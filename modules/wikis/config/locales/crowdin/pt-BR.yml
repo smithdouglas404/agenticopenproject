@@ -30,16 +30,14 @@ pt-BR:
       save_and_continue: Salvar e continuar
       done_continue: Done, continue
       wiki_page: Wiki page
-    inline_page_links_component:
-      empty_heading: Sem links embutidos
-      empty_text: Links embutidos para páginas wiki na descrição do pacote de trabalho também aparecerão automaticamente aqui.
-      heading: Links de página embutidos
+    work_package_wikis_tab_component:
+      inline_page_links: Inline page links
+      referencing_pages: Referenced in
     page_link_component:
       remove: Remove page link
     relation_page_links_component:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
-      heading: Related pages
     oauth_login_component:
       connect_button: Connect %{provider} account
     admin:

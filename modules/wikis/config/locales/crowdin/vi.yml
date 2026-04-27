@@ -28,16 +28,14 @@ vi:
       save_and_continue: Save and continue
       done_continue: Done, continue
       wiki_page: Wiki page
-    inline_page_links_component:
-      empty_heading: No inline links
-      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
-      heading: Inline page links
+    work_package_wikis_tab_component:
+      inline_page_links: Inline page links
+      referencing_pages: Referenced in
     page_link_component:
       remove: Remove page link
     relation_page_links_component:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
-      heading: Related pages
     oauth_login_component:
       connect_button: Connect %{provider} account
     admin:

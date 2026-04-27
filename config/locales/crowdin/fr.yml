@@ -262,7 +262,7 @@ fr:
               caption: Vérifiez vos paramètres d'importation et démarrez l'importation
               caption_done: Terminé
               label_available_data: Données disponibles pour l'importation
-              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
+              label_users_import_explanation: Utilisateurs impliqués dans les projets sélectionnés (y compris les membres de groupes)
               button_start: Démarrer l'importation
               description: Vous êtes sur le point de lancer un cycle d'importation avec les paramètres suivants.
               label_progress: Importation en cours...
@@ -1980,28 +1980,28 @@ fr:
         version: Version
         watcher: Observateur
       ordered_persisted_query_entity:
-        persisted_query: Persisted query
-        entity: Entity
+        persisted_query: Requête persistante
+        entity: Entité
         position: Position
       persisted_query:
-        name: Name
-        views: Views
-        filters: Filters
-        orders: Orders
-        selects: Selects
+        name: Nom
+        views: Affichages
+        filters: Filtres
+        orders: Commandes
+        selects: Sélectionne
       persisted_view:
-        name: Name
-        query: Query
-        parent: Parent view
+        name: Nom
+        query: Requête
+        parent: Vue parente
         public: Public
       user_card_view:
-        secondary_info: Secondary info
-        show_status_badge: Show status badge
-        show_email: Show email
-        tag_source: Tag source
-        tag_limit: Tag limit
-        card_size: Card size
-        columns_per_row: Columns per row
+        secondary_info: Informations secondaires
+        show_status_badge: Afficher le badge d'état
+        show_email: Afficher l'adresse électronique
+        tag_source: Source des étiquettes
+        tag_limit: Limite des étiquettes
+        card_size: Taille des cartes
+        columns_per_row: Colonne par ligne
     errors:
       messages:
         accepted: doi(ven)t être accepté(e)(s).
@@ -3576,7 +3576,7 @@ fr:
         personal_reminder: M'avertir pour les rappels personnels
       daily_reminders:
         title: M'envoyer des rappels quotidiens par e-mail pour les notifications non lues
-        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: Vous ne recevrez ces rappels que pour les notifications non lues et seulement aux heures que vous aurez spécifiées. Tant que vous n'aurez pas configuré un fuseau horaire pour votre compte, les heures seront interprétées comme étant en UTC.
         enabled: Activer les rappels quotidiens par e-mail
         add_time: Ajouter une heure
         remove_time: Supprimer l'heure
@@ -3590,7 +3590,7 @@ fr:
         date_range: Période de pause
       email_alerts:
         title: Alertes par e-mail pour les autres éléments qui ne sont pas des lots de travaux
-        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        description: Les notifications d'aujourd'hui sont limitées aux lots de travaux. Vous pouvez choisir de continuer à recevoir des alertes par e-mail pour ces événements jusqu'à ce qu'elles soient incluses dans les notifications.
         news_added: Actualités ajoutées
         news_commented: Commenter un article d'actualité
         document_added: Document ajouté
@@ -3603,7 +3603,7 @@ fr:
     notifications:
       participating:
         title: Participant
-        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        description: Notifications pour toute activité sur les lots de travaux vous concernant (assigné, responsable ou observateur).
         submit_button: Mettre à jour les préférences
         mentioned: Mentionné
         watched: En cours
@@ -3612,7 +3612,7 @@ fr:
         shared: Partagé avec moi
       date_alerts:
         title: Alertes de date
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        description: Notifications automatiques lorsque des dates importantes approchent pour les lots de travaux ouverts vous concernant (assigné, responsable ou observateur).
         submit_button: Mettre à jour les alertes de date
         start_date: Date de début
         due_date: Date de fin
@@ -3627,7 +3627,7 @@ fr:
           seven_days_after: 7 jours après
       non_participating:
         title: Non participant
-        description: Additional notifications for activities in all projects.
+        description: Notifications additionnelles pour les activités de tous les projets.
         submit_button: Mettre à jour les préférences
         work_package_created: Nouveaux lots de travaux
         work_package_commented: Tous les nouveaux commentaires
@@ -3636,7 +3636,7 @@ fr:
         work_package_scheduled: Tous les changements de date
       project_specific_settings:
         title: Paramètres de notification spécifiques au projet
-        description: These project-specific settings override default settings above.
+        description: Ces paramètres spécifiques au projet remplacent les paramètres par défaut ci-dessus.
         add_button: Ajouter des notifications spécifiques au projet
         dialog_title: Ajouter des notifications spécifiques au projet
         list_header: Projets avec notifications spécifiques

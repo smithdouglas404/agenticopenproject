@@ -257,42 +257,156 @@ RSpec.describe Backlogs::InboxController do
       get :menu, params: { project_id: project.id, id: work_package.id }, format: :html
     end
 
-    it "returns deferred action menu list HTML", :aggregate_failures do
-      subject
-      expect(response).to have_http_status :ok
-      expect(response.body).to include(I18n.t(:"js.button_open_details"))
-    end
-
-    context "when all=1 is in params" do
-      subject do
-        get :menu, params: { project_id: project.id, id: work_package.id, all: "1" }, format: :html
-      end
-
-      it "embeds the all query in deferred action URLs" do
+    shared_examples "it renders the menu" do
+      it "returns deferred action menu list HTML", :aggregate_failures do
         subject
-        expect(response.body).to match(/all=1/)
+        expect(response).to have_http_status :ok
+        expect(response.body).to include(I18n.t(:"js.button_open_details"))
+      end
+
+      context "when all=1 is in params" do
+        subject do
+          get :menu, params: { project_id: project.id, id: work_package.id, all: "1" }, format: :html
+        end
+
+        it "embeds the all query in deferred action URLs" do
+          subject
+          expect(response.body).to match(/all=1/)
+        end
+      end
+
+      context "when the work package belongs to another project" do
+        let(:other_project) { create(:project) }
+        let(:work_package) { create(:work_package, project: other_project) }
+
+        it "responds with 404" do
+          expect(response).to have_http_status :not_found
+        end
+      end
+
+      context "with a user lacking project permission" do
+        let(:user) { create(:user) }
+
+        it "responds with 404" do
+          subject
+          expect(response).to have_http_status :not_found
+        end
       end
     end
 
-    context "when the work package belongs to another project" do
-      let(:other_project) { create(:project) }
-      let(:work_package) { create(:work_package, project: other_project) }
-
-      it "responds with 404" do
-        expect(response).to have_http_status :not_found
+    shared_examples "renders actions to move in both directions" do
+      it "renders actions to move in both directions", :aggregate_failures do
+        expect(response.body).to include(I18n.t(:label_sort_highest))
+        expect(response.body).to include(I18n.t(:label_sort_higher))
+        expect(response.body).to include(I18n.t(:label_sort_lower))
+        expect(response.body).to include(I18n.t(:label_sort_lowest))
       end
     end
 
-    context "with a user lacking project permission" do
-      let(:user) { create(:user) }
-
-      it "responds with 404" do
-        subject
-        expect(response).to have_http_status :not_found
+    shared_examples "renders only actions to move to bottom" do
+      it "renders only actions to move to bottom", :aggregate_failures do
+        expect(response.body).not_to include(I18n.t(:label_sort_highest))
+        expect(response.body).not_to include(I18n.t(:label_sort_higher))
+        expect(response.body).to include(I18n.t(:label_sort_lower))
+        expect(response.body).to include(I18n.t(:label_sort_lowest))
       end
     end
 
-    it_behaves_like "checks permissions for private projects"
+    shared_examples "renders only actions to move to top" do
+      it "renders only actions to move to top", :aggregate_failures do
+        expect(response.body).to include(I18n.t(:label_sort_highest))
+        expect(response.body).to include(I18n.t(:label_sort_higher))
+        expect(response.body).not_to include(I18n.t(:label_sort_lower))
+        expect(response.body).not_to include(I18n.t(:label_sort_lowest))
+      end
+    end
+
+    shared_examples "renders no actions to move" do
+      it "renders no actions to move", :aggregate_failures do
+        expect(response.body).not_to include(I18n.t(:label_sort_highest))
+        expect(response.body).not_to include(I18n.t(:label_sort_higher))
+        expect(response.body).not_to include(I18n.t(:label_sort_lower))
+        expect(response.body).not_to include(I18n.t(:label_sort_lowest))
+      end
+    end
+
+    context "with backlog buckets enabled", with_flag: { backlog_buckets: true } do
+      let!(:bucket1) { create(:backlog_bucket, project:) }
+      let!(:bucket2) { create(:backlog_bucket, project:) }
+
+      let!(:bucket1_lone_work_package) { create(:work_package, project:, backlog_bucket: bucket1) }
+      let!(:bucket2_work_packages) { create_list(:work_package, 5, project:, backlog_bucket: bucket2) }
+
+      it_behaves_like "checks permissions for private projects"
+
+      it_behaves_like "it renders the menu"
+
+      context "for work package at the top of inbox" do
+        let(:work_package) { work_packages.first }
+
+        it_behaves_like "renders only actions to move to bottom"
+      end
+
+      context "for work package at the bottom of inbox" do
+        let(:work_package) { work_packages.last }
+
+        it_behaves_like "renders only actions to move to top"
+      end
+
+      context "for work package in the middle of inbox" do
+        let(:work_package) { work_packages.third }
+
+        it_behaves_like "renders actions to move in both directions"
+      end
+
+      context "for a work package alone in the bucket" do
+        let(:work_package) { bucket1_lone_work_package }
+
+        it_behaves_like "renders no actions to move"
+      end
+
+      context "for work package at the top of bucket with multiple" do
+        let(:work_package) { bucket2_work_packages.first }
+
+        it_behaves_like "renders only actions to move to bottom"
+      end
+
+      context "for work package in the middle of bucket with multiple" do
+        let(:work_package) { bucket2_work_packages.third }
+
+        it_behaves_like "renders actions to move in both directions"
+      end
+
+      context "for work package at the bottom of bucket with multiple" do
+        let(:work_package) { bucket2_work_packages.last }
+
+        it_behaves_like "renders only actions to move to top"
+      end
+    end
+
+    context "with backlog buckets disabled", with_flag: { backlog_buckets: false } do
+      it_behaves_like "checks permissions for private projects"
+
+      it_behaves_like "it renders the menu"
+
+      context "for work package at the top" do
+        let(:work_package) { work_packages.first }
+
+        it_behaves_like "renders only actions to move to bottom"
+      end
+
+      context "for work package in the middle" do
+        let(:work_package) { work_packages.third }
+
+        it_behaves_like "renders actions to move in both directions"
+      end
+
+      context "for work package at the bottom" do
+        let(:work_package) { work_packages.last }
+
+        it_behaves_like "renders only actions to move to top"
+      end
+    end
   end
 
   describe "GET #move_to_sprint_dialog" do

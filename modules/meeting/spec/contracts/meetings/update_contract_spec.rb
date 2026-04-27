@@ -66,6 +66,14 @@ RSpec.describe Meetings::UpdateContract do
 
       it_behaves_like "contract is invalid", base: :error_conflict
     end
+
+    context "when meeting is closed" do
+      before do
+        meeting.update_column(:state, :closed)
+      end
+
+      it_behaves_like "contract is invalid", base: I18n.t(:text_meeting_not_editable_anymore)
+    end
   end
 
   context "without permission" do

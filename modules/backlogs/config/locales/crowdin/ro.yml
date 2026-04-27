@@ -44,7 +44,7 @@ ro:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
         backlog_bucket: Backlog Bucket
-        backlogs_work_package_type: Tipul de restante
+        backlogs_work_package_type: Tip restanță
         position: Poziție
         sprint: Sprint
         story_points: Puncte

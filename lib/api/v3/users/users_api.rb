@@ -44,6 +44,12 @@ module API
               fail ::API::Errors::InvalidUserStatusTransition
             end
           end
+
+          def ensure_user_limit_not_reached_for_activation!
+            return unless OpenProject::Enterprise.user_limit_reached?
+
+            fail ::API::Errors::UnprocessableContent.new(I18n.t(:error_enterprise_activation_user_limit))
+          end
         end
 
         resources :users do
@@ -109,7 +115,10 @@ module API
               desc "Remove lock on user account"
               delete do
                 user_transition(@user.locked? || @user.active? || @user.deleted?) do
-                  @user.activate! unless @user.active?
+                  if @user.locked?
+                    ensure_user_limit_not_reached_for_activation!
+                    @user.activate!
+                  end
                 end
               end
             end
