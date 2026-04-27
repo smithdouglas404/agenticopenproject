@@ -29,4 +29,19 @@
 #++
 
 class BacklogBuckets::DeleteService < BaseServices::Delete
+  private
+
+  def before_perform(service_call)
+    move_to_backlog.each { |result| service_call.add_dependent!(result) }
+
+    service_call
+  end
+
+  def move_to_backlog
+    model.work_packages.order(position: :asc).map do |wp|
+      WorkPackages::UpdateService
+        .new(user:, model: wp, contract_class: WorkPackages::MoveToBacklogContract)
+        .call(backlog_bucket: nil)
+    end
+  end
 end

@@ -32,5 +32,44 @@ require "spec_helper"
 require "services/base_services/behaves_like_delete_service"
 
 RSpec.describe BacklogBuckets::DeleteService, type: :model do
+  shared_let(:project) { create(:project, enabled_module_names: %w[backlogs work_package_tracking]) }
+  shared_let(:bucket) { create(:backlog_bucket, project:) }
+  shared_let(:no_bucket_wp1) { create(:work_package, project:) }
+  shared_let(:bucket_wp1) { create(:work_package, project:, backlog_bucket: bucket) }
+  shared_let(:bucket_wp2) { create(:work_package, project:, backlog_bucket: bucket) }
+
+  let(:permissions) { %i[view_sprints create_sprints] }
+  let(:user) { create(:user, member_with_permissions: { project => permissions }) }
+  let(:instance) { described_class.new(user:, model: bucket) }
+
+  subject { instance.call }
+
   it_behaves_like "BaseServices delete service"
+
+  context "when the contract is valid" do
+    it "moves the work packages to the inbox (no bucket - updating the positions)", :aggregate_failures do
+      expect(subject).to be_success
+
+      expect(bucket_wp1.reload.backlog_bucket).to be_nil
+      expect(bucket_wp2.reload.backlog_bucket).to be_nil
+
+      # 1 is already taken by no_bucket_wp1
+      expect(bucket_wp1.reload.position).to eq(2)
+      expect(bucket_wp2.reload.position).to eq(3)
+    end
+  end
+
+  context "when the contract is invalid" do
+    let(:permissions) { %i[view_sprints] }
+
+    it "leaves the work packages where they are", :aggregate_failures do
+      expect(subject).to be_failure
+
+      expect(bucket_wp1.reload.backlog_bucket).to eq bucket
+      expect(bucket_wp2.reload.backlog_bucket).to eq bucket
+
+      expect(bucket_wp1.reload.position).to eq(1)
+      expect(bucket_wp2.reload.position).to eq(2)
+    end
+  end
 end
