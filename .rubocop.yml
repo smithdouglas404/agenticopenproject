@@ -60,7 +60,8 @@ Layout/MultilineOperationIndentation:
   Enabled: false
 
 Lint/AmbiguousBlockAssociation:
-  AllowedMethods: [ change ]
+  AllowedMethods:
+    - change
 
 Lint/AmbiguousOperator:
   Enabled: false
@@ -406,7 +407,8 @@ Style/FormatString:
   Enabled: false
 
 Style/FormatStringToken:
-  AllowedMethods: [ redirect ]
+  AllowedMethods:
+    - redirect
 
 Style/FrozenStringLiteralComment:
   Enabled: true
