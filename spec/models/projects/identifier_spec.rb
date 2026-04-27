@@ -258,5 +258,63 @@ RSpec.describe Projects::Identifier do
         expect(result).to match(/\Aproject-[a-z0-9]{5}\z/)
       end
     end
+
+    context "with explicit mode: parameter" do
+      context "when mode: semantic overrides a classic setting",
+              with_settings: { work_packages_identifier: "classic" } do
+        it "uses the semantic generator" do
+          allow(ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
+            .to receive(:suggest_identifier).and_return("MP")
+
+          Project.suggest_identifier("My Project", mode: Setting::WorkPackageIdentifier::SEMANTIC)
+
+          expect(ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
+            .to have_received(:suggest_identifier).with("My Project", exclude: a_kind_of(Set))
+        end
+      end
+
+      context "when mode: classic overrides a semantic setting",
+              with_settings: { work_packages_identifier: "semantic" } do
+        it "uses the classic generator" do
+          generator = instance_double(ProjectIdentifiers::ClassicIdentifierSuggestionGenerator)
+          allow(ProjectIdentifiers::ClassicIdentifierSuggestionGenerator).to receive(:new).and_return(generator)
+          allow(generator).to receive(:suggest_identifier).and_return("my-project")
+
+          result = Project.suggest_identifier("My Project", mode: Setting::WorkPackageIdentifier::CLASSIC)
+
+          expect(result).to eq("my-project")
+        end
+      end
+    end
+  end
+
+  describe "#suggest_identifier" do
+    subject(:project) { build(:project, name: "My Project") }
+
+    context "with no mode argument", with_settings: { work_packages_identifier: "classic" } do
+      it "delegates to the class method using the current setting" do
+        expect(project.suggest_identifier).to eq(Project.suggest_identifier("My Project"))
+      end
+    end
+
+    context "with explicit mode: semantic", with_settings: { work_packages_identifier: "classic" } do
+      it "passes the mode through to the class method" do
+        allow(ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
+          .to receive(:suggest_identifier).and_return("MP")
+
+        project.suggest_identifier(mode: Setting::WorkPackageIdentifier::SEMANTIC)
+
+        expect(ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
+          .to have_received(:suggest_identifier).with("My Project", exclude: a_kind_of(Set))
+      end
+    end
+
+    context "with explicit mode: classic", with_settings: { work_packages_identifier: "semantic" } do
+      it "passes the mode through to the class method" do
+        result = project.suggest_identifier(mode: Setting::WorkPackageIdentifier::CLASSIC)
+
+        expect(result).to eq("my-project")
+      end
+    end
   end
 end

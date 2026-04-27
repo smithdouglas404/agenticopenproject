@@ -88,8 +88,8 @@ module Projects::Identifier
       str.match?(CLASSIC_IDENTIFIER_FORMAT)
     end
 
-    def suggest_identifier(name)
-      if Setting::WorkPackageIdentifier.semantic?
+    def suggest_identifier(name, mode: Setting[:work_packages_identifier])
+      if mode == Setting::WorkPackageIdentifier::SEMANTIC
         exclude = ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.reserved_identifiers
         ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
           .suggest_identifier(name, exclude:)
@@ -97,6 +97,10 @@ module Projects::Identifier
         ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new.suggest_identifier(name)
       end
     end
+  end
+
+  def suggest_identifier(mode: Setting[:work_packages_identifier])
+    self.class.suggest_identifier(name, mode:)
   end
 
   # Override the `validation_context` getter to include the `default_validation_context` when the

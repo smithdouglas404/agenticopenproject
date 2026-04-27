@@ -71,16 +71,11 @@ module ProjectIdentifiers
     end
 
     def assign_semantic_identifier
-      # Re-instantiate inside the lock so the exclusion set reflects all
-      # identifiers committed since this job started.
-      detector  = ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.new
-      generator = ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
-
       # Prefer restoring the project's last known semantic identifier (from
       # FriendlyId history) so that existing WP identifiers remain valid and
       # aliases need no update. Fall back to generating a fresh suggestion.
       new_identifier = project.previous_semantic_identifier ||
-                       generator.suggest_identifier(project.name, exclude: detector.exclusion_set)
+                       project.suggest_identifier(mode: Setting::WorkPackageIdentifier::SEMANTIC)
 
       raise "Generated identifier is blank for project #{project.id}" if new_identifier.blank?
 
