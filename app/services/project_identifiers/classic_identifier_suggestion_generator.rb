@@ -68,7 +68,7 @@ module ProjectIdentifiers
     private
 
     def slugify(name)
-      name.to_url.first(Projects::Identifier::IDENTIFIER_MAX_LENGTH).presence
+      name.to_url.first(Projects::Identifier::CLASSIC_IDENTIFIER_MAX_LENGTH).presence
     end
 
     def fallback_base

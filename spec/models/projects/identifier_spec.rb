@@ -35,7 +35,16 @@ RSpec.describe Projects::Identifier do
     subject { create(:project) }
 
     it { is_expected.to validate_uniqueness_of(:identifier).case_insensitive }
-    it { is_expected.to validate_length_of(:identifier).is_at_most(100) }
+
+    context "with classic identifiers", with_settings: { work_packages_identifier: "classic" } do
+      it { is_expected.to validate_length_of(:identifier).is_at_most(100) }
+    end
+
+    context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
+      subject { build(:project, identifier: "PROJ") }
+
+      it { is_expected.to validate_length_of(:identifier).is_at_most(10) }
+    end
   end
 
   describe "database indexes" do
