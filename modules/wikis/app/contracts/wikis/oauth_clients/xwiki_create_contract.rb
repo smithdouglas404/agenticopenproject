@@ -32,7 +32,7 @@ module Wikis
   module OAuthClients
     # XWiki uses a public OAuth client (RFC 6749 §2.1) — no client_secret is issued.
     class XWikiCreateContract < ::OAuthClients::CreateContract
-      validates :client_secret, length: { maximum: 255 }, allow_blank: true
+      def client_secret_required? = false
     end
   end
 end

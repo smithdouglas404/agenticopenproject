@@ -28,20 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module OAuthClients
-    class CreateService < ::OAuthClients::CreateService
-      def initialize(**)
-        super(contract_class: Wikis::OAuthClients::XWikiCreateContract, **)
-      end
+require "spec_helper"
+require_module_spec_helper
+require "contracts/shared/model_contract_shared_context"
 
-      def attributes_service_class
-        ::OAuthClients::SetAttributesService
-      end
+RSpec.describe Wikis::OAuthClients::XWikiCreateContract do
+  include_context "ModelContract shared context"
 
-      def instance_class
-        ::OAuthClient
-      end
+  let(:current_user) { create(:admin) }
+  let(:client_id) { SecureRandom.uuid }
+  let(:client_secret) { nil }
+  let(:integration) { create(:xwiki_provider) }
+  let(:oauth_client) { build(:oauth_client, client_id:, client_secret:, integration:) }
+
+  let(:contract) { described_class.new(oauth_client, current_user) }
+
+  describe "client_secret" do
+    context "when absent (nil)" do
+      include_examples "contract is valid"
+    end
+
+    context "when empty string" do
+      let(:client_secret) { "" }
+
+      include_examples "contract is valid"
+    end
+
+    context "when too long" do
+      let(:client_secret) { "X" * 257 }
+
+      include_examples "contract is invalid", client_secret: :too_long
     end
   end
 end
