@@ -32,7 +32,7 @@ class SharingMailer < ApplicationMailer
   include MailNotificationHelper
   helper :mail_notification
 
-  def shared_work_package(sharer, membership, group = nil)
+  def shared_work_package(sharer, membership, group = nil) # rubocop:disable Metrics/AbcSize
     @sharer = sharer
     @shared_with_user = membership.principal
     @invitation_token = @shared_with_user.invited? ? @shared_with_user.invitation_token : nil
@@ -79,14 +79,14 @@ class SharingMailer < ApplicationMailer
     allowed_actions =
       case role.builtin
       when Role::BUILTIN_WORK_PACKAGE_EDITOR
-        [I18n.t("work_package.permissions.view"),
-         I18n.t("work_package.permissions.comment"),
-         I18n.t("work_package.permissions.edit")]
+        [I18n.t("work_package.permissions.view_verb"),
+         I18n.t("work_package.permissions.comment_verb"),
+         I18n.t("work_package.permissions.edit_verb")]
       when Role::BUILTIN_WORK_PACKAGE_COMMENTER
-        [I18n.t("work_package.permissions.view"),
-         I18n.t("work_package.permissions.comment")]
+        [I18n.t("work_package.permissions.view_verb"),
+         I18n.t("work_package.permissions.comment_verb")]
       when Role::BUILTIN_WORK_PACKAGE_VIEWER
-        [I18n.t("work_package.permissions.view")]
+        [I18n.t("work_package.permissions.view_verb")]
       end
 
     allowed_actions.map(&:downcase)

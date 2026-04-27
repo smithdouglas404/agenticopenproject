@@ -37,7 +37,7 @@
             <td style="<%= placeholder_text_styles %>">
               <%
                 allowed_actions = to_sentence(
-                  @allowed_work_package_actions.map { |action| content_tag(:span, action.downcase, style: "font-weight: bold") }
+                  @allowed_work_package_actions.map { |action| content_tag(:span, action, style: "font-weight: bold") }
                 )
               %>
 
