@@ -23,35 +23,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OAuthClients
-  class CreateContract < ::ModelContract
-    include ActiveModel::Validations
-
-    attribute :client_id, writable: true
-    validates :client_id, presence: true, length: { maximum: 255 }
-
-    attribute :client_secret, writable: true
-    validates :client_secret, presence: true, length: { maximum: 255 }
-
-    attribute :integration_type, writable: true
-    validates :integration_type, presence: true
-
-    attribute :integration_id, writable: true
-    validates :integration_id, presence: true
-
-    validate :validate_user_allowed
-
-    private
-
-    def validate_user_allowed
-      unless user.admin? && user.active?
-        errors.add :base, :error_unauthorized
-      end
+module Wikis
+  module OAuthClients
+    # XWiki uses a public OAuth client (RFC 6749 §2.1) — no client_secret is issued.
+    class XWikiCreateContract < ::OAuthClients::CreateContract
+      validates :client_secret, length: { maximum: 255 }, allow_blank: true
     end
   end
 end

@@ -52,8 +52,6 @@ module Wikis
       resolve("queries.user").call(access_token: token.access_token)
     end
 
-    def skip_client_secret_validation? = true
-
     def authenticate_via_two_way_oauth2?
       authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
     end
