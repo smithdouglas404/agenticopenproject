@@ -35,15 +35,20 @@ We will continue to expand support for additional custom field types in future r
 
 ### Backlog buckets in "Backlog and sprints" view
 
-Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+Backlog buckets are now available. They allow you to group work packages within the backlog into clearly structured lists. Each bucket can be named individually and helps organize large backlogs into manageable sections. This makes it easier to prioritize work packages and focus on specific groups during backlog refinement.
+
+Work packages can be moved between buckets, sorted within each bucket, and adjusted as priorities change.
 
 ### Backlog card draggable + one-click for side panel
 
-Easier drag and drop and improved move options in the Backlogs module.
+Backlog cards are now fully draggable, making it easier to move work packages during backlog refinement and sprint planning. With a single click, you can open a work package in the side panel to quickly view and edit details without losing context.
 
-### Sprint Start and Complete buttons in the sprint header
+### Sprint start and complete buttons in the sprint header
 
-Sprint Start and Complete buttons in the sprint header.
+You can now start and complete sprints directly from the sprint header by clicking the respective buttons. This makes these actions easier to access and provides a clearer overview of the sprint status.
+
+> [!NOTE]
+> Please note that these buttons represent actions you can take, such as starting or completing a sprint, and do not indicate the current sprint status.
 
 ### Workflow UX improvement: Apply workflow setting from one role to another role
 
