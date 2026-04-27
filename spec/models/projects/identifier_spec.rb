@@ -372,6 +372,18 @@ RSpec.describe Projects::Identifier do
       end
     end
 
+    describe "#excluding_project" do
+      it "drops the given project's slug history from the relation" do
+        values = Project.historical_identifiers.excluding_project(renamed_project).raw_values
+        expect(values).to contain_exactly("active-id")
+      end
+
+      it "is a no-op when project is nil" do
+        values = Project.historical_identifiers.excluding_project(nil).raw_values
+        expect(values).to contain_exactly("active-id", "current-id", "old-slug")
+      end
+    end
+
     it "composes scopes (truly_historical + upcased_values)" do
       values = Project.historical_identifiers.truly_historical.upcased_values
       expect(values).to contain_exactly("OLD-SLUG")

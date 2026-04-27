@@ -97,6 +97,11 @@ module Projects::Identifier
       where("LOWER(slug) = ?", value.downcase)
     end
 
+    # Excludes the given project's own slug history. No-op when project is nil.
+    def excluding_project(project)
+      project ? where.not(sluggable_id: project) : self
+    end
+
     def upcased_values   = pluck(Arel.sql("UPPER(slug)"))
     def downcased_values = pluck(Arel.sql("LOWER(slug)"))
     # Verbatim values, no case folding. Named `raw_values` to avoid colliding
