@@ -45,28 +45,28 @@ module Backlogs
       respond_with_dialog Backlogs::NewBacklogBucketDialogComponent.new(backlog_bucket: @backlog_bucket, state: :edit)
     end
 
-    def create # rubocop:disable Metrics/AbcSize
+    def create
       call = ::BacklogBuckets::CreateService
                .new(user: current_user)
                .call(attributes: backlog_bucket_params)
 
       if call.success?
         flash[:notice] = I18n.t(:notice_successful_create)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
+        redirect_to_backlogs
       else
         update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
       end
     end
 
-    def update # rubocop:disable Metrics/AbcSize
+    def update
       call = ::BacklogBuckets::UpdateService
                .new(user: current_user, model: @backlog_bucket)
                .call(attributes: edit_backlog_bucket_params)
 
       if call.success?
         flash[:notice] = I18n.t(:notice_successful_update)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
+        redirect_to_backlogs
       else
         update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
@@ -84,7 +84,7 @@ module Backlogs
         flash[:error] = call.errors.full_messages.join(", ")
       end
 
-      render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
+      redirect_to_backlogs
     end
 
     private
@@ -113,6 +113,12 @@ module Backlogs
 
     def edit_backlog_bucket_params
       params.expect(backlog_bucket: %i[name])
+    end
+
+    def redirect_to_backlogs
+      render turbo_stream: turbo_stream.redirect_to(
+        project_backlogs_backlog_path(@project, helpers.all_backlogs_params)
+      )
     end
   end
 end
