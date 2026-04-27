@@ -41,26 +41,26 @@ Backlog buckets are now available. They allow you to group work packages within 
 
 Work packages can be moved between buckets, sorted within each bucket, and adjusted as priorities change.
 
-Screenshot
+![Overlay to create a new backlog bucket in OpenProject, user can enter backlog bucket name](openproject-17-4-backlog-bucket-create.png)
 
 ### Backlog card draggable + one-click for side panel
 
 Backlog cards are now fully draggable, making it easier to move work packages during backlog refinement and sprint planning. With a single click, you can open a work package in the side panel to quickly view and edit details without losing context.
 
-### Sprint start and complete buttons in the sprint header
+### Sprint Start and Complete buttons in the sprint header
 
 You can now start and complete sprints directly from the sprint header by clicking the respective buttons. This makes these actions easier to access and provides a clearer overview of the sprint status.
 
 > [!NOTE]
 > Please note that these buttons represent actions you can take, such as starting or completing a sprint, and do not indicate the current sprint status.
 
-Screenshot
+![OpenProject Backlogs module, Sprints column with marked buttons: "Complete" on top of the active sprint and "Start" on top of the non active sprints](openproject-17-4-backlog-sprints-button-highlighted.png)
 
 ### Workflow UX improvement: Apply workflow setting from one role to another role
 
 You can now copy workflow settings from one role to other roles, using a dedicated dialog. This makes it easier to apply consistent workflows across roles and reduces manual configuration effort.
 
-Screenshot
+![Overlay in the OpenProject workflow settings: Copy workflow of "Task" to other roles, user can select multiple roles](openproject-17-4-workflow-copy-to-roles.png)
 
 ### New widget for upcoming meetings on Project Overview and Home page
 
@@ -68,7 +68,7 @@ A new "My meetings" widget shows your upcoming meetings directly on the Home and
 
 Please note that with this update, the Users widget has been removed and replaced by the "My meetings" widget.
 
-Screenshot
+![Project home of "Automotive project" example, My meetings widget highlighted and two clickable meetings with main information (name, time, duration) shown](openproject-17-4-my-meetings-project-home-highlighted.png)
 
 ### Demo and trial projects: Updated default modules
 
