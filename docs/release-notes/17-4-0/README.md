@@ -22,9 +22,16 @@ Take a look at our release video showing the most important features introduced 
 
 ![Release video of OpenProject 17.4](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_4_release.mp4)
 
-### Support basic custom fields migration from Jira 
+### Support basic custom fields migration from Jira
 
-Jira Migrator with support for basic custom fields (Beta).
+With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly (Beta). While the feature is not yet fully complete, it is ready to be tested. We encourage users to try the Jira Migrator and share their feedback. 
+
+> [!NOTE]
+> If you would like to share anonymized data from your Jira Migrator usage to support our development team, please [reach out to us](https://www.openproject.org/contact/). We are happy to sign an NDA to ensure confidentiality.
+
+It is now possible to migrate basic custom fields from Jira to OpenProject. Custom fields that have a corresponding field type in OpenProject can be migrated, such as text, numbers, dates, and select lists. This helps transfer existing data and maintain a consistent work package structure after migration.
+
+We will continue to expand support for additional custom field types in future releases to enable even more complete migrations.
 
 ### Backlog buckets in "Backlog and sprints" view
 
@@ -55,7 +62,11 @@ Copy workflow settings between roles.
 
 ### Expose project-based semantic work package identifier on the API
 
-text
+Project-based work package identifiers are now exposed via the API. With upcoming support for semantic identifiers such as `#ABC-123`, a new field `displayId` is available in the API. This field returns the correct identifier format, depending on how the instance is configured.
+
+If you are building or maintaining an application using the OpenProject API V3, we recommend using `displayId` instead of `id` when displaying work package identifiers.
+
+The `id` field will continue to return the internal database ID and should still be used for API requests such as filtering.
 
 ### Meetings and recurring meetings APIv3 endpoints
 
