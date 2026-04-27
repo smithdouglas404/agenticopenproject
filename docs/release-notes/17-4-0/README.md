@@ -10,9 +10,7 @@ release_date: 2026-04-23
 
  Release date: 2026-04-23
 
- We released OpenProject [OpenProject 17.4.0](https://community.openproject.org/versions/2267).
- The release contains several bug fixes and we recommend updating to the newest version.
- In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+ We released [OpenProject 17.4.0](https://community.openproject.org/versions/2267). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
 <!-- BEGIN CVE AUTOMATED SECTION -->
 
@@ -20,11 +18,53 @@ release_date: 2026-04-23
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+Take a look at our release video showing the most important features introduced in OpenProject 17.4.0:
 
-## Important updates and breaking changes
+![Release video of OpenProject 17.4](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_4_release.mp4)
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+### Support basic custom fields migration from Jira 
+
+Jira Migrator with support for basic custom fields (Beta).
+
+### Backlog buckets in "Backlog and sprints" view
+
+Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+
+### Backlog card draggable + one-click for side panel
+
+Easier drag and drop and improved move options in the Backlogs module.
+
+### Sprint Start and Complete buttons in the sprint header
+
+Sprint Start and Complete buttons in the sprint header.
+
+### Workflow UX improvement: Apply workflow setting from one role to another role
+
+Copy workflow settings between roles.
+
+### New widget for upcoming meetings on Project Overview and Home page
+
+"My Meetings" widget on the Home and Project Overview pages.
+
+####  Users widget removed
+
+### 
+
+
+## Important technical updates
+
+### Expose project-based semantic work package identifier on the API
+
+text
+
+### Meetings and recurring meetings APIv3 endpoints
+
+New APIv3 endpoints for meetings and recurring meetings, including agenda items, sections, and occurrences.
+
+### Allow webhook secrets for GitHub and GitLab integrations
+
+Improved security for GitHub and GitLab integrations with configurable webhook secrets.
+
 
 <!--more-->
 
@@ -111,12 +151,13 @@ release_date: 2026-04-23
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Andreas H., Madhu Reddy, Anna Mund.
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Andreas H., Madhu Reddy, and Anna Mund.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [Phi Công Nguyễn Vũ](https://crowdin.com/profile/nguyenvuphicong), for an outstanding number of translations into Vietnamese.
+- [Mehmet Coşkun](https://crowdin.com/profile/mmehmet.ccoskun), for a great number of translations into Turkish.
+- [Liangzdz](https://crowdin.com/profile/Liangzdz), for a great number of translations into Chinese Simplified.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 
