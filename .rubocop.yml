@@ -183,6 +183,7 @@ Rails/DynamicFindBy:
     - find_by_plaintext_value
     - find_by_rss_key
     - find_by_unique
+    - find_by_unique!
     - find_by_api_key
 
 # Allow reorder to prevent find each cop triggering
