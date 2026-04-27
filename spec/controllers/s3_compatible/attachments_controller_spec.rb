@@ -284,6 +284,11 @@ RSpec.describe S3Compatible::AttachmentsController, type: :controller do
         get :get_object, params: { bucket: "openproject", key: }
         expect(response.headers["ETag"]).to eq(%("#{attachment.digest}"))
       end
+
+      it "sets Content-Length to the actual file size, not the stale DB value" do
+        get :get_object, params: { bucket: "openproject", key: }
+        expect(response.headers["Content-Length"]).to eq(File.size(tmpfile.path).to_s)
+      end
     end
 
     context "with external (fog) storage" do

@@ -86,15 +86,12 @@ module S3Compatible
       attachment = find_attachment
       return render_s3_error(:not_found, "NoSuchKey", "The specified key does not exist.") unless attachment
 
-      set_object_headers(attachment)
+      set_object_headers attachment
 
       if attachment.external_storage?
         redirect_to attachment.external_url.to_s, allow_other_host: true, status: :found
       else
-        send_file attachment.diskfile.path,
-                  type:        "application/octet-stream",
-                  disposition: :attachment,
-                  filename:    attachment.filename
+        serve_local_attachment(attachment)
       end
     end
 
@@ -186,6 +183,31 @@ module S3Compatible
       "#{attachment.id}/#{attachment.filename}"
     end
 
+    def serve_local_attachment(attachment)
+      path = attachment.diskfile.path
+      file_size = attachment.filesize
+
+      range_header = request.headers["HTTP_RANGE"] || request.headers["Range"]
+      if range_header && (m = range_header.match(/\Abytes=(\d+)-(\d*)\z/))
+        first  = m[1].to_i
+        last   = m[2].present? ? [m[2].to_i, file_size - 1].min : file_size - 1
+        length = last - first + 1
+
+        response.headers["Content-Range"]  = "bytes #{first}-#{last}/#{file_size}"
+        response.headers["Content-Length"] = length.to_s
+        response.status = 206
+
+        send_data File.binread(path, length, first),
+                  type:        "application/octet-stream",
+                  disposition: :inline
+      else
+        send_file path,
+                  type:        "application/octet-stream",
+                  disposition: :attachment,
+                  filename:    attachment.filename
+      end
+    end
+
     def set_object_headers(attachment)
       response.headers["ETag"]             = %("#{attachment.digest}")
       response.headers["Content-Length"]   = attachment.filesize.to_s
@@ -207,7 +229,7 @@ module S3Compatible
           attachments.each do |a|
             xml.Contents do
               xml.Key         object_key(a)
-              xml.LastModified a.updated_at.iso8601(3)
+              xml.LastModified a.updated_at.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
               xml.ETag        %("#{a.digest}")
               xml.Size        a.filesize
               xml.StorageClass "STANDARD"
