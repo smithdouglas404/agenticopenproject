@@ -38,8 +38,9 @@ module OpenProject::GitlabIntegration
         @payload = wrap_payload(payload_params)
         return nil unless payload.object_kind == "push"
 
+        user = User.find_by(id: payload.open_project_user_id)
+
         payload.commits.each do |commit|
-          user = User.find_by(id: payload.open_project_user_id)
           text = [commit["title"], commit["message"]]
             .compact_blank
             .join(" - ")
