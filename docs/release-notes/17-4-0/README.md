@@ -29,15 +29,19 @@ With the release of OpenProject 17.4, the Jira Migrator is now available without
 > [!NOTE]
 > If you would like to share anonymized data from your Jira Migrator usage to support our development team, please [reach out to us](https://www.openproject.org/contact/). We are happy to sign an NDA to ensure confidentiality.
 
-It is now possible to migrate basic custom fields from Jira to OpenProject. Custom fields that have a corresponding field type in OpenProject can be migrated, such as text, numbers, dates, and select lists. This helps transfer existing data and maintain a consistent work package structure after migration.
+It is now possible to migrate basic custom fields from Jira to OpenProject. This includes custom fields that have a corresponding field type in OpenProject, such as text, numbers, dates, and select lists. This helps transfer existing data and maintain a consistent work package structure after migration.
 
 We will continue to expand support for additional custom field types in future releases to enable even more complete migrations.
 
+Screenshot
+
 ### Backlog buckets in "Backlog and sprints" view
 
-Backlog buckets are now available. They allow you to group work packages within the backlog into clearly structured lists. Each bucket can be named individually and helps organize large backlogs into manageable sections. This makes it easier to prioritize work packages and focus on specific groups during backlog refinement.
+Backlog buckets are now available. They allow you to group work packages within the backlog into clearly structured lists. Each bucket can be named individually and helps organize large backlogs into manageable sections, making it easier to prioritize work packages and focus on specific groups.
 
 Work packages can be moved between buckets, sorted within each bucket, and adjusted as priorities change.
+
+Screenshot
 
 ### Backlog card draggable + one-click for side panel
 
@@ -50,18 +54,25 @@ You can now start and complete sprints directly from the sprint header by clicki
 > [!NOTE]
 > Please note that these buttons represent actions you can take, such as starting or completing a sprint, and do not indicate the current sprint status.
 
+Screenshot
+
 ### Workflow UX improvement: Apply workflow setting from one role to another role
 
-Copy workflow settings between roles.
+You can now copy workflow settings from one role to other roles, using a dedicated dialog. This makes it easier to apply consistent workflows across roles and reduces manual configuration effort.
+
+Screenshot
 
 ### New widget for upcoming meetings on Project Overview and Home page
 
-"My Meetings" widget on the Home and Project Overview pages.
+A new "My meetings" widget shows your upcoming meetings directly on the Home and Project Overview pages. It displays the most relevant information at a glance, helping you stay on top of your schedule and quickly access upcoming meetings.
 
-####  Users widget removed
+Please note that with this update, the Users widget has been removed and replaced by the "My meetings" widget.
 
-### 
+Screenshot
 
+### Demo and trial projects: Updated default modules
+
+The default modules enabled in demo and trial projects have been updated. Budgets and Calendars are now enabled by default in the Demo project. Meetings are now enabled by default in the Scrum project. Please note that for some of the newly enabled modules, example content may not yet be available.
 
 ## Important technical updates
 
@@ -75,12 +86,15 @@ The `id` field will continue to return the internal database ID and should still
 
 ### Meetings and recurring meetings APIv3 endpoints
 
-New APIv3 endpoints for meetings and recurring meetings, including agenda items, sections, and occurrences.
+New APIv3 endpoints are now available for meetings and recurring meetings. These include support for managing agenda items, sections, and occurrences, enabling full access to meeting data via the API.
 
 ### Allow webhook secrets for GitHub and GitLab integrations
 
-Improved security for GitHub and GitLab integrations with configurable webhook secrets.
+You can now configure webhook secrets for GitHub and GitLab integrations. This improves the security of incoming webhook requests.
 
+### Add canonical URL meta tags to project and work package pages
+
+Canonical URL meta tags are now included on project and work package pages to improve SEO and avoid duplicate content issues.
 
 <!--more-->
 
