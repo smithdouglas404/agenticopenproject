@@ -34,12 +34,15 @@ require_module_spec_helper
 RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock do
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.local/") }
   let(:rest_url) { "https://xwiki.local/rest/" }
+  let(:input_data) { Wikis::Adapters::Input::UserQuery.new(access_token: "some-token") }
+
+  subject(:query) { described_class.new(model: wiki_provider) }
 
   it "is registered" do
     expect(Wikis::Adapters::Registry.resolve("xwiki.queries.user")).to eq(described_class)
   end
 
-  describe ".call" do
+  describe "#call" do
     context "when the request succeeds with xwiki-user header" do
       before do
         stub_request(:get, rest_url)
@@ -47,7 +50,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
       end
 
       it "returns Success with the xwiki-user header value" do
-        result = described_class.call(wiki_provider:, access_token: "some-token")
+        result = query.call(input_data)
         expect(result).to be_success
         expect(result.value!).to eq("XWiki.admin")
       end
@@ -59,10 +62,10 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
           .to_return(status: 200, body: "", headers: {})
       end
 
-      it "returns Failure mentioning the xwiki-user header" do
-        result = described_class.call(wiki_provider:, access_token: "invalid-token")
+      it "returns Failure with :unauthorized code" do
+        result = query.call(Wikis::Adapters::Input::UserQuery.new(access_token: "invalid-token"))
         expect(result).to be_failure
-        expect(result.failure).to include("xwiki-user header")
+        expect(result.failure).to have_attributes(code: :unauthorized)
       end
     end
 
@@ -71,19 +74,20 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
         stub_request(:get, rest_url).to_return(status: 500, body: "Internal Server Error")
       end
 
-      it "returns Failure with the status code" do
-        result = described_class.call(wiki_provider:, access_token: "some-token")
+      it "returns Failure with :request_failed code" do
+        result = query.call(input_data)
         expect(result).to be_failure
-        expect(result.failure).to include("500")
+        expect(result.failure).to have_attributes(code: :request_failed)
       end
     end
 
     context "when a network error occurs" do
       before { stub_request(:get, rest_url).to_timeout }
 
-      it "returns Failure" do
-        result = described_class.call(wiki_provider:, access_token: "some-token")
+      it "returns Failure with :connection_error code" do
+        result = query.call(input_data)
         expect(result).to be_failure
+        expect(result.failure).to have_attributes(code: :connection_error)
       end
     end
   end

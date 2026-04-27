@@ -28,37 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery < BaseQuery
-            def call(input_data)
-              url = "#{provider.url.chomp('/')}/rest/"
-              handle_response(OpenProject.httpx.bearer_auth(input_data.access_token).get(url))
-            end
-
-            private
-
-            def handle_response(response)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
-
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                failure(code: :request_failed)
-              end
-            end
-
-            def handle_success_response(response)
-              xwiki_user = response.headers["xwiki-user"]
-              xwiki_user.present? ? success(xwiki_user) : failure(code: :unauthorized)
-            end
-          end
-        end
-      end
-    end
-  end
+module Wikis::Adapters::Input
+  UserQuery = Data.define(:access_token)
 end
