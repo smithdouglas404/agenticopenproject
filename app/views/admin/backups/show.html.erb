@@ -61,4 +61,16 @@ See COPYRIGHT and LICENSE files for more details.
       "last-backup-attachment-id": @last_backup_attachment_id,
       "may-include-attachments": @may_include_attachments
     } %>
+
+  <section class="op-section-box" style="margin-top: 2rem;">
+    <h3><%= t("backup.s3_export.heading") %></h3>
+    <p><%= t("backup.s3_export.description") %></p>
+    <pre><code><%= t("backup.s3_export.command", endpoint_url: "#{request.base_url}/s3") %></code></pre>
+    <p>
+      <%= link_to t("backup.s3_export.docs_link_text"),
+                  t("backup.s3_export.docs_url"),
+                  target: "_blank",
+                  rel: "noopener noreferrer" %>
+    </p>
+  </section>
 <% end %>

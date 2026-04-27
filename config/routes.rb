@@ -1187,6 +1187,15 @@ Rails.application.routes.draw do
     mount Lookbook::Engine, at: "/lookbook"
   end
 
+  # S3-compatible read-only attachment export endpoint.
+  # Supports `aws s3 sync` and rclone using an OpenProject API token as the AWS access key ID.
+  # See docs/user-guide/file-management/s3-compatible-export.md for usage.
+  scope "/s3", module: "s3_compatible", format: false do
+    get  "/:bucket",      to: "attachments#list_objects", as: :s3_list_objects
+    get  "/:bucket/*key", to: "attachments#get_object",   as: :s3_get_object
+    match "/:bucket/*key", to: "attachments#head_object",  via: :head, as: :s3_head_object
+  end
+
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
