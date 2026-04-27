@@ -405,7 +405,7 @@ gem "disposable", "~> 0.6.2"
 gem "dentaku", "~> 3.5"
 
 # Used for more powerful counter caches
-gem "counter_culture", "~> 3.11"
+gem "counter_culture", "~> 3.13"
 
 group :postgres do
   gem "pg", "~> 1.6.2"
