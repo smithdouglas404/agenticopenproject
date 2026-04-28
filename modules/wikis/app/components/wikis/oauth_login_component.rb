@@ -29,7 +29,7 @@
 #++
 
 module Wikis
-  class RelationPageLinksComponent < ApplicationComponent
+  class OAuthLoginComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
 
@@ -40,20 +40,12 @@ module Wikis
       super(model, **)
     end
 
-    def page_link_infos
-      @page_link_infos ||= page_link_service.relation_page_link_infos_for(provider:, linkable: @work_package)
-    end
-
-    def user_connected?
-      return true if provider.oauth_client.blank?
-
-      OAuthClientToken.for_user_and_client(User.current, provider.oauth_client).exists?
-    end
-
-    private
-
-    def page_link_service
-      @page_link_service ||= PageLinkService.new
+    def login_url
+      oauth_clients_ensure_connection_url(
+        oauth_client_id: provider.oauth_client.client_id,
+        storage_id: provider.id,
+        destination_url: work_package_url(@work_package, tab: :wikis)
+      )
     end
   end
 end

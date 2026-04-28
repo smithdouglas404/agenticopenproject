@@ -28,32 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class RelationPageLinksComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
+require "spec_helper"
+require_module_spec_helper
 
-    alias_method :provider, :model
+RSpec.describe Wikis::OAuthLoginComponent, type: :component do
+  let(:work_package) { build_stubbed(:work_package) }
+  let(:provider) { create(:xwiki_provider) }
+  let(:oauth_client) { create(:oauth_client, integration: provider) }
 
-    def initialize(model = nil, work_package: nil, **)
-      @work_package = work_package
-      super(model, **)
-    end
+  before { allow(provider).to receive(:oauth_client).and_return(oauth_client) }
 
-    def page_link_infos
-      @page_link_infos ||= page_link_service.relation_page_link_infos_for(provider:, linkable: @work_package)
-    end
+  it "renders the heading" do
+    render_inline(described_class.new(provider, work_package:))
+    expect(page).to have_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
+  end
 
-    def user_connected?
-      return true if provider.oauth_client.blank?
+  it "renders the description" do
+    render_inline(described_class.new(provider, work_package:))
+    expect(page).to have_text(I18n.t("wikis.oauth_login_component.description", provider: provider.name))
+  end
 
-      OAuthClientToken.for_user_and_client(User.current, provider.oauth_client).exists?
-    end
-
-    private
-
-    def page_link_service
-      @page_link_service ||= PageLinkService.new
-    end
+  it "renders a connect button linking to ensure_connection with the wikis tab as destination" do
+    render_inline(described_class.new(provider, work_package:))
+    link = page.find_link(I18n.t("wikis.oauth_login_component.connect_button", provider: provider.name))
+    expect(link[:href]).to match(/ensure_connection/)
+    expect(link[:href]).to match(/destination_url=.*wikis/)
+    expect(link[:"data-turbo-frame"]).to eq("_top")
   end
 end

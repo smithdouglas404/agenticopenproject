@@ -52,18 +52,13 @@ See COPYRIGHT and LICENSE files for more details.
 
     if page_link_infos.empty?
       box.with_row do
-        render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
-          if user_connected?
+        if user_connected?
+          render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
             blankslate.with_heading(tag: :h2).with_content(t(".empty_heading"))
             blankslate.with_description { t(".empty_text") }
-          else
-            blankslate.with_heading(tag: :h2).with_content(t(".not_connected_heading", provider: provider.name))
-            blankslate.with_description { t(".not_connected_text", provider: provider.name) }
-            blankslate.with_primary_action(href: login_url, scheme: :secondary, data: { "turbo-frame": "_top" }) do |button|
-              button.with_trailing_visual_icon(icon: :"link-external")
-              t(".login_button", provider: provider.name)
-            end
           end
+        else
+          render(Wikis::OAuthLoginComponent.new(provider, work_package: @work_package))
         end
       end
     end

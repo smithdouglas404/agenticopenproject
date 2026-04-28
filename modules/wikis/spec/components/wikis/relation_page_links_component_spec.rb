@@ -52,28 +52,18 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
       expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading"))
     end
 
-    it "does not render a login button" do
+    it "does not render the OAuthLoginComponent" do
       render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_no_link(I18n.t("wikis.relation_page_links_component.login_button",
-                                          provider: provider.name))
+      expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
     end
   end
 
   context "when the provider has an oauth client but the user has no token" do
     before { allow(provider).to receive(:oauth_client).and_return(oauth_client) }
 
-    it "renders the not connected heading" do
+    it "renders the OAuthLoginComponent" do
       render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_text(I18n.t("wikis.relation_page_links_component.not_connected_heading",
-                                       provider: provider.name))
-    end
-
-    it "renders a login button linking to ensure_connection" do
-      render_inline(described_class.new(provider, work_package:))
-      link = page.find_link(I18n.t("wikis.relation_page_links_component.login_button", provider: provider.name))
-      expect(link[:href]).to match(/ensure_connection/)
-      expect(link[:href]).to match(/destination_url=.*wikis/)
-      expect(link[:"data-turbo-frame"]).to eq("_top")
+      expect(page).to have_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
     end
   end
 
@@ -88,10 +78,9 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
       expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading"))
     end
 
-    it "does not render a login button" do
+    it "does not render the OAuthLoginComponent" do
       render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_no_link(I18n.t("wikis.relation_page_links_component.login_button",
-                                          provider: provider.name))
+      expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
     end
   end
 end
