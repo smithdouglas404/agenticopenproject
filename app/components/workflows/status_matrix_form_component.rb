@@ -33,6 +33,8 @@ module Workflows
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
+    FORM_ID = "workflow_form"
+
     def initialize(tab:, roles:, type:, available_roles:, statuses:, has_status_changes:)
       super
       @tab = tab
@@ -45,12 +47,14 @@ module Workflows
 
     private
 
+    def form_id = FORM_ID
+
     def data_attributes
       {
         controller: "admin--workflow-role-select",
         "admin--workflow-role-select-base-url-value": helpers.edit_workflow_tab_path(@type, @tab),
-        "admin--workflow-role-select-current-role-ids-value": @roles.map(&:id).join(","),
-        "admin--workflow-role-select-admin--workflow-checkbox-state-outlet": "#workflow_form"
+        "admin--workflow-role-select-current-role-ids-value": @roles.map(&:id),
+        "admin--workflow-role-select-admin--workflow-checkbox-state-outlet": "##{form_id}"
       }
     end
   end

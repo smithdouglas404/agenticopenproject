@@ -38,12 +38,12 @@ import WorkflowCheckboxStateController from './workflow-checkbox-state.controlle
  */
 export default class WorkflowRoleSelectController extends Controller {
   static outlets = ['admin--workflow-checkbox-state'];
-  static values = { baseUrl: String, currentRoleIds: String };
+  static values = { baseUrl: String, currentRoleIds: Array };
 
   declare readonly adminWorkflowCheckboxStateOutlet:WorkflowCheckboxStateController;
   declare readonly hasAdminWorkflowCheckboxStateOutlet:boolean;
   declare baseUrlValue:string;
-  declare currentRoleIdsValue:string;
+  declare currentRoleIdsValue:unknown[];
 
   connect() {
     this.element.addEventListener('panelClosed', this.handlePanelClosed);
@@ -66,8 +66,7 @@ export default class WorkflowRoleSelectController extends Controller {
       return;
     }
 
-    const currentIds = this.currentRoleIdsValue.split(',').filter(Boolean);
-    if (selectedIds.slice().sort().join(',') === currentIds.slice().sort().join(',')) return;
+    if (selectedIds.slice().sort().join(',') === this.currentRoleIdsValue.slice().sort().join(',')) return;
 
     this.navigateTo(this.buildUrl(selectedIds as string[]));
   };

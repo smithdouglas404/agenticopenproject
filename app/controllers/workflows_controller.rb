@@ -56,10 +56,6 @@ class WorkflowsController < ApplicationController
     @types = ::Type.order(:position)
   end
 
-  def find_role
-    @role = eligible_roles.find(params[:role_id])
-  end
-
   def find_type
     @type = ::Type.find(params[:type_id])
   end
