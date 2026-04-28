@@ -1196,14 +1196,40 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         let(:permission) { :move_work_packages }
         let(:title) { "Move work package '#{work_package.subject}'" }
       end
+
+      context "in semantic mode",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
+
+        it_behaves_like "has a titled action link" do
+          let(:link) { "move" }
+          let(:href) { "/work_packages/#{work_package.id}/move/new" }
+          let(:permission) { :move_work_packages }
+          let(:title) { "Move work package '#{work_package.subject}'" }
+        end
+      end
     end
 
     describe "copy" do
       it_behaves_like "has a titled action link" do
         let(:link) { "copy" }
-        let(:href) { work_package_path(work_package, "copy") }
+        let(:href) { "/work_packages/#{work_package.id}/copy" }
         let(:permission) { :add_work_packages }
         let(:title) { "Copy work package '#{work_package.subject}'" }
+      end
+
+      context "in semantic mode",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
+
+        it_behaves_like "has a titled action link" do
+          let(:link) { "copy" }
+          let(:href) { "/work_packages/#{work_package.id}/copy" }
+          let(:permission) { :add_work_packages }
+          let(:title) { "Copy work package '#{work_package.subject}'" }
+        end
       end
     end
 
