@@ -26,13 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% if @instructions.available? %>
+<% if !@instructions.available? %>
 <div id="repository--checkout-instructions"
      class="op-toast -info persistent-toggle--toaster"
      hidden>
-  <a title="{{ ::I18n.t('js.close_popup_title') }}"
-     class="op-toast--close icon-context icon-close">
-  </a>
+  <button type="button"
+          aria-label="{{ ::I18n.t('js.close_popup_title') }}"
+          class="op-toast--close icon-context icon-close button--link">
+  </button>
   <div class="op-toast--content">
     <p>
     <%= simple_format instructions.instructions %>
@@ -46,9 +47,10 @@ See COPYRIGHT and LICENSE files for more details.
 </div>
 <% elsif @instructions.supported_but_not_enabled? %>
 <div class="op-toast -warning">
-  <a title="{{ ::I18n.t('js.close_popup_title') }}"
-     class="op-toast--close icon-context icon-close">
-  </a>
+  <button type="button"
+          aria-label="{{ ::I18n.t('js.close_popup_title') }}"
+          class="op-toast--close icon-context icon-close button--link">
+  </button>
   <div class="op-toast--content">
     <p><%= t("repositories.checkout.not_available") %></p>
   </div>
