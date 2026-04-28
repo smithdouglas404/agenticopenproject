@@ -29,13 +29,15 @@
 #++
 
 module Wikis
-  class OAuthLoginComponent < BaseComponent
-    def login_url
-      oauth_clients_ensure_connection_url(
-        oauth_client_id: provider.oauth_client.client_id,
-        storage_id: provider.id,
-        destination_url: work_package_url(@work_package, tab: :wikis)
-      )
+  class BaseComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
+
+    alias_method :provider, :model
+
+    def initialize(model = nil, work_package: nil, **)
+      @work_package = work_package
+      super(model, **)
     end
   end
 end
