@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
       id: dom_target(story, :menu, :open_details),
       tag: :a,
       label: t(:"js.button_open_details"),
-      href: project_backlogs_backlog_details_path(project, story, all_backlogs_params),
+      href: project_backlogs_backlog_details_path(project, story.display_id, all_backlogs_params),
       content_arguments: { data: { turbo_frame: "content-bodyRight", turbo_action: "advance" } }
     ) do |item|
       item.with_leading_visual_icon(icon: :"op-view-split")
@@ -43,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
       id: dom_target(story, :menu, :open_fullscreen),
       tag: :a,
       label: t(:"js.button_open_fullscreen"),
-      href: work_package_path(story),
+      href: work_package_path(story.display_id),
       content_arguments: { data: { turbo_frame: "_top" } }
     ) do |item|
       item.with_leading_visual_icon(icon: :"screen-full")
@@ -53,7 +53,7 @@ See COPYRIGHT and LICENSE files for more details.
       id: dom_target(story, :menu, :copy_url_to_clipboard),
       tag: :"clipboard-copy",
       label: t(".action_menu.copy_url_to_clipboard"),
-      content_arguments: { value: work_package_url(story) }
+      content_arguments: { value: work_package_url(story.display_id) }
     ) do |item|
       item.with_leading_visual_icon(icon: :copy)
     end
