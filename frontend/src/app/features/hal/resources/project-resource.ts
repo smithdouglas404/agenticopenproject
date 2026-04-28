@@ -31,8 +31,8 @@ import { ICKEditorContext } from 'core-app/shared/components/editor/components/c
 
 export class ProjectResource extends HalResource {
   public get identifier():string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-    return this.$source.identifier;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    return this.$source.identifier as string;
   }
 
   public get state() {
