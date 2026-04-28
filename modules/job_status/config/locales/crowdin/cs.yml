@@ -6,7 +6,7 @@ cs:
     description: Seznam a stav úkolů na pozadí.
   job_status_dialog:
     download_starts: Stahování by mělo začít automaticky.
-    click_to_download: Nebo [klikněte zde](download_url) pro stažení.
+    click_to_download: Or [click here](download_url) to download.
     title: Stav úlohy na pozadí
     redirect: Nyní jste přesměrováváni
     redirect_link: Pro pokračování klikněte prosím zde.

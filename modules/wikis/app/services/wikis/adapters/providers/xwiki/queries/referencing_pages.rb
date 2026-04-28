@@ -23,22 +23,46 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Users
-  ::Queries::Register.register(UserQuery) do
-    filter Filters::NameFilter
-    filter Filters::AnyNameAttributeFilter
-    filter Filters::GroupFilter
-    filter Filters::StatusFilter
-    filter Filters::LoginFilter
-    filter Filters::BlockedFilter
+module Wikis
+  module Adapters
+    module Providers
+      module XWiki
+        module Queries
+          class ReferencingPages < BaseQuery
+            def call(_input_data)
+              # TODO: use real API endpoints once available
 
-    order Orders::DefaultOrder
-    order Orders::NameOrder
-    order Orders::GroupOrder
+              title = [
+                "What makes XWiki special?",
+                "API documentation",
+                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
+              ]
+
+              success(
+                [
+                  Results::PageInfo.new(
+                    identifier: "1337",
+                    provider:,
+                    title: title.sample,
+                    href: "#"
+                  ),
+                  Results::PageInfo.new(
+                    identifier: "1338",
+                    provider:,
+                    title: title.sample,
+                    href: "#"
+                  )
+                ]
+              )
+            end
+          end
+        end
+      end
+    end
   end
 end

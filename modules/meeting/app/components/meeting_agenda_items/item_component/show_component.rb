@@ -233,8 +233,7 @@ module MeetingAgendaItems
     def next_meeting_action_item(menu, label:, action:, icon:)
       return unless has_next_occurrence?
 
-      from_time = @meeting.start_time.past? ? Time.current : (@meeting.recurrence_start_time || @meeting.start_time)
-      result = @series.first_available_occurrence(from_time:)
+      result = @series.first_available_occurrence(from_time: next_occurrence_from_time)
       return if result.nil?
 
       next_date = result[:occurrence]
@@ -263,8 +262,17 @@ module MeetingAgendaItems
       next_date.present?
     end
 
+    ##
+    # Find the next occurrence that we can move an item to.
+    # Even if meeting.start_time is in the past, its canonical reccurrence_start_time might be in the future.
+    # (when the meeting has been moved earlier than it recurrence time).
+    #
+    # In order to find the next valid slot, we need to skip:
+    # - at least past the recurrence_start_time (which may be sooner or later than the start_time)
+    # - the actual scheduled start_time of the meeting
+    # - the current time, to ensure we don't move to a past meeting.
     def next_occurrence_from_time
-      @meeting.start_time.past? ? Time.current : @meeting.start_time
+      [@meeting.recurrence_start_time, @meeting.start_time, Time.current].compact.max
     end
 
     def has_move_actions?

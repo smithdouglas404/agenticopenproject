@@ -256,6 +256,7 @@ ko:
               caption: 가져오기 설정을 검토하고 가져오기를 시작합니다
               caption_done: 완료됨
               label_available_data: 가져올 수 있는 데이터
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: 가져오기 시작
               description: 다음 설정으로 가져오기 실행을 시작하려고 합니다.
               label_progress: 가져오기 진행 중...
@@ -398,7 +399,8 @@ ko:
           error_special_characters: 특수 문자는 허용되지 않음
           error_not_fully_uppercased: 대문자여야 함
           error_in_use: 이미 다른 프로젝트의 활성 핸들로 사용 중입니다
-          error_reserved: 다른 프로젝트의 핸들 기록에 의해 예약되었습니다
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: 수동 검토가 필요합니다
           remaining_projects:
             other: "... %{count}개의 추가 프로젝트"
@@ -1963,6 +1965,29 @@ ko:
         type: 타입
         version: 버전
         watcher: 주시자
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: 허용 되어야 합니다.
@@ -3514,7 +3539,7 @@ ko:
         personal_reminder: 개인 미리 알림 보내기
       daily_reminders:
         title: 읽지 않은 알림에 대한 일일 이메일 미리 알림 보내기
-        caption: 읽지 않은 알림에 대해서만 그리고 사용자가 지정한 시간에만 이러한 미리 알림이 전송됩니다. 계정의 표준 시간대를 구성할 때까지, 시간은 UTC로 적용됩니다.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: 일일 이메일 미리 알림 활성화
         add_time: 시간 추가
         remove_time: 시간 제거
@@ -3528,6 +3553,7 @@ ko:
         date_range: 일시 중지 기간
       email_alerts:
         title: 작업 패키지가 아닌 기타 항목에 대한 이메일 알림
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: 뉴스 추가됨
         news_commented: 뉴스 항목의 코멘트
         document_added: 문서 추가됨
@@ -3540,6 +3566,7 @@ ko:
     notifications:
       participating:
         title: 참여
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: 기본 설정 업데이트
         mentioned: 멘션됨
         watched: 지켜보는 중
@@ -3548,6 +3575,7 @@ ko:
         shared: 나와 공유됨
       date_alerts:
         title: 날짜 알림
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: 날짜 알림 업데이트
         start_date: 시작 날짜
         due_date: 완료 날짜
@@ -3562,6 +3590,7 @@ ko:
           seven_days_after: 7일 후
       non_participating:
         title: 참여하지 않음
+        description: Additional notifications for activities in all projects.
         submit_button: 기본 설정 업데이트
         work_package_created: 새 작업 패키지
         work_package_commented: 모든 새로운 코멘트
@@ -3570,6 +3599,7 @@ ko:
         work_package_scheduled: 모든 날짜 변경 사항
       project_specific_settings:
         title: 프로젝트별 알림 설정
+        description: These project-specific settings override default settings above.
         add_button: 프로젝트별 알림 추가
         dialog_title: 프로젝트별 알림 추가
         list_header: 특정 알림이 있는 프로젝트

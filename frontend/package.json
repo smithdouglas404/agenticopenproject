@@ -111,13 +111,13 @@
     "@ng-select/ng-option-highlight": "^21.8.0",
     "@ng-select/ng-select": "^21.8.0",
     "@ngneat/content-loader": "^7.0.0",
-    "@openproject/octicons-angular": "^19.32.0",
-    "@openproject/primer-view-components": "^0.84.1",
+    "@openproject/octicons-angular": "^19.34.0",
+    "@openproject/primer-view-components": "^0.84.4",
     "@openproject/reactivestates": "^3.0.1",
     "@primer/css": "^22.1.0",
     "@primer/live-region-element": "^0.8.0",
     "@primer/primitives": "^11.5.1",
-    "@primer/view-components": "npm:@openproject/primer-view-components@^0.84.1",
+    "@primer/view-components": "npm:@openproject/primer-view-components@^0.84.4",
     "@rails/request.js": "^0.0.13",
     "@stimulus-components/auto-submit": "^6.0.0",
     "@stimulus-components/reveal": "^5.0.0",
@@ -179,7 +179,7 @@
     "turbo_power": "^0.7.1",
     "typedjson": "^1.5.1",
     "urijs": "^1.19.11",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "optionalDependencies": {
     "fsevents": "*"

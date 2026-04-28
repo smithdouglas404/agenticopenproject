@@ -150,9 +150,9 @@ RSpec.describe Backlogs::WorkPackagesController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlogs-component-#{project.id}"
         assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-inbox-component-#{project.id}"][method="morph"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlogs-component-#{project.id}"][method="morph"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(agile_sprint)

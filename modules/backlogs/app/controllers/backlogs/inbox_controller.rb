@@ -37,7 +37,13 @@ module Backlogs
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
-      max_position = Backlog.inbox_for(project: @project).maximum(:position) || 0
+      backlog_items_scope = if OpenProject::FeatureDecisions.backlog_buckets_active? && @work_package.backlog_bucket_id
+                              @work_package.backlog_bucket.work_packages
+                            else
+                              Backlog.inbox_for(project: @project)
+                            end
+
+      max_position = backlog_items_scope.maximum(:position) || 0
       open_sprints_exist = Agile::Sprint.for_project(@project).visible.not_completed.exists?
 
       render(Backlogs::InboxMenuComponent.new(
@@ -93,10 +99,15 @@ module Backlogs
     end
 
     def replace_inbox_component_via_turbo_stream
-      work_packages = Backlog.inbox_for(project: @project)
+      inbox_work_packages = Backlog.inbox_for(project: @project)
+      backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
+                          Agile::BacklogBucket.for_project(@project)
+                        end
+
       replace_via_turbo_stream(
-        component: Backlogs::InboxComponent.new(
-          work_packages:,
+        component: Backlogs::BacklogsComponent.new(
+          inbox_work_packages:,
+          backlog_buckets:,
           project: @project
         ),
         method: :morph

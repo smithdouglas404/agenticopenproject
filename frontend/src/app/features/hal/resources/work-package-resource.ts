@@ -50,6 +50,7 @@ import { Attachable } from 'core-app/features/hal/resources/mixins/attachable-mi
 import { ICKEditorContext } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { IWorkPackageTimestamp } from 'core-app/features/hal/resources/work-package-timestamp-resource';
+import { formatWorkPackageId } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export interface WorkPackageResourceEmbedded {
   activities:CollectionResource;
@@ -126,11 +127,28 @@ export class WorkPackageBaseResource extends HalResource {
   public subject:string;
 
   /**
-   * Returns the user-facing work package identifier.
-   * "PROJ-42" in semantic mode, "42" in classic mode.
+   * The canonical user-facing work package identifier.
+   *
+   * - Semantic mode: `"PROJ-42"` (project-scoped, contains letters)
+   * - Classic mode: `"42"` (numeric only)
+   *
+   * This is the correct value for URL path segments — use this rather
+   * than `id` when constructing work package hrefs. The numeric `id`
+   * (primary key) should only appear in data attributes and internal
+   * state management (selection, focus, hover).
+   *
+   * Falls back to the self link's `displayId` — ancestor/children links
+   * in the API expose `displayId` alongside `href`/`title` because those
+   * HAL resources are built from a link payload alone, without a
+   * top-level `displayId`. Finally falls back to `id` (defensive against
+   * stale cache during rolling deploys, and for resources built from
+   * bare hrefs).
    */
   public get displayId():string {
-    return this.$source.displayId?.toString() ?? this.id?.toString() ?? '';
+    return this.$source.displayId?.toString()
+      ?? this.$source._links?.self?.displayId?.toString()
+      ?? this.id?.toString()
+      ?? '';
   }
 
   /**
@@ -139,8 +157,7 @@ export class WorkPackageBaseResource extends HalResource {
    * Semantic mode: `PROJ-42` (no prefix — the identifier is self-describing)
    */
   public get formattedId():string {
-    const wpId = this.displayId;
-    return /[A-Za-z]/.test(wpId) ? wpId : `#${wpId}`;
+    return formatWorkPackageId(this.displayId);
   }
 
   public updatedAt:Date;

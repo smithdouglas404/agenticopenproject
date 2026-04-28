@@ -104,9 +104,7 @@ export class PrincipalRendererService {
     hoverCard:HoverCardOptions = { isActivated: true },
     title:string|null = null,
   ):void {
-    if (!container.dataset.testSelector) {
-      container.dataset.testSelector = 'op-principal';
-    }
+    container.dataset.testSelector ??= 'op-principal';
     container.classList.add('op-principal');
     const type = typeFromHref(hrefFromPrincipal(principal))!;
 
@@ -116,7 +114,7 @@ export class PrincipalRendererService {
     }
 
     if (!name.hide) {
-      const el = this.renderName(principal, type, name.link, title || principal.name, name.classes);
+      const el = this.renderName(principal, type, name.link, avatar.hide, title ?? principal.name, name.classes);
       this.setHoverCardAttributes(el, hoverCard, principal, type);
       container.appendChild(el);
     }
@@ -196,12 +194,12 @@ export class PrincipalRendererService {
   }
 
   private userAvatarUrl(principal:PrincipalLike|IPrincipal):string|null {
-    const id = principal.id || idFromLink(hrefFromPrincipal(principal));
+    const id = principal.id ?? idFromLink(hrefFromPrincipal(principal));
     return id ? this.apiV3Service.users.id(id).avatar.toString() : null;
   }
 
   private userHoverCardUrl(principal:PrincipalLike|IPrincipal):string|null {
-    const id = principal.id || idFromLink(hrefFromPrincipal(principal));
+    const id = principal.id ?? idFromLink(hrefFromPrincipal(principal));
     return id ? this.pathHelper.userHoverCardPath(id) : null;
   }
 
@@ -209,6 +207,7 @@ export class PrincipalRendererService {
     principal:PrincipalLike|IPrincipal,
     type:PrincipalType,
     asLink = true,
+    standalone = false,
     title = '',
     classes = '',
   ) {
@@ -217,6 +216,9 @@ export class PrincipalRendererService {
       link.textContent = principal.name;
       link.href = this.principalURL(principal, type);
       link.classList.add('op-principal--name');
+      if (standalone) {
+        link.classList.add('op-principal--name_standalone');
+      }
       link.title = title;
 
       return link;
@@ -234,7 +236,7 @@ export class PrincipalRendererService {
 
   private principalURL(principal:PrincipalLike|IPrincipal, type:PrincipalType):string {
     const href = hrefFromPrincipal(principal);
-    const id = principal.id || (href ? idFromLink(href) : '');
+    const id = principal.id ?? (href ? idFromLink(href) : '');
 
     switch (type) {
       case 'group':

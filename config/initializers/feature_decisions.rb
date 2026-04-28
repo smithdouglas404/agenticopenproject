@@ -57,10 +57,6 @@ OpenProject::FeatureDecisions.add :portfolio_models,
                                   description: "Enables the creation and management of portfolio and program work spaces.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :jira_import,
-                                  description: "Enables Jira Migration Tool.",
-                                  force_active: false
-
 OpenProject::FeatureDecisions.add :user_working_times,
                                   description: "Enables tracking of user working hours and non-working days."
 
@@ -76,4 +72,5 @@ OpenProject::FeatureDecisions.add :semantic_work_package_ids,
                                                "See #41855 for details."
 
 OpenProject::FeatureDecisions.add :backlog_buckets,
-                                  description: "Enables backlog buckets."
+                                  description: "Enables backlog buckets.",
+                                  force_active: true

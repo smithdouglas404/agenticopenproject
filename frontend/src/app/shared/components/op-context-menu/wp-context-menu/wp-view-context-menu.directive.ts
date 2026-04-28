@@ -150,10 +150,10 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
         if (this.hasUiRouterContext) {
           void this.$state.go(
             `${splitViewRoute(this.$state)}.tabs`,
-            { workPackageId: this.workPackageId, tabIdentifier: 'relations' },
+            { workPackageId: this.workPackage.displayId, tabIdentifier: 'relations' },
           );
         } else {
-          const relationsPath = `${window.location.pathname.replace(/\/details\/.*$/, '')}/details/${this.workPackageId}${window.location.search}`;
+          const relationsPath = `${window.location.pathname.replace(/\/details\/.*$/, '')}/details/${this.workPackage.displayId}${window.location.search}`;
           Turbo.visit(relationsPath, { frame: 'content-bodyRight', action: 'advance' });
         }
         break;
@@ -253,9 +253,9 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
         const splitViewHref = this.hasUiRouterContext
           ? this.$state.href(
             `${splitViewRoute(this.$state)}.tabs`,
-            { workPackageId: this.workPackageId, tabIdentifier: 'overview' },
+            { workPackageId: this.workPackage.displayId, tabIdentifier: 'overview' },
           )
-          : `${window.location.pathname.replace(/\/details\/.*$/, '')}/details/${this.workPackageId}${window.location.search}`;
+          : `${window.location.pathname.replace(/\/details\/.*$/, '')}/details/${this.workPackage.displayId}${window.location.search}`;
 
         items.unshift({
           disabled: false,
@@ -271,7 +271,7 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
             if (this.hasUiRouterContext) {
               this.$state.go(
                 `${splitViewRoute(this.$state)}.tabs`,
-                { workPackageId: this.workPackageId, tabIdentifier: 'overview' },
+                { workPackageId: this.workPackage.displayId, tabIdentifier: 'overview' },
               );
             } else {
               Turbo.visit(splitViewHref, { frame: 'content-bodyRight', action: 'advance' });

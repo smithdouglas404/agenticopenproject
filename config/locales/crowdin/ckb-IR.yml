@@ -262,6 +262,7 @@ ckb-IR:
               caption: Review your import settings and start the import
               caption_done: Completed
               label_available_data: Available data to import
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -406,7 +407,8 @@ ckb-IR:
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
@@ -1985,6 +1987,29 @@ ckb-IR:
         type: Type
         version: Version
         watcher: Watcher
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: must be accepted.
@@ -3559,7 +3584,7 @@ ckb-IR:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3573,6 +3598,7 @@ ckb-IR:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3585,6 +3611,7 @@ ckb-IR:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3593,6 +3620,7 @@ ckb-IR:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3607,6 +3635,7 @@ ckb-IR:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3615,6 +3644,7 @@ ckb-IR:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications

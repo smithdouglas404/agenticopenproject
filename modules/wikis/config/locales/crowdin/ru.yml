@@ -34,16 +34,14 @@ ru:
       save_and_continue: Сохранить и продолжить
       done_continue: Done, continue
       wiki_page: Wiki-страница
-    inline_page_links_component:
-      empty_heading: Нет встроенных ссылок
-      empty_text: Встроенные ссылки на вики-страницы в описании пакета работ также будут автоматически отображаться здесь.
-      heading: Inline page links
+    work_package_wikis_tab_component:
+      inline_page_links: Inline page links
+      referencing_pages: Referenced in
     page_link_component:
       remove: Удалить ссылку на страницу
     relation_page_links_component:
       empty_heading: Нет связанных страниц
       empty_text: Добавьте ссылки вручную на другие связанные вики-страницы.
-      heading: Связанные страницы
     oauth_login_component:
       connect_button: Connect %{provider} account
     admin:

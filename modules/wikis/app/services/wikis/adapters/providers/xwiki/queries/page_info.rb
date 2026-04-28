@@ -35,11 +35,16 @@ module Wikis
         module Queries
           class PageInfo < BaseQuery
             def call(input_data)
-              title = [
+              titles = [
                 "What makes XWiki special?",
                 "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-              ].sample
+                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject.",
+                "Security considerations for API design",
+                "Syntax overview",
+                "Getting help",
+                "Enterprise support"
+              ]
+              title = titles[Random.new(input_data.identifier.hash).rand(titles.size)]
 
               success(
                 Results::PageInfo.new(

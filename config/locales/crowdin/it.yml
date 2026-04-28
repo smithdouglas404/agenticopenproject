@@ -262,6 +262,7 @@ it:
               caption: Controlla le impostazioni dell'importazione e avviala
               caption_done: Completato
               label_available_data: Dati disponibili da importare
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Avvia l'importazione
               description: Stai per avviare un'importazione con le seguenti impostazioni.
               label_progress: Importazione in corso...
@@ -406,7 +407,8 @@ it:
           error_special_characters: I caratteri speciali non sono consentiti
           error_not_fully_uppercased: Deve essere maiuscolo
           error_in_use: Già in uso come identificatore attivo di un altro progetto
-          error_reserved: Riservato dalla cronologia degli identificatori di un altro progetto
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Necessita di controllo manuale
           remaining_projects:
             one: "... 1 altro progetto"
@@ -1983,6 +1985,29 @@ it:
         type: Tipo
         version: Versione
         watcher: Osservatore
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: deve essere accettato.
@@ -3559,7 +3584,7 @@ it:
         personal_reminder: Notificami i promemoria personali
       daily_reminders:
         title: Inviami promemoria email giornalieri per le notifiche non lette
-        caption: Riceverai questi promemoria solo per le notifiche non lette e solo negli orari che specifichi. Finché non configuri un fuso orario per il tuo account, gli orari saranno interpretati come UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Abilita promemoria email giornalieri
         add_time: Aggiungi orario
         remove_time: Rimuovi orario
@@ -3573,6 +3598,7 @@ it:
         date_range: Periodo di sospensione
       email_alerts:
         title: Avvisi email per altri elementi che non sono macro-attività
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: Notizie aggiunte
         news_commented: Commento su un articolo di notizie
         document_added: Documento aggiunto
@@ -3585,6 +3611,7 @@ it:
     notifications:
       participating:
         title: Partecipazione
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Aggiorna impostazioni
         mentioned: Menzionato
         watched: Osservazione
@@ -3593,6 +3620,7 @@ it:
         shared: Condivisi con me
       date_alerts:
         title: Avvisi sulle date
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Aggiorna gli avvisi sulle date
         start_date: Data di inizio
         due_date: Data di fine
@@ -3607,6 +3635,7 @@ it:
           seven_days_after: 7 giorni dopo
       non_participating:
         title: Non partecipante
+        description: Additional notifications for activities in all projects.
         submit_button: Aggiorna impostazioni
         work_package_created: Nuove macro-attività
         work_package_commented: Tutti i nuovi commenti
@@ -3615,6 +3644,7 @@ it:
         work_package_scheduled: Tutte le modifiche della data
       project_specific_settings:
         title: Impostazioni di notifica specifiche del progetto
+        description: These project-specific settings override default settings above.
         add_button: Aggiungi notifiche specifiche al progetto
         dialog_title: Aggiungi notifiche specifiche al progetto
         list_header: Progetti con notifiche specifiche

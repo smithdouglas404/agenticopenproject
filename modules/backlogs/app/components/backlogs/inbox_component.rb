@@ -50,6 +50,7 @@ module Backlogs
       @system_arguments = system_arguments
       @system_arguments[:id] = inbox_dom_id
       @system_arguments[:padding] = :condensed
+      @system_arguments[:test_selector] = test_selector
       @system_arguments[:data] = merge_data(
         @system_arguments,
         { data: drop_target_config }
@@ -64,6 +65,10 @@ module Backlogs
 
     def total
       @total ||= work_packages.count
+    end
+
+    def test_selector
+      "backlog-inbox"
     end
 
     def inbox_dom_id

@@ -28,14 +28,14 @@ ro:
     attributes:
       agile/sprint:
         duration: Durată
-        finish_date: Finish date
+        finish_date: Dată finalizare
         goal: Sprint goal
         name: Sprint name
         sharing: Sharing
         statuses:
           in_planning: In planning
-          active: Active
-          completed: Completed
+          active: Activ
+          completed: Finalizat
       project:
         sprint_sharing: Sprint sharing
       sprint:

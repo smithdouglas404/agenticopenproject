@@ -27,19 +27,23 @@
 //++
 
 import { StateService } from '@uirouter/core';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { UrlParamsHelperService } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalDeletedEvent, HalEventsService } from 'core-app/features/hal/services/hal-events.service';
+import { States } from 'core-app/core/states/states.service';
+import { resolveNumericId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Injectable()
 export class WorkPackageService {
   private text = {
     successful_delete: this.I18n.t('js.work_packages.message_successful_bulk_delete'),
   };
+
+  private readonly states = inject(States);
 
   constructor(private readonly http:HttpClient,
     private readonly $state:StateService,
@@ -68,8 +72,11 @@ export class WorkPackageService {
 
           ids.forEach((id) => this.halEvents.push({ _type: 'WorkPackage', id }, { eventType: 'deleted' } as HalDeletedEvent));
 
-          if (this.$state.includes('**.list.details.**')
-            && ids.includes(this.$state.params.workPackageId)) {
+          const routeWpId = this.$state.params.workPackageId as string;
+          const numericId = resolveNumericId(this.states, routeWpId);
+          if (numericId
+            && this.$state.includes('**.list.details.**')
+            && ids.includes(numericId)) {
             this.$state.go('work-packages.partitioned.list', this.$state.params);
           }
         })

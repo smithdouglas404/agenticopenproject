@@ -106,7 +106,7 @@ module ::Calendar
         flash[:error] = t(:error_can_not_delete_entry)
       end
 
-      redirect_to action: :index
+      redirect_to action: :index, status: :see_other
     end
 
     private

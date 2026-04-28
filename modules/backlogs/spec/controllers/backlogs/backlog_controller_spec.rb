@@ -65,7 +65,7 @@ RSpec.describe Backlogs::BacklogController do
           expect(response).to render_template(layout: false)
           expect(assigns(:project)).to eq(project)
           expect(assigns(:backlog_buckets)).to be_present
-          expect(assigns(:inbox_work_packages)).to be_nil
+          expect(assigns(:inbox_work_packages)).to match [work_package]
           expect(assigns(:sprints)).to be_present
         end
       end

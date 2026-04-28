@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,22 +26,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Queries::Users::UserQuery
-  include Queries::BaseQuery
-  include Queries::UnpersistedQuery
+require "spec_helper"
 
-  def self.model
-    User
-  end
-
-  def default_scope
-    # This seemingly duplication is necessary because of the builtin classes
-    # * SystemUser
-    # * DeletedUser
-    # * AnonymousUser
-    # inheriting from user. Without it, instances of those classes would show up.
-    User.user
+RSpec.describe Queries::Sprints::Filters::TypeaheadFilter do
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :typeahead }
+    let(:human_name) { I18n.t(:label_search) }
+    let(:type) { :search }
+    let(:model) { Agile::Sprint }
   end
 end

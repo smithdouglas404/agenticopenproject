@@ -33,58 +33,13 @@ See COPYRIGHT and LICENSE files for more details.
        data-generic-drag-and-drop-handle-value="false">
     <div id="owner_backlogs_container" class="op-sprint-planning-lists"
          data-generic-drag-and-drop-target="scrollContainer">
-      <% if OpenProject::FeatureDecisions.backlog_buckets_active? %>
-        <%=
-          render(Primer::Beta::Subhead.new(hide_border: true, pb: 0)) do |head|
-            head.with_heading(
-              tag: :h3,
-              size: :medium,
-              font_weight: :bold,
-              display: :inline_flex,
-              align_items: :center,
-              classes: "gap-2"
-            ) do
-              concat t(:label_backlog)
-              concat render(
-                Primer::Beta::Counter.new(
-                  scheme: :default,
-                  count: @backlog_buckets.sum { it.work_packages.length },
-                  round: true,
-                  limit: 1_000,
-                  hide_if_zero: true
-                )
-              )
-            end
-
-            if allow_backlog_bucket_creation?(@project)
-              head.with_actions do
-                render Primer::Beta::Button.new(
-                  tag: :a,
-                  label: Agile::BacklogBucket.human_model_name,
-                  href: new_dialog_project_backlogs_backlog_buckets_path(@project),
-                  data: {
-                    controller: "async-dialog",
-                    test_selector: "op-backlog-buckets--new-backlog-bucket-button"
-                  }
-                ) do |button|
-                  button.with_leading_visual_icon(icon: :plus)
-                  Agile::BacklogBucket.human_model_name
-                end
-              end
-            end
-          end
-        %>
-        <% @backlog_buckets.each do |backlog_bucket| %>
-          <%= render Backlogs::BacklogBucketComponent.new(backlog_bucket:, project: @project) %>
-        <% end %>
-      <% else %>
-        <%=
-          render Backlogs::InboxComponent.new(
-            work_packages: @inbox_work_packages,
-            project: @project,
-          )
-        %>
-      <% end %>
+      <%=
+        render Backlogs::BacklogsComponent.new(
+          inbox_work_packages: @inbox_work_packages,
+          backlog_buckets: @backlog_buckets,
+          project: @project
+        )
+      %>
     </div>
     <div id="sprint_backlogs_container" class="op-sprint-planning-lists"
          data-generic-drag-and-drop-target="scrollContainer">

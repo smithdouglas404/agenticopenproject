@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import {
   CalendarOptions,
   DatesSetArg,
@@ -51,6 +51,8 @@ import {
   uiStateLinkClass,
 } from 'core-app/features/work-packages/components/wp-fast-table/builders/ui-state-link-builder';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import { States } from 'core-app/core/states/states.service';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 import {
   WorkPackageViewContextMenu,
 } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-view-context-menu.directive';
@@ -86,6 +88,8 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     .pipe(
       take(1),
     );
+
+  private readonly states = inject(States);
 
   constructor(
     private I18n:I18nService,
@@ -284,7 +288,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       return;
     }
 
-    this.visitSplitViewLink(id);
+    this.visitSplitViewLink(resolveRoutingId(this.states, id));
   }
 
   public openSplitCreate(extraParams?:Record<string, string>):void {
@@ -302,7 +306,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
   public openFullView(id:string):void {
     this.wpTableSelection.setSelection(id, -1);
-    Turbo.visit(this.pathHelper.workPackagePath(id));
+    Turbo.visit(this.pathHelper.workPackagePath(resolveRoutingId(this.states, id)));
   }
 
   public onCardClicked({ workPackageId, event }:{ workPackageId:string, event:MouseEvent }):void {

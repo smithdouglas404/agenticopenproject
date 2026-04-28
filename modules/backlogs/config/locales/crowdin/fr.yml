@@ -43,7 +43,7 @@ fr:
       user_preference:
         backlogs_versions_default_fold_state: Afficher les sprints repliés
       work_package:
-        backlog_bucket: Backlog Bucket
+        backlog_bucket: Seau de backlog
         backlogs_work_package_type: Type de backlog
         position: Position
         sprint: Sprint
@@ -61,10 +61,10 @@ fr:
               share_all_projects_already_taken: ne peut pas être défini car le projet "%{name}" est déjà partagé avec tous les projets.
               share_all_projects_already_taken_anonymous: ne peut pas être défini parce qu'un autre projet est déjà partagé avec tous les projets.
         work_package:
-          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
+          backlog_bucket_xor_sprint: ne peut pas être affecté à la fois à un sprint et à un compartiment de backlog.
           attributes:
             backlog_bucket:
-              backlog_bucket_from_another_project: must belong to the same project as the work package.
+              backlog_bucket_from_another_project: doit appartenir au même projet que le work package.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: ne peut contenir que des ID de lots de travaux du sprint actuel.
               must_block_at_least_one_work_package: doit contenir l'ID d'au moins un ticket.
@@ -117,10 +117,10 @@ fr:
       title: Les paramètres d'administration du backlog évoluent
       text: Nous sommes en train de redessiner le module Backlogs. Les paramètres d'administration pour les sprints et les backlogs seront visibles ici dans un futur proche. Les paramètres au niveau du projet restent disponibles.
     backlog_bucket_component:
-      blankslate_title: Backlog bucket is empty
-      blankslate_description: Drag items here to add them.
+      blankslate_title: Le panier de commandes est vide
+      blankslate_description: Faites glisser les éléments ici pour les ajouter.
     backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Actions du paquet de travail
     sprint_component:
       blankslate_title: "%{name} est vide"
       blankslate_description: Aucun élément n'a encore été planifié. Faites glisser les éléments ici pour les ajouter.
@@ -152,15 +152,15 @@ fr:
         receive_shared_no_actions_description_text: Ce projet reçoit des sprints partagés d'un autre projet, mais aucun n'est disponible pour le moment.
         settings_link_text: paramètres du projet
     backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
+      label_actions: Actions de la corbeille du carnet de commandes
       action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
+        edit_backlog_bucket: Modifier le panier de commandes en attente
+        delete_backlog_bucket: Supprimer un seau d'arriérés
     backlog_bucket_header_component:
       label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
+        zero: Pas d'histoires dans le seau du carnet de commandes
+        one: "%{count} histoire dans le seau du carnet de commandes"
+        other: "%{count} histoires dans le seau du carnet de commandes"
     sprint_header_component:
       label_start_sprint: Début
       label_complete_sprint: Terminé
@@ -192,7 +192,7 @@ fr:
         copy_url_to_clipboard: Copier l'URL dans le presse-papier
         copy_work_package_id: Copier l'ID du lot de travail
         move_menu: Déplacer
-        move_to_sprint: Move to sprint
+        move_to_sprint: Déplacer dans le sprint
     burndown_chart:
       show:
         blankslate_title: Aucune donnée de gravure disponible
@@ -201,8 +201,8 @@ fr:
     story_points: Story points
     story_points_ideal: Story points (idéal)
   label_backlog: Backlog
-  label_backlog_bucket_edit: Edit backlog bucket
-  label_backlog_bucket_new: New backlog bucket
+  label_backlog_bucket_edit: Modifier le panier de commandes en attente
+  label_backlog_bucket_new: Nouveau seau d'arriérés
   label_inbox: Boîte de réception
   label_backlogs: Backlogs
   label_burndown_chart: Graphique burndown

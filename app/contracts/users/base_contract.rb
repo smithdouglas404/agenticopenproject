@@ -102,13 +102,11 @@ module Users
       errors.add(:identity_url, :error_readonly) if model.user_auth_provider_links.any?(&:changed?)
     end
 
-    # rubocop:disable Rails/DynamicFindBy
     def existing_auth_source
       if ldap_auth_source_id && LdapAuthSource.find_by_unique(ldap_auth_source_id).nil?
         errors.add :auth_source, :error_not_found
       end
     end
-    # rubocop:enable Rails/DynamicFindBy
 
     def can_create_or_manage_users?
       user.allowed_globally?(:manage_user) || user.allowed_globally?(:create_user)

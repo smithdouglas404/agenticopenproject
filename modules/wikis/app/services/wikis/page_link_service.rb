@@ -50,20 +50,19 @@ module Wikis
 
     def inline_page_link_infos_for(linkable:)
       InlinePageLink.where(linkable:)
-                    .order(created_at: :desc)
+                    .order(created_at: :asc)
                     .map { page_info(provider: it.provider, identifier: it.identifier) }
     end
 
     def referencing_wiki_page_infos_for(linkable:)
-      # TODO: iterate over all providers and fetch mentions of this linkable
-
       referenced_in = []
 
-      # Show a random internal wiki page as a referencing wiki page for work packages with even ids
-      if linkable.id % 2 == 0
-        InternalProvider.enabled.each do |provider|
-          random_wiki_page = WikiPage.order("RANDOM()").limit(1).first
-          referenced_in << page_info(provider:, identifier: random_wiki_page.id.to_s)
+      Adapters::Input::ReferencingPages.build(linkable:).bind do |input|
+        Provider.enabled.each do |provider|
+          provider.resolve("queries.referencing_pages")
+                  .call(input)
+                  # Only return page infos for successful results
+                  .fmap { |page_infos| referenced_in.concat(page_infos.map { Success(it) }) }
         end
       end
 

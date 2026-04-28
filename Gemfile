@@ -127,7 +127,7 @@ gem "multi_json", "~> 1.20.0"
 gem "oj", "~> 3.16.16"
 
 gem "daemons"
-gem "good_job", "~> 4.14.2" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.15.0" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -405,7 +405,7 @@ gem "disposable", "~> 0.6.2"
 gem "dentaku", "~> 3.5"
 
 # Used for more powerful counter caches
-gem "counter_culture", "~> 3.11"
+gem "counter_culture", "~> 3.13"
 
 group :postgres do
   gem "pg", "~> 1.6.2"
@@ -430,6 +430,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.32.0"
-gem "openproject-octicons_helper", "~>19.32.0"
-gem "openproject-primer_view_components", "~>0.84.1"
+gem "openproject-octicons", "~>19.34.0"
+gem "openproject-octicons_helper", "~>19.34.0"
+gem "openproject-primer_view_components", "~>0.84.4"

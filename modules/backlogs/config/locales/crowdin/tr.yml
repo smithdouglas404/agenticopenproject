@@ -27,15 +27,15 @@ tr:
   activerecord:
     attributes:
       agile/sprint:
-        duration: Duration
-        finish_date: Finish date
+        duration: Süre
+        finish_date: Bitiş tarihi
         goal: Sprint goal
         name: Sprint name
         sharing: Paylaşım
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: Planlamada
+          active: Aktif
+          completed: Tamamlandı
       project:
         sprint_sharing: Sprint sharing
       sprint:
@@ -81,7 +81,7 @@ tr:
                 other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
-              not_active: is not active so it cannot be closed.
+              not_active: aktif değildir, bu nedenle kapatılamaz.
         sprint:
           cannot_end_before_it_starts: Sprint başlamadan önce bitemez.
     models:
@@ -92,8 +92,8 @@ tr:
     definition_of_done_caption: Work packages with these statuses are treated as completed in backlog views and reporting.
     done_status: Done status
     sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
-    sharing: Sharing
-    label_burndown_chart: Burndown chart
+    sharing: Paylaşım
+    label_burndown_chart: Burndown grafiği
     label_sprint_board: Sprint board
     work_package_is_closed: İş paketi, ne zaman
     label_is_done_status: Durum %{status_name} tamamlandı anlamına geliyor
@@ -105,7 +105,7 @@ tr:
     rebuild: Yeniden inşa et
     rebuild_positions: Pozisyonu yeniden inşa et
     remaining_hours: Kalan çalışma
-    show_burndown_chart: Burndown chart
+    show_burndown_chart: Burndown grafiği
     story_points:
       one: "%{count} hikaye noktası"
       other: "%{count} hikaye noktaları"
@@ -118,25 +118,25 @@ tr:
       text: We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available.
     backlog_bucket_component:
       blankslate_title: Backlog bucket is empty
-      blankslate_description: Drag items here to add them.
+      blankslate_description: Öğeleri eklemek için buraya sürükleyin.
     backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: İş paketi eylemleri
     sprint_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: No items planned yet. Drag items here to add them.
+      blankslate_title: "%{name} boş"
+      blankslate_description: Henüz planlanan öğe yok. Eklemek için öğeleri buraya sürükleyin.
     inbox_component:
       blankslate_title: Backlog inbox is empty
-      blankslate_description: All open work packages in this project will automatically appear here.
+      blankslate_description: Bu projedeki tüm açık iş paketleri otomatik olarak burada görünecektir.
       show_more:
-        one: Show 1 more item
-        other: Show %{count} more items
+        one: 1 ürün daha göster
+        other: "%{count} ürün daha göster"
     inbox_item_component:
-      label_actions: Work package actions
+      label_actions: İş paketi eylemleri
     inbox_menu_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
+        copy_url_to_clipboard: URL'yi panoya kopyala
+        copy_work_package_id: İş paketi kimliğini kopyala
+        move_menu: Taşı
       label_move_to_sprint: Move to sprint
     move_to_sprint_dialog_component:
       title: Move to sprint
@@ -184,67 +184,67 @@ tr:
       label_actions: Sprint actions
       action_menu:
         edit_sprint: Edit sprint
-        add_work_package: Add work package
+        add_work_package: İş paketi ekle
     story_component:
-      label_actions: Story actions
+      label_actions: Hikaye eylemleri
     story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_sprint: Move to sprint
+        copy_url_to_clipboard: URL'yi panoya kopyala
+        copy_work_package_id: İş paketi kimliğini kopyala
+        move_menu: Taşı
+        move_to_sprint: Sprint'e taşı
     burndown_chart:
       show:
-        blankslate_title: No burndown data available
-        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
+        blankslate_title: Burndown verisi yok
+        blankslate_description: Bir burndown grafiği oluşturmak için sprint için başlangıç ve bitiş tarihi belirleyin.
   burndown:
     story_points: Hikaye noktaları
     story_points_ideal: Hikaye noktaları (ideal)
   label_backlog: Backlog
   label_backlog_bucket_edit: Edit backlog bucket
   label_backlog_bucket_new: New backlog bucket
-  label_inbox: Inbox
+  label_inbox: Gelen Kutusu
   label_backlogs: İş listeleri
-  label_burndown_chart: Burndown chart
-  label_sprint_board: Sprint board
+  label_burndown_chart: Burndown grafiği
+  label_sprint_board: Sprint panosu
   label_points_burn_down: Aşağı
   label_points_burn_up: Yukarı
-  label_sprint_edit: Edit sprint
-  label_sprint_new: New sprint
+  label_sprint_edit: Sprint düzenle
+  label_sprint_new: Yeni sprint
   label_backlog_and_sprints: Backlog and sprints
   label_task_board: Görev panosu
-  notice_successful_start: The sprint was started.
-  notice_successful_finish: The sprint was completed.
-  notice_unsuccessful_start: The sprint could not be started.
-  notice_unsuccessful_start_with_reason: 'The sprint could not be started: %{reason}'
-  notice_unsuccessful_finish: The sprint could not be completed.
-  notice_unsuccessful_finish_with_reason: 'The sprint could not be completed: %{reason}'
-  permission_create_sprints: Create sprints
-  permission_manage_sprint_items: Manage sprint items
+  notice_successful_start: Sprint başladı.
+  notice_successful_finish: Sprint tamamlandı.
+  notice_unsuccessful_start: Sprint başlatılamadı.
+  notice_unsuccessful_start_with_reason: 'Sprint başlatılamadı: %{reason}'
+  notice_unsuccessful_finish: Sprint tamamlanamadı.
+  notice_unsuccessful_finish_with_reason: 'Sprint tamamlanamadı: %{reason}'
+  permission_create_sprints: Sprintler oluşturma
+  permission_manage_sprint_items: Sprint öğelerini yönetme
   permission_select_done_statuses: Tamamlanan durumları seçiniz
-  permission_share_sprint: Share sprint
-  permission_start_complete_sprint: Start/complete sprint
-  permission_view_sprints: View sprints
+  permission_share_sprint: Sprint paylaşma
+  permission_start_complete_sprint: Sprint'i başlatma/tamamlama
+  permission_view_sprints: Sprintleri görüntüleme
   project_module_backlogs: İş listesi
   projects:
     settings:
       backlog_sharing:
         options:
           no_sharing:
-            label: Don't share
-            caption: Sprints created in this project will only be available and visible to this project. They will also not be visible to subprojects.
+            label: Paylaşma
+            caption: Bu projede oluşturulan sprintler yalnızca bu proje tarafından kullanılabilir ve görülebilir olacaktır. Ayrıca alt projeler tarafından da görülemezler.
           receive_shared:
-            label: Receive shared sprints
-            caption: This project can only use sprints shared by other projects.
-            warning: This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible.
+            label: Paylaşılan sprintleri alın
+            caption: Bu proje yalnızca diğer projeler tarafından paylaşılan sprintleri kullanabilir.
+            warning: Bu proje yalnızca diğer projeler tarafından paylaşılan sprintleri kullanabilir. Geçmişte bu projede oluşturulan kullanılmayan sprintler artık görünmeyecektir.
           share_all_projects:
-            label: All projects
-            caption: Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects.
-            disabled_caption: Option not available since project "%{name}" is currently sharing with all projects and only one project can do this.
-            disabled_caption_anonymous: Option not available since another project is currently sharing with all projects and only one project can do this.
+            label: Tüm projeler
+            caption: Bu projede oluşturulan sprintler bu örnekteki tüm projeler tarafından kullanılabilir. Bu seçeneği seçerseniz, artık diğer projeler tarafından kullanılamayacaktır.
+            disabled_caption: '"%{name}" projesi şu anda tüm projelerle paylaşıldığından ve bunu yalnızca bir proje yapabildiğinden seçenek kullanılamaz.'
+            disabled_caption_anonymous: Başka bir proje şu anda tüm projelerle paylaşımda olduğundan ve bunu yalnızca bir proje yapabildiğinden seçenek kullanılamaz.
           share_subprojects:
-            label: Subprojects
-            caption: Sprints created in this project will be available to all subprojects of the current project.
-            info: Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints.
-        sprint_sharing: Share sprints
+            label: Alt Projeler
+            caption: Bu projede oluşturulan sprintler, mevcut projenin tüm alt projelerinde kullanılabilir olacaktır.
+            info: Bir sprintin paylaşılması, tüm projelerde adı, durumu ve başlangıç ve bitiş tarihlerini paylaşacaktır. Bu sprintleri alan ve kullanan projelerde bunlar değiştirilemez.
+        sprint_sharing: Sprintleri paylaş
   remaining_hours: kalan çalışma

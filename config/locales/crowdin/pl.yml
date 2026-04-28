@@ -274,6 +274,7 @@ pl:
               caption: Sprawdź ustawienia importu i rozpocznij import
               caption_done: Ukończono
               label_available_data: Dane dostępne do zaimportowania
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Rozpocznij import
               description: W ten sposób rozpoczniesz import z następującymi ustawieniami.
               label_progress: Import w toku...
@@ -418,7 +419,8 @@ pl:
           error_special_characters: Znaki specjalne są niedozwolone
           error_not_fully_uppercased: Musi być pisany wielkimi literami
           error_in_use: Już używany jako aktywne dojście innego projektu
-          error_reserved: Zarezerwowany przez historię dojść innego projektu
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Wymaga ręcznego sprawdzenia
           remaining_projects:
             one: "...jeszcze 1 projekt"
@@ -2021,6 +2023,29 @@ pl:
         type: Typ
         version: Wersja
         watcher: Obserwator
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: musi być zaakceptowane.
@@ -3673,7 +3698,7 @@ pl:
         personal_reminder: Powiadamiaj mnie o osobistych przypomnieniach
       daily_reminders:
         title: Wyślij mi codzienne przypomnienia e-mail dla nieprzeczytanych powiadomień
-        caption: Będziesz otrzymywać te przypomnienia tylko w przypadku nieprzeczytanych powiadomień i tylko w określonych przez Ciebie godzinach. Dopóki nie skonfigurujesz strefy czasowej dla swojego konta, godziny będą interpretowane jako UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Włącz codzienne przypomnienia e-mail
         add_time: Dodaj godzinę
         remove_time: Usuń godzinę
@@ -3687,6 +3712,7 @@ pl:
         date_range: Okres wstrzymania
       email_alerts:
         title: Powiadomienia e-mail dotyczące innych elementów, które nie są pakietami roboczymi
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: Wiadomość dodana
         news_commented: Komentarz do nowości
         document_added: Dodano dokument
@@ -3699,6 +3725,7 @@ pl:
     notifications:
       participating:
         title: Uczestnictwo
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Zaktualizuj preferencje
         mentioned: Wzmianka
         watched: Obserwowane
@@ -3707,6 +3734,7 @@ pl:
         shared: Udostępnione dla mnie
       date_alerts:
         title: Alerty dotyczące dat
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Zaktualizuj alerty dotyczące dat
         start_date: Data rozpoczęcia
         due_date: Data zakończenia
@@ -3721,6 +3749,7 @@ pl:
           seven_days_after: 7 dni po
       non_participating:
         title: Brak uczestnictwa
+        description: Additional notifications for activities in all projects.
         submit_button: Zaktualizuj preferencje
         work_package_created: Nowe pakiety robocze
         work_package_commented: Wszystkie nowe komentarze
@@ -3729,6 +3758,7 @@ pl:
         work_package_scheduled: Wszystkie zmiany daty
       project_specific_settings:
         title: Ustawienia powiadomień dla danego projektu
+        description: These project-specific settings override default settings above.
         add_button: Dodaj powiadomienia specyficzne dla projektu
         dialog_title: Dodaj powiadomienia specyficzne dla projektu
         list_header: Projekty z określonymi powiadomieniami

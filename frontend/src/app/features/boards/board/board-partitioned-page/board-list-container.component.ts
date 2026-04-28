@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  inject,
   Input,
   Injector,
   OnInit,
@@ -39,6 +40,8 @@ import {
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { States } from 'core-app/core/states/states.service';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Component({
   selector: 'board-list-container',
@@ -91,6 +94,8 @@ export class BoardListContainerComponent extends UntilDestroyedMixin implements 
 
   private currentQueryUpdatedMonitoring:Subscription;
 
+  private readonly wpStates = inject(States);
+
   constructor(
     readonly I18n:I18nService,
     readonly state:StateService,
@@ -134,7 +139,8 @@ export class BoardListContainerComponent extends UntilDestroyedMixin implements 
         filter(() => window.location.pathname.includes('/details/')),
       ).subscribe((selection) => {
         // Update split screen
-        const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, id, selection.focusedWorkPackage!);
+        const routingId = resolveRoutingId(this.wpStates, selection.focusedWorkPackage!);
+        const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, id, routingId);
         const search = window.location.search;
         Turbo.visit(search ? `${base}${search}` : base, { frame: 'content-bodyRight', action: 'advance' });
       });

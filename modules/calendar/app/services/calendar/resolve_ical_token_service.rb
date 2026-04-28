@@ -34,9 +34,7 @@ module Calendar
         raise ActiveRecord::RecordNotFound
       end
 
-      # rubocop:disable Rails/DynamicFindBy
       token = Token::ICal.find_by_plaintext_value(ical_token_string)
-      # rubocop:enable Rails/DynamicFindBy
 
       if token.present?
         ServiceResult.success(result: token)

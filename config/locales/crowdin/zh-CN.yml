@@ -256,6 +256,7 @@ zh-CN:
               caption: 审核导入设置并开始导入
               caption_done: 已完成
               label_available_data: 可导入的数据
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: 开始导入
               description: 您即将使用以下设置开始导入运行。
               label_progress: 正在导入…
@@ -398,7 +399,8 @@ zh-CN:
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一个项目的有效标识名
-          error_reserved: 由另一个项目的标识名历史保留
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: 需要手动检查
           remaining_projects:
             other: "…其他 %{count} 个项目"
@@ -1961,6 +1963,29 @@ zh-CN:
         type: 类型
         version: 版本
         watcher: 关注者
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: 必须接受。
@@ -3494,7 +3519,7 @@ zh-CN:
         personal_reminder: 有个人提醒时通知我
       daily_reminders:
         title: 向我发送针对未读通知的每日电子邮件提醒
-        caption: 您仅会收到针对未读通知的提醒，且仅会在您指定的时间收到提醒。在您为帐户配置时区前，时间将解释为采用 UTC 格式。
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: 启用每日电子邮件提醒
         add_time: 添加时间
         remove_time: 移除时间
@@ -3508,6 +3533,7 @@ zh-CN:
         date_range: 暂停时间段
       email_alerts:
         title: 其他条目（非工作包）的电子邮件提醒
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: 新闻已添加
         news_commented: 评论新闻条目
         document_added: 文档已添加
@@ -3520,6 +3546,7 @@ zh-CN:
     notifications:
       participating:
         title: 参与
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: 更新偏好设置
         mentioned: 被提及
         watched: 关注中
@@ -3528,6 +3555,7 @@ zh-CN:
         shared: 与我共享
       date_alerts:
         title: 日期提醒
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: 更新日期提醒
         start_date: 开始日期
         due_date: 完成日期
@@ -3542,6 +3570,7 @@ zh-CN:
           seven_days_after: 推后 7 天
       non_participating:
         title: 不参与
+        description: Additional notifications for activities in all projects.
         submit_button: 更新偏好设置
         work_package_created: 新工作包
         work_package_commented: 所有新评论
@@ -3550,6 +3579,7 @@ zh-CN:
         work_package_scheduled: 所有日期更改
       project_specific_settings:
         title: 项目特定通知设置
+        description: These project-specific settings override default settings above.
         add_button: 添加项目特定通知
         dialog_title: 添加项目特定通知
         list_header: 具有特定通知的项目
