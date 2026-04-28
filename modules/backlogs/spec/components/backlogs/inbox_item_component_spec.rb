@@ -99,10 +99,14 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
 
       it "builds the split-view and full-view URLs from the semantic displayId" do
         semantic_id = work_package.reload.identifier
-        expect(semantic_id).to eq("INBOX-1")
+        expect(semantic_id).to start_with("INBOX-")
+
+        expect(row["data-backlogs--story-display-id-value"]).to eq(semantic_id)
 
         expect(row["data-backlogs--story-split-url-value"])
           .to end_with(project_backlogs_backlog_details_path(project, semantic_id))
+        expect(row["data-backlogs--story-split-url-value"])
+          .not_to include("/details/#{work_package.id}")
         expect(row["data-backlogs--story-full-url-value"])
           .to end_with(work_package_path(semantic_id))
         expect(row["data-backlogs--story-full-url-value"])
