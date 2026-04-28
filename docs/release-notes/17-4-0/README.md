@@ -24,7 +24,7 @@ Take a look at our release video showing the most important features introduced 
 
 ### Support basic custom fields migration from Jira
 
-With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly (Beta). While the feature is not yet fully complete, it is ready to be tested. We encourage users to try the Jira Migrator and share their feedback. 
+With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly. While the feature is not yet fully complete and still in Beta, it is ready to be tested. We encourage users to try the Jira Migrator and share their feedback. 
 
 > [!NOTE]
 > If you would like to share anonymized data from your Jira Migrator usage to support our development team, please [reach out to us](https://www.openproject.org/contact/). We are happy to sign an NDA to ensure confidentiality.
@@ -91,10 +91,6 @@ New APIv3 endpoints are now available for meetings and recurring meetings. These
 ### Allow webhook secrets for GitHub and GitLab integrations
 
 You can now configure webhook secrets for GitHub and GitLab integrations. This improves the security of incoming webhook requests.
-
-### Add canonical URL meta tags to project and work package pages
-
-Canonical URL meta tags are now included on project and work package pages to improve SEO and avoid duplicate content issues.
 
 <!--more-->
 
