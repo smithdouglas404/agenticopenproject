@@ -94,6 +94,21 @@ RSpec.describe WorkPackages::UpdateContract do
                         subject: :error_readonly,
                         story_points: :error_readonly
       end
+
+      context "when sprint is completed (shared with project but not assignable) but the assignment did not change" do
+        let(:completed_sprint) { build_stubbed(:agile_sprint, status: :completed) }
+        let(:work_package_sprint) { completed_sprint }
+
+        before do
+          # So that the changes look like they came out of the database
+          work_package.clear_changes_information
+
+          # The mocks in the shared context need to be taken into account.
+          allow(work_package_project).to receive(:assignable_sprints).and_return([])
+        end
+
+        it_behaves_like "contract is valid"
+      end
     end
 
     describe "writable_attributes" do
