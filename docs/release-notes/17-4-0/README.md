@@ -84,6 +84,8 @@ If you are building or maintaining an application using the OpenProject API V3, 
 
 The `id` field will continue to return the internal database ID and should still be used for API requests such as filtering.
 
+For more information on project-based work package identifiers in OpenProject, see the [Epic currently being developed by our team](https://community.openproject.org/wp/41855)
+
 ### Meetings and recurring meetings APIv3 endpoints
 
 New APIv3 endpoints are now available for meetings and recurring meetings. These include support for managing agenda items, sections, and occurrences, enabling full access to meeting data via the API.
