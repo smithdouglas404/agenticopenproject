@@ -29,43 +29,19 @@
 #++
 
 module Backlogs
-  class BacklogBucketHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-    include Primer::FetchOrFallbackHelper
-    include Redmine::I18n
-    include CommonHelper
+  module Buckets
+    class DetailsForm < ApplicationForm
+      form do |f|
+        f.hidden(name: :id)
 
-    attr_reader :backlog_bucket, :project, :work_packages, :collapsed, :current_user
-
-    def initialize(
-      backlog_bucket:,
-      project:,
-      work_packages:,
-      folded: false,
-      current_user: User.current
-    )
-      super()
-
-      @backlog_bucket = backlog_bucket
-      @project = project
-      @work_packages = work_packages
-      @collapsed = folded
-      @current_user = current_user
-    end
-
-    def wrapper_uniq_by
-      backlog_bucket.id
-    end
-
-    private
-
-    def story_points
-      @story_points ||= work_packages.sum { it.story_points || 0 }
-    end
-
-    def work_package_count
-      @work_package_count ||= work_packages.size
+        f.text_field(
+          label: attribute_name(:name),
+          name: :name,
+          required: true,
+          autofocus: true,
+          w: :full
+        )
+      end
     end
   end
 end

@@ -29,42 +29,35 @@
 #++
 
 module Backlogs
-  class NewSprintFormComponent < ApplicationComponent
+  class BucketFormComponent < ApplicationComponent
     include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
     include CommonHelper
 
-    FORM_ID = NewSprintDialogComponent::FORM_ID
+    FORM_ID = BucketDialogComponent::FORM_ID
 
-    def initialize(sprint:, base_errors: nil)
+    attr_reader :backlog_bucket
+
+    def initialize(backlog_bucket:, base_errors: nil)
       super
 
-      @sprint = sprint
+      @backlog_bucket = backlog_bucket
       @base_errors = base_errors
     end
 
     private
 
     def http_verb
-      @sprint.new_record? ? :post : :put
+      @backlog_bucket.new_record? ? :post : :put
     end
 
     def form_url
-      if @sprint.new_record?
-        project_backlogs_sprints_path(@sprint.project_id, all_backlogs_params)
+      if @backlog_bucket.new_record?
+        project_backlogs_backlog_buckets_path(@backlog_bucket.project, all_backlogs_params)
       else
-        project_backlogs_sprint_path(@sprint.project_id, @sprint.id, all_backlogs_params)
+        project_backlogs_backlog_bucket_path(@backlog_bucket.project, @backlog_bucket, all_backlogs_params)
       end
-    end
-
-    def data_attributes
-      {
-        controller: "refresh-on-form-changes",
-        "refresh-on-form-changes-target": "form",
-        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_backlogs_sprints_path(@sprint.project_id,
-                                                                                                     all_backlogs_params)
-      }
     end
   end
 end

@@ -29,32 +29,37 @@
 #++
 
 module Backlogs
-  class BacklogBucketMenuComponent < ApplicationComponent
+  class SprintDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
-    include CommonHelper
+    include Primer::FetchOrFallbackHelper
 
-    attr_reader :backlog_bucket, :project, :current_user
+    DIALOG_ID = "new-sprint-dialog"
+    FORM_ID = "new-sprint-dialog-form"
+    FOOTER_ID = "new-sprint-dialog-footer"
 
-    def initialize(backlog_bucket:, project:, current_user: User.current, **system_arguments)
-      super()
+    STATE_DEFAULT = :create
+    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
 
-      @backlog_bucket = backlog_bucket
-      @project = project
-      @current_user = current_user
+    attr_reader :sprint, :state
 
-      @system_arguments = system_arguments
-      @system_arguments[:menu_id] = dom_target(backlog_bucket, :menu)
-      @system_arguments[:anchor_align] = :end
-      @system_arguments[:classes] = class_names(
-        @system_arguments[:classes],
-        "hide-when-print"
-      )
+    delegate :create?, :edit?, to: :state
+
+    def initialize(sprint:, state: STATE_DEFAULT)
+      super
+
+      @sprint = sprint
+      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
     end
 
     private
 
-    def user_allowed?(permission)
-      current_user.allowed_in_project?(permission, project)
+    def title
+      create? ? t(:label_sprint_new) : t(:label_sprint_edit)
+    end
+
+    def button_caption
+      create? ? t(:button_create) : t(:button_save)
     end
   end
 end

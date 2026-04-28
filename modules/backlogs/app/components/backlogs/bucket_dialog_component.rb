@@ -29,33 +29,33 @@
 #++
 
 module Backlogs
-  class NewSprintDialogComponent < ApplicationComponent
+  class BucketDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
     include Primer::FetchOrFallbackHelper
 
-    DIALOG_ID = "new-sprint-dialog"
-    FORM_ID = "new-sprint-dialog-form"
-    FOOTER_ID = "new-sprint-dialog-footer"
+    DIALOG_ID = "new-backlog-bucket-dialog"
+    FORM_ID = "new-backlog-bucket-dialog-form"
+    FOOTER_ID = "new-backlog-bucket-dialog-footer"
 
     STATE_DEFAULT = :create
     STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
 
-    attr_reader :sprint, :state
+    attr_reader :backlog_bucket, :state
 
     delegate :create?, :edit?, to: :state
 
-    def initialize(sprint:, state: STATE_DEFAULT)
+    def initialize(backlog_bucket:, state: STATE_DEFAULT)
       super
 
-      @sprint = sprint
+      @backlog_bucket = backlog_bucket
       @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
     end
 
     private
 
     def title
-      create? ? t(:label_sprint_new) : t(:label_sprint_edit)
+      create? ? t(:label_backlog_bucket_new) : t(:label_backlog_bucket_edit)
     end
 
     def button_caption

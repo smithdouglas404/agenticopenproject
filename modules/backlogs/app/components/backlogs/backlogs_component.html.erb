@@ -39,14 +39,14 @@ See COPYRIGHT and LICENSE files for more details.
       ) do
         concat t(:label_backlog)
         concat render(
-                 Primer::Beta::Counter.new(
-                   scheme: :default,
-                   count: total,
-                   round: true,
-                   limit: 1_000,
-                   hide_if_zero: true
-                 )
-               )
+          Primer::Beta::Counter.new(
+            scheme: :default,
+            count: total,
+            round: true,
+            limit: 1_000,
+            hide_if_zero: true
+          )
+        )
       end
 
       if allow_backlog_bucket_creation?(project) && OpenProject::FeatureDecisions.backlog_buckets_active?
@@ -76,7 +76,7 @@ See COPYRIGHT and LICENSE files for more details.
   %>
 
   <% if OpenProject::FeatureDecisions.backlog_buckets_active? %>
-    <%= render Backlogs::BacklogBucketComponent.with_collection(backlog_buckets, project:) %>
+    <%= render Backlogs::BucketComponent.with_collection(backlog_buckets, project:) %>
   <% end %>
 
   <%=

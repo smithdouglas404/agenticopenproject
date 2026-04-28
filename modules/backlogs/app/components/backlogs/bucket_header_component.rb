@@ -29,37 +29,43 @@
 #++
 
 module Backlogs
-  class NewBacklogBucketDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
+  class BucketHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
     include Primer::FetchOrFallbackHelper
+    include Redmine::I18n
+    include CommonHelper
 
-    DIALOG_ID = "new-backlog-bucket-dialog"
-    FORM_ID = "new-backlog-bucket-dialog-form"
-    FOOTER_ID = "new-backlog-bucket-dialog-footer"
+    attr_reader :backlog_bucket, :project, :work_packages, :collapsed, :current_user
 
-    STATE_DEFAULT = :create
-    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
-
-    attr_reader :backlog_bucket, :state
-
-    delegate :create?, :edit?, to: :state
-
-    def initialize(backlog_bucket:, state: STATE_DEFAULT)
-      super
+    def initialize(
+      backlog_bucket:,
+      project:,
+      work_packages:,
+      folded: false,
+      current_user: User.current
+    )
+      super()
 
       @backlog_bucket = backlog_bucket
-      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
+      @project = project
+      @work_packages = work_packages
+      @collapsed = folded
+      @current_user = current_user
+    end
+
+    def wrapper_uniq_by
+      backlog_bucket.id
     end
 
     private
 
-    def title
-      create? ? t(:label_backlog_bucket_new) : t(:label_backlog_bucket_edit)
+    def story_points
+      @story_points ||= work_packages.sum { it.story_points || 0 }
     end
 
-    def button_caption
-      create? ? t(:button_create) : t(:button_save)
+    def work_package_count
+      @work_package_count ||= work_packages.size
     end
   end
 end

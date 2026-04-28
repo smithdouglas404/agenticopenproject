@@ -29,19 +29,42 @@
 #++
 
 module Backlogs
-  module BacklogBuckets
-    class DetailsForm < ApplicationForm
-      form do |f|
-        f.hidden(name: :id)
+  class SprintFormComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
+    include CommonHelper
 
-        f.text_field(
-          label: attribute_name(:name),
-          name: :name,
-          required: true,
-          autofocus: true,
-          w: :full
-        )
+    FORM_ID = SprintDialogComponent::FORM_ID
+
+    def initialize(sprint:, base_errors: nil)
+      super
+
+      @sprint = sprint
+      @base_errors = base_errors
+    end
+
+    private
+
+    def http_verb
+      @sprint.new_record? ? :post : :put
+    end
+
+    def form_url
+      if @sprint.new_record?
+        project_backlogs_sprints_path(@sprint.project_id, all_backlogs_params)
+      else
+        project_backlogs_sprint_path(@sprint.project_id, @sprint.id, all_backlogs_params)
       end
+    end
+
+    def data_attributes
+      {
+        controller: "refresh-on-form-changes",
+        "refresh-on-form-changes-target": "form",
+        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_backlogs_sprints_path(@sprint.project_id,
+                                                                                                     all_backlogs_params)
+      }
     end
   end
 end

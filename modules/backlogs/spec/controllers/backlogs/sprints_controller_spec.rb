@@ -50,7 +50,7 @@ RSpec.describe Backlogs::SprintsController do
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-new-sprint-dialog-component"
+        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-sprint-dialog-component"
         expect(assigns(:project)).to eq(project)
       end
 
@@ -74,7 +74,7 @@ RSpec.describe Backlogs::SprintsController do
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-new-sprint-dialog-component"
+        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-sprint-dialog-component"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(sprint)
       end
@@ -495,7 +495,7 @@ RSpec.describe Backlogs::SprintsController do
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "update", target: "backlogs-new-sprint-form-component"
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-sprint-form-component"
         expect(assigns(:sprint)).to be_nil
       end
 
@@ -524,7 +524,7 @@ RSpec.describe Backlogs::SprintsController do
 
           expect(response).to be_successful
           expect(response).to have_http_status :ok
-          expect(response).to have_turbo_stream action: "update", target: "backlogs-new-sprint-form-component"
+          expect(response).to have_turbo_stream action: "update", target: "backlogs-sprint-form-component"
         end
       end
     end

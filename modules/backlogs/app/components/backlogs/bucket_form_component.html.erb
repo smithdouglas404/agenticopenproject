@@ -1,4 +1,4 @@
-<%# -- copyright
+<%#-- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,24 +25,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++# %>
+++#%>
 
-<%= component_wrapper(tag: :section) do %>
-  <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
-    <% border_box.with_header(id: dom_target(backlog_bucket, :header)) do %>
-      <%= render(Backlogs::BacklogBucketHeaderComponent.new(backlog_bucket:, project:, work_packages:, folded: folded?)) %>
-    <% end %>
-    <% if work_packages.empty? %>
-      <% border_box.with_row(data: { empty_list_item: true }) do %>
-        <!-- TODO: separate inbox component also to have different blankslate titles? -->
-        <%=
-          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
-            blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title"))
-            blankslate.with_description_content(t(".blankslate_description"))
+<%=
+  component_wrapper do
+    primer_form_with(
+      id: Backlogs::BucketFormComponent::FORM_ID,
+      model: backlog_bucket,
+      scope: :backlog_bucket,
+      method: http_verb,
+      class: "op-backlog-buckets--form",
+      url: form_url
+    ) do |f|
+      flex_layout(mb: 2) do |flex|
+        if @base_errors&.any?
+          flex.with_row do
+            render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) { @base_errors.join("\n") }
           end
-        %>
-      <% end %>
-    <% end %>
-    <%= render Backlogs::BacklogBucketItemComponent.with_collection(work_packages, container: border_box, project:) %>
-  <% end %>
-<% end %>
+        end
+        flex.with_row(mb: 3) do
+          render Backlogs::Buckets::DetailsForm.new(f)
+        end
+      end
+    end
+  end
+%>
