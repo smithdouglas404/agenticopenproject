@@ -40,11 +40,11 @@ RSpec.describe "Meetings demo data seeding", type: :model do
     seed_data
   end
   # Mirrors the demo-data seeder list in DemoData::ProjectSeeder for meetings.
-  # Once the finalizer exists it should be appended here.
   let(:seeder_classes) do
     [
       Meetings::DemoData::MeetingSeriesSeeder,
-      Meetings::DemoData::MeetingAgendaItemsSeeder
+      Meetings::DemoData::MeetingAgendaItemsSeeder,
+      Meetings::DemoData::MeetingSeriesFinalizerSeeder
     ]
   end
 
