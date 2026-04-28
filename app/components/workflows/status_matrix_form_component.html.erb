@@ -57,6 +57,14 @@ See COPYRIGHT and LICENSE files for more details.
                 item_id: available_role.id
               )
             end
+            panel.with_footer(show_divider: true) do
+              render(
+                Primer::Beta::Button.new(
+                  scheme: :primary,
+                  data: { action: "click->admin--workflow-role-select#apply" }
+                )
+              ) { t(:button_save) }
+            end
           end
         end
       end

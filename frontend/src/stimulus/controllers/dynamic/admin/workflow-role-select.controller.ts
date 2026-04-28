@@ -45,15 +45,7 @@ export default class WorkflowRoleSelectController extends Controller {
   declare baseUrlValue:string;
   declare currentRoleIdsValue:unknown[];
 
-  connect() {
-    this.element.addEventListener('panelClosed', this.handlePanelClosed);
-  }
-
-  disconnect() {
-    this.element.removeEventListener('panelClosed', this.handlePanelClosed);
-  }
-
-  private handlePanelClosed = () => {
+  apply() {
     const panel = this.element as HTMLElement as SelectPanelElement;
     const selectedIds = panel.items
       .filter((item) => panel.isItemChecked(item))
@@ -69,8 +61,8 @@ export default class WorkflowRoleSelectController extends Controller {
     if (selectedIds.slice().sort().join(',') === this.currentRoleIdsValue.slice().sort().join(',')) return;
 
     this.navigateTo(this.buildUrl(selectedIds as string[]));
-  };
-  
+  }
+
   private buildUrl(roleIds:string[]):string {
     const url = new URL(this.baseUrlValue, window.location.origin);
     roleIds.forEach((id) => url.searchParams.append('role_ids[]', id));

@@ -272,7 +272,7 @@ RSpec.describe "Workflow edit with multiple roles", :js do
       click_button "2 roles selected"
       find("[data-item-id='#{role.id}']").click
       find("[data-item-id='#{role2.id}']").click
-      page.send_keys :escape
+      within("select-panel") { click_button "Save" }
 
       expect(page).to have_no_text("2 roles selected")
       expect(page).to have_button(role.name)
