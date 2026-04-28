@@ -1,0 +1,20 @@
+en:
+  plugin_openproject_resource_management:
+    name: "OpenProject Resource Management"
+    description: "Provides resource management and capacity planning."
+
+  project_module_resource_management: "Resource management"
+  permission_view_resource_planners: "View resource planners"
+  permission_view_resource_planners_explanation: >
+    Allows users to access resource planners. It allows them to create and
+    manage their own resource planners and view public resource planners. It
+    does not allow users to view resource planners created by other users that
+    are not shared publicly.
+  permission_manage_public_resource_planners: "Manage public resource planners"
+  permission_manage_public_resource_planners_explanation: >
+    Allows users to create and manage public resource planners. It allows them
+    to view, create, manage and publish their own resource planners. It does not
+    allow users to view resource planners created by other users that are not
+    shared publicly.
+
+  label_resource_management: "Resource planning"
