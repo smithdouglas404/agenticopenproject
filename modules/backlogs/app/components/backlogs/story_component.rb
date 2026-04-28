@@ -31,6 +31,7 @@
 module Backlogs
   class StoryComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
     attr_reader :story, :sprint, :project, :current_user
 
@@ -50,7 +51,7 @@ module Backlogs
     end
 
     def menu_src
-      menu_project_backlogs_work_package_path(project, sprint, story, **helpers.all_backlogs_params)
+      menu_project_backlogs_work_package_path(project, sprint, story, all_backlogs_params)
     end
   end
 end

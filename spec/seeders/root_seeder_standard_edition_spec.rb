@@ -91,22 +91,25 @@ RSpec.describe RootSeeder,
       expect(default_modules).to include("reporting_module")
     end
 
-    it "creates a weekly recurring meeting with one instance" do
+    it "creates a weekly recurring meeting with the first two instances" do
       expect(RecurringMeeting.count).to eq 1
 
-      # The template is created.
+      # The template is created and is no longer in draft state.
       expect(Meeting.templated.count).to eq 1
       template = Meeting.templated.first
+      expect(template).not_to be_draft
       expect(template.duration).to eq 1.0
       expect(template.agenda_items.count).to eq 9
       expect(template.agenda_items.sum(:duration_in_minutes)).to eq 60
 
-      # The first instance from that template is also created with the same data.
-      expect(Meeting.where(template: false).count).to eq 1
-      instance = Meeting.not_templated.first
-      expect(instance.duration).to eq 1.0
-      expect(instance.agenda_items.count).to eq 9
-      expect(instance.agenda_items.sum(:duration_in_minutes)).to eq 60
+      # The first instance is created synchronously by the finalizer seeder,
+      # the second by the chained InitNextOccurrenceJob.
+      expect(Meeting.where(template: false).count).to eq 2
+      Meeting.not_templated.find_each do |instance|
+        expect(instance.duration).to eq 1.0
+        expect(instance.agenda_items.count).to eq 9
+        expect(instance.agenda_items.sum(:duration_in_minutes)).to eq 60
+      end
     end
 
     it "creates different types of queries" do

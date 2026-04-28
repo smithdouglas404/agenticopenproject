@@ -31,11 +31,9 @@
 module Wikis
   class XWikiProvider < Provider
     AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
+      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2"
+      # AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso" # not yet implemented
     ].freeze
-
-    OIDC_CALLBACK_PATH = "oidc/authenticator/callback"
 
     has_one :oauth_client, as: :integration, dependent: :destroy
     has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
@@ -47,14 +45,19 @@ module Wikis
 
     class << self
       def registry_prefix = "xwiki"
+      def generate_client_id = SecureRandom.uuid
+    end
+
+    def extract_origin_user_id(token)
+      resolve("queries.user").call(Wikis::Adapters::Input::UserQuery.new(access_token: token.access_token))
     end
 
     def authenticate_via_two_way_oauth2?
       authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
     end
 
-    def oidc_redirect_uri
-      URI.join("#{url.chomp('/')}/", OIDC_CALLBACK_PATH).to_s
+    def oauth_configuration
+      Wikis::Adapters::Providers::XWiki::OAuthConfiguration.new(self)
     end
   end
 end

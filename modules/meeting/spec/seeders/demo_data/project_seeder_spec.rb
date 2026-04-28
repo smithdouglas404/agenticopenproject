@@ -102,10 +102,9 @@ RSpec.describe DemoData::ProjectSeeder do
     expect(second.notes).to eq "Some **markdown**"
   end
 
-  it "schedules a job for the first instance" do
-    perform_enqueued_jobs
-
+  it "instantiates the first occurrence with the template's agenda items" do
     series = RecurringMeeting.find_by(title: "Weekly")
+    expect(series.template).not_to be_draft
     expect(series.scheduled_instances.count).to eq(1)
     instance = series.scheduled_instances.first
     expect(instance.duration).to eq 0.5

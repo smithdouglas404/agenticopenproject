@@ -31,6 +31,7 @@
 module Backlogs
   class BacklogBucketMenuComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
     attr_reader :backlog_bucket, :project, :current_user
 
