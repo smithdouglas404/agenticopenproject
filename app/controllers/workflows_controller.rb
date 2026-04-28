@@ -68,9 +68,6 @@ class WorkflowsController < ApplicationController
     ordered = eligible_roles.order(:builtin, :position)
     @roles = ordered.where(id: params[:role_ids])
     @roles = [ordered.first] if @roles.empty?
-    # TODO: remove @role once the matrix form and all dependent components
-    # (dialogs, status selectors, page headers) work natively with @roles (multi-role).
-    @role = @roles.first
   end
 
   def eligible_roles

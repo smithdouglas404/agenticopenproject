@@ -251,4 +251,22 @@ RSpec.describe "Workflow edit with multiple roles", :js do
       expect_flash(message: "Successful update.")
     end
   end
+
+  context "when modifying statuses" do
+    before { visit_workflow_edit(roles: [role, role2]) }
+
+    it "preserves all selected roles after adding a status" do
+      add_status_via_dialog(statuses[2])
+
+      expect(page).to have_text("2 roles selected")
+    end
+
+    it "preserves all selected roles after removing a status via the danger dialog" do
+      remove_status_via_dialog(statuses[1])
+
+      within_dialog("Remove statuses") { click_button "Remove" }
+
+      expect(page).to have_text("2 roles selected")
+    end
+  end
 end

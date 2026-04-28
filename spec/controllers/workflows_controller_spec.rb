@@ -112,9 +112,7 @@ RSpec.describe WorkflowsController do
           .to render_template :edit
       end
 
-      # TODO: @role is a temporary single-role fallback; remove once components support multi-role natively
-      it "assigns the first role as fallback for @role, with @roles as the canonical collection" do
-        expect(assigns[:role]).to eq role
+      it "assigns @roles as the canonical collection" do
         expect(assigns[:roles]).to contain_exactly(role)
       end
 
@@ -144,7 +142,6 @@ RSpec.describe WorkflowsController do
 
       it "assigns the selected role" do
         expect(assigns[:roles]).to contain_exactly(role)
-        expect(assigns[:role]).to eq role
       end
 
       it "assigns type" do
@@ -174,11 +171,6 @@ RSpec.describe WorkflowsController do
 
       it "assigns all selected roles" do
         expect(assigns[:roles]).to contain_exactly(role, role2)
-      end
-
-      # TODO: @role is a temporary single-role fallback; remove once components support multi-role natively
-      it "assigns the first role as a temporary single-role fallback for @role" do
-        expect(assigns[:role]).to eq role
       end
 
       it "assigns type" do

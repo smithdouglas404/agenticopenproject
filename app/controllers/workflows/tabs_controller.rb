@@ -102,7 +102,7 @@ class Workflows::TabsController < ApplicationController
     all_statuses = Status.order(:position)
     current_statuses = if params[:status_ids].present?
                          Status.where(id: params[:status_ids].map(&:to_i)).order(:position)
-                       elsif @type && @role
+                       elsif @type && @roles.any?
                          statuses_for_roles_and_type
                        else
                          Status.none
@@ -111,7 +111,7 @@ class Workflows::TabsController < ApplicationController
     respond_with_dialog Workflows::StatusDialogComponent.new(
       all_statuses:,
       current_statuses:,
-      role: @role,
+      roles: @roles,
       type: @type,
       tab: @tab
     )
@@ -124,7 +124,7 @@ class Workflows::TabsController < ApplicationController
 
     if removed_count > 0
       respond_with_dialog Workflows::StatusRemovalDangerDialogComponent.new(
-        role: @role,
+        roles: @roles,
         type: @type,
         tab: @tab,
         status_ids: current_status_ids,
@@ -162,9 +162,6 @@ class Workflows::TabsController < ApplicationController
 
   def set_roles
     @roles = @eligible_roles.where(id: params[:role_ids])
-    # TODO: remove @role once the matrix form and all dependent components
-    # (dialogs, status selectors, page headers) work natively with @roles (multi-role).
-    @role = @roles.first
   end
 
   def statuses_for_form

@@ -37,7 +37,6 @@ module Workflows
       super
       @tab = tab
       @roles = roles
-      @role = @roles.first
       @type = type
       @available_roles = available_roles
       @statuses = statuses

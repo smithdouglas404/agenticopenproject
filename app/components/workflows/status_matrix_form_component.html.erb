@@ -44,8 +44,8 @@ See COPYRIGHT and LICENSE files for more details.
               button.with_trailing_visual_icon(icon: :"triangle-down")
               if @roles.many?
                 t("admin.workflows.role_selector.roles", count: @roles.size)
-              elsif @role
-                t("admin.workflows.role_selector.label", role: @role.name)
+              elsif @roles.one?
+                t("admin.workflows.role_selector.label", role: @roles.first.name)
               else
                 t("admin.workflows.role_selector.no_role")
               end
@@ -66,8 +66,6 @@ See COPYRIGHT and LICENSE files for more details.
         scheme: :secondary,
         leading_icon: :plus,
         label: t("admin.workflows.status_button"),
-        # TODO: status_dialog and StatusDialogComponent currently work with a single role (@role = @roles.first);
-        # update when they support multi-role natively.
         href: helpers.status_dialog_workflow_tab_path(@type, @tab, role_ids: @roles.map(&:id), status_ids: @statuses.pluck(:id).presence),
         data: { controller: "async-dialog" }
       ) do
@@ -132,6 +130,6 @@ See COPYRIGHT and LICENSE files for more details.
         %>
       <% end %>
   <% else %>
-    <%= render Workflows::BlankslateComponent.new(role: @role, type: @type, tab: @tab) %>
+    <%= render Workflows::BlankslateComponent.new(roles: @roles, type: @type, tab: @tab) %>
   <% end %>
 <% end %>
