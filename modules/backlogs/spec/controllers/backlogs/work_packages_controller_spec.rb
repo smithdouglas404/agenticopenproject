@@ -163,7 +163,7 @@ RSpec.describe Backlogs::WorkPackagesController do
 
       context "when all=1 with an inbox over the pagination threshold" do
         before do
-          stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+          stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
           create_list(:work_package, 4, project:, status:)
         end
 
@@ -179,7 +179,7 @@ RSpec.describe Backlogs::WorkPackagesController do
                      format: :turbo_stream
 
           expect(response).to be_successful
-          expect(response.body).not_to include("inbox-more-row-#{project.id}")
+          expect(response.body).not_to include("inbox_#{project.id}-show-more")
         end
       end
     end

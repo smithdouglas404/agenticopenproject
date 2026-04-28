@@ -424,9 +424,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
     let!(:sprint_wp2) { create(:work_package, project:, sprint:, type:) }
 
     before do
-      stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
-      stub_const("Backlogs::InboxComponent::FIRST_PAGE_SIZE", 2)
-      stub_const("Backlogs::InboxComponent::LAST_PAGE_SIZE", 1)
+      stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
       planning_page.visit!
     end
 

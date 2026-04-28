@@ -99,7 +99,7 @@ RSpec.describe Backlogs::InboxController do
 
     context "when all=1 with an inbox over the pagination threshold" do
       before do
-        stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+        stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
       end
 
       let!(:work_packages) { create_list(:work_package, 5, project:) }
@@ -113,7 +113,7 @@ RSpec.describe Backlogs::InboxController do
 
       it "replaces the inbox without a show-more row in the stream" do
         expect(response).to be_successful
-        expect(response.body).not_to include("inbox-more-row-#{project.id}")
+        expect(response.body).not_to include("inbox_#{project.id}-show-more")
       end
     end
 
@@ -205,7 +205,7 @@ RSpec.describe Backlogs::InboxController do
 
     context "when all=1 with an inbox over the pagination threshold" do
       before do
-        stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+        stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
       end
 
       let!(:work_packages) { create_list(:work_package, 5, project:) }
@@ -226,7 +226,7 @@ RSpec.describe Backlogs::InboxController do
 
       it "replaces the inbox without a show-more row in the stream" do
         expect(response).to be_successful
-        expect(response.body).not_to include("inbox-more-row-#{project.id}")
+        expect(response.body).not_to include("inbox_#{project.id}-show-more")
       end
     end
 

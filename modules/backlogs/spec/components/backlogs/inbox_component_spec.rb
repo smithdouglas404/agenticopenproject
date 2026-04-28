@@ -93,34 +93,35 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
   end
 
   describe "pagination" do
-    let(:threshold) { described_class::PAGINATION_THRESHOLD }
-    let(:first_page_size) { described_class::FIRST_PAGE_SIZE }
-    let(:last_page_size) { described_class::LAST_PAGE_SIZE }
+    # The shared box derives tail = max(truncate_middle / 5, 1) and the threshold
+    # to truncate as truncate_middle + tail*2.
+    let(:truncate_middle) { described_class::TRUNCATE_MIDDLE }
+    let(:tail_size) { [truncate_middle / 5, 1].max }
+    let(:threshold) { truncate_middle + (tail_size * 2) }
+    let(:show_more_id) { "inbox_#{project.id}-show-more" }
 
     context "when work packages do not exceed the threshold" do
       let(:work_packages) { create_list(:work_package, threshold, project:) }
 
       it "renders all items without pagination" do
         expect(page).to have_css(".Box-row", count: threshold)
-        # does not show a 'show more' link
-        expect(page).to have_no_css("#inbox-more-row-#{project.id}")
+        expect(page).to have_no_css("##{show_more_id}")
       end
     end
 
     context "when work packages exceed the threshold" do
       let(:total) { threshold + 8 }
-      let(:middle_count) { total - first_page_size - last_page_size }
+      let(:middle_count) { total - truncate_middle - tail_size }
       let(:work_packages) { create_list(:work_package, total, project:) }
 
       it "renders only the first page and last page items (not all)" do
-        expect(page).to have_css(".Box-row", count: first_page_size + last_page_size + 1) # +1 for "show more" row
-        # shows a 'show more' link with the count of hidden items
-        expect(page).to have_css("#inbox-more-row-#{project.id}")
+        expect(page).to have_css(".Box-row", count: truncate_middle + tail_size + 1) # +1 for "show more" row
+        expect(page).to have_css("##{show_more_id}")
         expect(page).to have_text("Show #{middle_count} more items")
       end
 
       it "renders show-more targeting the full backlog turbo frame with all=1" do
-        show_link = page.find("#inbox-more-row-#{project.id} a")
+        show_link = page.find("##{show_more_id}")
         expect(show_link[:href]).to include("all=1")
         expect(show_link["data-turbo-frame"]).to eq("backlogs_container")
       end
@@ -133,8 +134,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
 
       it "renders all items without pagination" do
         expect(page).to have_css(".Box-row", count: total)
-        # does not show a 'show more' link
-        expect(page).to have_no_css("#inbox-more-row-#{project.id}")
+        expect(page).to have_no_css("##{show_more_id}")
       end
     end
   end

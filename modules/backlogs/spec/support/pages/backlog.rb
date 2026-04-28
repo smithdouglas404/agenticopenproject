@@ -216,20 +216,20 @@ module Pages
 
     def expect_inbox_show_more
       within_inbox do
-        expect(page).to have_css("#inbox-more-row-#{project.id}")
+        expect(page).to have_css("#inbox_#{project.id}-show-more")
       end
     end
 
     def expect_no_inbox_show_more
       wait_for_network_idle
       within_inbox do
-        expect(page).to have_no_css("#inbox-more-row-#{project.id}")
+        expect(page).to have_no_css("#inbox_#{project.id}-show-more")
       end
     end
 
     def click_inbox_show_more
       within_inbox do
-        find("#inbox-more-row-#{project.id} a").click
+        find("#inbox_#{project.id}-show-more").click
       end
       wait_for_network_idle
     end
