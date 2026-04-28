@@ -40,13 +40,14 @@ import {
   openProjectWorkPackageInlineSpec,
   workPackageSlashMenu,
   useHashWpMenu,
+  useInlineWpEvents,
+  useDeduplicateInstanceIds
 } from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo } from 'react';
 import * as Y from 'yjs';
 import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
-import { useInlineWpEvents } from 'op-blocknote-extensions';
 
 interface CollaborativeUser {
   name: string;
@@ -125,6 +126,7 @@ export function OpBlockNoteEditor({
   const editor = useCreateBlockNote(editorParams, [activeUser]);
 
   useInlineWpEvents(editor);
+  useDeduplicateInstanceIds(editor); 
 
   const theme = useOpTheme();
 
