@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=keycloak
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2
+    image: quay.io/keycloak/keycloak:26.3
     command:
     - "start-dev"
     - "--proxy-headers"
@@ -41,6 +41,7 @@ services:
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
       - keycloak-data:/opt/keycloak/data/
       - ./themes/:/opt/keycloak/themes/
+      - ./providers/:/opt/keycloak/providers/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.keycloak-sub-secure.rule=Host(`keycloak.${OPENPROJECT_DOCKER_DEV_TLD:-local}`)"

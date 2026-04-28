@@ -1,2 +1,5 @@
 .env
 docker-compose.override.yml
+
+providers/*
+!providers/.gitkeep
