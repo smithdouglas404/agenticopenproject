@@ -101,7 +101,12 @@ RSpec.shared_examples_for "provides a single WP context menu" do
             with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "uses numeric parent_id in the URL and sets the parent correctly" do
-        # Ensure the WP has a semantic identifier so we can verify the URL uses numeric PK
+        expect(Setting::WorkPackageIdentifier.semantic_mode_active?)
+          .to be(true), "expected semantic mode to be active via with_settings + with_flag metadata"
+
+        # In semantic mode project identifiers are uppercase; force that here since
+        # the shared project may have been created with a factory-generated lowercase slug.
+        work_package.project.update_columns(identifier: work_package.project.identifier.upcase)
         work_package.allocate_and_register_semantic_id if work_package.identifier.blank?
 
         open_context_menu.call
