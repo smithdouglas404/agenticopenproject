@@ -152,7 +152,12 @@ module OpenProject::Bim::BcfXml
 
     def topic_reference_link(topic_node)
       target = fetch(topic_node, "ReferenceLink")
-      target.content = url_helpers.work_package_url(work_package)
+      # BCF is a machine-consumed BIM interchange format. Third-party tools
+      # (Revit, Solibri, etc.) may parse the URL for a numeric back-reference,
+      # so we pass the primary key explicitly rather than going through the
+      # model's #to_param (which would produce semantic identifiers in
+      # semantic mode).
+      target.content = url_helpers.work_package_url(id: work_package.id)
     end
 
     def topic_priority(topic_node)

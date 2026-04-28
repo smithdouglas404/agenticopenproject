@@ -129,7 +129,7 @@ RSpec.describe OpenProject::Bim::BcfXml::IssueWriter do
       expect(subject.at("Topic/ModifiedDate").content).to eql work_package.updated_at.iso8601
       expect(subject.at("Topic/Description").content).to eql work_package.description
       expect(subject.at("Topic/CreationAuthor").content).to eql work_package.author.mail
-      expect(subject.at("Topic/ReferenceLink").content).to eql url_helpers.work_package_url(work_package)
+      expect(subject.at("Topic/ReferenceLink").content).to eql url_helpers.work_package_url(id: work_package.id)
       expect(subject.at("Topic/Priority").content).to eql work_package.priority.name
       expect(subject.at("Topic/ModifiedAuthor").content).to eql work_package.journals.last.user.mail
       expect(subject.at("Topic/AssignedTo").content).to eql work_package.assigned_to.mail
