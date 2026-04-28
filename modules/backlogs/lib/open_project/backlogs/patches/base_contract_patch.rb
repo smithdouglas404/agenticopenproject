@@ -65,7 +65,7 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
     end
 
     def validate_sprint_is_assignable
-      if model.sprint_id && model.assignable_sprints.map(&:id).exclude?(model.sprint_id)
+      if model.sprint_id && model.sprint_id_changed? && model.assignable_sprints.map(&:id).exclude?(model.sprint_id)
         errors.add :sprint_id, :inclusion
       end
     end
