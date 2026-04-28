@@ -29,22 +29,30 @@
 #++
 
 require "spec_helper"
+require_module_spec_helper
 
 RSpec.describe "API v3 wiki page links resource" do
   include API::V3::Utilities::PathHelper
 
   let(:work_package) { create(:work_package) }
   let(:internal_wiki) { create(:internal_wiki_provider) }
+  let(:xwiki_provider) { create(:xwiki_provider) }
 
   let(:project) { work_package.project }
 
   let(:user) { create(:user, member_with_permissions: { project => %i(view_work_packages view_wiki_page_links) }) }
 
-  let(:relation_page_links) { create_list(:relation_wiki_page_link, 3, provider: internal_wiki, linkable: work_package) }
+  let(:relation_page_links) { create_list(:relation_wiki_page_link, 3, provider: xwiki_provider, linkable: work_package) }
+  let(:inline_page_links) { create_list(:inline_wiki_page_link, 3, provider: internal_wiki, linkable: work_package) }
+
+  let(:unrelated_page_links) do
+    create_list(:inline_wiki_page_link, 3, provider: internal_wiki, linkable: create(:work_package, project: project))
+  end
 
   before do
     login_as user
-    relation_page_links
+    stub_provider_queries
+    unrelated_page_links
   end
 
   describe "GET /api/v3/work_packages/:id/wiki_page_links" do
@@ -53,8 +61,8 @@ RSpec.describe "API v3 wiki page links resource" do
     context "with all preconditions met (happy path)" do
       before { get path }
 
-      it_behaves_like "API V3 collection response", 3, 3, "RelationPageLink", "Collection" do
-        let(:elements) { relation_page_links.reverse }
+      it_behaves_like "API V3 collection response", 6, 6, "WikiPageLink", "WikiPageLinkCollection" do
+        let(:elements) { Wikis::PageLink.where(linkable: work_package).order(id: :asc).all }
       end
     end
 
@@ -62,13 +70,44 @@ RSpec.describe "API v3 wiki page links resource" do
       let(:filter) { [{ provider: { operator: "=", values: [internal_wiki.universal_identifier] } }] }
 
       before do
-        create_list(:relation_wiki_page_link, 3, provider: create(:xwiki_provider), linkable: work_package)
         get "#{path}?filters=#{CGI.escape(filter.to_json)}"
       end
 
-      it_behaves_like "API V3 collection response", 3, 3, "RelationPageLink", "Collection" do
-        let(:elements) { relation_page_links.reverse }
+      it_behaves_like "API V3 collection response", 3, 3, "WikiPageLink", "WikiPageLinkCollection" do
+        let(:elements) { Wikis::PageLink.where(linkable: work_package, provider: internal_wiki).order(id: :asc).all }
       end
     end
+  end
+
+  private
+
+  def stub_provider_queries
+    internal_class = class_double(Wikis::Adapters::Providers::Internal::Queries::PageInfo)
+    xwiki_class = class_double(Wikis::Adapters::Providers::XWiki::Queries::PageInfo)
+
+    internal_query = instance_double(Wikis::Adapters::Providers::Internal::Queries::PageInfo)
+    xwiki_query = instance_double(Wikis::Adapters::Providers::XWiki::Queries::PageInfo)
+
+    Wikis::Adapters::Registry.stub("internal.queries.page_info", internal_class)
+    Wikis::Adapters::Registry.stub("xwiki.queries.page_info", xwiki_class)
+
+    allow(internal_class).to receive(:new).and_return(internal_query)
+    allow(xwiki_class).to receive(:new).and_return(xwiki_query)
+    stub_query_calls(inline_page_links, internal_query)
+    stub_query_calls(relation_page_links, xwiki_query)
+  end
+
+  def stub_query_calls(links, query)
+    links.each do |link|
+      Wikis::Adapters::Input::PageInfo.build(identifier: link.identifier).bind do |input|
+        allow(query).to receive(:call).with(input).and_return(Success(build_page_info(link)))
+      end
+    end
+  end
+
+  def build_page_info(link)
+    Wikis::Adapters::Results::PageInfo.new(
+      identifier: link.identifier, href: "valid_uri", title: "Title of #{link.identifier}", provider: link.provider
+    )
   end
 end

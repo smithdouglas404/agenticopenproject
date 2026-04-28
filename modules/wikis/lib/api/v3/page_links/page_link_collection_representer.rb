@@ -33,6 +33,8 @@ module API
     module PageLinks
       class PageLinkCollectionRepresenter < Decorators::OffsetPaginatedCollection
         property :count, getter: ->(*) { count(:id) }
+
+        def _type = "WikiPageLinkCollection"
       end
     end
   end

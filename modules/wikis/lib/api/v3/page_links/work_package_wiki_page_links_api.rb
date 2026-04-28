@@ -32,8 +32,10 @@ module API
   module V3
     module PageLinks
       class WorkPackageWikiPageLinksAPI < OpenProjectAPI
-        def self.enrich_models_with_wiki_metadata(relation)
-          Wikis::PageLinkMetadataService.new(relation).call
+        helpers do
+          def enrich_models_with_wiki_metadata(relation)
+            Wikis::PageLinkMetadataService.call(relation)
+          end
         end
 
         resources :wiki_page_links do
@@ -56,7 +58,7 @@ module API
                        end
 
             PageLinkCollectionRepresenter.new(
-              relation,
+              enrich_models_with_wiki_metadata(relation).result,
               per_page: params[:pageSize],
               self_link: api_v3_paths.work_package_page_links(@work_package.id),
               current_user:

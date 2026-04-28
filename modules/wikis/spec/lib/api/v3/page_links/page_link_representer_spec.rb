@@ -113,18 +113,34 @@ module API
         end
 
         describe "properties" do
+          describe "wiki_page_link_type" do
+            context "when InlinePageLink" do
+              let(:represented) { inline_page_link }
+
+              it_behaves_like "property", :wikiPageLinkType do
+                let(:value) { URN_INLINE_PAGE_LINK }
+              end
+            end
+
+            context "when RelationPageLink" do
+              it_behaves_like "property", :wikiPageLinkType do
+                let(:value) { URN_RELATION_PAGE_LINK }
+              end
+            end
+          end
+
           describe "_type" do
             context "when InlinePageLink" do
               let(:represented) { inline_page_link }
 
               it_behaves_like "property", :_type do
-                let(:value) { "InlinePageLink" }
+                let(:value) { "WikiPageLink" }
               end
             end
 
             context "when RelationPageLink" do
               it_behaves_like "property", :_type do
-                let(:value) { "RelationPageLink" }
+                let(:value) { "WikiPageLink" }
               end
             end
           end

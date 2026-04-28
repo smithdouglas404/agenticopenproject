@@ -30,25 +30,39 @@
 
 module Wikis
   class PageLinkMetadataService
-    def initialize(page_links)
-      @page_links = page_links
+    # @param relation [ActiveRecord::Relation<Wikis::PageLink>]
+    # @return [ServiceResult<ActiveRecord::Relation<Wikis::PageLink>]
+    def self.call(relation) = new.call(relation)
+
+    def initialize
       @result = ServiceResult.success(errors: ActiveModel::Errors.new(self))
     end
 
-    def call
-      metadata = @page_links.group_by(&:provider).filter_map do |provider, links|
-        result = provider.resolve("queries.pages").call(page_identifiers: links.map(&:identifier))
-        result.value_or { add_wiki_error(it) and next }
+    def call(relation)
+      metadata = relation.group_by(&:provider).filter_map do |provider, page_links|
+        build_inputs(page_links).filter_map do |input_data|
+          provider.resolve("queries.page_info").call(input_data).value_or { add_wiki_error(it) and next }
+        end
       end
 
-      @result.result = enrich_models(@page_links, metadata.flatten)
+      @result.result = enrich_models(relation, metadata.flatten)
       @result
     end
 
     private
 
+    def build_inputs(page_links)
+      page_links.filter_map do |page_link|
+        Adapters::Input::PageInfo.build(identifier: page_link.identifier).value_or { add_validation_error(it) }
+      end
+    end
+
     def add_wiki_error(error)
-      @result.add_error(:base, error.message)
+      @result.errors.add(:base, error.code)
+    end
+
+    def add_validation_error(error)
+      @result.errors.add(:identifiers, error.message, options: error.to_h)
     end
 
     def enrich_models(page_links, metadata)

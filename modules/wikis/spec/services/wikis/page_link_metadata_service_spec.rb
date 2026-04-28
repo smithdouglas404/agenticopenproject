@@ -32,30 +32,33 @@ require "spec_helper"
 require_module_spec_helper
 
 module Wikis
-  FakeMetadata = Data.define(:title, :identifier)
   RSpec.describe PageLinkMetadataService do
-    let(:relation) { PageLink.where(provider:) }
+    let(:relation) { PageLink.limit(30) }
 
-    let(:provider) { create(:internal_wiki_provider) }
-    let(:page_links) { create_list(:relation_wiki_page_link, 3, provider:) }
+    shared_let(:provider) { create(:internal_wiki_provider) }
+    shared_let(:page_links) { create_list(:relation_wiki_page_link, 3, provider:) }
 
-    let(:metadata) do
-      page_links.map { FakeMetadata.new("Wikis, now with more cheese! Part #{it.id}", it.identifier) }
-    end
-
-    subject(:service) { described_class.new(relation) }
+    subject(:service) { described_class }
 
     before do
-      page_links
-
       query_double = instance_double(Adapters::Providers::Internal::Queries::PageInfo)
-      allow(Adapters::Providers::Internal::Queries::PageInfo).to receive(:new).and_return(query_double)
+      query_class_double = class_double(Adapters::Providers::Internal::Queries::PageInfo, new: query_double)
+      Adapters::Registry.stub("internal.queries.page_info", query_class_double)
 
-      allow(query_double).to receive(:call).and_return(Success(metadata))
+      build_inputs.each do |input|
+        allow(query_double).to receive(:call).with(input).and_return(
+          Success(
+            Adapters::Results::PageInfo.new(title: "Wikis, now with more cheese! Part #{input.identifier}",
+                                            identifier: input.identifier,
+                                            href: "totally_valid_url",
+                                            provider:)
+          )
+        )
+      end
     end
 
     it "returns a new relation" do
-      service_result = service.call
+      service_result = service.call(relation)
 
       expect(service_result).to be_success
       expect(service_result.errors).to be_empty
@@ -63,11 +66,17 @@ module Wikis
     end
 
     it "adds the title attribute to the metadata association" do
-      service_result = service.call
+      service_result = service.call(relation)
       expect(service_result).to be_success
 
       page_links = service_result.result
-      expect(page_links.first.title).to match(/Wikis, now with more cheese! Part \d+/)
+      expect(page_links.first.title).to eq("Wikis, now with more cheese! Part #{page_links.first.identifier}")
+    end
+
+    private
+
+    def build_inputs
+      page_links.filter_map { Adapters::Input::PageInfo.build(identifier: it.identifier).value_or(nil) }
     end
   end
 end
