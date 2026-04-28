@@ -407,7 +407,8 @@ es:
           error_special_characters: No se permiten caracteres especiales
           error_not_fully_uppercased: Debe estar en mayúsculas
           error_in_use: Ya está en uso como identificador activo de otro proyecto
-          error_reserved: Reservado por el historial de identificadores de otro proyecto
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Necesita revisión manual
           remaining_projects:
             one: "... 1 proyecto más"

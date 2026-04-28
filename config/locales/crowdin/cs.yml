@@ -419,7 +419,8 @@ cs:
           error_special_characters: Speciální znaky nejsou povoleny
           error_not_fully_uppercased: Musí být napsán velkými písmeny
           error_in_use: Již se používá jako identifikátor jiného projektu
-          error_reserved: Již se dříve používal jako identifikátor jiného projektu
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Potřebuje ruční revizi
           remaining_projects:
             one: "... 1 další projekt"

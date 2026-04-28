@@ -419,7 +419,8 @@ pl:
           error_special_characters: Znaki specjalne są niedozwolone
           error_not_fully_uppercased: Musi być pisany wielkimi literami
           error_in_use: Już używany jako aktywne dojście innego projektu
-          error_reserved: Zarezerwowany przez historię dojść innego projektu
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Wymaga ręcznego sprawdzenia
           remaining_projects:
             one: "...jeszcze 1 projekt"

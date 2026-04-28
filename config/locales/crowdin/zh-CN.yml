@@ -399,7 +399,8 @@ zh-CN:
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一个项目的有效标识名
-          error_reserved: 由另一个项目的标识名历史保留
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: 需要手动检查
           remaining_projects:
             other: "…其他 %{count} 个项目"

@@ -419,7 +419,8 @@ ru:
           error_special_characters: Специальные символы не допускаются
           error_not_fully_uppercased: Должно быть заглавными
           error_in_use: Уже используется в другом проекте
-          error_reserved: Зарезервировано другим проектом
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Требуется ручная проверка
           remaining_projects:
             one: "... еще 1 проект"

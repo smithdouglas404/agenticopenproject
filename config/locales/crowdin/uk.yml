@@ -419,7 +419,8 @@ uk:
           error_special_characters: Не дозволяється використовувати спеціальні символи
           error_not_fully_uppercased: Літери мають бути великими
           error_in_use: Уже використовується як активний дескриптор іншого проєкту
-          error_reserved: Зарезервовано в історії дескрипторів іншого проєкту
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Потребує ручної перевірки
           remaining_projects:
             one: "… ще 1 проєкт"

@@ -407,7 +407,8 @@ de:
           error_special_characters: Sonderzeichen sind nicht erlaubt
           error_not_fully_uppercased: Muss in Großbuchstaben sein
           error_in_use: Bereits als aktive Kennung für ein anderes Projekt verwendet
-          error_reserved: Reserviert durch eine frühere Kennung eines anderen Projekts
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Benötigt manuelle Überprüfung
           remaining_projects:
             one: "... 1 weiteres Projekt"
