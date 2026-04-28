@@ -442,6 +442,42 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "#to_param" do
+    context "when semantic mode is active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      it "returns the semantic identifier" do
+        expect(work_package.to_param).to eq("MYPROJ-1")
+      end
+
+      it "falls back to the numeric id when identifier is missing" do
+        work_package.update_columns(identifier: nil, sequence_number: nil)
+        expect(work_package.to_param).to eq(work_package.id.to_s)
+      end
+
+      it "makes work_package_path produce a semantic URL" do
+        path = Rails.application.routes.url_helpers.work_package_path(work_package)
+        expect(path).to end_with("/work_packages/MYPROJ-1")
+      end
+    end
+
+    context "when semantic mode is not active",
+            with_flag: { semantic_work_package_ids: false } do
+      it "returns the numeric id as a string" do
+        expect(work_package.to_param).to eq(work_package.id.to_s)
+      end
+
+      it "makes work_package_path produce a numeric URL" do
+        path = Rails.application.routes.url_helpers.work_package_path(work_package)
+        expect(path).to end_with("/work_packages/#{work_package.id}")
+      end
+    end
+
+    it "returns nil for new (unsaved) records" do
+      expect(WorkPackage.new.to_param).to be_nil
+    end
+  end
+
   describe "semantic_identifier_fields_consistent validation" do
     subject(:wp) { build(:work_package, project:, sequence_number: nil, identifier: nil) }
 
