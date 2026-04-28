@@ -313,7 +313,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     if (this.isDirtyValue) {
       this.confirmThenNavigate(url);
     } else {
-      Turbo.visit(url);
+      this.frameNavigateTo(url);
     }
   }
 
@@ -323,14 +323,27 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
         this.hasCheckboxChangesValue = false;
         this.hasStatusChangesValue = false;
         this.confirmationDialogTarget.close();
-        setTimeout(() => { Turbo.visit(url); }, 0);
+        setTimeout(() => { this.frameNavigateTo(url); }, 0);
       },
       () => {
         this.element.requestSubmit();
         this.confirmationDialogTarget.close();
         // Delay to allow the flash message from the form submission to appear.
-        setTimeout(() => { Turbo.visit(url); }, 1000);
+        setTimeout(() => { this.frameNavigateTo(url); }, 1000);
       },
     );
+  }
+
+  // This keeps the url in the /tabs/:tab/edit format consistently,
+  // rather than doing a Turbo.visit which changes the format.
+  // It also keeps history usable, similar to data-turbo-action="advance".
+  private frameNavigateTo(url:string) {
+    const turboFrame = this.element.closest('turbo-frame') as HTMLElement | null;
+    if (turboFrame) {
+      turboFrame.setAttribute('src', url);
+      history.pushState({}, '', url);
+    } else {
+      Turbo.visit(url);
+    }
   }
 }

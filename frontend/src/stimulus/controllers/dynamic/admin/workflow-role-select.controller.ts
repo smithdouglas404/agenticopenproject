@@ -62,26 +62,27 @@ export default class WorkflowRoleSelectController extends Controller {
 
     // For when all roles are deselected
     if (!selectedIds.length) {
-      const url = new URL(this.baseUrlValue, window.location.origin);
-      if (this.hasAdminWorkflowCheckboxStateOutlet) {
-        this.adminWorkflowCheckboxStateOutlet.navigateTo(url.toString());
-      } else {
-        Turbo.visit(url.toString());
-      }
+      this.navigateTo(this.buildUrl([]));
       return;
     }
 
     const currentIds = this.currentRoleIdsValue.split(',').filter(Boolean);
-
     if (selectedIds.slice().sort().join(',') === currentIds.slice().sort().join(',')) return;
 
-    const url = new URL(this.baseUrlValue, window.location.origin);
-    selectedIds.forEach((id) => url.searchParams.append('role_ids[]', id!));
-
-    if (this.hasAdminWorkflowCheckboxStateOutlet) {
-      this.adminWorkflowCheckboxStateOutlet.navigateTo(url.toString());
-    } else {
-      Turbo.visit(url.toString());
-    }
+    this.navigateTo(this.buildUrl(selectedIds as string[]));
   };
+  
+  private buildUrl(roleIds:string[]):string {
+    const url = new URL(this.baseUrlValue, window.location.origin);
+    roleIds.forEach((id) => url.searchParams.append('role_ids[]', id));
+    return url.toString();
+  }
+
+  private navigateTo(url:string) {
+    if (this.hasAdminWorkflowCheckboxStateOutlet) {
+      this.adminWorkflowCheckboxStateOutlet.navigateTo(url);
+    } else {
+      Turbo.visit(url);
+    }
+  }
 }

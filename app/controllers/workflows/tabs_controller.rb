@@ -162,6 +162,7 @@ class Workflows::TabsController < ApplicationController
 
   def set_roles
     @roles = @eligible_roles.where(id: params[:role_ids])
+    @roles = [@eligible_roles.first] if @roles.empty?
   end
 
   def statuses_for_form
