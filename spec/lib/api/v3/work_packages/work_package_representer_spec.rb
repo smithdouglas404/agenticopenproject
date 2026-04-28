@@ -1261,6 +1261,38 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       end
     end
 
+    # The HAL surface must produce numeric URLs regardless of identifier
+    # mode — external API consumers depend on stable, predictable IDs.
+    # These specs guard against a future change that drops the explicit
+    # `id:` kwargs (or model-positional pins) and silently lets URLs flip
+    # to semantic identifiers via WorkPackage#to_param.
+    context "with semantic identifier mode active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic", feeds_enabled?: true } do
+      let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
+      let(:permissions) { all_permissions + [:export_work_packages] }
+
+      it "self stays numeric" do
+        expect(subject).to be_json_eql("/api/v3/work_packages/#{work_package.id}".to_json)
+                             .at_path("_links/self/href")
+      end
+
+      it "pdf stays numeric" do
+        expect(subject).to be_json_eql("/work_packages/#{work_package.id}.pdf".to_json)
+                             .at_path("_links/pdf/href")
+      end
+
+      it "generate_pdf stays numeric" do
+        expect(subject).to be_json_eql("/work_packages/#{work_package.id}/generate_pdf_dialog".to_json)
+                             .at_path("_links/generate_pdf/href")
+      end
+
+      it "atom stays numeric" do
+        expect(subject).to be_json_eql("/work_packages/#{work_package.id}.atom".to_json)
+                             .at_path("_links/atom/href")
+      end
+    end
+
     describe "changeParent" do
       it_behaves_like "has a titled action link" do
         let(:link) { "changeParent" }
