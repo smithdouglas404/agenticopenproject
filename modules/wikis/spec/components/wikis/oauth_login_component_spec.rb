@@ -36,20 +36,20 @@ RSpec.describe Wikis::OAuthLoginComponent, type: :component do
   let(:provider) { create(:xwiki_provider) }
   let(:oauth_client) { create(:oauth_client, integration: provider) }
 
-  before { allow(provider).to receive(:oauth_client).and_return(oauth_client) }
+  before do
+    allow(provider).to receive(:oauth_client).and_return(oauth_client)
+    render_inline(described_class.new(provider, work_package:))
+  end
 
   it "renders the heading" do
-    render_inline(described_class.new(provider, work_package:))
     expect(page).to have_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
   end
 
   it "renders the description" do
-    render_inline(described_class.new(provider, work_package:))
     expect(page).to have_text(I18n.t("wikis.oauth_login_component.description", provider: provider.name))
   end
 
   it "renders a connect button linking to ensure_connection with the wikis tab as destination" do
-    render_inline(described_class.new(provider, work_package:))
     link = page.find_link(I18n.t("wikis.oauth_login_component.connect_button", provider: provider.name))
     expect(link[:href]).to match(/ensure_connection/)
     expect(link[:href]).to match(/destination_url=.*wikis/)

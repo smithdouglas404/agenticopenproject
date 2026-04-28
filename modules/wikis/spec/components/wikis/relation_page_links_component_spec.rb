@@ -45,42 +45,32 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
   end
 
   context "when the provider has no oauth client configured" do
-    before { allow(provider).to receive(:oauth_client).and_return(nil) }
-
-    it "renders the empty state" do
+    before do
+      allow(provider).to receive(:oauth_client).and_return(nil)
       render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading"))
     end
 
-    it "does not render the OAuthLoginComponent" do
-      render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
-    end
+    it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
+    it { expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
   end
 
   context "when the provider has an oauth client but the user has no token" do
-    before { allow(provider).to receive(:oauth_client).and_return(oauth_client) }
-
-    it "renders the OAuthLoginComponent" do
+    before do
+      allow(provider).to receive(:oauth_client).and_return(oauth_client)
       render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
     end
+
+    it { expect(page).to have_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
   end
 
   context "when the user has a token for the provider" do
     before do
       allow(provider).to receive(:oauth_client).and_return(oauth_client)
       create(:oauth_client_token, oauth_client:, user:)
+      render_inline(described_class.new(provider, work_package:))
     end
 
-    it "renders the empty state" do
-      render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading"))
-    end
-
-    it "does not render the OAuthLoginComponent" do
-      render_inline(described_class.new(provider, work_package:))
-      expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name))
-    end
+    it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
+    it { expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
   end
 end
