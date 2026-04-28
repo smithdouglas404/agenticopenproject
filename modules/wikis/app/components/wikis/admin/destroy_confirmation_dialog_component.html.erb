@@ -34,7 +34,11 @@ See COPYRIGHT and LICENSE files for more details.
        message.with_heading(tag: :h2) { t(".title") }
      end %>
   <% dialog.with_additional_details do %>
-    <%= t(".warning_html", wiki_provider: content_tag(:strong, @wiki_provider.name)) %>
+    <% render(Primer::OpenProject::FlexLayout.new) do |flex| %>
+      <% flex.with_row do %>
+        <%= t(".warning_html", wiki_provider: content_tag(:strong, @wiki_provider.name)) %>
+      <% end %>
+    <% end %>
   <% end %>
   <% dialog.with_confirmation_check_box_content(t(:text_permanent_delete_confirmation_checkbox_label)) %>
 <% end %>

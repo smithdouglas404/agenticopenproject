@@ -95,6 +95,6 @@ en:
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
         delete:
           title: Delete wiki provider
-          warning_html: "You are about to delete %{wiki_provider}. This action is irreversible."
+          warning_html: "You are about to delete <strong>%{wiki_provider}</strong>. This action is irreversible."
     macro:
       page_not_found: Linked wiki page no longer available
