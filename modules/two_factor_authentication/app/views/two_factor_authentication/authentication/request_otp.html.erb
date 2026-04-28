@@ -1,5 +1,5 @@
 <% resend_supported = @strategy.mobile_token? %>
-<% has_other_devices = @active_devices.count > 1 %>
+<% has_other_devices = @active_devices.many? %>
 <% has_backup_codes = @authenticated_user.otp_backup_codes.exists? %>
 <% html_title t(:field_otp) %>
 <div id="login-form"
@@ -73,7 +73,8 @@
             id: "resend_otp",
             data: {
               turbo: false
-            }) do %>
+            }
+          ) do %>
         <%= hidden_field_tag "use_device", @service.device.id %>
         <hr>
         <div class="resend-header"><%= t(:text_send_otp_again) %></div>
