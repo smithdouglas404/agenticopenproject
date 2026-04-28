@@ -1131,9 +1131,16 @@ Rails.application.routes.draw do
         work_package_split_view: true
   end
 
+  concern :with_split_create do
+    get "details/new",
+        action: :split_create,
+        as: :split_create,
+        work_package_split_create: true
+  end
+
   resources :notifications, only: :index do
     collection do
-      concerns :with_split_view, base_route: :notifications_path
+      concerns :with_split_view
 
       post :mark_all_read
       resource :menu, module: :notifications, only: %i[show], as: :notifications_menu
