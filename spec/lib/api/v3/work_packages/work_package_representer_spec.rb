@@ -1734,6 +1734,21 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         end.to change(representer, :json_cache_key)
       end
 
+      it "changes when the work package identifier mode is toggled" do
+        # Without this, JSON rendered while in classic mode keeps serving
+        # numeric `displayId` values after an admin switches to semantic mode,
+        # because nothing else in the cache key reflects the setting flip.
+        with_flags(semantic_work_package_ids: true)
+
+        with_settings(work_packages_identifier: "classic")
+        classic_key = representer.json_cache_key
+
+        with_settings(work_packages_identifier: "semantic")
+        semantic_key = representer.json_cache_key
+
+        expect(semantic_key).not_to eq(classic_key)
+      end
+
       it "factors in the eager loaded cache_checksum" do
         without_partial_double_verification do
           allow(work_package)
