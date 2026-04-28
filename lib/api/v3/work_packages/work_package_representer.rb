@@ -805,7 +805,7 @@ module API
            Setting.work_package_done_ratio,
            Setting.show_work_package_attachments,
            Setting.feeds_enabled?,
-           Setting.work_packages_identifier]
+           Setting::WorkPackageIdentifier.semantic_mode_active?]
         end
 
         def load_complete_model(model)
