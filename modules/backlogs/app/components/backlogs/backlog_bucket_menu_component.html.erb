@@ -51,11 +51,8 @@ See COPYRIGHT and LICENSE files for more details.
           id: dom_target(backlog_bucket, :menu, :delete_backlog_bucket),
           label: t(".action_menu.delete_backlog_bucket"),
           scheme: :danger,
-          href: project_backlogs_backlog_bucket_path(project, backlog_bucket, all_backlogs_params),
-          form_arguments: {
-            method: :delete,
-            data: { turbo_confirm: t("text_are_you_sure") }
-          }
+          href: destroy_dialog_project_backlogs_backlog_bucket_path(project, backlog_bucket, all_backlogs_params),
+          content_arguments: { data: { controller: "async-dialog" } }
         ) do |item|
           item.with_leading_visual_icon(icon: :trash)
         end

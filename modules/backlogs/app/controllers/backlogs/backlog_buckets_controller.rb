@@ -33,7 +33,7 @@ module Backlogs
     include OpTurbo::ComponentStream
 
     before_action :check_feature_flag
-    before_action :find_backlog_bucket, only: %i[edit_dialog update destroy]
+    before_action :find_backlog_bucket, only: %i[edit_dialog destroy_dialog update destroy]
 
     def new_dialog
       backlog_bucket = Agile::BacklogBucket.new(project: @project)
@@ -43,6 +43,10 @@ module Backlogs
 
     def edit_dialog
       respond_with_dialog Backlogs::NewBacklogBucketDialogComponent.new(backlog_bucket: @backlog_bucket, state: :edit)
+    end
+
+    def destroy_dialog
+      respond_with_dialog Backlogs::BacklogBucketDestroyModalComponent.new(backlog_bucket: @backlog_bucket)
     end
 
     def create
