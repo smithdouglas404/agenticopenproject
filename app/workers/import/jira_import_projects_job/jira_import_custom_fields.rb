@@ -52,24 +52,24 @@ module Import
       # tuples share an allowedValues set.
       def build_custom_field_registry
         jira_field_ids = collect_used_jira_field_ids
-        return [] if jira_field_ids.empty?
-
-        Import::JiraField
-          .where(jira_id: @jira_id, jira_field_id: jira_field_ids)
-          .flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
+        if jira_field_ids.empty?
+          []
+        else
+          Import::JiraField
+            .where(jira_id: @jira_id, jira_field_id: jira_field_ids)
+            .flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
+        end
       end
 
       def collect_used_jira_field_ids
-        used_ids = Set.new
-        jira_project_ids = Import::JiraProject
-                             .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
-                             .pluck(:id)
-        Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: jira_project_ids).find_each do |issue|
-          issue.payload["fields"].each do |key, value|
-            used_ids << key if key.start_with?("customfield_") && value.present?
-          end
-        end
-        used_ids.to_a
+        Import::JiraIssue
+          .where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids)
+          .joins("CROSS JOIN LATERAL jsonb_each(payload->'fields') AS f(key, value)")
+          .where("f.key LIKE 'customfield%'")
+          .where("f.value <> 'null'::jsonb AND f.value <> 'false'::jsonb")
+          .where("f.value <> '\"\"'::jsonb AND f.value <> '[]'::jsonb AND f.value <> '{}'::jsonb")
+          .distinct
+          .pluck(Arel.sql("f.key"))
       end
 
       def build_registry_entries_for_field(jira_field)
@@ -121,15 +121,15 @@ module Import
       end
 
       def collect_string_values_from_issues(jira_field)
-        field_key = jira_field.jira_field_id
-        values = Set.new
-        Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids).find_each do |issue|
-          raw = issue.payload["fields"][field_key]
-          next unless raw.is_a?(Array)
-
-          raw.each { |v| values << v.to_s if v.present? }
-        end
-        values.to_a.sort
+        quoted_key = ActiveRecord::Base.connection.quote(jira_field.jira_field_id)
+        Import::JiraIssue
+          .where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids)
+          .where("jsonb_typeof(payload->'fields'->#{quoted_key}) = 'array'")
+          .joins("CROSS JOIN LATERAL jsonb_array_elements_text(payload->'fields'->#{quoted_key}) AS v(value)")
+          .where("v.value IS NOT NULL AND v.value <> ''")
+          .distinct
+          .order(Arel.sql("v.value"))
+          .pluck(Arel.sql("v.value"))
       end
 
       def build_multicheckbox_registry_entries(jira_field)
@@ -192,20 +192,20 @@ module Import
       end
 
       def all_jira_import_project_ids
-        Import::JiraProject
-          .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
-          .pluck(:id)
+        @all_jira_import_project_ids ||= Import::JiraProject
+                                           .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
+                                           .pluck(:id)
       end
 
       def collect_option_values_from_issues(jira_field)
-        values = Set.new
-        Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids).find_each do |issue|
-          raw = issue.payload["fields"][jira_field.jira_field_id]
-          next unless raw.is_a?(Array)
-
-          raw.each { |v| values << v["value"] if v["value"].present? }
-        end
-        values.to_a.sort
+        quoted_key = ActiveRecord::Base.connection.quote(jira_field.jira_field_id)
+        Import::JiraIssue
+          .where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids)
+          .where("jsonb_typeof(payload->'fields'->#{quoted_key}) = 'array'")
+          .joins("CROSS JOIN LATERAL jsonb_array_elements(payload->'fields'->#{quoted_key}) AS elem")
+          .where("(elem->>'value') IS NOT NULL AND (elem->>'value') <> ''")
+          .distinct
+          .pluck(Arel.sql("elem->>'value'"))
       end
 
       def build_contexts_for_field(jira_field)
