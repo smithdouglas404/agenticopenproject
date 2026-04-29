@@ -45,6 +45,26 @@ module OpenProject::TextFormatting
       end
 
       def call
+        run_matcher_hook(:preload_for_doc)
+        process_text_nodes
+        doc
+      ensure
+        run_matcher_hook(:cleanup_after_doc)
+      end
+
+      private
+
+      # Doc-level pre/cleanup hook dispatcher. Lets matchers warm or drop any
+      # per-render lookup caches (e.g. batched WP loads) so per-node `call`
+      # invocations stay query-free. Opt-in: only matchers that respond to the
+      # hook participate.
+      def run_matcher_hook(hook)
+        self.class.matchers.each do |matcher|
+          matcher.public_send(hook, doc, context) if matcher.respond_to?(hook)
+        end
+      end
+
+      def process_text_nodes
         doc.search(".//text()").each do |node|
           next if has_ancestor?(node, PREFORMATTED_BLOCKS)
 
@@ -52,8 +72,6 @@ module OpenProject::TextFormatting
             matcher.call(node, doc:, context:)
           end
         end
-
-        doc
       end
     end
   end

@@ -70,8 +70,21 @@ module OpenProject::TextFormatting::Matchers
       end
 
       def render_work_package_link(wp_id)
-        link_to("##{wp_id}",
-                work_package_path_or_url(id: wp_id, only_path: context[:only_path]),
+        # Read from the per-render preload populated by
+        # `ResourceLinksMatcher.preload_for_doc`. Nil means either no preload
+        # ran (e.g. a code path that bypasses `PatternMatcherFilter`) or the
+        # WP wasn't found — in both cases we fall back to the legacy `#N` shape
+        # rather than running a per-link query inside the renderer.
+        wp = OpenProject::TextFormatting::Matchers::ResourceLinksMatcher
+               .work_packages_lookup
+               &.[](wp_id)
+        label = wp&.formatted_id || "##{wp_id}"
+        # `display_id` is the semantic identifier (PROJ-7) in semantic mode and
+        # the numeric id in classic mode — same field, mode-agnostic.
+        href_id = wp&.display_id || wp_id
+
+        link_to(label,
+                work_package_path_or_url(id: href_id, only_path: context[:only_path]),
                 class: "issue work_package",
                 data: {
                   hover_card_trigger_target: "trigger",

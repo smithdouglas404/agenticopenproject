@@ -63,6 +63,14 @@ module OpenProject::TextFormatting
     #     identifier:version:1.0.0
     #     identifier:source:some/file
     class ResourceLinksMatcher < RegexMatcher
+      # Per-render cache of WorkPackage records referenced by `#N` plain links.
+      # Populated by `preload_for_doc` (a doc-level pass), read by the
+      # `WorkPackages` link handler, and cleared by `PatternMatcherFilter`
+      # after the per-node iteration completes. Thread-isolated so concurrent
+      # request threads don't share state. `nil` means "not preloaded" — handlers
+      # should treat it as an absent lookup, not an empty one.
+      thread_mattr_accessor :work_packages_lookup, instance_accessor: false
+
       include ::OpenProject::TextFormatting::Truncation
       # used for the work package quick links
       include WorkPackagesHelper
@@ -126,6 +134,68 @@ module OpenProject::TextFormatting
           LinkHandlers::ColonSeparator,
           LinkHandlers::Revisions
         ]
+      end
+
+      ##
+      # Doc-level preload hook (called by `PatternMatcherFilter` before per-node
+      # processing). Scans every text node for matches whose handler would
+      # require loading a WorkPackage record (the `#N` plain link), and runs a
+      # single batched query — avoiding N+1 when a render contains many `#N`
+      # references. Result is stashed in `work_packages_lookup` (numeric id →
+      # WorkPackage) for the link handler to read.
+      #
+      # Note: this intentionally does NOT apply visibility filtering. The
+      # matcher renders a link regardless of the viewer's permissions on the
+      # referenced WP — pre-existing behaviour outside this ticket's scope.
+      def self.preload_for_doc(doc, _context)
+        ids = collect_work_package_ids(doc)
+        return if ids.empty?
+
+        self.work_packages_lookup = WorkPackage.where(id: ids).index_by(&:id)
+      end
+
+      ##
+      # Cleanup hook (called by `PatternMatcherFilter` after the per-node loop).
+      # Clears the per-render lookup so it doesn't leak across renders that
+      # share the same request thread (e.g. nested formatting passes).
+      def self.cleanup_after_doc(_doc, _context)
+        self.work_packages_lookup = nil
+      end
+
+      def self.collect_work_package_ids(doc)
+        ids = Set.new
+        doc.search(".//text()").each do |node|
+          next if has_ancestor_in_preformatted_blocks?(node)
+
+          node.to_s.scan(regexp) { extract_work_package_id(Regexp.last_match)&.then { |id| ids << id } }
+        end
+        ids
+      end
+
+      # Returns the numeric WP id for a `#N` plain link match, or nil for any
+      # other shape (`##`/`###` quickinfo, `:`-separator resources, or
+      # leading-zero / non-numeric identifiers we don't link).
+      def self.extract_work_package_id(match)
+        sep = match[7] || match[9]
+        identifier = match[8] || match[11] || match[10]
+        return nil unless sep == "#" && identifier.present? && identifier == identifier.to_i.to_s
+
+        identifier.to_i
+      end
+
+      ##
+      # Mirror of `PatternMatcherFilter::PREFORMATTED_BLOCKS` ancestry check —
+      # `<pre>`/`<code>` text nodes are not matched, so they shouldn't
+      # contribute to the preload set either.
+      PREFORMATTED_ANCESTORS = %w[pre code].to_set
+      def self.has_ancestor_in_preformatted_blocks?(node)
+        ancestor = node.parent
+        until ancestor.nil? || ancestor.fragment? || ancestor.document?
+          return true if PREFORMATTED_ANCESTORS.include?(ancestor.name)
+
+          ancestor = ancestor.parent
+        end
+        false
       end
 
       def self.process_match(m, matched_string, context)
