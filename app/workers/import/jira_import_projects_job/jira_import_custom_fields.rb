@@ -91,9 +91,9 @@ module Import
         return [] if jira_field_ids.empty?
 
         @cf_name_index = WorkPackageCustomField.all.index_by { |cf| cf.name.downcase }
-        Import::JiraField
-          .where(jira_id: @jira_id, jira_field_id: jira_field_ids)
-          .flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
+        jira_fields = Import::JiraField.where(jira_id: @jira_id, jira_field_id: jira_field_ids).to_a
+        preload_array_field_values(jira_fields)
+        jira_fields.flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
       end
 
       def collect_used_jira_field_ids
@@ -156,15 +156,7 @@ module Import
       end
 
       def collect_string_values_from_issues(jira_field)
-        quoted_key = ActiveRecord::Base.connection.quote(jira_field.jira_field_id)
-        Import::JiraIssue
-          .where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids)
-          .where("jsonb_typeof(payload->'fields'->#{quoted_key}) = 'array'")
-          .joins("CROSS JOIN LATERAL jsonb_array_elements_text(payload->'fields'->#{quoted_key}) AS v(value)")
-          .where("v.value IS NOT NULL AND v.value <> ''")
-          .distinct
-          .order(Arel.sql("v.value"))
-          .pluck(Arel.sql("v.value"))
+        @string_array_values_by_field.fetch(jira_field.jira_field_id, [])
       end
 
       def build_multicheckbox_registry_entries(jira_field)
@@ -233,14 +225,63 @@ module Import
       end
 
       def collect_option_values_from_issues(jira_field)
-        quoted_key = ActiveRecord::Base.connection.quote(jira_field.jira_field_id)
+        @multicheckbox_option_values_by_field.fetch(jira_field.jira_field_id, [])
+      end
+
+      # Runs at most two queries to collect distinct values across all array-typed Jira
+      # customfields the registry build needs, instead of one query per field.
+      def preload_array_field_values(jira_fields)
+        string_array_keys = []
+        multicheckbox_keys = []
+        jira_fields.each do |jf|
+          next unless supported_field?(jf)
+
+          if string_array_field?(jf)
+            string_array_keys << jf.jira_field_id
+          elsif multicheckbox_field?(jf) && jf.payload["contextGroups"].blank?
+            multicheckbox_keys << jf.jira_field_id
+          end
+        end
+
+        @string_array_values_by_field = batch_string_array_values(string_array_keys)
+        @multicheckbox_option_values_by_field = batch_option_array_values(multicheckbox_keys)
+      end
+
+      def batch_string_array_values(field_keys)
+        return {} if field_keys.empty?
+
+        pairs = array_field_scope(field_keys)
+                  .joins("CROSS JOIN LATERAL jsonb_array_elements_text(f.value) AS v(value)")
+                  .where("v.value IS NOT NULL AND v.value <> ''")
+                  .distinct
+                  .order(Arel.sql("f.key, v.value"))
+                  .pluck(Arel.sql("f.key"), Arel.sql("v.value"))
+
+        group_pairs_by_field_key(pairs)
+      end
+
+      def batch_option_array_values(field_keys)
+        return {} if field_keys.empty?
+
+        pairs = array_field_scope(field_keys)
+                  .joins("CROSS JOIN LATERAL jsonb_array_elements(f.value) AS elem")
+                  .where("(elem->>'value') IS NOT NULL AND (elem->>'value') <> ''")
+                  .distinct
+                  .pluck(Arel.sql("f.key"), Arel.sql("elem->>'value'"))
+
+        group_pairs_by_field_key(pairs)
+      end
+
+      def array_field_scope(field_keys)
         Import::JiraIssue
           .where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids)
-          .where("jsonb_typeof(payload->'fields'->#{quoted_key}) = 'array'")
-          .joins("CROSS JOIN LATERAL jsonb_array_elements(payload->'fields'->#{quoted_key}) AS elem")
-          .where("(elem->>'value') IS NOT NULL AND (elem->>'value') <> ''")
-          .distinct
-          .pluck(Arel.sql("elem->>'value'"))
+          .joins("CROSS JOIN LATERAL jsonb_each(payload->'fields') AS f(key, value)")
+          .where(f: { key: field_keys })
+          .where("jsonb_typeof(f.value) = 'array'")
+      end
+
+      def group_pairs_by_field_key(pairs)
+        pairs.group_by(&:first).transform_values { |entries| entries.map(&:last) }
       end
 
       def build_contexts_for_field(jira_field)
