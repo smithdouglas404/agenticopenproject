@@ -54,6 +54,18 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
     it { expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
   end
 
+  context "when the provider does not support OAuth" do
+    let(:provider) { create(:internal_wiki_provider) }
+
+    before do
+      render_inline(described_class.new(provider, work_package:))
+    end
+
+    it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
+    it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_text")) }
+    it { expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
+  end
+
   context "when the provider has an oauth client but the user has no token" do
     before do
       allow(provider).to receive(:oauth_client).and_return(oauth_client)
