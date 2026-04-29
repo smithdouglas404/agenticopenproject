@@ -223,9 +223,20 @@ See COPYRIGHT and LICENSE files for more details.
       if query_group?
         box.with_row do
           flex_layout(justify_content: :space_between, align_items: :center) do |row|
-            row.with_column(flex: 1) do
-              render(Primer::Beta::Text.new(color: :subtle)) do
-                t("types.edit.form_configuration.query_group_label")
+            row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
+              left.with_column(mr: 2, classes: "hide-when-print") do
+                render(
+                  Primer::Box.new(
+                    classes: "type-form-configuration-page--row-alignment-spacer",
+                    aria: { hidden: true }
+                  )
+                )
+              end
+
+              left.with_column(flex: 1) do
+                render(Primer::Beta::Text.new(color: :subtle)) do
+                  t("types.edit.form_configuration.query_group_label")
+                end
               end
             end
 

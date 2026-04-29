@@ -32,7 +32,7 @@ See COPYRIGHT and LICENSE files for more details.
 <section class="form--section">
   <div>
     <div class="grid-block -visible-overflow wrap">
-      <div class="grid-content -visible-overflow small-12 large-10">
+      <div class="grid-content -visible-overflow small-12 large-12">
         <%= render(EnterpriseEdition::BannerComponent.new(:edit_attribute_groups, mb: 3)) %>
 
         <% unless EnterpriseToken.allows_to?(:edit_attribute_groups) %>
@@ -44,14 +44,16 @@ See COPYRIGHT and LICENSE files for more details.
       </div>
     </div>
     <div class="grid-block -visible-overflow wrap">
-      <div class="grid-content -visible-overflow small-12 large-10">
+      <div class="grid-content -visible-overflow small-12 large-12">
 
         <% no_filter_query = ::API::V3::Queries::QueryParamsRepresenter.new(Query.new_default.tap { |q| q.filters = [] }).to_json %>
-        <%= render(WorkPackageTypes::FormConfigurationComponent.new(
-              type: @type,
-              form_attributes:,
-              no_filter_query:
-            )) %>
+        <%= render(
+              WorkPackageTypes::FormConfigurationComponent.new(
+                type: @type,
+                form_attributes:,
+                no_filter_query:
+              )
+            ) %>
       </div>
     </div>
   </div>
