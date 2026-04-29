@@ -41,8 +41,11 @@ export class WorkPackageFilterValues {
       if (filter.id === 'project') {
         if (operator !== '=') return;
 
+        const currentProjectId = this.currentProject.id;
         const projectFilter = _.find(filter.values, (resource:HalResource|string) => {
-          return ((resource instanceof HalResource) ? resource.href : resource) === this.currentProject.apiv3Path;
+          const href = (resource instanceof HalResource) ? resource.href : resource;
+          const hrefParts = href?.split('/');
+          return hrefParts?.[hrefParts.length - 1] === currentProjectId;
         });
         this.setValue(change, 'project', projectFilter || filter.values[0]);
 
