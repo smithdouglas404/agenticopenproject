@@ -318,40 +318,40 @@ RSpec.describe Projects::Identifier do
     end
   end
 
-  describe ".historical_slugs scopes" do
+  describe ".identifier_slugs scopes" do
     let!(:active_project) { create(:project, identifier: "active-id") }
     let!(:renamed_project) { create(:project, identifier: "current-id") }
 
     before do
       # Slug history mirrors active identifiers for both projects (FriendlyId :history records the
       # current slug on save). Add an extra historical slug for renamed_project to exercise the
-      # "truly historical" filter — it doesn't match any active project's identifier.
+      # `historically_reserved` filter — it doesn't match any active project's identifier.
       FriendlyId::Slug.create!(sluggable: renamed_project, slug: "old-slug")
     end
 
-    describe "#truly_historical" do
+    describe "#historically_reserved" do
       it "returns slugs whose lowercase value isn't any active project's identifier" do
-        slugs = Project.historical_slugs.truly_historical.pluck(:slug)
+        slugs = Project.identifier_slugs.historically_reserved.pluck(:slug)
         expect(slugs).to contain_exactly("old-slug")
       end
     end
 
-    describe "#matching" do
+    describe "#for_identifier" do
       it "returns slugs whose lowercase equals the lowercased input" do
-        match = Project.historical_slugs.matching("OLD-SLUG")
+        match = Project.identifier_slugs.for_identifier("OLD-SLUG")
         expect(match.pluck(:slug)).to contain_exactly("old-slug")
       end
 
       it "matches case-insensitively when stored slug differs in case" do
         FriendlyId::Slug.create!(sluggable: renamed_project, slug: "MixedCase")
-        match = Project.historical_slugs.matching("mixedcase")
+        match = Project.identifier_slugs.for_identifier("mixedcase")
         expect(match.pluck(:slug)).to contain_exactly("MixedCase")
       end
     end
 
     describe "#upcased_values" do
       it "returns uppercased slugs as a plain array" do
-        values = Project.historical_slugs.upcased_values
+        values = Project.identifier_slugs.upcased_values
         expect(values).to contain_exactly("ACTIVE-ID", "CURRENT-ID", "OLD-SLUG")
       end
     end
@@ -359,7 +359,7 @@ RSpec.describe Projects::Identifier do
     describe "#downcased_values" do
       it "returns downcased slugs as a plain array" do
         FriendlyId::Slug.create!(sluggable: renamed_project, slug: "MixedCase")
-        values = Project.historical_slugs.downcased_values
+        values = Project.identifier_slugs.downcased_values
         expect(values).to include("active-id", "current-id", "old-slug", "mixedcase")
       end
     end
@@ -367,25 +367,25 @@ RSpec.describe Projects::Identifier do
     describe "#raw_values" do
       it "returns slug values verbatim (no case folding)" do
         FriendlyId::Slug.create!(sluggable: renamed_project, slug: "MixedCase")
-        values = Project.historical_slugs.raw_values
+        values = Project.identifier_slugs.raw_values
         expect(values).to contain_exactly("active-id", "current-id", "old-slug", "MixedCase")
       end
     end
 
     describe "#excluding_project" do
       it "drops the given project's slug history from the relation" do
-        values = Project.historical_slugs.excluding_project(renamed_project).raw_values
+        values = Project.identifier_slugs.excluding_project(renamed_project).raw_values
         expect(values).to contain_exactly("active-id")
       end
 
       it "is a no-op when project is nil" do
-        values = Project.historical_slugs.excluding_project(nil).raw_values
+        values = Project.identifier_slugs.excluding_project(nil).raw_values
         expect(values).to contain_exactly("active-id", "current-id", "old-slug")
       end
     end
 
-    it "composes scopes (truly_historical + upcased_values)" do
-      values = Project.historical_slugs.truly_historical.upcased_values
+    it "composes scopes (historically_reserved + upcased_values)" do
+      values = Project.identifier_slugs.historically_reserved.upcased_values
       expect(values).to contain_exactly("OLD-SLUG")
     end
   end

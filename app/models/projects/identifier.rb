@@ -83,17 +83,18 @@ module Projects::Identifier
     def unset_slug_if_invalid; end
   end
 
-  # Domain-named scopes for the FriendlyId::Slug relation returned by Project.historical_slugs.
-  # Lets callers compose against verbs like .truly_historical / .matching / .upcased_values
+  # Domain-named scopes for the FriendlyId::Slug relation returned by Project.identifier_slugs.
+  # Lets callers compose against verbs like .historically_reserved / .for_identifier / .upcased_values
   # instead of raw SQL fragments — keeping FriendlyId::Slug column knowledge in one place.
-  module HistoricalSlugScopes
-    # Slugs that are no longer used as any active project's identifier.
-    def truly_historical
+  module IdentifierSlugScopes
+    # Slugs that are no longer used as any active project's identifier, but remain reserved
+    # because FriendlyId still owns them — so they cannot be reused by another project.
+    def historically_reserved
       where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
     end
 
     # Slugs whose lowercase form equals the lowercased input.
-    def matching(value)
+    def for_identifier(value)
       where("LOWER(slug) = ?", value.downcase)
     end
 
@@ -114,10 +115,12 @@ module Projects::Identifier
       str.match?(CLASSIC_IDENTIFIER_FORMAT)
     end
 
-    # `slug` is FriendlyId terminology; in our domain language a slug is the project identifier.
-    # Method name aligns with FriendlyId's `project.slugs` association for vocabulary consistency.
-    def historical_slugs
-      FriendlyId::Slug.where(sluggable_type: name).extending(HistoricalSlugScopes)
+    # FriendlyId's :history module records a row on every save, so this relation contains
+    # both currently-used identifiers and historically-reserved ones. Compose with
+    # `.historically_reserved` to filter to the latter. The name aligns with FriendlyId's
+    # `project.slugs` association for vocabulary consistency.
+    def identifier_slugs
+      FriendlyId::Slug.where(sluggable_type: name).extending(IdentifierSlugScopes)
     end
 
     def suggest_identifier(name, mode: Setting[:work_packages_identifier])
@@ -199,8 +202,8 @@ module Projects::Identifier
   end
 
   def identifier_used_by_other_project_in_past?
-    self.class.historical_slugs
-              .matching(identifier)
+    self.class.identifier_slugs
+              .for_identifier(identifier)
               .where.not(sluggable_id: id)
               .exists?
   end
