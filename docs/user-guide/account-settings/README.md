@@ -10,19 +10,18 @@ keywords: my account, account settings, change language
 
 Change your personal settings under Account settings (earlier called My account). Here you can adapt, e.g. the language, edit notifications, or add an avatar. Moreover you can manage access tokens and sessions.
 
-| Topic                                                     | Content                                                      |
-| --------------------------------------------------------- | ------------------------------------------------------------ |
-| [Open account settings](#open-account-settings)           | How to open your personal settings in OpenProject            |
-| [Edit your user information](#edit-your-user-information) | How to change the name or email address in OpenProject       |
-| [Language and region](#language-and-region-settings)      | How to change the language and the time zone in OpenProject  |
-| [Change password](#change-password)                       | How to change my password                                    |
-| [Two-factor authentication](#two-factor-authentication)   | How to set up a two-factor authentication                    |
-| [Access tokens](#access-tokens)                           | How to set up access tokens in OpenProject                   |
-| [Session management](#sessions-management)                | How to manage your OpenProject sessions                      |
-| [Notifications settings](#notifications-settings)         | How to change in-app notifications in OpenProject            |
-| [Email reminders](#email-reminders)                       | How to change email reminders sent by OpenProject            |
-| [Set an Avatar](#set-an-avatar)                           | How to set an avatar in OpenProject and change the profile picture |
-| [Delete account](#delete-account)                         | How to delete my own account                                 |
+| Topic                                                      | Content                                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| [Open account settings](#open-account-settings)            | How to open your personal settings in OpenProject            |
+| [Edit your user information](#edit-your-user-information)  | How to change the name or email address in OpenProject       |
+| [Language and region](#language-and-region-settings)       | How to change the language and the time zone in OpenProject  |
+| [Change password](#change-password)                        | How to change my password                                    |
+| [Two-factor authentication](#two-factor-authentication)    | How to set up a two-factor authentication                    |
+| [Access tokens](#access-tokens)                            | How to set up access tokens in OpenProject                   |
+| [Session management](#sessions-management)                 | How to manage your OpenProject sessions                      |
+| [Notification and email settings](#notification-and-email-settings) | How to change in-app notifications in OpenProject            |
+| [Set an Avatar](#set-an-avatar)                            | How to set an avatar in OpenProject and change the profile picture |
+| [Delete account](#delete-account)                          | How to delete my own account                                 |
 
 ## Open account settings
 
@@ -354,7 +353,7 @@ Sessions expire automatically according to your instance’s authentication sett
 
 ## Notification and email settings
 
-To configure the notification settings which you receive from the system, navigate to **Account settings** and choose the **Notifications and email settings** in the menu. 
+To configure the notification settings which you receive from the system, navigate to **Account settings** and choose the **Notification and email settings** in the menu. 
 
 ![Notification settings in OpenProject account settings](openproject_account_settings_notification_settings.png)
 
@@ -362,9 +361,9 @@ In-app notifications can be configured and customized various ways. For a detail
 
 Please also see our detailed [in-app notifications](../../user-guide/notifications/) guide to gain a general understanding.
 
-## Email reminders
+### Email reminders
 
-To configure the email reminders which you receive from the system, switch to the email reminders tab. Your system administrator can also set them for you or change the global default settings.
+To configure the email reminders which you receive from the system, switch to the **email reminders tab.** Your system administrator can also set them for you or change the global default settings.
 
 ![Email reminders in OpenProject account settings](openproject_account_settings_email_reminders.png)
 
