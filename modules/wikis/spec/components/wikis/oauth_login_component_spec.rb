@@ -36,9 +36,11 @@ RSpec.describe Wikis::OAuthLoginComponent, type: :component do
   let(:provider) { create(:xwiki_provider) }
   let(:oauth_client) { create(:oauth_client, integration: provider) }
 
+  let(:return_url) { "https://openproject.example.com/work_packages/#{work_package.id}?tab=wikis" }
+
   before do
     allow(provider).to receive(:oauth_client).and_return(oauth_client)
-    render_inline(described_class.new(provider, work_package:))
+    render_inline(described_class.new(provider, return_url:, work_package:))
   end
 
   it "renders the heading" do
@@ -49,10 +51,10 @@ RSpec.describe Wikis::OAuthLoginComponent, type: :component do
     expect(page).to have_text(I18n.t("wikis.oauth_login_component.description", provider: provider.name))
   end
 
-  it "renders a connect button linking to ensure_connection with the wikis tab as destination" do
+  it "renders the connect button with the return url" do
     link = page.find_link(I18n.t("wikis.oauth_login_component.connect_button", provider: provider.name))
     expect(link[:href]).to match(/ensure_connection/)
-    expect(link[:href]).to match(/destination_url=.*wikis/)
+    expect(link[:href]).to include(CGI.escape(return_url))
     expect(link[:"data-turbo-frame"]).to eq("_top")
   end
 end

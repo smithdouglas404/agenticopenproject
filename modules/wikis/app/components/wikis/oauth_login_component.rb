@@ -30,11 +30,16 @@
 
 module Wikis
   class OAuthLoginComponent < BaseComponent
+    def initialize(model = nil, return_url:, **)
+      super(model, **)
+      @return_url = return_url
+    end
+
     def login_url
       oauth_clients_ensure_connection_url(
         oauth_client_id: provider.oauth_client.client_id,
         storage_id: provider.id,
-        destination_url: work_package_url(@work_package, tab: :wikis)
+        destination_url: @return_url
       )
     end
   end
