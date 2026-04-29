@@ -28,23 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module API
-  module V3
-    module Sprints
-      class SprintsByProjectAPI < ::API::OpenProjectAPI
-        resources :sprints do
-          after_validation do
-            authorize_in_project(:view_sprints, project: @project)
-          end
+module Agile::Sprints::Scopes::Assignable
+  extend ActiveSupport::Concern
 
-          get &::API::V3::Utilities::Endpoints::Index
-                 .new(
-                   model: Agile::Sprint,
-                   scope: -> { Agile::Sprint.for_project(@project).visible }
-                 )
-                 .mount
-        end
-      end
+  class_methods do
+    def assignable(project:, user: User.current)
+      for_project(project)
+        .visible(user)
+        .not_completed
     end
   end
 end

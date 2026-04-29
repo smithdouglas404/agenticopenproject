@@ -299,7 +299,10 @@ RSpec.describe "Inbox column in sprint planning view", :js do
             click_button "Move"
           end
 
-          planning_page.expect_and_dismiss_error("Update failed: Sprint is not set to one of the allowed values.")
+          planning_page
+            .expect_and_dismiss_error(
+              "Update failed: Sprint is not assignable since it is either not shared with the project or already finished."
+            )
 
           # Item was *not* moved:
           planning_page.expect_inbox_item(inbox_wp1)
