@@ -351,7 +351,7 @@ Sessions expire automatically according to your instance’s authentication sett
 > [!NOTE]
 > Closing a browser does not necessarily terminate the session. It might still be displayed in the list and will be reactivated if you open the browser. This depends on both your browser's and the OpenProject instance's settings.
 
-## Notification and email settings
+## Notifications settings
 
 To configure the notification settings which you receive from the system, navigate to **Account settings** and choose the **Notification and email settings** in the menu. (insert new picture)
 
