@@ -114,6 +114,11 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
 
       # Wait for the filter save to complete before opening the column configuration,
       # otherwise the two saves can race and only one change gets persisted.
+      # The first wait_for_network_idle catches the query-form GET; the sleep gives
+      # JavaScript time to process the form response and start the filter PATCH,
+      # and the second wait_for_network_idle catches that PATCH completing.
+      wait_for_network_idle
+      sleep(0.2)
       wait_for_network_idle
 
       filter_area.configure_wp_table

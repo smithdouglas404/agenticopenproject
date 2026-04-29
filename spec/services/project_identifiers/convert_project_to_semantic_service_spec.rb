@@ -67,6 +67,22 @@ RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticService,
       end
     end
 
+    context "when the suggested identifier case-insensitively matches a historical classic identifier" do
+      let!(:project_one) do
+        create(:project, name: "Project 1", identifier: "project_one").tap do |p|
+          FriendlyId::Slug.create!(sluggable: p, slug: "toi")
+        end
+      end
+      let!(:project_two) { create(:project, name: "Test Old Identifier", identifier: "whatever") }
+
+      it "avoids the clashing suggestion and assigns an alternative semantic identifier" do
+        described_class.new(project_two).call
+        # "TOI" (initials of "Test Old Identifier") is the first candidate but is
+        # blocked by the FriendlyId slug history; the generator expands to "TEOI" next.
+        expect(project_two.reload.identifier).to eq("TEOI")
+      end
+    end
+
     context "when the generated identifier is blank" do
       let!(:project) do
         create(:project).tap { |p| p.update_columns(identifier: "my-app") }
@@ -96,6 +112,20 @@ RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticService,
 
       it "backfills WPs using the new identifier" do
         expect(wp.reload.identifier).to eq("#{project.reload.identifier}-1")
+      end
+    end
+
+    context "when the only natural suggestion is a system-reserved keyword" do
+      let!(:project) do
+        # "New" produces "NEW" as the sole initial candidate, but "NEW" is in
+        # RESERVED_IDENTIFIERS; the generator falls back to the numeric suffix "NEW2".
+        create(:project, name: "New Project").tap { |p| p.update_columns(name: "New", identifier: "new") }
+      end
+
+      before { described_class.new(project).call }
+
+      it "steers to a non-reserved alternative" do
+        expect(project.reload.identifier).to eq("NEW2")
       end
     end
 

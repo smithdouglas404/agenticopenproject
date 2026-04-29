@@ -407,7 +407,8 @@ nl:
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
@@ -3409,18 +3410,17 @@ nl:
         header: Lees over nieuwe functies en product-updates.
         learn_about: Learn more about all new features
         missing: There are no highlighted features yet.
-        '17_3':
+        '17_4':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Upgrade naar Enterprise-editie
       postgres_migration: Uw installatie overzetten naar PostgreSQL

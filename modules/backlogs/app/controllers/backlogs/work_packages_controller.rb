@@ -76,7 +76,7 @@ module Backlogs
         work_package: @story,
         project: @project,
         move_action: move_project_backlogs_work_package_path(
-          @project, @sprint, @story, **helpers.all_backlogs_params
+          @project, @sprint, @story, helpers.all_backlogs_params
         )
       )
     end

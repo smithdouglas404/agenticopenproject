@@ -105,10 +105,20 @@ RSpec.describe Backlogs::SprintsController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response.body).to include("turbo-stream")
-        expect(response.body).to include("action=\"redirect_to\"")
-        expect(response.body).to include(project_backlogs_backlog_path(project))
+        expect(response.body).to have_turbo_stream(
+          action: "redirect_to",
+          url: project_backlogs_backlog_path(project)
+        )
         expect(project.reload.sprints.last.name).to eq("My Sprint")
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
+      end
+
+      context "when all=1 is passed" do
+        it "redirects to backlogs preserving the all param" do
+          post :create, format: :turbo_stream, params: params.merge(all: 1)
+
+          expect(response.body).to include(project_backlogs_backlog_path(project, all: 1))
+        end
       end
 
       context "without the 'create_sprints' permission" do
@@ -360,8 +370,10 @@ RSpec.describe Backlogs::SprintsController do
           post :finish, params: request_params
 
           expect(response).to be_successful
-          expect(response.body).to include("action=\"redirect_to\"")
-          expect(response.body).to include(project_backlogs_backlog_path(project))
+          expect(response.body).to have_turbo_stream(
+            action: "redirect_to",
+            url: project_backlogs_backlog_path(project)
+          )
           expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
           expect(service).to have_received(:call)
         end
@@ -383,8 +395,10 @@ RSpec.describe Backlogs::SprintsController do
         post :finish, format: :turbo_stream, params: request_params
 
         expect(response).to be_successful
-        expect(response.body).to include("action=\"redirect_to\"")
-        expect(response.body).to include(project_backlogs_backlog_path(project))
+        expect(response.body).to have_turbo_stream(
+          action: "redirect_to",
+          url: project_backlogs_backlog_path(project)
+        )
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
         expect(service).to have_received(:call)
       end
@@ -446,7 +460,8 @@ RSpec.describe Backlogs::SprintsController do
           post :finish, format: :turbo_stream, params: request_params
 
           expect(response).to be_successful
-          expect(response.body).to include("action=\"redirect_to\"")
+          expect(response.body).to have_turbo_stream(action: "redirect_to")
+
           expect(service).to have_received(:call)
             .with(hash_including(unfinished_action: "move_to_top_of_backlog"))
         end
@@ -459,7 +474,8 @@ RSpec.describe Backlogs::SprintsController do
           post :finish, format: :turbo_stream, params: request_params
 
           expect(response).to be_successful
-          expect(response.body).to include("action=\"redirect_to\"")
+          expect(response.body).to have_turbo_stream(action: "redirect_to")
+
           expect(service).to have_received(:call)
             .with(hash_including(unfinished_action: "move_to_bottom_of_backlog"))
         end

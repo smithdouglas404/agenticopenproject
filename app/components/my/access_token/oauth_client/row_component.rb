@@ -60,6 +60,8 @@ module My
         end
 
         def expires_on
+          return I18n.t(:label_never) if client_token.expires_in.blank?
+
           helpers.format_time(client_token.updated_at + client_token.expires_in.seconds)
         end
 

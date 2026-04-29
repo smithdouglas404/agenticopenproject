@@ -68,7 +68,7 @@ module ProjectIdentifiers
     private
 
     def slugify(name)
-      name.to_url.first(Projects::Identifier::IDENTIFIER_MAX_LENGTH).presence
+      name.to_url.first(Projects::Identifier::CLASSIC_IDENTIFIER_MAX_LENGTH).presence
     end
 
     def fallback_base
@@ -77,9 +77,7 @@ module ProjectIdentifiers
 
     def taken_identifiers(project: nil)
       current    = Project.unscoped.pluck(:identifier).compact.to_set(&:downcase)
-      historical = FriendlyId::Slug.where(sluggable_type: "Project")
-                                   .then { |q| project ? q.where.not(sluggable_id: project.id) : q }
-                                   .pluck(:slug).to_set(&:downcase)
+      historical = Project.identifier_slugs.excluding_project(project).downcased_values.to_set
       reserved   = Projects::Identifier::RESERVED_IDENTIFIERS.to_set
       current | historical | reserved
     end

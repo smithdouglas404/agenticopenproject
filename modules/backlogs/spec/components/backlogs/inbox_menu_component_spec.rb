@@ -59,14 +59,12 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
   def render_component(position: 2, max_position: 3, open_sprints_exist: true, show_all_backlog: false)
     work_package.update!(position:)
     vc_test_controller.params[:all] = "1" if show_all_backlog
-    render_inline(
-      described_class.new(
-        work_package:,
-        project:,
-        max_position:,
-        open_sprints_exist:,
-        current_user: user
-      )
+    render_inline described_class.new(
+      work_package:,
+      project:,
+      max_position:,
+      open_sprints_exist:,
+      current_user: user
     )
   end
 
@@ -96,8 +94,7 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
       it "adds the all param to the open details link" do
         render_component(show_all_backlog: true)
 
-        href = page.find("#work_package_#{work_package.id}_menu_open_details")[:href]
-        expect(href).to match(/all=1/)
+        expect(page).to have_css(%(#work_package_#{work_package.id}_menu_open_details[href*="all=1"]))
       end
     end
 

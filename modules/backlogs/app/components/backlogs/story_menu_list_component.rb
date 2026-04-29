@@ -33,6 +33,7 @@ module Backlogs
   # +menu_id+ must match the row ActionMenu in StoryComponent.
   class StoryMenuListComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
     attr_reader :story, :sprint, :project, :max_position, :current_user, :open_sprints_exist
 
@@ -102,7 +103,7 @@ module Backlogs
     end
 
     def move_href
-      reorder_project_backlogs_work_package_path(project, sprint, story, **helpers.all_backlogs_params)
+      reorder_project_backlogs_work_package_path(project, sprint, story, all_backlogs_params)
     end
   end
 end

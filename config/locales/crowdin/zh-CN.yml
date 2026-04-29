@@ -399,7 +399,8 @@ zh-CN:
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一个项目的有效标识名
-          error_reserved: 由另一个项目的标识名历史保留
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: 需要手动检查
           remaining_projects:
             other: "…其他 %{count} 个项目"
@@ -3348,18 +3349,17 @@ zh-CN:
         header: 了解新功能和产品更新。
         learn_about: 详细了解所有新功能
         missing: 目前还没有高亮显示的功能。
-        '17_3':
-          new_features_title: '此版本包含各种新功能和改进，例如：
+        '17_4':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 重大敏捷更新：专用的冲刺对象、在积压工作上显示所有工作包，以及自动创建冲刺面板。
-            line_1: 在“项目概览”页面上直接编辑项目特性
-            line_2: 共享会议模板（Basic 方案及更高版本）。
-            line_3: 提升了“时间与成本”、面板等功能中的搜索。
-            line_4: 增加了安全更改项目标识符的选项。
-            line_5: 改进了管理员的工作流配置。
-            line_6: 向社区发布操作面板。
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: 升级到企业版
       postgres_migration: 将您的安装迁移到 PostgreSQL

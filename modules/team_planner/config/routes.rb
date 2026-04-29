@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   scope "projects/:project_id", as: "project" do
     resources :team_planners,
               controller: "team_planner/team_planner",
-              only: %i[index destroy],
+              only: %i[index destroy show],
               as: :team_planners do
       collection do
         get "menu" => "team_planner/menus#show"
@@ -35,7 +35,6 @@ Rails.application.routes.draw do
             defaults: { tab: "overview" },
             as: :details,
             work_package_split_view: true
-        get "(/*state)" => "team_planner/team_planner#show", as: ""
       end
     end
   end

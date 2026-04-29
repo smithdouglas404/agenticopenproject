@@ -52,16 +52,16 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
   let(:work_packages) { WorkPackage.where(id: work_package.id).order(:position, :id) }
   let(:show_all_backlog) { false }
 
-  before do
+  def render_component
     vc_test_controller.params[:all] = "1" if show_all_backlog
-    render_inline(
-      Backlogs::InboxComponent.new(
-        work_packages:,
-        project:,
-        current_user: user
-      )
+    render_inline Backlogs::InboxComponent.new(
+      work_packages:,
+      project:,
+      current_user: user
     )
   end
+
+  before { render_component }
 
   it "rendering renders the Inbox Component", :aggregate_failures do
     # renders the work package subject
@@ -124,12 +124,12 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
   describe "with show_all_backlog true" do
     let(:show_all_backlog) { true }
 
+    subject(:row) { page.find(".Box-row#work_package_#{work_package.id}") }
+
     it "adds the all query to drag, split view, and menu fragment URLs", :aggregate_failures do
-      row = page.find(".Box-row#work_package_#{work_package.id}")
       expect(row["data-drop-url"]).to match(/all=1/)
       expect(row["data-backlogs--story-split-url-value"]).to match(/all=1/)
-      src = page.find("include-fragment", visible: :all)["src"]
-      expect(src).to match(/all=1/)
+      expect(row).to have_css(%(include-fragment[src*="all=1"]))
     end
   end
 end

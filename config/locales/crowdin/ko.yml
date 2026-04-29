@@ -399,7 +399,8 @@ ko:
           error_special_characters: 특수 문자는 허용되지 않음
           error_not_fully_uppercased: 대문자여야 함
           error_in_use: 이미 다른 프로젝트의 활성 핸들로 사용 중입니다
-          error_reserved: 다른 프로젝트의 핸들 기록에 의해 예약되었습니다
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: 수동 검토가 필요합니다
           remaining_projects:
             other: "... %{count}개의 추가 프로젝트"
@@ -3368,18 +3369,17 @@ ko:
         header: 새로운 기능 및 제품 업데이트에 대해 알아보세요.
         learn_about: 새로운 모든 기능에 대해 자세히 알아보기
         missing: 아직 강조 표시된 기능이 없습니다.
-        '17_3':
-          new_features_title: '이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+        '17_4':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: '대규모 애자일 업데이트: 전용 스프린트 개체, 백로그에 표시되는 모든 작업 패키지, 자동 스프린트 보드 생성.'
-            line_1: 프로젝트 개요 페이지에서 프로젝트 특성을 바로 편집 가능.
-            line_2: 미팅 템플릿 공유(Basic 플랜 이상).
-            line_3: 시간 및 비용, 보드 등에서 개선된 검색 기능.
-            line_4: 프로젝트 식별자를 안전하게 변경하는 옵션.
-            line_5: 개선된 관리자용 워크플로 구성.
-            line_6: 커뮤니티에 릴리스된 액션 보드.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Enterprise Edition으로 업그레이드
       postgres_migration: 설치를 PostgreSQL로 마이그레이션

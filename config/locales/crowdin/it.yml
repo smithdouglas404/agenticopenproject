@@ -407,7 +407,8 @@ it:
           error_special_characters: I caratteri speciali non sono consentiti
           error_not_fully_uppercased: Deve essere maiuscolo
           error_in_use: Già in uso come identificatore attivo di un altro progetto
-          error_reserved: Riservato dalla cronologia degli identificatori di un altro progetto
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Necessita di controllo manuale
           remaining_projects:
             one: "... 1 altro progetto"
@@ -3413,18 +3414,17 @@ it:
         header: Informati sulle nuove funzionalità e sugli aggiornamenti dei prodotti.
         learn_about: Scopri di più su tutte le nuove funzionalità
         missing: Non ci sono ancora caratteristiche evidenziate.
-        '17_3':
-          new_features_title: 'Questa versione contiene diverse nuove funzionalità e miglioramenti, come ad esempio:
+        '17_4':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Grande aggiornamento Agile: oggetti sprint dedicati, tutte le macro-attività visibili nel Backlog e creazione automatica della bacheca sprint.'
-            line_1: Modifica in linea degli attributi del progetto nella pagina Panoramica del progetto.
-            line_2: Condivisione dei modelli di riunione (piano Basic e superiori).
-            line_3: Ricerca migliorata in Tempi e costi, Bacheche e altro.
-            line_4: Opzione per cambiare in modo sicuro gli identificatori del progetto.
-            line_5: Configurazione migliorata del flusso di lavoro per gli amministratori.
-            line_6: Le bacheche di azione sono disponibili su Community.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Aggiorna ad Enterprise edition
       postgres_migration: Migrazione dell'installazione su PostgreSQL
