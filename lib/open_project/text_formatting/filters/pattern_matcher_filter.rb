@@ -45,22 +45,26 @@ module OpenProject::TextFormatting
       end
 
       def call
-        run_matcher_hook(:preload_for_doc)
-        process_text_nodes
+        with_matcher_preloads(self.class.matchers.dup) { process_text_nodes }
         doc
-      ensure
-        run_matcher_hook(:cleanup_after_doc)
       end
 
       private
 
-      # Doc-level pre/cleanup hook dispatcher. Lets matchers warm or drop any
-      # per-render lookup caches (e.g. batched WP loads) so per-node `call`
-      # invocations stay query-free. Opt-in: only matchers that respond to the
-      # hook participate.
-      def run_matcher_hook(hook)
-        self.class.matchers.each do |matcher|
-          matcher.public_send(hook, doc, context) if matcher.respond_to?(hook)
+      # Recursively wraps the per-node loop in each matcher's
+      # `with_preloaded_resources` block (a yielding hook). This lets matchers
+      # warm per-render caches AND save/restore the previous state, so nested
+      # `format_text` calls — e.g. a custom-field formatter that re-enters the
+      # pipeline mid-render — don't clobber the outer render's lookup. Opt-in:
+      # matchers without the hook are skipped.
+      def with_matcher_preloads(matchers, &)
+        matcher = matchers.shift
+        return yield if matcher.nil?
+
+        if matcher.respond_to?(:with_preloaded_resources)
+          matcher.with_preloaded_resources(doc, context) { with_matcher_preloads(matchers, &) }
+        else
+          with_matcher_preloads(matchers, &)
         end
       end
 
