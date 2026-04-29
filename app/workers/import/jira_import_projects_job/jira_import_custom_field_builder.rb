@@ -144,12 +144,14 @@ module Import
 
       attr_reader :jira_field, :context_group
 
-      def initialize(jira_field, context_group: nil, option_value: nil, needs_disambiguation: false, jira_import: nil)
+      def initialize(jira_field, context_group: nil, option_value: nil, needs_disambiguation: false, jira_import: nil,
+                     cf_name_index: nil)
         @jira_field = jira_field
         @context_group = context_group
         @option_value = option_value
         @needs_disambiguation = needs_disambiguation
         @jira_import = jira_import
+        @cf_name_index = cf_name_index
         @import_name = default_cf_name
       end
 
@@ -273,6 +275,8 @@ module Import
       end
 
       def custom_field_by_name(name)
+        return @cf_name_index[name.downcase] if @cf_name_index
+
         WorkPackageCustomField.where("LOWER(name) = LOWER(?)", name).first
       end
 
