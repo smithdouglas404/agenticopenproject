@@ -33,18 +33,54 @@ module Import
     module JiraImportCustomFields
       JIRA_IMPORT_GROUP_KEY = "Jira import"
 
-      def collect_custom_field_attributes(custom_field_registry, jira_issue)
-        custom_field_registry.each_with_object({}) do |entry, attrs|
-          field_key = entry[:jira_field].jira_field_id
-          raw_value = jira_issue.payload["fields"][field_key]
-          next if raw_value.blank?
-
-          context = find_context_for_issue(entry, jira_issue)
-          next unless context
-
+      def collect_custom_field_attributes(custom_field_index, jira_issue)
+        attrs = {}
+        each_custom_field_value(custom_field_index, jira_issue) do |context, raw_value|
           custom_field = context[:custom_field]
           attrs[custom_field.attribute_getter] = context[:builder].convert_value(raw_value, custom_field)
         end
+        attrs
+      end
+
+      # Indexes the registry by Jira field key so per-issue work is O(fields_on_issue)
+      # instead of O(registry_size). Multiple registry entries can share a Jira field
+      # (multicheckbox booleans split by option_value), so the value is an array.
+      def build_custom_field_index(custom_field_registry)
+        custom_field_registry.each_with_object({}) do |entry, index|
+          field_key = entry[:jira_field].jira_field_id
+          (index[field_key] ||= []) << { contexts: entry[:contexts], cache: {} }
+        end
+      end
+
+      # Yields (context, raw_value) for every custom field value present on the issue.
+      def each_custom_field_value(custom_field_index, jira_issue)
+        fields = jira_issue.payload["fields"]
+        project_key = fields.dig("project", "key")
+        issuetype_id = fields.dig("issuetype", "id")
+
+        fields.each do |field_key, raw_value|
+          next if raw_value.blank?
+
+          indexed_entries = custom_field_index[field_key]
+          next unless indexed_entries
+
+          indexed_entries.each do |indexed|
+            context = resolve_indexed_context(indexed, project_key, issuetype_id)
+            yield(context, raw_value) if context
+          end
+        end
+      end
+
+      def resolve_indexed_context(indexed, project_key, issuetype_id)
+        cache = indexed[:cache]
+        cache_key = [project_key, issuetype_id]
+        return cache[cache_key] if cache.key?(cache_key)
+
+        contexts = indexed[:contexts]
+        resolved = contexts.find do |ctx|
+          context_applies_to_project?(ctx, project_key) && context_applies_to_issuetype?(ctx, issuetype_id)
+        end
+        cache[cache_key] = resolved || contexts.first
       end
 
       # Builds one OP custom field per (Jira field, context group) combination, before any
@@ -52,13 +88,12 @@ module Import
       # tuples share an allowedValues set.
       def build_custom_field_registry
         jira_field_ids = collect_used_jira_field_ids
-        if jira_field_ids.empty?
-          []
-        else
-          Import::JiraField
-            .where(jira_id: @jira_id, jira_field_id: jira_field_ids)
-            .flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
-        end
+        return [] if jira_field_ids.empty?
+
+        @cf_name_index = WorkPackageCustomField.all.index_by { |cf| cf.name.downcase }
+        Import::JiraField
+          .where(jira_id: @jira_id, jira_field_id: jira_field_ids)
+          .flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
       end
 
       def collect_used_jira_field_ids
@@ -224,7 +259,8 @@ module Import
           context_group:,
           option_value:,
           needs_disambiguation:,
-          jira_import: @jira_import
+          jira_import: @jira_import,
+          cf_name_index: @cf_name_index
         )
         custom_field = find_or_create_custom_field(jira_field, builder)
         {
@@ -268,9 +304,14 @@ module Import
         end
 
         custom_field = service_call.result
+        register_custom_field_name(custom_field)
         create_reference!(op_leg: custom_field, jira_leg: jira_field, jira_import: @jira_import, uses_existing: false)
         builder.custom_field_post_processing(custom_field)
         custom_field
+      end
+
+      def register_custom_field_name(custom_field)
+        @cf_name_index[custom_field.name.downcase] = custom_field
       end
 
       # Picks the context entry whose (projects, issuetypes) match the issue's project key and
@@ -278,14 +319,6 @@ module Import
       # editmeta did not see the field for this (project, issuetype) pair but the issue still
       # carries a value for it (e.g. the field was removed from the screen after the value was
       # set). Falling back keeps the value rather than dropping it silently.
-      def find_context_for_issue(entry, jira_issue)
-        project_key = jira_issue.payload.dig("fields", "project", "key")
-        issuetype_id = jira_issue.payload.dig("fields", "issuetype", "id")
-        entry[:contexts].find do |ctx|
-          context_applies_to_project?(ctx, project_key) && context_applies_to_issuetype?(ctx, issuetype_id)
-        end || entry[:contexts].first
-      end
-
       def context_applies_to_project?(context, project_key)
         context[:projects].empty? || context[:projects].include?(project_key)
       end
