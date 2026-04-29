@@ -126,8 +126,12 @@ ru:
         title: Конфигурация Jira
         new: Новая конфигурация
       banner:
-        title: Ограниченные возможности импорта
-        description: 'Этот мигратор Jira в настоящее время находится в бета-версии и может импортировать только основные данные: проекты, проблемы (имя, заголовок, описание, вложения), пользователей (имя, электронная почта, членство в проекте), статусы и типы. Он не может импортировать рабочие процессы, пользовательские поля, отношения между заданиями или разрешения. В настоящее время мы поддерживаем только Jira Server/Data Center версий 10.x и 11.x. Облачные экземпляры на данный момент не поддерживаются.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Имя
@@ -254,8 +258,10 @@ ru:
               caption_done: Завершено
               label_info: Пожалуйста, обратите внимание, что этот инструмент импорта находится в бета-версии и не может импортировать все типы данных. Вот краткая информация о том, что хост Jira предлагает для импорта, и что этот инструмент может импортировать прямо сейчас.
               description: Выберите, какие данные Вы хотите импортировать из доступных, полученных из хоста Jira.
-              label_available_data: Доступные данные
-              label_not_available_data: Недоступно для импорта
+              label_supported_data: Supported data
+              label_comming_soon: Comming soon (Q2 2026)
+              label_comming_later: Comming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Выберите проекты для импорта
               button_continue: Продолжить
               label_import: Выберите проекты, которые Вы хотите импортировать.
@@ -264,16 +270,22 @@ ru:
               label_progress: Получение данных из Jira...
               elements:
                 relations: Отношения между проблемами
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Рабочие процессы на уровне проекта
-                users: Пользователи
-                sprints: Спринты
                 schemes: Схемы
-                permissions: Разрешения пользователей, групп и проектов
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Импорт данных
               caption: Просмотрите настройки импорта и начните импорт
               caption_done: Завершено
-              label_available_data: Доступные данные для импорта
+              label_available_data: Data to be imported
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Начать импорт
               description: Вы собираетесь начать импорт со следующими настройками.
@@ -282,33 +294,33 @@ ru:
             import_result:
               title: Результаты запуска импорта
               caption: Просмотрите выполнение импорта или отмените импорт
-              info: Импорт успешно запущен.
+              info: Import run was successful.
               label_results: Импортировано
               label_revert: Откатить импорт
               button_revert: Откатить импорт
-              button_done: Завершить импорт
-              preview_description: В настоящее время импортированные данные находятся в режиме просмотра. Нажмите "Завершить импорт", чтобы сделать импорт постоянным, или "Отменить импорт", чтобы отменить все изменения, сделанные в ходе этого запуска импорта.
-              label_finalize_import: Завершить импорт
-              label_finalizing: Завершение импорта...
-              label_finalizing_done: Импорт завершен.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Отмена импорта...
               label_reverted: Импорт отменен.
           select_dialog:
             filter_projects: Фильтр по тексту
           import_dialog:
-            title: Начать импорт?
+            title: Please make sure you have a backup!
             confirm_button: Начать импорт
-            description: 'Этот импортер является альфа-версией. Он еще не может импортировать все данные из Jira и может оставить неполные данные в данном экземпляре OpenProject. <b>Не используйте его в производственной среде и создайте резервную копию данных OpenProject перед началом работы.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: Я понял и сделал необходимые приготовления
+            confirm: I understand and have a backup
           revert_dialog:
             title: Отменить этот импорт?
-            description: Это удалит все импортированные объекты (включая целые проекты), даже если после импорта на OpenProject в этих проектах была активность пользователей.
+            description: This will delete all imported objects (including whole projects).
             confirm: Я понимаю, что при отмене данные будут удалены навсегда
           finalize_dialog:
-            title: Завершить импорт?
-            description: После завершения импорта его уже нельзя будет отменить. Все импортированные данные будут импортированы навсегда.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: Я понимаю, что это действие не может быть отменено
             confirm_button: Понятно
           select_projects:

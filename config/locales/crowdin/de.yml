@@ -126,8 +126,12 @@ de:
         title: Jira-Konfiguration
         new: Neue Konfiguration
       banner:
-        title: Eingeschränkte Importfähigkeiten
-        description: 'Der Jira-Migrator befindet sich derzeit in der Betaphase und kann nur grundlegende Daten importieren: Projekte, Tickets (Name, Titel, Beschreibung, Anhänge), Nutzer (Name, E-Mail, Projektmitgliedschaft), Status und Typen. Es kann keine Workflows, benutzerdefinierten Felder, Ticketbeziehungen oder Berechtigungen importieren. Wir unterstützen derzeit nur die Jira Server/Data Center Versionen 10.x und 11.x. Cloud-Instanzen werden derzeit nicht unterstützt.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Name
@@ -242,8 +246,10 @@ de:
               caption_done: Abgeschlossen
               label_info: Bitte beachten Sie, dass dieses Import-Tool in der Beta ist und nicht alle Arten von Daten importieren kann. Hier ist eine Zusammenfassung dessen, was die Jira Instanz für den Import bietet und was dieses Tool gerade importieren kann.
               description: Wählen Sie aus den verfügbaren Daten, die Sie aus der Host-Jira-Instanz abrufen, die Daten aus, die Sie importieren möchten.
-              label_available_data: Verfügbare Daten
-              label_not_available_data: Nicht verfügbar für den Import
+              label_supported_data: Supported data
+              label_comming_soon: Comming soon (Q2 2026)
+              label_comming_later: Comming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Projekte zum Importieren auswählen
               button_continue: Fortfahren
               label_import: Wählen Sie die Projekte aus, die Sie importieren möchten.
@@ -252,16 +258,22 @@ de:
               label_progress: Abrufen von Daten aus Jira...
               elements:
                 relations: Beziehungen zwischen Tickets
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Workflows auf Projektebene
-                users: Accounts
-                sprints: Sprints
                 schemes: Schemas
-                permissions: Benutzer-, Gruppen- und Projektberechtigungen
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Daten importieren
               caption: Überprüfen Sie Ihre Importeinstellungen und starten Sie den Import
               caption_done: Abgeschlossen
-              label_available_data: Verfügbare Daten zum Importieren
+              label_available_data: Data to be imported
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Import starten
               description: Sie sind dabei, einen Import mit den folgenden Einstellungen zu starten.
@@ -270,33 +282,33 @@ de:
             import_result:
               title: Importlauf-Ergebnisse
               caption: Importlauf überprüfen oder Import rückgängig machen
-              info: Import erfolgreich ausgeführt.
+              info: Import run was successful.
               label_results: Importiert
               label_revert: Import rückgängig machen
               button_revert: Import rückgängig machen
-              button_done: Import abschließen
-              preview_description: Die importierten Daten befinden sich derzeit im Überprüfungsmodus. Klicken Sie auf "Import abschließen", um den Import dauerhaft zu machen, oder auf "Import rückgängig machen", um alle in diesem Importlauf vorgenommenen Änderungen rückgängig zu machen.
-              label_finalize_import: Import abschließen
-              label_finalizing: Import wird abgeschlossen...
-              label_finalizing_done: Import abgeschlossen.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Import wird rückgängig gemacht...
               label_reverted: Import rückgängig gemacht.
           select_dialog:
             filter_projects: Nach Text filtern
           import_dialog:
-            title: Diesen Import starten?
+            title: Please make sure you have a backup!
             confirm_button: Import starten
-            description: 'Dieser Importer ist eine Alpha-Funktion. Er ist noch nicht in der Lage, alle Daten aus Jira zu importieren und könnte unvollständige Daten auf dieser OpenProject-Instanz hinterlassen. <b>Verwenden Sie keine Produktionsumgebung und erstellen Sie vor dem Start eine Sicherungskopie Ihrer OpenProject-Daten.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: Ich habe verstanden und die notwendigen Vorbereitungen getroffen
+            confirm: I understand and have a backup
           revert_dialog:
             title: Diesen Import dauerhaft rückgängig machen?
-            description: Dadurch werden alle importierten Objekte (einschließlich ganzer Projekte) gelöscht, auch wenn es nach dem Import in OpenProject Nutzeraktivitäten in diesen Projekten gab.
+            description: This will delete all imported objects (including whole projects).
             confirm: Mir ist bewusst, dass diese Rückgängigmachung die Daten dauerhaft löscht
           finalize_dialog:
-            title: Diesen Import abschließen?
-            description: Sobald dieser Import abgeschlossen ist, kann er nicht mehr rückgängig gemacht werden. Alle importierten Daten werden dann dauerhaft importiert.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: Ich verstehe, dass diese Aktion nicht rückgängig gemacht werden kann
             confirm_button: Verstanden
           select_projects:
@@ -1372,22 +1384,22 @@ de:
         mode:
           from_role:
             label: Copy to other roles
-            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+            caption: Kopieren Sie den aktuellen Workflow auf eine oder mehrere Rollen in demselben Typ. Wenn die ausgewählte Rolle bereits über einen Workflow verfügt, wird der aktuelle Workflow überschrieben.
           from_type:
-            label: Copy to another type
-            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+            label: In einen anderen Typ kopieren
+            caption: Kopieren Sie den aktuellen Workflow auf einen anderen Arbeitspaket-Typ. Wenn dieser bereits einen Workflow besitzt, wird der aktuelle überschrieben. Dies betrifft alle Rollen.
       from_roles:
         create:
           notice:
-            one: Successfully copied workflow to '%{role_name}' role.
-            other: Successfully copied workflow to %{count} roles.
+            one: Workflow erfolgreich in die Rolle '%{role_name}' kopiert.
+            other: Workflow erfolgreich in %{count} Rollen kopiert.
       from_types:
         create:
           notice:
-            one: Successfully copied workflow to '%{type_name}' type.
-            other: Successfully copied workflow to %{count} types.
+            one: Workflow erfolgreich in den Typ '%{type_name}' kopiert.
+            other: Workflow erfolgreich in %{count} Typen kopiert.
       new:
-        title: Copy workflow of "%{source_type}"
+        title: Workflow von "%{source_type}" kopieren
     form:
       matrix_caption: Workflow-Matrix
       matrix_caption_assignee: Workflow-Matrix für Zugewiesene
@@ -1399,28 +1411,28 @@ de:
       matrix_check_uncheck_all_in_col_label_html: Übergänge von allen alten Status zu <em>%{new_status}</em> umschalten
     index:
       type_filter:
-        label: Filter by type name…
+        label: Typen nach Name filtern…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: Konfigurieren Sie die Statusübergänge für jeden Arbeitspaket-Typ.
   work_flows:
     index:
       no_results_title_text: Derzeit gibt es keine Workflows.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: Arbeitspaket löschen
+      heading: Dieses Arbeitspaket unwiderruflich löschen?
+      description: Sind Sie sicher, dass Sie das Arbeitspaket "%{name}" löschen möchten?
+      confirm_descendants_deletion: Ich bestätige, dass ALLE Unteraufgaben der hier aufgeführten Arbeitspakete entfernt werden.
+      cross_project_warning: 'Die zur Löschung vorgesehenen Arbeitspakete stammen aus folgenden Projekten: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      title: "%{count} Arbeitspakete löschen"
+      heading: Diese %{count} Arbeitspakete unwiderruflich löschen?
+      description: 'Die folgenden Arbeitspakete, einschließlich der Unteraufgaben und aller zugehörigen Daten, werden dauerhaft gelöscht:'
+      description_with_children: 'Die folgenden Arbeitspakete, einschließlich der Unteraufgaben und aller zugehörigen Daten, werden dauerhaft gelöscht:'
+      confirm_children_deletion: Ich bestätige, dass alle ausgewählten Arbeitspakete inklusive ihrer Unteraufgaben dauerhaft gelöscht werden.
+      cross_project_warning: 'Diese Arbeitspakete umfassen mehrere Projekte: %{projects}'
+      children_label: 'Die folgenden Unteraufgaben werden ebenfalls gelöscht:'
     datepicker_modal:
       banner:
         description:
@@ -1881,7 +1893,7 @@ de:
         identity_url: Identity URL
         parent: Übergeordnete Gruppe
         organizational_unit: Organisationseinheit
-        group_users: Group users
+        group_users: Benutzer der Gruppe
       group_detail:
         parent: Übergeordnete Gruppe
         organizational_unit: Organisationseinheit
@@ -1956,7 +1968,7 @@ de:
         duration: Dauer
         end_insertion: Ende der Einfügung
         end_deletion: Ende des Löschvorgangs
-        identifier: Identifier
+        identifier: Kennung
         ignore_non_working_days: Nicht-Arbeitstage ignorieren
         include_non_working_days:
           title: Werktage

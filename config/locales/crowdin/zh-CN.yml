@@ -126,8 +126,12 @@ zh-CN:
         title: Jira 配置
         new: 新配置
       banner:
-        title: 有限导入功能
-        description: Jira Migrator 目前处于测试阶段，只能导入基本数据：项目、问题（名称、标题、描述、附件）、用户（名称、电子邮件地址、项目成员资格）、状态和类型。不能导入工作流、自定义字段、问题关系或权限。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: 名称
@@ -236,8 +240,10 @@ zh-CN:
               caption_done: 已完成
               label_info: 请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入摘要，以及此工具目前能够导入的内容。
               description: 在从主机 Jira 实例获取的可用数据中选择要导入的数据。
-              label_available_data: 可用数据
-              label_not_available_data: 不可导入
+              label_supported_data: Supported data
+              label_comming_soon: Comming soon (Q2 2026)
+              label_comming_later: Comming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: 选择要导入的项目
               button_continue: 继续
               label_import: 选择要导入的项目。
@@ -246,16 +252,22 @@ zh-CN:
               label_progress: 正在从 Jira 获取数据…
               elements:
                 relations: 问题之间的关系
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: 项目级工作流
-                users: 用户
-                sprints: 冲刺
                 schemes: 方案
-                permissions: 用户、群组和项目权限
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: 导入数据
               caption: 审核导入设置并开始导入
               caption_done: 已完成
-              label_available_data: 可导入的数据
+              label_available_data: Data to be imported
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: 开始导入
               description: 您即将使用以下设置开始导入运行。
@@ -264,33 +276,33 @@ zh-CN:
             import_result:
               title: 导入运行结果
               caption: 审核导入运行或撤消导入
-              info: 导入运行成功。
+              info: Import run was successful.
               label_results: 已导入
               label_revert: 撤消导入
               button_revert: 撤消导入
-              button_done: 完成导入
-              preview_description: 导入的数据当前处于审核模式。点击“完成导入”可永久导入，点击“撤消导入”可撤消本次导入运行中的所有更改。
-              label_finalize_import: 完成导入
-              label_finalizing: 正在完成导入…
-              label_finalizing_done: 导入已完成。
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: 正在撤消导入…
               label_reverted: 导入已撤消。
           select_dialog:
             filter_projects: 按文本筛选
           import_dialog:
-            title: 是否开始此导入？
+            title: Please make sure you have a backup!
             confirm_button: 开始导入
-            description: '此导入功能是一项 alpha 功能。它还不能从 Jira 导入所有数据，可能会在此 OpenProject 实例上留下不完整的数据。 <b>请勿在生产环境中使用，在开始之前，请先创建 OpenProject 数据备份。</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: 我明白，我已做好了必要的准备
+            confirm: I understand and have a backup
           revert_dialog:
             title: 是否永久撤消此导入？
-            description: 这将删除所有导入的对象（包括整个项目），即使在 OpenProject 上导入后这些项目中有用户活动。
+            description: This will delete all imported objects (including whole projects).
             confirm: 我明白，此撤消操作会永久删除数据
           finalize_dialog:
-            title: 是否完成此导入？
-            description: 完成后，此导入将无法再撤消。所有导入的数据将永久导入。
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: 我明白此操作无法撤消
             confirm_button: 明白了
           select_projects:

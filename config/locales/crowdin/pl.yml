@@ -126,8 +126,12 @@ pl:
         title: Konfiguracja usługi Jira
         new: Nowa konfiguracja
       banner:
-        title: Ograniczone możliwości importu
-        description: 'Ten migrator Jira jest obecnie w wersji beta i może importować tylko podstawowe dane: projekty, zgłoszenia problemów (nazwa, tytuł, opis, załączniki), użytkowników (nazwa, adres e-mail, członkostwo w projekcie), statusy i typy. Nie może importować przepływów pracy, pól niestandardowych, relacji między problemami ani uprawnień. Obecnie obsługujemy tylko serwery / centra danych Jira w wersjach 10.x i 11.x. Wystąpienia w chmurze nie są obecnie obsługiwane.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Nazwa
@@ -254,8 +258,10 @@ pl:
               caption_done: Ukończono
               label_info: Pamiętaj, że to narzędzie importu jest w wersji beta i nie może importować wszystkich typów danych. Poniżej znajduje się podsumowanie tego, co wystąpienie hosta Jira oferuje do importu i co to narzędzie jest obecnie w stanie zaimportować.
               description: Wybierz dane, które chcesz zaimportować z dostępnych danych pobranych z hosta wystąpienia Jira.
-              label_available_data: Dostępne dane
-              label_not_available_data: Niedostępne do importu
+              label_supported_data: Supported data
+              label_comming_soon: Comming soon (Q2 2026)
+              label_comming_later: Comming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Wybierz projekty do zaimportowania
               button_continue: Kontynuuj
               label_import: Wybierz projekty, które chcesz zaimportować.
@@ -264,16 +270,22 @@ pl:
               label_progress: Pobieranie danych z Jira...
               elements:
                 relations: Relacje między problemami
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Przepływy pracy na poziomie projektu
-                users: Użytkownicy
-                sprints: Sprinty
                 schemes: Schematy
-                permissions: Uprawnienia użytkowników, grup i projektów
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Importuj dane
               caption: Sprawdź ustawienia importu i rozpocznij import
               caption_done: Ukończono
-              label_available_data: Dane dostępne do zaimportowania
+              label_available_data: Data to be imported
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Rozpocznij import
               description: W ten sposób rozpoczniesz import z następującymi ustawieniami.
@@ -282,33 +294,33 @@ pl:
             import_result:
               title: Wyniki importu
               caption: Sprawdź uruchomiony import lub cofnij import
-              info: Import powiódł się.
+              info: Import run was successful.
               label_results: Zaimportowano
               label_revert: Cofnij import
               button_revert: Cofnij import
-              button_done: Sfinalizuj import
-              preview_description: Zaimportowane dane są obecnie w trybie przeglądu. Kliknij przycisk „Sfinalizuj import”, aby zaimportować dane na stałe lub „Cofnij import”, aby cofnąć wszystkie zmiany wprowadzone wskutek importu.
-              label_finalize_import: Sfinalizuj import
-              label_finalizing: Finalizowanie importu...
-              label_finalizing_done: Sfinalizowano import.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Cofanie importu...
               label_reverted: Cofnięto import.
           select_dialog:
             filter_projects: Filtruj według tekstu
           import_dialog:
-            title: Rozpocząć ten import?
+            title: Please make sure you have a backup!
             confirm_button: Rozpocznij import
-            description: 'Ten importer jest funkcją w wersji alfa. Nie jest jeszcze w stanie zaimportować wszystkich danych z Jira i może pozostawić niekompletne dane w tym wystąpieniu OpenProject. <b>Nie używaj środowiska produkcyjnego, a przed rozpoczęciem utwórz kopię zapasową danych OpenProject.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: Rozumiem i poczyniłem(-am) niezbędne przygotowania
+            confirm: I understand and have a backup
           revert_dialog:
             title: Na stałe cofnąć ten import?
-            description: Spowoduje to usunięcie wszystkich zaimportowanych obiektów (w tym całych projektów), nawet jeśli po zaimportowaniu w OpenProject wystąpiła aktywność użytkownika w tych projektach.
+            description: This will delete all imported objects (including whole projects).
             confirm: Rozumiem, że to cofnięcie poskutkuje trwałym usunięciem danych
           finalize_dialog:
-            title: Sfinalizować ten import?
-            description: Po sfinalizowaniu importu nie można go już cofnąć. Wszystkie zaimportowane dane zostaną zaimportowane na stałe.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: Rozumiem, że tego działania nie będzie można cofnąć
             confirm_button: Rozumiem
           select_projects:
