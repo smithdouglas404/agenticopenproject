@@ -31,6 +31,9 @@
 require "rails_helper"
 
 RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
+  shared_let(:admin) { create(:admin) }
+  current_user { admin }
+
   let(:project) { create(:project) }
   let(:work_package) { create(:work_package, project:) }
   let(:move_path) { Rails.application.routes.url_helpers.move_project_backlogs_inbox_path(project, work_package) }
@@ -128,6 +131,19 @@ RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
 
       expect(page).to have_no_css("option", text: "Current Sprint")
       expect(page).to have_css("option[value='sprint:#{target_sprint.id}']", text: "Target Sprint")
+    end
+  end
+
+  context "when the current user cannot view sprints in the project" do
+    let(:other_user) { create(:user) }
+    let!(:hidden_sprint) { create(:agile_sprint, project:, name: "Hidden Sprint") }
+
+    current_user { other_user }
+
+    it "does not list sprints the user is not permitted to see" do
+      render_component
+
+      expect(page).to have_no_css("option", text: "Hidden Sprint")
     end
   end
 end
