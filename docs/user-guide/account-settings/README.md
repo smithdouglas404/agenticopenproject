@@ -157,11 +157,13 @@ There is a personal settings available for the [Backlogs module](../../user-guid
 
 In order to reset your password, navigate to  **Account settings** and choose **Change password** in the menu.
 
-![Change password under account settings in OpenProject](openproject_account_settings_change_password.png)
+![Change password under account settings in OpenProject](openproject_account_settings_change_new_password.png)
 
 Enter your current password.
 
-Enter your new password and confirm it a second time.
+Enter your new password and ensure all password requirements are met.
+
+Confirm it a second time.
 
 Press the **Save** button in order to confirm the password changes.
 
@@ -350,9 +352,9 @@ Sessions expire automatically according to your instance’s authentication sett
 > [!NOTE]
 > Closing a browser does not necessarily terminate the session. It might still be displayed in the list and will be reactivated if you open the browser. This depends on both your browser's and the OpenProject instance's settings.
 
-## Notifications settings
+## Notification and email settings
 
-To configure the notification settings which you receive from the system, navigate to **Account settings** and choose **Notifications settings** in the menu.
+To configure the notification settings which you receive from the system, navigate to **Account settings** and choose the **Notifications and email settings** in the menu. 
 
 ![Notification settings in OpenProject account settings](openproject_account_settings_notification_settings.png)
 
@@ -362,7 +364,7 @@ Please also see our detailed [in-app notifications](../../user-guide/notificatio
 
 ## Email reminders
 
-To configure the email reminders which you receive from the system, navigate to **Account settings** and choose **Email reminders** in the menu. Your system administrator can also set them for you or change the global default settings.
+To configure the email reminders which you receive from the system, switch to the email reminders tab. Your system administrator can also set them for you or change the global default settings.
 
 ![Email reminders in OpenProject account settings](openproject_account_settings_email_reminders.png)
 
