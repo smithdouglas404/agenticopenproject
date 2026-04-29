@@ -35,6 +35,7 @@ module Wikis
     end
 
     def user_connected?
+      return true if provider.internal?
       return true if provider.oauth_client.blank?
 
       OAuthClientToken.for_user_and_client(User.current, provider.oauth_client).exists?
