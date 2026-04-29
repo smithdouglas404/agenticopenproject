@@ -633,7 +633,7 @@ GEM
     glob (0.4.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    good_job (4.15.0)
+    good_job (4.16.0)
       activejob (>= 6.1.0)
       activerecord (>= 6.1.0)
       concurrent-ruby (>= 1.3.1)
@@ -1631,7 +1631,7 @@ DEPENDENCIES
   friendly_id (~> 5.6.0)
   fuubar (~> 2.5.0)
   globalid (~> 1.3)
-  good_job (~> 4.15.0)
+  good_job (~> 4.16.0)
   google-apis-gmail_v1
   googleauth
   grape (~> 3.2.0)
@@ -1948,7 +1948,7 @@ CHECKSUMS
   fuubar (2.5.1) sha256=b272a7804b282661c7fab583a3764f92543cb482c365ae39c685cd218fdd4880
   glob (0.4.0) sha256=893dc9e2d24abe13dda907ce0cda576f680ff382f2a6cf9e543f98ecbe29238c
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
-  good_job (4.15.0) sha256=988b424c3f8fd7f8fce69c4153f93bfdc07f31891b6966e4c8b8b06bf6f76c3e
+  good_job (4.16.0) sha256=2f09a88f636a3030312929a1ed70b2610d0c5962a137049ccd98e48295e6ae83
   google-apis-core (1.0.2) sha256=ba4579aaadc902d6cc7bc8db88f566ab00f5e31ea87ab41e9f9a032c470f2629
   google-apis-gmail_v1 (0.47.0) sha256=3064434b6da55b85e2828ce4bb0f4d04e8cfd187a4ab262ceb1dcb01f98e49ef
   google-cloud-env (2.3.1) sha256=0faac01eb27be78c2591d64433663b1a114f8f7af55a4f819755426cac9178e7
