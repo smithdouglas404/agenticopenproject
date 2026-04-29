@@ -76,7 +76,7 @@ class ProjectIdentifierValidator < ActiveModel::EachValidator
   end
 
   def validate_classic_format(record, attribute, value)
-    record.errors.add(attribute, :invalid) unless record.class.classic_identifier_format?(value)
+    record.errors.add(attribute, :invalid) unless Project.classic_identifier_format?(value)
     max = Projects::Identifier::CLASSIC_IDENTIFIER_MAX_LENGTH
     record.errors.add(attribute, :too_long, count: max) if value.length > max
   end
@@ -109,9 +109,9 @@ class ProjectIdentifierValidator < ActiveModel::EachValidator
   end
 
   def used_by_other_project_in_past?(record, value)
-    record.class.identifier_slugs
-          .for_identifier(value)
-          .where.not(sluggable_id: record.id)
-          .exists?
+    Project.identifier_slugs
+           .for_identifier(value)
+           .where.not(sluggable_id: record.id)
+           .exists?
   end
 end
