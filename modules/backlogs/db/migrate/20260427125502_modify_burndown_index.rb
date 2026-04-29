@@ -14,8 +14,7 @@ class ModifyBurndownIndex < ActiveRecord::Migration[8.1]
   private
 
   def remove_and_add_burndown_index(column)
-    remove_index :work_package_journals,
-                 name: INDEX_NAME
+    remove_index(:work_package_journals, name: INDEX_NAME) if index_exists?(:work_package_journals, name: INDEX_NAME)
 
     add_index :work_package_journals,
               [column,
