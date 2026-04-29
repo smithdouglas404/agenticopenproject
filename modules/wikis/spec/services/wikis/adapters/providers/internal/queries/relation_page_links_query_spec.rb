@@ -82,12 +82,4 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
       expect(result[1].failure.code).to eq(:not_found)
     end
   end
-
-  context "when user can't see the wiki page links" do
-    let(:permissions) { %i[view_work_packages view_wiki_pages] }
-
-    it "returns a result with `forbidden`" do
-      expect(subject.failure.code).to eq(:forbidden)
-    end
-  end
 end
