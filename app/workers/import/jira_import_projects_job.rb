@@ -40,6 +40,7 @@ module Import
       @jira_id = jira.id
       @user = User.system
       @jira_client = Import::JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
+      @jira_user_index = build_jira_user_index
 
       ActiveRecord::Base.transaction do
         @project_role = setup_project_role
@@ -318,14 +319,31 @@ module Import
     def find_user(jira_user_key)
       return if jira_user_key.blank?
 
-      jira_user = Import::JiraUser.find_by(jira_user_key:, jira_import: @jira_import)
-      if jira_user
-        JiraOpenProjectReference.find_by!(
-          jira_entity_class: "Import::JiraUser",
-          jira_entity_id: jira_user.id
-        ).op_leg
-      else
-        raise "Import::JiraUser with jira_user_key #{jira_user_key} not found!"
+      user = @jira_user_index[jira_user_key]
+      raise "Import::JiraUser with jira_user_key #{jira_user_key} not found!" unless user
+
+      user
+    end
+
+    # Builds { jira_user_key => User } for every Jira user already mapped to an OP user by import_users.
+    def build_jira_user_index
+      jira_user_keys_by_id = Import::JiraUser.where(jira_import_id: @jira_import.id)
+                                              .pluck(:id, :jira_user_key)
+                                              .to_h
+      return {} if jira_user_keys_by_id.empty?
+
+      reference_pairs = JiraOpenProjectReference.where(
+        jira_import_id: @jira_import.id,
+        jira_entity_class: "Import::JiraUser",
+        op_entity_class: "User"
+      ).pluck(:jira_entity_id, :op_entity_id)
+
+      users_by_id = User.where(id: reference_pairs.map(&:last)).index_by { |u| u.id.to_s }
+
+      reference_pairs.each_with_object({}) do |(jira_entity_id, op_entity_id), index|
+        jira_user_key = jira_user_keys_by_id[jira_entity_id.to_i]
+        user = users_by_id[op_entity_id]
+        index[jira_user_key] = user if jira_user_key && user
       end
     end
 
