@@ -106,7 +106,7 @@ module API
           next if represented.new_record?
 
           {
-            href: new_work_package_move_path(work_package_id: represented.id),
+            href: new_work_package_move_path(represented),
             type: "text/html",
             title: "Move work package '#{represented.subject}'"
           }
@@ -117,7 +117,7 @@ module API
           next if represented.new_record?
 
           {
-            href: copy_work_package_path(id: represented.id),
+            href: work_package_path(represented, "copy"),
             type: "text/html",
             title: "Copy work package '#{represented.subject}'"
           }

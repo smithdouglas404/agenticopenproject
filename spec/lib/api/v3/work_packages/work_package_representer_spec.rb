@@ -1204,7 +1204,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
 
         it_behaves_like "has a titled action link" do
           let(:link) { "move" }
-          let(:href) { "/work_packages/#{work_package.id}/move/new" }
+          let(:href) { "/work_packages/PROJ-7/move/new" }
           let(:permission) { :move_work_packages }
           let(:title) { "Move work package '#{work_package.subject}'" }
         end
@@ -1214,7 +1214,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
     describe "copy" do
       it_behaves_like "has a titled action link" do
         let(:link) { "copy" }
-        let(:href) { "/work_packages/#{work_package.id}/copy" }
+        let(:href) { work_package_path(work_package, "copy") }
         let(:permission) { :add_work_packages }
         let(:title) { "Copy work package '#{work_package.subject}'" }
       end
@@ -1226,7 +1226,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
 
         it_behaves_like "has a titled action link" do
           let(:link) { "copy" }
-          let(:href) { "/work_packages/#{work_package.id}/copy" }
+          let(:href) { "/work_packages/PROJ-7/copy" }
           let(:permission) { :add_work_packages }
           let(:title) { "Copy work package '#{work_package.subject}'" }
         end
@@ -1261,33 +1261,32 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       end
     end
 
-    # The HAL surface must produce numeric URLs regardless of identifier
-    # mode — external API consumers depend on stable, predictable IDs.
-    # These specs guard against a future change that drops the explicit
-    # `id:` kwargs (or model-positional pins) and silently lets URLs flip
-    # to semantic identifiers via WorkPackage#to_param.
+    # The HAL contract surface stays numeric in semantic mode so clients
+    # can correlate work packages by comparing href strings (one
+    # resource's `self` === another's `parent`, etc.). Auxiliary
+    # endpoints (`pdf`, `generate_pdf`, `atom`) follow the same convention.
     context "with semantic identifier mode active",
             with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic", feeds_enabled?: true } do
       let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
       let(:permissions) { all_permissions + [:export_work_packages] }
 
-      it "self stays numeric" do
+      it "self href stays numeric" do
         expect(subject).to be_json_eql("/api/v3/work_packages/#{work_package.id}".to_json)
                              .at_path("_links/self/href")
       end
 
-      it "pdf stays numeric" do
+      it "pdf href stays numeric" do
         expect(subject).to be_json_eql("/work_packages/#{work_package.id}.pdf".to_json)
                              .at_path("_links/pdf/href")
       end
 
-      it "generate_pdf stays numeric" do
+      it "generate_pdf href stays numeric" do
         expect(subject).to be_json_eql("/work_packages/#{work_package.id}/generate_pdf_dialog".to_json)
                              .at_path("_links/generate_pdf/href")
       end
 
-      it "atom stays numeric" do
+      it "atom href stays numeric" do
         expect(subject).to be_json_eql("/work_packages/#{work_package.id}.atom".to_json)
                              .at_path("_links/atom/href")
       end

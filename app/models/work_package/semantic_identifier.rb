@@ -102,9 +102,9 @@ module WorkPackage::SemanticIdentifier
   # returns the integer primary key, so this is behaviourally identical
   # to the inherited `id&.to_s`.
   #
-  # API v3 deliberately bypasses this by passing `id:` kwargs explicitly
-  # (see lib/api/v3/work_packages/work_package_representer.rb) so HAL
-  # self-links remain numeric and stable for API consumers.
+  # The HAL+JSON self-link path (api_v3_paths.work_package) takes the
+  # numeric id directly and so is unaffected by this override — it stays
+  # numeric for cross-relation consistency on the API contract surface.
   def to_param
     return super if new_record?
 
