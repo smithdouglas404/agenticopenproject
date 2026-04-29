@@ -68,7 +68,9 @@ export default class TypeFormConfigurationController extends Controller {
   filterInactives(event:Event) {
     const input = event.currentTarget as HTMLInputElement;
     const query = input.value.trim().toLowerCase();
-    const inactiveList = this.inactiveContainerTarget.querySelector<HTMLElement>('ul.Box-list');
+    const inactiveList = this.inactiveContainerTarget.querySelector<HTMLElement>(
+      '[data-test-selector="type-form-configuration-inactive-list"]',
+    );
     if (!inactiveList) return;
 
     inactiveList.querySelectorAll<HTMLElement>('li[data-attr-key]').forEach((row) => {

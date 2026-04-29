@@ -27,25 +27,27 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(border_box_container(padding: :condensed)) do |box| %>
-  <% box.with_header(font_weight: :bold) do %>
-    <%= render(Primer::Beta::Text.new(font_weight: :bold)) do %>
-      <%= t("types.edit.form_configuration.inactive_attributes_heading") %>
-    <% end %>
-    <%= render(Primer::Beta::Text.new(color: :subtle, font_size: :small, ml: 2)) do %>
-      <%= t("types.edit.form_configuration.drag_to_activate") %>
-    <% end %>
-  <% end %>
-
+<%= render(
+      Primer::Alpha::ActionList.new(
+        role: :list,
+        classes: "type-form-configuration-page--inactive-list",
+        data: { "test-selector": "type-form-configuration-inactive-list" }
+      )
+    ) do |list| %>
   <% if inactives.empty? %>
-    <% box.with_row(data: { "empty-list-item": true }) do %>
-      <%= render(Primer::Beta::Text.new(color: :subtle)) do %>
-        <%= t("types.edit.form_configuration.no_inactive_attributes") %>
-      <% end %>
-    <% end %>
+    <% list.with_item(
+         label: t("types.edit.form_configuration.no_inactive_attributes"),
+         disabled: true,
+         classes: "type-form-configuration-page--inactive-empty",
+         content_arguments: { tag: :div },
+         data: { "empty-list-item": true }
+       ) %>
   <% else %>
     <% inactives.each do |attribute| %>
-      <% box.with_row(
+      <% list.with_item(
+           label: attribute[:translation],
+           classes: "type-form-configuration-page--inactive-item",
+           content_arguments: { tag: :div },
            data: {
              attr_key: attribute[:key],
              attr_translation: attribute[:translation],
@@ -54,20 +56,15 @@ See COPYRIGHT and LICENSE files for more details.
              "draggable-type": "attribute",
              "drop-url": drop_type_form_configuration_row_path(type, attribute[:key])
            }
-         ) do %>
-        <%= flex_layout(align_items: :center) do |row| %>
-          <% row.with_column(mr: 2) do %>
-            <%= render(
-                  Primer::OpenProject::DragHandle.new(
-                    classes: "attribute-handle",
-                    "aria-label": t("types.edit.form_configuration.drag_to_reorder"),
-                    data: { "test-selector": "type-form-configuration-attribute-handle-#{attribute[:key]}" }
-                  )
-                ) %>
-          <% end %>
-          <% row.with_column(flex: 1) do %>
-            <%= render(Primer::Beta::Text.new) { attribute[:translation] } %>
-          <% end %>
+         ) do |item| %>
+        <% item.with_leading_visual_raw_content do %>
+          <%= render(
+                Primer::OpenProject::DragHandle.new(
+                  classes: "attribute-handle",
+                  "aria-label": t("types.edit.form_configuration.drag_to_reorder"),
+                  data: { "test-selector": "type-form-configuration-attribute-handle-#{attribute[:key]}" }
+                )
+              ) %>
         <% end %>
       <% end %>
     <% end %>
