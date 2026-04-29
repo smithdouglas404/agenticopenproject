@@ -101,7 +101,7 @@ RSpec.describe "API v3 Work package resource",
       let(:permissions) { %i[add_work_packages view_work_packages manage_sprint_items] }
 
       it_behaves_like "constraint violation" do
-        let(:message) { "Sprint is not set to one of the allowed values." }
+        let(:message) { "Sprint is not assignable since it is either not shared with the project or already finished." }
       end
     end
 
@@ -125,7 +125,7 @@ RSpec.describe "API v3 Work package resource",
       end
 
       it_behaves_like "constraint violation" do
-        let(:message) { "Sprint is not set to one of the allowed values." }
+        let(:message) { "Sprint is not assignable since it is either not shared with the project or already finished." }
       end
     end
 
@@ -148,11 +148,8 @@ RSpec.describe "API v3 Work package resource",
         }
       end
 
-      it_behaves_like "multiple errors of the same type with messages" do
-        let(:message) do
-          ["Sprint is not shared with the project the work package is in.",
-           "Sprint is not set to one of the allowed values."]
-        end
+      it_behaves_like "constraint violation" do
+        let(:message) { "Sprint is not assignable since it is either not shared with the project or already finished." }
       end
     end
   end

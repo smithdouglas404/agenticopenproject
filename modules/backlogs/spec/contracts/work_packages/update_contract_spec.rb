@@ -53,9 +53,6 @@ RSpec.describe WorkPackages::UpdateContract do
   end
 
   before do
-    allow(work_package_project).to receive(:assignable_sprints)
-                        .and_return(shared_sprints)
-
     visible_scope = instance_double(ActiveRecord::Relation)
 
     allow(WorkPackage)
@@ -95,16 +92,14 @@ RSpec.describe WorkPackages::UpdateContract do
                         story_points: :error_readonly
       end
 
-      context "when sprint is completed (shared with project but not assignable) but the assignment did not change" do
+      context "when sprint is not assignable but the assignment did not change" do
         let(:completed_sprint) { build_stubbed(:agile_sprint, status: :completed) }
         let(:work_package_sprint) { completed_sprint }
+        let(:assignable_sprints) { [] }
 
         before do
           # So that the changes look like they came out of the database
           work_package.clear_changes_information
-
-          # The mocks in the shared context need to be taken into account.
-          allow(work_package_project).to receive(:assignable_sprints).and_return([])
         end
 
         it_behaves_like "contract is valid"
