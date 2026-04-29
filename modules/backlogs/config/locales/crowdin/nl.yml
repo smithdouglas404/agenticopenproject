@@ -26,7 +26,9 @@ nl:
     description: This module adds features enabling agile teams to work with OpenProject in Scrum projects.
   activerecord:
     attributes:
-      agile/sprint:
+      project:
+        sprint_sharing: Sprint sharing
+      sprint:
         duration: Duration
         finish_date: Finish date
         goal: Sprint goal
@@ -36,10 +38,6 @@ nl:
           in_planning: In planning
           active: Active
           completed: Completed
-      project:
-        sprint_sharing: Sprint sharing
-      sprint:
-        duration: Sprint duration
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
@@ -60,6 +58,15 @@ nl:
             sprint_sharing:
               share_all_projects_already_taken: cannot be set because project "%{name}" is already sharing with all projects.
               share_all_projects_already_taken_anonymous: cannot be set because another project is already sharing with all projects.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is %{count} work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,17 +80,6 @@ nl:
             sprint:
               not_shared_with_project: is not shared with the project the work package is in.
               not_eligible_for_moving: is not an active sprint in the project which holds the sprint the work package is moved out of.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: There is %{count} work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
-              format: "%{message}"
-            status:
-              not_active: is not active so it cannot be closed.
-        sprint:
-          cannot_end_before_it_starts: De sprint kan niet eindigen voordat het start.
     models:
       sprint: Sprint
   backlogs:

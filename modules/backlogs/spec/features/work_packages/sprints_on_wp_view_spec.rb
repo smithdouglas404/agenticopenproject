@@ -32,8 +32,8 @@ require "spec_helper"
 
 RSpec.describe "Sprint displayed and selectable on work package view", :js do
   shared_let(:project) { create(:project) }
-  shared_let(:sprint) { create(:agile_sprint, project:) }
-  shared_let(:other_sprint) { create(:agile_sprint, project:) }
+  shared_let(:sprint) { create(:sprint, project:) }
+  shared_let(:other_sprint) { create(:sprint, project:) }
   shared_let(:work_package) { create(:work_package, project:, sprint:) }
 
   let(:permissions) { %i(view_work_packages view_sprints manage_sprint_items) }

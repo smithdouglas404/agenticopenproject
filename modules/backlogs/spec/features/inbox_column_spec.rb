@@ -70,7 +70,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
   end
 
   context "when the inbox has no work packages" do
-    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+    let!(:sprint) { create(:sprint, name: "Sprint 1", project:) }
 
     before { planning_page.visit! }
 
@@ -183,7 +183,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
                types: [type],
                enabled_module_names: %w[work_package_tracking backlogs])
       end
-      let!(:shared_sprint) { create(:agile_sprint, name: "Shared Sprint", project: source_project) }
+      let!(:shared_sprint) { create(:sprint, name: "Shared Sprint", project: source_project) }
 
       before { planning_page.visit! }
 
@@ -195,7 +195,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
   end
 
   context "when a sprint is present" do
-    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+    let!(:sprint) { create(:sprint, name: "Sprint 1", project:) }
 
     before { planning_page.visit! }
 
@@ -206,7 +206,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
   end
 
   context "with work packages in the inbox" do
-    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+    let!(:sprint) { create(:sprint, name: "Sprint 1", project:) }
     let!(:inbox_wp1) { create(:work_package, project:) }
     let!(:inbox_wp2) { create(:work_package, project:) }
     let!(:inbox_wp3) { create(:work_package, project:) }
@@ -264,7 +264,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
     end
 
     describe "moving backlog items to a sprint via the 'Move to sprint' menu item" do
-      let!(:sprint2) { create(:agile_sprint, name: "Sprint 2", project:) }
+      let!(:sprint2) { create(:sprint, name: "Sprint 2", project:) }
       let!(:sprint_wp) { create(:work_package, project:, sprint:) }
 
       before { planning_page.visit! }
@@ -418,7 +418,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
   end
 
   describe "retaining the 'show all' state" do
-    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+    let!(:sprint) { create(:sprint, name: "Sprint 1", project:) }
     let!(:inbox_items) { create_list(:work_package, 5, project:, type:) }
     let!(:sprint_wp1) { create(:work_package, project:, sprint:, type:) }
     let!(:sprint_wp2) { create(:work_package, project:, sprint:, type:) }

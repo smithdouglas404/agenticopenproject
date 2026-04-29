@@ -26,20 +26,18 @@ ru:
     description: Этот модуль добавляет функции, позволяющие agile-командам работать с OpenProject в Scrum проектах.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Продолжительность
-        finish_date: Дата окончания
-        goal: Цель спринта
-        name: Название спринта
-        sharing: Совместное использование
-        statuses:
-          in_planning: В планировании
-          active: Активный
-          completed: Завершён
       project:
         sprint_sharing: Совместное использование спринта
       sprint:
-        duration: Продолжительность спринта
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Покажите спринты в свернутом виде
       work_package:
@@ -60,6 +58,17 @@ ru:
             sprint_sharing:
               share_all_projects_already_taken: не может быть установлен, потому что проект "%{name}" уже совместно используется со всеми проектами.
               share_all_projects_already_taken_anonymous: не может быть установлен, потому что другой проект уже совместно используется со всеми проектами.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is %{count} work package that was not completed in this sprint.
+                few: There are %{count} work packages that were not completed in this sprint.
+                many: There are %{count} work packages that were not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,19 +82,6 @@ ru:
             sprint:
               not_shared_with_project: не передается проекту, в котором находится пакет работ.
               not_eligible_for_moving: не является активным спринтом в проекте, в котором проводится спринт, из которого перемещается пакет работ.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: Есть пакет работ %{count}, который не был завершен в этом спринте.
-                few: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
-                many: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
-                other: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
-              format: "%{message}"
-            status:
-              not_active: не активен, поэтому не может быть закрыт.
-        sprint:
-          cannot_end_before_it_starts: Спринт не может заканчиваться до того, как начнется.
     models:
       sprint: Спринт
   backlogs:

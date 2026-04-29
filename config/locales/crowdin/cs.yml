@@ -465,8 +465,14 @@ cs:
         ignore: Ignorovat změny
         save: Uložit změny a pokračovat
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Vybrat roli
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Nejsou nakonfigurovány žádné stavové přechody
         description: Add statuses to start configuring workflows for this role

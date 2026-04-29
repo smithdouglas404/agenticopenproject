@@ -39,7 +39,7 @@ module API
 
           get &::API::V3::Utilities::Endpoints::Index
                  .new(
-                   model: Agile::Sprint,
+                   model: Sprint,
                    scope: -> { @project.assignable_sprints }
                  )
                  .mount

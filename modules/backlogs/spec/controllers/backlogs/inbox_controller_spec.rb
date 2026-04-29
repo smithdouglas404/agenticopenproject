@@ -140,8 +140,8 @@ RSpec.describe Backlogs::InboxController do
   end
 
   describe "PUT #move" do
-    let(:agile_sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
-    let(:target_id) { "sprint:#{agile_sprint.id}" }
+    let(:sprint) { create(:sprint, name: "Sprint 1", project:) }
+    let(:target_id) { "sprint:#{sprint.id}" }
     let(:prev_id) { 1 }
 
     subject do
@@ -155,13 +155,13 @@ RSpec.describe Backlogs::InboxController do
           format: :turbo_stream
     end
 
-    context "when moving to an Agile::Sprint" do
+    context "when moving to an Sprint" do
       it "replaces both the inbox and target sprint components", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
                                               target: "backlogs-backlogs-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-sprint-component-#{agile_sprint.id}"
+                                              target: "backlogs-sprint-component-#{sprint.id}"
 
         # Flash message is omitted here on purpose (#73600)
         expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
@@ -190,7 +190,7 @@ RSpec.describe Backlogs::InboxController do
     end
 
     context "when no prev_id is provided" do
-      let!(:work_packages) { create_list(:work_package, 5, project:, sprint: agile_sprint) }
+      let!(:work_packages) { create_list(:work_package, 5, project:, sprint:) }
       let(:prev_id) { nil }
 
       it "places the work package at the top of the sprint" do
@@ -410,7 +410,7 @@ RSpec.describe Backlogs::InboxController do
   end
 
   describe "GET #move_to_sprint_dialog" do
-    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+    let!(:sprint) { create(:sprint, name: "Sprint 1", project:) }
 
     subject do
       get :move_to_sprint_dialog,

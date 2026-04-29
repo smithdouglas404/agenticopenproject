@@ -465,8 +465,14 @@ uk:
         ignore: Ігнорувати зміни
         save: Зберегти зміни й продовжити
       role_selector:
+        title: Select roles
         label: 'Роль: %{role}'
         no_role: Виберіть роль
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Переходи статусів не налаштовано
         description: Додайте статуси, щоб почати налаштовувати робочі процеси для цієї ролі

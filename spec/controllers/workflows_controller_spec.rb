@@ -40,7 +40,7 @@ RSpec.describe WorkflowsController do
             .and_return(role_scope)
 
     allow(role_scope)
-      .to receive_messages(order: role_scope, find_by: nil)
+      .to receive_messages(order: role_scope, find_by: nil, first: role)
 
     allow(role_scope)
       .to receive(:find)
@@ -51,6 +51,11 @@ RSpec.describe WorkflowsController do
       .to receive(:find_by)
             .with(id: role.id.to_s)
             .and_return(role)
+
+    allow(role_scope)
+      .to receive(:where)
+            .with(id: nil)
+            .and_return([])
 
     role_scope
   end
@@ -90,10 +95,6 @@ RSpec.describe WorkflowsController do
       allow(Status)
         .to receive(:all)
               .and_return [type_status, non_type_status]
-
-      allow(role_scope)
-        .to receive(:order)
-              .and_return([role])
     end
 
     context "without parameters" do
@@ -111,9 +112,8 @@ RSpec.describe WorkflowsController do
           .to render_template :edit
       end
 
-      it "assigns the first role" do
-        expect(assigns[:role])
-          .to eq role
+      it "assigns @roles as the canonical collection" do
+        expect(assigns[:roles]).to contain_exactly(role)
       end
 
       it "does assign type" do
@@ -122,40 +122,59 @@ RSpec.describe WorkflowsController do
       end
     end
 
-    context "with role and type params" do
+    context "with a single role param" do
       before do
-        get :edit, params: { role_id: role.id.to_s, type_id: type.id.to_s }
-      end
+        allow(role_scope)
+          .to receive(:where)
+                .with(id: [role.id.to_s])
+                .and_return([role])
 
-      it "responds with the role type statuses", :aggregate_failures do
-        expect(response)
-          .to have_http_status(:ok)
-        expect(response)
-          .to render_template :edit
-        expect(assigns[:role])
-          .to eq role
-        expect(assigns[:type])
-          .to eq type
+        get :edit, params: { role_ids: [role.id.to_s], type_id: type.id.to_s }
       end
 
       it "is successful" do
-        expect(response)
-          .to have_http_status(:ok)
+        expect(response).to have_http_status(:ok)
       end
 
       it "renders the edit template" do
-        expect(response)
-          .to render_template :edit
+        expect(response).to render_template :edit
       end
 
-      it "assigns role" do
-        expect(assigns[:role])
-          .to eq role
+      it "assigns the selected role" do
+        expect(assigns[:roles]).to contain_exactly(role)
       end
 
-      it "assign type" do
-        expect(assigns[:type])
-          .to eq type
+      it "assigns type" do
+        expect(assigns[:type]).to eq type
+      end
+    end
+
+    context "with multiple role params" do
+      let(:role2) { build_stubbed(:project_role) }
+
+      before do
+        allow(role_scope)
+          .to receive(:where)
+                .with(id: [role.id.to_s, role2.id.to_s])
+                .and_return([role, role2])
+
+        get :edit, params: { role_ids: [role.id.to_s, role2.id.to_s], type_id: type.id.to_s }
+      end
+
+      it "is successful" do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "renders the edit template" do
+        expect(response).to render_template :edit
+      end
+
+      it "assigns all selected roles" do
+        expect(assigns[:roles]).to contain_exactly(role, role2)
+      end
+
+      it "assigns type" do
+        expect(assigns[:type]).to eq type
       end
     end
   end

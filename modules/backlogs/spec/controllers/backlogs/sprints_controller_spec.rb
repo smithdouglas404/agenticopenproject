@@ -67,7 +67,7 @@ RSpec.describe Backlogs::SprintsController do
     end
 
     describe "GET #edit_dialog" do
-      let!(:sprint) { create(:agile_sprint, project:) }
+      let!(:sprint) { create(:sprint, project:) }
 
       it "responds with success", :aggregate_failures do
         get :edit_dialog, params: { project_id: project.id, sprint_id: sprint.id }, format: :turbo_stream
@@ -134,7 +134,7 @@ RSpec.describe Backlogs::SprintsController do
     end
 
     describe "PUT #update" do
-      let!(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
+      let!(:sprint) { create(:sprint, name: "Original sprint name", project:) }
 
       let(:params) do
         {
@@ -171,7 +171,7 @@ RSpec.describe Backlogs::SprintsController do
     end
 
     describe "POST #start" do
-      let!(:sprint) { create(:agile_sprint, project:) }
+      let!(:sprint) { create(:sprint, project:) }
       let(:service_result) { ServiceResult.success(result: sprint.tap { it.status = "active" }) }
       let(:service) { instance_double(Sprints::StartService, call: service_result) }
       let(:request_params) { { project_id: project.id, sprint_id: sprint.id } }
@@ -186,7 +186,7 @@ RSpec.describe Backlogs::SprintsController do
       context "when the sprint is rendered in a receiving project" do
         let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
         let(:project) { create(:project, sprint_sharing: "receive_shared") }
-        let!(:sprint) { create(:agile_sprint, project: source_project) }
+        let!(:sprint) { create(:sprint, project: source_project) }
         let(:source_permissions) { %i[view_sprints start_complete_sprint] }
         let!(:board) { create(:board_grid_with_query, project:, linked: sprint) }
 
@@ -294,7 +294,7 @@ RSpec.describe Backlogs::SprintsController do
       end
 
       context "when another sprint is already active" do
-        let!(:active_sprint) { create(:agile_sprint, project:, status: "active") }
+        let!(:active_sprint) { create(:sprint, project:, status: "active") }
         let(:service_result) do
           ServiceResult.failure(
             result: sprint,
@@ -323,7 +323,7 @@ RSpec.describe Backlogs::SprintsController do
       end
 
       context "when the sprint is already active" do
-        let!(:sprint) { create(:agile_sprint, project:, status: "active") }
+        let!(:sprint) { create(:sprint, project:, status: "active") }
         let(:service_result) { ServiceResult.failure }
 
         it "redirects back with the default start failure message", :aggregate_failures do
@@ -337,7 +337,7 @@ RSpec.describe Backlogs::SprintsController do
     end
 
     describe "POST #finish" do
-      let!(:sprint) { create(:agile_sprint, project:, status: "active") }
+      let!(:sprint) { create(:sprint, project:, status: "active") }
       let(:request_params) { { project_id: project.id, sprint_id: sprint.id } }
       let(:service_result) do
         ServiceResult.success(
@@ -356,7 +356,7 @@ RSpec.describe Backlogs::SprintsController do
       context "when the sprint is rendered in a receiving project" do
         let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
         let(:project) { create(:project, sprint_sharing: "receive_shared") }
-        let!(:sprint) { create(:agile_sprint, project: source_project, status: "active") }
+        let!(:sprint) { create(:sprint, project: source_project, status: "active") }
         let(:source_permissions) { %i[view_sprints start_complete_sprint] }
 
         before do
@@ -441,7 +441,7 @@ RSpec.describe Backlogs::SprintsController do
       end
 
       context "when the sprint is already completed" do
-        let!(:sprint) { create(:agile_sprint, project:, status: "completed") }
+        let!(:sprint) { create(:sprint, project:, status: "completed") }
         let(:service_result) { ServiceResult.failure }
 
         it "redirects back with the default finish failure message", :aggregate_failures do
@@ -511,7 +511,7 @@ RSpec.describe Backlogs::SprintsController do
       end
 
       context "when refreshing the form in edit mode by passing a sprint id" do
-        let!(:sprint) { create(:agile_sprint, project:) }
+        let!(:sprint) { create(:sprint, project:) }
         let(:params) do
           {
             project_id: project.id,

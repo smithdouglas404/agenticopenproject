@@ -449,8 +449,12 @@ de:
         ignore: Änderungen ignorieren
         save: Änderungen speichern und fortfahren
       role_selector:
+        title: Select roles
         label: 'Rolle: %{role}'
         no_role: Rolle auswählen
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Keine Statusübergänge konfiguriert
         description: Status hinzufügen, um mit der Konfiguration von Arbeitsabläufen für diese Rolle zu beginnen
@@ -1373,22 +1377,22 @@ de:
         mode:
           from_role:
             label: Copy to other roles
-            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+            caption: Kopieren Sie den aktuellen Workflow auf eine oder mehrere Rollen in demselben Typ. Wenn die ausgewählte Rolle bereits über einen Workflow verfügt, wird der aktuelle Workflow überschrieben.
           from_type:
-            label: Copy to another type
-            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+            label: In einen anderen Typ kopieren
+            caption: Kopieren Sie den aktuellen Workflow auf einen anderen Arbeitspaket-Typ. Wenn dieser bereits einen Workflow besitzt, wird der aktuelle überschrieben. Dies betrifft alle Rollen.
       from_roles:
         create:
           notice:
-            one: Successfully copied workflow to '%{role_name}' role.
-            other: Successfully copied workflow to %{count} roles.
+            one: Workflow erfolgreich in die Rolle '%{role_name}' kopiert.
+            other: Workflow erfolgreich in %{count} Rollen kopiert.
       from_types:
         create:
           notice:
-            one: Successfully copied workflow to '%{type_name}' type.
-            other: Successfully copied workflow to %{count} types.
+            one: Workflow erfolgreich in den Typ '%{type_name}' kopiert.
+            other: Workflow erfolgreich in %{count} Typen kopiert.
       new:
-        title: Copy workflow of "%{source_type}"
+        title: Workflow von "%{source_type}" kopieren
     form:
       matrix_caption: Workflow-Matrix
       matrix_caption_assignee: Workflow-Matrix für Zugewiesene
@@ -1400,28 +1404,28 @@ de:
       matrix_check_uncheck_all_in_col_label_html: Übergänge von allen alten Status zu <em>%{new_status}</em> umschalten
     index:
       type_filter:
-        label: Filter by type name…
+        label: Typen nach Name filtern…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: Konfigurieren Sie die Statusübergänge für jeden Arbeitspaket-Typ.
   work_flows:
     index:
       no_results_title_text: Derzeit gibt es keine Workflows.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: Arbeitspaket löschen
+      heading: Dieses Arbeitspaket unwiderruflich löschen?
+      description: Sind Sie sicher, dass Sie das Arbeitspaket "%{name}" löschen möchten?
+      confirm_descendants_deletion: Ich bestätige, dass ALLE Unteraufgaben der hier aufgeführten Arbeitspakete entfernt werden.
+      cross_project_warning: 'Die zur Löschung vorgesehenen Arbeitspakete stammen aus folgenden Projekten: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      title: "%{count} Arbeitspakete löschen"
+      heading: Diese %{count} Arbeitspakete unwiderruflich löschen?
+      description: 'Die folgenden Arbeitspakete, einschließlich der Unteraufgaben und aller zugehörigen Daten, werden dauerhaft gelöscht:'
+      description_with_children: 'Die folgenden Arbeitspakete, einschließlich der Unteraufgaben und aller zugehörigen Daten, werden dauerhaft gelöscht:'
+      confirm_children_deletion: Ich bestätige, dass alle ausgewählten Arbeitspakete inklusive ihrer Unteraufgaben dauerhaft gelöscht werden.
+      cross_project_warning: 'Diese Arbeitspakete umfassen mehrere Projekte: %{projects}'
+      children_label: 'Die folgenden Unteraufgaben werden ebenfalls gelöscht:'
     datepicker_modal:
       banner:
         description:
@@ -1882,7 +1886,7 @@ de:
         identity_url: Identity URL
         parent: Übergeordnete Gruppe
         organizational_unit: Organisationseinheit
-        group_users: Group users
+        group_users: Benutzer der Gruppe
       group_detail:
         parent: Übergeordnete Gruppe
         organizational_unit: Organisationseinheit
@@ -1957,7 +1961,7 @@ de:
         duration: Dauer
         end_insertion: Ende der Einfügung
         end_deletion: Ende des Löschvorgangs
-        identifier: Identifier
+        identifier: Kennung
         ignore_non_working_days: Nicht-Arbeitstage ignorieren
         include_non_working_days:
           title: Werktage
@@ -1984,20 +1988,20 @@ de:
         version: Version
         watcher: Beobachter
       ordered_persisted_query_entity:
-        persisted_query: Persisted query
-        entity: Entity
+        persisted_query: Gespeicherte Abfrage
+        entity: Entität
         position: Position
       persisted_query:
         name: Name
-        views: Views
-        filters: Filters
-        orders: Orders
-        selects: Selects
+        views: Ansichten
+        filters: Filter
+        orders: Sortierungen
+        selects: Ausgewählte Attribute
       persisted_view:
         name: Name
-        query: Query
-        parent: Parent view
-        public: Public
+        query: Abfrage
+        parent: Übergeordnete Ansicht
+        public: Öffentlich
       user_card_view:
         secondary_info: Secondary info
         show_status_badge: Show status badge

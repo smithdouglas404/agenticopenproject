@@ -449,8 +449,12 @@ es:
         ignore: Descartar cambios
         save: Guardar cambios y continuar
       role_selector:
+        title: Select roles
         label: 'Rol: %{role}'
         no_role: Seleccionar rol
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: No hay transiciones de estado configuradas
         description: Añade estados para empezar a configurar los flujos de trabajo de este rol

@@ -38,7 +38,7 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:status)  { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint)  { create(:agile_sprint, project:) }
+  shared_let(:sprint)  { create(:sprint, project:) }
   shared_let(:story) { create(:work_package, status:, sprint:, project:) }
 
   current_user { user }
@@ -91,10 +91,10 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
 
       context "with no sprints available" do
         before do
-          allow(Agile::Sprint)
+          allow(Sprint)
             .to receive(:for_project)
             .with(project)
-            .and_return(Agile::Sprint.none)
+            .and_return(Sprint.none)
         end
 
         it "still renders the sprint planning container for turbo-frame requests" do

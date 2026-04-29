@@ -45,13 +45,13 @@ See COPYRIGHT and LICENSE files for more details.
          data-generic-drag-and-drop-target="scrollContainer">
       <%=
         render(Primer::Beta::Subhead.new(hide_border: true, pb: 0)) do |head|
-          head.with_heading(tag: :h3, size: :medium, font_weight: :bold) { Agile::Sprint.human_model_name.pluralize }
+          head.with_heading(tag: :h3, size: :medium, font_weight: :bold) { Sprint.human_model_name.pluralize }
 
           if allow_sprint_creation?(@project)
             head.with_actions do
               render Primer::Beta::Button.new(
                 tag: :a,
-                label: Agile::Sprint.human_model_name,
+                label: Sprint.human_model_name,
                 href: new_dialog_project_backlogs_sprints_path(@project, all_backlogs_params),
                 data: {
                   controller: "async-dialog",
@@ -59,7 +59,7 @@ See COPYRIGHT and LICENSE files for more details.
                 }
               ) do |button|
                 button.with_leading_visual_icon(icon: :plus)
-                Agile::Sprint.human_model_name
+                Sprint.human_model_name
               end
             end
           end
@@ -70,7 +70,7 @@ See COPYRIGHT and LICENSE files for more details.
           if allow_sprint_creation?(@project)
             subheader.with_action_button(
               leading_icon: :plus,
-              label: Agile::Sprint.human_model_name,
+              label: Sprint.human_model_name,
               tag: :a,
               href: new_dialog_project_backlogs_sprints_path(@project),
               data: {
@@ -78,7 +78,7 @@ See COPYRIGHT and LICENSE files for more details.
                 test_selector: "op-sprints--new-sprint-button"
               }
             ) do
-              Agile::Sprint.human_model_name
+              Sprint.human_model_name
             end
           end
         end %>

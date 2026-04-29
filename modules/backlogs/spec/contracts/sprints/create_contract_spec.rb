@@ -35,7 +35,7 @@ RSpec.describe Sprints::CreateContract do
   include_context "as sprint contract"
 
   let(:sprint) do
-    Agile::Sprint.new(name: sprint_name,
+    Sprint.new(name: sprint_name,
                       project: sprint_project,
                       start_date: sprint_start_date,
                       finish_date: sprint_finish_date,

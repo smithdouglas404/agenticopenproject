@@ -228,7 +228,7 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
   }
 
   public fullWorkPackageLink(wp:WorkPackageResource):string {
-    return this.keepTabService.currentShowHref(wp.id!);
+    return this.keepTabService.currentShowHref(wp.displayId);
   }
 
   public cardHighlightingClass(wp:WorkPackageResource):string {

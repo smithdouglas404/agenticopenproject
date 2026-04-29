@@ -449,8 +449,12 @@ pt-PT:
         ignore: Ignorar alterações
         save: Guardar as alterações e continuar
       role_selector:
+        title: Select roles
         label: 'Função: %{role}'
         no_role: Selecionar função
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Não há transições de estado configuradas
         description: Adicione estados para começar a configurar fluxos de trabalho para esta função

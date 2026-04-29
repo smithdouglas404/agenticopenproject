@@ -54,6 +54,7 @@ import {
   WorkPackageTabsService,
 } from 'core-app/features/work-packages/components/wp-tabs/services/wp-tabs/wp-tabs.service';
 import { TabComponent } from 'core-app/features/work-packages/components/wp-tabs/components/wp-tab-wrapper/tab';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Component({
   templateUrl: './wp-split-view.html',
@@ -109,9 +110,9 @@ export class WorkPackageSplitViewComponent extends WorkPackageSingleViewBase imp
         const currentId = this.workPackage?.id ?? this.workPackageId;
         const idSame = currentId.toString() === newId.toString();
         if (!idSame && this.$state.includes(`${this.baseRoute}.details`)) {
-          this.$state.go(
+          void this.$state.go(
             (this.$state.current.name!),
-            { workPackageId: newId, focus: false },
+            { workPackageId: resolveRoutingId(this.states, newId.toString()), focus: false },
           );
         }
       });

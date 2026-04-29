@@ -67,7 +67,7 @@ RSpec.describe "Backlog bucket deletion",
 
     backlogs_page.expect_work_packages_in_backlog_inbox_in_order(work_packages: [bucket_wp1, bucket_wp2])
 
-    expect(Agile::BacklogBucket.where(id: bucket.id)).to be_empty
+    expect(BacklogBucket.where(id: bucket.id)).to be_empty
     expect(bucket_wp1.reload.backlog_bucket_id).to be_nil
     expect(bucket_wp2.reload.backlog_bucket_id).to be_nil
   end

@@ -26,20 +26,18 @@ pl:
     description: Moduł ten dodaje funkcje umożliwiające zwinnym zespołom pracę z OpenProject w projektach Scrum.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Czas trwania
-        finish_date: Data zakończenia
-        goal: Cel sprintu
-        name: Nazwa sprintu
-        sharing: Udostępnianie
-        statuses:
-          in_planning: W planowaniu
-          active: Aktywne
-          completed: Ukończone
       project:
         sprint_sharing: Udostępnianie sprintu
       sprint:
-        duration: Czas trwania sprintu
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Pokaż zwinięte sprinty
       work_package:
@@ -60,6 +58,17 @@ pl:
             sprint_sharing:
               share_all_projects_already_taken: "— nie można ustawić, ponieważ projekt „%{name}” jest już udostępniony wszystkim projektom."
               share_all_projects_already_taken_anonymous: "— nie można ustawić, ponieważ inny projekt jest już udostępniony wszystkim projektom."
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is %{count} work package that was not completed in this sprint.
+                few: There are %{count} work packages that were not completed in this sprint.
+                many: There are %{count} work packages that were not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,19 +82,6 @@ pl:
             sprint:
               not_shared_with_project: nie jest udostępniany projektowi, w którym znajduje się pakiet roboczy.
               not_eligible_for_moving: nie jest aktywnym sprintem w projekcie, w którym znajduje się sprint, z którego przenoszony jest pakiet roboczy.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: "%{count} pakietu roboczego nie ukończono w tym sprincie."
-                few: "%{count} pakietów roboczych nie ukończono w tym sprincie."
-                many: "%{count} pakietów roboczych nie ukończono w tym sprincie."
-                other: "%{count} pakietu roboczego nie ukończono w tym sprincie."
-              format: "%{message}"
-            status:
-              not_active: jest nieaktywny, więc nie można go zamknąć.
-        sprint:
-          cannot_end_before_it_starts: Sprint nie może się skończyć przed swoim rozpoczęciem.
     models:
       sprint: Sprint
   backlogs:

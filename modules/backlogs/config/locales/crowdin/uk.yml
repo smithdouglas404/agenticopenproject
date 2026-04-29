@@ -26,20 +26,18 @@ uk:
     description: Цей модуль додає функції, завдяки яким agile-команди можуть працювати над проєктами Scrum в OpenProject.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Тривалість
-        finish_date: Дата закінчення
-        goal: Ціль спринту
-        name: Ім’я спринту
-        sharing: Надання доступу
-        statuses:
-          in_planning: На етапі планування
-          active: Активний
-          completed: Завершений
       project:
         sprint_sharing: Спільний доступ до спринту
       sprint:
-        duration: Тривалість спринту
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Показувати спринти згорнутими
       work_package:
@@ -60,6 +58,17 @@ uk:
             sprint_sharing:
               share_all_projects_already_taken: не можна налаштувати, оскільки проєкт «%{name}» уже надає спільний доступ усім проєктам.
               share_all_projects_already_taken_anonymous: не можна налаштувати, оскільки інший проєкт вже надає спільний доступ усім проєктам.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is %{count} work package that was not completed in this sprint.
+                few: There are %{count} work packages that were not completed in this sprint.
+                many: There are %{count} work packages that were not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,19 +82,6 @@ uk:
             sprint:
               not_shared_with_project: не надається проєкту, у якому міститься пакет робіт.
               not_eligible_for_moving: не є активним спринтом у проєкті, який включає спринт, з якого переміщується пакет робіт.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: У цьому спринті не завершено %{count} пакет робіт.
-                few: У цьому спринті не завершено %{count} пакети робіт.
-                many: У цьому спринті не завершено %{count} пакетів робіт.
-                other: У цьому спринті не завершено %{count} пакета робіт.
-              format: "%{message}"
-            status:
-              not_active: не є активним, тому його не можна закрити.
-        sprint:
-          cannot_end_before_it_starts: Спринт не може закінчитися, перш ніж він почне працювати.
     models:
       sprint: Спринт
   backlogs:

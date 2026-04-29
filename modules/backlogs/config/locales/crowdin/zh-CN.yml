@@ -26,20 +26,18 @@ zh-CN:
     description: 该模块为敏捷团队在敏捷项目中使用 OpenProject 添加了功能。
   activerecord:
     attributes:
-      agile/sprint:
-        duration: 持续时间
-        finish_date: 完成日期
-        goal: 冲刺目标
-        name: 冲刺名称
-        sharing: 共享
-        statuses:
-          in_planning: 规划中
-          active: 有效
-          completed: 已完成
       project:
         sprint_sharing: 冲刺共享
       sprint:
-        duration: 冲刺持续时间
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: 以折叠形式显示冲刺
       work_package:
@@ -60,6 +58,14 @@ zh-CN:
             sprint_sharing:
               share_all_projects_already_taken: 无法设置，因为项目“%{name}”已经与所有项目共享。
               share_all_projects_already_taken_anonymous: 无法设置，因为另一个项目已经与所有项目共享。
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,16 +79,6 @@ zh-CN:
             sprint:
               not_shared_with_project: 未与工作包所在的项目共享。
               not_eligible_for_moving: 在该工作包被移出的冲刺所属的项目中，没有处于有效状态的冲刺。
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                other: 此冲刺中有 %{count} 个未完成的工作包。
-              format: "%{message}"
-            status:
-              not_active: 未处于有效状态，因此无法关闭。
-        sprint:
-          cannot_end_before_it_starts: 比赛不可以在开始前结束。
     models:
       sprint: 冲刺
   backlogs:

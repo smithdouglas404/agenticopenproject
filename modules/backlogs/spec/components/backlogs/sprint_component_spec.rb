@@ -41,7 +41,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
+  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
 
   def render_component
     render_inline(described_class.new(sprint:, project:, current_user: user))
@@ -57,7 +57,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
                priority: default_priority,
                story_points: 5,
                position: 1,
-               sprint: sprint)
+               sprint:)
       end
       let!(:story2) do
         create(:work_package,
@@ -67,7 +67,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
                priority: default_priority,
                story_points: 3,
                position: 2,
-               sprint: sprint)
+               sprint:)
       end
 
       it "renders a Primer::Beta::BorderBox" do
@@ -79,7 +79,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       it "has the sprint ID in the DOM id" do
         render_component
 
-        expect(page).to have_css(".Box#agile_sprint_#{sprint.id}")
+        expect(page).to have_css(".Box#sprint_#{sprint.id}")
       end
 
       it "renders SprintHeaderComponent in header" do
@@ -91,7 +91,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       it "renders a stable id on the sprint header" do
         render_component
 
-        expect(page).to have_element(:div, class: "Box-header", id: /\Aagile_sprint_#{sprint.id}_header\z/)
+        expect(page).to have_element(:div, class: "Box-header", id: /\Asprint_#{sprint.id}_header\z/)
       end
 
       it "renders StoryComponent for each story" do

@@ -26,20 +26,18 @@ it:
     description: Questo modulo aggiunge funzionalità che consentono ai team agili di lavorare con i progetti OpenProject in Scrum.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Durata
-        finish_date: Data di fine
-        goal: Obiettivo dello sprint
-        name: Nome dello sprint
-        sharing: Condivisione
-        statuses:
-          in_planning: In pianificazione
-          active: Attivo
-          completed: Completato
       project:
         sprint_sharing: Condivisione dello sprint
       sprint:
-        duration: Durata dello sprint
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Mostra gli sprint compressi
       work_package:
@@ -60,6 +58,15 @@ it:
             sprint_sharing:
               share_all_projects_already_taken: non può essere impostato perché il progetto "%{name}" è già condiviso con tutti i progetti.
               share_all_projects_already_taken_anonymous: non può essere impostato perché un altro progetto è già condiviso con tutti i progetti.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is %{count} work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,17 +80,6 @@ it:
             sprint:
               not_shared_with_project: non è condiviso con il progetto in cui si trova la macro-attività.
               not_eligible_for_moving: non è uno sprint attivo nel progetto che contiene lo sprint da cui la macro-attività viene spostata.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: C'è %{count} macro-attività che non è stata completata in questo sprint.
-                other: Ci sono %{count} macro-attività che non sono state completate in questo sprint.
-              format: "%{message}"
-            status:
-              not_active: non è attivo, quindi non può essere chiuso.
-        sprint:
-          cannot_end_before_it_starts: Uno sprint non può terminare prima che venga avviato.
     models:
       sprint: Sprint
   backlogs:

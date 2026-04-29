@@ -35,7 +35,7 @@ RSpec.describe Sprints::UpdateContract do
   include_context "as sprint contract"
 
   let(:sprint) do
-    build_stubbed(:agile_sprint,
+    build_stubbed(:sprint,
                   name: sprint_name,
                   project: sprint_project,
                   start_date: sprint_start_date,

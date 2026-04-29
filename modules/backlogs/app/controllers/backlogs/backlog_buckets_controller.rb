@@ -36,7 +36,7 @@ module Backlogs
     before_action :find_backlog_bucket, only: %i[edit_dialog update destroy]
 
     def new_dialog
-      backlog_bucket = Agile::BacklogBucket.new(project: @project)
+      backlog_bucket = BacklogBucket.new(project: @project)
 
       respond_with_dialog Backlogs::NewBacklogBucketDialogComponent.new(backlog_bucket:)
     end
@@ -104,7 +104,7 @@ module Backlogs
     end
 
     def find_backlog_bucket
-      @backlog_bucket = Agile::BacklogBucket.where(project: @project).find(params[:id])
+      @backlog_bucket = BacklogBucket.where(project: @project).find(params[:id])
     end
 
     def backlog_bucket_params

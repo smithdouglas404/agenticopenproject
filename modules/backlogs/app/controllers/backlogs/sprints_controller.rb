@@ -48,7 +48,7 @@ module Backlogs
     def new_dialog
       call = ::Sprints::SetAttributesService.new(
         user: current_user,
-        model: Agile::Sprint.new,
+        model: Sprint.new,
         contract_class: ::EmptyContract
       ).call(attributes: converted_sprint_params)
 
@@ -56,14 +56,14 @@ module Backlogs
     end
 
     def edit_dialog
-      @sprint = Agile::Sprint.for_project(@project).visible.find(params[:sprint_id])
+      @sprint = Sprint.for_project(@project).visible.find(params[:sprint_id])
 
       respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint, state: :edit)
     end
 
     def refresh_form
       id = edit_sprint_params.dig(:sprint, :id)
-      sprint = id.present? ? Agile::Sprint.for_project(@project).visible.find(id) : Agile::Sprint.new
+      sprint = id.present? ? Sprint.for_project(@project).visible.find(id) : Sprint.new
 
       call = ::Sprints::SetAttributesService.new(
         user: current_user,
@@ -156,7 +156,7 @@ module Backlogs
         Backlogs::FinishSprintDialogComponent.new(
           sprint: @sprint,
           project: @project,
-          available_sprints: Agile::Sprint.native_to_sprint_source(@project).in_planning.where.not(id: @sprint.id).order_by_date
+          available_sprints: Sprint.native_to_sprint_source(@project).in_planning.where.not(id: @sprint.id).order_by_date
         )
       )
     end
@@ -165,7 +165,7 @@ module Backlogs
       load_project
 
       sprint_id = params[:sprint_id]
-      @sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id) if sprint_id
+      @sprint = Sprint.for_project(@project).visible.find(sprint_id) if sprint_id
     end
 
     def sprint_params

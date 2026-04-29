@@ -26,7 +26,9 @@ vi:
     description: Mô-đun này bổ sung các tính năng cho phép các nhóm linh hoạt làm việc với OpenProject trong các dự án Scrum.
   activerecord:
     attributes:
-      agile/sprint:
+      project:
+        sprint_sharing: Sprint sharing
+      sprint:
         duration: Duration
         finish_date: Finish date
         goal: Sprint goal
@@ -36,10 +38,6 @@ vi:
           in_planning: In planning
           active: Active
           completed: Completed
-      project:
-        sprint_sharing: Sprint sharing
-      sprint:
-        duration: Sprint duration
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
@@ -60,6 +58,14 @@ vi:
             sprint_sharing:
               share_all_projects_already_taken: cannot be set because project "%{name}" is already sharing with all projects.
               share_all_projects_already_taken_anonymous: cannot be set because another project is already sharing with all projects.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -75,16 +81,6 @@ vi:
             sprint:
               not_shared_with_project: is not shared with the project the work package is in.
               not_eligible_for_moving: is not an active sprint in the project which holds the sprint the work package is moved out of.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                other: There are %{count} work packages that were not completed in this sprint.
-              format: "%{message}"
-            status:
-              not_active: is not active so it cannot be closed.
-        sprint:
-          cannot_end_before_it_starts: Sprint không thể kết thúc trước khi nó bắt đầu.
     models:
       sprint: Sprint
   backlogs:

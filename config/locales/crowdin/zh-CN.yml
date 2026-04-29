@@ -439,8 +439,11 @@ zh-CN:
         ignore: 忽略更改
         save: 保存更改并继续
       role_selector:
+        title: Select roles
         label: 角色：%{role}
         no_role: 选择角色
+        roles:
+          other: "%{count} roles selected"
       blankslate:
         title: 未配置状态过渡
         description: 添加状态，以开始为此角色配置工作流

@@ -14,7 +14,7 @@ RSpec.describe "Work package table semantic ID navigation",
   let(:wp_table) { Pages::WorkPackagesTable.new(project) }
 
   before do
-    work_package.allocate_and_register_semantic_id
+    work_package
     login_as(user)
     wp_table.visit!
     wp_table.expect_work_package_listed(work_package)

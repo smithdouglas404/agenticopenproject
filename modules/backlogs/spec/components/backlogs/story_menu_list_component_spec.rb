@@ -39,7 +39,7 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
+  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:position) { 2 }
   let(:max_position) { 3 }
   let(:story) do
@@ -51,7 +51,7 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
            priority: default_priority,
            story_points: 5,
            position:,
-           sprint: sprint)
+           sprint:)
   end
 
   def render_component(position: 2, max_position: 3, open_sprints_exist: true)

@@ -26,20 +26,18 @@ el:
     description: This module adds features enabling agile teams to work with OpenProject in Scrum projects.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Διάρκεια
-        finish_date: Ημερομηνία ολοκλήρωσης
-        goal: Στόχος Sprint
-        name: Όνομα Sprint
-        sharing: Κοινή Χρήση
-        statuses:
-          in_planning: Σε σχεδιασμό
-          active: Ενεργό
-          completed: Ολοκληρωμένο
       project:
         sprint_sharing: Διαμοιρασμός Sprint
       sprint:
-        duration: Διάρκεια Sprint
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
@@ -60,6 +58,15 @@ el:
             sprint_sharing:
               share_all_projects_already_taken: δεν μπορεί να οριστεί επειδή το έργο "%{name}" ήδη διαμοιράζεται με όλα τα έργα.
               share_all_projects_already_taken_anonymous: δεν μπορεί να οριστεί επειδή ένα άλλο έργο ήδη διαμοιράζεται με όλα τα έργα.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is %{count} work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,17 +80,6 @@ el:
             sprint:
               not_shared_with_project: δεν διαμοιράζεται με το έργο στο οποίο ανήκει το πακέτο εργασίας.
               not_eligible_for_moving: is not an active sprint in the project which holds the sprint the work package is moved out of.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: There is %{count} work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
-              format: "%{message}"
-            status:
-              not_active: is not active so it cannot be closed.
-        sprint:
-          cannot_end_before_it_starts: Το sprint δεν μπορεί να λήξει πριν αρχίσει.
     models:
       sprint: Sprint
   backlogs:

@@ -39,7 +39,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
+  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:story_points) { 5 }
   let(:story) do
     create(:work_package,
@@ -50,7 +50,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
            priority: default_priority,
            story_points:,
            position: 1,
-           sprint: sprint)
+           sprint:)
   end
   let(:permissions) { %i[manage_sprint_items] }
 

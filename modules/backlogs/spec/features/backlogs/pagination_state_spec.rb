@@ -81,7 +81,7 @@ RSpec.describe "Backlog pagination state", :js do
     expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
     backlogs_page.expect_no_inbox_show_more
 
-    bucket = Agile::BacklogBucket.find_by!(project:, name: "New bucket")
+    bucket = BacklogBucket.find_by!(project:, name: "New bucket")
 
     # Edit backlog bucket
     backlogs_page.click_in_backlog_bucket_menu(bucket, "Edit backlog bucket")

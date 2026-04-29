@@ -26,20 +26,18 @@ de:
     description: Dieses Modul fügt Funktionen hinzu, die es agilen Teams ermöglichen, mit OpenProject in Scrum-Projekten zu arbeiten.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Dauer
-        finish_date: Endtermin
-        goal: Sprint-Ziel
-        name: Sprint-Name
-        sharing: Teilen
-        statuses:
-          in_planning: In Planung
-          active: Aktiv
-          completed: Abgeschlossen
       project:
         sprint_sharing: Sprints teilen
       sprint:
-        duration: Sprint-Dauer
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Zeige Versionen eingeklappt
       work_package:
@@ -60,6 +58,15 @@ de:
             sprint_sharing:
               share_all_projects_already_taken: kann nicht gewählt werden, da das Projekt "%{name}" bereits mit allen Projekten teilt.
               share_all_projects_already_taken_anonymous: kann nicht gewählt werden, da ein anderes Projekt bereits mit allen Projekten teilt.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is %{count} work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,17 +80,6 @@ de:
             sprint:
               not_shared_with_project: wird nicht mit dem Projekt geteilt, in dem sich das Arbeitspaket befindet.
               not_eligible_for_moving: ist kein aktiver Sprint in dem Projekt, in dem der Sprint liegt, aus dem das Arbeitspaket verschoben wird.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: Es gibt ein %{count} Arbeitspaket, das in diesem Sprint nicht abgeschlossen wurde.
-                other: Es gibt %{count} Arbeitspakete, die in diesem Sprint nicht abgeschlossen wurden.
-              format: "%{message}"
-            status:
-              not_active: ist nicht aktiv und kann deshalb nicht geschlossen werden.
-        sprint:
-          cannot_end_before_it_starts: Sprint kann nicht enden, bevor er begonnen hat.
     models:
       sprint: Sprint
   backlogs:

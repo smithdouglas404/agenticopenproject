@@ -28,9 +28,9 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 <% html_title t(:label_administration), t(:label_workflow_plural), @type.name -%>
 <% content_for :content_header do %>
-  <%= render Workflows::PageHeaders::EditComponent.new(@type, role: @role, tabs: workflow_tabs(@type)) %>
+  <%= render Workflows::PageHeaders::EditComponent.new(@type, roles: @roles, tabs: workflow_tabs(@type)) %>
 <% end %>
 
-<% if @type && @role %>
-  <%= turbo_frame_tag "workflow-table", src: edit_workflow_tab_path(@type, @current_tab, role_id: @role.id, status_ids: params[:status_ids]) %>
+<% if @type && @roles.any? %>
+  <%= turbo_frame_tag "workflow-table", src: edit_workflow_tab_path(@type, @current_tab, role_ids: @roles.map(&:id), status_ids: params[:status_ids]) %>
 <% end %>

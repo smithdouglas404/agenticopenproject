@@ -26,20 +26,18 @@ ko:
     description: 이 모듈은 애자일 팀이 Scrum 프로젝트에서 OpenProject로 작업할 수 있도록 하는 기능을 추가합니다.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: 기간
-        finish_date: 완료 날짜
-        goal: 스프린트 목표
-        name: 스프린트 이름
-        sharing: 공유
-        statuses:
-          in_planning: 계획 중
-          active: 활성
-          completed: 완료됨
       project:
         sprint_sharing: 스프린트 공유
       sprint:
-        duration: 스프린트 기간
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: 접힌 스프린트 표시
       work_package:
@@ -60,6 +58,14 @@ ko:
             sprint_sharing:
               share_all_projects_already_taken: '- 프로젝트 "%{name}"이(가) 이미 모든 프로젝트와 공유 중이므로 설정할 수 없습니다.'
               share_all_projects_already_taken_anonymous: "- 다른 프로젝트가 이미 모든 프로젝트와 공유 중이므로 설정할 수 없습니다."
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,16 +79,6 @@ ko:
             sprint:
               not_shared_with_project: "- 작업 패키지가 속한 프로젝트와 공유되지 않습니다."
               not_eligible_for_moving: "- 작업 패키지가 이동된 스프린트가 속한 프로젝트에서 활성 스프린트가 아닙니다."
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                other: 이 스프린트에서 완료되지 않은 %{count}개 작업 패키지가 있습니다.
-              format: "%{message}"
-            status:
-              not_active: "- 활성화되어 있지 않으므로 닫을 수 없습니다."
-        sprint:
-          cannot_end_before_it_starts: 스프린트는 시작되기 전에 끝날 수 없습니다.
     models:
       sprint: 스프린트
   backlogs:

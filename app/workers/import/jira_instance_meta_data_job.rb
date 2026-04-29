@@ -51,7 +51,7 @@ module Import
       jira_import.update!(job_id: nil, available:, error: nil)
       jira_import.transition_to!(:instance_meta_done)
     rescue StandardError => e
-      jira_import&.transition_to!(:instance_meta_error, error: e.message)
+      jira_import&.transition_to!(:instance_meta_error, error: e.message, error_backtrace: e.backtrace)
       jira_import&.update!(job_id: nil, error: e.message)
     end
 

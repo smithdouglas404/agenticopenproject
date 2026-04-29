@@ -465,8 +465,14 @@ ru:
         ignore: Игнорировать изменения
         save: Сохранить изменения и продолжить
       role_selector:
+        title: Select roles
         label: 'Роль: %{role}'
         no_role: Выберите роль
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Переходы статуса не настроены
         description: Добавьте статусы, чтобы начать настройку рабочих процессов для этой роли
