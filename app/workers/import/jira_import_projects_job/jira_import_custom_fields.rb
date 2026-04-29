@@ -260,7 +260,8 @@ module Import
           option_value:,
           needs_disambiguation:,
           jira_import: @jira_import,
-          cf_name_index: @cf_name_index
+          cf_name_index: @cf_name_index,
+          jira_user_index: @jira_user_index
         )
         custom_field = find_or_create_custom_field(jira_field, builder)
         {
