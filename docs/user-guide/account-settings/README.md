@@ -353,7 +353,7 @@ Sessions expire automatically according to your instance’s authentication sett
 
 ## Notification and email settings
 
-To configure the notification settings which you receive from the system, navigate to **Account settings** and choose the **Notification and email settings** in the menu. 
+To configure the notification settings which you receive from the system, navigate to **Account settings** and choose the **Notification and email settings** in the menu. (insert new picture)
 
 ![Notification settings in OpenProject account settings](openproject_account_settings_notification_settings.png)
 
