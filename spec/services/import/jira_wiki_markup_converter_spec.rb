@@ -83,6 +83,20 @@ RSpec.describe Import::JiraWikiMarkupConverter do
         expect(described_class.new(input).convert).to eq("**bold?text**")
       end
     end
+
+    context "with in between horizontal lines" do
+      let(:input) do
+        "start\n----\nGot it? Now click *Resolve this issue* " \
+          "and add a comment to complete this request.\n----\nend"
+      end
+
+      it do
+        expect(subject).to eq(
+          "start\n<hr>\n\nGot it? Now click **Resolve this issue** " \
+          "and add a comment to complete this request.\n<hr>\n\nend"
+        )
+      end
+    end
   end
 
   describe "line ending normalization" do
@@ -470,7 +484,7 @@ RSpec.describe Import::JiraWikiMarkupConverter do
   describe "horizontal rule" do
     let(:input) { "Above\n----\nBelow" }
 
-    it { is_expected.to eq("Above\n<hr>\nBelow") }
+    it { is_expected.to eq("Above\n<hr>\n\nBelow") }
   end
 
   describe "dashes" do
@@ -489,7 +503,7 @@ RSpec.describe Import::JiraWikiMarkupConverter do
     context "with dashes and line breaks" do
       let(:input) { "HR:\n----\nEm-Dash\n---\nEn-Dash\n--\n" }
 
-      it { is_expected.to eq("HR:\n<hr>\nEm-Dash\n\n\u2014\n\nEn-Dash\n\n\u2013\n\n") }
+      it { is_expected.to eq("HR:\n<hr>\n\nEm-Dash\n\n\u2014\n\nEn-Dash\n\n\u2013\n\n") }
     end
   end
 

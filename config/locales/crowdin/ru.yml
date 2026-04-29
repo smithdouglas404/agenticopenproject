@@ -3539,18 +3539,17 @@ ru:
         header: Читайте о новых возможностях и обновлениях продуктов.
         learn_about: Узнайте больше о всех новых функциях
         missing: Нет выделенных функций.
-        '17_3':
-          new_features_title: 'Релиз содержит различные новые функции и улучшения, такие как:
+        '17_4':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Большое обновление Agile: выделенные объекты спринта, все рабочие пакеты видны в бэклогах и автоматическое создание доски спринта.'
-            line_1: Редактирование атрибутов проекта на странице Обзор проекта.
-            line_2: Совместное использование шаблонов совещаний.
-            line_3: Улучшенный поиск в разделах "Время и затраты", "Доски" и многое другое.
-            line_4: Возможность безопасного изменения идентификаторов проекта.
-            line_5: Улучшена настройка рабочих процессов для администраторов.
-            line_6: Доски действий доступны в Community Edition.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Обновить до корпоративной версии
       postgres_migration: Перенос вашей установки в PostgreSQL

@@ -3411,18 +3411,17 @@ pt-BR:
         header: Leia sobre novos recursos e atualizações do produto.
         learn_about: Saiba mais sobre todos os novos recursos
         missing: Ainda não há recursos destacados.
-        '17_3':
-          new_features_title: 'A versão traz diversos novos recursos e melhorias, como:
+        '17_4':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Grande atualização Agile: objetos de sprint dedicados, todos os pacotes de trabalho visíveis nos Backlogs e criação automática de quadros de sprint.'
-            line_1: Edição direta dos atributos do projeto na página de visão geral do projeto.
-            line_2: Compartilhamento de modelos de reunião (plano Basic ou superior).
-            line_3: Melhor busca em Tempo e Custos, Quadros e mais.
-            line_4: Opção para alterar identificadores de projeto com segurança.
-            line_5: Configuração de fluxo de trabalho aprimorada para administradores.
-            line_6: Quadros de ação lançados para a comunidade.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Atualizar para a edição Enterprise
       postgres_migration: Migrando sua instalação para PostgreSQL

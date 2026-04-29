@@ -3528,18 +3528,17 @@ pl:
         header: Przeczytaj o nowych funkcjach i aktualizacjach produktów.
         learn_about: Dowiedz się więcej o wszystkich nowych funkcjach
         missing: Nie ma jeszcze wyróżnionych funkcji.
-        '17_3':
-          new_features_title: 'Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
+        '17_4':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Duża aktualizacja Agile: dedykowane obiekty sprintu, wszystkie pakiety robocze widoczne w module Backlogs i automatyczne tworzenie tablicy sprintu.'
-            line_1: Edycja na miejscu atrybutów projektu na stronie Przegląd projektu.
-            line_2: Udostępnianie szablonów spotkań (plan Basic i wyższe).
-            line_3: Lepsze wyszukiwanie w obszarach Czas i koszty, Tablice itd.
-            line_4: Opcja bezpiecznej zmiany identyfikatorów projektów.
-            line_5: Ulepszona konfiguracja przepływu pracy dla administratorów.
-            line_6: Tablice działań udostępnione społeczności.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Aktualizuj do wersji Enterprise
       postgres_migration: Migrowanie instalacji do PostgreSQL

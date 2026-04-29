@@ -95,7 +95,13 @@ module Import
         },
         {
           "type" => "array",
-          "items" => "string"
+          "items" => "string",
+          "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multiselect"
+        },
+        {
+          "type" => "array",
+          "items" => "string",
+          "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:labels"
         }
       ].freeze
 

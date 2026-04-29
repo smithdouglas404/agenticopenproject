@@ -51,8 +51,7 @@ module ProjectIdentifiers
       # Combines all FriendlyId slug history for projects (current and historical slugs)
       # with system-reserved keywords from Projects::Identifier::RESERVED_IDENTIFIERS.
       def self.reserved_identifiers
-        slug_set = Project.historical_slugs.pluck("UPPER(slug)").to_set
-        slug_set | model_reserved_identifiers
+        Project.identifier_slugs.upcased_values.to_set | model_reserved_identifiers
       end
 
       def self.model_reserved_identifiers
@@ -111,11 +110,7 @@ module ProjectIdentifiers
       private
 
       def historical_identifiers
-        @historical_identifiers ||= Project
-                                      .historical_slugs
-                                      .where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
-                                      .pluck("UPPER(slug)")
-                                      .to_set
+        @historical_identifiers ||= Project.identifier_slugs.historically_reserved.upcased_values.to_set
       end
 
       def exceeds_max_length        = Project.where("length(identifier) > ?", self.class.max_identifier_length)

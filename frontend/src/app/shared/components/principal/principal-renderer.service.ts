@@ -227,6 +227,9 @@ export class PrincipalRendererService {
     const span = document.createElement('span');
     span.textContent = principal.name;
     span.classList.add('op-principal--name');
+    if (standalone) {
+      span.classList.add('op-principal--name_standalone');
+    }
     span.title = title;
     classes !== '' && classes.split(' ').forEach((cls) => {
       span.classList.add(cls);

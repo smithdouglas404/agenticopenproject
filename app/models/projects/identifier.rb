@@ -83,13 +83,44 @@ module Projects::Identifier
     def unset_slug_if_invalid; end
   end
 
+  # Domain-named scopes for the FriendlyId::Slug relation returned by Project.identifier_slugs.
+  # Lets callers compose against verbs like .historically_reserved / .for_identifier / .upcased_values
+  # instead of raw SQL fragments — keeping FriendlyId::Slug column knowledge in one place.
+  module IdentifierSlugScopes
+    # Slugs that are no longer used as any active project's identifier, but remain reserved
+    # because FriendlyId still owns them — so they cannot be reused by another project.
+    def historically_reserved
+      where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
+    end
+
+    # Slugs whose lowercase form equals the lowercased input.
+    def for_identifier(value)
+      where("LOWER(slug) = ?", value.downcase)
+    end
+
+    # Excludes the given project's own slug history. No-op when project is nil.
+    def excluding_project(project)
+      project ? where.not(sluggable_id: project) : self
+    end
+
+    def upcased_values   = pluck(Arel.sql("UPPER(slug)"))
+    def downcased_values = pluck(Arel.sql("LOWER(slug)"))
+    # Verbatim values, no case folding. Named `raw_values` to avoid colliding
+    # with `ActiveRecord::Relation#values` (an internal Rails method).
+    def raw_values = pluck(:slug)
+  end
+
   class_methods do
     def classic_identifier_format?(str)
       str.match?(CLASSIC_IDENTIFIER_FORMAT)
     end
 
-    def historical_slugs
-      FriendlyId::Slug.where(sluggable_type: name)
+    # FriendlyId's :history module records a row on every save, so this relation contains
+    # both currently-used identifiers and historically-reserved ones. Compose with
+    # `.historically_reserved` to filter to the latter. The name aligns with FriendlyId's
+    # `project.slugs` association for vocabulary consistency.
+    def identifier_slugs
+      FriendlyId::Slug.where(sluggable_type: name).extending(IdentifierSlugScopes)
     end
 
     def suggest_identifier(name, mode: Setting[:work_packages_identifier])
@@ -171,8 +202,8 @@ module Projects::Identifier
   end
 
   def identifier_used_by_other_project_in_past?
-    self.class.historical_slugs
-              .where("LOWER(slug) = ?", identifier.downcase)
+    self.class.identifier_slugs
+              .for_identifier(identifier)
               .where.not(sluggable_id: id)
               .exists?
   end

@@ -101,7 +101,17 @@ RSpec.shared_examples_for "provides a single WP context menu" do
             with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "uses numeric parent_id in the URL and sets the parent correctly" do
-        # Ensure the WP has a semantic identifier so we can verify the URL uses numeric PK
+        expect(Setting::WorkPackageIdentifier.semantic_mode_active?)
+          .to be(true), "expected semantic mode to be active via with_settings + with_flag metadata"
+
+        # Consumers of this shared example use shared_let(:project), which evaluates
+        # before per-example `with_settings:` activates semantic mode — so the project
+        # was created via the classic-mode factory path with a lowercase slug. Force
+        # an identifier that satisfies Projects::Identifier's semantic constraints
+        # (uppercase, [A-Z][A-Z0-9_]*, max 10 chars). For specs that create their own
+        # project per example, prefer the `:semantic` factory trait instead.
+        semantic_project_identifier = "PROJ#{work_package.project.id}".first(Projects::Identifier::SEMANTIC_IDENTIFIER_MAX_LENGTH)
+        work_package.project.update_columns(identifier: semantic_project_identifier)
         work_package.allocate_and_register_semantic_id if work_package.identifier.blank?
 
         open_context_menu.call
