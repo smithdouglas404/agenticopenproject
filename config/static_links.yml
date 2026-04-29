@@ -242,3 +242,7 @@ webinar_videos:
 website:
   href: https://www.openproject.org
   label: label_openproject_website
+jira_migrator_project:
+  href: https://community.openproject.org/projects/jira-migration/dashboard
+backup_guide:
+  href: https://www.openproject.org/docs/installation-and-operations/operation/backing-up/
