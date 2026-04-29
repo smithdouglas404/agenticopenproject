@@ -30,6 +30,7 @@ import WorkingHoursFormController from './controllers/dynamic/users/working-hour
 import DailyRemindersController from './controllers/dynamic/my/daily-reminders.controller';
 import NonWorkingTimesController from './controllers/dynamic/users/non-working-times.controller';
 import NonWorkingTimesFormController from './controllers/dynamic/users/non-working-times-form.controller';
+import OpPasswordForceChangeController from './controllers/password-force-change.controller';
 
 import AutoSubmit from '@stimulus-components/auto-submit';
 import RevealController from '@stimulus-components/reveal';
@@ -92,6 +93,7 @@ OpenProjectStimulusApplication.preregister('users--working-hours-form', WorkingH
 OpenProjectStimulusApplication.preregister('my--daily-reminders', DailyRemindersController);
 OpenProjectStimulusApplication.preregister('users--non-working-times', NonWorkingTimesController);
 OpenProjectStimulusApplication.preregister('users--non-working-times-form', NonWorkingTimesFormController);
+OpenProjectStimulusApplication.preregister('password-force-change', OpPasswordForceChangeController);
 OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
 OpenProjectStimulusApplication.preregister('checkable', CheckableController);
 OpenProjectStimulusApplication.preregister('truncation', TruncationController);

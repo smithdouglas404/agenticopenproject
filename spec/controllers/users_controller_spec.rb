@@ -936,6 +936,28 @@ RSpec.describe UsersController do
           expect(mail.body.encoded)
             .to include("newpassPASS!")
         end
+
+        it "forces a password change on next login because the password was emailed" do
+          expect(some_user.reload.force_password_change).to be(true)
+        end
+      end
+
+      context "when manually setting a password without send_information" do
+        let(:params) do
+          {
+            id: some_user.id,
+            user: { password: "newpassPASS!",
+                    password_confirmation: "newpassPASS!" }
+          }
+        end
+
+        it "does not force a password change (password was not emailed)" do
+          expect(some_user.reload.force_password_change).to be(false)
+        end
+
+        it "does not send any email" do
+          expect(ActionMailer::Base.deliveries).to be_empty
+        end
       end
 
       context "with invalid params" do
