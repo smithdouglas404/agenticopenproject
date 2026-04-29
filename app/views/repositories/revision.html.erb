@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render(Repositories::Revision::PageHeaderComponent.new(changeset: @changeset, repository: @repository, project: @project)) %>
 <%= form_tag({ controller: "/repositories", action: "revision", project_id: @project }, method: :get) do %>
-  <%= text_field_tag :rev, @rev, placeholder: t(:label_revision) %>
+  <%= text_field_tag :rev, @rev, placeholder: t(:label_revision), autocomplete: "off" %>
 <% end %>
 <p><% if @changeset.scmid %>ID: <%= h(@changeset.scmid) %><br>
   <% end %>
