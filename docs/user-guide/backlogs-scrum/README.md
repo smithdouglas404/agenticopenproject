@@ -24,11 +24,17 @@ A **Backlog** is defined as a module that allows you to use the backlogs feature
 
 Please note that this user guide does not represent an introduction to Scrum methodology, but merely explains the Scrum-related functionalities and user instructions in OpenProject.
 
-![Backlogs module in OpenProject showing backlog items and multiple sprints with work packages](openproject_user_guide_backlogs_sprints.png)
+![Backlogs module in OpenProject showing backlog items and multiple sprints with work packages](openproject_user_guide_backlog_bucket.png)
 
 ## Manage the backlog
 
 The Backlog is automatically populated based on the work packages in a project that are not yet in sprints. When you add a work package to a sprint, or close it, the work package will no longer be visible in the backlog. 
+
+You can also create backlog buckets to group your backlog items in order of priority.
+
+![Backlogs module in OpenProject showing backlog items and multiple sprints with work packages](openproject_user_guide_backlog_add_bucket.png)
+
+
 
 When there are too many items in the Backlog, a **Show more items** link appears in the middle. This compacts the middle section so that you always see the top and the bottom of the backlog. 
 
@@ -50,7 +56,7 @@ Opening the fullscreen view opens the work package in fullscreen.
 
 ![Work package opened in fullscreen in OpenProject](openproject_user_guide_backlogs_fullscreen_view.png)
 
-With the **Move** option, you can order items according to your preference within the backlog or move them to a sprint. You can also drag and drop the work packages. 
+With the **Move** option, you can order items according to your preference within the backlog or move them to a sprint. You can also drag and drop an entire card.
 
 ![Move options menu for a backlog item showing reorder and sprint assignment options](openproject_user_guide_backlog_move_options.png)
 
