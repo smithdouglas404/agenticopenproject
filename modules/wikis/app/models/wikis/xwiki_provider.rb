@@ -48,6 +48,12 @@ module Wikis
       def generate_client_id = SecureRandom.uuid
     end
 
+    def user_connected?(user)
+      return true if oauth_client.blank?
+
+      OAuthClientToken.for_user_and_client(user, oauth_client).exists?
+    end
+
     def extract_origin_user_id(token)
       resolve("queries.user").call(Wikis::Adapters::Input::UserQuery.new(access_token: token.access_token))
     end

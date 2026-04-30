@@ -34,7 +34,7 @@ module Wikis
       def registry_prefix = "internal"
     end
 
-    def internal? = true
+    def user_connected?(_user) = true
 
     def name
       model_name.human
