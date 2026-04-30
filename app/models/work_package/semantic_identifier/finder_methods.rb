@@ -117,10 +117,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     semantic, numeric = values.partition { semantic_id?(it) }
 
     scope = where(id: numeric.map(&:to_i))
-    if semantic.any?
-      scope = scope.or(where(identifier: semantic))
-                   .or(where(id: WorkPackageSemanticAlias.where(identifier: semantic).select(:work_package_id)))
-    end
+    scope = scope.or(scope_for_semantic_identifier(semantic)) if semantic.any?
     scope
   end
 
