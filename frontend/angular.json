@@ -49,10 +49,6 @@
                 "bundleName": "spot"
               },
               {
-                "input": "src/backlogs.scss",
-                "bundleName": "backlogs"
-              },
-              {
                 "input": "node_modules/@blocknote/mantine/src/style.css",
                 "bundleName": "blocknote"
               },
