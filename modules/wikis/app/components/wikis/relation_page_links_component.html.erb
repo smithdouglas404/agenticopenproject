@@ -60,8 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
         else
           render(Wikis::OAuthLoginComponent.new(
             provider,
-            return_url: work_package_url(@work_package, tab: :wikis),
-            work_package: @work_package
+            return_url: work_package_url(@work_package, tab: :wikis)
             )
           )
         end
