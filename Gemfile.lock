@@ -949,7 +949,7 @@ GEM
       opentelemetry-instrumentation-active_support (>= 0.7.0)
     opentelemetry-instrumentation-active_record (0.13.0)
       opentelemetry-instrumentation-base (~> 0.25)
-    opentelemetry-instrumentation-active_storage (0.3.1)
+    opentelemetry-instrumentation-active_storage (0.5.0)
       opentelemetry-instrumentation-active_support (~> 0.10)
     opentelemetry-instrumentation-active_support (0.12.0)
       opentelemetry-instrumentation-base (~> 0.25)
@@ -2094,7 +2094,7 @@ CHECKSUMS
   opentelemetry-instrumentation-active_job (0.12.0) sha256=cb3f36fd385cd0806d601d9307116146b6a249f2c0a28c279c2574a40e0db992
   opentelemetry-instrumentation-active_model_serializers (0.24.0) sha256=8fe81e44167d17e45d9acfa588d20140c7640c323e58aca99e266de1bb3fce15
   opentelemetry-instrumentation-active_record (0.13.0) sha256=239fceaae5a42e82dd9dd87bc63b1888bea32058dac0779b5ea36110fcb3a299
-  opentelemetry-instrumentation-active_storage (0.3.1) sha256=f89b0fef54921f17c0c4c38a6e0926d29afabd0ac98436fcdbb8bde85dfde89e
+  opentelemetry-instrumentation-active_storage (0.5.0) sha256=39920d405fd111cd98c01a90a24b19413f4cb5bc8de2a24d7882f785e8f02c19
   opentelemetry-instrumentation-active_support (0.12.0) sha256=29a2cbdcb3aad4a42f4c9e829dab11167b71ed8a5205ad54587fe4d59d8ee704
   opentelemetry-instrumentation-all (0.91.0) sha256=b077ce47da94e70e167157206034405f37ed0a4641d12ca8180a4b655c5727e2
   opentelemetry-instrumentation-anthropic (0.4.0) sha256=0040e0d97e9a66ef32cc35612ff28d7310d4ec1cd2f949805a2017f00f4d2de0
