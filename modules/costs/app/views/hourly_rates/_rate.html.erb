@@ -71,7 +71,7 @@ See COPYRIGHT and LICENSE files for more details.
               class="delete-row-button no-decoration-on-hover button--link"
               aria-label="<%= t(:button_delete) %>"
               data-action="subform#deleteRow">
-        <%= op_icon("icon-context icon-delete") %>
+        <%= render(Primer::Beta::Octicon.new(icon: :trash)) %>
       </button>
     </td>
   <% end %>

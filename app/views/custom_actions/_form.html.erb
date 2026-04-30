@@ -160,7 +160,7 @@
                   class="spot-link"
                   aria-label="<%= t(:button_close) %>"
                   data-action="click->hide-sections#hide">
-            <%= op_icon("icon-close icon-small") %>
+            <%= render(Primer::Beta::Octicon.new(icon: :x, size: :small)) %>
           </button>
         </div>
       </section>
@@ -171,7 +171,7 @@
 
   <div class="form--field">
     <label class="form--label" for="add-custom-action-select">
-      <%= op_icon("icon-add icon4") %>
+      <%= render(Primer::Beta::Octicon.new(icon: :plus, size: :small)) %>
       <%= I18n.t(:"custom_actions.actions.add") %>
     </label>
     <span class="form--field-container">
