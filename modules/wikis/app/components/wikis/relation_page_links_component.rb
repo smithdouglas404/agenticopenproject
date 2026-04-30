@@ -29,7 +29,17 @@
 #++
 
 module Wikis
-  class RelationPageLinksComponent < BaseComponent
+  class RelationPageLinksComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
+
+    alias_method :provider, :model
+
+    def initialize(model = nil, work_package: nil, **)
+      @work_package = work_package
+      super(model, **)
+    end
+
     def page_link_infos
       @page_link_infos ||= page_link_service.relation_page_link_infos_for(provider:, linkable: @work_package)
     end

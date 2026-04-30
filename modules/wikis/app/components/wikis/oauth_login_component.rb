@@ -29,7 +29,12 @@
 #++
 
 module Wikis
-  class OAuthLoginComponent < BaseComponent
+  class OAuthLoginComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
+
+    alias_method :provider, :model
+
     def initialize(model = nil, return_url:, **)
       super(model, **)
       @return_url = return_url
