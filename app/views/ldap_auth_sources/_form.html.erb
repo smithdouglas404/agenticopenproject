@@ -48,13 +48,11 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% if @ldap_auth_source.seeded_from_env? %>
-  <div class="op-toast -warning">
-    <div class="op-toast--content">
-      <%= t(:label_seeded_from_env_warning) %>
-      <br>
-      <%= link_to t("ldap_auth_sources.back_to_index"), { action: :index } %>
-    </div>
-  </div>
+  <%= render(Primer::Alpha::Banner.new(scheme: :warning, icon: :alert, mb: 2)) do %>
+    <%= t(:label_seeded_from_env_warning) %>
+    <br>
+    <%= link_to t("ldap_auth_sources.back_to_index"), { action: :index } %>
+  <% end %>
 <% end %>
 
 <%= content_tag :fieldset, class: "form--fieldset", disabled: @ldap_auth_source.seeded_from_env? do %>

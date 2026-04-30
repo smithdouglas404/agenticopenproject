@@ -109,19 +109,23 @@ See COPYRIGHT and LICENSE files for more details.
     </div>
 
   <% if OpenProject::Enterprise.user_limit.present? %>
-        <div class="op-toast -warning icon-warning d-none"
-             data-user-limit-target="limitWarning">
-          <div class="op-toast--content">
-            <p>
-              <%=
-              link_translate(
-                "warning_user_limit_reached#{'_admin' if current_user.admin?}",
-                links: { upgrade_url: OpenProject::Enterprise.upgrade_url }
-              )
-              %>
-            </p>
-          </div>
-        </div>
+    <%=
+      render(
+        Primer::Alpha::Banner.new(
+          scheme: :warning,
+          icon: :alert,
+          classes: "d-none",
+          data: { "user-limit-target": "limitWarning" }
+        )
+      ) do
+    %>
+      <%=
+        link_translate(
+          "warning_user_limit_reached#{'_admin' if current_user.admin?}",
+          links: { upgrade_url: OpenProject::Enterprise.upgrade_url }
+        )
+      %>
     <% end %>
+  <% end %>
 
 <% end %>
