@@ -79,7 +79,8 @@ export default class StoryController extends Controller<HTMLElement> implements 
   private syncSelectionFromUrl(locationUrl:string):void {
     const { pathname } = new URL(locationUrl, window.location.origin);
     const [, id] = DETAILS_URL_PATTERN.exec(pathname) ?? [];
-    // URL segment may be numeric or semantic; compare against both forms.
+    // Bookmarks and external links may still carry a numeric ID after the
+    // switch to semantic mode, so accept either form here.
     if (id !== undefined && (id === this.idValue.toString() || id === this.displayIdValue)) {
       this.markAsSelected();
     } else {
