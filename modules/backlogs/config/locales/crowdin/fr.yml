@@ -176,7 +176,7 @@ fr:
       legend: Action pour les lots de travaux inachevés
       actions:
         move_to_top_of_backlog: Déplacez-les en haut du backlog
-        move_to_bottom_of_backlog: Déplacez-les en bas du backlog
+        move_to_bottom_of_backlog: Déplacez-les vers le bas de l'arriéré
         move_to_sprint: Déplacez-les vers un autre sprint
       select_sprint_label: Sélectionnez le sprint
       button_complete_sprint: Terminer le sprint
