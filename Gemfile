@@ -237,7 +237,7 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.33.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.91.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.92.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
 gem "view_component", "~> 4.6.0"
