@@ -113,6 +113,11 @@ class WorkPackages::UpdateService < BaseServices::Update
     return if work_packages.empty?
 
     work_packages.first.project.reserve_semantic_id_block!(work_packages.map(&:id))
+    # reserve_semantic_id_block! writes via raw SQL UPDATE, so the in-memory
+    # records still carry the nil identifier left by SetAttributesService.
+    # Refresh them here so callers (HAL representers, redirect helpers) see
+    # the freshly allocated semantic id without an explicit reload.
+    work_packages.each(&:reload)
   end
 
   def delete_relations(work_packages)
