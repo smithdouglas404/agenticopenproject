@@ -126,9 +126,9 @@ fr:
         title: Configuration de Jira
         new: Nouvelle configuration
       banner:
-        title: Beta - Try it out!
-        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
-        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+        title: Bêta - Essayez-le!
+        description: Ce Jira Migrator est actuellement en version bêta. Nous ne prenons actuellement en charge que les versions 10.x et 11.x de Jira Server/Data Center. Les instances Cloud ne sont pas prises en charge pour le moment.
+        contribution_callout: 'Aidez-nous à améliorer le Jira Migrator avec vos commentaires et vos dons de données privées. Vous pouvez [rejoindre la communauté de développement](link) du Jira Migrator.
 
           '
         supported_versions: ''
@@ -246,10 +246,10 @@ fr:
               caption_done: Terminé
               label_info: Veuillez noter que cet outil d'importation est en version bêta et qu'il ne peut pas importer tous les types de données. Voici un résumé de ce que l'instance Jira hôte offre pour l'importation et de ce que cet outil est capable d'importer pour le moment.
               description: Sélectionnez les données que vous souhaitez importer parmi les données disponibles extraites de l'instance Jira hôte.
-              label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
-              label_available_server_data: Available data on %{server_info}
+              label_supported_data: Données prises en charge
+              label_comming_soon: Prochainement (T2 2026)
+              label_comming_later: A venir
+              label_available_server_data: Données disponibles sur %{server_info}
               button_select_projects: Sélectionnez les projets à importer
               button_continue: Continuer
               label_import: Sélectionnez les projets que vous souhaitez importer.
@@ -258,22 +258,22 @@ fr:
               label_progress: Récupération des données de Jira...
               elements:
                 relations: Relations entre les problèmes
-                project_ids: Project identifiers
-                issue_ids: Issues identifiers
-                sprints: Sprint assignments
+                project_ids: Identifiant de projet
+                issue_ids: Identificateurs de questions
+                sprints: Affectation des sprints
                 workflows: Flux de travail au niveau du projet
                 schemes: Schémas
-                permissions: Permissions
-                projects: Projects
-                issues: Issues
-                issue_details: Issue description, history, comments and attachments
-                custom_fields: A subset of custom fields
-                users: Involved users and groups
+                permissions: Autorisations
+                projects: Projets
+                issues: Tickets
+                issue_details: Description de la question, historique, commentaires et pièces jointes
+                custom_fields: Un sous-ensemble de champs personnalisés
+                users: Utilisateurs et groupes concernés
             confirm_import:
               title: Importation des données
               caption: Vérifiez vos paramètres d'importation et démarrez l'importation
               caption_done: Terminé
-              label_available_data: Data to be imported
+              label_available_data: Données à importer
               label_users_import_explanation: Utilisateurs impliqués dans les projets sélectionnés (y compris les membres de groupes)
               button_start: Démarrer l'importation
               description: Vous êtes sur le point de lancer un cycle d'importation avec les paramètres suivants.
@@ -282,33 +282,33 @@ fr:
             import_result:
               title: Résultats du cycle d'importation
               caption: Examiner le cycle d'importation ou annuler l'importation
-              info: Import run was successful.
+              info: L'importation a été effectuée avec succès.
               label_results: Importé
               label_revert: Annuler l'importation
               button_revert: Annuler l'importation
-              button_done: Approve import
-              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Approve import
-              label_finalizing: Approving import...
-              label_finalizing_done: Import approved.
+              button_done: Approuver l'importation
+              preview_description: Les données importées sont actuellement en mode révision. Cliquez sur "Approuver l'importation" pour rendre l'importation permanente ou sur "Annuler l'importation" pour annuler toutes les modifications apportées lors de cette importation.
+              label_finalize_import: Approuver l'importation
+              label_finalizing: Approuver l'importation...
+              label_finalizing_done: Importation approuvée.
               label_revert_progress: Annulation de l'importation...
               label_reverted: Importation annulée.
           select_dialog:
             filter_projects: Filtrer par texte
           import_dialog:
-            title: Please make sure you have a backup!
+            title: Veuillez vous assurer que vous avez une sauvegarde !
             confirm_button: Démarrer l'importation
-            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
+            description: 'Les importations modifient la configuration d''OpenProject. Après l''importation, vous aurez la possibilité de revoir les changements. Pendant la révision, vous avez la possibilité de revenir en arrière ou d''approuver l''importation. Après l''approbation de l''importation, il ne sera plus possible de revenir en arrière. Par conséquent, assurez-vous d''avoir [une sauvegarde de votre instance OpenProject] (link) avant de continuer.
 
               '
-            confirm: I understand and have a backup
+            confirm: Je comprends et j'ai une solution de secours
           revert_dialog:
             title: Annuler définitivement cette importation ?
-            description: This will delete all imported objects (including whole projects).
+            description: Cette opération supprime tous les objets importés (y compris des projets entiers).
             confirm: Je comprends que cette réversion supprimera les données de façon permanente
           finalize_dialog:
-            title: Approve this import?
-            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
+            title: Approuver cette importation ?
+            description: Une fois approuvée, cette importation ne peut plus être annulée. Toutes les données importées deviennent permanentes.
             confirm: Je comprends que cette action ne peut pas être annulée
             confirm_button: Compris
           select_projects:
@@ -3396,16 +3396,16 @@ fr:
         learn_about: En savoir plus sur les nouvelles fonctionnalités
         missing: Il n'y a pas encore de fonctionnalités mises en évidence.
         '17_4':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_0: Migrateur Jira avec prise en charge des champs personnalisés de base.
+            line_1: Les buckets du carnet de commandes pour structurer et hiérarchiser les lots de travail lors de l'affinage du carnet de commandes.
+            line_2: Faciliter le glisser-déposer et améliorer les options de déplacement dans le module Backlogs.
+            line_3: Boutons de démarrage et d'achèvement du sprint dans l'en-tête du sprint.
+            line_4: Copier les paramètres du flux de travail entre les rôles.
+            line_5: widget "Mes réunions" sur les pages d'accueil et d'aperçu du projet.
     links:
       upgrade_enterprise_edition: Passer à la version Enterprise
       postgres_migration: Migration de votre installation vers PostgreSQL
@@ -4471,7 +4471,7 @@ fr:
       note: 'Note : « %{note} »'
     sharing:
       work_packages:
-        allowed_actions_html: Vous pouvez %{allowed_actions} ce lot de travaux. Cela peut changer en fonction de votre rôle dans le projet et de vos droits.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Pour accéder à ce lot de travaux, vous aurez besoin de créer et activer un compte sur %{instance}.
         open_work_package: Ouvrir ce lot de travaux
         subject: 'Le lot de travaux #%{id} a été partagé avec vous'
@@ -5741,10 +5741,13 @@ fr:
           same_as_work: Régler à la même valeur que le travail.
     permissions:
       comment: Commentaire
+      comment_verb: comment
       comment_description: Peut consulter et commenter ce lot de travaux.
       edit: Éditer
+      edit_verb: edit
       edit_description: Peut consulter, commenter et modifier ce lot de travaux.
       view: Voir
+      view_verb: view
       view_description: Peut consulter ce lot de travaux.
     reminders:
       label_remind_at: Date

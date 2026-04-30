@@ -77,8 +77,8 @@ es:
           attributes:
             base:
               unfinished_work_packages:
-                one: Hay %{count} paquete de trabajo que no se completó en este sprint.
-                other: Hay %{count} paquetes de trabajo que no se completaron en este sprint.
+                one: There is one work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
               not_active: no está activo, por lo que no puede cerrarse.

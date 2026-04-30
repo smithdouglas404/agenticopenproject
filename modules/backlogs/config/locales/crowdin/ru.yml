@@ -77,10 +77,10 @@ ru:
           attributes:
             base:
               unfinished_work_packages:
-                one: Есть пакет работ %{count}, который не был завершен в этом спринте.
-                few: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
-                many: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
-                other: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
+                one: There is one work package that was not completed in this sprint.
+                few: There are %{count} work packages that were not completed in this sprint.
+                many: There are %{count} work packages that were not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
               not_active: не активен, поэтому не может быть закрыт.

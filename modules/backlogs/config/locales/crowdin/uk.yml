@@ -77,10 +77,10 @@ uk:
           attributes:
             base:
               unfinished_work_packages:
-                one: У цьому спринті не завершено %{count} пакет робіт.
-                few: У цьому спринті не завершено %{count} пакети робіт.
-                many: У цьому спринті не завершено %{count} пакетів робіт.
-                other: У цьому спринті не завершено %{count} пакета робіт.
+                one: There is one work package that was not completed in this sprint.
+                few: There are %{count} work packages that were not completed in this sprint.
+                many: There are %{count} work packages that were not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
               not_active: не є активним, тому його не можна закрити.

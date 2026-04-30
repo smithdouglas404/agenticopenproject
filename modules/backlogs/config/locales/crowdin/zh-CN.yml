@@ -77,7 +77,7 @@ zh-CN:
           attributes:
             base:
               unfinished_work_packages:
-                other: 此冲刺中有 %{count} 个未完成的工作包。
+                other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
               not_active: 未处于有效状态，因此无法关闭。

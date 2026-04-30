@@ -126,9 +126,9 @@ de:
         title: Jira-Konfiguration
         new: Neue Konfiguration
       banner:
-        title: Beta - Try it out!
-        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
-        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+        title: Beta - Probieren Sie es aus!
+        description: Dieser Jira Migrator befindet sich derzeit in der Beta-Phase. Wir unterstützen derzeit nur Jira Server/Data Center Versionen 10.x und 11.x. Cloud-Instanzen werden derzeit nicht unterstützt.
+        contribution_callout: 'Bitte helfen Sie uns, den Jira Migrator mit Ihrem Feedback und Ihren privaten Datenspenden zu verbessern. Sie können [der Entwicklergemeinschaft](link) des Jira Migrator beitreten.
 
           '
         supported_versions: ''
@@ -246,10 +246,10 @@ de:
               caption_done: Abgeschlossen
               label_info: Bitte beachten Sie, dass dieses Import-Tool in der Beta ist und nicht alle Arten von Daten importieren kann. Hier ist eine Zusammenfassung dessen, was die Jira Instanz für den Import bietet und was dieses Tool gerade importieren kann.
               description: Wählen Sie aus den verfügbaren Daten, die Sie aus der Host-Jira-Instanz abrufen, die Daten aus, die Sie importieren möchten.
-              label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
-              label_available_server_data: Available data on %{server_info}
+              label_supported_data: Unterstützte Daten
+              label_comming_soon: Kommt bald (Q2 2026)
+              label_comming_later: Kommt später
+              label_available_server_data: Verfügbare Daten auf %{server_info}
               button_select_projects: Projekte zum Importieren auswählen
               button_continue: Fortfahren
               label_import: Wählen Sie die Projekte aus, die Sie importieren möchten.
@@ -258,22 +258,22 @@ de:
               label_progress: Abrufen von Daten aus Jira...
               elements:
                 relations: Beziehungen zwischen Tickets
-                project_ids: Project identifiers
-                issue_ids: Issues identifiers
-                sprints: Sprint assignments
+                project_ids: Projektkennungen
+                issue_ids: Ticketkennungen
+                sprints: Sprint-Zuweisungen
                 workflows: Workflows auf Projektebene
                 schemes: Schemas
-                permissions: Permissions
-                projects: Projects
-                issues: Issues
-                issue_details: Issue description, history, comments and attachments
-                custom_fields: A subset of custom fields
-                users: Involved users and groups
+                permissions: Berechtigungen
+                projects: Projekte
+                issues: Tickets
+                issue_details: Beschreibung, Verlaud, Kommentare und Anhänge
+                custom_fields: Ein Teil der benutzerdefinierten Felder
+                users: Beteiligte Benutzer und Gruppen
             confirm_import:
               title: Daten importieren
               caption: Überprüfen Sie Ihre Importeinstellungen und starten Sie den Import
               caption_done: Abgeschlossen
-              label_available_data: Data to be imported
+              label_available_data: Zu importierende Daten
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Import starten
               description: Sie sind dabei, einen Import mit den folgenden Einstellungen zu starten.
@@ -282,33 +282,33 @@ de:
             import_result:
               title: Importlauf-Ergebnisse
               caption: Importlauf überprüfen oder Import rückgängig machen
-              info: Import run was successful.
+              info: Der Importlauf war erfolgreich.
               label_results: Importiert
               label_revert: Import rückgängig machen
               button_revert: Import rückgängig machen
-              button_done: Approve import
-              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Approve import
-              label_finalizing: Approving import...
-              label_finalizing_done: Import approved.
+              button_done: Import bestätigen
+              preview_description: Die importierten Daten befinden sich derzeit im Überprüfungsmodus. Klicken Sie auf "Import bestätigen", um den Import dauerhaft zu machen, oder auf "Import rückgängig machen", um alle in diesem Importlauf vorgenommenen Änderungen rückgängig zu machen.
+              label_finalize_import: Import bestätigen
+              label_finalizing: Import wird abgeschlossen...
+              label_finalizing_done: Import bestätigt.
               label_revert_progress: Import wird rückgängig gemacht...
               label_reverted: Import rückgängig gemacht.
           select_dialog:
             filter_projects: Nach Text filtern
           import_dialog:
-            title: Please make sure you have a backup!
+            title: Bitte stellen Sie sicher, dass Sie ein Backup haben!
             confirm_button: Import starten
-            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
+            description: 'Importe ändern Ihre OpenProject-Konfiguration. Nach dem Import haben Sie die Möglichkeit, die Änderungen zu überprüfen. Während der Überprüfung haben Sie die Möglichkeit, den Import rückgängig zu machen oder zu bestätigen. Nachdem Sie den Import bestätigt haben, ist eine Rückgängigmachung nicht mehr möglich. Stellen Sie daher sicher, dass Sie [eine Sicherungskopie Ihrer OpenProject-Instanz](link) haben, bevor Sie fortfahren.
 
               '
-            confirm: I understand and have a backup
+            confirm: Ich verstehe und habe ein Backup
           revert_dialog:
             title: Diesen Import dauerhaft rückgängig machen?
-            description: This will delete all imported objects (including whole projects).
+            description: Dadurch werden alle importierten Objekte (einschließlich ganzer Projekte) gelöscht.
             confirm: Mir ist bewusst, dass diese Rückgängigmachung die Daten dauerhaft löscht
           finalize_dialog:
-            title: Approve this import?
-            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
+            title: Diesen Import bestätigen?
+            description: Sobald der Import bestätigt ist, kann er nicht mehr rückgängig gemacht werden. Alle importierten Daten werden dann dauerhaft übernommen.
             confirm: Ich verstehe, dass diese Aktion nicht rückgängig gemacht werden kann
             confirm_button: Verstanden
           select_projects:
@@ -3397,11 +3397,11 @@ de:
         learn_about: Erfahren Sie mehr über die neuen Funktionen
         missing: Es gibt noch keine hervorgehobenen Funktionen.
         '17_4':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
+            line_0: Jira Migrator mit Unterstützung für grundlegende benutzerdefinierte Felder.
             line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
             line_2: Easier drag and drop and improved move options in the Backlogs module.
             line_3: Sprint Start and Complete buttons in the sprint header.
@@ -4472,7 +4472,7 @@ de:
       note: 'Anmerkung: „%{note}“'
     sharing:
       work_packages:
-        allowed_actions_html: 'Sie haben auf diesem Arbeitspakte folgende Berechtigungen: %{allowed_actions}. Dies kann sich je nach Ihrer Projektrolle und Berechtigungen ändern.'
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Um auf dieses Arbeitspaket zuzugreifen, müssen Sie ein Konto für %{instance} erstellen und aktivieren.
         open_work_package: Arbeitspaket öffnen
         subject: 'Arbeitspaket #%{id} wurde mit Ihnen geteilt'
@@ -5744,10 +5744,13 @@ de:
           same_as_work: Auf denselben Wert wie Aufwand gesetzt.
     permissions:
       comment: Kommentar
+      comment_verb: comment
       comment_description: Kann dieses Arbeitspaket anzeigen und kommentieren.
       edit: Bearbeiten
+      edit_verb: edit
       edit_description: Kann dieses Arbeitspaket ansehen, kommentieren und editieren.
       view: Ansicht
+      view_verb: view
       view_description: Kann dieses Arbeitspaket ansehen.
     reminders:
       label_remind_at: Datum

@@ -4415,7 +4415,7 @@ vi:
       note: 'Lưu ý: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Để truy cập gói công việc này, bạn cần tạo và kích hoạt tài khoản trên %{instance}.
         open_work_package: Mở gói công việc
         subject: 'Gói công việc #%{id} đã được chia sẻ với bạn'
@@ -5695,10 +5695,13 @@ vi:
           same_as_work: Đặt thành cùng giá trị với Công việc.
     permissions:
       comment: bình luận
+      comment_verb: comment
       comment_description: Có thể xem và nhận xét gói công việc này.
       edit: Chỉnh sửa
+      edit_verb: edit
       edit_description: Có thể xem, bình luận và chỉnh sửa gói công việc này.
       view: lượt xem
+      view_verb: view
       view_description: Có thể xem gói công việc này.
     reminders:
       label_remind_at: ngày

@@ -77,10 +77,10 @@ pl:
           attributes:
             base:
               unfinished_work_packages:
-                one: "%{count} pakietu roboczego nie ukończono w tym sprincie."
-                few: "%{count} pakietów roboczych nie ukończono w tym sprincie."
-                many: "%{count} pakietów roboczych nie ukończono w tym sprincie."
-                other: "%{count} pakietu roboczego nie ukończono w tym sprincie."
+                one: There is one work package that was not completed in this sprint.
+                few: There are %{count} work packages that were not completed in this sprint.
+                many: There are %{count} work packages that were not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
               not_active: jest nieaktywny, więc nie można go zamknąć.

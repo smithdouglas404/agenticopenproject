@@ -4610,7 +4610,7 @@ cs:
       note: 'Poznámka: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Pro přístup k tomuto pracovnímu balíčku musíte vytvořit a aktivovat účet na %{instance}.
         open_work_package: Otevřít pracovní balíček
         subject: 'Pracovní balíček #%{id} byl s vámi sdílen'
@@ -5886,10 +5886,13 @@ cs:
           same_as_work: Nastavit na stejnou hodnotu jako práce.
     permissions:
       comment: Komentář
+      comment_verb: comment
       comment_description: Může zobrazit a komentovat tento pracovní balíček.
       edit: Upravit
+      edit_verb: edit
       edit_description: Může zobrazovat, komentovat a upravovat tento pracovní balíček.
       view: Zobrazit
+      view_verb: view
       view_description: Může zobrazit tento pracovní balíček.
     reminders:
       label_remind_at: Datum

@@ -4425,7 +4425,7 @@ ms:
       note: 'Nota: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Untuk mengakses pakej kerja ini, anda perlu mencipta dan mengaktifkan akaun di %{instance}.
         open_work_package: Buka pakej kerja
         subject: 'Pakej kerja #%{id} telah dikongsikan dengan anda'
@@ -5691,10 +5691,13 @@ ms:
           same_as_work: Tetapkan kepada nilai yang sama seperti Kerja.
     permissions:
       comment: Komen
+      comment_verb: comment
       comment_description: Boleh lihat dan komen berkenaan pakej kerja ini.
       edit: Edit
+      edit_verb: edit
       edit_description: Boleh lihat, komen dan edit pakej kerja ini.
       view: Lihat
+      view_verb: view
       view_description: Boleh papar pakej kerja ini.
     reminders:
       label_remind_at: Tarikh

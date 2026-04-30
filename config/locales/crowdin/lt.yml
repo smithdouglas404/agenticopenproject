@@ -4607,7 +4607,7 @@ lt:
       note: 'Note: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Kad prieitumėte prie darbo paketo, jums reikės sukurti ir aktyvuoti %{instance}  paskyrą.
         open_work_package: Atverti darbo paketą
         subject: 'Su jumis buvo pabendrintas darbo paketas #%{id}'
@@ -5877,10 +5877,13 @@ lt:
           same_as_work: Set to same value as Work.
     permissions:
       comment: Komentaras
+      comment_verb: comment
       comment_description: Gali žiūrėti ir komentuoti šį darbo paketą.
       edit: Redaguoti
+      edit_verb: edit
       edit_description: Gali žiūrėti, komentuoti ir keisti šį darbo paketą.
       view: Peržiūrėti
+      view_verb: view
       view_description: Gali žiūrėti šį darbo paketą.
     reminders:
       label_remind_at: Data

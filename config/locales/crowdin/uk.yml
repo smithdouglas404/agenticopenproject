@@ -4607,7 +4607,7 @@ uk:
       note: 'Примітка: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: Ви можете %{allowed_actions} у цьому пакеті робіт, але це залежить від вашої ролі й дозволів у проєкті.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 'Щоб отримати доступ до цього пакета робіт, вам знадобиться створити й активувати обліковий запис в %{instance}. '
         open_work_package: Відкрити пакет робіт
         subject: 'Вам надано доступ до пакета робіт #%{id}'
@@ -5882,10 +5882,13 @@ uk:
           same_as_work: Збігається зі значенням атрибута «Робота».
     permissions:
       comment: Коментування
+      comment_verb: comment
       comment_description: Може переглядати й коментувати цей пакет робіт.
       edit: Редагування
+      edit_verb: edit
       edit_description: Може переглядати, коментувати й редагувати цей пакет робіт.
       view: Перегляд
+      view_verb: view
       view_description: Може переглядати цей пакет робіт.
     reminders:
       label_remind_at: Дата

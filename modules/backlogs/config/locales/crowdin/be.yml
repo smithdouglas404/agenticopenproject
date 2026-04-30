@@ -77,7 +77,7 @@ be:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is %{count} work package that was not completed in this sprint.
+                one: There is one work package that was not completed in this sprint.
                 few: There are %{count} work packages that were not completed in this sprint.
                 many: There are %{count} work packages that were not completed in this sprint.
                 other: There are %{count} work packages that were not completed in this sprint.

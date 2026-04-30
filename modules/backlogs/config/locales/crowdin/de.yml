@@ -77,8 +77,8 @@ de:
           attributes:
             base:
               unfinished_work_packages:
-                one: Es gibt ein %{count} Arbeitspaket, das in diesem Sprint nicht abgeschlossen wurde.
-                other: Es gibt %{count} Arbeitspakete, die in diesem Sprint nicht abgeschlossen wurden.
+                one: There is one work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
               not_active: ist nicht aktiv und kann deshalb nicht geschlossen werden.
@@ -152,14 +152,14 @@ de:
         receive_shared_no_actions_description_text: Dieses Projekt zeigt geteilte Sprints aus einem anderen Projekt, aber derzeit sind keine vorhanden.
         settings_link_text: Projektkonfiguration
     backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
+      label_actions: Backlog Bucket Aktionen
       action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
+        edit_backlog_bucket: Backlog Bucket bearbeiten
+        delete_backlog_bucket: Backlog Bucket löschen
     backlog_bucket_header_component:
       label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
+        zero: Keine Arbeitspakete im Backlog Bucket
+        one: "%{count} Arbeitspakete im Backlog Bucket"
         other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: Beginn
@@ -201,8 +201,8 @@ de:
     story_points: Story-Points
     story_points_ideal: Story-Points (ideal)
   label_backlog: Backlog
-  label_backlog_bucket_edit: Edit backlog bucket
-  label_backlog_bucket_new: New backlog bucket
+  label_backlog_bucket_edit: Backlog Bucket bearbeiten
+  label_backlog_bucket_new: Neuer Backlog-Bucket
   label_inbox: Posteingang
   label_backlogs: Backlogs
   label_burndown_chart: Burndown-Diagramm

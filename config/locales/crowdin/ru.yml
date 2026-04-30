@@ -4611,7 +4611,7 @@ ru:
       note: 'Примечание: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: Вы можете %{allowed_actions} этот пакет работ. Это может измениться в зависимости от вашей роли и прав в проекте.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Для доступа к этому пакету работ необходимо создать и активировать учетную запись на %{instance}.
         open_work_package: Открыть пакет работ
         subject: 'Пакет работ #%{id} был разделен с вами'
@@ -5867,10 +5867,13 @@ ru:
           same_as_work: Установите то же значение, что и для Работы.
     permissions:
       comment: Комментарий
+      comment_verb: comment
       comment_description: Может просматривать и комментировать этот пакет работ.
       edit: Правка
+      edit_verb: edit
       edit_description: Может просматривать, комментировать и редактировать этот пакет работ.
       view: Вид
+      view_verb: view
       view_description: Может просматривать этот пакет работ.
     reminders:
       label_remind_at: Дата

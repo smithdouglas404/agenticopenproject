@@ -4469,7 +4469,7 @@ es:
       note: 'Nota: «%{note}»'
     sharing:
       work_packages:
-        allowed_actions_html: Puedes %{allowed_actions} en este paquete de trabajo. Esto puede variar en función de tu rol en el proyecto y tus permisos.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 'Para acceder a este paquete de trabajo necesitará crear y activar una cuenta en %{instance}. '
         open_work_package: Abrir paquete de trabajo
         subject: 'Paquete de trabajo #%{id} fue compartido contigo'
@@ -5731,10 +5731,13 @@ es:
           same_as_work: Ajustar al mismo valor que Trabajo.
     permissions:
       comment: Comentario
+      comment_verb: comment
       comment_description: Puede ver y comentar este paquete de trabajo.
       edit: Editar
+      edit_verb: edit
       edit_description: Puede ver, comentar y editar este paquete de trabajo.
       view: Ver
+      view_verb: view
       view_description: Puede ver este paquete de trabajo.
     reminders:
       label_remind_at: Fecha

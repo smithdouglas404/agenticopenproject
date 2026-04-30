@@ -77,8 +77,8 @@ fr:
           attributes:
             base:
               unfinished_work_packages:
-                one: Il y a %{count} lot de travaux qui n'a pas été achevé dans ce sprint.
-                other: Il y a %{count} lots de travaux qui n'ont pas été achevés dans ce sprint.
+                one: There is one work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
               not_active: n'est pas actif et ne peut donc pas être fermé.
@@ -176,7 +176,7 @@ fr:
       legend: Action pour les lots de travaux inachevés
       actions:
         move_to_top_of_backlog: Déplacez-les en haut du backlog
-        move_to_bottom_of_backlog: Déplacez-les en bas du backlog
+        move_to_bottom_of_backlog: Déplacez-les vers le bas de l'arriéré
         move_to_sprint: Déplacez-les vers un autre sprint
       select_sprint_label: Sélectionnez le sprint
       button_complete_sprint: Terminer le sprint
