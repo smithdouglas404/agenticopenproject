@@ -66,7 +66,7 @@ RSpec.describe "hourly rates on user edit", :js do
       before do
         click_link "Update" # go to update view for rates
         SeleniumHubWaiter.wait
-        find(".icon-delete").click # delete last existing rate
+        find(".delete-row-button").click # delete last existing rate
         click_on "Save" # save change
       end
 
