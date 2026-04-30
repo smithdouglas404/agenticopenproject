@@ -29,15 +29,15 @@ de:
       project:
         sprint_sharing: Sprints teilen
       sprint:
-        duration: Duration
-        finish_date: Finish date
-        goal: Sprint goal
-        name: Sprint name
-        sharing: Sharing
+        duration: Dauer
+        finish_date: Endtermin
+        goal: Sprint-Ziel
+        name: Sprint-Name
+        sharing: Teilen
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: In Planung
+          active: Aktiv
+          completed: Abgeschlossen
       user_preference:
         backlogs_versions_default_fold_state: Zeige Versionen eingeklappt
       work_package:
@@ -62,7 +62,7 @@ de:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is %{count} work package that was not completed in this sprint.
+                one: There is one work package that was not completed in this sprint.
                 other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
@@ -148,14 +148,14 @@ de:
         manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
         no_actions_description_text: No sprints are available for this project yet.
     backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
+      label_actions: Backlog Bucket Aktionen
       action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
+        edit_backlog_bucket: Backlog Bucket bearbeiten
+        delete_backlog_bucket: Backlog Bucket löschen
     backlog_bucket_header_component:
       label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
+        zero: Keine Arbeitspakete im Backlog Bucket
+        one: "%{count} Arbeitspakete im Backlog Bucket"
         other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: Beginn
@@ -197,8 +197,8 @@ de:
     story_points: Story-Points
     story_points_ideal: Story-Points (ideal)
   label_backlog: Backlog
-  label_backlog_bucket_edit: Edit backlog bucket
-  label_backlog_bucket_new: New backlog bucket
+  label_backlog_bucket_edit: Backlog Bucket bearbeiten
+  label_backlog_bucket_new: Neuer Backlog-Bucket
   label_inbox: Posteingang
   label_backlogs: Backlogs
   label_burndown_chart: Burndown-Diagramm

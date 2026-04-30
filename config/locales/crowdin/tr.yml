@@ -4511,7 +4511,7 @@ tr:
       note: 'Not: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: İş paketini aç
         subject: 'İş paketi #%{id} sizinle paylaşıldı'
@@ -5774,10 +5774,13 @@ tr:
           same_as_work: İş ile aynı değere ayarlayın.
     permissions:
       comment: Yorum
+      comment_verb: comment
       comment_description: Bu iş paketini görüntüleyebilir ve yorum yapabilir.
       edit: Düzenle
+      edit_verb: edit
       edit_description: Bu iş paketini görüntüleyebilir, yorum yapabilir ve düzenleyebilir.
       view: Göster
+      view_verb: view
       view_description: Bu iş paketini görüntüleyebilir.
     reminders:
       label_remind_at: Tarih

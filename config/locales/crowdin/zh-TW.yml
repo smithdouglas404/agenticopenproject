@@ -4437,7 +4437,7 @@ zh-TW:
       note: 備註： "%{note}"
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 要存取此工作套件，您需要建立一個 %{instance} 帳戶。
         open_work_package: 開啟工作套件
         subject: '有個工作套件 #%{id} 與您共同參與'
@@ -5709,10 +5709,13 @@ zh-TW:
           same_as_work: 設定與工時相同值。
     permissions:
       comment: 留言
+      comment_verb: comment
       comment_description: 可查看此工作套件與留言。
       edit: 編輯
+      edit_verb: edit
       edit_description: 可以查看，留言與編輯此工作套件。
       view: 檢視
+      view_verb: view
       view_description: 查看此工作套件。
     reminders:
       label_remind_at: 日期

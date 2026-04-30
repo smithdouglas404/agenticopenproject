@@ -4630,7 +4630,7 @@ pl:
       note: 'Uwaga: „%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: Możesz %{allowed_actions} ten pakiet roboczy. Może się to zmienić w zależności od Twojej roli w projekcie i uprawnień.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 'Aby uzyskać dostęp do tego pakietu roboczego, musisz utworzyć i aktywować konto w %{instance}. '
         open_work_package: Otwórz pakiet roboczy
         subject: Udostępniono Ci pakiet roboczy nr %{id}
@@ -5897,10 +5897,13 @@ pl:
           same_as_work: Ustaw na tę samą wartość, co Praca.
     permissions:
       comment: Komentarz
+      comment_verb: comment
       comment_description: Może wyświetlać i komentować ten pakiet roboczy.
       edit: Edycja
+      edit_verb: edit
       edit_description: Może wyświetlać, komentować i edytować ten pakiet roboczy.
       view: Wyświetlanie
+      view_verb: view
       view_description: Może wyświetlić ten pakiet roboczy.
     reminders:
       label_remind_at: Data

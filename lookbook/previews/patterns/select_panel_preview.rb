@@ -28,34 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Patches::GrapeDslRouting
-  extend ActiveSupport::Concern
-
-  included do
-    # Be reload safe. otherwise, an infinite loop occurs on reload.
-    unless method_defined?(:orig_namespace)
-      alias :orig_namespace :namespace
-    end
-
-    def namespace(space = nil, **, &)
-      orig_namespace(space, **) do
-        instance_eval(&)
-        apply_patches(space)
-      end
-    end
-
-    def apply_patches(path)
-      (patches[path] || []).each do |patch|
-        instance_eval(&patch)
-      end
-    end
-
-    def patches
-      Constants::APIPatchRegistry.patches_for(self)
+module Patterns
+  # @hidden
+  class SelectPanelPreview < ViewComponent::Preview
+    # @display min_height 400px
+    def footer_buttons
+      render_with_template
     end
   end
-end
-
-OpenProject::Patches.patch_gem_version "grape", "3.2.1" do
-  Grape::DSL::Routing.include OpenProject::Patches::GrapeDslRouting
 end

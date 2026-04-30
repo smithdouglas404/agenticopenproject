@@ -124,7 +124,7 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 gem "bcrypt", "~> 3.1.22"
 
 gem "multi_json", "~> 1.20.0"
-gem "oj", "~> 3.16.16"
+gem "oj", "~> 3.17.0"
 
 gem "daemons"
 gem "good_job", "~> 4.16.0" # update should be done manually in sync with saas-openproject version.
@@ -161,7 +161,7 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.12.0"
+gem "mcp", "~> 0.14.0"
 
 gem "meta-tags", "~> 2.23.0"
 
@@ -237,10 +237,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.33.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.91.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.93.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.6.0"
+gem "view_component", "~> 4.8.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
@@ -384,7 +384,7 @@ group :development, :test do
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.23.0", require: false
+gem "bootsnap", "~> 1.24.0", require: false
 
 # API gems
 gem "grape", "~> 3.2.0"

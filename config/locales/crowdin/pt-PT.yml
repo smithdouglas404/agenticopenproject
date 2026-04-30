@@ -4504,7 +4504,7 @@ pt-PT:
       note: 'Nota: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: Pode aceder a este pacote de trabalho em %{allowed_actions}. Isto pode mudar consoante a sua função no projeto e as suas permissões.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 'Para aceder a este pacote de trabalho, terá de criar e ativar uma conta em %{instance}. '
         open_work_package: Abrir pacote de trabalho
         subject: 'O pacote de trabalho #%{id} foi partilhado consigo'
@@ -5761,10 +5761,13 @@ pt-PT:
           same_as_work: Defina o mesmo valor que Trabalho.
     permissions:
       comment: Comentário
+      comment_verb: comment
       comment_description: Pode ver e comentar este pacote de trabalho.
       edit: Editar
+      edit_verb: edit
       edit_description: Pode ver, comentar e editar este pacote de trabalho.
       view: Ver
+      view_verb: view
       view_description: Pode ver este pacote de trabalho.
     reminders:
       label_remind_at: Data

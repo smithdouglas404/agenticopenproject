@@ -4504,7 +4504,7 @@
       note: 'Note: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: For å få tilgang til denne arbeidspakken, må du opprette og aktivere en konto for %{instance}.
         open_work_package: Åpne arbeidspakke
         subject: 'Arbeidspakke #%{id} ble delt med deg'
@@ -5776,10 +5776,13 @@
           same_as_work: Sett til samme verdi som arbeid.
     permissions:
       comment: Kommentar
+      comment_verb: comment
       comment_description: Kan se og kommentere denne arbeidspakken.
       edit: Rediger
+      edit_verb: edit
       edit_description: Kan vise, kommentere og redigere denne arbeidspakken.
       view: Vis
+      view_verb: view
       view_description: Kan se denne arbeidspakken.
     reminders:
       label_remind_at: Dato

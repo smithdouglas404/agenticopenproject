@@ -45,7 +45,7 @@ module Workflows
       click_button from_role.name
       find("[data-item-id='#{to_role.id}']").click
       find("[data-item-id='#{from_role.id}']").click
-      within("select-panel") { click_button "Save" }
+      within("select-panel") { click_button "Apply" }
     end
 
     def add_status_via_dialog(status)

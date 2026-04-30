@@ -6,21 +6,21 @@ da:
         display_name: Navn
         identifier: ID
         secret: Hemmelighed
-        scope: Omfang
+        scope: Scope
         assertion_consumer_service_url: ACS (Assertion consumer service) URL
         limit_self_registration: Begræns selvregistrering
-        sp_entity_id: Tjenesteentitets-ID
+        sp_entity_id: Tjenestes entity ID
         metadata_url: Identitetsudbydermetadata-URL
         name_identifier_format: Navnidentifikatorformat
-        idp_sso_service_url: Identitetsudbyder login-endepunkt
-        idp_slo_service_url: Identitetsudbyder logud-endepunkt
+        idp_sso_service_url: Identitetsudbyder login endpoint
+        idp_slo_service_url: IdP(Identity provider) logud endpoint
         idp_cert: Identitetsudbyders offentlige certifikat
         authn_requests_signed: Signér SAML AuthnRequests
         want_assertions_signed: Kræv signerede svar
         want_assertions_encrypted: Kræv krypterede svar
         certificate: Certifikat brugt af OpenProject til SAML-anmodninger
         private_key: Tilsvarende privat nøgle til OpenProject SAML-anmodninger
-        signature_method: Signaturalgoritme
+        signature_method: Signatur algoritme
         digest_method: Digest algoritme
         format: Format
         icon: Tilpasset ikon
@@ -34,7 +34,7 @@ da:
   saml:
     menu_title: SAML-udbydere
     delete_title: Slet SAML-udbyder
-    delete_heading: Delete this SAML provider?
+    delete_heading: Slet SAML-udbyder?
     info:
       title: SAML-protokolopsætnningsparametre
       description: 'Brug disse parametre til at opsætte identitetsudbyderforbindelsen til OpenProject.
@@ -70,7 +70,7 @@ da:
       metadata:
         dialog: 'Dette er URL''en, hvor OpenProject SAML-metadataene er tilgængelige. Brug den evt. til opsætning af identitetsudbyderen:'
       upsell:
-        title: Single Sign-On (SSO) with SAML
+        title: Single Sign-On (SSO) med SAML
         description: Forbind OpenProject til en SAML-identitetsudbyder
       request_attributes:
         title: Anmodede attributter
