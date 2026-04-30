@@ -39,7 +39,7 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
   let(:wiki_page) { create(:wiki_page) }
   let(:project) { wiki_page.project }
   let(:work_package) { create(:work_package, project:) }
-  let(:permissions) { %i[view_work_packages view_wiki_pages view_wiki_page_links] }
+  let(:permissions) { %i[view_wiki_pages] }
   let(:link_to_existing_page) do
     create(:relation_wiki_page_link, provider:, linkable: work_package, identifier: wiki_page.id.to_s)
   end
@@ -70,7 +70,7 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
   end
 
   context "when user can't see wiki pages" do
-    let(:permissions) { %i[view_work_packages view_wiki_page_links] }
+    let(:permissions) { [] }
 
     it "returns an array of results with `not_found`" do
       result = subject.value!
