@@ -9,7 +9,13 @@
     )
   ) do |subheader|
     subheader.with_filter_component do
-      render(Meetings::MeetingFilterButtonComponent.new(query: @query, project: @project))
+      render(
+        Meetings::MeetingFilterContainerComponent.new(
+          query: @query,
+          params: @params,
+          project: @project
+        )
+      )
     end
 
     subheader.with_segmented_control("aria-label": I18n.t(:label_meeting_date_time)) do |control|
