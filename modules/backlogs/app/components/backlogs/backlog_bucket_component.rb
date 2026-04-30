@@ -42,7 +42,7 @@ module Backlogs
       @backlog_bucket = backlog_bucket
       @project = project
       @current_user = current_user
-      @work_packages = backlog_bucket.work_packages
+      @work_packages = backlog_bucket.displayed_work_packages
 
       @system_arguments = system_arguments
       @system_arguments[:id] = dom_id(backlog_bucket)
