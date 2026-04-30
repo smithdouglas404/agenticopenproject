@@ -62,7 +62,7 @@ de:
           attributes:
             base:
               unfinished_work_packages:
-                one: Es gibt %{count} Arbeitspakete, die in diesem Sprint nicht abgeschlossen wurden.
+                one: There is one work package that was not completed in this sprint.
                 other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:

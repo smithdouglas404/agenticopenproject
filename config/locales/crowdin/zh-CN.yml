@@ -4436,7 +4436,7 @@ zh-CN:
       note: 注："%{note}"
     sharing:
       work_packages:
-        allowed_actions_html: 您可以%{allowed_actions}此工作包。允许的操作根据您的项目角色和权限而变化。
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 要访问此工作包，您需要创建一个 %{instance} 帐户。
         open_work_package: 打开工作包
         subject: '工作包 #%{id} 已被分享给你'
@@ -5699,10 +5699,13 @@ zh-CN:
           same_as_work: 设置为与 "工时 "相同的值。
     permissions:
       comment: 评论
+      comment_verb: comment
       comment_description: 可以查看和评论该工作包。
       edit: 编辑
+      edit_verb: edit
       edit_description: 可以查看、评论和编辑此工作包。
       view: 查看
+      view_verb: view
       view_description: 可以查看此工作包。
     reminders:
       label_remind_at: 日期

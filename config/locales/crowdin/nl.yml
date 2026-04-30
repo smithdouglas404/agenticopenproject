@@ -4502,7 +4502,7 @@ nl:
       note: 'Note: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
         subject: 'Work package #%{id} was shared with you'
@@ -5762,10 +5762,13 @@ nl:
           same_as_work: Set to same value as Work.
     permissions:
       comment: Commentaar
+      comment_verb: comment
       comment_description: Can view and comment this work package.
       edit: Wijzig
+      edit_verb: edit
       edit_description: Kan dit werkpakket bekijken, becommentariëren en bewerken.
       view: Toon
+      view_verb: view
       view_description: Can view this work package.
     reminders:
       label_remind_at: Datum

@@ -4443,7 +4443,7 @@ ja:
       note: '注意: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: このワークパッケージにアクセスするには、 %{instance} のアカウントを作成して有効化する必要があります。
         open_work_package: ワークパッケージを開く
         subject: ワークパッケージ%{id} があなたと共有されました
@@ -5707,10 +5707,13 @@ ja:
           same_as_work: ワークと同じ値に設定する。
     permissions:
       comment: コメント
+      comment_verb: comment
       comment_description: このワークパッケージを閲覧し、コメントすることができる。
       edit: 編集
+      edit_verb: edit
       edit_description: このワークパッケージの閲覧、コメント、編集が可能。
       view: 表示
+      view_verb: view
       view_description: このワークパッケージを見ることができる。
     reminders:
       label_remind_at: 日付

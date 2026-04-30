@@ -4499,7 +4499,7 @@ fr:
       note: 'Note : « %{note} »'
     sharing:
       work_packages:
-        allowed_actions_html: Vous pouvez %{allowed_actions} ce lot de travaux. Cela peut changer en fonction de votre rôle dans le projet et de vos droits.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Pour accéder à ce lot de travaux, vous aurez besoin de créer et activer un compte sur %{instance}.
         open_work_package: Ouvrir ce lot de travaux
         subject: 'Le lot de travaux #%{id} a été partagé avec vous'
@@ -5769,10 +5769,13 @@ fr:
           same_as_work: Régler à la même valeur que le travail.
     permissions:
       comment: Commentaire
+      comment_verb: comment
       comment_description: Peut consulter et commenter ce lot de travaux.
       edit: Éditer
+      edit_verb: edit
       edit_description: Peut consulter, commenter et modifier ce lot de travaux.
       view: Voir
+      view_verb: view
       view_description: Peut consulter ce lot de travaux.
     reminders:
       label_remind_at: Date

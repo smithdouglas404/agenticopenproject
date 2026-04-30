@@ -4506,7 +4506,7 @@ it:
       note: 'Nota: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: Puoi %{allowed_actions} questa macro-attività. Questa impostazione può cambiare a seconda del ruolo e delle autorizzazioni del progetto.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Per accedere a questa macro-attività è necessario creare e attivare un account su %{instance}
         open_work_package: Apri macro-attività
         subject: 'La macro-attività #%{id} è stata condivisa con te'
@@ -5772,10 +5772,13 @@ it:
           same_as_work: Impostato allo stesso valore del Lavoro.
     permissions:
       comment: Commentare
+      comment_verb: comment
       comment_description: Può visualizzare e commentare questa macro-attività.
       edit: Modificare
+      edit_verb: edit
       edit_description: Può visu
       view: Visualizzare
+      view_verb: view
       view_description: Può visualizzare questa macro-attività.
     reminders:
       label_remind_at: Data
