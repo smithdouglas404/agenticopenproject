@@ -29,15 +29,15 @@ fr:
       project:
         sprint_sharing: Partage de sprint
       sprint:
-        duration: Duration
-        finish_date: Finish date
-        goal: Sprint goal
-        name: Sprint name
-        sharing: Sharing
+        duration: Durée
+        finish_date: Date de fin
+        goal: Objectif du sprint
+        name: Nom du sprint
+        sharing: Partage
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: En planification
+          active: Actif
+          completed: Terminé
       user_preference:
         backlogs_versions_default_fold_state: Afficher les sprints repliés
       work_package:
@@ -62,11 +62,11 @@ fr:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is %{count} work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
+                one: Il y a %{count} work package qui n'a pas été achevé dans ce sprint.
+                other: Il y a %{count} work packages qui n'ont pas été achevés dans ce sprint.
               format: "%{message}"
             status:
-              not_active: is not active so it cannot be closed.
+              not_active: n'est pas actif et ne peut donc pas être fermé.
         work_package:
           backlog_bucket_xor_sprint: ne peut pas être affecté à la fois à un sprint et à un compartiment de backlog.
           attributes:
@@ -137,16 +137,16 @@ fr:
     move_to_sprint_dialog_component:
       title: Passer au sprint
       label_sprint: Sprint
-    backlog:
+    sprints_component:
       blankslate:
-        title: Il n'y a pas encore de sprints
-        description_html: Pour commencer à planifier votre sprint, créez-en un ici ou rendez-vous sur %{settings_link} pour recevoir les sprints d'un autre projet.
-        create_sprint_description_text: Pour commencer à planifier votre sprint, créez-en un ici.
-        share_sprint_description_html: Pour commencer à planifier votre sprint, rendez-vous sur %{settings_link} pour recevoir les sprints d'un autre projet.
-        no_actions_description_text: Il n'y a pas encore de sprints disponibles pour ce projet.
-        receive_shared_description_html: Ce projet reçoit des sprints d'un autre projet. Gérez cela à l'adresse %{settings_link}.
-        receive_shared_no_actions_description_text: Ce projet reçoit des sprints partagés d'un autre projet, mais aucun n'est disponible pour le moment.
-        settings_link_text: paramètres du projet
+        title: No sprints present yet
+        settings_link_text: project settings
+        receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
+        receive_description_text: This project receives shared sprints from a different project, but none are available right now.
+        create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
+        create_description_text: To start planning your sprint, create one here.
+        manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
+        no_actions_description_text: No sprints are available for this project yet.
     backlog_bucket_menu_component:
       label_actions: Actions de la corbeille du carnet de commandes
       action_menu:
@@ -172,7 +172,7 @@ fr:
       legend: Action pour les lots de travaux inachevés
       actions:
         move_to_top_of_backlog: Déplacez-les en haut du backlog
-        move_to_bottom_of_backlog: Déplacez-les en bas du backlog
+        move_to_bottom_of_backlog: Déplacez-les vers le bas de l'arriéré
         move_to_sprint: Déplacez-les vers un autre sprint
       select_sprint_label: Sélectionnez le sprint
       button_complete_sprint: Terminer le sprint

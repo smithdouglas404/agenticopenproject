@@ -27,7 +27,7 @@ fr:
   project_module_wiki_platforms: Fournisseurs de wiki
   wikis:
     buttons:
-      connect_account: Connect %{provider} account
+      connect_account: Connectez votre compte %{provider}
       done_continue: Terminé, continuer
       save_and_continue: Enregistrer et continuer
       wiki_page: Page wiki
@@ -52,7 +52,7 @@ fr:
           application_id: ID de l'application
           application_secret: Secret de l'application
         oauth_client_form_component:
-          client_id: Client ID
+          client_id: ID du client
       oauth_application_info_component:
         confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir à nouveau les informations d'identification dans votre instance XWiki et tous les utilisateurs devront se réautoriser. Êtes-vous sûr de vouloir continuer ?
         label_pending: En attente
@@ -87,7 +87,7 @@ fr:
           oauth:
             openproject_oauth_description: Permettre à XWiki d'accéder aux données d'OpenProject en utilisant une application OAuth. Copiez les informations d'identification ci-dessous dans votre instance XWiki.
             provider_oauth: OAuth XWiki
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
+            provider_oauth_description: Permet à OpenProject d'accéder aux données de XWiki en utilisant OAuth. Un identifiant client est automatiquement généré pour identifier OpenProject auprès de XWiki - aucune configuration manuelle n'est nécessaire du côté de XWiki.
           openproject_oauth_description: Autoriser XWiki à accéder aux données d'OpenProject en utilisant un OAuth.
           xwiki_oauth: OAuth XWiki
           xwiki_oauth_description: Autoriser OpenProject à accéder aux données XWiki en utilisant un OAuth.

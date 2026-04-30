@@ -126,8 +126,12 @@ fr:
         title: Configuration de Jira
         new: Nouvelle configuration
       banner:
-        title: Capacités d'importation limitées
-        description: 'Cet outil Jora Migrator est actuellement en version bêta et ne peut importer que des données de base : projets, tickets (nom, titre, description, pièces jointes), utilisateurs (nom, e-mail, appartenance à un projet), statuts et types. Il ne peut pas importer les flux de travail, les champs personnalisés, les relations entre les tickets ou les autorisations. Nous ne prenons actuellement en charge que les versions 10.x et 11.x de Jira Server/Data Center. Les instances cloud ne sont pas prises en charge pour le moment.'
+        title: Bêta - Essayez-le!
+        description: Ce Jira Migrator est actuellement en version bêta. Nous ne prenons actuellement en charge que les versions 10.x et 11.x de Jira Server/Data Center. Les instances Cloud ne sont pas prises en charge pour le moment.
+        contribution_callout: 'Aidez-nous à améliorer le Jira Migrator avec vos commentaires et vos dons de données privées. Vous pouvez [rejoindre la communauté de développement](link) du Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Nom
@@ -242,8 +246,10 @@ fr:
               caption_done: Terminé
               label_info: Veuillez noter que cet outil d'importation est en version bêta et qu'il ne peut pas importer tous les types de données. Voici un résumé de ce que l'instance Jira hôte offre pour l'importation et de ce que cet outil est capable d'importer pour le moment.
               description: Sélectionnez les données que vous souhaitez importer parmi les données disponibles extraites de l'instance Jira hôte.
-              label_available_data: Données disponibles
-              label_not_available_data: Indisponibles pour l'importation
+              label_supported_data: Données prises en charge
+              label_comming_soon: Prochainement (T2 2026)
+              label_comming_later: A venir
+              label_available_server_data: Données disponibles sur %{server_info}
               button_select_projects: Sélectionnez les projets à importer
               button_continue: Continuer
               label_import: Sélectionnez les projets que vous souhaitez importer.
@@ -252,16 +258,22 @@ fr:
               label_progress: Récupération des données de Jira...
               elements:
                 relations: Relations entre les problèmes
+                project_ids: Identifiant de projet
+                issue_ids: Identificateurs de questions
+                sprints: Affectation des sprints
                 workflows: Flux de travail au niveau du projet
-                users: Utilisateurs
-                sprints: Sprints
                 schemes: Schémas
-                permissions: Autorisations d'utilisateur, de groupe et de projet
+                permissions: Autorisations
+                projects: Projets
+                issues: Tickets
+                issue_details: Description de la question, historique, commentaires et pièces jointes
+                custom_fields: Un sous-ensemble de champs personnalisés
+                users: Utilisateurs et groupes concernés
             confirm_import:
               title: Importation des données
               caption: Vérifiez vos paramètres d'importation et démarrez l'importation
               caption_done: Terminé
-              label_available_data: Données disponibles pour l'importation
+              label_available_data: Données à importer
               label_users_import_explanation: Utilisateurs impliqués dans les projets sélectionnés (y compris les membres de groupes)
               button_start: Démarrer l'importation
               description: Vous êtes sur le point de lancer un cycle d'importation avec les paramètres suivants.
@@ -270,33 +282,33 @@ fr:
             import_result:
               title: Résultats du cycle d'importation
               caption: Examiner le cycle d'importation ou annuler l'importation
-              info: Le cycle d'importation a été effectué avec succès.
+              info: L'importation a été effectuée avec succès.
               label_results: Importé
               label_revert: Annuler l'importation
               button_revert: Annuler l'importation
-              button_done: Finaliser l'importation
-              preview_description: Les données importées sont actuellement en mode révision. Cliquez sur « Finaliser l'importation » pour rendre l'importation permanente ou sur « Annuler l'importation » pour annuler toutes les modifications apportées lors de ce cycle d'importation.
-              label_finalize_import: Finaliser l'importation
-              label_finalizing: Finalisation de l'importation...
-              label_finalizing_done: Importation finalisée.
+              button_done: Approuver l'importation
+              preview_description: Les données importées sont actuellement en mode révision. Cliquez sur "Approuver l'importation" pour rendre l'importation permanente ou sur "Annuler l'importation" pour annuler toutes les modifications apportées lors de cette importation.
+              label_finalize_import: Approuver l'importation
+              label_finalizing: Approuver l'importation...
+              label_finalizing_done: Importation approuvée.
               label_revert_progress: Annulation de l'importation...
               label_reverted: Importation annulée.
           select_dialog:
             filter_projects: Filtrer par texte
           import_dialog:
-            title: Commencer cette importation ?
+            title: Veuillez vous assurer que vous avez une sauvegarde !
             confirm_button: Démarrer l'importation
-            description: 'Cet importateur est une fonctionnalité alpha. Il n''est pas encore capable d''importer toutes les données de Jira et peut laisser des données incomplètes sur cette instance d''OpenProject. <b>N''utilisez pas d''environnement de production et créez une sauvegarde de vos données OpenProject avant de commencer.</b>
+            description: 'Les importations modifient la configuration d''OpenProject. Après l''importation, vous aurez la possibilité de revoir les changements. Pendant la révision, vous avez la possibilité de revenir en arrière ou d''approuver l''importation. Après l''approbation de l''importation, il ne sera plus possible de revenir en arrière. Par conséquent, assurez-vous d''avoir [une sauvegarde de votre instance OpenProject] (link) avant de continuer.
 
               '
-            confirm: Je comprends et j'ai fait les préparatifs nécessaires
+            confirm: Je comprends et j'ai une solution de secours
           revert_dialog:
             title: Annuler définitivement cette importation ?
-            description: Cette opération supprimera tous les objets importés (y compris les projets entiers), même s'il y a eu une activité de l'utilisateur dans ces projets après l'importation dans OpenProject.
+            description: Cette opération supprime tous les objets importés (y compris des projets entiers).
             confirm: Je comprends que cette réversion supprimera les données de façon permanente
           finalize_dialog:
-            title: Finaliser cette importation ?
-            description: Une fois finalisée, cette importation ne peut plus être annulée. Toutes les données importées le seront définitivement.
+            title: Approuver cette importation ?
+            description: Une fois approuvée, cette importation ne peut plus être annulée. Toutes les données importées deviennent permanentes.
             confirm: Je comprends que cette action ne peut pas être annulée
             confirm_button: Compris
           select_projects:
@@ -407,8 +419,8 @@ fr:
           error_special_characters: Caractères spéciaux non autorisés
           error_not_fully_uppercased: Doit être en majuscules
           error_in_use: Déjà utilisé comme alias actif d'un autre projet
-          error_used_in_past: Reserved by another project's handle history
-          error_reserved_by_system: Reserved as a system keyword
+          error_used_in_past: Réservé par l'historique des alias d'un autre projet
+          error_reserved_by_system: Réservé comme mot-clé du système
           error_unknown: Nécessite une vérification manuelle
           remaining_projects:
             one: "... 1 projet supplémentaire"
@@ -449,12 +461,12 @@ fr:
         ignore: Ignorer les changements
         save: Enregistrer les modifications et continuer
       role_selector:
-        title: Select roles
+        title: Sélectionner les rôles
         label: 'Rôle : %{role}'
         no_role: Sélectionner un rôle
         roles:
-          one: "%{count} role selected"
-          other: "%{count} roles selected"
+          one: "%{count} rôle sélectionné"
+          other: "%{count} rôles sélectionnés"
       blankslate:
         title: Aucune transition de statut configurée
         description: Ajouter des statuts pour commencer à configurer des workflows pour ce rôle
@@ -3412,16 +3424,16 @@ fr:
         learn_about: En savoir plus sur les nouvelles fonctionnalités
         missing: Il n'y a pas encore de fonctionnalités mises en évidence.
         '17_4':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_0: Migrateur Jira avec prise en charge des champs personnalisés de base.
+            line_1: Les buckets du carnet de commandes pour structurer et hiérarchiser les lots de travail lors de l'affinage du carnet de commandes.
+            line_2: Faciliter le glisser-déposer et améliorer les options de déplacement dans le module Backlogs.
+            line_3: Boutons de démarrage et d'achèvement du sprint dans l'en-tête du sprint.
+            line_4: Copier les paramètres du flux de travail entre les rôles.
+            line_5: widget "Mes réunions" sur les pages d'accueil et d'aperçu du projet.
     links:
       upgrade_enterprise_edition: Passer à la version Enterprise
       postgres_migration: Migration de votre installation vers PostgreSQL

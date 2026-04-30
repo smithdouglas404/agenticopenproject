@@ -126,8 +126,12 @@ ko:
         title: Jira 구성
         new: 새 구성
       banner:
-        title: 제한된 가져오기 기능
-        description: 이 Jira Migrator는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원됩니다. 클라우드 인스턴스는 현재 지원되지 않습니다.
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: 이름
@@ -236,8 +240,10 @@ ko:
               caption_done: 완료됨
               label_info: 이 가져오기 도구는 베타 버전이며 일부 유형의 데이터를 가져올 수 없다는 점에 유의하세요. 호스트 Jira 인스턴스에서 가져오기용으로 제공하는 항목과 이 도구에서 현재 가져올 수 있는 항목에 대한 요약은 다음과 같습니다.
               description: 호스트 Jira 인스턴스에서 가져온 사용 가능한 데이터에서 가져올 데이터를 선택합니다.
-              label_available_data: 사용 가능한 데이터
-              label_not_available_data: 가져오기에 사용할 수 없음
+              label_supported_data: Supported data
+              label_comming_soon: Comming soon (Q2 2026)
+              label_comming_later: Comming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: 가져올 프로젝트 선택
               button_continue: 계속
               label_import: 가져올 프로젝트를 선택합니다.
@@ -246,16 +252,22 @@ ko:
               label_progress: Jira에서 데이터를 가져오는 중...
               elements:
                 relations: 이슈 간의 관계
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: 프로젝트 수준 워크플로
-                users: 사용자
-                sprints: 스프린트
                 schemes: 스키마
-                permissions: 사용자, 그룹 및 프로젝트 권한
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: 데이터 가져오기
               caption: 가져오기 설정을 검토하고 가져오기를 시작합니다
               caption_done: 완료됨
-              label_available_data: 가져올 수 있는 데이터
+              label_available_data: Data to be imported
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: 가져오기 시작
               description: 다음 설정으로 가져오기 실행을 시작하려고 합니다.
@@ -264,33 +276,33 @@ ko:
             import_result:
               title: 가져오기 실행 결과
               caption: 가져오기 실행 검토 또는 가져오기 되돌리기
-              info: 가져오기 실행에 성공했습니다.
+              info: Import run was successful.
               label_results: 가져옴
               label_revert: 가져오기 되돌리기
               button_revert: 가져오기 되돌리기
-              button_done: 가져오기 마무리
-              preview_description: 가져온 데이터는 현재 검토 모드에 있습니다. 가져오기를 영구적으로 적용하려면 "가져오기 마무리"를 클릭하고, 가져오기 실행에서 변경된 모든 사항을 취소하려면 "가져오기 되돌리기"를 클릭합니다.
-              label_finalize_import: 가져오기 마무리
-              label_finalizing: 가져오기 마무리 중...
-              label_finalizing_done: 가져오기가 마무리되었습니다.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: 가져오기를 되돌리는 중...
               label_reverted: 가져오기를 되돌렸습니다.
           select_dialog:
             filter_projects: 텍스트로 필터링
           import_dialog:
-            title: 이 가져오기를 시작하시겠습니까?
+            title: Please make sure you have a backup!
             confirm_button: 가져오기 시작
-            description: '이 가져오기 도구는 알파 기능입니다. 아직 Jira에서 일부 데이터를 가져올 수 없으며 이 OpenProject 인스턴스에 불완전한 데이터가 남을 수 있습니다. <b>프로덕션 환경을 사용하지 말고, 시작하기 전에 OpenProject 데이터의 백업을 만드세요.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: 이해했으며 필요한 준비를 마쳤습니다
+            confirm: I understand and have a backup
           revert_dialog:
             title: 이 가져오기를 영구적으로 되돌리시겠습니까?
-            description: 이렇게 하면 OpenProject의 가져오기 후 해당 프로젝트에 사용자 활동이 있더라도 가져온 모든 개체(전체 프로젝트 포함)가 삭제됩니다.
+            description: This will delete all imported objects (including whole projects).
             confirm: 이 되돌리기를 통해 데이터가 영구적으로 삭제됨을 이해합니다
           finalize_dialog:
-            title: 이 가져오기를 마무리하시겠습니까?
-            description: 이 가져오기가 마무리되면 더 이상 되돌릴 수 없습니다. 가져온 모든 데이터는 영구적으로 가져오게 됩니다.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: 이 작업을 취소할 수 없음을 이해합니다.
             confirm_button: 이해함
           select_projects:

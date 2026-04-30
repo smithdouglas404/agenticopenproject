@@ -133,16 +133,16 @@ zh-CN:
     move_to_sprint_dialog_component:
       title: 移动到冲刺
       label_sprint: 冲刺
-    backlog:
+    sprints_component:
       blankslate:
-        title: 还不存在冲刺
-        description_html: 要开始计划冲刺，请在此处创建一个冲刺，或转到%{settings_link}从其他项目接收冲刺。
-        create_sprint_description_text: 要开始计划冲刺，请在此处创建一个冲刺。
-        share_sprint_description_html: 要开始计划冲刺，请转到%{settings_link}从其他项目接收冲刺。
-        no_actions_description_text: 此项目还没有可用冲刺。
-        receive_shared_description_html: 此项目从其他项目接收冲刺。请在%{settings_link}中管理此设置。
-        receive_shared_no_actions_description_text: 此项目从其他项目接收共享冲刺，但目前没有可用冲刺。
-        settings_link_text: 项目设置
+        title: No sprints present yet
+        settings_link_text: project settings
+        receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
+        receive_description_text: This project receives shared sprints from a different project, but none are available right now.
+        create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
+        create_description_text: To start planning your sprint, create one here.
+        manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
+        no_actions_description_text: No sprints are available for this project yet.
     backlog_bucket_menu_component:
       label_actions: Backlog bucket actions
       action_menu:
