@@ -61,10 +61,10 @@ de:
               share_all_projects_already_taken: kann nicht gewählt werden, da das Projekt "%{name}" bereits mit allen Projekten teilt.
               share_all_projects_already_taken_anonymous: kann nicht gewählt werden, da ein anderes Projekt bereits mit allen Projekten teilt.
         work_package:
-          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
+          backlog_bucket_xor_sprint: kann nicht gleichzeitig einem Sprint und einem Backlog Bucket zugewiesen werden.
           attributes:
             backlog_bucket:
-              backlog_bucket_from_another_project: must belong to the same project as the work package.
+              backlog_bucket_from_another_project: muss zum selben Projekt gehören wie das Arbeitspaket.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: kann nur die IDs von Arbeitspaketen des aktuellen Sprints enthalten.
               must_block_at_least_one_work_package: muss die ID von mindestens einem Arbeitspaket enthalten.
@@ -77,8 +77,8 @@ de:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
+                one: Es gibt ein Arbeitspaket, das in diesem Sprint nicht abgeschlossen wurde.
+                other: Es gibt %{count} Arbeitspakete, die in diesem Sprint nicht abgeschlossen wurden.
               format: "%{message}"
             status:
               not_active: ist nicht aktiv und kann deshalb nicht geschlossen werden.
@@ -117,10 +117,10 @@ de:
       title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
       text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
     backlog_bucket_component:
-      blankslate_title: Backlog bucket is empty
-      blankslate_description: Drag items here to add them.
+      blankslate_title: Eingangs Backlog ist leer
+      blankslate_description: Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
     backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Arbeitspaket-Aktionen
     sprint_component:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
@@ -160,7 +160,7 @@ de:
       label_work_package_count:
         zero: Keine Arbeitspakete im Backlog Bucket
         one: "%{count} Arbeitspakete im Backlog Bucket"
-        other: "%{count} stories in backlog bucket"
+        other: "%{count} Arbeitspakete im Backlog Bucket"
     sprint_header_component:
       label_start_sprint: Beginn
       label_complete_sprint: Fertigstellen
@@ -192,11 +192,11 @@ de:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
         copy_work_package_id: Arbeitspaket-ID kopieren
         move_menu: Verschieben
-        move_to_sprint: Move to sprint
+        move_to_sprint: Zum Sprint verschieben
     burndown_chart:
       show:
-        blankslate_title: No burndown data available
-        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
+        blankslate_title: Keine Burndown-Daten verfügbar
+        blankslate_description: Legen Sie Start- und Enddatum für den Sprint fest, um ein Burndown-Diagramm zu erstellen.
   burndown:
     story_points: Story-Points
     story_points_ideal: Story-Points (ideal)

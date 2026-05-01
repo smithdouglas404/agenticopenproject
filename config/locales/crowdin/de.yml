@@ -3402,11 +3402,11 @@ de:
             '
           new_features_list:
             line_0: Jira Migrator mit Unterstützung für grundlegende benutzerdefinierte Felder.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_1: Backlog Buckets zur Strukturierung und Priorisierung von Arbeitspaketen während des Backlog-Refinement.
+            line_2: Leichteres "drag and drop" und verbesserte Optionen beim Verschieben im Modul Backlogs.
+            line_3: Schaltflächen zum Starten und Beenden von Sprints in der Kopfzeile des Sprints.
+            line_4: Kopieren Sie Workflow-Einstellungen zwischen Rollen.
+            line_5: Widget 'Meine Besprechungen' auf der Home- und Projektübersichtsseite.
     links:
       upgrade_enterprise_edition: Auf Enterprise Edition upgraden
       postgres_migration: Migration Ihrer Installation zu PostgreSQL
@@ -4472,7 +4472,7 @@ de:
       note: 'Anmerkung: „%{note}“'
     sharing:
       work_packages:
-        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
+        allowed_actions_html: 'Sie haben auf diesem Arbeitspakte folgende Berechtigungen: %{allowed_actions}. Dies kann sich je nach Ihrer Projektrolle und Berechtigungen ändern.'
         create_account: Um auf dieses Arbeitspaket zuzugreifen, müssen Sie ein Konto für %{instance} erstellen und aktivieren.
         open_work_package: Arbeitspaket öffnen
         subject: 'Arbeitspaket #%{id} wurde mit Ihnen geteilt'
@@ -5744,13 +5744,13 @@ de:
           same_as_work: Auf denselben Wert wie Aufwand gesetzt.
     permissions:
       comment: Kommentar
-      comment_verb: comment
+      comment_verb: kommentieren
       comment_description: Kann dieses Arbeitspaket anzeigen und kommentieren.
       edit: Bearbeiten
-      edit_verb: edit
+      edit_verb: editieren
       edit_description: Kann dieses Arbeitspaket ansehen, kommentieren und editieren.
       view: Ansicht
-      view_verb: view
+      view_verb: sehen
       view_description: Kann dieses Arbeitspaket ansehen.
     reminders:
       label_remind_at: Datum
