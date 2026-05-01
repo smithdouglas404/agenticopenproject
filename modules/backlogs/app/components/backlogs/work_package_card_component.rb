@@ -32,7 +32,7 @@ module Backlogs
   class WorkPackageCardComponent < ApplicationComponent
     attr_reader :work_package, :menu_src
 
-    delegate :with_menu, to: :card
+    delegate :with_menu, :with_metric, to: :card
 
     def initialize(work_package:, menu_src: nil)
       super()
@@ -43,8 +43,10 @@ module Backlogs
 
     def call
       render(card) do |common_card|
-        common_card.with_metric do
-          render(Backlogs::StoryPointsComponent.new(work_package:))
+        unless common_card.metric?
+          common_card.with_metric do
+            render(Backlogs::StoryPointsComponent.new(work_package:))
+          end
         end
       end
     end

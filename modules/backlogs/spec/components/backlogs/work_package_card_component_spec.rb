@@ -56,6 +56,15 @@ RSpec.describe Backlogs::WorkPackageCardComponent, type: :component do
     expect(rendered_component).to have_text("5 points", normalize_ws: true)
   end
 
+  it "supports caller-provided metric content" do
+    rendered = render_inline(described_class.new(work_package:, menu_src:)) do |card|
+      card.with_metric { "Custom metric" }
+    end
+
+    expect(rendered).to have_text("Custom metric")
+    expect(rendered).to have_no_text("5 points", normalize_ws: true)
+  end
+
   it "passes the menu source to the common card" do
     expect(rendered_component).to have_element "include-fragment",
                                                src: menu_src

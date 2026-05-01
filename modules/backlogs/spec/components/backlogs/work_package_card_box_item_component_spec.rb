@@ -149,6 +149,13 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
       expect(rendered_card).to have_text("5 points", normalize_ws: true)
     end
 
+    it "supports caller-provided metric content through the item" do
+      item.with_metric { "Custom metric" }
+
+      expect(rendered_card).to have_text("Custom metric")
+      expect(rendered_card).to have_no_text("5 points", normalize_ws: true)
+    end
+
     context "with a sprint container" do
       it "uses the sprint menu source" do
         expect(rendered_card).to have_element(

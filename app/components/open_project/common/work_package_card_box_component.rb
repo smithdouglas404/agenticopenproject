@@ -86,15 +86,15 @@ module OpenProject
       #   #
       #   # @param work_package [WorkPackage] the work package rendered in the row.
       #   # @param component_klass [Class] row bridge class used instead of the
-      #   #   box's configured `item_component_klass`. It must accept the
-      #   #   arguments documented on
+      #   #   default item class. Defaults to the box's configured
+      #   #   `item_component_klass`. It must accept the arguments documented on
       #   #   `#build_item`, expose `#row_args` with valid
       #   #   `Primer::Beta::BorderBox#with_row` keyword arguments, and expose
       #   #   `#card` returning a renderable object.
       #   # @param system_arguments [Hash] forwarded to the item class.
       #   def with_work_package_item(
       #     work_package:,
-      #     component_klass: item_component_klass,
+      #     component_klass: Item,
       #     **system_arguments,
       #     &block
       #   )
@@ -305,9 +305,8 @@ module OpenProject
 
       def drag_and_drop_data
         {
-          # Sprint historically used "container" alone. The shared box keeps the
-          # first mirror container on the page for now until parent-specific DnD
-          # handling is extracted in follow-up work.
+          # Existing callers share one mirror container target on the page until
+          # parent-specific DnD handling is extracted in follow-up work.
           generic_drag_and_drop_target: "container mirrorContainer",
           target_container_accessor: ":scope > ul",
           target_id: drag_and_drop.fetch(:target_id),
