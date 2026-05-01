@@ -30,7 +30,6 @@ See COPYRIGHT and LICENSE files for more details.
 <%= component_wrapper(tag: :section) do %>
   <%= render(
         OpenProject::Common::WorkPackageCardBoxComponent.new(
-          work_packages:,
           project:,
           container: dom_target(:inbox, project),
           drag_and_drop: {
@@ -50,8 +49,33 @@ See COPYRIGHT and LICENSE files for more details.
          spacious: true
        ) %>
 
-    <% unless show_all_backlog %>
-      <% box.with_show_more(truncate_middle: TRUNCATE_MIDDLE) %>
+    <% visible_work_packages.each.with_index do |work_package, index| %>
+      <% box.with_work_package_item(work_package:) %>
+
+      <% if truncated? && index == TRUNCATE_MIDDLE - 1 %>
+        <% box.with_item(
+             scheme: :neutral,
+             classes: "op-work-package-card-box--show-more-row",
+             data: { draggable_id: last_omitted_id }
+           ) do %>
+          <%= render(
+                Primer::Beta::Button.new(
+                  id: show_more_id,
+                  scheme: :link,
+                  tag: :a,
+                  size: :large,
+                  block: true,
+                  align_content: :start,
+                  underline: true,
+                  href: project_backlogs_backlog_path(project, all: 1),
+                  data: {
+                    turbo_frame: "backlogs_container",
+                    turbo_action: :advance
+                  }
+                )
+              ) { show_more_label } %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

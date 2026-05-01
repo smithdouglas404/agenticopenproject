@@ -67,19 +67,6 @@ module OpenProject
         blankslate
       }
 
-      # When set, the box truncates `work_packages` to the first `truncate_middle`
-      # rows plus a derived tail (`max(truncate_middle / 5, 1)`) and inserts a
-      # show-more affordance between them. Truncation only triggers when
-      # `work_packages.size > truncate_middle + 2 * tail_size`.
-      #
-      # @param truncate_middle [Integer] first-page size.
-      # @param text [String, NilClass] copy override for the show-more label.
-      #   Supports a `%{count}` placeholder. Defaults to the
-      #   `work_package_card_box_component.show_more` translation key.
-      renders_one :show_more, ->(truncate_middle:, text: nil) {
-        ShowMore.new(truncate_middle:, text:)
-      }
-
       # @!parse
       #   # Adds a work package item row to the box. When at least one item is
       #   # added manually, the box does not build rows from `work_packages:`.
@@ -104,11 +91,20 @@ module OpenProject
       #   # Adds a custom empty item row to the box. This can be used instead of
       #   # the `empty_state` slot when the caller owns item iteration. It cannot
       #   # be combined with `work_packages:`, `with_work_package_item`, or
-      #   # `with_show_more`.
+      #   # `with_item`.
       #   #
       #   # @param system_arguments [Hash] forwarded to
       #   #   `Primer::Beta::BorderBox#with_row`.
       #   def with_empty_item(**system_arguments, &block)
+      #   end
+
+      # @!parse
+      #   # Adds a generic item to the box. When at least one item is added
+      #   # manually, the box does not build rows from `work_packages:`.
+      #   #
+      #   # @param system_arguments [Hash] forwarded to
+      #   #   `Primer::Beta::BorderBox#with_row`.
+      #   def with_item(**system_arguments, &block)
       #   end
       renders_many :items, types: {
         work_package_item: {
@@ -121,11 +117,15 @@ module OpenProject
         },
         empty_item: {
           renders: lambda { |**system_arguments, &block|
-            EmptyItem.new(**system_arguments).tap do |empty_item|
-              empty_item.with_content(capture(&block)) if block
-            end
+            build_content_item(EmptyItem, **system_arguments, &block)
           },
           as: :empty_item
+        },
+        item: {
+          renders: lambda { |**system_arguments, &block|
+            build_content_item(ContentItem, **system_arguments, &block)
+          },
+          as: :item
         }
       }
 
@@ -146,8 +146,7 @@ module OpenProject
       # @param container [Symbol, String, Class, ApplicationRecord] drives the box
       #   DOM id and related ids via `dom_target`.
       # @param work_packages [Enumerable<WorkPackage>] the work packages to render
-      #   as cards. Truncated when the `:show_more` slot is set and the count
-      #   exceeds the derived threshold.
+      #   as cards.
       # @param drag_and_drop [Hash, NilClass] optional generic drag-and-drop
       #   target data. Requires `:target_id` and `:allowed_drag_type` when set.
       # @param item_component_klass [Class] item class used for automatically
@@ -193,11 +192,6 @@ module OpenProject
         validate_item_mode!
         build_automatic_items if build_automatic_items?
         validate_empty_state!
-        validate_show_more!
-      end
-
-      def truncated?
-        automatic_items? && show_more? && work_packages.size > truncate_threshold
       end
 
       # Builds a new work package item without adding it to the box. Use this
@@ -231,14 +225,20 @@ module OpenProject
       end
 
       def build_automatic_items?
-        work_package_items.empty? && work_packages.any?
+        non_empty_items.empty? && work_packages.any?
       end
 
       def build_automatic_items
         @automatic_items = true
 
-        visible_work_packages.each do |work_package|
+        work_packages.each do |work_package|
           with_work_package_item(work_package:)
+        end
+      end
+
+      def build_content_item(item_class, **system_arguments, &block)
+        item_class.new(**system_arguments).tap do |item|
+          item.with_content(capture(&block)) if block
         end
       end
 
@@ -253,12 +253,8 @@ module OpenProject
           raise ArgumentError, "empty_item cannot be combined with work_packages"
         end
 
-        if work_package_items.any?
-          raise ArgumentError, "empty_item cannot be combined with work_package_item"
-        end
-
-        if show_more?
-          raise ArgumentError, "empty_item cannot be combined with show_more"
+        if non_empty_items.any?
+          raise ArgumentError, "empty_item cannot be combined with other items"
         end
       end
 
@@ -266,12 +262,6 @@ module OpenProject
         return unless items.empty? && !empty_state?
 
         raise ArgumentError, "empty_state slot is required when no work package items are rendered"
-      end
-
-      def validate_show_more!
-        return if !show_more? || show_more.truncate_middle.is_a?(Integer)
-
-        raise ArgumentError, "show_more requires truncate_middle: as an Integer"
       end
 
       def container_id
@@ -290,7 +280,7 @@ module OpenProject
         items.select { |item| item.respond_to?(:empty_item?) && item.empty_item? }
       end
 
-      def work_package_items
+      def non_empty_items
         items - empty_items
       end
 
@@ -312,46 +302,6 @@ module OpenProject
           target_id: drag_and_drop.fetch(:target_id),
           target_allowed_drag_type: drag_and_drop.fetch(:allowed_drag_type)
         }
-      end
-
-      def visible_work_packages
-        return work_packages unless truncated?
-
-        work_packages.first(show_more.truncate_middle) + work_packages.last(tail_size)
-      end
-
-      def tail_size
-        return 0 unless show_more?
-
-        [show_more.truncate_middle / 5, 1].max
-      end
-
-      def truncate_threshold
-        show_more.truncate_middle + (tail_size * 2)
-      end
-
-      def omitted_count
-        work_packages.size - show_more.truncate_middle - tail_size
-      end
-
-      def last_omitted_id
-        if work_packages.respond_to?(:reverse_order)
-          work_packages.reverse_order.offset(tail_size).limit(1).pick(:id)
-        else
-          work_packages[-(tail_size + 1)]&.id
-        end
-      end
-
-      def show_more_id
-        dom_target(container, :show_more)
-      end
-
-      def show_more_label
-        if show_more.text
-          format(show_more.text, count: omitted_count)
-        else
-          t(".show_more", count: omitted_count)
-        end
       end
     end
   end

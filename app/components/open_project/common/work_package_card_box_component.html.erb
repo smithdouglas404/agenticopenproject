@@ -39,34 +39,9 @@ See COPYRIGHT and LICENSE files for more details.
       <%= empty_state %>
     <% end %>
   <% else %>
-    <% items.each.with_index do |item, index| %>
+    <% items.each do |item| %>
       <% border_box.with_row(**item.row_args) do %>
         <%= render(item.card) %>
-      <% end %>
-
-      <% if truncated? && index == show_more.truncate_middle - 1 %>
-        <% border_box.with_row(
-             scheme: :neutral,
-             classes: "op-work-package-card-box--show-more-row",
-             data: { draggable_id: last_omitted_id }
-           ) do %>
-          <%= render(
-                Primer::Beta::Button.new(
-                  id: show_more_id,
-                  scheme: :link,
-                  tag: :a,
-                  size: :large,
-                  block: true,
-                  align_content: :start,
-                  underline: true,
-                  href: project_backlogs_backlog_path(project, all: 1),
-                  data: {
-                    turbo_frame: "backlogs_container",
-                    turbo_action: :advance
-                  }
-                )
-              ) { show_more_label } %>
-        <% end %>
       <% end %>
     <% end %>
   <% end %>

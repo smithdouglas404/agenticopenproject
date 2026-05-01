@@ -82,30 +82,18 @@ module OpenProject
         end
       end
 
-      def truncated_inbox
-        project = Project.first
-        return preview_message("No project in the database.") unless project
-
-        # Mirror `Backlog.inbox_for` semantics without `.visible` (Lookbook
-        # has no authenticated user) or the Arel-based secondary order.
-        inbox_filter = { project:, sprint_id: nil }
-        inbox_filter[:backlog_bucket_id] = nil if WorkPackage.column_names.include?("backlog_bucket_id")
-
-        work_packages = WorkPackage.where(inbox_filter).order(:position).to_a
-
-        # truncate_middle: 50 derives tail = 10, threshold = 70.
-        # The show-more row only renders for counts > 70.
-        if work_packages.size < 71
-          return preview_message("Need at least 71 inbox work packages on the first project to demo truncation.")
-        end
+      def manual_item
+        work_package = WorkPackage.first
+        project = work_package&.project
+        return preview_message("No work packages in the database.") unless work_package && project
 
         render OpenProject::Common::WorkPackageCardBoxComponent.new(
-          work_packages:,
           project:,
-          container: dom_target(:inbox, project)
+          container: :manual_item_demo
         ) do |box|
-          box.with_empty_state(title: "Inbox is empty", description: "All caught up", icon: :"op-backlogs")
-          box.with_show_more(truncate_middle: 50)
+          box.with_empty_state(title: "No items", description: "Manual items can be added by callers")
+          box.with_work_package_item(work_package:)
+          box.with_item(scheme: :neutral) { "Caller-provided item" }
         end
       end
 

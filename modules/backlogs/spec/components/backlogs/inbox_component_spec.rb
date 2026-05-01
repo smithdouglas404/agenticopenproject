@@ -106,8 +106,8 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
   end
 
   describe "pagination" do
-    # The shared box derives tail = max(truncate_middle / 5, 1) and the threshold
-    # to truncate as truncate_middle + tail*2.
+    # The inbox derives tail = max(truncate_middle / 5, 1) and the threshold to
+    # truncate as truncate_middle + tail*2.
     let(:truncate_middle) { described_class::TRUNCATE_MIDDLE }
     let(:tail_size) { [truncate_middle / 5, 1].max }
     let(:threshold) { truncate_middle + (tail_size * 2) }
@@ -137,6 +137,12 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         show_link = page.find("##{show_more_id}")
         expect(show_link[:href]).to include("all=1")
         expect(show_link["data-turbo-frame"]).to eq("backlogs_container")
+      end
+
+      it "renders the show-more row with the last omitted work package id" do
+        last_omitted = work_packages.sort_by(&:position)[-(tail_size + 1)]
+
+        expect(page).to have_css("[data-draggable-id='#{last_omitted.id}']")
       end
     end
 

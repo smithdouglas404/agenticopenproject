@@ -149,6 +149,9 @@ en:
     inbox_component:
       blankslate_title: "Backlog inbox is empty"
       blankslate_description: "All open work packages in this project will automatically appear here."
+      show_more:
+        one: "Show 1 more item"
+        other: "Show %{count} more items"
 
     inbox_menu_component:
       action_menu:

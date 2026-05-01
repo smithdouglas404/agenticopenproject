@@ -48,5 +48,45 @@ module Backlogs
     def wrapper_uniq_by
       project.id
     end
+
+    def truncated?
+      !show_all_backlog && work_packages.size > truncate_threshold
+    end
+
+    def visible_work_packages
+      return work_packages unless truncated?
+
+      work_packages.first(TRUNCATE_MIDDLE) + work_packages.last(tail_size)
+    end
+
+    def show_more_id
+      dom_target(:inbox, project, :show_more)
+    end
+
+    def show_more_label
+      I18n.t("backlogs.inbox_component.show_more", count: omitted_count)
+    end
+
+    def last_omitted_id
+      if work_packages.respond_to?(:reverse_order)
+        work_packages.reverse_order.offset(tail_size).limit(1).pick(:id)
+      else
+        work_packages[-(tail_size + 1)]&.id
+      end
+    end
+
+    private
+
+    def tail_size
+      [TRUNCATE_MIDDLE / 5, 1].max
+    end
+
+    def truncate_threshold
+      TRUNCATE_MIDDLE + (tail_size * 2)
+    end
+
+    def omitted_count
+      work_packages.size - TRUNCATE_MIDDLE - tail_size
+    end
   end
 end

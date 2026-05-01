@@ -4880,9 +4880,6 @@ en:
             zero: "No work packages"
             one: "%{count} work package"
             other: "%{count} work packages"
-        show_more:
-          one: "Show 1 more item"
-          other: "Show %{count} more items"
 
   permission_add_work_package_comments: "Add comments"
   permission_add_work_packages: "Add work packages"

@@ -45,7 +45,7 @@ RSpec.describe "Backlog pagination state", :js do
 
   before do
     # Stub the threshold so only 6 work packages are needed to trigger pagination.
-    # The shared box derives tail = max(truncate_middle / 5, 1) and the truncation
+    # The inbox derives tail = max(truncate_middle / 5, 1) and the truncation
     # threshold as truncate_middle + tail*2 = 5; 6 > 5 triggers the show-more row.
     stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 3)
 

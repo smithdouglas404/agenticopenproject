@@ -31,20 +31,26 @@
 module OpenProject
   module Common
     class WorkPackageCardBoxComponent
-      # Internal config carrier for the :show_more slot. The box reads
-      # `truncate_middle` and `text` to drive truncation and copy; it
-      # renders the show-more row itself, so this component never renders.
-      class ShowMore < ApplicationComponent
-        attr_reader :truncate_middle, :text
-
-        def initialize(truncate_middle:, text: nil)
+      # Item bridge for caller-provided content.
+      class ContentItem < ApplicationComponent
+        def initialize(**system_arguments)
           super()
-          @truncate_middle = truncate_middle
-          @text = text
+
+          @system_arguments = system_arguments
         end
 
-        def render?
-          false
+        def row_args
+          @system_arguments.deep_dup
+        end
+
+        def card
+          self
+        end
+
+        def empty_item? = false
+
+        def call
+          content
         end
       end
     end
