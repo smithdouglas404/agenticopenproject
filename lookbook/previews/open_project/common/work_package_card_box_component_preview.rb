@@ -32,6 +32,8 @@ module OpenProject
   module Common
     # @logical_path OpenProject/Common
     class WorkPackageCardBoxComponentPreview < ViewComponent::Preview
+      include ActionView::RecordIdentifier
+
       def sprint_with_cards
         sprint = Sprint.first
         project = sprint&.project
@@ -69,7 +71,9 @@ module OpenProject
         return preview_message("No project in the database.") unless project
 
         render OpenProject::Common::WorkPackageCardBoxComponent.new(
-          work_packages: [], project:, container: nil
+          work_packages: [],
+          project:,
+          container: dom_target(:inbox, project)
         ) do |box|
           box.with_empty_state(title: "Inbox is empty", description: "All caught up",
                                icon: :"op-backlogs")
@@ -94,7 +98,9 @@ module OpenProject
         end
 
         render OpenProject::Common::WorkPackageCardBoxComponent.new(
-          work_packages:, project:, container: nil
+          work_packages:,
+          project:,
+          container: dom_target(:inbox, project)
         ) do |box|
           box.with_empty_state(title: "Inbox is empty", description: "All caught up", icon: :"op-backlogs")
           box.with_show_more(truncate_middle: 50)

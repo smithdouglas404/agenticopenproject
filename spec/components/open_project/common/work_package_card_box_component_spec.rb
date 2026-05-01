@@ -46,6 +46,8 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
 
   let(:container) { sprint }
   let(:drag_and_drop) { nil }
+  let(:item_menu_src) { nil }
+  let(:params) { {} }
   let(:work_packages) { [] }
   let(:system_arguments) { {} }
   let(:header_arguments) { nil }
@@ -56,15 +58,18 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
   end
 
   def render_component(work_packages:, container:, drag_and_drop:, system_arguments:)
+    component_arguments = {
+      work_packages:,
+      project:,
+      container:,
+      drag_and_drop:,
+      item_menu_src:,
+      params:,
+      current_user: user,
+      **system_arguments
+    }
     render_inline(
-      described_class.new(
-        work_packages:,
-        project:,
-        container:,
-        drag_and_drop:,
-        current_user: user,
-        **system_arguments
-      )
+      described_class.new(**component_arguments)
     ) do |box|
       box.with_header(**header_arguments) if header_arguments
       box.with_empty_state(title: "Sprint 1 is empty", description: "Drag work packages here")
@@ -228,7 +233,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
         render_inline(described_class.new(work_packages: [], project:, container: sprint, current_user: user)) do |box|
           box.with_footer { "" }
         end
-      end.to raise_error(ArgumentError, /empty_state/i)
+      end.to raise_error(ArgumentError, /empty_state slot is required when no work package items are rendered/)
     end
 
     it "renders the blankslate when work_packages is empty" do
@@ -258,7 +263,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
     end
   end
 
-  describe "cards collection" do
+  describe "items collection" do
     let(:work_packages) do
       [
         create(:work_package, subject: "WP A", project:, type: type_feature, status: default_status,
@@ -281,6 +286,210 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       expect(rendered_component).to have_css(
         ".Box-row#work_package_#{work_package.id}.Box-row--clickable[data-test-selector='work-package-#{work_package.id}']"
       )
+    end
+
+    context "with an item_menu_src proc" do
+      let(:item_menu_src) { ->(work_package) { "/custom/#{work_package.id}/menu" } }
+
+      it "uses the derived menu source for automatically built items" do
+        expect(rendered_component).to have_element(
+          "include-fragment",
+          src: "/custom/#{work_packages.first.id}/menu"
+        )
+      end
+    end
+
+    context "with an invalid item_menu_src" do
+      let(:item_menu_src) { :custom_menu }
+
+      it "raises ArgumentError" do
+        expect { rendered_component }.to raise_error(ArgumentError, /item_menu_src/)
+      end
+    end
+  end
+
+  describe ":work_package_item slot" do
+    let(:work_packages) do
+      [
+        create(:work_package, subject: "WP A", project:, type: type_feature, status: default_status,
+                              priority: default_priority, sprint:, position: 1),
+        create(:work_package, subject: "WP B", project:, type: type_feature, status: default_status,
+                              priority: default_priority, sprint:, position: 2)
+      ]
+    end
+    let(:params) { { all: 1 } }
+    let(:slot_work_package) { work_packages.first }
+    let(:custom_item_component_class) do
+      stub_const(
+        "CustomWorkPackageCardBoxItem",
+        Class.new(ApplicationComponent) do
+          def initialize(
+            work_package:,
+            project:,
+            container:,
+            params:,
+            item_menu_src: nil,
+            current_user: User.current,
+            **system_arguments
+          )
+            super()
+
+            @work_package = work_package
+            @item_menu_src = item_menu_src
+            @params = params
+            @context = [project, container, current_user]
+            @system_arguments = system_arguments
+          end
+
+          def row_args
+            data = @system_arguments.fetch(:data, {}).merge(
+              params: @params.to_query,
+              context_size: @context.size
+            )
+            data[:item_menu_src] = @item_menu_src if @item_menu_src
+
+            @system_arguments.merge(
+              id: "custom_work_package_#{@work_package.id}",
+              data:
+            )
+          end
+
+          def card
+            CustomWorkPackageCardBoxItemCard.new(subject: @work_package.subject)
+          end
+
+          def render? = false
+        end
+      )
+    end
+
+    before do
+      stub_const(
+        "CustomWorkPackageCardBoxItemCard",
+        Class.new(ApplicationComponent) do
+          def initialize(subject:)
+            super()
+
+            @subject = subject
+          end
+
+          def call
+            tag.span("custom #{@subject}")
+          end
+        end
+      )
+    end
+
+    def render_with_manual_item
+      render_inline(
+        described_class.new(work_packages: [], project:, container:, params:, current_user: user)
+      ) do |box|
+        box.with_empty_state(title: "empty", description: "drag here")
+        box.with_work_package_item(
+          work_package: slot_work_package,
+          component_klass: custom_item_component_class,
+          data: { source: "slot" }
+        )
+      end
+    end
+
+    it "builds rows with the configured item component class" do
+      rendered = render_with_manual_item
+
+      expect(rendered).to have_css(".Box-row#custom_work_package_#{work_packages.first.id}", text: "custom WP A")
+      expect(rendered).to have_css(".Box-row[data-source='slot']")
+      expect(rendered).to have_css(".Box-row[data-params='all=1']")
+    end
+
+    it "does not also build automatic work package rows" do
+      rendered = render_inline(
+        described_class.new(work_packages:, project:, container:, params:, current_user: user)
+      ) do |box|
+        box.with_empty_state(title: "empty", description: "drag here")
+        box.with_work_package_item(work_package: slot_work_package)
+      end
+
+      expect(rendered).to have_css(".Box-row", count: 1)
+      expect(rendered).to have_text("WP A")
+      expect(rendered).to have_no_text("WP B")
+    end
+
+    it "uses the provided menu source for manual work package items" do
+      rendered = render_inline(
+        described_class.new(project:, container:, params:, current_user: user)
+      ) do |box|
+        box.with_empty_state(title: "empty", description: "drag here")
+        box.with_work_package_item(work_package: slot_work_package, item_menu_src: "/manual-menu")
+      end
+
+      expect(rendered).to have_element("include-fragment", src: "/manual-menu")
+    end
+
+    it "exposes build_item for building an item without adding it to the box" do
+      component = described_class.new(work_packages: [], project:, container:, params:, current_user: user)
+
+      item = component.build_item(
+        work_package: slot_work_package,
+        component_klass: custom_item_component_class,
+        data: { source: "builder" }
+      )
+
+      expect(item.row_args).to include(
+        id: "custom_work_package_#{slot_work_package.id}",
+        data: { params: "all=1", context_size: 3, source: "builder" }
+      )
+    end
+  end
+
+  describe ":empty_item slot" do
+    it "renders a caller-provided empty item row" do
+      rendered = render_inline(described_class.new(project:, container:, current_user: user)) do |box|
+        box.with_empty_item(data: { test_selector: "manual-empty-item" }) do
+          "Nothing to show"
+        end
+      end
+
+      expect(rendered).to have_css(
+        ".Box-row[data-empty-list-item='true'][data-test-selector='manual-empty-item']",
+        text: "Nothing to show"
+      )
+    end
+
+    it "raises when combined with automatic work packages" do
+      work_package = create(:work_package, project:, type: type_feature, status: default_status,
+                                           priority: default_priority, sprint:, position: 1)
+
+      expect do
+        render_inline(
+          described_class.new(work_packages: [work_package], project:, container:, current_user: user)
+        ) do |box|
+          box.with_empty_state(title: "empty", description: "drag here")
+          box.with_empty_item { "Nothing to show" }
+        end
+      end.to raise_error(ArgumentError, /empty_item cannot be combined with work_packages/)
+    end
+
+    it "raises when combined with manual work package items" do
+      work_package = create(:work_package, project:, type: type_feature, status: default_status,
+                                           priority: default_priority, sprint:, position: 1)
+
+      expect do
+        render_inline(described_class.new(project:, container:, current_user: user)) do |box|
+          box.with_empty_state(title: "empty", description: "drag here")
+          box.with_work_package_item(work_package:)
+          box.with_empty_item { "Nothing to show" }
+        end
+      end.to raise_error(ArgumentError, /empty_item cannot be combined with work_package_item/)
+    end
+
+    it "raises when combined with show_more" do
+      expect do
+        render_inline(described_class.new(project:, container:, current_user: user)) do |box|
+          box.with_empty_state(title: "empty", description: "drag here")
+          box.with_show_more(truncate_middle: 5)
+          box.with_empty_item { "Nothing to show" }
+        end
+      end.to raise_error(ArgumentError, /empty_item cannot be combined with show_more/)
     end
   end
 

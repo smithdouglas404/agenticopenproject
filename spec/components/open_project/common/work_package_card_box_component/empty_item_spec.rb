@@ -28,26 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  module Common
-    # @logical_path OpenProject/Common
-    class WorkPackageCardComponentPreview < ViewComponent::Preview
-      def default
-        work_package = WorkPackage.first
-        return preview_message("No work packages in the database.") unless work_package
+require "rails_helper"
 
-        render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        )
-      end
+RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::EmptyItem, type: :component do
+  describe "#row_args" do
+    it "marks the row as an empty list item by default" do
+      item = described_class.new
 
-      private
+      expect(item.row_args[:data]).to include(empty_list_item: true)
+    end
 
-      def preview_message(text)
-        render(Primer::Beta::Blankslate.new) do |b|
-          b.with_heading(tag: :h4).with_content(text)
-        end
-      end
+    it "lets caller-supplied data override the default empty item data" do
+      item = described_class.new(
+        data: {
+          empty_list_item: false,
+          test_selector: "custom-empty-row"
+        }
+      )
+
+      expect(item.row_args[:data]).to include(
+        empty_list_item: false,
+        test_selector: "custom-empty-row"
+      )
     end
   end
 end

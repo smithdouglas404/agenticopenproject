@@ -37,6 +37,14 @@ See COPYRIGHT and LICENSE files for more details.
             target_id: "inbox",
             allowed_drag_type: "story"
           },
+          item_menu_src: ->(work_package) do
+            menu_project_backlogs_inbox_path(
+              project,
+              work_package,
+              all_backlogs_params
+            )
+          end,
+          params: all_backlogs_params,
           current_user:,
           data: { test_selector: "backlog-inbox" }
         )

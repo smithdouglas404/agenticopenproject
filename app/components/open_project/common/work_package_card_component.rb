@@ -32,108 +32,22 @@ module OpenProject
   module Common
     class WorkPackageCardComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
-      include ::Backlogs::CommonHelper
 
-      attr_reader :work_package, :project, :container, :current_user
+      attr_reader :work_package, :menu_src
 
       # @param work_package [WorkPackage] the work package this card represents.
-      # @param project [Project] the project this card is rendered in. May
-      #   differ from `work_package.project` when sprints or buckets are
-      #   shared across projects.
-      # @param container [Sprint, BacklogBucket, NilClass] the parent
-      #   list this card is rendered into. Drives `drop_url` and `menu_src`. `nil`
-      #   means inbox.
-      # @param current_user [User] used for the draggable permission check;
-      #   defaults to `User.current`.
-      def initialize(work_package:, project:, container:, current_user: User.current)
+      # @param menu_src [String, NilClass] optional lazy menu source.
+      def initialize(work_package:, menu_src: nil)
         super()
 
         @work_package = work_package
-        @project = project
-        @container = container
-        @current_user = current_user
-      end
-
-      # Threaded into Primer::BorderBox#with_row by the parent box.
-      # When DnD migrates to inner-card model (WP #74172), drag-related
-      # data attrs leave this hash; row_args shrinks; box loop unchanged.
-      def row_args
-        {
-          id: dom_id(work_package),
-          tabindex: 0,
-          classes: row_classes,
-          data: row_data
-        }
+        @menu_src = menu_src
       end
 
       private
 
       def story_points
         work_package.story_points || 0
-      end
-
-      def draggable?
-        current_user.allowed_in_project?(:manage_sprint_items, project)
-      end
-
-      def split_url
-        project_backlogs_backlog_details_path(project, work_package, all_backlogs_params)
-      end
-
-      def full_url
-        work_package_path(work_package)
-      end
-
-      # Sprint is the only positive match; bucket and nil both fall through to inbox.
-      def uses_inbox_routes?
-        !container.is_a?(Sprint)
-      end
-
-      def drop_url
-        if uses_inbox_routes?
-          move_project_backlogs_inbox_path(project, work_package, all_backlogs_params)
-        else
-          move_project_backlogs_work_package_path(project, container, work_package, all_backlogs_params)
-        end
-      end
-
-      def menu_src
-        if uses_inbox_routes?
-          menu_project_backlogs_inbox_path(project, work_package, all_backlogs_params)
-        else
-          menu_project_backlogs_work_package_path(project, container, work_package, all_backlogs_params)
-        end
-      end
-
-      def row_classes
-        class_names(
-          "Box-row--hover-blue",
-          "Box-row--focus-gray",
-          "Box-row--clickable",
-          "Box-row--draggable" => draggable?
-        )
-      end
-
-      # `story` data attrs match the live Stimulus controller and Dragula drag-type;
-      # renaming requires coordinated JS changes (separate PR).
-      def row_data
-        base = {
-          story: true,
-          controller: "backlogs--story",
-          backlogs__story_id_value: work_package.id,
-          backlogs__story_split_url_value: split_url,
-          backlogs__story_full_url_value: full_url,
-          backlogs__story_selected_class: "Box-row--blue",
-          test_selector: "work-package-#{work_package.id}"
-        }
-
-        return base unless draggable?
-
-        base.merge(
-          draggable_id: work_package.id,
-          draggable_type: "story",
-          drop_url:
-        )
       end
     end
   end

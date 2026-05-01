@@ -30,22 +30,34 @@
 
 module OpenProject
   module Common
-    # @logical_path OpenProject/Common
-    class WorkPackageCardComponentPreview < ViewComponent::Preview
-      def default
-        work_package = WorkPackage.first
-        return preview_message("No work packages in the database.") unless work_package
+    class WorkPackageCardBoxComponent
+      # Row bridge for caller-provided empty content.
+      class EmptyItem < ApplicationComponent
+        include Primer::AttributesHelper
 
-        render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        )
-      end
+        def initialize(**system_arguments)
+          super()
 
-      private
+          @system_arguments = system_arguments
+        end
 
-      def preview_message(text)
-        render(Primer::Beta::Blankslate.new) do |b|
-          b.with_heading(tag: :h4).with_content(text)
+        def row_args
+          system_arguments = @system_arguments.deep_dup
+          system_arguments[:data] = merge_data(
+            { data: { empty_list_item: true } },
+            system_arguments
+          )
+          system_arguments
+        end
+
+        def card
+          self
+        end
+
+        def empty_item? = true
+
+        def call
+          content
         end
       end
     end

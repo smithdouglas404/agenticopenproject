@@ -37,6 +37,15 @@ See COPYRIGHT and LICENSE files for more details.
             target_id: "sprint:#{sprint.id}",
             allowed_drag_type: "story"
           },
+          item_menu_src: ->(work_package) do
+            menu_project_backlogs_work_package_path(
+              project,
+              sprint,
+              work_package,
+              all_backlogs_params
+            )
+          end,
+          params: all_backlogs_params,
           current_user:,
           data: { test_selector: "sprint-#{sprint.id}" }
         )

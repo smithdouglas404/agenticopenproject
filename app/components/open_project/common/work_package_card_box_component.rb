@@ -44,8 +44,10 @@ module OpenProject
         Header.new(title:, count:, container:, list_id:, collapsed: folded?)
       }
 
-      # Renders a `Primer::Beta::Blankslate` when `work_packages` is empty. The
-      # slot is required — `before_render` raises if it is not set.
+      # Renders a `Primer::Beta::Blankslate` when no items are produced — that
+      # is, when `items.empty?` after slot resolution and automatic item builds.
+      # The slot is required unless the caller provides manual items, and is
+      # silently ignored whenever `items` is non-empty.
       #
       # @param title [String] blankslate heading.
       # @param description [String, NilClass] optional secondary text.
@@ -78,30 +80,93 @@ module OpenProject
         ShowMore.new(truncate_middle:, text:)
       }
 
+      # @!parse
+      #   # Adds a work package item row to the box. When at least one item is
+      #   # added manually, the box does not build rows from `work_packages:`.
+      #   #
+      #   # @param work_package [WorkPackage] the work package rendered in the row.
+      #   # @param component_klass [Class] row bridge class used instead of the
+      #   #   default `Item`. It must accept the arguments documented on
+      #   #   `#build_item`, expose `#row_args` with valid
+      #   #   `Primer::Beta::BorderBox#with_row` keyword arguments, and expose
+      #   #   `#card` returning a renderable object.
+      #   # @param item_menu_src [String, NilClass] optional menu source for the
+      #   #   item's `WorkPackageCardComponent`.
+      #   # @param system_arguments [Hash] forwarded to the item class.
+      #   def with_work_package_item(
+      #     work_package:,
+      #     component_klass: Item,
+      #     item_menu_src: nil,
+      #     **system_arguments,
+      #     &block
+      #   )
+      #   end
+
+      # @!parse
+      #   # Adds a custom empty item row to the box. This can be used instead of
+      #   # the `empty_state` slot when the caller owns item iteration. It cannot
+      #   # be combined with `work_packages:`, `with_work_package_item`, or
+      #   # `with_show_more`.
+      #   #
+      #   # @param system_arguments [Hash] forwarded to
+      #   #   `Primer::Beta::BorderBox#with_row`.
+      #   def with_empty_item(**system_arguments, &block)
+      #   end
+      renders_many :items, types: {
+        work_package_item: {
+          renders: lambda { |work_package:, **system_arguments|
+            build_item(work_package:, **system_arguments)
+          },
+          as: :work_package_item
+        },
+        empty_item: {
+          renders: lambda { |**system_arguments, &block|
+            EmptyItem.new(**system_arguments).tap do |empty_item|
+              empty_item.with_content(capture(&block)) if block
+            end
+          },
+          as: :empty_item
+        }
+      }
+
       # Renders a free-form footer row below the card list.
       renders_one :footer
 
-      attr_reader :work_packages, :project, :container, :drag_and_drop, :current_user
+      attr_reader :work_packages,
+                  :project,
+                  :container,
+                  :drag_and_drop,
+                  :item_menu_src,
+                  :params,
+                  :current_user
 
-      # @param work_packages [Enumerable<WorkPackage>] the work packages to render
-      #   as cards. Truncated when the `:show_more` slot is set and the count
-      #   exceeds the derived threshold.
       # @param project [Project] the project this card box is rendered in. May
       #   differ from individual `work_package.project` values when sprints or
       #   buckets are shared across projects.
       # @param container [Symbol, String, Class, ApplicationRecord] drives the box
       #   DOM id and related ids via `dom_target`.
+      # @param work_packages [Enumerable<WorkPackage>] the work packages to render
+      #   as cards. Truncated when the `:show_more` slot is set and the count
+      #   exceeds the derived threshold.
       # @param drag_and_drop [Hash, NilClass] optional generic drag-and-drop
       #   target data. Requires `:target_id` and `:allowed_drag_type` when set.
-      # @param current_user [User] passed through to each `WorkPackageCardComponent`
-      #   for permission checks; defaults to `User.current`.
+      # @param item_menu_src [Proc, String, NilClass] optional menu source for
+      #   automatically built items. Procs receive the work package. When set,
+      #   callers are responsible for including any URL params they want in the
+      #   returned source.
+      # @param params [Hash] optional URL params passed to work package items
+      #   when deriving row and menu URLs.
+      # @param current_user [User] passed through to each item for permission
+      #   checks; defaults to `User.current`.
       # @param system_arguments [Hash] forwarded to the underlying
       #   `Primer::Beta::BorderBox`.
       def initialize(
-        work_packages:,
         project:,
         container:,
+        work_packages: [],
         drag_and_drop: nil,
+        item_menu_src: nil,
+        params: {},
         current_user: User.current,
         **system_arguments
       )
@@ -111,7 +176,10 @@ module OpenProject
         @project = project
         @container = container
         @drag_and_drop = drag_and_drop
+        @item_menu_src = item_menu_src
+        @params = params
         @current_user = current_user
+        @automatic_items = false
 
         @system_arguments = system_arguments
         @system_arguments[:id] = container_id
@@ -121,27 +189,114 @@ module OpenProject
       end
 
       def before_render
-        raise ArgumentError, "empty_state slot is required" unless empty_state?
-
-        return if !show_more? || show_more.truncate_middle.is_a?(Integer)
-
-        raise ArgumentError, "show_more requires truncate_middle: as an Integer"
-      end
-
-      def cards
-        @cards ||= visible_work_packages.map do |work_package|
-          WorkPackageCardComponent.new(work_package:, project:, container:, current_user:)
-        end
+        # Content must be loaded before mode validation and automatic item builds
+        # so slot calls have already populated `items`.
+        content
+        validate_item_menu_src!
+        validate_item_mode!
+        build_automatic_items if build_automatic_items?
+        validate_empty_state!
+        validate_show_more!
       end
 
       def truncated?
-        show_more? && work_packages.size > truncate_threshold
+        automatic_items? && show_more? && work_packages.size > truncate_threshold
+      end
+
+      # Builds a new work package item without adding it to the box. Use this
+      # instead of the `#with_work_package_item` slot when rendering additional
+      # items outside this box, such as in a separately-loaded page.
+      #
+      # @param work_package [WorkPackage] the work package rendered in the row.
+      # @param component_klass [Class] item class used instead of the default
+      #   `Item`. It must accept `work_package:`, `project:`, `container:`,
+      #   `params:`, optional `item_menu_src:`, `current_user:`, and
+      #   `**system_arguments`.
+      # @param item_menu_src [String, NilClass] optional item menu source
+      #   override. When set, callers are responsible for including any URL
+      #   params they want in the source.
+      # @param system_arguments [Hash] forwarded to the item class.
+      def build_item(
+        work_package:,
+        component_klass: Item,
+        item_menu_src: item_menu_src_for(work_package),
+        **system_arguments
+      )
+        component_klass.new(
+          work_package:,
+          project:,
+          container:,
+          params:,
+          item_menu_src:,
+          current_user:,
+          **system_arguments
+        )
       end
 
       private
 
       def folded?
         current_user.pref[:backlogs_versions_default_fold_state] == "closed"
+      end
+
+      def build_automatic_items?
+        work_package_items.empty? && work_packages.any?
+      end
+
+      def build_automatic_items
+        @automatic_items = true
+
+        visible_work_packages.each do |work_package|
+          with_work_package_item(work_package:)
+        end
+      end
+
+      def automatic_items?
+        @automatic_items
+      end
+
+      def item_menu_src_for(work_package)
+        return unless item_menu_src
+
+        if item_menu_src.is_a?(Proc)
+          item_menu_src.call(work_package)
+        else
+          item_menu_src
+        end
+      end
+
+      def validate_item_menu_src!
+        return if item_menu_src.nil? || item_menu_src.is_a?(Proc) || item_menu_src.is_a?(String)
+
+        raise ArgumentError, "item_menu_src must be a Proc, String, or nil"
+      end
+
+      def validate_item_mode!
+        return unless empty_items.any?
+
+        if work_packages.any?
+          raise ArgumentError, "empty_item cannot be combined with work_packages"
+        end
+
+        if work_package_items.any?
+          raise ArgumentError, "empty_item cannot be combined with work_package_item"
+        end
+
+        if show_more?
+          raise ArgumentError, "empty_item cannot be combined with show_more"
+        end
+      end
+
+      def validate_empty_state!
+        return unless items.empty? && !empty_state?
+
+        raise ArgumentError, "empty_state slot is required when no work package items are rendered"
+      end
+
+      def validate_show_more!
+        return if !show_more? || show_more.truncate_middle.is_a?(Integer)
+
+        raise ArgumentError, "show_more requires truncate_middle: as an Integer"
       end
 
       def container_id
@@ -154,6 +309,14 @@ module OpenProject
 
       def header_id
         dom_target(container, :header)
+      end
+
+      def empty_items
+        items.select { |item| item.respond_to?(:empty_item?) && item.empty_item? }
+      end
+
+      def work_package_items
+        items - empty_items
       end
 
       def merge_drag_and_drop_data!

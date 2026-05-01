@@ -34,15 +34,14 @@ See COPYRIGHT and LICENSE files for more details.
     <% end %>
   <% end %>
 
-  <% if work_packages.empty? %>
+  <% if items.empty? %>
     <% border_box.with_row(data: { empty_list_item: true }) do %>
       <%= empty_state %>
     <% end %>
   <% else %>
-    <% cards.each.with_index do |card, index| %>
-      <% card_html = capture { render(card) } %>
-      <% border_box.with_row(**card.row_args) do %>
-        <%= card_html %>
+    <% items.each.with_index do |item, index| %>
+      <% border_box.with_row(**item.row_args) do %>
+        <%= render(item.card) %>
       <% end %>
 
       <% if truncated? && index == show_more.truncate_middle - 1 %>
