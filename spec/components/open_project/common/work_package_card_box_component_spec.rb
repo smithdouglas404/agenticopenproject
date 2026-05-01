@@ -46,13 +46,53 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
 
   let(:container) { sprint }
   let(:drag_and_drop) { nil }
-  let(:item_menu_src) { nil }
-  let(:item_metric) { nil }
+  let(:item_component_klass) { described_class::Item }
   let(:params) { {} }
   let(:work_packages) { [] }
   let(:system_arguments) { {} }
   let(:header_arguments) { nil }
   let(:footer_content) { nil }
+
+  let(:custom_item_component_class) do
+    stub_const(
+      "CustomWorkPackageCardBoxItem",
+      Class.new(ApplicationComponent) do
+        def initialize(
+          work_package:,
+          project:,
+          container:,
+          params:,
+          current_user: User.current,
+          **system_arguments
+        )
+          super()
+
+          @work_package = work_package
+          @params = params
+          @context = [project, container, current_user]
+          @system_arguments = system_arguments
+        end
+
+        def row_args
+          data = @system_arguments.fetch(:data, {}).merge(
+            params: @params.to_query,
+            context_size: @context.size
+          )
+
+          @system_arguments.merge(
+            id: "custom_work_package_#{@work_package.id}",
+            data:
+          )
+        end
+
+        def card
+          CustomWorkPackageCardBoxItemCard.new(subject: @work_package.subject)
+        end
+
+        def render? = false
+      end
+    )
+  end
 
   subject(:rendered_component) do
     render_component(work_packages:, container:, drag_and_drop:, system_arguments:)
@@ -64,8 +104,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       project:,
       container:,
       drag_and_drop:,
-      item_menu_src:,
-      item_metric:,
+      item_component_klass:,
       params:,
       current_user: user,
       **system_arguments
@@ -77,6 +116,23 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       box.with_empty_state(title: "Sprint 1 is empty", description: "Drag work packages here")
       box.with_footer { footer_content } if footer_content
     end
+  end
+
+  before do
+    stub_const(
+      "CustomWorkPackageCardBoxItemCard",
+      Class.new(ApplicationComponent) do
+        def initialize(subject:)
+          super()
+
+          @subject = subject
+        end
+
+        def call
+          tag.span("custom #{@subject}")
+        end
+      end
+    )
   end
 
   describe "Box shell" do
@@ -290,39 +346,25 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       )
     end
 
-    context "with an item_menu_src proc" do
-      let(:item_menu_src) { ->(work_package) { "/custom/#{work_package.id}/menu" } }
+    it "does not include Backlogs row wiring by default" do
+      expect(rendered_component).to have_css(".Box-row", count: 2)
+      expect(rendered_component).to have_no_css(".Box-row[data-controller='backlogs--story']")
+      expect(rendered_component).to have_no_css(".Box-row[data-drop-url]")
+      expect(rendered_component).to have_no_css(".Box-row[data-backlogs--story-split-url-value]")
+    end
 
-      it "uses the derived menu source for automatically built items" do
-        expect(rendered_component).to have_element(
-          "include-fragment",
-          src: "/custom/#{work_packages.first.id}/menu"
+    context "with an item_component_klass" do
+      let(:item_component_klass) { custom_item_component_class }
+
+      it "uses the configured item class for automatically built items" do
+        expect(rendered_component).to have_css(
+          ".Box-row#custom_work_package_#{work_packages.first.id}",
+          text: "custom WP A"
         )
-      end
-    end
-
-    context "with an invalid item_menu_src" do
-      let(:item_menu_src) { :custom_menu }
-
-      it "raises ArgumentError" do
-        expect { rendered_component }.to raise_error(ArgumentError, /item_menu_src/)
-      end
-    end
-
-    context "with an item_metric proc" do
-      let(:item_metric) { ->(work_package) { "metric #{work_package.id}" } }
-
-      it "uses the derived metric for automatically built items" do
-        expect(rendered_component).to have_text("metric #{work_packages.first.id}")
-        expect(rendered_component).to have_text("metric #{work_packages.second.id}")
-      end
-    end
-
-    context "with an invalid item_metric" do
-      let(:item_metric) { "static metric" }
-
-      it "raises ArgumentError" do
-        expect { rendered_component }.to raise_error(ArgumentError, /item_metric/)
+        expect(rendered_component).to have_css(
+          ".Box-row#custom_work_package_#{work_packages.second.id}",
+          text: "custom WP B"
+        )
       end
     end
   end
@@ -338,69 +380,6 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
     end
     let(:params) { { all: 1 } }
     let(:slot_work_package) { work_packages.first }
-    let(:custom_item_component_class) do
-      stub_const(
-        "CustomWorkPackageCardBoxItem",
-        Class.new(ApplicationComponent) do
-          def initialize(
-            work_package:,
-            project:,
-            container:,
-            params:,
-            item_menu_src: nil,
-            item_metric: nil,
-            current_user: User.current,
-            **system_arguments
-          )
-            super()
-
-            @work_package = work_package
-            @item_menu_src = item_menu_src
-            @item_metric = item_metric
-            @params = params
-            @context = [project, container, current_user]
-            @system_arguments = system_arguments
-          end
-
-          def row_args
-            data = @system_arguments.fetch(:data, {}).merge(
-              params: @params.to_query,
-              context_size: @context.size
-            )
-            data[:item_menu_src] = @item_menu_src if @item_menu_src
-            data[:item_metric] = @item_metric if @item_metric
-
-            @system_arguments.merge(
-              id: "custom_work_package_#{@work_package.id}",
-              data:
-            )
-          end
-
-          def card
-            CustomWorkPackageCardBoxItemCard.new(subject: @work_package.subject)
-          end
-
-          def render? = false
-        end
-      )
-    end
-
-    before do
-      stub_const(
-        "CustomWorkPackageCardBoxItemCard",
-        Class.new(ApplicationComponent) do
-          def initialize(subject:)
-            super()
-
-            @subject = subject
-          end
-
-          def call
-            tag.span("custom #{@subject}")
-          end
-        end
-      )
-    end
 
     def render_with_manual_item
       render_inline(
@@ -434,17 +413,6 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       expect(rendered).to have_css(".Box-row", count: 1)
       expect(rendered).to have_text("WP A")
       expect(rendered).to have_no_text("WP B")
-    end
-
-    it "uses the provided menu source for manual work package items" do
-      rendered = render_inline(
-        described_class.new(project:, container:, params:, current_user: user)
-      ) do |box|
-        box.with_empty_state(title: "empty", description: "drag here")
-        box.with_work_package_item(work_package: slot_work_package, item_menu_src: "/manual-menu")
-      end
-
-      expect(rendered).to have_element("include-fragment", src: "/manual-menu")
     end
 
     it "uses caller-provided metric content for manual work package items" do

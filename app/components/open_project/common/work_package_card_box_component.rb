@@ -86,20 +86,15 @@ module OpenProject
       #   #
       #   # @param work_package [WorkPackage] the work package rendered in the row.
       #   # @param component_klass [Class] row bridge class used instead of the
-      #   #   default `Item`. It must accept the arguments documented on
+      #   #   box's configured `item_component_klass`. It must accept the
+      #   #   arguments documented on
       #   #   `#build_item`, expose `#row_args` with valid
       #   #   `Primer::Beta::BorderBox#with_row` keyword arguments, and expose
       #   #   `#card` returning a renderable object.
-      #   # @param item_menu_src [String, NilClass] optional menu source for the
-      #   #   item's `WorkPackageCardComponent`.
-      #   # @param item_metric [Object, NilClass] optional metric content for the
-      #   #   item's `WorkPackageCardComponent`.
       #   # @param system_arguments [Hash] forwarded to the item class.
       #   def with_work_package_item(
       #     work_package:,
-      #     component_klass: Item,
-      #     item_menu_src: nil,
-      #     item_metric: nil,
+      #     component_klass: item_component_klass,
       #     **system_arguments,
       #     &block
       #   )
@@ -141,8 +136,7 @@ module OpenProject
                   :project,
                   :container,
                   :drag_and_drop,
-                  :item_menu_src,
-                  :item_metric,
+                  :item_component_klass,
                   :params,
                   :current_user
 
@@ -156,15 +150,10 @@ module OpenProject
       #   exceeds the derived threshold.
       # @param drag_and_drop [Hash, NilClass] optional generic drag-and-drop
       #   target data. Requires `:target_id` and `:allowed_drag_type` when set.
-      # @param item_menu_src [Proc, String, NilClass] optional menu source for
-      #   automatically built items. Procs receive the work package. When set,
-      #   callers are responsible for including any URL params they want in the
-      #   returned source.
-      # @param item_metric [Proc, NilClass] optional metric content for
-      #   automatically built items. Procs receive the work package and return
-      #   renderable content.
+      # @param item_component_klass [Class] item class used for automatically
+      #   built work package items.
       # @param params [Hash] optional URL params passed to work package items
-      #   when deriving row and menu URLs.
+      #   when deriving row arguments.
       # @param current_user [User] passed through to each item for permission
       #   checks; defaults to `User.current`.
       # @param system_arguments [Hash] forwarded to the underlying
@@ -174,8 +163,7 @@ module OpenProject
         container:,
         work_packages: [],
         drag_and_drop: nil,
-        item_menu_src: nil,
-        item_metric: nil,
+        item_component_klass: Item,
         params: {},
         current_user: User.current,
         **system_arguments
@@ -186,8 +174,7 @@ module OpenProject
         @project = project
         @container = container
         @drag_and_drop = drag_and_drop
-        @item_menu_src = item_menu_src
-        @item_metric = item_metric
+        @item_component_klass = item_component_klass
         @params = params
         @current_user = current_user
         @automatic_items = false
@@ -203,8 +190,6 @@ module OpenProject
         # Content must be loaded before mode validation and automatic item builds
         # so slot calls have already populated `items`.
         content
-        validate_item_menu_src!
-        validate_item_metric!
         validate_item_mode!
         build_automatic_items if build_automatic_items?
         validate_empty_state!
@@ -220,20 +205,13 @@ module OpenProject
       # items outside this box, such as in a separately-loaded page.
       #
       # @param work_package [WorkPackage] the work package rendered in the row.
-      # @param component_klass [Class] item class used instead of the default
-      #   `Item`. It must accept `work_package:`, `project:`, `container:`,
-      #   `params:`, optional `item_menu_src:`, `current_user:`, and
-      #   `**system_arguments`.
-      # @param item_menu_src [String, NilClass] optional item menu source
-      #   override. When set, callers are responsible for including any URL
-      #   params they want in the source.
-      # @param item_metric [Object, NilClass] optional item metric content.
+      # @param component_klass [Class] item class used instead of the configured
+      #   default item class. It must accept `work_package:`, `project:`,
+      #   `container:`, `params:`, `current_user:`, and `**system_arguments`.
       # @param system_arguments [Hash] forwarded to the item class.
       def build_item(
         work_package:,
-        component_klass: Item,
-        item_menu_src: item_menu_src_for(work_package),
-        item_metric: item_metric_for(work_package),
+        component_klass: item_component_klass,
         **system_arguments
       )
         component_klass.new(
@@ -241,8 +219,6 @@ module OpenProject
           project:,
           container:,
           params:,
-          item_menu_src:,
-          item_metric:,
           current_user:,
           **system_arguments
         )
@@ -268,35 +244,6 @@ module OpenProject
 
       def automatic_items?
         @automatic_items
-      end
-
-      def item_menu_src_for(work_package)
-        return unless item_menu_src
-
-        if item_menu_src.is_a?(Proc)
-          item_menu_src.call(work_package)
-        else
-          item_menu_src
-        end
-      end
-
-      def item_metric_for(work_package)
-        return unless item_metric
-
-        metric = item_metric.call(work_package)
-        metric.respond_to?(:render_in) ? render(metric) : metric
-      end
-
-      def validate_item_menu_src!
-        return if item_menu_src.nil? || item_menu_src.is_a?(Proc) || item_menu_src.is_a?(String)
-
-        raise ArgumentError, "item_menu_src must be a Proc, String, or nil"
-      end
-
-      def validate_item_metric!
-        return if item_metric.nil? || item_metric.is_a?(Proc)
-
-        raise ArgumentError, "item_metric must be a Proc or nil"
       end
 
       def validate_item_mode!

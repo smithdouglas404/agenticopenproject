@@ -31,8 +31,6 @@
 require "rails_helper"
 
 RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :component do
-  include Rails.application.routes.url_helpers
-
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:default_status) { create(:default_status) }
   shared_let(:default_priority) { create(:default_priority) }
@@ -40,13 +38,8 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :co
   current_user { user }
 
   shared_let(:project) { create(:project, types: [type_feature]) }
-  shared_let(:sprint) do
-    create(:sprint, project:, name: "Sprint 1",
-                    start_date: Date.yesterday, finish_date: Date.tomorrow)
-  end
-  shared_let(:backlog_bucket) { create(:backlog_bucket, project:, name: "Bucket A") }
 
-  let(:container) { sprint }
+  let(:container) { project }
   let(:params) { {} }
   let(:work_package) do
     create(:work_package,
@@ -56,11 +49,30 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :co
            priority: default_priority,
            subject: "Card subject",
            story_points: 5,
-           position: 1,
-           sprint:)
+           position: 1)
   end
   let(:item) do
     described_class.new(work_package:, project:, container:, params:, current_user: user)
+  end
+  let(:draggable_item_class) do
+    stub_const(
+      "DraggableWorkPackageCardBoxItem",
+      Class.new(described_class) do
+        private
+
+        def draggable?
+          true
+        end
+
+        def draggable_data
+          {
+            draggable_id: work_package.id,
+            draggable_type: "work_package",
+            drop_url: "/drop"
+          }
+        end
+      end
+    )
   end
 
   describe "#row_args" do
@@ -109,55 +121,25 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :co
       )
     end
 
-    it "marks the row as draggable for users allowed to manage sprint items" do
-      expect(item.row_args[:classes]).to include("Box-row--draggable")
-      expect(item.row_args[:data]).to include(
-        draggable_id: work_package.id,
-        draggable_type: "story"
+    it "does not include Backlogs row wiring" do
+      expect(item.row_args[:classes]).not_to include("Box-row--draggable")
+      expect(item.row_args[:data]).not_to include(
+        :controller,
+        :draggable_id,
+        :drop_url,
+        :backlogs__story_split_url_value
       )
     end
 
-    context "when the user cannot manage sprint items" do
-      let(:role) { create(:project_role, permissions: %i[view_sprints view_work_packages]) }
-      let(:limited_user) { create(:user, member_with_roles: { project => role }) }
-      let(:item) do
-        described_class.new(work_package:, project:, container:, params:, current_user: limited_user)
-      end
+    it "supports generic draggable row data from subclasses" do
+      item = draggable_item_class.new(work_package:, project:, container:, params:, current_user: user)
 
-      it "does not mark the row as draggable" do
-        expect(item.row_args[:classes]).not_to include("Box-row--draggable")
-        expect(item.row_args[:data]).not_to include(:draggable_id)
-        expect(item.row_args[:data]).not_to include(:drop_url)
-      end
-    end
-  end
-
-  describe "URL derivation by container" do
-    context "with a sprint container" do
-      it "uses sprint routes" do
-        expect(item.row_args.dig(:data, :backlogs__story_split_url_value))
-          .to end_with(project_backlogs_backlog_details_path(project, work_package))
-        expect(item.row_args.dig(:data, :drop_url))
-          .to end_with(move_project_backlogs_work_package_path(project, sprint, work_package))
-      end
-    end
-
-    context "with a backlog bucket container" do
-      let(:container) { backlog_bucket }
-
-      it "uses inbox routes" do
-        expect(item.row_args.dig(:data, :drop_url))
-          .to end_with(move_project_backlogs_inbox_path(project, work_package))
-      end
-    end
-
-    context "with an inbox container id" do
-      let(:container) { "inbox_project_#{project.id}" }
-
-      it "uses inbox routes" do
-        expect(item.row_args.dig(:data, :drop_url))
-          .to end_with(move_project_backlogs_inbox_path(project, work_package))
-      end
+      expect(item.row_args[:classes]).to include("Box-row--draggable")
+      expect(item.row_args[:data]).to include(
+        draggable_id: work_package.id,
+        draggable_type: "work_package",
+        drop_url: "/drop"
+      )
     end
   end
 
@@ -168,15 +150,6 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :co
       expect(rendered_card).to have_no_element "include-fragment"
     end
 
-    context "with params" do
-      let(:params) { { all: 1 } }
-
-      it "passes params into row URLs" do
-        expect(item.row_args.dig(:data, :backlogs__story_split_url_value)).to match(/all=1/)
-        expect(item.row_args.dig(:data, :drop_url)).to match(/all=1/)
-      end
-    end
-
     it "returns the same card instance across calls" do
       expect(item.card).to equal(item.card)
     end
@@ -185,39 +158,6 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :co
       item.with_metric { "Forwarded metric" }
 
       expect(rendered_card).to have_text("Forwarded metric")
-    end
-
-    context "with a provided menu source" do
-      let(:item) do
-        described_class.new(
-          work_package:,
-          project:,
-          container:,
-          params:,
-          item_menu_src: "/provided-menu",
-          current_user: user
-        )
-      end
-
-      it "uses the provided source" do
-        expect(rendered_card).to have_element "include-fragment",
-                                              src: "/provided-menu"
-      end
-    end
-
-    context "with an invalid menu source" do
-      it "raises ArgumentError" do
-        expect do
-          described_class.new(
-            work_package:,
-            project:,
-            container:,
-            params:,
-            item_menu_src: :provided_menu,
-            current_user: user
-          )
-        end.to raise_error(ArgumentError, /item_menu_src/)
-      end
     end
   end
 end

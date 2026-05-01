@@ -42,8 +42,6 @@ module OpenProject
         attr_reader :work_package,
                     :project,
                     :container,
-                    :item_menu_src,
-                    :item_metric,
                     :params,
                     :current_user
 
@@ -54,21 +52,15 @@ module OpenProject
           project:,
           container:,
           params: {},
-          item_menu_src: nil,
-          item_metric: nil,
           current_user: User.current,
           **system_arguments
         )
           super()
 
-          validate_item_menu_src!(item_menu_src)
-
           @work_package = work_package
           @project = project
           @container = container
           @params = params
-          @item_menu_src = item_menu_src
-          @item_metric = item_metric
           @current_user = current_user
           @system_arguments = system_arguments
         end
@@ -86,9 +78,7 @@ module OpenProject
         end
 
         def card
-          @card ||= WorkPackageCardComponent.new(work_package:, menu_src: item_menu_src).tap do |card|
-            card.with_metric_content(item_metric) if item_metric
-          end
+          @card ||= WorkPackageCardComponent.new(work_package:)
         end
 
         def render? = false
@@ -96,43 +86,6 @@ module OpenProject
         def empty_item? = false
 
         private
-
-        def draggable?
-          current_user.allowed_in_project?(:manage_sprint_items, project)
-        end
-
-        def split_url
-          url_helpers.project_backlogs_backlog_details_path(project, work_package, params)
-        end
-
-        def full_url
-          url_helpers.work_package_path(work_package)
-        end
-
-        # Sprint is the only positive match; bucket and inbox both fall through
-        # to inbox routes.
-        def uses_inbox_routes?
-          !container.is_a?(Sprint)
-        end
-
-        def drop_url
-          if uses_inbox_routes?
-            url_helpers.move_project_backlogs_inbox_path(project, work_package, params)
-          else
-            url_helpers.move_project_backlogs_work_package_path(
-              project,
-              container,
-              work_package,
-              params
-            )
-          end
-        end
-
-        def validate_item_menu_src!(source)
-          return if source.nil? || source.is_a?(String)
-
-          raise ArgumentError, "item_menu_src must be a String or nil"
-        end
 
         def row_classes
           class_names(
@@ -143,27 +96,20 @@ module OpenProject
           )
         end
 
-        # `story` data attrs match the live Stimulus controller and Dragula
-        # drag-type; renaming requires coordinated JS changes (separate PR).
         def row_data
-          base = {
-            story: true,
-            controller: "backlogs--story",
-            backlogs__story_id_value: work_package.id,
-            backlogs__story_display_id_value: work_package.display_id,
-            backlogs__story_split_url_value: split_url,
-            backlogs__story_full_url_value: full_url,
-            backlogs__story_selected_class: "Box-row--blue",
+          data = {
             test_selector: "work-package-#{work_package.id}"
           }
 
-          return base unless draggable?
+          draggable? ? data.merge(draggable_data) : data
+        end
 
-          base.merge(
-            draggable_id: work_package.id,
-            draggable_type: "story",
-            drop_url:
-          )
+        def draggable?
+          false
+        end
+
+        def draggable_data
+          {}
         end
       end
     end
