@@ -28,45 +28,32 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintFormComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-    include CommonHelper
+require "rails_helper"
 
-    FORM_ID = SprintDialogComponent::FORM_ID
+RSpec.describe Backlogs::SprintFormComponent, type: :component do
+  shared_let(:project) { create(:project) }
+  shared_let(:sprint) { create(:sprint, project:) }
 
-    attr_reader :sprint, :base_errors
+  let(:base_errors) { ["Sprint failed"] }
+  let(:component) { described_class.new(sprint:, base_errors:) }
 
-    def initialize(sprint:, base_errors: nil)
-      super
+  subject(:rendered_component) do
+    render_inline(component)
+  end
 
-      @sprint = sprint
-      @base_errors = base_errors
-    end
+  it "exposes the sprint" do
+    expect(component.sprint).to eq(sprint)
+  end
 
-    private
+  it "exposes base errors" do
+    expect(component.base_errors).to eq(base_errors)
+  end
 
-    def http_verb
-      sprint.new_record? ? :post : :put
-    end
+  it "renders the form" do
+    expect(rendered_component).to have_css("form##{described_class::FORM_ID}")
+  end
 
-    def form_url
-      if sprint.new_record?
-        project_backlogs_sprints_path(sprint.project_id, all_backlogs_params)
-      else
-        project_backlogs_sprint_path(sprint.project_id, sprint.id, all_backlogs_params)
-      end
-    end
-
-    def data_attributes
-      {
-        controller: "refresh-on-form-changes",
-        "refresh-on-form-changes-target": "form",
-        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_backlogs_sprints_path(sprint.project_id,
-                                                                                                     all_backlogs_params)
-      }
-    end
+  it "renders base errors" do
+    expect(rendered_component).to have_text("Sprint failed")
   end
 end
