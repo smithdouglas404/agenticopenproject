@@ -77,8 +77,8 @@ fr:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
+                one: Il y a un lot de travail qui n'a pas été achevé dans ce sprint.
+                other: Il y a %{count} lots de travaux qui n'ont pas été achevés dans ce sprint.
               format: "%{message}"
             status:
               not_active: n'est pas actif et ne peut donc pas être fermé.

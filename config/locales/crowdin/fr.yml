@@ -5741,7 +5741,7 @@ fr:
           same_as_work: Régler à la même valeur que le travail.
     permissions:
       comment: Commentaire
-      comment_verb: comment
+      comment_verb: commenter
       comment_description: Peut consulter et commenter ce lot de travaux.
       edit: Éditer
       edit_verb: éditer
