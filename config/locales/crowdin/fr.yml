@@ -5744,10 +5744,10 @@ fr:
       comment_verb: comment
       comment_description: Peut consulter et commenter ce lot de travaux.
       edit: Éditer
-      edit_verb: edit
+      edit_verb: éditer
       edit_description: Peut consulter, commenter et modifier ce lot de travaux.
       view: Voir
-      view_verb: view
+      view_verb: afficher
       view_description: Peut consulter ce lot de travaux.
     reminders:
       label_remind_at: Date
