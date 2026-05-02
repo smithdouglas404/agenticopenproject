@@ -39,8 +39,27 @@ import type { Step } from 'prosemirror-transform';
 import type { Node as PmNode, Mark, Slice } from 'prosemirror-model';
 import { isHrefExternal } from 'core-stimulus/helpers/external-link-helpers';
 
+// ProseMirror primer
+// ------------------
+// • Transaction (`tr`): an immutable description of an edit. Editor state
+//   moves forward by applying transactions, not by direct DOM mutation.
+// • Step: the atomic operation a transaction is built from. Relevant ones
+//   are ReplaceStep (replace a range with a Slice of content) and
+//   AddMarkStep / RemoveMarkStep (toggle a mark like `link` on a range).
+// • Slice: the chunk of content carried by a ReplaceStep — what is being
+//   pasted, typed, or otherwise inserted.
+// • Mapping (`tr.mapping`): ProseMirror's position translator. After an
+//   insert of N characters at position 10, mapping rewrites later
+//   positions to account for the shift. Decorations can be mapped through
+//   it to stay in sync without being rebuilt.
+// • Decoration / DecorationSet: non-mutating overlays (widgets, attrs)
+//   rendered alongside the document. The sr-only hint here is a widget
+//   decoration — invisible to the model, visible (audible) in the DOM.
+
 const pluginKey = new PluginKey('externalLinkA11y');
 const DESCRIPTION_ID = 'open-blank-target-link-description';
+
+// --- Decoration construction ------------------------------------------------
 
 function findExternalLinkMark(node:PmNode):Mark|null {
   for (const mark of node.marks) {
@@ -93,80 +112,6 @@ function buildWidget():HTMLElement {
   return span;
 }
 
-// ProseMirror primer for the gating logic below
-// ----------------------------------------------
-// • Transaction (`tr`): an immutable description of an edit. Editor state
-//   moves forward by applying transactions, not by direct DOM mutation.
-// • Step: the atomic operation a transaction is built from. Relevant ones
-//   are ReplaceStep (replace a range with a Slice of content) and
-//   AddMarkStep / RemoveMarkStep (toggle a mark like `link` on a range).
-// • Slice: the chunk of content carried by a ReplaceStep — what is being
-//   pasted, typed, or otherwise inserted.
-// • Mapping (`tr.mapping`): ProseMirror's position translator. After an
-//   insert of N characters at position 10, mapping rewrites later
-//   positions to account for the shift. Decorations can be mapped through
-//   it to stay in sync without being rebuilt.
-// • Decoration / DecorationSet: non-mutating overlays (widgets, attrs)
-//   rendered alongside the document. The sr-only hint here is a widget
-//   decoration — invisible to the model, visible (audible) in the DOM.
-// • `tr.setMeta(key, value)`: stash arbitrary data on a transaction
-//   without producing a doc edit. Used here to hand a freshly-built
-//   DecorationSet from the post-batch hook back into plugin state.
-
-function sliceContainsLinkMark(slice:Slice):boolean {
-  let found = false;
-  slice.content.descendants((node) => {
-    if (found) return false;
-    if (node.marks.some((m) => m.type.name === 'link')) {
-      found = true;
-      return false;
-    }
-    return true;
-  });
-  return found;
-}
-
-function rangeContainsLinkMark(doc:PmNode, from:number, to:number):boolean {
-  if (from >= to) return false;
-  let found = false;
-  doc.nodesBetween(from, to, (node) => {
-    if (found) return false;
-    if (node.marks.some((m) => m.type.name === 'link')) {
-      found = true;
-      return false;
-    }
-    return true;
-  });
-  return found;
-}
-
-/**
- * Decides whether a transaction's steps actually change the *set* of link
- * runs in the doc, vs. just shifting their positions.
- *
- * Plain typing or moving content around merely shifts link runs — the
- * existing widget at the end of each run rides along correctly via
- * decoration mapping. The expensive doc walk is only needed when the set
- * of links changes: paste with linked content, toolbar mark application,
- * or deletion of marked content.
- *
- * For ReplaceStep we have to inspect both ends. The inserted Slice may
- * carry link marks INTO the doc; the range being replaced may carry link
- * marks OUT of it (e.g. deleting a whole link). Missing the second check
- * would leave the link's widget stranded at a position that no longer has
- * a link.
- */
-function stepAffectsLinks(step:Step, oldDoc:PmNode):boolean {
-  if (step instanceof AddMarkStep || step instanceof RemoveMarkStep) {
-    return step.mark.type.name === 'link';
-  }
-  if (step instanceof ReplaceStep || step instanceof ReplaceAroundStep) {
-    if (sliceContainsLinkMark(step.slice)) return true;
-    return rangeContainsLinkMark(oldDoc, step.from, step.to);
-  }
-  return false;
-}
-
 function buildDecorations(doc:PmNode):DecorationSet {
   const decorations:Decoration[] = [];
 
@@ -200,6 +145,49 @@ function buildDecorations(doc:PmNode):DecorationSet {
   });
 
   return DecorationSet.create(doc, decorations);
+}
+
+// --- Transaction gating -----------------------------------------------------
+
+function sliceContainsLinkMark(slice:Slice):boolean {
+  let found = false;
+  slice.content.descendants((node) => {
+    if (found) return false;
+    if (node.marks.some((m) => m.type.name === 'link')) {
+      found = true;
+      return false;
+    }
+    return true;
+  });
+  return found;
+}
+
+/**
+ * Decides whether a step warrants rebuilding the widget set, vs. just
+ * shifting existing decorations forward.
+ *
+ * Plain typing or moving content around merely shifts link runs — the
+ * widget at the end of each run rides along correctly via decoration
+ * mapping. The expensive doc walk is only needed when a step adds,
+ * removes, or moves a link mark.
+ *
+ * Limitation: deleting a whole link's text leaves the slice empty, and
+ * we don't have cheap access to the old range here to detect that the
+ * removed range carried a link mark. The orphaned widget gets cleaned
+ * up by the next link-affecting transaction (e.g. typing nearby with a
+ * stored link mark, or any subsequent paste). The visible cost between
+ * those events is a sr-only span at a position that no longer has a
+ * link wrapper around it — invisible to sighted users, briefly noisy
+ * for screen readers if they navigate before the next rebuild.
+ */
+function stepAffectsLinks(step:Step):boolean {
+  if (step instanceof AddMarkStep || step instanceof RemoveMarkStep) {
+    return step.mark.type.name === 'link';
+  }
+  if (step instanceof ReplaceStep || step instanceof ReplaceAroundStep) {
+    return sliceContainsLinkMark(step.slice);
+  }
+  return false;
 }
 
 /**
@@ -236,47 +224,23 @@ export const ExternalLinkA11yExtension = createExtension({
         init(_, { doc }) {
           return buildDecorations(doc);
         },
-        // `apply` runs once per transaction to advance plugin state. It is
-        // the hot path during typing — must stay cheap.
-        //   1. If a transaction carries a meta payload from us, install it
-        //      verbatim. That's how the post-batch hook below hands a freshly
-        //      rebuilt DecorationSet back into state.
-        //   2. If the doc didn't change, decorations are still valid as-is.
-        //   3. Otherwise, just shift existing decorations forward through the
-        //      transaction's position mapping. No doc walk, O(decoration count).
+        // `apply` runs once per transaction to advance plugin state and is
+        // the hot path during typing. Three branches:
+        //   1. Doc unchanged: decorations are still valid as-is.
+        //   2. Doc changed but no step affects link runs: shift existing
+        //      decorations forward through the transaction's position
+        //      mapping. O(decoration count); no doc walk.
+        //   3. A step adds, removes, or moves a link mark: rebuild.
+        //
+        // The rebuild lives here in `apply` rather than in `appendTransaction`
+        // because dispatching a chained meta-only tx from there interferes
+        // with y-prosemirror's PM↔Y.Doc sync — paste content gets applied
+        // locally but never reaches the rendered view.
         apply(tr, oldDecos) {
-          const meta = tr.getMeta(pluginKey) as DecorationSet | undefined;
-          if (meta instanceof DecorationSet) return meta;
           if (!tr.docChanged) return oldDecos;
+          if (tr.steps.some(stepAffectsLinks)) return buildDecorations(tr.doc);
           return oldDecos.map(tr.mapping, tr.doc);
         },
-      },
-      // `appendTransaction` is a ProseMirror plugin hook that runs after a
-      // batch of transactions has been applied but before the view re-renders.
-      // It receives the array of dispatched transactions and may return one
-      // additional transaction to chain. We use it as the gate for the
-      // expensive rebuild: only when at least one step in the batch actually
-      // changes which link runs exist do we walk the doc and dispatch a
-      // meta-only transaction with the fresh DecorationSet (picked up by
-      // `apply` above).
-      //
-      // Why here and not in `view.update` with rAF (`requestAnimationFrame`,
-      // a browser API that defers a callback to the next paint, ~16ms):
-      // `appendTransaction` is synchronous and lifecycle-safe. An rAF callback
-      // can fire after the editor has unmounted (Turbo navigation, React
-      // teardown), at which point dispatching into a destroyed view throws.
-      // Running this hook synchronously sidesteps that class of bug entirely.
-      //
-      // This path covers all edit sources uniformly: local typing, remote
-      // y-prosemirror updates from collaborators, and Hocuspocus reconnect
-      // backlogs all flow through the same transaction pipeline.
-      appendTransaction(trs, oldState, newState) {
-        const linkAffecting = trs.some((tr) =>
-          tr.docChanged
-          && tr.steps.some((step) => stepAffectsLinks(step, oldState.doc)),
-        );
-        if (!linkAffecting) return null;
-        return newState.tr.setMeta(pluginKey, buildDecorations(newState.doc));
       },
       props: {
         decorations(state) {
