@@ -179,6 +179,7 @@ export class CKEditorSetupService {
         'OPMacroToc',
         'OPMacroEmbeddedTable',
         'OPMacroWpButton',
+        'OPMacroWpQuickinfo',
       ];
     }
 
