@@ -34,25 +34,25 @@ module OpenProject::Webhooks::EventResources
       end
 
       def available_actions
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       ##
       # Localize the given event name
       def localize_event_name(key)
-        I18n.t(key, scope: 'webhooks.outgoing.events')
+        I18n.t(key, scope: "webhooks.outgoing.events")
       end
 
       ##
       # Get the name of this resource
       def resource_name
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       ##
       # Get the subscriptions for OP::Notifications
       def notification_names
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       protected

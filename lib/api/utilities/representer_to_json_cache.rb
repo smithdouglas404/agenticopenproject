@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,13 +44,13 @@ module API
       end
 
       def json_cache_key
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       private
 
       def json_representer_name_cache_key
-        self.class.name.to_s.split('::') + ['json', I18n.locale]
+        self.class.name.to_s.split("::") + ["json", I18n.locale]
       end
     end
   end

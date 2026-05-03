@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,7 +43,7 @@ module Query::Highlighting
 
     QUERY_HIGHLIGHTING_MODES = %i[inline none status type priority].freeze
 
-    serialize :highlighted_attributes, Array
+    serialize :highlighted_attributes, type: Array
 
     validates :highlighting_mode,
               inclusion: { in: QUERY_HIGHLIGHTING_MODES,
@@ -67,8 +69,6 @@ module Query::Highlighting
     end
 
     def highlighted_attributes
-      return [] unless EnterpriseToken.allows_to?(:conditional_highlighting)
-
       val = super
 
       if val.present?
@@ -79,8 +79,6 @@ module Query::Highlighting
     end
 
     def highlighting_mode
-      return :none unless EnterpriseToken.allows_to?(:conditional_highlighting)
-
       val = super
 
       if val.present?
@@ -100,7 +98,7 @@ module Query::Highlighting
       if difference.any?
         errors.add(:highlighted_attributes,
                    I18n.t(:error_attribute_not_highlightable,
-                          attributes: difference.map(&:to_s).map(&:capitalize).join(', ')))
+                          attributes: difference.map { |attribute| attribute.to_s.capitalize }.join(", ")))
       end
     end
 

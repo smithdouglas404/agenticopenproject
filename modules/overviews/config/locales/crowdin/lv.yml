@@ -1,4 +1,6 @@
+---
 lv:
   overviews:
-    label: 'Pārskats'
-  permission_manage_overview: 'Manage overview page'
+    label_home: "%{workspace_type} home"
+    label_dashboard: Informācijas panelis
+    label_overview: Pārskats

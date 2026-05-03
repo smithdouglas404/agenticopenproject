@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +33,7 @@ module API
         include AvatarHelper
         extend ::API::V3::Utilities::CustomFieldInjector::RepresenterClass
 
-        cached_representer key_parts: %i(auth_source),
+        cached_representer key_parts: %i(ldap_auth_source),
                            dependencies: ->(*) {
                              [
                                # For the name rendering
@@ -47,11 +47,11 @@ module API
         self_link
 
         link :showUser do
-          next if represented.new_record? || represented.locked?
+          next if represented.new_record? || represented.locked? || represented.deleted?
 
           {
             href: api_v3_paths.show_user(represented.id),
-            type: 'text/html'
+            type: "text/html"
           }
         end
 
@@ -97,11 +97,11 @@ module API
 
         link :auth_source,
              cache_if: -> { current_user_is_admin? } do
-          next unless represented.auth_source
+          next unless represented.ldap_auth_source
 
           {
-            href: "/api/v3/auth_sources/#{represented.auth_source_id}",
-            title: represented.auth_source.name
+            href: "/api/v3/auth_sources/#{represented.ldap_auth_source_id}",
+            title: represented.ldap_auth_source.name
           }
         end
 
@@ -120,6 +120,10 @@ module API
                  },
                  setter: ->(fragment:, represented:, **) { represented.admin = fragment },
                  cache_if: -> { current_user_is_admin? }
+
+        property :name,
+                 render_nil: true,
+                 setter: ->(*) { raise API::Errors::UnwritableProperty.new(:name, I18n.t("api_v3.errors.user.name_readonly")) }
 
         property :firstname,
                  as: :firstName,
@@ -143,7 +147,7 @@ module API
                  getter: ->(*) { represented.mail },
                  setter: ->(fragment:, represented:, **) { represented.mail = fragment },
                  exec_context: :decorator,
-                 cache_if: -> { !represented.pref.hide_mail || represented.new_record? || current_user_can_manage? }
+                 cache_if: -> { current_user_can_view_user_email? || represented.new_record? || current_user_can_manage? }
 
         property :avatar,
                  exec_context: :decorator,
@@ -159,7 +163,7 @@ module API
 
         property :identity_url,
                  exec_context: :decorator,
-                 as: 'identityUrl',
+                 as: "identityUrl",
                  getter: ->(*) { represented.identity_url },
                  setter: ->(fragment:, represented:, **) { represented.identity_url = fragment },
                  render_nil: true,
@@ -182,17 +186,17 @@ module API
                  }
 
         ##
-        # Used while parsing JSON to initialize `auth_source_id` through the given link.
+        # Used while parsing JSON to initialize `ldap_auth_source_id` through the given link.
         def initialize_embedded_links!(data)
-          auth_source_id = parse_auth_source_id data, "auth_source"
+          ldap_auth_source_id = parse_auth_source_id(data, "authSource") || parse_auth_source_id(data, "auth_source")
 
-          if auth_source_id
-            auth_source = AuthSource.find_by_unique auth_source_id
+          if ldap_auth_source_id
+            auth_source = LdapAuthSource.find_by_unique(ldap_auth_source_id)
             id = auth_source ? auth_source.id : 0
 
             # set id to 0 (as opposed to nil) to produce an auth source not found
             # error further down the line in the user's base contract
-            represented.auth_source_id = id
+            represented.ldap_auth_source_id = id
           end
         end
 
@@ -220,7 +224,7 @@ module API
         end
 
         def _type
-          'User'
+          "User"
         end
 
         def current_user_can_delete_represented?
@@ -228,7 +232,15 @@ module API
         end
 
         def current_user_can_manage?
-          current_user && (current_user.allowed_to_globally?(:manage_user) || current_user_is_self?)
+          current_user && (
+            current_user.allowed_globally?(:manage_user) ||
+            current_user.allowed_globally?(:create_user) ||
+            current_user_is_self?
+          )
+        end
+
+        def current_user_can_view_user_email?
+          current_user&.allowed_globally?(:view_user_email)
         end
 
         private

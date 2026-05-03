@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,25 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Test mail notification', type: :feature, js: true do
-  shared_let(:admin) { create :admin }
+RSpec.describe "Test mail notification", :js do
+  shared_let(:admin) { create(:admin) }
 
   before do
-    login_as(admin)
+    login_as admin
     visit admin_settings_mail_notifications_path(tab: :notifications)
   end
 
-  it 'shows the correct message on errors in test notification (Regression #28226)' do
+  it "shows the correct message on errors in test notification (Regression #28226)", with_ssrf_ip_allowlist: %w(127.0.0.1) do
     error_message = '"error" with <strong>Markup?</strong>'
-    expect(UserMailer).to receive(:test_mail).with(admin)
-      .and_raise error_message
+    allow(UserMailer).to receive(:test_mail).and_raise error_message
 
-    click_link 'Send a test email'
+    click_link "Send a test email"
+
+    expect(UserMailer).to have_received(:test_mail).with(admin, delivery_method_options: {})
 
     expected = "An error occurred while sending mail (#{error_message})"
-    expect(page).to have_selector('.flash.error', text: expected)
-    expect(page).to have_no_selector('.flash.error strong')
+    expect_flash(type: :error, message: expected)
+    expect(page).to have_no_css(".op-toast.-error strong")
   end
 end

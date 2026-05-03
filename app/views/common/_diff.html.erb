@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -49,11 +49,11 @@ See COPYRIGHT and LICENSE files for more details.
             <tr>
               <th class="line-num"><%= line.nb_line_left %></th>
               <td class="line-code <%= line.type_diff_left %>">
-                <pre><%=to_utf8_for_attachments line.html_line_left %></pre>
+                <pre><%= to_utf8_for_attachments line.html_line_left %></pre>
               </td>
               <th class="line-num"><%= line.nb_line_right %></th>
               <td class="line-code <%= line.type_diff_right %>">
-                <pre><%=to_utf8_for_attachments line.html_line_right %></pre>
+                <pre><%= to_utf8_for_attachments line.html_line_right %></pre>
               </td>
             </tr>
           <% end -%>
@@ -79,7 +79,7 @@ See COPYRIGHT and LICENSE files for more details.
               <th class="line-num"><%= line.nb_line_left %></th>
               <th class="line-num"><%= line.nb_line_right %></th>
               <td class="line-code <%= line.type_diff %>">
-                <pre><%=to_utf8_for_attachments line.html_line %></pre>
+                <pre><%= to_utf8_for_attachments line.html_line %></pre>
               </td>
             </tr>
           <% end -%>

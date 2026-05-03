@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,10 +26,23 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { MultiInputState, State } from 'reactivestates';
-import { Observable } from 'rxjs';
 import {
-  auditTime, map, share, startWith, take,
+  InputState,
+  MultiInputState,
+  State,
+} from '@openproject/reactivestates';
+import {
+  combineLatest,
+  firstValueFrom,
+  forkJoin,
+  Observable,
+} from 'rxjs';
+import {
+  auditTime,
+  map,
+  share,
+  startWith,
+  take,
 } from 'rxjs/operators';
 
 export interface HasId {
@@ -77,7 +90,7 @@ export class StateCacheService<T> {
 
     this
       .multiState.get(id)
-      .clearAndPutFromPromise(observable.toPromise());
+      .clearAndPutFromPromise(firstValueFrom(observable));
 
     return observable;
   }
@@ -138,6 +151,20 @@ export class StateCacheService<T> {
           return mapped;
         }),
       );
+  }
+
+  observeChanges():Observable<[string, T|undefined, InputState<T>]> {
+    return this.multiState.observeChange();
+  }
+
+  observeSome(ids:string[]):Observable<T[]> {
+    return combineLatest(
+      ids.map(
+        (id) => this.observe(id).pipe(startWith(null)),
+      ),
+    ).pipe(
+      map((values) => values.filter((value) => !!value)),
+    ) as Observable<T[]>;
   }
 
   /**

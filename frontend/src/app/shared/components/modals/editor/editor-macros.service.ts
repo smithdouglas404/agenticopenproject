@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,15 +28,26 @@
 
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { Injectable, Injector } from '@angular/core';
-import { WpButtonMacroModalComponent } from 'core-app/shared/components/modals/editor/macro-wp-button-modal/wp-button-macro.modal';
-import { WikiIncludePageMacroModalComponent } from 'core-app/shared/components/modals/editor/macro-wiki-include-page-modal/wiki-include-page-macro.modal';
-import { CodeBlockMacroModalComponent } from 'core-app/shared/components/modals/editor/macro-code-block-modal/code-block-macro.modal';
-import { ChildPagesMacroModalComponent } from 'core-app/shared/components/modals/editor/macro-child-pages-modal/child-pages-macro.modal';
+import {
+  WpButtonMacroModalComponent,
+} from 'core-app/shared/components/modals/editor/macro-wp-button-modal/wp-button-macro.modal';
+import {
+  WikiIncludePageMacroModalComponent,
+} from 'core-app/shared/components/modals/editor/macro-wiki-include-page-modal/wiki-include-page-macro.modal';
+import {
+  CodeBlockMacroModalComponent,
+} from 'core-app/shared/components/modals/editor/macro-code-block-modal/code-block-macro.modal';
+import {
+  ChildPagesMacroModalComponent,
+} from 'core-app/shared/components/modals/editor/macro-child-pages-modal/child-pages-macro.modal';
+import { PortalOutletTarget } from 'core-app/shared/components/modal/portal-outlet-target.enum';
 
 @Injectable()
 export class EditorMacrosService {
-  constructor(readonly opModalService:OpModalService,
-    readonly injector:Injector) {
+  constructor(
+    readonly opModalService:OpModalService,
+    readonly injector:Injector,
+  ) {
   }
 
   /**
@@ -44,11 +55,16 @@ export class EditorMacrosService {
    * Used from within ckeditor-augmented-textarea.
    */
   public configureWorkPackageButton(typeName?:string, classes?:string):Promise<{ type:string, classes:string }> {
-    return new Promise<{ type:string, classes:string }>((resolve, reject) => {
+    const target = document.querySelector('opce-custom-modal-overlay') ? PortalOutletTarget.Custom : PortalOutletTarget.Default;
+
+    return new Promise<{ type:string, classes:string }>((resolve, _) => {
       this.opModalService.show(
         WpButtonMacroModalComponent,
         this.injector,
         { type: typeName, classes },
+        false,
+        false,
+        target,
       ).subscribe((modal) => modal.closingEvent.subscribe(() => {
         if (modal.changed) {
           resolve({ type: modal.type, classes: modal.classes });
@@ -82,10 +98,15 @@ export class EditorMacrosService {
    */
   public editCodeBlock(content:string, languageClass:string):Promise<{ content:string, languageClass:string }> {
     return new Promise<{ content:string, languageClass:string }>((resolve, _) => {
+      const target = document.querySelector('opce-custom-modal-overlay') ? PortalOutletTarget.Custom : PortalOutletTarget.Default;
+
       this.opModalService.show(
         CodeBlockMacroModalComponent,
         this.injector,
         { content, languageClass },
+        false,
+        false,
+        target,
       ).subscribe((modal) => modal.closingEvent.subscribe(() => {
         if (modal.changed) {
           resolve({ languageClass: modal.languageClass, content: modal.content });

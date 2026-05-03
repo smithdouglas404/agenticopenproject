@@ -1,3 +1,33 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
 #   = Diff
 #   (({diff.rb})) - computes the differences between two arrays or
 #   strings. Copyright (C) 2001 Lars Christensen
@@ -85,7 +115,7 @@ module Redmine::Diff::Diffable
   def patch(diff)
     newary = nil
     newary = if diff.difftype == String
-               diff.difftype.new('')
+               diff.difftype.new("")
              else
                diff.difftype.new
              end
@@ -94,14 +124,14 @@ module Redmine::Diff::Diffable
     diff.diffs.each do |d|
       d.each do |mod|
         case mod[0]
-        when '-'
+        when "-"
           while ai < mod[1]
             newary << self[ai]
             ai += 1
             bi += 1
           end
           ai += 1
-        when '+'
+        when "+"
           while bi < mod[1]
             newary << self[ai]
             ai += 1
@@ -110,7 +140,7 @@ module Redmine::Diff::Diffable
           newary << mod[2]
           bi += 1
         else
-          raise 'Unknown diff action'
+          raise "Unknown diff action"
         end
       end
     end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -25,7 +25,7 @@
 //
 // See COPYRIGHT and LICENSE files for more details.
 //++
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
 
@@ -33,6 +33,11 @@ import { StatusResource } from 'core-app/features/hal/resources/status-resource'
   templateUrl: './status-board-header.html',
   styleUrls: ['./status-board-header.sass'],
   host: { class: 'title-container -small' },
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class StatusBoardHeaderComponent {
   @Input('resource') public status:StatusResource;

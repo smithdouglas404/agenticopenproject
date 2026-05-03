@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,14 +31,23 @@
 # TODO: check if this can be postponed and if some plugins can make use of the ActiveSupport.on_load hooks
 
 # Loads the core plugins located in lib_static/plugins
-Dir.glob(Rails.root.join('lib_static/plugins/*')).each do |directory|
+CORE_PLUGINS = %w[
+  acts_as_attachable
+  acts_as_customizable
+  acts_as_event
+  acts_as_journalized
+  acts_as_searchable
+  verification
+].freeze
+
+CORE_PLUGINS.map { |name| Rails.root.join("lib_static/plugins", name).to_s }.each do |directory|
   if File.directory?(directory)
-    lib = File.join(directory, 'lib')
+    lib = File.join(directory, "lib")
 
     $:.unshift lib
     Rails.configuration.paths.add lib, eager_load: true, glob: "**[^test]/*"
 
-    initializer = File.join(directory, 'init.rb')
+    initializer = File.join(directory, "init.rb")
     if File.file?(initializer)
       eval(File.read(initializer), binding, initializer)
     end

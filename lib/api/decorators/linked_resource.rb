@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,8 +39,10 @@ module API
         base.extend ClassMethods
       end
 
-      def from_hash(hash, *args)
-        return super unless hash && hash['_links']
+      def from_hash(hash, *)
+        return super unless hash && hash["_links"]
+
+        validate_links!(hash["_links"])
 
         copied_hash = hash.deep_dup
 
@@ -46,13 +50,57 @@ module API
           next unless dfn[:linked_resource]
 
           name = dfn[:as] ? dfn[:as].(nil) : dfn.name
-          fragment = copied_hash['_links'].delete(name)
+          fragment = copied_hash["_links"].delete(name)
           next unless fragment
 
           copied_hash[name] = fragment
         end
 
-        super(copied_hash, *args)
+        super(copied_hash, *)
+      end
+
+      private
+
+      def parse_link_ids_from_fragment(fragment, path)
+        struct = Struct.new(:id).new
+        link = ::API::Decorators::LinkObject.new(struct, path: path, property_name: :id, setter: "id=")
+
+        fragment.map do |href|
+          link.from_hash(href)
+          struct.id
+        end
+      end
+
+      def validate_links!(links)
+        raise ::API::Errors::BadRequest.new(I18n.t("api_v3.errors.bad_request.links_not_an_object")) unless links.is_a?(Hash)
+
+        invalid, = links.find { |_, link| !(link.is_a?(Hash) || link.is_a?(Array)) }
+        return if invalid.nil?
+
+        raise ::API::Errors::BadRequest.new(I18n.t("api_v3.errors.bad_request.invalid_link", key: invalid))
+      end
+
+      def associated_resource_default_link(represented,
+                                           name,
+                                           v3_path:,
+                                           skip_link:,
+                                           title_attribute:,
+                                           getter: :"#{name}_id",
+                                           undisclosed: false)
+        if undisclosed && instance_exec(&skip_link)
+          {
+            href: API::V3::URN_UNDISCLOSED,
+            title: I18n.t(:"api_v3.undisclosed.#{name}")
+          }
+        elsif !instance_exec(&skip_link)
+          ::API::Decorators::LinkObject
+            .new(represented,
+                 path: v3_path.is_a?(Proc) ? instance_exec(&v3_path) : v3_path,
+                 property_name: name,
+                 title_attribute:,
+                 getter:)
+            .to_hash
+        end
       end
 
       module ClassMethods
@@ -61,11 +109,11 @@ module API
                      setter:,
                      link:,
                      uncacheable_link: false,
+                     link_cache_if: nil,
                      show_if: ->(*) { true },
                      skip_render: nil,
                      embedded: true)
-
-          link(link_attr(name, uncacheable_link), &link)
+          link(link_attr(name, uncacheable_link, link_cache_if), &link)
 
           property name,
                    exec_context: :decorator,
@@ -83,11 +131,11 @@ module API
                       setter:,
                       link:,
                       uncacheable_link: false,
+                      link_cache_if: nil,
                       show_if: ->(*) { true },
                       skip_render: nil,
                       embedded: true)
-
-          links(link_attr(name, uncacheable_link), &link)
+          links(link_attr(name, uncacheable_link, link_cache_if), &link)
 
           property name,
                    exec_context: :decorator,
@@ -104,7 +152,6 @@ module API
                           setter:,
                           getter:,
                           show_if: ->(*) { true })
-
           resource(name,
                    getter: ->(*) {},
                    setter:,
@@ -127,16 +174,18 @@ module API
                                 skip_link: skip_render,
                                 undisclosed: false,
                                 link_title_attribute: :name,
+                                link_getter: :"#{name}_id",
+                                link_property_name: nil,
                                 uncacheable_link: false,
                                 getter: associated_resource_default_getter(name, representer),
                                 setter: associated_resource_default_setter(name, as, v3_path),
-                                link: associated_resource_default_link(name,
-                                                                       v3_path:,
-                                                                       skip_link:,
-                                                                       undisclosed:,
-                                                                       title_attribute: link_title_attribute))
-
-          resource((as || name),
+                                link: associated_resource_default_link_lambda(link_property_name || name,
+                                                                              v3_path:,
+                                                                              skip_link:,
+                                                                              undisclosed:,
+                                                                              title_attribute: link_title_attribute,
+                                                                              getter: link_getter))
+          resource(as || name,
                    getter:,
                    setter:,
                    link:,
@@ -144,9 +193,10 @@ module API
                    skip_render:)
         end
 
-        def link_attr(name, uncacheable)
+        def link_attr(name, uncacheable, link_cache_if)
           links_attr = { rel: name.to_s.camelize(:lower) }
           links_attr[:uncacheable] = true if uncacheable
+          links_attr[:cache_if] = link_cache_if if link_cache_if
 
           links_attr
         end
@@ -174,27 +224,20 @@ module API
           end
         end
 
-        def associated_resource_default_link(name,
+        def associated_resource_default_link_lambda(name,
+                                                    v3_path:,
+                                                    skip_link:,
+                                                    title_attribute:,
+                                                    getter: :"#{name}_id",
+                                                    undisclosed: false)
+          ->(*) do
+            associated_resource_default_link(represented,
+                                             name,
                                              v3_path:,
                                              skip_link:,
                                              title_attribute:,
-                                             getter: :"#{name}_id",
-                                             undisclosed: false)
-          ->(*) do
-            if undisclosed && instance_exec(&skip_link)
-              {
-                href: API::V3::URN_UNDISCLOSED,
-                title: I18n.t(:"api_v3.undisclosed.#{name}")
-              }
-            elsif !instance_exec(&skip_link)
-              ::API::Decorators::LinkObject
-                .new(represented,
-                     path: v3_path,
-                     property_name: name,
-                     title_attribute:,
-                     getter:)
-                .to_hash
-            end
+                                             getter:,
+                                             undisclosed:)
           end
         end
 
@@ -205,23 +248,23 @@ module API
                                  skip_render: ->(*) { false },
                                  skip_link: skip_render,
                                  link_title_attribute: :name,
+                                 uncacheable_link: false,
                                  getter: associated_resources_default_getter(name, representer),
                                  setter: associated_resources_default_setter(name, v3_path),
                                  link: associated_resources_default_link(name,
                                                                          v3_path:,
                                                                          skip_link:,
                                                                          title_attribute: link_title_attribute))
-
           resources(as,
                     getter:,
                     setter:,
                     link:,
+                    uncacheable_link:,
                     skip_render:)
         end
 
         def associated_resources_default_getter(name,
                                                 representer)
-
           representer ||= default_representer(name.to_s.singularize)
 
           ->(*) do
@@ -233,18 +276,7 @@ module API
 
         def associated_resources_default_setter(name, v3_path)
           ->(fragment:, **) do
-            struct = Struct.new(:id).new
-
-            link = ::API::Decorators::LinkObject.new(struct,
-                                                     path: v3_path,
-                                                     property_name: :id,
-                                                     setter: 'id=')
-
-            ids = fragment.map do |href|
-              link.from_hash(href)
-              struct.id
-            end
-
+            ids = parse_link_ids_from_fragment(fragment, v3_path)
             represented.send(:"#{name.to_s.singularize}_ids=", ids)
           end
         end

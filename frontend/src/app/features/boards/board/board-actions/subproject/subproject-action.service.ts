@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UserResource } from 'core-app/features/hal/resources/user-resource';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { SubprojectBoardHeaderComponent } from 'core-app/features/boards/board/board-actions/subproject/subproject-board-header.component';
@@ -8,7 +7,8 @@ import { imagePath } from 'core-app/shared/helpers/images/path-helper';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class BoardSubprojectActionService extends CachedBoardActionService {
@@ -43,7 +43,7 @@ export class BoardSubprojectActionService extends CachedBoardActionService {
     changeset.setValue('project', { href });
   }
 
-  protected loadUncached():Promise<HalResource[]> {
+  protected loadUncached():Observable<HalResource[]> {
     const currentProjectId = this.currentProject.id!;
     return this
       .apiV3Service
@@ -54,7 +54,8 @@ export class BoardSubprojectActionService extends CachedBoardActionService {
           .add('active', '=', true),
       )
       .get()
-      .toPromise()
-      .then((collection:CollectionResource<UserResource>) => collection.elements);
+      .pipe(
+        map((collection) => collection.elements),
+      );
   }
 }

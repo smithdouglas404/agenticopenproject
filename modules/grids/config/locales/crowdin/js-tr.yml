@@ -1,66 +1,60 @@
+---
 tr:
   js:
     grid:
-      add_widget: 'Widget ekleyin'
-      remove: 'Widget''ı kaldır'
-      configure: 'Widget''ı yapılandır'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
+      add_widget: Bileşen ekle
+      widget_menu_label: Show menu options for %{widgetName} widget
+      remove: Bileşeni kaldır
+      configure: Bileşeni yapılandır
       widgets:
+        missing_permission: Bu bileşeni görüntülemek için gerekli izinlere sahip değilsiniz.
+        not_available: This widget is currently unavailable.
         custom_text:
-          title: 'Özel metin'
+          title: Özel metin
         documents:
-          title: 'Belgeler'
-          no_results: 'Henüz belge yok.'
+          title: Belgeler
+          no_results: Henüz belge yok.
         members:
-          title: 'Üyeler'
-          no_results: 'Görünür üye yok.'
-          view_all_members: 'Tüm üyeleri göster'
-          add: 'Üye'
-          too_many: '%{total} üyelerin %{count} sayısını gösteriliyor.'
+          title: Üyeler
         news:
-          title: 'Haberler'
-          at: 'en'
-          no_results: 'Rapor için yeni birşey bulunamadı.'
+          title: Haberler
         project_description:
-          title: 'Proje tanımı'
-          no_results: "Henüz bir açıklama yazılmadı. Biri 'Proje ayarları' içinde sağlanabilir."
-        project_details:
-          title: 'Proje detayları'
-          no_results: 'Projeler için özel alan tanımlanmadı.'
+          title: Açıklama
         project_status:
-          title: 'Proje Durumu'
-          not_started: 'Başlatılmadı'
-          on_track: 'Takipte'
-          off_track: 'Kapalı parça'
-          at_risk: 'Riskli'
-          not_set: 'Ayarlanmadı'
-          finished: 'Bitti'
-          discontinued: 'Durduruldu'
+          title: Durum
+          not_started: Başlatılmadı
+          on_track: Takipte
+          off_track: Hedeften uzaklaşmış
+          at_risk: Riskli
+          not_set: Ayarlanmadı
+          finished: Tamamlandı
+          discontinued: Durduruldu
         subprojects:
-          title: 'Alt Projeler'
-          no_results: 'Alt proje yok.'
+          title: Alt öğeler
+        project_favorites:
+          title: Favori projeler
+          no_results: Şu anda favori projeniz yok. Favorilerinize bir proje eklemek için proje gösterge panelindeki yıldız simgesine tıklayın.
         time_entries_current_user:
-          title: 'Geçirdiğim zaman'
+          title: Geçirdiğim zaman
           displayed_days: 'Widget''te görüntülenen günler:'
         time_entries_list:
-          title: 'Harcanan zaman (son 7 gün)'
-          no_results: 'Son 7 günde zaman girişi yok.'
+          title: Harcanan zaman (son 7 gün)
+          no_results: Son 7 gündür zaman girişi yapılmadı.
         work_packages_accountable:
-          title: "Sorumlusu olduğum iş paketleri"
+          title: Sorumlusu olduğum iş paketleri
         work_packages_assigned:
-          title: 'Bana atanan iş paketleri'
+          title: Bana atanan iş paketleri
         work_packages_created:
-          title: 'Oluşturduğum iş paketleri'
+          title: Oluşturduğum iş paketleri
         work_packages_watched:
-          title: 'İzlediğim iş paketleri'
+          title: Takip ettiğim iş paketleri
         work_packages_table:
-          title: 'İş paketleri tablosu'
+          title: İş paketleri tablosu
         work_packages_graph:
-          title: 'İş paketleri grafiği'
+          title: İş paketleri grafiği
+          summary: "%{chartType} %{description}olan iş paketlerini gösteren grafik."
         work_packages_calendar:
-          title: 'Takvim'
+          title: Takvim
         work_packages_overview:
-          title: 'İş paketlerine genel bakış'
-          placeholder: 'Düzenlemek için tıkla ...'
+          title: İş paketlerine genel bakış
+          placeholder: Düzenlemek için tıkla ...

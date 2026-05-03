@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,22 +27,38 @@
 //++
 
 import {
-  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Injector, Output,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Injector,
+  Output,
 } from '@angular/core';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { CreateAutocompleterComponent } from 'core-app/shared/components/autocompleter/create-autocompleter/create-autocompleter.component';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { VersionResource } from 'core-app/features/hal/resources/version-resource';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
+import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   templateUrl: '../create-autocompleter/create-autocompleter.component.html',
   selector: 'version-autocompleter',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class VersionAutocompleterComponent extends CreateAutocompleterComponent implements AfterViewInit {
   @Output() public onCreate = new EventEmitter<VersionResource>();
+
+  groupByFn = (item:HalResource):string|null => {
+    if (!item.id) return null; // Do not group non version options
+    const project = item.definingProject as HalResource | undefined;
+    return project?.name || this.I18n.t('js.project.not_available');
+  };
 
   constructor(
     readonly injector:Injector,
@@ -59,7 +75,7 @@ export class VersionAutocompleterComponent extends CreateAutocompleterComponent 
   ngAfterViewInit() {
     super.ngAfterViewInit();
 
-    this.canCreateNewActionElements().then((val) => {
+    void this.canCreateNewActionElements().then((val) => {
       if (val) {
         this.createAllowed = (input:string) => this.createNewVersion(input);
         this.cdRef.detectChanges();
@@ -77,12 +93,13 @@ export class VersionAutocompleterComponent extends CreateAutocompleterComponent 
       return Promise.resolve(false);
     }
 
-    return this
-      .apiV3Service
-      .versions
-      .available_projects
-      .exists(this.currentProject.id)
-      .toPromise()
+    return firstValueFrom(
+      this
+        .apiV3Service
+        .versions
+        .available_projects
+        .exists(this.currentProject.id),
+    )
       .catch(() => false);
   }
 

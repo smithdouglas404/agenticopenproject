@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,59 +26,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-describe WorkPackages::CreateContract do
-  let(:work_package) { build(:work_package, author: other_user, project:) }
-  let(:other_user) { build_stubbed(:user) }
-  let(:project) { build_stubbed(:project) }
+RSpec.describe WorkPackages::CreateContract do
+  let(:work_package) do
+    WorkPackage.new(project: work_package_project,
+                    subject: "Some subject",
+                    type: work_package_type,
+                    priority: work_package_priority,
+                    status: work_package_status,
+                    story_points: work_package_story_points,
+                    sprint: work_package_sprint) do |wp|
+      wp.extend(OpenProject::ChangedBySystem)
+
+      wp.change_by_system do
+        wp.author = work_package_author
+      end
+    end
+  end
+
   let(:permissions) do
     %i[
       view_work_packages
       add_work_packages
+      manage_sprint_items
+      view_sprints
     ]
   end
-  let(:changed_values) { [] }
-
-  include_context 'user with stubbed permissions'
-
-  subject(:contract) { described_class.new(work_package, user) }
-
-  include_context 'user with stubbed permissions'
 
   before do
-    allow(work_package).to receive(:changed).and_return(changed_values)
+    allow(work_package_project).to receive(:assignable_sprints)
+                                     .and_return(shared_sprints)
   end
 
-  describe 'story points' do
-    before do
-      contract.validate
-    end
-
-    context 'when not changed' do
-      it('is valid') { expect(contract.errors.symbols_for(:story_points)).to be_empty }
-    end
-
-    context 'when changed' do
-      let(:changed_values) { ['story_points'] }
-
-      it('is valid') { expect(contract.errors.symbols_for(:story_points)).to be_empty }
-    end
-  end
-
-  describe 'remaining hours' do
-    before do
-      contract.validate
-    end
-
-    context 'when not changed' do
-      it('is valid') { expect(contract.errors.symbols_for(:remaining_hours)).to be_empty }
-    end
-
-    context 'when changed' do
-      let(:changed_values) { ['remaining_hours'] }
-
-      it('is valid') { expect(contract.errors.symbols_for(:remaining_hours)).to be_empty }
-    end
-  end
+  it_behaves_like "work package contract with backlogs extensions"
 end

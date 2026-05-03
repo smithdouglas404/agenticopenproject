@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -21,25 +23,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module API
   module Errors
+    # A representation for internal server errors that's safe to be used to wrap unexpected errors received in rescue_from.
+    # It will hide the detailed error message of some exception classes that are known to risk exposing internal details.
     class InternalError < ErrorBase
-      identifier 'InternalServerError'
+      identifier "InternalServerError"
       code 500
 
-      def initialize(error_message = nil, exception: nil, **)
-        error = I18n.t('api_v3.errors.code_500')
+      def initialize(error_message = nil, exception:)
+        error = I18n.t("api_v3.errors.code_500")
 
         if error_message && visible_exception?(exception)
           error += " #{error_message}"
         end
 
-        super error
+        super(error)
       end
 
       private
@@ -47,12 +51,12 @@ module API
       ##
       # Hide internal database errors in production
       def visible_exception?(exception)
-        exception_blacklist.none? do |clz|
+        exception_blocklist.none? do |clz|
           exception.is_a?(clz)
         end
       end
 
-      def exception_blacklist
+      def exception_blocklist
         [
           ActiveRecord::StatementInvalid
         ]

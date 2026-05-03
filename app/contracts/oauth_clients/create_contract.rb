@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,13 +31,15 @@
 module OAuthClients
   class CreateContract < ::ModelContract
     include ActiveModel::Validations
-    include ActiveModel::Validations
 
     attribute :client_id, writable: true
     validates :client_id, presence: true, length: { maximum: 255 }
 
     attribute :client_secret, writable: true
-    validates :client_secret, presence: true, length: { maximum: 255 }
+    validates :client_secret, presence: true, if: :client_secret_required?
+    validates :client_secret, length: { maximum: 255 }
+
+    def client_secret_required? = true
 
     attribute :integration_type, writable: true
     validates :integration_type, presence: true

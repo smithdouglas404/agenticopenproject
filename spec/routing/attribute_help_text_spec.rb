@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,23 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe AttributeHelpTextsController, type: :routing do
-  it 'routes CRUD to the controller' do
-    expect(get('/admin/attribute_help_texts'))
-      .to route_to(controller: 'attribute_help_texts', action: 'index')
+RSpec.describe AttributeHelpTextsController do
+  it "routes to show_dialog" do
+    expect(get("/attribute_help_texts/1/show_dialog"))
+      .to route_to(controller: "attribute_help_texts", action: "show_dialog", id: "1")
+  end
 
-    expect(get('/admin/attribute_help_texts/1/edit'))
-      .to route_to(controller: 'attribute_help_texts', action: 'edit', id: '1')
+  it "routes CRUD to the controller" do
+    expect(get("/admin/attribute_help_texts"))
+      .to route_to(controller: "attribute_help_texts", action: "index")
 
-    expect(post('/admin/attribute_help_texts'))
-      .to route_to(controller: 'attribute_help_texts', action: 'create')
+    expect(get("/admin/attribute_help_texts/1/edit"))
+      .to route_to(controller: "attribute_help_texts", action: "edit", id: "1")
 
-    expect(put('/admin/attribute_help_texts/1'))
-      .to route_to(controller: 'attribute_help_texts', action: 'update', id: '1')
+    expect(post("/admin/attribute_help_texts"))
+      .to route_to(controller: "attribute_help_texts", action: "create")
 
-    expect(delete('/admin/attribute_help_texts/1'))
-      .to route_to(controller: 'attribute_help_texts', action: 'destroy', id: '1')
+    expect(put("/admin/attribute_help_texts/1"))
+      .to route_to(controller: "attribute_help_texts", action: "update", id: "1")
+
+    expect(delete("/admin/attribute_help_texts/1"))
+      .to route_to(controller: "attribute_help_texts", action: "destroy", id: "1")
   end
 end

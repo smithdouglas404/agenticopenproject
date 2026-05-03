@@ -1,5 +1,5 @@
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +33,7 @@ module API
         link :self,
              path: { api: :group, params: %w(id) },
              column: -> { :id },
-             title: -> { 'lastname' }
+             title: -> { "lastname" }
 
         property :_type,
                  representation: ->(*) { "'Group'" }
@@ -42,6 +42,9 @@ module API
 
         property :name,
                  column: :lastname
+
+        property :email,
+                 column: :mail
       end
     end
   end

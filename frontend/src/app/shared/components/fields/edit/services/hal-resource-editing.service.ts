@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,7 @@
 
 import {
   combine, deriveRaw, InputState, multiInput, State, StatesGroup,
-} from 'reactivestates';
+} from '@openproject/reactivestates';
 import { filter, map } from 'rxjs/operators';
 import { Injectable, Injector } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -88,9 +88,7 @@ export class ResourceChangesetCommit<T extends HalResource = HalResource> {
   }
 }
 
-export interface ResourceChangesetClass {
-  new(...args:any[]):ResourceChangeset;
-}
+export type ResourceChangesetClass = new(...args:any[]) => ResourceChangeset;
 
 @Injectable()
 export class HalResourceEditingService extends StateCacheService<ResourceChangeset> {
@@ -227,7 +225,7 @@ export class HalResourceEditingService extends StateCacheService<ResourceChanges
           filter(([resource, _]) => !!resource),
           map(([resource, change]) => {
             if (change) {
-              change.updatePristineResource(resource as V);
+              change.updatePristineResource(resource!);
               return change.projectedResource;
             }
 

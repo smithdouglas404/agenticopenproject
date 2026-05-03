@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,9 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
+import {
+  HalResourceEditingService,
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -48,7 +50,7 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import {
   displayClassName,
-  DisplayFieldRenderer,
+  DisplayFieldRenderer, displayTriggerLink,
   editFieldContainerClass,
 } from 'core-app/shared/components/fields/display/display-field-renderer';
 import { States } from 'core-app/core/states/states.service';
@@ -61,6 +63,7 @@ import { SchemaResource } from 'core-app/features/hal/resources/schema-resource'
   selector: 'op-editable-attribute-field',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './editable-attribute-field.component.html',
+  standalone: false,
 })
 export class EditableAttributeFieldComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @Input() public fieldName:string;
@@ -69,7 +72,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
 
   @Input() public wrapperClasses?:string;
 
-  @Input() public displayFieldOptions:{ [key:string]:unknown } = {};
+  @Input() public displayFieldOptions:Record<string, unknown> = {};
 
   @Input() public isDropTarget?:boolean = false;
 
@@ -83,11 +86,12 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
 
   public active = false;
 
-  private $element:JQuery;
+  private element:HTMLElement;
 
   public destroyed = false;
 
-  constructor(protected states:States,
+  constructor(
+    protected states:States,
     protected injector:Injector,
     protected elementRef:ElementRef,
     protected opContextMenu:OPContextMenuService,
@@ -96,7 +100,8 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     // Get parent field group from injector if we're in a form
     @Optional() protected editForm:EditFormComponent,
     protected cdRef:ChangeDetectorRef,
-    protected I18n:I18nService) {
+    protected I18n:I18nService,
+  ) {
     super();
   }
 
@@ -109,7 +114,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
 
   public ngOnInit():void {
     this.fieldRenderer = new DisplayFieldRenderer(this.injector, 'single-view', this.displayFieldOptions);
-    this.$element = jQuery<HTMLElement>(this.elementRef.nativeElement);
+    this.element = this.elementRef.nativeElement;
 
     // Register on the form if we're in an editable context
     this.editForm?.register(this);
@@ -122,19 +127,22 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
       )
       .subscribe((resource) => {
         this.resource = resource;
-        this.render();
+        if (this.isEditable) {
+          this.render();
+        } else {
+          this.reset();
+        }
       });
   }
 
   // Open the field when its closed and relay drag & drop events to it.
-  public startDragOverActivation(event:JQuery.TriggeredEvent):boolean {
+  public startDragActivation(event:DragEvent):void {
     if (!this.isDropTarget || !this.isEditable || this.active) {
-      return true;
+      return;
     }
 
     this.handleUserActivate(null);
     event.preventDefault();
-    return false;
   }
 
   public render():void {
@@ -149,7 +157,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     this.setActive(false);
 
     if (focus) {
-      setTimeout(() => this.$element.find(`.${displayClassName}`).focus(), 20);
+      setTimeout(() => this.element.querySelector<HTMLElement>(`.${displayClassName}`)?.focus(), 20);
     }
   }
 
@@ -166,8 +174,9 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     }
 
     // Skip activation if the user clicked on a link or within a macro
-    const target = jQuery(event.target as HTMLElement);
-    if (target.closest('a,macro', this.displayContainer.nativeElement).length > 0) {
+    const target = event.target as HTMLElement;
+    const foundElement = target.closest(`a:not(.${displayTriggerLink}),macro`);
+    if (foundElement && this.displayContainer.nativeElement.contains(foundElement)) {
       return true;
     }
 
@@ -181,6 +190,10 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
   }
 
   public activateOnForm(noWarnings = false):Promise<void|EditFieldHandler> {
+    if (!this.isEditable) {
+      return Promise.reject();
+    }
+
     // Activate the field
     this.setActive(true);
 
@@ -199,7 +212,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     // This can be both a direct click as well as a "click" via keyboard, e.g. the <Enter> key.
     if (evt?.type === 'click') {
       // Get the position where the user clicked.
-      positionOffset = getPosition(evt);
+      positionOffset = getPosition(evt as MouseEvent);
     }
 
     void this.activateOnForm()
@@ -229,3 +242,4 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     return this.schemaCache.of(this.resource);
   }
 }
+

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +29,7 @@
 #++
 
 FactoryBot.define do
-  factory :day, class: 'Day' do
+  factory :day, class: "Day" do
     sequence :date do |n|
       (1.year.ago + n.days).to_date
     end

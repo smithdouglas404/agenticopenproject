@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +26,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'roar/decorator'
-require 'roar/json/hal'
+require "roar/decorator"
+require "roar/json/hal"
 
 module API
   module V3
@@ -57,7 +57,7 @@ module API
 
         def self.associated_container_link
           ->(*) do
-            return nil unless v3_container_name == 'nil_class' || api_v3_paths.respond_to?(v3_container_name)
+            return nil unless v3_container_name == "nil_class" || api_v3_paths.respond_to?(v3_container_name)
 
             ::API::Decorators::LinkObject
               .new(represented,
@@ -106,17 +106,18 @@ module API
         formattable_property :description,
                              plain: true
 
+        property :status
         property :content_type
         property :digest,
                  getter: ->(*) {
-                   ::API::Decorators::Digest.new(digest, algorithm: 'md5')
+                   ::API::Decorators::Digest.new(digest, algorithm: "md5")
                  },
                  render_nil: true
 
         date_time_property :created_at
 
         def _type
-          'Attachment'
+          "Attachment"
         end
 
         def container_representer
@@ -128,7 +129,9 @@ module API
         end
 
         def v3_container_name
-          ::API::Utilities::PropertyNameConverter.from_ar_name(represented.container.class.name.underscore).underscore
+          ar_name = represented.container.class.name.underscore
+
+          ::API::Utilities::PropertyNameConverter.from_ar_name_with_aliases(ar_name, "journal" => "activity").underscore
         end
 
         def container_title_attribute

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,26 +31,43 @@
 # The logic for creating storage was extracted from the controller and put into
 # a service: https://dev.to/joker666/ruby-on-rails-pattern-service-objects-b19
 # Purpose: create and persist a Storages::Storage record
-# Used by: Storages::Admin::StoragesController#create, could also be used by the
-# API in the future.
-# Reference: https://www.openproject.org/docs/development/concepts/contracted-services/
+# Used by: Storages::Admin::StoragesController#create, API::V3::Storages::StoragesAPI
 # The comments here are also valid for the other *_service.rb files
 module Storages::Storages
   class CreateService < ::BaseServices::Create
+    def initialize(*, create_oauth_app: true, **)
+      super(*, **)
+
+      @create_oauth_app = create_oauth_app
+    end
+
     protected
 
     def after_perform(service_call)
-      super(service_call)
+      super
+      return service_call unless create_oauth_app?
 
       storage = service_call.result
-      # Automatically create an OAuthApplication object for the Nextcloud storage
-      # using values from storage (particularly :host) as defaults
-      if storage.provider_type == 'nextcloud'
+      if storage.provider_type_nextcloud? && !storage.authenticate_via_idp?
         persist_service_result = ::Storages::OAuthApplications::CreateService.new(storage:, user:).call
+        storage.oauth_application = persist_service_result.result if persist_service_result.success?
         service_call.add_dependent!(persist_service_result)
       end
 
       service_call
+    end
+
+    # @override BaseServices::Create#instance to return a Storages::{ProviderType}Storage class name
+    # At this stage, the model contract has already been validated, so we can be sure of the provider_type presence
+    # @example instance_klass = Storages::NextcloudStorage
+    #
+    def instance(params)
+      instance_klass = params[:provider_type].constantize
+      instance_klass.new
+    end
+
+    def create_oauth_app?
+      @create_oauth_app
     end
   end
 end

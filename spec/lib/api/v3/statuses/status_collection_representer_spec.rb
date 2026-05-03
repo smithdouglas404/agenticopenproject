@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::Statuses::StatusCollectionRepresenter do
+RSpec.describe API::V3::Statuses::StatusCollectionRepresenter do
   include API::V3::Utilities::PathHelper
 
   let(:statuses) { build_list(:status, 3) }
   let(:representer) do
-    described_class.new(statuses, self_link: api_v3_paths.statuses, current_user: double('current_user'))
+    described_class.new(statuses, self_link: api_v3_paths.statuses, current_user: double("current_user"))
   end
 
-  context 'generation' do
+  context "generation" do
     subject(:collection) { representer.to_json }
 
-    it_behaves_like 'unpaginated APIv3 collection', 3, 'statuses', 'Status'
+    it_behaves_like "unpaginated APIv3 collection", 3, "statuses", "Status"
   end
 end

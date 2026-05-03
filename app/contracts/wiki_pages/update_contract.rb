@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,5 +30,10 @@
 
 module WikiPages
   class UpdateContract < BaseContract
+    attribute :lock_version do
+      if model.lock_version.nil? || model.lock_version_changed?
+        errors.add :base, :error_conflict
+      end
+    end
   end
 end

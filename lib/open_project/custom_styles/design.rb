@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,7 +34,7 @@ module OpenProject::CustomStyles
     # Returns the name of the color scheme.
     # To be overridden by a plugin
     def name
-      'OpenProject Theme'
+      "OpenProject Theme"
     end
 
     def identifier
@@ -46,30 +46,33 @@ module OpenProject::CustomStyles
     end
 
     ##
-    # Path the favicon
+    # Path to favicon
     def favicon_asset_path
-      'favicon.ico'.freeze
+      if OpenProject::Configuration.development_highlight_enabled?
+        "development/favicon.ico".freeze
+      else
+        "favicon.ico".freeze
+      end
+    end
+
+    ##
+    # Path to apple touch icon
+    def apple_touch_icon_asset_path
+      if OpenProject::Configuration.development_highlight_enabled?
+        "development/apple-touch-icon-120x120.png".freeze
+      else
+        "apple-touch-icon-120x120.png".freeze
+      end
     end
 
     ##
     # Returns the keys of variables that are customizable through the design
     def customizable_variables
-      %w( primary-color
-          primary-color-dark
-          alternative-color
-          content-link-color
+      %w( primary-button-color
+          accent-color
           header-bg-color
-          header-item-bg-hover-color
-          header-item-font-color
-          header-item-font-hover-color
-          header-border-bottom-color
           main-menu-bg-color
-          main-menu-bg-selected-background
-          main-menu-bg-hover-background
-          main-menu-font-color
-          main-menu-selected-font-color
-          main-menu-hover-font-color
-          main-menu-border-color )
+          main-menu-bg-selected-background)
     end
   end
 end

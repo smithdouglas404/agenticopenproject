@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,7 +46,7 @@ module API
           private
 
           def determine_path_method(record)
-            # since not all things are equally named between APIv3 and the rails code,
+            # Since not all things are equally named between APIv3 and the rails code,
             # we need to convert some names manually
             case record
             when Project
@@ -59,6 +59,8 @@ module API
               :activity
             when Changeset
               :revision
+            when ::CustomField::Hierarchy::HierarchyItemAdapter
+              :custom_field_item
             else
               record.class.model_name.singular
             end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,7 +41,7 @@ class Journals::CompletedJob < ApplicationJob
 
     def aggregated_event(journal)
       case journal.journable_type
-      when WikiContent.name
+      when WikiPage.name
         OpenProject::Events::AGGREGATED_WIKI_JOURNAL_READY
       when WorkPackage.name
         OpenProject::Events::AGGREGATED_WORK_PACKAGE_JOURNAL_READY

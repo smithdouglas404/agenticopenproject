@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +39,7 @@ module NotificationSettings::Scopes
       # rubocop:disable Metrics/AbcSize
       def applicable(project)
         global_notifications = NotificationSetting.arel_table
-        project_notifications = NotificationSetting.arel_table.alias('project_settings')
+        project_notifications = NotificationSetting.arel_table.alias("project_settings")
 
         subselect = global_notifications
                     .where(global_notifications[:project_id].eq(nil))

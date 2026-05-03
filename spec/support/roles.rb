@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-shared_context 'with non-member permissions from non_member_permissions' do
+RSpec.shared_context "with non-member permissions from non_member_permissions" do
   around do |example|
-    non_member = Role.non_member
+    non_member = ProjectRole.non_member
     previous_permissions = non_member.permissions
 
     non_member.update_attribute(:permissions, non_member_permissions)

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,42 +31,36 @@
 // dependencies required by classic (Rails) and Angular application.
 
 // Lodash
-require('expose-loader?_!lodash');
-
-// jQuery
-require('expose-loader?jQuery!jquery');
-require('jquery-ujs');
-
-require('expose-loader?mousetrap!mousetrap/mousetrap.js');
-
-// Angular dependencies
-require('expose-loader?dragula!dragula/dist/dragula.min.js');
-require('@uirouter/angular');
+import lodash from 'lodash';
 
 // Jquery UI
-require('jquery-ui/ui/core.js');
-require('jquery-ui/ui/position.js');
-require('jquery-ui/ui/disable-selection.js');
-require('jquery-ui/ui/widgets/sortable.js');
-require('jquery-ui/ui/widgets/dialog.js');
-require('jquery-ui/ui/widgets/tooltip.js');
+// import 'jquery-ui/ui/position';
+// import 'jquery-ui/ui/disable-selection';
+// import 'jquery-ui/ui/widgets/sortable';
+// import 'jquery-ui/ui/widgets/dialog';
+// import 'jquery-ui/ui/widgets/tooltip';
+import 'core-vendor/jquery-ui-1.14.1/jquery-ui';
 
-require('expose-loader?moment!moment');
-require('moment/locale/en-gb.js');
-require('moment/locale/de.js');
+import moment from 'moment';
+import './init-moment-locales';
 
-require('jquery.caret');
+import 'jquery.caret';
 // Text highlight for autocompleter
-require('mark.js/dist/jquery.mark.min.js');
-// Micro Text fuzzy search library
-require('fuse.js');
+import 'mark.js/dist/jquery.mark.min';
 
-require('moment-timezone/builds/moment-timezone-with-data.min.js');
+import 'moment-timezone/builds/moment-timezone-with-data.min';
+// eslint-disable-next-line import/extensions,import/no-extraneous-dependencies
+import '@openproject/primer-view-components/app/assets/javascripts/primer_view_components.js';
 
-require('expose-loader?URI!urijs');
-require('urijs/src/URITemplate');
+import URI from 'urijs';
+import 'urijs/src/URITemplate';
 
-require('expose-loader?I18n!core-vendor/i18n');
+declare global {
+  interface Window {
+    _:typeof lodash;
+  }
+}
 
-// Localization for fullcalendar
-require('@fullcalendar/core/locales-all');
+window._ = lodash;
+window.moment = moment;
+window.URI = URI;

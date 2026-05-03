@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,22 +26,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ProjectWebhookJob, type: :job, webmock: true do
-  shared_let(:user) { create :admin }
+RSpec.describe ProjectWebhookJob, :webmock, type: :job do
+  include_context "with ssrf stubs"
+
   shared_let(:request_url) { "http://example.net/test/42" }
-  shared_let(:project) { create :project, name: 'Foo Bar' }
-  shared_let(:webhook) { create :webhook, all_projects: true, url: request_url, secret: nil }
+  shared_let(:project) { create(:project, name: "Foo Bar") }
+  shared_let(:webhook) { create(:webhook, all_projects: true, url: request_url, secret: nil) }
 
   shared_examples "a project webhook call" do
     let(:event) { "project:created" }
-    let(:job) { ProjectWebhookJob.perform_now(webhook.id, project, event) }
+    let(:job) { described_class.perform_now(webhook.id, project, event) }
 
     let(:stubbed_url) { request_url }
 
     let(:request_headers) do
-      { content_type: "application/json", accept: "application/json" }
+      { "Content-Type": "application/json", Accept: "application/json" }
     end
 
     let(:response_code) { 200 }
@@ -50,17 +51,22 @@ describe ProjectWebhookJob, type: :job, webmock: true do
       { content_type: "text/plain", x_spec: "foobar" }
     end
 
+    let(:expected_payload) do
+      {}
+    end
+
     let(:stub) do
-      stub_request(:post, stubbed_url.sub("http://", ""))
+      stub_request(:post, stubbed_url)
         .with(
           body: hash_including(
             "action" => event,
             "project" => hash_including(
               "_type" => "Project",
-              "name" => 'Foo Bar'
+              "name" => "Foo Bar",
+              **expected_payload
             )
           ),
-          headers: request_headers
+          headers: request_headers.merge(host: "example.net")
         )
         .to_return(
           status: response_code,
@@ -77,12 +83,11 @@ describe ProjectWebhookJob, type: :job, webmock: true do
     end
 
     before do
-      allow(::Webhooks::Webhook).to receive(:find).with(webhook.id).and_return(webhook)
-      login_as user
+      allow(Webhooks::Webhook).to receive(:find).with(webhook.id).and_return(webhook)
       stub
     end
 
-    it 'requests with all projects' do
+    it "requests with all projects" do
       allow(webhook)
         .to receive(:enabled_for_project?).with(project.id)
         .and_call_original
@@ -91,20 +96,20 @@ describe ProjectWebhookJob, type: :job, webmock: true do
       expect(stub).to have_been_requested
     end
 
-    it 'does not request when project does not match unless create case' do
+    it "does not request when project does not match unless create case" do
       allow(webhook)
         .to receive(:enabled_for_project?).with(project.id)
         .and_return(false)
 
       subject
-      if event == 'project:created'
+      if event == "project:created"
         expect(stub).to have_been_requested
       else
         expect(stub).not_to have_been_requested
       end
     end
 
-    describe 'successful flow' do
+    describe "successful flow" do
       before do
         subject
       end
@@ -133,7 +138,7 @@ describe ProjectWebhookJob, type: :job, webmock: true do
     end
   end
 
-  describe "triggering a projec creation" do
+  describe "triggering a project creation" do
     it_behaves_like "a project webhook call" do
       let(:event) { "project:created" }
     end
@@ -144,6 +149,32 @@ describe ProjectWebhookJob, type: :job, webmock: true do
       let(:event) { "project:update" }
       let(:response_code) { 404 }
       let(:response_body) { "not found" }
+    end
+  end
+
+  describe "triggering an update with a custom field set" do
+    shared_let(:custom_field) { create(:project_custom_field, :string, projects: [project]) }
+    shared_let(:custom_value) do
+      create(:custom_value,
+             custom_field:,
+             customized: project,
+             value: "wat")
+    end
+
+    it_behaves_like "a project webhook call" do
+      let(:expected_payload) do
+        { custom_field.attribute_name(:camel_case) => "wat" }
+      end
+
+      it "includes the custom field value" do
+        subject
+
+        expect(stub).to have_been_requested
+
+        log = Webhooks::Log.last
+        request = JSON.parse(log.request_body)
+        expect(request["project"][custom_field.attribute_name(:camel_case)]).to eq "wat"
+      end
     end
   end
 end

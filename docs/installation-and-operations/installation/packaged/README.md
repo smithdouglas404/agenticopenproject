@@ -6,7 +6,10 @@ sidebar_navigation:
 
 # Install OpenProject with DEB/RPM packages
 
-The packaged installation of OpenProject is the recommended way to install and maintain OpenProject using DEB or RPM packages.
+> [!IMPORTANT]
+> We will not build packages for new Linux versions, such as Ubuntu 24.04. We will, however, keep releasing new package versions for the currently supported Linux versions until their EOL (end of life).
+
+The packaged installation of OpenProject is one of the ways to install and maintain OpenProject using DEB or RPM packages.
 
 The package will:
 
@@ -27,26 +30,23 @@ The package will:
 The package is available for the following Linux distributions:
 
 | Distribution (64 bits only)                 |
-| ------------------------------------------- |
+|---------------------------------------------|
 | [Ubuntu 22.04 Jammy](#ubuntu-2204)          |
 | [Ubuntu 20.04 Focal](#ubuntu-2004)          |
-| [Ubuntu 18.04 Bionic Beaver](#ubuntu-1804)  |
-| [Ubuntu 16.04 Xenial Xerus](#ubuntu-1604)   |
-| [Debian 11 Bullseye](#debian-11)              |
-| [Debian 10 Buster](#debian-10)              |
-| [Debian 9 Stretch](#debian-9)               |
-| [CentOS/RHEL 8.x](#centos-8--rhel-8)                    |
-| [CentOS/RHEL 7.x](#centos-7--rhel-7)                    |
-| [Suse Linux Enterprise Server 12](#sles-12) |
+| [Debian 12 Bookworm](#debian-12)            |
+| [Debian 11 Bullseye](#debian-11)            |
+| [CentOS/RHEL 9.x](#centos-9--rhel-9)        |
+| [Suse Linux Enterprise Server 15](#sles-15) |
 
 Please ensure that you are running on a 64bit system before proceeding with the installation. You can check by running the `uname -i` command on the target server and verifying that it outputs `x86_64`:
 
-```bash
-$ uname -i
+```shell
+$ uname -m
 x86_64
 ```
 
-> **Important note:** Please note that the packaged installation works best when running on a dedicated server or virtual machine, as we cannot ensure that the components installed and configured by the OpenProject installer will work on systems that have been already customized. If you must install OpenProject on a server where other software is running, or with an already configured Apache or NginX server, then you should have a look at the Docker-based installation instead.
+> [!IMPORTANT]
+> Please note that the packaged installation works best when running on a dedicated server or virtual machine, as we cannot ensure that the components installed and configured by the OpenProject installer will work on systems that have been already customized. If you must install OpenProject on a server where other software is running, or with an already configured Apache or NginX server, then you should have a look at the Docker-based installation instead.
 
 ## Ubuntu Installation
 
@@ -54,319 +54,262 @@ x86_64
 
 Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
 
-```bash
+```shell
 sudo apt-get update
 sudo apt-get install apt-transport-https ca-certificates wget
 ```
 
 Import the PGP key used to sign our packages:
 
-```bash
-wget -qO- https://dl.packager.io/srv/opf/openproject/key | sudo apt-key add -
+```shell
+sudo curl -fsSL "https://packages.openproject.com/srv/deb/opf/openproject/gpg-key.gpg" \
+  -o /usr/share/keyrings/openproject.gpg
 ```
-
-Note: you might get a warning when importing the key `Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8))`. This happens because APT has updated the way it manages signing keys, and the package provider is not supporting the new way yet.
 
 Add the OpenProject package source:
 
-```bash
-sudo wget -O /etc/apt/sources.list.d/openproject.list \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/ubuntu/22.04.repo
+```shell
+sudo curl -fsSL \
+  "https://packages.openproject.com/srv/opf/openproject/stable/17/installer/ubuntu/22.04.list" \
+  -o /etc/apt/sources.list.d/openproject.list
 ```
 
 Download the OpenProject package:
 
-```bash
+```shell
 sudo apt-get update
 sudo apt-get install openproject
 ```
 
+Verify the repository is configured correctly:
+
+```bash
+apt-cache policy
+```
+
 Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
 
-<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/openproject-installation-ubuntu.mp4" type="video/mp4" controls="" style="width:100%"></video>
+<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/openproject-installation-ubuntu.mp4"></video>
 
 ### Ubuntu 20.04
 
 Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
 
-```bash
+```shell
 sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates wget
+sudo apt-get install apt-transport-https ca-certificates curl
 ```
 
 Import the PGP key used to sign our packages:
 
-```bash
-wget -qO- https://dl.packager.io/srv/opf/openproject/key | sudo apt-key add -
+```shell
+sudo curl -fsSL "https://packages.openproject.com/srv/deb/opf/openproject/gpg-key.gpg" \
+  -o /usr/share/keyrings/openproject.gpg
 ```
 
 Add the OpenProject package source:
 
-```bash
-sudo wget -O /etc/apt/sources.list.d/openproject.list \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/ubuntu/20.04.repo
+```shell
+sudo curl -fsSL \
+  "https://packages.openproject.com/srv/opf/openproject/stable/17/installer/ubuntu/20.04.list" \
+  -o /etc/apt/sources.list.d/openproject.list
 ```
 
 Download the OpenProject package:
 
-```bash
+```shell
 sudo apt-get update
 sudo apt-get install openproject
 ```
 
-Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
-
-### Ubuntu 18.04
-
-Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
+Verify the repository is configured correctly:
 
 ```bash
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates wget
+apt-cache policy
 ```
 
-Import the PGP key used to sign our packages:
 
-```bash
-wget -qO- https://dl.packager.io/srv/opf/openproject/key | sudo apt-key add -
-```
-
-Add the OpenProject package source:
-
-```bash
-sudo wget -O /etc/apt/sources.list.d/openproject.list \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/ubuntu/18.04.repo
-```
-
-Download the OpenProject package:
-
-```bash
-sudo apt-get update
-sudo apt-get install openproject
-```
-
-Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
-
-### Ubuntu 16.04
-
-Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
-
-```bash
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates wget
-```
-
-Import the PGP key used to sign our packages:
-
-```bash
-wget -qO- https://dl.packager.io/srv/opf/openproject/key | sudo apt-key add -
-```
-
-Add the OpenProject package source:
-
-```bash
-sudo wget -O /etc/apt/sources.list.d/openproject.list \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/ubuntu/16.04.repo
-```
-
-Download the OpenProject package:
-
-```bash
-sudo apt-get update
-sudo apt-get install openproject
-```
 
 Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
 
 ## Debian Installation
 
+### Debian 12
+
+As root update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
+
+```shell
+su -
+apt update
+apt install apt-transport-https ca-certificates curl gpg
+```
+
+Import the PGP key used to sign our packages:
+
+```shell
+sudo curl -fsSL "https://packages.openproject.com/srv/deb/opf/openproject/gpg-key.gpg" \
+  -o /usr/share/keyrings/openproject.gpg
+```
+
+Add the OpenProject package source:
+
+```shell
+sudo curl -fsSL \
+  "https://packages.openproject.com/srv/opf/openproject/stable/17/installer/debian/12.list" \
+  -o /etc/apt/sources.list.d/openproject.list
+```
+
+Download the OpenProject package:
+
+```shell
+apt update
+apt install openproject
+```
+
+Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
+
+Verify the repository is configured correctly:
+
+```bash
+apt-cache policy
+```
+
 ### Debian 11
 
-Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
+As root update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
 
-```bash
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates wget
+```shell
+su -
+apt update
+apt install apt-transport-https ca-certificates curl gpg
 ```
 
 Import the PGP key used to sign our packages:
 
-```bash
-wget -qO- https://dl.packager.io/srv/opf/openproject/key | sudo apt-key add -
+```shell
+sudo curl -fsSL "https://packages.openproject.com/srv/deb/opf/openproject/gpg-key.gpg" \
+  -o /usr/share/keyrings/openproject.gpg
 ```
 
 Add the OpenProject package source:
 
-```bash
-sudo wget -O /etc/apt/sources.list.d/openproject.list \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/debian/11.repo
+```shell
+sudo curl -fsSL \
+  "https://packages.openproject.com/srv/opf/openproject/stable/17/installer/debian/11.list" \
+  -o /etc/apt/sources.list.d/openproject.list
 ```
 
 Download the OpenProject package:
 
-```bash
-sudo apt-get update
-sudo apt-get install openproject
+```shell
+apt update
+apt install openproject
 ```
 
 Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
 
-### Debian 10
-
-Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
+Verify the repository is configured correctly:
 
 ```bash
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates wget
+apt-cache policy
 ```
-
-Import the PGP key used to sign our packages:
-
-```bash
-wget -qO- https://dl.packager.io/srv/opf/openproject/key | sudo apt-key add -
-```
-
-Add the OpenProject package source:
-
-```bash
-sudo wget -O /etc/apt/sources.list.d/openproject.list \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/debian/10.repo
-```
-
-Download the OpenProject package:
-
-```bash
-sudo apt-get update
-sudo apt-get install openproject
-```
-
-Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
-
-### Debian 9
-
-Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
-
-```bash
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates wget
-```
-
-Import the PGP key used to sign our packages:
-
-```bash
-wget -qO- https://dl.packager.io/srv/opf/openproject/key | sudo apt-key add -
-```
-
-Add the OpenProject package source:
-
-```bash
-sudo wget -O /etc/apt/sources.list.d/openproject.list \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/debian/9.repo
-```
-
-Download the OpenProject package:
-
-```bash
-sudo apt-get update
-sudo apt-get install openproject
-```
-
-Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
 
 ## CentOS Installation
 
-### CentOS 8 / RHEL 8
+### CentOS 9 / RHEL 9
 
-Add the OpenProject package source:
+Please ensure that you have `curl` installed.
 
-```bash
-sudo wget -O /etc/yum.repos.d/openproject.repo \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/el/8.repo
+Import the repository GPG key
+
+```shell
+sudo rpm --import https://packages.openproject.com/srv/rpm/opf/openproject/gpg-key.asc
 ```
 
 If it is not already enabled, make sure to enable [Extra Packages for Enterprise Linux](https://fedoraproject.org/wiki/EPEL) (EPEL).
 
-```bash
-sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+```shell
+sudo subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+
+# if using CentOS 9:
+# sudo dnf config-manager --set-enabled crb
+# sudo dnf install https://dl.fedoraproject.org/pub/epel/epel{,-next}-release-latest-9.noarch.rpm
 ```
+
+Add the OpenProject repository:
+
+```bash
+sudo curl -fsSL \
+  "https://packages.openproject.com/srv/opf/openproject/stable/17/installer/el/9.repo" \
+  -o /etc/yum.repos.d/openproject.repo
+```
+
+
 
 Download the OpenProject package:
 
-```bash
+```shell
 sudo yum install openproject
 ```
 
-Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
-
-> **Note:** On this distribution full-text extraction for attachments [*is not supported*](#full-text-extraction-not-supported) by default.
->
-
-### CentOS 7 / RHEL 7
-
-Add the OpenProject package source:
+Or if you are using dnf:
 
 ```bash
-sudo wget -O /etc/yum.repos.d/openproject.repo \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/el/7.repo
+sudo dnf install openproject
 ```
 
-Download the OpenProject package:
 
-```bash
-sudo yum install openproject
-```
 
 Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
 
-> **Note:** On this distribution full-text extraction for attachments [*is not supported*](#full-text-extraction-not-supported) by default.
-
-**Workaround for outdated PostgreSQL library package**
-
-Depending on your version and installation variant, you might receive errors like `symbol lookup error: /opt/openproject/vendor/bundle/ruby/3.1.0/gems/pg-1.4.3/lib/pg_ext.so: undefined symbol: PQconninfo`.
-
-This happens when your local postgresql-libs package is outdated. You'll have to install a newer version manually like so:
-
-1. Add the package source for PostgreSQL (the exact URL might differ, double check https://www.postgresql.org/download/linux/redhat/)
-
-`yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm`
-
-2. Install postgresql13-libs
-
-`yum install postgresql13-libs`
+> [!NOTE]
+> On this distribution full-text extraction for attachments [*is not supported*](#full-text-extraction-not-supported) by default.
 
 ## SUSE Linux Enterprise Server (SLES) Installation
 
-### SLES 12
+> [!NOTE]
+> On SLES, full-text extraction for attachments [*is not supported*](#full-text-extraction-not-supported) by default.
+
+### SLES 15
+
+Please make sure that you have  `curl` installed on your system.
 
 Add the OpenProject package source:
 
-```bash
-wget -O /etc/zypp/repos.d/openproject.repo \
-  https://dl.packager.io/srv/opf/openproject/stable/12/installer/sles/12.repo
+```shell
+sudo curl -o /etc/zypp/repos.d/openproject.repo \
+  "https://packages.openproject.com/srv/opf/openproject/stable/17/installer/sles/15.repo"
 ```
 
 If you already had an old package source that is being updated you must refresh
 your source next. It can't hurt to do this in any case, though.
 
-```bash
+```shell
 sudo zypper refresh openproject
 ```
 
 Next, download the OpenProject package:
 
-```bash
+```shell
 sudo zypper install openproject
 ```
 
+Verify the repository is correctly configured:
+
+```bash
+sudo zypper repos
+```
+
+
+
 Then finish the installation by reading the [*Initial configuration*](#initial-configuration) section.
 
-**Note:** On SLES12 full-text extraction for attachments [*is not supported*](#full-text-extraction-not-supported) by default.
-
-# Full-text extraction not supported
+## Full-text extraction not supported
 
 For some distributions we do not provide the required dependencies for full-text extraction of attachments. If you need this feature, please install the required dependencies (`catdoc unrtf poppler-utils tesseract-ocr`) manually. For more information, [please see the plaintext gem](https://github.com/planio-gmbh/plaintext). Once installed, check `Administration > Information` to see if OpenProject is able to pick up these dependencies.
 
-# Initial Configuration
+## Initial Configuration
 
 After you have successfully installed the OpenProject package, you can now perform the initial configuration of OpenProject, using the wizard that ships with the OpenProject package.
 
@@ -380,17 +323,14 @@ After you have successfully installed the OpenProject package, you can now perfo
 
 To start the configuration wizard, please run the following command  with `sudo`, or as root:
 
-```bash
+```shell
 sudo openproject reconfigure #interactive - manual choices are stored in /etc/openproject/installer.dat
 sudo openproject configure #non-interactive - using values stored in /etc/openproject/installer.dat
 ```
 
-> **Notes:**
->
-> * Every time you will run the OpenProject wizard, by using `sudo openproject reconfigure` your choices will be persisted in a configuration file at `/etc/openproject/installer.dat` and subsequent executions of `sudo openproject configure` will re-use these values, only showing you the wizard steps for options you have not yet been asked for.
->
-> * In the interactive way you can skip dialogs you do not want to change simply by confirming them with `ENTER`.
->
+> [!NOTE]
+> Every time you will run the OpenProject wizard, by using `sudo openproject reconfigure` your choices will be persisted in a configuration file at `/etc/openproject/installer.dat` and subsequent executions of `sudo openproject configure` will re-use these values, only showing you the wizard steps for options you have not yet been asked for.
+> In the interactive way you can skip dialogs you do not want to change simply by confirming them with `ENTER`.
 
 ## Step 1: Select your OpenProject edition
 
@@ -406,10 +346,9 @@ You can find more about the BIM edition on [this page](https://www.openproject.o
 
 > This wizard step is only available on the following distributions:
 >
-> * RHEL/CentOS 8
+> * RHEL/CentOS 9
+> * Ubuntu 22.04
 > * Ubuntu 20.04
-> * Ubuntu 18.04
-> * Debian 10
 > * Debian 11
 >
 > On older distributions, this wizard step won't be displayed, and the installation will default to the default edition.
@@ -426,7 +365,8 @@ The dialog allows you to choose from three options:
 
 Choose this option if you want OpenProject to set up and configure a local database server manually. This is the best choice if you are unfamiliar with administering databases, or do not have a separate PostgreSQL database server installed that you want to connect to.
 
-> **Note:** If you would like to use the database that was automatically installed by OpenProject at time of installation just choose `install` again
+> [!NOTE]
+> If you would like to use the database that was automatically installed by OpenProject at time of installation just choose `install` again
 
 ### Use an existing PostgreSQL database
 
@@ -440,7 +380,7 @@ The wizard will not try to connect to any database. You will have to specify a d
 
 You can set this `DATABASE_URL` parameter yourself to a PostgreSQL database URL.
 
-```bash
+```shell
 sudo openproject config:set DATABASE_URL="postgresql://[user[:password]@][host][:port][/dbname][?param1=value1&...]
 ```
 
@@ -454,11 +394,12 @@ This wizard step allows you to auto-install an Apache2 web server to function as
 
 The available options are:
 
-### **Install Apache2 web server** (default)
+### Install Apache2 web server (default)
 
 We recommend that you let OpenProject install and configure the outer web server, in which case we will install an Apache2 web server with a VirtualHost listening to the domain name you specify, optionally providing SSL/TLS termination.
 
-> **Note:** In case you re-run `sudo openproject reconfigure` later it is mandatory to select `install` at the webserver again
+> [!NOTE]
+> In case you re-run `sudo openproject reconfigure` later it is mandatory to select `install` at the webserver again
 
 In case you have selected to install Apache2, multiple dialogs will request the parameters for setting it up:
 
@@ -476,7 +417,8 @@ If you wish to install OpenProject under a server path prefix, such as `yourdoma
 
 #### SSL/TLS configuration
 
-> **Note:** With OpenProject version 12.2 **HTTPS configuration** was set to be **default** for every installation. **Now best practice is to proceed by selecting `yes` for using HTTPS (SSL/TLS)** and generating the needed certificates, otherwise you will have to manually deactivate HTTPS on the command line.
+> [!NOTE]
+> With OpenProject version 12.2 **HTTPS configuration** was set to be **default** for every installation. **Now best practice is to proceed by selecting `yes` for using HTTPS (SSL/TLS)** and generating the needed certificates, otherwise you will have to manually deactivate HTTPS on the command line.
 
 OpenProject can configure Apache to support HTTPS (SSL/TLS). If you have SSL certificates and want to use SSL/TLS (recommended), select **Yes**.
 
@@ -488,18 +430,17 @@ In that case, you will be shown three additional dialogs to enter the certificat
 
 ![02d-ssl](02d-ssl.png)
 
-
-
-Enabling this mode will result in OpenProject only responding to HTTPS requests, and upgrade any non-secured requests to HTTPS. It will also output HTTP Strict Transport Security (HSTS) headers to the client. 
+Enabling this mode will result in OpenProject only responding to HTTPS requests, and upgrade any non-secured requests to HTTPS. It will also output HTTP Strict Transport Security (HSTS) headers to the client.
 
 #### External SSL/TLS termination
 
-> **Note**: If you terminate SSL externally before the request hits the OpenProject server, you need to follow the following instructions to avoid errors in routing. If you want to use SSL on the server running OpenProject, skip this section.
+> [!NOTE]
+> If you terminate SSL externally before the request hits the OpenProject server, you need to follow the following instructions to avoid errors in routing. If you want to use SSL on the server running OpenProject, skip this section.
 
 If you have a separate server that is terminating SSL and only forwarding/proxying to the OpenProject server, you must select "No" in this dialog. However, there are some parameters you need to put into your outer configuration.
 
 - If you're proxying to the openproject server, you need to forward the HOST header to the internal server. This ensures that the host name of the outer request gets forwarded to the internal server. Otherwise you might see redirects in your browser to the internal host that OpenProject is running on.
-  - In Apache2, set the `ProxyPreserveHost On` directive 
+  - In Apache2, set the `ProxyPreserveHost On` directive
   - In NginX, use the following value: `proxy_set_header X-Forwarded-Host $host:$server_port;`
 - If you're terminating SSL on the outer server, you need to set the `X-Forwarded-Proto https` header to let OpenProject know that the request is HTTPS, even though its been terminated earlier in the request on the outer server.
   - In Apache2, use `RequestHeader set "X-Forwarded-Proto" https`
@@ -507,30 +448,31 @@ If you have a separate server that is terminating SSL and only forwarding/proxyi
 
 - Finally, to let OpenProject know that it should create links with 'https' when no request is available (for example, when sending emails), you need to set the following setting: `openproject config:set SERVER_PROTOCOL_FORCE_HTTPS="true"` followed by an `openproject configure`. This ensures that OpenProject responds correctly with secure cookies even though it was not configured for https in the server configuration.
 
-Here an example for external SSL/TLS terminaltion with apache (httpd):
+Here an example for external SSL/TLS termination with apache (httpd):
 
-> **Note:** There is [another example](../docker/#1-virtual-host-root) for external SSL/TLS termination for **docker-compose** installations
+> [!NOTE]
+> There is [another example](../docker/#1-virtual-host-root) for external SSL/TLS termination for **docker-compose** installations
 
-```bash
+```shell
 <VirtualHost *:443>
    ServerName openproject.example.com
-   
+
    # Logging
    LogLevel Warn
    ErrorLog /var/log/httpd/openproject.example.com-error.log
    CustomLog /var/log/httpd/openproject.example.com-access.log combined
-   
+
    # Reverse Proxy
    ProxyPreserveHost On
    ProxyRequests Off
    ProxyPass / http://[OPENPROJECT-HOST-IP]/
    ProxyPassReverse / http://[OPENPROJECT-HOST-IP]/
-   #ProxyPass / https://[OPENPROJECT-HOST-IP]/               # if openproject's internal apache2 server/ssl is YES 
+   #ProxyPass / https://[OPENPROJECT-HOST-IP]/               # if openproject's internal apache2 server/ssl is YES
    #ProxyPassReverse / https://[OPENPROJECT-HOST-IP]/        # if openproject's internal apache2 server/ssl is YES
-   
+
    # Request Header
    RequestHeader set "X-Forwarded-Proto" https
-   
+
    # SSL Certificate that was created by LetsEncrypt
    Include /etc/letsencrypt/options-ssl-apache.conf
    SSLEngine On
@@ -541,11 +483,10 @@ Here an example for external SSL/TLS terminaltion with apache (httpd):
 </VirtualHost>
 ```
 
-
-
 ### Skip Apache2 web server install (not recommended)
 
-> **Note:** Skipping step 3 Apache2 web server install will ask later in step 7 for information about the hostname and HTTPS 
+> [!NOTE]
+> Skipping step 3 Apache2 web server install will ask later in step 7 for information about the hostname and HTTPS
 
 The installer will not set up an external web server for accessing. You will need to either install and set up a web server such as Apache2 or Nginx to function as the web server forwarding to our internal server listening at `localhost:6000` by proxying.
 
@@ -557,9 +498,8 @@ When installing with an existing Apache2, you can take a look at the source of o
 
 [For a minimal nginx config, please see this gist](https://gist.github.com/seLain/375d16ccd4542e3727e97a7478187d3a) as as starting point.
 
-> **Please note:** If you reconfigure the OpenProject application and switch to `skip`, you might run into errors with the Apache configuration file, as that will not be automatically remove. Please double-check you removed references to the `openproject.conf` if you do reconfigure.
-
-
+> [!IMPORTANT]
+> If you reconfigure the OpenProject application and switch to `skip`, you might run into errors with the Apache configuration file, as that will not be automatically remove. Please double-check you removed references to the `openproject.conf` if you do reconfigure.
 
 ## Step 4: SVN/Git integration server
 
@@ -568,7 +508,6 @@ If you have selected to auto-install an Apache2 web server, you will be asked wh
 For more information, [see our help on repositories](../../../user-guide/repository/)
 
 ![03-repos](03-repos.png)
-
 
 ## Step 5: Administrator email
 
@@ -584,25 +523,33 @@ OpenProject heavily relies on caching, which is why the wizard suggests you to i
 
 ## Step 7: Host name and Protocol (if step 3 was skipped)
 
-> **Note:** This step is only shown if you decided to skip step 3, the Apache2 installation. OpenProject still needs to know what external host name you're running on, as well as if you're using HTTPS or not.
+> [!NOTE]
+> This step is only shown if you decided to skip step 3, the Apache2 installation. OpenProject still needs to know what external host name you're running on, as well as if you're using HTTPS or not.
 
 First, enter the fully qualified domain where your OpenProject installation will be reached at. This will be used to generate full links from OpenProject, such as in emails.
 
 ![Select the OpenProject host name](07a-hostname.png)
 
-
-
 Next, tell OpenProject whether you have SSL termination enabled somewhere in your stack. Please note that you need to set up protocol forwarding by the means mentioned in the [Skip Apache2 Installation](#skip-apache2-web-server-install-not-recommended) at step 3 above.
 
 ![HTTPS setting](07b-protocol.png)
 
+## Step 8: Default language
 
+> [!NOTE]
+> This step is only shown on the very first installation of OpenProject, as it affects only the initial seeding of the basic and demo data. Changing this value after installation will have no effect.
+
+OpenProject can be used with a wide variety of languages. The initial data of the instance (basic data such as status names, types, etc.) as well as data for demonstrational purposes will be created in the language you select in this screen. Move through the list using the arrow keys and select the default language.
+
+Also, this setting will control what is the default language for new users if their browser language is not available in the system.
+
+![Default language screen](08-default-language.png)
 
 ## Result
 
 With this last step confirmed, the OpenProject wizard will complete, and apply all the configuration options that you have just selected. This might take a few minutes depending on your machine and internet connection, as OpenProject might need to install additional packages (such as the web server, database) depending on your selections.
 
-In case this process crashes or exits with an obvious error, please keep the output and send your configuration from `/etc/openproject/installer.dat` (removing any passwords from it) to us at support@openproject.com , or [reach out to the community forums](https://community.openproject.com/projects/openproject/forums). 
+In case this process crashes or exits with an obvious error, please keep the output and send your configuration from `/etc/openproject/installer.dat` (removing any passwords from it) to us at [support@openproject.com](mailto:support@openproject.com), or [reach out to the community forums](https://community.openproject.org/projects/openproject/forums).
 
 When this process completes, it will have started the internal application and web servers, the background jobs to process work-intensive jobs, and set up the connection to the database.
 
@@ -615,11 +562,19 @@ You can then log in using the default user/password combination:
 
 You will be asked to change this password immediately after the first login.
 
-
-
 ## Post-installation configuration
 
 Here are some pointers to related documentation that you will need to get started:
 
 - [Set up outgoing email notifications (SMTP, sendmail)](../../configuration/outbound-emails/)
 - [Integrate an external authentication provider (LDAP/AD, SAML, OpenID)](../../../system-admin-guide/authentication/)
+
+## Installation on Windows via WSL
+
+OpenProject can be installed on Windows using the Windows Subsystem for Linux (WSL) with a supported Linux distribution such as Ubuntu 22.04. Please note:
+
+- You should install WSL 2 for best performance and compatibility.
+- Follow the standard installation instructions as you would on Ubuntu.
+- Some features, such as email notifications or service auto-start, may require additional setup or elevated privileges.
+
+For more details, see [Microsoft's guide to WSL](https://learn.microsoft.com/en-us/windows/wsl/).

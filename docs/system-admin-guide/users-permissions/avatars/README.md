@@ -1,17 +1,16 @@
 ---
 sidebar_navigation:
   title: Avatars
-  priority: 960
+  priority: 940
 description: Manage Avatars in OpenProject
 keywords: Avatars
 ---
 # OpenProject Avatars
 
-To select which type of Avatars can be used in your OpenProject, navigate to -> *Administration* -> *Users and permissions* -> *Avatars*.
+To select which type of Avatars can be used in your OpenProject, navigate to **Administration -> Users and permissions -> Avatars**.
 
-You can choose whether to allow user Gravatar or enable to upload custom avatars.
+You can choose whether to allow user gravatars or enable custom avatars upload.
 
 The Avatars can be configured via the [user profile](../users).
 
-![OpenProject avatars](image-20200211142213576.png)
-
+![OpenProject avatars](system-guide-avatar.png)

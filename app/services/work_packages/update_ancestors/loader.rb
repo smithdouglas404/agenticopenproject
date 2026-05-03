@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -25,34 +27,43 @@
 #  See COPYRIGHT and LICENSE files for more details.
 
 class WorkPackages::UpdateAncestors::Loader
+  DESCENDANT_ATTRIBUTES = {
+    id: "id",
+    parent_id: "parent_id",
+    estimated_hours: "estimated_hours",
+    remaining_hours: "remaining_hours",
+    done_ratio: "done_ratio",
+    derived_done_ratio: "derived_done_ratio",
+    status_excluded_from_totals: "statuses.excluded_from_totals",
+    schedule_manually: "schedule_manually",
+    ignore_non_working_days: "ignore_non_working_days"
+  }.freeze
+
+  WorkPackageLikeStruct = Data.define(*DESCENDANT_ATTRIBUTES.keys) do
+    def included_in_totals_calculation?
+      !status_excluded_from_totals
+    end
+  end
+
   def initialize(work_package, include_former_ancestors)
     self.work_package = work_package
     self.include_former_ancestors = include_former_ancestors
   end
 
   def select
-    ancestors.select do |ancestor|
-      yield ancestor, self
-    end
+    [work_package, *ancestors]
+      .reject(&:destroyed?)
+      .select do |work_package|
+        yield work_package, self
+      end
   end
 
   def descendants_of(queried_work_package)
     @descendants ||= Hash.new do |hash, wp|
-      hash[wp] = replaced_related_of(wp, :descendants)
+      hash[wp] = replaced_related_descendants(wp)
     end
 
     @descendants[queried_work_package]
-  end
-
-  def leaves_of(queried_work_package)
-    @leaves ||= Hash.new do |hash, wp|
-      hash[wp] = replaced_related_of(wp, :leaves) do |leaf|
-        # Mimic work package by implementing the closed? interface
-        leaf.send(:'closed?=', leaf.is_closed)
-      end
-    end
-
-    @leaves[queried_work_package]
   end
 
   def children_of(queried_work_package)
@@ -81,7 +92,7 @@ class WorkPackages::UpdateAncestors::Loader
                    end
   end
 
-  # Replace descendants/leaves by ancestors if they are the same.
+  # Replace descendants by ancestors if they are the same.
   # This can e.g. be the case in scenario of
   # grandparent
   #      |
@@ -93,31 +104,27 @@ class WorkPackages::UpdateAncestors::Loader
   # Then grandparent and parent are already in ancestors.
   # Parent might be modified during the UpdateAncestorsService run,
   # and the descendants of grandparent need to have the updated value.
-  def replaced_related_of(queried_work_package, relation_type)
-    related_of(queried_work_package, relation_type).map do |leaf|
+  def replaced_related_descendants(queried_work_package)
+    related_descendants(queried_work_package).map do |leaf|
       if work_package.id == leaf.id
         work_package
       elsif (ancestor = ancestors.detect { |a| a.id == leaf.id })
         ancestor
       else
-        yield leaf if block_given?
         leaf
       end
     end
   end
 
-  def related_of(queried_work_package, relation_type)
+  def related_descendants(queried_work_package)
     scope = queried_work_package
-              .send(relation_type)
+              .descendants
               .where.not(id: queried_work_package.id)
 
-    if send("#{relation_type}_joins")
-      scope = scope.joins(send("#{relation_type}_joins"))
-    end
-
     scope
-      .pluck(*send("selected_#{relation_type}_attributes"))
-      .map { |p| LoaderStruct.new(send("selected_#{relation_type}_attributes").zip(p).to_h) }
+      .left_joins(:status)
+      .pluck(*DESCENDANT_ATTRIBUTES.values)
+      .map { |p| WorkPackageLikeStruct.new(**DESCENDANT_ATTRIBUTES.keys.zip(p).to_h) }
   end
 
   # Returns the current ancestors sorted by distance (called generations in the table)
@@ -131,28 +138,10 @@ class WorkPackages::UpdateAncestors::Loader
   def former_ancestors
     @former_ancestors ||= if previous_parent_id && include_former_ancestors
                             parent = WorkPackage.find(previous_parent_id)
-
-                            [parent] + parent.ancestors
+                            parent.self_and_ancestors
                           else
                             []
                           end
-  end
-
-  def selected_descendants_attributes
-    # By having the id in here, we can avoid DISTINCT queries squashing duplicate values
-    %i(id estimated_hours parent_id schedule_manually ignore_non_working_days)
-  end
-
-  def descendants_joins
-    nil
-  end
-
-  def selected_leaves_attributes
-    %i(id done_ratio derived_estimated_hours estimated_hours is_closed)
-  end
-
-  def leaves_joins
-    :status
   end
 
   ##
@@ -161,7 +150,9 @@ class WorkPackages::UpdateAncestors::Loader
   # (when work_package was saved/destroyed)
   # Or the set parent before saving
   def previous_parent_id
-    if work_package.parent_id.nil? && work_package.parent_id_was
+    if work_package.parent_id && work_package.destroyed?
+      work_package.parent_id
+    elsif work_package.parent_id.nil? && work_package.parent_id_was
       work_package.parent_id_was
     else
       previous_change_parent_id
@@ -171,11 +162,8 @@ class WorkPackages::UpdateAncestors::Loader
   def previous_change_parent_id
     previous = work_package.previous_changes
 
-    previous_parent_changes = (previous[:parent_id] || previous[:parent])
+    previous_parent_changes = previous[:parent_id] || previous[:parent]
 
-    previous_parent_changes ? previous_parent_changes.first : nil
+    previous_parent_changes&.first
   end
-
-  class LoaderStruct < Hashie::Mash; end
-  LoaderStruct.disable_warnings
 end

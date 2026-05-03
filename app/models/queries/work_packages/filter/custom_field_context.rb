@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -52,8 +54,8 @@ module Queries::WorkPackages::Filter::CustomFieldContext
     end
 
     def where_subselect_joins(custom_field)
-      cf_types_db_table = 'custom_fields_types'
-      cf_projects_db_table = 'custom_fields_projects'
+      cf_types_db_table = "custom_fields_types"
+      cf_projects_db_table = "custom_fields_projects"
       cv_db_table = CustomValue.table_name
       work_package_db_table = WorkPackage.table_name
 
@@ -72,6 +74,10 @@ module Queries::WorkPackages::Filter::CustomFieldContext
       end
 
       joins
+    end
+
+    def where_subselect_conditions
+      nil
     end
   end
 end

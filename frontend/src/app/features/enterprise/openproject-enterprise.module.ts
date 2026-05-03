@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,36 +27,20 @@
 //++
 
 import { NgModule } from '@angular/core';
-import { OPSharedModule } from 'core-app/shared/shared.module';
+import { OpSharedModule } from 'core-app/shared/shared.module';
 import { OpenprojectModalModule } from 'core-app/shared/components/modal/modal.module';
-import { EnterpriseTrialService } from 'core-app/features/enterprise/enterprise-trial.service';
-import { EnterpriseBaseComponent } from 'core-app/features/enterprise/enterprise-base.component';
-import { EnterpriseTrialModalComponent } from 'core-app/features/enterprise/enterprise-modal/enterprise-trial.modal';
-import { EETrialFormComponent } from 'core-app/features/enterprise/enterprise-modal/enterprise-trial-form/ee-trial-form.component';
-import { EETrialWaitingComponent } from 'core-app/features/enterprise/enterprise-trial-waiting/ee-trial-waiting.component';
-import { EEActiveTrialComponent } from 'core-app/features/enterprise/enterprise-active-trial/ee-active-trial.component';
-import { EEActiveSavedTrialComponent } from 'core-app/features/enterprise/enterprise-active-trial/ee-active-saved-trial.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EnterpriseBannerFrameComponent } from 'core-app/features/enterprise/enterprise-banner-frame.component';
 
 @NgModule({
   imports: [
-    OPSharedModule,
+    OpSharedModule,
     OpenprojectModalModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  providers: [
-    EnterpriseTrialService,
   ],
   exports: [
+    EnterpriseBannerFrameComponent,
   ],
   declarations: [
-    EnterpriseBaseComponent,
-    EnterpriseTrialModalComponent,
-    EETrialFormComponent,
-    EETrialWaitingComponent,
-    EEActiveTrialComponent,
-    EEActiveSavedTrialComponent,
+    EnterpriseBannerFrameComponent,
   ],
 })
 export class OpenprojectEnterpriseModule {

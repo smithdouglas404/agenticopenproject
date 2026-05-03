@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,9 +33,19 @@ FactoryBot.define do
     sequence(:name) { |n| "status #{n}" }
     is_closed { false }
     is_readonly { false }
+    excluded_from_totals { false }
+
+    trait :excluded_from_totals do
+      excluded_from_totals { true }
+    end
 
     factory :closed_status do
       is_closed { true }
+    end
+
+    factory :rejected_status do
+      excluded_from_totals
+      name { "Rejected" }
     end
 
     factory :default_status do
@@ -42,6 +54,16 @@ FactoryBot.define do
 
     trait :readonly do
       is_readonly { true }
+    end
+
+    transient do
+      workflow_for_type { nil }
+    end
+
+    callback(:after_create) do |status, evaluator|
+      if evaluator.workflow_for_type
+        create(:workflow, type: evaluator.workflow_for_type, old_status: status)
+      end
     end
   end
 end

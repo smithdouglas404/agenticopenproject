@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,8 +31,10 @@
 module Projects::Copy
   class WorkPackagesDependentService < Dependency
     include AttachmentCopier
+    include ShareCopier
 
     attachment_dependent_service ::Projects::Copy::WorkPackageAttachmentsDependentService
+    share_dependent_service ::Projects::Copy::WorkPackageSharesDependentService
 
     def self.human_name
       I18n.t(:label_work_package_plural)
@@ -60,12 +64,12 @@ module Projects::Copy
       source
         .work_packages
         .includes(:custom_values, :version, :assigned_to, :responsible)
-        .order_by_ancestors('asc')
-        .order('id ASC')
+        .order_by_ancestors("asc")
+        .order("id ASC")
     end
 
     def copy_work_packages(to_copy)
-      user_cf_ids = WorkPackageCustomField.where(field_format: 'user').pluck(:id)
+      user_cf_ids = WorkPackageCustomField.where(field_format: "user").pluck(:id)
 
       to_copy.inject({}) do |work_packages_map, wp|
         parent_id = work_packages_map[wp.parent_id] || wp.parent_id
@@ -85,7 +89,12 @@ module Projects::Copy
         .new(user:,
              work_package: source_work_package,
              contract_class: WorkPackages::CopyProjectContract)
-        .call(copy_attachments: copy_attachments?, **overrides)
+        .with_state(bulk_duplicate_in_progress: true)
+        .call(
+          copy_attachments: copy_attachments?,
+          copy_share_members: copy_shares?,
+          **overrides
+        )
 
       if service_call.success?
         service_call.result
@@ -115,33 +124,21 @@ module Projects::Copy
 
         Relation.create(source_relation
                           .attributes
-                          .except('id', 'from_id', 'to_id')
+                          .except("id", "from_id", "to_id")
                           .merge(to_id:, from_id:))
       end
     end
 
     def copy_work_package_attribute_overrides(source_work_package, parent_id, user_cf_ids)
-      custom_value_attributes = source_work_package.custom_value_attributes.map do |id, value|
-        if user_cf_ids.include?(id) && !target.users.detect { |u| u.id.to_s == value }
-          [id, nil]
-        else
-          [id, value]
-        end
-      end.to_h
-
       {
         project: target,
         parent_id:,
         version_id: work_package_version_id(source_work_package),
         assigned_to_id: work_package_assigned_to_id(source_work_package),
         responsible_id: work_package_responsible_id(source_work_package),
-        custom_field_values: custom_value_attributes,
+        custom_field_values: custom_value_attributes(source_work_package, user_cf_ids),
         # We don't support copying budgets right now
-        budget_id: nil,
-
-        # We fetch the value from the global registry to persist it in the job which
-        # will trigger a delayed job for potentially sending the journal notifications.
-        send_notifications: ActionMailer::Base.perform_deliveries
+        budget_id: nil
       }
     end
 
@@ -152,19 +149,27 @@ module Projects::Copy
     end
 
     def work_package_assigned_to_id(source_work_package)
-      possible_principal_id(source_work_package.assigned_to_id,
-                            source_work_package.project)
+      possible_principal_id(source_work_package.assigned_to_id)
     end
 
     def work_package_responsible_id(source_work_package)
-      possible_principal_id(source_work_package.responsible_id,
-                            source_work_package.project)
+      possible_principal_id(source_work_package.responsible_id)
     end
 
-    def possible_principal_id(principal_id, project)
+    def custom_value_attributes(source_work_package, user_cf_ids)
+      source_work_package.custom_value_attributes.to_h do |id, value|
+        if user_cf_ids.include?(id) && !target.users.detect { |u| u.id.to_s == value }
+          [id, nil]
+        else
+          [id, value]
+        end
+      end
+    end
+
+    def possible_principal_id(principal_id)
       return unless principal_id
 
-      @principals ||= Principal.possible_assignee(project).pluck(:id).to_set
+      @principals ||= Principal.possible_assignee(target).pluck(:id).to_set
       principal_id if @principals.include?(principal_id)
     end
 

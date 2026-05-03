@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,8 +29,9 @@
 #++
 
 Rails.application.config.to_prepare do
-  if OpenProject::Configuration.disabled_modules.any?
-    to_disable = OpenProject::Configuration.disabled_modules
+  to_disable = OpenProject::Configuration.disabled_modules
+
+  if to_disable.any?
     OpenProject::Plugins::ModuleHandler.disable_modules!(to_disable)
   end
 end

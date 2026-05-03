@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +27,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative './base'
-require_relative './show'
+require_relative "base"
+require_relative "show"
 
 module Pages::Meetings
   class Edit < Base
     attr_accessor :meeting
 
     def initialize(meeting)
+      super(meeting.project)
       self.meeting = meeting
     end
 
@@ -56,13 +58,13 @@ module Pages::Meetings
     end
 
     def click_save
-      click_button('Save')
+      click_on("Save")
 
       Pages::Meetings::Show.new(meeting)
     end
 
     def path
-      edit_meeting_path(meeting)
+      edit_project_meeting_path(project, meeting)
     end
   end
 end

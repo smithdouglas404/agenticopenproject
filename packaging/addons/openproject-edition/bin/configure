@@ -33,6 +33,9 @@ supported_distribution() {
 				8*)
 					return 0
 					;;
+				9*)
+					return 0
+					;;
 			esac
 			;;
 	esac

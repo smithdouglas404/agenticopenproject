@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -23,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See docs/COPYRIGHT.rdoc for more details.
+# See COPYRIGHT and LICENSE files for more details.
 #++
 
 # load the module spec_helper.rb from calling spec if it exists
@@ -31,7 +33,7 @@ def require_module_spec_helper
   module_caller = caller.grep(Regexp.new("\\A#{Rails.root.join('modules')}")).first
   return unless module_caller
 
-  module_name = module_caller.scan(/modules\/\w+/).first
+  module_name = module_caller.scan(/modules\/[\w-]+/).first
   module_spec_helper = Rails.root.join("#{module_name}/spec/spec_helper.rb")
   require module_spec_helper if module_spec_helper.file?
 end

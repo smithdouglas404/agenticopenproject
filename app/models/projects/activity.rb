@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,17 +36,18 @@ module Projects::Activity
   module ActivityScopes
     def latest_project_activity
       @latest_project_activity ||=
-        OpenProject::ProjectActivity.registered.map do |params|
+        OpenProject::ProjectLatestActivity.registered.map do |params|
           build_latest_project_activity_for(on: params[:on].constantize,
                                             chain: Array(params[:chain]).map(&:constantize),
-                                            attribute: params[:attribute])
+                                            attribute: params[:attribute],
+                                            project_id_attribute: params[:project_id_attribute])
         end
     end
 
     def with_latest_activity
       Project
-        .select('projects.*')
-        .select('activity.latest_activity_at')
+        .select("projects.*")
+        .select("activity.latest_activity_at")
         .joins("LEFT JOIN (#{latest_activity_sql}) activity ON projects.id = activity.project_id")
     end
 
@@ -57,17 +60,17 @@ module Projects::Activity
     end
 
     def all_activity_provider_union_sql
-      latest_project_activity.join(' UNION ALL ')
+      latest_project_activity.join(" UNION ALL ")
     end
 
-    def build_latest_project_activity_for(on:, chain:, attribute:)
+    def build_latest_project_activity_for(on:, chain:, attribute:, project_id_attribute:)
       join_chain = Array(chain).dup.push(on)
       from = join_chain.first
 
       joins = build_joins_from_chain(join_chain)
 
       <<-SQL
-        SELECT project_id, MAX(#{on.table_name}.#{attribute}) updated_at
+        SELECT #{project_id_attribute} project_id, MAX(#{on.table_name}.#{attribute}) updated_at
         FROM #{from.table_name}
         #{joins.join(' ')}
         WHERE #{on.table_name}.#{attribute} IS NOT NULL

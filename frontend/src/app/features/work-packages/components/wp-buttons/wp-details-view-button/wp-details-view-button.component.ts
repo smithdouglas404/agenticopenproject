@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -36,11 +36,13 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { States } from 'core-app/core/states/states.service';
 import { KeepTabService } from '../../wp-single-view-tabs/keep-tab/keep-tab.service';
 import * as Mousetrap from 'mousetrap';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Component({
   templateUrl: '../wp-button.template.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wp-details-view-button',
+  standalone: false,
 })
 export class WorkPackageDetailsViewButtonComponent extends AbstractWorkPackageButtonComponent implements OnDestroy {
   public projectIdentifier:string;
@@ -117,8 +119,9 @@ export class WorkPackageDetailsViewButtonComponent extends AbstractWorkPackageBu
   }
 
   public openDetailsView():void {
+    const focused = this.wpTableFocus.focusedWorkPackage;
     const params = {
-      workPackageId: this.wpTableFocus.focusedWorkPackage,
+      workPackageId: focused ? resolveRoutingId(this.states, focused) : focused,
     };
 
     this.keepTab.goCurrentDetailsState(params);

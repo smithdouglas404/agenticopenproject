@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -33,11 +33,11 @@ import { WorkPackageRelationsService } from 'core-app/features/work-packages/com
 
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
-import { Directive } from '@angular/core';
+import { Directive, OnInit } from '@angular/core';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 
 @Directive()
-export class WorkPackageCopyController extends WorkPackageCreateComponent {
+export class WorkPackageCopyController extends WorkPackageCreateComponent implements OnInit {
   private __initialized_at:number;
 
   private copiedWorkPackageId:string;
@@ -63,6 +63,17 @@ export class WorkPackageCopyController extends WorkPackageCreateComponent {
       });
   }
 
+  public cancelAndBack() {
+    this.wpCreate.cancelCreation();
+
+    if (this.routedFromAngular) {
+      this.$state.go(this.cancelState, this.$state.params);
+    } else {
+      const link = this.pathHelper.genericWorkPackagePath(this.currentProjectService.id, this.copiedWorkPackageId);
+      Turbo.visit(link + window.location.search, { action: 'advance' });
+    }
+  }
+
   protected createdWorkPackage() {
     this.copiedWorkPackageId = this.stateParams.copiedFromWorkPackageId;
     return new Promise<WorkPackageChangeset>((resolve, reject) => {
@@ -81,7 +92,7 @@ export class WorkPackageCopyController extends WorkPackageCreateComponent {
   }
 
   protected setTitle() {
-    this.titleService.setFirstPart(this.I18n.t('js.work_packages.copy.title'));
+    this.titleService.setFirstPart(this.I18n.t('js.work_packages.duplicate.title'));
   }
 
   private createCopyFrom(wp:WorkPackageResource) {

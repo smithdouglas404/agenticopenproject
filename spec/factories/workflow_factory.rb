@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +32,7 @@ FactoryBot.define do
   factory :workflow do
     old_status factory: :status
     new_status factory: :status
-    role
+    role factory: :project_role
     type
 
     factory :workflow_with_default_status do

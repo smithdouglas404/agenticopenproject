@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,8 +32,8 @@ class Queries::WorkPackages::Filter::SubjectOrIdFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
   include Queries::WorkPackages::Filter::OrFilterForWpMixin
 
-  CONTAINS_OPERATOR = '~'.freeze
-  EQUALS_OPERATOR = '='.freeze
+  CONTAINS_OPERATOR = "~"
+  EQUALS_OPERATOR = "="
 
   FILTERS = [
     Queries::WorkPackages::Filter::FilterConfiguration.new(
@@ -58,8 +60,12 @@ class Queries::WorkPackages::Filter::SubjectOrIdFilter <
     :search
   end
 
+  def values=(values)
+    super(Array(values).map { it.to_s.strip })
+  end
+
   def human_name
-    I18n.t('label_subject_or_id')
+    I18n.t("label_subject_or_id")
   end
 
   def filter_configurations

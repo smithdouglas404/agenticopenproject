@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2022 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -19,14 +19,18 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 zh-TW:
   js:
+    text_are_you_sure: 是否確定？
+    myTimeTracking:
+      noSpecificTime: 無指定時間
     work_packages:
       property_groups:
-        costs: "Costs"
+        costs: 費用
       properties:
-        overallCosts: "Overall costs"
-        spentUnits: "Spent units"
-    button_log_costs: "Log unit costs"
-    label_hour: "小時"
-    label_hours: "小時"
+        overallCosts: 總費用
+        spentUnits: 支出單位
+    button_log_costs: 紀錄支出單位
+    label_hour: 小時
+    label_hours: 小時

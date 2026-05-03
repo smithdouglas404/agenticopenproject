@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,15 +27,10 @@
 //++
 
 import { debugLog } from 'core-app/shared/helpers/debug_output';
-import {
-  ErrorReporterBase,
-  ErrorTags,
-  MessageSeverity,
-} from 'core-app/core/errors/error-reporter-base';
-import type {
-  Appsignal,
-  Span,
-} from './appsignal-dependency';
+import { ErrorReporterBase, ErrorTags, MessageSeverity } from 'core-app/core/errors/error-reporter-base';
+import type { Appsignal } from './appsignal-dependency';
+import { Span } from '@appsignal/javascript';
+import { getMetaElement } from 'core-app/core/setup/globals/global-helpers';
 
 export class AppsignalReporter extends ErrorReporterBase {
   private client:Appsignal;
@@ -56,7 +51,7 @@ export class AppsignalReporter extends ErrorReporterBase {
 
   constructor() {
     super();
-    const element = document.querySelector('meta[name=openproject_appsignal]') as HTMLElement;
+    const element = getMetaElement('openproject_appsignal')!;
     this.loadAppsignal(element);
   }
 
@@ -69,6 +64,10 @@ export class AppsignalReporter extends ErrorReporterBase {
         namespace: 'frontend',
         key,
         revision,
+        ignoreErrors: [
+          /getComputedStyle/,
+          /Loading chunk/,
+        ],
       });
 
       this.client.use(imported.networkPlugin());

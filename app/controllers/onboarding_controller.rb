@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,6 +29,10 @@
 #++
 
 class OnboardingController < ApplicationController
+  include OpTurbo::ComponentStream
+
+  no_authorization_required! :user_settings, :onboarding_video_dialog
+
   def user_settings
     @user = User.current
 
@@ -44,5 +50,9 @@ class OnboardingController < ApplicationController
     uri = Addressable::URI.parse(request.referer.to_s)
     uri.query_values = {}
     redirect_to uri.to_s
+  end
+
+  def onboarding_video_dialog
+    respond_with_dialog Onboarding::VideoDialogComponent.new
   end
 end

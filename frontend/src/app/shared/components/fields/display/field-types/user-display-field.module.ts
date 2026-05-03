@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -29,13 +29,19 @@
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { PrincipalRendererService } from 'core-app/shared/components/principal/principal-renderer.service';
+import { PrincipalLike } from 'core-app/shared/components/principal/principal-types';
+
+interface Attribute {
+  url?:string;
+  name?:string;
+}
 
 export class UserDisplayField extends DisplayField {
   @InjectField() principalRenderer:PrincipalRendererService;
 
   public get value() {
     if (this.schema) {
-      return this.attribute && this.attribute.name;
+      return this.typeSafeAttribute()?.name || '';
     }
     return null;
   }
@@ -46,10 +52,15 @@ export class UserDisplayField extends DisplayField {
     } else {
       this.principalRenderer.render(
         element,
-        this.attribute,
+        this.typeSafeAttribute() as PrincipalLike,
         { hide: false, link: false },
         { hide: false, size: 'medium' },
+        { isActivated: true, url: this.typeSafeAttribute()?.url || '' },
       );
     }
+  }
+
+  private typeSafeAttribute():Attribute {
+    return this.attribute as Attribute;
   }
 }

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,31 +33,35 @@
 #
 
 class SystemUser < User
-  validate :validate_unique_system_user, on: :create
+  include Users::FunctionUser
 
-  # There should be only one SystemUser in the database
-  def validate_unique_system_user
-    errors.add :base, 'A SystemUser already exists.' if SystemUser.any?
-  end
-
-  # Overrides a few properties
-  def logged?; false end
-
-  def builtin?; true end
-
-  def name(*_args); 'System' end
-
-  def mail; nil end
-
-  def time_zone; nil end
-
-  def rss_key; nil end
-
-  def destroy; false end
+  def name(*_args); "System" end
 
   def run_given
     User.execute_as(self) do
       yield self
     end
+  end
+
+  def self.first
+    system_user = super
+
+    if system_user.nil?
+      system_user = new(
+        firstname: "",
+        lastname: "System",
+        login: "",
+        mail: "",
+        admin: true,
+        status: User.statuses[:active],
+        first_login: false
+      )
+
+      system_user.save
+
+      raise "Unable to create the system user." unless system_user.persisted?
+    end
+
+    system_user
   end
 end

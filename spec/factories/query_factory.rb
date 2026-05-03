@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +33,8 @@ FactoryBot.define do
     project
     user factory: :user
     include_subprojects { Setting.display_subprojects_work_packages? }
+    show_hierarchies { false }
+    display_sums { false }
     sequence(:name) { |n| "Query #{n}" }
 
     factory :public_query do
@@ -70,6 +74,22 @@ FactoryBot.define do
 
       callback(:after_create) do |query|
         create(:view_work_packages_calendar, query:)
+      end
+    end
+
+    factory :query_with_view_gantt do
+      sequence(:name) { |n| "Gantt query #{n}" }
+
+      callback(:after_create) do |query|
+        create(:view_gantt, query:)
+      end
+    end
+
+    factory :query_with_view_bim do
+      sequence(:name) { |n| "Bim query #{n}" }
+
+      callback(:after_create) do |query|
+        create(:view_bim, query:)
       end
     end
 

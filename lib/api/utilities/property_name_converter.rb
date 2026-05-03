@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,6 +45,17 @@ module API
     # sense in different contexts.
     class PropertyNameConverter
       class << self
+        def from_ar_name_with_aliases(attribute, ar_name_aliases = {})
+          normalized_attribute = attribute.to_s
+          normalized_aliases = ar_name_aliases.transform_keys(&:to_s)
+
+          if normalized_aliases.key?(normalized_attribute)
+            normalized_attribute = normalized_aliases[normalized_attribute]
+          end
+
+          from_ar_name(normalized_attribute)
+        end
+
         # Converts the attribute name as referred to by ActiveRecord to a corresponding API-conform
         # attribute name:
         #  * camelCasing the attribute name

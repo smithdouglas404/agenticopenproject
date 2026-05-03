@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,16 +36,16 @@ class WorkPackages::ReportsController < ApplicationController
     reports_service = Reports::ReportsService.new(@project)
 
     @reports = [
-      reports_service.report_for('type'),
-      reports_service.report_for('priority'),
-      reports_service.report_for('assigned_to'),
-      reports_service.report_for('responsible'),
-      reports_service.report_for('author'),
-      reports_service.report_for('version'),
-      reports_service.report_for('category')
+      reports_service.report_for("type"),
+      reports_service.report_for("priority"),
+      reports_service.report_for("assigned_to"),
+      reports_service.report_for("responsible"),
+      reports_service.report_for("author"),
+      reports_service.report_for("version"),
+      reports_service.report_for("category")
     ]
 
-    @reports << reports_service.report_for('subproject') if @project.children.any?
+    @reports << reports_service.report_for("subproject") if @project.children.any?
   end
 
   def report_details
@@ -58,11 +60,5 @@ class WorkPackages::ReportsController < ApplicationController
         format.html { redirect_to report_project_work_packages_path(@project) }
       end
     end
-  end
-
-  private
-
-  def default_breadcrumb
-    I18n.t(:label_summary)
   end
 end

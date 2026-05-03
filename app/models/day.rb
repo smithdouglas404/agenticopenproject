@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,48 +33,76 @@ class Day < ApplicationRecord
 
   has_many :non_working_days,
            inverse_of: false,
-           class_name: 'NonWorkingDay',
+           class_name: "NonWorkingDay",
            foreign_key: :date,
            primary_key: :date,
            dependent: nil
 
   attribute :date, :date, default: nil
   attribute :day_of_week, :integer, default: nil
-  attribute :working, :boolean, default: 't'
+  attribute :working, :boolean, default: "t"
 
   delegate :name, to: :week_day, allow_nil: true
 
-  def self.default_scope
-    today = Time.zone.today
-    from = today.at_beginning_of_month
-    to = today.next_month.at_end_of_month
-    from_range(from:, to:)
-    .includes(:non_working_days)
-    .order("days.id")
-  end
+  scope :working, -> { where(working: true) }
 
-  def self.from_range(from:, to:)
-    from(Arel.sql(from_sql(from:, to:)))
-  end
+  class << self
+    def default_scope
+      today = Time.zone.today
+      from = today.at_beginning_of_month
+      to = today.next_month.at_end_of_month
+      from_range(from:, to:)
+        .includes(:non_working_days)
+        .order("days.id")
+    end
 
-  def self.from_sql(from:, to:)
-    <<~SQL.squish
-      (SELECT
-        to_char(dd, 'YYYYMMDD')::integer id,
-        date_trunc('day', dd)::date date,
-        extract(isodow from dd) day_of_week,
-        (COALESCE(POSITION(extract(isodow from dd)::text IN settings.value) > 0, TRUE)
-          AND non_working_days.id IS NULL)::bool working
-      FROM
-      generate_series( '#{from}'::timestamp,
-            '#{to}'::timestamp,
-            '1 day'::interval) dd
-      LEFT JOIN settings
-           ON settings.name = 'working_days'
-      LEFT JOIN non_working_days
-           ON dd = non_working_days.date
-      ) days
-    SQL
+    def from_range(from:, to:)
+      from(Arel.sql(from_sql(from:, to:)))
+    end
+
+    def from_sql(from:, to:)
+      from = from.to_date
+      to = to.to_date
+      <<~SQL.squish
+        (
+          SELECT
+            to_char(dd, 'YYYYMMDD')::integer id,
+            date_trunc('day', dd)::date date,
+            extract(isodow from dd) day_of_week,
+            (
+              COALESCE(
+                POSITION(
+                  extract(isodow from dd)::text IN settings.value
+                ) > 0,
+                TRUE
+              )
+              AND
+              non_working_days.id IS NULL
+            )::bool working
+          FROM
+            generate_series(
+              '#{from}'::timestamp,
+              '#{to}'::timestamp,
+              '1 day'::interval
+            ) dd
+          LEFT JOIN settings
+            ON settings.name = 'working_days'
+          LEFT JOIN non_working_days
+            ON dd = non_working_days.date
+        ) days
+      SQL
+    end
+
+    def last_working
+      # Look up only from 8 days ago, because the Setting.working_days must have at least 1 working weekday.
+      from_range(from: 8.days.ago, to: Time.zone.yesterday).where(working: true).last
+    end
+
+    def next_working(from: Time.zone.today)
+      # Look up only the next 8 days, because the Setting.working_days must have at least 1 working weekday.
+      # Exclude the current day
+      from_range(from: from + 1.day, to: from + 9.days).where(working: true).first
+    end
   end
 
   def week_day

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +35,7 @@ class CostQuery < ApplicationRecord
   belongs_to :project
 
   before_save :serialize
-  serialize :serialized, Hash
+  serialize :serialized, type: Hash
 
   def_delegators :result, :real_costs
 
@@ -60,24 +60,24 @@ class CostQuery < ApplicationRecord
 
   def self.public(project)
     if project
-      CostQuery.where(['is_public = ? AND (project_id IS NULL OR project_id = ?)', true, project])
-        .order(Arel.sql('name ASC'))
+      CostQuery.where(["is_public = ? AND (project_id IS NULL OR project_id = ?)", true, project])
+        .order(Arel.sql("name ASC"))
     else
-      CostQuery.where(['is_public = ? AND project_id IS NULL', true])
-        .order(Arel.sql('name ASC'))
+      CostQuery.where(["is_public = ? AND project_id IS NULL", true])
+        .order(Arel.sql("name ASC"))
     end
   end
 
   def self.private(project, user)
     if project
-      CostQuery.where(['user_id = ? AND is_public = ? AND (project_id IS NULL OR project_id = ?)',
+      CostQuery.where(["user_id = ? AND is_public = ? AND (project_id IS NULL OR project_id = ?)",
                        user,
                        false,
                        project])
-        .order(Arel.sql('name ASC'))
+        .order(Arel.sql("name ASC"))
     else
-      CostQuery.where(['user_id = ? AND is_public = ? AND project_id IS NULL', user, false])
-        .order(Arel.sql('name ASC'))
+      CostQuery.where(["user_id = ? AND is_public = ? AND project_id IS NULL", user, false])
+        .order(Arel.sql("name ASC"))
     end
   end
 
@@ -85,15 +85,34 @@ class CostQuery < ApplicationRecord
     public(project).or(private(project, user)).exists?
   end
 
+  # rubocop:disable Metrics/AbcSize
+  def self.build_query(project, filters, groups = {})
+    query = CostQuery.new(project:)
+    query.tap do |q|
+      filters[:operators].each do |filter, operator|
+        unless filters[:values][filter] == ["<<inactive>>"]
+          values = Array(filters[:values][filter]).map { |v| v == "<<null>>" ? nil : v }
+          q.filter(filter.to_sym,
+                   operator:,
+                   values:)
+        end
+      end
+    end
+    groups[:columns].try(:reverse_each) { |c| query.column(c) }
+    groups[:rows].try(:reverse_each) { |r| query.row(r) }
+    query
+  end
+  # rubocop:enable Metrics/AbcSize
+
   def serialize
     # have to take the reverse group_bys to retain the original order when deserializing
-    self.serialized = { filters: (filters.map(&:serialize).reject(&:nil?).sort { |a, b| a.first <=> b.first }),
+    self.serialized = { filters: filters.map(&:serialize).reject(&:nil?).sort_by(&:first),
                         group_bys: group_bys.map(&:serialize).reject(&:nil?).reverse }
   end
 
   def deserialize
     if @chain
-      raise ArgumentError, 'Cannot deserialize a report which already has a chain'
+      raise ArgumentError, "Cannot deserialize a report which already has a chain"
     else
       hash = serialized || serialize
       self.class.deserialize(hash, self)
@@ -139,7 +158,12 @@ class CostQuery < ApplicationRecord
   end
 
   def add_chain(type, name, options)
-    chain type.const_get(name.to_s.camelcase), options
+    begin
+      chain type.const_get(name.to_s.camelcase), options
+    rescue NameError
+      # if something ends up in the column chain that does not exist, ignore it
+    end
+
     @transformer = nil
     @table = nil
     @depths = nil
@@ -214,9 +238,9 @@ class CostQuery < ApplicationRecord
 
   def cache_key
     deserialize unless @chain
-    parts = [self.class.table_name.sub('_reports', '')]
-    parts.concat [filters.sort, group_bys].map { |l| l.map(&:cache_key).join(' ') }
-    parts.join '/'
+    parts = [self.class.table_name.sub("_reports", "")]
+    parts.concat([filters.sort, group_bys].map { |l| l.map(&:cache_key).join(" ") })
+    parts.join "/"
   end
 
   def self.engine

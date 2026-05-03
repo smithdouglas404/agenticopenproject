@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,18 +36,19 @@ module Type::AttributeGroups
     after_save :unset_attribute_groups_objects
     after_destroy :remove_attribute_groups_queries
 
-    serialize :attribute_groups, Array
+    serialize :attribute_groups, type: Array
     attr_accessor :attribute_groups_objects
 
     # Mapping from AR attribute name to a default group
     # May be extended by plugins
     mattr_accessor :default_group_map do
       {
-        author: :people,
         assignee: :people,
         responsible: :people,
-        estimated_time: :estimates_and_time,
-        spent_time: :estimates_and_time,
+        estimated_time: :estimates_and_progress,
+        remaining_time: :estimates_and_progress,
+        percentage_done: :estimates_and_progress,
+        spent_time: :estimates_and_progress,
         priority: :details
       }
     end
@@ -54,10 +57,10 @@ module Type::AttributeGroups
     mattr_accessor :default_groups do
       {
         people: :label_people,
-        estimates_and_time: :label_estimates_and_time,
+        estimates_and_progress: :label_estimates_and_progress,
         details: :label_details,
         other: :label_other,
-        children: :'activerecord.attributes.work_package.children'
+        children: :"activerecord.attributes.work_package.children"
       }
     end
   end
@@ -116,6 +119,7 @@ module Type::AttributeGroups
   # the default group map.
   def default_attribute_groups
     values = work_package_attributes_by_default_group_key
+    values.reject! { |k, _| k == :estimates_and_progress } if is_milestone?
 
     default_groups.keys.each_with_object([]) do |groupkey, array|
       members = values[groupkey]
@@ -166,9 +170,11 @@ module Type::AttributeGroups
   # it will put them into the other group.
   def work_package_attributes_by_default_group_key
     active_cfs = active_custom_field_attributes
+
     work_package_attributes
       .keys
       .select { |key| default_attribute?(active_cfs, key) }
+      .sort_by { |key| default_group_map.keys.index(key.to_sym) || default_group_map.keys.size }
       .group_by { |key| default_group_key(key.to_sym) }
   end
 
@@ -226,8 +232,7 @@ module Type::AttributeGroups
     old_groups = attribute_groups_was
 
     ids = (old_groups.map(&:last).flatten - new_groups.map(&:last).flatten)
-          .map { |k| ::Type::QueryGroup.query_attribute_id(k) }
-          .compact
+          .filter_map { |k| ::Type::QueryGroup.query_attribute_id(k) }
 
     Query.where(id: ids).destroy_all
   end

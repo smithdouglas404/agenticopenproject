@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,19 +29,19 @@
 #++
 
 FactoryBot.define do
-  factory :oauth_access_token, class: '::Doorkeeper::AccessToken' do
+  factory :oauth_access_token, class: "::Doorkeeper::AccessToken" do
     transient do
-      resource_owner { create :user }
+      resource_owner { create(:user) }
     end
 
     after(:build) do |token, evaluator|
-      token.resource_owner_id = evaluator.resource_owner.id
+      token.resource_owner_id = evaluator.resource_owner.id if evaluator.resource_owner
     end
 
     application factory: :oauth_application
 
     expires_in { 2.hours }
-    scopes { 'api_v3' }
+    scopes { "api_v3" }
 
     factory :clientless_access_token do
       application { nil }

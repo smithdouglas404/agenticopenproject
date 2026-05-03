@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,6 +35,7 @@ class Report::Result
     alias values value
     include Enumerable
     include Report::QueryUtils
+    include ActionView::Helpers::OutputSafetyHelper
 
     def initialize(value)
       @important_fields ||= []
@@ -42,8 +43,8 @@ class Report::Result
       @value = value
     end
 
-    def recursive_each_with_level(level = 0, _depth_first = true, &block)
-      block.call(level, self)
+    def recursive_each_with_level(level = 0, _depth_first = true)
+      yield(level, self)
     end
 
     def recursive_each
@@ -146,7 +147,8 @@ class Report::Result
     end
 
     def render(keys = important_fields)
-      fields.map { |k, v| yield(k, v) if keys.include? k }.join
+      rendered = fields.map { |k, v| yield(k, v) if keys.include? k }
+      safe_join(rendered)
     end
 
     def set_key(index = [])
@@ -162,11 +164,11 @@ class Report::Result
     end
 
     def count
-      self['count'].to_i
+      self["count"].to_i
     end
 
     def units
-      self['units'].to_d
+      self["units"].to_d
     end
 
     ##
@@ -229,10 +231,10 @@ class Report::Result
       @sum_for[field] ||= sum { |v| v.send(field) || 0 }
     end
 
-    def recursive_each_with_level(level = 0, depth_first = true, &block)
+    def recursive_each_with_level(level = 0, depth_first = true, &)
       if depth_first
         super
-        each { |c| c.recursive_each_with_level(level + 1, depth_first, &block) }
+        each { |c| c.recursive_each_with_level(level + 1, depth_first, &) }
       else # width-first
         to_evaluate = [self]
         lvl = level
@@ -240,7 +242,7 @@ class Report::Result
           # evaluate all stored results and find the results we need to evaluate soon
           to_evaluate_soon = []
           to_evaluate.each do |r|
-            block.call(lvl, r)
+            yield(lvl, r)
             to_evaluate_soon.concat r.values if r.size > 0
           end
           # take new results to evaluate
@@ -292,9 +294,9 @@ class Report::Result
 
   def self.new(value, fields = {}, type = nil, important_fields = [])
     result = case value
-             when ActiveRecord::Result, Array then engine::Result::WrappedResult.new value.map { |e|
+             when ActiveRecord::Result, Array then engine::Result::WrappedResult.new(value.map do |e|
                                                                                        new e, {}, nil, important_fields
-                                                                                     }
+                                                                                     end)
              when Hash  then engine::Result::DirectResult.new value.with_indifferent_access
              when Base  then value
              else raise ArgumentError, "Cannot create Result from #{value.inspect}"

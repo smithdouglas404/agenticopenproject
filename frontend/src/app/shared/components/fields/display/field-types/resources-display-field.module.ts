@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +33,7 @@ export class ResourcesDisplayField extends DisplayField {
     return _.isEmpty(this.value);
   }
 
-  public get value() {
+  public get stringValue():string[] {
     const cf = this.resource[this.name];
     if (this.schema && cf) {
       if (cf.elements) {
@@ -50,7 +50,7 @@ export class ResourcesDisplayField extends DisplayField {
   }
 
   public render(element:HTMLElement, displayText:string):void {
-    const values = this.value;
+    const values = this.stringValue;
     element.innerHTML = '';
     element.setAttribute('title', values.join(', '));
 
@@ -72,7 +72,7 @@ export class ResourcesDisplayField extends DisplayField {
     content.appendChild(abridged);
 
     if (values.length > 2) {
-      const badge = this.optionDiv(values.length.toString(), 'badge', '-secondary');
+      const badge = this.optionDiv(values.length.toString(), 'badge');
       content.appendChild(badge);
     }
 

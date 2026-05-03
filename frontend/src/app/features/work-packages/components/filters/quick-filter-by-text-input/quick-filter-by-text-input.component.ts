@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { Subject } from 'rxjs';
@@ -34,15 +34,19 @@ import {
   debounceTime, distinctUntilChanged, map, tap,
 } from 'rxjs/operators';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
-import { input } from 'reactivestates';
+import { input } from '@openproject/reactivestates';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { QueryFilterResource } from 'core-app/features/hal/resources/query-filter-resource';
 
 @Component({
   selector: 'wp-filter-by-text-input',
   templateUrl: './quick-filter-by-text-input.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-
 export class WorkPackageFilterByTextInputComponent extends UntilDestroyedMixin {
   @Output() public deactivateFilter = new EventEmitter<QueryFilterResource>();
 
@@ -74,9 +78,7 @@ export class WorkPackageFilterByTextInputComponent extends UntilDestroyedMixin {
         }),
       )
       .subscribe((upstreamTerm:string) => {
-        console.log(`upstream ${upstreamTerm} ${(this.searchTerm as any).timestampOfLastValue}`);
         if (!this.searchTerm.value || this.searchTerm.isValueOlderThan(500)) {
-          console.log(`Upstream value setting to ${upstreamTerm}`);
           this.searchTerm.putValue(upstreamTerm);
         }
       });

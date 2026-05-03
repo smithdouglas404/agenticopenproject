@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,22 +26,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './shared_contract_examples'
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-describe TimeEntries::CreateContract do
-  it_behaves_like 'time entry contract' do
+RSpec.describe TimeEntries::CreateContract do
+  it_behaves_like "time entry contract" do
     subject(:contract) do
       described_class.new(time_entry, current_user)
     end
 
     let(:time_entry) do
       TimeEntry.new(project: time_entry_project,
-                    work_package: time_entry_work_package,
+                    entity: time_entry_entity,
                     user: time_entry_user,
                     activity: time_entry_activity,
                     spent_on: time_entry_spent_on,
                     hours: time_entry_hours,
+                    ongoing: time_entry_ongoing,
                     comments: time_entry_comments).tap do |t|
         t.extend(OpenProject::ChangedBySystem)
         t.changed_by_system(changed_by_system) if changed_by_system
@@ -57,71 +58,106 @@ describe TimeEntries::CreateContract do
       end
     end
 
-    context 'if user is not allowed to log time' do
+    context "if user is not allowed to log time" do
       let(:permissions) { [] }
 
-      it 'is invalid' do
-        expect_valid(false, base: %i(error_unauthorized))
+      it "is invalid" do
+        expect_valid(false,
+                     entity: %i(cannot_log_for_this_work_package),
+                     base: %i(error_unauthorized))
       end
     end
 
-    context 'if user has only permission to log own time' do
+    context "when ongoing and different user" do
+      let(:time_entry_user) { other_user }
+      let(:time_entry_ongoing) { true }
+
+      it "is invalid" do
+        expect_valid(false, ongoing: %i(not_current_user))
+      end
+    end
+
+    context "if user has only permission to log own time" do
       let(:permissions) { %i[log_own_time] }
 
-      it 'is valid' do
+      it "is valid" do
         expect_valid(true)
       end
 
-      context 'when trying to log for other user' do
+      context "when trying to log for other user" do
         let(:time_entry_user) { build_stubbed(:user) }
         let(:changed_by_system) { {} }
 
-        it 'is invalid' do
-          expect_valid(false, base: %i(error_unauthorized))
+        it "is invalid" do
+          expect_valid(false,
+                       entity: %i(cannot_log_for_this_work_package),
+                       base: %i(error_unauthorized))
         end
       end
     end
 
-    context 'if time_entry user is not contract user' do
-      let(:other_user) do
-        build_stubbed(:user) do |user|
-          allow(user)
-            .to receive(:allowed_to?) do |permission, permission_project|
-            permissions.include?(permission) && time_entry_project == permission_project
-          end
-        end
-      end
+    context "if time_entry user is not contract user" do
+      let(:other_user) { build_stubbed(:user) }
       let(:permissions) { [] }
       let(:time_entry_user) { other_user }
 
-      it 'is invalid' do
-        expect_valid(false, base: %i(error_unauthorized))
+      before do
+        mock_permissions_for(other_user) do |mock|
+          mock.allow_in_project *permissions, project: time_entry_project
+        end
+      end
+
+      it "is invalid" do
+        expect_valid(false,
+                     entity: %i(cannot_log_for_this_work_package),
+                     base: %i(error_unauthorized))
       end
     end
 
-    context 'if time_entry user was not set by system' do
-      let(:other_user) do
-        build_stubbed(:user) do |user|
-          allow(user)
-            .to receive(:allowed_to?) do |permission, permission_project|
-            permissions.include?(permission) && time_entry_project == permission_project
-          end
-        end
+    context "if the user is set to a user that the user has no access to" do
+      let(:user_visible) { false }
+
+      it "is invalid" do
+        expect_valid(false, user_id: %i(invalid))
       end
+    end
+
+    context "if time_entry user was not set by system" do
+      let(:other_user) { build_stubbed(:user) }
       let(:time_entry_user) { other_user }
       let(:permissions) { [] }
       let(:changed_by_system) { {} }
 
-      it 'is invalid' do
-        expect_valid(false, base: %i(error_unauthorized))
+      before do
+        mock_permissions_for(other_user) do |mock|
+          mock.allow_in_project *permissions, project: time_entry_project
+        end
+      end
+
+      it "is invalid" do
+        expect_valid(false,
+                     entity: %i(cannot_log_for_this_work_package),
+                     base: %i(error_unauthorized))
       end
     end
 
-    context 'if the user is nil' do
+    context "if the user is nil" do
       let(:time_entry_user) { nil }
 
-      it 'is invalid' do
+      it "is invalid" do
         expect_valid(false, user_id: %i(blank))
+      end
+    end
+
+    context "if logging for another user who is not a project member" do
+      let(:time_entry_user) { other_user }
+
+      before do
+        allow(other_user).to receive(:member_of?).with(time_entry_project).and_return(false)
+      end
+
+      it "is invalid" do
+        expect_valid(false, base: %i(error_unauthorized))
       end
     end
   end

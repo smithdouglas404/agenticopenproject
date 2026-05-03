@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -40,12 +40,11 @@ import { WorkPackagesActivityService } from 'core-app/features/work-packages/com
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
 import { WorkPackageCache } from 'core-app/core/apiv3/endpoints/work_packages/work-package.cache';
-import { OpenProjectFileUploadService } from 'core-app/core/file-upload/op-file-upload.service';
-import { OpenProjectDirectFileUploadService } from 'core-app/core/file-upload/op-direct-file-upload.service';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { OpenprojectHalModule } from 'core-app/features/hal/openproject-hal.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('WorkPackageCache', () => {
   let injector:Injector;
@@ -56,11 +55,8 @@ describe('WorkPackageCache', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OpenprojectHalModule,
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [OpenprojectHalModule],
+    providers: [
         States,
         HalResourceService,
         TimezoneService,
@@ -73,10 +69,10 @@ describe('WorkPackageCache', () => {
         { provide: ToastService, useValue: {} },
         { provide: HalResourceNotificationService, useValue: { handleRawError: () => false } },
         { provide: WorkPackageNotificationService, useValue: {} },
-        { provide: OpenProjectFileUploadService, useValue: {} },
-        { provide: OpenProjectDirectFileUploadService, useValue: {} },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
     injector = TestBed.inject(Injector);
     states = TestBed.inject(States);
@@ -84,7 +80,7 @@ describe('WorkPackageCache', () => {
     workPackageCache = new WorkPackageCache(injector, states.workPackages);
 
     // sinon.stub(schemaCacheService, 'ensureLoaded').returns(Promise.resolve(true));
-    spyOn(schemaCacheService, 'ensureLoaded').and.returnValue(Promise.resolve(true as any));
+    spyOn(schemaCacheService, 'ensureLoaded').and.resolveTo(true as any);
 
     const workPackage1 = new WorkPackageResource(
       injector,

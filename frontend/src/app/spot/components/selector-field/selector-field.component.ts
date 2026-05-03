@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   HostBinding,
@@ -14,6 +15,11 @@ import {
 @Component({
   selector: 'spot-selector-field',
   templateUrl: './selector-field.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SpotSelectorFieldComponent {
   @HostBinding('class.spot-form-field') className = true;
@@ -37,7 +43,7 @@ export class SpotSelectorFieldComponent {
   /**
    * Whether the label should be in bold or regular font weight
    */
-  @Input() labelWeight:'bold'|'regular' = 'regular';
+  @Input() labelWeight:'bold'|'regular' = 'bold';
 
   /**
    * Whether this input is required
@@ -60,7 +66,7 @@ export class SpotSelectorFieldComponent {
 
   /**
    * Hides the input. This is a utility input for usage of `spot-form-field` in dynamic forms.
-   * Outside of dynamic forms, you should be hiding inputs via `*ngIf` or other methods.
+   * Outside of dynamic forms, you should be hiding inputs via `@if` or other methods.
    */
   @Input() hidden = false;
 

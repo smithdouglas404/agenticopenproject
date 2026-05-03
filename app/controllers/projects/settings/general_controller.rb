@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,5 +29,39 @@
 #++
 
 class Projects::Settings::GeneralController < Projects::SettingsController
+  include OpTurbo::ComponentStream
+
   menu_item :settings_general
+
+  def toggle_public_dialog
+    respond_with_dialog Projects::Settings::TogglePublicDialogComponent.new(@project)
+  end
+
+  def toggle_public
+    call = Projects::UpdateService
+      .new(model: @project, user: current_user)
+      .call(public: !@project.public?)
+
+    call.on_failure do
+      flash[:error] = call.message
+    end
+
+    redirect_to action: :show, status: :see_other
+  end
+
+  def update # rubocop:disable Metrics/AbcSize
+    call = Projects::UpdateService
+      .new(model: @project, user: current_user)
+      .call(permitted_params.project)
+
+    @project = call.result
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_update)
+      redirect_to project_settings_general_path(@project)
+    else
+      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+      render action: :show, status: :unprocessable_entity
+    end
+  end
 end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -39,34 +39,103 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.model';
 import { OpModalLocalsMap } from 'core-app/shared/components/modal/modal.types';
 import { OpModalLocalsToken } from 'core-app/shared/components/modal/modal.service';
-import { StorageFilesResourceService } from 'core-app/core/state/storage-files/storage-files.service';
 import { SortFilesPipe } from 'core-app/shared/components/storages/pipes/sort-files.pipe';
-import { isDirectory } from 'core-app/shared/components/storages/functions/storages.functions';
+import {
+  isDirectory,
+  makeFilesCollectionLink,
+  storageLocaleString,
+} from 'core-app/shared/components/storages/functions/storages.functions';
+import { StorageFilesResourceService } from 'core-app/core/state/storage-files/storage-files.service';
 import {
   StorageFileListItem,
 } from 'core-app/shared/components/storages/storage-file-list-item/storage-file-list-item';
 import {
   FilePickerBaseModalComponent,
-} from 'core-app/shared/components/storages/file-picker-base-modal.component.ts/file-picker-base-modal.component';
+} from 'core-app/shared/components/storages/file-picker-base-modal/file-picker-base-modal.component';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'location-picker-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class LocationPickerModalComponent extends FilePickerBaseModalComponent {
+  public submitted = false;
+
   public readonly text = {
     header: this.i18n.t('js.storages.select_location'),
+    alertNoAccess: this.i18n.t('js.storages.files.project_folder_no_access'),
+    alertNoManagedProjectFolder: this.i18n.t('js.storages.files.managed_project_folder_not_available'),
+    alertNoAccessToManagedProjectFolder: this.i18n.t('js.storages.files.managed_project_folder_no_access'),
+    alertCannotCreateFolder: this.i18n.t('js.storages.files.cannot_create_folder'),
+    content: {
+      empty: this.i18n.t('js.storages.files.empty_folder'),
+      emptyHint: this.i18n.t('js.storages.files.empty_folder_location_hint'),
+      noConnection: (storageType:string) => this.i18n.t('js.storages.no_connection', { storageType }),
+      noConnectionHint: (storageType:string) => this.i18n.t('js.storages.information.connection_error', { storageType }),
+    },
     buttons: {
-      openStorage: ():string => this.i18n.t('js.storages.open_storage', { storageType: this.locals.storageTypeName as string }),
       submit: this.i18n.t('js.storages.choose_location'),
       submitEmptySelection: this.i18n.t('js.storages.file_links.selection_none'),
       cancel: this.i18n.t('js.button_cancel'),
       selectAll: this.i18n.t('js.storages.file_links.select_all'),
+      newFolder: this.i18n.t('js.storages.new_folder'),
+    },
+    tooltip: {
+      directory_not_writeable: this.i18n.t('js.storages.files.directory_not_writeable'),
+      file_not_selectable: this.i18n.t('js.storages.files.file_not_selectable_location'),
     },
   };
 
+  public get location():IStorageFile {
+    return this.currentDirectory;
+  }
+
+  public get storageType():string {
+    return this.i18n.t(storageLocaleString(this.storage._links.type.href));
+  }
+
+  public get filesAtLocation():IStorageFile[] {
+    return this.storageFiles$.getValue();
+  }
+
   public get canChooseLocation():boolean {
-    return this.breadcrumbs.crumbs.length > 1;
+    if (!this.currentDirectory) {
+      return false;
+    }
+
+    return this.currentDirectory.permissions.some((value) => value === 'writeable');
+  }
+
+  public get canCreateFolder():boolean {
+    if (!this.currentDirectory) {
+      return false;
+    }
+
+    return this.currentDirectory.permissions.some((value) => value === 'writeable');
+  }
+
+  public get alertText():Observable<string> {
+    return this.showAlert
+      .pipe(
+        map((alert) => {
+          switch (alert) {
+            case 'noAccess':
+              return this.text.alertNoAccess;
+            case 'managedFolderNoAccess':
+              return this.text.alertNoAccessToManagedProjectFolder;
+            case 'managedFolderNotFound':
+              return this.text.alertNoManagedProjectFolder;
+            case 'cannotCreateFolder':
+              return this.text.alertCannotCreateFolder;
+            case 'none':
+              return '';
+            default:
+              throw new Error('unknown alert type');
+          }
+        }),
+      );
   }
 
   constructor(
@@ -88,21 +157,55 @@ export class LocationPickerModalComponent extends FilePickerBaseModalComponent {
   }
 
   public chooseLocation():void {
+    this.submitted = true;
     this.service.close();
   }
 
   protected storageFileToListItem(file:IStorageFile, index:number):StorageFileListItem {
-    const isFolder = isDirectory(file.mimeType);
-    const enterDirectoryCallback = isFolder ? this.enterDirectoryCallback(file) : undefined;
-
     return new StorageFileListItem(
       this.timezoneService,
       file,
-      !isFolder,
+      !isDirectory(file),
       index === 0,
+      this.enterDirectoryCallback(file),
+      this.isConstrained(file),
+      this.tooltip(file),
       undefined,
-      undefined,
-      enterDirectoryCallback,
     );
+  }
+
+  private isConstrained(file:IStorageFile):boolean {
+    return !file.permissions.some((permission) => permission === 'writeable');
+  }
+
+  private tooltip(file:IStorageFile):string|undefined {
+    if (isDirectory(file)) {
+      return file.permissions.some((permission) => permission === 'writeable')
+        ? undefined
+        : this.text.tooltip.directory_not_writeable;
+    }
+
+    return this.text.tooltip.file_not_selectable;
+  }
+
+  public createAndNavigateToFolder() {
+    const value = window.prompt(this.text.buttons.newFolder);
+    if (!value) { return; }
+
+    this.storageFilesResourceService.createFolder(
+      this.locals.createFolderHref as string,
+      {
+        name: value,
+        parent_id: this.currentDirectory.id,
+      },
+    ).subscribe({
+      next: (newlyCreatedDirectory) => {
+        // clear cache for the current directory
+        const cacheKey = makeFilesCollectionLink(this.storage._links.self, this.currentDirectory.location);
+        this.storageFilesResourceService.removeCollection(cacheKey);
+        this.changeLevel(newlyCreatedDirectory);
+      },
+      error: (_) => this.showAlert.next('cannotCreateFolder'),
+    });
   }
 }

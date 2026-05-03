@@ -6,6 +6,7 @@ import {
   ICKEditorWatchdog,
 } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 import { Constructor } from '@angular/cdk/schematics';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
 export type ICKEditorType = 'full'|'constrained';
 export type ICKEditorMacroType = 'none'|'resource'|'full'|boolean|string[];
@@ -23,7 +24,18 @@ export class CKEditorSetupService {
   /** The language CKEditor was able to load, falls back to 'en' */
   private loadedLocale = 'en';
 
-  constructor(private PathHelper:PathHelperService) {
+  /** Prefetch ckeditor when browser is idle */
+  private prefetch:Promise<unknown>;
+
+  constructor(
+    readonly PathHelper:PathHelperService,
+    readonly configurationService:ConfigurationService,
+    ) {
+  }
+
+  public initialize() {
+    this.prefetch = this.load();
+    this.watchTopLayer();
   }
 
   /**
@@ -38,44 +50,73 @@ export class CKEditorSetupService {
    * @returns {Promise<ICKEditorWatchdog>}
    */
   public async create(
-    wrapper:HTMLElement, context:ICKEditorContext,
+    wrapper:HTMLElement,
+    context:ICKEditorContext,
     initialData:string|null = null,
   ):Promise<ICKEditorWatchdog> {
     // Load the bundle and the matching locale, if found.
-    await this.load();
+    await this.prefetch;
 
     const { type } = context;
     const editorClass = type === 'constrained' ? window.OPConstrainedEditor : window.OPClassicEditor;
     wrapper.classList.add(`ckeditor-type-${type}`);
 
-    const toolbarWrapper = wrapper.querySelector('.document-editor__toolbar') as HTMLElement;
+    const toolbarWrapper = wrapper.querySelector('.document-editor__toolbar')!;
     const contentWrapper = wrapper.querySelector('.document-editor__editable') as HTMLElement;
-    const uiLocale = this.loadedLocale;
-    const contentLanguage = context.options && context.options.rtl ? 'ar' : 'en';
-
-    const config = {
-      openProject: this.createConfig(context),
-      initialData,
-      language: {
-        ui: uiLocale,
-        content: contentLanguage,
-      },
-    };
+    const config = this.createConfig(context, initialData);
 
     return this
       .createWatchdog(editorClass, contentWrapper, config)
       .then((watchdog:ICKEditorWatchdog) => {
         const { editor } = watchdog;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         toolbarWrapper.appendChild(editor.ui.view.toolbar.element);
 
         // Allow custom events on wrapper to set/get data for debugging
-        jQuery(wrapper)
-          .on('op:ckeditor:setData', (event:unknown, data:string) => editor.setData(data))
-          .on('op:ckeditor:clear', () => editor.setData(' '))
-          .on('op:ckeditor:getData', (event:unknown, cb:(data:string) => void) => cb(editor.getData({ trim: false })));
+        wrapper.addEventListener('op:ckeditor:autosave', () => {
+          editor.config.get('autosave').save(editor);
+        });
+        wrapper.addEventListener('op:ckeditor:setData', (event:CustomEvent<string>) => {
+          editor.setData(event.detail);
+        });
+        wrapper.addEventListener('op:ckeditor:clear', () => {
+          editor.setData(' ');
+        });
+        wrapper.addEventListener('op:ckeditor:getData', (event:CustomEvent<(data:string) => void>) => {
+          event.detail(editor.getData({ trim: false }));
+        });
 
         return watchdog;
       });
+  }
+
+  private createConfig(context:ICKEditorContext, initialData:string|null) {
+    const uiLocale = this.loadedLocale;
+    const contentLanguage = context.options?.rtl ? 'ar' : 'en';
+
+    const config = {
+      openProject: this.createContext(context),
+      removePlugins: context.removePlugins,
+      initialData,
+      ui: {
+        poweredBy: {
+          side: 'left',
+        },
+      },
+      language: {
+        ui: uiLocale,
+        content: contentLanguage,
+      },
+      link: {},
+      storageKey: context.storageKey,
+    };
+
+    const allowedLinkProtocols = this.configurationService.allowedLinkProtocols;
+    if (allowedLinkProtocols) {
+      config.link = { allowedProtocols: allowedLinkProtocols.map((el:string) => _.escapeRegExp(el)) };
+    }
+
+    return config;
   }
 
   /**
@@ -105,22 +146,32 @@ export class CKEditorSetupService {
    * Load the ckeditor asset
    */
   private async load():Promise<void> {
-    // untyped module cannot be dynamically imported
+    // untyped modules cannot be dynamically imported
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    await import(/* webpackChunkName: "ckeditor" */ 'core-vendor/ckeditor/ckeditor.js');
+    const loadEditorScript = import(/* webpackChunkName: "ckeditor" */ 'core-vendor/ckeditor/ckeditor');
 
+    const promises = [loadEditorScript];
+
+    if (I18n.locale !== 'en') {
+      promises.push(this.loadLocale());
+    }
+
+    await Promise.all(promises);
+  }
+
+  private async loadLocale():Promise<void> {
     try {
       await import(
-        /* webpackChunkName: "ckeditor-translation" */ `../../../../../../vendor/ckeditor/translations/${I18n.locale}.js`
-      ) as unknown;
+        /* webpackPrefetch: true; webpackChunkName: "ckeditor-translation" */ `../../../../../../vendor/ckeditor/translations/${I18n.locale}.js`
+      );
       this.loadedLocale = I18n.locale;
     } catch (e:unknown) {
       console.warn(`Failed to load translation for CKEditor: ${e as string}`);
     }
   }
 
-  private createConfig(context:ICKEditorContext):unknown {
+  private createContext(context:ICKEditorContext):unknown {
     if (context.macros === 'none') {
       context.macros = false;
     } else if (context.macros === 'resource') {
@@ -136,5 +187,32 @@ export class CKEditorSetupService {
       helpURL: this.PathHelper.textFormattingHelp(),
       pluginContext: window.OpenProject.pluginContext.value,
     };
+  }
+
+  private watchTopLayer() {
+    const targetClassNames = ['ck-body-wrapper', 'ck-inspector-'];
+
+    const observer = new MutationObserver((mutations) => {
+      const dialog = document.querySelector('dialog[open]');
+      if (!dialog) {
+        return;
+      }
+
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (!(node instanceof HTMLElement)) {
+            return;
+          }
+
+          if (targetClassNames.some((className) => node.classList.contains(className))) {
+            dialog.append(node);
+          }
+        });
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+    });
   }
 }

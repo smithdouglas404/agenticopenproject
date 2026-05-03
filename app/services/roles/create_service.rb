@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,31 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Roles::CreateService < ::BaseServices::Create
-  include Roles::NotifyMixin
-
+class Roles::CreateService < BaseServices::Create
   private
 
-  def perform(params)
+  def perform
     copy_workflow_id = params.delete(:copy_workflow_from)
 
     super_call = super
 
     if super_call.success?
       copy_workflows(copy_workflow_id, super_call.result)
-
-      notify_changed_roles(:added, super_call.result)
     end
 
     super_call
   end
 
   def instance(params)
-    if params.delete(:global_role)
-      GlobalRole.new
-    else
-      super
-    end
+    klass = if params.delete(:global_role)
+              GlobalRole
+            else
+              ProjectRole
+            end
+
+    klass.new
   end
 
   def copy_workflows(copy_workflow_id, role)

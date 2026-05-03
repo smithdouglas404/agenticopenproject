@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -30,25 +30,30 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { States } from 'core-app/core/states/states.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import { InputState } from 'reactivestates';
-import { WorkPackagesActivityService } from 'core-app/features/work-packages/components/wp-single-view-tabs/activity-panel/wp-activity.service';
-import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
+import { InputState } from '@openproject/reactivestates';
+import {
+  WorkPackagesActivityService,
+} from 'core-app/features/work-packages/components/wp-single-view-tabs/activity-panel/wp-activity.service';
+import {
+  WorkPackageNotificationService,
+} from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { OpenProjectFileUploadService } from 'core-app/core/file-upload/op-file-upload.service';
 import { AttachmentCollectionResource } from 'core-app/features/hal/resources/attachment-collection-resource';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import { TypeResource } from 'core-app/features/hal/resources/type-resource';
 import { RelationResource } from 'core-app/features/hal/resources/relation-resource';
+import { StatusResource } from 'core-app/features/hal/resources/status-resource';
 import { FormResource } from 'core-app/features/hal/resources/form-resource';
 import { Attachable } from 'core-app/features/hal/resources/mixins/attachable-mixin';
 import { ICKEditorContext } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
+import { IWorkPackageTimestamp } from 'core-app/features/hal/resources/work-package-timestamp-resource';
+import { formatWorkPackageId } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export interface WorkPackageResourceEmbedded {
   activities:CollectionResource;
-  ancestors:WorkPackageResource[];
   assignee:HalResource|any;
   attachments:AttachmentCollectionResource;
   fileLinks?:CollectionResource;
@@ -62,7 +67,7 @@ export interface WorkPackageResourceEmbedded {
   relations:CollectionResource;
   responsible:HalResource|any;
   revisions:CollectionResource|any;
-  status:HalResource|any;
+  status:StatusResource|any;
   timeEntries:HalResource[]|any[];
   type:TypeResource;
   version:HalResource|any;
@@ -95,6 +100,8 @@ export interface WorkPackageResourceLinks extends WorkPackageResourceEmbedded {
 
   logTime():Promise<any>;
 
+  startTimer():Promise<unknown>;
+
   move():Promise<any>;
 
   removeWatcher():Promise<any>;
@@ -119,6 +126,40 @@ export class WorkPackageBaseResource extends HalResource {
 
   public subject:string;
 
+  /**
+   * The canonical user-facing work package identifier.
+   *
+   * - Semantic mode: `"PROJ-42"` (project-scoped, contains letters)
+   * - Classic mode: `"42"` (numeric only)
+   *
+   * This is the correct value for URL path segments — use this rather
+   * than `id` when constructing work package hrefs. The numeric `id`
+   * (primary key) should only appear in data attributes and internal
+   * state management (selection, focus, hover).
+   *
+   * Falls back to the self link's `displayId` — ancestor/children links
+   * in the API expose `displayId` alongside `href`/`title` because those
+   * HAL resources are built from a link payload alone, without a
+   * top-level `displayId`. Finally falls back to `id` (defensive against
+   * stale cache during rolling deploys, and for resources built from
+   * bare hrefs).
+   */
+  public get displayId():string {
+    return this.$source.displayId?.toString()
+      ?? this.$source._links?.self?.displayId?.toString()
+      ?? this.id?.toString()
+      ?? '';
+  }
+
+  /**
+   * Returns the work package identifier formatted for inline UI display.
+   * Classic mode: `#42` (hash-prefixed numeric ID)
+   * Semantic mode: `PROJ-42` (no prefix — the identifier is self-describing)
+   */
+  public get formattedId():string {
+    return formatWorkPackageId(this.displayId);
+  }
+
   public updatedAt:Date;
 
   public lockVersion:number;
@@ -128,6 +169,10 @@ export class WorkPackageBaseResource extends HalResource {
   public activities:CollectionResource;
 
   public attachments:AttachmentCollectionResource;
+
+  private ancestors?:this[];
+
+  public attributesByTimestamp?:IWorkPackageTimestamp[];
 
   @InjectField() I18n!:I18nService;
 
@@ -143,36 +188,41 @@ export class WorkPackageBaseResource extends HalResource {
 
   @InjectField() pathHelper:PathHelperService;
 
-  @InjectField() opFileUpload:OpenProjectFileUploadService;
-
   readonly attachmentsBackend = true;
+
+  /**
+   * Returns the list of ancestors, if any
+   */
+  public getAncestors():this[] {
+    return this.ancestors || [];
+  }
 
   /**
    * Return the ids of all its ancestors, if any
    */
   public get ancestorIds():string[] {
-    const { ancestors } = this as any;
-    return ancestors.map((el:WorkPackageResource) => el.id!);
+    return this.getAncestors().map((el:HalResource) => (el.id as string|number).toString());
   }
 
   /**
-   * Return "<type name>: <subject> (#<id>)" if type and id are known.
+   * Return "<type name>: <subject> (<formattedId>)" if type and id are known.
    */
   public subjectWithType(truncateSubject = 40):string {
-    const type = this.type ? `${this.type.name}: ` : '';
-    const subject = this.subjectWithId(truncateSubject);
-
-    return `${type}${subject}`;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    return `${this.type.name}: ${this.subjectWithId(truncateSubject)}`;
   }
 
   /**
-   * Return "<subject> (#<id>)" if the id is known.
+   * Return "<subject> (<formattedId>)" if the id is known.
    */
   public subjectWithId(truncateSubject = 40):string {
-    const id = isNewResource(this) ? '' : ` (#${this.id})`;
-    const subject = _.truncate(this.subject, { length: truncateSubject });
+    const id = isNewResource(this) ? '' : ` (${this.formattedId})`;
 
-    return `${subject}${id}`;
+    return `${this.truncatedSubject(truncateSubject)}${id}`;
+  }
+
+  public truncatedSubject(length = 40):string {
+    return length <= 0 ? this.subject : _.truncate(this.subject, { length: length });
   }
 
   public get isLeaf():boolean {
@@ -207,7 +257,7 @@ export class WorkPackageBaseResource extends HalResource {
    * Return a rejected promise, if the resource is not a property of the work package.
    */
   public updateLinkedResources(...resourceNames:string[]):Promise<any> {
-    const resources:{ [id:string]:Promise<HalResource> } = {};
+    const resources:Record<string, Promise<HalResource>> = {};
 
     resourceNames.forEach((name) => {
       const linked = this[name];

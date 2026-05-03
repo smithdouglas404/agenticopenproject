@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -59,7 +61,7 @@ class UserPassword < ApplicationRecord
 
   ##
   # Rehash the password using the currently active strategy.
-  # This replaces the password and keeps expiry date identical.
+  # This replaces the password and keeps expiration date identical.
   def rehash_as_active(plain)
     active_class = UserPassword.active_type
 
@@ -101,10 +103,10 @@ class UserPassword < ApplicationRecord
 
   # Require the implementation to provide a secure comparison
   def hash_matches?(_plain)
-    raise NotImplementedError, 'Must be overridden by subclass'
+    raise SubclassResponsibilityError
   end
 
   def derive_password!(_input)
-    raise NotImplementedError, 'Must be overridden by subclass'
+    raise SubclassResponsibilityError
   end
 end

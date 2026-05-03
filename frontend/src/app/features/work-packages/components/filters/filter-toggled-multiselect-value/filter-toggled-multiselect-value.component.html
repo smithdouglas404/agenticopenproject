@@ -3,7 +3,6 @@
   id="div-values-{{filter.id}}"
 >
   <op-autocompleter
-    appendTo="body"
     class="advanced-filters--ng-select -multi-select"
     [id]="'values-' + filter.id"
     [items]="availableOptions"
@@ -14,7 +13,9 @@
     [hideSelected]="true"
     [multiple]="true"
     [model]="value"
+    [compareWith]="compareByHref"
+    [trackByFn]="itemTracker"
     bindLabel="name"
     (change)="setValues($event)"
-  ></op-autocompleter>
+   />
 </div>

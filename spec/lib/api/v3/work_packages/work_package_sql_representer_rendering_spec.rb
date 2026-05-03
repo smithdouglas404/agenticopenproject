@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -24,13 +26,13 @@
 #
 #  See COPYRIGHT and LICENSE files for more details.
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
-  include ::API::V3::Utilities::PathHelper
+RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
+  include API::V3::Utilities::PathHelper
 
   subject(:json) do
-    ::API::V3::Utilities::SqlRepresenterWalker
+    API::V3::Utilities::SqlRepresenterWalker
       .new(scope,
            current_user:,
            url_query: { select: })
@@ -46,28 +48,31 @@ describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
   let(:rendered_work_package) do
     create(:work_package,
            project:,
+           type:,
            assigned_to: assignee,
            author:,
            responsible:)
   end
-  let(:project) { create :project, types: [create(:type, is_milestone:)] }
+  let(:project) { create(:project, types: [type]) }
+  let(:type) { create(:type, is_milestone:) }
   let(:is_milestone) { false }
   let(:assignee) { nil }
   let(:author) { create(:user) }
   let(:responsible) { nil }
 
-  let(:select) { { '*' => {} } }
+  let(:select) { { "*" => {} } }
 
   current_user do
     create(:user)
   end
 
-  context 'when rendering all supported properties' do
-    context 'for a work_package' do
+  context "when rendering all supported properties" do
+    context "for a work_package" do
       let(:expected) do
         {
           _type: "WorkPackage",
           id: rendered_work_package.id,
+          displayId: rendered_work_package.id.to_s,
           subject: rendered_work_package.subject,
           dueDate: rendered_work_package.due_date,
           startDate: rendered_work_package.start_date,
@@ -89,23 +94,32 @@ describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
             author: {
               href: api_v3_paths.user(author.id),
               title: author.name
+            },
+            status: {
+              href: api_v3_paths.status(rendered_work_package.status.id),
+              title: rendered_work_package.status.name
+            },
+            type: {
+              href: api_v3_paths.type(type.id),
+              title: type.name
             }
           }
         }
       end
 
-      it 'renders as expected' do
+      it "renders as expected" do
         expect(json)
           .to be_json_eql(expected.to_json)
       end
     end
 
-    context 'for a milestone work_package' do
+    context "for a milestone work_package" do
       let(:is_milestone) { true }
       let(:expected) do
         {
           _type: "WorkPackage",
           id: rendered_work_package.id,
+          displayId: rendered_work_package.id.to_s,
           subject: rendered_work_package.subject,
           date: rendered_work_package.start_date,
           _links: {
@@ -126,21 +140,47 @@ describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
             author: {
               href: api_v3_paths.user(author.id),
               title: author.name
+            },
+            status: {
+              href: api_v3_paths.status(rendered_work_package.status.id),
+              title: rendered_work_package.status.name
+            },
+            type: {
+              href: api_v3_paths.type(type.id),
+              title: type.name
             }
           }
         }
       end
 
-      it 'renders as expected' do
+      it "renders as expected" do
         expect(json).to be_json_eql(expected.to_json)
+      end
+    end
+
+    describe "displayId" do
+      context "when semantic work package ids are active",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:project) { create(:project, identifier: "PROJ", types: [type]) }
+
+        it "returns the semantic identifier" do
+          expect(json).to be_json_eql("PROJ-1".to_json).at_path("displayId")
+        end
+      end
+
+      context "when semantic work package ids are not active" do
+        it "returns the numeric id as a string" do
+          expect(json).to be_json_eql(rendered_work_package.id.to_s.to_json).at_path("displayId")
+        end
       end
     end
   end
 
-  shared_examples_for 'principal link' do |link_name, only_user: false|
+  shared_examples_for "principal link" do |link_name, only_user: false|
     let(:select) { { link_name => {} } }
 
-    context 'with a user' do
+    context "with a user" do
       let(:principal_object) { create(:user) }
 
       let(:expected) do
@@ -154,14 +194,14 @@ describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
         }
       end
 
-      it 'renders as expected' do
+      it "renders as expected" do
         expect(json)
           .to be_json_eql(expected.to_json)
       end
     end
 
     unless only_user
-      context 'with a group' do
+      context "with a group" do
         let(:principal_object) { create(:group) }
 
         let(:expected) do
@@ -175,13 +215,13 @@ describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
           }
         end
 
-        it 'renders as expected' do
+        it "renders as expected" do
           expect(json)
             .to be_json_eql(expected.to_json)
         end
       end
 
-      context 'with a placeholder user' do
+      context "with a placeholder user" do
         let(:principal_object) { create(:placeholder_user) }
 
         let(:expected) do
@@ -195,7 +235,7 @@ describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
           }
         end
 
-        it 'renders as expected' do
+        it "renders as expected" do
           expect(json)
             .to be_json_eql(expected.to_json)
         end
@@ -203,20 +243,20 @@ describe ::API::V3::WorkPackages::WorkPackageSqlRepresenter, 'rendering' do
     end
   end
 
-  describe 'assignee link' do
-    it_behaves_like 'principal link', 'assignee' do
+  describe "assignee link" do
+    it_behaves_like "principal link", "assignee" do
       let(:assignee) { principal_object }
     end
   end
 
-  describe 'responsible link' do
-    it_behaves_like 'principal link', 'responsible' do
+  describe "responsible link" do
+    it_behaves_like "principal link", "responsible" do
       let(:responsible) { principal_object }
     end
   end
 
-  describe 'author link' do
-    it_behaves_like 'principal link', 'author', only_user: true do
+  describe "author link" do
+    it_behaves_like "principal link", "author", only_user: true do
       let(:author) { principal_object }
     end
   end

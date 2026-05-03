@@ -1,6 +1,6 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
 <% content_for :styles do %>
     body { font:80% Verdana,Tahoma,Arial,sans-serif; }
@@ -49,7 +49,7 @@ See COPYRIGHT and LICENSE files for more details.
     .CodeRay .fu { color:#06B; font-weight:bold }
 
     .CodeRay .il { background: #eee }
-    .CodeRay .il .idl { font-weight: bold; color: #888 }
+    .CodeRay .il .idl { font-weight: 600; color: #888 }
 
     .CodeRay .iv { color:#33B }
     .CodeRay .r  { color:#080; font-weight:bold }
@@ -152,13 +152,11 @@ See COPYRIGHT and LICENSE files for more details.
                 </ul></li>
         </ul>
 
-
         <p>Escaping:</p>
 
         <ul>
             <li>You can prevent OpenProject links from being parsed by preceding them with an exclamation mark: !</li>
         </ul>
-
 
         <h3><a name="4" class="wiki-page"></a>External links</h3>
 
@@ -178,9 +176,7 @@ https://www.openproject.org, someone@foo.bar
 
         <p>displays: <a href="https://www.openproject.org" class="external">OpenProject web site</a></p>
 
-
     <h2><a name="5" class="wiki-page"></a>Text formatting</h2>
-
 
     <p>For things such as headlines, bold, tables, lists, OpenProject supports Textile syntax.  See <a class="external" href="http://www.textism.com/tools/textile/">http://www.textism.com/tools/textile/</a> for information on using any of these features.  A few samples are included below, but the engine is capable of much more of that.</p>
 
@@ -222,7 +218,6 @@ h3. Subsubheading
 
         <p>OpenProject assigns an anchor to each of those headings thus you can link to them with "#Heading", "#Subheading" and so forth.</p>
 
-
         <h3><a name="9" class="wiki-page"></a>Paragraphs</h3>
 
 <pre>
@@ -231,7 +226,6 @@ p=. centered
 </pre>
 
         <p style="text-align:center;">This is a centered paragraph.</p>
-
 
         <h3><a name="10" class="wiki-page"></a>Blockquotes</h3>
 
@@ -245,9 +239,8 @@ To go live, all you need to add is a database and a web server.
         <p>Display:</p>
 
         <blockquote>
-                <p>Rails is a full-stack framework for developing database-backed web applications according to the Model-View-Control pattern.<br />To go live, all you need to add is a database and a web server.</p>
+                <p>Rails is a full-stack framework for developing database-backed web applications according to the Model-View-Control pattern.<br>To go live, all you need to add is a database and a web server.</p>
         </blockquote>
-
 
         <h3><a name="11" class="wiki-page"></a>Table of content</h3>
 
@@ -260,10 +253,9 @@ To go live, all you need to add is a database and a web server.
 
     <p>OpenProject has the following builtin macros:</p>
 
-    <p><dl><dt><code>hello_world</code></dt><dd><p>Sample macro.</p></dd><dt><code>include</code></dt><dd><p>Include a wiki page. Example:</p>
+    <dl><dt><code>hello_world</code></dt><dd><p>Sample macro.</p></dd><dt><code>include</code></dt><dd><p>Include a wiki page. Example:</p>
 
-    <pre><code>{{include(Foo)}}</code></pre></dd><dt><code>macro_list</code></dt><dd><p>Displays a list of all available macros, including description if available.</p></dd></dl></p>
-
+    <pre><code>{{include(Foo)}}</code></pre></dd><dt><code>macro_list</code></dt><dd><p>Displays a list of all available macros, including description if available.</p></dd></dl>
 
     <h2><a name="13" class="wiki-page"></a>Code highlighting</h2>
 

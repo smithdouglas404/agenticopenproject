@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,7 @@ module Queries::WorkPackages::Filter::FilterForWpMixin
   end
 
   def allowed_values
-    raise NotImplementedError, 'There would be too many candidates'
+    raise NotImplementedError, "There would be too many candidates"
   end
 
   def value_objects
@@ -46,11 +48,11 @@ module Queries::WorkPackages::Filter::FilterForWpMixin
   end
 
   def allowed_objects
-    raise NotImplementedError, 'There would be too many candidates'
+    raise NotImplementedError, "There would be too many candidates"
   end
 
   def available?
-    key = 'Queries::WorkPackages::Filter::FilterForWpMixin/available'
+    key = "Queries::WorkPackages::Filter::FilterForWpMixin/available"
 
     RequestStore.fetch(key) do
       visible_scope.exists?
@@ -69,6 +71,10 @@ module Queries::WorkPackages::Filter::FilterForWpMixin
     else
       id_values
     end
+  end
+
+  def has_templated_value?
+    values.intersect?(templated_value_keys)
   end
 
   private
@@ -101,9 +107,5 @@ module Queries::WorkPackages::Filter::FilterForWpMixin
 
   def deprecated_templated_value_key
     ::Queries::Filters::TemplatedValue::DEPRECATED_KEY
-  end
-
-  def has_templated_value?
-    (values & templated_value_keys).any?
   end
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -24,13 +26,13 @@
 #
 #  See COPYRIGHT and LICENSE files for more details.
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
-  include ::API::V3::Utilities::PathHelper
+RSpec.describe API::V3::Principals::PrincipalSqlRepresenter, "rendering" do
+  include API::V3::Utilities::PathHelper
 
   subject(:json) do
-    ::API::V3::Utilities::SqlRepresenterWalker
+    API::V3::Utilities::SqlRepresenterWalker
       .new(scope,
            current_user:,
            url_query: { select: })
@@ -46,13 +48,13 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
   let(:group) { create(:group) }
   let(:placeholder_user) { create(:placeholder_user) }
 
-  let(:select) { { '*' => {} } }
+  let(:select) { { "*" => {} } }
 
   current_user do
     create(:user)
   end
 
-  context 'when rendering all supported properties for a group' do
+  context "when rendering all supported properties for a group" do
     let(:rendered_principal) { group }
 
     let(:expected) do
@@ -60,6 +62,7 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
         _type: "Group",
         id: group.id,
         name: group.name,
+        email: "",
         _links: {
           self: {
             href: api_v3_paths.group(group.id),
@@ -69,13 +72,13 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
       }
     end
 
-    it 'renders as expected' do
+    it "renders as expected" do
       expect(json)
         .to be_json_eql(expected.to_json)
     end
   end
 
-  context 'when rendering all supported properties for a placeholder user' do
+  context "when rendering all supported properties for a placeholder user" do
     let(:rendered_principal) { placeholder_user }
 
     let(:expected) do
@@ -83,6 +86,7 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
         _type: "PlaceholderUser",
         id: placeholder_user.id,
         name: placeholder_user.name,
+        email: "",
         _links: {
           self: {
             href: api_v3_paths.placeholder_user(placeholder_user.id),
@@ -92,13 +96,13 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
       }
     end
 
-    it 'renders as expected' do
+    it "renders as expected" do
       expect(json)
         .to be_json_eql(expected.to_json)
     end
   end
 
-  context 'when rendering all supported properties for a user' do
+  context "when rendering all supported properties for a user" do
     let(:rendered_principal) { current_user }
 
     let(:expected) do
@@ -108,6 +112,7 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
         name: current_user.name,
         firstname: current_user.firstname,
         lastname: current_user.lastname,
+        email: current_user.mail,
         _links: {
           self: {
             href: api_v3_paths.user(current_user.id),
@@ -117,15 +122,15 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
       }
     end
 
-    it 'renders as expected' do
+    it "renders as expected" do
       expect(json)
         .to be_json_eql(expected.to_json)
     end
   end
 
-  context 'when rendering only the name property for a user' do
+  context "when rendering only the name property for a user" do
     let(:rendered_principal) { current_user }
-    let(:select) { { 'name' => {} } }
+    let(:select) { { "name" => {} } }
 
     let(:expected) do
       {
@@ -133,7 +138,7 @@ describe ::API::V3::Principals::PrincipalSqlRepresenter, 'rendering' do
       }
     end
 
-    it 'renders as expected' do
+    it "renders as expected" do
       expect(json)
         .to be_json_eql(expected.to_json)
     end

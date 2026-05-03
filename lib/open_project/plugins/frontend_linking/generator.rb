@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'bundler'
-require 'fileutils'
+require "bundler"
+require "fileutils"
 
+# rubocop:disable Rails/Output
 module ::OpenProject::Plugins
   module FrontendLinking
     class Generator
@@ -58,54 +61,61 @@ module ::OpenProject::Plugins
       # Register plugins with an Angular frontend to the CLI build.
       # For that, search all gems with the group :opf_plugins
       def regenerate_angular_links
-        all_frontend_plugins.tap do |plugins|
-          target_dir = Rails.root.join('frontend', 'src', 'app', 'features', 'plugins', 'linked')
-          puts "Cleaning linked target directory #{target_dir}"
+        remove_all_frontend_plugins_links
+        create_frontend_plugins_links(all_frontend_plugins)
+        generate_plugin_module(all_angular_frontend_plugins)
+        generate_plugin_sass(all_plugins_with_global_styles)
+      end
 
-          # Removing the current linked directory and recreate
-          FileUtils.remove_dir(target_dir, force: true)
-          FileUtils.mkdir_p(target_dir)
-
-          plugins.each do |name, path|
-            source = File.join(path, 'frontend', 'module')
-            target = File.join(target_dir, name)
-
-            puts "Linking frontend of OpenProject plugin #{name} to #{target}."
-            FileUtils.ln_sf(source, target)
-          end
-
-          generate_plugin_module(all_angular_frontend_plugins)
-          generate_plugin_sass(all_plugins_with_global_styles)
-        end
+      def target_dir
+        Rails.root.join("frontend/src/app/features/plugins/linked")
       end
 
       def all_frontend_plugins
         openproject_plugins.select do |_, path|
-          frontend_entry = File.join(path, 'frontend', 'module')
+          frontend_entry = File.join(path, "frontend", "module")
           File.directory? frontend_entry
         end
       end
 
       def all_angular_frontend_plugins
         openproject_plugins.select do |_, path|
-          frontend_entry = File.join(path, 'frontend', 'module', 'main.ts')
+          frontend_entry = File.join(path, "frontend", "module", "main.ts")
           File.readable? frontend_entry
         end
       end
 
       def all_plugins_with_global_styles
         openproject_plugins.select do |_, path|
-          style_file = File.join(path, 'frontend', 'module', 'global_styles.*')
-          !Dir.glob(style_file).empty?
+          style_file = File.join(path, "frontend", "module", "global_styles.*")
+          Dir.glob(style_file).any?
+        end
+      end
+
+      def remove_all_frontend_plugins_links
+        puts "Cleaning linked target directory #{target_dir}"
+
+        # Removing the current linked directory and recreate
+        FileUtils.remove_dir(target_dir, force: true)
+        FileUtils.mkdir_p(target_dir)
+      end
+
+      def create_frontend_plugins_links(plugins)
+        plugins.each do |name, path|
+          source = File.join(path, "frontend", "module")
+          target = File.join(target_dir, name)
+
+          puts "Linking frontend of OpenProject plugin #{name} (#{target} -> #{source})."
+          FileUtils.ln_sf(source, target)
         end
       end
 
       ##
       # Regenerate the frontend plugin module orchestrating the linked frontends
       def generate_plugin_module(plugins)
-        file_register = Rails.root.join('frontend', 'src', 'app', 'features', 'plugins', 'linked-plugins.module.ts')
-        template_file = File.read(File.expand_path('linked-plugins.module.ts.erb', __dir__))
-        template = ::ERB.new template_file, trim_mode: '-'
+        file_register = Rails.root.join("frontend/src/app/features/plugins/linked-plugins.module.ts")
+        template_file = File.read(File.expand_path("linked-plugins.module.ts.erb", __dir__))
+        template = ::ERB.new template_file, trim_mode: "-"
 
         puts "Regenerating frontend plugin registry #{file_register}."
         context = ::OpenProject::Plugins::FrontendLinking::ErbContext.new plugins
@@ -116,9 +126,9 @@ module ::OpenProject::Plugins
       ##
       # Regenerate the frontend plugin sass files
       def generate_plugin_sass(plugins)
-        file_register = Rails.root.join('frontend', 'src', 'app', 'features', 'plugins', 'linked-plugins.styles.sass')
-        template_file = File.read(File.expand_path('linked-plugins.styles.sass.erb', __dir__))
-        template = ::ERB.new template_file, trim_mode: '-'
+        file_register = Rails.root.join("frontend/src/app/features/plugins/linked-plugins.styles.sass")
+        template_file = File.read(File.expand_path("linked-plugins.styles.sass.erb", __dir__))
+        template = ::ERB.new template_file, trim_mode: "-"
 
         puts "Regenerating frontend plugin sass #{file_register}."
         context = ::OpenProject::Plugins::FrontendLinking::ErbContext.new plugins
@@ -131,16 +141,17 @@ module ::OpenProject::Plugins
       # from the :opf_plugins group.
       def load_known_opf_plugins
         bundler_groups = %i[opf_plugins]
-        gemfile_path = Rails.root.join('Gemfile')
+        gemfile_path = Rails.root.join("Gemfile")
 
-        gems = Bundler::Dsl.evaluate(gemfile_path, '_temp_lockfile', true)
+        gems = Bundler::Dsl.evaluate(gemfile_path, "_temp_lockfile", true)
 
         gems.dependencies
           .each_with_object({}) do |dep, l|
-          l[dep.name] = dep if (bundler_groups & dep.groups).any?
+          l[dep.name] = dep if bundler_groups.intersect?(dep.groups)
         end
           .compact
       end
     end
   end
 end
+# rubocop:enable Rails/Output

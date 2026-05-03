@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -51,25 +53,28 @@ module Exports
     def sane_filename(name)
       parts = name.split /(?<=.)\.(?=[^.])(?!.*\.[^.])/m
 
-      parts.map! { |s| s.gsub /[^a-z0-9\-]+/i, '_' }
+      parts.map! do |s|
+        # Preserve the file extension avoid eg. .xls => .khls for some languages
+        s.match?(/\A\.[a-zA-Z]+\z/) ? s : I18n.transliterate(s).gsub(/[^a-z0-9-]+/i, "_")
+      end
 
-      parts.join '.'
+      parts.join "."
     end
 
     # Run the export, yielding the result of the render output
     def export!
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     protected
 
-    def formatter_for(attribute)
-      ::Exports::Register.formatter_for(model, attribute)
+    def formatter_for(attribute, export_format)
+      ::Exports::Register.formatter_for(model, attribute, export_format)
     end
 
-    def format_attribute(object, attribute, **options)
-      formatter = formatter_for(attribute)
-      formatter.format(object, **options)
+    def format_attribute(object, attribute, export_format, **)
+      formatter = formatter_for(attribute, export_format)
+      formatter.format(object, **)
     end
   end
 end

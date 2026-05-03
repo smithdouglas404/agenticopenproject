@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,34 +28,24 @@
 
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { combineLatest } from 'rxjs';
-import {
-  debounceTime,
-  filter,
-  map,
-  mergeMap,
-  shareReplay,
-  take,
-} from 'rxjs/operators';
+import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
+import { map, shareReplay, take, tap } from 'rxjs/operators';
 import { IProject } from 'core-app/core/state/projects/project.model';
 import { insertInList } from 'core-app/shared/components/project-include/insert-in-list';
 import { recursiveSort } from 'core-app/shared/components/project-include/recursive-sort';
-import { SearchableProjectListService } from 'core-app/shared/components/searchable-project-list/searchable-project-list.service';
+import {
+  SearchableProjectListService,
+} from 'core-app/shared/components/searchable-project-list/searchable-project-list.service';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { IProjectData } from 'core-app/shared/components/searchable-project-list/project-data';
-
-export const headerProjectSelectSelector = 'op-header-project-select';
+import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
 @Component({
-  selector: headerProjectSelectSelector,
+  selector: 'opce-header-project-select',
   templateUrl: './header-project-select.component.html',
   styleUrls: ['./header-project-select.component.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -63,26 +53,36 @@ export const headerProjectSelectSelector = 'op-header-project-select';
   providers: [
     SearchableProjectListService,
   ],
+  standalone: false,
 })
-export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
-  @HostBinding('class.op-header-project-select') className = true;
+export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implements OnInit, OnDestroy, AfterViewInit {
+  @HostBinding('class.op-project-select') className = true;
+
+  @ViewChild('projectSearchField', { read: ElementRef })
+
+  projectSearchField?:ElementRef<HTMLElement>;
+
+  private activeProjectId:number|null = null;
+
+  private readonly listboxId = 'op-header-project-select-listbox';
 
   public dropModalOpen = false;
 
   public textFieldFocused = false;
 
+  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
+
   public canCreateNewProjects$ = this.currentUserService.hasCapabilities$('projects/create', 'global');
 
-  public projects$ = combineLatest([
-    this.searchableProjectListService.allProjects$,
-    this.searchableProjectListService.searchText$.pipe(debounceTime(200)),
-  ]).pipe(
+  public projects$ = this.searchableProjectListService.allProjects$.pipe(
     map(
-      ([projects, searchText]:[IProject[], string]) => projects
+      (projects:IProject[]) => projects
         .filter(
           (project) => {
+            const searchText = this.searchableProjectListService.searchText;
             if (searchText.length) {
-              const matches = project.name.toLowerCase().includes(searchText.toLowerCase());
+              const terms = searchText.toLowerCase().split(/\s+/).filter((t) => t.length > 0);
+              const matches = terms.every((term) => project.name.toLowerCase().includes(term));
 
               if (!matches) {
                 return false;
@@ -108,48 +108,73 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
         ),
     ),
     map((projects) => recursiveSort(projects)),
+    tap(() => {
+      if(this.dropModalOpen) {
+        // only clear loading indicator if modal is open, otherwise rendering is triggered that will cause loading of
+        // favorites while the modal is closed
+        this.loading$.next(false);
+      }
+    }),
     shareReplay(),
   );
 
+  public favorites$:Observable<string[]> = this.searchableProjectListService.favoriteIds$;
+
   public text = {
+    all: this.I18n.t('js.label_all_uppercase'),
+    favorited: this.I18n.t('js.label_favorites'),
+    no_favorites: this.I18n.t('js.favorite_projects.no_results'),
+    no_favorites_subtext: this.I18n.t('js.favorite_projects.no_results_subtext'),
     project: {
       singular: this.I18n.t('js.label_project'),
       plural: this.I18n.t('js.label_project_plural'),
       list: this.I18n.t('js.label_project_list'),
-      select: this.I18n.t('js.label_select_project'),
+      select: this.I18n.t('js.label_all_projects'),
+      search_placeholder: this.I18n.t('js.include_projects.search_placeholder')
     },
-    search_placeholder: this.I18n.t('js.include_projects.search_placeholder'),
+    workspace: {
+      list: this.I18n.t('js.label_workspace_list'),
+      search_placeholder: this.I18n.t('js.include_workspaces.search_placeholder')
+    },
+    search_favorites_placeholder: this.I18n.t('js.include_projects.search_placeholder_favorites'),
     no_results: this.I18n.t('js.include_projects.no_results'),
+    no_favorite_results: this.I18n.t('js.include_projects.no_favorite_results')
   };
 
-  /* This seems like a way too convoluted loading check, but there's a good reason we need it.
-   * The searchableProjectListService says fetching is "done" when the request returns.
-   * However, this causes flickering on the initial load, since `projects$` still needs
-   * to do the tree calculation. In the template, we show the project-list when `loading$ | async` is false,
-   * but if we would only make this depend on `fetchingProjects$` Angular would still wait with
-   * rendering the project-list until `projects$ | async` has also fired.
-   *
-   * To fix this, we first wait for fetchingProjects$ to be true once,
-   * then switch over to projects$, and after that has pinged once, it switches back to
-   * fetchingProjects$ as the decider for when fetching is done.
-   */
-  public loading$ = this.searchableProjectListService.fetchingProjects$.pipe(
-    filter((fetching) => fetching),
-    take(1),
-    mergeMap(() => this.projects$),
-    mergeMap(() => this.searchableProjectListService.fetchingProjects$),
-  );
+  // Computed text properties based on portfolio models feature flag
+  public get currentText() {
+    return this.portfolioModelsEnabled ? this.text.workspace : this.text.project;
+  }
+
+  public displayMode:'all'|'favorited';
+
+  public displayModeOptions = [
+    { value: 'all', title: this.text.all },
+    { value: 'favorited', title: this.text.favorited },
+  ];
+
+  public loading$ = new BehaviorSubject<boolean>(true);
 
   private scrollToCurrent = false;
 
+  private subscriptionComplete$ = new ReplaySubject<void>(1);
+
+  private displayModeLocalStorageKey = 'openProject-project-select-display-mode';
+
   constructor(
-    protected pathHelper:PathHelperService,
-    protected I18n:I18nService,
-    protected currentProject:CurrentProjectService,
+    readonly pathHelper:PathHelperService,
+    readonly configuration:ConfigurationService,
+    readonly I18n:I18nService,
+    readonly currentProject:CurrentProjectService,
     readonly searchableProjectListService:SearchableProjectListService,
     readonly currentUserService:CurrentUserService,
+    readonly apiV3Service:ApiV3Service,
   ) {
     super();
+
+    if(this.currentProject.id) {
+      this.searchableProjectListService.preloadProjectIds = [this.currentProject.id];
+    }
 
     this.projects$
       .pipe(this.untilDestroyed())
@@ -161,20 +186,82 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
         }
 
         this.scrollToCurrent = false;
+        this.subscriptionComplete$.next(); // Signal that subscription logic is complete
       });
   }
 
+  private onTextInput:Subscription;
+
+  ngOnInit():void {
+    const stored = window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey) as 'all'|'favorited'|undefined;
+    this.displayMode = stored ?? 'all';
+    this.onTextInput = this.searchableProjectListService.queriedSearchText$.subscribe(() => this.loading$.next(true));
+  }
+
+  ngOnDestroy():void {
+    this.onTextInput.unsubscribe();
+  }
+
+  ngAfterViewInit():void {
+    this.searchableProjectListService.selectedItemID$
+      .pipe(this.untilDestroyed())
+      .subscribe((selectedItemID:number|null) => {
+        this.activeProjectId = selectedItemID;
+        this.syncSearchInputAccessibility();
+      });
+  }
+
+  private syncSearchInputAccessibility():void {
+    requestAnimationFrame(() => {
+      const input = this.projectSearchField?.nativeElement.querySelector('input') as HTMLInputElement | null;
+
+      if (!input) {
+        return;
+      }
+
+      input.setAttribute('role', 'combobox');
+      input.setAttribute('aria-autocomplete', 'list');
+      input.setAttribute('aria-haspopup', 'listbox');
+      input.setAttribute('aria-expanded', String(this.dropModalOpen));
+      input.setAttribute('aria-controls', this.listboxId);
+      input.setAttribute('aria-label', this.searchPlaceHolder());
+
+      if (this.dropModalOpen && this.activeProjectId !== null) {
+        input.setAttribute('aria-activedescendant', `op-header-project-select-option-${this.activeProjectId}`);
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    });
+  }
+
   toggleDropModal():void {
-    this.dropModalOpen = !this.dropModalOpen;
-    if (this.dropModalOpen) {
-      this.scrollToCurrent = true;
-      this.searchableProjectListService.loadAllProjects();
+    this.subscriptionComplete$.pipe(take(1)).subscribe(() => {
+      this.dropModalOpen = !this.dropModalOpen;
+      if (this.dropModalOpen) {
+        this.loading$.next(true);
+        this.searchableProjectListService.enableLoading();
+        this.scrollToCurrent = true;
+      } else {
+        this.searchableProjectListService.disableLoading();
+      }
+      this.syncSearchInputAccessibility();
+    });
+  }
+
+  displayModeChange(mode:'all'|'favorited'):void {
+    this.displayMode = mode;
+    window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey, mode);
+
+    if (this.currentProject.id) {
+      this.searchableProjectListService.selectedItemID$.next(parseInt(this.currentProject.id, 10));
     }
   }
 
   close():void {
-    this.searchableProjectListService.searchText = '';
     this.dropModalOpen = false;
+    this.searchableProjectListService.disableLoading();
+    this.searchableProjectListService.searchText = '';
+    this.syncSearchInputAccessibility();
   }
 
   currentProjectName():string {
@@ -192,5 +279,27 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
   newProjectPath():string {
     const parentParam = this.currentProject.id ? `?parent_id=${this.currentProject.id}` : '';
     return `${this.pathHelper.projectsNewPath()}${parentParam}`;
+  }
+
+  anyProjectsFound(projects:IProjectData[], favorites:string[]):boolean {
+    if (this.displayMode === 'all') {
+      return projects.length > 0;
+    }
+
+    return projects.length > 0 && favorites.length > 0;
+  }
+
+  searchPlaceHolder():string {
+    if (this.displayMode === 'all') {
+      return this.currentText.search_placeholder;
+    }
+    return this.text.search_favorites_placeholder;
+  }
+
+  noSearchResultsText():string {
+    if (this.displayMode === 'all') {
+      return this.text.no_results;
+    }
+    return this.text.no_favorite_results;
   }
 }

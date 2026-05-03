@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,13 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::Queries::Schemas::BooleanFilterDependencyRepresenter do
-  include ::API::V3::Utilities::PathHelper
+RSpec.describe API::V3::Queries::Schemas::BooleanFilterDependencyRepresenter do
+  include API::V3::Utilities::PathHelper
 
   let(:project) { build_stubbed(:project) }
-  let(:bool_cf) { build_stubbed(:bool_wp_custom_field) }
+  let(:bool_cf) { build_stubbed(:boolean_wp_custom_field) }
   let(:filter) do
     Queries::WorkPackages::Filter::CustomFieldFilter.from_custom_field! custom_field: bool_cf,
                                                                         context: project
@@ -48,27 +50,27 @@ describe ::API::V3::Queries::Schemas::BooleanFilterDependencyRepresenter do
 
   subject(:generated) { instance.to_json }
 
-  context 'generation' do
-    context 'properties' do
-      describe 'values' do
-        let(:path) { 'values' }
-        let(:type) { '[1]Boolean' }
+  context "generation" do
+    context "properties" do
+      describe "values" do
+        let(:path) { "values" }
+        let(:type) { "[1]Boolean" }
 
         context "for operator 'Queries::Operators::Equals'" do
           let(:operator) { Queries::Operators::Equals }
 
-          it_behaves_like 'filter dependency'
+          it_behaves_like "filter dependency"
         end
 
         context "for operator 'Queries::Operators::NotEquals'" do
           let(:operator) { Queries::Operators::NotEquals }
 
-          it_behaves_like 'filter dependency'
+          it_behaves_like "filter dependency"
         end
       end
     end
 
-    describe 'caching' do
+    describe "caching" do
       let(:operator) { Queries::Operators::Equals }
 
       before do
@@ -76,14 +78,14 @@ describe ::API::V3::Queries::Schemas::BooleanFilterDependencyRepresenter do
         instance.to_json
       end
 
-      it 'is cached' do
+      it "is cached" do
         expect(instance)
           .not_to receive(:to_hash)
 
         instance.to_json
       end
 
-      it 'busts the cache on a different operator' do
+      it "busts the cache on a different operator" do
         instance.send(:operator=, Queries::Operators::NotEquals)
 
         expect(instance)
@@ -92,7 +94,7 @@ describe ::API::V3::Queries::Schemas::BooleanFilterDependencyRepresenter do
         instance.to_json
       end
 
-      it 'busts the cache on changes to the locale' do
+      it "busts the cache on changes to the locale" do
         expect(instance)
           .to receive(:to_hash)
 
@@ -101,7 +103,7 @@ describe ::API::V3::Queries::Schemas::BooleanFilterDependencyRepresenter do
         end
       end
 
-      it 'busts the cache on different form_embedded' do
+      it "busts the cache on different form_embedded" do
         embedded_instance = described_class.new(filter,
                                                 operator,
                                                 form_embedded: !form_embedded)

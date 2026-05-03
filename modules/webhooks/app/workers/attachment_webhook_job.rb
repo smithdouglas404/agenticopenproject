@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,10 +38,7 @@ class AttachmentWebhookJob < RepresentedWebhookJob
     webhook.enabled_for_project?(project.id)
   end
 
-  def payload_representer
-    User.system.run_given do |user|
-      ::API::V3::Attachments::AttachmentRepresenter
-        .create(resource, current_user: user, embed_links: true)
-    end
+  def payload_representer_class
+    ::API::V3::Attachments::AttachmentRepresenter
   end
 end

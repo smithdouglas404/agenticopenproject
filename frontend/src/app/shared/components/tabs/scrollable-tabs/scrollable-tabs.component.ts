@@ -13,17 +13,24 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TabDefinition } from 'core-app/shared/components/tabs/tab.interface';
-import { trackByProperty } from 'core-app/shared/helpers/angular/tracking-functions';
-import { RawParams, StateService } from '@uirouter/core';
+import {
+  RawParams,
+  StateService,
+  UIRouterGlobals,
+} from '@uirouter/core';
+import { Observable } from 'rxjs';
+import { share } from 'rxjs/operators';
+import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
+import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 
 @Component({
   templateUrl: 'scrollable-tabs.component.html',
   selector: 'op-scrollable-tabs',
   styleUrls: ['./scrollable-tabs.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-
-export class ScrollableTabsComponent implements AfterViewInit, OnChanges {
+export class ScrollableTabsComponent extends UntilDestroyedMixin implements AfterViewInit, OnChanges {
   @ViewChild('scrollContainer', { static: true }) scrollContainer:ElementRef;
 
   @ViewChild('scrollPane', { static: true }) scrollPane:ElementRef;
@@ -44,13 +51,17 @@ export class ScrollableTabsComponent implements AfterViewInit, OnChanges {
 
   @Output() public tabSelected = new EventEmitter<TabDefinition>();
 
-  trackById = trackByProperty('id');
+  @InjectField() uiRouterGlobals:UIRouterGlobals;
+
+  counters:Record<string, Observable<number>> = {};
 
   private container:Element;
 
   private pane:Element;
 
-  private debouncedTabActivationTimeout:NodeJS.Timeout|null;
+  private resizeObserver:ResizeObserver;
+
+  private debouncedTabActivationTimeout:ReturnType<typeof setTimeout>|null;
 
   private dragTargetStack = 0;
 
@@ -58,13 +69,33 @@ export class ScrollableTabsComponent implements AfterViewInit, OnChanges {
     protected readonly $state:StateService,
     private cdRef:ChangeDetectorRef,
     public injector:Injector,
-  ) { }
+  ) {
+    super();
+  }
 
   ngAfterViewInit():void {
     this.container = this.scrollContainer.nativeElement as HTMLElement;
     this.pane = this.scrollPane.nativeElement as HTMLElement;
 
-    this.updateScrollableArea();
+    this.resizeObserver = new ResizeObserver(() => this.updateScrollableArea());
+    this.resizeObserver.observe(this.container);
+
+    this
+      .uiRouterGlobals
+      .params$
+      ?.pipe(
+        this.untilDestroyed(),
+      )
+      .subscribe((params) => {
+        if (params.tabIdentifier) {
+          this.currentTabId = params.tabIdentifier as string;
+        }
+      });
+  }
+
+  override ngOnDestroy():void {
+    this.resizeObserver?.disconnect();
+    super.ngOnDestroy();
   }
 
   ngOnChanges(_changes:SimpleChanges):void {
@@ -73,7 +104,23 @@ export class ScrollableTabsComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  private updateScrollableArea() {
+  counter(tab:TabDefinition):Observable<number>|null {
+    if (!tab.counter) {
+      return null;
+    }
+
+    if (!this.counters[tab.id]) {
+      this.counters[tab.id] = tab.counter(this.injector).pipe(share());
+    }
+
+    return this.counters[tab.id];
+  }
+
+  private updateScrollableArea():void {
+    if (!this.pane || !this.container) {
+      return;
+    }
+
     this.determineScrollButtonVisibility();
     if (this.currentTabId != null) {
       this.scrollIntoVisibleArea(this.currentTabId);
@@ -84,10 +131,11 @@ export class ScrollableTabsComponent implements AfterViewInit, OnChanges {
     this.currentTabId = tab.id;
     this.tabSelected.emit(tab);
 
-    // If the tab does not provide its own link,
-    // avoid propagation
-    if (!tab.path) {
-      event.preventDefault();
+    event.preventDefault();
+
+    // Override history to avoid that browser back leads you to a different tab instead of the page you originated from
+    if (tab.path) {
+      Turbo.visit(tab.path, { action: document.referrer != '' ? 'replace' : 'advance' });
     }
   }
 
@@ -157,13 +205,27 @@ export class ScrollableTabsComponent implements AfterViewInit, OnChanges {
   }
 
   private scrollIntoVisibleArea(tabId:string) {
-    const tab:JQuery<Element> = jQuery(this.pane).find(`[data-tab-id=${tabId}]`);
-    const position:JQueryCoordinates = tab.position();
+    const tab = this.pane.querySelector<HTMLElement>(`[data-tab-id=${tabId}]`);
+    if (!tab) {
+      return;
+    }
 
-    const tabRightBorderAt:number = position.left + Number(tab.outerWidth());
+    const position = getPosition(tab);
+    const tabRightBorderAt = position.left + tab.offsetWidth;
 
     if (this.pane.scrollLeft + this.container.clientWidth < tabRightBorderAt) {
       this.pane.scrollLeft = tabRightBorderAt - this.container.clientWidth + 40; // 40px to not overlap by buttons
     }
   }
+}
+
+function getPosition(el:HTMLElement) {
+  const offsetParent = el.offsetParent || document.body;
+  const elRect = el.getBoundingClientRect();
+  const parentRect = offsetParent.getBoundingClientRect();
+
+  return {
+    top: elRect.top - parentRect.top - parseFloat(getComputedStyle(offsetParent).borderTopWidth),
+    left: elRect.left - parentRect.left - parseFloat(getComputedStyle(offsetParent).borderLeftWidth)
+  };
 }

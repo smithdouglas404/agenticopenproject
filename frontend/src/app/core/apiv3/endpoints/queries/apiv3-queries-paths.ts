@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -74,7 +74,11 @@ export class ApiV3QueriesPaths extends ApiV3ResourceCollection<QueryResource, Ap
    * @param queryId
    * @param projectIdentifier
    */
-  public find(queryData:Object, queryId?:string|null, projectIdentifier?:string|null|undefined):Observable<QueryResource> {
+  public find(
+    queryData:object,
+    queryId?:string|null,
+    projectIdentifier?:string|null,
+  ):Observable<QueryResource> {
     let path:string;
 
     if (queryId) {
@@ -93,12 +97,12 @@ export class ApiV3QueriesPaths extends ApiV3ResourceCollection<QueryResource, Ap
    *
    * @param params
    */
-  public parameterised(params:Object):Observable<QueryResource> {
+  public parameterised(params:object):Observable<QueryResource> {
     return this.halResourceService
       .get<QueryResource>(
-      this.default.path,
-      params,
-    );
+        this.default.path,
+        params,
+      );
   }
 
   /**
@@ -107,7 +111,7 @@ export class ApiV3QueriesPaths extends ApiV3ResourceCollection<QueryResource, Ap
    * @param payload Payload object or query HAL resource
    * @param form Form resource, needed when QueryResource is passed
    */
-  public post(payload:QueryResource|Object, form?:QueryFormResource):Observable<QueryResource> {
+  public post(payload:QueryResource|object, form?:QueryFormResource):Observable<QueryResource> {
     if (payload instanceof QueryResource && form) {
       // Extracting requires having the filter schemas loaded as the dependencies
       this.queryFilters.mapSchemasIntoFilters(payload, form);
@@ -116,9 +120,7 @@ export class ApiV3QueriesPaths extends ApiV3ResourceCollection<QueryResource, Ap
 
     return this
       .halResourceService
-      .post<QueryResource>(
-      this.apiRoot.queries.path, payload,
-    );
+      .post<QueryResource>(this.apiRoot.queries.path, payload);
   }
 
   /**
@@ -131,5 +133,15 @@ export class ApiV3QueriesPaths extends ApiV3ResourceCollection<QueryResource, Ap
       return query.unstar();
     }
     return query.star();
+  }
+
+  /**
+   * Get the ical url of the given query for the requesting user with the ical token
+   *
+   * @param query
+   * @param tokenName
+   */
+  public getIcalUrl(query:QueryResource, tokenName:string):Promise<unknown> {
+    return query.icalUrl({ token_name: tokenName });
   }
 }

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,29 +29,50 @@
 #++
 
 class UsersController < ApplicationController
-  layout 'admin'
+  include OpTurbo::ComponentStream
+  include WorkingTimesAuthorization
+  include Notifications::NotificationSettingsActions
+
+  layout "admin"
 
   before_action :authorize_global, except: %i[show deletion_info destroy]
 
+  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_user, only: %i[show
                                      edit
                                      update
+                                     update_reminders
+                                     update_workdays
+                                     update_email_alerts
+                                     update_participating
+                                     update_non_participating
+                                     update_date_alerts
+                                     new_project_settings
+                                     create_project_settings
+                                     edit_project_settings
+                                     update_project_settings
+                                     destroy_project_settings
                                      change_status_info
                                      change_status
                                      destroy
                                      deletion_info
                                      resend_invitation]
+  # rubocop:enable Rails/LexicallyScopedActionFilter
   # should also contain destroy but post data can not be redirected
   before_action :require_login, only: [:deletion_info]
   before_action :authorize_for_user, only: [:destroy]
   before_action :check_if_deletion_allowed, only: %i[deletion_info
                                                      destroy]
+  no_authorization_required! :show
+  authorization_checked! :destroy, :deletion_info
 
   # Password confirmation helpers and actions
   include PasswordConfirmation
+
   before_action :check_password_confirmation, only: [:destroy]
 
   include Accounts::UserLimits
+
   before_action :enforce_user_limit, only: [:create]
   before_action -> { enforce_user_limit flash_now: true }, only: [:new]
 
@@ -58,43 +81,33 @@ class UsersController < ApplicationController
   include PaginationHelper
 
   def index
-    @groups = Group.all.sort
-    @status = Users::UserFilterCell.status_param params
-    @users = Users::UserFilterCell.filter params
-
-    respond_to do |format|
-      format.html do
-        render layout: !request.xhr?
-      end
-    end
+    @groups = Group.visible.sort
+    @status = Users::UserFilterComponent.status_param params
+    @users = Users::UserFilterComponent.filter params
   end
 
   def show
-    # show projects based on current user visibility
-    @memberships = @user.memberships
-                        .where.not(project_id: nil)
-                        .visible(current_user)
-
-    events = Activities::Fetcher.new(User.current, author: @user).events(nil, nil, limit: 10)
-    @events_by_day = events.group_by { |e| e.event_datetime.to_date }
-
-    if !current_user.allowed_to_globally?(:manage_user) &&
-       (!(@user.active? ||
-       @user.registered?) ||
-       (@user != User.current && @memberships.empty? && events.empty?))
-      render_404
+    if can_show_user?
+      render layout: (can_manage_or_create_users? ? "admin" : "no_menu")
     else
-      respond_to do |format|
-        format.html { render layout: 'no_menu' }
-      end
+      render_404
     end
   end
 
   def new
     @user = User.new(language: Setting.default_language)
+    @contract = Users::CreateContract.new(@user, current_user)
   end
 
-  def create
+  def edit
+    @membership ||= Member.new
+    @individual_principal = @user
+    @contract = Users::UpdateContract.new(@user, current_user)
+
+    prepare_views_for_tab
+  end
+
+  def create # rubocop:disable Metrics/AbcSize
     call = Users::CreateService
            .new(user: current_user)
            .call(create_params)
@@ -103,19 +116,38 @@ class UsersController < ApplicationController
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_create)
-      redirect_to(params[:continue] ? new_user_path : edit_user_path(@user))
+      redirect_to(params[:continue] ? new_user_path : helpers.allowed_management_user_profile_path(@user))
     else
-      @errors = call.errors
-      render action: 'new'
+      @contract = Users::CreateContract.new(@user, current_user)
+      render action: :new, status: :unprocessable_entity
     end
   end
 
-  def edit
-    @membership ||= Member.new
-    @individual_principal = @user
+  def update_email_alerts
+    global_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+    persist_notification_setting(global_setting, permitted_params.notification_setting_email_alerts)
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
   end
 
-  def update
+  def update_reminders
+    call = ::Users::UpdateService.new(model: @user, user: current_user).call(pref: permitted_params.pref.to_h)
+    flash[call.success? ? :notice : :error] = update_service_flash_message(call)
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
+  end
+
+  def update_participating
+    update_user_notification_setting(permitted_params.notification_setting_participating)
+  end
+
+  def update_non_participating
+    update_user_notification_setting(permitted_params.notification_setting_non_participating)
+  end
+
+  def update_date_alerts
+    update_user_notification_setting(build_date_alerts_params)
+  end
+
+  def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     update_params = build_user_update_params
     call = ::Users::UpdateService.new(model: @user, user: current_user).call(update_params)
 
@@ -143,19 +175,19 @@ class UsersController < ApplicationController
       respond_to do |format|
         format.html do
           flash[:notice] = I18n.t(:notice_successful_update)
-          redirect_back(fallback_location: edit_user_path(@user))
+          redirect_to action: :edit
         end
       end
     else
       @membership ||= Member.new
       # Clear password input
       @user = call.result
-      @errors = call.errors
       @user.password = @user.password_confirmation = nil
 
       respond_to do |format|
         format.html do
-          render action: :edit
+          @contract = Users::UpdateContract.new(@user, current_user)
+          render action: :edit, status: :unprocessable_entity
         end
       end
     end
@@ -164,51 +196,71 @@ class UsersController < ApplicationController
   def change_status_info
     @status_change = params[:change_action].to_sym
 
-    return render_400 unless %i(activate lock unlock).include? @status_change
+    render_400 unless %i(activate lock unlock).include? @status_change
   end
 
-  def change_status
+  def change_status # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     if @user.id == current_user.id
       # user is not allowed to change own status
-      redirect_back_or_default(action: 'edit', id: @user)
+      flash[:error] = I18n.t("user.error_status_change_self")
+      redirect_back_or_default({ action: "edit", id: @user })
+      return
+    end
+
+    if @user.admin? && !current_user.admin?
+      # non-admin users are not allowed to change admin status
+      flash[:error] = I18n.t("user.error_admin_change_on_non_admin")
+      redirect_back_or_default({ action: "edit", id: @user })
       return
     end
 
     if (params[:unlock] || params[:activate]) && user_limit_reached?
       show_user_limit_error!
 
-      return redirect_back_or_default(action: 'edit', id: @user)
+      return redirect_back_or_default({ action: "edit", id: @user })
     end
+
+    activated_account = false
 
     if params[:unlock]
       @user.failed_login_count = 0
       @user.activate
+      activated_account = true
     elsif params[:lock]
       @user.lock
     elsif params[:activate]
       @user.activate
+      activated_account = true
     end
-    # Was the account activated? (do it before User#save clears the change)
-    was_activated = (@user.status_change == %w[registered active])
 
-    if params[:activate] && @user.missing_authentication_method?
-      flash[:error] = I18n.t('user.error_status_change_failed',
+    # Was the account activated? (do it before User#save clears the change)
+    should_deliver_activation_mail = (@user.status_change == %w[registered active])
+
+    if activated_account && @user.missing_authentication_method?
+      flash[:error] = I18n.t("user.error_status_change_failed",
                              errors: I18n.t(:notice_user_missing_authentication_method))
     elsif @user.save
       flash[:notice] = I18n.t(:notice_successful_update)
-      if was_activated
+      if should_deliver_activation_mail
         UserMailer.account_activated(@user).deliver_later
       end
     else
-      flash[:error] = I18n.t('user.error_status_change_failed',
-                             errors: @user.errors.full_messages.join(', '))
+      flash[:error] = I18n.t("user.error_status_change_failed",
+                             errors: @user.errors.full_messages.join(", "))
     end
-    redirect_back_or_default(action: 'edit', id: @user)
+    redirect_back_or_default({ action: "edit", id: @user })
   end
 
-  def resend_invitation
+  def resend_invitation # rubocop:disable Metrics/AbcSize
+    if @user.admin? && !current_user.admin?
+      # non-admin users are not allowed to change admin status
+      flash[:error] = I18n.t("user.error_admin_change_on_non_admin")
+      redirect_to helpers.allowed_management_user_profile_path(@user)
+      return
+    end
+
     status = Principal.statuses[:invited]
-    @user.update status: status if @user.status != status
+    @user.update!(status: status) if @user.status != status
 
     token = UserInvitation.reinvite_user @user.id
 
@@ -219,16 +271,20 @@ class UsersController < ApplicationController
       flash[:error] = I18n.t(:notice_internal_server_error, app_title: Setting.app_title)
     end
 
-    redirect_to edit_user_path(@user)
+    redirect_to helpers.allowed_management_user_profile_path(@user)
   end
 
   def destroy
     # true if the user deletes him/herself
     self_delete = (@user == User.current)
 
-    Users::DeleteService.new(model: @user, user: User.current).call
+    result = Users::DeleteService.new(model: @user, user: User.current).call
 
-    flash[:notice] = I18n.t('account.deleted')
+    if result.success?
+      flash[:notice] = I18n.t("account.deletion_pending")
+    else
+      flash[:error] = result.errors.full_messages.join(", ")
+    end
 
     respond_to do |format|
       format.html do
@@ -238,20 +294,54 @@ class UsersController < ApplicationController
   end
 
   def deletion_info
-    render action: 'deletion_info', layout: my_or_admin_layout
+    respond_with_dialog Users::DeleteDialogComponent.new(user: @user)
   end
 
   private
 
+  def update_user_notification_setting(update_params)
+    global_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+    persist_notification_setting(global_setting, update_params)
+    redirect_back_or_to edit_user_path(@user, tab: "notifications")
+  end
+
+  def notifications_settings_path
+    edit_user_path(@user, tab: "notifications")
+  end
+
+  def workdays_redirect_path
+    edit_user_path(@user, tab: "reminders")
+  end
+
+  def project_notifications_create_url
+    project_notifications_user_path(@user)
+  end
+
+  def project_setting_form_url(project_id)
+    project_setting_user_path(@user, project_id:)
+  end
+
+  def can_show_user?
+    return true if can_manage_or_create_users?
+    return true if @user == User.current
+    return true if current_user.allowed_globally?(:view_all_principals)
+
+    return false unless @user.active? || @user.registered?
+
+    @user.visible?(current_user)
+  end
+
+  def can_manage_or_create_users?
+    current_user.allowed_globally?(:manage_user) || current_user.allowed_globally?(:create_user)
+  end
+
   def find_user
-    if params[:id] == 'current' || params['id'].nil?
+    if params[:id] == User::CURRENT_USER_LOGIN_ALIAS || params[:id].nil?
       require_login || return
       @user = User.current
     else
-      @user = User.find(params[:id])
+      @user = User.visible.find(params[:id])
     end
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def authorize_for_user
@@ -261,9 +351,9 @@ class UsersController < ApplicationController
 
       respond_to do |format|
         format.html { render_403 }
-        format.xml  { head :unauthorized, 'WWW-Authenticate' => 'Basic realm="OpenProject API"' }
-        format.js   { head :unauthorized, 'WWW-Authenticate' => 'Basic realm="OpenProject API"' }
-        format.json { head :unauthorized, 'WWW-Authenticate' => 'Basic realm="OpenProject API"' }
+        format.xml  { head :unauthorized, "WWW-Authenticate" => 'Basic realm="OpenProject API"' }
+        format.js   { head :unauthorized, "WWW-Authenticate" => 'Basic realm="OpenProject API"' }
+        format.json { head :unauthorized, "WWW-Authenticate" => 'Basic realm="OpenProject API"' }
       end
 
       false
@@ -271,16 +361,21 @@ class UsersController < ApplicationController
   end
 
   def check_if_deletion_allowed
-    render_404 unless Users::DeleteContract.deletion_allowed? @user, User.current
+    return if Users::DeleteContract.deletion_allowed?(@user, User.current)
+
+    render_error_flash_message_via_turbo_stream(message: I18n.t("user.error_cannot_delete_user"))
+    respond_with_turbo_streams(status: :not_found) do |format|
+      format.html { render_404 }
+    end
   end
 
   def my_or_admin_layout
     # TODO: how can this be done better:
     # check if the route used to call the action is in the 'my' namespace
     if url_for(:delete_my_account_info) == request.url
-      'my'
+      "my"
     else
-      'admin'
+      "admin"
     end
   end
 
@@ -290,19 +385,7 @@ class UsersController < ApplicationController
 
   protected
 
-  def default_breadcrumb
-    if action_name == 'index'
-      t('label_user_plural')
-    else
-      ActionController::Base.helpers.link_to(t('label_user_plural'), users_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    action_name != 'show'
-  end
-
-  def build_user_update_params
+  def build_user_update_params # rubocop:disable Metrics/AbcSize
     pref_params = permitted_params.pref.to_h
     update_params = permitted_params
       .user_create_as_admin(@user.uses_external_authentication?, @user.change_password_allowed?)
@@ -319,10 +402,8 @@ class UsersController < ApplicationController
         force_password_change: true
       )
     elsif set_password? params
-      update_params.merge!(
-        password: params[:user][:password],
-        password_confirmation: params[:user][:password_confirmation]
-      )
+      update_params[:password] = params[:user][:password]
+      update_params[:password_confirmation] = params[:user][:password_confirmation]
     end
 
     update_params
@@ -334,5 +415,28 @@ class UsersController < ApplicationController
       .merge(admin: params[:user][:admin] || false,
              login: params[:user][:login] || params[:user][:mail],
              status: User.statuses[:invited])
+  end
+
+  def prepare_views_for_tab # rubocop:disable Metrics/AbcSize
+    if params[:tab] == "non_working_times"
+      authorize_manage_working_times
+      check_working_times_feature_flag_is_active
+
+      @year = (params[:year].presence || Date.current.year).to_i
+      @non_working_times = @user.non_working_time_entities_for_year(@year)
+    elsif params[:tab] == "working_hours"
+      authorize_manage_working_times
+      check_working_times_feature_flag_is_active
+
+      @current_working_hours = @user.working_hours.current
+
+      @future_working_hours = @user.working_hours.upcoming(Date.current + 1)
+
+      @past_working_hours = if @current_working_hours
+                              @user.working_hours.history_for(@current_working_hours)
+                            else
+                              UserWorkingHours.none
+                            end
+    end
   end
 end

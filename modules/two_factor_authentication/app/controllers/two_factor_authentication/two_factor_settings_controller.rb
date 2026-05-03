@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module ::TwoFactorAuthentication
   class TwoFactorSettingsController < ApplicationController
-    include EnterpriseTrialHelper
     before_action :require_admin
     before_action :check_enabled
+    before_action :check_writable, only: :update
 
-    layout 'admin'
+    layout "admin"
     menu_item :two_factor_authentication
 
     def show
-      render template: 'two_factor_authentication/settings',
+      render template: "two_factor_authentication/settings",
              locals: {
                settings: Setting.plugin_openproject_two_factor_authentication,
                strategy_manager: manager,
@@ -24,7 +26,7 @@ module ::TwoFactorAuthentication
         flash[:notice] = I18n.t(:notice_successful_update)
       rescue ArgumentError => e
         Setting.plugin_openproject_two_factor_authentication = current_settings
-        flash[:error] = I18n.t('two_factor_authentication.settings.failed_to_save_settings', message: e.message)
+        flash[:error] = I18n.t("two_factor_authentication.settings.failed_to_save_settings", message: e.message)
         Rails.logger.error "Failed to save 2FA settings: #{e.message}"
       end
 
@@ -32,6 +34,12 @@ module ::TwoFactorAuthentication
     end
 
     private
+
+    def check_writable
+      unless Setting.plugin_openproject_two_factor_authentication_writable?
+        render_403 message: I18n.t("two_factor_authentication.notice_not_writable")
+      end
+    end
 
     def permitted_params
       params.require(:settings).permit(:enforced, :allow_remember_for_days)
@@ -50,14 +58,6 @@ module ::TwoFactorAuthentication
 
     def manager
       ::OpenProject::TwoFactorAuthentication::TokenStrategyManager
-    end
-
-    def default_breadcrumb
-      t('two_factor_authentication.settings.title')
-    end
-
-    def show_local_breadcrumb
-      true
     end
   end
 end

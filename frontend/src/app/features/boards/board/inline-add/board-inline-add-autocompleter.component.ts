@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +28,7 @@
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -55,12 +56,15 @@ import { HalResourceService } from 'core-app/features/hal/services/hal-resource.
 @Component({
   selector: 'board-inline-add-autocompleter',
   templateUrl: './board-inline-add-autocompleter.html',
-
   // Allow styling the embedded ng-select
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./board-inline-add-autocompleter.sass'],
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-
 export class BoardInlineAddAutocompleterComponent implements AfterViewInit {
   readonly text = {
     placeholder: this.I18n.t('js.relations_autocomplete.placeholder'),
@@ -75,7 +79,7 @@ export class BoardInlineAddAutocompleterComponent implements AfterViewInit {
     const filters:ApiV3FilterBuilder = new ApiV3FilterBuilder();
     const results = this.querySpace.results.value;
 
-    filters.add('subjectOrId', '**', [searchString]);
+    filters.add('typeahead', '**', [searchString]);
 
     if (results && results.elements.length > 0) {
       filters.add('id', '!', results.elements.map((wp:WorkPackageResource) => wp.id!));
@@ -91,7 +95,7 @@ export class BoardInlineAddAutocompleterComponent implements AfterViewInit {
       .apiV3Service
       .withOptionalProject(this.CurrentProject.id)
       .work_packages
-      .filtered(filters)
+      .filtered(filters, { sortBy: '[["updatedAt","desc"]]' })
       .get()
       .pipe(
         map((collection) => collection.elements),

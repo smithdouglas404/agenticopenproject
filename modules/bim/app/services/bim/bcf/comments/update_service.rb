@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,11 +31,12 @@ module Bim::Bcf
     class UpdateService < ::BaseServices::Update
       private
 
-      def before_perform(params, service_result)
+      def before_perform(service_result)
         journal_call = update_journal(params[:original_comment].journal, params[:comment])
         return journal_call if journal_call.failure?
 
-        super params.slice(*::Bim::Bcf::Comment::UPDATE_ATTRIBUTES), service_result
+        self.params = params.slice(*::Bim::Bcf::Comment::UPDATE_ATTRIBUTES)
+        super
       end
 
       def update_journal(journal, comment)

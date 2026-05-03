@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'api/v3/work_packages/work_package_representer'
+require "api/v3/work_packages/work_package_representer"
 
 module API
   module V3
@@ -42,7 +44,7 @@ module API
           mount ::API::V3::WorkPackages::Schema::WorkPackageSchemasAPI
 
           get do
-            authorize(:view_work_packages, global: true)
+            authorize_in_any_work_package(:view_work_packages)
 
             call = raise_invalid_query_on_service_failure do
               WorkPackageCollectionFromQueryParamsService
@@ -53,15 +55,15 @@ module API
             call.result
           end
 
-          post &::API::V3::Utilities::Endpoints::Create.new(model: WorkPackage,
+          post(&::API::V3::Utilities::Endpoints::Create.new(model: WorkPackage,
                                                             parse_service: WorkPackages::ParseParamsService,
                                                             params_modifier: ->(attributes) {
                                                               attributes[:send_notifications] = notify_according_to_params
                                                               attributes
                                                             })
-                                                       .mount
+                                                       .mount)
 
-          route_param :id, type: Integer, desc: 'Work package ID' do
+          route_param :id, type: String, desc: "Work package ID or semantic identifier (e.g. PROJ-42)" do
             helpers WorkPackagesSharedHelpers
 
             helpers do
@@ -69,14 +71,14 @@ module API
             end
 
             after_validation do
-              @work_package = WorkPackage.find(declared_params[:id])
+              @work_package = WorkPackage.visible.find(declared_params[:id])
 
-              authorize(:view_work_packages, context: @work_package.project) do
+              authorize_in_work_package(:view_work_packages, work_package: @work_package) do
                 raise API::Errors::NotFound.new model: :work_package
               end
             end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: WorkPackage).mount
+            get &API::V3::WorkPackages::ShowEndPoint.new(model: WorkPackage).mount
 
             patch &::API::V3::WorkPackages::UpdateEndPoint.new(model: WorkPackage,
                                                                parse_service: ::API::V3::WorkPackages::ParseParamsService,
@@ -94,9 +96,12 @@ module API
             mount ::API::V3::Attachments::AttachmentsByWorkPackageAPI
             mount ::API::V3::Repositories::RevisionsByWorkPackageAPI
             mount ::API::V3::WorkPackages::UpdateFormAPI
+            mount ::API::V3::WorkPackages::AvailableAssigneesAPI
             mount ::API::V3::WorkPackages::AvailableProjectsOnEditAPI
             mount ::API::V3::WorkPackages::AvailableRelationCandidatesAPI
             mount ::API::V3::WorkPackages::WorkPackageRelationsAPI
+            mount ::API::V3::Reminders::RemindersByWorkPackageAPI
+            mount ::API::V3::EmojiReactions::EmojiReactionsByWorkPackageCommentsAPI
           end
 
           mount ::API::V3::WorkPackages::CreateFormAPI

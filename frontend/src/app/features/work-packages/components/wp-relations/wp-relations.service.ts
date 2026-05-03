@@ -1,15 +1,17 @@
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { multiInput, MultiInputState, StatesGroup } from 'reactivestates';
+import { multiInput, MultiInputState, StatesGroup } from '@openproject/reactivestates';
 import { Injectable } from '@angular/core';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { StateCacheService } from 'core-app/core/apiv3/cache/state-cache.service';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { firstValueFrom, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { RelationResource } from 'core-app/features/hal/resources/relation-resource';
+import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import { ApiV3Filter } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 
-export type RelationsStateValue = { [relationId:string]:RelationResource };
+export type RelationsStateValue = Record<string, RelationResource>;
 
 export class RelationStateGroup extends StatesGroup {
   name = 'WP-Relations';
@@ -24,9 +26,12 @@ export class RelationStateGroup extends StatesGroup {
 
 @Injectable()
 export class WorkPackageRelationsService extends StateCacheService<RelationsStateValue> {
-  constructor(private PathHelper:PathHelperService,
+  constructor(
+    private PathHelper:PathHelperService,
     private apiV3Service:ApiV3Service,
-    private halResource:HalResourceService) {
+    private halResource:HalResourceService,
+    readonly turboRequests:TurboRequestsService,
+  ) {
     super(new RelationStateGroup().relations);
   }
 
@@ -40,12 +45,7 @@ export class WorkPackageRelationsService extends StateCacheService<RelationsStat
    * @param force Load the value anyway.
    */
   public require(id:string, force = false):Promise<RelationsStateValue> {
-    return this
-      .requireAndStream(id, force)
-      .pipe(
-        take(1),
-      )
-      .toPromise();
+    return firstValueFrom(this.requireAndStream(id, force));
   }
 
   /**
@@ -76,12 +76,13 @@ export class WorkPackageRelationsService extends StateCacheService<RelationsStat
   protected load(id:string):Observable<RelationsStateValue> {
     return this
       .apiV3Service
-      .work_packages
-      .id(id)
       .relations
-      .get()
+      .filtered(
+        ApiV3Filter('involved', '=', [id]),
+      )
+      .getPaginatedResults()
       .pipe(
-        map((collection) => this.relationsStateValue(id, collection.elements)),
+        map((elements:RelationResource[]) => this.relationsStateValue(id, elements)),
       );
   }
 
@@ -145,7 +146,7 @@ export class WorkPackageRelationsService extends StateCacheService<RelationsStat
     return this.updateRelation(relation, params);
   }
 
-  public updateRelation(relation:RelationResource, params:{ [key:string]:any }) {
+  public updateRelation(relation:RelationResource, params:Record<string, any>) {
     return relation.updateImmediately(params)
       .then((savedRelation:RelationResource) => {
         this.insertIntoStates(savedRelation);
@@ -172,6 +173,13 @@ export class WorkPackageRelationsService extends StateCacheService<RelationsStat
         this.insertIntoStates(relation);
         return relation;
       });
+  }
+
+  public updateCounter(workPackage:WorkPackageResource) {
+    if (workPackage.id) {
+      const url = this.PathHelper.workPackageUpdateCounterPath(workPackage.id, 'relations');
+      void this.turboRequests.request(url);
+    }
   }
 
   /**

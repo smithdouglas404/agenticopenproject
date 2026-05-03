@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +27,7 @@
 //++
 
 import { Injector } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { States } from 'core-app/core/states/states.service';
@@ -35,7 +35,8 @@ import { of } from 'rxjs';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { OpenprojectHalModule } from 'core-app/features/hal/openproject-hal.module';
 import { HalLink, HalLinkInterface } from 'core-app/features/hal/hal-link/hal-link';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import Spy = jasmine.Spy;
 
 describe('HalResource', () => {
@@ -48,28 +49,24 @@ describe('HalResource', () => {
   class OtherResource extends HalResource {
   }
 
-  beforeEach(waitForAsync(() => {
-    // noinspection JSIgnoredPromiseFromCall
-    TestBed.configureTestingModule({
-      imports: [
-        OpenprojectHalModule,
-        HttpClientTestingModule,
-      ],
-      providers: [
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+    imports: [OpenprojectHalModule],
+    providers: [
         HalResourceService,
         States,
         I18nService,
-      ],
-    })
-      .compileComponents()
-      .then(() => {
-        halResourceService = TestBed.inject(HalResourceService);
-        injector = TestBed.inject(Injector);
-      });
-  }));
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
+    halResourceService = TestBed.inject(HalResourceService);
+    injector = TestBed.inject(Injector);
+  });
 
   it('should be instantiable using a default object', () => {
     const resource = halResourceService.createHalResource({}, true);
+
     expect(resource.href).toEqual(null);
   });
 
@@ -96,6 +93,7 @@ describe('HalResource', () => {
     it('should perform a request', () => {
       resource = halResourceService.createHalResource(source, true);
       resource.$update();
+
       expect(getStub).toHaveBeenCalled();
     });
   });
@@ -179,12 +177,14 @@ describe('HalResource', () => {
     it('should use the source link only once when called', () => {
       resource.link;
       resource.link;
+
       expect(linkFn.calls.count()).toEqual(1);
     });
 
     it('should use the source embedded only once when called', () => {
       resource.resource;
       resource.resource;
+
       expect(embeddedFn.calls.count()).toEqual(1);
     });
   });
@@ -254,6 +254,7 @@ describe('HalResource', () => {
 
     it('should have a writable name attribute', () => {
       resource.name = 'some name';
+
       expect(resource.name).toEqual('some name');
     });
 
@@ -707,6 +708,7 @@ describe('HalResource', () => {
 
         it('should update the source when set', () => {
           resource.property = resource;
+
           expect(resource.$source._links.property.href).toEqual('/api/self');
         });
 
@@ -742,7 +744,7 @@ describe('HalResource', () => {
             promise.then(() => {
               expect(resource.$loaded).toBeTruthy();
               done();
-            });
+            }).catch(done.fail);
           });
 
           it('should be updated', () => {
@@ -751,6 +753,7 @@ describe('HalResource', () => {
 
           it('should have properties that have a getter and setter', () => {
             const descriptor = Object.getOwnPropertyDescriptor(newResult, 'foo');
+
             expect(descriptor).toBeDefined('Descriptor should be defined');
 
             expect(descriptor!.get).toBeDefined('Descriptor getter should be defined');

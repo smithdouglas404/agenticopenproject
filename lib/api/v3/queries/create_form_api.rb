@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'api/v3/queries/query_representer'
+require "api/v3/queries/query_representer"
 
 module API
   module V3
@@ -36,7 +36,7 @@ module API
           helpers ::API::V3::Queries::QueryHelper
 
           post do
-            create_or_update_query_form Query.new_default, ::Queries::CreateContract, CreateFormRepresenter
+            create_or_update_query_form Query.new_default, ::Queries::BaseContract, CreateFormRepresenter
           end
         end
       end

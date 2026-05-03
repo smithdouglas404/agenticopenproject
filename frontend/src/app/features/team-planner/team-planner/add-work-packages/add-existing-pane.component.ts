@@ -32,12 +32,9 @@ import { UrlParamsHelperService } from 'core-app/features/work-packages/componen
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { CalendarDragDropService } from 'core-app/features/team-planner/team-planner/calendar-drag-drop.service';
-import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
-import { StateService } from '@uirouter/core';
 import { ActionsService } from 'core-app/core/state/actions/actions.service';
 import { teamPlannerEventRemoved } from 'core-app/features/team-planner/team-planner/planner/team-planner.actions';
 import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
-import { OpCalendarService } from 'core-app/features/calendar/op-calendar.service';
 import { OpWorkPackagesCalendarService } from 'core-app/features/calendar/op-work-packages-calendar.service';
 
 @Component({
@@ -45,6 +42,7 @@ import { OpWorkPackagesCalendarService } from 'core-app/features/calendar/op-wor
   templateUrl: './add-existing-pane.component.html',
   styleUrls: ['./add-existing-pane.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AddExistingPaneComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @HostBinding('class.op-add-existing-pane') className = true;
@@ -89,8 +87,8 @@ export class AddExistingPaneComponent extends UntilDestroyedMixin implements OnI
   ])
     .pipe(
       map(([draggable, rendered]) => {
-        const renderedIds = rendered.elements.map((el) => el.id as string);
-        return draggable.filter((wp) => !renderedIds.includes(wp.id as string));
+        const renderedIds = rendered.elements.map((el) => el.id!);
+        return draggable.filter((wp) => !renderedIds.includes(wp.id!));
       }),
     );
 
@@ -120,7 +118,6 @@ export class AddExistingPaneComponent extends UntilDestroyedMixin implements OnI
     private readonly urlParamsHelper:UrlParamsHelperService,
     private readonly workPackagesCalendar:OpWorkPackagesCalendarService,
     private readonly calendarDrag:CalendarDragDropService,
-    private readonly $state:StateService,
     private readonly actions$:ActionsService,
     private readonly wpFilters:WorkPackageViewFiltersService,
   ) {
@@ -213,10 +210,7 @@ export class AddExistingPaneComponent extends UntilDestroyedMixin implements OnI
   }
 
   openStateLink(event:{ workPackageId:string; requestedState:string }):void {
-    void this.$state.go(
-      `${splitViewRoute(this.$state)}.tabs`,
-      { workPackageId: event.workPackageId, tabIdentifier: 'overview' },
-    );
+    this.workPackagesCalendar.openSplitView(event.workPackageId);
   }
 
   private addExistingFilters(filters:ApiV3FilterBuilder) {

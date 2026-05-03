@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -29,26 +29,34 @@ See COPYRIGHT and LICENSE files for more details.
 <% if repository.new_record? %>
   <% scm_types = repository.class.available_types %>
 
-  <div class="attributes-group -toggleable" data-switch="scm_type">
-   <% scm_types.each do |type|%>
-     <div class="form--field">
-      <%= styled_label_tag type, t("repositories.#{@repository.vendor}.#{type}_title") %>
-      <div class="form--field-container">
-        <%= styled_radio_button_tag 'scm_type', type, scm_types.length == 1 ? true : false, id: type, autofocus: true %>
+  <div class="form--fieldset attributes-group -toggleable"
+       data-repository-settings-target="scmTypeSwitch">
+    <% scm_types.each do |type| %>
+      <div class="form--field">
+        <%= styled_label_tag type, t("repositories.#{repository.vendor}.#{type}_title") %>
+        <div class="form--field-container">
+          <%= styled_radio_button_tag "scm_type",
+                                      type,
+                                      scm_types.length == 1,
+                                      id: type,
+                                      autofocus: true,
+                                      data: {
+                                        action: "repository-settings#toggleContent"
+                                      } %>
+        </div>
       </div>
-    </div>
     <% end %>
 
-      <% scm_types.each do |type|%>
-          <%= render partial: "projects/settings/repository/vendor_attribute_groups",
-                     locals: { existing: false, alone: scm_types.length == 1,
-                               vendor: @repository.vendor, type: type,
-                               form: form, repository: repository } %>
-      <% end %>
+    <% scm_types.each do |type| %>
+        <%= render partial: "projects/settings/repository/vendor_attribute_groups",
+                   locals: { existing: false, alone: scm_types.length == 1,
+                             vendor: repository.vendor, type: type,
+                             form: form, repository: repository } %>
+    <% end %>
   </div>
 <% else %>
   <%= render partial: "projects/settings/repository/vendor_attribute_groups",
-             locals: { existing: true, alone: true, vendor: @repository.vendor,
+             locals: { existing: true, alone: true, vendor: repository.vendor,
                        type: repository.scm_type,
                        form: form, repository: repository } %>
 <% end %>

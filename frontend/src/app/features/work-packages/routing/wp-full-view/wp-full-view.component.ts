@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,68 +26,102 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  Injector,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { StateService } from '@uirouter/core';
-import { Component, Injector, OnInit } from '@angular/core';
-import { of } from 'rxjs';
+import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
+import { RecentItemsService } from 'core-app/core/recent-items.service';
+import { ProjectResource } from 'core-app/features/hal/resources/project-resource';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
+import { WpSingleViewService } from 'core-app/features/work-packages/routing/wp-view-base/state/wp-single-view.service';
 import { WorkPackageViewSelectionService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
 import { WorkPackageSingleViewBase } from 'core-app/features/work-packages/routing/wp-view-base/work-package-single-view.base';
-import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
-import { WpSingleViewService } from 'core-app/features/work-packages/routing/wp-view-base/state/wp-single-view.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   templateUrl: './wp-full-view.html',
-  selector: 'wp-full-view-entry',
+  selector: 'op-wp-full-view',
   // Required class to support inner scrolling on page
   host: { class: 'work-packages-page--ui-view' },
   providers: [
     WpSingleViewService,
     { provide: HalResourceNotificationService, useExisting: WorkPackageNotificationService },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase implements OnInit {
   // Watcher properties
   public isWatched:boolean;
 
-  public displayWatchButton:boolean;
+  public displayReminderButton$:Observable<boolean> = of(false);
+
+  public displayShareButton$:false|Observable<boolean> = false;
+
+  public displayTimerButton = false;
+
+  public displayWatchButton = false;
 
   public watchers:any;
 
-  stateName$ = of('work-packages.new');
+  public text = {
+    fullView: {
+      buttonMore: this.i18n.t('js.button_more'),
+    },
+  };
 
   constructor(
     public injector:Injector,
     public wpTableSelection:WorkPackageViewSelectionService,
+    public recentItemsService:RecentItemsService,
     readonly $state:StateService,
+    readonly currentUserService:CurrentUserService,
   ) {
-    super(injector, $state.params.workPackageId);
+    super(injector);
+  }
+
+  // enable other parts of the application to trigger an immediate update
+  // e.g. a stimulus controller
+  // currently used by the new activities tab which does its own polling
+  @HostListener('document:ian-update-immediate')
+  triggerImmediateUpdate() {
+    this.storeService.reload();
   }
 
   ngOnInit():void {
     this.observeWorkPackage();
   }
 
-  protected initializeTexts() {
-    super.initializeTexts();
-
-    this.text.full_view = {
-      button_more: this.I18n.t('js.button_more'),
-    };
-  }
-
   protected init() {
     super.init();
 
-    // Set Focused WP
-    this.wpTableFocus.updateFocus(this.workPackage.id!);
+    if (this.workPackage.id) {
+      this.recentItemsService.add(this.workPackage.id);
+
+      // Set Focused WP
+      this.wpTableFocus.updateFocus(this.workPackage.id);
+    }
 
     this.setWorkPackageScopeProperties(this.workPackage);
   }
 
   private setWorkPackageScopeProperties(wp:WorkPackageResource) {
-    this.isWatched = wp.hasOwnProperty('unwatch');
-    this.displayWatchButton = wp.hasOwnProperty('unwatch') || wp.hasOwnProperty('watch');
+    this.isWatched = Object.prototype.hasOwnProperty.call(wp, 'unwatch');
+    this.displayWatchButton = Object.prototype.hasOwnProperty.call(wp, 'unwatch') || Object.prototype.hasOwnProperty.call(wp, 'watch');
+    this.displayTimerButton = Object.prototype.hasOwnProperty.call(wp, 'logTime');
+    this.displayShareButton$ = this.currentUserService.hasCapabilities$('work_package_shares/index', (wp.project as ProjectResource).id);
+    this.displayReminderButton$ = this.currentUserService.isLoggedInAndHasCapabalities$(
+      'work_packages/read',
+      (this.workPackage.project as ProjectResource).id,
+    );
 
     // watchers
     if (wp.watchers) {

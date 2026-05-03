@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,48 +31,44 @@
 class Enumeration < ApplicationRecord
   default_scope { order("#{Enumeration.table_name}.position ASC") }
 
-  belongs_to :project
+  belongs_to :project, optional: true
 
   acts_as_list scope: 'type = \'#{type}\''
-  acts_as_tree order: 'position ASC'
+  acts_as_tree order: "position ASC"
 
   before_save :unmark_old_default_value, if: :became_default_value?
+  before_save :ensure_activated, if: -> { self.class.can_have_default_value? && is_default? }
   before_destroy :check_integrity
 
-  validates :name, presence: true
   validates :name,
-            uniqueness: { scope: %i(type project_id),
-                          case_sensitive: false }
-  validates :name, length: { maximum: 30 }
+            presence: true,
+            length: { maximum: 256 },
+            uniqueness: { scope: %i(type project_id), case_sensitive: false }
 
   scope :shared, -> { where(project_id: nil) }
   scope :active, -> { where(active: true) }
-
-  # let all child classes have Enumeration as it's model name
-  # used to not having to create another route for every subclass of Enumeration
-  def self.inherited(child)
-    child.instance_eval do
-      def model_name
-        Enumeration.model_name
-      end
-    end
-    super
-  end
 
   def self.colored?
     false
   end
 
+  delegate :colored?, to: :class
+
   def self.default
     # Creates a fake default scope so Enumeration.default will check
-    # it's type.  STI subclasses will automatically add their own
+    # its type.  STI subclasses will automatically add their own
     # types to the finder.
     if descends_from_active_record?
-      where(is_default: true, type: 'Enumeration').first
+      where(is_default: true, type: "Enumeration").first
     else
       # STI classes are
       where(is_default: true).first
     end
+  end
+
+  # boolean to define if the enumeration can set a default
+  def self.can_have_default_value?
+    true
   end
 
   # Destroys enumerations in a single transaction
@@ -129,7 +127,7 @@ class Enumeration < ApplicationRecord
 
   # Does the +new+ Hash override the previous Enumeration?
   def self.overriding_change?(new, previous)
-    if same_active_state?(new['active'], previous.active) && same_custom_values?(new, previous)
+    if same_active_state?(new["active"], previous.active) && same_custom_values?(new, previous)
       false
     else
       true
@@ -140,8 +138,8 @@ class Enumeration < ApplicationRecord
   def self.same_custom_values?(new, previous)
     previous.custom_field_values.each do |custom_value|
       if new &&
-         new['custom_field_values'] &&
-         custom_value.value != new['custom_field_values'][custom_value.custom_field_id.to_s]
+         new["custom_field_values"] &&
+         custom_value.value != new["custom_field_values"][custom_value.custom_field_id.to_s]
         return false
       end
     end
@@ -151,7 +149,7 @@ class Enumeration < ApplicationRecord
 
   # Are the new and previous fields equal?
   def self.same_active_state?(new, previous)
-    new = new == '1'
+    new = new == "1"
     new == previous
   end
 
@@ -175,9 +173,8 @@ class Enumeration < ApplicationRecord
   def check_integrity
     raise "Can't delete enumeration" if in_use?
   end
-end
 
-# Force load the subclasses in development mode
-%w(time_entry_activity issue_priority).each do |enum_subclass|
-  require enum_subclass
+  def ensure_activated
+    self.active = true
+  end
 end

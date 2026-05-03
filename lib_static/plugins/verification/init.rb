@@ -1,3 +1,3 @@
-# Include hook code here
+# frozen_string_literal: true
 
-require 'action_controller/verification'
+# Include hook code here

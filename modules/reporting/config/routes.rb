@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,32 +26,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-OpenProject::Application.routes.draw do
-  scope 'projects/:project_id' do
+Rails.application.routes.draw do
+  scope "projects/:project_id" do
     resources :cost_reports, except: :create do
       collection do
         match :index, via: %i[get post]
+        get "menu" => "cost_reports/menus#show", as: :menu_project
       end
 
       member do
         post :update
         post :rename
+        delete :destroy
       end
     end
   end
 
+  namespace :cost_reports do
+    resource :menu, only: %[show]
+  end
+
   resources :cost_reports, except: :create do
     collection do
-      match :index, via: %i[get post]
+      match :index, via: %i[get post], as: :global
       post :save_as, action: :create
       get :drill_down
       match :available_values, via: %i[get post]
-      get :display_report_list
     end
 
     member do
       post :update
       post :rename
+      delete :destroy
     end
   end
 end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +28,7 @@
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -38,17 +39,17 @@ import {
 } from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { OpInviteUserModalService } from 'core-app/features/invite-user-modal/invite-user-modal.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { AddTagFn } from '@ng-select/ng-select/lib/ng-select.component';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { Subject } from 'rxjs';
-import { typeFromHref } from 'core-app/shared/components/principal/principal-helper';
 import { compareByHref } from 'core-app/shared/helpers/angular/tracking-functions';
-import { filter } from 'rxjs/operators';
+import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-redundant-type-constituents
+type AddTagFn = (term:string) => any | Promise<any>;
 
 export interface CreateAutocompleterValueOption {
   name:string;
@@ -58,7 +59,9 @@ export interface CreateAutocompleterValueOption {
 @Component({
   templateUrl: './create-autocompleter.component.html',
   selector: 'create-autocompleter',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./create-autocompleter.component.sass'],
+  standalone: false,
 })
 export class CreateAutocompleterComponent extends UntilDestroyedMixin implements AfterViewInit {
   @Input() public availableValues:CreateAutocompleterValueOption[];
@@ -85,7 +88,7 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
 
   @Output() public onChange = new EventEmitter<HalResource>();
 
-  @Output() public onKeydown = new EventEmitter<JQuery.TriggeredEvent>();
+  @Output() public onKeydown = new EventEmitter<KeyboardEvent>();
 
   @Output() public onOpen = new EventEmitter<void>();
 
@@ -107,7 +110,9 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
 
   public compareByHref = compareByHref;
 
-  public text:{ [key:string]:string } = {};
+  public groupByFn = (_item:HalResource):string | null => null;
+
+  public text:Record<string, string> = {};
 
   public createAllowed:boolean|AddTagFn = false;
 
@@ -144,15 +149,7 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
   }
 
   public opened() {
-    // Force reposition as a workaround for BUG
-    // https://github.com/ng-select/ng-select/issues/1259
-    setTimeout(() => {
-      const component = this.ngSelectComponent as any;
-      if (this.appendTo && component && component.dropdownPanel) {
-        component.dropdownPanel._updatePosition();
-      }
-    }, 25);
-
+    repositionDropdownBugfix(this.ngSelectComponent);
     this.onOpen.emit();
   }
 
@@ -161,7 +158,7 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
     this.onClose.emit();
   }
 
-  public keyPressed(event:JQuery.TriggeredEvent) {
+  public keyPressed(event:KeyboardEvent) {
     this.onKeydown.emit(event);
   }
 

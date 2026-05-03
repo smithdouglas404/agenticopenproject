@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,24 +26,19 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ConfigurationService } from 'core-app/core/config/configuration.service';
-import {
-  input,
-  State,
-} from 'reactivestates';
-import { Injectable } from '@angular/core';
-import { UploadInProgress } from 'core-app/core/file-upload/op-file-upload.service';
-import {
-  IHalErrorBase,
-  IHalMultipleError,
-  isHalError,
-} from 'core-app/features/hal/resources/error-resource';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { input, State } from '@openproject/reactivestates';
+import { Injectable } from '@angular/core';
+import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
+
 import { I18nService } from 'core-app/core/i18n/i18n.service';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import waitForUploadsFinished from 'core-app/core/upload/wait-for-uploads-finished';
+import { IHalErrorBase, IHalMultipleError, isHalError } from 'core-app/features/hal/resources/error-resource';
 
 export function removeSuccessFlashMessages():void {
-  jQuery('.flash.notice').remove();
+  document.querySelectorAll('.op-toast.-success').forEach((flashMessage) => flashMessage.remove());
 }
 
 export type ToastType = 'success'|'error'|'warning'|'info'|'upload'|'loading';
@@ -51,6 +46,7 @@ export const OPToastEvent = 'op:toasters:add';
 
 export interface IToast {
   message:string;
+  icon?:string;
   link?:{ text:string, target:() => void };
   type:ToastType;
   data?:unknown;
@@ -65,11 +61,9 @@ export class ToastService {
     readonly configurationService:ConfigurationService,
     readonly I18n:I18nService,
   ) {
-    jQuery(window)
-      .on(OPToastEvent,
-        (event:JQuery.TriggeredEvent, toast:IToast) => {
-          this.add(toast);
-        });
+    window.addEventListener(OPToastEvent, ({ detail:toast }:CustomEvent<IToast>) => {
+      this.add(toast);
+    });
   }
 
   /**
@@ -85,8 +79,7 @@ export class ToastService {
 
     this.stack.doModify((current) => {
       const nextValue = [toast].concat(current);
-      _.remove(nextValue, (n, i) => i > 0 && this.removeOnAdd(n));
-      return nextValue;
+      return [nextValue[0]].concat(nextValue.slice(1).filter((n, i) => !this.removeOnAdd(n)));
     });
 
     // auto-hide if success
@@ -101,7 +94,7 @@ export class ToastService {
     return ['success', 'error', 'loading'].includes(toast.type);
   }
 
-  public addError(obj:HttpErrorResponse|IToast|string, additionalErrors:unknown[]|string = []):IToast {
+  public addError(obj:HttpErrorResponse|IToast|string, additionalErrors:unknown[]|string = []):IToast|null {
     let message:IToast|string;
     let errors:string[];
 
@@ -112,6 +105,11 @@ export class ToastService {
     }
 
     if (obj instanceof HttpErrorResponse) {
+      if (obj.status === 0) {
+        console.error('Request cancelled or failed otherwise: %O', obj);
+        return null;
+      }
+
       message = isHalError(obj.error) ? obj.error.message : obj.message;
 
       if ((obj.error as IHalMultipleError)?._embedded?.errors) {
@@ -142,8 +140,24 @@ export class ToastService {
     return this.add(this.createToast(message, 'info'));
   }
 
-  public addAttachmentUpload(message:IToast|string, uploads:UploadInProgress[]):IToast {
-    return this.add(this.createAttachmentUploadToast(message, uploads));
+  public addUpload(message:string, uploads:[File, Observable<HttpEvent<unknown>>][]):IToast {
+    if (!uploads.length) {
+      throw new Error('Cannot create an upload toast without uploads!');
+    }
+
+    const notification = this.add({
+      data: uploads,
+      type: 'upload',
+      message,
+    });
+
+    waitForUploadsFinished(uploads.map((o) => o[1]))
+      .pipe(take(1))
+      .subscribe(() => {
+        setTimeout(() => this.remove(notification), 700);
+      });
+
+    return notification;
   }
 
   public addLoading(observable:Observable<unknown>):IToast {
@@ -152,8 +166,7 @@ export class ToastService {
 
   public remove(toast:IToast):void {
     this.stack.doModify((current) => {
-      _.remove(current, (n) => n === toast);
-      return current;
+      return current.filter((n) => n !== toast);
     });
   }
 
@@ -168,19 +181,9 @@ export class ToastService {
         message: toast.message,
         type,
         link: toast.link,
+        icon: toast.icon,
         data: toast.data,
       };
-  }
-
-  private createAttachmentUploadToast(message:IToast|string, uploads:UploadInProgress[]) {
-    if (!uploads.length) {
-      throw new Error('Cannot create an upload toast without uploads!');
-    }
-
-    const toast = this.createToast(message, 'upload');
-    toast.data = uploads;
-
-    return toast;
   }
 
   private createLoadingToast(message:IToast|string, observable:Observable<unknown>) {

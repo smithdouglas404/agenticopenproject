@@ -3,13 +3,19 @@ import { TabComponent } from 'core-app/features/work-packages/components/wp-tabl
 import { WorkPackageViewGroupByService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-group-by.service';
 import { WorkPackageViewHierarchiesService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-hierarchy.service';
 import { WorkPackageViewSumService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-sum.service';
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { QueryGroupByResource } from 'core-app/features/hal/resources/query-group-by-resource';
 
 @Component({
+  selector: 'op-wp-table-configuration-settings-tab',
   templateUrl: './display-settings-tab.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class WpTableConfigurationDisplaySettingsTabComponent implements TabComponent {
+export class WpTableConfigurationDisplaySettingsTabComponent implements TabComponent, OnInit {
   // Display mode
   public displayMode:'hierarchy'|'grouped'|'default' = 'default';
 
@@ -38,12 +44,14 @@ export class WpTableConfigurationDisplaySettingsTabComponent implements TabCompo
     },
   };
 
-  constructor(readonly injector:Injector,
+  constructor(
+    readonly injector:Injector,
     readonly I18n:I18nService,
     readonly wpTableGroupBy:WorkPackageViewGroupByService,
     readonly wpTableHierarchies:WorkPackageViewHierarchiesService,
-    readonly wpTableSums:WorkPackageViewSumService) {
-  }
+    readonly wpTableSums:WorkPackageViewSumService,
+    readonly cdRef:ChangeDetectorRef,
+  ) { }
 
   public onSave() {
     // Update hierarchy state
@@ -71,11 +79,12 @@ export class WpTableConfigurationDisplaySettingsTabComponent implements TabCompo
 
     this.displaySums = this.wpTableSums.current;
 
-    this.wpTableGroupBy
+    void this.wpTableGroupBy
       .onReady()
       .then(() => {
         this.availableGroups = _.sortBy(this.wpTableGroupBy.available, 'name');
-        this.currentGroup = this.wpTableGroupBy.current;
+        this.currentGroup = this.wpTableGroupBy.current || this.availableGroups[0];
+        this.cdRef.markForCheck();
       });
   }
 }

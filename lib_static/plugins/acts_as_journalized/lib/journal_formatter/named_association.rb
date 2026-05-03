@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,10 +30,11 @@
 
 module JournalFormatter
   class NamedAssociation < Attribute
-    def render(key, values, options = { no_html: false })
-      label, old_value, value = format_details(key, values, options)
+    def render(key_with_id, values, options = { html: true })
+      key = key_with_id.to_s.delete_suffix("_id")
+      label, old_value, value = format_details(key, values, cache: options[:cache])
 
-      unless options[:no_html]
+      if options[:html]
         label, old_value, value = *format_html_details(label, old_value, value)
       end
 
@@ -40,52 +43,43 @@ module JournalFormatter
 
     private
 
-    def format_details(key, values, options = {})
+    def format_details(key, values, cache:)
       label = label(key)
 
-      old_value, value = *format_values(values, key, options)
+      old_value, value = *format_values(values, key, cache:)
 
       [label, old_value, value]
     end
 
-    def format_values(values, key, options)
-      field = key.to_s.gsub(/_id\z/, '').to_sym
-      klass = class_from_field(field)
+    def format_values(values, key, cache:)
+      klass = class_from_field(key)
 
       values.map do |value|
-        if klass
-          record = associated_object(klass, value.to_i, options)
-          if record
-            if record.respond_to? 'name'
-              record.name
-            else
-              record.subject
-            end
-          end
-        end
+        next unless klass && value
+
+        record = associated_object(klass, value.to_i, cache:)
+        associated_object_name(record)
       end
     end
 
-    def associated_object(klass, id, options = {})
-      cache = options[:cache]
+    def associated_object_name(object)
+      object&.name
+    end
 
-      if cache.is_a?(Acts::Journalized::JournalObjectCache)
-        cache.fetch(klass, id) do |k, i|
-          k.find_by(id: i)
+    def associated_object(klass, id, cache:)
+      if cache
+        cache.fetch(klass, id) do
+          klass.find_by(id:)
         end
       else
         klass.find_by(id:)
       end
     end
 
-    def label(key)
-      @journal.journable.class.human_attribute_name(key.to_s.gsub(/_id$/, ''))
-    end
-
     def class_from_field(field)
       association = @journal.journable.class.reflect_on_association(field)
 
-      association&.class_name&.constantize
+      association&.klass
     end
   end
 end

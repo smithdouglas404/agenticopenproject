@@ -26,7 +26,7 @@ example:
           patria ago consectetur ventito sustineo nihil caecus. Supra officiis eos
           velociter somniculosus tonsor qui. Suffragium aduro arguo angustus cogito
           quia tolero vulnus. Supplanto sortitus cresco apud vestrum qui.</p>"
-      createdAt: '2015-03-20T12:57:01Z'
+      createdAt: '2015-03-20T12:57:01.509Z'
       _links:
         self:
           href: "/api/v3/news/1"
@@ -37,6 +37,12 @@ example:
         author:
           href: "/api/v3/users/2"
           title: Peggie Feeney
+        updateImmediately:
+          href: "api/v3/news/1"
+          method: "patch"
+        delete:
+          href: "api/v3/news/1"
+          method: "delete"
     - _type: News
       id: 2
       title: terminatio tutamen. Officia adeptio sp
@@ -51,7 +57,7 @@ example:
           Officia adeptio spectaculum atavus nisi cum concido bis. Harum caecus auxilium
           sol theatrum eaque consequatur. Omnis aeger suus adipisci cicuta. Cur delicate
           alias curto cursim atqui talio fugiat.</p>"
-      createdAt: '2015-03-20T12:57:01Z'
+      createdAt: '2015-03-20T12:57:01.509Z'
       _links:
         self:
           href: "/api/v3/news/2"
@@ -62,6 +68,12 @@ example:
         author:
           href: "/api/v3/users/2"
           title: Peggie Feeney
+        updateImmediately:
+          href: "api/v3/news/2"
+          method: "patch"
+        delete:
+          href: "api/v3/news/2"
+          method: "delete"
   _links:
     self:
       href: "/api/v3/news?offset=1&pageSize=2"

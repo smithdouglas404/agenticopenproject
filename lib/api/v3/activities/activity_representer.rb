@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,8 @@ module API
         include API::V3::Utilities
         include API::Decorators::DateProperty
         include API::Decorators::FormattableProperty
+        include API::Caching::CachedRepresenter
+        include ::API::V3::Attachments::AttachableRepresenterMixin
         include ActivityPropertyFormatters
 
         self_link path: :activity,
@@ -60,6 +62,12 @@ module API
           }
         end
 
+        link :emojiReactions do
+          {
+            href: api_v3_paths.emoji_reactions_by_activity_comment(represented.id)
+          }
+        end
+
         property :id,
                  render_nil: true
 
@@ -74,15 +82,48 @@ module API
 
         property :version, render_nil: true
 
+        property :internal
+
+        property :work_package,
+                 embedded: true,
+                 exec_context: :decorator,
+                 if: ->(*) { embed_links },
+                 uncacheable: true
+
+        property :emoji_reactions,
+                 embedded: true,
+                 exec_context: :decorator,
+                 if: ->(*) { embed_links },
+                 uncacheable: true
+
         date_time_property :created_at
         date_time_property :updated_at
 
         def _type
           if represented.noop? || represented.notes.present?
-            'Activity::Comment'
+            "Activity::Comment"
           else
-            'Activity'
+            "Activity"
           end
+        end
+
+        def work_package
+          return unless represented.journable.is_a?(WorkPackage)
+
+          API::V3::WorkPackages::WorkPackageRepresenter
+            .create(represented.journable,
+                    current_user: current_user,
+                    embed_links: false)
+        end
+
+        def emoji_reactions
+          return unless represented.journable.is_a?(WorkPackage)
+
+          emoji_reactions = ::EmojiReactions::GroupedQueries.grouped_emoji_reactions(reactable: represented)
+          API::V3::EmojiReactions::EmojiReactionCollectionRepresenter
+            .new(emoji_reactions,
+                 self_link: api_v3_paths.emoji_reactions_by_activity_comment(represented.id),
+                 current_user:)
         end
 
         private

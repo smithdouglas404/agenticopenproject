@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,15 +37,19 @@ module API
           end
 
           def filters_param
-            JSON::parse(params[:filters] || '[]')
-              .concat([string_filter, type_filter])
+            JSON::parse(params[:filters] || "[]")
+              .concat([string_filter, type_filter].compact)
           end
 
           def string_filter
-            filter_param(:typeahead, '**', params[:query])
+            return unless params.key?(:query)
+
+            filter_param(:typeahead, "**", params[:query])
           end
 
           def type_filter
+            return unless params.key?(:type)
+
             filter_param(:relatable, params[:type], [@work_package.id.to_s])
           end
 
@@ -56,7 +60,7 @@ module API
 
         resources :available_relation_candidates do
           params do
-            requires :query, type: String # part of the WP ID and/or part of its subject and/or part of the projects name
+            optional :query, type: String # part of the WP ID and/or part of its subject and/or part of the projects name
             optional :type, type: String, default: ::Relation::TYPE_RELATES # relation type
             optional :pageSize, type: Integer, default: 10
           end

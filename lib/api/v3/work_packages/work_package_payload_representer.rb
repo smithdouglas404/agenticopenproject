@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,9 +31,33 @@ module API
     module WorkPackages
       class WorkPackagePayloadRepresenter < WorkPackageRepresenter
         include ::API::Utilities::PayloadRepresenter
+        include ::API::Utilities::MetaProperty
         include ::API::V3::Attachments::AttachablePayloadRepresenterMixin
 
         cached_representer disabled: true
+
+        def meta_representer_class
+          WorkPackageMetaRepresenter
+        end
+
+        property :file_links,
+                 exec_context: :decorator,
+                 getter: ->(*) {},
+                 setter: ->(fragment:, **) do
+                   next unless fragment.is_a?(Array)
+
+                   ids = fragment.map do |link|
+                     ::API::Utilities::ResourceLinkParser.parse_id link["href"],
+                                                                   property: :file_link,
+                                                                   expected_version: "3",
+                                                                   expected_namespace: :file_links
+                   end
+
+                   represented.file_links_ids = ids
+                 end,
+                 skip_render: ->(*) { true },
+                 linked_resource: true,
+                 uncacheable: true
 
         def writable_attributes
           super + %w[date]

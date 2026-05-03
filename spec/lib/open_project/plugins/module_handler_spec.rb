@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,23 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-describe OpenProject::Plugins::ModuleHandler do
-  let!(:all_former_permissions) { OpenProject::AccessControl.permissions }
+require "spec_helper"
+RSpec.describe OpenProject::Plugins::ModuleHandler do
+  around do |example|
+    old_mapped_permissions = OpenProject::AccessControl.instance_variable_get(:@mapped_permissions).deep_dup
+    described_class.disable_modules!("repository")
 
-  before do
-    described_class.disable_modules!('repository')
-  end
-
-  after do
-    raise 'Test outdated' unless OpenProject::AccessControl.instance_variable_defined?(:@mapped_permissions)
-
-    OpenProject::AccessControl.instance_variable_set(:@mapped_permissions, all_former_permissions)
+    example.run
+  ensure
+    OpenProject::AccessControl.instance_variable_set(:@mapped_permissions, old_mapped_permissions)
     OpenProject::AccessControl.clear_caches
   end
 
-  describe '#disable' do
-    it 'disables repository module' do
+  describe "#disable" do
+    it "disables repository module" do
       expect(OpenProject::AccessControl.available_project_modules).not_to include(:repository)
     end
   end

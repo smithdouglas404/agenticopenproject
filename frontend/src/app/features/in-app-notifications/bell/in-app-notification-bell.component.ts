@@ -1,76 +1,77 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-} from '@angular/core';
-import {
-  combineLatest,
-  merge,
-  timer,
-} from 'rxjs';
-import {
-  filter,
-  map,
-  shareReplay,
-  switchMap,
-  throttleTime,
-} from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, HostListener } from '@angular/core';
+import { combineLatest, merge, Observable, timer } from 'rxjs';
+import { filter, map, shareReplay, switchMap, throttleTime } from 'rxjs/operators';
 import { ActiveWindowService } from 'core-app/core/active-window/active-window.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { IanBellService } from 'core-app/features/in-app-notifications/bell/state/ian-bell.service';
-
-export const opInAppNotificationBellSelector = 'op-in-app-notification-bell';
-const ACTIVE_POLLING_INTERVAL = 10000;
-const INACTIVE_POLLING_INTERVAL = 120000;
+import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 
 @Component({
-  selector: opInAppNotificationBellSelector,
+  selector: 'opce-in-app-notification-bell',
   templateUrl: './in-app-notification-bell.component.html',
   styleUrls: ['./in-app-notification-bell.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-export class InAppNotificationBellComponent {
-  polling$ = merge(
-    timer(10, ACTIVE_POLLING_INTERVAL).pipe(filter(() => this.activeWindow.isActive)),
-    timer(10, INACTIVE_POLLING_INTERVAL).pipe(filter(() => !this.activeWindow.isActive)),
-  )
-    .pipe(
-      throttleTime(ACTIVE_POLLING_INTERVAL),
-      switchMap(() => this.storeService.fetchUnread()),
-    );
+export class InAppNotificationBellComponent implements OnInit {
+  @Input() interval = 50000;
 
-  unreadCount$ = combineLatest([
-    this.storeService.unread$,
-    this.polling$,
-  ]).pipe(
-    map(([count]) => count),
-    shareReplay(1),
-  );
+  polling$:Observable<number>;
 
-  unreadCountText$ = this
-    .unreadCount$
-    .pipe(
-      map((count) => {
-        if (count > 99) {
-          return '99+';
-        }
+  unreadCount$:Observable<number>;
 
-        if (count <= 0) {
-          return '';
-        }
+  unreadCountText$:Observable<number|string>;
 
-        return count;
-      }),
-    );
+  public bellDisplayLimit = 99;
 
   constructor(
+    readonly elementRef:ElementRef,
     readonly storeService:IanBellService,
     readonly apiV3Service:ApiV3Service,
     readonly activeWindow:ActiveWindowService,
     readonly pathHelper:PathHelperService,
-  ) { }
+  ) {
+    populateInputsFromDataset(this);
+  }
 
-  notificationsPath():string {
-    return this.pathHelper.notificationsPath();
+  // enable other parts of the application to trigger an immediate update
+  // e.g. a stimulus controller
+  // currently used by the new activities tab which does its own polling
+  // and receives updates from the backend earlier than the polling in the bell component
+  @HostListener('document:ian-update-immediate')
+  triggerImmediateUpdate() {
+    this.storeService.fetchUnread().subscribe();
+  }
+
+  ngOnInit() {
+    this.polling$ = merge(
+      timer(10, this.interval).pipe(filter(() => this.activeWindow.isActive)),
+      timer(10, this.interval * 10).pipe(filter(() => !this.activeWindow.isActive)),
+    )
+      .pipe(
+        throttleTime(this.interval),
+        switchMap(() => this.storeService.fetchUnread()),
+      );
+
+    this.unreadCount$ = combineLatest([
+      this.storeService.unread$,
+      this.polling$,
+    ]).pipe(
+      map(([count]) => count),
+      shareReplay(1),
+    );
+
+    this.unreadCountText$ = this
+      .unreadCount$
+      .pipe(
+        map((count) => {
+          if (count > this.bellDisplayLimit || count <= 0) {
+            return '';
+          }
+
+          return count;
+        }),
+      );
   }
 }

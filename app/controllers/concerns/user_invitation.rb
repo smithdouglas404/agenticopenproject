@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,11 +32,11 @@ module UserInvitation
   module Events
     class << self
       def user_invited
-        'user_invited'
+        "user_invited"
       end
 
       def user_reinvited
-        'user_reinvited'
+        "user_reinvited"
       end
     end
   end
@@ -54,7 +56,7 @@ module UserInvitation
   # @return The invited user. If the invitation failed, calling `#registered?`
   #         on the returned user will yield `false`. Check for validation errors
   #         in that case.
-  def invite_new_user(email:, login: nil, first_name: nil, last_name: nil)
+  def invite_new_user(email:, login: nil, first_name: nil, last_name: nil, send_notification: true)
     attributes = {
       mail: email,
       login:,
@@ -67,7 +69,7 @@ module UserInvitation
 
     yield user if block_given?
 
-    invite_user! user
+    invite_user! user, send_notification:
   end
 
   ##
@@ -103,7 +105,7 @@ module UserInvitation
   end
 
   def reset_login(user_id)
-    User.where(id: user_id).update_all identity_url: nil
+    UserAuthProviderLink.where(user_id:).delete_all
     UserPassword.where(user_id:).destroy_all
   end
 
@@ -114,11 +116,11 @@ module UserInvitation
   # Validates and saves the given user. The invitation will fail if the user is invalid.
   #
   # @return The invited user or nil if the invitation failed.
-  def invite_user!(user)
+  def invite_user!(user, send_notification: true)
     user, token = user_invitation user
 
     if token
-      OpenProject::Notifications.send(Events.user_invited, token)
+      OpenProject::Notifications.send(Events.user_invited, token) if send_notification
 
       user
     end
@@ -136,7 +138,7 @@ module UserInvitation
       user.invite
 
       if user.valid?
-        token = Token::Invitation.create! user: user
+        token = Token::Invitation.create!(user:)
         user.save!
 
         [user, token]

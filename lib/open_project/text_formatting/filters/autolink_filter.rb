@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,7 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require 'rinku'
 
 module OpenProject::TextFormatting
   module Filters
@@ -43,7 +44,8 @@ module OpenProject::TextFormatting
         autolink_context = default_autolink_options.merge context.fetch(:autolink, {})
         return doc if autolink_context[:enabled] == false
 
-        ::Rinku.auto_link(html, :all, "class=\"#{autolink_context[:classes]}\"")
+        ::Rinku.auto_link(html, :all, "class=\"#{autolink_context[:classes]}\" rel=\"noopener noreferrer nofollow\"", nil,
+                          Rinku::AUTOLINK_SHORT_DOMAINS)
       end
 
       def default_autolink_options
@@ -51,7 +53,7 @@ module OpenProject::TextFormatting
           enabled: true,
           # Having to specify the link class again here is unfortunate. But as rinku seems to run latest,
           # it cannot receive the link class like all the rest of the links.
-          classes: 'op-uc-link'
+          classes: "op-uc-link"
         }
       end
     end

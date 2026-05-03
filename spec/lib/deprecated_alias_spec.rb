@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe DeprecatedAlias do
+RSpec.describe DeprecatedAlias do
   let(:clazz) do
     Class.new do
       extend DeprecatedAlias
 
       def secret_key
-        'happiness'
+        "happiness"
       end
       deprecated_alias :special_key, :secret_key
     end
@@ -47,15 +49,23 @@ describe DeprecatedAlias do
 
     MSG
   end
+  let(:deprecation_instance) do
+    instance_double(ActiveSupport::Deprecation, warn: nil)
+  end
 
   subject(:object) { clazz.new }
 
   before do
-    expect(ActiveSupport::Deprecation).to receive(:warn)
-      .with(deprecation_warning, an_instance_of(Array))
+    allow(ActiveSupport::Deprecation)
+      .to receive(:new)
+         .and_return(deprecation_instance)
   end
 
-  it 'aliases the method' do
-    expect(object.special_key).to eq('happiness')
+  it "aliases the method" do
+    expect(object.special_key).to eq("happiness")
+
+    expect(deprecation_instance)
+      .to have_received(:warn)
+            .with(deprecation_warning, an_instance_of(Array))
   end
 end

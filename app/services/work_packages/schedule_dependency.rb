@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,10 +43,11 @@
 #   package, but are necessary to accurately determine the new start and due
 #   dates of the moving work packages.
 class WorkPackages::ScheduleDependency
-  attr_accessor :dependencies
+  attr_accessor :dependencies, :switching_to_automatic_mode
 
-  def initialize(moved_work_packages)
+  def initialize(moved_work_packages, switching_to_automatic_mode: [])
     self.moved_work_packages = Array(moved_work_packages)
+    self.switching_to_automatic_mode = Array(switching_to_automatic_mode)
 
     preload_scheduling_data
 
@@ -79,16 +82,41 @@ class WorkPackages::ScheduleDependency
     @moving_work_packages_set.include?(work_package.id)
   end
 
+  def parent_of(work_package)
+    work_package_by_id(work_package.parent_id)
+  end
+
   def ancestors(work_package)
     @ancestors ||= {}
     @ancestors[work_package] ||= begin
-      parent = work_package_by_id(work_package.parent_id)
+      parent = parent_of(work_package)
 
       if parent
-        [parent] + ancestors(parent)
+        [parent, *ancestors(parent)]
       else
         []
       end
+    end
+  end
+
+  def automatically_scheduled_ancestors(work_package)
+    @automatically_scheduled_ancestors ||= {}
+    @automatically_scheduled_ancestors[work_package] ||= begin
+      work_packages_to_process = [work_package]
+      result = []
+      processed_ids = Set.new
+
+      while current = work_packages_to_process.shift
+        processed_ids.add(current.id)
+
+        parent = parent_of(current)
+
+        if parent&.schedule_automatically?
+          result << parent unless parent.id == work_package.id
+          work_packages_to_process << parent unless processed_ids.include?(parent.id)
+        end
+      end
+      result
     end
   end
 
@@ -97,9 +125,23 @@ class WorkPackages::ScheduleDependency
     # All needed data is already loaded.
     @descendants ||= {}
     @descendants[work_package] ||= begin
-      children = children_by_parent_id(work_package.id)
+      work_packages_to_process = [work_package]
+      result = []
+      processed_ids = Set.new
 
-      children + children.flat_map { |child| descendants(child) }
+      while current = work_packages_to_process.shift
+        processed_ids.add(current.id)
+
+        children = children_by_parent_id(current.id)
+
+        # Avoid cycles by rejecting children that have already been processed
+        children.reject! { |child| processed_ids.include?(child.id) }
+
+        result.concat(children)
+        work_packages_to_process.concat(children)
+      end
+
+      result
     end
   end
 
@@ -119,9 +161,9 @@ class WorkPackages::ScheduleDependency
                 :moved_work_packages
 
   def all_direct_and_indirect_follows_relations_for(work_package)
-    family = ancestors(work_package) + [work_package] + descendants(work_package)
+    self_and_automatic_ancestors = [work_package] + automatically_scheduled_ancestors(work_package)
     follows_relations_by_follower_id
-      .fetch_values(*family.pluck(:id)) { [] }
+      .fetch_values(*self_and_automatic_ancestors.pluck(:id)) { [] }
       .flatten
       .uniq
   end
@@ -131,12 +173,18 @@ class WorkPackages::ScheduleDependency
   end
 
   def create_dependencies
-    moving_work_packages.index_with { |work_package| Dependency.new(work_package, self) }
+    (moved_work_packages + moving_work_packages)
+      .filter { |work_package| automatically_scheduled?(work_package) }
+      .index_with { |work_package| Dependency.new(work_package, self) }
+  end
+
+  def automatically_scheduled?(work_package)
+    work_package.schedule_automatically? || switching_to_automatic_mode.include?(work_package)
   end
 
   def moving_work_packages
     @moving_work_packages ||= WorkPackage
-                                .for_scheduling(moved_work_packages)
+                                .for_scheduling(moved_work_packages, switching_to_automatic_mode:)
   end
 
   # All work packages preloaded during initialization.

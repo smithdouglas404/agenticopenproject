@@ -12,13 +12,14 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { CustomTextEditFieldService } from 'core-app/shared/components/grids/widgets/custom-text/custom-text-edit-field.service';
+import {
+  CustomTextEditFieldService,
+} from 'core-app/shared/components/grids/widgets/custom-text/custom-text-edit-field.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { filter } from 'rxjs/operators';
 import { GridAreaService } from 'core-app/shared/components/grids/grid/area.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { DynamicBootstrapper } from 'core-app/core/setup/globals/dynamic-bootstrapper';
 
 @Component({
   templateUrl: './custom-text.component.html',
@@ -26,6 +27,7 @@ import { DynamicBootstrapper } from 'core-app/core/setup/globals/dynamic-bootstr
   providers: [
     CustomTextEditFieldService,
   ],
+  standalone: false,
 })
 export class WidgetCustomTextComponent extends AbstractWidgetComponent implements OnInit, OnChanges, OnDestroy {
   protected currentRawText:string;
@@ -36,7 +38,7 @@ export class WidgetCustomTextComponent extends AbstractWidgetComponent implement
     attachments: this.I18n.t('js.label_attachments'),
   };
 
-  @ViewChild('displayContainer') readonly displayContainer:ElementRef;
+  @ViewChild('displayContainer') readonly displayContainer:ElementRef<HTMLElement>;
 
   constructor(
     protected I18n:I18nService,
@@ -60,9 +62,15 @@ export class WidgetCustomTextComponent extends AbstractWidgetComponent implement
         this.untilDestroyed(),
         filter((value) => value !== this.resource.options.text),
       ).subscribe((newText) => {
-        const changeset = this.setChangesetOptions({ text: { raw: newText } });
-        this.resourceChanged.emit(changeset);
-      });
+      const changeset = this.setChangesetOptions({ text: { raw: newText } });
+      this.resourceChanged.emit(changeset);
+    });
+
+    this
+      .handler
+      .stateChanged$
+      .pipe(this.untilDestroyed())
+      .subscribe(() => this.cdr.markForCheck());
   }
 
   ngOnChanges(changes:SimpleChanges):void {
@@ -81,8 +89,9 @@ export class WidgetCustomTextComponent extends AbstractWidgetComponent implement
 
     // Load the attachments so that they are displayed in the list.
     // Once that is done, we can show the edit form.
-    this.resource.grid.updateAttachments().then(() => {
+    void this.resource.grid.updateAttachments().then(() => {
       this.handler.activate();
+      this.cdr.detectChanges();
     });
   }
 
@@ -136,11 +145,6 @@ export class WidgetCustomTextComponent extends AbstractWidgetComponent implement
 
   private memorizeCustomText() {
     this.customText = this.sanitization.bypassSecurityTrustHtml(this.handler.htmlText);
-
-    // Allow embeddable rendered content
-    setTimeout(() => {
-      DynamicBootstrapper.bootstrapOptionalEmbeddable(this.appRef, this.displayContainer.nativeElement);
-    }, 100);
   }
 
   private clickedElementIsLinkWithinDisplayContainer(event:any) {

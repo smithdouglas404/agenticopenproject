@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,13 +30,13 @@
 
 module Queries::Operators
   class BetweenDate < Base
-    label 'between'
-    set_symbol '<>d'
+    label "between"
+    set_symbol "<>d"
 
     extend DateRangeClauses
 
     def self.sql_for_field(values, db_table, db_field)
-      lower_boundary, upper_boundary = values.map { |v| v.blank? ? nil : Date.parse(v) }
+      lower_boundary, upper_boundary = values.map { |v| Date.parse(v) if v.present? }
 
       date_range_clause(db_table, db_field, lower_boundary, upper_boundary)
     end

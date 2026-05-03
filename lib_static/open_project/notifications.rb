@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,7 +47,7 @@ module OpenProject
     # @raises ArgumentError if no block is given.
     def subscribe(name, clear_subscriptions: false, &block)
       # if no block is given, raise an error
-      raise ArgumentError, 'please provide a block as a callback' unless block_given?
+      raise ArgumentError, "please provide a block as a callback" unless block
 
       if clear_subscriptions
         subscriptions[name].each do |sub|
@@ -54,7 +56,7 @@ module OpenProject
       end
 
       sub = ActiveSupport::Notifications.subscribe(name.to_s) do |_, _, _, _, data|
-        block.call(data.fetch(:payload, data))
+        yield(data.fetch(:payload, data))
       end
 
       subs = clear_subscriptions ? [] : Array(subscriptions[name])

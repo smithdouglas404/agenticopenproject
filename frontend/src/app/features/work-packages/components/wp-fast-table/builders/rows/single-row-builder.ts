@@ -6,16 +6,27 @@ import { WorkPackageViewColumnsService } from 'core-app/features/work-packages/r
 import { TableActionRenderer } from 'core-app/features/work-packages/components/wp-fast-table/builders/table-action-renderer';
 import { WorkPackageViewSelectionService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
 import {
+  internalBaselineColumn,
   internalContextMenuColumn,
   internalSortColumn,
+  sharedUserColumn,
 } from 'core-app/features/work-packages/components/wp-fast-table/builders/internal-sort-columns';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { checkedClassName } from '../ui-state-link-builder';
 import { RelationCellbuilder } from '../relation-cell-builder';
-import { CellBuilder, tdClassName } from '../cell-builder';
-import { WorkPackageTable } from '../../wp-fast-table';
-import { isRelationColumn, QueryColumn } from '../../../wp-query/query-column';
+import {
+  CellBuilder,
+  tdClassName,
+} from '../cell-builder';
+import {
+  isRelationColumn,
+  QueryColumn,
+} from '../../../wp-query/query-column';
+import { WorkPackageTable } from 'core-app/features/work-packages/components/wp-fast-table/wp-fast-table';
+import { WorkPackageViewBaselineService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-baseline.service';
+import { BaselineColumnBuilder } from 'core-app/features/work-packages/components/wp-fast-table/builders/baseline/baseline-column-builder';
+import { ShareCellbuilder } from '../share-cell-builder';
 
 // Work package table row entries
 export const tableRowClassName = 'wp-table--row';
@@ -28,6 +39,8 @@ export class SingleRowBuilder {
 
   @InjectField() wpTableColumns:WorkPackageViewColumnsService;
 
+  @InjectField() wpTableBaseline:WorkPackageViewBaselineService;
+
   @InjectField() I18n!:I18nService;
 
   // Cell builder instance
@@ -36,14 +49,22 @@ export class SingleRowBuilder {
   // Relation cell builder instance
   protected relationCellBuilder = new RelationCellbuilder(this.injector);
 
+  // Share cell builder instance
+  protected shareCellBuilder = new ShareCellbuilder(this.injector);
+
   // Details Link builder
   protected contextLinkBuilder = new TableActionRenderer(this.injector);
+
+  // Baseline column builder
+  protected baselineColumnBuilder = new BaselineColumnBuilder(this.injector);
 
   // Build the augmented columns set to render with
   protected readonly augmentedColumns:QueryColumn[] = this.buildAugmentedColumns();
 
-  constructor(public readonly injector:Injector,
-    protected workPackageTable:WorkPackageTable) {
+  constructor(
+    public readonly injector:Injector,
+    protected workPackageTable:WorkPackageTable,
+  ) {
   }
 
   /**
@@ -60,6 +81,10 @@ export class SingleRowBuilder {
   private buildAugmentedColumns():QueryColumn[] {
     const columns = [...this.columns, internalContextMenuColumn];
 
+    if (this.wpTableBaseline.isActive()) {
+      columns.unshift(internalBaselineColumn);
+    }
+
     if (this.workPackageTable.configuration.dragAndDropEnabled) {
       columns.unshift(internalSortColumn);
     }
@@ -67,10 +92,14 @@ export class SingleRowBuilder {
     return columns;
   }
 
-  public buildCell(workPackage:WorkPackageResource, column:QueryColumn):HTMLElement|null {
+  public buildCell(workPackage:WorkPackageResource, column:QueryColumn):HTMLTableCellElement|null {
     // handle relation types
     if (isRelationColumn(column)) {
       return this.relationCellBuilder.build(workPackage, column);
+    }
+
+    if (column.id === sharedUserColumn.id) {
+      return this.shareCellBuilder.build(workPackage, column);
     }
 
     // Handle property types
@@ -78,12 +107,16 @@ export class SingleRowBuilder {
       case internalContextMenuColumn.id:
         if (this.workPackageTable.configuration.actionsColumnEnabled) {
           return this.contextLinkBuilder.build(workPackage);
-        } if (this.workPackageTable.configuration.columnMenuEnabled) {
+        }
+        if (this.workPackageTable.configuration.columnMenuEnabled) {
           const td = document.createElement('td');
           td.classList.add('hide-when-print');
           return td;
         }
         return null;
+
+      case internalBaselineColumn.id:
+        return this.baselineColumnBuilder.build(workPackage, column);
 
       default:
         return this.cellBuilder.build(workPackage, column);
@@ -142,23 +175,24 @@ export class SingleRowBuilder {
   /**
    * Refresh a row that is currently being edited, that is, some edit fields may be open
    */
-  public refreshRow(workPackage:WorkPackageResource, jRow:JQuery):JQuery {
+  public refreshRow(workPackage:WorkPackageResource, row:HTMLTableRowElement):HTMLTableRowElement {
     // Detach all current edit cells
-    const cells = jRow.find(`.${tdClassName}`).detach();
+    const cells = Array.from(row.querySelectorAll<HTMLTableCellElement>(`.${tdClassName}`))
+      .map((el) => el.parentNode!.removeChild(el));
 
     // Remember the order of all new edit cells
-    const newCells:HTMLElement[] = [];
+    const newCells:HTMLTableCellElement[] = [];
 
     this.augmentedColumns.forEach((column:QueryColumn) => {
-      const oldTd = cells.filter(`td.${column.id}`);
+      const oldTd = cells.find((cell) => cell.matches(`td.${column.id}`));
 
       // Treat internal columns specially
       // and skip the replacement of the column if this is being edited.
       // But only do that, if the column existed before. Sometimes, e.g. when lacking permissions
       // the column was not correctly created (with the intended classes). This code then
       // increases the robustness.
-      if ((column.id.startsWith('__internal') || this.isColumnBeingEdited(workPackage, column)) && oldTd.length) {
-        newCells.push(oldTd[0]);
+      if ((column.id.startsWith('__internal') || this.isColumnBeingEdited(workPackage, column)) && oldTd) {
+        newCells.push(oldTd);
         return;
       }
 
@@ -170,8 +204,8 @@ export class SingleRowBuilder {
       }
     });
 
-    jRow.prepend(newCells);
-    return jRow;
+    row.prepend(...newCells);
+    return row;
   }
 
   protected isColumnBeingEdited(workPackage:WorkPackageResource, column:QueryColumn) {
@@ -182,24 +216,27 @@ export class SingleRowBuilder {
 
   protected buildEmptyRow(workPackage:WorkPackageResource, row:HTMLTableRowElement):[HTMLTableRowElement, boolean] {
     const change = this.workPackageTable.editing.change(workPackage);
-    const cells:{ [attribute:string]:JQuery } = {};
+    const cells:Record<string, HTMLTableCellElement> = {};
 
     if (change && !change.isEmpty()) {
       // Try to find an old instance of this row
       const oldRow = locateTableRowByIdentifier(this.classIdentifier(workPackage));
 
       change.changedAttributes.forEach((attribute:string) => {
-        cells[attribute] = oldRow.find(`.${tdClassName}.${attribute}`);
+        const oldCell = oldRow?.querySelector<HTMLTableCellElement>(`.${tdClassName}.${attribute}`);
+        if (oldCell) {
+          cells[attribute] = oldCell;
+        }
       });
     }
 
     this.augmentedColumns.forEach((column:QueryColumn) => {
       let cell:Element|null;
-      const oldCell:JQuery|undefined = cells[column.id];
+      const oldCell = cells[column.id];
 
-      if (oldCell && oldCell.length) {
+      if (oldCell) {
         debugLog(`Rendering previous open column ${column.id} on ${workPackage.id}`);
-        jQuery(row).append(oldCell);
+        row.appendChild(oldCell);
       } else {
         cell = this.buildCell(workPackage, column);
 

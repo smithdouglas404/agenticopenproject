@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,94 +28,103 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative '../spec_helper'
+require "spec_helper"
+require_module_spec_helper
 
-describe 'Showing of file links in work package', type: :feature, js: true do
+RSpec.describe "Showing of file links in work package", :js do
   let(:permissions) { %i(view_work_packages edit_work_packages view_file_links manage_file_links) }
   let(:project) { create(:project) }
-  let(:current_user) { create(:user, member_in_project: project, member_with_permissions: permissions) }
-  let(:work_package) { create(:work_package, project:, description: 'Initial description') }
+  let(:current_user) { create(:user, member_with_permissions: { project => permissions }) }
+  let(:work_package) { create(:work_package, project:, description: "Initial description") }
 
-  let(:storage) { create(:storage) }
+  let(:storage) { create(:nextcloud_storage_configured, name: "My storage") }
   let(:oauth_client) { create(:oauth_client, integration: storage) }
   let(:oauth_client_token) { create(:oauth_client_token, oauth_client:, user: current_user) }
   let(:project_storage) { create(:project_storage, project:, storage:) }
-  let(:file_link) { create(:file_link, container: work_package, storage:) }
-  let(:wp_page) { ::Pages::FullWorkPackage.new(work_package, project) }
+  let(:file_link) { create(:file_link, container: work_package, storage:, origin_id: "42", origin_name: "logo.png") }
+  let(:wp_page) { Pages::FullWorkPackage.new(work_package, project) }
 
-  let(:connection_manager) { instance_double(::OAuthClients::ConnectionManager) }
-  let(:sync_service) { instance_double(::Storages::FileLinkSyncService) }
+  let(:sync_service) { instance_double(Storages::FileLinkSyncService) }
+  let(:authorization_state) { Success() }
+  let(:remote_identity) { create(:remote_identity, user: current_user, integration: storage) }
 
   before do
-    allow(::OAuthClients::ConnectionManager)
-      .to receive(:new)
-            .and_return(connection_manager)
-    allow(connection_manager)
-      .to receive(:refresh_token)
-            .and_return(ServiceResult.success(result: oauth_client_token))
-    allow(connection_manager)
-      .to receive(:get_access_token)
-            .and_return(ServiceResult.success(result: oauth_client_token))
-    allow(connection_manager)
-      .to receive(:authorization_state)
-           .and_return(:connected)
+    Storages::Adapters::Registry.stub("#{storage}.queries.user", ->(_) { authorization_state })
 
-    # Mock FileLinkSyncService as if Nextcloud would respond with origin_permission=nil
-    allow(::Storages::FileLinkSyncService)
-      .to receive(:new).and_return(sync_service)
+    # Mock FileLinkSyncService as if Nextcloud would respond with origin_status=nil
+    allow(Storages::FileLinkSyncService).to receive(:new).and_return(sync_service)
+
     allow(sync_service).to receive(:call) do |file_links|
-      ServiceResult.success(result: file_links.each { |file_link| file_link.origin_permission = :view })
+      ServiceResult.success(result: file_links.each { |file_link| file_link.origin_status = :view_allowed })
     end
 
     project_storage
     file_link
+    remote_identity
 
     login_as current_user
     wp_page.visit_tab! :files
   end
 
-  context 'if work package has associated file links' do
+  context "if work package has associated file links" do
     it "must show associated file links" do
-      expect(page).to have_selector('[data-qa-selector="op-tab-content--tab-section"]', count: 2)
-      expect(page.find('[data-qa-selector="file-list"]'))
-        .to have_selector('[data-qa-selector="file-list--item"]', text: file_link.origin_name, count: 1)
+      expect(page).to have_test_selector("op-tab-content--tab-section", count: 2)
+      within_test_selector("op-tab-content--tab-section", text: "MY STORAGE") do
+        expect(page).to have_list_item(count: 1)
+        expect(page).to have_list_item(text: "logo.png")
+      end
     end
   end
 
-  context 'if user has no permission to see file links' do
+  context "if user has no permission to see file links" do
     let(:permissions) { %i(view_work_packages edit_work_packages) }
 
-    it 'must not show a file links section' do
-      expect(page).to have_selector('[data-qa-selector="op-tab-content--tab-section"]', count: 1)
+    it "must not show a file links section" do
+      expect(page).to have_test_selector("op-tab-content--tab-section", count: 1)
     end
   end
 
-  context 'if project has no storage' do
+  context "if project has no storage" do
     let(:project_storage) { {} }
 
-    it 'must not show a file links section' do
-      expect(page).to have_selector('[data-qa-selector="op-tab-content--tab-section"]', count: 1)
+    it "must not show a file links section" do
+      expect(page).to have_test_selector("op-tab-content--tab-section", count: 1)
     end
   end
 
-  context 'if user is not authorized in Nextcloud' do
-    before do
-      allow(connection_manager).to receive(:authorization_state).and_return(:failed_authorization)
-      allow(connection_manager).to receive(:get_authorization_uri).and_return('https://example.com/authorize')
-    end
+  context "if user is not connected to Nextcloud" do
+    let(:authorization_state) { Failure(Storages::Adapters::Results::Error.new(code: :missing_token, source: self)) }
 
-    it 'must show storage information box with login button' do
-      expect(page.find('[data-qa-selector="op-files-tab--storage-information"]')).to have_selector('button', count: 1)
+    it "must show storage information box with login button" do
+      within_test_selector("op-tab-content--tab-section", text: "MY STORAGE", wait: 25) do
+        expect(page).to have_button("Nextcloud login")
+        expect(page).to have_text("Login to Nextcloud")
+        expect(page).to have_list_item(text: "logo.png")
+      end
     end
   end
 
-  context 'if an error occurred while authorizing to Nextcloud' do
-    before do
-      allow(connection_manager).to receive(:authorization_state).and_return(:error)
-    end
+  context "if user is not authorized in Nextcloud" do
+    let(:authorization_state) { Failure(Storages::Adapters::Results::Error.new(code: :unauthorized, source: self)) }
 
-    it 'must show storage information box' do
-      expect(page).to have_selector('[data-qa-selector="op-files-tab--storage-information"]', count: 1)
+    it "must show storage information box with login button" do
+      within_test_selector("op-tab-content--tab-section", text: "MY STORAGE", wait: 25) do
+        expect(page).to have_button("Nextcloud login")
+        expect(page).to have_text("Authentication with Nextcloud failed")
+        expect(page).to have_list_item(text: "logo.png")
+      end
+    end
+  end
+
+  context "if an error occurred while authorizing to Nextcloud" do
+    let(:authorization_state) { Failure(Storages::Adapters::Results::Error.new(code: :error, source: self)) }
+
+    it "must show storage information box" do
+      within_test_selector("op-tab-content--tab-section", text: "MY STORAGE", wait: 25) do
+        expect(page).to have_no_button
+        expect(page).to have_text("No Nextcloud connection")
+        expect(page).to have_list_item(text: "logo.png")
+      end
     end
   end
 end

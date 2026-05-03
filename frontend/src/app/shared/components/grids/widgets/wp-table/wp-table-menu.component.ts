@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +26,32 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component } from '@angular/core';
-import { WpTableConfigurationModalComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/wp-table-configuration.modal';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  WpTableConfigurationModalComponent,
+} from 'core-app/features/work-packages/components/wp-table/configuration-modal/wp-table-configuration.modal';
 import { WidgetWpSetMenuComponent } from 'core-app/shared/components/grids/widgets/menu/wp-set-menu.component';
+import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'widget-wp-table-menu',
   templateUrl: '../menu/widget-menu.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WidgetWpTableMenuComponent extends WidgetWpSetMenuComponent {
+  @InjectField() currentUser:CurrentUserService;
+
   protected configurationComponent = WpTableConfigurationModalComponent;
+
+  protected configurationAllowed():Promise<boolean> {
+    return firstValueFrom(
+      this.currentUser.hasCapabilities$('queries/create', null),
+    );
+  }
 }

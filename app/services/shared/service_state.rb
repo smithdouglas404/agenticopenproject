@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,7 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require "ostruct"
 
 ##
 # Service state object to be passed around services
@@ -34,23 +35,12 @@ require "ostruct"
 # Borrows heavily from interactor gem's context class at
 # https://github.com/collectiveidea/interactor
 module Shared
-  class ServiceState < OpenStruct
+  class ServiceState < Hashie::Mash
     ##
     # Builds the context object unless
     # it's already an instance of this context.
     def self.build(state = {})
       self === state ? state : new(state)
-    end
-
-    ##
-    # Remember that the state was passed to the given service
-    def called!(service)
-      service_chain << service
-    end
-
-    # Remembered service calls this context was used against
-    def service_chain
-      @service_chain ||= []
     end
   end
 end

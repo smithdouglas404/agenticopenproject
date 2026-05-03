@@ -1,66 +1,60 @@
+---
 vi:
   js:
     grid:
-      add_widget: 'Add widget'
-      remove: 'Xóa widget'
-      configure: 'Configure widget'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
+      add_widget: Thêm tiện ích
+      widget_menu_label: Show menu options for %{widgetName} widget
+      remove: Xóa tiện ích
+      configure: Định cấu hình tiện ích
       widgets:
+        missing_permission: Bạn không có quyền cần thiết để xem tiện ích này.
+        not_available: This widget is currently unavailable.
         custom_text:
-          title: 'Custom text'
+          title: Văn bản tùy chỉnh
         documents:
-          title: 'Tài liệu'
-          no_results: 'Chưa có tài liệu.'
+          title: Tài liệu
+          no_results: Chưa có tài liệu.
         members:
-          title: 'Members'
-          no_results: 'No visible members.'
-          view_all_members: 'View all members'
-          add: 'Thành viên'
-          too_many: 'Displaying %{count} of %{total} members.'
+          title: thành viên
         news:
-          title: 'Tin tức'
-          at: 'tại'
-          no_results: 'Không có gì mới để báo cáo.'
+          title: tin tức
         project_description:
-          title: 'Project description'
-          no_results: "No description has been written yet. One can be provided in the 'Project settings'."
-        project_details:
-          title: 'Project details'
-          no_results: 'No custom fields have been defined for projects.'
+          title: mô tả
         project_status:
-          title: 'Tình trạng dự án'
-          not_started: 'Not started'
-          on_track: 'Theo dõi'
-          off_track: 'Không theo dõi'
-          at_risk: 'Có rủi ro'
-          not_set: 'Không được thiết lập'
-          finished: 'Finished'
-          discontinued: 'Discontinued'
+          title: trạng thái
+          not_started: Chưa bắt đầu
+          on_track: Đang đi đúng hướng
+          off_track: Lạc lối
+          at_risk: Có nguy cơ
+          not_set: Không được thiết lập
+          finished: Đã hoàn thành
+          discontinued: Đã ngừng sản xuất
         subprojects:
-          title: 'Dự án con'
-          no_results: 'No subprojects.'
+          title: mục phụ
+        project_favorites:
+          title: dự án yêu thích
+          no_results: Hiện tại bạn chưa có dự án yêu thích nào. Nhấp vào biểu tượng ngôi sao trong bảng điều khiển dự án để thêm một biểu tượng vào mục yêu thích của bạn.
         time_entries_current_user:
-          title: 'Thời gian hiện tại (My spent time)'
-          displayed_days: 'Days displayed in the widget:'
+          title: Thời gian hiện tại (My spent time)
+          displayed_days: 'Ngày hiển thị trong widget:'
         time_entries_list:
-          title: 'Thời gian làm việc (trong 7 ngày gần nhất)'
-          no_results: 'Không có ghi nhận thời gian làm việc trong 7 ngày gần nhất.'
+          title: Thời gian đã sử dụng (7 ngày qua)
+          no_results: Không có mục thời gian trong 7 ngày qua.
         work_packages_accountable:
-          title: "Gói công việc mà tôi có trách nhiệm"
+          title: Gói công việc mà tôi có trách nhiệm
         work_packages_assigned:
-          title: 'Work package được chỉ định cho tôi'
+          title: Work package được chỉ định cho tôi
         work_packages_created:
-          title: 'Công việc tạo bởi tôi'
+          title: Công việc tạo bởi tôi
         work_packages_watched:
-          title: 'Công việc có liên quan tới tôi'
+          title: Công việc có liên quan tới tôi
         work_packages_table:
-          title: 'Work packages table'
+          title: Bảng gói công việc
         work_packages_graph:
-          title: 'Work packages graph'
+          title: Biểu đồ gói công việc
+          summary: Biểu đồ %{chartType} hiển thị các gói công việc %{description}.
         work_packages_calendar:
-          title: 'Lịch'
+          title: lịch
         work_packages_overview:
-          title: 'Work packages overview'
-          placeholder: 'Click to edit ...'
+          title: Tổng quan về gói công việc
+          placeholder: Bấm vào để chỉnh sửa...

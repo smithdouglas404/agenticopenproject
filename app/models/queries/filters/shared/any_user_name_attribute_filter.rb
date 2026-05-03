@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -43,21 +45,29 @@ module Queries::Filters::Shared::AnyUserNameAttributeFilter
        Queries::Operators::NotContains]
     end
 
+    def email_field_allowed?
+      User.current.allowed_globally?(:view_user_email)
+    end
+
+    def human_name
+      I18n.t(:label_filter_any_name_attribute)
+    end
+
     private
 
     def sql_concat_name
-      <<-SQL
-    LOWER(
-      CONCAT(
+      fields = <<~SQL.squish
         users.firstname, ' ', users.lastname,
         ' ',
         users.lastname, ' ', users.firstname,
         ' ',
-        users.login,
-        ' ',
-        users.mail
-      )
-    )
+        users.login
+      SQL
+
+      fields << ", ' ',users.mail" if email_field_allowed?
+
+      <<~SQL.squish
+        LOWER(CONCAT(#{fields}))
       SQL
     end
   end

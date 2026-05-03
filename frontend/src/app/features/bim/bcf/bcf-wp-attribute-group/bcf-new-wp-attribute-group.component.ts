@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -38,6 +38,7 @@ import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
   templateUrl: './bcf-wp-attribute-group.component.html',
   styleUrls: ['./bcf-wp-attribute-group.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class BcfNewWpAttributeGroupComponent extends BcfWpAttributeGroupComponent implements AfterViewInit {
   galleryViewpoints:BcfViewpointItem[] = [];
@@ -74,6 +75,7 @@ export class BcfNewWpAttributeGroupComponent extends BcfWpAttributeGroupComponen
         }),
       )
       .subscribe(() => {
+        this.viewpointsService.resetBcfTopic();
         this.showIndex = this.galleryViewpoints.length - 1;
       });
   }

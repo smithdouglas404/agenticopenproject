@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'open_project/plugins/auth_plugin'
+require "open_project/plugins/auth_plugin"
 
 module OmniAuth
   module FlexibleStrategy
@@ -41,7 +41,7 @@ module OmniAuth
       return false unless providers
 
       @provider = providers.find do |p|
-        (current_path =~ /#{path_for_provider(p.to_hash[:name])}/) == 0
+        current_path.match?(/#{path_for_provider(p.to_hash[:name])}(\/|\s*$)/)
       end
 
       if @provider
@@ -91,7 +91,7 @@ module OmniAuth
 
   module FlexibleStrategyClass
     def new(app, *args, &)
-      super(app, *args, &).tap do |strategy|
+      super.tap do |strategy|
         strategy.extend FlexibleStrategy
       end
     end

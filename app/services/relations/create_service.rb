@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,12 +30,14 @@
 
 class Relations::CreateService < Relations::BaseService
   def initialize(user:)
-    @user = user
+    super
     self.contract_class = Relations::CreateContract
   end
 
-  def perform(send_notifications: true, **attributes)
-    in_user_context(send_notifications) do
+  def perform
+    attributes = params.except(:send_notifications)
+
+    in_user_context(send_notifications: params[:send_notifications]) do
       update_relation ::Relation.new, attributes
     end
   end

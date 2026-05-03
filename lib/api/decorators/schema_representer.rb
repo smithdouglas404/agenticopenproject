@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,9 +63,11 @@ module API
                    max_length: nil,
                    regular_expression: nil,
                    options: {},
+                   formula: nil,
                    show_if: true,
                    description: nil,
-                   deprecated: nil)
+                   deprecated: nil,
+                   placeholder: nil)
           getter = ->(*) do
             schema_property_getter(type,
                                    name_source,
@@ -77,18 +79,20 @@ module API
                                    max_length,
                                    regular_expression,
                                    options,
+                                   formula,
                                    location,
                                    description,
-                                   deprecated)
+                                   deprecated,
+                                   placeholder)
           end
 
           schema_property(property,
-                          getter,
-                          show_if,
-                          required,
-                          has_default,
-                          name_source,
-                          as)
+                          getter:,
+                          show_if:,
+                          required:,
+                          has_default:,
+                          name_source:,
+                          as:)
         end
 
         def schema_with_allowed_link(property,
@@ -112,12 +116,12 @@ module API
           end
 
           schema_property(property,
-                          getter,
-                          show_if,
-                          required,
-                          has_default,
-                          name_source,
-                          as)
+                          getter:,
+                          show_if:,
+                          required:,
+                          has_default:,
+                          name_source:,
+                          as:)
         end
 
         def schema_with_allowed_collection(property,
@@ -134,7 +138,6 @@ module API
                                            writable: default_writable_property(property),
                                            attribute_group: nil,
                                            show_if: true)
-
           getter = ->(*) do
             schema_with_allowed_collection_getter(type,
                                                   name_source,
@@ -150,12 +153,12 @@ module API
           end
 
           schema_property(property,
-                          getter,
-                          show_if,
-                          required,
-                          has_default,
-                          name_source,
-                          as)
+                          getter:,
+                          show_if:,
+                          required:,
+                          has_default:,
+                          name_source:,
+                          as:)
         end
 
         def schema_with_allowed_string_collection(property,
@@ -189,25 +192,25 @@ module API
           end
 
           schema_property(property,
-                          getter,
-                          show_if,
-                          required,
-                          has_default,
-                          name_source,
-                          as)
+                          getter:,
+                          show_if:,
+                          required:,
+                          has_default:,
+                          name_source:,
+                          as:)
         end
 
         def schema_property(property,
-                            getter,
-                            show_if,
-                            required,
-                            has_default,
-                            name_source,
-                            property_alias)
+                            getter:,
+                            show_if:,
+                            required:,
+                            has_default:,
+                            name_source:,
+                            as:)
           raise ArgumentError unless property
 
           property property,
-                   as: property_alias,
+                   as:,
                    exec_context: :decorator,
                    getter:,
                    if: show_if,
@@ -266,7 +269,6 @@ module API
                      current_user:,
                      self_link: nil,
                      form_embedded: false)
-
         self.form_embedded = form_embedded
         self.self_link = self_link
 
@@ -284,7 +286,7 @@ module API
                     :self_link
 
       def _type
-        'Schema'
+        "Schema"
       end
 
       def _dependencies
@@ -301,9 +303,11 @@ module API
                                  max_length,
                                  regular_expression,
                                  options,
+                                 formula,
                                  location,
                                  description,
-                                 deprecated)
+                                 deprecated,
+                                 placeholder)
         name = call_or_translate(name_source)
         schema = ::API::Decorators::PropertySchemaRepresenter
                  .new(type: call_or_use(type),
@@ -314,11 +318,13 @@ module API
                       has_default: call_or_use(has_default),
                       writable: call_or_use(writable),
                       attribute_group: call_or_use(attribute_group),
-                      deprecated:)
+                      deprecated:,
+                      placeholder: call_or_use(placeholder))
         schema.min_length = min_length
         schema.max_length = max_length
         schema.regular_expression = regular_expression
         schema.options = options
+        schema.formula = formula
 
         schema
       end
@@ -357,7 +363,6 @@ module API
                                                 attribute_group,
                                                 values_callback,
                                                 allowed_values_getter)
-
         wrapped_link_factory = if link_factory
                                  ->(value) { instance_exec(value, &link_factory) }
                                else

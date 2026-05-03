@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -23,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See docs/COPYRIGHT.rdoc for more details.
+# See COPYRIGHT and LICENSE files for more details.
 #++
 
 module Attachments
@@ -36,8 +38,8 @@ module Attachments
     # @param whitelist A custom whitelist to validate with, or empty to disable validation
     #
     # Warning: When passing an empty whitelist, this results in no validations on the content type taking place.
-    def self.bypass_whitelist(user:, whitelist: [])
-      new(user:, contract_options: { whitelist: whitelist.map(&:to_s) })
+    def self.bypass_allowlist(user:, allowlist: [])
+      new(user:, contract_options: { allowlist: allowlist.map(&:to_s) })
     end
   end
 end

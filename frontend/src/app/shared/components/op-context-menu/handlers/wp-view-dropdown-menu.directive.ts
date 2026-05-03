@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -39,6 +39,7 @@ import { WorkPackageViewTimelineService } from 'core-app/features/work-packages/
 
 @Directive({
   selector: '[wpViewDropdown]',
+  standalone: false,
 })
 export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
   constructor(
@@ -51,9 +52,16 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
     super(elementRef, opContextMenu);
   }
 
-  protected open(evt:JQuery.TriggeredEvent) {
-    this.buildItems();
-    this.opContextMenu.show(this, evt);
+  public isOpen = false;
+
+  protected open(evt:Event) {
+    this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.buildItems();
+      this.opContextMenu.show(this, evt);
+    } else {
+      this.opContextMenu.close();
+    }
   }
 
   public get locals() {
@@ -74,6 +82,7 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
           title: this.I18n.t('js.button_show_cards'),
           icon: 'icon-view-card',
           onClick: (evt:any) => {
+            this.isOpen = false;
             this.wpDisplayRepresentationService.setDisplayRepresentation(wpDisplayCardRepresentation);
             if (this.wpTableTimeline.isVisible) {
               // Necessary for the timeline buttons to disappear
@@ -93,6 +102,7 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
           title: this.I18n.t('js.button_show_table'),
           icon: 'icon-view-list',
           onClick: (evt:any) => {
+            this.isOpen = false;
             this.wpDisplayRepresentationService.setDisplayRepresentation(wpDisplayListRepresentation);
             if (this.wpTableTimeline.isVisible) {
               this.wpTableTimeline.toggle();
@@ -111,6 +121,7 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
           title: this.I18n.t('js.button_show_gantt'),
           icon: 'icon-view-timeline',
           onClick: (evt:any) => {
+            this.isOpen = false;
             if (!this.wpTableTimeline.isVisible) {
               this.wpTableTimeline.toggle();
             }

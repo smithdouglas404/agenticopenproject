@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -72,6 +74,12 @@ module BaseServices
       # Return only the unsaved copy
       return call if params[:attributes_only]
 
+      super
+    end
+
+    def after_persist(call)
+      return call unless call.result&.persisted?
+
       super.tap do |super_call|
         copy_instance = super_call.result
         self.class.copy_dependencies.each do |service_cls|
@@ -90,12 +98,6 @@ module BaseServices
     end
 
     protected
-
-    ##
-    # Disabling sending regular notifications
-    def service_context(*_args, &)
-      in_context(model, false, &)
-    end
 
     ##
     # Should the dependency be skipped for this service run?

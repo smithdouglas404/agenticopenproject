@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,6 +32,7 @@
 module WorkPackages::Scopes
   module ForScheduling
     extend ActiveSupport::Concern
+    using CoreExtensions::SquishSql
 
     class_methods do
       # Fetches all work packages that need to be evaluated for eventual
@@ -43,13 +46,18 @@ module WorkPackages::Scopes
       # stop on that path if the work package evaluated to be added is either:
       #
       #   * itself scheduled manually
-      #   * having all of it's children scheduled manually
+      #   * having all of its children scheduled manually
       #
       # The children themselves are scheduled manually if all of their children
       # are scheduled manually which repeats itself down to the leaf work
       # packages. So another way of putting it, and that is how the sql
       # statement works, is that a work package is considered to be scheduled
       # manually if *all* of its descendants are scheduled manually.
+      #
+      # One notable exception is if one of the manually scheduled children is
+      # the origin work package of the rescheduling. In this case, the parent is
+      # also subject to reschedule as the origin work package dates may have
+      # changed.
       #
       # For example in case of the hierarchy:
       #   A and B <- hierarchy (C is parent of both A and B) - C <- hierarchy - D
@@ -103,13 +111,13 @@ module WorkPackages::Scopes
       # @param work_packages WorkPackage[] A set of work packages for which the
       #   set of related work packages that might be subject to reschedule is
       #   fetched.
-      def for_scheduling(work_packages)
+      def for_scheduling(work_packages, switching_to_automatic_mode: [])
         return none if work_packages.empty?
 
         sql = <<~SQL.squish
           WITH
             RECURSIVE
-            #{scheduling_paths_sql(work_packages)}
+            #{scheduling_paths_sql(work_packages, switching_to_automatic_mode:)}
 
             SELECT id
             FROM to_schedule
@@ -154,24 +162,44 @@ module WorkPackages::Scopes
       #
       # Paths whose ending work package is marked to be manually scheduled are
       # not joined with any more.
-      def scheduling_paths_sql(work_packages)
+      def scheduling_paths_sql(work_packages, switching_to_automatic_mode: [])
+        automatic_ids = switching_to_automatic_mode.map do |wp|
+          ::OpenProject::SqlSanitization.sanitize("(:id)", id: wp.id)
+        end.join(", ")
+
         values = work_packages.map do |wp|
           ::OpenProject::SqlSanitization
-            .sanitize "(:id, false, false)",
+            .sanitize "(:id, false, false, true)",
                       id: wp.id
-        end.join(', ')
+        end.join(", ")
 
         <<~SQL.squish
-          to_schedule (id, manually) AS (
+          -- All work packages that are switching to automatic scheduling mode
+          -- but are still seen as manually scheduled from the database's perspective.
+          switching_to_automatic_mode (id) AS (
+            SELECT id::bigint FROM (VALUES #{automatic_ids.presence || '(NULL)'}) AS t(id)
+          ),
 
-            SELECT * FROM (VALUES#{values}) AS t(id, manually, hierarchy_up)
+          -- recursively fetch all work packages that are eligible for rescheduling
+          to_schedule (id, manually, hierarchy_up, origin) AS (
+
+            SELECT * FROM (VALUES#{values}) AS t(id, manually, hierarchy_up, origin)
 
             UNION
 
             SELECT
               relations.from_id id,
-              (related_work_packages.schedule_manually OR COALESCE(descendants.manually, false)) manually,
-              relations.hierarchy_up
+              (
+                (
+                  related_work_packages.schedule_manually
+                  AND switching_to_automatic_mode.id IS NULL
+                ) OR (
+                  COALESCE(descendants.manually, false)
+                  AND NOT (to_schedule.origin AND relations.hierarchy_up)
+                )
+              ) manually,
+              relations.hierarchy_up,
+              false origin
             FROM
               to_schedule
             JOIN LATERAL
@@ -196,16 +224,21 @@ module WorkPackages::Scopes
                 FROM
                   work_package_hierarchies
                 WHERE
-                  NOT to_schedule.manually
+                  (NOT to_schedule.manually OR to_schedule.origin)
                   AND ((work_package_hierarchies.ancestor_id = to_schedule.id AND NOT to_schedule.hierarchy_up AND work_package_hierarchies.generations = 1)
                        OR (work_package_hierarchies.descendant_id = to_schedule.id AND work_package_hierarchies.generations > 0))
               ) relations ON relations.to_id = to_schedule.id
             LEFT JOIN work_packages related_work_packages
               ON relations.from_id = related_work_packages.id
+            LEFT JOIN switching_to_automatic_mode
+              ON related_work_packages.id = switching_to_automatic_mode.id
             LEFT JOIN LATERAL (
               SELECT
                 descendant_hierarchies.ancestor_id from_id,
-                bool_and(COALESCE(descendant_work_packages.schedule_manually, false)) manually
+                bool_and(
+                  COALESCE(descendant_work_packages.schedule_manually, false)
+                  AND (NOT EXISTS (SELECT 1 FROM switching_to_automatic_mode WHERE descendant_work_packages.id = switching_to_automatic_mode.id))
+                ) manually
               FROM work_package_hierarchies descendant_hierarchies
               JOIN work_packages descendant_work_packages
               ON

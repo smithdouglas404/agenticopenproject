@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -36,11 +36,12 @@ import { EditFormComponent } from 'core-app/shared/components/fields/edit/edit-f
   templateUrl: './wp-edit-actions-bar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wp-edit-actions-bar',
+  standalone: false,
 })
 export class WorkPackageEditActionsBarComponent {
-  @Output('onSave') public onSave = new EventEmitter<void>();
+  @Output() public onSave = new EventEmitter<void>();
 
-  @Output('onCancel') public onCancel = new EventEmitter<void>();
+  @Output() public onCancel = new EventEmitter<void>();
 
   public _saving = false;
 

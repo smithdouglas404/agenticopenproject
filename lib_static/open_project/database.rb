@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,7 +27,7 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require 'semantic'
+require "semantic"
 
 module OpenProject
   # This module provides some information about the currently used database
@@ -34,8 +36,8 @@ module OpenProject
   # syntax differences.
 
   module Database
-    DB_VALUE_FALSE = 'f'.freeze
-    DB_VALUE_TRUE = 't'.freeze
+    DB_VALUE_FALSE = "f"
+    DB_VALUE_TRUE = "t"
 
     class InsufficientVersionError < StandardError; end
 
@@ -56,7 +58,7 @@ module OpenProject
     def self.required_version
       {
         numeric: 100000, # PG_VERSION_NUM
-        string: '10.0.0'
+        string: "10.0.0"
       }
     end
 
@@ -64,13 +66,13 @@ module OpenProject
     # Check pending database migrations
     # and cache the result for up to one hour
     def self.migrations_pending?(ensure_fresh: false)
-      cache_key = OpenProject::Cache::CacheKey.key('database_migrations')
+      cache_key = OpenProject::Cache::CacheKey.key("database_migrations")
       cached_result = Rails.cache.read(cache_key)
 
       # Ensure cache is busted if result is positive or unset
       # and the value was cached
       if ensure_fresh || cached_result != false
-        fresh_result = connection.migration_context.needs_migration?
+        fresh_result = connection.pool.migration_context.needs_migration?
         Rails.cache.write(cache_key, expires_in: 1.hour)
         return fresh_result
       end
@@ -81,7 +83,7 @@ module OpenProject
     ##
     # Determine whether the current version is deprecated
     def self.version_deprecated?
-      !version_matches?(130000)
+      !version_matches?(160000)
     end
 
     ##
@@ -97,7 +99,7 @@ module OpenProject
 
         if adapter_name.match?(/mysql/i)
           message << " As MySql used to be supported, there is a migration script to ease the transition " \
-                     "(https://www.openproject.org/deprecating-mysql-support/)."
+                     "(https://www.openproject.org/blog/deprecating-mysql-support/)."
         end
 
         raise UnsupportedDatabaseError.new message
@@ -109,9 +111,9 @@ module OpenProject
 
         raise InsufficientVersionError.new message
       elsif version_deprecated?
-        message = "The next major release of OpenProject (v12) will require PostgreSQL 13 or later.\n" \
+        message = "OpenProject versions higher than 16.0 will require at least PostgreSQL 17.\n" \
                   "You can anticipate this upgrade by updating your database installation by following the guide at " \
-                  "https://www.openproject.org/docs/installation-and-operations/misc/migration-to-postgresql13/"
+                  "https://www.openproject.org/docs/installation-and-operations/misc/migration-to-postgresql17/"
 
         raise DeprecatedVersionWarning.new message
       end
@@ -160,7 +162,7 @@ module OpenProject
 
     def self.mysql?(_arg = nil)
       message = ".mysql? is no longer supported and will always return false. Remove the call."
-      ActiveSupport::Deprecation.warn message, caller
+      ActiveSupport::Deprecation.new.warn message, caller_locations
       false
     end
 
@@ -168,13 +170,13 @@ module OpenProject
     # Set the +raw+ argument to true to return the unmangled string
     # from the database.
     def self.version(raw = false)
-      @version ||= ActiveRecord::Base.connection.select_value('SELECT version()')
+      @version ||= ActiveRecord::Base.connection.select_value("SELECT version()")
 
       raw ? @version : @version.match(/\APostgreSQL ([\d.]+)/i)[1]
     end
 
     def self.numeric_version
-      ActiveRecord::Base.connection.select_value('SHOW server_version_num;').to_i
+      ActiveRecord::Base.connection.select_value("SHOW server_version_num;").to_i
     end
 
     # Return if the version of the underlying database engine is capable of TSVECTOR features, needed for full-text

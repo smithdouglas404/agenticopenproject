@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.dirname(__FILE__) + '/../spec_helper'
+require_relative "../spec_helper"
 
-describe Budget, type: :model do
+RSpec.describe Budget do
   let(:budget) { build(:budget, project:) }
   let(:type) { create(:type_feature) }
   let(:project) { create(:project_with_types) }
   let(:user) { create(:user) }
 
-  describe 'destroy' do
+  describe "destroy" do
     let(:work_package) { create(:work_package, project:) }
 
     before do
@@ -45,28 +47,51 @@ describe Budget, type: :model do
       budget.destroy
     end
 
-    it { expect(Budget.find_by_id(budget.id)).to be_nil }
-    it { expect(WorkPackage.find_by_id(work_package.id)).to eq(work_package) }
+    it { expect(described_class.find_by(id: budget.id)).to be_nil }
+    it { expect(WorkPackage.find_by(id: work_package.id)).to eq(work_package) }
     it { expect(work_package.reload.budget).to be_nil }
   end
 
-  describe '#existing_material_budget_item_attributes=' do
+  describe "#base_amount=" do
+    it "sets the base amount to 0.0 when an empty string is passed" do
+      budget.base_amount = ""
+      expect(budget.base_amount).to eq(0.0)
+    end
+
+    it "sets the base amount to 0.0 when nil is passed" do
+      budget.base_amount = nil
+      expect(budget.base_amount).to eq(0.0)
+    end
+
+    it "sets the base amount to the given float value" do
+      budget.base_amount = "12.34"
+      expect(budget.base_amount).to eq(12.34)
+    end
+
+    it "parses the base amount according to the current locale" do
+      I18n.with_locale(:de) do
+        budget.base_amount = "12,34"
+        expect(budget.base_amount).to eq(12.34)
+      end
+    end
+  end
+
+  describe "#existing_material_budget_item_attributes=" do
     let!(:existing_material_budget_item) do
       create(:material_budget_item, budget:, units: 10.0)
 
       budget.material_budget_items.reload.first
     end
 
-    context 'allowed to edit budgets' do
+    context "allowed to edit budgets" do
       before do
-        allow(User.current)
-          .to receive(:allowed_to?)
-          .with(:edit_budgets, project)
-          .and_return(true)
+        mock_permissions_for(User.current) do |mock|
+          mock.allow_in_project :edit_budgets, project:
+        end
       end
 
-      context 'with a non integer value' do
-        it 'updates the item' do
+      context "with a non integer value" do
+        it "updates the item" do
           budget.existing_material_budget_item_attributes = { existing_material_budget_item.id.to_s.to_sym => { units: "0.5" } }
 
           expect(existing_material_budget_item.units)
@@ -74,8 +99,8 @@ describe Budget, type: :model do
         end
       end
 
-      context 'with no value' do
-        it 'deletes the item' do
+      context "with no value" do
+        it "deletes the item" do
           budget.existing_material_budget_item_attributes = { existing_material_budget_item.id.to_s.to_sym => {} }
 
           expect(existing_material_budget_item)

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,9 +33,14 @@
 # Purpose: create and persist a Storages::Storage record
 # Used by: Storages::Admin::StoragesController#create, could also be used by the
 # API in the future.
-# Reference: https://www.openproject.org/docs/development/concepts/contracted-services/
 # The comments here are also valid for the other *_service.rb files
 module OAuthClients
   class CreateService < ::BaseServices::Create
+    protected
+
+    def after_validate(contract_call)
+      OAuthClient.where(integration: params[:integration]).delete_all
+      super
+    end
   end
 end

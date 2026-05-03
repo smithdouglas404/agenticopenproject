@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'base'
+require_relative "base"
 
 class Tables::GroupUsers < Tables::Base
-  def self.id_options
-    { id: false }
-  end
-
   def self.table(migration)
-    create_table migration do |t|
-      t.integer :group_id, null: false
-      t.integer :user_id, null: false
+    create_table migration do |t| # rubocop:disable Rails/CreateTableWithTimestamps
+      t.bigint :group_id, null: false
+      t.bigint :user_id, null: false
 
       t.index %i(group_id user_id), name: :group_user_ids, unique: true
+
+      t.index %i[user_id group_id], unique: true
     end
   end
 end

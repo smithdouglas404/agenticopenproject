@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,7 @@ module UserPreferences
 
     attr_accessor :notifications
 
-    def validate_params(params)
+    def validate_params
       contract = ParamsContract.new(model, user, params:)
 
       ServiceResult.new success: contract.valid?,
@@ -40,7 +42,7 @@ module UserPreferences
                         result: model
     end
 
-    def before_perform(params, _service_result)
+    def before_perform(_service_result)
       self.notifications = params&.delete(:notification_settings)
 
       super
@@ -60,8 +62,8 @@ module UserPreferences
                           .map { |item| item.merge(user_id: model.user_id) }
                           .partition { |setting| setting[:project_id].nil? }
 
-      global_ids = upsert_notifications(global, %i[user_id], 'project_id IS NULL')
-      project_ids = upsert_notifications(project, %i[user_id project_id], 'project_id IS NOT NULL')
+      global_ids = upsert_notifications(global, %i[user_id], "project_id IS NULL")
+      project_ids = upsert_notifications(project, %i[user_id project_id], "project_id IS NOT NULL")
 
       global_ids + project_ids
     end
@@ -92,6 +94,7 @@ module UserPreferences
             columns: %i[watched
                         assignee
                         responsible
+                        shared
                         mentioned
                         start_date
                         due_date

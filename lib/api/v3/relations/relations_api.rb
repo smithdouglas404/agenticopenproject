@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,14 +32,10 @@ module API
       class RelationsAPI < ::API::OpenProjectAPI
         resources :relations do
           get &::API::V3::Utilities::Endpoints::Index.new(model: Relation,
-                                                          scope: -> {
-                                                            Relation
-                                                              .includes(::API::V3::Relations::RelationRepresenter.to_eager_load)
-                                                          },
                                                           render_representer: RelationPaginatedCollectionRepresenter)
                                                      .mount
 
-          route_param :id, type: Integer, desc: 'Relation ID' do
+          route_param :id, type: Integer, desc: "Relation ID" do
             after_validation do
               @relation = Relation.visible.find(params[:id])
             end

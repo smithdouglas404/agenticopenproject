@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -135,7 +135,7 @@ export class HalResourceNotificationService {
       errorBody = (response as any).data;
     }
 
-    if (errorBody && errorBody._type === 'Error') {
+    if (errorBody?._type === 'Error') {
       return this.halResourceService.createHalResourceOfClass(ErrorResource, errorBody);
     }
 
@@ -186,7 +186,7 @@ export class HalResourceNotificationService {
       const attributeType = schema.type.toLowerCase();
       const i18nString = `js.hal.error.format.${attributeType}`;
 
-      if (this.I18n.lookup(i18nString) === undefined) {
+      if (this.I18n.t(i18nString, { default: '[not found]' }) === '[not found]') {
         return false;
       }
 

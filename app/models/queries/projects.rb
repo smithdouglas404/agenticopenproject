@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,30 +30,51 @@
 
 module Queries::Projects
   ::Queries::Register.register(ProjectQuery) do
-    filter Filters::AncestorFilter
-    filter Filters::TypeFilter
     filter Filters::ActiveFilter
-    filter Filters::TemplatedFilter
-    filter Filters::PublicFilter
-    filter Filters::NameFilter
-    filter Filters::NameAndIdentifierFilter
-    filter Filters::TypeaheadFilter
-    filter Filters::CustomFieldFilter
+    filter Filters::AncestorFilter
+    filter Filters::AvailableCustomFieldsProjectsFilter
+    filter Filters::AvailableProjectAttributesFilter
     filter Filters::CreatedAtFilter
-    filter Filters::LatestActivityAtFilter
-    filter Filters::PrincipalFilter
-    filter Filters::ParentFilter
+    filter Filters::CustomFieldFilter
+    filter Filters::FavoritedFilter
     filter Filters::IdFilter
+    filter Filters::LatestActivityAtFilter
+    filter Filters::ProjectPhaseAnyFilter
+    filter Filters::ProjectPhaseGateFilter
+    filter Filters::ProjectPhaseFilter
+    filter Filters::MemberOfFilter
+    filter Filters::NameAndIdentifierFilter
+    filter Filters::NameFilter
+    filter Filters::ParentFilter
+    filter Filters::PrincipalFilter
     filter Filters::ProjectStatusFilter
+    filter Filters::PublicFilter
+    filter Filters::TemplatedFilter
+    filter Filters::TypeFilter
+    filter Filters::TypeaheadFilter
+    filter Filters::UpdatedAtFilter
     filter Filters::UserActionFilter
     filter Filters::VisibleFilter
 
+    order Orders::CustomFieldOrder
     order Orders::DefaultOrder
     order Orders::LatestActivityAtOrder
-    order Orders::RequiredDiskSpaceOrder
-    order Orders::CustomFieldOrder
-    order Orders::ProjectStatusOrder
+    order Orders::ProjectPhaseOrder
     order Orders::NameOrder
+    order Orders::ProjectStatusOrder
+    order Orders::RequiredDiskSpaceOrder
     order Orders::TypeaheadOrder
+    order Orders::UpdatedAtOrder
+
+    select Selects::CreatedAt
+    select Selects::CustomField
+    select Selects::CustomComment
+    select Selects::Default
+    select Selects::Favorited
+    select Selects::LatestActivityAt
+    select Selects::ProjectPhase
+    select Selects::RequiredDiskSpace
+    select Selects::Status
+    select Selects::UpdatedAt
   end
 end

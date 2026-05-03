@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Injector,
   Input,
   OnDestroy,
@@ -26,6 +27,8 @@ import { AuthorisationService } from 'core-app/core/model-auth/model-auth.servic
 import { Highlighting } from 'core-app/features/work-packages/components/wp-fast-table/builders/highlighting/highlighting.functions';
 import { WorkPackageCardViewComponent } from 'core-app/features/work-packages/components/wp-card-view/wp-card-view.component';
 import { WorkPackageStatesInitializationService } from 'core-app/features/work-packages/components/wp-list/wp-states-initialization.service';
+import { States } from 'core-app/core/states/states.service';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 import { BoardService } from 'core-app/features/boards/board/board.service';
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
@@ -48,7 +51,6 @@ import {
   debounceTime,
   filter,
   map,
-  take,
 } from 'rxjs/operators';
 import { ChangeItem } from 'core-app/shared/components/fields/changeset/changeset';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
@@ -63,6 +65,10 @@ import {
   HalEventsService,
 } from 'core-app/features/hal/services/hal-events.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import { firstValueFrom } from 'rxjs';
+import { WorkPackageIsolatedQuerySpaceDirective } from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 export interface DisabledButtonPlaceholder {
   text:string;
@@ -74,11 +80,13 @@ export interface DisabledButtonPlaceholder {
   templateUrl: './board-list.component.html',
   styleUrls: ['./board-list.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
   providers: [
     { provide: WorkPackageInlineCreateService, useClass: BoardInlineCreateService },
     BoardListMenuComponent,
     WorkPackageCardDragAndDropService,
   ],
+  standalone: false,
 })
 export class BoardListComponent extends AbstractWidgetComponent implements OnInit, OnDestroy {
   /** Output fired upon query removal */
@@ -91,7 +99,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
   @Input() public board:Board;
 
   /** Access to the loading indicator element */
-  @ViewChild('loadingIndicator', { static: true }) indicator:ElementRef;
+  @ViewChild('loadingIndicator', { static: true }) indicator:ElementRef<HTMLElement>;
 
   /** Access to the card view */
   @ViewChild(WorkPackageCardViewComponent) cardView:WorkPackageCardViewComponent;
@@ -115,7 +123,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
   /** Whether the add button should be shown */
   public showAddButton = false;
 
-  private canAdd = this.wpInlineCreate.canAdd.pipe(take(1)).toPromise();
+  private canAdd = firstValueFrom(this.wpInlineCreate.canAdd);
 
   public columnsQueryProps:any;
 
@@ -143,7 +151,10 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   public buttonPlaceholder:DisabledButtonPlaceholder|undefined;
 
-  constructor(readonly apiv3Service:ApiV3Service,
+  private readonly states = inject(States);
+
+  constructor(
+    readonly apiv3Service:ApiV3Service,
     readonly I18n:I18nService,
     readonly state:StateService,
     readonly cdRef:ChangeDetectorRef,
@@ -167,7 +178,9 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     readonly boardActionRegistry:BoardActionsRegistryService,
     readonly causedUpdates:CausedUpdatesService,
     readonly keepTab:KeepTabService,
-    readonly $state:StateService) {
+    readonly currentProject:CurrentProjectService,
+    readonly pathHelper:PathHelperService,
+  ) {
     super(I18n, injector);
   }
 
@@ -177,9 +190,9 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     this.resource.isNewWidget = false;
 
     // Set initial selection if split view open
-    if (this.state.includes(`${this.state.current.data.baseRoute}.details`)) {
-      const wpId = this.state.params.workPackageId;
-      this.wpViewSelectionService.initializeSelection([wpId]);
+    const detailsMatch = window.location.pathname.match(/\/details\/(\d+)/);
+    if (detailsMatch) {
+      this.wpViewSelectionService.initializeSelection([detailsMatch[1]]);
     }
 
     // If this query space changes its focused or selected
@@ -303,7 +316,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   private boardListActionColorClass(value?:HalResource):string {
     const attribute = this.board.actionAttribute!;
-    if (value && value.id) {
+    if (value?.id) {
       return Highlighting.backgroundClass(attribute, value.id);
     }
     return '';
@@ -348,7 +361,6 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     }
 
     // Load the resource
-    // eslint-disable-next-line consistent-return
     return actionService
       .getLoadedActionValue(query)
       .then(async (resource) => {
@@ -430,7 +442,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
   }
 
   private get indicatorInstance() {
-    return this.loadingIndicator.indicator(jQuery(this.indicator.nativeElement));
+    return this.loadingIndicator.indicator(this.indicator.nativeElement);
   }
 
   private setQueryProps(filters:ApiV3Filter[]) {
@@ -481,21 +493,27 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   openFullViewOnDoubleClick(event:{ workPackageId:string, double:boolean }) {
     if (event.double) {
-      this.state.go(
-        'work-packages.show',
-        { workPackageId: event.workPackageId },
-      );
+      const routingId = resolveRoutingId(this.states, event.workPackageId);
+      const projectIdentifier = this.currentProject.identifier;
+      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, routingId) + window.location.search;
+      Turbo.visit(link, { action: 'advance' });
     }
   }
 
   openStateLink(event:{ workPackageId:string; requestedState:string }) {
-    const params = { workPackageId: event.workPackageId };
-
+    const routingId = resolveRoutingId(this.states, event.workPackageId);
     if (event.requestedState === 'split') {
-      this.keepTab.goCurrentDetailsState(params);
+      this.goToSplitView(routingId);
     } else {
-      this.keepTab.goCurrentShowState(params);
+      this.keepTab.goCurrentShowState(routingId);
     }
+  }
+
+  private goToSplitView(workPackageId:string):void {
+    const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, this.board.id!, workPackageId);
+    const search = window.location.search;
+    const link = search ? `${base}${search}` : base;
+    Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
   }
 
   private schema(workPackage:WorkPackageResource) {

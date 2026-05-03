@@ -1,12 +1,12 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2020 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
 #
 # OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
-# Copyright (C) 2006-2017 Jean-Philippe Lang
+# Copyright (C) 2006-2013 Jean-Philippe Lang
 # Copyright (C) 2010-2013 the ChiliProject Team
 #
 # This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ module API
                    <<~SQL.squish
                      CASE
                      WHEN context_id IS NULL THEN action || '/g-' || principal_id
-                     ELSE action || '/p' || context_id || '-' || principal_id
+                     ELSE action || '/w' || context_id || '-' || principal_id
                      END
                    SQL
                  }
@@ -52,7 +52,7 @@ module API
                <<~SQL.squish
                  CASE
                  WHEN context_id IS NULL THEN action || '/g-' || principal_id
-                 ELSE action || '/p' || context_id || '-' || principal_id
+                 ELSE action || '/w' || context_id || '-' || principal_id
                  END
                SQL
              },
@@ -67,7 +67,9 @@ module API
                <<~SQL.squish
                  CASE
                  WHEN context_id IS NULL THEN '#{api_v3_paths.capabilities_contexts_global}'
-                 ELSE format('#{api_v3_paths.project('%s')}', context_id)
+                 WHEN workspace_type = 'project' THEN format('#{api_v3_paths.project('%s')}', context_id)
+                 WHEN workspace_type = 'program' THEN format('#{api_v3_paths.program('%s')}', context_id)
+                 WHEN workspace_type = 'portfolio' THEN format('#{api_v3_paths.portfolio('%s')}', context_id)
                  END
                SQL
              },
@@ -81,7 +83,7 @@ module API
              },
              join: { table: :projects,
                      condition: "contexts.id = capabilities.context_id",
-                     select: ['contexts.name context_name'] }
+                     select: ["contexts.name context_name, contexts.workspace_type workspace_type"] }
 
         associated_user_link :principal
       end

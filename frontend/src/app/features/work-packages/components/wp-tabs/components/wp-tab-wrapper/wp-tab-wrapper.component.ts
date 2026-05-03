@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -24,11 +24,13 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // See COPYRIGHT and LICENSE files for more details.
-// ++
+//++
 
 import { UIRouterGlobals } from '@uirouter/core';
 import {
+  ChangeDetectionStrategy,
   Component,
+  Input,
   OnInit,
 } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
@@ -42,8 +44,16 @@ import { WorkPackageResource } from 'core-app/features/hal/resources/work-packag
 @Component({
   templateUrl: './wp-tab-wrapper.html',
   selector: 'op-wp-tab',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WpTabWrapperComponent implements OnInit {
+  @Input() public workPackageId:string;
+  @Input() public tabIdentifier:string;
+
   workPackage:WorkPackageResource;
 
   ndcDynamicInputs$:Observable<{
@@ -51,17 +61,18 @@ export class WpTabWrapperComponent implements OnInit {
     tab:WpTabDefinition | undefined;
   }>;
 
-  get workPackageId():string {
-    const { workPackageId } = this.uiRouterGlobals.params as unknown as { workPackageId:string };
-    return workPackageId;
-  }
-
-  constructor(readonly I18n:I18nService,
+  constructor(
+    readonly I18n:I18nService,
     readonly uiRouterGlobals:UIRouterGlobals,
     readonly apiV3Service:ApiV3Service,
-    readonly wpTabsService:WorkPackageTabsService) {}
+    readonly wpTabsService:WorkPackageTabsService
+  ) {}
 
   ngOnInit() {
+    if (this.workPackageId === undefined) {
+      this.workPackageId = this.uiRouterGlobals.params.workPackageId;
+    }
+
     this.ndcDynamicInputs$ = this
       .apiV3Service
       .work_packages
@@ -76,8 +87,10 @@ export class WpTabWrapperComponent implements OnInit {
   }
 
   findTab(workPackage:WorkPackageResource):WpTabDefinition | undefined {
-    const { tabIdentifier } = this.uiRouterGlobals.params as unknown as { tabIdentifier:string };
+    if (this.tabIdentifier === undefined) {
+      this.tabIdentifier = this.uiRouterGlobals.params.tabIdentifier;
+    }
 
-    return this.wpTabsService.getTab(tabIdentifier, workPackage);
+    return this.wpTabsService.getTab(this.tabIdentifier, workPackage);
   }
 }

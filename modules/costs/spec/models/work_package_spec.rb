@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +26,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require_relative "../spec_helper"
 
-describe WorkPackage, type: :model do
+RSpec.describe WorkPackage do
   let(:user) { create(:admin) }
-  let(:role) { create(:role) }
+  let(:role) { create(:project_role) }
   let(:project) do
     create(:project_with_types, members: { user => role })
   end
@@ -42,8 +42,8 @@ describe WorkPackage, type: :model do
                           author: user)
   end
   let!(:cost_entry) do
-    create(:cost_entry, work_package:, project:, units: 3, spent_on: Date.today, user:,
-                        comments: 'test entry')
+    create(:cost_entry, entity: work_package, project:, units: 3, spent_on: Date.current, user:,
+                        comments: "test entry")
   end
   let!(:budget) { create(:budget, project:) }
 
@@ -53,13 +53,13 @@ describe WorkPackage, type: :model do
       .call(project:)
   end
 
-  it 'updates cost entries on move' do
+  it "updates cost entries on move" do
     expect(work_package.project_id).to eql project.id
     expect(move_to_project(work_package, project2)).not_to be_falsey
     expect(cost_entry.reload.project_id).to eql project2.id
   end
 
-  it 'allows to set budget to nil' do
+  it "allows to set budget to nil" do
     work_package.budget = budget
     work_package.save!
     expect(work_package.budget).to eql budget

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ class WikiMenuItemsController < ApplicationController
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
     project = controller.instance_variable_get(:@project)
-    if (page = WikiPage.find_by(wiki_id: project.wiki.id, slug: controller.params[:id]))
+    if (page = project.wiki.pages.find_by(id: controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -43,7 +45,8 @@ class WikiMenuItemsController < ApplicationController
   current_menu_item :select_main_menu_item do |controller|
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
-    if (page = WikiPage.find_by(id: controller.params[:id]))
+    project = controller.instance_variable_get(:@project)
+    if (page = project.wiki.pages.find_by(id: controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -52,7 +55,7 @@ class WikiMenuItemsController < ApplicationController
     menu_item = controller.default_menu_item(page)
     return unless menu_item
 
-    "no-menu-item-#{menu_item.menu_identifier}".to_sym
+    :"no-menu-item-#{menu_item.menu_identifier}"
   end
 
   before_action :find_project_by_project_id
@@ -62,14 +65,13 @@ class WikiMenuItemsController < ApplicationController
     get_data_from_params(params)
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     wiki_menu_setting = wiki_menu_item_params[:setting]
-    parent_wiki_menu_item = params[:parent_wiki_menu_item]
 
     get_data_from_params(params)
 
-    if wiki_menu_setting == 'no_item'
-      unless @wiki_menu_item.nil?
+    if wiki_menu_setting == "no_item"
+      if @wiki_menu_item
         if @wiki_menu_item.is_only_main_item?
           if @page.only_wiki_page?
             flash.now[:error] = t(:wiki_menu_item_delete_not_permitted)
@@ -86,12 +88,8 @@ class WikiMenuItemsController < ApplicationController
       @wiki_menu_item.name = @page.slug
       @wiki_menu_item.title = wiki_menu_item_params[:title] || @page_title
 
-      if wiki_menu_setting == 'sub_item'
-        @wiki_menu_item.parent_id = parent_wiki_menu_item
-      elsif wiki_menu_setting == 'main_item'
-        @wiki_menu_item.parent_id = nil
-        assign_wiki_menu_item_params @wiki_menu_item
-      end
+      @wiki_menu_item.parent_id = nil
+      assign_wiki_menu_item_params @wiki_menu_item
     end
 
     if @wiki_menu_item.destroyed? || @wiki_menu_item.save
@@ -101,18 +99,18 @@ class WikiMenuItemsController < ApplicationController
         flash[:notice] = t(:notice_successful_update)
       end
 
-      redirect_back_or_default(action: 'edit', id: @page)
+      redirect_back_or_default({ action: "edit", id: @page }, status: :see_other)
     else
       respond_to do |format|
         format.html do
-          render action: 'edit', id: @page
+          render action: :edit, id: @page, status: :unprocessable_entity
         end
       end
     end
   end
 
   def select_main_menu_item
-    @page = WikiPage.find params[:id]
+    @page = @project.wiki.pages.find params[:id]
     @possible_wiki_pages = @project
                            .wiki
                            .pages
@@ -124,12 +122,16 @@ class WikiMenuItemsController < ApplicationController
                            end
   end
 
-  def replace_main_menu_item
-    current_page = WikiPage.find params[:id]
+  def replace_main_menu_item # rubocop:disable Metrics/AbcSize
+    current_page = @project.wiki.pages.find(params[:id])
 
-    if (current_menu_item = current_page.menu_item) && (page = WikiPage.find_by(id: params[:wiki_page][:id])) && current_menu_item != page.menu_item
-      create_main_menu_item_for_wiki_page(page, current_menu_item.options)
-      current_menu_item.destroy
+    if current_menu_item = current_page.menu_item
+      page = @project.wiki.pages.find(params[:wiki_page][:id])
+
+      if page && current_menu_item != page.menu_item
+        create_main_menu_item_for_wiki_page(page, current_menu_item.options)
+        current_menu_item.destroy!
+      end
     end
 
     redirect_to action: :edit, id: current_page
@@ -138,11 +140,11 @@ class WikiMenuItemsController < ApplicationController
   private
 
   def wiki_menu_item_params
-    @wiki_menu_item_params ||= params.require(:menu_items_wiki_menu_item).permit(:name, :title, :navigatable_id, :parent_id,
-                                                                                 :setting, :new_wiki_page, :index_page)
+    @wiki_menu_item_params ||= params.expect(menu_items_wiki_menu_item: %i[name title navigatable_id parent_id
+                                                                           setting new_wiki_page index_page])
   end
 
-  def get_data_from_params(params)
+  def get_data_from_params(params) # rubocop:disable Metrics/AbcSize
     wiki = @project.wiki
 
     @page = wiki.find_page(params[:id])
@@ -163,15 +165,15 @@ class WikiMenuItemsController < ApplicationController
   end
 
   def assign_wiki_menu_item_params(menu_item)
-    if wiki_menu_item_params[:new_wiki_page] == '1'
+    if wiki_menu_item_params[:new_wiki_page] == "1"
       menu_item.new_wiki_page = true
-    elsif wiki_menu_item_params[:new_wiki_page] == '0'
+    elsif wiki_menu_item_params[:new_wiki_page] == "0"
       menu_item.new_wiki_page = false
     end
 
-    if wiki_menu_item_params[:index_page] == '1'
+    if wiki_menu_item_params[:index_page] == "1"
       menu_item.index_page = true
-    elsif wiki_menu_item_params[:index_page] == '0'
+    elsif wiki_menu_item_params[:index_page] == "0"
       menu_item.index_page = false
     end
   end
@@ -186,6 +188,6 @@ class WikiMenuItemsController < ApplicationController
                 end
 
     menu_item.options = options
-    menu_item.save
+    menu_item.save!
   end
 end

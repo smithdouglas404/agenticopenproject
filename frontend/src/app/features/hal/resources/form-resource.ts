@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -36,13 +36,13 @@ export interface FormResourceLinks<T = HalResource> {
 
 export interface FormResourceEmbedded {
   schema:SchemaResource;
-  validationErrors:{ [attribute:string]:ErrorResource };
+  validationErrors:Record<string, ErrorResource>;
 }
 
 export class FormResource<T = HalResource> extends HalResource {
   public schema:SchemaResource;
 
-  public validationErrors:{ [attribute:string]:ErrorResource };
+  public validationErrors:Record<string, ErrorResource>;
 
   public getErrors():ErrorResource|null {
     const errors = _.values(this.validationErrors);

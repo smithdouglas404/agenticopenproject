@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -38,10 +38,13 @@ import {
   of,
 } from 'rxjs';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
+import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 
 @Injectable()
 export class WpRelationInlineCreateService extends WorkPackageInlineCreateService implements WpRelationInlineCreateServiceInterface, OnDestroy {
   @InjectField() wpRelations:WorkPackageRelationsService;
+
+  @InjectField() halEvents:HalEventsService;
 
   constructor(public injector:Injector) {
     super(injector);
@@ -72,7 +75,13 @@ export class WpRelationInlineCreateService extends WorkPackageInlineCreateServic
     const relation = this.wpRelations.find(to, from, this.relationType);
 
     if (relation !== undefined) {
-      return this.wpRelations.removeRelation(relation);
+      return this.wpRelations.removeRelation(relation).then(() => {
+        this.halEvents.push(from, {
+          eventType: 'association',
+          relatedWorkPackage: to.id,
+          relationType: relation.normalizedType(from),
+        });
+      });
     }
     return Promise.reject();
   }

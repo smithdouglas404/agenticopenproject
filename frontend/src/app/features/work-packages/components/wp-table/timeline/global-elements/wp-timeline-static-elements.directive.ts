@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,13 +26,14 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnInit,
 } from '@angular/core';
 import { States } from 'core-app/core/states/states.service';
 import { WorkPackageTimelineTableController } from '../container/wp-timeline-container.directive';
-import { TimelineViewParameters } from '../wp-timeline';
+import { calculatePositionValueForDayCountingPx, TimelineViewParameters } from '../wp-timeline';
 import {
   TimelineStaticElement,
   timelineStaticElementCssClassname,
@@ -41,10 +42,15 @@ import { TodayLineElement } from './wp-timeline.today-line';
 
 @Component({
   selector: 'wp-timeline-static-elements',
-  template: '<div class="wp-table-timeline--static-elements"></div>'
+  template: '<div class="wp-table-timeline--static-elements"></div>',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageTableTimelineStaticElements implements OnInit {
-  public $element:HTMLElement;
+  public element:HTMLElement;
 
   private container:HTMLElement;
 
@@ -53,7 +59,7 @@ export class WorkPackageTableTimelineStaticElements implements OnInit {
   constructor(elementRef:ElementRef,
     public states:States,
     public workPackageTimelineTableController:WorkPackageTimelineTableController) {
-    this.$element = elementRef.nativeElement;
+    this.element = elementRef.nativeElement;
 
     this.elements = [
       new TodayLineElement(),
@@ -61,7 +67,7 @@ export class WorkPackageTableTimelineStaticElements implements OnInit {
   }
 
   ngOnInit() {
-    this.container = this.$element.querySelector('.wp-table-timeline--static-elements') as HTMLElement;
+    this.container = this.element.querySelector('.wp-table-timeline--static-elements')!;
     this.workPackageTimelineTableController
       .onRefreshRequested('static elements', (vp:TimelineViewParameters) => this.update(vp));
   }
@@ -81,6 +87,13 @@ export class WorkPackageTableTimelineStaticElements implements OnInit {
   private renderElements(vp:TimelineViewParameters) {
     for (const e of this.elements) {
       this.container.appendChild(e.render(vp));
+    }
+    const timelineSide = document.querySelector('.work-packages-tabletimeline--timeline-side');
+    if (timelineSide !== null && vp.settings.zoomLevel !== 'auto') {
+      const visibleMomentBeforeToday = vp.now.clone().subtract(vp.settings.visibleBeforeTodayInZoomLevel, vp.settings.zoomLevel);
+      const visibleDaysBeforeToday = visibleMomentBeforeToday.diff(vp.dateDisplayStart, 'days');
+      const visibleDaysBeforeTodayPositionPixels = calculatePositionValueForDayCountingPx(vp, visibleDaysBeforeToday);
+      timelineSide.scrollLeft = visibleDaysBeforeTodayPositionPixels;
     }
   }
 }

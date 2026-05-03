@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -75,7 +75,7 @@ export class ApiV3WorkPackagesPaths extends ApiV3Collection<WorkPackageResource,
           _.each(pagedResults, (results) => {
             if (results.schemas) {
               _.each(results.schemas.elements, (schema:SchemaResource) => {
-                this.states.schemas.get(schema.href as string).putValue(schema);
+                this.states.schemas.get(schema.href!).putValue(schema);
               });
             }
 
@@ -95,7 +95,7 @@ export class ApiV3WorkPackagesPaths extends ApiV3Collection<WorkPackageResource,
    * @param payload
    * @return {Promise<WorkPackageResource>}
    */
-  public post(payload:Object):Observable<WorkPackageResource> {
+  public post(payload:object):Observable<WorkPackageResource> {
     return this
       .halResourceService
       .post<WorkPackageResource>(this.path, payload)
@@ -104,7 +104,7 @@ export class ApiV3WorkPackagesPaths extends ApiV3Collection<WorkPackageResource,
       );
   }
 
-  filtered<R = ApiV3GettableResource<WorkPackageCollectionResource>>(filters:ApiV3FilterBuilder, params:{ [p:string]:string } = {}):R {
+  filtered<R = ApiV3GettableResource<WorkPackageCollectionResource>>(filters:ApiV3FilterBuilder, params:Record<string, string> = {}):R {
     return super.filtered(filters, params, ApiV3WorkPackageCachedSubresource) as any;
   }
 
@@ -114,7 +114,7 @@ export class ApiV3WorkPackagesPaths extends ApiV3Collection<WorkPackageResource,
    * @param idOnly
    * @param additionalParams Additional set of params to the API
    */
-  public filterByTypeaheadOrId(term:string, idOnly = false, additionalParams:{ [key:string]:string } = {}):ApiV3WorkPackageCachedSubresource {
+  public filterByTypeaheadOrId(term:string, idOnly = false, additionalParams:Record<string, string> = {}):ApiV3WorkPackageCachedSubresource {
     const filters:ApiV3FilterBuilder = new ApiV3FilterBuilder();
 
     if (idOnly) {
@@ -161,13 +161,14 @@ export class ApiV3WorkPackagesPaths extends ApiV3Collection<WorkPackageResource,
   protected loadCollectionsFor(ids:string[]):Promise<WorkPackageCollectionResource[]> {
     return this
       .halResourceService
-    .getAllPaginated<WorkPackageCollectionResource>(
-      this.path,
-      {
-        filters: ApiV3Filter('id', '=', ids).toJson(),
-      },
-    )
-      .toPromise();
+      .getAllPaginated(
+        this.path,
+        {
+          filters: ApiV3Filter('id', '=', ids).toJson(),
+          valid_subset: true,
+        },
+      )
+      .toPromise() as Promise<WorkPackageCollectionResource[]>;
   }
 
   protected createCache():WorkPackageCache {

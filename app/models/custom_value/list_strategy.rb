@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,8 +36,7 @@ class CustomValue::ListStrategy < CustomValue::ARObjectStrategy
   end
 
   def typed_value
-    super_value = super
-    (super_value && super_value.to_s) || nil
+    super&.to_s
   end
 
   private
@@ -45,11 +46,10 @@ class CustomValue::ListStrategy < CustomValue::ARObjectStrategy
   end
 
   def ar_object(value)
-    option = CustomOption.find_by(id: value.to_s)
-    if option.nil?
-      "#{value} #{I18n.t(:label_not_found)}"
-    else
+    if (option = super)
       option.value
+    else
+      "#{value} #{I18n.t(:label_not_found)}"
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,20 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Queries::CreateService do
+RSpec.describe Queries::CreateService do
   let(:user) { build_stubbed(:admin) }
 
   let(:instance) { described_class.new(user:) }
 
   subject { instance.call(params).result }
 
-  describe 'ordered work packages' do
-    let!(:work_package) { create :work_package }
+  describe "ordered work packages" do
+    let!(:work_package) { create(:work_package) }
     let(:params) do
       {
-        name: 'My query',
+        name: "My query",
         ordered_work_packages: {
           work_package.id => 0,
           9999 => 1
@@ -47,7 +49,7 @@ describe Queries::CreateService do
       }
     end
 
-    it 'removes items for which work packages do not exist' do
+    it "removes items for which work packages do not exist" do
       expect(subject).to be_valid
       expect(subject.ordered_work_packages.length).to eq 1
       expect(subject.ordered_work_packages.first.work_package_id).to eq work_package.id

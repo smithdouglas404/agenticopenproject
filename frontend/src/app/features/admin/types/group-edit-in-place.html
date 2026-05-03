@@ -1,11 +1,17 @@
-<div *ngIf="!editing"
-      (click)="startEditing()"
-      [textContent]="name"
-      class="group-edit-handler">
-</div>
-<input
+@if (!editing) {
+  <div
+    role="button"
+    tabindex="0"
+    class="group-edit-handler"
+    [textContent]="name"
+    (click)="startEditing()"
+    (keydown.enter)="startEditing()"
+    (keydown.space)="startEditing()">
+  </div>
+}
+@if (editing) {
+  <input
     #nameInput
-    *ngIf="editing"
     class="group-edit-in-place--input"
     type="text"
     opAutofocus
@@ -14,3 +20,4 @@
     (blur)="saveEdition($event)"
     (keydown.escape)="reset()"
     (keydown.enter)="saveEdition($event)">
+}

@@ -1,28 +1,37 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild,
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewChild,
 } from '@angular/core';
 import { WorkPackageEmbeddedTableComponent } from 'core-app/features/work-packages/components/wp-table/embedded/wp-embedded-table.component';
 import { WpTableConfigurationService } from 'core-app/features/work-packages/components/wp-table/configuration-modal/wp-table-configuration.service';
 import { RestrictedWpTableConfigurationService } from 'core-app/features/work-packages/components/wp-table/external-configuration/restricted-wp-table-configuration.service';
 import { OpQueryConfigurationLocalsToken } from 'core-app/features/work-packages/components/wp-table/external-configuration/external-query-configuration.constants';
 import { UrlParamsHelperService } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
+import {
+  WorkPackageIsolatedQuerySpaceDirective,
+} from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
 
 export interface QueryConfigurationLocals {
   service:any;
   currentQuery:any;
   urlParams?:boolean;
-  disabledTabs?:{ [key:string]:string };
+  disabledTabs?:Record<string, string>;
   callback:(newQuery:any) => void;
 }
 
 @Component({
   templateUrl: './external-query-configuration.template.html',
+  hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
   providers: [[{ provide: WpTableConfigurationService, useClass: RestrictedWpTableConfigurationService }]],
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ExternalQueryConfigurationComponent implements OnInit, AfterViewInit {
   @ViewChild('embeddedTableForConfiguration', { static: true }) private embeddedTable:WorkPackageEmbeddedTableComponent;
 
-  queryProps:string;
+  queryProps:string|object;
 
   constructor(@Inject(OpQueryConfigurationLocalsToken) readonly locals:QueryConfigurationLocals,
     readonly urlParamsHelper:UrlParamsHelperService,
@@ -33,7 +42,7 @@ export class ExternalQueryConfigurationComponent implements OnInit, AfterViewIni
     if (this.locals.urlParams) {
       this.queryProps = this.urlParamsHelper.buildV3GetQueryFromJsonParams(this.locals.currentQuery);
     } else {
-      this.queryProps = this.locals.currentQuery;
+      this.queryProps = this.locals.currentQuery as string;
     }
   }
 

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,10 +27,11 @@
 //++
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
 } from '@angular/core';
-import * as moment from 'moment';
+import moment, { Moment } from 'moment';
 import { TimelineZoomLevel } from 'core-app/features/hal/resources/query-resource';
 import { WorkPackageTimelineTableController } from '../container/wp-timeline-container.directive';
 import {
@@ -41,16 +42,20 @@ import {
   TimelineViewParameters,
 } from '../wp-timeline';
 import { WeekdayService } from 'core-app/core/days/weekday.service';
-import Moment = moment.Moment;
 
 @Component({
   selector: 'wp-timeline-grid',
   template: '<div class="wp-table-timeline--grid"></div>',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageTableTimelineGrid implements AfterViewInit {
   private activeZoomLevel:TimelineZoomLevel;
 
-  private gridContainer:JQuery;
+  private gridContainer:HTMLElement;
 
   constructor(
     private elementRef:ElementRef,
@@ -59,8 +64,8 @@ export class WorkPackageTableTimelineGrid implements AfterViewInit {
   ) {}
 
   ngAfterViewInit():void {
-    const $element = jQuery(this.elementRef.nativeElement);
-    this.gridContainer = $element.find('.wp-table-timeline--grid');
+    const element = this.elementRef.nativeElement;
+    this.gridContainer = element.querySelector('.wp-table-timeline--grid');
     this.wpTimeline.onRefreshRequested('grid', (vp:TimelineViewParameters) => this.refreshView(vp));
   }
 
@@ -69,7 +74,7 @@ export class WorkPackageTableTimelineGrid implements AfterViewInit {
   }
 
   private renderLabels(vp:TimelineViewParameters):void {
-    this.gridContainer.empty();
+    this.gridContainer.innerHTML = '';
 
     switch (vp.settings.zoomLevel) {
       case 'days':
@@ -170,7 +175,7 @@ export class WorkPackageTableTimelineGrid implements AfterViewInit {
       cell.classList.add(timelineElementCssClass, timelineGridElementCssClass);
       cell.style.left = calculatePositionValueForDayCount(vp, start.diff(startView, 'days'));
       cell.style.width = calculatePositionValueForDayCount(vp, end.diff(start, 'days') + 1);
-      this.gridContainer[0].appendChild(cell);
+      this.gridContainer.appendChild(cell);
       cellCallback(start, cell);
     }
     setTimeout(() => {
@@ -179,7 +184,7 @@ export class WorkPackageTableTimelineGrid implements AfterViewInit {
         cell.classList.add(timelineElementCssClass, timelineGridElementCssClass);
         cell.style.left = calculatePositionValueForDayCount(vp, start.diff(startView, 'days'));
         cell.style.width = calculatePositionValueForDayCount(vp, end.diff(start, 'days') + 1);
-        this.gridContainer[0].appendChild(cell);
+        this.gridContainer.appendChild(cell);
         cellCallback(start, cell);
       }
     }, 0);
@@ -187,10 +192,9 @@ export class WorkPackageTableTimelineGrid implements AfterViewInit {
 
   private checkForNonWorkingDayHighlight(date:Moment, cell:HTMLElement) {
     const day = date.toDate();
-
-    if (this.weekdaysService.isNonWorkingDay(day)) {
+    if (this.weekdaysService.isNonWorkingDay(day) || this.wpTimeline.isNonWorkingDay(day)) {
       cell.classList.add('wp-timeline--non-working-day');
-      cell.dataset.qaSelector = `wp-timeline--non-working-day_${day.getDate()}-${day.getMonth() + 1}-${day.getFullYear()}`;
+      cell.dataset.testSelector = `wp-timeline--non-working-day_${day.getDate()}-${day.getMonth() + 1}-${day.getFullYear()}`;
     }
   }
 }

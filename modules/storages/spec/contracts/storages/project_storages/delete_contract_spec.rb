@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,32 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 require_module_spec_helper
-require 'contracts/shared/model_contract_shared_context'
+require "contracts/shared/model_contract_shared_context"
 
-describe ::Storages::ProjectStorages::DeleteContract do
-  include_context 'ModelContract shared context'
+RSpec.describe Storages::ProjectStorages::DeleteContract do
+  include_context "ModelContract shared context"
 
   let(:current_user) { create(:user) }
-  let(:role) { create(:existing_role, permissions: [:manage_storages_in_project]) }
+  let(:role) { create(:project_role, permissions: [:manage_files_in_project]) }
   let(:project) { create(:project, members: { current_user => role }) }
   let(:project_storage) { create(:project_storage, project:) }
   let(:contract) { described_class.new(project_storage, current_user) }
 
   # Default test setup should be valid ("happy test setup").
   # The example below was included above from "ModelContract shared context".
-  # This tests works with manage_storages_in_project permissions for current_user.
-  it_behaves_like 'contract is valid'
+  # This tests works with manage_files_in_project permissions for current_user.
+  it_behaves_like "contract is valid"
 
   # Now we remove the permissions from the user by creating a role without special perms.
-  context 'without manage_storages_in_project permission for project' do
-    # existing_role is a role _without_ the :manage_storages_in_project permission
-    let(:role) { create(:existing_role) }
+  context "without manage_files_in_project permission for project" do
+    # existing_role is a role _without_ the :manage_files_in_project permission
+    let(:role) { create(:project_role) }
 
-    it_behaves_like 'contract is invalid'
+    it_behaves_like "contract is invalid"
   end
 
   # Generic checks that the contract is valid for valid admin, but invalid otherwise
-  it_behaves_like 'contract is valid for active admins and invalid for regular users'
+  it_behaves_like "contract is valid for active admins and invalid for regular users"
+
+  include_examples "contract reuses the model errors"
 end

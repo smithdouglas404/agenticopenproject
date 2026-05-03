@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,37 +29,41 @@
 #++
 
 class AttributeHelpTextsController < ApplicationController
-  layout 'admin'
+  include OpTurbo::ComponentStream
+
+  layout "admin"
   menu_item :attribute_help_texts
 
-  before_action :require_admin
-  before_action :require_ee_token, except: %i[upsale]
+  before_action :authorize_global, except: :show_dialog
   before_action :find_entry, only: %i(edit update destroy)
   before_action :find_type_scope
+
+  authorization_checked! :show_dialog
+
+  def index
+    @attribute_help_texts = AttributeHelpText
+      .where(type: @attribute_scope)
+      .to_a
+      .sort_by(&:attribute_field_name)
+  end
+
+  def show_dialog
+    @attribute_help_text = AttributeHelpText.visible(current_user).find(params[:id])
+
+    respond_with_dialog(
+      AttributeHelpTexts::ShowDialogComponent.new(attribute_help_text: @attribute_help_text)
+    )
+  end
 
   def new
     @attribute_help_text = AttributeHelpText.new type: @attribute_scope
   end
 
-  def edit; end
-
-  def upsale; end
-
-  def update
-    call = ::AttributeHelpTexts::UpdateService
-      .new(user: current_user, model: @attribute_help_text)
-      .call(permitted_params_with_attachments)
-
-    if call.success?
-      flash[:notice] = t(:notice_successful_update)
-      redirect_to attribute_help_texts_path(tab: @attribute_help_text.attribute_scope)
-    else
-      flash[:error] = call.message || I18n.t('notice_internal_server_error')
-      render action: 'edit'
-    end
+  def edit
+    @back_url = params[:back_url] || request.referer
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     call = ::AttributeHelpTexts::CreateService
       .new(user: current_user)
       .call(permitted_params_with_attachments)
@@ -67,8 +73,22 @@ class AttributeHelpTextsController < ApplicationController
       redirect_to attribute_help_texts_path(tab: call.result.attribute_scope)
     else
       @attribute_help_text = call.result
-      flash[:error] = call.message || I18n.t('notice_internal_server_error')
-      render action: 'new'
+      flash.now[:error] = call.message || I18n.t("notice_internal_server_error")
+      render action: "new", status: :unprocessable_entity
+    end
+  end
+
+  def update # rubocop:disable Metrics/AbcSize
+    call = ::AttributeHelpTexts::UpdateService
+      .new(user: current_user, model: @attribute_help_text)
+      .call(permitted_params_with_attachments)
+
+    if call.success?
+      flash[:notice] = t(:notice_successful_update)
+      redirect_back_or_default(attribute_help_texts_path(tab: @attribute_help_text.attribute_scope))
+    else
+      flash.now[:error] = call.message || I18n.t("notice_internal_server_error")
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
@@ -79,37 +99,18 @@ class AttributeHelpTextsController < ApplicationController
       flash[:error] = t(:error_can_not_delete_entry)
     end
 
-    redirect_to attribute_help_texts_path(tab: @attribute_help_text.attribute_scope)
-  end
-
-  def index
-    @texts_by_type = AttributeHelpText.all_by_scope
+    redirect_to attribute_help_texts_path(tab: @attribute_help_text.attribute_scope),
+                status: :see_other
   end
 
   protected
 
-  def require_ee_token
-    unless EnterpriseToken.allows_to?(:attribute_help_texts)
-      redirect_to upsale_attribute_help_texts_path
-    end
-  end
-
-  def default_breadcrumb
-    if action_name == 'index'
-      t('attribute_help_texts.label_plural')
-    else
-      ActionController::Base.helpers.link_to(t('attribute_help_texts.label_plural'), attribute_help_texts_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    true
-  end
-
   private
 
   def permitted_params_with_attachments
-    permitted_params.attribute_help_text.merge(attachment_params)
+    permitted_params
+      .attribute_help_text
+      .merge(attachment_params)
   end
 
   def attachment_params
@@ -124,18 +125,16 @@ class AttributeHelpTextsController < ApplicationController
 
   def find_entry
     @attribute_help_text = AttributeHelpText.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def find_type_scope
-    name = params.fetch(:name, 'WorkPackage')
+    name = params[:tab] || params[:name] || "WorkPackage"
     submodule = AttributeHelpText.available_types.find { |mod| mod == name }
 
     if submodule.nil?
       render_404
     end
 
-    @attribute_scope = AttributeHelpText.const_get(submodule)
+    @attribute_scope = AttributeHelpText.const_get(submodule).to_s
   end
 end

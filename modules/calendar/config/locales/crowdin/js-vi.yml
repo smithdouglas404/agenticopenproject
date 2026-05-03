@@ -1,8 +1,10 @@
 #English strings go here
+---
 vi:
   js:
     calendar:
-      create_new: 'Create new calendar'
-      title: 'Calendar'
-      too_many: 'There are %{count} work packages in total, but only %{max} can be shown.'
-      unsaved_title: 'Unnamed calendar'
+      create_new: Tạo lịch mới
+      title: lịch
+      too_many: Tổng cộng có %{count} gói công việc nhưng chỉ có thể hiển thị %{max}.
+      unsaved_title: Lịch không tên
+      label_calendar_plural: lịch

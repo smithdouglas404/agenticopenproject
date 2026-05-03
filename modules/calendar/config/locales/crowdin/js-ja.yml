@@ -1,8 +1,10 @@
 #English strings go here
+---
 ja:
   js:
     calendar:
-      create_new: 'Create new calendar'
-      title: 'Calendar'
-      too_many: 'There are %{count} work packages in total, but only %{max} can be shown.'
-      unsaved_title: 'Unnamed calendar'
+      create_new: 新しいカレンダーを作成
+      title: カレンダー
+      too_many: 合計 %{count} のワークパッケージがありますが %{max} のみ表示されます。
+      unsaved_title: 新しいカレンダー
+      label_calendar_plural: カレンダー

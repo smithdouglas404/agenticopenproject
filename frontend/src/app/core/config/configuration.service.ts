@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -25,11 +25,13 @@
 //
 // See COPYRIGHT and LICENSE files for more details.
 //++
+
 import { Injectable } from '@angular/core';
-import { I18nService } from 'core-app/core/i18n/i18n.service';
+import moment from 'moment';
+
 import { ConfigurationResource } from 'core-app/features/hal/resources/configuration-resource';
-import * as moment from 'moment';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
+import { type DurationFormat } from 'core-app/shared/helpers/chronic_duration';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigurationService {
@@ -38,20 +40,20 @@ export class ConfigurationService {
   // but could easily be stored in localStorage
   private configuration:ConfigurationResource;
 
-  public initialized:Promise<boolean>;
-
   public constructor(
-    readonly I18n:I18nService,
-    readonly apiV3Service:ApiV3Service,
-  ) {
-    this.initialized = this
-      .loadConfiguration()
-      .then(() => true)
-      .catch(() => false);
+    private readonly apiV3Service:ApiV3Service,
+  ) { }
+
+  public initialize():Promise<void> {
+    return this.loadConfiguration();
   }
 
   public commentsSortedInDescendingOrder():boolean {
     return this.userPreference('commentSortDescending');
+  }
+
+  public disableKeyboardShortcuts():boolean {
+    return this.userPreference('disableKeyboardShortcuts');
   }
 
   public warnOnLeavingUnsaved():boolean {
@@ -64,6 +66,10 @@ export class ConfigurationService {
 
   public isTimezoneSet():boolean {
     return !!this.timezone();
+  }
+
+  public isDefaultTimezoneSet():boolean {
+    return !!this.defaultTimezone();
   }
 
   public timezone():string {
@@ -82,8 +88,16 @@ export class ConfigurationService {
     return this.systemPreference('maximumAttachmentFileSize');
   }
 
+  public get maximumApiV3PageSize():number {
+    return this.systemPreference('maximumAPIV3PageSize');
+  }
+
   public get perPageOptions():number[] {
     return this.systemPreference('perPageOptions');
+  }
+
+  public get allowedLinkProtocols():string[]|null {
+    return this.systemPreference('allowedLinkProtocols') || null;
   }
 
   public dateFormatPresent():boolean {
@@ -94,12 +108,32 @@ export class ConfigurationService {
     return this.systemPreference('dateFormat');
   }
 
+  public durationFormat():DurationFormat {
+    return this.systemPreference('durationFormat');
+  }
+
+  public hoursPerDay():number {
+    return this.systemPreference('hoursPerDay');
+  }
+
+  public hoursPerWeek():number {
+    return this.systemPreference('hoursPerWeek');
+  }
+
+  public daysPerMonth():number {
+    return this.systemPreference('daysPerMonth');
+  }
+
   public timeFormatPresent():boolean {
     return !!this.systemPreference('timeFormat');
   }
 
   public timeFormat():string {
     return this.systemPreference('timeFormat');
+  }
+
+  public defaultTimezone():string {
+    return this.systemPreference('userDefaultTimezone');
   }
 
   public startOfWeekPresent():boolean {
@@ -113,6 +147,10 @@ export class ConfigurationService {
     return moment.localeData(I18n.locale).firstDayOfWeek();
   }
 
+  public get wikisAvailable():boolean {
+    return this.systemPreference('wikisAvailable');
+  }
+
   public get hostName():string {
     return this.systemPreference('hostName');
   }
@@ -121,13 +159,21 @@ export class ConfigurationService {
     return this.systemPreference<string[]>('activeFeatureFlags');
   }
 
+  public get availableFeatures():string[] {
+    return this.systemPreference<string[]>('availableFeatures');
+  }
+
+  public get triallingFeatures():string[] {
+    return this.systemPreference<string[]>('triallingFeatures');
+  }
+
   private loadConfiguration() {
     return this
       .apiV3Service
       .configuration
       .get()
       .toPromise()
-      .then((configuration) => {
+      .then((configuration:ConfigurationResource) => {
         this.configuration = configuration;
       });
   }

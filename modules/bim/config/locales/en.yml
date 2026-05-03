@@ -1,11 +1,18 @@
 # English strings go here for Rails i18n
 en:
+  plugin_openproject_bim:
+    name: "OpenProject BIM and BCF functionality"
+    description: "This OpenProject plugin introduces BIM and BCF functionality."
+
   bim:
     label_bim: 'BIM'
+    error_direct_upload_failed: 'Direct upload failed.'
+
   bcf:
     label_bcf: 'BCF'
     label_imported_failed: 'Failed imports of BCF topics'
     label_imported_successfully: 'Successfully imported BCF topics'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "Issues"
     recommended: 'recommended'
     not_recommended: 'not recommended'
@@ -87,6 +94,12 @@ en:
         ifc_attachment: "IFC file"
         is_default: "Default model"
         attachments: "IFC file"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Viewpoint"
     errors:
       models:
         bim/ifc_models/ifc_model:
@@ -138,4 +151,3 @@ en:
   extraction:
     available:
       ifc_convert: "IFC conversion pipeline available"
-

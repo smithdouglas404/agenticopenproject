@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +33,7 @@ module TimeEntries
     include AssignableValuesContract
     include AssignableCustomFieldValues
 
-    delegate :work_package,
+    delegate :entity,
              :project,
              :available_custom_fields,
              :new_record?,
@@ -43,7 +45,8 @@ module TimeEntries
 
     validate :validate_hours_are_in_range
     validate :validate_project_is_set
-    validate :validate_work_package
+    validate :validate_entity
+    validate :validate_user
 
     validates :spent_on,
               date: { before_or_equal_to: Proc.new { Date.new(9999, 12, 31) },
@@ -51,9 +54,14 @@ module TimeEntries
               unless: Proc.new { spent_on.blank? }
 
     attribute :project_id
-    attribute :work_package_id
+    attribute :entity_id
+    attribute :entity_type
     attribute :activity_id do
       validate_activity_active
+    end
+    attribute :ongoing do
+      validate_self_timer
+      validate_no_other_ongoing
     end
     attribute :hours
     attribute :comments
@@ -66,6 +74,8 @@ module TimeEntries
     attribute :user_id,
               permission: :log_time
 
+    attribute :start_time # TODO: Add validation with global setting
+
     def assignable_activities
       if model.project
         TimeEntryActivity.active_in_project(model.project)
@@ -74,20 +84,29 @@ module TimeEntries
       end
     end
 
-    # Necessary for custom fields
-    # of type version.
-    def assignable_versions
-      work_package.try(:assignable_versions) || project.try(:assignable_versions) || []
+    # Necessary for custom fields of type version.
+    def assignable_versions(only_open: true)
+      entity.try(:assignable_versions, only_open:) || project.try(:assignable_versions, only_open:) || []
     end
 
     private
 
-    def validate_work_package
-      return unless model.work_package || model.work_package_id_changed?
+    def validate_entity
+      if model.entity.is_a?(WorkPackage)
+        if work_package_invisible? || work_package_not_in_project?
+          errors.add :entity, :invalid
+        end
+      elsif model.entity.is_a?(Meeting)
+        # TODO: Add validation for meeting
+      end
+    end
 
-      if work_package_invisible? ||
-         work_package_not_in_project?
-        errors.add :work_package_id, :invalid
+    def validate_user
+      return unless model.user || model.user_id_changed?
+      return if model.user == model.logged_by
+
+      if user_invisible?
+        errors.add :user_id, :invalid
       end
     end
 
@@ -104,15 +123,26 @@ module TimeEntries
     end
 
     def work_package_invisible?
-      model.work_package.nil? || !model.work_package.visible?(user)
+      model.entity.nil? || !model.entity.visible?(user)
     end
 
     def work_package_not_in_project?
-      model.work_package && model.project != model.work_package.project
+      model.entity && model.project != model.entity.project
     end
 
-    def validate_logged_by_current_user
-      errors.add :logged_by_id, :not_current_user if model.logged_by != logged_by
+    def user_invisible?
+      model.user.nil? || !model.user.visible?
+    end
+
+    def validate_self_timer
+      errors.add :ongoing, :not_current_user if model.ongoing? && model.user != user
+    end
+
+    def validate_no_other_ongoing
+      if model.ongoing? && model.ongoing_changed? && TimeEntry.ongoing_for_user_other_than(model.user, model).any?
+        errors.add :base,
+                   :duplicate_ongoing
+      end
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'model_contract'
-
 module Queries
   class BaseContract < ::ModelContract
     attribute :name
@@ -47,6 +47,7 @@ module Queries
 
     attribute :column_names # => columns
     attribute :filters
+    attribute :timestamps
 
     attribute :sort_criteria # => sortBy
     attribute :group_by # => groupBy
@@ -59,17 +60,26 @@ module Queries
 
     validate :validate_project
     validate :user_allowed_to_make_public
+    validate :timestamps_are_parsable
+
+    validates :name,
+              presence: true,
+              length: { maximum: 255 }
 
     def validate_project
       errors.add :project, :error_not_found if project_id.present? && !project_visible?
     end
 
     def project_visible?
-      Project.visible(user).exists?(id: project_id)
+      ::Project.visible(user).exists?(id: project_id)
     end
 
     def may_not_manage_queries?
-      !user.allowed_to?(:manage_public_queries, model.project, global: model.project.nil?)
+      if model.project
+        !user.allowed_in_project?(:manage_public_queries, model.project)
+      else
+        !user.allowed_in_any_project?(:manage_public_queries)
+      end
     end
 
     def user_allowed_to_make_public
@@ -79,6 +89,22 @@ module Queries
 
       if model.public && may_not_manage_queries?
         errors.add :public, :error_unauthorized
+      end
+    end
+
+    def user_allowed_to_save_queries?
+      if model.project
+        user.allowed_in_project?(:save_queries, model.project)
+      else
+        user.allowed_in_any_project?(:save_queries)
+      end
+    end
+
+    def timestamps_are_parsable
+      invalid_timestamps = model.timestamps.reject(&:valid?)
+
+      if invalid_timestamps.any?
+        errors.add :timestamps, :invalid, values: invalid_timestamps.join(", ")
       end
     end
   end

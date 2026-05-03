@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,16 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe WorkPackages::AutoCompletesController, type: :routing do
-  it 'connects GET /work_packages/auto_completes to work_package/auto_complete#index' do
-    expect(get('/work_packages/auto_complete')).to route_to(controller: 'work_packages/auto_completes',
-                                                            action: 'index')
+RSpec.describe WorkPackages::AutoCompletesController do
+  it "connects GET /work_packages/auto_completes to work_package/auto_complete#index" do
+    expect(get("/work_packages/auto_complete")).to route_to(controller: "work_packages/auto_completes",
+                                                            action: "index")
   end
 
-  it 'connects PUT /work_packages/auto_completes to work_package/auto_complete#index' do
-    expect(get('/work_packages/auto_complete')).to route_to(controller: 'work_packages/auto_completes',
-                                                            action: 'index')
+  it "connects PUT /work_packages/auto_completes to work_package/auto_complete#index" do
+    expect(get("/work_packages/auto_complete")).to route_to(controller: "work_packages/auto_completes",
+                                                            action: "index")
   end
 end

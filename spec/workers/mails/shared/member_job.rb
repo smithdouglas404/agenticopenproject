@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-shared_examples 'member job' do
+RSpec.shared_examples "member job" do
   subject(:run_job) do
     described_class.perform_now(current_user:,
                                 member:,
@@ -67,27 +69,29 @@ shared_examples 'member job' do
     build_stubbed(:group).tap do |g|
       scope = group_user_members
 
-      allow(Member)
-        .to receive(:of)
-              .with(project)
-              .and_return(scope)
+      without_partial_double_verification do
+        allow(Member)
+          .to receive(:of_project)
+                .with(project)
+                .and_return(scope)
 
-      allow(scope)
-        .to receive(:where)
-              .with(principal: group_users)
-              .and_return(scope)
+        allow(scope)
+          .to receive(:where)
+                .with(principal: group_users)
+                .and_return(scope)
 
-      allow(scope)
-        .to receive(:includes)
-              .and_return(scope)
+        allow(scope)
+          .to receive(:includes)
+                .and_return(scope)
 
-      allow(g)
-        .to receive(:users)
-              .and_return(group_users)
+        allow(g)
+          .to receive(:users)
+                .and_return(group_users)
+      end
     end
   end
   let(:group_user_members) { [] }
-  let(:role) { build_stubbed(:role) }
+  let(:role) { build_stubbed(:project_role) }
   let(:member_role_inherited_from) { nil }
   let(:message) { "Some message" }
 
@@ -97,12 +101,12 @@ shared_examples 'member job' do
     %i[added_project updated_global updated_project].each do |mails|
       allow(MemberMailer)
         .to receive(mails)
-              .and_return(double('mail', deliver_now: nil))  # rubocop:disable RSpec/VerifiedDoubles
+              .and_return(double("mail", deliver_now: nil)) # rubocop:disable RSpec/VerifiedDoubles
     end
   end
 
-  shared_examples_for 'sends no mail' do
-    it 'sends no mail' do
+  shared_examples_for "sends no mail" do
+    it "sends no mail" do
       run_job
 
       %i[added_project updated_global updated_project].each do |mails|
@@ -112,11 +116,11 @@ shared_examples 'member job' do
     end
   end
 
-  context 'with a global membership' do
+  context "with a global membership" do
     let(:project) { nil }
 
-    context 'with sending enabled' do
-      it 'sends mail' do
+    context "with sending enabled" do
+      it "sends mail" do
         run_job
 
         expect(MemberMailer)
@@ -125,17 +129,17 @@ shared_examples 'member job' do
       end
     end
 
-    context 'with sending disabled' do
+    context "with sending disabled" do
       let(:principal) do
-        create :user,
+        create(:user,
                notification_settings: [
                  build(:notification_setting,
                        NotificationSetting::MEMBERSHIP_ADDED => false,
                        NotificationSetting::MEMBERSHIP_UPDATED => false)
-               ]
+               ])
       end
 
-      it 'still sends mail due to the message present' do
+      it "still sends mail due to the message present" do
         run_job
 
         expect(MemberMailer)
@@ -143,23 +147,23 @@ shared_examples 'member job' do
                 .with(current_user, member, message)
       end
 
-      context 'when the message is nil' do
-        let(:message) { '' }
+      context "when the message is nil" do
+        let(:message) { "" }
 
-        it_behaves_like 'sends no mail'
+        it_behaves_like "sends no mail"
       end
     end
 
-    context 'with the current user being the membership user' do
+    context "with the current user being the membership user" do
       let(:user) { current_user }
 
-      it_behaves_like 'sends no mail'
+      it_behaves_like "sends no mail"
     end
   end
 
-  context 'with a user membership' do
-    context 'with sending enabled' do
-      it 'sends mail' do
+  context "with a user membership" do
+    context "with sending enabled" do
+      it "sends mail" do
         run_job
 
         expect(MemberMailer)
@@ -168,10 +172,10 @@ shared_examples 'member job' do
       end
     end
 
-    context 'with the current user being the member user' do
+    context "with the current user being the member user" do
       let(:user) { current_user }
 
-      it_behaves_like 'sends no mail'
+      it_behaves_like "sends no mail"
     end
   end
 end

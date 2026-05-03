@@ -7,6 +7,7 @@ import {
 
 @Directive({
   selector: '[opSearchHighlight]',
+  standalone: false,
 })
 export class OpSearchHighlightDirective implements AfterViewChecked {
   @Input('opSearchHighlight') public query = '';
@@ -17,7 +18,7 @@ export class OpSearchHighlightDirective implements AfterViewChecked {
     let el = this.elementRef.nativeElement as HTMLElement;
     const highlightedElement = el.querySelector('.op-search-highlight');
 
-    if (!!highlightedElement && highlightedElement.innerHTML.toLocaleLowerCase() === this.query.toLocaleLowerCase()) {
+    if (!!highlightedElement && this.query && highlightedElement.innerHTML.toLocaleLowerCase() === this.query.toLocaleLowerCase()) {
       return;
     }
 
@@ -50,9 +51,7 @@ export class OpSearchHighlightDirective implements AfterViewChecked {
   private cleanUpOldHighlighting(el:HTMLElement):HTMLElement {
     if (el.children.length > 0) {
       const unifiedLabelText = Array.from(el.children, ({ textContent }) => textContent?.trim()).join('');
-      // eslint-disable-next-line no-param-reassign
       el.innerHTML = '';
-      // eslint-disable-next-line no-param-reassign
       el.innerText = unifiedLabelText;
     }
 

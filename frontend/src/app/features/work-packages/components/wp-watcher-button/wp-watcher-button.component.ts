@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -39,15 +39,12 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
   selector: 'wp-watcher-button',
   templateUrl: './wp-watcher-button.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageWatcherButtonComponent extends UntilDestroyedMixin implements OnInit {
-  @Input('workPackage') public workPackage:WorkPackageResource;
+  @Input() public workPackage:WorkPackageResource;
 
-  @Input('showText') public showText = false;
-
-  @Input('disabled') public disabled = false;
-
-  public buttonText:string;
+  @Input() public disabled = false;
 
   public buttonTitle:string;
 
@@ -55,12 +52,14 @@ export class WorkPackageWatcherButtonComponent extends UntilDestroyedMixin imple
 
   public buttonId:string;
 
-  public watchIconClass:string;
+  public watched:boolean;
 
-  constructor(readonly I18n:I18nService,
+  constructor(
+    readonly I18n:I18nService,
     readonly wpWatchersService:WorkPackageWatchersService,
     readonly apiV3Service:ApiV3Service,
-    readonly cdRef:ChangeDetectorRef) {
+    readonly cdRef:ChangeDetectorRef,
+  ) {
     super();
   }
 
@@ -106,19 +105,17 @@ export class WorkPackageWatcherButtonComponent extends UntilDestroyedMixin imple
     return this.workPackage[linkName];
   }
 
-  private setWatchStatus() {
+  private setWatchStatus():void {
     if (this.isWatched) {
       this.buttonTitle = this.I18n.t('js.label_unwatch_work_package');
-      this.buttonText = this.I18n.t('js.label_unwatch');
       this.buttonClass = '-active';
       this.buttonId = 'unwatch-button';
-      this.watchIconClass = 'icon-watched';
+      this.watched = true;
     } else {
       this.buttonTitle = this.I18n.t('js.label_watch_work_package');
-      this.buttonText = this.I18n.t('js.label_watch');
       this.buttonClass = '';
       this.buttonId = 'watch-button';
-      this.watchIconClass = 'icon-unwatched';
+      this.watched = false;
     }
   }
 }

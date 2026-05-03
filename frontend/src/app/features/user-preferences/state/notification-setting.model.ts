@@ -1,10 +1,11 @@
-import { HalSourceLink } from 'core-app/features/hal/resources/hal-resource';
+import { HalSourceLink } from 'core-app/features/hal/interfaces';
 
 export interface INotificationSetting {
   _links:{ project:HalSourceLink };
   watched:boolean;
   assignee:boolean;
   responsible:boolean;
+  shared:boolean;
   mentioned:boolean;
   workPackageCommented:boolean;
   workPackageCreated:boolean;
@@ -34,6 +35,7 @@ export function buildNotificationSetting(project:null|HalSourceLink, params:Part
     },
     assignee: true,
     responsible: true,
+    shared: true,
     mentioned: true,
     watched: true,
     workPackageCommented: true,

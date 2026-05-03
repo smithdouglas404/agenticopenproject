@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -103,7 +103,7 @@ export class WorkPackageViewCollapsedGroupsService extends WorkPackageViewBaseSe
   }
 
   setAllGroupsCollapseStateTo(collapsedState:boolean):void {
-    const groupUpdatedState = this.currentGroups.reduce((updatedState:{ [key:string]:boolean }, group) => ({
+    const groupUpdatedState = this.currentGroups.reduce((updatedState:Record<string, boolean>, group) => ({
       ...updatedState,
       [group.identifier]: collapsedState,
     }), {});

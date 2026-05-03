@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module OAuthHelper
     if strings.empty?
       I18n.t("oauth.scopes.api_v3")
     else
-      safe_join(strings.map { |scope| I18n.t("oauth.scopes.#{scope}", default: scope) }, '</br>'.html_safe)
+      safe_join(strings.map { |scope| I18n.t("oauth.scopes.#{scope}", default: scope) }, tag(:br))
     end
   end
 

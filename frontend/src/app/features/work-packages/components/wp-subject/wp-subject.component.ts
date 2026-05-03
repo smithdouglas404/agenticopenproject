@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,11 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+} from '@angular/core';
 import { UIRouterGlobals } from '@uirouter/core';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { randomString } from 'core-app/shared/helpers/random-string';
@@ -36,30 +40,21 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 @Component({
   selector: 'wp-subject',
   templateUrl: './wp-subject.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class WorkPackageSubjectComponent extends UntilDestroyedMixin implements OnInit {
-  @Input('workPackage') workPackage:WorkPackageResource;
+export class WorkPackageSubjectComponent extends UntilDestroyedMixin {
+  @Input() workPackage:WorkPackageResource;
 
   public readonly uniqueElementIdentifier = `work-packages--subject-type-row-${randomString(16)}`;
 
-  constructor(protected uiRouterGlobals:UIRouterGlobals,
-    protected apiV3Service:ApiV3Service) {
+  constructor(
+    protected uiRouterGlobals:UIRouterGlobals,
+    protected apiV3Service:ApiV3Service,
+  ) {
     super();
-  }
-
-  ngOnInit() {
-    if (!this.workPackage) {
-      this
-        .apiV3Service
-        .work_packages
-        .id(this.uiRouterGlobals.params.workPackageId)
-        .requireAndStream()
-        .pipe(
-          this.untilDestroyed(),
-        )
-        .subscribe((wp:WorkPackageResource) => {
-          this.workPackage = wp;
-        });
-    }
   }
 }

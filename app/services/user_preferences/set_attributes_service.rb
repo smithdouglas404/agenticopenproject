@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,8 +31,6 @@
 module UserPreferences
   class SetAttributesService < ::BaseServices::SetAttributes
     def set_attributes(params)
-      set_boolean_value(:hide_mail, params.delete(:hide_mail)) if params.key?(:hide_mail)
-
       params.each do |k, v|
         model[k] = v if model.supported_settings_method?(k)
       end

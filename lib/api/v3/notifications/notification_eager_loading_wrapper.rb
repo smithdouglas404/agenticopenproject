@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,20 +35,6 @@ module API
             notifications
               .includes(API::V3::Notifications::NotificationRepresenter.to_eager_load)
               .to_a
-              .tap { |loaded_notifications| set_resource(loaded_notifications) }
-          end
-
-          private
-
-          # The resource cannot be loaded by rails eager loading means (include)
-          # because it is a polymorphic association. That being as it is, currently only
-          # work packages are assigned.
-          def set_resource(notifications)
-            work_packages_by_id = WorkPackage.where(id: notifications.pluck(:resource_id).uniq).index_by(&:id)
-
-            notifications.each do |notification|
-              notification.resource = work_packages_by_id[notification.resource_id]
-            end
           end
         end
       end

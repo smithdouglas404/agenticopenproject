@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,11 +30,11 @@
 
 FactoryBot.define do
   factory :design_color do
-    hexcode { ('#%0.6x' % rand(0xFFFFFF)).upcase }
+    hexcode { ("#%0.6x" % rand(0xFFFFFF)).upcase }
   end
 end
 
-{ "primary-color" => "#3493B3" }.each do |name, code|
+{ "primary-button-color" => "#3493B3" }.each do |name, code|
   FactoryBot.define do
     factory(:"design_color_#{name}", parent: :design_color) do
       variable { name }

@@ -1,43 +1,34 @@
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
-// Require the reflect ES7 polyfill for JIT
-import 'zone.js'; // Included with Angular CLI.
-import 'core-js/es/reflect';
-
-import 'zone.js/testing';
 import { getTestBed } from '@angular/core/testing';
+import { NgModule, provideZonelessChangeDetection } from '@angular/core';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import { GlobalI18n } from 'core-app/core/i18n/i18n.service';
-import { I18nShim } from './test/i18n-shim';
+import { I18n } from 'i18n-js';
+import { registerDialogStreamAction } from 'core-turbo/dialog-stream-action';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access no-explicit-any
+registerDialogStreamAction();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
 (window as any).global = window;
 
-require('expose-loader?_!lodash');
-
-declare const require:any;
-declare global {
-  export interface Window {
-    I18n:GlobalI18n;
-  }
-}
-
 // Declare global I18n shim
-window.I18n = new I18nShim();
+window.I18n = new I18n();
+
+@NgModule({
+  imports: [BrowserDynamicTestingModule],
+  exports: [BrowserDynamicTestingModule],
+  providers: [provideZonelessChangeDetection()],
+})
+class ZonelessBrowserDynamicTestingModule {}
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
+  ZonelessBrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
   {
     teardown: { destroyAfterEach: false },
   },
 );
-
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './shared_contract_examples'
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-describe Messages::UpdateContract do
-  it_behaves_like 'message contract' do
+RSpec.describe Messages::UpdateContract do
+  it_behaves_like "message contract" do
     let(:message) do
       build_stubbed(:message).tap do |message|
         message.forum = message_forum
@@ -44,10 +46,43 @@ describe Messages::UpdateContract do
     end
     subject(:contract) { described_class.new(message, current_user) }
 
-    context 'if the author is changed' do
-      it 'is invalid' do
+    context "if the author is changed" do
+      it "is invalid" do
         message.author = other_user
         expect_valid(false, author_id: %i(error_readonly))
+      end
+    end
+  end
+
+  context "when moving a message to another forum" do
+    let(:project) { create(:project) }
+    let(:forum) { create(:forum, project: project) }
+    let(:other_forum) { create(:forum, project: project) }
+    let(:message) { create(:message, forum: forum) }
+    let(:forum_in_other_project) { create(:forum) }
+
+    let(:current_user) { create(:user, member_with_permissions: { project => [:edit_messages] }) }
+
+    subject(:contract) { described_class.new(message, current_user) }
+
+    context "when moving the message to another forum in the same project" do
+      before do
+        message.forum = other_forum
+      end
+
+      it "is valid" do
+        expect(contract).to be_valid
+      end
+    end
+
+    context "when moving the message to a forum in another project" do
+      before do
+        message.forum = forum_in_other_project
+      end
+
+      it "is invalid" do
+        expect(contract).not_to be_valid
+        expect(contract.errors[:forum_id]).to include("A message cannot be moved to a forum of a different project.")
       end
     end
   end

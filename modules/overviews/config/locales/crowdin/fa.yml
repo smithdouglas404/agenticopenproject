@@ -1,4 +1,6 @@
+---
 fa:
   overviews:
-    label: 'نمای کلی'
-  permission_manage_overview: 'Manage overview page'
+    label_home: "%{workspace_type} آغازه"
+    label_dashboard: پیشخوان
+    label_overview: نمای کلی

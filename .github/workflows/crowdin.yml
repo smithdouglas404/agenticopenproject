@@ -2,31 +2,31 @@ name: crowdin
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *' # Daily at 03:00
+    - cron: "0 3 * * *" # Daily at 03:00
 
 permissions: {}
 jobs:
   setup:
+    if: github.repository == 'opf/openproject'
     runs-on: ubuntu-latest
     outputs:
       latest_release_branch: ${{ steps.find_latest_release.outputs.branch }}
     steps:
-    - id: find_latest_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
-      run: |
-        BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
-          https://api.github.com/repos/$GITHUB_REPOSITORY/branches?protected=true | \
-          jq -r .[].name | grep "release/" | sort -r | head -1
-        )
-        if [ "$BRANCH" = "" ]; then
-          echo "Invalid release branch found: $BRANCH"
-          exit 1
-        fi
+      - id: find_latest_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/branches?protected=true | \
+            jq -r '.[].name' | grep '^release/' | sort --version-sort | tail -1
+          )
+          if [ "$BRANCH" = "" ]; then
+            echo "Invalid release branch found: $BRANCH"
+            exit 1
+          fi
 
-        echo "::set-output name=branch::${BRANCH}"
-        echo "::set-output name=crowdin_release_branch::release"
+          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
 
   crowdin:
     permissions:
@@ -42,11 +42,13 @@ jobs:
           - dev
           - "${{ needs.setup.outputs.latest_release_branch }}"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
           ref: ${{ matrix.branch }}
           fetch-depth: 1
       - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
       - name: "Set crowdin branch name"
         id: vars
         env:
@@ -54,12 +56,17 @@ jobs:
         run: |
           echo "Setting crowdin branch from $BRANCH"
           if [ "$BRANCH" = "dev" ]; then
-            echo "::set-output name=crowdin_branch::dev"
+            echo "crowdin_branch=dev" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=crowdin_branch::release"
+            echo "crowdin_branch=release" >> $GITHUB_OUTPUT
           fi
-      - name: "Updating translations"
-        uses: crowdin/github-action@1.4.4
+      - name: "Generate seeders i18n source file"
+        run: |
+          if [ -f script/i18n/generate_seeders_i18n_source_file ]; then
+            bundle exec script/i18n/generate_seeders_i18n_source_file
+          fi
+      - name: "Crowdin: upload sources and download translations"
+        uses: crowdin/github-action@v2
         with:
           # Upload current source files
           upload_sources: true
@@ -69,17 +76,27 @@ jobs:
           crowdin_branch_name: ${{ steps.vars.outputs.crowdin_branch }}
           # Dont create a PR for the updated translations
           push_translations: false
+          user: auto
         env:
           OPENPROJECT_CROWDIN_PROJECT: ${{ secrets.OPENPROJECT_CROWDINV2_PROJECT }}
           OPENPROJECT_CROWDIN_API_KEY: ${{ secrets.OPENPROJECT_CROWDINV2_API_KEY }}
-      - name: "Fixing translation names"
-        run: |
-          ruby script/crowdin/fix_locale_keys.rb
+      - name: "Fix root key in Portuguese crowdin translation files"
+        run: script/i18n/fix_crowdin_pt_language_root_key
+      - name: "Rewrite crowdin translation files using ruby yaml library"
+        run: script/i18n/rewrite_crowdin_yml_files
       - name: "Commit translations"
+        env:
+          BRANCH: ${{ matrix.branch }}
         run: |
           git config user.name "OpenProject Actions CI"
           git config user.email "operations+ci@openproject.com"
           echo "Updating combined translations"
           git ls-files -m -o | grep 'crowdin\/.*\.yml$' | xargs git add
           git diff --staged --name-only
-          git diff --staged --exit-code --quiet || ( git commit -m "update locales from crowdin [ci skip]" && git pull --rebase && git push origin $BRANCH )
+          if ! git diff --staged --exit-code --quiet; then
+            git commit -m "update locales from crowdin [ci skip]"
+            echo "Run git pull --rebase origin $BRANCH"
+            git pull --rebase origin "$BRANCH"
+            echo "Run git push origin $BRANCH"
+            git push origin "$BRANCH"
+          fi

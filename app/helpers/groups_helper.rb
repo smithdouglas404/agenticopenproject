@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,27 +32,56 @@ module GroupsHelper
   def group_settings_tabs(group)
     [
       {
-        name: 'general',
-        partial: 'groups/general',
+        name: "general",
+        partial: "groups/general",
         path: edit_group_path(group),
         label: :label_general
       },
       {
-        name: 'users',
-        partial: 'groups/users',
+        name: "users",
+        partial: "groups/users",
         path: edit_group_path(group, tab: :users),
         label: :label_user_plural
       },
       {
-        name: 'memberships',
-        partial: 'groups/memberships',
+        name: "memberships",
+        partial: "groups/memberships",
         path: edit_group_path(group, tab: :memberships),
         label: :label_project_plural
       },
       {
-        name: 'global_roles',
-        partial: 'principals/global_roles',
+        name: "global_roles",
+        partial: "principals/global_roles",
         path: edit_group_path(group, tab: :global_roles),
+        label: :label_global_roles
+      },
+      {
+        name: "synchronized_groups",
+        partial: "groups/synchronized_groups",
+        path: edit_group_path(group, tab: :synchronized_groups),
+        label: :"groups.edit.synchronized_groups"
+      }
+    ]
+  end
+
+  def department_settings_tabs(group)
+    [
+      {
+        name: "general",
+        partial: "admin/departments/general",
+        path: edit_admin_department_path(group),
+        label: :label_general
+      },
+      {
+        name: "memberships",
+        partial: "admin/departments/memberships",
+        path: edit_admin_department_path(group, tab: :memberships),
+        label: :label_project_plural
+      },
+      {
+        name: "global_roles",
+        partial: "principals/global_roles",
+        path: edit_admin_department_path(group, tab: :global_roles),
         label: :label_global_roles
       }
     ]
@@ -58,8 +89,8 @@ module GroupsHelper
 
   def autocompleter_filters(group)
     [
-      { selector: 'status', operator: '=', values: ['active', 'invited'] },
-      { selector: 'group', operator: '!', values: [group.id] }
+      { name: "status", operator: "=", values: ["active", "invited"] },
+      { name: "group", operator: "!", values: [group.id] }
     ]
   end
 end

@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,8 +27,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render partial: 'principals/global_roles_header' %>
-
 <%
   principal = @group || @user
   global_member = Member.global.where(principal: principal).includes(:roles).first
@@ -36,41 +34,49 @@ See COPYRIGHT and LICENSE files for more details.
 
 <div class="grid-block" id="principal_global_roles_content">
   <div id="assigned_principal_roles" class="grid-content">
-  <% unless global_member&.roles&.any? %>
-    <%= no_results_box %>
-  <% else %>
     <div class="generic-table--container">
       <div class="generic-table--results-container">
-        <table class="generic-table principal_roles" id="table_principal_roles">
+        <table class="generic-table principal_roles" id="table_principal_roles" data-controller="table-highlighting">
           <colgroup>
-            <col opHighlightCol>
             <col>
+            <col data-highlight="false">
           </colgroup>
           <thead>
-            <tr>
-              <th>
-                <div class="generic-table--sort-header-outer">
-                  <div class="generic-table--sort-header">
+          <tr>
+            <th>
+              <div class="generic-table--sort-header-outer">
+                <div class="generic-table--sort-header">
                     <span>
-                      <%= Role.model_name.human %>
+                      <%= GlobalRole.model_name.human %>
                     </span>
-                  </div>
                 </div>
-              </th>
-              <th><div class="generic-table--empty-header"></div></th>
-            </tr>
+              </div>
+            </th>
+            <th>
+              <div class="generic-table--empty-header"></div>
+            </th>
+          </tr>
           </thead>
           <tbody id="table_principal_roles_body">
-          <% global_member.roles.each do |role| %>
-            <%= render partial: 'principals/assigned_global_role', locals: { role: role, member: global_member } %>
+          <% standard_role = GlobalRole.standard %>
+          <tr id="assigned_global_role_<%= standard_role.id %>">
+            <td class="role -italic">
+              <%= link_to standard_role, edit_role_path(standard_role) %>
+            </td>
+            <td class="buttons">
+            </td>
+          </tr>
+          <% if global_member %>
+            <% global_member.roles.each do |role| %>
+              <%= render partial: "principals/assigned_global_role", locals: { role: role, member: global_member } %>
+            <% end %>
           <% end %>
           </tbody>
         </table>
 
       </div>
     </div>
-  <% end %>
   </div>
 
-  <%= render partial: 'principals/available_global_roles', locals: { principal: principal, global_member: global_member } %>
+  <%= render partial: "principals/available_global_roles", locals: { principal: principal, global_member: global_member } %>
 </div>

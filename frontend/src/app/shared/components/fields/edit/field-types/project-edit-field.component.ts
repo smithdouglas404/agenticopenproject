@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -52,18 +52,18 @@ import { ResourceChangeset } from '../../changeset/resource-changeset';
 import { IFieldSchema } from '../../field.base';
 import { EditFieldHandler } from '../editing-portal/edit-field-handler';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
-import {
-  take,
-  tap,
-} from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
+import { IAPIFilter } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
+import { FilterOperator } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 
 @Component({
   templateUrl: './project-edit-field.component.html',
   styleUrls: ['./project-edit-field.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProjectEditFieldComponent extends EditFieldComponent implements OnInit {
   isNew = isNewResource(this.resource);
@@ -115,14 +115,14 @@ export class ProjectEditFieldComponent extends EditFieldComponent implements OnI
     return this.handler.handleUserSubmit();
   }
 
-  public get APIFilters():(string | string[])[][] {
+  public get APIFilters():IAPIFilter[] {
     const filters = [
-      ['active', '=', ['t']],
+        { name: 'active', operator: '=' as FilterOperator, values: ['t'] },
     ];
 
     if (isNewResource(this.resource) && this.change.value('type')) {
-      const typeId = idFromLink((this.change.value('type') as HalResource).href);
-      filters.push(['type_id', '=', [typeId]]);
+      const typeId = idFromLink((this.change.value('type') as { href:string }).href);
+      filters.push({ name: 'type_id', operator: '=' as FilterOperator, values: [typeId] });
     }
 
     return filters;

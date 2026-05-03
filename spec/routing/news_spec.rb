@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,76 +28,85 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe NewsController, 'routing', type: :routing do
-  context 'project scoped' do
-    it {
-      expect(subject).to route(:get, '/projects/567/news').to(controller: 'news',
-                                                              action: 'index',
-                                                              project_id: '567')
-    }
-
-    it do
-      expect(get('/projects/567/news.atom'))
-        .to route_to(controller: 'news',
-                     action: 'index',
-                     format: 'atom',
-                     project_id: '567')
-    end
-
-    it {
-      expect(subject).to route(:get, '/projects/567/news/new').to(controller: 'news',
-                                                                  action: 'new',
-                                                                  project_id: '567')
-    }
-
-    it {
-      expect(subject).to route(:post, '/projects/567/news').to(controller: 'news',
-                                                               action: 'create',
-                                                               project_id: '567')
-    }
+RSpec.describe NewsController, "routing" do
+  it do
+    expect(subject).to route(:get, "/news").to(controller: "news",
+                                               action: "index")
   end
-
-  it {
-    expect(subject).to route(:get, '/news').to(controller: 'news',
-                                               action: 'index')
-  }
 
   it do
-    expect(get('/news.atom'))
-      .to route_to(controller: 'news',
-                   action: 'index',
-                   format: 'atom')
+    expect(get("/news.atom")).to route_to(controller: "news",
+                                          action: "index",
+                                          format: "atom")
   end
 
-  it {
-    expect(subject).to route(:get, '/news/2').to(controller: 'news',
-                                                 action: 'show',
-                                                 id: '2')
-  }
+  it do
+    expect(subject).to route(:get, "/news/123").to(controller: "news",
+                                                   action: "show",
+                                                   id: "123")
+  end
 
-  it {
-    expect(subject).to route(:get, '/news/234').to(controller: 'news',
-                                                   action: 'show',
-                                                   id: '234')
-  }
+  context "with project scoped routes" do
+    it do
+      expect(subject).to route(:get, "/projects/567/news").to(controller: "news",
+                                                              action: "index",
+                                                              project_id: "567")
+    end
 
-  it {
-    expect(subject).to route(:get, '/news/567/edit').to(controller: 'news',
-                                                        action: 'edit',
-                                                        id: '567')
-  }
+    it do
+      expect(get("/projects/567/news.atom")).to route_to(controller: "news",
+                                                         action: "index",
+                                                         format: "atom",
+                                                         project_id: "567")
+    end
 
-  it {
-    expect(subject).to route(:put, '/news/567').to(controller: 'news',
-                                                   action: 'update',
-                                                   id: '567')
-  }
+    it do
+      expect(subject).to route(:get, "/projects/567/news/new").to(controller: "news",
+                                                                  action: "new",
+                                                                  project_id: "567")
+    end
 
-  it {
-    expect(subject).to route(:delete, '/news/567').to(controller: 'news',
-                                                      action: 'destroy',
-                                                      id: '567')
-  }
+    it do
+      expect(subject).to route(:post, "/projects/567/news").to(controller: "news",
+                                                               action: "create",
+                                                               project_id: "567")
+    end
+
+    it do
+      expect(subject).to route(:get, "/projects/567/news/2").to(controller: "news",
+                                                                action: "show",
+                                                                project_id: "567",
+                                                                id: "2")
+    end
+
+    it do
+      expect(subject).to route(:get, "/projects/567/news/234").to(controller: "news",
+                                                                  action: "show",
+                                                                  project_id: "567",
+                                                                  id: "234")
+    end
+
+    it do
+      expect(subject).to route(:get, "/projects/567/news/567/edit").to(controller: "news",
+                                                                       action: "edit",
+                                                                       project_id: "567",
+                                                                       id: "567")
+    end
+
+    it do
+      expect(subject).to route(:put, "/projects/567/news/567").to(controller: "news",
+                                                                  action: "update",
+                                                                  project_id: "567",
+                                                                  id: "567")
+    end
+
+    it do
+      expect(subject).to route(:delete, "/projects/567/news/567").to(controller: "news",
+                                                                     action: "destroy",
+                                                                     project_id: "567",
+                                                                     id: "567")
+    end
+  end
 end

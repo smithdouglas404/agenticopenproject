@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,7 +41,7 @@ module API
           def children(id)
             @children ||= WorkPackage
                           .where(parent_id: work_packages.map(&:id))
-                          .select(:id, :subject, :project_id, :parent_id)
+                          .select(:id, :identifier, :subject, :project_id, :parent_id)
                           .group_by(&:parent_id)
                           .to_h
 

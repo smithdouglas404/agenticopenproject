@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,12 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe CoreExtensions::SquishSql do
+RSpec.describe CoreExtensions::SquishSql do
   using described_class
 
-  it 'removes single line SQL comments' do
+  it "removes single line SQL comments" do
     sql = <<~SQL.squish
       -- select existing users from given IDs
       --

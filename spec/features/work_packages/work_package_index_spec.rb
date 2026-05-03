@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,32 +28,53 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-RSpec.describe 'Work package index view' do
-  let(:user) { create(:admin) }
-  let(:project) { create(:project, enabled_module_names: %w[work_package_tracking]) }
+RSpec.describe "Work Packages", "index view", :js do
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project, enabled_module_names: %w[work_package_tracking]) }
+
   let(:wp_table) { Pages::WorkPackagesTable.new(project) }
 
-  before do
-    login_as(user)
+  current_user { user }
+
+  context "within a global context" do
+    before do
+      visit root_path
+    end
+
+    it "is reachable by clicking the global menu item" do
+      within("#main-menu") do
+        click_link "Work packages"
+      end
+
+      expect(page).to have_current_path(work_packages_path)
+
+      within("#content") do
+        wp_table.expect_title("All open", editable: true)
+        expect(page).to have_content("No work packages to display")
+      end
+    end
   end
 
-  it 'is reachable by clicking the sidebar menu item', js: true do
-    visit project_path(project)
+  context "within a project-specific context" do
+    it "is reachable by clicking the sidebar menu item" do
+      visit project_path(project)
 
-    within('#content') do
-      expect(page).to have_content('Overview')
-    end
+      within("#content") do
+        expect(page).to have_heading project.name
+      end
 
-    within('#main-menu') do
-      click_link 'Work package'
-    end
+      within("#main-menu") do
+        click_link "Work packages"
+      end
 
-    expect(current_path).to eql("/projects/#{project.identifier}/work_packages")
-    within('#content') do
-      wp_table.expect_title('All open', editable: true)
-      expect(page).to have_content('No work packages to display')
+      expect(page).to have_current_path(project_work_packages_path(project))
+
+      within("#content") do
+        wp_table.expect_title("All open", editable: true)
+        expect(page).to have_content("No work packages to display")
+      end
     end
   end
 end

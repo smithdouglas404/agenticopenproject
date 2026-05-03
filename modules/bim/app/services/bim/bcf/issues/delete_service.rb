@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +31,7 @@ module Bim::Bcf
     class DeleteService < ::BaseServices::Delete
       private
 
-      def after_validate(params, contract_call)
+      def after_validate(contract_call)
         wp_call = work_package_delete_call(params)
 
         if wp_call.success?
@@ -42,7 +42,7 @@ module Bim::Bcf
       end
 
       def work_package_delete_call(params)
-        associated_wp = WorkPackage.find(model.work_package_id)
+        associated_wp = WorkPackage.visible(user).find(model.work_package_id)
         # Load the project association as AR fails do do so once the work package
         # is destroyed.
         model.project

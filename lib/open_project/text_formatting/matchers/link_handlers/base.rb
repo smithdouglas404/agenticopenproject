@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -55,14 +57,12 @@ module OpenProject::TextFormatting::Matchers
         []
       end
 
-      def allowed_prefixes
-        self.class.allowed_prefixes
-      end
+      delegate :allowed_prefixes, to: :class
 
       ##
       # Test whether we should try to resolve the given link
       def applicable?
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       ##
@@ -70,13 +70,11 @@ module OpenProject::TextFormatting::Matchers
       # and matchers.
       # If nil is returned, the link remains as-is.
       def call
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       def oid
-        unless identifier.nil?
-          identifier.to_i
-        end
+        identifier&.to_i
       end
 
       delegate :identifier, to: :matcher

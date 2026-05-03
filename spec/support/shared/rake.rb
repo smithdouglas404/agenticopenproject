@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,9 +31,9 @@
 # Origins from http://robots.thoughtbot.com/test-rake-tasks-like-a-boss
 # Author: Josh Clayton
 
-require 'rake'
+require "rake"
 
-shared_context 'rake' do
+RSpec.shared_context "rake" do
   let(:rake)      { Rake::Application.new }
   let(:task_name) { self.class.description }
   let(:task_path) { "lib/tasks/#{task_name.split(':').first}" }

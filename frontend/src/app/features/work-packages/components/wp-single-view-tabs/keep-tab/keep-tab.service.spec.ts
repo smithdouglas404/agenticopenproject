@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,6 +27,8 @@
 //++
 
 import { KeepTabService } from './keep-tab.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 describe('keepTab service', () => {
   let callback:(transition:any) => void;
@@ -34,6 +36,8 @@ describe('keepTab service', () => {
   let $state:any;
   let $transitions:any;
   let uiRouterGlobals:any;
+  let pathHelper:any;
+  let currentProject:any;
   let keepTab:KeepTabService;
   let defaults:any;
 
@@ -53,7 +57,7 @@ describe('keepTab service', () => {
       params: { tabIdentifier: 'activity' },
     };
 
-    keepTab = new KeepTabService($state, uiRouterGlobals, $transitions);
+    keepTab = new KeepTabService($state, uiRouterGlobals, $transitions, pathHelper, currentProject);
 
     defaults = {
       showTab: 'work-packages.show.tabs',
@@ -100,6 +104,7 @@ describe('keepTab service', () => {
       };
 
       keepTab.observable.subscribe(cb);
+
       expect(cb).toHaveBeenCalledWith(expected);
     });
 
@@ -155,6 +160,7 @@ describe('keepTab service', () => {
       };
 
       keepTab.observable.subscribe(cb);
+
       expect(cb).toHaveBeenCalledWith(expected);
 
       keepTab.updateTabs();

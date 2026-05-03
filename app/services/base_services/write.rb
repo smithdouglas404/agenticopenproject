@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,8 +32,8 @@ module BaseServices
   class Write < BaseContracted
     protected
 
-    def persist(service_result)
-      service_result = super(service_result)
+    def persist(_service_result)
+      service_result = super
 
       unless service_result.result.save
         service_result.errors = service_result.result.errors
@@ -47,7 +49,7 @@ module BaseServices
       service_result
     end
 
-    def before_perform(params, _service_result)
+    def before_perform(_service_result)
       set_attributes(params)
     end
 
@@ -65,11 +67,11 @@ module BaseServices
     end
 
     def instance(_params)
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def default_contract_class
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def instance_class
@@ -77,7 +79,7 @@ module BaseServices
     end
 
     def set_attributes_params(params)
-      params
+      params.except(:send_notifications)
     end
   end
 end

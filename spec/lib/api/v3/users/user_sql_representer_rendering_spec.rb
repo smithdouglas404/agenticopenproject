@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -24,13 +26,13 @@
 #
 #  See COPYRIGHT and LICENSE files for more details.
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
-  include ::API::V3::Utilities::PathHelper
+RSpec.describe API::V3::Users::UserSqlRepresenter, "rendering" do
+  include API::V3::Utilities::PathHelper
 
   subject(:json) do
-    ::API::V3::Utilities::SqlRepresenterWalker
+    API::V3::Utilities::SqlRepresenterWalker
       .new(scope,
            current_user:,
            url_query: { select: })
@@ -45,13 +47,13 @@ describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
 
   let(:rendered_user) { current_user }
 
-  let(:select) { { '*' => {} } }
+  let(:select) { { "*" => {} } }
 
   current_user do
     create(:user)
   end
 
-  context 'when rendering all supported properties' do
+  context "when rendering all supported properties" do
     let(:expected) do
       {
         _type: "User",
@@ -59,6 +61,7 @@ describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
         name: current_user.name,
         firstname: current_user.firstname,
         lastname: current_user.lastname,
+        email: current_user.mail,
         _links: {
           self: {
             href: api_v3_paths.user(current_user.id),
@@ -68,15 +71,15 @@ describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
       }
     end
 
-    it 'renders as expected' do
+    it "renders as expected" do
       expect(json)
         .to be_json_eql(expected.to_json)
     end
   end
 
-  describe 'name property' do
-    shared_examples_for 'name property depending on user format setting' do
-      let(:select) { { 'name' => {} } }
+  describe "name property" do
+    shared_examples_for "name property depending on user format setting" do
+      let(:select) { { "name" => {} } }
 
       let(:expected) do
         {
@@ -84,38 +87,38 @@ describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
         }
       end
 
-      it 'renders as expected' do
+      it "renders as expected" do
         expect(json)
           .to be_json_eql(expected.to_json)
       end
     end
 
-    context 'when user_format is set to firstname', with_settings: { user_format: :firstname } do
-      it_behaves_like 'name property depending on user format setting'
+    context "when user_format is set to firstname", with_settings: { user_format: :firstname } do
+      it_behaves_like "name property depending on user format setting"
     end
 
-    context 'when user_format is set to lastname_firstname', with_settings: { user_format: :lastname_firstname } do
-      it_behaves_like 'name property depending on user format setting'
+    context "when user_format is set to lastname_firstname", with_settings: { user_format: :lastname_firstname } do
+      it_behaves_like "name property depending on user format setting"
     end
 
-    context 'when user_format is set to lastname_coma_firstname', with_settings: { user_format: :lastname_coma_firstname } do
-      it_behaves_like 'name property depending on user format setting'
+    context "when user_format is set to lastname_comma_firstname", with_settings: { user_format: :lastname_comma_firstname } do
+      it_behaves_like "name property depending on user format setting"
     end
 
-    context 'when user_format is set to lastname_n_firstname', with_settings: { user_format: :lastname_n_firstname } do
-      it_behaves_like 'name property depending on user format setting'
+    context "when user_format is set to lastname_n_firstname", with_settings: { user_format: :lastname_n_firstname } do
+      it_behaves_like "name property depending on user format setting"
     end
 
-    context 'when user_format is set to username', with_settings: { user_format: :username } do
-      it_behaves_like 'name property depending on user format setting'
+    context "when user_format is set to username", with_settings: { user_format: :username } do
+      it_behaves_like "name property depending on user format setting"
     end
   end
 
-  describe 'firstname property' do
-    let(:select) { { 'firstname' => {} } }
+  describe "firstname property" do
+    let(:select) { { "firstname" => {} } }
 
-    context 'when the user is the current user' do
-      it 'renders the firstname' do
+    context "when the user is the current user" do
+      it "renders the firstname" do
         expect(json)
           .to be_json_eql(
             {
@@ -125,20 +128,20 @@ describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
       end
     end
 
-    context 'when the user is a user not having manage_user permission' do
+    context "when the user is a user not having manage_user permission" do
       let(:rendered_user) { create(:user) }
 
-      it 'hides the firstname' do
+      it "hides the firstname" do
         expect(json)
           .to be_json_eql({}.to_json)
       end
     end
 
-    context 'when the user is a user having manage_user permission' do
+    context "when the user is a user having manage_user permission" do
       let(:current_user) { create(:user, global_permissions: [:manage_user]) }
       let(:rendered_user) { create(:user) }
 
-      it 'renders the firstname' do
+      it "renders the firstname" do
         expect(json)
           .to be_json_eql(
             {
@@ -149,11 +152,11 @@ describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
     end
   end
 
-  describe 'lastname property' do
-    let(:select) { { 'lastname' => {} } }
+  describe "lastname property" do
+    let(:select) { { "lastname" => {} } }
 
-    context 'when the user is the current user' do
-      it 'renders the lastname' do
+    context "when the user is the current user" do
+      it "renders the lastname" do
         expect(json)
           .to be_json_eql(
             {
@@ -163,26 +166,65 @@ describe ::API::V3::Users::UserSqlRepresenter, 'rendering' do
       end
     end
 
-    context 'when the user is a user not having manage_user permission' do
+    context "when the user is a user not having manage_user permission" do
       let(:rendered_user) { create(:user) }
 
-      it 'hides the lastname' do
+      it "hides the lastname" do
         expect(json)
           .to be_json_eql({}.to_json)
       end
     end
 
-    context 'when the user is a user having manage_user permission' do
+    context "when the user is a user having manage_user permission" do
       let(:current_user) { create(:user, global_permissions: [:manage_user]) }
       let(:rendered_user) { create(:user) }
 
-      it 'renders the lastname' do
+      it "renders the lastname" do
         expect(json)
           .to be_json_eql(
             {
               lastname: rendered_user.lastname
             }.to_json
           )
+      end
+    end
+  end
+
+  describe "email property" do
+    let(:select) { { "email" => {} } }
+
+    context "when the user is the current user" do
+      it "renders the email" do
+        expect(json)
+          .to be_json_eql(
+            {
+              email: rendered_user.mail
+            }.to_json
+          )
+      end
+    end
+
+    context "when the user has view_user_email permission" do
+      let(:current_user) { create(:user, global_permissions: [:view_user_email]) }
+      let(:rendered_user) { create(:user) }
+
+      it "renders the email" do
+        expect(json)
+          .to be_json_eql(
+            {
+              email: rendered_user.mail
+            }.to_json
+          )
+      end
+    end
+
+    context "when the user has no view_user_email permission" do
+      let(:current_user) { create(:user, global_permissions: []) }
+      let(:rendered_user) { create(:user) }
+
+      it "hides the email" do
+        expect(json)
+          .to be_json_eql({}.to_json)
       end
     end
   end

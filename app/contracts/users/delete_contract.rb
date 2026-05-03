@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,6 +40,8 @@ module Users
     # @param user [User] User to be deleted.
     # @param actor [User] User who wants to delete the given user.
     def self.deletion_allowed?(user, actor)
+      return false if user.admin? && User.admin.active.where.not(id: user.id).empty?
+
       if actor == user
         Setting.users_deletable_by_self?
       else

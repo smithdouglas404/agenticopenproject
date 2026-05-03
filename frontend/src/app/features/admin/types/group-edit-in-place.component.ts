@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -41,6 +41,7 @@ import { TypeBannerService } from 'core-app/features/admin/types/type-banner.ser
   selector: 'op-group-edit-in-place',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './group-edit-in-place.html',
+  standalone: false,
 })
 export class GroupEditInPlaceComponent implements OnInit {
   @Input() public placeholder = '';
@@ -67,10 +68,12 @@ export class GroupEditInPlaceComponent implements OnInit {
   }
 
   startEditing():void {
-    this.bannerService.conditional(
+    void this.bannerService.conditional(
+      'edit_attribute_groups',
       () => this.bannerService.showEEOnlyHint(),
       () => {
         this.editing = true;
+        this.cdRef.detectChanges();
       },
     );
   }

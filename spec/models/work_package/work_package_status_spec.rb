@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,26 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe WorkPackage, 'status', type: :model do
+RSpec.describe WorkPackage, "status" do
   let(:status) { create(:status) }
   let!(:work_package) do
     create(:work_package,
            status:)
   end
 
-  describe '#readonly' do
+  describe "#readonly" do
     let(:status) { create(:status, is_readonly: true) }
 
-    context 'with EE', with_ee: %i[readonly_work_packages] do
-      it 'marks work package as read only' do
+    context "with EE", with_ee: %i[readonly_work_packages] do
+      it "marks work package as read only" do
         expect(work_package).to be_readonly_status
       end
     end
 
-    context 'without EE' do
-      it 'is not marked as read only' do
+    context "without EE" do
+      it "is not marked as read only" do
         expect(work_package).not_to be_readonly_status
       end
     end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,5 +36,5 @@
 
 Mime::SET << Mime[:csv] unless Mime::SET.include?(Mime[:csv])
 
-Mime::Type.register 'application/pdf', :pdf unless Mime::Type.lookup_by_extension(:pdf)
-Mime::Type.register 'image/png', :png unless Mime::Type.lookup_by_extension(:png)
+Mime::Type.register "application/pdf", :pdf unless Mime::Type.lookup_by_extension(:pdf)
+Mime::Type.register "image/png", :png unless Mime::Type.lookup_by_extension(:png)

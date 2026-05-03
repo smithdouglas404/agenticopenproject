@@ -1,9 +1,9 @@
 import {
-  Inject, Injectable, Injector, OnDestroy,
+  Inject, Injectable, Injector, OnDestroy, DOCUMENT
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import { findIndex, reinsert } from 'core-app/shared/helpers/drag-and-drop/drag-and-drop.helpers';
+import dragula, { Drake } from 'dragula';
 
 export interface DragMember {
   dragContainer:HTMLElement;
@@ -32,7 +32,7 @@ export interface DragMember {
 
 @Injectable()
 export class DragAndDropService implements OnDestroy {
-  public drake:dragula.Drake|null = null;
+  public drake:Drake|null = null;
 
   public members:DragMember[] = [];
 
@@ -63,8 +63,8 @@ export class DragAndDropService implements OnDestroy {
 
   public remove(container:HTMLElement) {
     if (this.initialized) {
-      _.remove(this.drake!.containers, (el) => el === container);
-      _.remove(this.members, (el) => el.dragContainer === container);
+      this.drake!.containers = this.drake!.containers.filter((el) => el !== container);
+      this.members = this.members.filter((el) => el.dragContainer !== container);
     }
   }
 
@@ -132,7 +132,7 @@ export class DragAndDropService implements OnDestroy {
       },
       accepts: (el:any, container:any) => {
         const member = this.getMember(container);
-        return (member && member.accepts) ? member.accepts(el, container) : true;
+        return (member?.accepts) ? member.accepts(el, container) : true;
       },
       invalid: () => false,
       direction: 'vertical', // Y axis is considered when determining where an element would be dropped
@@ -144,7 +144,6 @@ export class DragAndDropService implements OnDestroy {
     });
 
     this.drake.on('drag', (el:HTMLElement) => {
-      // eslint-disable-next-line no-param-reassign
       el.dataset.sourceIndex = findIndex(el).toString();
     });
 
@@ -164,7 +163,7 @@ export class DragAndDropService implements OnDestroy {
 
     this.drake.on('cloned', (clone:HTMLElement, original:HTMLElement) => {
       const member = this.member(original.parentElement!);
-      if (member && member.onCloned) {
+      if (member?.onCloned) {
         member.onCloned(clone, original);
       }
     });
@@ -179,14 +178,14 @@ export class DragAndDropService implements OnDestroy {
 
     this.drake.on('shadow', (shadowElement:HTMLElement, container:HTMLElement) => {
       const member = this.member(container);
-      if (member && member.onShadowInserted) {
+      if (member?.onShadowInserted) {
         member.onShadowInserted(shadowElement);
       }
     });
 
     this.drake.on('cancel', (el:HTMLElement, container:HTMLElement) => {
       const member = this.member(container);
-      if (member && member.onCancel) {
+      if (member?.onCancel) {
         member.onCancel(el);
       }
     });

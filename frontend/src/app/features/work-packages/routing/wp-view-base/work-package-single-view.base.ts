@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,12 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectorRef, Injector } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  Injector,
+  Input,
+} from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import {
@@ -45,6 +50,9 @@ import {
 import {
   WorkPackageNotificationService,
 } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
+import {
+  take,
+} from 'rxjs/operators';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
@@ -58,11 +66,22 @@ import { FileLinksResourceService } from 'core-app/core/state/file-links/file-li
 import { ProjectsResourceService } from 'core-app/core/state/projects/projects.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { StateService } from '@uirouter/angular';
 
-export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
+@Directive()
+export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
+  @Input() routedFromAngular = true;
+
+  @Input() workPackageId:string;
+
+  @Input() activeTab = 'activity';
+
   @InjectField() states:States;
 
-  @InjectField() I18n!:I18nService;
+  @InjectField() $state:StateService;
+
+  @InjectField() i18n:I18nService;
 
   @InjectField() keepTab:KeepTabService;
 
@@ -98,8 +117,6 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
 
   @InjectField() readonly storeService:WpSingleViewService;
 
-  public text:any = {};
-
   // Work package resource to be loaded from the cache
   public workPackage:WorkPackageResource;
 
@@ -111,15 +128,25 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
 
   public displayNotificationsButton$:Observable<boolean>;
 
-  constructor(public injector:Injector,
-    protected workPackageId:string) {
+  constructor(
+    public injector:Injector,
+  ) {
     super();
-    this.initializeTexts();
+
+    if (this.routedFromAngular && this.workPackageId === undefined) {
+      this.workPackageId = this.$state.params.workPackageId as string;
+    }
   }
 
   /**
    * Observe changes of work package and re-run initialization.
    * Needs to be run explicitly by descendants.
+   *
+   * Note: this.workPackageId may be a semantic identifier (e.g. "PROJ-7")
+   * from the route param. The API resolves it correctly, but the cache key
+   * would be "PROJ-7" while list queries cache the same WP under "42".
+   * After the first load we normalize to the numeric PK to prevent
+   * dual cache entries.
    */
   protected observeWorkPackage():void {
     this
@@ -129,6 +156,13 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
       .requireAndStream()
       .pipe(this.untilDestroyed())
       .subscribe((wp:WorkPackageResource) => {
+        // Normalize semantic route param (e.g. "PROJ-7") to numeric PK
+        // for cache coherence — downstream code uses this.workPackageId
+        // as a cache key, and the canonical key is always numeric.
+        if (this.workPackageId !== wp.id && wp.id) {
+          this.workPackageId = wp.id;
+        }
+
         if (!this.workPackage) {
           this.workPackage = wp;
           this.init();
@@ -136,20 +170,15 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
           this.workPackage = wp;
         }
 
+        if (this.routedFromAngular) {
+          // Push the current title
+          this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
+        }
+
         this.cdRef.detectChanges();
       }, (error) => {
         this.handleLoadingError(error);
       });
-  }
-
-  /**
-   * Provide static translations
-   */
-  protected initializeTexts():void {
-    this.text.tabs = {};
-    ['overview', 'activity', 'relations', 'watchers'].forEach((tab) => {
-      this.text.tabs[tab] = this.I18n.t(`js.work_packages.tabs.${tab}`);
-    });
   }
 
   /**
@@ -170,41 +199,27 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
     // lazy load the work package's project, needed when initializing
     // the work package resource from split view.
     this.projectsResourceService
-      .update((this.workPackage.$links.project as HalResource).href as string)
-      .subscribe(() => {}, (error) => {
-        this.toastService.addError(error);
-      });
+      .requireEntity((this.workPackage.$links.project as HalResource).href!)
+      .subscribe(
+        () => {},
+        (error:HttpErrorResponse) => {
+          this.toastService.addError(error);
+        },
+      );
 
     this.displayNotificationsButton$ = this.storeService.hasNotifications$;
-    this.storeService.setFilters(this.workPackage.id as string);
+    this.storeService.setFilters(this.workPackage.id!);
 
     // Set authorisation data
     this.authorisationService.initModelAuth('work_package', this.workPackage.$links);
-
-    // Push the current title
-    this.titleService.setFirstPart(this.workPackage.subjectWithType(20));
 
     // Preselect this work package for future list operations
     this.showStaticPagePath = this.PathHelper.workPackagePath(this.workPackageId);
 
     // Fetch attachments of current work package
-    const attachments = this.workPackage.attachments as unknown&{ href:string };
-    this.attachmentsResourceService.fetchAttachments(attachments.href).subscribe();
-
-    // Fetch file link collections for work package (only if storages module is enabled)
-    if (this.workPackage.$links.fileLinks) {
-      this.fileLinkResourceService.updateCollectionsForWorkPackage(this.workPackage.$links.fileLinks.href as string);
+    if (this.workPackage.$links.attachments) {
+      this.attachmentsResourceService.fetchCollection(this.workPackage.$links.attachments.href!).subscribe();
     }
-
-    // Fetch storages for work package's project (only if storages module is enabled)
-    this.projectsResourceService
-      .lookup((this.workPackage.project as unknown&{ id:string }).id)
-      .pipe(this.untilDestroyed())
-      .subscribe((project) => {
-        if (project._links.storages) {
-          this.storages.updateCollection(project._links.self.href, project._links.storages);
-        }
-      });
 
     // Listen to tab changes to update the tab label
     this.keepTab.observable
@@ -222,8 +237,8 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
    * Recompute the current tab focus label
    */
   public updateFocusAnchorLabel(tabName:string):string {
-    this.focusAnchorLabel = this.I18n.t('js.label_work_package_details_you_are_here', {
-      tab: this.I18n.t(`js.work_packages.tabs.${tabName}`),
+    this.focusAnchorLabel = this.i18n.t('js.label_work_package_details_you_are_here', {
+      tab: this.i18n.t(`js.work_packages.tabs.${tabName}`),
       type: this.workPackage.type.name,
       subject: this.workPackage.subject,
     });

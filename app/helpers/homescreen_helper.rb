@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,25 +38,13 @@ module HomescreenHelper
   ##
   # Homescreen organization icon
   def organization_icon
-    op_icon('icon-context icon-enterprise')
-  end
-
-  ##
-  # Render a static link defined in OpenProject::Static::Links
-  def static_link_to(key)
-    link = OpenProject::Static::Links.links[key]
-    label = I18n.t(link[:label])
-
-    link_to label,
-            link[:href],
-            title: label,
-            target: '_blank', rel: 'noopener'
+    op_icon("icon-context icon-enterprise")
   end
 
   ##
   # Determine whether we should render the links on homescreen?
   def show_homescreen_links?
-    EnterpriseToken.show_banners? || OpenProject::Configuration.show_community_links?
+    OpenProject::Configuration.show_community_links?
   end
 
   ##

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +31,8 @@ import { KeepTabService } from 'core-app/features/work-packages/components/wp-si
 import { UiStateLinkBuilder } from 'core-app/features/work-packages/components/wp-fast-table/builders/ui-state-link-builder';
 import { WorkPackageDisplayField } from 'core-app/shared/components/fields/display/field-types/work-package-display-field.module';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 export class LinkedWorkPackageDisplayField extends WorkPackageDisplayField {
   public text = {
@@ -42,7 +44,11 @@ export class LinkedWorkPackageDisplayField extends WorkPackageDisplayField {
 
   @InjectField() keepTab!:KeepTabService;
 
-  private uiStateBuilder:UiStateLinkBuilder = new UiStateLinkBuilder(this.$state, this.keepTab);
+  @InjectField() currentProject!:CurrentProjectService;
+
+  @InjectField() pathHelper!:PathHelperService;
+
+  private uiStateBuilder:UiStateLinkBuilder = new UiStateLinkBuilder(this.$state, this.keepTab, this.currentProject, this.pathHelper);
 
   public render(element:HTMLElement, displayText:string):void {
     if (this.isEmpty()) {
@@ -50,10 +56,12 @@ export class LinkedWorkPackageDisplayField extends WorkPackageDisplayField {
       return;
     }
 
+    const routingId = this.wpRoutingId;
     const link = this.uiStateBuilder.linkToShow(
       this.wpId,
       this.text.linkTitle,
       this.valueString,
+      routingId,
     );
 
     const title = document.createElement('span');
@@ -69,6 +77,6 @@ export class LinkedWorkPackageDisplayField extends WorkPackageDisplayField {
   }
 
   public get valueString() {
-    return `#${this.wpId}`;
+    return this.wpFormattedId;
   }
 }

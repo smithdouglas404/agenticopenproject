@@ -19,13 +19,14 @@ get:
                     method: "patch"
                 _type: "UserPreferences"
                 commentSortDescending: true
-                hideMail: false
+                disableKeyboardShortcuts: false
                 timeZone: "Europe/Berlin"
                 warnOnLeavingUnsaved: true
                 notifications:
                   watched: false
                   involved: true
                   mentioned: false
+                  shared: true
                   newsAdded: false,
                   newsCommented: false
                   documentAdded: false
@@ -82,13 +83,14 @@ patch:
                     method: "patch"
                 _type: UserPreferences
                 commentSortDescending: true
-                hideMail: false
+                disableKeyboardShortcuts: false
                 timeZone: Europe/Berlin
                 warnOnLeavingUnsaved: true
                 notifications:
                   watched: false
                   involved: true
                   mentioned: false
+                  shared: true
                   newsAdded: false,
                   newsCommented: false
                   documentAdded: false

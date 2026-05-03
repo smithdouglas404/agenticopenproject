@@ -527,15 +527,15 @@
     version = "1.0.25";
   };
   carrierwave = {
-    dependencies = ["activemodel" "activesupport" "mime-types" "ssrf_filter"];
+    dependencies = ["activemodel" "activesupport" "addressable" "image_processing" "marcel" "mini_mime" "ssrf_filter"];
     groups = ["default"];
     platforms = [];
     source = {
       remotes = ["https://rubygems.org"];
-      sha256 = "055i3ybjv9n9hqaazxn3d9ibqhlwh93d4hdlwbpjjfy8qbrz6hiw";
+      sha256 = "dy6364hzm3ijfzxgwdi3ny66sc24gyqj1wvsx60zj7xzmy3qsyh1";
       type = "gem";
     };
-    version = "1.3.2";
+    version = "2.2.6";
   };
   carrierwave_direct = {
     dependencies = ["carrierwave" "fog-aws"];
@@ -1132,17 +1132,6 @@
     };
     version = "6.1.0";
   };
-  faker = {
-    dependencies = ["i18n"];
-    groups = ["development"];
-    platforms = [];
-    source = {
-      remotes = ["https://rubygems.org"];
-      sha256 = "0z3d4y6xg8prn3zdjw1qpqrnziq1d3zigqil4sxjj0pbr46gc1d6";
-      type = "gem";
-    };
-    version = "2.17.0";
-  };
   faraday = {
     dependencies = ["faraday-net_http" "multipart-post" "ruby2_keywords"];
     groups = ["default" "development" "sentry" "test"];
@@ -1644,7 +1633,7 @@
       sha256 = "0imzd0cb9vlkc3yggl4rph1v1wm4z9psgs4z6aqsqa5hgf8gr9hj";
       type = "gem";
     };
-    version = "3.4.1";
+    version = "3.4.2";
   };
   livingstyleguide = {
     dependencies = ["minisyntax" "redcarpet" "sassc" "thor" "tilt"];
@@ -1706,10 +1695,10 @@
     platforms = [];
     source = {
       remotes = ["https://rubygems.org"];
-      sha256 = "1vhp6lifwvqs2b0a276lj61n86c1l7d1xiswjj2w23f54gl51mpk";
+      sha256 = "dhmj4zvnbs3kirgs6s2d933hsds9pim6hf88rk807l1m8km2n091";
       type = "gem";
     };
-    version = "1.0.0";
+    version = "1.0.4";
   };
   messagebird-rest = {
     groups = ["default" "opf_plugins"];
@@ -2112,7 +2101,7 @@
     version = "1.0.0";
   };
   openproject-backlogs = {
-    dependencies = ["acts_as_list" "openproject-pdf_export"];
+    dependencies = ["acts_as_list"];
     groups = ["opf_plugins"];
     platforms = [];
     source = {
@@ -2193,16 +2182,6 @@
     platforms = [];
     source = {
       path = ../modules/openid_connect;
-      type = "path";
-    };
-    version = "1.0.0";
-  };
-  openproject-pdf_export = {
-    dependencies = ["pdf-inspector" "prawn"];
-    groups = ["opf_plugins"];
-    platforms = [];
-    source = {
-      path = ../modules/pdf_export;
       type = "path";
     };
     version = "1.0.0";
@@ -3335,10 +3314,10 @@
     platforms = [];
     source = {
       remotes = ["https://rubygems.org"];
-      sha256 = "0flmg6f444liaxjgdwdrwcfwyyhc54a7wp26kqih2cklwll5gp40";
+      sha256 = "632vjyxwh673082knymg3j82ml22f2fxw5z2m31h2816q3cm6mw1";
       type = "gem";
     };
-    version = "1.0.7";
+    version = "1.3.0";
   };
   stackprof = {
     groups = ["development" "test"];

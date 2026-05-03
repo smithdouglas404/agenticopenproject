@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,36 +32,34 @@ class HourlyRatesController < ApplicationController
   helper :users
   helper :sort
   include SortHelper
+
   helper :hourly_rates
   include HourlyRatesHelper
 
-  before_action :find_user, only: %i[show edit update set_rate]
+  before_action :find_optional_project, only: %i[edit update]
+  before_action :find_project, only: %i[show]
+  before_action :find_user, only: %i[show edit update]
 
-  before_action :find_optional_project, only: %i[show edit update]
-  before_action :find_project, only: [:set_rate]
-
-  # #show, #edit have their own authorization
+  # #show, #edit and #update have their own authorization
   before_action :authorize, except: %i[show edit update]
+  no_authorization_required! :show,
+                             :edit,
+                             :update
 
   # TODO: this should be an index
   def show
-    if @project
-      return deny_access unless User.current.allowed_to?(:view_hourly_rates, @project)
+    return deny_access if @project.nil?
+    return deny_access unless User.current.allowed_in_project?(:view_hourly_rates, @project)
 
-      @rates = HourlyRate.where(user_id: @user, project_id: @project)
-               .order("#{HourlyRate.table_name}.valid_from desc")
-    else
-      @rates = HourlyRate.history_for_user(@user)
-      @rates_default = @rates.delete(nil)
-    end
+    @rates = HourlyRate.where(user_id: @user, project_id: @project).order("#{HourlyRate.table_name}.valid_from desc")
   end
 
-  def edit
+  def edit # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     # TODO: split into edit and update
     # remove code where appropriate
     if @project
       # Hourly Rate
-      return deny_access unless User.current.allowed_to?(:edit_hourly_rates, @project)
+      return deny_access unless User.current.allowed_in_project?(:edit_hourly_rates, @project)
     else
       # Default Hourly Rate
       return deny_access unless User.current.admin?
@@ -69,31 +69,31 @@ class HourlyRatesController < ApplicationController
       @rates = DefaultHourlyRate.where(user_id: @user)
                .order("#{DefaultHourlyRate.table_name}.valid_from desc")
                .to_a
-      @rates << @user.default_rates.build(valid_from: Date.today) if @rates.empty?
+      @rates << @user.default_rates.build(valid_from: Time.zone.today) if @rates.empty?
     else
       @rates = @user.rates.select { |r| r.project_id == @project.id }.sort { |a, b| b.valid_from <=> a.valid_from }.to_a
-      @rates << @user.rates.build(valid_from: Date.today, project: @project) if @rates.empty?
+      @rates << @user.rates.build(valid_from: Time.zone.today, project: @project) if @rates.empty?
     end
 
-    render action: 'edit', layout: !request.xhr?
+    render action: :edit, layout: !request.xhr?
   end
 
   current_menu_item :edit do
     :budgets
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     # TODO: copied over from edit
     # remove code where appropriate
     if @project
       # Hourly Rate
-      return deny_access unless User.current.allowed_to?(:edit_hourly_rates, @project)
+      return deny_access unless User.current.allowed_in_project?(:edit_hourly_rates, @project)
     else
       # Default Hourly Rate
       return deny_access unless User.current.admin?
     end
 
-    if params.include? 'user'
+    if params.include? "user"
       update_rates @user,
                    @project,
                    permitted_params.user_rates[:new_rate_attributes],
@@ -105,48 +105,22 @@ class HourlyRatesController < ApplicationController
     if @user.save
       flash[:notice] = t(:notice_successful_update)
       if @project.nil?
-        redirect_back_or_default(controller: 'users', action: 'edit', id: @user)
+        redirect_back_or_default({ controller: "users", action: "edit", id: @user })
       else
-        redirect_back_or_default(action: 'show', id: @user, project_id: @project)
+        redirect_back_or_default({ action: "show", id: @user, project_id: @project })
       end
     else
       if @project.nil?
         @rates = @user.default_rates
-        @rates << @user.default_rates.build(valid_from: Date.today) if @rates.empty?
+        @rates << @user.default_rates.build(valid_from: Time.zone.today) if @rates.empty?
       else
         @rates = @user
                  .rates
                  .select { |r| r.project_id == @project.id }
-                 .sort { |a, b| b.valid_from || Date.today <=> a.valid_from || Date.today }
-        @rates << @user.rates.build(valid_from: Date.today, project: @project) if @rates.empty?
+                 .sort { |a, b| b.valid_from || Time.zone.today <=> a.valid_from || Time.zone.today }
+        @rates << @user.rates.build(valid_from: Time.zone.today, project: @project) if @rates.empty?
       end
-      render action: 'edit', layout: !request.xhr?
-    end
-  end
-
-  def set_rate
-    today = Date.today
-
-    rate = @user.rate_at(today, @project)
-    rate = HourlyRate.new if rate.nil? || rate.valid_from != today
-
-    rate.tap do |hr|
-      hr.project    = @project
-      hr.user       = @user
-      hr.valid_from = today
-      hr.rate = parse_number_string_to_number(params[:rate])
-    end
-
-    if rate.save
-      if request.xhr?
-        render :update do |page|
-          page.replace_html "rate_for_#{@user.id}",
-                            link_to(number_to_currency(rate.rate), action: 'edit', id: @user, project_id: @project)
-        end
-      else
-        flash[:notice] = t(:notice_successful_update)
-        redirect_to action: 'index'
-      end
+      render action: :edit, layout: !request.xhr?
     end
   end
 
@@ -159,27 +133,23 @@ class HourlyRatesController < ApplicationController
 
   def delete_rates(user, project)
     if project.present?
-      user.rates.delete_all
+      user.rates.where(project:).delete_all
     else
       user.default_rates.delete_all
     end
   end
 
   def find_project
-    @project = Project.find(params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-
-  def find_optional_project
-    @project = params[:project_id].blank? ? nil : Project.find(params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
+    @project = Project.visible.find(params[:project_id])
   end
 
   def find_user
-    @user = params[:id] ? User.find(params[:id]) : User.current
-  rescue ActiveRecord::RecordNotFound
-    render_404
+    @user = if params[:id].blank?
+              User.current
+            elsif @project
+              User.in_project(@project).visible.find(params[:id])
+            else
+              User.visible.find(params[:id])
+            end
   end
 end

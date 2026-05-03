@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -37,11 +37,15 @@ import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decora
 import { ViewpointsService } from 'core-app/features/bim/bcf/helper/viewpoints.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { HttpClient } from '@angular/common/http';
-import { IfcProjectDefinition } from 'core-app/features/bim/ifc_models/pages/viewer/ifc-models-data.service';
+import {
+  IfcModelsDataService,
+  IfcProjectDefinition,
+} from 'core-app/features/bim/ifc_models/pages/viewer/ifc-models-data.service';
 import { BIMViewer } from '@xeokit/xeokit-bim-viewer/dist/xeokit-bim-viewer.es';
 import { BcfViewpointData, CreateBcfViewpointData } from 'core-app/features/bim/bcf/api/bcf-api.model';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
+import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
 
 export interface XeokitElements {
   canvasElement:HTMLElement;
@@ -52,6 +56,7 @@ export interface XeokitElements {
   busyModelBackdropElement:HTMLElement;
   enableEditModels?:boolean;
   keyboardEventsElement?:HTMLElement;
+  enableMeasurements?:boolean;
 }
 
 /**
@@ -81,16 +86,16 @@ export interface BCFLoadOptions {
 /**
  * Wrapping type from xeokit module. Can be removed after we get a real type package.
  */
-type Controller = {
+interface Controller {
   on:(event:string, callback:(event:unknown) => void) => string
-};
+}
 
 /**
  * Wrapping type from xeokit module. Can be removed after we get a real type package.
  */
 type XeokitBimViewer = Controller&{
   loadProject:(projectId:string) => void,
-  saveBCFViewpoint:(options:BCFCreationOptions) => CreateBcfViewpointData,
+  saveBCFViewpoint:(options:BCFCreationOptions) => unknown,
   loadBCFViewpoint:(bcfViewpoint:BcfViewpointData, options:BCFLoadOptions) => void,
   setKeyboardEnabled:(enabled:boolean) => true,
   destroy:() => void
@@ -112,6 +117,8 @@ export class IFCViewerService extends ViewerBridgeService {
 
   @InjectField() viewpointsService:ViewpointsService;
 
+  @InjectField() ifcModelsDataService:IfcModelsDataService;
+
   @InjectField() currentProjectService:CurrentProjectService;
 
   @InjectField() httpClient:HttpClient;
@@ -121,7 +128,7 @@ export class IFCViewerService extends ViewerBridgeService {
   }
 
   public newViewer(elements:XeokitElements, projects:IfcProjectDefinition[]):void {
-    const server = new XeokitServer(this.pathHelper);
+    const server = new XeokitServer(this.pathHelper, this.ifcModelsDataService);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const viewerUI = new BIMViewer(server, elements) as XeokitBimViewer;
 
@@ -130,7 +137,7 @@ export class IFCViewerService extends ViewerBridgeService {
     viewerUI.loadProject(projects[0].id);
 
     viewerUI.on('addModel', () => { // "Add" selected in Models tab's context menu
-      window.location.href = this.pathHelper.ifcModelsNewPath(this.currentProjectService.identifier as string);
+      window.location.href = this.pathHelper.ifcModelsNewPath(this.currentProjectService.identifier!);
     });
 
     viewerUI.on('openInspector', () => {
@@ -138,7 +145,7 @@ export class IFCViewerService extends ViewerBridgeService {
     });
 
     viewerUI.on('editModel', (event:{ modelId:number|string }) => { // "Edit" selected in Models tab's context menu
-      window.location.href = this.pathHelper.ifcModelsEditPath(this.currentProjectService.identifier as string, event.modelId);
+      window.location.href = this.pathHelper.ifcModelsEditPath(this.currentProjectService.identifier!, event.modelId);
     });
 
     viewerUI.on('deleteModel', (event:{ modelId:number|string }) => { // "Delete" selected in Models tab's context menu
@@ -146,7 +153,7 @@ export class IFCViewerService extends ViewerBridgeService {
       const formData = new FormData();
       formData.append(
         'authenticity_token',
-        jQuery('meta[name=csrf-token]').attr('content') as string,
+        getMetaContent('csrf-token')
       );
       formData.append(
         '_method',
@@ -154,9 +161,7 @@ export class IFCViewerService extends ViewerBridgeService {
       );
 
       this.httpClient.post(
-        this.pathHelper.ifcModelsDeletePath(
-          this.currentProjectService.identifier as string, event.modelId,
-        ),
+        this.pathHelper.ifcModelsDeletePath(this.currentProjectService.identifier!, event.modelId),
         formData,
       )
         .subscribe()
@@ -200,12 +205,35 @@ export class IFCViewerService extends ViewerBridgeService {
     }
 
     const opts:BCFCreationOptions = { spacesVisible: true, reverseClippingPlanes: true };
-    const viewpoint = this.viewer.saveBCFViewpoint(opts);
+    const viewpoint = this.viewer.saveBCFViewpoint(opts) as CreateBcfViewpointData;
 
-    // The backend rejects viewpoints with bitmaps
-    viewpoint.bitmaps = null;
+    // project output of viewer to ensured BCF viewpoint format
+    const bcfViewpoint:CreateBcfViewpointData = {
+      // The backend currently rejects viewpoints with bitmaps
+      bitmaps: null,
+      clipping_planes: viewpoint.clipping_planes,
+      index: viewpoint.index,
+      guid: viewpoint.guid,
+      components: {
+        selection: viewpoint.components.selection,
+        coloring: viewpoint.components.coloring,
+        visibility: {
+          default_visibility: viewpoint.components.visibility.default_visibility,
+          exceptions: viewpoint.components.visibility.exceptions,
+          view_setup_hints: {
+            openings_visible: viewpoint.components.visibility.view_setup_hints?.openings_visible || false,
+            space_boundaries_visible: viewpoint.components.visibility.view_setup_hints?.space_boundaries_visible || false,
+            spaces_visible: viewpoint.components.visibility.view_setup_hints?.spaces_visible || false,
+          },
+        },
+      },
+      lines: viewpoint.lines,
+      orthogonal_camera: viewpoint.orthogonal_camera,
+      perspective_camera: viewpoint.perspective_camera,
+      snapshot: viewpoint.snapshot,
+    };
 
-    return of(viewpoint);
+    return of(bcfViewpoint);
   }
 
   public showViewpoint(workPackage:WorkPackageResource, index:number):void {

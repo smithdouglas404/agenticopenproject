@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,14 +33,21 @@ module OpenProject
                   :controller_actions,
                   :contract_actions,
                   :project_module,
-                  :dependencies
+                  :dependencies,
+                  :permissible_on
 
+      # @param public [Boolean] when true, the permission is granted to anybody
+      # having at least one role in a project, regardless of the role's
+      # permissions.
+      # @param visible [true, false, Proc] When true, the permission is visible
+      # in the UI. When false, the permission is hidden. It can be dynamic by
+      # using a Proc.
       def initialize(name,
                      hash,
+                     permissible_on:,
                      public: false,
                      require: nil,
-                     global: false,
-                     enabled: true,
+                     visible: true,
                      project_module: nil,
                      contract_actions: [],
                      grant_to_admin: true,
@@ -48,8 +55,9 @@ module OpenProject
         @name = name
         @public = public
         @require = require
-        @global = global
-        @enabled = enabled
+        @permissible_on = Array(permissible_on)
+        @enabled = true
+        @visible = visible
         @project_module = project_module
         @contract_actions = contract_actions
         @grant_to_admin = grant_to_admin
@@ -68,8 +76,45 @@ module OpenProject
         @public
       end
 
+      def work_package?
+        permissible_on? :work_package
+      end
+
+      def project?
+        permissible_on? :project
+      end
+
       def global?
-        @global
+        permissible_on? :global
+      end
+
+      def project_query?
+        permissible_on? :project_query
+      end
+
+      def permissible_on?(context_type)
+        # Sometimes the context_type passed in is a decorated object.
+        # Most of the times, this would then be an 'EagerLoadingWrapper' instance.
+        # We need to unwrap the object to get the actual object.
+        # Checking for `context_type.is_a?(SimpleDelegator)` fails for unknown reasons.
+        context_type = context_type.__getobj__ if context_type.class.ancestors.include?(SimpleDelegator)
+
+        context_symbol = case context_type
+                         when WorkPackage
+                           :work_package
+                         when Project
+                           :project
+                         when ::ProjectQuery
+                           :project_query
+                         when Symbol
+                           context_type
+                         when nil
+                           :global
+                         else
+                           raise "Unknown context: #{context_type}"
+                         end
+
+        @permissible_on.include?(context_symbol)
       end
 
       def grant_to_admin?
@@ -85,11 +130,27 @@ module OpenProject
       end
 
       def enabled?
-        if @enabled.respond_to?(:call)
-          @enabled.call
+        @enabled
+      end
+
+      def visible?
+        if @visible.respond_to?(:call)
+          @visible.call
         else
-          @enabled
+          @visible
         end
+      end
+
+      def hidden?
+        !visible?
+      end
+
+      def disable!
+        @enabled = false
+      end
+
+      def enable!
+        @enabled = true
       end
     end
   end

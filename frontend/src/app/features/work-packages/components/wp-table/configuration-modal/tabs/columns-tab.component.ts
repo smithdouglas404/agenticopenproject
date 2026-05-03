@@ -1,45 +1,50 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { QueryColumn } from 'core-app/features/work-packages/components/wp-query/query-column';
-import { ConfigurationService } from 'core-app/core/config/configuration.service';
-import { WorkPackageViewColumnsService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-columns.service';
-import { TabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tab-portal-outlet';
-import { BannersService } from 'core-app/core/enterprise/banners.service';
-import { DraggableOption } from 'core-app/shared/components/autocompleter/draggable-autocomplete/draggable-autocomplete.component';
-import { enterpriseDocsUrl } from 'core-app/core/setup/globals/constants.const';
+import {
+  WorkPackageViewColumnsService,
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-columns.service';
+import {
+  TabComponent,
+} from 'core-app/features/work-packages/components/wp-table/configuration-modal/tab-portal-outlet';
+import {
+  DraggableOption,
+} from 'core-app/shared/components/autocompleter/draggable-autocomplete/draggable-autocomplete.component';
 
 @Component({
   templateUrl: './columns-tab.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WpTableConfigurationColumnsTabComponent implements TabComponent, OnInit {
   public availableColumnsOptions = this.wpTableColumns.all.map((c) => this.column2Like(c));
 
   public availableColumns = this.wpTableColumns.all;
 
-  public availableColumnsMap:{ [id:string]:QueryColumn } = _.keyBy(this.availableColumns, (c) => c.id);
+  public availableColumnsMap:Record<string, QueryColumn> = _.keyBy(this.availableColumns, (c) => c.id);
 
   public selectedColumns:DraggableOption[] = this.wpTableColumns.getColumns().map((c) => this.column2Like(c));
 
-  public selectedColumnMap:{ [id:string]:boolean } = {};
-
-  public eeShowBanners = false;
+  public selectedColumnMap:Record<string, boolean> = {};
 
   public text = {
     columnsHelp: this.I18n.t('js.work_packages.table_configuration.columns_help_text'),
     columnsLabel: this.I18n.t('js.label_columns'),
-    selectedColumns: this.I18n.t('js.description_selected_columns'),
     multiSelectLabel: this.I18n.t('js.work_packages.label_column_multiselect'),
 
-    upsaleRelationColumns: this.I18n.t('js.work_packages.table_configuration.upsale.relation_columns'),
-    upsaleCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsale.check_out_link'),
-    moreInfoLink: enterpriseDocsUrl.website,
+    inputPlaceholder: this.I18n.t('js.label_search_columns'),
+    inputLabel: this.I18n.t('js.label_add_columns'),
+    inputDragLabel: this.I18n.t('js.label_manage_columns'),
   };
 
-  constructor(readonly injector:Injector,
+  constructor(
+    readonly injector:Injector,
     readonly I18n:I18nService,
     readonly wpTableColumns:WorkPackageViewColumnsService,
-    readonly ConfigurationService:ConfigurationService,
-    readonly bannerService:BannersService) {
+) {
   }
 
   public onSave() {
@@ -47,7 +52,6 @@ export class WpTableConfigurationColumnsTabComponent implements TabComponent, On
   }
 
   ngOnInit() {
-    this.eeShowBanners = this.bannerService.eeShowBanners;
     this.selectedColumns.forEach((c:DraggableOption) => {
       this.selectedColumnMap[c.id] = true;
     });

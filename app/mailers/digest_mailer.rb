@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,7 +47,7 @@ class DigestMailer < ApplicationMailer
   class << self
     def generate_message_id(_, user)
       hash = "openproject.digest-#{user.id}-#{Time.current.strftime('%Y%m%d%H%M%S')}"
-      host = Setting.mail_from.to_s.gsub(%r{\A.*@}, '')
+      host = ApplicationMailer.mail_from.to_s.gsub(%r{\A.*@}, "")
       host = "#{::Socket.gethostname}.openproject" if host.empty?
       "#{hash}@#{host}"
     end
@@ -55,7 +57,7 @@ class DigestMailer < ApplicationMailer
     recipient = User.find(recipient_id)
 
     open_project_headers User: recipient.name
-    message_id 'digest', recipient
+    message_id "digest", recipient
 
     @user = recipient
     @notification_ids = notification_ids
@@ -67,17 +69,13 @@ class DigestMailer < ApplicationMailer
     @mentioned_count = @aggregated_notifications
                          .values
                          .flatten
-                         .map(&:reason)
-                         .compact
+                         .filter_map(&:reason)
                          .count("mentioned")
 
     return if @aggregated_notifications.empty?
 
-    with_locale_for(recipient) do
-      subject = "#{Setting.app_title} - #{digest_summary_text(notification_ids.size, @mentioned_count)}"
-
-      mail to: recipient.mail,
-           subject:
+    send_localized_mail(recipient) do
+      "#{Setting.app_title} - #{digest_summary_text(notification_ids.size, @mentioned_count)}"
     end
   end
 
@@ -86,10 +84,9 @@ class DigestMailer < ApplicationMailer
   def load_notifications(notification_ids)
     Notification
       .where(id: notification_ids)
-      .includes(:project, :resource)
+      .includes(:resource)
       .reject do |notification|
         notification.resource.nil? ||
-        notification.project.nil? ||
         (notification.journal.nil? && !notification.date_alert?)
       end
   end

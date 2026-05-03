@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -72,10 +74,10 @@ module Attachments
       log_attachment_saving_error(e)
 
       message =
-        if e&.class&.to_s == 'Errno::EACCES'
-          I18n.t('api_v3.errors.unable_to_create_attachment_permissions')
+        if e&.class&.to_s == "Errno::EACCES"
+          I18n.t("api_v3.errors.unable_to_create_attachment_permissions")
         else
-          I18n.t('api_v3.errors.unable_to_create_attachment')
+          I18n.t("api_v3.errors.unable_to_create_attachment")
         end
       raise message
     end

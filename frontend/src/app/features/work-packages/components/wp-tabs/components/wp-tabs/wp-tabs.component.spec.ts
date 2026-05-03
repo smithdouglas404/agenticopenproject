@@ -1,5 +1,5 @@
-import { Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { KeepTabService } from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
@@ -8,6 +8,8 @@ import { ScrollableTabsComponent } from 'core-app/shared/components/tabs/scrolla
 import { WorkPackageTabsService } from 'core-app/features/work-packages/components/wp-tabs/services/wp-tabs/wp-tabs.service';
 import { WpTabsComponent } from './wp-tabs.component';
 import { TabComponent } from '../wp-tab-wrapper/tab';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 describe('WpTabsComponent', () => {
   class TestComponent implements TabComponent {
@@ -39,8 +41,11 @@ describe('WpTabsComponent', () => {
         { provide: StateService, useValue: { includes: () => false } },
         { provide: UIRouterGlobals, useValue: {} },
         { provide: KeepTabService, useValue: {} },
+        { provide: CurrentProjectService, useValue: {} },
+        { provide: PathHelperService, useValue: {} },
         WorkPackageTabsService,
       ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   });
@@ -56,8 +61,9 @@ describe('WpTabsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('displays the visible tab', fakeAsync(() => {
+  it('displays the visible tab', () => {
     const tabLink:HTMLElement = fixture.debugElement.query(By.css('[data-qa-tab-id="displayable-test-tab"]')).nativeElement;
+
     expect(tabLink.innerText).toContain('Displayable TestTab');
-  }));
+  });
 });

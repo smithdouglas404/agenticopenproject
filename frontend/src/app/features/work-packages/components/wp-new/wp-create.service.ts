@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,12 +31,15 @@ import {
   Injector,
 } from '@angular/core';
 import {
+  firstValueFrom,
   Observable,
   Subject,
 } from 'rxjs';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { HookService } from 'core-app/features/plugins/hook-service';
-import { WorkPackageFilterValues } from 'core-app/features/work-packages/components/wp-edit-form/work-package-filter-values';
+import {
+  WorkPackageFilterValues,
+} from 'core-app/features/work-packages/components/wp-edit-form/work-package-filter-values';
 import {
   HalResourceEditingService,
   ResourceChangesetCommit,
@@ -51,8 +54,6 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import {
   HalResource,
-  HalSource,
-  HalSourceLink,
 } from 'core-app/features/hal/resources/hal-resource';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
 import { SchemaResource } from 'core-app/features/hal/resources/schema-resource';
@@ -60,6 +61,8 @@ import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
 import { AttachmentsResourceService } from 'core-app/core/state/attachments/attachments.service';
+import { AttachmentCollectionResource } from 'core-app/features/hal/resources/attachment-collection-resource';
+import { HalSource, HalSourceLink } from 'core-app/features/hal/interfaces';
 
 export const newWorkPackageHref = '/api/v3/work_packages/new';
 
@@ -151,6 +154,11 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
       .then((form:FormResource) => {
         const changeset = this.fromCreateForm(form);
 
+        // Override scheduleManually to true when copying a single work package.
+        // Has a copy cannot have children nor predecessors, it must be manually
+        // scheduled despite the scheduling mode of the source work package.
+        changeset.setValue('scheduleManually', true);
+
         return changeset;
       });
   }
@@ -167,13 +175,14 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
 
   public getEmptyForm(projectIdentifier:string|null|undefined):Promise<FormResource> {
     if (!this.form) {
-      this.form = this
-        .apiV3Service
-        .withOptionalProject(projectIdentifier)
-        .work_packages
-        .form
-        .post({})
-        .toPromise();
+      this.form = firstValueFrom(
+        this
+          .apiV3Service
+          .withOptionalProject(projectIdentifier)
+          .work_packages
+          .form
+          .post({}),
+      );
     }
 
     return this.form;
@@ -268,7 +277,9 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
           // We need to apply the defaults again (after them being applied in the form requests)
           // here as the initial form requests might have led to some default
           // values not being carried over. This can happen when custom fields not available in one type are filter values.
-          this.defaultsFromFilters(change, defaults);
+          // The defaults should be applied to the customFields only, hence we ignore the other filters.
+          const ignoreFiltersFn = (id:string):boolean => /customField\d+/.exec(id) === null;
+          this.defaultsFromFilters(change, defaults, ignoreFiltersFn);
 
           return change;
         });
@@ -284,13 +295,21 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
    * @param object
    * @param defaults
    */
-  private defaultsFromFilters(object:HalSource|WorkPackageChangeset, defaults?:HalSource):void {
+  private defaultsFromFilters(
+    object:HalSource|WorkPackageChangeset,
+    defaults?:HalSource,
+    ignoreFiltersFn?:(id:string) => boolean,
+  ):void {
     // Not using WorkPackageViewFiltersService here as the embedded table does not load the form
     // which will result in that service having empty current filters.
     const query = this.querySpace.query.value;
 
     if (query) {
-      const except:string[] = defaults?._links ? Object.keys(defaults._links) : [];
+      let except = defaults?._links ? Object.keys(defaults._links) : [];
+
+      if (ignoreFiltersFn !== undefined) {
+        except = except.concat(query.filters.map((f) => f.id).filter(ignoreFiltersFn));
+      }
 
       new WorkPackageFilterValues(this.injector, query.filters, except)
         .applyDefaultsFromFilters(object);
@@ -305,7 +324,7 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
    * a valid payload in the sense that all properties are at their correct place and are in the right format. That means
    * HalResources are in the _links section and follow the { href: some_link } format while simple properties stay on the
    * top level.
-    */
+   */
   private withFiltersPayload(projectIdentifier:string|null|undefined, defaults?:HalSource):Promise<HalSource> {
     const fromFilter = { _links: {} };
     this.defaultsFromFilters(fromFilter, defaults);
@@ -366,7 +385,7 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
    * @param form
    */
   private initializeNewResource(form:FormResource) {
-    const payload = form.payload.$plain();
+    const payload = form.payload.$plain() as object&{ _links:{ schema:{ href:string } } };
 
     // maintain the reference to the schema
     payload._links.schema = { href: 'new' };
@@ -385,7 +404,12 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
     // Set update link to form
     wp.update = wp.$links.update = form.$links.self;
     // Use POST /work_packages for saving link
-    wp.updateImmediately = wp.$links.updateImmediately = (payload) => this.apiV3Service.work_packages.post(payload).toPromise();
+    wp.updateImmediately = (data:object) => firstValueFrom(this.apiV3Service.work_packages.post(data));
+    wp.$links.updateImmediately = (data:object) => firstValueFrom(this.apiV3Service.work_packages.post(data));
+
+    if (form.schema.$links.attachments) {
+      wp.$links.attachments = { elements: [] } as unknown as AttachmentCollectionResource;
+    }
 
     // We need to provide the schema to the cache so that it is available in the html form to e.g. determine
     // the editability.

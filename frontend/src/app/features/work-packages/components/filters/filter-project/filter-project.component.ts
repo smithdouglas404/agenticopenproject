@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,37 +26,35 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Output } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { DebouncedEventEmitter } from 'core-app/shared/helpers/rxjs/debounced-event-emitter';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
-import { IProjectAutocompleteItem } from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocomplete-item';
+import {
+  IProjectAutocompleteItem,
+} from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocomplete-item';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { ApiV3ListFilter } from 'core-app/core/apiv3/paths/apiv3-list-resource.interface';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { firstValueFrom } from 'rxjs';
+import { IAPIFilter } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
 
 @Component({
   selector: 'op-filter-project',
   templateUrl: './filter-project.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FilterProjectComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public shouldFocus = false;
 
   @Input() public filter:QueryFilterInstanceResource;
 
-  @Output() public filterChanged = new DebouncedEventEmitter<QueryFilterInstanceResource>(componentDestroyed(this));
+  @Output() public filterChanged = new DebouncedEventEmitter<QueryFilterInstanceResource>(componentDestroyed(this), 0);
 
-  additionalProjectApiFilters:ApiV3ListFilter[] = [];
+  additionalProjectApiFilters:IAPIFilter[] = [];
 
   constructor(
     readonly I18n:I18nService,
@@ -68,8 +66,11 @@ export class FilterProjectComponent extends UntilDestroyedMixin implements OnIni
 
   ngOnInit():void {
     const projectID = this.currentProjectService.id;
+
+    this.additionalProjectApiFilters.push({ name: 'active', operator: '=', values: ['t'] });
+
     if (projectID && (this.filter.id === 'subprojectId' || this.filter.id === 'onlySubproject')) {
-      this.additionalProjectApiFilters.push(['ancestor', '=', [projectID]]);
+      this.additionalProjectApiFilters.push({ name: 'ancestor', operator: '=', values: [projectID] });
     }
   }
 
@@ -78,7 +79,7 @@ export class FilterProjectComponent extends UntilDestroyedMixin implements OnIni
       return;
     }
 
-    if (!val) {
+    if (!val || (val?.length === 0)) {
       this.filter.values.length = 0;
       this.filterChanged.emit(this.filter);
       return;
@@ -86,11 +87,13 @@ export class FilterProjectComponent extends UntilDestroyedMixin implements OnIni
 
     // The project autocompleter does not return HalResources, but most filters want them.
     // Here we change from one to the other
-    const projects = await this.apiV3Service.projects.list({
-      filters: [
-        ['id', '=', val.map((p:HalResource|IProjectAutocompleteItem) => String(p.id) || '')],
-      ],
-    }).toPromise();
+    const projects = await firstValueFrom(
+      this.apiV3Service.projects.list({
+        filters: [
+          ['id', '=', val.map((p:HalResource|IProjectAutocompleteItem) => String(p.id) || '')],
+        ],
+      }),
+    );
 
     this.filter.values = projects.elements;
     this.filterChanged.emit(this.filter);

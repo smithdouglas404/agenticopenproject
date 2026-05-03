@@ -1,6 +1,37 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
 module XlsExport::WorkPackage::Exporter
   class XLS < WorkPackage::Exports::QueryExporter
     include ::XlsExport::Concerns::SpreadsheetBuilder
+    include WorkPackage::Exports::AdditionalColumns
 
     def records
       work_packages
@@ -12,11 +43,11 @@ module XlsExport::WorkPackage::Exporter
     end
 
     def with_descriptions
-      options[:show_descriptions]
+      ActiveModel::Type::Boolean.new.cast(options[:show_descriptions])
     end
 
     def with_relations
-      options[:show_relations]
+      ActiveModel::Type::Boolean.new.cast(options[:show_relations])
     end
 
     def enable!(singleton_module)
@@ -50,7 +81,11 @@ module XlsExport::WorkPackage::Exporter
     end
 
     def row(work_package)
-      super + [work_package.description]
+      super + [sanitize(work_package.description)]
+    end
+
+    def sanitize(string)
+      Rails::Html::FullSanitizer.new.sanitize(string)
     end
   end
 
@@ -124,9 +159,9 @@ module XlsExport::WorkPackage::Exporter
 
     def relation_row(work_package, wp_columns, other, relation)
       type = relation_type work_package, other, relation
-      delay = relation ? relation.delay : ""
+      lag = relation ? relation.lag : ""
       description = relation ? relation.description : ""
-      relation_columns = ["", type, delay, description] + column_values(other)
+      relation_columns = ["", type, lag, description] + column_values(other)
 
       [""] + wp_columns + relation_columns
     end
@@ -136,16 +171,16 @@ module XlsExport::WorkPackage::Exporter
         normalized = relation.relation_type_for(work_package)
         I18n.t("js.relation_labels.#{normalized}", default: normalized)
       elsif work_package.parent_id == other.id
-        I18n.t 'xls_export.child_of'
+        I18n.t "xls_export.child_of"
       elsif work_package.children.where(id: other.id).exists?
-        I18n.t 'xls_export.parent_of'
+        I18n.t "xls_export.parent_of"
       end
     end
 
     def with_relations_headers
       [
         Relation.human_attribute_name(:relation_type),
-        Relation.human_attribute_name(:delay),
+        Relation.human_attribute_name(:lag),
         Relation.human_attribute_name(:description)
       ]
     end

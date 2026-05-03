@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Injector } from '@angular/core';
+import { ApplicationRef, Injector } from '@angular/core';
 import { States } from 'core-app/core/states/states.service';
 import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 import {
@@ -42,6 +42,8 @@ import { HalResourceNotificationService } from 'core-app/features/hal/services/h
 import { ErrorResource } from 'core-app/features/hal/resources/error-resource';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { HalError } from 'core-app/features/hal/services/hal-error';
+import { FormResource } from 'core-app/features/hal/resources/form-resource';
+import { HalResourceEditFieldHandler } from 'core-app/shared/components/fields/edit/field-handler/hal-resource-edit-field-handler';
 
 export const activeFieldContainerClassName = 'inline-edit--active-field';
 export const activeFieldClassName = 'inline-edit--field';
@@ -57,10 +59,10 @@ export abstract class EditForm<T extends HalResource = HalResource> {
   @InjectField() halEvents:HalEventsService;
 
   // All current active (open) edit fields
-  public activeFields:{ [fieldName:string]:EditFieldHandler } = {};
+  public activeFields:Record<string, EditFieldHandler> = {};
 
   // Errors of the last operation (required when adding opening fields afterwards)
-  public errorsPerAttribute:{ [fieldName:string]:string[] } = {};
+  public errorsPerAttribute:Record<string, string[]> = {};
 
   // Reference to the changeset used in this form
   public resource:T;
@@ -145,14 +147,18 @@ export abstract class EditForm<T extends HalResource = HalResource> {
   /**
    * Activate all fields that are returned in validation errors
    */
-  public activateMissingFields() {
-    this.change.getForm().then((form:any) => {
-      _.each(form.validationErrors, (val:any, key:string) => {
+  public async activateMissingFields():Promise<unknown[]> {
+    return this.change.getForm().then((form:FormResource) => {
+      const activateFields:Promise<unknown>[] = [];
+
+      _.each(form.validationErrors, (_:ErrorResource, key:string) => {
         if (key === 'id') {
           return;
         }
-        this.activateWhenNeeded(key);
+        activateFields.push(this.activateWhenNeeded(key));
       });
+
+      return Promise.all(activateFields);
     });
   }
 
@@ -168,6 +174,10 @@ export abstract class EditForm<T extends HalResource = HalResource> {
 
     // Mark changeset as in flight
     this.change.inFlight = true;
+    this.notifyActiveFieldStateChanged();
+
+    // Request custom field validation
+    this.change.validateCustomFields = true;
 
     // Reset old error notifications
     this.errorsPerAttribute = {};
@@ -191,17 +201,24 @@ export abstract class EditForm<T extends HalResource = HalResource> {
           this.onSaved(result);
           this.change.inFlight = false;
         })
-        .catch((error:ErrorResource|unknown) => {
+        .catch((error:unknown) => {
+          // Reset flags before handling errors so active portals can drop
+          // their disabled state in zoneless mode.
+          this.change.inFlight = false;
+          this.change.validateCustomFields = false;
+          this.notifyActiveFieldStateChanged();
+
           this.halNotification.handleRawError(error, this.resource);
 
           if (error instanceof HalError && error.resource) {
             this.handleSubmissionErrors(error.resource);
-            reject();
+            this.injector.get(ApplicationRef).tick();
+            reject(error instanceof Error ? error : new Error('Edit form submission failed.'));
+            return;
           }
 
-          this.change.inFlight = false;
-
-          return Promise.reject(error);
+          this.injector.get(ApplicationRef).tick();
+          reject(error instanceof Error ? error : new Error('Edit form submission failed.'));
         });
     });
   }
@@ -246,18 +263,25 @@ export abstract class EditForm<T extends HalResource = HalResource> {
   }
 
   private setErrorsForFields(erroneousFields:string[]) {
-    // Accumulate errors for the given response
-    const promises:Promise<any>[] = erroneousFields.map((fieldName:string) => this.requireVisible(fieldName).then(() => {
+    // Immediately set errors on already-active fields (synchronous, no polling needed).
+    // This handles the common case where the field is already open when the 422 arrives.
+    erroneousFields.forEach((fieldName:string) => {
       if (this.activeFields[fieldName]) {
         this.activeFields[fieldName].setErrors(this.errorsPerAttribute[fieldName] || []);
       }
+    });
 
-      return this.activateWhenNeeded(fieldName) as any;
-    }));
+    // Activate any fields that are not yet visible / open (e.g. required custom fields).
+    const promises:Promise<unknown>[] = erroneousFields.map((fieldName:string) => this.activateWhenNeeded(fieldName));
 
     Promise.all(promises)
       .then(() => {
-        setTimeout(() => this.focusOnFirstError());
+        // Run CD again after any newly required fields are activated so their
+        // portal bindings reflect the reset inFlight state in zoneless mode.
+        queueMicrotask(() => {
+          this.injector.get(ApplicationRef).tick();
+          this.focusOnFirstError();
+        });
       })
       .catch(() => {
         console.error('Failed to activate all erroneous fields.');
@@ -293,7 +317,16 @@ export abstract class EditForm<T extends HalResource = HalResource> {
       .getForm()
       .then(() => {
         // Look up whether we're actually editable
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const fieldSchema = this.change.schema.ofProperty(fieldName);
+
+        // If the type changed while we tried to activate the form
+        // silently close the field as it will no longer be writable
+        if (!fieldSchema) {
+          this.closeEditFields([fieldName]);
+          return;
+        }
+
         if (!fieldSchema.writable && !noWarnings) {
           this.halNotification.showEditingBlockedError(fieldSchema.name || fieldName);
           this.closeEditFields([fieldName]);
@@ -321,5 +354,13 @@ export abstract class EditForm<T extends HalResource = HalResource> {
         console.error(`Failed to render edit field:${error}`);
         this.halNotification.handleRawError(error);
       });
+  }
+
+  private notifyActiveFieldStateChanged():void {
+    Object.values(this.activeFields).forEach((handler) => {
+      if (handler instanceof HalResourceEditFieldHandler) {
+        handler.notifyStateChanged();
+      }
+    });
   }
 }

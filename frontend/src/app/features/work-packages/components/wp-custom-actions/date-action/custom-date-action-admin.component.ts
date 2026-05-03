@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,26 +27,30 @@
 //++
 
 import {
-  ApplicationRef, ChangeDetectorRef, Component, ElementRef, OnInit,
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
 } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 
-export const customDateActionAdminSelector = 'custom-date-action-admin';
-
 @Component({
-  selector: customDateActionAdminSelector,
+  selector: 'opce-custom-date-action-admin',
   templateUrl: './custom-date-action-admin.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CustomDateActionAdminComponent implements OnInit {
   public valueVisible = false;
 
-  public fieldName:string;
+  public fieldName = '';
 
-  public fieldValue:string;
+  public fieldValue = '';
 
-  public visibleValue:string;
-
-  public selectedOperator:any;
+  public visibleValue = '';
 
   private onKey = 'on';
 
@@ -54,44 +58,47 @@ export class CustomDateActionAdminComponent implements OnInit {
 
   private currentFieldValue = '%CURRENT_DATE%';
 
+  private elementRef = inject(ElementRef);
+  private cdRef = inject(ChangeDetectorRef);
+  public appRef = inject(ApplicationRef);
+  private I18n = inject(I18nService);
+
+  public selectedOperatorKey = this.onKey;
+
   public operators = [
     { key: this.onKey, label: this.I18n.t('js.custom_actions.date.specific') },
     { key: this.currentKey, label: this.I18n.t('js.custom_actions.date.current_date') },
   ];
 
-  constructor(private elementRef:ElementRef,
-    private cdRef:ChangeDetectorRef,
-    public appRef:ApplicationRef,
-    private I18n:I18nService) {
-  }
-
   // cannot use $onInit as it would be called before the operators gets filled
   public ngOnInit() {
     const element = this.elementRef.nativeElement as HTMLElement;
-    this.fieldName = element.dataset.fieldName!;
-    this.fieldValue = element.dataset.fieldValue!;
+    this.fieldName = element.dataset.fieldName! || '';
+    this.fieldValue = element.dataset.fieldValue! || '';
 
     if (this.fieldValue === this.currentFieldValue) {
-      this.selectedOperator = this.operators[1];
+      this.selectedOperatorKey = this.currentKey;
     } else {
-      this.selectedOperator = this.operators[0];
+      this.selectedOperatorKey = this.onKey;
       this.visibleValue = this.fieldValue;
     }
 
     this.toggleValueVisibility();
+    this.cdRef.markForCheck();
   }
 
   public toggleValueVisibility() {
-    this.valueVisible = this.selectedOperator.key === this.onKey;
+    this.valueVisible = this.selectedOperatorKey === this.onKey;
     if (this.fieldValue === this.currentFieldValue) {
       this.fieldValue = '';
     }
 
     this.updateDbValue();
+    this.cdRef.detectChanges();
   }
 
   private updateDbValue() {
-    if (this.selectedOperator.key === this.currentKey) {
+    if (this.selectedOperatorKey === this.currentKey) {
       this.fieldValue = this.currentFieldValue;
     }
   }

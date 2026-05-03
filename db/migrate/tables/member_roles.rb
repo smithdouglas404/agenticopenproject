@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,18 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'base'
+require_relative "base"
 
 class Tables::MemberRoles < Tables::Base
   def self.table(migration)
-    create_table migration do |t|
-      t.integer :member_id, null: false
-      t.integer :role_id, null: false
-      t.integer :inherited_from
+    create_table migration do |t| # rubocop:disable Rails/CreateTableWithTimestamps
+      t.bigint :member_id, null: false
+      t.bigint :role_id, null: false
+      t.bigint :inherited_from
 
-      t.index :member_id, name: 'index_member_roles_on_member_id'
-      t.index :role_id, name: 'index_member_roles_on_role_id'
+      t.index :member_id, name: "index_member_roles_on_member_id"
+      t.index :role_id, name: "index_member_roles_on_role_id"
       t.index :inherited_from
+      t.index %i[member_id role_id inherited_from],
+              name: "unique_inherited_role",
+              unique: true
     end
   end
 end

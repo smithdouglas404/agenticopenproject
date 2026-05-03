@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2020 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
 #
 # OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
-# Copyright (C) 2006-2017 Jean-Philippe Lang
+# Copyright (C) 2006-2013 Jean-Philippe Lang
 # Copyright (C) 2010-2013 the ChiliProject Team
 #
 # This program is free software; you can redistribute it and/or
@@ -27,9 +29,9 @@
 #++
 
 class PlaceholderUsersController < ApplicationController
-  include EnterpriseTrialHelper
-  layout 'admin'
+  layout "admin"
   before_action :authorize_global, except: %i[show]
+  no_authorization_required! :show
 
   before_action :find_placeholder_user, only: %i[show
                                                  edit
@@ -40,7 +42,7 @@ class PlaceholderUsersController < ApplicationController
   before_action :authorize_deletion, only: %i[deletion_info destroy]
 
   def index
-    @placeholder_users = PlaceholderUsers::PlaceholderUserFilterCell.query params
+    @placeholder_users = PlaceholderUsers::PlaceholderUserFilterComponent.query params
 
     respond_to do |format|
       format.html do
@@ -50,12 +52,17 @@ class PlaceholderUsersController < ApplicationController
   end
 
   def show
-    # show projects based on current user visibility
-    @memberships = @placeholder_user.memberships
-      .visible(current_user)
+    # show projects based on current user visibility.
+    # But don't simply concatenate the .visible scope to the memberships
+    # as .memberships has an include and an order which for whatever reason
+    # also gets applied to the Project.allowed_to parts concatenated by a UNION
+    # and an order inside a UNION is not allowed in postgres.
+    @memberships = @placeholder_user
+                     .memberships
+                     .where(id: Member.visible(current_user))
 
     respond_to do |format|
-      format.html { render layout: 'no_menu' }
+      format.html { render layout: "no_menu" }
     end
   end
 
@@ -68,7 +75,12 @@ class PlaceholderUsersController < ApplicationController
       .result
   end
 
-  def create
+  def edit
+    @membership ||= Member.new
+    @individual_principal = @placeholder_user
+  end
+
+  def create # rubocop:disable Metrics/AbcSize
     service = PlaceholderUsers::CreateService.new(user: User.current)
     service_result = service.call(permitted_params.placeholder_user)
     @placeholder_user = service_result.result
@@ -81,21 +93,15 @@ class PlaceholderUsersController < ApplicationController
         end
       end
     else
-      @errors = service_result.errors
       respond_to do |format|
         format.html do
-          render action: :new
+          render action: :new, status: :unprocessable_entity
         end
       end
     end
   end
 
-  def edit
-    @membership ||= Member.new
-    @individual_principal = @placeholder_user
-  end
-
-  def update
+  def update # rubocop:disable Metrics/AbcSize
     service_result = PlaceholderUsers::UpdateService
       .new(user: User.current,
            model: @placeholder_user)
@@ -105,7 +111,7 @@ class PlaceholderUsersController < ApplicationController
       respond_to do |format|
         format.html do
           flash[:notice] = I18n.t(:notice_successful_update)
-          redirect_back(fallback_location: edit_placeholder_user_path(@placeholder_user))
+          redirect_back_or_to(edit_placeholder_user_path(@placeholder_user))
         end
       end
     else
@@ -113,7 +119,7 @@ class PlaceholderUsersController < ApplicationController
 
       respond_to do |format|
         format.html do
-          render action: :edit
+          render action: :edit, status: :unprocessable_entity
         end
       end
     end
@@ -140,29 +146,14 @@ class PlaceholderUsersController < ApplicationController
   private
 
   def find_placeholder_user
-    @placeholder_user = PlaceholderUser.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
+    @placeholder_user = PlaceholderUser.visible.find(params[:id])
   end
 
   protected
 
   def authorize_deletion
     unless helpers.can_delete_placeholder_user?(@placeholder_user, current_user)
-      render_403 message: I18n.t('placeholder_users.right_to_manage_members_missing')
+      render_403 message: I18n.t("placeholder_users.right_to_manage_members_missing")
     end
-  end
-
-  def default_breadcrumb
-    if action_name == 'index'
-      t('label_placeholder_user_plural')
-    else
-      ActionController::Base.helpers.link_to(t('label_placeholder_user_plural'),
-                                             placeholder_users_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    action_name != 'show'
   end
 end

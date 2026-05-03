@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,7 @@ import {
   Injectable,
   Injector,
 } from '@angular/core';
-import * as moment from 'moment';
+import moment, { Moment } from 'moment';
 import {
   take,
   tap,
@@ -57,7 +57,7 @@ export class WeekdayService {
    * @param date The iso day number (1-7) or a date instance
    * @return {boolean} whether the given iso day is working or not
    */
-  public isNonWorkingDay(date:Date|number):boolean {
+  public isNonWorkingDay(date:Moment|Date|number):boolean {
     const isoDayOfWeek = (typeof date === 'number') ? date : moment(date).isoWeekday();
     return !!(this.weekdays || []).find((wd) => wd.day === isoDayOfWeek && !wd.working);
   }
@@ -73,7 +73,7 @@ export class WeekdayService {
 
     return this
       .weekdaysService
-      .require()
+      .requireCollection()
       .pipe(
         take(1),
         tap((weekdays) => {

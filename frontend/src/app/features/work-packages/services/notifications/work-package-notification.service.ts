@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,48 +31,40 @@ import { IToast } from 'core-app/shared/components/toaster/toast.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
+import { HalResource } from 'core-app/features/hal/resources/hal-resource';
+import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 
 @Injectable()
 export class WorkPackageNotificationService extends HalResourceNotificationService {
-  constructor(readonly injector:Injector,
-    readonly apiV3Service:ApiV3Service) {
+  constructor(
+    readonly injector:Injector,
+    readonly apiV3Service:ApiV3Service,
+    readonly turboRequests:TurboRequestsService,
+  ) {
     super(injector);
   }
 
-  public showSave(resource:WorkPackageResource, isCreate = false) {
-    const message:any = {
+  public showSave(resource:HalResource, isCreate = false) {
+    const message:IToast = {
       message: this.I18n.t(`js.notice_successful_${isCreate ? 'create' : 'update'}`),
+      type: 'success',
     };
-
-    this.addWorkPackageFullscreenLink(message, resource as any);
 
     this.ToastService.addSuccess(message);
   }
 
   protected showCustomError(errorResource:any, resource:WorkPackageResource):boolean {
     if (errorResource.errorIdentifier === 'urn:openproject-org:api:v3:errors:UpdateConflict') {
-      this.ToastService.addError({
-        message: errorResource.message,
-        type: 'error',
-        link: {
-          text: this.I18n.t('js.hal.error.update_conflict_refresh'),
-          target: () => this.apiV3Service.work_packages.id(resource).refresh(),
-        },
+      // currently we do not have a programmatic way to show the primer flash messages
+      // so we just do a request to the server to show it
+      // should be refactored once we have a programmatic way to show the primer flash messages!
+      void this.turboRequests.request('/work_packages/show_conflict_flash_message?scheme=danger', {
+        method: 'GET',
       });
 
       return true;
     }
 
     return super.showCustomError(errorResource, resource);
-  }
-
-  private addWorkPackageFullscreenLink(message:IToast, resource:WorkPackageResource) {
-    // Don't show the 'Show in full screen' link  if we're there already
-    if (!this.$state.includes('work-packages.show')) {
-      message.link = {
-        target: () => this.$state.go('work-packages.show.tabs', { tabIdentifier: 'activity', workPackageId: resource.id }),
-        text: this.I18n.t('js.work_packages.message_successful_show_in_fullscreen'),
-      };
-    }
   }
 }

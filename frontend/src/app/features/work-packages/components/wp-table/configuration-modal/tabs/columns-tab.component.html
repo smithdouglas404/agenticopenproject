@@ -1,21 +1,13 @@
 <div class="columns-modal--content">
-  <label
-    [textContent]="text.selectedColumns"
-    class="hidden-for-sighted">
-  </label>
-
-  <draggable-autocompleter [options]="availableColumnsOptions"
-                           [selected]="selectedColumns"
-                           (onChange)="updateSelected($event)">
-  </draggable-autocompleter>
-
-  <p class="form--inline-instructions" [textContent]="text.columnsHelp"></p>
+  <op-draggable-autocompleter [options]="availableColumnsOptions"
+                              [selected]="selectedColumns"
+                              [inputLabel]="text.inputLabel"
+                              [inputPlaceholder]="text.inputPlaceholder"
+                              [dragAreaLabel]="text.inputDragLabel"
+                              [id]="'columns-select'"
+                              (onChange)="updateSelected($event)" />
 </div>
 
-<op-enterprise-banner class="ee-relation-columns-upsale"
-                   *ngIf="eeShowBanners"
-                   [linkMessage]="text.upsaleCheckOutLink"
-                   [textMessage]="text.upsaleRelationColumns"
-                   [moreInfoLink]="text.moreInfoLink"
-                   opReferrer="wp-list-columns#relations">
-</op-enterprise-banner>
+<op-enterprise-banner-frame feature="work_package_query_relation_columns"
+  [dismissable]="true"
+ />

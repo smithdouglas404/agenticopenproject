@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -48,24 +50,28 @@ module Queries
       end
 
       def self.key
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
-      def scope
-        scope = order
-        scope = scope.joins(joins) if joins
-        scope = scope.left_outer_joins(left_outer_joins) if left_outer_joins
-        scope
+      def apply_to(query_scope)
+        query_scope = order(query_scope)
+        query_scope = query_scope.joins(joins) if joins
+        query_scope = query_scope.left_outer_joins(left_outer_joins) if left_outer_joins
+        query_scope
       end
 
       def name
         attribute
       end
 
+      def available?
+        true
+      end
+
       private
 
-      def order
-        model.order(name => direction)
+      def order(scope)
+        scope.order(name => direction)
       end
 
       def joins

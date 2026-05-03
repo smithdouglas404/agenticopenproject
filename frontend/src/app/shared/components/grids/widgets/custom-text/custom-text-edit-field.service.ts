@@ -1,16 +1,15 @@
 import { EditFieldHandler } from 'core-app/shared/components/fields/edit/editing-portal/edit-field-handler';
 import { ElementRef, Injectable, Injector } from '@angular/core';
 import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { GridWidgetResource } from 'core-app/features/hal/resources/grid-widget-resource';
 import { SchemaResource } from 'core-app/features/hal/resources/schema-resource';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
-import { UploadFile } from 'core-app/core/file-upload/op-file-upload.service';
 import { ICKEditorContext } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
-import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { GridResource } from 'core-app/features/hal/resources/grid-resource';
+import { HalSource } from 'core-app/features/hal/interfaces';
 
 @Injectable()
 export class CustomTextEditFieldService extends EditFieldHandler {
@@ -18,19 +17,19 @@ export class CustomTextEditFieldService extends EditFieldHandler {
 
   public valueChanged$:BehaviorSubject<string>;
 
+  public readonly stateChanged$ = new Subject<void>();
+
   public changeset:ResourceChangeset;
 
   public active:boolean;
 
-  constructor(protected elementRef:ElementRef,
+  constructor(
+    protected elementRef:ElementRef,
     protected injector:Injector,
     protected halResource:HalResourceService,
-    protected schemaCache:SchemaCacheService) {
+    protected schemaCache:SchemaCacheService,
+  ) {
     super();
-  }
-
-  onFocusOut():void {
-    // interface
   }
 
   public initialize(value:GridWidgetResource) {
@@ -45,7 +44,7 @@ export class CustomTextEditFieldService extends EditFieldHandler {
   /**
    * Handle saving the text
    */
-  public handleUserSubmit():Promise<any> {
+  public handleUserSubmit():Promise<void> {
     return this.update();
   }
 
@@ -96,10 +95,12 @@ export class CustomTextEditFieldService extends EditFieldHandler {
   deactivate():void {
     this.changeset.clear();
     this.active = false;
+    this.stateChanged$.next();
   }
 
   activate() {
     this.active = true;
+    this.stateChanged$.next();
   }
 
   get inEditMode():boolean {
@@ -141,6 +142,7 @@ export class CustomTextEditFieldService extends EditFieldHandler {
     const schemaHref = 'customtext-schema';
     const grid:GridResource = value.grid;
     const resourceSource:HalSource = {
+      id: `${grid.id}_custom_text`,
       text: value.options.text,
       getEditorContext: () => ({
         type: 'full',
@@ -148,6 +150,7 @@ export class CustomTextEditFieldService extends EditFieldHandler {
       } as ICKEditorContext),
       canAddAttachments: value.grid.canAddAttachments as boolean,
       _links: {
+        addAttachment: grid.addAttachment as { href?:string },
         attachments: grid.attachments as { href?:string },
         schema: {
           href: schemaHref,
@@ -156,7 +159,7 @@ export class CustomTextEditFieldService extends EditFieldHandler {
     };
 
     if (grid.prepareAttachment as { href?:string }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       resourceSource._links.prepareAttachment = grid.prepareAttachment;
     }
 

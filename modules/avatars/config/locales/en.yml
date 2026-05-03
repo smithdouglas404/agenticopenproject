@@ -1,5 +1,11 @@
 # English strings go here
 en:
+  plugin_openproject_avatars:
+    name: "Avatars"
+    description: >-
+      This plugin allows OpenProject users to upload a picture to be used as an avatar or use
+      registered images from Gravatar.
+
   label_avatar: "Avatar"
   label_avatar_plural: "Avatars"
   label_current_avatar: "Current Avatar"
@@ -7,7 +13,6 @@ en:
   message_avatar_uploaded: "Avatar changed successfully."
   error_image_upload: "Error saving the image."
   error_image_size: "The image is too large."
-  button_change_avatar:  "Change avatar"
   are_you_sure_delete_avatar: "Are you sure you want to delete your avatar?"
   avatar_deleted:  "Avatar deleted successfully."
   unable_to_delete_avatar:  "Avatar could not be deleted."
@@ -36,6 +41,3 @@ en:
       enable_gravatars: 'Enable user gravatars'
       gravatar_default: "Default Gravatar image"
       enable_local_avatars: 'Enable user custom avatars'
-
-
-

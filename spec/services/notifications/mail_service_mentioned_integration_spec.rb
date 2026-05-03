@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './mentioned_journals_shared'
+require "spec_helper"
+require_relative "mentioned_journals_shared"
 
-describe Notifications::MailService, 'Mentioned integration', type: :model do
-  include_context 'with a mentioned work package being updated again'
+RSpec.describe Notifications::MailService, "Mentioned integration", type: :model do
+  include_context "with a mentioned work package being updated again"
 
   let(:assignee) do
-    create :user,
+    create(:user,
            preferences: {
              immediate_reminders: {
                mentioned: true
@@ -45,8 +47,7 @@ describe Notifications::MailService, 'Mentioned integration', type: :model do
                    assignee: true,
                    responsible: true)
            ],
-           member_in_project: project,
-           member_through_role: role
+           member_with_roles: { project => role })
   end
 
   let(:assigned_notification) do
@@ -57,7 +58,7 @@ describe Notifications::MailService, 'Mentioned integration', type: :model do
     expect(mentioned_notification).to be_present
     mentioned_notification.reload
     expect(mentioned_notification.recipient).to eq recipient
-    expect(mentioned_notification.reason).to eq 'mentioned'
+    expect(mentioned_notification.reason).to eq "mentioned"
     expect(mentioned_notification.read_ian).to be false
     expect(mentioned_notification.mail_alert_sent).to be true
   end
@@ -76,10 +77,10 @@ describe Notifications::MailService, 'Mentioned integration', type: :model do
     expect(assigned_notification).to be_present
     expect(assigned_notification.recipient).to eq assignee
     expect(assigned_notification.read_ian).to be false
-    expect(assigned_notification.mail_alert_sent).to be false
+    expect(assigned_notification.mail_alert_sent).to be_nil
   end
 
-  it 'will trigger only one mention notification mail when editing attributes afterwards' do
+  it "triggers only one mention notification mail when editing attributes afterwards" do
     allow(WorkPackageMailer)
       .to receive(:mentioned)
             .and_call_original

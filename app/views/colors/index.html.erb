@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,29 +27,40 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title t(:label_administration), t("timelines.admin_menu.colors") %>
+<% html_title t(:label_administration), t(:label_color_plural) %>
 
-<%= toolbar title: t('timelines.admin_menu.colors') do %>
-  <li class="toolbar-item">
-    <%= link_to new_color_path,
-          { class: 'button -alt-highlight',
-            aria: {label: t('timelines.new_color')},
-            title: t('timelines.new_color')} do %>
-      <%= op_icon('button--icon icon-add') %>
-      <span class="button--text"><%= t('activerecord.attributes.type.color') %></span>
-    <% end %>
-  </li>
-<% end %>
+<%=
+  render(Primer::OpenProject::PageHeader.new) do |header|
+    header.with_title { t(:label_color_plural) }
+    header.with_breadcrumbs(
+      [{ href: admin_index_path, text: t(:label_administration) },
+       t(:label_color_plural)]
+    )
+  end
+%>
+<%=
+  render(Primer::OpenProject::SubHeader.new) do |subheader|
+    subheader.with_action_button(
+      scheme: :primary,
+      leading_icon: :plus,
+      label: I18n.t("colors.index.label_new_color"),
+      tag: :a,
+      href: new_color_path
+    ) do
+      t("activerecord.attributes.type.color")
+    end
+  end
+%>
 
 <% if @colors.any? %>
   <div class="color--preview-patch-field">
     <% @colors.each do |color| %>
       <%= content_tag :div,
-          class: 'color--preview-patch',
-          style: "background-color: #{color.hexcode}" do %>
+                      class: "color--preview-patch",
+                      style: "background-color: #{color.hexcode}" do %>
         <%= link_to color.name,
                     edit_color_path(color),
-                    class: color.bright? ? '-bright' : '-dark' %>
+                    class: color.bright? ? "-bright" : "-dark" %>
       <% end %>
     <% end %>
   </div>

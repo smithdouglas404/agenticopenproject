@@ -1,8 +1,18 @@
 require:
+  - rubocop-openproject
+  - ./config/initializers/inflections.rb
+
+plugins:
+  - rubocop-capybara
+  - rubocop-factory_bot
+  - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
-  - ./lib_static/rubocop/cop/open_project/no_do_end_block_with_rspec_capybara_matcher_in_expect.rb
-  - ./lib_static/rubocop/cop/open_project/use_service_result_factory_methods.rb
+  - rubocop-rspec_rails
+
+# A rubocop-local.yml file can be added to customized the styles
+inherit_from:
+  - .rubocop-local*.yml
 
 inherit_mode:
   merge:
@@ -10,22 +20,33 @@ inherit_mode:
     - Exclude
 
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.4
   # Enable any new cops in new versions by default
   NewCops: enable
   Exclude:
-    - '**/node_modules/**/*'
+    - "**/node_modules/**/*"
+
+# Disable it as it is deprecated
+# From https://docs.rubocop.org/rubocop-capybara/cops_capybara.html#capybaraclicklinkorbuttonstyle
+# "This cop is deprecated. We plan to remove this in the next major version update to 3.0."
+Capybara/ClickLinkOrButtonStyle:
+  Enabled: false
+
+FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false
+
+FactoryBot/SyntaxMethods:
+  Enabled: true
 
 Gemspec/RequiredRubyVersion:
   Exclude:
     - modules/**/*.gemspec
 
-
 Layout/ConditionPosition:
   Enabled: false
 
 Layout/DotPosition:
-    EnforcedStyle: leading
+  EnforcedStyle: leading
 
 Layout/LineLength:
   Max: 130
@@ -37,6 +58,10 @@ Layout/MultilineMethodCallIndentation:
 # and will auto-format against it with our editorconfig
 Layout/MultilineOperationIndentation:
   Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods:
+    - change
 
 Lint/AmbiguousOperator:
   Enabled: false
@@ -77,19 +102,22 @@ Lint/UnderscorePrefixedVariableName:
 Lint/Void:
   Enabled: false
 
-Lint/AmbiguousBlockAssociation:
-  AllowedMethods: [change]
-
-Metrics/ClassLength:
-  Enabled: false
-
-Metrics/CyclomaticComplexity:
-  Enabled: false
+Metrics/AbcSize:
+  Enabled: true
+  Exclude:
+    - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
 Metrics/BlockLength:
   Enabled: false
 
 Metrics/BlockNesting:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
   Enabled: false
 
 Metrics/MethodLength:
@@ -100,12 +128,6 @@ Metrics/ModuleLength:
 
 Metrics/ParameterLists:
   Enabled: false
-
-Metrics/AbcSize:
-  Enabled: true
-  Exclude:
-    - 'spec/**/*.rb'
-    - 'modules/*/spec/**/*.rb'
 
 Naming/AccessorMethodName:
   Enabled: false
@@ -120,18 +142,24 @@ Naming/ClassAndModuleCamelCase:
 Naming/FileName:
   Enabled: false
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   ForbiddenPrefixes:
     - is_
 
 Naming/VariableNumber:
   AllowedPatterns:
-    - '\w_20\d\d' # allow dates like christmas_2022 or date_2034_04_12
+    - "\\w_20\\d\\d" # allow dates like christmas_2022 or date_2034_04_12
+    - "\\w\\d++(_\\d++)+" # allow hierarchical data like child1_2_5 (second + in regex is possessive qualifier)
+    - "custom_field_\\d+" # allow custom field method names to be called with send :custom_field_1001
 
-# There are valid cases in which to use methods like:
-# * update_all
-# * touch_all
-Rails/SkipsModelValidations:
+OpenProject/AddPreviewForViewComponent:
+  Include:
+    - app/components/op_turbo/**.rb
+    - app/components/op_primer/**.rb
+    - app/components/open_project/**.rb
+    - app/components/concerns/**.rb
+
+Performance/Casecmp:
   Enabled: false
 
 # Don't force us to use tag instead of content_tag
@@ -139,21 +167,120 @@ Rails/SkipsModelValidations:
 Rails/ContentTag:
   Enabled: false
 
+# dynamic finders cop clashes with capybara ID cop
+Rails/DynamicFindBy:
+  Enabled: true
+  AllowedMethods:
+    - find_by_display_id
+    - find_by_display_id!
+    - find_by_semantic_identifier
+  Exclude:
+    - "spec/features/**/*.rb"
+    - "spec/support/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
+  Whitelist:
+    - find_by_login
+    - find_by_mail
+    - find_by_plaintext_value
+    - find_by_rss_key
+    - find_by_unique
+    - find_by_unique!
+    - find_by_api_key
+
+# Allow reorder to prevent find each cop triggering
+Rails/FindEach:
+  AllowedMethods:
+    - order
+    - reorder
+    - limit
+    - select
+    - lock
+  Exclude:
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
+
+# The http verbs in Rack::Test do not accept named parameters (params: params)
+Rails/HttpPositionalArguments:
+  Enabled: false
+
 # Disable I18n.locale = in specs, where it is reset
 # by us explicitly
 Rails/I18nLocaleAssignment:
   Enabled: true
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
-# The http verbs in Rack::Test do not accept named parameters (params: params)
-Rails/HttpPositionalArguments:
+Rails/I18nLocaleTexts:
+  Enabled: true
   Exclude:
-    - 'spec/requests/api/v3/**/*.rb'
+    - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
+
+# We have config.active_record.belongs_to_required_by_default = false ,
+# which means, we do have to declare presence validators on belongs_to relations.
+Rails/RedundantPresenceValidationOnBelongsTo:
+  Enabled: false
 
 # require_dependency is an obsolete method for Rails applications running in Zeitwerk mode.
 Rails/RequireDependency:
   Enabled: true
+
+# Require save! to prevent saving without validation when saving outside of a condition.
+Rails/SaveBang:
+  Enabled: true
+  Exclude:
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
+
+# There are valid cases in which to use methods like:
+# * update_all
+# * touch_all
+Rails/SkipsModelValidations:
+  Enabled: false
+
+# Allow number HTTP status codes in specs
+RSpecRails/HttpStatus:
+  Enabled: false
+
+# The block form of `travel_to` is often the tighter and safer option in our Rails specs.
+RSpecRails/TravelAround:
+  Enabled: false
+
+# expect not_to change is not working as expected
+# if you chain it with multiple expected changes
+RSpec/ChangeByZero:
+  Enabled: false
+
+RSpec/ContextWording:
+  Prefixes:
+    - and
+    - as
+    - even
+    - for
+    - given
+    - having
+    - if
+    - in
+    - "on"
+    - to
+    - unless
+    - via
+    - when
+    - with
+    - within
+    - without
+
+RSpec/DescribeClass:
+  Enabled: true
+  Exclude:
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
+
+# Don't force the second argument of describe
+# to be .class_method or #instance_method
+RSpec/DescribeMethod:
+  Enabled: false
 
 # For feature specs, we tend to have longer specs that cover a larger part of the functionality.
 # This is done for multiple reasons:
@@ -163,35 +290,41 @@ RSpec/ExampleLength:
   Max: 25
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
+
+# Prevent  "fit" or similar to be committed
+RSpec/Focus:
+  Enabled: true
+
+# Nothing wrong with `include_examples` when used properly.
+RSpec/IncludeExamples:
+  Enabled: false
+
+# Do not bother if `let` statements use an index in their name
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/LeadingSubject:
+  Enabled: false
+
+# We use let!() to ensure dependencies are created
+# instead of let() and referencing them explicitly
+RSpec/LetSetup:
+  Enabled: false
 
 # We have specs that have no expect(..) syntax,
 # but only helper classes that expect themselves
 RSpec/NoExpectationExample:
   Enabled: false
 
-RSpec/DescribeClass:
-  Enabled: true
-  Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
-
-# dynamic finders cop clashes with capybara ID cop
-Rails/DynamicFindBy:
-  Enabled: true
-  Exclude:
-    - 'spec/features/**/*.rb'
-    - 'spec/support/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
-
 # See RSpec/ExampleLength for why feature specs are excluded
 RSpec/MultipleExpectations:
   Max: 15
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
@@ -200,40 +333,18 @@ RSpec/NestedGroups:
   Enabled: false
 
 # Don't force the second argument of describe
-# to be .class_method or #instance_method
-RSpec/DescribeMethod:
-  Enabled: false
-
-# Don't force the second argument of describe
 # to match the exact file name
-RSpec/FilePath:
-  SpecSuffixOnly: true
-
-# We use let!() to ensure dependencies are created
-# instead of let() and referencing them explicitly
-RSpec/LetSetup:
-  Enabled: false
-
-RSpec/LeadingSubject:
-  Enabled: false
+RSpec/SpecFilePathFormat:
+  CustomTransform:
+    OpenIDConnect: openid_connect
+    OAuthClients: oauth_clients
+    XWiki: xwiki
+    XWikiProviders: xwiki_providers
+  EnforcedInflector: active_support
+  IgnoreMethods: true
 
 RSpec/NamedSubject:
   Enabled: false
-
-RSpec/ContextWording:
-  Prefixes:
-    - as
-    - for
-    - if
-    - 'on'
-    - to
-    - unless
-    - when
-    - with
-    - without
-
-RSpec/FactoryBot/SyntaxMethods:
-  Enabled: true
 
 Style/Alias:
   Enabled: false
@@ -275,9 +386,6 @@ Style/ColonMethodCall:
 Style/CommentAnnotation:
   Enabled: false
 
-Style/PreferredHashMethods:
-  Enabled: false
-
 Style/Documentation:
   Enabled: false
 
@@ -290,6 +398,9 @@ Style/EachWithObject:
 Style/EmptyLiteral:
   Enabled: false
 
+Style/EndlessMethod:
+  Enabled: true
+
 Style/EvenOdd:
   Enabled: false
 
@@ -297,7 +408,21 @@ Style/FormatString:
   Enabled: false
 
 Style/FormatStringToken:
-  AllowedMethods: [redirect]
+  AllowedMethods:
+    - redirect
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always_true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
 
 Style/GlobalVars:
   Enabled: false
@@ -341,6 +466,13 @@ Style/NilComparison:
 Style/Not:
   Enabled: false
 
+Style/NumericLiterals:
+  Enabled: false
+
+# Avoid enforcing "positive?"
+Style/NumericPredicate:
+  Enabled: false
+
 Style/OneLineConditional:
   Enabled: false
 
@@ -350,11 +482,19 @@ Style/PercentLiteralDelimiters:
 Style/PerlBackrefs:
   Enabled: false
 
+Style/PreferredHashMethods:
+  Enabled: false
+
 Style/Proc:
   Enabled: false
 
 Style/RaiseArgs:
   Enabled: false
+
+Style/RescueModifier:
+  Exclude:
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
 
 Style/RegexpLiteral:
   Enabled: false
@@ -382,10 +522,9 @@ Style/SpecialGlobalVars:
 #   For the record: using single quotes does NOT have any performance advantages.
 #   Even if it did, this would be a silly argument.
 #
-# Ideally we would just use double quotes everywhere but since that would result
-# in innumerable rubocop offenses we will just disable this. Quote away.
+# Quote away.
 Style/StringLiterals:
-  Enabled: false
+  EnforcedStyle: double_quotes
 
 Style/TrivialAccessors:
   Enabled: false
@@ -401,22 +540,3 @@ Style/WhileUntilModifier:
 
 Style/WordArray:
   Enabled: false
-
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/NumericLiterals:
-  Enabled: false
-
-# Avoid enforcing "positive?"
-Style/NumericPredicate:
-  Enabled: false
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true

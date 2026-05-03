@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +39,7 @@ module Projects
 
     private
 
-    def perform(params)
+    def perform
       call = test_copy(params)
 
       if call.success?
@@ -51,20 +53,24 @@ module Projects
     # Tests whether the copy can be performed
     def test_copy(params)
       test_params = params.merge(attributes_only: true)
-
+      contract_options = { skip_custom_field_validation: params[:skip_custom_field_validation] }
       Projects::CopyService
-        .new(user:, source:)
+        .new(user:, source:, contract_options:)
         .call(test_params)
     end
 
     ##
     # Schedule the project copy job
     def schedule_copy_job(params)
-      CopyProjectJob.perform_later(user_id: user.id,
-                                   source_project_id: source.id,
-                                   target_project_params: params[:target_project_params],
-                                   associations_to_copy: params[:only].to_a,
-                                   send_mails: ActiveRecord::Type::Boolean.new.cast(params[:send_notifications]))
+      job = nil
+      GoodJob::Batch.enqueue(on_finish: SendCopyProjectStatusEmailJob, user:, source_project: source) do
+        job = CopyProjectJob.perform_later(target_project_params: params[:target_project_params],
+                                           copy_from_template: params.dig(:target_project_params, :template).present?,
+                                           associations_to_copy: params[:only].to_a,
+                                           skip_custom_field_validation: params[:skip_custom_field_validation],
+                                           send_mails: ActiveRecord::Type::Boolean.new.cast(params[:send_notifications]))
+      end
+      job
     end
   end
 end

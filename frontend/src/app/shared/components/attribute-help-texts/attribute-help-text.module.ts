@@ -1,27 +1,29 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OpenprojectModalModule } from 'core-app/shared/components/modal/modal.module';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { OpenprojectAttachmentsModule } from 'core-app/shared/components/attachments/openproject-attachments.module';
 import { IconModule } from 'core-app/shared/components/icon/icon.module';
 
 import { AttributeHelpTextComponent } from './attribute-help-text.component';
-import { AttributeHelpTextModalComponent } from './attribute-help-text.modal';
+import { StaticAttributeHelpTextComponent } from './static-attribute-help-text.component';
+import { StaticAttributeHelpTextModalComponent } from './static-attribute-help-text.modal';
 
 @NgModule({
   imports: [
     CommonModule,
-    OpenprojectModalModule,
     OpenprojectAttachmentsModule,
     IconModule,
   ],
   declarations: [
     AttributeHelpTextComponent,
-    AttributeHelpTextModalComponent,
+    StaticAttributeHelpTextComponent,
+    StaticAttributeHelpTextModalComponent,
   ],
   providers: [
   ],
   exports: [
     AttributeHelpTextComponent,
+    StaticAttributeHelpTextComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AttributeHelpTextModule {}

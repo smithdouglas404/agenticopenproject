@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,322 +28,408 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-ruby '~> 3.1.2'
+# TODO: Once packager.io and heroku buildpacks support bundler 2.4.22,
+# then we can use the new bundler syntax `ruby file: '.ruby-version'`.
+# https://github.com/heroku/heroku-buildpack-ruby/issues/1408#issuecomment-1841596215
 
-gem 'actionpack-xml_parser', '~> 2.0.0'
-gem 'activemodel-serializers-xml', '~> 1.0.1'
-gem 'activerecord-import', '~> 1.4.0'
-gem 'activerecord-session_store', '~> 2.0.0'
-gem 'rails', '~> 7.0', '>= 7.0.3.1'
-gem 'responders', '~> 3.0'
+ruby File.read(File.expand_path(".ruby-version", __dir__)).strip
 
-gem 'ffi', '~> 1.15'
+gem "actionpack-xml_parser", "~> 2.0.0"
+gem "activemodel-serializers-xml", "~> 1.0.1"
+gem "activerecord-import", "~> 2.2.0"
+gem "activerecord-session_store", "~> 2.2.0"
+gem "ox"
+gem "rails", "~> 8.1.3"
+gem "responders", "~> 3.2"
 
-# Lock mail at 2.7 due to incompatibility
-# TODO: Remove it once the new version is fixed
-gem 'mail', '~> 2.7.1'
+gem "ffi", "~> 1.17"
 
-gem 'rdoc', '>= 2.4.2'
+gem "connection_pool", "~> 3.0.2"
 
-gem 'doorkeeper', '~> 5.5.0'
+gem "rdoc", ">= 2.4.2"
+
+gem "doorkeeper", "~> 5.9.0"
 # Maintain our own omniauth due to relative URL root issues
 # see upstream PR: https://github.com/omniauth/omniauth/pull/903
-gem 'omniauth', git: 'https://github.com/opf/omniauth', ref: 'fe862f986b2e846e291784d2caa3d90a658c67f0'
-gem 'request_store', '~> 1.5.0'
+gem "omniauth", git: "https://github.com/opf/omniauth", ref: "7eb21563ba047ef86d71f099975587b5ec88f9c9"
+gem "request_store", "~> 1.7.0"
 
-gem 'warden', '~> 1.2'
-gem 'warden-basic_auth', '~> 0.2.1'
+gem "warden", "~> 1.2"
+gem "warden-basic_auth", "~> 0.2.1"
 
-gem 'will_paginate', '~> 3.3.0'
+gem "pagy"
+gem "will_paginate", "~> 4.0.0"
 
-gem 'friendly_id', '~> 5.5.0'
+gem "friendly_id", "~> 5.6.0"
 
-gem 'acts_as_list', '~> 1.0.1'
-gem 'acts_as_tree', '~> 2.9.0'
-gem 'awesome_nested_set', '~> 3.5.0'
-gem 'closure_tree', '~> 7.4.0'
-gem 'rubytree', '~> 2.0.0'
-# Only used in down migrations now.
-# Is to be removed once the referencing migrations have been squashed.
-gem 'typed_dag', '~> 2.0.2', require: false
+gem "scimitar", "~> 2.13"
 
-gem 'addressable', '~> 2.8.0'
+gem "acts_as_list", "~> 1.2.6"
+gem "acts_as_tree", "~> 2.9.0"
+gem "awesome_nested_set", "~> 3.9.0"
+gem "closure_tree", "~> 9.6.1"
+gem "rubytree", "~> 2.2.0"
+
+gem "addressable", "~> 2.9.0"
 
 # Remove whitespace from model input
 gem "auto_strip_attributes", "~> 2.5"
 
 # Provide timezone info for TZInfo used by AR
-gem 'tzinfo-data', '~> 1.2022.1'
+gem "tzinfo-data", "~> 1.2026.1"
 
 # to generate html-diffs (e.g. for wiki comparison)
-gem 'htmldiff'
+gem "htmldiff"
 
 # Generate url slugs with #to_url and other string niceties
-gem 'stringex', '~> 2.8.5'
+gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem 'commonmarker', '~> 0.23.6'
+gem "commonmarker", "~> 2.8.0"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
-gem 'html-pipeline', '~> 2.14.0'
+gem "html-pipeline", "~> 2.14.0"
 # Tasklist parsing and renderer
-gem 'deckar01-task_list', '~> 2.3.1'
+gem "deckar01-task_list", "~> 2.3.1"
 # Requires escape-utils for faster escaping
-gem 'escape_utils', '~> 1.3'
+gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
-gem 'rouge', '~> 4.0.0'
+gem "rouge", "~> 4.7.0"
 # HTML sanitization used for html-pipeline
-gem 'sanitize', '~> 6.0.0'
+gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
-gem 'rinku', '~> 2.0.4'
+gem "rinku", "~> 2.0.4", require: %w[rinku rails_rinku]
 # Version parsing with semver
-gem 'semantic', '~> 1.6.1'
+gem "semantic", "~> 1.6.1"
 
 # generates SVG Graphs
 # used for statistics on svn repositories
-gem 'svg-graph', '~> 2.2.0'
+gem "svg-graph", "~> 2.2.0"
 
-gem 'date_validator', '~> 0.12.0'
-gem 'email_validator', '~> 2.2.3'
-gem 'json_schemer', '~> 0.2.18'
-gem 'ruby-duration', '~> 3.2.0'
+gem "date_validator", "~> 0.12.0"
+gem "email_validator", "~> 2.2.3"
+gem "json_schemer", "~> 2.5.0"
+gem "ruby-duration", "~> 3.2.0"
+
+gem "mail", "2.9.0"
+
+gem "csv", "~> 3.3"
 
 # provide compatible filesystem information for available storage
-gem 'sys-filesystem', '~> 1.4.0', require: false
+gem "sys-filesystem", "~> 1.5.0", require: false
 
-# Faster posix-compliant spawns for 8.0. conversions with pandoc
-gem 'posix-spawn', '~> 0.3.13', require: false
+gem "bcrypt", "~> 3.1.22"
 
-gem 'bcrypt', '~> 3.1.6'
+gem "multi_json", "~> 1.20.0"
+gem "oj", "~> 3.17.0"
 
-gem 'multi_json', '~> 1.15.0'
-gem 'oj', '~> 3.13.0'
+gem "daemons"
+gem "good_job", "~> 4.16.0" # update should be done manually in sync with saas-openproject version.
 
-gem 'daemons'
-gem 'delayed_cron_job', '~> 0.9.0'
-gem 'delayed_job_active_record', '~> 4.1.5'
-
-gem 'rack-protection', '~> 3.0.0'
+gem "rack-protection", "~> 3.2.0"
 
 # Rack::Attack is a rack middleware to protect your web app from bad clients.
 # It allows whitelisting, blacklisting, throttling, and tracking based
 # on arbitrary properties of the request.
 # https://github.com/kickstarter/rack-attack
-gem 'rack-attack', '~> 6.6.0'
-
-# CSP headers
-gem 'secure_headers', '~> 6.5.0'
+gem "rack-attack", "~> 6.8.0"
 
 # Browser detection for incompatibility checks
-gem 'browser', '~> 5.3.0'
+gem "browser", "~> 6.2.0"
 
 # Providing health checks
-gem 'okcomputer', '~> 1.18.1'
-
-gem 'gon', '~> 6.4.0'
+gem "okcomputer", "~> 1.19.1"
 
 # Lograge to provide sane and non-verbose logging
-gem 'lograge', '~> 0.12.0'
+gem "lograge", "~> 0.14.0"
 
 # Structured warnings to selectively disable them in production
-gem 'structured_warnings', '~> 0.4.0'
+gem "structured_warnings", "~> 0.5.0"
 
 # catch exceptions and send them to any airbrake compatible backend
 # don't require by default, instead load on-demand when actually configured
-gem 'airbrake', '~> 13.0.0', require: false
+gem "airbrake", "~> 13.0.0", require: false
 
-gem 'prawn', '~> 2.2'
-gem 'prawn-markup', '~> 0.3.0'
+gem "markly", "~> 0.15" # another markdown parser like commonmarker, but with AST support used in PDF export
+gem "md_to_pdf", git: "https://github.com/opf/md-to-pdf", ref: "0cb4597becd2243b810e7ce53bbbbf28b5f05844"
+gem "prawn", "~> 2.4"
+gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues/1346 resolved.
+
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
-gem 'matrix', '~> 0.4.2'
+gem "matrix", "~> 0.4.3"
 
-gem 'cells-erb', '~> 0.1.0'
-gem 'cells-rails', '~> 0.1.4'
+gem "mcp", "~> 0.14.0"
 
-gem 'meta-tags', '~> 2.18.0'
+gem "meta-tags", "~> 2.23.0"
 
-gem "paper_trail", "~> 12.3"
+gem "paper_trail", "~> 17.0.0"
+
+# State machine with audit trail
+gem "statesman", "~> 13.1.0"
+
+gem "job-iteration"
+
+gem "op-clamav-client", "~> 3.4", require: "clamav"
+
+# Global ID for polymorphic associations
+gem "globalid", "~> 1.3"
+
+# Recurring meeting events definition
+gem "ice_cube", "~> 0.17.0"
 
 group :production do
   # we use dalli as standard memcache client
-  # requires memcached 1.4+
-  gem 'dalli', '~> 3.2.0'
+  # requires memcached 1.6+
+  gem "dalli", "~> 5.0.0"
+  gem "redis", "~> 5.4.0"
 end
 
-gem 'i18n-js', '~> 3.9.0'
-gem 'rails-i18n', '~> 7.0.0'
+gem "i18n-js", "~> 4.2.4"
+gem "rails-i18n", "~> 8.1.0"
 
-gem 'sprockets', '~> 3.7.2' # lock sprockets below 4.0
-gem 'sprockets-rails', '~> 3.4.2'
+gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
+gem "sprockets-rails", "~> 3.5.1"
 
-gem 'puma', '~> 5.6'
-gem 'puma-plugin-statsd', '~> 2.0'
-gem 'rack-timeout', '~> 0.6.3', require: "rack/timeout/base"
+gem "puma", "~> 7.1"
+gem "puma-plugin-statsd", "~> 2.7"
+gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
-gem 'nokogiri', '~> 1.13.10'
+gem "nokogiri", "~> 1.19.2"
 
-gem 'carrierwave', '~> 1.3.1'
-gem 'carrierwave_direct', '~> 2.1.0'
-gem 'fog-aws'
+gem "carrierwave", "~> 2.2.6"
+gem "carrierwave_direct", "~> 3.0.0"
+gem "ssrf_filter", "~> 1.3"
+gem "fog-aws"
 
-gem 'aws-sdk-core', '~> 3.107'
+gem "aws-sdk-core", "~> 3.244"
 # File upload via fog + screenshots on travis
-gem 'aws-sdk-s3', '~> 1.91'
+gem "aws-sdk-s3", "~> 1.217"
 
-gem 'openproject-token', '~> 2.2.0'
+gem "openproject-token", "~> 8.8.2"
 
-gem 'plaintext', '~> 0.3.2'
+gem "plaintext", "~> 0.3.7"
 
-gem 'rest-client', '~> 2.0'
+gem "ruby-progressbar", "~> 1.13.0", require: false
 
-gem 'ruby-progressbar', '~> 1.11.0', require: false
+gem "mini_magick", "~> 5.3.0", require: false
 
-gem 'mini_magick', '~> 4.12.0', require: false
+gem "validate_url"
 
-gem 'validate_url'
+# Storages support code
+gem "dry-container"
+gem "dry-monads"
+gem "dry-validation"
 
-# Sentry error reporting
-gem "sentry-delayed_job", '~> 5.7.0'
-gem "sentry-rails", '~> 5.7.0'
-gem "sentry-ruby", '~> 5.7.0'
+# ActiveRecord extension which adds typecasting to store accessors
+gem "store_attribute", "~> 2.0"
 
 # Appsignal integration
-gem "appsignal", "~> 3.0", require: false
+gem "appsignal", "~> 4.8", require: false
+
+# Yabeda integration
+gem "yabeda-activerecord"
+gem "yabeda-prometheus-mmap", require: false
+gem "yabeda-puma-plugin"
+gem "yabeda-rails"
+
+# opentelemetry
+gem "opentelemetry-exporter-otlp", "~> 0.33.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.93.0", require: false
+gem "opentelemetry-sdk", "~> 1.10", require: false
+
+gem "view_component", "~> 4.8.0"
+# Lookbook
+gem "lookbook", "2.3.14"
+
+gem "inline_svg", "~> 1.10.0"
+
+# Require factory_bot for usage with openproject plugins testing
+gem "factory_bot", "~> 6.5.6", require: false
+# require factory_bot_rails for convenience in core development
+gem "factory_bot_rails", "~> 6.5.0", require: false
+
+gem "turbo_power", "~> 0.7.0"
+gem "turbo-rails", "~> 2.0.20"
+
+gem "httpx", "~> 1.7.5"
+
+# Brings actual deep-freezing to most ruby objects
+gem "ice_nine"
 
 group :test do
-  gem 'launchy', '~> 2.5.0'
-  gem 'rack-test', '~> 2.0.0'
-  gem 'shoulda-context', '~> 2.0'
+  gem "launchy", "~> 3.1.0"
+  gem "rack-test", "~> 2.2.0"
+  gem "shoulda-context", "~> 2.0"
 
   # Test prof provides factories from code
   # and other niceties
-  gem 'test-prof', '~> 1.0.0'
+  gem "test-prof", "~> 1.6.0"
+  gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
-  gem 'rack_session_access'
-  gem 'rspec', '~> 3.12.0'
-  # also add to development group, so "spec" rake task gets loaded
-  gem 'rspec-rails', '~> 6.0.0', group: :development
+  gem "rack_session_access"
+  gem "rspec", "~> 3.13.2"
+  # also add to development group, so 'spec' rake task gets loaded
+  gem "rspec-rails", "~> 8.0.4", group: :development
 
   # Retry failures within the same environment
-  gem 'retriable', '~> 3.1.1'
-  gem 'rspec-retry', '~> 0.6.1'
+  gem "retriable", "~> 3.4.1"
+  gem "rspec-retry", "~> 0.6.1"
+
+  # Accessibility tests
+  gem "axe-core-rspec"
+
+  # Modify ENV
+  gem "climate_control"
 
   # XML comparison tests
-  gem 'compare-xml', '~> 0.66', require: false
+  gem "compare-xml", "~> 0.66", require: false
+
+  # PDF Export tests
+  gem "pdf-inspector", "~> 1.2"
 
   # brings back testing for 'assigns' and 'assert_template' extracted in rails 5
-  gem 'rails-controller-testing', '~> 1.0.2'
+  gem "rails-controller-testing", "~> 1.0.2"
 
-  gem 'capybara', '~> 3.38.0'
-  gem 'capybara-screenshot', '~> 1.0.17'
-  gem 'selenium-webdriver', '~> 4.0'
-  gem 'webdrivers', '~> 5.2.0'
+  gem "capybara", "~> 3.40.0"
+  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.15.0"
+  gem "capybara-screenshot", "~> 1.0.17"
+  gem "cuprite", "~> 0.17.0"
+  gem "rspec-wait"
+  gem "selenium-devtools"
+  gem "selenium-webdriver", "~> 4.38"
 
-  gem 'fuubar', '~> 2.5.0'
-  gem 'timecop', '~> 0.9.0'
+  gem "fuubar", "~> 2.5.0", require: false
+  gem "timecop", "~> 0.9.0"
 
+  # Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
+  gem "vcr"
   # Mock backend requests (for ruby tests)
-  gem 'webmock', '~> 3.12', require: false
+  gem "webmock", "~> 3.26", require: false
 
   # Mock selenium requests through proxy (for feature tests)
-  gem 'puffing-billy', '~> 3.0.0'
-  gem 'table_print', '~> 1.5.6'
+  gem "puffing-billy", "~> 4.0.0"
+  gem "table_print", "~> 1.5.6"
 
-  gem 'equivalent-xml', '~> 0.6'
-  gem 'json_spec', '~> 1.1.4'
-  gem 'shoulda-matchers', '~> 5.0', require: nil
+  gem "equivalent-xml", "~> 0.6"
+  gem "json_spec", "~> 1.1.4"
+  gem "shoulda-matchers", "~> 7.0", require: nil
 
-  gem 'parallel_tests', '~> 4.0'
+  gem "parallel_tests", "~> 4.0"
 end
 
 group :ldap do
-  gem 'net-ldap', '~> 0.17.0'
+  gem "net-ldap", "~> 0.20.0"
 end
 
 group :development do
-  gem 'listen', '~> 3.7.0' # Use for event-based reloaders
+  gem "listen", "~> 3.10.0" # Use for event-based reloaders
 
-  gem 'faker', require: false
-  gem 'letter_opener'
+  gem "letter_opener_web"
 
-  gem 'spring'
-  gem 'spring-commands-rspec'
+  gem "spring"
+  gem "spring-commands-rspec"
+  gem "spring-commands-rubocop"
 
-  # Gems for living styleguide
-  gem 'livingstyleguide', '~> 2.1.0'
-  gem 'sassc-rails'
+  gem "colored2"
 end
 
 group :development, :test do
-  gem 'dotenv-rails'
-  # Require factory_bot for usage with openproject plugins testing
-  gem 'factory_bot', '~> 6.2.0'
-  # require factory_bot_rails for convenience in core development
-  gem 'factory_bot_rails', '~> 6.2.0'
+  gem "dotenv-rails"
 
   # Tracing and profiling gems
-  gem 'flamegraph', require: false
-  gem 'rack-mini-profiler', require: false
-  gem 'ruby-prof', require: false
-  gem 'stackprof', require: false
+  gem "flamegraph", require: false
+  gem "rack-mini-profiler", require: false
+  gem "ruby-prof", require: false
+  gem "stackprof", require: false
+  gem "vernier", require: false
 
-  # REPL with debug commands
-  gem 'debug'
+  # Output a stack trace anytime, useful when a process is stuck
+  gem "rbtrace"
 
-  gem 'pry-byebug', '~> 3.10.0', platforms: [:mri]
-  gem 'pry-rails', '~> 0.3.6'
-  gem 'pry-rescue', '~> 1.5.2'
+  # REPL with debug commands, Debug changed to byebug due to the issue below
+  # https://github.com/puma/puma/issues/2835#issuecomment-2302133927
+  gem "byebug"
+
+  # Unreleased fix of readline dependency of pry: https://github.com/pry/pry/pull/2366
+  # Once this gets released, the specific dev dependency on pry can be removed
+  gem "pry", github: "pry/pry", ref: "135640262879544c6bfecbf3e78511289bfe956c"
+  gem "pry-byebug", "~> 3.12.0", platforms: [:mri]
+  gem "pry-rails", "~> 0.3.6"
+  gem "pry-rescue", "~> 1.6.0"
 
   # ruby linting
-  gem 'rubocop', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
+  gem "rubocop", require: false
+  gem "rubocop-capybara", require: false
+  gem "rubocop-factory_bot", require: false
+  gem "rubocop-openproject", require: false
+  gem "rubocop-performance", require: false
+  gem "rubocop-rails", "~> 2.34.2"
+  gem "rubocop-rspec", require: false
+  gem "rubocop-rspec_rails", require: false
 
-  # git hooks manager
-  gem 'lefthook', require: false
+  # erb linting
+  gem "erb_lint", require: false
+  gem "erblint-github", require: false
 
   # Brakeman scanner
-  gem 'brakeman', '~> 5.4.0'
-  gem 'danger-brakeman'
+  gem "brakeman", "~> 8.0.1"
+
+  # i18n-tasks helps find and manage missing and unused translations.
+  gem "i18n-tasks", "~> 1.1.0", require: false
+
+  # Active Record Doctor helps to keep the database in good shape.
+  gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem 'bootsnap', '~> 1.15.0', require: false
+gem "bootsnap", "~> 1.24.0", require: false
 
 # API gems
-gem 'grape', '~> 1.6.0'
-gem 'grape_logging', '~> 1.8.4'
-gem 'roar', '~> 1.1.0'
+gem "grape", "~> 3.2.0"
+gem "grape_logging", "~> 3.0.0"
+gem "roar", "~> 1.2.0"
 
 # CORS for API
-gem 'rack-cors', '~> 1.1.1'
+gem "rack-cors", "~> 2.0.2"
+
+# Gmail API
+gem "google-apis-gmail_v1", require: false
+gem "googleauth", require: false
 
 # Required for contracts
-gem 'disposable', '~> 0.6.2'
+gem "disposable", "~> 0.6.2"
 
-platforms :mri, :mingw, :x64_mingw do
-  group :postgres do
-    gem 'pg', '~> 1.4.0'
-  end
+# Used for formula evaluation of calculated values
+gem "dentaku", "~> 3.5"
 
-  # Support application loading when no database exists yet.
-  gem 'activerecord-nulldb-adapter', '~> 0.8.0'
+# Used for more powerful counter caches
+gem "counter_culture", "~> 3.13"
 
-  # Have application level locks on the database to have a mutex shared between workers/hosts.
-  # We e.g. employ this to safeguard the creation of journals.
-  gem 'with_advisory_lock', '~> 4.6.0'
+group :postgres do
+  gem "pg", "~> 1.6.2"
 end
 
+# Support application loading when no database exists yet.
+gem "activerecord-nulldb-adapter", "~> 1.2.2"
+
+# Have application level locks on the database to have a mutex shared between workers/hosts.
+# We e.g. employ this to safeguard the creation of journals.
+gem "with_advisory_lock", "~> 7.5.0"
+
 # Load Gemfile.modules explicitly to allow dependabot to work
-eval_gemfile './Gemfile.modules'
+eval_gemfile "./Gemfile.modules"
 
 # Load Gemfile.local, Gemfile.plugins and custom Gemfiles
-gemfiles = Dir.glob File.expand_path('{Gemfile.plugins,Gemfile.local}', __dir__)
-gemfiles << ENV['CUSTOM_PLUGIN_GEMFILE'] unless ENV['CUSTOM_PLUGIN_GEMFILE'].nil?
+gemfiles = Dir.glob File.expand_path("{Gemfile.plugins,Gemfile.local}", __dir__)
+gemfiles << ENV["CUSTOM_PLUGIN_GEMFILE"] unless ENV["CUSTOM_PLUGIN_GEMFILE"].nil?
 gemfiles.each do |file|
   # We use send to allow dependabot to function
   # don't use eval_gemfile(file) here as it will break dependabot!
   send(:eval_gemfile, file) if File.readable?(file)
 end
+
+gem "openproject-octicons", "~>19.34.0"
+gem "openproject-octicons_helper", "~>19.34.0"
+gem "openproject-primer_view_components", "~>0.84.5"

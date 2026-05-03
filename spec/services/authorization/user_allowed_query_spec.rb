@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,41 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Authorization::UserAllowedQuery do
-  describe '.query' do
-    let(:user) { member.principal }
-    let(:anonymous) { build(:anonymous) }
-    let(:project) { build(:project, public: false) }
-    let(:project2) { build(:project, public: false) }
-    let(:role) { build(:role) }
-    let(:role2) { build(:role) }
-    let(:anonymous_role) { build(:anonymous_role) }
-    let(:non_member_role) { build(:non_member) }
+RSpec.describe Authorization::UserAllowedQuery do
+  describe ".query" do
+    shared_let(:project) { create(:project, public: false) }
+    shared_let(:project2) { create(:project, public: false) }
+    shared_let(:user) { create(:user) }
+    shared_let(:anonymous) { create(:anonymous) }
+    shared_let(:anonymous_role) { create(:anonymous_role) }
+    shared_let(:non_member_role) { create(:non_member) }
+
+    let(:role) { build(:project_role) }
+    let(:role2) { build(:project_role) }
     let(:member) do
-      build(:member, project:,
-                     roles: [role])
+      build(:member,
+            principal: user,
+            project:,
+            roles: [role])
     end
 
     let(:action) { :view_work_packages }
     let(:other_action) { :another }
     let(:public_action) { :view_project }
 
-    before do
-      user.save!
-      anonymous.save!
-      anonymous_role.save!
-      non_member_role.save!
-    end
-
-    it 'is an AR relation' do
+    it "is an AR relation" do
       expect(described_class.query(action, project)).to be_a ActiveRecord::Relation
     end
 
-    context 'w/o the project being public
-             w/ the user being member in the project
-             w/ the role having the necessary permission' do
+    context "without the project being public " \
+            "with the user being member in the project " \
+            "with the role having the necessary permission" do
       before do
         role.add_permission! action
         role.save!
@@ -68,53 +66,53 @@ describe Authorization::UserAllowedQuery do
         member.save!
       end
 
-      it 'returns the user' do
-        expect(described_class.query(action, project)).to match_array [user]
+      it "returns the user" do
+        expect(described_class.query(action, project)).to contain_exactly(user)
       end
     end
 
-    context 'w/o the project being public
-             w/o the user being member in the project
-             w/ the user being admin' do
+    context "without the project being public " \
+            "without the user being member in the project " \
+            "with the user being admin" do
       before do
         user.update_attribute(:admin, true)
       end
 
-      it 'returns the user' do
-        expect(described_class.query(action, project)).to match_array [user]
+      it "returns the user" do
+        expect(described_class.query(action, project)).to contain_exactly(user)
       end
     end
 
-    context 'w/o the project being public
-             w/ the user being member in the project
-             w/o the role having the necessary permission' do
+    context "without the project being public " \
+            "with the user being member in the project " \
+            "without the role having the necessary permission" do
       before do
         role.save!
         member.save!
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(action, project)).to be_empty
       end
     end
 
-    context 'w/o the project being public
-             w/o the user being member in the project
-             w/ the role having the necessary permission' do
+    context "without the project being public " \
+            "without the user being member in the project " \
+            "with the role having the necessary permission" do
       before do
         role.add_permission! action
         role.save!
       end
 
-      it 'returns the user' do
+      it "returns the user" do
         expect(described_class.query(action, project)).to be_empty
       end
     end
 
-    context 'w/o the project being public
-             w/o the user being member in the project
-             w/ the user being member in a different project
-             w/ the role having the permission' do
+    context "without the project being public " \
+            "without the user being member in the project " \
+            "with the user being member in a different project " \
+            "with the role having the permission" do
       before do
         role.add_permission! action
         role.save!
@@ -123,15 +121,15 @@ describe Authorization::UserAllowedQuery do
         member.save!
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(action, project)).to be_empty
       end
     end
 
-    context 'w/ the project being public
-             w/o the user being member in the project
-             w/ the user being member in a different project
-             w/ the role having the permission' do
+    context "with the project being public " \
+            "without the user being member in the project " \
+            "with the user being member in a different project " \
+            "with the role having the permission" do
       before do
         role.add_permission! action
         role.save!
@@ -143,85 +141,85 @@ describe Authorization::UserAllowedQuery do
         member.save!
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(action, project)).to be_empty
       end
     end
 
-    context 'w/ the project being public
-             w/o the user being member in the project
-             w/ the non member role having the necessary permission' do
+    context "with the project being public " \
+            "without the user being member in the project " \
+            "with the non member role having the necessary permission" do
       before do
         project.public = true
 
-        non_member = Role.non_member
+        non_member = ProjectRole.non_member
         non_member.add_permission! action
         non_member.save
 
         project.save!
       end
 
-      it 'returns the user' do
-        expect(described_class.query(action, project)).to match_array [user]
+      it "returns the user" do
+        expect(described_class.query(action, project)).to contain_exactly(user)
       end
     end
 
-    context 'w/ the project being public
-             w/o the user being member in the project
-             w/ the anonymous role having the necessary permission' do
+    context "with the project being public " \
+            "without the user being member in the project " \
+            "with the anonymous role having the necessary permission" do
       before do
         project.public = true
 
-        anonymous_role = Role.anonymous
+        anonymous_role = ProjectRole.anonymous
         anonymous_role.add_permission! action
         anonymous_role.save
 
         project.save!
       end
 
-      it 'returns the anonymous user' do
-        expect(described_class.query(action, project)).to match_array([anonymous])
+      it "returns the anonymous user" do
+        expect(described_class.query(action, project)).to contain_exactly(anonymous)
       end
     end
 
-    context 'w/ the project being public
-             w/o the user being member in the project
-             w/ the non member role having another permission' do
+    context "with the project being public " \
+            "without the user being member in the project " \
+            "with the non member role having another permission" do
       before do
         project.public = true
 
-        non_member = Role.non_member
+        non_member = ProjectRole.non_member
         non_member.add_permission! other_action
         non_member.save
 
         project.save!
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(action, project)).to be_empty
       end
     end
 
-    context 'w/ the project being private
-             w/o the user being member in the project
-             w/ the non member role having the permission' do
+    context "with the project being private " \
+            "without the user being member in the project " \
+            "with the non member role having the permission" do
       before do
-        non_member = Role.non_member
+        non_member = ProjectRole.non_member
         non_member.add_permission! action
         non_member.save
 
         project.save!
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(action, project)).to be_empty
       end
     end
 
-    context 'w/ the project being public
-             w/ the user being member in the project
-             w/o the role having the necessary permission
-             w/ the non member role having the permission' do
+    context "with the project being public " \
+            "with the user being member in the project " \
+            "without the role having the necessary permission " \
+            "with the non member role having the permission" do
       before do
         project.public = true
         project.save
@@ -229,47 +227,47 @@ describe Authorization::UserAllowedQuery do
         role.add_permission! other_action
         member.save!
 
-        non_member = Role.non_member
+        non_member = ProjectRole.non_member
         non_member.add_permission! action
         non_member.save
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(action, project)).to be_empty
       end
     end
 
-    context 'w/o the project being public
-             w/ the user being member in the project
-             w/o the role having the permission
-             w/ the permission being public' do
+    context "without the project being public " \
+            "with the user being member in the project " \
+            "without the role having the permission " \
+            "with the permission being public" do
       before do
         member.save!
       end
 
-      it 'returns the user' do
-        expect(described_class.query(public_action, project)).to match_array [user]
+      it "returns the user" do
+        expect(described_class.query(public_action, project)).to contain_exactly(user)
       end
     end
 
-    context 'w/ the project being public
-             w/o the user being member in the project
-             w/o the role having the permission
-             w/ the permission being public' do
+    context "with the project being public " \
+            "without the user being member in the project " \
+            "without the role having the permission " \
+            "with the permission being public" do
       before do
         project.public = true
         project.save
       end
 
-      it 'returns the user and anonymous' do
-        expect(described_class.query(public_action, project)).to match_array [user, anonymous]
+      it "returns the user and anonymous" do
+        expect(described_class.query(public_action, project)).to contain_exactly(user, anonymous)
       end
     end
 
-    context 'w/ the user being member in the project
-             w/ asking for a certain permission
-             w/ the permission belonging to a module
-             w/o the module being active' do
+    context "with the user being member in the project " \
+            "with asking for a certain permission " \
+            "with the permission belonging to a module " \
+            "without the module being active" do
       let(:permission) do
         OpenProject::AccessControl.permissions.find { |p| p.project_module.present? }
       end
@@ -281,15 +279,15 @@ describe Authorization::UserAllowedQuery do
         member.save!
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(permission.name, project)).to eq []
       end
     end
 
-    context 'w/ the user being member in the project
-             w/ asking for a certain permission
-             w/ the permission belonging to a module
-             w/ the module being active' do
+    context "with the user being member in the project " \
+            "with asking for a certain permission " \
+            "with the permission belonging to a module " \
+            "with the module being active" do
       let(:permission) do
         OpenProject::AccessControl.permissions.find { |p| p.project_module.present? }
       end
@@ -301,15 +299,15 @@ describe Authorization::UserAllowedQuery do
         member.save!
       end
 
-      it 'returns the user' do
+      it "returns the user" do
         expect(described_class.query(permission.name, project)).to eq [user]
       end
     end
 
-    context 'w/ the user being member in the project
-             w/ asking for a certain permission
-             w/ the user having the permission in the project
-             w/o the project being active' do
+    context "with the user being member in the project " \
+            "with asking for a certain permission " \
+            "with the user having the permission in the project " \
+            "without the project being active" do
       before do
         role.add_permission! action
         member.save!
@@ -317,7 +315,7 @@ describe Authorization::UserAllowedQuery do
         project.update(active: false)
       end
 
-      it 'is empty' do
+      it "is empty" do
         expect(described_class.query(action, project)).to eq []
       end
     end

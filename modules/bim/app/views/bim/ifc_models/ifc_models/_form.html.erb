@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,28 +27,28 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% unless @ifc_model.new_record?  %>
+<% unless @ifc_model.new_record? %>
   <div class="form--field -required">
-    <%= f.text_field :title, required: true, container_class: '-wide' %>
+    <%= f.text_field :title, required: true, container_class: "-wide" %>
   </div>
 <% end %>
 
 <% if OpenProject::Configuration.direct_uploads? %>
   <% Hash(@form).each do |key, value| %>
-    <input type="hidden" name="<%= key %>" value="<%= value %>" />
+    <input type="hidden" name="<%= key %>" value="<%= value %>">
   <% end %>
 <% end %>
 
-<div class="form--field <%= @ifc_model.new_record? ? '-required': '' %>">
+<div class="form--field <%= @ifc_model.new_record? ? "-required" : "" %>">
   <% if OpenProject::Configuration.direct_uploads? %>
-    <input class="form--file-field" type="file" name="file" accept=".ifc" />
+    <input class="form--file-field" type="file" name="file" accept=".ifc">
   <% else %>
-    <%= f.file_field :ifc_attachment, accept: '.ifc' %>
+    <%= f.file_field :ifc_attachment, accept: ".ifc" %>
   <% end %>
 </div>
 
 <div class="form--field">
-  <%= f.check_box 'is_default' %>
+  <%= f.check_box "is_default" %>
 </div>
 
 <% if OpenProject::Configuration.direct_uploads? %>
@@ -61,6 +61,13 @@ See COPYRIGHT and LICENSE files for more details.
       if (fileNameField.length > 0 && fileNameField[0].files && fileNameField[0].files[0]) {
         fileName = fileNameField[0].files[0].name;
       }
+      if (fileName.length === 0) {
+        return jQuery.Deferred().resolve().promise();
+      }
+
+      <%# Reset the form validity %>
+      <%# See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity %>
+      fileNameField[0].setCustomValidity('');
 
       var titleField = jQuery("#bim_ifc_models_ifc_model_title");
 
@@ -76,6 +83,7 @@ See COPYRIGHT and LICENSE files for more details.
       } else {
         title = fileName;
       }
+      var csrfToken = jQuery('meta[name="csrf-token"]').attr("content");
 
       return jQuery.ajax({
         type: "post",
@@ -85,12 +93,21 @@ See COPYRIGHT and LICENSE files for more details.
           withCredentials: true
         },
         data: {
+          authenticity_token: csrfToken,
           title: title,
-          isDefault: jQuery("#bim_ifc_models_ifc_model_is_default").is(":checked") ? 1 : 0
+          isDefault: jQuery("#bim_ifc_models_ifc_model_is_default").is(":checked") ? 1 : 0,
+          filesize: fileNameField[0].files[0].size
         },
         statusCode: {
           401: function(resp, status, error) {
             document.location.reload(); // reload to make user login again
+          }
+        },
+        error: function(jqXHR, ajaxOptions, errorThrown) {
+          if (jqXHR.status == 422) {
+            var errorMessage = jqXHR.responseJSON.error;
+            fileNameField[0].setCustomValidity(errorMessage);
+            fileNameField[0].reportValidity();
           }
         }
       });
@@ -102,8 +119,7 @@ See COPYRIGHT and LICENSE files for more details.
       setDirectUploadFileName();
 
       <%# rebuild form to post to S3 directly %>
-      if (jQuery("input[name=utf8]").length == 1) {
-        jQuery("input[name=utf8]").remove();
+      if (jQuery("input[name=authenticity_token]").length === 1) {
         jQuery("input[name=authenticity_token]").remove();
         jQuery("input[name=_method]").remove();
 

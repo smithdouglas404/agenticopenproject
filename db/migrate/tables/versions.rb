@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,24 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'base'
+require_relative "base"
 
 class Tables::Versions < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.integer :project_id, default: 0, null: false
-      t.string :name, default: '', null: false
-      t.string :description, default: ''
+      t.bigint :project_id, null: false
+      t.string :name, default: "", null: false, collation: "versions_name"
+      t.string :description, default: ""
       t.date :effective_date
-      t.datetime :created_on
-      t.datetime :updated_on
+      t.timestamps precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: true
       t.string :wiki_page_title
       t.string :status, default: :open
       t.string :sharing, default: :none, null: false
       t.date :start_date
 
-      t.index :project_id, name: 'versions_project_id'
-      t.index :sharing, name: 'index_versions_on_sharing'
+      t.index :project_id, name: "versions_project_id"
+      t.index :sharing, name: "index_versions_on_sharing"
     end
   end
 end

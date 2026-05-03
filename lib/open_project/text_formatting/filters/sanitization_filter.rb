@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,38 +31,56 @@
 module OpenProject::TextFormatting
   module Filters
     class SanitizationFilter < HTML::Pipeline::SanitizationFilter
-      def allowlist
+      # Prefix for all id and name attributes so they cannot clobber document/window
+      # (e.g. id="constructor" becomes id="op-frag-constructor"). Anchors still work
+      # because we rewrite fragment links to use the same prefix. Used by
+      # TableOfContentsFilter when it assigns heading ids.
+      FRAGMENT_ID_PREFIX = "op-frag-"
+
+      def allowlist # rubocop:disable Metrics/AbcSize
         base = super
+        # Ensure id is allowed (for anchors); we make it safe by prefixing in the transformer.
+        base_attrs = base[:attributes].deep_dup
+        all_attrs = Array(base_attrs[:all])
+        base_attrs[:all] = all_attrs.include?("id") ? all_attrs : all_attrs + ["id"]
 
         Sanitize::Config.merge(
           base,
           elements: base[:elements] + %w[macro mention],
+          # Strip SVG entirely (tag + all nested content). SVG is not on the allowlist, but
+          # without remove_contents Sanitize would keep SVG child nodes as orphaned content.
+          remove_contents: Array(base[:remove_contents]) | %w[svg style],
 
-          attributes: base[:attributes].deep_merge(
+          attributes: base_attrs.deep_merge(
             # Whitelist class and data-* attributes on all macros
-            'macro' => ['class', :data],
+            "macro" => ["class", :data],
             # mentions
-            'mention' => %w[data-type data-text data-id class],
+            "mention" => %w[data-type data-text data-id class],
             # add styles to tables
-            'figure' => %w[class style],
+            "figure" => %w[class style],
             # allow inline image styles
-            'img' => %w[src alt longdesc style],
-            'table' => ['style'],
-            'th' => ['style'],
-            'tr' => ['style'],
-            'td' => ['style']
+            "img" => %w[src alt longdesc style],
+            "table" => ["style"],
+            "th" => ["style"],
+            "tr" => ["style"],
+            "td" => ["style"]
           ),
 
-          # Add rel attribute to prevent tabnabbing
+          # Add rel attribute to prevent tabnabbing and SEO spam
           add_attributes: {
-            'a' => { 'rel' => 'noopener noreferrer' }
+            "a" => { "rel" => "noopener noreferrer nofollow" }
           },
 
           # Add custom transformer logic for more complex modifications
           transformers: base[:transformers] + transformers,
 
           # Allow relaxed CSS styles for the given attributes
-          css: ::Sanitize::Config::RELAXED[:css]
+          css: ::Sanitize::Config::RELAXED[:css],
+
+          # Allow our protocols, and relative links always
+          protocols: {
+            "a" => { "href" => Setting::AllowedLinkProtocols.all + %i[relative] }
+          }
         )
       end
 
@@ -68,26 +88,67 @@ module OpenProject::TextFormatting
 
       def transformers
         [
+          fragment_id_prefix_transformer,
+          fragment_link_rewrite_transformer,
           todo_list_transformer,
           code_block_transformer
         ]
       end
 
+      # Prefix all id and name attributes so they cannot clobber document/window.
+      # e.g. id="constructor" -> id="op-frag-constructor"; anchors still work.
+      def fragment_id_prefix_transformer
+        prefix = FRAGMENT_ID_PREFIX
+        lambda { |env|
+          node = env[:node]
+          next unless node.element?
+
+          %w[id name].each do |attr|
+            val = node[attr]
+            next if val.blank?
+            next if val.start_with?(prefix)
+
+            node[attr] = "#{prefix}#{val}"
+          end
+        }
+      end
+
+      # Rewrite same-document fragment links to use the same prefix so anchors match.
+      # e.g. <a href="#section"> -> href="#op-frag-section"
+      def fragment_link_rewrite_transformer
+        prefix = FRAGMENT_ID_PREFIX
+        lambda { |env|
+          node = env[:node]
+          next unless node.name == "a"
+
+          href = node["href"]
+          return if href.blank?
+
+          # Only rewrite fragment-only links (#foo), not full URLs with fragment
+          next unless href.start_with?("#") && href.length > 1
+
+          fragment = href.slice(1..)
+          next if fragment.empty? || fragment.start_with?(prefix)
+
+          node["href"] = "##{prefix}#{fragment}"
+        }
+      end
+
       # Transformer to fix task lists in sanitization
       # Replace to do lists in tables with their markdown equivalent
-      def todo_list_transformer
+      def todo_list_transformer # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity
         lambda { |env|
           name = env[:node_name]
           table = env[:node]
 
-          next unless name == 'table'
+          next unless name == "table"
 
           # Support both the old css ('todo-list__label') as well as the new one
           # ('op-uc-list_task-list').
-          table.css('label.todo-list__label, .op-uc-list_task-list label').each do |label|
+          table.css("label.todo-list__label, .op-uc-list_task-list label").each do |label|
             # table.css('.op-uc-list_task-list label').each do |label|
-            checkbox = label.css('input[type=checkbox]').first
-            li_node = label.ancestors.detect { |node| node.name == 'li' }
+            checkbox = label.css("input[type=checkbox]").first
+            li_node = label.ancestors.detect { |node| node.name == "li" }
 
             # assign all children of the label to its parent
             # that might be the LI, or another element (code, link)
@@ -99,11 +160,11 @@ module OpenProject::TextFormatting
             # both Foo and Bar are contained by labels
             if checkbox.nil?
               # In case we don't have a checkbox, add the content of the label
-              # or it's parent in case of links directly to the node
+              # or its parent in case of links directly to the node
               to_add = li_node == parent ? label.children : parent
               li_node.add_child to_add
             else
-              checked = checkbox.attr('checked') == 'checked' ? 'x' : ' '
+              checked = checkbox.attr("checked") == "checked" ? "x" : " "
               checkbox.unlink
 
               # Ensure the task list text is be added as first child to the LI
@@ -127,11 +188,11 @@ module OpenProject::TextFormatting
           name = env[:node_name]
           code = env[:node]
 
-          next unless name == 'code'
+          next unless name == "code"
 
           parent = code.parent
 
-          if parent&.name == 'pre'
+          if parent&.name == "pre"
             parent.children = code.children
           end
         }

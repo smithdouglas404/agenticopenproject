@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -24,7 +24,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // See COPYRIGHT and LICENSE files for more details.
-// ++    Ng1FieldControlsWrapper,
+//++    Ng1FieldControlsWrapper,
 
 import {
   ChangeDetectionStrategy,
@@ -33,10 +33,13 @@ import {
   ElementRef,
   HostBinding,
   Injector,
+  OnInit,
 } from '@angular/core';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
-import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
+import {
+  HalResourceEditingService,
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { DisplayFieldService } from 'core-app/shared/components/fields/display/display-field.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
@@ -44,19 +47,19 @@ import {
   SupportedAttributeModels,
 } from 'core-app/shared/components/fields/macros/attribute-model-loader.service';
 import { capitalize } from 'core-app/shared/helpers/string-helpers';
-
-export const attributeLabelMacro = 'macro.macro--attribute-label';
+import { firstValueFrom } from 'rxjs';
+import { IOPFieldSchema } from 'core-app/features/hal/interfaces';
 
 @Component({
-  selector: attributeLabelMacro,
   templateUrl: './attribute-label-macro.html',
   styleUrls: ['./attribute-macro.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     HalResourceEditingService,
   ],
+  standalone: false,
 })
-export class AttributeLabelMacroComponent {
+export class AttributeLabelMacroComponent implements OnInit {
   // Whether the value could not be loaded
   error:string|null = null;
 
@@ -78,46 +81,46 @@ export class AttributeLabelMacroComponent {
   attribute:string;
 
   // The label to render
-  label:string;
+  label:string|undefined;
 
-  constructor(readonly elementRef:ElementRef,
+  constructor(
+    readonly elementRef:ElementRef,
     readonly injector:Injector,
     readonly resourceLoader:AttributeModelLoaderService,
     readonly schemaCache:SchemaCacheService,
     readonly displayField:DisplayFieldService,
     readonly I18n:I18nService,
-    readonly cdRef:ChangeDetectorRef) {
-
+    readonly cdRef:ChangeDetectorRef,
+  ) {
   }
 
-  ngOnInit() {
+  ngOnInit():void {
     const element = this.elementRef.nativeElement as HTMLElement;
-    const model:SupportedAttributeModels = element.dataset.model as any;
-    const id:string = element.dataset.id!;
-    const attributeName:string = element.dataset.attribute!;
+    const model = element.dataset.model as SupportedAttributeModels;
+    const id = element.dataset.id!;
+    const attributeName = element.dataset.attribute!;
     this.attributeScope = capitalize(model);
 
-    this.loadResourceAttribute(model, id, attributeName);
+    void this.loadResourceAttribute(model, id, attributeName);
   }
 
-  private async loadResourceAttribute(model:SupportedAttributeModels, id:string, attributeName:string) {
-    let resource:HalResource|null;
-
+  private async loadResourceAttribute(model:SupportedAttributeModels, id:string, attributeName:string):Promise<void> {
     try {
-      this.resource = resource = await this.resourceLoader.require(model, id);
+      this.resource = await firstValueFrom(this.resourceLoader.require(model, id));
     } catch (e) {
-      console.error(`Failed to render macro ${e}`);
-      return this.markError(this.text.not_found);
-    }
-
-    if (!resource) {
+      console.error('Failed to render macro %O', e);
       this.markError(this.text.not_found);
       return;
     }
 
-    const schema = await this.schemaCache.ensureLoaded(resource);
+    if (!this.resource) {
+      this.markError(this.text.not_found);
+      return;
+    }
+
+    const schema = await this.schemaCache.ensureLoaded(this.resource);
     this.attribute = schema.attributeFromLocalizedName(attributeName) || attributeName;
-    this.label = schema[this.attribute]?.name;
+    this.label = (schema[this.attribute] as IOPFieldSchema|undefined)?.name;
 
     if (!this.label) {
       this.markError(this.text.invalid_attribute(attributeName));

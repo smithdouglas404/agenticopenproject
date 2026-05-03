@@ -1,6 +1,6 @@
 # --copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,10 +30,10 @@ module API::V3::Values::Schemas
   class ValueSchemaAPI < ::API::OpenProjectAPI
     resources :schemas do
       params do
-        requires :property, desc: 'Name of the schema property', regexp: /^[a-z][a-zA-Z0-9]*$/
+        requires :property, desc: "Name of the schema property", regexp: /^[a-z][a-zA-Z0-9]*$/
       end
 
-      get ':property' do
+      get ":property" do
         ValueSchemaFactory.for(params[:property].underscore).tap do |representer|
           raise API::Errors::NotFound unless representer
         end

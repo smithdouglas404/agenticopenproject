@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,26 +29,24 @@
 #++
 
 FactoryBot.define do
-  factory :user, parent: :principal, class: 'User' do
-    firstname { 'Bob' }
-    lastname { 'Bobbit' }
+  factory :user, parent: :principal, class: "User" do
+    firstname { "Bob" }
+    sequence(:lastname) { |n| "Bobbit#{n}" }
     sequence(:login) { |n| "bob#{n}" }
     sequence(:mail) { |n| "bobmail#{n}.bobbit@bob.com" }
-    password { 'adminADMIN!' }
-    password_confirmation { 'adminADMIN!' }
+    password { "adminADMIN!" }
+    password_confirmation { "adminADMIN!" }
 
     transient do
       preferences { {} }
+      authentication_provider { nil }
+      external_id { SecureRandom.uuid }
     end
 
-    language { 'en' }
+    language { "en" }
     status { User.statuses[:active] }
     admin { false }
-    first_login { false if User.table_exists? and User.columns.map(&:name).include? 'first_login' }
-
-    transient do
-      global_permissions { [] }
-    end
+    first_login { false if User.table_exists? and User.columns.map(&:name).include? "first_login" }
 
     callback(:after_build) do |user, evaluator|
       evaluator.preferences&.each do |key, val|
@@ -63,37 +63,56 @@ FactoryBot.define do
         ]
       end
 
-      if factory.global_permissions.present?
-        global_role = create :global_role, permissions: factory.global_permissions
-        create :global_member, principal: user, roles: [global_role]
+      if factory.authentication_provider.present?
+        user.user_auth_provider_links.create!(auth_provider: factory.authentication_provider,
+                                              external_id: factory.external_id)
       end
     end
 
     callback(:after_stub) do |user, evaluator|
       if evaluator.preferences.present?
-        user.preference = build_stubbed(:user_preference, user:, settings: evaluator.preferences)
+        # The assign_attributes workaround is required, because assigning user.preference will trigger
+        # creating a new database record, which raises an error in the build_stubbed context
+        user.pref.assign_attributes(
+          build_stubbed(:user_preference, user:, settings: evaluator.preferences).attributes
+        )
       end
     end
 
-    factory :admin do
-      firstname { 'OpenProject' }
+    trait :passwordless do
+      password { nil }
+      password_confirmation { nil }
+    end
+
+    factory :admin, parent: :user, class: "User" do
+      firstname { "OpenProject" }
       sequence(:lastname) { |n| "Admin#{n}" }
       sequence(:login) { |n| "admin#{n}" }
       sequence(:mail) { |n| "admin#{n}@example.com" }
       admin { true }
-      first_login { false if User.table_exists? and User.columns.map(&:name).include? 'first_login' }
+      first_login { false if User.table_exists? and User.columns.map(&:name).include? "first_login" }
     end
 
-    factory :deleted_user, class: 'DeletedUser'
+    factory :deleted_user, class: "DeletedUser"
 
     factory :locked_user do
-      firstname { 'Locked' }
-      lastname { 'User' }
+      firstname { "Locked" }
+      lastname { "User" }
       sequence(:login) { |n| "locked#{n}" }
       sequence(:mail) { |n| "locked#{n}@bob.com" }
-      password { 'adminADMIN!' }
-      password_confirmation { 'adminADMIN!' }
+      password { "adminADMIN!" }
+      password_confirmation { "adminADMIN!" }
       status { User.statuses[:locked] }
+    end
+
+    factory :user_marked_for_deletion do
+      firstname { "Deleted" }
+      lastname { "User" }
+      sequence(:login) { |n| "deleted#{n}" }
+      sequence(:mail) { |n| "deleted#{n}@bob.com" }
+      password { "adminADMIN!" }
+      password_confirmation { "adminADMIN!" }
+      status { User.statuses[:deleted] }
     end
 
     factory :invited_user do
@@ -101,11 +120,11 @@ FactoryBot.define do
     end
   end
 
-  factory :anonymous, class: 'AnonymousUser' do
+  factory :anonymous, class: "AnonymousUser" do
     initialize_with { User.anonymous }
   end
 
-  factory :system, class: 'SystemUser' do
+  factory :system, class: "SystemUser" do
     initialize_with { User.system }
   end
 end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -37,16 +37,17 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
 
 @Directive({
   selector: '[opFocusWithin]',
+  standalone: false,
 })
 export class FocusWithinDirective extends UntilDestroyedMixin implements OnInit {
   @Input() public selector:string;
 
-  constructor(readonly elementRef:ElementRef) {
+  constructor(readonly elementRef:ElementRef<HTMLElement>) {
     super();
   }
 
   ngOnInit() {
-    const element = jQuery(this.elementRef.nativeElement);
+    const element = this.elementRef.nativeElement;
     const focusedObservable = new BehaviorSubject(false);
 
     focusedObservable
@@ -55,22 +56,22 @@ export class FocusWithinDirective extends UntilDestroyedMixin implements OnInit 
         auditTime(50),
       )
       .subscribe((focused) => {
-        element.toggleClass('-focus', focused);
+        element.classList.toggle('-focus', focused);
       });
 
     const focusListener = function () {
       focusedObservable.next(true);
     };
-    element[0].addEventListener('focus', focusListener, true);
+    element.addEventListener('focus', focusListener, true);
 
     const blurListener = function () {
       focusedObservable.next(false);
     };
-    element[0].addEventListener('blur', blurListener, true);
+    element.addEventListener('blur', blurListener, true);
 
     setTimeout(() => {
-      element.addClass('op-focus-within');
-      element.find(this.selector).addClass('op-focus-within');
+      element.classList.add('op-focus-within');
+      element.querySelector(this.selector)?.classList.add('op-focus-within');
     }, 0);
   }
 }

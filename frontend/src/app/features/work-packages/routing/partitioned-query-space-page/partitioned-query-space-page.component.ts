@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -44,15 +44,18 @@ import { ComponentType } from '@angular/cdk/overlay';
 import { Ng2StateDeclaration } from '@uirouter/angular';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { InviteUserModalComponent } from 'core-app/features/invite-user-modal/invite-user.component';
 import { WorkPackageFilterContainerComponent } from 'core-app/features/work-packages/components/filters/filter-container/filter-container.directive';
 import isPersistedResource from 'core-app/features/hal/helpers/is-persisted-resource';
 import { UIRouterGlobals } from '@uirouter/core';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import { firstValueFrom } from 'rxjs';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export interface DynamicComponentDefinition {
   component:ComponentType<any>;
-  inputs?:{ [inputName:string]:any };
-  outputs?:{ [outputName:string]:Function };
+  inputs?:Record<string, any>;
+  outputs?:Record<string, Function>;
 }
 
 export interface ToolbarButtonComponentDefinition extends DynamicComponentDefinition {
@@ -71,6 +74,7 @@ export type ViewPartitionState = '-split'|'-left-only'|'-right-only';
     { provide: HalResourceNotificationService, useClass: WorkPackageNotificationService },
     QueryParamListenerService,
   ],
+  standalone: false,
 })
 export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase implements OnInit, OnDestroy {
   @InjectField() I18n!:I18nService;
@@ -79,11 +83,17 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   @InjectField() queryParamListener:QueryParamListenerService;
 
+  @InjectField() pathHelperService:PathHelperService;
+
+  @InjectField() currentProjectService:CurrentProjectService;
+
   @InjectField() opModalService:OpModalService;
 
   @InjectField() uiRouterGlobals:UIRouterGlobals;
 
-  text:{ [key:string]:string } = {
+  @InjectField() configuration:ConfigurationService;
+
+  text:Record<string, string> = {
     jump_to_pagination: this.I18n.t('js.work_packages.jump_marks.pagination'),
     text_jump_to_pagination: this.I18n.t('js.work_packages.jump_marks.label_pagination'),
   };
@@ -117,9 +127,6 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   /** We need to pass the correct partition state to the view to manage the grid */
   currentPartition:ViewPartitionState = '-split';
-
-  /** What route (if any) should we go back to using the back button left of the title? */
-  backButtonCallback:() => void|undefined;
 
   /** Which filter container component to mount */
   filterContainerDefinition:DynamicComponentDefinition = {
@@ -171,6 +178,16 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
       });
   }
 
+  breadcrumbItems() {
+    throw new Error('Not implemented');
+  }
+
+  currentMenuSectionHeader() {
+    if (!this.currentQuery?.id) return this.I18n.t('js.label_default_queries');
+    if (this.currentQuery.starred) return this.I18n.t('js.label_starred_queries');
+    return this.currentQuery.public ? this.I18n.t('js.label_global_queries') : this.I18n.t('js.label_custom_queries');
+  }
+
   /**
    * We need to set the current partition to the grid to ensure
    * either side gets expanded to full width if we're not in '-split' mode.
@@ -178,7 +195,7 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
    * @param state The current or entering state
    */
   protected setPartition(state:Ng2StateDeclaration):void {
-    this.currentPartition = (state.data && state.data.partition) ? state.data.partition : '-split';
+    this.currentPartition = (state.data?.partition) ? state.data.partition : '-split';
   }
 
   protected setupInformationLoadedListener():void {
@@ -214,7 +231,10 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
     this.currentQuery!.name = val;
     this.wpListService
       .save(this.currentQuery)
-      .finally(() => { this.toolbarDisabled = false; });
+      .finally(() => {
+        this.toolbarDisabled = false;
+        this.cdRef.detectChanges();
+      });
   }
 
   updateTitle(query?:QueryResource):void {
@@ -233,7 +253,7 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
     }
   }
 
-  refresh(visibly = false, firstPage = false):Promise<QueryResource> {
+  refresh(visibly = false, firstPage = false):void {
     let promise = this.loadQuery(firstPage);
 
     if (visibly) {
@@ -245,19 +265,10 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
       this.loadingIndicator = promise;
     } else {
-      promise = promise.then((loadedQuery:QueryResource) => {
+      void promise.then((loadedQuery:QueryResource) => {
         this.wpStatesInitialization.initialize(loadedQuery, loadedQuery.results);
-        return loadedQuery;
       });
     }
-
-    return promise;
-  }
-
-  protected inviteModal = InviteUserModalComponent;
-
-  openInviteUserModal():void {
-    this.opModalService.show(this.inviteModal, 'global');
   }
 
   protected loadQuery(firstPage = false):Promise<QueryResource> {
@@ -268,9 +279,7 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
       promise = this.loadFirstPage();
     } else {
       const pagination = this.wpListService.getPaginationInfo();
-      promise = this.wpListService
-        .loadQueryFromExisting(query, pagination, this.projectIdentifier)
-        .toPromise();
+      promise = firstValueFrom(this.wpListService.loadQueryFromExisting(query, pagination, this.projectIdentifier));
     }
 
     return promise;
@@ -278,7 +287,7 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   protected loadFirstPage():Promise<QueryResource> {
     if (this.currentQuery) {
-      return this.wpListService.reloadQuery(this.currentQuery, this.projectIdentifier).toPromise();
+      return firstValueFrom(this.wpListService.reloadQuery(this.currentQuery, this.projectIdentifier));
     }
     return this.wpListService.loadCurrentQueryFromParams(this.projectIdentifier);
   }

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +38,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, first } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { IPrincipal } from 'core-app/core/state/principals/principal.model';
 import { IAttachment } from 'core-app/core/state/attachments/attachment.model';
@@ -51,30 +51,35 @@ import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-
 import { ConfirmDialogOptions } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.modal';
 import { getIconForMimeType } from 'core-app/shared/components/storages/functions/storages.functions';
 import { IFileIcon } from 'core-app/shared/components/storages/icons.mapping';
-import idFromLink from 'core-app/features/hal/helpers/id-from-link';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[op-attachment-list-item]',
   templateUrl: './attachment-list-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpAttachmentListItemComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit {
   @Input() public attachment:IAttachment;
 
   @Input() public index:number;
 
+  @Input() public showTimestamp = true;
+
+  @Input() public showDelete = true;
+
   @Output() public removeAttachment = new EventEmitter<void>();
 
-  @ViewChild('avatar') avatar:ElementRef;
+  @ViewChild('avatar') avatar:ElementRef<HTMLDivElement>;
 
   static imageFileExtensions:string[] = ['jpeg', 'jpg', 'gif', 'bmp', 'png'];
 
   public text = {
+    quarantinedHint: this.I18n.t('js.attachments.quarantined_hint'),
     dragHint: this.I18n.t('js.attachments.draggable_hint'),
     deleteTitle: this.I18n.t('js.attachments.delete'),
     deleteConfirmation: this.I18n.t('js.attachments.delete_confirmation'),
-    removeFile: (arg:unknown):string => this.I18n.t('js.label_remove_file', arg),
+    removeFile: (arg:object):string => this.I18n.t('js.label_remove_file', arg),
   };
 
   public get deleteIconTitle():string {
@@ -103,15 +108,10 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
   ngOnInit():void {
     this.fileIcon = getIconForMimeType(this.attachment.contentType);
 
-    const authorId = idFromLink(this.attachment._links.author.href);
-
-    if (!this.principalsResourceService.exists(authorId)) {
-      this.principalsResourceService.fetchUser(authorId).subscribe();
-    }
+    const href = this.attachment._links.author.href;
+    this.author$ = this.principalsResourceService.requireEntity(href);
 
     this.timestampText = this.timezoneService.parseDatetime(this.attachment.createdAt).fromNow();
-
-    this.author$ = this.principalsResourceService.lookup(authorId).pipe(first());
 
     combineLatest([
       this.author$,
@@ -173,7 +173,7 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
 
   private get isImage():boolean {
     const ext = this.attachment.fileName.split('.').pop() || '';
-    return OpAttachmentListItemComponent.imageFileExtensions.indexOf(ext.toLowerCase()) > -1;
+    return OpAttachmentListItemComponent.imageFileExtensions.includes(ext.toLowerCase());
   }
 
   public confirmRemoveAttachment():void {
@@ -182,9 +182,6 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
         text: this.text.deleteConfirmation,
         title: this.text.deleteTitle,
         button_continue: this.text.deleteTitle,
-      },
-      icon: {
-        continue: 'delete',
       },
       dangerHighlighting: true,
     };

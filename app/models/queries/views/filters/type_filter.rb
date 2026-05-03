@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,7 @@ class Queries::Views::Filters::TypeFilter < Queries::Views::Filters::ViewFilter
   end
 
   def where
-    operator_strategy.sql_for_field(transformed_values, View.table_name, 'type')
+    operator_strategy.sql_for_field(transformed_values, View.table_name, "type")
   end
 
   def transformed_values

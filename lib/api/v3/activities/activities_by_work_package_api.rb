@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +26,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'api/v3/activities/activity_representer'
+require "api/v3/activities/activity_representer"
 
 module API
   module V3
     module Activities
       class ActivitiesByWorkPackageAPI < ::API::OpenProjectAPI
         resource :activities do
+          helpers do
+            def to_boolean(value, default)
+              ActiveRecord::Type::Boolean.new.cast(value.presence || default)
+            end
+          end
+
           get do
             self_link = api_v3_paths.work_package_activities @work_package.id
-            journals = @work_package.journals.includes(:data,
-                                                       :customizable_journals,
-                                                       :attachable_journals,
-                                                       :bcf_comment)
+
+            journals = @work_package
+              .journals
+              .internal_visible
+              .includes(:data,
+                        :customizable_journals,
+                        :attachable_journals,
+                        :storable_journals,
+                        :bcf_comment)
 
             Activities::ActivityCollectionRepresenter.new(journals,
                                                           self_link:,
@@ -49,20 +60,22 @@ module API
             requires :comment, type: Hash
           end
           post do
-            authorize({ controller: :journals, action: :new }, context: @work_package.project) do
+            authorize_in_work_package({ controller: :journals, action: :new }, work_package: @work_package) do
               raise ::API::Errors::NotFound.new
             end
 
-            result = AddWorkPackageNoteService
+            internal = to_boolean(params[:internal], false)
+            call = AddWorkPackageNoteService
                        .new(user: current_user,
                             work_package: @work_package)
                        .call(params[:comment][:raw],
-                             send_notifications: !(params.has_key?(:notify) && params[:notify] == 'false'))
+                             send_notifications: to_boolean(params[:notify], true),
+                             internal:)
 
-            if result.success?
-              Activities::ActivityRepresenter.new(work_package.journals.last, current_user:)
+            if call.success?
+              Activities::ActivityRepresenter.new(call.result, current_user:)
             else
-              fail ::API::Errors::ErrorBase.create_and_merge_errors(result.errors)
+              fail ::API::Errors::ErrorBase.create_and_merge_errors(call.errors)
             end
           end
         end

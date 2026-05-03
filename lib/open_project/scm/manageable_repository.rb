@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,8 +34,8 @@ module OpenProject
 
         ##
         # Take note when projects are renamed and check for associated managed repositories
-        OpenProject::Notifications.subscribe('project_renamed') do |payload|
-          repository = payload[:project].repository
+        OpenProject::Notifications.subscribe(OpenProject::Events::PROJECT_RENAMED) do |payload|
+          repository = payload[:project]&.repository
 
           if repository&.managed?
             ::SCM::RelocateRepositoryJob.perform_later(repository)
@@ -111,7 +111,14 @@ module OpenProject
       # Used only in the creation of a repository, at a later point
       # in time, it is referred to in the root_url
       def managed_repository_path
-        File.join(self.class.managed_root, repository_identifier)
+        root = File.expand_path(self.class.managed_root)
+        path = File.expand_path(File.join(root, repository_identifier))
+
+        unless path.start_with?("#{root}/")
+          raise ArgumentError, "Repository path escapes the configured managed root directory"
+        end
+
+        path
       end
 
       ##

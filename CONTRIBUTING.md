@@ -4,15 +4,14 @@ We are pleased that you are thinking about contributing to OpenProject! This gui
 
 ## Get in touch
 
-Please get in touch with us using our [develompment forum](https://community.openproject.com/projects/openproject/boards/7) or send us an email to info@openproject.com.
+Please get in touch with us using our [OpenProject community platform](https://community.openproject.org/) or send us an email to [info@openproject.com](mailto:info@openproject.com).
 
 ## Issue tracking and coordination
 
 We eat our own ice cream so we use OpenProject for roadmap planning and team collaboration. Please have a look at the following pages:
 
-- [Product roadmap](https://community.openproject.org/projects/openproject/work_packages?query_id=1993)
+- [Product roadmap](https://community.openproject.org/projects/openproject/roadmap)
 - [Wish list](https://community.openproject.org/projects/openproject/work_packages?query_id=180)
-- [Bug backlog board](https://community.openproject.org/projects/openproject/boards/2905)
 - [Report a bug](https://www.openproject.org/docs/development/report-a-bug/)
 - [Submit a feature idea](https://www.openproject.org/docs/development/submit-feature-idea/)
 
@@ -31,39 +30,39 @@ For contributing source code, please follow the git workflow below:
 - **Fork** OpenProject on GitHub
 - Clone your fork to your development machine:
 
-```
+```bash
 git clone git@github.com/<username>/openproject
 ```
 
 - Optional: Add the original OpenProject repository as a remote, so you can fetch changes:
 
-```
+```bash
 git remote add upstream git@github.com:opf/openproject
 ```
 
 - Make sure you're on the right branch. The main development branch is `dev`:
 
-```
+```bash
 git checkout dev
 ```
 
 - Create a feature branch:
 
-```
+```bash
 git checkout -b feature/<short description of your feature>
 ```
 
 - Make your changes, then push the branch into your ***own*** repository:
 
-```
+```bash
 git push origin <your feature branch>
 ```
 
 - Create a pull request against a branch of of the <opf/openproject> repository, containing a ***clear description*** of what the pull request attempts to change and/or fix.
 
-If your pull request **does not contain a description** for what it does and what it's intentions are,
+If your pull request **does not contain a description** for what it does and what its intentions are,
 we will reject it.
-If you are working on a specific work package from the [list](https://community.openproject.com/projects/openproject/work_packages),
+If you are working on a specific work package from the [list](https://community.openproject.org/projects/openproject/work_packages),
 you may include a link to that work package in the description, so we can track your work.
 
 The core contributor team will then review your pull request according to our [code review guideline](https://www.openproject.org/open-source/development-free-project-management-software/code-review-guideliness/).
@@ -83,11 +82,9 @@ More on this topic can be found in our [blog post](https://www.openproject.org/h
 
 Please add tests to your code to verify functionality, especially if it is a new feature.
 
-Pull requests will be verified by TravisCI as well,
+Pull requests will be verified by GitHub Actions,
 but please run them locally as well and make sure they are green before creating your pull request.
 We have a lot of pull requests coming in and it takes some time to run the complete suite for each one.
-
-If you push to your branch in quick succession, please consider stopping the associated Travis builds, as Travis will run for each commit. This is especially true if you force push to the branch.
 
 Please also use `[ci skip]` in your commit message to suppress builds which are not necessary
 (e.g. after fixing a typo in the `README`).
@@ -100,17 +97,17 @@ A fix for the current version (called "Hotfix" and the branch ideally being name
 should target `release/*` and a fix for the former version
 (called "Backport" and the branch ideally being named `backport/XYZ`)
 should target `backport/*`. We will try to merge hotfixes into dev branch
-but if that is no trivial task, we might ask you to create another PR for that.
+but if that is a non-trivial task, we might ask you to create another PR for that.
 
 ## Inactive pull requests
 
-We want to keep the Pull request list as cleaned up as possible - we will aim close pull requests
+We want to keep the Pull request list as tidy as possible - we will aim close pull requests
 after an **inactivity period of 30 days** (no comments, no further pushes)
 which are not labelled as `work in progress` by us.
 
 ## Security
 
-If you notice a security issue in OpenProject, please send us a gpg encrypted email to security@openproject.com and describe the issue you found. Download our public gpg key [here](https://pgp.mit.edu/pks/lookup?op=get&search=0x7D669C6D47533958).
+If you notice a security issue in OpenProject, please send us a gpg encrypted email to security@openproject.com and describe the issue you found. [Download OpenProject security team public gpg key](https://keys.openpgp.org/vks/v1/by-fingerprint/BDCFE01EDE84EA199AE172CE7D669C6D47533958).
 
 Please include a description on how to reproduce the issue if possible. Our security team will get your email and will attempt to reproduce and fix the issue as soon as possible.
 
@@ -136,12 +133,13 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 by opening an issue or contacting one or more of the project maintainers.
 
 This code of conduct is adapted from the
-[Contributor Covenant](http:contributor-covenant.org),
+[Contributor Covenant](https://www.contributor-covenant.org),
 version 1.0.0, available at
-[http://contributor-covenant.org/version/1/0/0/](http://contributor-covenant.org/version/1/0/0/)
+[http://contributor-covenant.org/version/1/0/0/](https://www.contributor-covenant.org/version/1/0/0/code-of-conduct/)
 
 ## Contributors license agreement
 
-Contributors have to sign a CLA before contributing to OpenProject.
-The [CLA can be found here](https://www.openproject.org/legal/contributor-license-agreement/)
-and has to be filled out and sent to info@openproject.org.
+If you want to contribute to OpenProject, please make sure to accept our Contributor License Agreement (CLA). The CLA documents the rights granted by contributors to OpenProject.
+The [CLA can be found here](https://www.openproject.org/legal/contributor-license-agreement/).
+
+A GitHub action will enforce the CLA has been read and accepted by every new contributor. You will only be asked once, the document is short, and signing is easy.

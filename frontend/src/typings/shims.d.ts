@@ -11,33 +11,55 @@
 /// <reference path="../../node_modules/@types/moment-timezone/index.d.ts" />
 /// <reference path="../../node_modules/@types/urijs/index.d.ts" />
 /// <reference path="../../node_modules/@types/webpack-env/index.d.ts" />
-/// <reference path="../../node_modules/@types/dragula/index.d.ts" />
 /// <reference path="../../node_modules/@types/resize-observer-browser/index.d.ts" />
 
 import { Injector } from '@angular/core';
 
 import { OpenProject } from 'core-app/core/setup/globals/openproject';
 import * as TLodash from 'lodash';
-import * as TMoment from 'moment';
-import { GlobalI18n } from 'core-app/core/i18n/i18n.service';
-import { Dragula } from 'dragula';
 import { Screenfull } from 'screenfull';
 import { ErrorReporterBase } from 'core-app/core/errors/error-reporter-base';
+import { I18n } from 'i18n-js';
 
 declare module 'observable-array';
 declare module 'dom-autoscroller';
 declare module 'core-vendor/enjoyhint';
 
+declare module '@hotwired/turbo' {
+  interface BrowserAdapter {
+    formSubmissionStarted:() => void;
+    formSubmissionFinished:() => void;
+  }
+
+  export const session:{
+    drive:boolean;
+    adapter:BrowserAdapter;
+  };
+
+  export const config:{
+    drive:{ progressBarDelay:number }
+  };
+
+  export const navigator:{
+    submitForm:(form:HTMLFormElement, submitter?:HTMLElement) => void;
+  };
+
+  export interface StreamElement {
+    templateElement:HTMLTemplateElement;
+    templateContent:DocumentFragment;
+  }
+
+  export function start():void;
+}
+
 declare global {
   const _:typeof TLodash;
-  const moment:typeof TMoment;
-  const I18n:GlobalI18n;
-  const dragula:Dragula;
+  const I18n:I18n;
 }
 
 declare global {
   interface Window {
-    I18n:GlobalI18n;
+    I18n:I18n;
     appBasePath:string;
     ng2Injector:Injector;
     OpenProject:OpenProject;
@@ -48,8 +70,6 @@ declare global {
   }
 
   interface JQuery {
-    topShelf:any;
-    mark:any;
     tablesorter:any;
   }
 

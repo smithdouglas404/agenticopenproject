@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,144 +28,193 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require File.expand_path('../support/shared/become_member', __dir__)
+require "spec_helper"
 
-describe Project do
+RSpec.describe Project do
   include BecomeMember
+
   shared_let(:admin) { create(:admin) }
 
   let(:active) { true }
   let(:project) { create(:project, active:) }
-  let(:build_project) { build_stubbed(:project, active:) }
+  let(:build_project) { build(:project, active:) }
   let(:user) { create(:user) }
 
-  describe '#active?' do
-    context 'if active' do
-      it 'is true' do
+  describe ".templated" do
+    let!(:projects) { create_list(:project, 2) }
+    let!(:templated_projects) { create_list(:template_project, 1) }
+
+    it "returns templated projects only" do
+      expect(described_class.templated).to match_array(templated_projects)
+    end
+  end
+
+  describe "template associations" do
+    let(:template) { create(:template_project) }
+    let(:project_from_template) { create(:project, template:) }
+
+    it { is_expected.to belong_to(:template).class_name("Project").optional }
+    it { is_expected.to have_many(:templated_projects).class_name("Project").with_foreign_key("template_id") }
+
+    it "allows a project to reference its template" do
+      expect(project_from_template.template).to eq(template)
+    end
+
+    it "allows a template to access projects created from it" do
+      expect(template.templated_projects).to include(project_from_template)
+    end
+  end
+
+  describe "#active?" do
+    context "if active" do
+      it "is true" do
         expect(project).to be_active
       end
     end
 
-    context 'if not active' do
+    context "if not active" do
       let(:active) { false }
 
-      it 'is false' do
+      it "is false" do
         expect(project).not_to be_active
       end
     end
   end
 
-  describe '#archived?' do
-    context 'if archived' do
-      it 'is true' do
-        expect(project).not_to be_archived
-      end
+  describe "#archived?" do
+    subject { project.archived? }
+
+    context "if active is true" do
+      let(:active) { true }
+
+      it { is_expected.to be false }
     end
 
-    context 'if not archived' do
+    context "if active is false" do
       let(:active) { false }
 
-      it 'is false' do
-        expect(project).to be_archived
-      end
+      it { is_expected.to be true }
     end
   end
 
-  context 'when the wiki module is enabled' do
-    let(:project) { create(:project, disable_modules: 'wiki') }
+  describe "#being_archived?" do
+    subject { project.being_archived? }
+
+    context "if active is true" do
+      let(:active) { true }
+
+      it { is_expected.to be false }
+    end
+
+    context "if active was true and changes to false (marking as archived)" do
+      let(:active) { true }
+
+      before do
+        project.active = false
+      end
+
+      it { is_expected.to be true }
+    end
+
+    context "if active is false" do
+      let(:active) { false }
+
+      it { is_expected.to be false }
+    end
+
+    context "if active was false and changes to true (marking as active)" do
+      let(:active) { false }
+
+      before do
+        project.active = true
+      end
+
+      it { is_expected.to be false }
+    end
+  end
+
+  context "when the wiki module is enabled" do
+    let(:project) { create(:project, disable_modules: "wiki") }
 
     before do
-      project.enabled_module_names = project.enabled_module_names | ['wiki']
+      project.enabled_module_names = project.enabled_module_names | ["wiki"]
       project.save
       project.reload
     end
 
-    it 'creates a wiki' do
+    it "creates a wiki" do
       expect(project.wiki).to be_present
     end
 
-    it 'creates a wiki menu item named like the default start page' do
+    it "creates a wiki menu item named like the default start page" do
       expect(project.wiki.wiki_menu_items).to be_one
       expect(project.wiki.wiki_menu_items.first.title).to eq(project.wiki.start_page)
     end
   end
 
-  describe '#copy_allowed?' do
+  describe "#copy_allowed?" do
     let(:user) { build_stubbed(:user) }
     let(:project) { build_stubbed(:project) }
     let(:permission_granted) { true }
 
     before do
-      allow(user)
-        .to receive(:allowed_to?)
-        .with(:copy_projects, project)
-        .and_return(permission_granted)
+      mock_permissions_for(user) do |mock|
+        mock.allow_in_project :copy_projects, project:
+      end
 
       login_as(user)
     end
 
-    context 'with copy project permission' do
-      it 'is true' do
+    context "with copy project permission" do
+      it "is true" do
         expect(project).to be_copy_allowed
       end
     end
 
-    context 'without copy project permission' do
-      let(:permission_granted) { false }
+    context "without copy project permission" do
+      before { mock_permissions_for(user, &:forbid_everything) }
 
-      it 'is false' do
+      it "is false" do
         expect(project).not_to be_copy_allowed
       end
     end
   end
 
-  describe 'status' do
-    let(:status) { build_stubbed(:project_status) }
-    let(:stubbed_project) do
-      build_stubbed(:project,
-                    status:)
-    end
-
-    it 'has a status' do
-      expect(stubbed_project.status)
-        .to eql status
-    end
-
-    it 'is destroyed along with the project' do
-      status = project.create_status explanation: 'some description'
-
-      project.destroy!
-
-      expect(Projects::Status.where(id: status.id))
-        .not_to exist
-    end
-  end
-
-  describe 'name' do
-    let(:name) { '     Hello    World   ' }
+  describe "name" do
+    let(:name) { "     Hello    World   " }
     let(:project) { described_class.new attributes_for(:project, name:) }
 
-    context 'with white spaces in the name' do
-      it 'trims the name' do
-        project.save
-        expect(project.name).to eql('Hello World')
+    context "with whitespace in the name" do
+      it "normalizes excess whitespace" do
+        expect(subject).to normalize(:name).from(name).to("Hello World")
       end
     end
 
-    context 'when updating the name' do
-      it 'persists the update' do
+    context "when updating the name" do
+      it "persists the update" do
         project.save
-        project.name = 'A new name'
+        project.name = "A new name"
         project.save
         project.reload
 
-        expect(project.name).to eql('A new name')
+        expect(project.name).to eql("A new name")
       end
     end
   end
 
-  describe '#types_used_by_work_packages' do
+  describe "workspace_type" do
+    it "is set to nil by default, to force having errors when it has not been set" do
+      # Would it make sense to have "project" as default value?
+      project = described_class.new
+      expect(project.workspace_type).to be_nil
+    end
+
+    it "must be one of the allowed values: #{described_class.workspace_types.keys}" do
+      expect(project).to validate_inclusion_of(:workspace_type).in_array(%w[project program portfolio])
+    end
+  end
+
+  describe "#types_used_by_work_packages" do
     let(:project) { create(:project_with_types) }
     let(:type) { project.types.first }
     let(:other_type) { create(:type) }
@@ -171,19 +222,19 @@ describe Project do
     let(:other_project) { create(:project, types: [other_type, type]) }
     let(:other_project_work_package) { create(:work_package, type: other_type, project: other_project) }
 
-    it 'returns the type used by a work package of the project' do
+    it "returns the type used by a work package of the project" do
       project_work_package
       other_project_work_package
 
-      expect(project.types_used_by_work_packages).to match_array [project_work_package.type]
+      expect(project.types_used_by_work_packages).to contain_exactly(project_work_package.type)
     end
   end
 
-  describe 'Views belonging to queries that belong to the project' do
+  describe "Views belonging to queries that belong to the project" do
     let(:query) { create(:query, project:) }
     let(:view) { create(:view, query:) }
 
-    it 'destroys the views and queries when project gets destroyed' do
+    it "destroys the views and queries when project gets destroyed" do
       view
       project.destroy
 
@@ -192,45 +243,41 @@ describe Project do
     end
   end
 
-  describe '#members' do
-    let(:role) { create(:role) }
+  describe "#members" do
+    let(:role) { create(:project_role) }
     let(:active_user) { create(:user) }
     let!(:active_member) { create(:member, project:, user: active_user, roles: [role]) }
 
     let(:inactive_user) { create(:user, status: Principal.statuses[:locked]) }
     let!(:inactive_member) { create(:member, project:, user: inactive_user, roles: [role]) }
 
-    it 'only includes active members' do
+    it "only includes active members" do
       expect(project.members)
         .to eq [active_member]
     end
   end
 
-  include_examples 'creates an audit trail on destroy' do
+  it_behaves_like "creates an audit trail on destroy" do
     subject { create(:attachment) }
   end
 
-  describe '#users' do
-    let(:role) { create(:role) }
+  describe "#users" do
+    let(:role) { create(:project_role) }
     let(:active_user) { create(:user) }
     let!(:active_member) { create(:member, project:, user: active_user, roles: [role]) }
 
     let(:inactive_user) { create(:user, status: Principal.statuses[:locked]) }
     let!(:inactive_member) { create(:member, project:, user: inactive_user, roles: [role]) }
 
-    it 'only includes active users' do
+    it "only includes active users" do
       expect(project.users)
         .to eq [active_user]
     end
   end
 
-  include_examples 'creates an audit trail on destroy' do
-    subject { create(:attachment) }
-  end
-
-  describe '#close_completed_versions' do
+  describe "#close_completed_versions" do
     let!(:completed_version) do
-      create(:version, project:, effective_date: Date.parse('2000-01-01')).tap do |v|
+      create(:version, project:, effective_date: Date.parse("2000-01-01")).tap do |v|
         create(:work_package, version: v, status: create(:closed_status))
       end
     end
@@ -240,7 +287,7 @@ describe Project do
       end
     end
     let!(:version_with_open_wps) do
-      create(:version, project:, effective_date: Date.parse('2000-01-01')).tap do |v|
+      create(:version, project:, effective_date: Date.parse("2000-01-01")).tap do |v|
         create(:work_package, version: v)
       end
     end
@@ -249,80 +296,101 @@ describe Project do
       project.close_completed_versions
     end
 
-    it 'closes the completed version' do
+    it "closes the completed version" do
       expect(completed_version.reload.status)
-        .to eq 'closed'
+        .to eq "closed"
     end
 
-    it 'keeps the version with the not yet reached date open' do
+    it "keeps the version with the not yet reached date open" do
       expect(ineffective_version.reload.status)
-        .to eq 'open'
+        .to eq "open"
     end
 
-    it 'keeps the version with open work packages open' do
+    it "keeps the version with open work packages open" do
       expect(version_with_open_wps.reload.status)
-        .to eq 'open'
+        .to eq "open"
     end
   end
 
-  describe 'hierarchy methods' do
+  describe "hierarchy methods" do
     shared_let(:root_project) { create(:project) }
     shared_let(:parent_project) { create(:project, parent: root_project) }
     shared_let(:child_project1) { create(:project, parent: parent_project) }
     shared_let(:child_project2) { create(:project, parent: parent_project) }
 
-    describe '#parent' do
-      it 'returns the parent' do
+    describe "#parent" do
+      it "returns the parent" do
         expect(parent_project.parent)
           .to eq root_project
       end
     end
 
-    describe '#root' do
-      it 'returns the root of the hierarchy' do
+    describe "#root" do
+      it "returns the root of the hierarchy" do
         expect(child_project1.root)
           .to eq root_project
       end
     end
 
-    describe '#ancestors' do
-      it 'returns the ancestors of the work package' do
+    describe "#ancestors" do
+      it "returns the ancestors of the work package" do
         expect(child_project1.ancestors)
           .to eq [root_project, parent_project]
       end
 
-      it 'returns empty array if there are no ancestors' do
+      it "returns empty array if there are no ancestors" do
         expect(root_project.ancestors)
           .to be_empty
       end
     end
 
-    describe '#desendants' do
-      it 'returns the descendants of the work package' do
+    describe "#descendants" do
+      it "returns the descendants of the work package" do
         expect(root_project.descendants)
-          .to eq [parent_project, child_project1, child_project2]
+          .to contain_exactly(parent_project, child_project1, child_project2)
       end
 
-      it 'returns empty array if there are no descendants' do
+      it "returns empty array if there are no descendants" do
         expect(child_project2.descendants)
           .to be_empty
       end
     end
 
-    describe '#children' do
-      it 'returns the children of the work package' do
+    describe "#children" do
+      it "returns the children of the work package" do
         expect(parent_project.children)
-          .to eq [child_project1, child_project2]
+          .to contain_exactly(child_project1, child_project2)
       end
 
-      it 'returns empty array if there are no descendants' do
+      it "returns empty array if there are no descendants" do
         expect(child_project2.children)
           .to be_empty
       end
     end
   end
 
-  describe '#rolled_up_types' do
+  describe "#active_subprojects" do
+    subject { root_project.active_subprojects }
+
+    shared_let(:root_project) { create(:project) }
+    shared_let(:parent_project) { create(:project, parent: root_project) }
+    shared_let(:child_project1) { create(:project, parent: parent_project) }
+
+    context "with an archived subproject" do
+      before do
+        child_project1.active = false
+        child_project1.save
+      end
+
+      it { is_expected.to eq [parent_project] }
+    end
+
+    context "with all active subprojects" do
+      it { is_expected.to eq [parent_project, child_project1] }
+    end
+  end
+
+  describe "#rolled_up_types" do
     let!(:parent) do
       create(:project, types: [parent_type]).tap do |p|
         project.update_attribute(:parent, p)
@@ -343,7 +411,7 @@ describe Project do
       end
     end
 
-    it 'includes all types of active projects starting from receiver down to the leaves' do
+    it "includes all types of active projects starting from receiver down to the leaves" do
       project.reload
 
       expect(project.rolled_up_types)
@@ -351,30 +419,191 @@ describe Project do
     end
   end
 
-  describe '#enabled_module_names=', with_settings: { default_projects_modules: %w(work_package_tracking repository) } do
-    context 'when assigning a new value' do
+  describe "#project_phases" do
+    it { is_expected.to have_many(:phases).class_name("Project::Phase").dependent(:destroy) }
+
+    it "has many available_phases" do
+      expect(subject).to have_many(:available_phases)
+                    .class_name("Project::Phase")
+                    .inverse_of(:project)
+                    .dependent(nil)
+                    .order("project_phase_definitions.position ASC")
+    end
+
+    it "checks for active flag" do
+      expect(subject.available_phases.to_sql)
+        .to include("\"project_phases\".\"active\" = TRUE")
+    end
+
+    it "checks for :view_project_phases permission" do
+      project_condition = described_class.allowed_to(User.current, :view_project_phases).select(:id)
+
+      expect(subject.available_phases.to_sql).to include(project_condition.to_sql)
+    end
+
+    it "eager loads :definition" do
+      expect(subject.available_phases.to_sql)
+        .to include("LEFT OUTER JOIN \"project_phase_definitions\" ON")
+    end
+
+    describe ".validates_associated" do
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i(view_project view_project_phases) })
+      end
+      let!(:project_phase) do
+        create :project_phase, :skip_validate, project:, start_date: Date.new(3000, 1, 1), finish_date: Date.new(2000, 1, 1)
+      end
+
+      current_user { user }
+
+      it "is valid without a validation context" do
+        expect(project).to be_valid
+      end
+
+      it "is invalid with the :saving_phases validation context" do
+        expect(project).not_to be_valid(:saving_phases)
+      end
+    end
+  end
+
+  describe "#enabled_module_names=", with_settings: { default_projects_modules: %w(work_package_tracking repository) } do
+    context "when assigning a new value" do
       let(:new_value) { %w(work_package_tracking news) }
 
       subject do
         project.enabled_module_names = new_value
       end
 
-      it 'sets the value' do
+      it "sets the value" do
         subject
 
         expect(project.reload.enabled_module_names.sort)
           .to eql new_value.sort
       end
 
-      it 'keeps already assigned modules intact (same id)' do
+      it "keeps already assigned modules intact (same id)" do
         expect { subject }
-          .not_to change { project.reload.enabled_modules.find { |em| em.name == 'work_package_tracking' }.id }
+          .not_to change { project.reload.enabled_modules.find { |em| em.name == "work_package_tracking" }.id }
       end
     end
   end
 
-  it_behaves_like 'acts_as_customizable included' do
-    let(:model_instance) { project }
-    let(:custom_field) { create(:string_project_custom_field) }
+  it_behaves_like "acts_as_favoritable included" do
+    let(:instance) { project }
+  end
+
+  it_behaves_like "acts_as_customizable included", admin_only_allowed: true, comments: true do
+    let!(:model_instance) { project }
+    let!(:new_model_instance) { build_project }
+    let!(:custom_field) { create(:string_project_custom_field) }
+
+    before do
+      allow(project).to receive(:available_custom_fields) { ProjectCustomField.all }
+      allow(new_model_instance).to receive(:available_custom_fields) { ProjectCustomField.all }
+    end
+
+    describe "valid?" do
+      let(:custom_field) { create(:string_project_custom_field, is_required: true) }
+
+      before do
+        model_instance.custom_field_values = { custom_field.id => "test" }
+        model_instance.save
+        model_instance.custom_field_values = { custom_field.id => nil }
+        # Ensure the custom values are validated.
+        # Note: Since the default behavior is to not validate custom values unless they are
+        # received from the user input, the :saving_custom_fields validation context might
+        # not be required anymore.
+        model_instance.custom_values_to_validate = model_instance.custom_field_values
+      end
+
+      context "without a validation context" do
+        it "does not validates the custom fields" do
+          expect(model_instance).to be_valid
+        end
+
+        it "does not includes the default validation context in the validation_context" do
+          model_instance.send(:validation_context=, :custom_context)
+          expect(model_instance.validation_context).to eq(:custom_context)
+        end
+      end
+
+      context "with the :saving_custom_fields validation context" do
+        it "validates the custom fields" do
+          expect(model_instance).not_to be_valid(:saving_custom_fields)
+        end
+
+        it "includes the default validation context too in the validation_context" do
+          model_instance.send(:validation_context=, :saving_custom_fields)
+          expect(model_instance.validation_context).to eq(%i(saving_custom_fields update))
+        end
+      end
+    end
+  end
+
+  describe "#custom_values_for_custom_field" do
+    let(:custom_field) { create(:list_project_custom_field, multi_value: true) }
+    # intentionally out of order
+    let!(:cv2) { create(:custom_value, id: 1002, customized: project, custom_field:) }
+    let!(:cv1) { create(:custom_value, id: 1001, customized: project, custom_field:) }
+    let!(:cv3) { create(:custom_value, id: 1003, customized: project, custom_field:) }
+
+    before do
+      allow(project).to receive(:available_custom_fields) { ProjectCustomField.all }
+    end
+
+    it "returns values ordered by id" do
+      values = project.custom_values_for_custom_field(custom_field)
+      expect(values).to eq([cv1, cv2, cv3])
+    end
+  end
+
+  describe "#allowed_parent_workspace_types" do
+    {
+      project: %i[portfolio program project],
+      program: %i[portfolio],
+      portfolio: %i[]
+    }.each do |workspace_type, allowed_parent_workspace_types|
+      context "for workspace type #{workspace_type}" do
+        let(:project) { described_class.new(workspace_type:) }
+
+        subject { project.allowed_parent_workspace_types }
+
+        it { is_expected.to match_array(allowed_parent_workspace_types) }
+      end
+    end
+
+    context "for unknown workspace type" do
+      let(:project) { described_class.new(workspace_type: :unknown) }
+
+      subject { project.allowed_parent_workspace_types }
+
+      it { is_expected.to eq [] }
+    end
+  end
+
+  describe "#parent_allowed?" do
+    context "for a project" do
+      let(:workspace) { build_stubbed(:project) }
+
+      it "is truthy" do
+        expect(workspace).to be_parent_allowed
+      end
+    end
+
+    context "for a program" do
+      let(:workspace) { build_stubbed(:program) }
+
+      it "is truthy" do
+        expect(workspace).to be_parent_allowed
+      end
+    end
+
+    context "for a portfolio" do
+      let(:workspace) { build_stubbed(:portfolio) }
+
+      it "is falsey" do
+        expect(workspace).not_to be_parent_allowed
+      end
+    end
   end
 end

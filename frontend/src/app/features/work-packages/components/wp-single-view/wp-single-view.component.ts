@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -36,27 +36,34 @@ import {
   OnInit,
 } from '@angular/core';
 import { StateService } from '@uirouter/core';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { distinctUntilChanged, first, map } from 'rxjs/operators';
+
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { distinctUntilChanged, map } from 'rxjs/operators';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
-import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
+import {
+  HalResourceEditingService,
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { DisplayFieldService } from 'core-app/shared/components/fields/display/display-field.service';
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { HookService } from 'core-app/features/plugins/hook-service';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
-import { Subject } from 'rxjs';
 import { randomString } from 'core-app/shared/helpers/random-string';
-import { BrowserDetector } from 'core-app/core/browser/browser-detector.service';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
-import idFromLink from 'core-app/features/hal/helpers/id-from-link';
-import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { States } from 'core-app/core/states/states.service';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import { ProjectsResourceService } from 'core-app/core/state/projects/projects.service';
+import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
+import { HalResource } from 'core-app/features/hal/resources/hal-resource';
+import { ProjectStoragesResourceService } from 'core-app/core/state/project-storages/project-storages.service';
+import { IProjectStorage } from 'core-app/core/state/project-storages/project-storage.model';
+import idFromLink from 'core-app/features/hal/helpers/id-from-link';
+import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 
 export interface FieldDescriptor {
   name:string;
@@ -86,9 +93,10 @@ export interface ResourceContextChange {
 export const overflowingContainerAttribute = 'overflowingIdentifier';
 
 @Component({
-  templateUrl: './wp-single-view.html',
+  templateUrl: './wp-single-view.component.html',
   selector: 'wp-single-view',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
@@ -99,30 +107,25 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   // Grouped fields returned from API
   public groupedFields:GroupDescriptor[] = [];
 
-  // State updated when structural changes to the single view may occur.
-  // (e.g., when changing the type or project context).
-  public resourceContextChange = new Subject<ResourceContextChange>();
-
   // Project context as an indicator
   // when editing the work package in a different project
   public projectContext:{
     matches:boolean,
+    id:string|null,
     href:string|null,
     field?:FieldDescriptor[]
   };
 
   public text = {
+    linkProject: (name:string) => this.I18n.t('js.project.click_to_switch_to_project', { projectname: name }),
     attachments: {
       label: this.I18n.t('js.label_attachments'),
     },
     files: {
       label: this.I18n.t('js.work_packages.tabs.files'),
-      migration_help: this.I18n.t('js.work_packages.tabs.files_tab_migration_help'),
     },
     project: {
       required: this.I18n.t('js.project.required_outside_context'),
-      context: this.I18n.t('js.project.context'),
-      switchTo: this.I18n.t('js.project.click_to_switch_context'),
     },
 
     fields: {
@@ -138,82 +141,114 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
 
   public uiSelfRef:string;
 
-  protected firstTimeFocused = false;
+  element:HTMLElement;
 
-  $element:JQuery;
+  projectStorages = new BehaviorSubject<IProjectStorage[]>([]);
 
-  constructor(readonly I18n:I18nService,
-    protected currentProject:CurrentProjectService,
-    protected PathHelper:PathHelperService,
-    protected $state:StateService,
-    protected states:States,
-    protected halEditing:HalResourceEditingService,
-    protected halResourceService:HalResourceService,
-    protected displayFieldService:DisplayFieldService,
-    protected schemaCache:SchemaCacheService,
-    protected hook:HookService,
-    protected injector:Injector,
-    protected cdRef:ChangeDetectorRef,
-    readonly elementRef:ElementRef,
-    readonly browserDetector:BrowserDetector) {
+  constructor(
+    protected readonly injector:Injector,
+    private readonly states:States,
+    private readonly I18n:I18nService,
+    private readonly hook:HookService,
+    private readonly $state:StateService,
+    private readonly elementRef:ElementRef,
+    private readonly cdRef:ChangeDetectorRef,
+    private readonly PathHelper:PathHelperService,
+    private readonly schemaCache:SchemaCacheService,
+    private readonly currentProject:CurrentProjectService,
+    private readonly halEditing:HalResourceEditingService,
+    private readonly halResourceService:HalResourceService,
+    private readonly currentUserService:CurrentUserService,
+    private readonly displayFieldService:DisplayFieldService,
+    private readonly projectsResourceService:ProjectsResourceService,
+    private readonly projectStoragesService:ProjectStoragesResourceService,
+  ) {
     super();
   }
 
   public ngOnInit():void {
-    this.$element = jQuery(this.elementRef.nativeElement as HTMLElement);
+    this.element = this.elementRef.nativeElement as HTMLElement;
 
     this.isNewResource = isNewResource(this.workPackage);
 
     this.uiSelfRef = this.$state.$current.name;
 
     const change = this.halEditing.changeFor<WorkPackageResource, WorkPackageChangeset>(this.workPackage);
-    this.resourceContextChange.next(this.contextFrom(change.projectedResource));
     this.refresh(change);
 
-    // Whenever the resource context changes in any way,
+    // Whenever the temporary resource changes in any way,
     // update the visible fields.
-    this.resourceContextChange
-      .pipe(
-        this.untilDestroyed(),
-        distinctUntilChanged<ResourceContextChange>((a, b) => _.isEqual(a, b)),
-        map(() => this.halEditing.changeFor(this.workPackage)),
-      )
-      .subscribe((changeset:WorkPackageChangeset) => this.refresh(changeset));
-
-    // Update the resource context on every update to the temporary resource.
-    // This allows detecting a changed type value in a new work package.
     this.halEditing
       .temporaryEditResource(this.workPackage)
       .values$()
       .pipe(
         this.untilDestroyed(),
+        map((resource) => this.contextFrom(resource)),
+        distinctUntilChanged<ResourceContextChange>((a, b) => _.isEqual(a, b)),
+        map(() => this.halEditing.changeFor(this.workPackage)),
       )
-      .subscribe((resource) => {
-        this.resourceContextChange.next(this.contextFrom(resource));
-      });
+      .subscribe((changeset:WorkPackageChangeset) => this.refresh(changeset));
   }
 
   private refresh(change:WorkPackageChangeset) {
     // Prepare the fields that are required always
-    const isNew = isNewResource(this.workPackage);
     const resource = change.projectedResource;
 
     if (!resource.project) {
-      this.projectContext = { matches: false, href: null };
+      this.projectContext = { matches: false, href: null, id: null };
     } else {
+      const project = resource.project as unknown&{ href:string, id:string };
+      const workPackageId = this.workPackage.id;
+      if (!workPackageId) {
+        throw new Error('work package id is invalid');
+      }
+
       this.projectContext = {
-        href: this.PathHelper.projectWorkPackagePath(idFromLink(resource.project.href), this.workPackage.id!),
-        matches: resource.project.href === this.currentProject.apiv3Path,
+        id: project.id,
+        href: this.PathHelper.projectWorkPackagePath(project.id, this.workPackage.displayId),
+        matches: project.href === this.currentProject.apiv3Path,
       };
     }
 
-    if (isNew && !this.currentProject.inProjectContext) {
-      this.projectContext.field = this.getFields(change, ['project']);
+    if (isNewResource(resource)) {
+      this.updateWorkPackageCreationState(change);
     }
 
-    const attributeGroups = this.schema(resource)._attributeGroups;
-    this.groupedFields = this.rebuildGroupedFields(change, attributeGroups);
+    // eslint-disable-next-line no-underscore-dangle
+    this.groupedFields = this.rebuildGroupedFields(change, this.schema(resource)._attributeGroups) as GroupDescriptor[];
     this.cdRef.detectChanges();
+  }
+
+  private updateWorkPackageCreationState(change:WorkPackageChangeset) {
+    const resource = change.projectedResource;
+    if (!this.currentProject.inProjectContext) {
+      this.projectContext.field = this.getFields(change, ['project']);
+      this.workPackage.project = resource.project as HalResource;
+    }
+
+    if (resource.project === null) {
+      this.projectStorages.next([]);
+    } else {
+      const project = resource.project as unknown&{ href:string, id:string };
+      combineLatest([
+        this.projectsResourceService.requireEntity(project.href),
+        this.projectStoragesService.requireCollection({ filters: [['projectId', '=', [project.id]]] }),
+        this.currentUserService.hasCapabilities$('file_links/manage', project.id),
+      ])
+        .pipe(
+          map(([p, projectStorages, manageFileLinks]) => {
+            if (!p._links.storages || !manageFileLinks) {
+              return [];
+            }
+
+            return projectStorages;
+          }),
+          first(),
+        )
+        .subscribe((ps) => {
+          this.projectStorages.next(ps);
+        });
+    }
   }
 
   /**
@@ -228,16 +263,6 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
     const queryInNew = isNewResource(this.workPackage) && !!group.query;
 
     return isEmpty || queryInNew;
-  }
-
-  /**
-   * angular 2 doesn't support track by property any more but requires a custom function
-   * https://github.com/angular/angular/issues/12969
-   * @param _index
-   * @param elem
-   */
-  public trackByName(_index:number, elem:{ name:string }):string {
-    return elem.name;
   }
 
   /**
@@ -269,18 +294,20 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
    * Returns the work package label
    */
   public get idLabel():string {
-    return `#${this.workPackage.id || ''}`;
+    return this.workPackage.formattedId;
   }
 
-  public get projectContextText():string {
+  public showSwitchToProjectBanner():boolean {
+    return !this.isNewResource && this.projectContext && !this.projectContext.matches;
+  }
+
+  public get switchToProjectPath():string {
     const id = idFromLink(this.workPackage.project.href);
-    const projectPath = this.PathHelper.projectPath(id);
-    const project = `<a href="${projectPath}">${this.workPackage.project.name}<a>`;
-    return this.I18n.t('js.project.work_package_belongs_to', { projectname: project });
+    return this.PathHelper.projectPath(id);
   }
 
   showTwoColumnLayout():boolean {
-    return this.$element[0].getBoundingClientRect().width > 750;
+    return this.element.getBoundingClientRect().width > 750;
   }
 
   private rebuildGroupedFields(change:WorkPackageChangeset, attributeGroups:any) {
@@ -350,7 +377,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
    */
   private getDateField(change:WorkPackageChangeset):FieldDescriptor {
     const object:FieldDescriptor = {
-      name: '',
+      name: 'date',
       label: this.I18n.t('js.work_packages.properties.date'),
       spanAll: false,
       multiple: false,
@@ -358,10 +385,8 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
 
     if (change.schema.ofProperty('date')) {
       object.field = this.displayField(change, 'date');
-      object.name = 'date';
     } else {
       object.field = this.displayField(change, 'combinedDate');
-      object.name = 'combinedDate';
     }
 
     return object;
@@ -379,7 +404,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
     const schema = this.schema(workPackage);
 
     let schemaHref:string|null;
-    const projectHref:string|null = workPackage.project && workPackage.project.href;
+    const projectHref:string|null = workPackage.project?.href;
 
     if (schema.baseSchema) {
       schemaHref = schema.baseSchema.href;
@@ -404,9 +429,9 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   }
 
   private getAttributesGroupId(group:any):string {
-    const overflowingIdentifier = this.$element
-      .find(`[data-group-name=\'${group.name}\']`)
-      .data(overflowingContainerAttribute);
+    const overflowingIdentifier = this.element
+      .querySelector<HTMLElement>(`[data-group-name=\'${group.name}\']`)
+      ?.dataset[overflowingContainerAttribute];
 
     if (overflowingIdentifier) {
       return overflowingIdentifier.replace('.__overflowing_', '');

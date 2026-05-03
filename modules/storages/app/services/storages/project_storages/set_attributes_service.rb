@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Used by: CreateService when setting attributes
 module Storages::ProjectStorages
   class SetAttributesService < ::BaseServices::SetAttributes
-    def set_default_attributes(_params)
-      model.creator ||= user
+    def set_default_attributes(params)
+      project_storage = model
+      storage = project_storage.storage
+
+      project_storage.creator ||= user
+      project_storage.project_folder_mode ||=
+        if params[:project_folder_mode].present?
+          params[:project_folder_mode]
+        elsif storage.present? && storage.automatic_management_enabled?
+          "automatic"
+        else
+          "inactive"
+        end
     end
   end
 end

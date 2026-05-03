@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,14 +27,27 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= labelled_tabular_form_for(:member, url: main_app.project_members_path,
-                              method: :post,
-                              html: { id: "members_add_form", class: "form -vertical -bordered -medium-compressed" }) do |f| %>
-    <a title="<%= t('js.close_form_title') %>" class="hide-member-form-button form--close icon-context icon-close"></a>
+<%= labelled_tabular_form_for(
+      :member, url: main_app.project_members_path,
+               method: :post,
+               html: { id: "members_add_form",
+                       class: "form -vertical -bordered -medium-compressed" },
+               data: {
+                 "members-form-target": "addMemberForm",
+                 controller: "user-limit",
+                 "user-limit-open-seats-value": OpenProject::Enterprise.open_seats_count,
+                 "user-limit-member-autocompleter-value": true
+               }
+    ) do |f| %>
+    <a title="<%= t("js.close_form_title") %>"
+       class="hide-member-form-button form--close icon-context icon-close"
+       data-action="members-form#hideAddMemberForm"></a>
     <div id="new-member-message"></div>
     <div class="grid-block">
       <div class="grid-content medium-5 small-12 collapse -flex">
-        <div class="form--field">
+        <div
+          class="form--field"
+          data-user-limit-target="inviteUserForm">
           <%
             user_id_title = I18n.t(:label_principal_search)
 
@@ -44,46 +57,58 @@ See COPYRIGHT and LICENSE files for more details.
           %>
           <%= styled_label_tag :member_user_ids, user_id_title %>
 
-          <%= angular_component_tag 'op-members-autocompleter',
+          <%= angular_component_tag "opce-members-autocompleter",
                                     inputs: {
-                                      name: "member[user_ids][]",
-                                      url: autocomplete_for_member_project_members_path + '.json',
-                                      appendTo: "body",
+                                      inputName: "member[user_ids]",
+                                      inputBindValue: "id",
+                                      url: autocomplete_for_member_project_members_path + ".json",
                                       multiple: true
-                                    }
-          %>
+                                    } %>
         </div>
       </div>
       <div class="grid-content medium-8 small-12 -flex -with-button">
         <div class="form--field">
-          <%= styled_label_tag :member_role_ids, t(:label_role_search) %>
+          <%= styled_label_tag :member_role_ids, title: t(:label_role_search) do
+                render OpenProject::Common::AttributeLabelComponent.new(
+                  attribute: "members",
+                  model: Project,
+                  tag: nil
+                ) do
+                  render(Primer::Beta::Text.new) { t(:label_role_search) }
+                end
+              end %>
           <div class="form--field-container">
             <div class="form--select-container -auto">
               <% options = roles.collect { |obj| [obj.name, obj.id] } %>
-              <%= select_tag 'member[role_ids][]', options_for_select(options),
+              <%= select_tag "member[role_ids][]", options_for_select(options),
                              multiple: false,
                              no_label: true,
-                             title:    t(:label_role_search),
+                             title: t(:label_role_search),
                              tabIndex: 0,
-                             class:    'form--select',
-                             id:       'member_role_ids' %>
+                             class: "form--select",
+                             id: "member_role_ids" %>
             </div>
           </div>
         </div>
         <div id="member-add-submit-button--container">
           <%= f.button t(:button_add),
-                       class: 'button -highlight -with-icon icon-checkmark',
-                       id: 'add-member--submit-button' %>
+                       class: "button -primary -with-icon icon-checkmark",
+                       id: "add-member--submit-button" %>
         </div>
       </div>
     </div>
-    <% if OpenProject::Enterprise.user_limit_reached? %>
-        <div class="op-toast -warning icon-warning" id="member-user-limit-warning" style="display: none;">
+
+  <% if OpenProject::Enterprise.user_limit.present? %>
+        <div class="op-toast -warning icon-warning d-none"
+             data-user-limit-target="limitWarning">
           <div class="op-toast--content">
-            <p><%= I18n.t(:warning_user_limit_reached, upgrade_url: OpenProject::Enterprise.upgrade_path).html_safe %></p>
+            <p><%=
+              link_translate(
+                "warning_user_limit_reached#{'_admin' if current_user.admin?}",
+                links: { upgrade_url: OpenProject::Enterprise.upgrade_url }
+              ) %>
           </div>
         </div>
     <% end %>
+
 <% end %>
-
-

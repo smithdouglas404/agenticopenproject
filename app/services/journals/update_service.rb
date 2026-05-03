@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,5 +29,32 @@
 #++
 
 module Journals
-  class UpdateService < ::BaseServices::Update; end
+  class UpdateService < ::BaseServices::Update
+    protected
+
+    def after_perform(call)
+      if call.success? && activity_comment?(call.result)
+        attachments_claims = claim_attachments_for(call.result)
+        call.add_dependent!(attachments_claims)
+      end
+
+      OpenProject::Notifications.send(OpenProject::Events::JOURNAL_UPDATED,
+                                      journal: call.result,
+                                      send_notification: Journal::NotificationConfiguration.active?)
+
+      call
+    end
+
+    private
+
+    def activity_comment?(journal)
+      journal.notes.present? || journal.attachments.exists?
+    end
+
+    def claim_attachments_for(journal)
+      WorkPackages::ActivitiesTab::CommentAttachmentsClaims::ClaimsService
+       .new(user: User.current, model: journal)
+       .call
+    end
+  end
 end

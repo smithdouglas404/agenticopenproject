@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,23 +33,23 @@ module ReorderLinksHelper
     method = options[:method] || :post
 
     content_tag(:span,
-                reorder_link(name, url, 'highest', 'icon-sort-up', t(:label_sort_highest), method) +
-                  reorder_link(name, url, 'higher', 'icon-arrow-up2', t(:label_sort_higher), method) +
-                  reorder_link(name, url, 'lower', 'icon-arrow-down2', t(:label_sort_lower), method) +
-                  reorder_link(name, url, 'lowest', 'icon-sort-down', t(:label_sort_lowest), method),
-                class: 'reorder-icons')
+                reorder_link(name, url, "highest", "icon-sort-up", t(:label_sort_highest), method) +
+                  reorder_link(name, url, "higher", "icon-arrow-up2", t(:label_sort_higher), method) +
+                  reorder_link(name, url, "lower", "icon-arrow-down2", t(:label_sort_lower), method) +
+                  reorder_link(name, url, "lowest", "icon-sort-down", t(:label_sort_lowest), method),
+                class: "reorder-icons")
   end
 
   def reorder_link(name, url, direction, icon_class, label, method)
     text = content_tag(:span,
                        label,
-                       class: 'hidden-for-sighted')
+                       class: "sr-only")
     icon = content_tag(:span,
-                       '',
+                       "",
                        class: "icon-context #{icon_class} icon-small")
     link_to(text + icon,
             url.merge("#{name}[move_to]" => direction),
-            method:,
+            data: { turbo_method: method },
             title: label)
   end
 end

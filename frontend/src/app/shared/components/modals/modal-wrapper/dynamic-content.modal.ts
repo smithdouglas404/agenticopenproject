@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -43,6 +43,7 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 @Component({
   templateUrl: './dynamic-content.modal.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DynamicContentModalComponent extends OpModalComponent implements OnInit, OnDestroy {
   constructor(
@@ -58,12 +59,12 @@ export class DynamicContentModalComponent extends OpModalComponent implements On
     super.ngOnInit();
 
     // Append the dynamic body
-    const wrapper = this.$element.children[0];
+    const wrapper = this.element.children[0];
     const classes = (this.locals.modalClassName as string) || '';
     wrapper.classList.add(...classes.split(' '));
     wrapper.innerHTML = this.locals.modalBody as string;
 
-    const modal = document.querySelector('.spot-modal') as HTMLElement;
+    const modal = document.querySelector('.spot-modal')!;
     const closeButton = modal.querySelector<HTMLButtonElement>('[dynamic-content-modal-close-button]');
     closeButton?.addEventListener('click', () => this.closeMe());
   }

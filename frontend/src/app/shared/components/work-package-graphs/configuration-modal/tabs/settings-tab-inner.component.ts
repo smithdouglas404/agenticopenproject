@@ -1,7 +1,6 @@
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageViewGroupByService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-group-by.service';
-import { Component } from '@angular/core';
-import { ChartType } from 'chart.js';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { WpGraphConfigurationService } from 'core-app/shared/components/work-package-graphs/configuration/wp-graph-configuration.service';
 import { WorkPackageStatesInitializationService } from 'core-app/features/work-packages/components/wp-list/wp-states-initialization.service';
 import { TabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tab-portal-outlet';
@@ -9,15 +8,21 @@ import { QuerySpacedTabComponent } from 'core-app/shared/components/work-package
 import { QueryGroupByResource } from 'core-app/features/hal/resources/query-group-by-resource';
 
 interface OpChartType {
-  identifier:ChartType;
+  identifier:string;
   label:string;
+  indexAxis?:'x'|'y';
 }
 
 @Component({
   selector: 'op-settings-tab-inner',
   templateUrl: './settings-tab-inner.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class WpGraphConfigurationSettingsTabInnerComponent extends QuerySpacedTabComponent implements TabComponent {
+export class WpGraphConfigurationSettingsTabInnerComponent extends QuerySpacedTabComponent implements TabComponent, OnInit {
   // Grouping
   public availableGroups:QueryGroupByResource[] = [];
 
@@ -33,7 +38,8 @@ export class WpGraphConfigurationSettingsTabInnerComponent extends QuerySpacedTa
   constructor(readonly I18n:I18nService,
     readonly wpTableGroupBy:WorkPackageViewGroupByService,
     readonly wpStatesInitialization:WorkPackageStatesInitializationService,
-    readonly wpGraphConfiguration:WpGraphConfigurationService) {
+    readonly wpGraphConfiguration:WpGraphConfigurationService,
+    private cdRef:ChangeDetectorRef) {
     super(I18n, wpStatesInitialization, wpGraphConfiguration);
   }
 
@@ -53,14 +59,15 @@ export class WpGraphConfigurationSettingsTabInnerComponent extends QuerySpacedTa
   }
 
   ngOnInit() {
-    this
+    void this
       .initializeQuerySpace()
       .then(() => {
-        this.wpTableGroupBy
+        void this.wpTableGroupBy
           .onReady()
           .then(() => {
             this.initializeAvailableGroups();
             this.initializeAvailableChartType();
+            this.cdRef.markForCheck();
           });
       });
   }
@@ -81,13 +88,13 @@ export class WpGraphConfigurationSettingsTabInnerComponent extends QuerySpacedTa
 
   private initializeAvailableChartType() {
     this.availableChartTypes = _.sortBy([
-      { identifier: 'horizontalBar' as ChartType, label: this.I18n.t('js.chart.types.horizontal_bar') },
-      { identifier: 'bar' as ChartType, label: this.I18n.t('js.chart.types.bar') },
-      { identifier: 'line' as ChartType, label: this.I18n.t('js.chart.types.line') },
-      { identifier: 'pie' as ChartType, label: this.I18n.t('js.chart.types.pie') },
-      { identifier: 'doughnut' as ChartType, label: this.I18n.t('js.chart.types.doughnut') },
-      { identifier: 'radar' as ChartType, label: this.I18n.t('js.chart.types.radar') },
-      { identifier: 'polarArea' as ChartType, label: this.I18n.t('js.chart.types.polar_area') },
+      { identifier: 'horizontalBar', label: this.I18n.t('js.chart.types.horizontal_bar') },
+      { identifier: 'bar', label: this.I18n.t('js.chart.types.bar') },
+      { identifier: 'line', label: this.I18n.t('js.chart.types.line') },
+      { identifier: 'pie', label: this.I18n.t('js.chart.types.pie') },
+      { identifier: 'doughnut', label: this.I18n.t('js.chart.types.doughnut') },
+      { identifier: 'radar', label: this.I18n.t('js.chart.types.radar') },
+      { identifier: 'polarArea', label: this.I18n.t('js.chart.types.polar_area') },
     ], 'label');
 
     this.currentChartType = this.availableChartTypes.find((type) => type.identifier === this.wpGraphConfiguration.configuration.chartType) || this.availableChartTypes[0];

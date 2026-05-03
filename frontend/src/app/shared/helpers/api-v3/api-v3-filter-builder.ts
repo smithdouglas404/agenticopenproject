@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -37,11 +37,9 @@ export interface ApiV3FilterValue {
   values:ApiV3FilterValueType[];
 }
 
-export interface ApiV3Filter {
-  [filter:string]:ApiV3FilterValue;
-}
+export type ApiV3Filter = Record<string, ApiV3FilterValue>;
 
-export type ApiV3FilterObject = { [filter:string]:ApiV3FilterValue };
+export type ApiV3FilterObject = Record<string, ApiV3FilterValue>;
 
 export class ApiV3FilterBuilder {
   private filterMap:ApiV3FilterObject = {};
@@ -94,6 +92,23 @@ export class ApiV3FilterBuilder {
   }
 
   /**
+   * Builds a filter instance from the array-map style of query filters
+   *
+   * @param filters APIv3 filter array [ {foo: { operator: '=', val: ['bar'] } }, ...]
+   * @return ApiV3FilterBuilder
+   */
+  public static fromFilterObject(filters:ApiV3FilterObject):ApiV3FilterBuilder {
+    const instance = new ApiV3FilterBuilder();
+
+    Object.keys(filters).forEach((selector) => {
+      const item = filters[selector];
+      instance.add(selector, item.operator, item.values);
+    });
+
+    return instance;
+  }
+
+  /**
    * Merges the other filters into the current set,
    * replacing them if the are duplicated.
    *
@@ -125,7 +140,7 @@ export class ApiV3FilterBuilder {
     return JSON.stringify(this.filters);
   }
 
-  public toParams(mergeParams:{ [key:string]:string } = {}):string {
+  public toParams(mergeParams:Record<string, string> = {}):string {
     const params = { filters: this.toJson(), ...mergeParams };
     return new URLSearchParams(params).toString();
   }
@@ -143,6 +158,6 @@ export class ApiV3FilterBuilder {
   }
 }
 
-export function ApiV3Filter(name:string, operator:FilterOperator, values:ApiV3FilterValueType[]):ApiV3FilterBuilder {
+export function ApiV3Filter(name:string, operator:FilterOperator, values:boolean|ApiV3FilterValueType[]):ApiV3FilterBuilder {
   return new ApiV3FilterBuilder().add(name, operator, values);
 }

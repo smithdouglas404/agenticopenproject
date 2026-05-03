@@ -1,38 +1,34 @@
-<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width">
 <%= output_title_and_meta_tags %>
-<%= sentry_frontend_tags %>
 <%= appsignal_frontend_tag %>
 
-<% relative_url_root = OpenProject::Configuration['rails_relative_url_root'] || '' %>
-<meta name="app_base_path" content="<%= relative_url_root %>"/>
-<base href="<%= relative_url_root %>/" />
+<% relative_url_root = OpenProject::Configuration["rails_relative_url_root"] || "" %>
+<meta name="app_title" content="<%= page_title(*html_title_parts) %>">
+<meta name="app_base_path" content="<%= relative_url_root %>">
+<base href="<%= relative_url_root %>/">
 <% if @project %>
   <meta name="current_project"
         data-project-name="<%= h @project.name %>"
         data-project-id="<%= @project.id %>"
-        data-project-identifier="<%= @project.identifier %>"/>
+        data-project-identifier="<%= @project.identifier %>">
 <% end %>
-<% unless User.current.anonymous? %>
-  <meta name="current_user"
-        data-name="<%= User.current.name %>"
-        data-mail="<%= User.current.mail %>"
-        data-id="<%= User.current.id %>" />
-<% end %>
+<meta name="current_user"
+      data-name="<%= User.current.name %>"
+      data-logged-in="<%= User.current.logged? %>"
+      data-id="<%= User.current.id %>">
 
-<% if Setting.demo_projects_available %><meta name="demo_projects_available" content="true"/><% end %>
-<% if Setting.boards_demo_data_available %><meta name="boards_demo_data_available" content="true"/><% end %>
-<% if Setting.demo_view_of_type_team_planner_seeded %><meta name="demo_view_of_type_team_planner_seeded" content="true"/><% end %>
+<% if Setting.demo_projects_available %><meta name="demo_projects_available" content="true"><% end %>
+<% if Setting.boards_demo_data_available %><meta name="boards_demo_data_available" content="true"><% end %>
+<% if Setting.demo_view_of_type_team_planner_seeded %><meta name="demo_view_of_type_team_planner_seeded" content="true"><% end %>
 <%= csrf_meta_tags %>
+<%= secure_header_csp_meta_tag %>
 <%= initializer_meta_tag %>
 
 <!-- global meta hooks before any scripts are loaded-->
 <%= call_hook :view_layouts_base_html_meta %>
 
-<%= render 'common/favicons' %>
-
-<%# Allow gon output when necessary %>
-<%= include_gon(nonce: content_security_policy_script_nonce) %>
+<%= render "common/favicons" %>
 
 <%# Include CLI assets (development) or prod build assets %>
 <%= include_frontend_assets %>
@@ -44,6 +40,7 @@
 
 <%# Custom styles %>
 <%= render partial: "custom_styles/inline_css_logo" %>
+<%= render partial: "custom_styles/primer_color_mapping" %>
 <% if apply_custom_styles? %>
   <% cache(CustomStyle.current) do %>
     <%= render partial: "custom_styles/inline_css" %>
@@ -55,4 +52,6 @@
     <% end %>
   <% end %>
 <% end %>
-<%= crowdin_in_context_translation %>
+
+<%# Disable prefetching for now %>
+<meta name="turbo-prefetch" content="false">

@@ -11,7 +11,7 @@ closely matches the way OpenProject is run in production systems for packaged an
 You will need a certificate to terminate SSL requests at Apache. For development purposes only, create a self-signed
 certificate as follows:
 
-```bash
+```shell
 sudo mkdir -p /etc/ssl/openproject-dev/
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/openproject-dev/privkey.key -out /etc/ssl/openproject-dev/cert.crt
 ```
@@ -29,7 +29,7 @@ it.
 First, you'll need to install the Apache2 web server. The actual command will differ depending on your actual
 distribution. For apt-based systems, the following command is used:
 
-```bash
+```shell
 sudo apt-get install apache2
 ```
 
@@ -39,7 +39,7 @@ are being loaded.
 
 You will then add a configuration for OpenProject under:
 
-```bash
+```shell
 nano /etc/apache2/sites-available/openproject-dev-ssl.conf
 ```
 
@@ -47,7 +47,7 @@ The path might differ. For RHEL/Fedora systems, the configuration directory resi
 
 The following contains an exemplary configuration:
 
-```
+```apache
 <VirtualHost *:80>
     ServerName openproject.example.com
     redirect permanent / https://openproject.example.com/
@@ -93,7 +93,7 @@ application server. You can do that with `/usr/sbin/setsebool -P httpd_can_netwo
 ## Step 4: Configure OpenProject for HTTPS usage
 
 We assume you have already configured your OpenProject local development environment
-as [described in this guide](../development-environment-ubuntu). You will need to add your custom host name
+as [described in this guide](../development-environment). You will need to add your custom host name
 to the environment. You can use this variable to do so.
 
 ```yaml
@@ -118,23 +118,18 @@ setup a reverse proxy in docker, like [traefik](https://traefik.io/). Then follo
 - create a `docker-compose.override.yml`
 - make your openproject services visible with specific host names, i.e. with `traefik` this means adding labels to the
   services defined host routers
+
   ```yaml
   labels:
     - "traefik.http.routers.op-backend.rule=Host(`op-backend.local`)"
   ```
+
 - add the extra hosts to your `/etc/hosts` to redirect to `localhost`
 - add the extra hosts to your `backend` service with
+
   ```yaml
   OPENPROJECT_DEV_EXTRA_HOSTS: 'op-backend.local,op-backend.local'
   ```
 
-#### Reminder
-
-This setup is still experimental and under further development. Use it only, when you know what you are doing.
-
-## Questions, Comments, and Feedback
-
-If you have any further questions, comments, feedback, or an idea to enhance this guide, please tell us at the
-appropriate community.openproject.org [forum](https://community.openproject.org/projects/openproject/boards/9).
-[Follow OpenProject on twitter](https://twitter.com/openproject), and
-follow [the news](https://www.openproject.org/blog) to stay up to date.
+> **Reminder**:
+  This setup is still experimental and under further development. Use it only, when you know what you are doing.

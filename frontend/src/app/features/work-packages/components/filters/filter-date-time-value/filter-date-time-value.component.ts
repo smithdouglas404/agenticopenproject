@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +27,12 @@
 //++
 
 import {
-  Component, Input, OnInit, Output,
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  HostBinding,
+  OnInit,
+  Output,
 } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
@@ -41,8 +46,19 @@ import { AbstractDateTimeValueController } from '../abstract-filter-date-time-va
 @Component({
   selector: 'op-filter-date-time-value',
   templateUrl: './filter-date-time-value.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FilterDateTimeValueComponent extends AbstractDateTimeValueController implements OnInit {
+  @HostBinding('id') get id() {
+    return `div-values-${this.filter.id}`;
+  }
+
+  @HostBinding('class.inline-label') className = true;
+
   @Input() public shouldFocus = false;
 
   @Input() public filter:QueryFilterInstanceResource;

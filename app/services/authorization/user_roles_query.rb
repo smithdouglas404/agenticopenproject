@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,8 +32,8 @@ class Authorization::UserRolesQuery < Authorization::AbstractUserQuery
   self.model = Role
   self.base_table = users_table
 
-  def self.query(*args)
-    arel = transformed_query(*args)
+  def self.query(*)
+    arel = transformed_query(*)
 
     model.where(roles_table[:id].in(arel))
   end

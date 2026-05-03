@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,20 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe News::CommentsController, 'routing', type: :routing do
-  context 'news scoped' do
-    it {
-      expect(subject).to route(:post, '/news/567/comments').to(controller: 'news/comments',
-                                                               action: 'create',
-                                                               news_id: '567')
-    }
+RSpec.describe News::CommentsController, "routing" do
+  context "news scoped" do
+    it do
+      expect(subject).to route(:post, "/projects/123/news/567/comments").to(controller: "news/comments",
+                                                                            action: "create",
+                                                                            project_id: "123",
+                                                                            news_id: "567")
+    end
   end
 
-  it {
-    expect(subject).to route(:delete, '/comments/15').to(controller: 'news/comments',
-                                                         action: 'destroy',
-                                                         id: '15')
-  }
+  it do
+    expect(subject).to route(:delete, "/projects/123/news/567/comments/15").to(controller: "news/comments",
+                                                                               action: "destroy",
+                                                                               project_id: "123",
+                                                                               news_id: "567",
+                                                                               id: "15")
+  end
 end

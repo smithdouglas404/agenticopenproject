@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -59,7 +61,7 @@ module Versions::Scopes
         includes(:project)
           .merge(Project.active)
           .where(projects: { id: root.self_and_descendants.select(:id) })
-          .where(sharing: 'tree')
+          .where(sharing: "tree")
       end
 
       def shared_versions_by_hierarchy_or_descendants(project)
@@ -71,13 +73,13 @@ module Versions::Scopes
 
       def shared_versions_by_hierarchy(project)
         rolled_up(project)
-          .where(sharing: 'hierarchy')
+          .where(sharing: "hierarchy")
       end
 
       def shared_versions_by_system
         includes(:project)
           .merge(Project.active)
-          .where(sharing: 'system')
+          .where(sharing: "system")
       end
     end
   end

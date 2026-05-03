@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,24 +31,22 @@
 module OpenProject
   module Enterprise
     class << self
-      def token
-        EnterpriseToken.current.presence
-      end
-
       def upgrade_url
         "#{Setting.protocol}://#{Setting.host_name}#{upgrade_path}"
       end
 
-      def upgrade_path
-        url_helpers.enterprise_path
-      end
+      delegate :user_limit, to: EnterpriseToken
 
-      def user_limit
-        Hash(token.restrictions)[:active_user_count] if token
+      def upgrade_path
+        url_helpers.enterprise_tokens_path
       end
 
       def active_user_count
         User.human.active.count
+      end
+
+      def open_seats_count
+        user_limit - active_user_count if user_limit
       end
 
       ##

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,10 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require 'rack/test'
+require "spec_helper"
+require "rack/test"
 
-describe 'API v3 Project resource index', type: :request, content_type: :json do
+RSpec.describe "API v3 Project resource index", content_type: :json do
   include Rack::Test::Methods
   include API::V3::Utilities::PathHelper
 
@@ -50,8 +52,9 @@ describe 'API v3 Project resource index', type: :request, content_type: :json do
       project.save
     end
   end
-  let(:role) { create(:role) }
-  let(:second_role) { create(:role) }
+  let(:permissions) { [] }
+  let(:role) { create(:project_role, permissions:) }
+  let(:second_role) { create(:project_role) }
   let(:filters) { [] }
   let(:get_path) do
     api_v3_paths.path_for :projects, filters:
@@ -59,7 +62,7 @@ describe 'API v3 Project resource index', type: :request, content_type: :json do
   let(:response) { last_response }
   let(:projects) { [project, other_project] }
 
-  current_user { create(:user, member_in_project: project, member_through_role: role) }
+  current_user { create(:user, member_with_roles: { project => role }) }
 
   before do
     projects
@@ -67,9 +70,9 @@ describe 'API v3 Project resource index', type: :request, content_type: :json do
     get get_path
   end
 
-  it_behaves_like 'API V3 collection response', 1, 1, 'Project'
+  it_behaves_like "API V3 collection response", 1, 1, "Project"
 
-  context 'with a pageSize and offset' do
+  context "with a pageSize and offset" do
     let(:projects) { [project, project2, project3] }
     let(:project2) do
       create(:project,
@@ -84,88 +87,213 @@ describe 'API v3 Project resource index', type: :request, content_type: :json do
       api_v3_paths.path_for :projects, sort_by: { id: :asc }, page_size: 2, offset: 2
     end
 
-    it_behaves_like 'API V3 collection response', 3, 1, 'Project' do
+    it_behaves_like "API V3 collection response", 3, 1, "Project" do
       let(:elements) { [project3] }
     end
   end
 
-  context 'when filtering for project by ancestor' do
+  context "when filtering for project by ancestor" do
     let(:projects) { [project, other_project, parent_project] }
 
     let(:filters) do
-      [{ ancestor: { operator: '=', values: [parent_project.id.to_s] } }]
+      [{ ancestor: { operator: "=", values: [parent_project.id.to_s] } }]
     end
 
-    it_behaves_like 'API V3 collection response', 1, 1, 'Project'
-
-    it 'returns the child project' do
-      expect(response.body)
-        .to be_json_eql(api_v3_paths.project(project.id).to_json)
-              .at_path('_embedded/elements/0/_links/self/href')
+    it_behaves_like "API V3 collection response", 1, 1, "Project" do
+      let(:elements) { [project] }
     end
   end
 
-  context 'with filtering by capability action' do
-    let(:other_project) do
-      create(:project, members: [current_user])
+  context "with filtering by capability action" do
+    let(:other_project) { create(:project) }
+    let(:another_project) { create(:project) }
+    let(:projects) { [project, other_project, another_project] }
+    let(:role) { create(:project_role, permissions: %i[copy_projects view_work_packages]) }
+    let(:other_role) { create(:project_role, permissions: %i[view_work_packages]) }
+    let(:another_role) { create(:project_role, permissions: []) }
+    let(:current_user) do
+      create(:user, member_with_roles: { project => role,
+                                         other_project => other_role,
+                                         another_project => another_role })
     end
-    let(:projects) { [project, other_project] }
-    let(:role) { create(:role, permissions: [:copy_projects]) }
 
-    let(:get_path) do
-      api_v3_paths.path_for :projects, filters: [{ user_action: { operator: "=", values: ["projects/copy"] } }]
+    let(:filters) do
+      [{ user_action: { operator:, values: %w[projects/copy work_packages/read] } }]
     end
 
-    it_behaves_like 'API V3 collection response', 1, 1, 'Project'
+    context "if using the equals operator" do
+      let(:operator) { "=" }
 
-    it 'returns the project the current user has the capability in' do
-      expect(response.body)
-        .to be_json_eql(api_v3_paths.project(project.id).to_json)
-              .at_path('_embedded/elements/0/_links/self/href')
+      it_behaves_like "API V3 collection response", 2, 2, "Project" do
+        let(:elements) { [other_project, project] }
+      end
+    end
+
+    context "if using the all operator" do
+      let(:operator) { "&=" }
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [project] }
+      end
     end
   end
 
-  context 'when filtering for principals (members)' do
+  context "when filtering by available project attributes" do
+    shared_let(:other_project) { create(:project) }
+    shared_let(:project) { create(:project) }
+    shared_let(:project_custom_field_mapping1) { create(:project_custom_field_project_mapping, project:) }
+    shared_let(:project_custom_field_mapping2) { create(:project_custom_field_project_mapping, project:) }
+
+    let(:current_user) do
+      create(:user, member_with_roles: { project => role,
+                                         other_project => role })
+    end
+
+    let(:valid_values) do
+      [project_custom_field_mapping1.custom_field_id.to_s,
+       project_custom_field_mapping2.custom_field_id.to_s]
+    end
+
+    let(:filters) do
+      [{ available_project_attributes: { operator:, values: valid_values } }]
+    end
+
+    context "if using the equals operator" do
+      let(:operator) { "=" }
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [project] }
+      end
+    end
+
+    context "if using the not equals operator" do
+      let(:operator) { "!" }
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [other_project] }
+      end
+    end
+  end
+
+  context "when filtering for principals (members)" do
     let(:other_project) do
-      Role.non_member
+      ProjectRole.non_member
       create(:public_project)
     end
     let(:projects) { [project, other_project] }
+    # Just here to make sure that work package members do not interfere
+    let!(:share) do
+      create(:work_package_member,
+             entity: create(:work_package, project: other_project),
+             roles: [create(:work_package_role)])
+    end
 
-    context 'if filtering for a value' do
-      let(:filter_query) do
-        [{ principal: { operator: '=', values: [current_user.id.to_s] } }]
+    context "if filtering for a value" do
+      let(:filters) do
+        [{ principal: { operator: "=", values: [current_user.id.to_s] } }]
       end
 
-      let(:get_path) do
-        api_v3_paths.path_for :projects, filters: filter_query
-      end
-
-      it 'returns the filtered for value' do
-        expect(response.body)
-          .to be_json_eql(project.id.to_json)
-                .at_path('_embedded/elements/0/id')
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [project] }
       end
     end
 
-    context 'if filtering for a negative value' do
-      let(:filter_query) do
-        [{ principal: { operator: '!', values: [current_user.id.to_s] } }]
+    context "if filtering for a negative value" do
+      let(:filters) do
+        [{ principal: { operator: "!", values: [current_user.id.to_s] } }]
       end
 
-      let(:get_path) do
-        api_v3_paths.path_for :projects, filters: filter_query
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [other_project] }
+      end
+    end
+
+    context "if filtering for all" do
+      let(:filters) do
+        [{ principal: { operator: "*", values: [] } }]
       end
 
-      it 'returns the projects not matching the value' do
-        expect(last_response.body)
-          .to be_json_eql(other_project.id.to_json)
-                .at_path('_embedded/elements/0/id')
+      # Does not contain the other project as that does not have members
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [project] }
+      end
+    end
+
+    context "if filtering for none" do
+      let(:filters) do
+        [{ principal: { operator: "!*", values: [] } }]
+      end
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [other_project] }
       end
     end
   end
 
-  context 'with filtering by visiblity' do
+  context "when filtering for favorited" do
+    let(:favorited_project) { create(:project) }
+    let(:unfavorited_project) { create(:project) }
+
+    let(:projects) { [favorited_project, unfavorited_project] }
+
+    current_user do
+      create(:user, member_with_roles: { favorited_project => role,
+                                         unfavorited_project => role }) do |user|
+        favorited_project.set_favorited(user)
+      end
+    end
+
+    context "when filtering for favorite projects" do
+      let(:filters) do
+        [{ favorited: { operator: "=", values: ["t"] } }]
+      end
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [favorited_project] }
+      end
+    end
+
+    context "when filtering for nonfavorite projects" do
+      let(:filters) do
+        [{ favorited: { operator: "=", values: ["f"] } }]
+      end
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [unfavorited_project] }
+      end
+    end
+
+    context "when not filtering for favorite projects" do
+      let(:filters) do
+        [{ favorited: { operator: "!", values: ["t"] } }]
+      end
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [unfavorited_project] }
+      end
+    end
+
+    context "when not filtering for nonfavorite projects" do
+      let(:filters) do
+        [{ favorited: { operator: "!", values: ["f"] } }]
+      end
+
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [favorited_project] }
+      end
+    end
+  end
+
+  context "with programs and portfolios" do
+    shared_let(:portfolio) { create(:portfolio, public: true) }
+    shared_let(:program) { create(:program, public: true) }
+
+    it_behaves_like "API V3 collection response", 3, 3, "Project" do
+      let(:elements) { [project, program, portfolio] }
+    end
+  end
+
+  context "with filtering by visibility" do
     let(:public_project) do
       # Otherwise, the public project is invisible
       create(:non_member)
@@ -182,7 +310,7 @@ describe 'API v3 Project resource index', type: :request, content_type: :json do
       create(:project, members: { other_user => role }, active: false)
     end
     let(:projects) { [member_project, public_project, non_member_project, archived_member_project] }
-    let(:role) { create(:role, permissions: []) }
+    let(:role) { create(:project_role, permissions: []) }
     let(:other_user) do
       create(:user)
     end
@@ -192,45 +320,39 @@ describe 'API v3 Project resource index', type: :request, content_type: :json do
 
     current_user { admin }
 
-    it_behaves_like 'API V3 collection response', 2, 2, 'Project'
-
-    it 'contains the expected projects' do
-      expect(last_response.body)
-        .to be_json_eql(public_project.id.to_json)
-              .at_path('_embedded/elements/0/id')
-
-      expect(last_response.body)
-        .to be_json_eql(member_project.id.to_json)
-              .at_path('_embedded/elements/1/id')
+    it_behaves_like "API V3 collection response", 2, 2, "Project" do
+      let(:elements) { [public_project, member_project] }
     end
   end
 
-  context 'with the project being archived/inactive' do
+  context "with the project being archived/inactive" do
     let(:project_active) { false }
     let(:projects) { [project] }
 
-    context 'with the user being admin' do
+    context "with the user being admin" do
       current_user { admin }
 
-      it 'responds with 200 OK' do
-        expect(last_response.status).to eq(200)
+      it "responds with 200 OK" do
+        expect(last_response).to have_http_status(:ok)
       end
 
-      it_behaves_like 'API V3 collection response', 1, 1, 'Project'
+      it_behaves_like "API V3 collection response", 1, 1, "Project" do
+        let(:elements) { [project] }
+      end
     end
 
-    context 'with the user being no admin' do
-      it_behaves_like 'API V3 collection response', 0, 0, 'Project'
+    context "with the user being no admin" do
+      it_behaves_like "API V3 collection response", 0, 0, "Project"
 
-      it 'responds with 200' do
-        expect(last_response.status).to eq(200)
+      it "responds with 200" do
+        expect(last_response).to have_http_status(:ok)
       end
     end
   end
 
-  context 'when signaling the properties to include' do
+  context "when signaling the properties to include" do
     let(:projects) { [project, parent_project] }
-    let(:select) { 'elements/id,elements/name,elements/ancestors,total' }
+    let(:select) { "elements/id,elements/name,elements/ancestors,total" }
     let(:get_path) do
       api_v3_paths.path_for :projects, select:
     end
@@ -261,22 +383,158 @@ describe 'API v3 Project resource index', type: :request, content_type: :json do
       }
     end
 
-    it 'is the reduced set of properties of the embedded elements' do
+    it "is the reduced set of properties of the embedded elements" do
       expect(last_response.body)
         .to be_json_eql(expected.to_json)
     end
   end
 
-  context 'as project collection' do
-    let(:role) { create(:role, permissions: %i[view_work_packages]) }
+  context "as project collection" do
+    let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
     let(:projects) { [project] }
-    let(:expected) do
-      "#{api_v3_paths.project(project.id)}/work_packages"
-    end
+    let(:expected) { api_v3_paths.work_packages_by_workspace(project.id) }
 
-    it 'has projects with links to their work packages' do
+    it "has projects with links to their work packages" do
       expect(last_response.body)
-        .to be_json_eql(expected.to_json).at_path('_embedded/elements/0/_links/workPackages/href')
+        .to be_json_eql(expected.to_json).at_path("_embedded/elements/0/_links/workPackages/href")
+    end
+  end
+
+  describe "permissions" do
+    context "when a project without view project permission is present" do
+      shared_let(:other_project) { create(:project) }
+      shared_let(:project) { create(:project) }
+      shared_let(:public_project) do
+        create(:non_member) # Otherwise, the public project is invisible
+        create(:public_project)
+      end
+      shared_let(:public_non_member_project) do
+        create(:public_project)
+      end
+      shared_let(:public_wp_share_project) do
+        create(:public_project)
+      end
+      shared_let(:work_package) do
+        create(:work_package, project: public_wp_share_project)
+      end
+      shared_let(:project_cf) do
+        # This custom field is enabled in both project and other_project to test that there is no
+        # bleeding of enabled custom fields between 2 projects.
+        create(:project_custom_field_project_mapping, project:).project_custom_field.tap do |pcf|
+          create(:project_custom_field_project_mapping,
+                 project: other_project,
+                 project_custom_field: pcf)
+        end
+      end
+      shared_let(:public_cf) do
+        create(:project_custom_field_project_mapping, project: public_project).project_custom_field
+      end
+      shared_let(:public_non_member_cf) do
+        create(:project_custom_field_project_mapping, project: public_non_member_project)
+        .project_custom_field
+      end
+      shared_let(:public_wp_share_cf) do
+        create(:project_custom_field_project_mapping, project: public_wp_share_project)
+        .project_custom_field
+      end
+      shared_let(:for_all_cf) do
+        create(:string_project_custom_field, is_for_all: true)
+      end
+
+      shared_let(:current_user) do
+        create(:user, member_with_permissions: {
+                 project => [],
+                 other_project => %i(view_project_attributes),
+                 public_project => [],
+                 work_package => %i(view_work_packages)
+               })
+      end
+
+      it_behaves_like "API V3 collection response", 5, 5, "Project" do
+        let(:elements) do
+          [public_wp_share_project, public_non_member_project, public_project, project, other_project]
+        end
+
+        it "does not return the project attributes for a public project as a work package member" do
+          expect(subject)
+            .to be_json_eql(public_wp_share_project.name.to_json)
+            .at_path("_embedded/elements/0/name")
+
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/0/#{public_wp_share_cf.attribute_name(:camel_case)}"
+          )
+        end
+
+        it "does not return the project attributes for a public project as a non-member" do
+          expect(subject)
+            .to be_json_eql(public_non_member_project.name.to_json)
+            .at_path("_embedded/elements/1/name")
+
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/1/#{public_non_member_cf.attribute_name(:camel_case)}"
+          )
+        end
+
+        it "does not return the project attributes for a public project" \
+           "as a member without view_project_attributes" do
+          expect(subject)
+            .to be_json_eql(public_project.name.to_json)
+            .at_path("_embedded/elements/2/name")
+
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/2#{public_cf.attribute_name(:camel_case)}"
+          )
+        end
+
+        it "does not return the project attributes for a private project as a member without " \
+           "view_project_attributes even if the same custom field is active in other_project" do
+          expect(subject)
+            .to be_json_eql(project.name.to_json)
+            .at_path("_embedded/elements/3/name")
+
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/3/#{project_cf.attribute_name(:camel_case)}"
+          )
+        end
+
+        it "returns project attributes for other project as a member with view_project_attributes " \
+           "for the same custom field enabled in a non-member project too" do
+          expect(subject)
+            .to be_json_eql(other_project.name.to_json)
+            .at_path("_embedded/elements/4/name")
+
+          expect(subject).to have_json_path(
+            "_embedded/elements/4/#{project_cf.attribute_name(:camel_case)}"
+          )
+        end
+
+        it "returns the for_all_cf only for the other_project as a member " \
+           "with view_project_attributes" do
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/0/#{for_all_cf.attribute_name(:camel_case)}"
+          )
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/1/#{for_all_cf.attribute_name(:camel_case)}"
+          )
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/2/#{for_all_cf.attribute_name(:camel_case)}"
+          )
+          expect(subject).not_to have_json_path(
+            "_embedded/elements/3/#{for_all_cf.attribute_name(:camel_case)}"
+          )
+          expect(subject).to have_json_path(
+            "_embedded/elements/4/#{for_all_cf.attribute_name(:camel_case)}"
+          )
+        end
+      end
+    end
+  end
+
+  context "when not being logged in and login is required" do
+    current_user { create(:anonymous) }
+
+    context "if user is not logged in" do
+      it_behaves_like "unauthenticated access"
     end
   end
 end

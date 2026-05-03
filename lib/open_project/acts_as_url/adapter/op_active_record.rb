@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,8 +38,10 @@ module OpenProject
       class OpActiveRecord < Stringex::ActsAsUrl::Adapter::ActiveRecord
         ##
         # Avoid generating the slug if the attribute is already set
-        # and only_when_blank is true
+        # and only_when_blank is true, or if skip_if evaluates to true.
         def ensure_unique_url!(instance)
+          return if settings.skip_if&.call
+
           attribute = instance.send(settings.url_attribute)
           super if attribute.blank? || !settings.only_when_blank
         end
@@ -62,10 +64,10 @@ module OpenProject
 
         def modify_base_url_custom_rules
           replacement = case instance.send(settings.attribute_to_urlify).to_s
-                        when '.'
-                          'dot'
-                        when '!'
-                          'bang'
+                        when "."
+                          "dot"
+                        when "!"
+                          "bang"
                         end
 
           self.base_url = replacement if replacement

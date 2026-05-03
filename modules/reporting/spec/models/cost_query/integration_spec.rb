@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,20 +26,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
+require_relative "../../spec_helper"
 
-describe CostQuery, type: :model, reporting_query_helper: true do
+RSpec.describe CostQuery, :reporting_query_helper do
   minimal_query
 
   let!(:project1) { create(:project_with_types) }
   let!(:work_package1) { create(:work_package, project: project1) }
-  let!(:time_entry1) { create(:time_entry, work_package: work_package1, project: project1) }
-  let!(:time_entry2) { create(:time_entry, work_package: work_package1, project: project1) }
+  let!(:time_entry1) { create(:time_entry, entity: work_package1, project: project1) }
+  let!(:time_entry2) { create(:time_entry, entity: work_package1, project: project1) }
 
   let!(:project2) { create(:project_with_types) }
   let!(:work_package2) { create(:work_package, project: project2) }
-  let!(:time_entry3) { create(:time_entry, work_package: work_package2, project: project2) }
-  let!(:time_entry4) { create(:time_entry, work_package: work_package2, project: project2) }
+  let!(:time_entry3) { create(:time_entry, entity: work_package2, project: project2) }
+  let!(:time_entry4) { create(:time_entry, entity: work_package2, project: project2) }
 
   before do
     create(:admin)
@@ -48,7 +48,7 @@ describe CostQuery, type: :model, reporting_query_helper: true do
   describe "the reporting system" do
     it "computes group_by and a filter" do
       query.group_by :project_id
-      query.filter :status_id, operator: 'o'
+      query.filter :status_id, operator: "o"
       sql_result = query.result
 
       expect(sql_result.size).to eq(2)
@@ -63,9 +63,9 @@ describe CostQuery, type: :model, reporting_query_helper: true do
     end
 
     it "applies two filter and a group_by correctly" do
-      query.filter :project_id, operator: '=', value: [project1.id]
+      query.filter :project_id, operator: "=", value: [project1.id]
       query.group_by :user_id
-      query.filter :overridden_costs, operator: 'n'
+      query.filter :overridden_costs, operator: "n"
 
       sql_result = query.result
       expect(sql_result.size).to eq(2)
@@ -80,21 +80,21 @@ describe CostQuery, type: :model, reporting_query_helper: true do
     end
 
     it "applies two different filters on the same field" do
-      query.filter :project_id, operator: '=', value: [project1.id, project2.id]
-      query.filter :project_id, operator: '!', value: [project2.id]
+      query.filter :project_id, operator: "=", value: [project1.id, project2.id]
+      query.filter :project_id, operator: "!", value: [project2.id]
 
       sql_result = query.result
       expect(sql_result.count).to eq(2)
     end
 
-    it 'processes only _one_ SQL query for any operations on a valid CostQuery' do
+    it "processes only _one_ SQL query for any operations on a valid CostQuery" do
       number_of_sql_queries = 0
       expect_any_instance_of(CostQuery::SqlStatement).to receive(:to_s) do |*_|
-        number_of_sql_queries += 1 unless caller.third.include? 'sql_statement.rb'
+        number_of_sql_queries += 1 unless caller.third.include? "sql_statement.rb"
 
         # Apparently, we have to return a valid SQL query
 
-        'SELECT 1=1'
+        "SELECT 1=1"
       end
 
       # create a random query

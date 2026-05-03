@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,10 +26,8 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
@@ -47,16 +45,15 @@ describe('TimezoneService', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-      ],
-      providers: [
+    imports: [],
+    providers: [
         { provide: I18nService, useValue: {} },
         { provide: ConfigurationService, useValue: ConfigurationServiceStub },
         PathHelperService,
         TimezoneService,
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+});
 
     timezoneService = TestBed.inject(TimezoneService);
   };
@@ -69,12 +66,14 @@ describe('TimezoneService', () => {
     describe('#parseDatetime', () => {
       it('is UTC', () => {
         const time = timezoneService.parseDatetime(TIME);
+
         expect(time.utcOffset()).toEqual(0);
         expect(time.format('HH:mm')).toEqual('09:30');
       });
 
       it('has no time information', () => {
         const time = timezoneService.parseDate(DATE);
+
         expect(time.format('HH:mm')).toEqual('00:00');
       });
     });
@@ -88,6 +87,7 @@ describe('TimezoneService', () => {
     describe('Non-UTC timezone', () => {
       it('is in the given timezone', () => {
         const date = timezoneService.parseDatetime(TIME);
+
         expect(date.format('HH:mm')).toEqual('01:30');
       });
 

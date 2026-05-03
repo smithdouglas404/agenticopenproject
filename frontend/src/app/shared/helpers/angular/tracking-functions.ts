@@ -4,27 +4,17 @@ export function halHref<T extends HalResource>(_index:number, item:T):string|nul
   return item.href;
 }
 
-export function compareByAttribute(attribute:string) {
+export function compareByAttribute(...attributes:string[]) {
   return (a:any, b:any) => {
     const bothNil = !a && !b;
-    return bothNil || (!!a && !!b && a[attribute] === b[attribute]);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const same = !!a && !!b && attributes.every((attribute) => a[attribute] === b[attribute]);
+    return bothNil || (!!a && !!b && same);
   };
 }
 
 export function compareByName<T extends HalResource>(a:T|undefined|null, b:T|undefined|null):boolean {
   return compareByAttribute('name')(a, b);
-}
-
-export function trackByName(i:number, item:any) {
-  return _.get(item, 'name');
-}
-
-export function trackByHref(i:number, item:{ href?:unknown }) {
-  return _.get(item, 'href');
-}
-
-export function trackByProperty(prop:string) {
-  return (i:number, item:unknown) => _.get(item, prop);
 }
 
 export function trackByHrefAndProperty(propertyName:string) {
@@ -37,7 +27,7 @@ export function trackByHrefAndProperty(propertyName:string) {
 }
 
 export function trackByTrackingIdentifier(i:number, item:any) {
-  return _.get(item, 'trackingIdentifier', item && item.href);
+  return _.get(item, 'trackingIdentifier', item?.href);
 }
 
 export function compareByHref<T extends HalResource>(a:T|undefined|null, b:T|undefined|null):boolean {
@@ -45,9 +35,9 @@ export function compareByHref<T extends HalResource>(a:T|undefined|null, b:T|und
   return bothNil || (!!a && !!b && a.href === b.href);
 }
 
-export function compareByHrefOrString<T extends HalResource>(a:T|string|undefined|null, b:T|string|undefined|null):boolean {
+export function compareByHrefOrString<T extends HalResource>(a:T|string|undefined|null|unknown, b:T|string|undefined|null|unknown):boolean {
   if (a instanceof HalResource && b instanceof HalResource) {
-    return compareByHref(a as HalResource, b as HalResource);
+    return compareByHref(a, b);
   }
 
   const bothNil = !a && !b;

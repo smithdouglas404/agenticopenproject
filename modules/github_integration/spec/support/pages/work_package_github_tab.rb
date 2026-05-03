@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +26,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'rbconfig'
-require 'support/pages/page'
+require "rbconfig"
+require "support/pages/page"
 
 module Pages
   class GitHubTab < Page
@@ -43,26 +43,22 @@ module Pages
     end
 
     def git_actions_menu_button
-      find('.github-git-copy:not([disabled])', text: 'Git')
+      find(".github-git-copy:not([disabled])", text: "Git")
     end
 
     def git_actions_copy_branch_name_button
-      find('.git-actions-menu .copy-button:not([disabled])', match: :first)
+      find(".git-actions-menu .copy-button:not([disabled])", match: :first)
     end
 
     def paste_clipboard_content
       meta_key = osx? ? :command : :control
-      page.send_keys(meta_key, 'v')
-    end
-
-    def expect_tab_not_present
-      expect(page).not_to have_selector('.op-tab-row--link', text: 'GITHUB')
+      page.send_keys(meta_key, "v")
     end
 
     private
 
     def osx?
-      RbConfig::CONFIG['host_os'] =~ /darwin/
+      RbConfig::CONFIG["host_os"].include?("darwin")
     end
   end
 end

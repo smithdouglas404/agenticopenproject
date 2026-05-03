@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,10 +35,10 @@ Journal.class_eval do
     original = attributes
     recreated = o.attributes
 
-    original.except!('created_at')
-    details.except!('created_on')
-    recreated.except!('created_at')
-    o.details.except!('created_on')
+    original.except!("created_at")
+    details.except!("created_on")
+    recreated.except!("created_at")
+    o.details.except!("created_on")
 
     original.identical?(recreated)
   end

@@ -25,6 +25,7 @@ import { QuerySchemaResource } from 'core-app/features/hal/resources/query-schem
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
 import { SchemaResource } from 'core-app/features/hal/resources/schema-resource';
 import { WorkPackagesListChecksumService } from './wp-list-checksum.service';
+import { WorkPackageViewBaselineService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-baseline.service';
 
 @Injectable()
 export class WorkPackageStatesInitializationService {
@@ -49,6 +50,7 @@ export class WorkPackageStatesInitializationService {
     protected authorisationService:AuthorisationService,
     protected wpDisplayRepresentation:WorkPackageViewDisplayRepresentationService,
     protected wpIncludeSubprojects:WorkPackageViewIncludeSubprojectsService,
+    protected wpTimestamps:WorkPackageViewBaselineService,
   ) { }
 
   /**
@@ -88,7 +90,7 @@ export class WorkPackageStatesInitializationService {
     const schema:QuerySchemaResource = form.schema as any;
 
     _.each(schema.filtersSchemas.elements, (schema) => {
-      this.states.schemas.get(schema.href as string).putValue(schema as any);
+      this.states.schemas.get(schema.href!).putValue(schema as any);
     });
 
     this.wpTableFilters.initializeFilters(query, schema);
@@ -107,7 +109,7 @@ export class WorkPackageStatesInitializationService {
 
     if (results.schemas) {
       _.each(results.schemas.elements, (schema:SchemaResource) => {
-        this.states.schemas.get(schema.href as string).putValue(schema);
+        this.states.schemas.get(schema.href!).putValue(schema);
       });
     }
 
@@ -132,6 +134,8 @@ export class WorkPackageStatesInitializationService {
     this.wpDisplayRepresentation.initialize(query, results);
 
     this.wpIncludeSubprojects.initialize(query, results);
+
+    this.wpTimestamps.initialize(query, results);
 
     this.querySpace.additionalRequiredWorkPackages
       .values$()

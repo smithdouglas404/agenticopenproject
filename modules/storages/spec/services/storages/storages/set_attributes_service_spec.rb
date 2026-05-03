@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,23 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
+require_module_spec_helper
 
-describe ::Storages::Storages::SetAttributesService, type: :model do
+RSpec.describe Storages::Storages::SetAttributesService, type: :model do
   let(:current_user) { build_stubbed(:admin) }
 
   let(:contract_instance) do
-    contract = instance_double(::Storages::Storages::BaseContract, 'contract_instance')
-    allow(contract)
-      .to receive(:validate)
-      .and_return(contract_valid)
-    allow(contract)
-      .to receive(:errors)
-      .and_return(contract_errors)
+    contract = instance_double(Storages::Storages::CreateContract, "contract_instance")
+    allow(contract).to receive_messages(validate: contract_valid, errors: contract_errors)
     contract
   end
 
-  let(:contract_errors) { instance_double(ActiveModel::Errors, 'contract_errors') }
+  let(:contract_errors) { instance_double(ActiveModel::Errors, "contract_errors") }
   let(:contract_valid) { true }
   let(:model_valid) { true }
 
@@ -52,76 +50,92 @@ describe ::Storages::Storages::SetAttributesService, type: :model do
                         contract_class:,
                         contract_options: {})
   end
-  let(:model_instance) { ::Storages::Storage.new }
+  let(:model_instance) { Storages::Storage.new }
   let(:contract_class) do
-    allow(::Storages::Storages::CreateContract)
+    allow(Storages::Storages::CreateContract)
       .to receive(:new)
-      .and_return(contract_instance)
+            .and_return(contract_instance)
 
-    ::Storages::Storages::CreateContract
+    Storages::Storages::CreateContract
   end
 
-  let(:params) { {} }
+  let(:params) { { provider_type: Storages::NextcloudStorage.name } }
 
   before do
     allow(model_instance)
       .to receive(:valid?)
-      .and_return(model_valid)
+            .and_return(model_valid)
   end
 
   subject { instance.call(params) }
 
-  it 'returns the instance as the result' do
+  it "returns the instance as the result" do
     expect(subject.result)
       .to eql model_instance
   end
 
-  it 'is a success' do
+  it "is a success" do
     expect(subject)
       .to be_success
   end
 
-  context 'with new record' do
-    it 'sets creator to current user' do
+  context "with new record" do
+    it "sets creator to current user" do
       expect(subject.result.creator).to eq current_user
     end
 
-    it 'sets provider_type to nextcloud' do
-      expect(subject.result.provider_type).to eq Storages::Storage::PROVIDER_TYPE_NEXTCLOUD
+    it "sets provider_type to nextcloud" do
+      expect(subject.result.provider_type).to eq Storages::NextcloudStorage.name
     end
 
-    it 'sets name to "My Nextcloud" by default' do
-      expect(subject.result.name).to eq I18n.t('storages.provider_types.nextcloud.default_name')
-    end
-
-    context 'when setting host' do
+    context "with host" do
       before do
-        params[:host] = "https://some.host.com//"
+        params[:host] = host_input
       end
 
-      it 'removes trailing slashes from host' do
-        expect(subject.result.host).to eq("https://some.host.com")
+      context "if host input has a trailing slashes" do
+        let(:host_input) { "https://some.host.com//" }
+
+        it "keeps a trailing slash" do
+          expect(subject.result.host).to eq(host_input)
+        end
+      end
+
+      context "if host input is empty string" do
+        let(:host_input) { "" }
+
+        it "sets host to nil" do
+          expect(subject.result.host).to be_nil
+        end
+      end
+
+      context "if host input has no trailing slash" do
+        let(:host_input) { "https://some.host.com" }
+
+        it "adds a trailing slash" do
+          expect(subject.result.host).to eq("https://some.host.com/")
+        end
       end
     end
   end
 
-  context 'with existing record' do
-    let(:model_instance) { build_stubbed(:storage, name: 'My Storage', creator: build_stubbed(:user)) }
+  context "with existing record" do
+    let(:model_instance) { build_stubbed(:nextcloud_storage, name: "My Storage", creator: build_stubbed(:user)) }
 
-    it 'keeps its name' do
-      expect(subject.result.name).to eq 'My Storage'
+    it "keeps its name" do
+      expect(subject.result.name).to eq "My Storage"
     end
 
-    it 'keeps its creator' do
+    it "keeps its creator" do
       expect(subject.result.creator).not_to eq current_user
     end
   end
 
-  context 'with params' do
+  context "with params" do
     let(:params) do
       {
-        name: 'Foobar',
-        provider_type: 'foo provider'
+        name: "Foobar",
+        provider_type: "foo provider"
       }
     end
 
@@ -129,25 +143,66 @@ describe ::Storages::Storages::SetAttributesService, type: :model do
       subject
     end
 
-    it 'assigns the params' do
-      expect(model_instance.name).to eq 'Foobar'
-    end
-
-    it 'cannot assign provider_type to anything else than "nextcloud"' do
-      expect(model_instance.provider_type).to eq Storages::Storage::PROVIDER_TYPE_NEXTCLOUD
+    it "assigns the params" do
+      expect(model_instance.name).to eq "Foobar"
+      expect(model_instance.provider_type).to eq "foo provider"
     end
   end
 
-  context 'with an invalid contract' do
+  context "with an invalid contract" do
     let(:contract_valid) { false }
 
-    it 'returns failure' do
+    it "returns failure" do
       expect(subject).not_to be_success
     end
 
     it "returns the contract's errors" do
       expect(subject.errors)
         .to eql(contract_errors)
+    end
+  end
+
+  describe "automatically managed project folders" do
+    let(:model_instance) { build_stubbed(:nextcloud_storage) }
+
+    context "with password" do
+      let(:params) do
+        super().merge(
+          "automatically_managed" => true,
+          "password" => "secret"
+        )
+      end
+
+      it "enables automatic folder management with password" do
+        expect(subject.result).to have_attributes(automatically_managed: true, username: "OpenProject",
+                                                  password: "secret")
+      end
+    end
+
+    context "with automatically_managed false" do
+      let(:params) do
+        super().merge(
+          "automatically_managed" => false
+        )
+      end
+
+      it "disables automatic folder management" do
+        expect(subject.result).to have_attributes(automatically_managed: false)
+        expect(subject.result.attributes.keys).not_to include(:username, :password)
+      end
+    end
+
+    context "with automatically_managed nil" do
+      let(:params) do
+        super().merge(
+          "automatically_managed" => nil
+        )
+      end
+
+      it "does not change the value" do
+        expect(subject.result).to have_attributes(automatically_managed: nil)
+        expect(subject.result.attributes.keys).not_to include(:username, :password)
+      end
     end
   end
 end

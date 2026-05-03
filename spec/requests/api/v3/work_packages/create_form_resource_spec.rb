@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2020 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,10 +27,10 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 
-require 'spec_helper'
-require 'rack/test'
+require "spec_helper"
+require "rack/test"
 
-describe ::API::V3::WorkPackages::CreateProjectFormAPI do
+RSpec.describe "POST api/v3/workspaces/:id/work_packages/form" do
   include Rack::Test::Methods
   include API::V3::Utilities::PathHelper
 
@@ -36,51 +38,51 @@ describe ::API::V3::WorkPackages::CreateProjectFormAPI do
   shared_let(:priority) { create(:default_priority) }
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project_with_types) }
+  shared_let(:type) { project.types.first }
 
   let(:path) { api_v3_paths.create_work_package_form }
   let(:parameters) { {} }
 
   before do
     login_as(user)
-    post path, parameters.to_json, 'CONTENT_TYPE' => 'application/json'
+    post path, parameters.to_json, "CONTENT_TYPE" => "application/json"
   end
 
   subject(:response) { last_response }
 
-  it 'returns 200(OK)' do
-    expect(response.status).to eq(200)
+  it "returns 200(OK)" do
+    expect(response).to have_http_status(:ok)
   end
 
-  it 'is of type form' do
-    expect(response.body).to be_json_eql('Form'.to_json).at_path('_type')
+  it "is of type form" do
+    expect(response.body).to be_json_eql("Form".to_json).at_path("_type")
   end
 
-  it 'has the available_projects link for creation in the schema' do
+  it "has the available_projects link for creation in the schema" do
     expect(response.body)
       .to be_json_eql(api_v3_paths.available_projects_on_create.to_json)
-      .at_path('_embedded/schema/project/_links/allowedValues/href')
+      .at_path("_embedded/schema/project/_links/allowedValues/href")
   end
 
-  describe 'with empty parameters' do
-    it 'has 3 validation errors' do
-      expect(subject.body).to have_json_size(3).at_path('_embedded/validationErrors')
+  describe "with empty parameters" do
+    it "has 3 validation errors" do
+      expect(subject.body).to have_json_size(3).at_path("_embedded/validationErrors")
     end
 
-    it 'has a validation error on subject' do
-      expect(subject.body).to have_json_path('_embedded/validationErrors/subject')
+    it "has a validation error on subject" do
+      expect(subject.body).to have_json_path("_embedded/validationErrors/subject")
     end
 
-    it 'has a validation error on type' do
-      expect(subject.body).to have_json_path('_embedded/validationErrors/type')
+    it "has a validation error on type" do
+      expect(subject.body).to have_json_path("_embedded/validationErrors/type")
     end
 
-    it 'has a validation error on project' do
-      expect(subject.body).to have_json_path('_embedded/validationErrors/project')
+    it "has a validation error on project" do
+      expect(subject.body).to have_json_path("_embedded/validationErrors/project")
     end
   end
 
-  describe 'with all minimum parameters' do
-    let(:type) { project.types.first }
+  describe "with all minimum parameters" do
     let(:parameters) do
       {
         _links: {
@@ -88,15 +90,15 @@ describe ::API::V3::WorkPackages::CreateProjectFormAPI do
             href: "/api/v3/projects/#{project.id}"
           }
         },
-        subject: 'lorem ipsum'
+        subject: "lorem ipsum"
       }
     end
 
-    it 'has 0 validation errors' do
-      expect(subject.body).to have_json_size(0).at_path('_embedded/validationErrors')
+    it "has 0 validation errors" do
+      expect(subject.body).to have_json_size(0).at_path("_embedded/validationErrors")
     end
 
-    it 'has the default type active in the project set' do
+    it "has the default type active in the project set" do
       type_link = {
         href: "/api/v3/types/#{type.id}",
         title: type.name
@@ -104,7 +106,108 @@ describe ::API::V3::WorkPackages::CreateProjectFormAPI do
 
       expect(subject.body)
         .to be_json_eql(type_link.to_json)
-        .at_path('_embedded/payload/_links/type')
+        .at_path("_embedded/payload/_links/type")
+    end
+  end
+
+  describe "custom fields" do
+    context "when the custom field is required" do
+      shared_let(:required_custom_field) do
+        create(:work_package_custom_field,
+               field_format: "string",
+               name: "Department",
+               is_required: true,
+               projects: [project],
+               types: [type])
+      end
+
+      context "when no custom field value is provided" do
+        let(:parameters) do
+          {
+            subject: "new work package with CF",
+            _links: {
+              type: {
+                href: "/api/v3/types/#{type.id}"
+              },
+              project: {
+                href: "/api/v3/projects/#{project.id}"
+              }
+            }
+          }
+        end
+
+        it "has validation errors for the required custom field" do
+          expect(subject.body).to have_json_path("_embedded/validationErrors/customField#{required_custom_field.id}")
+          expect(subject.body).not_to have_json_path("_links/commit")
+        end
+
+        it "explains the custom field error" do
+          expect(subject.body)
+            .to be_json_eql("Department can't be blank.".to_json)
+            .at_path("_embedded/validationErrors/customField#{required_custom_field.id}/message")
+        end
+      end
+
+      context "when the custom field is provided but empty" do
+        let(:parameters) do
+          {
+            subject: "new work package with CF",
+            "customField#{required_custom_field.id}" => "",
+            _links: {
+              type: {
+                href: "/api/v3/types/#{type.id}"
+              },
+              project: {
+                href: "/api/v3/projects/#{project.id}"
+              }
+            }
+          }
+        end
+
+        it "has validation errors for the required custom field" do
+          expect(subject.body).to have_json_path("_embedded/validationErrors/customField#{required_custom_field.id}")
+          expect(subject.body).not_to have_json_path("_links/commit")
+        end
+
+        it "explains the custom field error" do
+          expect(subject.body)
+            .to be_json_eql("Department can't be blank.".to_json)
+            .at_path("_embedded/validationErrors/customField#{required_custom_field.id}/message")
+        end
+      end
+
+      context "when the custom field value is provided and valid" do
+        let(:parameters) do
+          {
+            subject: "new work package with CF",
+            "customField#{required_custom_field.id}" => "Engineering",
+            _links: {
+              type: {
+                href: "/api/v3/types/#{type.id}"
+              },
+              project: {
+                href: "/api/v3/projects/#{project.id}"
+              }
+            }
+          }
+        end
+
+        it "has no validation errors" do
+          expect(subject.body).to have_json_size(0).at_path("_embedded/validationErrors")
+        end
+
+        it "has a commit link" do
+          expect(subject.body)
+            .to be_json_eql(api_v3_paths.work_packages.to_json)
+            .at_path("_links/commit/href")
+        end
+
+        it "has the custom field value in the payload" do
+          expect(subject.body)
+            .to be_json_eql("Engineering".to_json)
+            .at_path("_embedded/payload/customField#{required_custom_field.id}")
+        end
+      end
     end
   end
 end

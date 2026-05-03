@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +31,7 @@ import { UrlParamsHelperService } from 'core-app/features/work-packages/componen
 import { Injectable } from '@angular/core';
 import { WorkPackageViewPagination } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-table-pagination';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class WorkPackagesListChecksumService {
@@ -43,6 +44,9 @@ export class WorkPackagesListChecksumService {
   public checksum:string|null;
 
   public visibleChecksum:string|null;
+
+  /** Emits whenever visibleChecksum changes (useful for non-uiRouter pages to react to URL param changes) */
+  public readonly visibleChecksum$ = new Subject<string|null>();
 
   public updateIfDifferent(query:QueryResource,
     pagination:WorkPackageViewPagination):Promise<unknown> {
@@ -153,6 +157,28 @@ export class WorkPackagesListChecksumService {
 
   private maintainUrlQueryState(id:string|null, checksum:string|null):TransitionPromise {
     this.visibleChecksum = checksum;
+    this.visibleChecksum$.next(checksum);
+
+    // When uiRouter is not managing the current page (e.g. calendar after Turbo migration),
+    // $state.current.name is empty and state.go('.') does nothing. Fall back to pushState.
+    if (!this.$state.current.name) {
+      const url = new URL(window.location.href);
+
+      if (checksum) {
+        url.searchParams.set('query_props', checksum);
+      } else {
+        url.searchParams.delete('query_props');
+      }
+
+      if (id) {
+        url.searchParams.set('query_id', id);
+      } else {
+        url.searchParams.delete('query_id');
+      }
+
+      window.history.pushState({}, '', url.toString());
+      return Promise.resolve() as unknown as TransitionPromise;
+    }
 
     return this.$state.go(
       '.',

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'fog/aws'
-require 'carrierwave'
-require 'carrierwave/storage/fog'
+require "fog/aws"
+require "carrierwave"
+require "carrierwave/storage/fog"
 
 module CarrierWave
   module Configuration
@@ -37,13 +39,12 @@ module CarrierWave
                             public: false)
 
       # Ensure that the provider AWS is uppercased
-      provider = credentials[:provider] || 'AWS'
-      if [:aws, 'aws'].include? provider
-        credentials[:provider] = 'AWS'
+      provider = credentials[:provider] || "AWS"
+      if [:aws, "aws"].include? provider
+        credentials[:provider] = "AWS"
       end
 
       CarrierWave.configure do |config|
-        config.fog_provider    = 'fog/aws'
         config.fog_credentials = credentials
         config.fog_directory   = directory
         config.fog_public      = public
@@ -52,6 +53,12 @@ module CarrierWave
       end
     end
   end
+end
+
+# CW 2.0 changed the default cache_storage from :file to nil.
+# Restore :file to keep Attachment.clean_cached_files! working.
+CarrierWave.configure do |config|
+  config.cache_storage = :file
 end
 
 unless OpenProject::Configuration.fog_credentials.empty?

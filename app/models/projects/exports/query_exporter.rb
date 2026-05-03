@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,7 @@ module Projects::Exports
     alias :query :object
 
     def columns
-      @columns ||= (forced_columns + selected_columns)
+      @columns ||= selected_columns
     end
 
     def page
@@ -40,33 +42,35 @@ module Projects::Exports
     end
 
     def projects
-      @projects ||= query
-        .results
-        .with_required_storage
-        .with_latest_activity
-        .includes(:custom_values, :status)
+      @projects ||= all_projects
         .page(page)
         .per_page(Setting.work_packages_projects_export_limit.to_i)
     end
 
-    private
+    def all_projects
+      scope = query
+        .results
+        .with_required_storage
+        .with_latest_activity
+        .includes(:custom_values, :custom_comments)
 
-    def forced_columns
-      [
-        { name: :id, caption: Project.human_attribute_name(:id) },
-        { name: :identifier, caption: Project.human_attribute_name(:identifier) },
-        { name: :name, caption: Project.human_attribute_name(:name) },
-        { name: :description, caption: Project.human_attribute_name(:description) }
-      ]
+      # Mirror ProjectQuery#default_scope: admins see (and may export) archived
+      # projects, which Project.allowed_to would otherwise filter out since
+      # :export_projects is only permissible on active projects.
+      if User.current.admin?
+        scope
+      else
+        scope.where(id: Project.allowed_to(User.current, :export_projects))
+      end
     end
 
+    private
+
     def selected_columns
-      ::Projects::TableCell
-        .new(nil, current_user: User.current)
-        .all_columns
-        .reject { |_, options| options[:builtin] } # We add builtin columns ourselves
-        .select { |name, _| Setting.enabled_projects_columns.include?(name.to_s) }
-        .map { |name, options| { name:, caption: options[:caption] } }
+      query
+        .selects
+        .reject { |s| s.is_a?(Queries::Selects::NotExistingSelect) }
+        .map { |s| { name: s.attribute, caption: s.caption } }
     end
   end
 end

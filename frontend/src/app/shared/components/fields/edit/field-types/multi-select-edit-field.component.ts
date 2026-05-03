@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -29,19 +29,32 @@
 import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ViewChild } from '@angular/core';
 import { EditFieldComponent } from 'core-app/shared/components/fields/edit/edit-field.component';
 import { ValueOption } from 'core-app/shared/components/fields/edit/field-types/select-edit-field/select-edit-field.component';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { UserResource } from 'core-app/features/hal/resources/user-resource';
+import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 
 @Component({
   templateUrl: './multi-select-edit-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MultiSelectEditFieldComponent extends EditFieldComponent implements OnInit {
   @ViewChild(NgSelectComponent, { static: true }) public ngSelectComponent:NgSelectComponent;
 
   @InjectField() I18n!:I18nService;
+
+  @InjectField() pathHelperService:PathHelperService;
+
+  groupByFn = (item:HalResource):string|null => {
+    if (!this.isVersionResource) return null;
+    const project = item.definingProject as HalResource | undefined;
+    return project?.name || this.I18n.t('js.project.not_available');
+  };
 
   public availableOptions:any[] = [];
 
@@ -119,7 +132,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
 
       // Special case 'null' value, which angular
       // only understands in ng-options as an empty string.
-      if (option && option.href === '') {
+      if (option?.href === '') {
         option.href = null;
       }
 
@@ -130,9 +143,9 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
   }
 
   public onOpen() {
-    jQuery(this.hiddenOverflowContainer).one('scroll', () => {
+    document.querySelector(this.hiddenOverflowContainer)?.addEventListener('scroll', () => {
       this.ngSelectComponent.close();
-    });
+    }, { once: true });
   }
 
   public onClose() {
@@ -140,17 +153,14 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
   }
 
   public repositionDropdown() {
-    if (this.ngSelectComponent && this.ngSelectComponent.dropdownPanel) {
-      setTimeout(() => this.ngSelectComponent.dropdownPanel.adjustPosition(), 0);
-    }
+    repositionDropdownBugfix(this.ngSelectComponent);
   }
 
   private openAutocompleteSelectField() {
     // The timeout takes care that the opening is added to the end of the current call stack.
     // Thus we can be sure that the autocompleter is rendered and ready to be opened.
-    const that = this;
     window.setTimeout(() => {
-      that.ngSelectComponent.open();
+      this.ngSelectComponent.open();
     }, 0);
   }
 
@@ -173,7 +183,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
       });
     }
 
-    this.availableOptions = availableValues || [];
+    this.availableOptions = this.filterInvalidValues(availableValues || []);
     this._selectedOption = this.buildSelectedOption();
     this.checkCurrentValueValidity();
 
@@ -193,18 +203,28 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
     if (Array.isArray(allowedValues)) {
       this.setValues(allowedValues);
     } else if (this.schema.allowedValues) {
-      return this.schema.allowedValues.$load().then((values:CollectionResource) => {
+      return (this.schema.allowedValues.$load() as Promise<CollectionResource>).then((values:CollectionResource) => {
         // The select options of the project shall be sorted
         if (values.count > 0 && (values.elements[0] as any)._type === 'Project') {
           this.setValues(values.elements, true);
         } else {
           this.setValues(values.elements);
         }
+
+        if (this.requestFocus) {
+          // Focus and open the field once the values are loaded
+          this.ngSelectComponent.focus();
+          this.openAutocompleteSelectField();
+        }
       });
     } else {
       this.setValues([]);
     }
     return Promise.resolve();
+  }
+
+  private filterInvalidValues(availableValues:HalResource[]) {
+    return availableValues.filter((value) => !!value.name);
   }
 
   private checkCurrentValueValidity() {
@@ -218,5 +238,41 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
       // If no value but required
       this.currentValueInvalid = !!this.schema.required;
     }
+  }
+
+  /**
+   * For multi-select fields that are of type User, we want to show a hover card when hovering over users in the
+   * dropdown. For this to happen we must register a trigger target.
+   */
+  protected getHoverCardTriggerTarget() {
+    if (this.isUserResource) {
+      return 'trigger';
+    }
+
+    return '';
+  }
+
+  /**
+   * For multi-select fields that are of type User, we want to show a hover card when hovering over users in the
+   * dropdown. For this to happen, we must define a URL for the hover card.
+   */
+  protected getHoverCardUrl(item:HalResource) {
+    if (item instanceof UserResource && item.id) {
+      return this.pathHelperService.userHoverCardPath(item.id);
+    }
+
+    return '';
+  }
+
+  protected readonly getComputedStyle = getComputedStyle;
+
+  private get isUserResource() {
+    const type = this.schema?.type;
+    return type && type.indexOf('User') > 0;
+  }
+
+  private get isVersionResource() {
+    const type = this.schema?.type;
+    return type && type.indexOf('Version') > 0;
   }
 }

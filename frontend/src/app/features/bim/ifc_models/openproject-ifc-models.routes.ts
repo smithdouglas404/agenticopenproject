@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -34,12 +34,20 @@ import { WorkPackageNewFullViewComponent } from 'core-app/features/work-packages
 import { WorkPackagesBaseComponent } from 'core-app/features/work-packages/routing/wp-base/wp--base.component';
 import { BcfSplitLeftComponent } from 'core-app/features/bim/ifc_models/bcf/split/left/bcf-split-left.component';
 import { BcfSplitRightComponent } from 'core-app/features/bim/ifc_models/bcf/split/right/bcf-split-right.component';
+import { WP_ID_URL_PATTERN } from 'core-app/shared/helpers/work-package-id-pattern';
+
+export const sidemenuId = 'bim_sidemenu';
+
+export const sideMenuOptions = {
+  sidemenuId,
+  hardReloadOnBaseRoute: true,
+};
 
 export const IFC_ROUTES:Ng2StateDeclaration[] = [
   {
     name: 'bim',
     parent: 'optional_project',
-    url: '/bcf?query_id&query_props&models&viewpoint',
+    url: '/bcf?query_id&query_props&models&viewpoint&name',
     abstract: true,
     component: WorkPackagesBaseComponent,
     redirectTo: 'bim.partitioned.list',
@@ -49,6 +57,7 @@ export const IFC_ROUTES:Ng2StateDeclaration[] = [
       query_props: { type: 'opQueryString', dynamic: true },
       models: { type: 'opQueryString', dynamic: true },
       viewpoint: { type: 'int', dynamic: true },
+      name: { type: 'string', dynamic: true },
     },
   },
   {
@@ -58,6 +67,7 @@ export const IFC_ROUTES:Ng2StateDeclaration[] = [
     component: IFCViewerPageComponent,
     data: {
       bodyClasses: 'router--bim',
+      sideMenuOptions,
     },
   },
   {
@@ -67,6 +77,7 @@ export const IFC_ROUTES:Ng2StateDeclaration[] = [
       baseRoute: 'bim.partitioned.list',
       newRoute: 'bim.partitioned.list.new',
       partition: '-split',
+      sideMenuOptions,
     },
     reloadOnSearch: false,
     views: {
@@ -83,15 +94,17 @@ export const IFC_ROUTES:Ng2StateDeclaration[] = [
       allowMovingInEditMode: true,
       partition: '-left-only',
       successState: 'bim.partitioned.show',
+      sideMenuOptions,
     },
     views: { 'content-left': { component: WorkPackageNewFullViewComponent } },
   },
   {
     name: 'bim.partitioned.show',
-    url: '/show/{workPackageId:[0-9]+}',
+    url: `/show/{workPackageId:${WP_ID_URL_PATTERN}}`,
     data: {
       baseRoute: 'bim.partitioned.list',
       partition: '-left-only',
+      sideMenuOptions,
     },
     reloadOnSearch: false,
     redirectTo: 'bim.partitioned.show.details',

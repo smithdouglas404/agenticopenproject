@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,7 @@
 
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { InputState } from 'reactivestates';
+import { InputState } from '@openproject/reactivestates';
 import { States } from 'core-app/core/states/states.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
@@ -43,15 +43,18 @@ import { CausedUpdatesService } from 'core-app/features/boards/board/caused-upda
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { QueryOrder } from 'core-app/core/apiv3/endpoints/queries/apiv3-query-order';
 import { WorkPackageQueryStateService } from './wp-view-base.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class WorkPackageViewOrderService extends WorkPackageQueryStateService<QueryOrder> {
-  constructor(protected readonly querySpace:IsolatedQuerySpace,
+  constructor(
+    protected readonly querySpace:IsolatedQuerySpace,
     protected readonly apiV3Service:ApiV3Service,
     protected readonly states:States,
     protected readonly causedUpdates:CausedUpdatesService,
     protected readonly wpTableSortBy:WorkPackageViewSortByService,
-    protected readonly pathHelper:PathHelperService) {
+    protected readonly pathHelper:PathHelperService,
+) {
     super(querySpace);
   }
 
@@ -87,7 +90,7 @@ export class WorkPackageViewOrderService extends WorkPackageQueryStateService<Qu
    * Pull an item from the rendered list
    */
   public remove(order:string[], wpId:string):string[] {
-    _.remove(order, (id) => id === wpId);
+    order = order.filter((id) => id !== wpId);
     this.update({ [wpId]: -1 });
     return order;
   }
@@ -169,7 +172,7 @@ export class WorkPackageViewOrderService extends WorkPackageQueryStateService<Qu
       const { value } = this.positions;
 
       // Remove empty or stale values given we can reload them
-      if ((value === {} || this.positions.isValueOlderThan(60000))) {
+      if ((_.isEmpty(value) || this.positions.isValueOlderThan(60000))) {
         this.positions.clear('Clearing old positions value');
       }
 
@@ -186,10 +189,7 @@ export class WorkPackageViewOrderService extends WorkPackageQueryStateService<Qu
       this.positions.putValue({});
     }
 
-    return this.positions
-      .values$()
-      .pipe(take(1))
-      .toPromise();
+    return firstValueFrom(this.positions.values$());
   }
 
   public valueFromQuery(query:QueryResource) {

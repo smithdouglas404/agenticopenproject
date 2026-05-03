@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Queries::WorkPackages::Filter::ManualSortFilter, type: :model do
+RSpec.describe Queries::WorkPackages::Filter::ManualSortFilter do
   let!(:in_order) { create(:work_package) }
   let!(:in_order2) { create(:work_package) }
   let!(:out_order) { create(:work_package) }
@@ -37,13 +39,13 @@ describe Queries::WorkPackages::Filter::ManualSortFilter, type: :model do
   let(:query_double) { double(Query, ordered_work_packages: ar_double) }
 
   let(:instance) do
-    described_class.create!(name: :manual_sort, context: query_double, operator: 'ow', values: [])
+    described_class.create!(name: :manual_sort, context: query_double, operator: "ow", values: [])
   end
 
-  describe '#where' do
-    it 'filters based on the manual sort order' do
+  describe "#where" do
+    it "filters based on the manual sort order" do
       expect(WorkPackage.where(instance.where))
-        .to match_array [in_order2, in_order]
+        .to contain_exactly(in_order2, in_order)
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,11 +29,12 @@
 #++
 
 class WorkPackages::MovesController < ApplicationController
-  include WorkPackages::FlashBulkError
+  include WorkPackages::BulkErrorMessage
 
   default_search_scope :work_packages
   before_action :find_work_packages, :check_project_uniqueness
-  before_action :authorize
+  before_action :authorize_move_or_copy
+  authorization_checked! :new, :create
 
   def new
     prepare_for_work_package_move
@@ -40,57 +43,73 @@ class WorkPackages::MovesController < ApplicationController
   def create
     prepare_for_work_package_move
 
-    result = modify_call
-
-    set_flash_from_bulk_work_package_save(@work_packages, result)
-
-    redirect_after_create(result)
+    perform_operation
   end
 
   private
 
-  def modify_call
-    klass = if @copy
-              WorkPackages::Bulk::CopyService
-            else
-              WorkPackages::Bulk::MoveService
-            end
-
-    klass
-      .new(user: current_user, work_packages: @work_packages)
-      .call(attributes_for_create)
+  def authorize_move_or_copy
+    permission = params.has_key?(:copy) ? :copy_work_packages : :move_work_packages
+    do_authorize(permission)
   end
 
-  def redirect_after_create(result)
-    if params[:follow]
-      if result.success? && @work_packages.size == 1
-        redirect_to work_package_path(result.dependent_results.first.result)
-      else
-        redirect_to project_work_packages_path(@target_project || @project)
-      end
+  def perform_operation
+    if within_frontend_treshold?
+      perform_in_frontend
     else
+      perform_in_background
+    end
+  end
+
+  def within_frontend_treshold?
+    WorkPackageHierarchy.where(ancestor_id: @work_packages).count <= Setting.work_packages_bulk_request_limit
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def perform_in_frontend
+    call = job_class
+             .perform_now(**job_args)
+
+    if call.success? && @work_packages.any?
+      flash[:notice] = call.message
+      redirect_to call.result
+    else
+      flash[:error] = bulk_error_message(@work_packages, call.dependent_results.first)
       redirect_back_or_default(project_work_packages_path(@project))
     end
   end
 
-  def set_flash_from_bulk_work_package_save(work_packages, service_result)
-    if service_result.success? && work_packages.any?
-      flash[:notice] = @copy ? I18n.t(:notice_successful_create) : I18n.t(:notice_successful_update)
-    else
-      error_flash(work_packages,
-                  service_result)
-    end
+  # rubocop:enable Metrics/AbcSize
+
+  def perform_in_background
+    job = job_class.perform_later(**job_args)
+    redirect_to job_status_path(job.job_id)
   end
 
-  def default_breadcrumb
-    I18n.t(:label_move_work_package)
+  def job_args
+    {
+      user: current_user,
+      work_package_ids: @work_packages.pluck(:id),
+      project: @project,
+      target_project: @target_project,
+      params: attributes_for_create,
+      follow: params[:follow]
+    }
+  end
+
+  def job_class
+    if @copy
+      WorkPackages::BulkCopyJob
+    else
+      WorkPackages::BulkMoveJob
+    end
   end
 
   # Check if project is unique before bulk operations
   def check_project_uniqueness
     unless @project
       # TODO: let users bulk move/copy work packages from different projects
-      render_error message: :'work_packages.move.unsupported_for_multiple_projects', status: 400
+      render_error message: :"work_packages.move.unsupported_for_multiple_projects", status: 400
       false
     end
   end
@@ -100,11 +119,29 @@ class WorkPackages::MovesController < ApplicationController
     @allowed_projects = WorkPackage.allowed_target_projects_on_move(current_user)
     @target_project = @allowed_projects.detect { |p| p.id.to_s == params[:new_project_id].to_s } if params[:new_project_id]
     @target_project ||= @project
-    @types = @target_project.types
+    @types = @target_project.types.order(:position)
     @target_type = @types.find { |t| t.id.to_s == params[:new_type_id].to_s }
+    @unavailable_type_in_target_project = set_unavailable_type_in_target_project
     @available_versions = @target_project.assignable_versions
     @available_statuses = Workflow.available_statuses(@project)
-    @notes = params[:notes] || ''
+    @notes = params[:notes] || ""
+  end
+
+  def set_unavailable_type_in_target_project
+    if @target_project == @project
+      false
+    elsif @target_type.nil?
+      hierarchies = WorkPackageHierarchy
+                      .includes(:ancestor)
+                      .where(ancestor_id: @work_packages.select(:id))
+      Type.where(id: hierarchies.map { it.ancestor.type_id })
+          .select("distinct id")
+          .pluck(:id)
+          .difference(@types.pluck(:id))
+          .any?
+    else
+      @types.exclude?(@target_type)
+    end
   end
 
   def attributes_for_create
@@ -112,7 +149,7 @@ class WorkPackages::MovesController < ApplicationController
       .move_work_package
       .compact_blank
       # 'none' is used in the frontend as a value to unset the property, e.g. the assignee.
-      .transform_values { |v| v == 'none' ? nil : v }
+      .transform_values { |v| v == "none" ? nil : v }
       .to_h
   end
 end

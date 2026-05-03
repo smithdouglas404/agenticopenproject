@@ -1,6 +1,6 @@
 import { TypedJSON } from 'typedjson';
 import { BcfTopicResource } from 'core-app/features/bim/bcf/api/topics/bcf-topic.resource';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export const topic_object = {
   guid: '00efc0da-b4d5-4933-bcb6-e01513ee2bcc',
@@ -33,7 +33,9 @@ describe('BcfTopicResource', () => {
     expect(subject).toBeInstanceOf(BcfTopicResource);
     ['guid', 'topic_type', 'topic_status', 'priority', 'reference_links', 'title',
       'index', 'labels', 'creation_author', 'modified_author', 'assigned_to', 'stage',
-      'description'].forEach((item) => expect((subject as any)[item]).toEqual((topic_object as any)[item]));
+      'description'].forEach((item) =>
+
+      expect((subject as any)[item]).toEqual((topic_object as any)[item]));
 
     // Expect dates
     expect(subject.creation_date).toEqual(moment(topic_object.creation_date));

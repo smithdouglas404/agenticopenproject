@@ -3,15 +3,18 @@ import {
   ChangeDetectorRef,
   Component,
   Injector,
+  Input,
+  OnInit,
 } from '@angular/core';
 import {
   DynamicComponentDefinition,
   ToolbarButtonComponentDefinition,
   ViewPartitionState,
 } from 'core-app/features/work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component';
-import { StateService, TransitionService } from '@uirouter/core';
+import {
+  StateService,
+} from '@uirouter/core';
 import { BoardFilterComponent } from 'core-app/features/boards/board/board-filter/board-filter.component';
-import { Board } from 'core-app/features/boards/board/board';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { BoardService } from 'core-app/features/boards/board/board.service';
@@ -19,24 +22,32 @@ import { DragAndDropService } from 'core-app/shared/helpers/drag-and-drop/drag-a
 import { WorkPackageFilterButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/wp-filter-button/wp-filter-button.component';
 import { ZenModeButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/zen-mode-toggle-button/zen-mode-toggle-button.component';
 import { BoardsMenuButtonComponent } from 'core-app/features/boards/board/toolbar-menu/boards-menu-button.component';
-import { RequestSwitchmap } from 'core-app/shared/helpers/rxjs/request-switchmap';
-import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { finalize, take } from 'rxjs/operators';
+import {
+  catchError,
+  finalize,
+  skip,
+  take,
+} from 'rxjs/operators';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
-import { Ng2StateDeclaration } from '@uirouter/angular';
+import { Board } from 'core-app/features/boards/board/board';
 import { BoardFiltersService } from 'core-app/features/boards/board/board-filter/board-filters.service';
 import { CardViewHandlerRegistry } from 'core-app/features/work-packages/components/wp-card-view/event-handler/card-view-handler-registry';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { OpTitleService } from 'core-app/core/html/op-title.service';
+import { EMPTY, ReplaySubject } from 'rxjs';
+import { SubmenuService } from 'core-app/core/main-menu/submenu.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export function boardCardViewHandlerFactory(injector:Injector) {
   return new CardViewHandlerRegistry(injector);
 }
 
 @Component({
-  templateUrl: '../../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.html',
+  selector: 'board-partitioned-page',
+  templateUrl: '../../../work-packages/routing/partitioned-query-space-page/primerized-partitioned-query-space-page.component.html',
   styleUrls: [
     '../../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.sass',
     './board-partitioned-page.component.sass',
@@ -46,8 +57,10 @@ export function boardCardViewHandlerFactory(injector:Injector) {
     DragAndDropService,
     BoardFiltersService,
   ],
+  standalone: false,
 })
-export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
+export class BoardPartitionedPageComponent extends UntilDestroyedMixin implements OnInit {
+  @Input() boardId:string;
   text = {
     button_more: this.I18n.t('js.button_more'),
     delete: this.I18n.t('js.button_delete'),
@@ -57,26 +70,16 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     unnamedBoard: this.I18n.t('js.boards.label_unnamed_board'),
     loadingError: 'No such board found',
     addList: this.I18n.t('js.boards.add_list'),
-    upsaleBoards: this.I18n.t('js.boards.upsale.teaser_text'),
-    upsaleCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsale.check_out_link'),
+    upsellBoards: this.I18n.t('js.boards.upsell.teaser_text'),
+    upsellCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsell.check_out_link'),
     unnamed_list: this.I18n.t('js.boards.label_unnamed_list'),
   };
 
-  /** Board observable */
-  board$ = this
-    .apiV3Service
-    .boards
-    .id(this.state.params.board_id.toString())
-    .observe();
-
-  /** Whether this is a new board just created */
-  isNew = !!this.state.params.isNew;
+  /** Board subject */
+  board$ = new ReplaySubject<Board>(1);
 
   /** Whether the board is editable */
   editable:boolean;
-
-  /** Go back to boards using back-button */
-  backButtonCallback:() => void;
 
   /** Current query title to render */
   selectedTitle?:string;
@@ -88,10 +91,6 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
 
   /** Do we currently have query props ? */
   showToolbarSaveButton:boolean;
-
-  /** Listener callbacks */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  removeTransitionSubscription:Function;
 
   /** Show a toolbar */
   showToolbar = true;
@@ -111,30 +110,18 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     },
   };
 
-  // We remember when we want to update the board
-  boardSaver = new RequestSwitchmap(
-    (board:Board) => {
-      this.toolbarDisabled = true;
-      return this.Boards
-        .save(board)
-        .pipe(
-          finalize(() => (this.toolbarDisabled = false)),
-        );
-    },
-  );
-
   toolbarButtonComponents:ToolbarButtonComponentDefinition[] = [
     {
       component: WorkPackageFilterButtonComponent,
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
     },
     {
       component: ZenModeButtonComponent,
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
     },
     {
       component: BoardsMenuButtonComponent,
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
       show: () => this.editable,
       inputs: {
         board$: this.board$,
@@ -142,9 +129,9 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     },
   ];
 
-  constructor(readonly I18n:I18nService,
+  constructor(
+    readonly I18n:I18nService,
     readonly cdRef:ChangeDetectorRef,
-    readonly $transitions:TransitionService,
     readonly state:StateService,
     readonly toastService:ToastService,
     readonly halNotification:HalResourceNotificationService,
@@ -152,7 +139,11 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     readonly apiV3Service:ApiV3Service,
     readonly boardFilters:BoardFiltersService,
     readonly Boards:BoardService,
-    readonly titleService:OpTitleService) {
+    readonly titleService:OpTitleService,
+    readonly submenuService:SubmenuService,
+    readonly pathHelperService:PathHelperService,
+    readonly currentProject:CurrentProjectService,
+  ) {
     super();
   }
 
@@ -160,38 +151,28 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     // Ensure board is being loaded
     this.Boards.loadAllBoards();
 
-    this.boardSaver
-      .observe(componentDestroyed(this))
-      .subscribe(
-        () => {
-          this.toastService.addSuccess(this.text.updateSuccessful);
-        },
-        (error:unknown) => this.halNotification.handleRawError(error),
-      );
+    const boardId = this.boardId || this.state.params.board_id?.toString();
+    this.apiV3Service.boards.id(boardId).observe()
+      .pipe(this.untilDestroyed())
+      .subscribe((board) => this.board$.next(board));
 
-    this.removeTransitionSubscription = this.$transitions.onSuccess({}, (transition):any => {
-      const toState = transition.to();
-      const params = transition.params('to');
-
-      this.showToolbarSaveButton = !!params.query_props;
-      this.setPartition(toState);
-
-      this
-        .board$
-        .pipe(take(1))
-        .subscribe((board) => {
-          this.titleService.setFirstPart(board.name);
-        });
-
-      this.cdRef.detectChanges();
-    });
+    // React to filter changes (board-filter updates boardFilters after pushing URL)
+    this.boardFilters.filters.values$()
+      .pipe(
+        this.untilDestroyed(),
+        skip(1), // skip the initial empty default value
+      )
+      .subscribe(() => {
+        this.showToolbarSaveButton = !!new URLSearchParams(window.location.search).get('query_props');
+        this.cdRef.detectChanges();
+      });
 
     this.board$
       .pipe(
         this.untilDestroyed(),
       )
       .subscribe((board) => {
-        const queryProps = this.state.params.query_props;
+        const queryProps = new URLSearchParams(window.location.search).get('query_props');
         this.editable = board.editable;
         this.selectedTitle = board.name;
         this.titleService.setFirstPart(board.name);
@@ -201,10 +182,15 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
       });
   }
 
-  ngOnDestroy():void {
-    super.ngOnDestroy();
-    this.removeTransitionSubscription();
+  breadcrumbItems() {
+    return [
+      { href: this.pathHelperService.projectPath(this.currentProject.identifier!), text: (this.currentProject.name) },
+      { href: this.pathHelperService.boardsPath(this.currentProject.identifier), text: this.I18n.t('js.label_board_plural') },
+      this.selectedTitle?? '',
+    ];
   }
+
+  currentMenuSectionHeader() { return this.I18n.t('js.label_global_queries'); }
 
   changeChangesFromTitle(newName:string) {
     this.board$
@@ -213,10 +199,28 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
         board.name = newName;
         board.filters = this.boardFilters.current;
 
-        const params = { isNew: false, query_props: null };
-        this.state.go('.', params, { custom: { notify: false } });
+        const url = new URL(window.location.href);
+        url.searchParams.delete('query_props');
+        window.history.pushState({}, '', url);
+        this.showToolbarSaveButton = false;
 
-        this.boardSaver.request(board);
+        this.toolbarDisabled = true;
+        this.Boards
+          .save(board)
+          .pipe(
+            catchError((error) => {
+              this.halNotification.handleRawError(error);
+              return EMPTY;
+            }),
+            finalize(() => {
+              this.toolbarDisabled = false;
+              this.cdRef.detectChanges();
+              this.reloadSidemenu();
+            }),
+          ).subscribe(() => {
+            this.toastService.addSuccess(this.text.updateSuccessful);
+          },
+        );
       });
   }
 
@@ -229,13 +233,7 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     return this.editable;
   }
 
-  /**
-   * We need to set the current partition to the grid to ensure
-   * either side gets expanded to full width if we're not in '-split' mode.
-   *
-   * @param state The current or entering state
-   */
-  protected setPartition(state:Ng2StateDeclaration) {
-    this.currentPartition = (state.data && state.data.partition) ? state.data.partition : '-split';
+  private reloadSidemenu():void {
+    this.submenuService.reloadSubmenu(null, 'boards_sidemenu');
   }
 }

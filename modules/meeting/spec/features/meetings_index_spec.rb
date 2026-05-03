@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +27,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-require_relative '../support/pages/meetings/index'
+require_relative "../support/pages/meetings/index"
 
-describe 'Meetings', type: :feature do
-  let(:project) { create :project, enabled_module_names: %w[meetings] }
-  let(:other_project) { create :project, enabled_module_names: %w[meetings] }
-  let(:role) { create(:role, permissions:) }
+RSpec.describe "Meetings", "Index", :js do
+  shared_let(:business_day_at_noon) { Time.zone.local(2025, 1, 8, 12, 0, 0) }
+
+  after do
+    travel_back
+  end
+
+  # The order the Projects are created in is important. By naming `project` alphanumerically
+  # after `other_project`, we can ensure that subsequent specs that assert sorting is
+  # correct for the right reasons (sorting by Project name and not id)
+  shared_let(:project) { create(:project, name: "Project 2", enabled_module_names: %w[meetings]) }
+  shared_let(:other_project) { create(:project, name: "Project 1", enabled_module_names: %w[meetings]) }
+  let(:role) { create(:project_role, permissions:) }
   let(:permissions) { %i(view_meetings) }
   let(:user) do
     create(:user) do |user|
@@ -46,64 +56,406 @@ describe 'Meetings', type: :feature do
     end
   end
 
-  let(:meeting) do
-    create :meeting, project:, title: 'Awesome meeting today!', start_time: Time.now
+  shared_let(:meeting) do
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Awesome meeting today!",
+           start_time: business_day_at_noon - 5.minutes)
   end
-  let(:tomorrows_meeting) do
-    create :meeting, project:, title: 'Awesome meeting tomorrow!', start_time: Time.now + 1.day
+  shared_let(:tomorrows_meeting) do
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Awesome meeting tomorrow!",
+           start_time: business_day_at_noon + 1.day,
+           duration: 2.0,
+           location: "no-protocol.com")
   end
-  let(:yesterdays_meeting) do
-    create :meeting, project:, title: 'Awesome meeting yesterday!', start_time: Time.now - 1.day
+  shared_let(:meeting_with_no_location) do
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Boring meeting without a location!",
+           start_time: business_day_at_noon + 1.day + 5.minutes,
+           location: "")
   end
-  let!(:other_project_meeting) do
-    create :meeting, project: other_project, title: 'Awesome other project meeting!'
+  shared_let(:meeting_with_malicious_location) do
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Sneaky meeting!",
+           start_time: business_day_at_noon + 1.day + 10.minutes,
+           location: "<script>alert('Description');</script>")
   end
-  let(:meetings_page) { Pages::Meetings::Index.new(project) }
+  shared_let(:yesterdays_meeting) do
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Awesome meeting yesterday!",
+           start_time: business_day_at_noon - 1.day)
+  end
+
+  shared_let(:other_project_meeting) do
+    create(:meeting,
+           :author_participates,
+           project: other_project,
+           title: "Awesome other project meeting!",
+           start_time: business_day_at_noon + 2.days,
+           duration: 2.0,
+           location: "not-a-url")
+  end
+  shared_let(:ongoing_meeting) do
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Awesome ongoing meeting!",
+           start_time: business_day_at_noon - 30.minutes)
+  end
+
+  def setup_meeting_involvement
+    invite_to_meeting(tomorrows_meeting)
+    invite_to_meeting(yesterdays_meeting)
+    create(:meeting_participant, :attendee, user:, meeting: yesterdays_meeting)
+    create(:meeting_participant, :attendee, user:, meeting: tomorrows_meeting)
+    meeting.update!(author: user)
+  end
+
+  def invite_to_meeting(meeting)
+    create(:meeting_participant, :invitee, user:, meeting:)
+  end
 
   before do
-    login_as(user)
+    travel_to(business_day_at_noon)
+    login_as user
   end
 
-  it 'visting page via menu with no meetings' do
-    meetings_page.navigate_by_menu
+  shared_examples "sidebar filtering" do |context:|
+    context "when showing all meetings without invitations" do
+      it "does not show under My meetings, but in All meetings" do
+        meetings_page.visit!
+        meetings_page.expect_no_meetings_listed
+        meetings_page.expect_blank_slate_component
 
-    meetings_page.expect_no_meetings_listed
+        meetings_page.set_sidebar_filter "All meetings"
+
+        # It now includes the ongoing meeting I'm not invited to
+        if context == :global
+          [ongoing_meeting, meeting, tomorrows_meeting, other_project_meeting]
+        else
+          [ongoing_meeting, meeting, tomorrows_meeting]
+        end
+      end
+    end
+
+    context "when showing all meetings with the sidebar" do
+      before do
+        ongoing_meeting
+        other_project_meeting
+        setup_meeting_involvement
+        meetings_page.visit!
+        meetings_page.set_sidebar_filter "All meetings"
+      end
+
+      context 'with the "Upcoming meetings" quick filter' do
+        before do
+          meetings_page.set_quick_filter upcoming: true
+        end
+
+        it "shows all upcoming and ongoing meetings", :aggregate_failures do
+          expected_upcoming_meetings =
+            if context == :global
+              [ongoing_meeting, meeting, tomorrows_meeting, meeting_with_no_location,
+               meeting_with_malicious_location, other_project_meeting]
+            else
+              [ongoing_meeting, meeting, tomorrows_meeting, meeting_with_no_location, meeting_with_malicious_location]
+            end
+
+          meetings_page.expect_meetings_listed_in_order(*expected_upcoming_meetings)
+          meetings_page.expect_meetings_not_listed(yesterdays_meeting)
+        end
+      end
+
+      context 'with the "Past meetings" quick filter' do
+        before do
+          meetings_page.set_quick_filter upcoming: false
+        end
+
+        it "show all past meetings" do
+          meetings_page.expect_meetings_listed_in_table(yesterdays_meeting, meeting, ongoing_meeting)
+          meetings_page.expect_meetings_not_listed(tomorrows_meeting)
+
+          # keeps the past filter selected when changing advanced filters (Regression #61875)" do
+          meetings_page.open_filters
+          meetings_page.remove_filter "invited_user_id"
+          click_on "Apply"
+
+          wait_for_network_idle
+
+          if context == :global
+            expect(page).to have_current_path(meetings_path(upcoming: false, filters: "[]"))
+          else
+            expect(page).to have_current_path(project_meetings_path(project, upcoming: false, filters: "[]"))
+          end
+        end
+      end
+
+      context 'with the "Invitations" filter' do
+        before do
+          meetings_page.set_sidebar_filter "Invitations"
+        end
+
+        it "shows all meetings I've been marked as invited to with a quick filter" do
+          meetings_page.expect_meeting_listed_in_group(tomorrows_meeting, key: :tomorrow)
+          meetings_page.expect_meetings_not_listed(yesterdays_meeting,
+                                                   meeting,
+                                                   ongoing_meeting)
+
+          meetings_page.set_quick_filter upcoming: false
+
+          meetings_page.expect_meetings_listed_in_table(yesterdays_meeting)
+
+          meetings_page.expect_meetings_not_listed(meeting, tomorrows_meeting)
+        end
+      end
+
+      context 'with the "Attendee" filter' do
+        before do
+          meetings_page.set_sidebar_filter "Attended"
+        end
+
+        it "shows all past meetings I've been marked as attending to" do
+          meetings_page.expect_meetings_listed(yesterdays_meeting)
+          meetings_page.expect_meetings_not_listed(meeting,
+                                                   ongoing_meeting,
+                                                   tomorrows_meeting)
+
+          # Switch to upcoming
+          meetings_page.set_quick_filter upcoming: true
+
+          meetings_page.expect_meetings_listed(tomorrows_meeting)
+          meetings_page.expect_meetings_not_listed(yesterdays_meeting,
+                                                   meeting,
+                                                   ongoing_meeting)
+        end
+      end
+
+      context 'with the "Creator" filter' do
+        before do
+          meetings_page.set_sidebar_filter "Created by me"
+        end
+
+        it "shows all meetings I'm the author of" do
+          meetings_page.expect_meetings_listed(meeting)
+          meetings_page.expect_meetings_not_listed(yesterdays_meeting,
+                                                   ongoing_meeting,
+                                                   tomorrows_meeting)
+        end
+      end
+    end
   end
 
-  it 'visiting page with 1 meeting listed' do
-    meeting
-    meetings_page.visit!
+  context "when visiting from a global context" do
+    let(:meetings_page) { Pages::Meetings::Index.new(project: nil) }
 
-    meetings_page.expect_meetings_listed(meeting)
+    it "lists all upcoming meetings for all projects the user is invited to" do
+      invite_to_meeting(meeting)
+      invite_to_meeting(yesterdays_meeting)
+      invite_to_meeting(other_project_meeting)
+
+      meetings_page.visit!
+      meetings_page.expect_meeting_listed_in_group(meeting, key: :today)
+      meetings_page.expect_meeting_listed_in_group(other_project_meeting)
+      meetings_page.expect_meetings_not_listed(yesterdays_meeting)
+    end
+
+    it "renders a link to each meeting's location if present and a valid URL" do
+      invite_to_meeting(meeting)
+      invite_to_meeting(meeting_with_no_location)
+      invite_to_meeting(meeting_with_malicious_location)
+      invite_to_meeting(tomorrows_meeting)
+      invite_to_meeting(other_project_meeting)
+
+      meetings_page.visit!
+
+      meetings_page.expect_link_to_meeting_location(meeting)
+      meetings_page.expect_plaintext_meeting_location(tomorrows_meeting)
+      meetings_page.expect_plaintext_meeting_location(other_project_meeting)
+      meetings_page.expect_plaintext_meeting_location(meeting_with_malicious_location)
+      meetings_page.expect_no_meeting_location(meeting_with_no_location)
+    end
+
+    context "and the user is only allowed to view meetings" do
+      let(:permissions) { %i[view_meetings] }
+
+      it "doesn't show a create new button" do
+        meetings_page.visit!
+
+        meetings_page.expect_no_create_new_button
+      end
+
+      it "shows a download ical event action button for each meeting" do
+        invite_to_meeting(meeting)
+        meetings_page.visit!
+
+        meetings_page.expect_ical_action(meeting)
+      end
+
+      it "doesn't show a copy meeting action button for each meeting" do
+        invite_to_meeting(meeting)
+        meetings_page.visit!
+
+        meetings_page.expect_no_copy_action(meeting)
+      end
+
+      it "doesn't show a delete meeting action button for each meeting" do
+        invite_to_meeting(meeting)
+        meetings_page.visit!
+
+        meetings_page.expect_no_delete_action(meeting)
+      end
+    end
+
+    context "and the user is allowed to create meetings" do
+      let(:permissions) { %i(view_meetings create_meetings) }
+
+      it "shows the create new button" do
+        meetings_page.visit!
+
+        meetings_page.expect_create_new_button
+      end
+
+      it "allows creation of both types of meetings" do
+        meetings_page.visit!
+
+        meetings_page.expect_create_new_types
+      end
+
+      it "shows a copy meeting action button for each meeting" do
+        invite_to_meeting(meeting)
+        meetings_page.visit!
+
+        meetings_page.expect_copy_action(meeting)
+      end
+    end
+
+    context "and the user is allowed to delete meetings" do
+      let(:permissions) { %i(view_meetings delete_meetings) }
+
+      it "shows a delete meeting action button for each meeting" do
+        invite_to_meeting(meeting)
+        meetings_page.visit!
+
+        meetings_page.expect_delete_action(meeting)
+      end
+    end
+
+    include_examples "sidebar filtering", context: :global
   end
 
-  it 'visiting page with pagination', with_settings: { per_page_options: '1' } do
-    meeting
-    tomorrows_meeting
-    yesterdays_meeting
+  context "when visiting from a project specific context" do
+    let(:meetings_page) { Pages::Meetings::Index.new(project:) }
 
-    # Jumps to today's meeting if not specified differently
-    meetings_page.visit!
-    meetings_page.expect_meetings_listed(meeting)
-    meetings_page.expect_meetings_not_listed(tomorrows_meeting, yesterdays_meeting)
+    context "via the menu" do
+      specify "with no meetings" do
+        meetings_page.navigate_by_project_menu
 
-    meetings_page.expect_to_be_on_page(2)
+        meetings_page.expect_no_meetings_listed
+        meetings_page.expect_blank_slate_component
+      end
+    end
 
-    # Sorted by start_time ascending
-    meetings_page.to_page(1)
-    meetings_page.expect_meetings_listed(tomorrows_meeting)
-    meetings_page.expect_meetings_not_listed(meeting, yesterdays_meeting)
+    context "when the user is allowed to create meetings" do
+      let(:permissions) { %i(view_meetings create_meetings) }
 
-    meetings_page.to_page(3)
-    meetings_page.expect_meetings_listed(yesterdays_meeting)
-    meetings_page.expect_meetings_not_listed(meeting, tomorrows_meeting)
+      it "shows the create new button" do
+        meetings_page.visit!
+        meetings_page.expect_create_new_button
+      end
+    end
 
-    # The 'today' link will navigate back to today
-    meetings_page.to_today
+    context "when the user is not allowed to create meetings" do
+      let(:permissions) { %i[view_meetings] }
 
-    meetings_page.expect_meetings_listed(meeting)
-    meetings_page.expect_meetings_not_listed(tomorrows_meeting, yesterdays_meeting)
+      it "doesn't show the create new button" do
+        meetings_page.visit!
+        meetings_page.expect_no_create_new_button
+      end
+    end
 
-    meetings_page.expect_to_be_on_page(2)
+    include_examples "sidebar filtering", context: :project
+
+    specify "with 1 meeting listed" do
+      invite_to_meeting(meeting)
+      meetings_page.visit!
+
+      meetings_page.expect_meetings_listed(meeting)
+    end
+
+    it "renders a link to each meeting's location if present and a valid URL" do
+      invite_to_meeting(meeting)
+      invite_to_meeting(meeting_with_no_location)
+      invite_to_meeting(meeting_with_malicious_location)
+      invite_to_meeting(tomorrows_meeting)
+
+      meetings_page.visit!
+      meetings_page.expect_link_to_meeting_location(meeting)
+      meetings_page.expect_plaintext_meeting_location(tomorrows_meeting)
+      meetings_page.expect_plaintext_meeting_location(meeting_with_malicious_location)
+      meetings_page.expect_no_meeting_location(meeting_with_no_location)
+    end
+  end
+
+  describe "top level menu items and breadcrumbs (Regression #61343)" do
+    let(:meetings_page) { Pages::Meetings::Index.new(project: nil) }
+
+    context "when the user is logged in and specific filters are selected" do
+      it "shows the correct selected menu item and breadcrumb each time" do
+        meetings_page.visit!
+
+        expect(page).to have_css(".op-submenu--item-action.selected", text: "My meetings")
+        expect(page).to have_css("li.breadcrumb-item-selected", text: "My meetings")
+
+        meetings_page.set_sidebar_filter("Recurring meetings")
+
+        expect(page).to have_css(".op-submenu--item-action.selected", text: "Recurring meetings")
+        expect(page).to have_css("li.breadcrumb-item-selected", text: "Recurring meetings")
+
+        meetings_page.set_sidebar_filter("All meetings")
+
+        expect(page).to have_css(".op-submenu--item-action.selected", text: "All meetings")
+        expect(page).to have_css("li.breadcrumb-item-selected", text: "All meetings")
+      end
+    end
+  end
+
+  describe "top level menu items and breadcrumbs anonymously (Regression #61343)" do
+    let(:user) do
+      create(:anonymous_role, permissions: %i[view_project view_meetings])
+      User.anonymous
+    end
+    let(:project) { create(:public_project, enabled_module_names: %i[meetings]) }
+    let(:meetings_page) { Pages::Meetings::Index.new(project:) }
+
+    context "when the user is logged out and specific filters are selected", with_settings: { login_required?: false } do
+      it "shows the correct selected menu item and breadcrumb each time" do
+        meetings_page.visit!
+
+        # with no filter
+        expect(page).to have_css(".op-submenu--item-action.selected", text: "All meetings")
+        expect(page).to have_css("li.breadcrumb-item-selected", text: "All meetings")
+
+        meetings_page.set_sidebar_filter("Recurring meetings")
+
+        expect(page).to have_css(".op-submenu--item-action.selected", text: "Recurring meetings")
+        expect(page).to have_css("li.breadcrumb-item-selected", text: "Recurring meetings")
+
+        # with an explicitly selected filter
+        meetings_page.set_sidebar_filter("All meetings")
+
+        expect(page).to have_css(".op-submenu--item-action.selected", text: "All meetings")
+        expect(page).to have_css("li.breadcrumb-item-selected", text: "All meetings")
+      end
+    end
   end
 end

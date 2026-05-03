@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +26,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe WorkPackages::ExportJob do
+RSpec.describe WorkPackages::ExportJob do
   let(:user) { build_stubbed(:user) }
-  let(:attachment) { double('Attachment', id: 1234) }
+  let(:attachment) { double("Attachment", id: 1234) }
   let(:export) do
     build_stubbed(:work_packages_export)
   end
@@ -52,29 +52,28 @@ describe WorkPackages::ExportJob do
     job.tap(&:perform_now)
   end
 
-  describe '#perform' do
-    context 'with the bcf mime type' do
+  describe "#perform" do
+    context "with the bcf mime type" do
       let(:mime_type) { :bcf }
       let(:exporter) { OpenProject::Bim::BcfXml::Exporter }
       let(:exporter_instance) { instance_double(exporter) }
 
-      it 'issues an OpenProject::Bim::BcfXml::Exporter export' do
-        result = Exports::Result.new(format: 'blubs',
+      it "issues an OpenProject::Bim::BcfXml::Exporter export" do
+        result = Exports::Result.new(format: "blubs",
                                      title: "some_title.#{mime_type}",
-                                     content: 'some content',
+                                     content: "some content",
                                      mime_type: "application/octet-stream")
 
-        service = double('attachments create service')
+        service = double("attachments create service")
 
-        expect(Attachments::CreateService)
-          .to receive(:bypass_whitelist)
-                .with(user:)
+        allow(Attachments::CreateService)
+          .to receive(:bypass_allowlist)
                 .and_return(service)
 
-        expect(Exports::CleanupOutdatedJob)
+        allow(Exports::CleanupOutdatedJob)
           .to receive(:perform_after_grace)
 
-        expect(service)
+        allow(service)
           .to(receive(:call))
           .and_return(ServiceResult.success(result: attachment))
 
@@ -83,8 +82,18 @@ describe WorkPackages::ExportJob do
 
         # expect to create a status
         expect(subject.job_status).to be_present
-        expect(subject.job_status[:status]).to eq 'success'
-        expect(subject.job_status[:payload]['download']).to eq '/api/v3/attachments/1234/content'
+        expect(subject.job_status[:status]).to eq "success"
+        expect(subject.job_status[:payload]["download"]).to eq "/api/v3/attachments/1234/content"
+
+        expect(Attachments::CreateService)
+          .to have_received(:bypass_allowlist)
+                .with(user:)
+
+        expect(Exports::CleanupOutdatedJob)
+          .to have_received(:perform_after_grace)
+
+        expect(service)
+          .to have_received(:call)
       end
     end
   end

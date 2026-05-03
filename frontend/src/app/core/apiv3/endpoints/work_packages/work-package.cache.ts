@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { MultiInputState } from 'reactivestates';
+import { MultiInputState } from '@openproject/reactivestates';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { Injectable, Injector } from '@angular/core';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
@@ -34,13 +34,16 @@ import { StateCacheService } from 'core-app/core/apiv3/cache/state-cache.service
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
+import { CustomActionResource } from 'core-app/features/hal/resources/custom-action-resource';
 
 @Injectable()
 export class WorkPackageCache extends StateCacheService<WorkPackageResource> {
   @InjectField() private schemaCacheService:SchemaCacheService;
 
-  constructor(readonly injector:Injector,
-    state:MultiInputState<WorkPackageResource>) {
+  constructor(
+    readonly injector:Injector,
+    state:MultiInputState<WorkPackageResource>,
+  ) {
     super(state);
   }
 
@@ -55,12 +58,18 @@ export class WorkPackageCache extends StateCacheService<WorkPackageResource> {
     if (immediate || isNewResource(wp)) {
       return super.updateValue(wp.id!, wp);
     }
+
+    // Preserve the full custom actions data if it exists in the current state
+    const currentState = this.multiState.get(wp.id!);
+    if (currentState.hasValue()) {
+      this.preserveCustomActionsData(wp, currentState.value!);
+    }
+
     return this.updateValue(wp.id!, wp);
   }
 
   updateWorkPackageList(list:WorkPackageResource[], skipOnIdentical = true) {
-    list.forEach((i) => {
-      const wp = i;
+    list.forEach((wp) => {
       const workPackageId = wp.id!;
       const state = this.multiState.get(workPackageId);
 
@@ -70,9 +79,14 @@ export class WorkPackageCache extends StateCacheService<WorkPackageResource> {
         return;
       }
 
+      // Preserve custom actions data if it exists in the current state
+      if (state.hasValue()) {
+        this.preserveCustomActionsData(wp, state.value!);
+      }
+
       // Ensure the schema is loaded
       // so that no consumer needs to call schema#$load manually
-      this.schemaCacheService.ensureLoaded(wp).then(() => {
+      void this.schemaCacheService.ensureLoaded(wp).then(() => {
         // Check if the work package has changed
         if (skipOnIdentical && state.hasValue() && _.isEqual(state.value!.$source, wp.$source)) {
           debugLog('Skipping identical work package from updating');
@@ -82,5 +96,27 @@ export class WorkPackageCache extends StateCacheService<WorkPackageResource> {
         state.putValue(wp);
       });
     });
+  }
+
+  private preserveCustomActionsData(
+    wp:WorkPackageResource,
+    currentWp:WorkPackageResource,
+  ):void {
+    if (currentWp.customActions && Array.isArray(currentWp.customActions)) {
+      const existingActions = new Map(
+        currentWp.customActions.map(
+          (action:CustomActionResource) => [action.name, action],
+        ),
+      );
+
+      if (wp.customActions && Array.isArray(wp.customActions)) {
+        wp.customActions = wp.customActions.map(
+          (action:CustomActionResource) => {
+            const existingAction = existingActions.get(action.name);
+            return existingAction || action;
+          },
+        );
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -24,16 +24,25 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // See COPYRIGHT and LICENSE files for more details.
-// ++    Ng1FieldControlsWrapper,
+//++    Ng1FieldControlsWrapper,
 
 import { Injectable } from '@angular/core';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { NEVER, Observable, throwError } from 'rxjs';
 import {
-  filter, map, take, tap,
+  firstValueFrom,
+  NEVER,
+  Observable,
+  throwError,
+} from 'rxjs';
+import {
+  filter,
+  map,
+  shareReplay,
+  take,
+  tap,
 } from 'rxjs/operators';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { multiInput } from 'reactivestates';
+import { multiInput } from '@openproject/reactivestates';
 import { TransitionService } from '@uirouter/core';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
@@ -69,32 +78,32 @@ export class AttributeModelLoaderService {
    * @param model
    * @param id
    */
-  require(model:SupportedAttributeModels, id:string):Promise<HalResource|null> {
+  require(model:SupportedAttributeModels, id:string):Observable<HalResource|null> {
     const identifier = `${model}-${id}`;
     const state = this.cache$.get(identifier);
 
     if (state.isPristine()) {
-      const promise = this
+      const observable = this
         .load(model, id)
         .pipe(
           filter((response) => !!response),
-        )
-        .toPromise();
-      state.clearAndPutFromPromise(promise as PromiseLike<HalResource>);
+          shareReplay(1),
+        );
 
-      return promise;
+      state.clearAndPutFromPromise(firstValueFrom(observable) as PromiseLike<HalResource>);
+
+      return observable;
     }
 
     return state
       .values$()
       .pipe(
         take(1),
-        tap((val) => console.log(`VAL ${val}`), (err) => console.error(`ERR ${err}`)),
-      )
-      .toPromise();
+        tap({ next: (val) => console.log(`VAL ${val}`), error: (err) => console.error(`ERR ${err}`) }),
+      );
   }
 
-  private load(model:SupportedAttributeModels, id?:string|undefined|null):Observable<HalResource|null> {
+  private load(model:SupportedAttributeModels, id?:string|null):Observable<HalResource|null> {
     switch (model) {
       case 'workPackage':
         return this.loadWorkPackage(id);
@@ -122,7 +131,7 @@ export class AttributeModelLoaderService {
       );
   }
 
-  private loadWorkPackage(id?:string|undefined|null) {
+  private loadWorkPackage(id?:string|null) {
     if (!id) {
       return throwError(this.text.not_found);
     }

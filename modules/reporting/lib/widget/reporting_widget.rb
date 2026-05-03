@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,15 +31,17 @@ class Widget::ReportingWidget < ActionView::Base
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::JavaScriptHelper
+  include ActionView::Helpers::OutputSafetyHelper
   include Rails.application.routes.url_helpers
   include ApplicationHelper
+  include AngularHelper
   include ReportingHelper
   include Redmine::I18n
 
   attr_accessor :output_buffer, :controller, :config, :_content_for, :_routes, :subject
 
   def self.new(subject)
-    super(subject).tap do |o|
+    super.tap do |o|
       o.subject = subject
     end
   end
@@ -52,8 +54,8 @@ class Widget::ReportingWidget < ActionView::Base
     false
   end
 
-  def method_missing(name, *args, &)
-    controller.send(name, *args, &)
+  def method_missing(name, *, &)
+    controller.send(name, *, &)
   rescue NoMethodError
     raise NoMethodError, "undefined method `#{name}' for #<#{self.class}:0x#{object_id}>"
   end

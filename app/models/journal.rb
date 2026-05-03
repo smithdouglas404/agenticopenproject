@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,37 +29,108 @@
 #++
 
 class Journal < ApplicationRecord
-  self.table_name = 'journals'
-  self.ignored_columns += ['activity_type']
+  self.table_name = "journals"
+  self.ignored_columns += ["activity_type"]
 
   include ::JournalChanges
   include ::JournalFormatter
   include ::Acts::Journalized::FormatHooks
+  include Journal::Timestamps
+  include Reactable
 
-  register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
-  register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
-  register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
-  register_journal_formatter :schedule_manually, OpenProject::JournalFormatter::ScheduleManually
-  register_journal_formatter :ignore_non_working_days, OpenProject::JournalFormatter::IgnoreNonWorkingDays
+  # Inline attachments for Journal#notes aka comments
+  acts_as_attachable view_permission: :view_work_packages,
+                     add_on_new_permission: :add_work_package_comments,
+                     add_on_persisted_permission: :edit_own_work_package_comments,
+                     delete_permission: :edit_own_work_package_comments
+
+  register_journal_formatter OpenProject::JournalFormatter::ActiveStatus
+  register_journal_formatter OpenProject::JournalFormatter::AgendaItemDiff
+  register_journal_formatter OpenProject::JournalFormatter::AgendaItemDuration
+  register_journal_formatter OpenProject::JournalFormatter::AgendaItemPosition
+  register_journal_formatter OpenProject::JournalFormatter::AgendaItemTitle
+  register_journal_formatter OpenProject::JournalFormatter::Attachment
+  register_journal_formatter OpenProject::JournalFormatter::Cause
+  register_journal_formatter OpenProject::JournalFormatter::CustomComment
+  register_journal_formatter OpenProject::JournalFormatter::CustomField
+  register_journal_formatter OpenProject::JournalFormatter::Diff
+  register_journal_formatter OpenProject::JournalFormatter::FileLink
+  register_journal_formatter OpenProject::JournalFormatter::IgnoreNonWorkingDays
+  register_journal_formatter OpenProject::JournalFormatter::MeetingStartTime
+  register_journal_formatter OpenProject::JournalFormatter::MeetingState
+  register_journal_formatter OpenProject::JournalFormatter::MeetingWorkPackageId
+  register_journal_formatter OpenProject::JournalFormatter::ProjectPhaseActive
+  register_journal_formatter OpenProject::JournalFormatter::ProjectPhaseDates
+  register_journal_formatter OpenProject::JournalFormatter::ProjectPhaseDefinition
+  register_journal_formatter OpenProject::JournalFormatter::ProjectStatusCode
+  register_journal_formatter OpenProject::JournalFormatter::ScheduleManually
+  register_journal_formatter OpenProject::JournalFormatter::SubprojectNamedAssociation
+  register_journal_formatter OpenProject::JournalFormatter::Template
+  register_journal_formatter OpenProject::JournalFormatter::TimeEntryHours
+  register_journal_formatter OpenProject::JournalFormatter::TimeEntryNamedAssociation
+  register_journal_formatter OpenProject::JournalFormatter::Visibility
+  register_journal_formatter OpenProject::JournalFormatter::WikiDiff
+
+  # Attributes related to the cause are stored in a JSONB column so we can easily add new relations and related
+  # attributes without a heavy database migration. Fields will be prefixed with `cause_` but are stored in the JSONB
+  # hash without that prefix
+  store_accessor :cause,
+                 %i[
+                   type
+                   feature
+                   import_history
+                   work_package_id
+                   changed_days
+                   status_name
+                   status_id
+                   status_changes
+                 ],
+                 prefix: true
+  VALID_CAUSE_TYPES = %w[
+    default_attribute_written
+    import
+    progress_mode_changed_to_status_based
+    status_changed
+    system_update
+    total_percent_complete_mode_changed_to_work_weighted_average
+    work_package_children_changed_times
+    work_package_parent_changed_times
+    work_package_predecessor_changed_times
+    work_package_related_changed_times
+    work_package_duplicate_closed
+    working_days_changed
+  ].freeze
 
   # Make sure each journaled model instance only has unique version ids
   validates :version, uniqueness: { scope: %i[journable_id journable_type] }
+  validates :cause_type, inclusion: { in: VALID_CAUSE_TYPES, allow_blank: true }
 
   belongs_to :user
   belongs_to :journable, polymorphic: true
   belongs_to :data, polymorphic: true, dependent: :destroy
 
-  has_many :attachable_journals, class_name: 'Journal::AttachableJournal', dependent: :delete_all
-  has_many :customizable_journals, class_name: 'Journal::CustomizableJournal', dependent: :delete_all
+  has_many :agenda_item_journals, class_name: "Journal::MeetingAgendaItemJournal", dependent: :delete_all
+  has_many :attachable_journals, class_name: "Journal::AttachableJournal", dependent: :delete_all
+  has_many :customizable_journals, class_name: "Journal::CustomizableJournal", dependent: :delete_all
+  has_many :custom_comment_journals, class_name: "Journal::CustomCommentJournal", dependent: :delete_all
+  has_many :project_phase_journals, class_name: "Journal::ProjectPhaseJournal", dependent: :delete_all
+  has_many :storable_journals, class_name: "Journal::StorableJournal", dependent: :delete_all
 
   has_many :notifications, dependent: :destroy
 
+  include ::Scopes::Scoped
+
+  scopes :with_sequence_version
+
   # Scopes to all journals excluding the initial journal - useful for change
   # logs like the history on issue#show
-  scope :changing, -> { where(['version > 1']) }
+  scope :changing, -> { where(["version > 1"]) }
 
-  scope :for_wiki_content, -> { where(journable_type: "WikiContent") }
+  scope :for_wiki_page, -> { where(journable_type: "WikiPage") }
   scope :for_work_package, -> { where(journable_type: "WorkPackage") }
+  scope :for_meeting, -> { where(journable_type: "Meeting") }
+
+  alias_attribute :internal, :restricted
 
   # In conjunction with the included Comparable module, allows comparison of journal records
   # based on their corresponding version numbers, creation timestamps and IDs.
@@ -86,6 +159,22 @@ class Journal < ApplicationRecord
     end
   end
 
+  def attachments_visible?(user = User.current)
+    if internal?
+      super && user.allowed_in_project?(:view_internal_comments, project)
+    else
+      super
+    end
+  end
+
+  def visible?(user = User.current)
+    if internal?
+      user.allowed_in_project?(:view_internal_comments, project)
+    else
+      journable.visible?(user)
+    end
+  end
+
   def editable_by?(user)
     journable.journal_editable_by?(self, user)
   end
@@ -107,28 +196,50 @@ class Journal < ApplicationRecord
   end
 
   def successor
-    @successor ||= self.class
-                       .where(journable_type:, journable_id:)
-                       .where("#{self.class.table_name}.version > ?", version)
-                       .order(version: :asc)
-                       .first
+    return @successor if defined?(@successor)
+
+    @successor = self.class
+                     .where(journable_type:, journable_id:)
+                     .where("#{self.class.table_name}.version > ?", version)
+                     .order(version: :asc)
+                     .first
   end
 
   def noop?
     (!notes || notes&.empty?) && get_changes.empty?
   end
 
+  def has_cause?
+    cause_type.present?
+  end
+
+  def has_unread_notifications_for_user?(user)
+    # we optionally set the instance variable @unread_notifications in the ActivityEagerLoadingWrapper
+    # in order to avoid N+1 queries
+    if instance_variable_defined?(:@unread_notifications)
+      @unread_notifications&.any? { |notification| notification.recipient_id == user.id }
+    else
+      notifications.where(read_ian: false, recipient_id: user.id).any?
+    end
+  end
+
   private
 
+  def has_file_links?
+    journable.respond_to?(:file_links)
+  end
+
   def predecessor
-    @predecessor ||= if initial?
-                       nil
-                     else
-                       self.class
-                         .where(journable_type:, journable_id:)
-                         .where("#{self.class.table_name}.version < ?", version)
-                         .order(version: :desc)
-                         .first
-                     end
+    return @predecessor if defined?(@predecessor)
+
+    @predecessor = if initial?
+                     nil
+                   else
+                     self.class
+                       .where(journable_type:, journable_id:)
+                       .where("#{self.class.table_name}.version < ?", version)
+                       .order(version: :desc)
+                       .first
+                   end
   end
 end

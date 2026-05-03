@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +30,7 @@
 
 module Queries::WorkPackages
   ::Queries::Register.register(Query) do
+    filter Filter::AncestorFilter
     filter Filter::AssignedToFilter
     filter Filter::AssigneeOrGroupFilter
     filter Filter::AttachmentContentFilter
@@ -45,6 +48,8 @@ module Queries::WorkPackages
     filter Filter::ProjectFilter
     filter Filter::ResponsibleFilter
     filter Filter::RoleFilter
+    filter Filter::SharedWithUserFilter
+    filter Filter::SharedWithMeFilter
     filter Filter::StartDateFilter
     filter Filter::StatusFilter
     filter Filter::SubjectFilter
@@ -57,6 +62,7 @@ module Queries::WorkPackages
     filter Filter::DatesIntervalFilter
     filter Filter::ParentFilter
     filter Filter::PrecedesFilter
+    filter Filter::ProjectPhaseFilter
     filter Filter::FollowsFilter
     filter Filter::RelatesFilter
     filter Filter::DuplicatesFilter
@@ -78,11 +84,13 @@ module Queries::WorkPackages
     filter Filter::DurationFilter
     exclude Filter::RelatableFilter
 
-    column Columns::PropertyColumn
-    column Columns::CustomFieldColumn
-    column Columns::RelationToTypeColumn
-    column Columns::RelationOfTypeColumn
-    column Columns::ManualSortingColumn
-    column Columns::TypeaheadColumn
+    select Selects::PropertySelect
+    select Selects::ProjectPhaseSelect
+    select Selects::CustomFieldSelect
+    select Selects::RelationToTypeSelect
+    select Selects::RelationOfTypeSelect
+    select Selects::RelationChildSelect
+    select Selects::ManualSortingSelect
+    select Selects::TypeaheadSelect
   end
 end

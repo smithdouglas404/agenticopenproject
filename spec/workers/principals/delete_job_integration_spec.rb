@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Principals::DeleteJob, type: :model do
+RSpec.describe Principals::DeleteJob, type: :model do
   subject(:job) { described_class.perform_now(principal) }
 
   shared_let(:project) { create(:project) }
@@ -47,14 +49,14 @@ describe Principals::DeleteJob, type: :model do
   end
 
   shared_let(:role) do
-    create(:role, permissions: %i[view_work_packages])
+    create(:project_role, permissions: %i[view_work_packages])
   end
 
-  describe '#perform' do
+  describe "#perform" do
     # These are the only tests that include testing
     # the ReplaceReferencesService. Most of the tests for this
     # Service are handled within the matching spec file.
-    shared_examples_for 'work_package handling' do
+    shared_examples_for "work_package handling" do
       let(:work_package) do
         create(:work_package,
                assigned_to: principal,
@@ -63,36 +65,31 @@ describe Principals::DeleteJob, type: :model do
 
       before do
         work_package
+        principal.update_column(:status, User.statuses[:deleted])
         job
       end
 
-      it 'resets assigned to to the deleted user' do
-        expect(work_package.reload.assigned_to)
-          .to eql(deleted_user)
+      it "resets assigned to to the deleted user" do
+        expect(work_package.reload.assigned_to).to eql(deleted_user)
       end
 
-      it 'resets assigned to in all journals to the deleted user' do
-        expect(Journal::WorkPackageJournal.pluck(:assigned_to_id))
-          .to eql([deleted_user.id])
+      it "resets assigned to in all journals to the deleted user" do
+        expect(Journal::WorkPackageJournal.pluck(:assigned_to_id)).to eql([deleted_user.id])
       end
 
-      it 'resets responsible to to the deleted user' do
-        expect(work_package.reload.responsible)
-          .to eql(deleted_user)
+      it "resets responsible to to the deleted user" do
+        expect(work_package.reload.responsible).to eql(deleted_user)
       end
 
-      it 'resets responsible to in all journals to the deleted user' do
-        expect(Journal::WorkPackageJournal.pluck(:responsible_id))
-          .to eql([deleted_user.id])
+      it "resets responsible to in all journals to the deleted user" do
+        expect(Journal::WorkPackageJournal.pluck(:responsible_id)).to eql([deleted_user.id])
       end
     end
 
-    shared_examples_for 'labor_budget_item handling' do
-      let(:item) { build(:labor_budget_item, user: principal) }
+    shared_examples_for "labor_budget_item handling" do
+      let!(:item) { create(:labor_budget_item, principal:) }
 
       before do
-        item.save!
-
         job
       end
 
@@ -100,7 +97,7 @@ describe Principals::DeleteJob, type: :model do
       it { expect(item.user_id).to eq(principal.id) }
     end
 
-    shared_examples_for 'cost_entry handling' do
+    shared_examples_for "cost_entry handling" do
       let(:work_package) { create(:work_package) }
       let(:entry) do
         create(:cost_entry,
@@ -108,15 +105,15 @@ describe Principals::DeleteJob, type: :model do
                project: work_package.project,
                units: 100.0,
                spent_on: Time.zone.today,
-               work_package:,
-               comments: '')
+               entity: work_package,
+               comments: "")
       end
 
       before do
         create(:member,
                project: work_package.project,
                user: principal,
-               roles: [build(:role)])
+               roles: [build(:project_role)])
         entry
 
         job
@@ -124,30 +121,64 @@ describe Principals::DeleteJob, type: :model do
         entry.reload
       end
 
-      it { expect(entry.user_id).to eq(principal.id) }
+      it { expect(entry.user_id).to eq(deleted_user.id) }
     end
 
-    shared_examples_for 'member handling' do
+    shared_examples_for "member handling" do
       before do
         member
 
         job
       end
 
-      it 'removes that member' do
+      it "removes that member" do
         expect(Member.find_by(id: member.id)).to be_nil
       end
 
-      it 'leaves the role' do
+      it "leaves the role" do
         expect(Role.find_by(id: role.id)).to eq(role)
       end
 
-      it 'leaves the project' do
+      it "leaves the project" do
         expect(Project.find_by(id: project.id)).to eq(project)
       end
     end
 
-    shared_examples_for 'hourly_rate handling' do
+    shared_examples_for "work package member handling" do
+      let(:work_package) { create(:work_package, project:) }
+
+      let(:work_package_member) do
+        create(:work_package_member,
+               principal:,
+               project:,
+               work_package:,
+               roles: [role])
+      end
+
+      before do
+        work_package_member
+
+        job
+      end
+
+      it "removes that work package member" do
+        expect(Member.find_by(id: work_package_member.id)).to be_nil
+      end
+
+      it "leaves the role" do
+        expect(Role.find_by(id: role.id)).to eq(role)
+      end
+
+      it "leaves the work_package" do
+        expect(WorkPackage.find_by(id: work_package.id)).to eq(work_package)
+      end
+
+      it "leaves the project" do
+        expect(Project.find_by(id: project.id)).to eq(project)
+      end
+    end
+
+    shared_examples_for "hourly_rate handling" do
       let(:hourly_rate) do
         build(:hourly_rate,
               user: principal,
@@ -163,7 +194,7 @@ describe Principals::DeleteJob, type: :model do
       it { expect(hourly_rate.reload.user_id).to eq(principal.id) }
     end
 
-    shared_examples_for 'watcher handling' do
+    shared_examples_for "watcher handling" do
       let(:watched) { create(:news, project:) }
       let(:watch) do
         Watcher.create(user: principal,
@@ -180,9 +211,9 @@ describe Principals::DeleteJob, type: :model do
       it { expect(Watcher.find_by(id: watch.id)).to be_nil }
     end
 
-    shared_examples_for 'token handling' do
+    shared_examples_for "rss token handling" do
       let(:token) do
-        Token::RSS.new(user: principal, value: 'loremipsum')
+        Token::RSS.new(user: principal, value: "loremipsum")
       end
 
       before do
@@ -194,7 +225,7 @@ describe Principals::DeleteJob, type: :model do
       it { expect(Token::RSS.find_by(id: token.id)).to be_nil }
     end
 
-    shared_examples_for 'notification handling' do
+    shared_examples_for "notification handling" do
       let(:notification) do
         create(:notification, recipient: principal)
       end
@@ -208,9 +239,9 @@ describe Principals::DeleteJob, type: :model do
       it { expect(Notification.find_by(id: notification.id)).to be_nil }
     end
 
-    shared_examples_for 'private query handling' do
+    shared_examples_for "private query handling" do
       let!(:query) do
-        create(:private_query, user: principal, views: [create(:view_work_packages_table)])
+        create(:private_query, user: principal, views: create_list(:view_work_packages_table, 1))
       end
 
       before do
@@ -220,7 +251,75 @@ describe Principals::DeleteJob, type: :model do
       it { expect(Query.find_by(id: query.id)).to be_nil }
     end
 
-    shared_examples_for 'token handling' do
+    shared_examples_for "persisted view and query handling" do
+      let!(:private_view) { PersistedView.create!(name: "Private", public: false, principal:) }
+      let!(:public_view)  { PersistedView.create!(name: "Public",  public: true,  principal:) }
+
+      # Query shared between the principal's private view and another user's public view —
+      # must survive the destruction of the private view.
+      let!(:other_user) { create(:user) }
+      let!(:shared_query) { UserQuery.create!(name: "Shared") }
+      let!(:shared_private_view) do
+        PersistedView.create!(name: "Shared-private", public: false, principal:, query: shared_query)
+      end
+      let!(:other_public_view) do
+        PersistedView.create!(name: "Other-public", public: true, principal: other_user, query: shared_query)
+      end
+
+      # Query referenced only from the principal's private view — should be destroyed along with the view.
+      let!(:orphaned_query) { UserQuery.create!(name: "Orphaned", principal:) }
+      let!(:orphaning_view) do
+        PersistedView.create!(name: "Orphaning-private", public: false, principal:, query: orphaned_query)
+      end
+
+      # Public query owned by the principal — kept, principal_id nullified.
+      let!(:kept_user_query) { UserQuery.create!(name: "Public-owned", principal:) }
+      let!(:kept_public_view) do
+        PersistedView.create!(name: "Keeps-query", public: true, principal: other_user, query: kept_user_query)
+      end
+
+      # Manual entries pointing at the principal — must be deleted.
+      let!(:manual_entry_user) do
+        OrderedPersistedQueryEntity.create!(persisted_query: shared_query, entity: principal, position: 1)
+      end
+      let!(:manual_entry_other) do
+        OrderedPersistedQueryEntity.create!(persisted_query: shared_query, entity: other_user, position: 2)
+      end
+
+      before { job }
+
+      it "deletes private views owned by the principal" do
+        expect(PersistedView.find_by(id: private_view.id)).to be_nil
+        expect(PersistedView.find_by(id: shared_private_view.id)).to be_nil
+        expect(PersistedView.find_by(id: orphaning_view.id)).to be_nil
+      end
+
+      it "keeps public views but nullifies their principal_id" do
+        expect(public_view.reload.principal_id).to be_nil
+      end
+
+      it "destroys queries that are no longer referenced by any public view" do
+        expect(PersistedQuery.find_by(id: orphaned_query.id)).to be_nil
+      end
+
+      it "keeps queries still referenced by another public view" do
+        expect(PersistedQuery.find_by(id: shared_query.id)).to eq(shared_query)
+      end
+
+      it "nullifies principal_id on surviving queries" do
+        expect(kept_user_query.reload.principal_id).to be_nil
+      end
+
+      it "deletes ordered entries that pointed at the principal" do
+        expect(OrderedPersistedQueryEntity.find_by(id: manual_entry_user.id)).to be_nil
+      end
+
+      it "keeps ordered entries that point at other users" do
+        expect(OrderedPersistedQueryEntity.find_by(id: manual_entry_other.id)).to eq(manual_entry_other)
+      end
+    end
+
+    shared_examples_for "backup token handling" do
       let!(:backup_token) do
         create(:backup_token, user: principal)
       end
@@ -236,7 +335,7 @@ describe Principals::DeleteJob, type: :model do
       it { expect(Token::Base.where(user_id: principal.id)).to be_empty }
     end
 
-    shared_examples_for 'issue category handling' do
+    shared_examples_for "issue category handling" do
       let(:category) do
         create(:category,
                assigned_to: principal,
@@ -249,17 +348,17 @@ describe Principals::DeleteJob, type: :model do
         job
       end
 
-      it 'does not remove the category' do
+      it "does not remove the category" do
         expect(Category.find_by(id: category.id)).to eq(category)
       end
 
-      it 'removes the assigned_to association to the principal' do
+      it "removes the assigned_to association to the principal" do
         expect(category.reload.assigned_to).to be_nil
       end
     end
 
-    shared_examples_for 'removes the principal' do
-      it 'deletes the principal' do
+    shared_examples_for "removes the principal" do
+      it "deletes the principal" do
         job
 
         expect(Principal.find_by(id: principal.id))
@@ -267,17 +366,47 @@ describe Principals::DeleteJob, type: :model do
       end
     end
 
-    shared_examples_for 'private cost_query handling' do
+    shared_examples_for "private cost_query handling" do
       let!(:query) { create(:private_cost_query, user: principal) }
 
-      it 'removes the query' do
+      it "removes the query" do
         job
 
         expect(CostQuery.find_by(id: query.id)).to be_nil
       end
     end
 
-    shared_examples_for 'public cost_query handling' do
+    shared_examples_for "project query handling" do
+      let!(:query) { create(:project_query, user: principal) }
+
+      it "removes the query" do
+        job
+
+        expect(ProjectQuery.find_by(id: query.id)).to be_nil
+      end
+    end
+
+    shared_examples_for "working hours handling" do
+      let!(:working_hours) { create(:user_working_hours, user: principal) }
+
+      it "removes the working hours" do
+        job
+
+        expect(UserWorkingHours.find_by(id: working_hours.id)).to be_nil
+      end
+    end
+
+    shared_examples_for "non working times handling" do
+      let!(:non_working_time) { create(:user_non_working_time, user: principal) }
+
+      it "removes the non working times" do
+        job
+
+        expect(UserNonWorkingTime.find_by(id: non_working_time.id)).to be_nil
+      end
+    end
+
+    shared_examples_for "public cost_query handling" do
       let!(:query) { create(:public_cost_query, user: principal) }
 
       before do
@@ -286,23 +415,23 @@ describe Principals::DeleteJob, type: :model do
         job
       end
 
-      it 'leaves the query' do
+      it "leaves the query" do
         expect(CostQuery.find_by(id: query.id)).to eq(query)
       end
 
-      it 'rewrites the user reference' do
+      it "rewrites the user reference" do
         expect(query.reload.user).to eq(deleted_user)
       end
     end
 
-    shared_examples_for 'cost_query handling' do
+    shared_examples_for "cost_query handling" do
       let(:query) { create(:cost_query) }
       let(:other_user) { create(:user) }
 
       shared_examples_for "public query rewriting" do
         let(:filter_symbol) { filter.to_s.demodulize.underscore.to_sym }
 
-        describe "with the filter has the deleted user as it's value" do
+        describe "with the filter has the deleted user as its value" do
           before do
             query.filter(filter_symbol, values: [principal.id.to_s], operator: "=")
             query.save!
@@ -310,13 +439,13 @@ describe Principals::DeleteJob, type: :model do
             job
           end
 
-          it 'removes the filter' do
+          it "removes the filter" do
             expect(CostQuery.find_by(id: query.id).deserialize.filters)
               .not_to(be_any { |f| f.is_a?(filter) })
           end
         end
 
-        describe "with the filter has another user as it's value" do
+        describe "with the filter has another user as its value" do
           before do
             query.filter(filter_symbol, values: [other_user.id.to_s], operator: "=")
             query.save!
@@ -324,19 +453,19 @@ describe Principals::DeleteJob, type: :model do
             job
           end
 
-          it 'keeps the filter' do
+          it "keeps the filter" do
             expect(CostQuery.find_by(id: query.id).deserialize.filters)
               .to(be_any { |f| f.is_a?(filter) })
           end
 
-          it 'does not alter the filter values' do
+          it "does not alter the filter values" do
             expect(CostQuery.find_by(id: query.id).deserialize.filters.detect do |f|
               f.is_a?(filter)
             end.values).to eq([other_user.id.to_s])
           end
         end
 
-        describe "with the filter has the deleted user and another user as it's value" do
+        describe "with the filter has the deleted user and another user as its value" do
           before do
             query.filter(filter_symbol, values: [principal.id.to_s, other_user.id.to_s], operator: "=")
             query.save!
@@ -344,12 +473,12 @@ describe Principals::DeleteJob, type: :model do
             job
           end
 
-          it 'keeps the filter' do
+          it "keeps the filter" do
             expect(CostQuery.find_by(id: query.id).deserialize.filters)
               .to(be_any { |f| f.is_a?(filter) })
           end
 
-          it 'removes only the deleted user' do
+          it "removes only the deleted user" do
             expect(CostQuery.find_by(id: query.id).deserialize.filters.detect do |f|
               f.is_a?(filter)
             end.values).to eq([other_user.id.to_s])
@@ -382,7 +511,7 @@ describe Principals::DeleteJob, type: :model do
       end
     end
 
-    shared_examples_for 'mention rewriting' do
+    shared_examples_for "mention rewriting" do
       let(:text) do
         <<~TEXT
           <mention class="mention"
@@ -407,40 +536,56 @@ describe Principals::DeleteJob, type: :model do
         job
       end
 
-      it 'rewrites the mentioning in the text' do
+      it "rewrites the mentioning in the text" do
         expect(work_package.reload.description)
           .to include expected_text
       end
     end
 
-    context 'with a user' do
-      it_behaves_like 'removes the principal'
-      it_behaves_like 'work_package handling'
-      it_behaves_like 'labor_budget_item handling'
-      it_behaves_like 'cost_entry handling'
-      it_behaves_like 'hourly_rate handling'
-      it_behaves_like 'member handling'
-      it_behaves_like 'watcher handling'
-      it_behaves_like 'token handling'
-      it_behaves_like 'notification handling'
-      it_behaves_like 'private query handling'
-      it_behaves_like 'issue category handling'
-      it_behaves_like 'private cost_query handling'
-      it_behaves_like 'public cost_query handling'
-      it_behaves_like 'cost_query handling'
-      it_behaves_like 'mention rewriting'
+    context "with a user" do
+      it_behaves_like "removes the principal"
+      it_behaves_like "work_package handling"
+      it_behaves_like "labor_budget_item handling"
+      it_behaves_like "cost_entry handling"
+      it_behaves_like "hourly_rate handling"
+      it_behaves_like "member handling"
+      it_behaves_like "watcher handling"
+      it_behaves_like "rss token handling"
+      it_behaves_like "backup token handling"
+      it_behaves_like "notification handling"
+      it_behaves_like "private query handling"
+      it_behaves_like "persisted view and query handling"
+      it_behaves_like "issue category handling"
+      it_behaves_like "private cost_query handling"
+      it_behaves_like "public cost_query handling"
+      it_behaves_like "cost_query handling"
+      it_behaves_like "project query handling"
+      it_behaves_like "mention rewriting"
+      it_behaves_like "working hours handling"
+      it_behaves_like "non working times handling"
+
+      describe "favorites" do
+        before do
+          project.add_favoriting_user(principal)
+          job
+        end
+
+        it "removes the assigned_to association to the principal" do
+          expect(project.favoriting_users.reload).to be_empty
+        end
+      end
     end
 
-    context 'with a group' do
+    context "with a group" do
       let(:principal) { create(:group, members: group_members) }
       let(:group_members) { [] }
 
-      it_behaves_like 'removes the principal'
-      it_behaves_like 'work_package handling'
-      it_behaves_like 'member handling'
-      it_behaves_like 'mention rewriting'
+      it_behaves_like "removes the principal"
+      it_behaves_like "work_package handling"
+      it_behaves_like "member handling"
+      it_behaves_like "mention rewriting"
 
-      context 'with user only in project through group' do
+      context "with user only in project through group" do
         let(:user) do
           create(:user)
         end
@@ -451,7 +596,7 @@ describe Principals::DeleteJob, type: :model do
                          watchable: watched)
         end
 
-        it 'removes the watcher' do
+        it "removes the watcher" do
           job
 
           expect(watched.watchers.reload).to be_empty
@@ -459,11 +604,30 @@ describe Principals::DeleteJob, type: :model do
       end
     end
 
-    context 'with a placeholder user' do
+    context "with a service account" do
+      describe "service account association" do
+        let(:principal) { create(:service_account, service:) }
+        let(:service) { create(:oauth_application) }
+
+        before do
+          principal.save!
+        end
+
+        it "deletes the service account association" do
+          expect { job }.to change(ServiceAccountAssociation, :count).from(1).to(0)
+        end
+
+        it "does not delete the service associated to the service account" do
+          expect { job }.not_to change(Doorkeeper::Application, :count)
+        end
+      end
+    end
+
+    context "with a placeholder user" do
       let(:principal) { create(:placeholder_user) }
 
-      it_behaves_like 'removes the principal'
-      it_behaves_like 'work_package handling'
+      it_behaves_like "removes the principal"
+      it_behaves_like "work_package handling"
     end
   end
 end

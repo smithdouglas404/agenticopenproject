@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,49 +31,22 @@
 class Authorization::EnterpriseService
   attr_accessor :token
 
-  GUARDED_ACTIONS = %i(
-    attachment_filters
-    attribute_help_texts
-    board_view
-    conditional_highlighting
-    custom_actions
-    custom_fields_in_projects_list
-    date_alerts
-    define_custom_style
-    edit_attribute_groups
-    grid_widget_wp_graph
-    ldap_groups
-    multiselect_custom_fields
-    openid_providers
-    placeholder_users
-    readonly_work_packages
-    team_planner_view
-    two_factor_authentication
-    work_package_query_relation_columns
-  ).freeze
-
   def initialize(token)
     self.token = token
   end
 
   # Return a true ServiceResult if the token contains this particular action.
-  def call(action)
-    allowed =
-      if token.nil? || token.token_object.nil? || token.expired?
-        false
-      else
-        process(action)
-      end
+  def call(feature)
+    allowed = if token.nil? || token.token_object.nil? || token.expired? || token.invalid_domain?
+                false
+              else
+                token.token_object.has_feature?(feature)
+              end
 
     result(allowed)
   end
 
   private
-
-  def process(action)
-    # Every non-expired token
-    GUARDED_ACTIONS.include?(action.to_sym)
-  end
 
   def result(bool)
     ServiceResult.new(success: bool, result: bool)

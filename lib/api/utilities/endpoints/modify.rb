@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,14 +32,14 @@ module API
       class Modify < Bodied
         def default_instance_generator(model)
           ->(_params, _current_user) do
-            instance_variable_get("@#{model.name.demodulize.underscore}")
+            instance_variable_get(:"@#{model.name.demodulize.underscore}")
           end
         end
 
         private
 
         def present_success(_request, _call)
-          raise NotImplementedError
+          raise SubclassResponsibilityError
         end
 
         def present_error(call)

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -49,7 +49,7 @@ export class BcfApiService {
    *
    * @param href
    */
-  parse<T>(href:string):T {
+  parse<T>(href:string):T|undefined {
     if (!href.startsWith(this.bcfApiBase)) {
       throw new Error(`Cannot parse ${href} into BCF resource.`);
     }

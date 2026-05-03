@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,21 +30,21 @@ FactoryBot.define do
   factory :cost_entry do
     project
     user
-    work_package
+    entity factory: :work_package
     cost_type
-    spent_on { Date.today }
+    spent_on { Date.current }
     units { 1 }
-    comments { '' }
+    comments { "" }
 
     before(:create) do |ce|
-      ce.work_package.project = ce.project
+      ce.project = ce.entity.project
 
       unless ce.project.users.include?(ce.user)
         Members::CreateService
           .new(user: User.system, contract_class: EmptyContract)
           .call(principal: ce.user,
                 project: ce.project,
-                roles: [create(:role)])
+                roles: [create(:project_role)])
       end
     end
   end

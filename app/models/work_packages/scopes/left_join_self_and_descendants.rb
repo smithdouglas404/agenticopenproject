@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,7 +65,9 @@ module WorkPackages::Scopes::LeftJoinSelfAndDescendants
     end
 
     def allowed_to_view_work_packages(user)
-      wp_descendants_table[:project_id].in(Project.allowed_to(user, :view_work_packages).select(:id).arel)
+      wp_descendants_table[:project_id].in(Project.allowed_to(user, :view_work_packages).select(:id).arel).or(
+        wp_descendants_table[:id].in(WorkPackage.visible(user).select(:id).arel)
+      )
     end
 
     def self_or_descendant_condition
@@ -79,7 +83,7 @@ module WorkPackages::Scopes::LeftJoinSelfAndDescendants
     end
 
     def wp_descendants_table
-      @wp_descendants_table ||= wp_table.alias('descendants')
+      @wp_descendants_table ||= wp_table.alias("descendants")
     end
   end
 end

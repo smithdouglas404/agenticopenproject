@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Capabilities::CapabilityQuery < Queries::BaseQuery
+class Queries::Capabilities::CapabilityQuery
+  include Queries::BaseQuery
+  include Queries::UnpersistedQuery
+
   def self.model
     Capability
   end
 
   def results
     super
-      .reorder('action ASC', 'principal_id ASC', 'capabilities.context_id ASC')
+      .reorder("action ASC", "principal_id ASC", "capabilities.context_id ASC")
   end
 
   def default_scope
     Capability
-      .default
+      .visible
       .distinct
   end
 
@@ -50,9 +55,9 @@ class Queries::Capabilities::CapabilityQuery < Queries::BaseQuery
     any_required = filters.any? do |filter|
       [Queries::Capabilities::Filters::PrincipalIdFilter,
        Queries::Capabilities::Filters::ContextFilter,
-       Queries::Capabilities::Filters::IdFilter].include?(filter.class) && filter.operator == '='
+       Queries::Capabilities::Filters::IdFilter].include?(filter.class) && filter.operator == "="
     end
 
-    errors.add(:filters, I18n.t('activerecord.errors.models.capability.query.filters.minimum')) unless any_required
+    errors.add(:filters, I18n.t("activerecord.errors.models.capability.query.filters.minimum")) unless any_required
   end
 end

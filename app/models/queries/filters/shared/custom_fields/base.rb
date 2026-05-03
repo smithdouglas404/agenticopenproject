@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -21,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -34,7 +36,7 @@ module Queries::Filters::Shared
       attr_reader :custom_field, :custom_field_context
 
       def initialize(custom_field:, custom_field_context:, **options)
-        name = :"cf_#{custom_field.id}"
+        name = custom_field.column_name.to_sym
 
         @custom_field = custom_field
         @custom_field_context = custom_field_context
@@ -42,8 +44,8 @@ module Queries::Filters::Shared
         super(name, options)
       end
 
-      def self.create!(custom_field:, custom_field_context:, **options)
-        new(custom_field:, custom_field_context:, **options)
+      def self.create!(custom_field:, custom_field_context:, **)
+        new(custom_field:, custom_field_context:, **)
       end
 
       def project
@@ -51,7 +53,7 @@ module Queries::Filters::Shared
       end
 
       def available?
-        custom_field.present?
+        custom_field.present? && custom_field_context.custom_fields(context).include?(custom_field)
       end
 
       def order
@@ -81,14 +83,16 @@ module Queries::Filters::Shared
 
       def type
         case custom_field.field_format
-        when 'float'
+        when "float", "calculated_value"
           :float
-        when 'int'
+        when "int"
           :integer
-        when 'text'
+        when "text"
           :text
-        when 'date'
+        when "date"
           :date
+        when "hierarchy", "weighted_item_list"
+          :hierarchy
         else
           :string
         end
@@ -96,14 +100,13 @@ module Queries::Filters::Shared
 
       def where
         model_db_table = model.table_name
-        cv_db_table = CustomValue.table_name
 
         <<-SQL
           #{model_db_table}.id IN
           (SELECT #{model_db_table}.id
           FROM #{model_db_table}
           #{custom_field_context.where_subselect_joins(custom_field)}
-          WHERE #{operator_strategy.sql_for_field(values_replaced, cv_db_table, 'value')})
+          WHERE #{condition})
         SQL
       end
 
@@ -111,10 +114,17 @@ module Queries::Filters::Shared
         messages = errors.full_messages
                          .join(" #{I18n.t('support.array.sentence_connector')} ")
 
-        human_name + I18n.t(default: ' %<message>s', message: messages)
+        human_name + I18n.t(default: " %<message>s", message: messages)
       end
 
       protected
+
+      def condition
+        [
+          custom_field_context.where_subselect_conditions,
+          operator_strategy.sql_for_field(values_replaced, CustomValue.table_name, "value")
+        ].compact.join(" AND ")
+      end
 
       def type_strategy_class
         strategies[type] || strategies[:inexistent]

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +33,15 @@ module Queries::Filters::Strategies
     delegate :allowed_values,
              to: :filter
 
-    self.supported_operators = ['=', '!']
-    self.default_operator = '='
+    self.supported_operators = ["=", "!"]
+    self.default_operator = "="
+
+    def operator_map
+      super_value = super.dup
+      super_value["="] = ::Queries::Operators::EqualsOr
+
+      super_value
+    end
 
     def validate
       # TODO: the -1 is a special value that exists for historical reasons
@@ -45,11 +54,11 @@ module Queries::Filters::Strategies
     end
 
     def valid_values!
-      filter.values &= (allowed_values.map(&:last).map(&:to_s) + ['-1'])
+      filter.values &= (allowed_values.map { |_, v| v.to_s } + ["-1"])
     end
 
     def non_valid_values?
-      (values.reject(&:blank?) & (allowed_values.map(&:last).map(&:to_s) + ['-1'])) != values.reject(&:blank?)
+      (values.compact_blank & (allowed_values.map { |_, v| v.to_s } + ["-1"])) != values.compact_blank
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -57,11 +59,11 @@ module API
           ->(*) {
             v3_path = API::V3::Principals::PrincipalType.for(represented.send(name))
 
-            instance_exec(&self.class.associated_resource_default_link(name,
-                                                                       v3_path:,
-                                                                       skip_link: -> { false },
-                                                                       title_attribute: :name,
-                                                                       getter:))
+            instance_exec(&self.class.associated_resource_default_link_lambda(name,
+                                                                              v3_path:,
+                                                                              skip_link: -> { false },
+                                                                              title_attribute: :name,
+                                                                              getter:))
           }
         end
 

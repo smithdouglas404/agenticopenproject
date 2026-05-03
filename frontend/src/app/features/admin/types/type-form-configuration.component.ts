@@ -1,12 +1,17 @@
 import {
-  AfterViewInit, Component, ElementRef, OnInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit
 } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import { ExternalRelationQueryConfigurationService } from 'core-app/features/work-packages/components/wp-table/external-configuration/external-relation-query-configuration.service';
+import {
+  ExternalRelationQueryConfigurationService,
+} from 'core-app/features/work-packages/components/wp-table/external-configuration/external-relation-query-configuration.service';
 import { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import { DragulaService, DrakeWithModels } from 'ng2-dragula';
-import { GonService } from 'core-app/core/gon/gon.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { installMenuLogic } from 'core-app/core/setup/globals/global-listeners/action-menu';
 import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.service';
@@ -30,17 +35,19 @@ export interface TypeGroup {
   type:TypeGroupType;
 }
 
-export const adminTypeFormConfigurationSelector = 'admin-type-form-configuration';
 export const emptyTypeGroup = '__empty';
 
 @Component({
-  selector: adminTypeFormConfigurationSelector,
+  selector: 'opce-admin-type-form-configuration',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './type-form-configuration.html',
   providers: [
     TypeBannerService,
+    DragulaService
   ],
+  standalone: false,
 })
-export class TypeFormConfigurationComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit {
+export class TypeFormConfigurationComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit, OnDestroy {
   public text = {
     drag_to_activate: this.I18n.t('js.admin.type_form.drag_to_activate'),
     reset: this.I18n.t('js.admin.type_form.reset_to_defaults'),
@@ -56,9 +63,9 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
 
   private element:HTMLElement;
 
-  private form:JQuery;
+  private form:HTMLFormElement;
 
-  private submit:JQuery;
+  private submit:HTMLButtonElement;
 
   public groups:TypeGroup[] = [];
 
@@ -70,13 +77,17 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
 
   private no_filter_query:string;
 
+  private eventListeners = {
+    typeFormUpdater: () => {
+      this.updateHiddenFields();
+    }
+  };
+
   constructor(
-    private elementRef:ElementRef,
+    private elementRef:ElementRef<HTMLElement>,
     private I18n:I18nService,
-    private Gon:GonService,
     private dragula:DragulaService,
     private confirmDialog:ConfirmDialogService,
-    private toastService:ToastService,
     private externalRelationQuery:ExternalRelationQueryConfigurationService,
     readonly typeBanner:TypeBannerService,
   ) {
@@ -84,36 +95,21 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   ngOnInit():void {
+    // For unclear reasons, this component is initialized twice if used in conjunction with
+    // turbo drive. This then leads to the groups defined in this component being duplicated.
+    // It does not harm to remove them if they exist but it would of course be better if that hack
+    // would not be necessary. The functionality should all be handled in ngOnDestroy.
+    this.dragula.destroy('groups');
+    this.dragula.destroy('attributes');
+
     // Hook on form submit
     this.element = this.elementRef.nativeElement;
     this.no_filter_query = this.element.dataset.noFilterQuery!;
-    this.form = jQuery(this.element).closest('form');
-    this.submit = this.form.find('.form-configuration--save');
-
-    // In the following we are triggering the form submit ourselves to work around
-    // a firefox shortcoming. But to avoid double submits which are sometimes not canceled fast
-    // enough, we need to memoize whether we have already submitted.
-    let submitted = false;
-
-    this.form.on('submit', () => {
-      submitted = true;
-    });
-
-    // Capture mousedown on button because firefox breaks blur on click
-    this.submit.on('mousedown', () => {
-      setTimeout(() => {
-        if (!submitted) {
-          this.form.trigger('submit');
-        }
-      }, 50);
-      return true;
-    });
+    this.form = this.element.closest('form')!;
+    this.submit = this.form.querySelector('.form-configuration--save')!;
 
     // Capture regular form submit
-    this.form.on('submit.typeformupdater', () => {
-      this.updateHiddenFields();
-      return true;
-    });
+    this.form.addEventListener('submit', this.eventListeners.typeFormUpdater);
 
     // Setup groups
     this.groupsDrake = this
@@ -141,7 +137,7 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
     const that = this;
     this.autoscroll = new DomAutoscrollService(
       [
-        document.getElementById('content-wrapper')!,
+        document.getElementById('content-body')!,
       ],
       {
         margin: 25,
@@ -158,8 +154,15 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   ngAfterViewInit():void {
-    const menu = jQuery(this.elementRef.nativeElement).find('.toolbar-items');
+    const menu = this.elementRef.nativeElement.querySelector<HTMLElement>('.toolbar-items')!;
     installMenuLogic(menu);
+  }
+
+  ngOnDestroy():void {
+    this.dragula.destroy('groups');
+    this.dragula.destroy('attributes');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+    this.autoscroll.destroy();
   }
 
   deactivateAttribute(attribute:TypeFormAttribute):void {
@@ -172,7 +175,8 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   editQuery(group:TypeGroup):void {
-    this.typeBanner.conditional(
+    void this.typeBanner.conditional(
+      'edit_attribute_groups',
       () => this.typeBanner.showEEOnlyHint(),
       () => {
         // Disable display mode and timeline for now since we don't want users to enable it
@@ -191,7 +195,8 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   deleteGroup(group:TypeGroup):void {
-    this.typeBanner.conditional(
+    void this.typeBanner.conditional(
+      'edit_attribute_groups',
       () => this.typeBanner.showEEOnlyHint(),
       () => {
         if (group.type === 'attribute') {
@@ -228,13 +233,15 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
         },
       })
       .then(() => {
-        this.form.find('input#type_attribute_groups').val(JSON.stringify([]));
+        const input = this.form.querySelector<HTMLInputElement>('input#type_attribute_groups')!;
+        input.value = JSON.stringify([]);
 
         // Disable our form handler that updates the attribute groups
-        this.form.off('submit.typeformupdater');
-        this.form.trigger('submit');
+        this.form.removeEventListener('submit', this.eventListeners.typeFormUpdater);
+        this.form.requestSubmit();
       })
-      .catch(() => {});
+      .catch(() => {
+      });
 
     $event.preventDefault();
     return false;
@@ -255,13 +262,13 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   private updateHiddenFields():void {
-    const hiddenField = this.form.find('.admin-type-form--hidden-field');
+    const hiddenField = this.form.querySelector<HTMLInputElement>('.admin-type-form--hidden-field')!;
     if (this.groups.length === 0) {
       // Ensure we're adding an empty group if deliberately removing
       // all values.
-      hiddenField.val(JSON.stringify([this.emptyGroup]));
+      hiddenField.value = JSON.stringify([this.emptyGroup]);
     } else {
-      hiddenField.val(JSON.stringify(this.groups));
+      hiddenField.value = JSON.stringify(this.groups);
     }
   }
 }

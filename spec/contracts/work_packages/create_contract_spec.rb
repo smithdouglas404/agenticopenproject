@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,121 +28,153 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require 'contracts/work_packages/shared_base_contract'
+require "spec_helper"
+require "contracts/work_packages/shared_contract_examples"
 
-describe WorkPackages::CreateContract do
+RSpec.describe WorkPackages::CreateContract do
+  include_context "work package contract"
+
   let(:work_package) do
-    WorkPackage.new(project: work_package_project).tap do |wp|
+    WorkPackage.new(project: persisted_project,
+                    subject: "Some subject",
+                    type: persisted_type,
+                    priority: persisted_priority,
+                    status: persisted_status) do |wp|
       wp.extend(OpenProject::ChangedBySystem)
+
+      wp.change_by_system do
+        wp.author = user
+      end
     end
   end
-  let(:validated_contract) do
-    contract = subject
-    contract.validate
-    contract
-  end
-  let(:work_package_project) { project }
-  let(:project) { build_stubbed(:project) }
-  let(:user) { build_stubbed(:user) }
+  let(:other_project) { build_stubbed(:project) }
+  let(:user) { persisted_user }
+  let(:permissions) { %i[add_work_packages assign_versions] }
 
   subject(:contract) { described_class.new(work_package, user) }
 
-  it_behaves_like 'work package contract'
+  describe "validations" do
+    context "when user allowed in project and project specified" do
+      it_behaves_like "contract is valid"
+    end
 
-  def add_work_packages_allowed(in_project: true, in_global: true)
-    allow(user)
-      .to receive(:allowed_to?) do |permission, permission_project, global: false|
-      (in_project && project == permission_project && permission == :add_work_packages) ||
-        (in_global && global && permission == :add_work_packages)
+    context "when user not allowed in project and project specified" do
+      let(:permissions) { [] }
+
+      it_behaves_like "contract is invalid", base: :error_unauthorized
+    end
+
+    context "when user not allowed in any project and no project specified" do
+      before do
+        work_package.project = nil
+      end
+
+      # But no error_unauthorized
+      it_behaves_like "contract is invalid", project: :blank
+    end
+
+    context "when user not allowed in any projects and no project specified" do
+      let(:permissions) { [] }
+
+      before do
+        work_package.project = nil
+      end
+
+      it_behaves_like "contract is invalid", base: :error_unauthorized
     end
   end
 
-  describe 'authorization' do
-    context 'user allowed in project and project specified' do
-      before do
-        add_work_packages_allowed(in_project: true, in_global: true)
+  describe "writing read-only attributes" do
+    let(:validated_contract) do
+      contract = subject
+      contract.validate
+      contract
+    end
 
-        work_package.project = project
-      end
+    shared_examples "can write" do |attribute, value|
+      it "can write #{attribute}", :aggregate_failures do
+        expect(contract.writable_attributes).to include(attribute.to_s)
 
-      it 'has no authorization error' do
-        expect(validated_contract.errors[:base]).to be_empty
+        work_package.send(:"#{attribute}=", value)
+        expect(validated_contract.errors[attribute]).to be_empty
       end
     end
 
-    context 'user not allowed in project and project specified' do
-      before do
-        add_work_packages_allowed(in_project: false, in_global: true)
+    shared_examples "can not write" do |attribute, value|
+      it "can not write #{attribute}", :aggregate_failures do
+        expect(contract.writable_attributes).not_to include(attribute.to_s)
 
-        work_package.project = project
-      end
-
-      it 'is not authorized' do
-        expect(validated_contract.errors.symbols_for(:base))
-          .to match_array [:error_unauthorized]
+        work_package.send(:"#{attribute}=", value)
+        expect(validated_contract).not_to be_valid
+        expect(validated_contract.errors[attribute]).to include "was attempted to be written but is not writable."
       end
     end
 
-    context 'user allowed in a project and no project specified' do
-      before do
-        add_work_packages_allowed(in_project: true, in_global: true)
-      end
+    context "when enabled for admin", with_settings: { apiv3_write_readonly_attributes: true } do
+      let(:user) { build_stubbed(:admin) }
 
-      it 'has no authorization error' do
-        expect(validated_contract.errors[:base]).to be_empty
+      it_behaves_like "can write", :created_at, 1.day.ago
+      it_behaves_like "can not write", :updated_at, 1.day.ago
+      it_behaves_like "can write", :author_id, 1234
+    end
+
+    context "when disabled for admin", with_settings: { apiv3_write_readonly_attributes: false } do
+      let(:user) { build_stubbed(:admin) }
+
+      it_behaves_like "can not write", :created_at, 1.day.ago
+      it_behaves_like "can not write", :updated_at, 1.day.ago
+      it_behaves_like "can not write", :author_id, 1234
+    end
+
+    context "when enabled for regular user", with_settings: { apiv3_write_readonly_attributes: true } do
+      it_behaves_like "can not write", :created_at, 1.day.ago
+      it_behaves_like "can not write", :updated_at, 1.day.ago
+      it_behaves_like "can not write", :author_id, 1234
+    end
+
+    context "when disabled for regular user", with_settings: { apiv3_write_readonly_attributes: false } do
+      it_behaves_like "can not write", :created_at, 1.day.ago
+      it_behaves_like "can not write", :updated_at, 1.day.ago
+      it_behaves_like "can not write", :author_id, 1234
+    end
+  end
+
+  describe "#assignable_assignees" do
+    context "with a project set" do
+      it "returns the users assignable" do
+        expect(subject.assignable_assignees)
+          .to contain_exactly(persisted_possible_assignee)
       end
     end
 
-    context 'user not allowed in any project and no project specified' do
+    context "without a project set" do
       before do
-        add_work_packages_allowed(in_project: false, in_global: false)
+        work_package.project = nil
       end
 
-      it 'is not authorized' do
-        expect(validated_contract.errors.symbols_for(:base))
-          .to match_array [:error_unauthorized]
-      end
-    end
-
-    context 'user not allowed in any project and project specified' do
-      before do
-        add_work_packages_allowed(in_project: false, in_global: false)
-
-        work_package.project = project
-      end
-
-      it 'is not authorized' do
-        expect(validated_contract.errors.symbols_for(:base))
-          .to match_array [:error_unauthorized]
+      it "returns no users" do
+        expect(subject.assignable_assignees)
+          .to be_empty
       end
     end
   end
 
-  describe 'author_id' do
-    before do
-      add_work_packages_allowed(in_project: true, in_global: true)
-      work_package.project = project
-    end
-
-    context 'if the user is set by the system and the user is the user the contract is evaluated for' do
-      subject(:contract) { described_class.new(work_package, user) }
-
-      it 'is valid' do
-        work_package.change_by_system do
-          work_package.author = user
-        end
-
-        expect(validated_contract.errors[:author_id]).to be_empty
+  describe "#assignable_responsibles" do
+    context "with a project set" do
+      it "returns the users assignable" do
+        expect(subject.assignable_responsibles)
+          .to contain_exactly(persisted_possible_assignee)
       end
     end
 
-    context 'if the user is different from the user the contract is evaluated for' do
-      it 'is invalid' do
-        work_package.author = build_stubbed(:user)
+    context "without a project set" do
+      before do
+        work_package.project = nil
+      end
 
-        expect(validated_contract.errors.symbols_for(:author_id))
-          .to match_array %i[invalid error_readonly]
+      it "returns no users" do
+        expect(subject.assignable_responsibles)
+          .to be_empty
       end
     end
   end

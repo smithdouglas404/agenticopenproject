@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,18 +33,22 @@ module Queries::Storages::WorkPackages::Filter::StoragesFilterMixin
     :list
   end
 
+  def human_name
+    ::Storages::Storage.human_attribute_name(name)
+  end
+
   # Returns the model class for which the filter will apply.
   #
   # Used in the where and joins clauses.
   def filter_model
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   # Returns the column name for which the filter will apply.
   #
   # Used in the where clause.
   def filter_column
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def allowed_values
@@ -64,7 +70,7 @@ module Queries::Storages::WorkPackages::Filter::StoragesFilterMixin
   end
 
   def additional_where_condition
-    ''
+    ""
   end
 
   def joins
@@ -72,6 +78,23 @@ module Queries::Storages::WorkPackages::Filter::StoragesFilterMixin
   end
 
   def unescape_hosts(hosts)
-    hosts.map { |host| CGI.unescape(host).gsub(/\/+$/, '') }
+    hosts.map { |host| CGI.unescape(host).gsub(/\/+$/, "") }
+  end
+
+  # Host values are valid with or without a trailing slash and they match either case.
+  # Example: If the host is either "https://example.com" or "https://example.com/",
+  # both of the following values are valid:
+  # - "https://example.com"
+  # - "https://example.com/"
+  def prepare_host_values(hosts)
+    nested_host_values = hosts.map do |host|
+      host_value = CGI.unescape(host)
+      possible_host_values = [host_value]
+      possible_host_values << "#{host_value}/" unless host_value.ends_with?("/")
+      possible_host_values << host_value.chomp("/") if host_value.ends_with?("/")
+      possible_host_values
+    end
+
+    nested_host_values.flatten
   end
 end

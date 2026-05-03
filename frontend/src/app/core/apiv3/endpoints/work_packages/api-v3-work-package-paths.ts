@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -45,6 +45,9 @@ export class ApiV3WorkPackagePaths extends ApiV3Resource<WorkPackageResource> {
 
   // /api/v3/(?:projectPath)/work_packages/(:workPackageId)/available_watchers
   public readonly available_watchers = this.subResource('available_watchers');
+
+  // /api/v3/(?:projectPath)/work_packages/(:workPackageId)/reminders
+  public readonly reminders = this.subResource('reminders');
 
   // /api/v3/(?:projectPath)/work_packages/(:workPackageId)/available_projects
   public readonly available_projects = this.subResource('available_projects');

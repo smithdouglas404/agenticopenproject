@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,20 +26,26 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { DatePickerEditFieldComponent } from 'core-app/shared/components/fields/edit/field-types/date-picker-edit-field.component';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 
 @Component({
-  template: `
-    <input [value]="dates"
-           (click)="showDatePickerModal()"
-           class="op-input"
-           type="text" />
-  `,
+  templateUrl: './combined-date-edit-field.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent {
+export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent implements OnInit {
   dates = '';
+
+  opened = false;
 
   text = {
     placeholder: {
@@ -49,21 +55,32 @@ export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent
     },
   };
 
-  public showDatePickerModal():void {
-    super.showDatePickerModal();
-
-    this
-      .modal
-      ?.onDataUpdated
-      .subscribe((dates:string) => {
-        this.dates = dates;
-        this.cdRef.detectChanges();
-      });
+  ngOnInit() {
+    super.ngOnInit();
   }
 
-  protected onModalClosed():void {
-    this.resetDates();
+  public onInputClick(event:MouseEvent) {
+    event.stopPropagation();
+  }
+
+  public onModalClosed():void {
     super.onModalClosed();
+
+    if (!this.handler.inEditMode) {
+      this.handler.deactivate(false);
+    }
+    this.resetDates();
+  }
+
+  public save():void {
+    void this.handler.handleUserSubmit();
+  }
+
+  public cancel():void {
+    if (!this.handler.inEditMode) {
+      this.handler.reset();
+    }
+    this.onModalClosed();
   }
 
   // Overwrite super in order to set the initial dates.
@@ -97,6 +114,6 @@ export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent
 
   protected current(dateAttribute:'startDate' | 'dueDate' | 'date'):string {
     const value = (this.resource && (this.resource as WorkPackageResource)[dateAttribute]) as string|null;
-    return (value || this.text.placeholder[dateAttribute]);
+    return (value ?? this.text.placeholder[dateAttribute]);
   }
 }

@@ -12,6 +12,7 @@
     display: flex
     flex-direction: column
     margin: 0
+    font-weight: normal
 
   &--label
     display: flex
@@ -19,11 +20,7 @@
     align-items: center
     margin-bottom: $spot-spacing-0_25
 
-    @include spot-body-small($weight: bold)
-    color: $spot-color-basic-gray-1
-
-    &-indicator
-      color: $spot-color-basic-black
+    @include spot-body-small($weight: var(--base-text-weight-bold))
 
   &--help-text
     padding-left: $spot-spacing-0_25
@@ -39,7 +36,7 @@
 
   &--input
     margin-bottom: $spot-spacing-0_25
-    display: -webkit-flex /* Safari */     
+    display: -webkit-flex /* Safari */
     display: flex
 
     > *
@@ -49,7 +46,7 @@
     @include spot-caption
     font-style: italic
     margin-bottom: $spot-spacing-0_25
-    color: $spot-color-basic-gray-2
+    color: var(--fgColor-muted)
 
   &--errors
     display: flex
@@ -57,7 +54,7 @@
 
   &--error
     @include spot-caption
-    color: $spot-color-danger-dark
+    color: var(--control-borderColor-danger)
     margin-bottom: $spot-spacing-0_25
 
   &--label,

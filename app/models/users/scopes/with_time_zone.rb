@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -47,7 +49,7 @@ module Users::Scopes
       end
 
       def user_default_time_zone
-        Arel::Nodes::build_quoted(Setting.user_default_timezone.presence || 'Etc/UTC')
+        Arel::Nodes::build_quoted(Setting.user_default_timezone.presence || "Etc/UTC")
       end
     end
   end

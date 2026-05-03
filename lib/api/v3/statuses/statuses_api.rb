@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +26,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'api/v3/statuses/status_collection_representer'
-require 'api/v3/statuses/status_representer'
+require "api/v3/statuses/status_collection_representer"
+require "api/v3/statuses/status_representer"
 
 module API
   module V3
@@ -35,21 +35,21 @@ module API
       class StatusesAPI < ::API::OpenProjectAPI
         resources :statuses do
           after_validation do
-            authorize(:view_work_packages, global: true)
+            authorize_in_any_work_package(:view_work_packages)
           end
 
           get do
-            StatusCollectionRepresenter.new(Status.all,
+            StatusCollectionRepresenter.new(Status.visible,
                                             self_link: api_v3_paths.statuses,
                                             current_user:)
           end
 
-          route_param :id, type: Integer, desc: 'Status ID' do
+          route_param :id, type: Integer, desc: "Status ID" do
             helpers do
               # Note that naming the method #status or having
               # a variable named @status colides with grape.
               def work_package_status
-                Status.find(params[:id])
+                Status.visible.find(params[:id])
               end
             end
 

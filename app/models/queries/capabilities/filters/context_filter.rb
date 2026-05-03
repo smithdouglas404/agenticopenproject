@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +35,8 @@ class Queries::Capabilities::Filters::ContextFilter < Queries::Capabilities::Fil
 
   def split_values
     values.map do |value|
-      if (matches = value.match(/\A([gp])(\d*)\z/))
+      # @deprecated Remove the context `p` for projects for 17.2
+      if (matches = value.match(/\A([gwp])(\d*)\z/))
         {
           context_key: matches[1],
           context_id: matches[2]

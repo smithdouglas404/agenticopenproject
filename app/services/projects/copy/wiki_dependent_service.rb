@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,7 +48,7 @@ module Projects::Copy
       # Check that the source project has a wiki first
       return if source.wiki.nil?
 
-      target.wiki = target.build_wiki(source.wiki.attributes.dup.except('id', 'project_id'))
+      target.wiki = target.build_wiki(source.wiki.attributes.dup.except("id", "project_id"))
       target.wiki.wiki_menu_items.delete_all
 
       copy_wiki_pages(params)
@@ -69,17 +71,9 @@ module Projects::Copy
     end
 
     def copy_wiki_page(source_page, new_parent_id)
-      # Skip pages without content
-      return if source_page.content.nil?
-
-      # Relying on ActionMailer::Base.perform_deliveries is violating cohesion
-      # but the value is currently not otherwise provided
       service_call = WikiPages::CopyService
                      .new(user:, model: source_page, contract_class: WikiPages::CopyContract)
-                     .call(wiki: target.wiki,
-                           parent_id: new_parent_id,
-                           send_notifications: ActionMailer::Base.perform_deliveries,
-                           copy_attachments: copy_attachments?)
+                     .call(wiki: target.wiki, parent_id: new_parent_id, copy_attachments: copy_attachments?)
 
       if service_call.success?
         service_call.result
@@ -118,7 +112,7 @@ module Projects::Copy
 
       source.wiki.wiki_menu_items.each do |item|
         new_item = MenuItems::WikiMenuItem.new
-        new_item.attributes = item.attributes.dup.except('id', 'wiki_id', 'parent_id')
+        new_item.attributes = item.attributes.dup.except("id", "wiki_id", "parent_id")
         new_item.wiki = target.wiki
         (wiki_menu_items_map[item.id] = new_item.reload) if new_item.save
       end

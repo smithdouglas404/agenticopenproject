@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,10 +30,11 @@
 
 Rails.application.reloader.to_prepare do
   # Do not place any patches within this file. Add a file to lib/open_project/patches
-  require 'open_project/patches'
+  load File.expand_path("../../lib/open_project/patches.rb", __dir__)
 
-  # Whatever ruby file is placed in lib/open_project/patches is required
-  Dir.glob(File.expand_path('../../lib/open_project/patches/*.rb', __dir__)).each do |path|
-    require path
+  # Whatever ruby file is placed in lib/open_project/patches is loaded (not required)
+  # to ensure patches are re-applied on each reload
+  Dir.glob(File.expand_path("../../lib/open_project/patches/*.rb", __dir__)).each do |path|
+    load path
   end
 end

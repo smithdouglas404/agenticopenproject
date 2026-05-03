@@ -1,24 +1,24 @@
-require 'net/ldap'
-require 'net/ldap/dn'
+require "net/ldap"
+require "net/ldap/dn"
 
 module LdapGroups
   class SynchronizedGroup < ApplicationRecord
     belongs_to :group
 
-    belongs_to :auth_source
+    belongs_to :ldap_auth_source
 
     belongs_to :filter,
-               class_name: '::LdapGroups::SynchronizedFilter'
+               class_name: "::LdapGroups::SynchronizedFilter"
 
     has_many :users,
-             class_name: '::LdapGroups::Membership',
+             class_name: "::LdapGroups::Membership",
              dependent: :delete_all,
-             foreign_key: 'group_id'
+             foreign_key: "group_id"
 
     validates_presence_of :dn
     validates_presence_of :group
     validates_associated :group
-    validates_presence_of :auth_source
+    validates_presence_of :ldap_auth_source
 
     before_destroy :remove_all_members
 
@@ -79,12 +79,9 @@ module LdapGroups
     def add_members_to_group(new_users)
       user_ids = new_users.map { |user| user_id(user) }
 
-      # Ensure we use pluck to get the current DB version of user_ids
-      current_user_ids = group.group_users.pluck(:user_id)
-
       call = Groups::UpdateService
         .new(user: User.current, model: group)
-        .call(user_ids: (current_user_ids + user_ids).uniq)
+        .call(add_user_ids: user_ids)
 
       call.on_success do
         Rails.logger.debug "[LDAP groups] Added users #{user_ids} to #{group.name}"
@@ -97,12 +94,9 @@ module LdapGroups
     end
 
     def remove_members_from_group(user_ids)
-      # Ensure we use pluck to get the current DB version of user_ids
-      current_user_ids = group.group_users.pluck(:user_id)
-
       call = Groups::UpdateService
         .new(user: User.system, model: group)
-        .call(user_ids: current_user_ids - user_ids)
+        .call(remove_user_ids: user_ids)
 
       call.on_success do
         Rails.logger.debug "[LDAP groups] Removed users #{user_ids} from #{group.name}"

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,23 +30,30 @@
 
 module Components::Autocompleter
   module AutocompleteHelpers
-    def search_autocomplete(element, query:, results_selector: nil)
+    def search_autocomplete(element, query:, results_selector: "body")
       # Open the element
       element.click
       # Insert the text to find
       sleep(0.1)
       element.set(query)
 
+      wait_for_network_idle
+
       ##
       # Find the open dropdown
       list =
-        page.find(results_selector || '.ng-dropdown-panel-items', wait: 10)
+        page.find(results_selector || ".ng-dropdown-panel-items", wait: 10)
 
       scroll_to_element(list)
       list
     end
 
-    def select_autocomplete(element, query:, results_selector: nil, item_selector: nil, select_text: nil)
+    def select_autocomplete(element,
+                            query:,
+                            results_selector: "body",
+                            item_selector: nil,
+                            select_text: nil,
+                            expected_value: nil)
       target_dropdown = search_autocomplete(element, results_selector:, query:)
 
       ##
@@ -56,9 +65,11 @@ module Components::Autocompleter
       query_element = if item_selector
                         target_dropdown.find(item_selector, text:)
                       else
-                        target_dropdown.find('.ng-option', text:)
+                        target_dropdown.find(".ng-option", text:)
                       end
       query_element.click
+
+      expect(page).to have_css(".ng-value", text: expected_value) if expected_value
     end
   end
 end

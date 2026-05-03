@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -30,12 +30,14 @@ import {
   ChangeDetectionStrategy, Component, EventEmitter, Input, Output,
 } from '@angular/core';
 import { GridAreaService } from 'core-app/shared/components/grids/grid/area.service';
+import { GridDragAndDropService } from 'core-app/shared/components/grids/grid/drag-and-drop.service';
 
 @Component({
   selector: 'widget-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WidgetHeaderComponent {
   @Input() name:string;
@@ -44,7 +46,10 @@ export class WidgetHeaderComponent {
 
   @Output() onRenamed = new EventEmitter<string>();
 
-  constructor(readonly layout:GridAreaService) {
+  constructor(
+    readonly layout:GridAreaService,
+    readonly drag:GridDragAndDropService,
+  ) {
 
   }
 

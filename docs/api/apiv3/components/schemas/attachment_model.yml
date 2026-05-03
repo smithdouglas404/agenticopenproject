@@ -2,45 +2,52 @@
 ---
 type: object
 required:
-- title
-- fileName
-- description
-- contentType
-- digest
-- createdAt
+  - fileName
+  - description
+  - status
+  - contentType
+  - digest
+  - createdAt
 properties:
   id:
     type: integer
     description: Attachment's id
-    readOnly: true
-    minimum: 0
-    exclusiveMinimum: true
-  title:
-    type: string
-    description: The name of the file
-    readOnly: true
+    minimum: 1
   fileName:
     type: string
     description: The name of the uploaded file
-    readOnly: true
   fileSize:
     type: integer
     description: The size of the uploaded file in Bytes
-    readOnly: true
     minimum: 0
   description:
     allOf:
-    - "$ref": "./formattable.yml"
+    - $ref: "./formattable.yml"
     - description: A user provided description of the file
-      readOnly: true
+  status:
+    type: string
+    enum:
+      - uploaded
+      - prepared
+      - scanned
+      - quarantined
+      - rescan
   contentType:
     type: string
     description: The files MIME-Type as determined by the server
-    readOnly: true
   digest:
-    type: string
+    type: object
     description: A checksum for the files content
-    readOnly: true
+    required:
+      - algorithm
+      - hash
+    properties:
+      algorithm:
+        type: string
+        description: "The algorithm used to generate the digest."
+      hash:
+        type: string
+        description: "The hexadecimal representation of the digested hash value."
   createdAt:
     type: string
     format: date-time
@@ -48,53 +55,48 @@ properties:
   _links:
     type: object
     required:
-    - self
-    - container
-    - author
-    - downloadLocation
+      - self
+      - container
+      - author
+      - downloadLocation
     properties:
       delete:
         allOf:
-        - "$ref": "./link.yml"
+        - $ref: "./link.yml"
         - description: |-
             Deletes this attachment
 
             # Conditions
 
             **Permission**: edit on attachment container or being the author for attachments without container
-          readOnly: true
       self:
         allOf:
-        - "$ref": "./link.yml"
+        - $ref: "./link.yml"
         - description: |-
             This attachment
 
             **Resource**: Attachment
-          readOnly: true
       container:
         allOf:
-        - "$ref": "./link.yml"
+        - $ref: "./link.yml"
         - description: |-
             The object (e.g. WorkPackage) housing the attachment
 
             **Resource**: Anything
-          readOnly: true
       author:
         allOf:
-        - "$ref": "./link.yml"
+        - $ref: "./link.yml"
         - description: |-
             The user who uploaded the attachment
 
             **Resource**: User
-          readOnly: true
       downloadLocation:
         allOf:
-        - "$ref": "./link.yml"
+        - $ref: "./link.yml"
         - description: |-
             Direct download link to the attachment
 
             **Resource**: -
-          readOnly: true
 example:
   _type: Attachment
   _links:
@@ -105,12 +107,13 @@ example:
     author:
       href: "/api/v3/users/1"
     staticDownloadLocation:
-      href: "/api/v3/attachments/1/download"
+      href: "/api/v3/attachments/1/content"
     downloadLocation:
       href: "/some/remote/aws/url/image.png"
   id: 1
   fileName: cat.png
   filesize: 24
+  status: uploaded
   description:
     format: plain
     raw: A picture of a cute cat
@@ -119,4 +122,4 @@ example:
   digest:
     algorithm: md5
     hash: 64c26a8403cd796ea4cf913cda2ee4a9
-  createdAt: '2014-05-21T08:51:20Z'
+  createdAt: '2014-05-21T08:51:20.396Z'

@@ -8,10 +8,12 @@ import { TypeGroup } from 'core-app/features/admin/types/type-form-configuration
   selector: 'op-type-form-query-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './query-group.component.html',
+  standalone: false,
 })
 export class TypeFormQueryGroupComponent {
   text = {
     edit_query: this.I18n.t('js.admin.type_form.edit_query'),
+    delete_group: this.I18n.t('js.admin.type_form.delete_group')
   };
 
   @Input() public group:TypeGroup;

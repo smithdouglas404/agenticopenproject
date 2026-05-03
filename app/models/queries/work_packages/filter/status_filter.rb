@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +35,7 @@ class Queries::WorkPackages::Filter::StatusFilter < Queries::WorkPackages::Filte
 
   def available_operators
     [Queries::Operators::OpenWorkPackages,
-     Queries::Operators::Equals,
+     Queries::Operators::EqualsOr,
      Queries::Operators::ClosedWorkPackages,
      Queries::Operators::NotEquals,
      Queries::Operators::All]
@@ -53,8 +55,7 @@ class Queries::WorkPackages::Filter::StatusFilter < Queries::WorkPackages::Filte
 
   def value_objects
     values
-      .map { |status_id| all_statuses[status_id.to_i] }
-      .compact
+      .filter_map { |status_id| all_statuses[status_id.to_i] }
   end
 
   def allowed_objects
@@ -72,7 +73,7 @@ class Queries::WorkPackages::Filter::StatusFilter < Queries::WorkPackages::Filte
   private
 
   def all_statuses
-    key = 'Queries::WorkPackages::Filter::StatusFilter/all_statuses'
+    key = "Queries::WorkPackages::Filter::StatusFilter/all_statuses"
 
     RequestStore.fetch(key) do
       Status.all.to_a.index_by(&:id)
@@ -83,11 +84,11 @@ class Queries::WorkPackages::Filter::StatusFilter < Queries::WorkPackages::Filte
     super_value = super
 
     super_value || case operator
-                   when 'o'
+                   when "o"
                      Queries::Operators::OpenWorkPackages
-                   when 'c'
+                   when "c"
                      Queries::Operators::ClosedWorkPackages
-                   when '*'
+                   when "*"
                      Queries::Operators::All
                    end
   end

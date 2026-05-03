@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,85 +28,111 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Global role: Global Create project', type: :feature, js: true do
-  let(:user) { create(:admin) }
-  let(:project) { create :project }
+RSpec.describe "Global role: Global Create project",
+               :js do
+  shared_let(:admin) { create(:admin) }
+  shared_let(:user) { create(:user) }
+  shared_let(:project) { create(:project) }
 
-  before do
-    login_as(user)
-  end
+  let(:projects_page) { Pages::Projects::Index.new }
 
-  describe 'Create Project is not a member permission' do
+  describe "Create project is not a member permission" do
     # Given there is a role "Member"
-    let!(:role) { create(:role, name: 'Member') }
+    let!(:role) { create(:project_role, name: "Member") }
 
     # And I am already admin
+    current_user { admin }
+
     # When I go to the edit page of the role "Member"
     # Then I should not see "Create project"
-    it 'does not show the global permission' do
+    it "does not show the global permission" do
       visit edit_role_path(role)
-      expect(page).to have_selector('.form--label-with-check-box', text: 'Edit project')
-      expect(page).to have_no_selector('.form--label-with-check-box', text: 'Create project')
+      expect(page).to have_css(".form--label-with-check-box", text: "Edit project")
+      expect(page).to have_no_css(".form--label-with-check-box", text: "Create project")
     end
   end
 
-  describe 'Create Project is a global permission' do
+  describe "Create project is a global permission" do
     # Given there is a global role "Global"
-    let!(:role) { create(:global_role, name: 'Global') }
+    let!(:role) { create(:global_role, name: "Global") }
+
     # And I am already admin
+    current_user { admin }
+
     # When I go to the edit page of the role "Global"
     # Then I should see "Create project"
 
-    it 'does show the global permission' do
+    it "does show the global permission" do
       visit edit_role_path(role)
-      expect(page).to have_no_selector('.form--label-with-check-box', text: 'Edit project')
-      expect(page).to have_selector('.form--label-with-check-box', text: 'Create project')
+      expect(page).to have_no_css(".form--label-with-check-box", text: "Edit project")
+      expect(page).to have_css(".form--label-with-check-box", text: "Create project")
     end
   end
 
-  describe 'Create Project displayed to user' do
-    let!(:global_role) { create(:global_role, name: 'Global', permissions: %i[add_project]) }
-    let!(:member_role) { create(:role, name: 'Member', permissions: %i[view_project]) }
+  describe "for a user with the global permission to add projects" do
+    let!(:global_role) { create(:global_role, name: "Global", permissions: %i[add_project]) }
+    let!(:member_role) { create(:project_role, name: "Member", permissions: %i[view_project]) }
 
-    let(:user) { create :user }
     let!(:global_member) do
       create(:global_member,
              principal: user,
              roles: [global_role])
     end
 
-    let(:name_field) { ::FormFields::InputFormField.new :name }
+    current_user { user }
 
-    it 'does show the global permission' do
-      visit projects_path
-      expect(page).to have_selector('.button.-alt-highlight', text: 'Project')
+    it 'allows creating projects via the "+ Project" button' do
+      projects_page.visit!
+      projects_page.create_new_workspace
 
-      # Can add new project
-      visit new_project_path
+      # Step 1: Select workspace type (blank project)
+      click_on "Continue"
 
-      name_field.set_value 'New project name'
+      # Step 2: Fill in project details
+      fill_in "Name", with: "New project name"
 
-      page.find('button:not([disabled])', text: 'Save').click
+      click_on "Complete"
 
-      expect(page).to have_current_path '/projects/new-project-name/'
+      expect(page).to have_current_path "/projects/new-project-name"
     end
   end
 
-  describe 'Create Project not displayed to user without global role' do
-    # Given there is 1 User with:
-    # | Login | bob |
-    # | Firstname | Bob |
-    # | Lastname | Bobbit |
-    #   When I am already logged in as "bob"
-    let(:user) { create :user }
+  describe "for a user without permission to add projects" do
+    current_user { user }
 
-    it 'does show the global permission' do
-      # And I go to the overall projects page
-      visit projects_path
-      # Then I should not see "Project" within ".toolbar-items"
-      expect(page).to have_no_selector('.button.-alt-highlight', text: 'Project')
+    it "does show the button for project creation" do
+      projects_page.visit!
+      projects_page.expect_no_project_create_button
+    end
+  end
+
+  describe "portfolio_models feature flag" do
+    context "when enabled", with_flag: { portfolio_models: true } do
+      let(:projects_menu) { Components::Projects::TopMenu.new }
+
+      current_user { admin }
+
+      it "does not show the button for project creation and list" do
+        projects_page.visit!
+        projects_menu.toggle!
+        projects_menu.expect_no_project_create_button
+        projects_menu.expect_no_project_list_button
+      end
+    end
+
+    describe "when disabled", with_flag: { portfolio_models: false } do
+      let(:projects_menu) { Components::Projects::TopMenu.new }
+
+      current_user { admin }
+
+      it "shows the button for project creation and list" do
+        projects_page.visit!
+        projects_menu.toggle!
+        projects_menu.expect_project_create_button
+        projects_menu.expect_project_list_button
+      end
     end
   end
 end

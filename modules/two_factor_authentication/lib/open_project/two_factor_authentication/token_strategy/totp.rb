@@ -1,4 +1,6 @@
-require 'rotp'
+# frozen_string_literal: true
+
+require "rotp"
 
 module OpenProject::TwoFactorAuthentication
   module TokenStrategy

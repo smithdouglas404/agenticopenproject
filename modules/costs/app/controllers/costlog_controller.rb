@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,9 +30,8 @@
 
 class CostlogController < ApplicationController
   menu_item :work_packages
-  before_action :find_project, :authorize, only: %i[edit new create update destroy]
+  before_action :find_cost_entry_work_package_or_project, :authorize, only: %i[edit new create update destroy]
   before_action :find_associated_objects, only: %i[create update]
-  before_action :find_optional_project, only: %i[report]
 
   helper :work_packages
   include CostlogHelper
@@ -38,7 +39,7 @@ class CostlogController < ApplicationController
   def new
     new_default_cost_entry
 
-    render action: 'edit'
+    render action: "edit"
   end
 
   def edit
@@ -56,9 +57,9 @@ class CostlogController < ApplicationController
     elsif @cost_entry.save
 
       flash[:notice] = t(:notice_cost_logged_successfully)
-      redirect_back_or_default work_package_path(@cost_entry.work_package)
+      redirect_back_or_default polymorphic_path(@cost_entry.entity)
     else
-      render action: 'edit'
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
@@ -72,10 +73,10 @@ class CostlogController < ApplicationController
     elsif @cost_entry.save
 
       flash[:notice] = t(:notice_successful_update)
-      redirect_back fallback_location: work_package_path(@cost_entry.work_package)
+      redirect_back_or_to(polymorphic_path(@cost_entry.entity))
 
     else
-      render action: 'edit'
+      render action: "edit"
     end
   end
 
@@ -86,88 +87,66 @@ class CostlogController < ApplicationController
     @cost_entry.destroy
     flash[:notice] = t(:notice_successful_delete)
 
-    if request.referer =~ /cost_reports/
-      redirect_to controller: '/cost_reports', action: :index
+    if request.referer.include?("cost_reports")
+      redirect_to controller: "/cost_reports", action: :index, status: :see_other
     else
-      redirect_back fallback_location: work_package_path(@cost_entry.work_package)
+      redirect_back_or_to(polymorphic_path(@cost_entry.entity), status: :see_other)
     end
   end
 
   private
 
-  def find_project
-    # copied from timelog_controller.rb
+  def find_cost_entry_work_package_or_project # rubocop:disable Metrics/AbcSize
     if params[:id]
-      @cost_entry = CostEntry.find(params[:id])
+      @cost_entry = CostEntry.visible.find(params[:id])
       @project = @cost_entry.project
     elsif params[:work_package_id]
-      @work_package = WorkPackage.find(params[:work_package_id])
-      @project = @work_package.project
-    elsif params[:work_package_id]
-      @work_package = WorkPackage.find(params[:work_package_id])
+      @work_package = WorkPackage.visible.find(params[:work_package_id])
       @project = @work_package.project
     elsif params[:project_id]
-      @project = Project.find(params[:project_id])
+      @project = Project.visible.find(params[:project_id])
     else
       render_404
-      false
-    end
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-
-  def find_optional_project
-    if params[:work_package_id].present?
-      @work_package = WorkPackage.find(params[:work_package_id])
-      @project = @work_package.project
-    elsif params[:work_package_id].present?
-      @work_package = WorkPackage.find(params[:work_package_id])
-      @project = @work_package.project
-    elsif params[:project_id].present?
-      @project = Project.find(params[:project_id])
-    end
-
-    if params[:cost_type_id].present?
-      @cost_type = CostType.find(params[:cost_type_id])
     end
   end
 
-  def find_associated_objects
+  def find_associated_objects # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     user_id = cost_entry_params.delete(:user_id)
     @user = if @cost_entry.present? && @cost_entry.user_id == user_id
               @cost_entry.user
             else
-              User.find_by_id(user_id)
+              User.visible.find_by(id: user_id)
             end
 
-    work_package_id = cost_entry_params.delete(:work_package_id)
-    @work_package = if @cost_entry.present? && @cost_entry.work_package_id == work_package_id
-                      @cost_entry.work_package
-                    else
-                      WorkPackage.find_by_id(work_package_id)
+    entity_id = cost_entry_params.delete(:entity_id)
+    entity_type = cost_entry_params.delete(:entity_type)
+    @work_package = if @cost_entry.present? && @cost_entry.entity_type == "WorkPackage" && @cost_entry.entity_id == entity_id
+                      @cost_entry.entity
+                    elsif entity_type == "WorkPackage"
+                      WorkPackage.visible.find_by(id: entity_id)
                     end
 
     cost_type_id = cost_entry_params.delete(:cost_type_id)
     @cost_type = if @cost_entry.present? && @cost_entry.cost_type_id == cost_type_id
                    @cost_entry.cost_type
                  else
-                   CostType.find_by_id(cost_type_id)
+                   CostType.find_by(id: cost_type_id)
                  end
   end
 
   def new_default_cost_entry
     @cost_entry = CostEntry.new.tap do |ce|
       ce.project = @project
-      ce.work_package = @work_package
+      ce.entity = @work_package
       ce.user = User.current
-      ce.spent_on = Date.today
+      ce.spent_on = Time.zone.today
       # notice that cost_type is set to default cost_type in the model
     end
   end
 
   def update_cost_entry_from_params
     @cost_entry.user = @user
-    @cost_entry.work_package = @work_package
+    @cost_entry.entity = @work_package
     @cost_entry.cost_type = @cost_type
 
     attributes = permitted_params.cost_entry
@@ -181,7 +160,6 @@ class CostlogController < ApplicationController
   end
 
   def cost_entry_params
-    params.require(:cost_entry).permit(:work_package_id, :spent_on, :user_id,
-                                       :cost_type_id, :units, :comments)
+    params.expect(cost_entry: %i[user_id entity_id entity_type spent_on cost_type_id units comments])
   end
 end

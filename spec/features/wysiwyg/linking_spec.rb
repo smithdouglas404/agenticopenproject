@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,39 +28,72 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Wysiwyg linking',
-         type: :feature, js: true do
-  let(:user) { create :admin }
-  let(:project) { create(:project, enabled_module_names: %w[wiki work_package_tracking]) }
-  let(:editor) { ::Components::WysiwygEditor.new }
+RSpec.describe "Wysiwyg linking", :js do
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project, enabled_module_names: %w[wiki work_package_tracking]) }
+  let(:editor) { Components::WysiwygEditor.new }
 
   before do
     login_as(user)
   end
 
-  describe 'creating a wiki page' do
+  describe "creating a wiki page" do
     before do
       visit project_wiki_path(project, :wiki)
     end
 
-    it 'can create links with spaces (Regression #29742)' do
+    it "can create links with spaces (Regression #29742)" do
       # single hash autocomplete
-      editor.insert_link 'http://example.org/link with spaces'
+      editor.insert_link "http://example.org/link with spaces"
 
       # Save wiki page
-      click_on 'Save'
+      click_on "Save"
 
-      expect(page).to have_selector('.flash.notice')
+      expect_flash(message: "Successful creation.")
 
       wiki_page = project.wiki.pages.first.reload
 
-      expect(wiki_page.content.text).to eq(
+      expect(wiki_page.text).to eq(
         "[http://example.org/link with spaces](http://example.org/link%20with%20spaces)"
       )
 
-      expect(page).to have_selector('a[href="http://example.org/link%20with%20spaces"]')
+      expect(page).to have_link(href: "http://example.org/link%20with%20spaces")
+    end
+  end
+
+  describe "linking in a wiki page with different protocols",
+           with_settings: { allowed_link_protocols: %w[data] } do
+    let(:wiki_page) { create(:wiki_page, wiki: project.wiki) }
+    let(:always_allowed_protocols) { Setting::AllowedLinkProtocols::ALWAYS_ALLOWED }
+
+    before do
+      visit edit_project_wiki_path(project, :wiki)
+    end
+
+    it "allows linking with the always allowed protocols" do
+      editor.insert_link "https://example.org/path"
+      click_on "Save"
+      expect_flash(message: "Successful update.")
+      expect(page).to have_link(href: "https://example.org/path")
+    end
+
+    it "allows linking the custom protocol" do
+      editor.insert_link "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=="
+      click_on "Save"
+      expect_flash(message: "Successful update.")
+      expect(page).to have_link(href: "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==")
+    end
+
+    it "prevents linking to a non-allowed custom protocol" do
+      editor.insert_link "ftp://example.org/path"
+      click_on "Save"
+      expect_flash(message: "Successful update.")
+      expect(page).to have_no_link(href: "ftp://example.org/path")
+
+      link = page.find("a", text: "ftp://example.org/path")
+      expect(link["href"]).to be_nil
     end
   end
 end

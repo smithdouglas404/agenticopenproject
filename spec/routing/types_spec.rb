@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,12 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'types routes', type: :routing do
+RSpec.describe "types routes" do
   it do
-    expect(post('/types/move/123')).to route_to(controller: 'types',
-                                                action: 'move',
-                                                id: '123')
+    expect(post("/types/move/123")).to route_to(controller: "work_package_types/types",
+                                                action: "move",
+                                                id: "123")
   end
 end

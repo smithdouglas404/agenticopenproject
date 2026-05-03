@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,24 +30,18 @@
 
 module IconsHelper
   ##
-  # Create an <i> tag with the given icon class names
+  # Create a <i> tag with the given icon class names
   # and make it aria-hidden since screenreaders otherwise
   # output the css `content` of the icon.
   def op_icon(classnames, title: nil)
-    title = "title=\"#{h(title)}\"" unless title.nil?
-    %(<i class="#{classnames}" #{title} aria-hidden="true"></i>).html_safe
-  end
-
-  def spot_icon(icon_name, title: nil)
-    classnames = "spot-icon spot-icon_#{icon_name}"
-    content_tag(:span, title, class: classnames.to_s)
+    content_tag(:i, nil, class: classnames, title:, "aria-hidden": true)
   end
 
   ##
   # Icon wrapper with an invisible label
   def icon_wrapper(icon_class, label)
     content = op_icon(icon_class)
-    content << content_tag(:span, label, class: 'hidden-for-sighted')
+    content << content_tag(:span, label, class: "sr-only")
     content
   end
 end

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +36,7 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
+*.log
 npm-debug.log*
 /tmp
 *.swp
@@ -64,7 +64,7 @@ npm-debug.log*
 # Generated files
 /app/assets/javascripts/editor/*
 /app/assets/javascripts/locales/*.*
-/frontend/src/locales/*.js
+/frontend/src/locales/*
 /modules/*/frontend/module/module
 /config/additional_environment.rb
 /config/configuration.yml
@@ -95,6 +95,7 @@ npm-debug.log*
 /.rvmrc*
 /.ruby-gemset
 /.foreman
+/.overmind.env
 .DS_Store
 *.icloud
 .rspec
@@ -110,16 +111,11 @@ npm-debug.log*
 /frontend/npm-debug.log*
 /frontend/dist/
 /frontend/tests/*.gif
-/frontend/storybook-static
 node_modules/
 
-# Storybook data
-/frontend/documentation.json
-
 # Ignore global package-lock.json that generates
-/package-lock.json
 plaintext.yml
-structure.sql
+db/*.sql
 
 # Local development
 # used by dotenv
@@ -133,6 +129,21 @@ structure.sql
 /.envrc
 /.direnv
 
-# lefthook.yml user override
+# local user override
 lefthook-local.yml
+.rubocop-local.yml
+
+# Local AI coding agent instruction overrides
+AGENTS.local.md
+CLAUDE.local.md
+
+/.lefthook-local/
+
 frontend/package-lock.json
+
+# Testing and nextcloud infrastructure
+acme.json
+.env.test
+
+# Generated seeders crowdin source file
+**/config/locales/en.seeders.yml

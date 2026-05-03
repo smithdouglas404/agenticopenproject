@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -39,6 +39,7 @@ import { BcfViewService } from 'core-app/features/bim/ifc_models/pages/viewer/bc
   templateUrl: './bcf-split-left.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-bcf-content-left',
+  standalone: false,
 })
 export class BcfSplitLeftComponent implements OnInit {
   showViewer$:Observable<boolean>;

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,16 +39,6 @@ module Accounts::CurrentUser
 
   protected
 
-  # The current user is a per-session kind of thing and session stuff is controller responsibility.
-  # A globally accessible User.current is a big code smell. When used incorrectly it allows getting
-  # the current user outside of a session scope, i.e. in the model layer, from mailers or
-  # in the console which doesn't make any sense. For model code that needs to be aware of the
-  # current user, i.e. when returning all visible projects for <somebody>, the controller should
-  # pass the current user to the model, instead of letting it fetch it by itself through
-  # `User.current`. This method acts as a reminder and wants to encourage you to use it.
-  # Project.visible_by actually allows the controller to pass in a user but it falls back
-  # to `User.current` and there are other places in the session-unaware codebase,
-  # that rely on `User.current`.
   def current_user
     User.current
   end
@@ -67,22 +59,55 @@ module Accounts::CurrentUser
   # Returns the current user or nil if no user is logged in
   # and starts a session if needed
   def find_current_user
-    if session[:user_id]
-      # existing session
-      User.active.find_by(id: session[:user_id])
-    elsif cookies[OpenProject::Configuration['autologin_cookie_name']] && Setting::Autologin.enabled?
-      # auto-login feature starts a new session
-      user = User.try_to_autologin(cookies[OpenProject::Configuration['autologin_cookie_name']])
-      session[:user_id] = user.id if user
-      user
-    elsif params[:format] == 'atom' && params[:key] && accept_key_auth_actions.include?(params[:action])
+    %i[
+      current_session_user
+      current_autologin_user
+      current_rss_key_user
+      current_api_key_user
+    ].each do |method|
+      user = send(method)
+      return user if user&.logged? && user&.active?
+    end
+
+    nil
+  end
+
+  def current_session_user
+    return if session[:user_id].nil?
+
+    User.active.find_by(id: session[:user_id])
+  end
+
+  def current_autologin_user
+    return unless Setting::Autologin.enabled?
+
+    autologin_cookie_name = OpenProject::Configuration["autologin_cookie_name"]
+    token = Token::AutoLogin.find_valid_token cookies[autologin_cookie_name]
+    if token.present?
+      session[:autologin_token_id] = token.id
+      login_user(token.user)
+      token.user
+    else
+      cookies.delete(autologin_cookie_name)
+      nil
+    end
+  end
+
+  def current_rss_key_user
+    if params[:format] == "atom" && params[:key] && accept_key_auth_actions.include?(action_name)
       # RSS key authentication does not start a session
       User.find_by_rss_key(params[:key])
-    elsif Setting.rest_api_enabled? && api_request?
-      if (key = api_key_from_request) && accept_key_auth_actions.include?(params[:action])
-        # Use API key
-        User.find_by_api_key(key)
-      end
+    end
+  end
+
+  def current_api_key_user
+    return unless Setting.api_tokens_enabled? && api_request?
+
+    key = api_key_from_request
+
+    if key && accept_key_auth_actions.include?(action_name)
+      # Use API key
+      User.find_by_api_key(key)
     end
   end
 
@@ -99,7 +124,7 @@ module Accounts::CurrentUser
   def logout_user
     ::Users::LogoutService
       .new(controller: self)
-      .call(current_user)
+      .call!(current_user)
   end
 
   # Redirect the user according to the logout scheme
@@ -127,8 +152,8 @@ module Accounts::CurrentUser
   # Login the current user
   def login_user(user)
     ::Users::LoginService
-      .new(controller: self, request:)
-      .call(user)
+      .new(user:, controller: self, request:)
+      .call!
   end
 
   def require_login
@@ -143,12 +168,8 @@ module Accounts::CurrentUser
           redirect_to main_app.signin_path(back_url: login_back_url)
         end
 
-        auth_header = OpenProject::Authentication::WWWAuthenticate.response_header(request_headers: request.headers)
-
-        format.any(:xml, :js, :json) do
-          head :unauthorized,
-               'X-Reason' => 'login needed',
-               'WWW-Authenticate' => auth_header
+        format.any(:xml, :js, :json, :turbo_stream) do
+          head :unauthorized, "WWW-Authenticate" => OpenProject::Authentication::WWWAuthenticate.response_header
         end
 
         format.all { head :not_acceptable }

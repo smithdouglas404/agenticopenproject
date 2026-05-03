@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,11 +33,16 @@ class Setting
     ##
     # Reload the currently configured mailer configuration
     def reload_mailer_settings!
-      ActionMailer::Base.perform_deliveries = true
       ActionMailer::Base.delivery_method = Setting.email_delivery_method if Setting.email_delivery_method
 
-      if Setting.email_delivery_method == :smtp
+      case Setting.email_delivery_method
+      when :smtp
         reload_smtp_settings!
+      when :sendmail
+        ActionMailer::Base.sendmail_settings = {
+          location: Setting.sendmail_location,
+          arguments: Setting.sendmail_arguments
+        }
       end
     rescue StandardError => e
       Rails.logger.error "Unable to set ActionMailer settings (#{e.message}). " \
@@ -70,6 +77,8 @@ class Setting
 
       ActionMailer::Base.smtp_settings[:enable_starttls_auto] = Setting.smtp_enable_starttls_auto?
       ActionMailer::Base.smtp_settings[:ssl] = Setting.smtp_ssl?
+      ActionMailer::Base.smtp_settings[:open_timeout] = Setting.smtp_timeout
+      ActionMailer::Base.smtp_settings[:read_timeout] = Setting.smtp_timeout
 
       Setting.smtp_openssl_verify_mode.tap do |mode|
         ActionMailer::Base.smtp_settings[:openssl_verify_mode] = mode unless mode.nil?

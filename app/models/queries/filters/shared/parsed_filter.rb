@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,9 +35,9 @@ module Queries::Filters::Shared::ParsedFilter
 
   def where
     case operator
-    when '='
-      value_conditions.join(' OR ')
-    when '!'
+    when "="
+      value_conditions.join(" OR ")
+    when "!"
       "NOT #{value_conditions.join(' AND NOT ')}"
     end
   end
@@ -48,11 +50,11 @@ module Queries::Filters::Shared::ParsedFilter
   private
 
   def split_values
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def value_conditions
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def validate_values

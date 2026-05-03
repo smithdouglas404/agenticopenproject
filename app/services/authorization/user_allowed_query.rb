@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -107,14 +109,14 @@ class Authorization::UserAllowedQuery < Authorization::AbstractUserQuery
 
   def self.anonymous_user_condition
     users_table[:type]
-      .eq('AnonymousUser')
+      .eq("AnonymousUser")
       .and(roles_table[:builtin].eq(Role::BUILTIN_ANONYMOUS))
   end
 
   def self.member_or_public_project_condition(id_equal)
     roles_table
       .grouping(users_table[:type]
-                .eq('User')
+                .eq("User")
                 .and(id_equal.or(no_membership_and_non_member_role_condition)))
       .or(anonymous_user_condition)
   end

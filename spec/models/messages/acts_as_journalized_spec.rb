@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Message, 'acts_as_journalized', type: :model do
+RSpec.describe Message, "acts_as_journalized" do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
   let!(:forum) do
@@ -37,10 +39,10 @@ describe Message, 'acts_as_journalized', type: :model do
   end
   let(:attachment) { create(:attachment, container: nil, author: user) }
 
-  context 'on creation' do
-    context 'attachments' do
+  context "on creation" do
+    context "attachments" do
       before do
-        Message.create! forum:, subject: 'Test message', content: 'Message body', attachments: [attachment]
+        Message.create! forum:, subject: "Test message", content: "Message body", attachments: [attachment]
       end
 
       let(:attachment_id) { "attachments_#{attachment.id}" }

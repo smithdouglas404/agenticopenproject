@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,22 +33,18 @@ class UserMailer < ApplicationMailer
 
   helper_method :message_url
 
-  def test_mail(user)
-    @welcome_url = url_for(controller: '/homescreen')
+  def test_mail(user, delivery_method_options: {})
+    @welcome_url = url_for(controller: "/homescreen")
 
-    open_project_headers 'Type' => 'Test'
+    open_project_headers "Type" => "Test"
 
-    send_mail(user,
-              'OpenProject Test')
+    send_localized_mail(user, delivery_method_options:) { "#{Setting.app_title} Test" }
   end
 
   def backup_ready(user)
-    User.execute_as user do
-      @download_url = admin_backups_url
+    @download_url = admin_backups_url
 
-      send_mail(user,
-                I18n.t("mail_subject_backup_ready"))
-    end
+    send_localized_mail(user) { I18n.t(:mail_subject_backup_ready) }
   end
 
   def backup_token_reset(recipient, user:, waiting_period: OpenProject::Configuration.backup_initial_waiting_period)
@@ -54,39 +52,46 @@ class UserMailer < ApplicationMailer
     @user_login = user.login
     @waiting_period = waiting_period
 
-    User.execute_as recipient do
-      send_mail(recipient,
-                I18n.t("mail_subject_backup_token_reset"))
-    end
+    send_localized_mail(recipient) { I18n.t(:mail_subject_backup_token_reset) }
   end
 
   def password_lost(token)
     return unless token.user # token's can have no user
 
     @token = token
-    @reset_password_url = url_for(controller: '/account',
+    @reset_password_url = url_for(controller: "/account",
                                   action: :lost_password,
                                   token: @token.value)
 
-    open_project_headers 'Type' => 'Account'
+    open_project_headers "Type" => "Account"
 
-    send_mail(token.user,
-              t(:mail_subject_lost_password, value: Setting.app_title))
+    send_localized_mail(token.user) { I18n.t(:mail_subject_lost_password, value: Setting.app_title) }
+  end
+
+  def password_change_not_possible(user)
+    @user = user
+    @provider =
+      if user.ldap_auth_source
+        user.ldap_auth_source.name
+      else
+        user.human_authentication_provider
+      end
+    open_project_headers "Type" => "Account"
+
+    send_localized_mail(user) { I18n.t("mail_password_change_not_possible.title") }
   end
 
   def news_added(user, news)
     @news = news
 
-    open_project_headers 'Type'    => 'News'
-    open_project_headers 'Project' => @news.project.identifier if @news.project
+    open_project_headers "Type" => "News"
+    open_project_headers "Project" => @news.project.identifier if @news.project
 
     message_id @news, user
     references @news
 
-    subject = "#{News.model_name.human}: #{@news.title}"
-    subject = "[#{@news.project.name}] #{subject}" if @news.project
-
-    send_mail(user, subject)
+    project = @news.project ? "#{@news.project.name}] " : ""
+    send_localized_mail(user) { "#{project}#{News.model_name.human}: #{@news.title}" }
   end
 
   def user_signed_up(token)
@@ -94,54 +99,57 @@ class UserMailer < ApplicationMailer
 
     @user = token.user
     @token = token
-    @activation_url = url_for(controller: '/account',
+    @activation_url = url_for(controller: "/account",
                               action: :activate,
                               token: @token.value)
 
-    open_project_headers 'Type' => 'Account'
+    open_project_headers "Type" => "Account"
 
-    send_mail(token.user,
-              t(:mail_subject_register, value: Setting.app_title))
+    send_localized_mail(token.user) { I18n.t(:mail_subject_register, value: Setting.app_title) }
   end
 
   def news_comment_added(user, comment)
     @comment = comment
-    @news    = @comment.commented
+    @news = @comment.commented
 
-    open_project_headers 'Project' => @news.project.identifier if @news.project
+    open_project_headers "Project" => @news.project.identifier if @news.project
 
     message_id @comment, user
     references @news, @comment
 
     subject = "#{News.model_name.human}: #{@news.title}"
-    subject = "Re: [#{@news.project.name}] #{subject}" if @news.project
 
-    send_mail(user, subject)
+    project = @news.project ? "#{@news.project.name}] " : ""
+    send_localized_mail(user) do
+      "Re: #{project}#{subject}"
+    end
   end
 
-  def wiki_content_added(user, wiki_content)
-    @wiki_content = wiki_content
+  def wiki_page_added(user, wiki_page)
+    @wiki_page = wiki_page
 
-    open_project_wiki_headers @wiki_content
-    message_id @wiki_content, user
+    open_project_wiki_headers @wiki_page
+    message_id @wiki_page, user
 
-    send_mail(user,
-              "[#{@wiki_content.project.name}] #{t(:mail_subject_wiki_content_added, id: @wiki_content.page.title)}")
+    send_localized_mail(user) do
+      "[#{@wiki_page.project.name}] #{t(:mail_subject_wiki_content_added, id: @wiki_page.title)}"
+    end
   end
 
-  def wiki_content_updated(user, wiki_content)
-    @wiki_content  = wiki_content
-    @wiki_diff_url = url_for(controller: '/wiki',
+  def wiki_page_updated(user, wiki_page)
+    @wiki_page = wiki_page
+    @wiki_diff_url = url_for(controller: "/wiki",
                              action: :diff,
-                             project_id: wiki_content.project,
-                             id: wiki_content.page.slug,
-                             version: wiki_content.version)
+                             project_id: wiki_page.project,
+                             id: wiki_page.slug,
+                             version: wiki_page.version)
 
-    open_project_wiki_headers @wiki_content
-    message_id @wiki_content, user
+    open_project_wiki_headers @wiki_page
+    message_id @wiki_page, user
 
-    send_mail(user,
-              "[#{@wiki_content.project.name}] #{t(:mail_subject_wiki_content_updated, id: @wiki_content.page.title)}")
+    send_localized_mail(user) do
+      "[#{@wiki_page.project.name}] #{t(:mail_subject_wiki_content_updated, id: @wiki_page.title)}"
+    end
   end
 
   def message_posted(user, message)
@@ -151,66 +159,38 @@ class UserMailer < ApplicationMailer
     message_id @message, user
     references *[@message.parent, @message].compact
 
-    send_mail(user,
-              "[#{@message.forum.project.name} - #{@message.forum.name} - msg#{@message.root.id}] #{@message.subject}")
+    send_localized_mail(user) do
+      "[#{@message.forum.project.name} - #{@message.forum.name} - msg#{@message.root.id}] #{@message.subject}"
+    end
   end
 
   def account_activated(user)
     @user = user
 
-    open_project_headers 'Type' => 'Account'
+    open_project_headers "Type" => "Account"
 
-    send_mail(user,
-              t(:mail_subject_register, value: Setting.app_title))
+    send_localized_mail(user) { t(:mail_subject_register, value: Setting.app_title) }
   end
 
   def account_information(user, password)
-    @user     = user
+    @user = user
     @password = password
 
-    open_project_headers 'Type' => 'Account'
+    open_project_headers "Type" => "Account"
 
-    send_mail(user,
-              t(:mail_subject_register, value: Setting.app_title))
+    send_localized_mail(user) { t(:mail_subject_register, value: Setting.app_title) }
   end
 
   def account_activation_requested(admin, user)
-    @user           = user
-    @activation_url = url_for(controller: '/users',
+    @user = user
+    @activation_url = url_for(controller: "/users",
                               action: :index,
-                              status: 'registered',
-                              sort: 'created_at:desc')
+                              status: "registered",
+                              sort: "created_at:desc")
 
-    open_project_headers 'Type' => 'Account'
+    open_project_headers "Type" => "Account"
 
-    send_mail(admin,
-              t(:mail_subject_account_activation_request, value: Setting.app_title))
-  end
-
-  def reminder_mail(user, issues, days, group = nil)
-    @issues = issues
-    @days   = days
-    @group  = group
-
-    assigned_to_id = if group
-                       group.id
-                     else
-                       user.id
-                     end
-
-    @assigned_issues_url = url_for(controller: :work_packages,
-                                   action: :index,
-                                   query_props: '{"t":"dueDate:asc","f":[{"n":"status","o":"o","v":[]},{"n":"assignee","o":"=","v":["' + assigned_to_id.to_s + '"]},{"n":"dueDate","o":"<t+","v":["2"]}]}')
-
-    open_project_headers 'Type' => 'Issue'
-
-    subject = if @group
-                t(:mail_subject_group_reminder, count: @issues.size, days: @days, group: @group.name)
-              else
-                t(:mail_subject_reminder, count: @issues.size, days: @days)
-              end
-
-    send_mail(user, subject)
+    send_localized_mail(admin) { t(:mail_subject_account_activation_request, value: Setting.app_title) }
   end
 
   ##
@@ -221,7 +201,7 @@ class UserMailer < ApplicationMailer
   def activation_limit_reached(user_email, admin)
     @email = user_email
 
-    send_mail(admin, t("mail_user_activation_limit_reached.subject"))
+    send_localized_mail(admin) { t("mail_user_activation_limit_reached.subject") }
   end
 
   ##
@@ -239,23 +219,25 @@ class UserMailer < ApplicationMailer
     @incoming_text = mail[:text]
     @quote = mail[:quote]
 
-    headers['References'] = ["<#{mail[:message_id]}>"]
-    headers['In-Reply-To'] = ["<#{mail[:message_id]}>"]
+    headers["References"] = ["<#{mail[:message_id]}>"]
+    headers["In-Reply-To"] = ["<#{mail[:message_id]}>"]
 
-    send_mail user, mail[:subject].present? ? "Re: #{mail[:subject]}" : I18n.t("mail_subject_incoming_email_error")
+    send_localized_mail(user) do
+      mail[:subject].present? ? "Re: #{mail[:subject]}" : I18n.t("mail_subject_incoming_email_error")
+    end
   end
 
   private
 
-  def open_project_wiki_headers(wiki_content)
-    open_project_headers 'Project' => wiki_content.project.identifier,
-                         'Wiki-Page-Id' => wiki_content.page.id,
-                         'Type' => 'Wiki'
+  def open_project_wiki_headers(wiki_page)
+    open_project_headers "Project" => wiki_page.project.identifier,
+                         "Wiki-Page-Id" => wiki_page.id,
+                         "Type" => "Wiki"
   end
 
   def open_project_message_headers(message)
-    open_project_headers 'Project' => message.project.identifier,
-                         'Message-Id' => message.parent_id || message.id,
-                         'Type' => 'Forum'
+    open_project_headers "Project" => message.project.identifier,
+                         "Message-Id" => message.parent_id || message.id,
+                         "Type" => "Forum"
   end
 end

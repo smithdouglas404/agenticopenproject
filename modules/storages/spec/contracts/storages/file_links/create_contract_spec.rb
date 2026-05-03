@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,21 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 require_module_spec_helper
-require 'contracts/shared/model_contract_shared_context'
-require_relative 'shared_contract_examples'
+require_relative "shared_contract_examples"
 
-describe Storages::FileLinks::CreateContract do
-  include_context 'ModelContract shared context'
-
-  it_behaves_like 'file_link contract' do
+RSpec.describe Storages::FileLinks::CreateContract do
+  it_behaves_like "file_link contract" do
     let(:contract) { described_class.new(file_link, current_user) }
 
-    context 'when creator is not the current user' do
+    context "when creator is not the current user" do
       let(:file_link_creator) { build_stubbed(:user) }
 
-      include_examples 'contract is invalid', creator: :invalid
+      include_examples "contract is invalid", creator: :invalid
+    end
+
+    context "with one drive storage and missing ee token", with_ee: false do
+      let(:storage) { create(:one_drive_storage) }
+
+      include_examples "contract is invalid", base: I18n.t("api_v3.errors.code_500_missing_enterprise_token")
+    end
+
+    context "with one drive storage and valid ee token", with_ee: %i[one_drive_sharepoint_file_storage] do
+      let(:storage) { create(:one_drive_storage) }
+
+      include_examples "contract is valid"
     end
   end
 end

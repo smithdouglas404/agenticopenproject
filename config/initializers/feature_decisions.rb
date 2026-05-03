@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # --copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-require_relative '../../lib_static/open_project/feature_decisions'
+require_relative "../../lib_static/open_project/feature_decisions"
 
 # Add feature flags here via e.g.
 #
@@ -38,3 +40,37 @@ require_relative '../../lib_static/open_project/feature_decisions'
 #   initializer 'the_engine.feature_decisions' do
 #     OpenProject::FeatureDecisions.add :some_flag
 #   end
+
+OpenProject::FeatureDecisions.add :built_in_oauth_applications,
+                                  description: "Allows the display and use of built-in OAuth applications.",
+                                  force_active: true
+
+OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
+                                  description: "Allows the use of calculated values as a project attribute.",
+                                  force_active: true
+
+OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
+                                  description: "Allow exporting a meeting with FITKO styling. " \
+                                               "See #65124 for details."
+
+OpenProject::FeatureDecisions.add :portfolio_models,
+                                  description: "Enables the creation and management of portfolio and program work spaces.",
+                                  force_active: true
+
+OpenProject::FeatureDecisions.add :user_working_times,
+                                  description: "Enables tracking of user working hours and non-working days."
+
+OpenProject::FeatureDecisions.add :wiki_enhancements,
+                                  description: "Enables Wiki enhancements, such as the Wikis tab and XWiki integration."
+
+OpenProject::FeatureDecisions.add :departments,
+                                  description: "Enables the management of departments within the organization."
+
+OpenProject::FeatureDecisions.add :semantic_work_package_ids,
+                                  description: "Enables the use of semantic work package IDs, " \
+                                               "in the schema <project identifier>-<sequence number>. " \
+                                               "See #41855 for details."
+
+OpenProject::FeatureDecisions.add :backlog_buckets,
+                                  description: "Enables backlog buckets.",
+                                  force_active: true

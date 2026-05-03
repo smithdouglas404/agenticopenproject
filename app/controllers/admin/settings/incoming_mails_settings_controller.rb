@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,14 +32,6 @@ module Admin::Settings
   class IncomingMailsSettingsController < ::Admin::SettingsController
     current_menu_item [:show] do
       :incoming_mails
-    end
-
-    def default_breadcrumb
-      t(:label_incoming_emails)
-    end
-
-    def show_local_breadcrumb
-      true
     end
   end
 end

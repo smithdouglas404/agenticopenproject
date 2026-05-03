@@ -3,16 +3,19 @@ import { ChangeDetectorRef, Component, DebugElement, Input } from '@angular/core
 import { OpIconComponent } from "core-app/shared/components/icon/icon.component";
 import { GitActionsMenuDirective } from "core-app/features/plugins/linked/openproject-github_integration/git-actions-menu/git-actions-menu.directive";
 import { TabPrsComponent } from "core-app/features/plugins/linked/openproject-github_integration/tab-prs/tab-prs.component";
-import { HalResourceService } from "core-app/features/hal/services/hal-resource.service";
+import { GithubPullRequestResourceService } from '../state/github-pull-request.service';
 import { ApiV3Service } from "core-app/core/apiv3/api-v3.service";
 import { of } from "rxjs";
 import { PullRequestComponent } from "core-app/features/plugins/linked/openproject-github_integration/pull-request/pull-request.component";
 import { By } from "@angular/platform-browser";
 import { I18nService } from "core-app/core/i18n/i18n.service";
+import { IGithubPullRequest } from '../state/github-pull-request.model';
+import { PullRequestStateComponent } from '../pull-request/pull-request-state.component';
 
 @Component({
   selector: 'op-date-time',
-  template: '<p>OpDateTimeComponent </p>'
+  template: '<p>OpDateTimeComponent </p>',
+  standalone: false,
 })
 class OpDateTimeComponent {
   @Input()
@@ -23,7 +26,7 @@ describe('TabPrsComponent', () => {
   let component:TabPrsComponent;
   let fixture:ComponentFixture<TabPrsComponent>;
   let element:DebugElement;
-  let halResourceService: jasmine.SpyObj<HalResourceService>;
+  let githubPullRequestResourceServiceSpy:jasmine.SpyObj<GithubPullRequestResourceService>;
   let changeDetectorRef: jasmine.SpyObj<ChangeDetectorRef>;
   const I18nServiceStub = {
     t: function(key:string) {
@@ -35,56 +38,95 @@ describe('TabPrsComponent', () => {
       id: () => ({github_pull_requests: 'prpath'})
     }
   }
-  const pullRequests = {
-    elements: [
-      {
-        title: 'title 1',
+
+  const pullRequests:IGithubPullRequest[] = [
+    {
+      id: 1,
+      title: 'title 1',
+      githubUpdatedAt: 'githubUser 1 githubUpdatedAt',
+      htmlUrl: 'githubUser 1 htmlUrl',
+      repository: 'githubUser 1 repository',
+      repositoryHtmlUrl: 'githubUser 2 repositoryHtmlUrl',
+      number: 1,
+      _links: {
+        githubUser: {
+          href: 'githubUser 1 api url',
+          title: 'gitHubUser 1 title'
+        },
+        self: {
+          href: 'this href',
+          title: 'this title'
+        }
+      },
+      _embedded: {
         githubUser: {
           avatarUrl: 'githubUser 1 avatarUrl',
           htmlUrl: 'githubUser 1 htmlUrl',
           login: 'githubUser 1 login',
         },
-        githubUpdatedAt: 'githubUser 1 githubUpdatedAt',
-        repository: 'githubUser 1 repository',
-        number: 'githubUser 1 number',
         checkRuns: [
           {
-            name: 'githubUser 1 checkRun',
-            outputTitle: 'githubUser 1 outputTitle',
-            conclusion: 'githubUser 1 conclusion',
-            status: 'githubUser 1 status',
-            detailsUrl: 'githubUser 1 detailsUrl',
+            appOwnerAvatarUrl: 'githubUser 1 checkRuns appOwnerAvatarUrl',
+            completedAt: 'githubUser 1 checkRuns completedAt',
+            conclusion: 'githubUser 1 checkRuns conclusion',
+            detailsUrl: 'githubUser 1 checkRuns detailsurl',
+            htmlUrl: 'githubUser 1 checkRuns htmlUrl',
+            name: 'githubUser 1 checkRuns name',
+            outputSummary: 'githubUser 1 checkRuns outputSummary',
+            outputTitle: 'githubUser 1 checkRuns outputTitle',
+            startedAt: 'githubUser 1 checkRuns startedAt',
+            status: 'githubUser 1 checkRuns status',
           }
         ],
+      }
+    },
+    {
+      id: 2,
+      title: 'title 2',
+      githubUpdatedAt: 'githubUser 2 githubUpdatedAt',
+      htmlUrl: 'githubUser 2 htmlUrl',
+      repository: 'githubUser 2 repository',
+      repositoryHtmlUrl: 'githubUser 2 repositoryHtmlUrl',
+      number: 2,
+      _links: {
+        githubUser: {
+          href: 'githubUser 2 api url',
+          title: 'gitHubUser 2 title'
+        },
+        self: {
+          href: 'this href',
+          title: 'this title'
+        }
       },
-      {
-        title: 'title 2',
+      _embedded: {
         githubUser: {
           avatarUrl: 'githubUser 2 avatarUrl',
           htmlUrl: 'githubUser 2 htmlUrl',
           login: 'githubUser 2 login',
         },
-        githubUpdatedAt: 'githubUser 2 githubUpdatedAt',
-        repository: 'githubUser 2 repository',
-        number: 'githubUser 2 number',
         checkRuns: [
           {
-            name: 'githubUser 2 checkRun',
-            outputTitle: 'githubUser 2 outputTitle',
-            conclusion: 'githubUser 2 conclusion',
-            status: 'githubUser 2 status',
-            detailsUrl: 'githubUser 2 detailsUrl',
+            appOwnerAvatarUrl: 'githubUser 2 checkRuns appOwnerAvatarUrl',
+            completedAt: 'githubUser 2 checkRuns completedAt',
+            conclusion: 'githubUser 2 checkRuns conclusion',
+            detailsUrl: 'githubUser 2 checkRuns detailsurl',
+            htmlUrl: 'githubUser 2 checkRuns htmlUrl',
+            name: 'githubUser 2 checkRuns name',
+            outputSummary: 'githubUser 2 checkRuns outputSummary',
+            outputTitle: 'githubUser 2 checkRuns outputTitle',
+            startedAt: 'githubUser 2 checkRuns startedAt',
+            status: 'githubUser 2 checkRuns status',
           }
         ],
       }
-    ]
-  }
+    }
+  ];
 
   beforeEach(async () => {
-    const halResourceServiceSpy = jasmine.createSpyObj('HalResourceService', ['get']);
     const changeDetectorSpy = jasmine.createSpyObj('ChangeDetectorRef', ['detectChanges']);
+    githubPullRequestResourceServiceSpy = jasmine.createSpyObj('GithubPullRequestResourceService', ['ofWorkPackage']);
     // @ts-ignore
-    halResourceServiceSpy.get.and.returnValue(of(pullRequests));
+    githubPullRequestResourceServiceSpy.ofWorkPackage.and.returnValue(of(pullRequests));
 
     await TestBed
       .configureTestingModule({
@@ -93,13 +135,14 @@ describe('TabPrsComponent', () => {
           OpIconComponent,
           GitActionsMenuDirective,
           PullRequestComponent,
+          PullRequestStateComponent,
           OpDateTimeComponent,
         ],
         providers: [
           { provide: I18nService, useValue: I18nServiceStub },
-          { provide: HalResourceService, useValue: halResourceServiceSpy },
           { provide: ApiV3Service, useValue: ApiV3Stub },
           { provide: ChangeDetectorRef, useValue: changeDetectorSpy },
+          { provide: GithubPullRequestResourceService, useValue: githubPullRequestResourceServiceSpy },
         ],
       })
       .compileComponents();
@@ -109,11 +152,11 @@ describe('TabPrsComponent', () => {
     fixture = TestBed.createComponent(TabPrsComponent);
     component = fixture.componentInstance;
     element = fixture.debugElement;
-    halResourceService = fixture.debugElement.injector.get(HalResourceService) as jasmine.SpyObj<HalResourceService>;
     changeDetectorRef = fixture.debugElement.injector.get(ChangeDetectorRef) as jasmine.SpyObj<ChangeDetectorRef>;
     // @ts-ignore
     component.workPackage = { id: 'testId' };
 
+    changeDetectorRef.markForCheck();
     fixture.detectChanges();
   });
 
@@ -122,15 +165,17 @@ describe('TabPrsComponent', () => {
   });
 
   it('should display a PullRequestComponent per pull request', () => {
-    const pullRequests = fixture.debugElement.queryAll(By.css('github-pull-request'));
+    const pullRequests = fixture.debugElement.queryAll(By.css('op-github-pull-request'));
 
     expect(pullRequests.length).toBe(2);
   });
 
   it('should display a message when there are no pull requests', () => {
-    component.pullRequests = [];
+    component.pullRequests$ = of([]);
+    changeDetectorRef.markForCheck();
     fixture.detectChanges();
-    const pullRequests = fixture.debugElement.queryAll(By.css('github-pull-request'));
+
+    const pullRequests = fixture.debugElement.queryAll(By.css('op-github-pull-request'));
     const textMessage = fixture.debugElement.queryAll(By.css('p'));
 
     expect(pullRequests.length).toBe(0);

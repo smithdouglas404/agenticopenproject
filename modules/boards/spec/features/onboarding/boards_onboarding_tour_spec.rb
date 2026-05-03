@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './../support/onboarding_steps'
+require "spec_helper"
+require_relative "../support/onboarding_steps"
 
-describe 'boards onboarding tour', js: true do
-  let(:next_button) { find('.enjoyhint_next_btn') }
+# We decrease the notification polling interval because some portions of the JS code rely on something triggering
+# the Angular change detection. This is usually done by the notification polling, but we don't want to wait
+RSpec.describe "boards onboarding tour",
+               :js,
+               with_settings: { notifications_polling_interval: 1_000 } do
+  let(:next_button) { find(".enjoyhint_next_btn") }
   let(:user) do
-    create :admin,
-           member_in_project: demo_project,
-           member_through_role: role
+    create(:admin,
+           member_with_roles: { demo_project => role })
   end
   let(:permissions) do
     %i[
@@ -46,35 +51,24 @@ describe 'boards onboarding tour', js: true do
       manage_public_queries
     ]
   end
-  let(:role) { create(:role, permissions:) }
+  let(:role) { create(:project_role, permissions:) }
 
   let(:demo_project) do
-    create :project,
-           name: 'Demo project',
-           identifier: 'demo-project',
+    create(:project,
+           name: "Demo project",
+           identifier: "demo-project",
            public: true,
-           enabled_module_names: %w[work_package_tracking wiki board_view]
+           enabled_module_names: %w[work_package_tracking gantt wiki board_view])
   end
-  let(:scrum_project) do
-    create :project,
-           name: 'Scrum project',
-           identifier: 'your-scrum-project',
-           public: true,
-           enabled_module_names: %w[work_package_tracking wiki board_view]
-  end
-  let!(:wp_1) { create(:work_package, project: demo_project) }
-  let!(:wp_2) { create(:work_package, project: scrum_project) }
+  let!(:wp1) { create(:work_package, project: demo_project) }
 
-  let!(:demo_board_view) { create :board_grid_with_query, project: demo_project, name: 'Kanban', query: }
-  let!(:demo_basic_board_view) { create :board_grid_with_query, project: demo_project, name: 'Basic board', query: }
-  let!(:scrum_board_view) { create :board_grid_with_query, project: scrum_project, name: 'Kanban', query: }
-  let!(:scrum_basic_board_view) { create :board_grid_with_query, project: scrum_project, name: 'Task board', query: }
-  let(:query) { create :query, user:, project: demo_project }
+  let!(:demo_board_view) { create(:board_grid_with_query, project: demo_project, name: "Kanban", query:) }
+  let!(:demo_basic_board_view) { create(:board_grid_with_query, project: demo_project, name: "Basic board", query:) }
+  let(:query) { create(:query, user:, project: demo_project) }
 
   before do
-    ::OrderedWorkPackage.create(query:, work_package: wp_1, position: 0)
-    allow(Setting).to receive(:demo_projects_available).and_return(true)
-    allow(Setting).to receive(:boards_demo_data_available).and_return(true)
+    OrderedWorkPackage.create!(query:, work_package: wp1, position: 0)
+    allow(Setting).to receive_messages(demo_projects_available: true, boards_demo_data_available: true)
   end
 
   after do
@@ -82,68 +76,20 @@ describe 'boards onboarding tour', js: true do
     page.execute_script("window.sessionStorage.clear();")
   end
 
-  context 'as a new user' do
-    context 'with an EE token' do
-      before do
-        with_enterprise_token :board_view
-        login_as user
-      end
-
-      it 'I see the board onboarding tour in the demo project' do
-        # Set the tour parameter so that we can start on the wp page
-        visit "/projects/#{demo_project.identifier}/work_packages?start_onboarding_tour=true"
-
-        step_through_onboarding_wp_tour demo_project, wp_1
-
-        step_through_onboarding_board_tour
-
-        step_through_onboarding_main_menu_tour has_full_capabilities: true
-      end
-
-      it "I see the board onboarding tour in the scrum project" do
-        # Set sessionStorage value so that the tour knows that it is in the scum tour
-        page.execute_script("window.sessionStorage.setItem('openProject-onboardingTour', 'startMainTourFromBacklogs');")
-
-        # Set the tour parameter so that we can start on the wp page
-        visit "/projects/#{scrum_project.identifier}/work_packages?start_onboarding_tour=true"
-
-        step_through_onboarding_wp_tour scrum_project, wp_2
-
-        step_through_onboarding_board_tour
-
-        step_through_onboarding_main_menu_tour has_full_capabilities: true
-      end
+  context "as a new user" do
+    before do
+      login_as user
     end
 
-    context 'without an EE token' do
-      before do
-        login_as user
-      end
+    it "I see the board onboarding tour in the demo project" do
+      # Set the tour parameter so that we can start on the wp page
+      visit "/projects/#{demo_project.identifier}/work_packages?start_onboarding_tour=true"
 
-      it 'I see the board onboarding tour in the demo project' do
-        # Set the tour parameter so that we can start on the wp page
-        visit "/projects/#{demo_project.identifier}/work_packages?start_onboarding_tour=true"
+      step_through_onboarding_wp_tour demo_project, wp1
 
-        step_through_onboarding_wp_tour demo_project, wp_1
+      step_through_onboarding_board_tour
 
-        step_through_onboarding_board_tour with_ee_token: false
-
-        step_through_onboarding_main_menu_tour has_full_capabilities: true
-      end
-
-      it "I see the board onboarding tour in the scrum project" do
-        # Set sessionStorage value so that the tour knows that it is in the scum tour
-        page.execute_script("window.sessionStorage.setItem('openProject-onboardingTour', 'startMainTourFromBacklogs');")
-
-        # Set the tour parameter so that we can start on the wp page
-        visit "/projects/#{scrum_project.identifier}/work_packages?start_onboarding_tour=true"
-
-        step_through_onboarding_wp_tour scrum_project, wp_2
-
-        step_through_onboarding_board_tour with_ee_token: false
-
-        step_through_onboarding_main_menu_tour has_full_capabilities: true
-      end
+      step_through_onboarding_main_menu_tour has_full_capabilities: true
     end
   end
 end

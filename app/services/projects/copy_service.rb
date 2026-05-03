@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,9 +43,25 @@ module Projects
         ::Projects::Copy::QueriesDependentService,
         ::Projects::Copy::BoardsDependentService,
         ::Projects::Copy::OverviewDependentService,
-        ::Projects::Copy::StoragesDependentService,
-        ::Projects::Copy::FileLinksDependentService
+        ::Projects::Copy::PhasesDependentService,
+        ::Projects::Copy::StoragesDependentService
       ]
+    end
+
+    # Project Folders and File Links aren't dependent services anymore,
+    #  so we need to amend the services for the form Representer
+    def self.copyable_dependencies
+      super + [{ identifier: "storage_project_folders",
+                 name_source: -> { I18n.t(:label_project_storage_project_folder) },
+                 count_source: ->(source, _) { source.storages.count } },
+
+               { identifier: "file_links",
+                 name_source: -> { I18n.t("projects.copy.work_package_file_links") },
+                 count_source: ->(source, _) { source.work_packages.joins(:file_links).count("file_links.id") } }]
+    end
+
+    def initialize(contract_options: {}, **)
+      super(contract_options: contract_options.reverse_merge(validate_model: true), **)
     end
 
     protected
@@ -62,16 +80,18 @@ module Projects
         types: source_types,
         work_package_custom_fields: source_custom_fields,
 
-        # Copy status object
-        status: source_status
+        # clear PIR settings
+        project_creation_wizard_artifact_work_package_id: nil
       )
+
+      clean_settings_attributes!(attributes[:settings])
 
       only_allowed_parent_id(attributes)
         .merge(source_custom_field_attributes)
         .merge(target_project_params)
     end
 
-    def before_perform(params, service_call)
+    def before_perform(service_call)
       super.tap do |super_call|
         # Retain values after the set attributes service
         retain_attributes(source, super_call.result)
@@ -82,8 +102,20 @@ module Projects
       end
     end
 
-    def contract_options
-      { copy_source: source, validate_model: true }
+    def after_perform(call)
+      super.tap do |super_call|
+        copy_activated_custom_fields(super_call)
+        update_calculated_value_custom_fields(super_call.result)
+      end
+    end
+
+    def clean_settings_attributes!(settings)
+      # We want to remove the PIR work package as that should be reset on copy
+      settings.delete("project_creation_wizard_artifact_work_package_id")
+    end
+
+    def copy_activated_custom_fields(call)
+      call.result.project_custom_field_ids = source.project_custom_field_ids
     end
 
     def retain_attributes(source, target)
@@ -130,10 +162,26 @@ module Projects
 
     def only_allowed_parent_id(attributes)
       if (parent_id = attributes[:parent_id]) && (parent = Project.find_by(id: parent_id)) &&
-        !user.allowed_to?(:add_subprojects, parent)
+        !user.allowed_in_project?(:add_subprojects, parent)
         attributes.except(:parent_id)
       else
         attributes
+      end
+    end
+
+    private
+
+    def build_missing_project_custom_field_project_mappings(project)
+      # Build mappings using the concern's logic
+      super
+
+      # Copy creation_wizard flag from source project's mappings to the newly built mappings
+      source_mappings_by_custom_field_id = source.project_custom_field_project_mappings
+        .index_by(&:custom_field_id)
+
+      project.project_custom_field_project_mappings.each do |mapping|
+        source_mapping = source_mappings_by_custom_field_id[mapping.custom_field_id]
+        mapping.creation_wizard = source_mapping.creation_wizard if source_mapping
       end
     end
   end

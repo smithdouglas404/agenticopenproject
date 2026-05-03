@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,29 +38,5 @@ module API
         api.apply_patches(nil)
       end
     end
-  end
-end
-
-Grape::DSL::Routing::ClassMethods.module_eval do
-  # Be reload safe. otherwise, an infinite loop occurs on reload.
-  unless instance_methods.include?(:orig_namespace)
-    alias :orig_namespace :namespace
-  end
-
-  def namespace(space = nil, options = {}, &)
-    orig_namespace(space, options) do
-      instance_eval(&)
-      apply_patches(space)
-    end
-  end
-
-  def apply_patches(path)
-    (patches[path] || []).each do |patch|
-      instance_eval(&patch)
-    end
-  end
-
-  def patches
-    ::Constants::APIPatchRegistry.patches_for(base)
   end
 end

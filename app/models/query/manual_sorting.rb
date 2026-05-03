@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,11 +36,11 @@ module Query::ManualSorting
              -> { order(position: :asc) }
 
     def manually_sorted?
-      sort_criteria_columns.any? { |clz, _| clz.is_a?(::Queries::WorkPackages::Columns::ManualSortingColumn) }
+      sort_criteria_columns.any? { |clz, _| clz.is_a?(::Queries::WorkPackages::Selects::ManualSortingSelect) }
     end
 
     def self.manual_sorting_column
-      ::Queries::WorkPackages::Columns::ManualSortingColumn.new
+      ::Queries::WorkPackages::Selects::ManualSortingSelect.new
     end
     delegate :manual_sorting_column, to: :class
   end

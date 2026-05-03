@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,11 +30,11 @@
 
 class Comment < ApplicationRecord
   belongs_to :commented, polymorphic: true, counter_cache: true
-  belongs_to :author, class_name: 'User'
+  belongs_to :author, class_name: "User"
 
   validates :commented, :author, :comments, presence: true
 
-  after_create :send_news_comment_added_mail
+  after_create :send_comment_added_event
 
   def text
     comments
@@ -43,6 +45,10 @@ class Comment < ApplicationRecord
   end
 
   private
+
+  def send_comment_added_event
+    send_news_comment_added_mail if commented_type == News.name
+  end
 
   def send_news_comment_added_mail
     OpenProject::Notifications.send(OpenProject::Events::NEWS_COMMENT_CREATED,

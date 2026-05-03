@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,22 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-def assert_valid_ee_action(action, example)
-  valid_ee_actions = Authorization::EnterpriseService::GUARDED_ACTIONS
-  return if valid_ee_actions.include?(action)
-
-  spell_checker = DidYouMean::SpellChecker.new(dictionary: valid_ee_actions)
-  suggestions = spell_checker.correct(action).map(&:inspect).join(' ')
-  did_you_mean = " Did you mean #{suggestions} instead?" if suggestions.present?
-
-  raise "Invalid Enterprise action #{action.inspect} at #{example.location}.#{did_you_mean}"
-end
-
 def ee_actions(example)
   return [] unless example.respond_to?(:metadata) && example.metadata[:with_ee]
 
-  actions = example.metadata[:with_ee]
-  actions.each { |action| assert_valid_ee_action(action, example) }
+  Array(example.metadata[:with_ee])
 end
 
 def aggregate_parent_array(example, acc)
@@ -57,19 +47,26 @@ end
 RSpec.configure do |config|
   config.before do |example|
     allowed = ee_actions(example)
-    if allowed.present?
+    if allowed.present? || example.metadata[:with_ee_trial]
       allowed = aggregate_parent_array(example, allowed.to_set)
 
-      allow(EnterpriseToken).to receive(:allows_to?).and_call_original
-      allowed.each do |k|
-        allow(EnterpriseToken)
-          .to receive(:allows_to?)
-          .with(k)
-          .and_return true
+      # partial double of OpenProject::Token with available features
+      token_object = OpenProject::Token.new
+      allow(token_object).to receive_messages(available_features: allowed.to_a,
+                                              trial?: !!example.metadata[:with_ee_trial])
+
+      # partial double of EnterpriseToken returning the partial double of token object
+      enterprise_token = EnterpriseToken.new
+      allow(enterprise_token).to receive_messages(token_object:)
+
+      # To ensure tests don't trip up on the trial teaser banner
+      if example.metadata[:with_ee_trial]
+        allow(enterprise_token).to receive(:days_left).and_return(42)
       end
 
-      # Also disable banners to signal the frontend we're on EE
-      allow(EnterpriseToken).to receive(:show_banners?).and_return(allowed.empty?)
+      # EnterpriseToken is mocked to return the partial double of enterprise
+      # token as active token
+      allow(EnterpriseToken).to receive(:active_tokens).and_return([enterprise_token])
     end
   end
 end

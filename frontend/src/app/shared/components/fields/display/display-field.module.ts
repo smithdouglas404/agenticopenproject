@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -37,6 +37,8 @@ export const cssClassCustomOption = 'custom-option';
 
 export class DisplayField<T extends HalResource = HalResource> extends Field {
   public static type:string;
+
+  public resource:T;
 
   public mode:string | null = null;
 
@@ -100,7 +102,12 @@ export class DisplayField<T extends HalResource = HalResource> extends Field {
   }
 
   public get placeholder():string {
-    return '-';
+    // Use the placeholder from the schema if available (set by the backend)
+    if (this.schema.placeholder) {
+      return this.schema.placeholder;
+    } else {
+      return '-';
+    }
   }
 
   public get label() {

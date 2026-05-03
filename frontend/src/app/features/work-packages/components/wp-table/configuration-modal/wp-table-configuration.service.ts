@@ -3,10 +3,12 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WpTableConfigurationDisplaySettingsTabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tabs/display-settings-tab.component';
 import { TabInterface } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tab-portal-outlet';
 import { WpTableConfigurationColumnsTabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tabs/columns-tab.component';
-import { WpTableConfigurationFiltersTab } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tabs/filters-tab.component';
+import { WpTableConfigurationFiltersTabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tabs/filters-tab.component';
 import { WpTableConfigurationSortByTabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tabs/sort-by-tab.component';
 import { WpTableConfigurationTimelinesTabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tabs/timelines-tab.component';
 import { WpTableConfigurationHighlightingTabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tabs/highlighting-tab.component';
+import { OpBaselineComponent } from 'core-app/features/work-packages/components/wp-baseline/baseline/baseline.component';
+import { StateService } from '@uirouter/angular';
 
 @Injectable()
 export class WpTableConfigurationService {
@@ -19,12 +21,17 @@ export class WpTableConfigurationService {
     {
       id: 'filters',
       name: this.I18n.t('js.work_packages.query.filters'),
-      componentClass: WpTableConfigurationFiltersTab,
+      componentClass: WpTableConfigurationFiltersTabComponent,
     },
     {
       id: 'sort-by',
       name: this.I18n.t('js.label_sort_by'),
       componentClass: WpTableConfigurationSortByTabComponent,
+    },
+    {
+      id: 'baseline',
+      name: this.I18n.t('js.baseline.toggle_title'),
+      componentClass: OpBaselineComponent,
     },
     {
       id: 'display-settings',
@@ -36,17 +43,25 @@ export class WpTableConfigurationService {
       name: this.I18n.t('js.work_packages.table_configuration.highlighting'),
       componentClass: WpTableConfigurationHighlightingTabComponent,
     },
-    {
-      id: 'timelines',
-      name: this.I18n.t('js.timelines.gantt_chart'),
-      componentClass: WpTableConfigurationTimelinesTabComponent,
-    },
   ];
 
-  constructor(readonly I18n:I18nService) {
+  constructor(
+    readonly I18n:I18nService,
+    readonly $state:StateService,
+  ) {
   }
 
   public get tabs() {
-    return this._tabs;
+    if (this.$state.current.name?.includes('work-packages') || this.$state.current.name?.includes('bim')) {
+      return this._tabs;
+    }
+
+    return this._tabs.concat([
+      {
+        id: 'timelines',
+        name: this.I18n.t('js.gantt_chart.label'),
+        componentClass: WpTableConfigurationTimelinesTabComponent,
+      },
+    ]);
   }
 }

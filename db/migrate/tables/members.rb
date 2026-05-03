@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'base'
+require_relative "base"
 
 class Tables::Members < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.integer :user_id, default: 0, null: false
-      t.integer :project_id, default: 0, null: false
-      t.datetime :created_on
-      t.boolean :mail_notification, default: false, null: false
+      t.references :user, null: false, index: { name: "index_members_on_user_id" }
+      t.references :project, default: nil, null: true, index: { name: "index_members_on_project_id" }
+      t.datetime :created_at, precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: true
+      t.datetime :updated_at, precision: nil, default: -> { "CURRENT_TIMESTAMP" }, null: false
+      t.references :entity, foreign_key: false, polymorphic: true, index: true
 
-      t.index :project_id, name: 'index_members_on_project_id'
-      t.index %i[user_id project_id], name: 'index_members_on_user_id_and_project_id', unique: true
-      t.index :user_id, name: 'index_members_on_user_id'
+      t.index %i[user_id project_id],
+              unique: true,
+              where: "entity_type IS NULL AND entity_id IS NULL",
+              name: "index_members_on_user_id_and_project_without_entity"
+
+      t.index %i[user_id project_id entity_type entity_id],
+              unique: true,
+              where: "entity_type IS NOT NULL AND entity_id IS NOT NULL",
+              name: "index_members_on_user_id_and_project_with_entity"
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,9 +39,9 @@ module Principals::Scopes
       # @desc [Boolean] Whether the sortation should be reversed
       # @return [ActiveRecord::Relation] A scope of sorted principals
       def ordered_by_name(desc: false)
-        direction = desc ? 'DESC' : 'ASC'
+        direction = desc ? "DESC" : "ASC"
 
-        order_case = Arel.sql <<~SQL
+        order_case = Arel.sql(<<~SQL.squish)
           CASE
           WHEN users.type = 'User' THEN LOWER(#{user_concat_sql})
           WHEN users.type != 'User' THEN LOWER(users.lastname)
@@ -56,8 +58,8 @@ module Principals::Scopes
         when :firstname_lastname
           "concat_ws(' ', users.firstname, users.lastname)"
         when :firstname
-          'users.firstname'
-        when :lastname_firstname, :lastname_coma_firstname, :lastname_n_firstname
+          "users.firstname"
+        when :lastname_firstname, :lastname_comma_firstname, :lastname_n_firstname
           "concat_ws(' ', users.lastname, users.firstname)"
         when :username
           "users.login"

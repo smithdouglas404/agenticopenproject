@@ -8,6 +8,7 @@ import { TypeFormAttribute, TypeGroup } from 'core-app/features/admin/types/type
   selector: 'op-type-form-attribute-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './attribute-group.component.html',
+  standalone: false,
 })
 export class TypeFormAttributeGroupComponent {
   @Input() public group:TypeGroup;
@@ -18,6 +19,8 @@ export class TypeFormAttributeGroupComponent {
 
   text = {
     custom_field: this.I18n.t('js.admin.type_form.custom_field'),
+    delete_group: this.I18n.t('js.admin.type_form.delete_group'),
+    remove_attribute: this.I18n.t('js.admin.type_form.remove_attribute')
   };
 
   constructor(private I18n:I18nService,

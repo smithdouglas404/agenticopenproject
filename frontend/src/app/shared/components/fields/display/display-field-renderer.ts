@@ -6,22 +6,21 @@ import {
   DisplayFieldService,
 } from 'core-app/shared/components/fields/display/display-field.service';
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
-import { MultipleLinesCustomOptionsDisplayField } from 'core-app/shared/components/fields/display/field-types/multiple-lines-custom-options-display-field.module';
-import { ProgressTextDisplayField } from 'core-app/shared/components/fields/display/field-types/progress-text-display-field.module';
-import { MultipleLinesUserFieldModule } from 'core-app/shared/components/fields/display/field-types/multiple-lines-user-display-field.module';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import { SchemaResource } from 'core-app/features/hal/resources/schema-resource';
-import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
-import { DateDisplayField } from 'core-app/shared/components/fields/display/field-types/date-display-field.module';
+import {
+  HalResourceEditingService,
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 
 export const editableClassName = '-editable';
 export const requiredClassName = '-required';
 export const readOnlyClassName = '-read-only';
 export const placeholderClassName = '-placeholder';
 export const displayClassName = 'inline-edit--display-field';
+export const displayTriggerLink = 'inline-edit--display-trigger';
 export const editFieldContainerClass = 'inline-edit--container';
 
 export class DisplayFieldRenderer<T extends HalResource = HalResource> {
@@ -34,12 +33,12 @@ export class DisplayFieldRenderer<T extends HalResource = HalResource> {
   @InjectField() I18n!:I18nService;
 
   /** We cache the previously used fields to avoid reinitialization */
-  private fieldCache:{ [key:string]:DisplayField } = {};
+  private fieldCache:Record<string, DisplayField> = {};
 
   constructor(
     public readonly injector:Injector,
     public readonly container:'table'|'single-view'|'timeline',
-    public readonly options:{ [key:string]:unknown } = {},
+    public readonly options:Record<string, unknown> = {},
   ) {
   }
 
@@ -80,7 +79,7 @@ export class DisplayFieldRenderer<T extends HalResource = HalResource> {
     field.render(span, this.getText(field), fieldSchema.options);
 
     const { title } = field;
-    if (title) {
+    if (title && !span.getAttribute('title')) {
       span.setAttribute('title', title);
     }
     span.setAttribute('aria-label', this.getAriaLabel(field, schema));
@@ -97,7 +96,6 @@ export class DisplayFieldRenderer<T extends HalResource = HalResource> {
     let field = this.fieldCache[attributeName];
 
     if (!field) {
-      // eslint-disable-next-line no-multi-assign
       field = this.fieldCache[attributeName] = this.getFieldForCurrentContext(resource, attributeName, fieldSchema);
     }
 
@@ -109,28 +107,6 @@ export class DisplayFieldRenderer<T extends HalResource = HalResource> {
 
   private getFieldForCurrentContext(resource:T, attributeName:string, fieldSchema:IFieldSchema):DisplayField {
     const context:DisplayFieldContext = { container: this.container, injector: this.injector, options: this.options };
-
-    // We handle multi value fields differently in the single view context
-    const isCustomMultiLinesField = ['[]CustomOption'].indexOf(fieldSchema.type) >= 0;
-    if (this.container === 'single-view' && isCustomMultiLinesField) {
-      return new MultipleLinesCustomOptionsDisplayField(attributeName, context) as DisplayField;
-    }
-    const isUserMultiLinesField = ['[]User'].indexOf(fieldSchema.type) >= 0;
-    if (this.container === 'single-view' && isUserMultiLinesField) {
-      return new MultipleLinesUserFieldModule(attributeName, context) as DisplayField;
-    }
-
-    // We handle progress differently in the timeline
-    if (this.container === 'timeline' && attributeName === 'percentageDone') {
-      return new ProgressTextDisplayField(attributeName, context);
-    }
-
-    // We want to render an combined edit field but the display field must
-    // show the original attribute
-    if (this.container === 'table' && ['startDate', 'dueDate', 'date'].includes(attributeName)) {
-      return new DateDisplayField(attributeName, context);
-    }
-
     return this.displayFieldService.getField(resource, attributeName, fieldSchema, context);
   }
 
@@ -182,8 +158,10 @@ export class DisplayFieldRenderer<T extends HalResource = HalResource> {
 
     if (field.isFormattable && !field.isEmpty()) {
       try {
-        titleContent = _.escape(jQuery(`<div>${labelContent}</div>`).text());
-      } catch (e) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(labelContent, 'text/html');
+        titleContent = _.escape(doc.body.textContent ?? '');
+      } catch {
         console.error('Failed to parse formattable labelContent');
         titleContent = `Label for ${field.displayName}`;
       }

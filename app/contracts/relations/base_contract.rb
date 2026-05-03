@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'model_contract'
-
 module Relations
   class BaseContract < ::ModelContract
     attribute :relation_type
-    attribute :delay
+    attribute :lag
     attribute :description
     attribute :from
     attribute :to
 
-    validate :manage_relations_permission?
     validate :validate_from_exists
     validate :validate_to_exists
+    validate :validate_user_allowed
     validate :validate_nodes_relatable
     validate :validate_accepted_type
 
@@ -46,27 +46,26 @@ module Relations
       Relation
     end
 
-    def validate!(*args)
-      # same as before_validation callback
-      model.send(:reverse_if_needed)
-
-      super
-    end
-
     private
 
     def validate_from_exists
-      errors.add :from, :error_not_found unless visible_work_packages.exists? model.from_id
+      errors.add :from_id, :error_not_found unless visible_work_packages.exists? model.from_id
     end
 
     def validate_to_exists
-      errors.add :to, :error_not_found unless visible_work_packages.exists? model.to_id
+      errors.add :to_id, :error_not_found unless visible_work_packages.exists? model.to_id
     end
 
     def validate_nodes_relatable
-      if (model.from_id_changed? || model.to_id_changed?) &&
-         WorkPackage.relatable(model.from, model.relation_type).where(id: model.to).empty?
-        errors.add :base, I18n.t(:'activerecord.errors.messages.circular_dependency')
+      # when creating a relation from the work package relations tab and not selecting a WorkPackage
+      # the to_id is not set
+      # in this case we only want to show the "WorkPackage can't be blank" error instead of a
+      # misleading circular dependencies error
+      # the error is added by the `validate_from_exists` and `validate_to_exists` methods
+      return if to_id_or_from_id_nil?
+
+      if relation_changed? && circular_dependency?
+        errors.add :base, I18n.t(:"activerecord.errors.messages.circular_dependency")
       end
     end
 
@@ -76,18 +75,45 @@ module Relations
       errors.add :relation_type, :inclusion
     end
 
-    def manage_relations_permission?
-      unless manage_relations?
-        errors.add :base, :error_unauthorized
+    def validate_user_allowed
+      # Only check if the work packages exist and are visible
+      return if skip_validation?
+
+      unless from_manageable?
+        errors.add :from_id, :error_not_manageable
       end
+
+      unless to_manageable?
+        errors.add :to_id, :error_not_manageable
+      end
+    end
+
+    def to_id_or_from_id_nil?
+      model.to_id.nil? || model.from_id.nil?
+    end
+
+    def relation_changed?
+      model.from_id_changed? || model.to_id_changed?
+    end
+
+    def circular_dependency?
+      WorkPackage.relatable(model.from, model.relation_type, ignored_relation: model).where(id: model.to_id).empty?
     end
 
     def visible_work_packages
       ::WorkPackage.visible(user)
     end
 
-    def manage_relations?
-      user.allowed_to? :manage_work_package_relations, model.from.project
+    def from_manageable?
+      user.allowed_in_work_package?(:manage_work_package_relations, model.from)
+    end
+
+    def to_manageable?
+      user.allowed_in_work_package?(:manage_work_package_relations, model.to)
+    end
+
+    def skip_validation?
+      model.to_id.nil? || model.from_id.nil? || errors[:from_id].any? || errors[:to_id].any?
     end
   end
 end

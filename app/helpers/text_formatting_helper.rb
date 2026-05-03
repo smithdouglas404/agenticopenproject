@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -77,24 +79,29 @@ module TextFormattingHelper
     end
   end
 
-  def truncate_formatted_text(text, length: 120)
-    # rubocop:disable Rails/OutputSafety
-    stripped_text = strip_tags(format_text(text.to_s)).html_safe
+  def truncate_formatted_text(text, length: 120, replace_newlines: true)
+    stripped_text = strip_tags(format_text(text.to_s))
 
-    if length
-      truncate_multiline(stripped_text)
+    stripped_text = if length
+                      truncate_multiline(stripped_text, length)
+                    else
+                      stripped_text
+                    end
+                      .strip
+
+    if replace_newlines
+      stripped_text.gsub!(/[\r\n]+/, "<br/>")
     else
       stripped_text
     end
-      .strip
-      .gsub(/[\r\n]+/, '<br />')
-      .html_safe
-    # rubocop:enable Rails/OutputSafety
+
+    # Sanitized through strip_tags
+    stripped_text.html_safe # rubocop:disable Rails/OutputSafety
   end
 
-  def truncate_multiline(string)
-    if string.to_s =~ /\A(.{120}).*?$/m
-      "#{$1}..."
+  def truncate_multiline(string, length)
+    if string.to_s.length > length
+      "#{string[0, length]}..."
     else
       string
     end

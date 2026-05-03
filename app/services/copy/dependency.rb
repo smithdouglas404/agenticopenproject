@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +40,7 @@ module Copy
     ##
     # Identifier of this dependency to include/exclude
     def self.identifier
-      name.demodulize.gsub('DependentService', '').underscore
+      name.demodulize.gsub("DependentService", "").underscore
     end
 
     ##
@@ -79,11 +81,13 @@ module Copy
       errors.full_messages.join(". ")
     end
 
-    def perform(params:)
+    def perform
       begin
         copy_dependency(params:)
       rescue StandardError => e
         Rails.logger.error { "Failed to copy dependency #{self.class.identifier}: #{e.message}" }
+        ::OpenProject.logger.error e
+
         result.success = false
         result.errors.add(:base, :could_not_be_copied, dependency: self.class.human_name)
       end
@@ -92,7 +96,7 @@ module Copy
     end
 
     def copy_dependency(params:)
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
   end
 end

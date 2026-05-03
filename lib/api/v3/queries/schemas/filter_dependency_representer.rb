@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -67,7 +67,7 @@ module API
           # Avoid having a _links section on the json objects
           def to_hash(*)
             super.tap do |hash|
-              hash.delete('_links')
+              hash.delete("_links")
             end
           end
 
@@ -82,11 +82,11 @@ module API
           end
 
           def type
-            raise NotImplementedError, 'Subclass has to implement #type'
+            raise SubclassResponsibilityError, "Subclass has to implement #type"
           end
 
           def href_callback
-            raise NotImplementedError, 'Subclass has to implement #href_callback'
+            raise SubclassResponsibilityError, "Subclass has to implement #href_callback"
           end
 
           attr_accessor :operator

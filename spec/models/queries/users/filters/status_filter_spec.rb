@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Queries::Users::Filters::StatusFilter, type: :model do
-  it_behaves_like 'basic query filter' do
+RSpec.describe Queries::Users::Filters::StatusFilter do
+  it_behaves_like "basic query filter" do
     let(:class_key) { :status }
     let(:type) { :list }
 
-    describe '#allowed_values' do
-      it 'is a list of the possible values' do
+    describe "#allowed_values" do
+      it "is a list of the possible values" do
         expected = Principal.statuses.keys.map do |key|
           [I18n.t(:"status_#{key}"), key]
         end
@@ -44,18 +46,18 @@ describe Queries::Users::Filters::StatusFilter, type: :model do
     end
   end
 
-  describe '#scope' do
-    include_context 'filter tests'
+  describe "#apply_to" do
+    include_context "filter tests"
     let(:values) { %w[active invited] }
     let(:model) { User.user }
 
     context 'for "="' do
-      let(:operator) { '=' }
+      let(:operator) { "=" }
 
-      it 'is the same as handwriting the query' do
-        expected = model.where("users.status IN (1,4)")
+      it "is the same as handwriting the query" do
+        expected = model.where("users.status IN (1, 4)")
 
-        expect(instance.scope.to_sql).to eql expected.to_sql
+        expect(instance.apply_to(model).to_sql).to eql expected.to_sql
       end
     end
   end

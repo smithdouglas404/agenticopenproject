@@ -1,15 +1,20 @@
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { BannersService } from 'core-app/core/enterprise/banners.service';
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
 import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.service';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
 @Injectable()
 export class TypeBannerService extends BannersService {
-  constructor(@Inject(DOCUMENT) protected documentElement:Document,
-    private confirmDialog:ConfirmDialogService,
-    private I18n:I18nService) {
-    super(documentElement);
+  eeAvailable = this.allowsTo('edit_attribute_groups');
+
+  constructor(
+    @Inject(DOCUMENT) protected documentElement:Document,
+    protected confirmDialog:ConfirmDialogService,
+    protected I18n:I18nService,
+    protected configuration:ConfigurationService,
+  ) {
+    super(documentElement, configuration);
   }
 
   showEEOnlyHint():void {
@@ -23,6 +28,7 @@ export class TypeBannerService extends BannersService {
     }).then(() => {
       window.location.href = 'https://www.openproject.org/enterprise-edition/?utm_source=unknown&utm_medium=community-edition&utm_campaign=form-configuration';
     })
-      .catch(() => {});
+      .catch(() => {
+      });
   }
 }

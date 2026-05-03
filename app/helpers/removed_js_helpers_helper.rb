@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,14 +38,18 @@ module RemovedJsHelpersHelper
     id = html_options.delete(:id) { "link-to-function-#{SecureRandom.uuid}" }
     csp_onclick(function, "##{id}")
 
-    content_tag(:a, content, html_options.merge(id:, href: ''))
+    content_tag(:a, content, html_options.merge(id:, href: ""))
   end
 
   ##
   # Execute the callback on click
   def csp_onclick(callback_str, selector, prevent_default: true)
     content_for(:additional_js_dom_ready) do
-      "jQuery('#{selector}').click(function() { #{callback_str}; #{prevent_default ? 'return false;' : ''} });\n".html_safe
+      raw <<~JS # rubocop:disable Rails/OutputSafety
+        document.querySelector('#{j(selector)}')?.addEventListener('click', function(event) {
+          #{callback_str&.delete_suffix(';')};#{"\n  event.preventDefault();" if prevent_default}
+        });
+      JS
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,46 +28,133 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 require_module_spec_helper
-require 'services/base_services/behaves_like_delete_service'
+require "services/base_services/behaves_like_delete_service"
+require_relative "shared_event_gun_examples"
 
-describe ::Storages::ProjectStorages::DeleteService, type: :model do
-  context 'with records written to DB' do
+RSpec.describe Storages::ProjectStorages::DeleteService, :webmock, type: :model do
+  shared_examples_for "deleting project storages with project folders" do
+    let(:command_double) { class_double(command_class_reference, call: Success()) }
+
+    before do
+      Storages::Adapters::Registry
+        .stub("#{storage}.commands.delete_folder", command_double)
+    end
+
+    context "if project folder mode is set to automatic" do
+      let(:project_storage) do
+        create(:project_storage, project:, storage:, project_folder_id: "1337", project_folder_mode: "automatic")
+      end
+
+      it "tries to remove the project folder at the remote storage" do
+        expect(described_class.new(model: project_storage, user:).call).to be_success
+        expect(command_double).to have_received(:call)
+      end
+
+      context "if project folder deletion request fails" do
+        let(:error) { Storages::Adapters::Results::Error.new(code: :conflict, source: command_class_reference) }
+        let(:command_double) { class_double(command_class_reference, call: Failure(error)) }
+
+        it "tries to remove the project folder at the remote storage and still succeed with deletion" do
+          expect(described_class.new(model: project_storage, user:).call).to be_success
+          expect(command_double).to have_received(:call)
+        end
+      end
+    end
+
+    context "when the user is not permitted to manage files in the project" do
+      let(:role) { create(:project_role, permissions: []) }
+      let(:project_storage) do
+        create(:project_storage, project:, storage:, project_folder_id: "1337", project_folder_mode: "automatic")
+      end
+
+      it "must not try to delete project folders" do
+        described_class.new(model: project_storage, user:).call
+
+        expect(command_double).not_to have_received(:call)
+      end
+    end
+
+    context "if project folder mode is set to manual" do
+      let(:project_storage) do
+        create(:project_storage, project:, storage:, project_folder_id: "1337", project_folder_mode: "manual")
+      end
+
+      it "must not try to delete manual project folders" do
+        expect(described_class.new(model: project_storage, user:).call).to be_success
+        expect(command_double).not_to have_received(:call)
+      end
+    end
+  end
+
+  context "with records written to DB" do
     let(:user) { create(:user) }
-    let(:role) { create(:existing_role, permissions: [:manage_storages_in_project]) }
+    let(:role) { create(:project_role, permissions: [:manage_files_in_project]) }
     let(:project) { create(:project, members: { user => role }) }
     let(:other_project) { create(:project) }
-    let(:project_storage) { create(:project_storage, project:) }
+    let(:storage) { create(:nextcloud_storage) }
+    let(:project_storage) { create(:project_storage, project:, storage:) }
     let(:work_package) { create(:work_package, project:) }
     let(:other_work_package) { create(:work_package, project: other_project) }
-    let(:file_link) { create(:file_link, container: work_package, storage: project_storage.storage) }
-    let(:other_file_link) { create(:file_link, container: other_work_package, storage: project_storage.storage) }
+    let(:file_link) { create(:file_link, container: work_package, storage:) }
+    let(:other_file_link) { create(:file_link, container: other_work_package, storage:) }
 
-    it 'destroys the record' do
+    it "destroys the record" do
       project_storage
       described_class.new(model: project_storage, user:).call
 
-      expect(::Storages::ProjectStorage.where(id: project_storage.id))
-        .not_to exist
+      expect(Storages::ProjectStorage.where(id: project_storage.id)).not_to exist
     end
 
-    it 'deletes all FileLinks that belong to containers of the related project' do
+    it "deletes all FileLinks that belong to containers of the related project" do
       file_link
       other_file_link
 
       described_class.new(model: project_storage, user:).call
 
-      expect(::Storages::FileLink.where(id: file_link.id))
-        .not_to exist
-      expect(::Storages::FileLink.where(id: other_file_link.id))
-        .to exist
+      expect(Storages::FileLink.where(id: file_link.id)).not_to exist
+      expect(Storages::FileLink.where(id: other_file_link.id)).to exist
+    end
+
+    context "with Nextcloud storage" do
+      let(:delete_folder_url) do
+        "#{storage.host}/remote.php/dav/files/#{storage.username}/#{project_storage.project_folder_location}"
+      end
+
+      it_behaves_like "deleting project storages with project folders"
+    end
+
+    context "with OneDrive storage" do
+      let(:storage) { create(:one_drive_storage) }
+      let(:delete_folder_url) do
+        "https://graph.microsoft.com/v1.0/drives/#{storage.drive_id}/items/#{project_storage.project_folder_location}"
+      end
+
+      it_behaves_like "deleting project storages with project folders"
     end
   end
 
-  # Includes many specs that are common for every DeleteService that inherits from ::BaseServices::Delete.
-  # Collected tests on DeleteContracts from last 15 years.
-  it_behaves_like 'BaseServices delete service' do
+  it_behaves_like "BaseServices delete service" do
     let(:factory) { :project_storage }
+    let(:host) { model_instance.storage.host }
+    let(:username) { model_instance.storage.username }
+    let(:path) { model_instance.managed_project_folder_path.chop }
+    let(:delete_folder_url) do
+      "#{host}/remote.php/dav/files/#{username}/#{path}/"
+    end
+
+    before do
+      Storages::Adapters::Registry.stub("#{model_instance.storage}.commands.delete_folder",
+                                        ->(*) { Success() })
+    end
+
+    it_behaves_like("an event gun", OpenProject::Events::PROJECT_STORAGE_DESTROYED)
+  end
+
+  private
+
+  def command_class_reference
+    Storages::Adapters::Registry["#{project_storage.storage}.commands.delete_folder"]
   end
 end

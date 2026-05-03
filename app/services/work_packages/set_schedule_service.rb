@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,21 +29,19 @@
 #++
 
 class WorkPackages::SetScheduleService
-  attr_accessor :user, :work_packages
+  attr_accessor :user, :work_packages, :initiated_by, :switching_to_automatic_mode
 
-  def initialize(user:, work_package:)
+  def initialize(user:, work_package:, initiated_by: nil, switching_to_automatic_mode: [])
     self.user = user
     self.work_packages = Array(work_package)
+    self.initiated_by = initiated_by
+    self.switching_to_automatic_mode = switching_to_automatic_mode
   end
 
   def call(changed_attributes = %i(start_date due_date))
     altered = []
 
-    if (%i(parent parent_id) & changed_attributes).any?
-      altered += schedule_by_parent
-    end
-
-    if (%i(start_date due_date parent parent_id) & changed_attributes).any?
+    if %i(start_date due_date parent parent_id schedule_manually).intersect?(changed_attributes)
       altered += schedule_following
     end
 
@@ -55,24 +55,6 @@ class WorkPackages::SetScheduleService
   end
 
   private
-
-  # rubocop:disable Metrics/AbcSize
-  def schedule_by_parent
-    work_packages
-      .select { |wp| wp.start_date.nil? && wp.parent }
-      .each do |wp|
-        days = WorkPackages::Shared::Days.for(wp)
-        wp.start_date = days.soonest_working_day(wp.parent.soonest_start)
-        if wp.due_date || wp.duration
-          wp.due_date = [
-            wp.start_date,
-            days.due_date(wp.start_date, wp.duration),
-            wp.due_date
-          ].compact.max
-        end
-      end
-  end
-  # rubocop:enable Metrics/AbcSize
 
   # Finds all work packages that need to be rescheduled because of a
   # rescheduling of the service's work package and reschedules them.
@@ -93,13 +75,34 @@ class WorkPackages::SetScheduleService
   def schedule_following
     altered = []
 
-    WorkPackages::ScheduleDependency.new(work_packages).in_schedule_order do |scheduled, dependency|
-      reschedule(scheduled, dependency)
+    moved_work_packages = work_packages.flat_map do |work_package|
+      if work_package.parent && work_package.parent_id_changed?
+        [work_package, work_package.parent]
+      else
+        [work_package]
+      end
+    end
 
-      altered << scheduled if scheduled.changed?
+    WorkPackages::ScheduleDependency.new(moved_work_packages, switching_to_automatic_mode:)
+                                    .in_schedule_order do |scheduled, dependency|
+      changes_before = scheduled.changes
+      apply_switching_to_automatic_scheduling(scheduled)
+      reschedule(scheduled, dependency)
+      changes_after = scheduled.changes
+
+      altered << scheduled if changes_before != changes_after
     end
 
     altered
+  end
+
+  # Switches the scheduling mode of a work package to automatic if it is in the
+  # switching_to_automatic_mode array.
+  def apply_switching_to_automatic_scheduling(work_package)
+    switching_to_automatic_mode_ids = switching_to_automatic_mode.pluck(:id)
+    if switching_to_automatic_mode_ids.include?(work_package.id)
+      work_package.schedule_manually = false
+    end
   end
 
   # Schedules work packages based on either
@@ -109,8 +112,10 @@ class WorkPackages::SetScheduleService
   def reschedule(scheduled, dependency)
     if dependency.has_descendants?
       reschedule_by_descendants(scheduled, dependency)
-    else
+    elsif dependency.has_direct_or_indirect_predecessors?
       reschedule_by_predecessors(scheduled, dependency)
+    elsif switching_to_automatic_mode.exclude?(scheduled) # do not switch to manual a work package forced to automatic
+      scheduled.schedule_manually = true
     end
   end
 
@@ -122,6 +127,7 @@ class WorkPackages::SetScheduleService
   # descendants
   def reschedule_by_descendants(scheduled, dependency)
     set_dates(scheduled, dependency.start_date, dependency.due_date)
+    assign_cause_for_journaling(scheduled, :children)
   end
 
   # Calculates the dates of a work package based on its follows relations.
@@ -144,9 +150,10 @@ class WorkPackages::SetScheduleService
   def reschedule_by_predecessors(scheduled, dependency)
     return unless dependency.soonest_start_date
 
-    new_start_date = [scheduled.start_date, dependency.soonest_start_date].compact.max
+    new_start_date = dependency.soonest_start_date
     new_due_date = determine_due_date(scheduled, new_start_date)
     set_dates(scheduled, new_start_date, new_due_date)
+    assign_cause_for_journaling(scheduled, :predecessor)
   end
 
   def determine_due_date(work_package, start_date)
@@ -173,5 +180,26 @@ class WorkPackages::SetScheduleService
 
   def days(work_package)
     WorkPackages::Shared::Days.for(work_package)
+  end
+
+  def assign_cause_for_journaling(work_package, relation)
+    return {} if initiated_by.nil?
+    return {} unless work_package.changes.keys.intersect?(%w(start_date due_date duration))
+
+    if initiated_by.is_a?(WorkPackage)
+      assign_cause_initiated_by_work_package(work_package, relation)
+    elsif initiated_by.is_a?(CauseOfChange::Base)
+      work_package.journal_cause = initiated_by
+    end
+  end
+
+  def assign_cause_initiated_by_work_package(work_package, _relation)
+    # For now we only track a generic cause, and not a specialized reason depending on the relation
+    # work_package.journal_cause = case relation
+    #                             when :children then Journal::CausedByWorkPackageChildChange.new(initiated_by)
+    #                             when :predecessor then Journal::CausedByWorkPackagePredecessorChange.new(initiated_by)
+    #                             end
+
+    work_package.journal_cause = Journal::CausedByWorkPackageRelatedChange.new(work_package: initiated_by)
   end
 end

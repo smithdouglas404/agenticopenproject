@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,13 +31,13 @@
 module Plugins
   module LoadPathHelper
     def self.spec_load_paths
-      plugin_load_paths.map { |path| File.join(path, 'spec') }
+      plugin_load_paths.map { |path| File.join(path, "spec") }
                        .keep_if { |path| File.directory?(path) }
     end
 
     # fetch load paths for available plugins
     def self.plugin_load_paths
-      Rails.application.config.plugins_to_test_paths.map { _1.relative_path_from(Rails.root).to_s }
+      Rails.application.config.plugins_to_test_paths.map { it.relative_path_from(Rails.root).to_s }
     end
   end
 end

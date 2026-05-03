@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment, { Moment } from 'moment';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { DisplayFieldRenderer } from 'core-app/shared/components/fields/display/display-field-renderer';
 import { Injector } from '@angular/core';
@@ -20,14 +20,13 @@ import {
   timelineElementCssClass,
   timelineMarkerSelectionStartClass,
 } from '../wp-timeline';
-import Moment = moment.Moment;
 
 export interface CellDateMovement {
   // Target values to move work package to
-  startDate?:moment.Moment;
-  dueDate?:moment.Moment;
+  startDate?:Moment;
+  dueDate?:Moment;
   // Target value to move milestone to
-  date?:moment.Moment;
+  date?:Moment;
 }
 
 export type LabelPosition = 'left'|'right'|'farRight';
@@ -117,8 +116,8 @@ export class TimelineCellRenderer {
     labels:WorkPackageCellLabels,
     dates:CellDateMovement,
   ):void {
-    this.assignDate(change, 'startDate', dates.startDate as moment.Moment);
-    this.assignDate(change, 'dueDate', dates.dueDate as moment.Moment);
+    this.assignDate(change, 'startDate', dates.startDate!);
+    this.assignDate(change, 'dueDate', dates.dueDate!);
 
     this.updateLabels(true, labels, change);
   }
@@ -144,7 +143,12 @@ export class TimelineCellRenderer {
     if (direction === 'left') {
       dates.startDate = moment(initialStartDate || initialDueDate).add(delta, 'days');
     } else if (direction === 'right') {
-      dates.dueDate = moment(initialDueDate || now).add(delta, 'days');
+      // When no due date is present and the start date is in the past,
+      // we assume the task hasn't finished yet, meaning the end date is not in the past.
+      // To cover this case we have to choose the start date, only when it's in the future,
+      // and choose now if the start date is in the past.
+      const calculatedDueDate = initialDueDate || (now > initialStartDate ? now : initialStartDate);
+      dates.dueDate = moment(calculatedDueDate).add(delta, 'days');
     } else if (direction === 'both') {
       if (initialStartDate) {
         dates.startDate = moment(initialStartDate).add(delta, 'days');
@@ -183,8 +187,10 @@ export class TimelineCellRenderer {
     const projection = renderInfo.change.projectedResource;
     let direction:Exclude<MouseDirection, 'create'>;
 
+    const target = ev.target as HTMLElement;
+
     // Update the cursor and maybe set start/due values
-    if (jQuery(ev.target!).hasClass(classNameLeftHandle)) {
+    if (target.classList.contains(classNameLeftHandle)) {
       // only left
       direction = 'left';
       this.mouseDirection = 'left';
@@ -192,7 +198,7 @@ export class TimelineCellRenderer {
       if (projection.startDate === null) {
         projection.startDate = projection.dueDate;
       }
-    } else if (jQuery(ev.target!).hasClass(classNameRightHandle) || dateForCreate) {
+    } else if (target.classList.contains(classNameRightHandle) || dateForCreate) {
       // only right
       direction = 'right';
       this.mouseDirection = 'right';
@@ -248,13 +254,13 @@ export class TimelineCellRenderer {
     if (_.isNaN(due.valueOf()) && !_.isNaN(start.valueOf())) {
       // Set due date to today
       due = moment();
-      bar.style.backgroundImage = 'linear-gradient(90deg, rgba(255,255,255,0) 0%, #F1F1F1 100%)';
+      bar.setAttribute('style', 'background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, #F1F1F1 100%) !important');
     }
 
     // only finish date, fade out bar to the left
     if (_.isNaN(start.valueOf()) && !_.isNaN(due.valueOf())) {
       start = due.clone();
-      bar.style.backgroundImage = 'linear-gradient(90deg, #F1F1F1 0%, rgba(255,255,255,0) 80%)';
+      bar.setAttribute('style', 'background-image: linear-gradient(90deg, #F1F1F1 0%, rgba(255,255,255,0) 80%) !important');
     }
 
     this.setElementPositionAndSize(element, renderInfo, start, due);
@@ -282,7 +288,7 @@ export class TimelineCellRenderer {
       element.style.backgroundImage = ''; // required! unable to disable "fade out bar" with css
 
       if (renderInfo.viewParams.selectionModeStart === `${renderInfo.workPackage.id!}`) {
-        jQuery(element).addClass(timelineMarkerSelectionStartClass);
+        element.classList.add(timelineMarkerSelectionStartClass);
         element.style.background = 'none';
       }
     }
@@ -316,7 +322,7 @@ export class TimelineCellRenderer {
         break;
       }
       // Extend the duration if the currentDate is non-working
-      if (this.weekdayService.isNonWorkingDay(currentDate.toDate())) {
+      if (this.weekdayService.isNonWorkingDay(currentDate.toDate() || this.workPackageTimeline.isNonWorkingDay(currentDate.toDate()))) {
         duration += 1;
       }
     }
@@ -436,13 +442,13 @@ export class TimelineCellRenderer {
     }
   }
 
-  protected assignDate(change:WorkPackageChangeset, attributeName:string, value:moment.Moment) {
+  protected assignDate(change:WorkPackageChangeset, attributeName:string, value:Moment) {
     if (value) {
       change.projectedResource[attributeName] = value.format('YYYY-MM-DD');
     }
   }
 
-  setElementPositionAndSize(element:HTMLElement, renderInfo:RenderInfo, start:moment.Moment, due:moment.Moment) {
+  setElementPositionAndSize(element:HTMLElement, renderInfo:RenderInfo, start:Moment, due:Moment) {
     const { viewParams } = renderInfo;
     // offset left
     const offsetStart = start.diff(viewParams.dateDisplayStart, 'days');
@@ -467,10 +473,11 @@ export class TimelineCellRenderer {
     const dates = (evOrDates instanceof MouseEvent)
       ? [this.cursorDateAndDayOffset(evOrDates, renderInfo)[0]]
       : evOrDates;
-    if (!renderInfo.workPackage.ignoreNonWorkingDays && direction === 'both' && this.weekdayService.isNonWorkingDay(dates[dates.length - 1].toDate())) {
+    if (!renderInfo.workPackage.ignoreNonWorkingDays && direction === 'both'
+      && (this.weekdayService.isNonWorkingDay(dates[dates.length - 1].toDate() || this.workPackageTimeline.isNonWorkingDay(dates[dates.length - 1].toDate())))) {
       return false;
     }
-    return dates.some((date) => this.weekdayService.isNonWorkingDay(date.toDate()));
+    return dates.some((date) => (this.weekdayService.isNonWorkingDay(date.toDate()) || this.workPackageTimeline.isNonWorkingDay(date.toDate())));
   }
 
   /**

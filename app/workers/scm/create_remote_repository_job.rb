@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,15 +38,15 @@
 # Until then, a synchronous process is more failsafe.
 class SCM::CreateRemoteRepositoryJob < SCM::RemoteRepositoryJob
   def perform(repository)
-    super(repository)
+    super
 
     response = send_request(repository_request.merge(action: :create))
-    repository.root_url = response['path']
-    repository.url = response['url']
+    repository.root_url = response["path"]
+    repository.url = response["url"]
 
     unless repository.save
       raise OpenProject::SCM::Exceptions::SCMError.new(
-        I18n.t('repositories.errors.remote_save_failed')
+        I18n.t("repositories.errors.remote_save_failed")
       )
     end
   end

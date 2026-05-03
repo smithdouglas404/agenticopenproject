@@ -1,4 +1,6 @@
+---
 cs:
   overviews:
-    label: 'Přehled'
-  permission_manage_overview: 'Správa přehledové stránky '
+    label_home: "%{workspace_type}"
+    label_dashboard: Nástěnka
+    label_overview: Přehled

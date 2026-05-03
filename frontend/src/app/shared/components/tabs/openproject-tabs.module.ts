@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,6 @@ import { CommonModule } from '@angular/common';
 import { UIRouterModule } from '@uirouter/angular';
 import { FocusModule } from 'core-app/shared/directives/focus/focus.module';
 import { AttributeHelpTextModule } from 'core-app/shared/components/attribute-help-texts/attribute-help-text.module';
-import { ContentTabsComponent } from 'core-app/shared/components/tabs/content-tabs/content-tabs.component';
 import { ScrollableTabsComponent } from 'core-app/shared/components/tabs/scrollable-tabs/scrollable-tabs.component';
 import { TabCountComponent } from 'core-app/shared/components/tabs/tab-badges/tab-count.component';
 import { IconModule } from 'core-app/shared/components/icon/icon.module';
@@ -48,7 +47,6 @@ import { IconModule } from 'core-app/shared/components/icon/icon.module';
   ],
   declarations: [
     ScrollableTabsComponent,
-    ContentTabsComponent,
     TabCountComponent,
   ],
 })

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,6 +37,8 @@ module Type::Attributes
                 derived_start_date
                 derived_due_date
                 derived_estimated_time
+                derived_remaining_time
+                derived_percentage_done
                 ignore_non_working_days
                 duration
                 description
@@ -75,12 +79,13 @@ module Type::Attributes
     # @return [Hash{String => Hash}] Map from attribute names to options.
     def all_work_package_form_attributes(merge_date: false)
       wp_cf_cache_parts = RequestStore.fetch(:wp_cf_max_updated_at_and_count) do
-        WorkPackageCustomField.pluck(Arel.sql('max(updated_at), count(id)')).flatten
+        WorkPackageCustomField.pluck(Arel.sql("max(updated_at), count(id)")).flatten
       end
 
-      OpenProject::Cache.fetch('all_work_package_form_attributes',
-                               *wp_cf_cache_parts,
-                               merge_date) do
+      OpenProject::Cache.fetch_request_cached("all_work_package_form_attributes",
+                                              *wp_cf_cache_parts,
+                                              EXCLUDED.length,
+                                              merge_date) do
         calculate_all_work_package_form_attributes(merge_date)
       end
     end
@@ -131,20 +136,20 @@ module Type::Attributes
 
     def skipped_attribute?(key, definition)
       # We always want to include the priority even if its required
-      return false if key == 'priority'
+      return false if key == "priority"
 
       EXCLUDED.include?(key) || definition[:required]
     end
 
     def merge_date_for_form_attributes(attributes)
-      attributes['date'] = { required: false, has_default: false }
-      attributes.delete 'due_date'
-      attributes.delete 'start_date'
+      attributes["date"] = { required: false, has_default: false }
+      attributes.delete "due_date"
+      attributes.delete "start_date"
     end
 
     def add_custom_fields_to_form_attributes(attributes)
-      WorkPackageCustomField.includes(:custom_options).all.find_each do |field|
-        attributes["custom_field_#{field.id}"] = {
+      WorkPackageCustomField.includes(:custom_options).find_each do |field|
+        attributes[field.attribute_name] = {
           required: field.is_required,
           has_default: field.default_value.present?,
           is_cf: true,
@@ -154,19 +159,19 @@ module Type::Attributes
     end
 
     def attr_i18n_key(name)
-      if name == 'percentage_done'
-        'done_ratio'
+      if name == "percentage_done"
+        "done_ratio"
       else
         name
       end
     end
 
     def attr_translate(name)
-      if name == 'date'
-        I18n.t('label_date')
+      if name == "date"
+        I18n.t("label_date")
       else
         key = attr_i18n_key(name)
-        I18n.t("activerecord.attributes.work_package.#{key}", fallback: false, default: '')
+        I18n.t("activerecord.attributes.work_package.#{key}", fallback: false, default: "")
           .presence || I18n.t("attributes.#{key}")
       end
     end
@@ -206,9 +211,14 @@ module Type::Attributes
   ##
   # Returns whether the custom field is active in the given project.
   def custom_field_in_project?(attribute, project)
-    project
-      .all_work_package_custom_fields.pluck(:id)
-      .map { |id| "custom_field_#{id}" }
+    custom_fields_in_project = RequestStore.fetch(:"custom_field_in_project_#{project.id}") do
+      project
+        .all_work_package_custom_fields
+        .pluck(:id)
+        .map { |id| "custom_field_#{id}" }
+    end
+
+    custom_fields_in_project
       .include? attribute
   end
 end

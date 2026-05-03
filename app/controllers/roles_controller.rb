@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,43 +30,45 @@
 
 class RolesController < ApplicationController
   include PaginationHelper
-  include Roles::NotifyMixin
 
-  layout 'admin'
+  layout "admin"
 
-  before_action :require_admin, except: [:autocomplete_for_role]
+  before_action :require_admin
+
+  menu_item :roles, except: :report
+  menu_item :permissions_report, only: :report
 
   def index
     @roles = roles_scope
              .page(page_param)
              .per_page(per_page_param)
 
-    render action: 'index', layout: false if request.xhr?
+    render action: "index", layout: false if request.xhr?
   end
 
   def new
-    @role = Role.new(permitted_params.role? || { permissions: Role.non_member.permissions })
+    @role = ProjectRole.new(permitted_params.role? || { permissions: ProjectRole.non_member.permissions })
 
     @roles = roles_scope
   end
 
+  def edit
+    @role = Role.find(params[:id])
+    @call = set_role_attributes(@role, "update")
+  end
+
   def create
-    @call = create_role
+    @call = Roles::CreateService.new(user: current_user).call(create_params)
     @role = @call.result
 
     if @call.success?
       flash[:notice] = t(:notice_successful_create)
-      redirect_to action: 'index'
+      redirect_to action: "index"
     else
       @roles = roles_scope
 
-      render action: 'new'
+      render action: :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @role = Role.find(params[:id])
-    @call = set_role_attributes(@role, 'update')
   end
 
   def update
@@ -73,26 +77,29 @@ class RolesController < ApplicationController
 
     if @call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to action: 'index'
+      redirect_to action: "index", status: :see_other
     else
-      render action: 'edit'
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @role = Role.find(params[:id])
-    @role.destroy
-    flash[:notice] = I18n.t(:notice_successful_delete)
-    redirect_to action: 'index'
-    notify_changed_roles(:removed, @role)
-  rescue StandardError
-    flash[:error] = I18n.t(:error_can_not_remove_role)
-    redirect_to action: 'index'
+    service_result = Roles::DeleteService.new(
+      model: Role.find(params[:id]),
+      user: current_user
+    ).call
+
+    if service_result.success?
+      flash[:notice] = I18n.t(:notice_successful_delete)
+    else
+      flash[:error] = I18n.t(:error_can_not_remove_role)
+    end
+    redirect_to action: "index", status: :see_other
   end
 
   def report
-    @roles = Role.order(Arel.sql('builtin, position'))
-    @permissions = OpenProject::AccessControl.permissions.reject(&:public?)
+    @roles = roles_scope
+    @permissions = visible_permissions
   end
 
   def bulk_update
@@ -102,25 +109,11 @@ class RolesController < ApplicationController
 
     if calls.all?(&:success?)
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to action: 'index'
+      redirect_to action: "index", status: :see_other
     else
       @calls = calls
-      @permissions = OpenProject::AccessControl.permissions.reject(&:public?)
-      render action: 'report'
-    end
-  end
-
-  def autocomplete_for_role
-    size = params[:page_limit].to_i
-    page = params[:page].to_i
-
-    @roles = Role.paginated_search(params[:q], page:, page_limit: size)
-    # we always get all the items on a page, so just check if we just got the last
-    @more = @roles.total_pages > page
-    @total = @roles.total_entries
-
-    respond_to do |format|
-      format.json
+      @permissions = visible_permissions
+      render action: "report", status: :unprocessable_entity
     end
   end
 
@@ -148,26 +141,14 @@ class RolesController < ApplicationController
     end
   end
 
-  def create_role
-    Roles::CreateService
-      .new(user: current_user)
-      .call(create_params)
+  def visible_permissions
+    OpenProject::AccessControl.permissions
+                              .reject(&:public?)
+                              .filter(&:visible?)
   end
 
   def roles_scope
-    Role.order(Arel.sql('builtin, position'))
-  end
-
-  def default_breadcrumb
-    if action_name == 'index'
-      t('label_role_plural')
-    else
-      ActionController::Base.helpers.link_to(t('label_role_plural'), roles_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    true
+    Role.visible.ordered_by_builtin_and_position
   end
 
   def new_params

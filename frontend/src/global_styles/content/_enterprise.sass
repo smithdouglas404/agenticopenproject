@@ -1,24 +1,4 @@
-.upsale-notification
-  max-width: 50vw
-  margin: auto
-  padding-top: 20px
-  text-align: center
-
-  .widget-box--teaser-image,
-  .widget-box--teaser-video
-    width: 100%
-    height: auto
-    margin-bottom: 20px
-    box-shadow: 4px 4px 10px rgb(0 0 0 / 15%)
-    border-radius: 25px
-
-  .widget-box--teaser-image_default
-    width: 30%
-    margin-bottom: 20px
-    box-shadow: 4px 4px 10px rgb(0 0 0 / 15%)
-    border-radius: 25px
-
-.upsale-actions
+.upsell-actions
   display: flex
   flex-wrap: wrap
   align-items: baseline
@@ -26,53 +6,77 @@
   .openproject--static-link
     margin-left: 1rem
 
-.upsale--information-container
+.upsell--information-container
   margin-bottom: 40px
 
 .token-form textarea
   font-family: "Lucida Console", Monaco, monospace
   max-width: 560px
 
-.widget-box--blocks--upsale-buttons
-  display: flex
-  justify-content: end
+.controller-homescreen .widget-boxes
+  .widget-box.upsell
+    padding: 0
+    flex-basis: 100%
+    border: var(--borderWidth-thin) solid var(--enterprise-upsell-color)
+    border-radius: var(--borderRadius-medium)
+    background: var(--body-background)
+    container-name: upsellContainer
+    container-type: inline-size
 
-.widget-box--blocks--upsale-info-button
-  margin: 0.5rem 1rem 0 0
+.widget-box--upsell-block
+  margin-bottom: 1rem
+  border: var(--borderWidth-thin) solid var(--enterprise-upsell-color)
+  border-radius: var(--borderRadius-medium)
+  background: var(--body-background)
+  // Ensure the image does not overflow the container on the borders
+  position: relative
+  overflow: hidden
 
-.widget-box--blocks--upsale-title
+.widget-box--blocks--upsell-container
+  position: relative
+  padding: 20px
+  height: 250px
+
+.upsell-colored
+  color: var(--enterprise-upsell-color) !important
+
+.upsell-colored-text
+  color: var(--enterprise-upsell-text-color) !important
+
+.upsell-colored-background
+  background: var(--enterprise-upsell-color) !important
+  color: white !important
+  border-color: var(--enterprise-upsell-color) !important
+
+.widget-box--blocks--upsell-title
   font-weight: 400
   font-size: 20px
-  line-height: 24px
   margin-top: 10px
-
-.widget-box--blocks--upsale-description
-  margin: 10px 0 10px 0
   display: flex
 
-.widget-box--blocks--upsale-image
-  width: 200px
-  margin: auto
+.widget-box--blocks--upsell-text
+  display: flex
+  flex-direction: column
+  height: 100%
+  width: 60%
+  position: relative
+  z-index: 1
 
-.enterprise-addons--button-icon
-  font-size: 1rem !important
+  @media screen and (max-width: $breakpoint-lg)
+    width: 100%
 
-// There is a breadcrumb at the top of some of the Enterprise pages showing some spacing,
-// but for some other pages without a breadcrumb, there is no space at the top of of the page.
-// Therefore, we are just hiding the breadcrumb on top of these pages.
-:has(.upsale-notification_hide-breadcrumb)
-  #breadcrumb:has(:not(.-show))
-    display: block
-    visibility: hidden
+.widget-box--blocks--upsell-image
+  @include upsell-image
 
-.spot-icon_enterprise-addons
-  color: $spot-color-feedback-warning-dark
+@container upsellContainer (max-width: 1000px)
+  .widget-box--blocks--upsell-container
+    height: auto
+  .widget-box--blocks--upsell-image
+    background-image: none !important
 
-@media screen and (max-width: 679px)
-  .upsale-notification
-    max-width: none
+@container upsellContainer (max-width: 1300px)
+  .widget-box--blocks--upsell-image
+    background-size: cover
 
-    .widget-box--teaser-image,
-    .widget-box--teaser-video
-      width: 90%
-      border-radius: 15px
+.widget-box--blocks--upsell-description
+  flex-grow: 1

@@ -1,3 +1,5 @@
+import moment from 'moment-timezone';
+
 export const skeletonResources = [
   {
     id: 'skeleton-resource-1',

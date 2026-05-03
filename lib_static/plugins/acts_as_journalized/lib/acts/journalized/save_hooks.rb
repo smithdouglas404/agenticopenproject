@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -53,7 +55,7 @@ module Acts::Journalized
       base.class_eval do
         after_save :save_journals
 
-        attr_accessor :journal_notes, :journal_user
+        attr_accessor :journal_notes, :journal_user, :journal_internal, :journal_cause
       end
     end
 
@@ -61,10 +63,11 @@ module Acts::Journalized
       with_ensured_journal_attributes do
         create_call = Journals::CreateService
                       .new(self, @journal_user)
-                      .call(notes: @journal_notes)
+                      .call(notes: @journal_notes, internal: @journal_internal, cause: @journal_cause)
 
         if create_call.success? && create_call.result
           OpenProject::Notifications.send(OpenProject::Events::JOURNAL_CREATED,
+                                          changes: previous_changes,
                                           journal: create_call.result,
                                           send_notification: Journal::NotificationConfiguration.active?)
         end
@@ -73,21 +76,32 @@ module Acts::Journalized
       end
     end
 
-    def add_journal(user = User.current, notes = '')
+    def touch_and_save_journals
+      update_column(:updated_at, Time.current)
+      save_journals
+    end
+
+    def add_journal(user: User.current, notes: "", internal: false, cause: CauseOfChange::NoCause.new)
       self.journal_user ||= user
       self.journal_notes ||= notes
+      self.journal_cause ||= cause
+      self.journal_internal ||= internal
     end
 
     private
 
     def with_ensured_journal_attributes
       self.journal_user ||= User.current
-      self.journal_notes ||= ''
+      self.journal_notes ||= ""
+      self.journal_cause ||= CauseOfChange::NoCause.new
+      self.journal_internal ||= false
 
       yield
     ensure
       self.journal_user = nil
       self.journal_notes = nil
+      self.journal_cause = nil
+      self.journal_internal = nil
     end
   end
 end

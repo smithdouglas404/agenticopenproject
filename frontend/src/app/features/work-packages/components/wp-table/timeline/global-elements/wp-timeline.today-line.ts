@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { calculatePositionValueForDayCount, TimelineViewParameters } from '../wp-timeline';
 import { TimelineStaticElement } from './timeline-static-element';
 

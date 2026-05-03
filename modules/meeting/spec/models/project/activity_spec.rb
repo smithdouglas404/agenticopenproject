@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Projects::Activity, type: :model do
-  let(:project) do
-    create(:project)
+RSpec.describe Projects::Activity, "meeting" do
+  shared_let(:project) do
+    create(:project, :updated_a_long_time_ago)
   end
 
-  let(:initial_time) { Time.now }
+  let(:initial_time) { Time.current }
 
   let(:meeting) do
     create(:meeting,
@@ -54,36 +56,32 @@ describe Projects::Activity, type: :model do
     Project.with_latest_activity.find(project.id).latest_activity_at
   end
 
-  describe '.with_latest_activity' do
-    it 'is the latest meeting update' do
-      meeting.update_attribute(:updated_at, initial_time - 10.seconds)
-      meeting2.update_attribute(:updated_at, initial_time - 20.seconds)
-      meeting.reload
-      meeting2.reload
+  describe ".with_latest_activity" do
+    it "set project.latest_activity_at to the latest updated meeting time" do
+      meeting.update_columns(updated_at: initial_time - 10.seconds)
+      meeting2.update_columns(updated_at: initial_time - 20.seconds)
 
-      expect(latest_activity).to eql meeting.updated_at
+      # there is a loss of precision for timestamps stored in database
+      expect(latest_activity).to equal_time_without_usec(meeting.updated_at)
     end
 
-    it 'takes the time stamp of the latest activity across models' do
-      work_package.update_attribute(:updated_at, initial_time - 10.seconds)
-      meeting.update_attribute(:updated_at, initial_time - 20.seconds)
-
-      work_package.reload
-      meeting.reload
+    it "takes the time stamp of the latest activity across models" do
+      work_package.update_columns(updated_at: initial_time - 10.seconds)
+      meeting.update_columns(updated_at: initial_time - 20.seconds)
 
       # Order:
       # work_package
       # meeting
 
-      expect(latest_activity).to eql work_package.updated_at
+      expect(latest_activity).to equal_time_without_usec(work_package.updated_at)
 
-      work_package.update_attribute(:updated_at, meeting.updated_at - 10.seconds)
+      work_package.update_columns(updated_at: meeting.updated_at - 10.seconds)
 
       # Order:
       # meeting
       # work_package
 
-      expect(latest_activity).to eql meeting.updated_at
+      expect(latest_activity).to equal_time_without_usec(meeting.updated_at)
     end
   end
 end

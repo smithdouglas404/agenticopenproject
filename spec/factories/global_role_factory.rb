@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,5 +31,19 @@
 FactoryBot.define do
   factory :global_role do
     sequence(:name) { |n| "Global Role #{n}" }
+
+    factory :standard_global_role do
+      name { "Standard global role" }
+      builtin { Role::BUILTIN_STANDARD_GLOBAL }
+      initialize_with { GlobalRole.where(builtin: Role::BUILTIN_STANDARD_GLOBAL).first_or_initialize }
+      permissions { [:view_user_email] }
+    end
+
+    factory :empty_global_role do
+      name { "Empty global role" }
+      builtin { Role::BUILTIN_STANDARD_GLOBAL }
+      initialize_with { GlobalRole.where(builtin: Role::BUILTIN_STANDARD_GLOBAL).first_or_initialize }
+      permissions { [] }
+    end
   end
 end

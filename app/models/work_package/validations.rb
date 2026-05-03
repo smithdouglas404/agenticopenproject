@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,11 +32,11 @@ module WorkPackage::Validations
   extend ActiveSupport::Concern
 
   included do
-    validates :subject, :priority, :project, :type, :author, :status, presence: true
-
-    validates :subject, length: { maximum: 255 }
-    validates :done_ratio, inclusion: { in: 0..100 }
-    validates :estimated_hours, numericality: { allow_nil: true }
+    validates :priority, :project, :type, :author, :status, presence: true
+    validates :done_ratio, inclusion: { in: 0..100 }, numericality: true, allow_nil: true
+    validates :estimated_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
+    validates :remaining_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
+    validates :derived_remaining_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
 
     validates :due_date, date: { allow_blank: true }
     validates :start_date, date: { allow_blank: true }

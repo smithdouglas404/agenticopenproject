@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,73 +28,70 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require 'rack/test'
+require "spec_helper"
+require "rack/test"
 
-describe "API v3 version's projects resource" do
+RSpec.describe "API v3 version's projects resource" do
   include Rack::Test::Methods
   include API::V3::Utilities::PathHelper
 
-  let(:current_user) do
-    user = create(:user,
-                  member_in_project: project,
-                  member_through_role: role)
-
-    allow(User).to receive(:current).and_return user
-
-    user
+  current_user do
+    create(:user,
+           member_with_roles: { project => role })
   end
-  let(:role) { create(:role, permissions: [:view_work_packages]) }
-  let(:role_without_permissions) { create(:role, permissions: []) }
+  let(:role) { create(:project_role, permissions: [:view_work_packages]) }
+  let(:role_without_permissions) { create(:project_role, permissions: []) }
   let(:project) { create(:project, public: false) }
-  let(:project2) { create(:project, public: false) }
-  let(:project3) { create(:project, public: false) }
-  let(:project4) { create(:project, public: false) }
-  let(:version) { create(:version, project:, sharing: 'system') }
+  let(:program) { create(:program, public: false) }
+  let(:portfolio) { create(:portfolio, public: false) }
+  let(:inaccessible_project) { create(:project, public: false) }
+  let(:version) { create(:version, project:) }
 
   subject(:response) { last_response }
 
-  describe '#get (index)' do
-    let(:get_path) { api_v3_paths.projects_by_version version.id }
-
-    context 'logged in user with permissions' do
+  shared_examples "get workspace's versions" do
+    context "logged in user with permissions" do
       before do
-        current_user
-
         # this is to be included
         create(:member, user: current_user,
-                        project: project2,
+                        project: program,
                         roles: [role])
         # this is to be included as the user is a member of the project, the
         # lack of permissions is irrelevant.
         create(:member, user: current_user,
-                        project: project3,
+                        project: portfolio,
                         roles: [role_without_permissions])
-        # project4 should NOT be included
-        project4
+        # inaccessible_project should NOT be included
+        inaccessible_project
 
         get get_path
       end
 
-      it_behaves_like 'API V3 collection response', 3, 3, 'Project'
-
-      it 'includes only the projects which the user can see' do
-        id_in_response = JSON.parse(response.body)['_embedded']['elements'].map { |p| p['id'] }
-
-        expect(id_in_response).to match_array [project.id, project2.id, project3.id]
+      it_behaves_like "API V3 collection response", 3, 3, "Portfolio" do
+        let(:elements) { [portfolio, program, project] }
       end
     end
 
-    context 'logged in user without permissions' do
+    context "logged in user without permissions" do
       let(:role) { role_without_permissions }
 
       before do
-        current_user
-
         get get_path
       end
 
-      it_behaves_like 'not found'
+      it_behaves_like "not found"
+    end
+  end
+
+  describe "#GET /api/v3/versions/:id/projects" do
+    it_behaves_like "get workspace's versions" do
+      let(:get_path) { api_v3_paths.projects_by_version version.id }
+    end
+  end
+
+  describe "#GET /api/v3/versions/:id/workspaces" do
+    it_behaves_like "get workspace's versions" do
+      let(:get_path) { api_v3_paths.workspaces_by_version version.id }
     end
   end
 end

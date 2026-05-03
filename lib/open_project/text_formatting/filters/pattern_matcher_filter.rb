@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,16 +34,18 @@ module OpenProject::TextFormatting
       # Skip text nodes that are within preformatted blocks
       PREFORMATTED_BLOCKS = %w(pre code).to_set
 
-      def self.matchers
-        [
-          OpenProject::TextFormatting::Matchers::ResourceLinksMatcher,
-          OpenProject::TextFormatting::Matchers::WikiLinksMatcher,
-          OpenProject::TextFormatting::Matchers::AttributeMacros
-        ]
+      class << self
+        def append_matcher(matcher)
+          matchers << matcher
+        end
+
+        def matchers
+          @matchers ||= []
+        end
       end
 
       def call
-        doc.search('.//text()').each do |node|
+        doc.search(".//text()").each do |node|
           next if has_ancestor?(node, PREFORMATTED_BLOCKS)
 
           self.class.matchers.each do |matcher|

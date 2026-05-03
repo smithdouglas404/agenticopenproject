@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { Board } from 'core-app/features/boards/board/board';
 import { Observable } from 'rxjs';
@@ -9,9 +9,14 @@ import { Observable } from 'rxjs';
             class="button last board--settings-dropdown toolbar-icon"
             boardsToolbarMenu
             [boardsToolbarMenu-resource]="board$ | async">
-      <op-icon icon-classes="button--icon icon-show-more"></op-icon>
+      <op-icon icon-classes="button--icon icon-show-more" />
     </button>
   `,
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BoardsMenuButtonComponent {
   @Input() board$:Observable<Board>;

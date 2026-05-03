@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,20 +27,25 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 <%= fields_for :pref, @user.pref, builder: TabularFormBuilder, lang: current_language do |pref_fields| %>
-  <%=
-    cell(
-      Settings::TimeZoneSettingCell,
-      "time_zone",
-      form: pref_fields,
-      container_class: (defined? input_size) ? "-#{input_size}" : "-wide"
-    )
-  %>
+  <%= render Settings::TimeZoneSettingComponent.new(
+    "time_zone",
+    form: pref_fields,
+    include_blank: false,
+    container_class: defined?(input_size) ? "-#{input_size}" : "-wide"
+  ) %>
   <div class="form--field">
-    <%= pref_fields.select :comments_sorting,
-                           [[t(:label_chronological_order), 'asc'],
-                            [t(:label_reverse_chronological_order), 'desc']],
-                           container_class: (defined? input_size) ? "-#{input_size}" : '' %>
+    <%= pref_fields.select :theme, theme_options_for_select, container_class: "-middle" %> <!-- TODO -->
+    <div class="form--field-instructions">
+      <%= I18n.t("activerecord.attributes.user_preference.mode_guideline") %>
+    </div>
   </div>
-  <div class="form--field"><%= pref_fields.check_box :warn_on_leaving_unsaved %></div>
-  <div class="form--field"><%= pref_fields.check_box :auto_hide_popups %></div>
+
+  <div class="form--field">
+    <%= pref_fields.check_box :disable_keyboard_shortcuts,
+                              label: I18n.t("activerecord.attributes.user_preference.disable_keyboard_shortcuts") %>
+    <span class="form--field-instructions">
+      <%= link_translate(:"user_preferences.disable_keyboard_shortcuts_caption",
+                         links: { docs_url: %i[shortcuts] }) %>
+    </span>
+  </div>
 <% end %>

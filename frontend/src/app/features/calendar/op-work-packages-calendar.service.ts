@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  Injector,
-} from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import {
   CalendarOptions,
   DatesSetArg,
@@ -18,12 +15,13 @@ import { ConfigurationService } from 'core-app/core/config/configuration.service
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
-import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
-import { StateService } from '@uirouter/angular';
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import { Observable } from 'rxjs';
-import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
+import { firstValueFrom, Observable } from 'rxjs';
+import {
+  WorkPackageViewFiltersService,
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { WorkPackagesListService } from 'core-app/features/work-packages/components/wp-list/wp-list.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -35,24 +33,35 @@ import {
   UrlParamsHelperService,
 } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { UIRouterGlobals } from '@uirouter/core';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
-import { WorkPackagesListChecksumService } from 'core-app/features/work-packages/components/wp-list/wp-list-checksum.service';
 import {
-  EventReceiveArg,
-  EventResizeDoneArg,
-} from '@fullcalendar/interaction';
-import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
+  WorkPackagesListChecksumService,
+} from 'core-app/features/work-packages/components/wp-list/wp-list-checksum.service';
+import { EventReceiveArg, EventResizeDoneArg } from '@fullcalendar/interaction';
+import {
+  HalResourceEditingService,
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
-import * as moment from 'moment';
-import { WorkPackageViewSelectionService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
+import moment from 'moment';
+import {
+  WorkPackageViewSelectionService,
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
 import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/link-handling';
-import { uiStateLinkClass } from 'core-app/features/work-packages/components/wp-fast-table/builders/ui-state-link-builder';
+import {
+  uiStateLinkClass,
+} from 'core-app/features/work-packages/components/wp-fast-table/builders/ui-state-link-builder';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
-import { WorkPackageViewContextMenu } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-view-context-menu.directive';
+import { States } from 'core-app/core/states/states.service';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
+import {
+  WorkPackageViewContextMenu,
+} from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-view-context-menu.directive';
 import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
 import { OpCalendarService } from 'core-app/features/calendar/op-calendar.service';
 import { WeekdayService } from 'core-app/core/days/weekday.service';
+import { IDay } from 'core-app/core/state/days/day.model';
+import { DayResourceService } from 'core-app/core/state/days/day.service';
+import allLocales from '@fullcalendar/core/locales-all';
 
 export interface CalendarViewEvent {
   el:HTMLElement;
@@ -66,9 +75,11 @@ interface CalendarOptionsWithDayGrid extends CalendarOptions {
 
 @Injectable()
 export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
-  static MAX_DISPLAYED = 100;
+  static MAX_DISPLAYED = 500;
 
   tooManyResultsText:string|null;
+
+  public nonWorkingDays:IDay[] = [];
 
   currentWorkPackages$:Observable<WorkPackageCollectionResource> = this
     .querySpace
@@ -78,11 +89,12 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       take(1),
     );
 
+  private readonly states = inject(States);
+
   constructor(
     private I18n:I18nService,
     private configuration:ConfigurationService,
     private sanitizer:DomSanitizer,
-    private $state:StateService,
     readonly injector:Injector,
     readonly schemaCache:SchemaCacheService,
     readonly toastService:ToastService,
@@ -93,28 +105,16 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     readonly querySpace:IsolatedQuerySpace,
     readonly apiV3Service:ApiV3Service,
     readonly halResourceService:HalResourceService,
-    readonly uiRouterGlobals:UIRouterGlobals,
     readonly timezoneService:TimezoneService,
+    readonly pathHelper:PathHelperService,
     readonly halEditing:HalResourceEditingService,
     readonly wpTableSelection:WorkPackageViewSelectionService,
     readonly contextMenuService:OPContextMenuService,
     readonly calendarService:OpCalendarService,
     readonly weekdayService:WeekdayService,
+    readonly dayService:DayResourceService,
   ) {
     super();
-  }
-
-  workPackagesListener$(callbackFn:() => void):void {
-    this
-      .querySpace
-      .results
-      .values$()
-      .pipe(
-        this.untilDestroyed(),
-      )
-      .subscribe(() => {
-        callbackFn();
-      });
   }
 
   calendarOptions(additionalOptions:CalendarOptions):CalendarOptions {
@@ -125,7 +125,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     if (this.isMilestone(workPackage)) {
       return workPackage.date;
     }
-    return workPackage[`${type}Date`] as string;
+    return workPackage[`${type}Date`];
   }
 
   isMilestone(workPackage:WorkPackageResource):boolean {
@@ -134,11 +134,13 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
   warnOnTooManyResults(collection:WorkPackageCollectionResource, isStatic = false):void {
     if (collection.count < collection.total) {
-      this.tooManyResultsText = this.I18n.t('js.calendar.too_many',
+      this.tooManyResultsText = this.I18n.t(
+        'js.calendar.too_many',
         {
           count: collection.total,
           max: OpWorkPackagesCalendarService.MAX_DISPLAYED,
-        });
+        },
+      );
     } else {
       this.tooManyResultsText = null;
     }
@@ -148,10 +150,21 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     }
   }
 
+  async requireNonWorkingDays(start:Date|string, end:Date|string) {
+    this.nonWorkingDays = await firstValueFrom(this.dayService.requireNonWorkingYears$(start, end));
+  }
+
+  isNonWorkingDay(date:Date|string):boolean {
+    const formatted = moment(date).format('YYYY-MM-DD');
+    return (this.nonWorkingDays.findIndex((el) => el.date === formatted) !== -1);
+  }
+
   async updateTimeframe(
     fetchInfo:{ start:Date, end:Date, timeZone:string },
     projectIdentifier:string|undefined,
   ):Promise<unknown> {
+    await this.requireNonWorkingDays(fetchInfo.start, fetchInfo.end);
+
     if (this.areFiltersEmpty && this.querySpace.query.value) {
       // nothing to do
       return Promise.resolve();
@@ -164,7 +177,6 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     if (this.urlParams.query_id) {
       queryId = this.urlParams.query_id as string;
     }
-
     // We derive the necessary props in the following cases
     // 1. We load a queryId with no props
     // 2. We load visible query props or empty
@@ -179,11 +191,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       // such filter exists yet, we need to add it to the existing filter set.
       // In order to do both, we first need to fetch the query as we cannot signal
       // to the backend yet to only add this one filter but leave the rest unchanged.
-      const initialQuery = await this
-        .apiV3Service
-        .queries
-        .find({ pageSize: 0 }, queryId)
-        .toPromise();
+      const initialQuery = await firstValueFrom(this.apiV3Service.queries.find({ pageSize: 0 }, queryId));
 
       queryProps = this.generateQueryProps(
         initialQuery,
@@ -195,7 +203,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       // There might also be a query_id but the settings persisted in it are overwritten by the props.
       if (this.urlParams.query_props) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const oldQueryProps:{ [key:string]:unknown } = JSON.parse(this.urlParams.query_props);
+        const oldQueryProps:Record<string, unknown> = JSON.parse(this.urlParams.query_props as string);
 
         // Update the date period of the calendar in the filter
         const newQueryProps = {
@@ -204,6 +212,8 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
             ...(oldQueryProps.f as QueryPropsFilter[]).filter((filter:QueryPropsFilter) => filter.n !== 'datesInterval'),
             OpWorkPackagesCalendarService.dateFilter(startDate, endDate),
           ],
+          pp: OpWorkPackagesCalendarService.MAX_DISPLAYED,
+          pa: 1,
         };
 
         queryProps = JSON.stringify(newQueryProps);
@@ -212,7 +222,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       }
     } else {
       queryProps = this.generateQueryProps(
-        this.querySpace.query.value as QueryResource,
+        this.querySpace.query.value!,
         startDate,
         endDate,
       );
@@ -221,10 +231,11 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       this.wpListChecksumService.set(queryId, queryProps);
     }
 
-    return this
+    return Promise.all([this
       .wpListService
       .fromQueryParams({ query_id: queryId, query_props: queryProps }, projectIdentifier || undefined)
-      .toPromise();
+      .toPromise(),
+    ]);
   }
 
   public generateQueryProps(
@@ -273,23 +284,29 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     this.wpTableSelection.setSelection(id, -1);
 
     // Only open the split view if already open, otherwise only clicking the details opens
-    if (onlyWhenOpen && !this.$state.includes('**.details.*')) {
+    if (onlyWhenOpen && !window.location.pathname.includes('/details/')) {
       return;
     }
 
-    void this.$state.go(
-      `${splitViewRoute(this.$state)}.tabs`,
-      { workPackageId: id, tabIdentifier: 'overview' },
-    );
+    this.visitSplitViewLink(resolveRoutingId(this.states, id));
+  }
+
+  public openSplitCreate(extraParams?:Record<string, string>):void {
+    this.visitSplitViewLink('new', extraParams);
+  }
+
+  private visitSplitViewLink(id:string, extraParams?:Record<string, string>):void {
+    const basePath = window.location.pathname.replace(/\/details\/.*$/, '');
+    const params = new URLSearchParams(window.location.search);
+    if (extraParams) {
+      Object.entries(extraParams).forEach(([key, value]) => params.set(key, value));
+    }
+    Turbo.visit(`${basePath}/details/${id}?${params.toString()}`, { frame: 'content-bodyRight', action: 'advance' });
   }
 
   public openFullView(id:string):void {
     this.wpTableSelection.setSelection(id, -1);
-
-    void this.$state.go(
-      'work-packages.show',
-      { workPackageId: id },
-    );
+    Turbo.visit(this.pathHelper.workPackagePath(resolveRoutingId(this.states, id)));
   }
 
   public onCardClicked({ workPackageId, event }:{ workPackageId:string, event:MouseEvent }):void {
@@ -325,13 +342,14 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
     event.preventDefault();
 
-    const handler = new WorkPackageViewContextMenu(this.injector, workPackageId, jQuery(event.target as HTMLElement));
+    const handler = new WorkPackageViewContextMenu(this.injector, workPackageId, event.target as HTMLElement);
     this.contextMenuService.show(handler, event);
   }
 
   private defaultOptions():CalendarOptionsWithDayGrid {
     return {
       editable: false,
+      locales: allLocales,
       locale: this.I18n.locale,
       fixedWeekCount: false,
       firstDay: this.configuration.startOfWeek(),
@@ -345,11 +363,12 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       initialDate: this.initialDate,
       initialView: this.initialView,
       datesSet: (dates) => this.updateDateParam(dates),
-      dayHeaderClassNames: (data:DayHeaderContentArg) => this.calendarService.applyNonWorkingDay(data),
-      dayCellClassNames: (data:DayCellContentArg) => this.calendarService.applyNonWorkingDay(data),
-      dayGridClassNames: (data:DayCellContentArg) => this.calendarService.applyNonWorkingDay(data),
-      slotLaneClassNames: (data:SlotLaneContentArg) => this.calendarService.applyNonWorkingDay(data),
-      slotLabelClassNames: (data:SlotLabelContentArg) => this.calendarService.applyNonWorkingDay(data),
+      dayHeaderClassNames: (data:DayHeaderContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
+      dayCellClassNames: (data:DayCellContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
+      dayGridClassNames: (data:DayCellContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
+      slotLaneClassNames: (data:SlotLaneContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
+      slotLabelClassNames: (data:SlotLabelContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
+      dayHeaderContent: (data:DayHeaderContentArg) => this.calendarService.dayHeaderContent(data),
     };
   }
 
@@ -387,8 +406,22 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       && !this.urlParams.query_props;
   }
 
-  private get urlParams() {
-    return this.uiRouterGlobals.params;
+  public get urlParams():{
+    query_id?:string;
+    query_props?:string;
+    cdate?:string;
+    cview?:string;
+  } {
+    const search = new URLSearchParams(window.location.search);
+    // Extract query_id from path-based routing (e.g. /calendars/<id>, /team_planners/<id>).
+    const match = /\/(?:calendars|team_planners)\/([^/]+)/.exec(window.location.pathname);
+    const rawId = match?.[1];
+    return {
+      query_id: rawId === 'new' ? undefined : rawId,
+      query_props: search.get('query_props') ?? undefined,
+      cdate: search.get('cdate') ?? undefined,
+      cview: search.get('cview') ?? undefined,
+    };
   }
 
   private get areFiltersEmpty():boolean {
@@ -405,30 +438,90 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
   }
 
   private updateDateParam(dates:DatesSetArg) {
-    void this.$state.go(
-      '.',
-      {
-        cdate: this.timezoneService.formattedISODate(dates.view.currentStart),
-        cview: dates.view.type,
-      },
-      {
-        custom: { notify: false },
-      },
-    );
+    const url = new URL(window.location.href);
+
+    // Don't push a history entry when a split view is open: the date params are already
+    // encoded in the details URL, and pushing here would add a spurious details-URL entry
+    // that browser-back would restore (with the split view still visible).
+    if (url.pathname.includes('/details/')) {
+      return;
+    }
+
+    const newDate = this.timezoneService.formattedISODate(dates.view.calendar.getDate());
+    const newView = (dates.view as unknown as { type:string }).type;
+
+    if (url.searchParams.get('cdate') === newDate && url.searchParams.get('cview') === newView) {
+      return;
+    }
+
+    url.searchParams.set('cdate', newDate);
+    url.searchParams.set('cview', newView);
+    // Use a Turbo-compatible state so that browser history.back() triggers Turbo's
+    // restoration visit (full page reload), which correctly resets any open split view frame.
+    window.history.pushState({ turbo: { restorationIdentifier: crypto.randomUUID() } }, '', url);
   }
 
   updateDates(resizeInfo:EventResizeDoneArg|EventDropArg|EventReceiveArg, dragged?:boolean):ResourceChangeset<WorkPackageResource> {
     const workPackage = resizeInfo.event.extendedProps.workPackage as WorkPackageResource;
-    const changeset = this.halEditing.edit(workPackage);
-    if (!workPackage.ignoreNonWorkingDays && workPackage.duration && dragged) {
-      changeset.setValue('duration', workPackage.duration);
-    } else {
-      const due = moment(resizeInfo.event.endStr)
-        .subtract(1, 'day')
-        .format('YYYY-MM-DD');
-      changeset.setValue('dueDate', due);
+    const startDate = resizeInfo.event.startStr;
+    const endDate = moment(resizeInfo.event.endStr).subtract(1, 'day').format('YYYY-MM-DD');
+
+    // When resizing an event, or if it's a milestone, set work package dates to
+    // event dates
+    if (!dragged || this.isMilestone(workPackage)) {
+      return this.changeToDates(workPackage, startDate, endDate);
     }
-    changeset.setValue('startDate', resizeInfo.event.startStr);
+
+    // When drag&drop, adjust existing dates and duration of work package,
+    //
+    // In TeamPlanner, work packages can be moved from a work package list to
+    // the calendar. In this case, there is no `delta` property (EventReceiveArg
+    // event type) and dates need to set, even if not set initially.
+    //
+    // When moving inside the calendar, event is an EventDropArg and `delta`
+    // property is present. Dates must be changed only if they are already set.
+    const isMovingInSameCalendar = !!(resizeInfo as EventDropArg).delta;
+    if (isMovingInSameCalendar) {
+      return this.moveToDates(workPackage, startDate, endDate);
+    }
+    return this.moveToStartDate(workPackage, startDate);
+  }
+
+  private changeToDates(workPackage:WorkPackageResource, startDate:string, endDate:string):ResourceChangeset<WorkPackageResource> {
+    const changeset = this.halEditing.edit(workPackage);
+    changeset.setValue('startDate', startDate);
+    changeset.setValue('dueDate', endDate);
+
+    return changeset;
+  }
+
+  private moveToDates(workPackage:WorkPackageResource, startDate:string, endDate:string):ResourceChangeset<WorkPackageResource> {
+    const changeset = this.halEditing.edit(workPackage);
+
+    // Due to non-working days, we can't directly set start and due date when
+    // drag-n-dropping work packages. Instead set duration (if present) and
+    // start date to get due date recomputed.
+    if (workPackage.duration) {
+      changeset.setValue('duration', workPackage.duration);
+    }
+
+    // Keep dates unset if they are not set
+    if (workPackage.startDate) {
+      changeset.setValue('startDate', startDate);
+    } else {
+      changeset.setValue('dueDate', endDate);
+    }
+
+    return changeset;
+  }
+
+  private moveToStartDate(workPackage:WorkPackageResource, startDate:string):ResourceChangeset<WorkPackageResource> {
+    const changeset = this.halEditing.edit(workPackage);
+
+    changeset.setValue('startDate', startDate);
+    // keep duration if present to deal with non-working days, or defaults to 1 day
+    changeset.setValue('duration', workPackage.duration || 'P1D');
+
     return changeset;
   }
 }

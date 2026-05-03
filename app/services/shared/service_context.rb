@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,19 +32,19 @@ module Shared
   module ServiceContext
     private
 
-    def in_context(model, send_notifications = true, &)
+    def in_context(model, send_notifications: nil, &)
       if model
-        in_mutex_context(model, send_notifications, &)
+        in_mutex_context(model, send_notifications:, &)
       else
-        in_user_context(send_notifications, &)
+        in_user_context(send_notifications:, &)
       end
     end
 
-    def in_mutex_context(model, send_notifications = true, &)
+    def in_mutex_context(model, send_notifications: nil, &)
       result = nil
 
       OpenProject::Mutex.with_advisory_lock_transaction(model) do
-        result = without_context_transaction(send_notifications, &)
+        result = without_context_transaction(send_notifications:, &)
 
         raise ActiveRecord::Rollback if result.failure?
       end
@@ -50,11 +52,11 @@ module Shared
       result
     end
 
-    def in_user_context(send_notifications = true, &)
+    def in_user_context(send_notifications: nil, &)
       result = nil
 
       ActiveRecord::Base.transaction do
-        result = without_context_transaction(send_notifications, &)
+        result = without_context_transaction(send_notifications:, &)
 
         raise ActiveRecord::Rollback if result.failure?
       end
@@ -62,7 +64,7 @@ module Shared
       result
     end
 
-    def without_context_transaction(send_notifications, &)
+    def without_context_transaction(send_notifications:, &)
       User.execute_as user do
         Journal::NotificationConfiguration.with(send_notifications, &)
       end

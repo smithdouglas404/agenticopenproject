@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,30 +26,21 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  Injector,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injector, ViewChild } from '@angular/core';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import { JobStatusModalComponent } from 'core-app/features/job-status/job-status-modal/job-status.modal';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { OpenProjectBackupService } from 'core-app/core/backup/op-backup.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { HalError } from 'core-app/features/hal/services/hal-error';
-
-export const backupSelector = 'backup';
+import { JobStatusModalService } from 'core-app/features/job-status/job-status-modal.service';
 
 @Component({
-  selector: backupSelector,
+  selector: 'opce-backup',
   templateUrl: './backup.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class BackupComponent implements AfterViewInit {
   public text = {
@@ -65,15 +56,13 @@ export class BackupComponent implements AfterViewInit {
     attachmentsDisabled: this.i18n.t('js.backup.attachments_disabled'),
   };
 
-  public jobStatusId:string = this.elementRef.nativeElement.dataset.jobStatusId;
+  public jobStatusId = this.elementRef.nativeElement.dataset.jobStatusId!;
 
-  public lastBackupDate:string = this.elementRef.nativeElement.dataset.lastBackupDate;
+  public lastBackupDate = this.elementRef.nativeElement.dataset.lastBackupDate!;
 
-  public lastBackupAttachmentId:string = this.elementRef.nativeElement.dataset.lastBackupAttachmentId;
+  public lastBackupAttachmentId = this.elementRef.nativeElement.dataset.lastBackupAttachmentId!;
 
-  public mayIncludeAttachments:boolean = this.elementRef.nativeElement.dataset.mayIncludeAttachments != 'false';
-
-  public isInProgress = false;
+  public mayIncludeAttachments = this.elementRef.nativeElement.dataset.mayIncludeAttachments !== 'false';
 
   public includeAttachments = true;
 
@@ -81,15 +70,15 @@ export class BackupComponent implements AfterViewInit {
 
   @InjectField() opBackup:OpenProjectBackupService;
 
-  @ViewChild('backupTokenInput') backupTokenInput:ElementRef;
+  @ViewChild('backupTokenInput') backupTokenInput:ElementRef<HTMLInputElement>;
 
   constructor(
-    readonly elementRef:ElementRef,
+    readonly elementRef:ElementRef<HTMLElement>,
     public injector:Injector,
     protected i18n:I18nService,
     protected toastService:ToastService,
-    protected opModalService:OpModalService,
     protected pathHelper:PathHelperService,
+    protected jobStatusModalService:JobStatusModalService,
   ) {
     this.includeAttachments = this.mayIncludeAttachments;
   }
@@ -107,15 +96,11 @@ export class BackupComponent implements AfterViewInit {
     return this.pathHelper.attachmentDownloadPath(this.lastBackupAttachmentId, undefined);
   }
 
-  public includeAttachmentsDefault():boolean {
-    return this.mayIncludeAttachments;
-  }
-
   public includeAttachmentsTitle():string {
     return this.mayIncludeAttachments ? '' : this.text.attachmentsDisabled;
   }
 
-  public triggerBackup(event?:JQuery.TriggeredEvent) {
+  public triggerBackup(event?:Event) {
     if (event) {
       event.stopPropagation();
       event.preventDefault();
@@ -129,8 +114,8 @@ export class BackupComponent implements AfterViewInit {
       .triggerBackup(backupToken, this.includeAttachments)
       .subscribe(
         (resp:HalResource) => {
-          this.jobStatusId = resp.jobStatusId;
-          this.opModalService.show(JobStatusModalComponent, 'global', { jobId: resp.jobStatusId });
+          this.jobStatusId = resp.jobStatusId as string;
+          this.jobStatusModalService.show(resp.jobStatusId as string);
         },
         (error:HalError) => {
           this.toastService.addError(error.message);

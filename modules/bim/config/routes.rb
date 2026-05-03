@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,12 +26,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-OpenProject::Application.routes.draw do
-  scope '', as: 'bcf' do
-    mount ::Bim::Bcf::API::Root => '/api/bcf'
+Rails.application.routes.draw do
+  scope "", as: "bcf" do
+    mount Bim::Bcf::API::Root => "/api/bcf"
 
-    scope 'projects/:project_id', as: 'project' do
-      resources :issues, controller: 'bim/bcf/issues' do
+    scope "projects/:project_id", as: "project" do
+      get "bcf/menu" => "bim/menus#show"
+
+      resources :issues, controller: "bim/bcf/issues", except: :index do
         get :upload, action: :upload, on: :collection
         post :prepare_import, action: :prepare_import, on: :collection
         post :configure_import, action: :configure_import, on: :collection
@@ -39,10 +41,10 @@ OpenProject::Application.routes.draw do
       end
 
       # IFC viewer frontend
-      get 'bcf(/*state)', to: 'bim/ifc_models/ifc_viewer#show', as: :frontend
+      get "bcf(/*state)", to: "bim/ifc_models/ifc_viewer#show", as: :frontend
 
       # IFC model management
-      resources :ifc_models, controller: 'bim/ifc_models/ifc_models' do
+      resources :ifc_models, controller: "bim/ifc_models/ifc_models" do
         collection do
           get :defaults
           get :direct_upload_finished

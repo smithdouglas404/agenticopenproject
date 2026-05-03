@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # --copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,56 +28,56 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::Values::PropertyDateRepresenter, 'rendering' do
+RSpec.describe API::V3::Values::PropertyDateRepresenter, "rendering" do
   subject(:generated) { representer.to_json }
 
-  let(:property) { 'abc' }
+  let(:property) { "abc" }
   let(:date_value) { Date.current }
   let(:key_value) { Struct.new(:property, :value, keyword_init: true).new(property:, value: date_value) }
-  let(:self_link) { 'api/bogus/value' }
+  let(:self_link) { "api/bogus/value" }
   let(:representer) do
     described_class.new key_value, self_link:
   end
 
-  describe 'self link' do
-    it_behaves_like 'has an untitled link' do
-      let(:link) { 'self' }
+  describe "self link" do
+    it_behaves_like "has an untitled link" do
+      let(:link) { "self" }
       let(:href) { self_link }
     end
   end
 
-  describe 'properties' do
-    describe '_type' do
-      it_behaves_like 'property', :_type do
-        let(:value) { 'Values::Property' }
+  describe "properties" do
+    describe "_type" do
+      it_behaves_like "property", :_type do
+        let(:value) { "Values::Property" }
       end
     end
 
-    describe 'property' do
-      it_behaves_like 'property', :property do
+    describe "property" do
+      it_behaves_like "property", :property do
         let(:value) { property }
       end
 
-      context 'with a snake_case property' do
-        let(:property) { 'snake_case' }
+      context "with a snake_case property" do
+        let(:property) { "snake_case" }
 
-        it_behaves_like 'property', :property do
-          let(:value) { 'snakeCase' }
+        it_behaves_like "property", :property do
+          let(:value) { "snakeCase" }
         end
       end
     end
 
-    describe 'value' do
-      it_behaves_like 'date property', :value do
+    describe "value" do
+      it_behaves_like "date property", :value do
         let(:value) { date_value }
       end
 
-      context 'with an empty value' do
+      context "with an empty value" do
         let(:date_value) { nil }
 
-        it_behaves_like 'date property', :value do
+        it_behaves_like "date property", :value do
           let(:value) { nil }
         end
       end

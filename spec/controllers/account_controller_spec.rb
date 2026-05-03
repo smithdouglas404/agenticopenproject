@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,331 +28,344 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe AccountController,
-         skip_2fa_stage: true, # Prevent redirects to 2FA stage
-         type: :controller do
-  class UserHook < OpenProject::Hook::ViewListener
-    attr_reader :registered_user, :first_login_user
+RSpec.describe AccountController, :skip_2fa_stage do
+  let(:user_hook_class) do
+    Class.new(OpenProject::Hook::ViewListener) do
+      attr_reader :registered_user, :first_login_user
 
-    def user_registered(context)
-      @registered_user = context[:user]
-    end
+      def user_registered(context)
+        @registered_user = context[:user]
+      end
 
-    def user_first_login(context)
-      @first_login_user = context[:user]
-    end
+      def user_first_login(context)
+        @first_login_user = context[:user]
+      end
 
-    def reset!
-      @registered_user = nil
-      @first_login_user = nil
+      def reset!
+        @registered_user = nil
+        @first_login_user = nil
+      end
     end
   end
 
-  let(:hook) { UserHook.instance }
+  let(:hook) { user_hook_class.instance }
   let(:user) { build_stubbed(:user) }
 
   before do
     hook.reset!
   end
 
-  context 'GET #login' do
-    let(:setup) {}
+  describe "GET #login" do
     let(:params) { {} }
 
-    before do
-      setup
+    context "when the user is not already logged in" do
+      before do
+        get :login, params:
+      end
 
-      get :login, params:
-    end
-
-    it 'renders the view' do
-      expect(response).to render_template 'login'
-      expect(response).to be_successful
-    end
-
-    context 'user already logged in' do
-      let(:setup) { login_as user }
-
-      it 'redirects to home' do
-        expect(response)
-          .to redirect_to my_page_path
+      it "renders the view" do
+        expect(response).to render_template "login"
+        expect(response).to be_successful
       end
     end
 
-    context 'user already logged in and back url present' do
-      let(:setup) { login_as user }
-      let(:params) { { back_url: "/projects" } }
+    context "when the user is already logged in" do
+      before do
+        login_as user
 
-      it 'redirects to back_url value' do
-        expect(response)
-          .to redirect_to projects_path
+        get :login, params:
       end
-    end
 
-    context 'user already logged in and invalid back url present' do
-      let(:setup) { login_as user }
-      let(:params) { { back_url: 'http://test.foo/work_packages/show/1' } }
+      it "redirects to home" do
+        expect(response)
+          .to redirect_to home_path
+      end
 
-      it 'redirects to home' do
-        expect(response).to redirect_to my_page_path
+      context "and a valid back url is present" do
+        let(:params) { { back_url: "/projects" } }
+
+        it "redirects to back_url value" do
+          expect(response)
+            .to redirect_to projects_path
+        end
+      end
+
+      context "and an invalid back url present" do
+        let(:params) { { back_url: "http://test.foo/work_packages/show/1" } }
+
+        it "redirects to home" do
+          expect(response).to redirect_to home_path
+        end
       end
     end
   end
 
-  context 'POST #login' do
-    shared_let(:admin) { create :admin }
+  describe "GET #internal_login" do
+    shared_let(:admin) { create(:admin) }
 
-    describe 'wrong password' do
-      it 'redirects back to login' do
-        post :login, params: { username: 'admin', password: 'bad' }
-        expect(response).to be_successful
-        expect(response).to render_template 'login'
-        expect(flash[:error]).to include 'Invalid user or password'
+    context "when direct login enabled", with_config: { omniauth_direct_login_provider: "some_provider" } do
+      it "allows to login internally using a special route" do
+        get :internal_login
+
+        expect(response).to render_template "account/login"
+      end
+
+      it "allows to post to login" do
+        post :login, params: { username: admin.login, password: "adminADMIN!" }
+        expect(response).to redirect_to home_path
       end
     end
 
-    context 'with first login' do
+    context "when direct login disabled" do
+      it "the internal login route is inactive" do
+        get :internal_login
+
+        expect(response).to have_http_status(:not_found)
+        expect(session[:internal_login]).not_to be_present
+      end
+    end
+  end
+
+  describe "POST #login" do
+    shared_let(:admin) { create(:admin) }
+
+    describe "wrong password" do
+      it "redirects back to login" do
+        post :login, params: { username: "admin", password: "bad" }
+        expect(response).to have_http_status :unprocessable_entity
+        expect(response).to render_template "login"
+        expect(flash[:error]).to include "Invalid user or password"
+      end
+    end
+
+    context "with first login" do
       before do
         admin.update first_login: true
 
-        post :login, params: { username: admin.login, password: 'adminADMIN!' }
+        post :login, params: { username: admin.login, password: "adminADMIN!" }
       end
 
-      it 'redirect to default path with ?first_time_user=true' do
+      it "redirect to default path with ?first_time_user=true" do
         expect(response).to redirect_to "/?first_time_user=true"
       end
 
-      it 'calls the user_first_login hook' do
+      it "calls the user_first_login hook" do
         expect(hook.first_login_user).to eq admin
       end
     end
 
-    context 'without first login' do
+    context "without first login" do
       before do
-        post :login, params: { username: admin.login, password: 'adminADMIN!' }
+        post :login, params: { username: admin.login, password: "adminADMIN!" }
       end
 
-      it 'redirect to the my page' do
-        expect(response).to redirect_to "/my/page"
+      it "redirect to the home page" do
+        expect(response).to redirect_to home_path
       end
 
-      it 'does not call the user_first_login hook' do
+      context "with login redirect set", with_settings: { after_login_default_redirect_url: "/my/page" } do
+        it "redirect to the my page" do
+          expect(response).to redirect_to my_page_path
+        end
+      end
+
+      it "does not call the user_first_login hook" do
         expect(hook.first_login_user).to be_nil
       end
     end
 
-    describe 'User logging in with back_url' do
-      it 'redirects to a relative path' do
+    describe "User logging in with back_url" do
+      it "redirects to a relative path" do
         post :login,
-             params: { username: admin.login, password: 'adminADMIN!', back_url: '/' }
+             params: { username: admin.login, password: "adminADMIN!", back_url: "/" }
         expect(response).to redirect_to root_path
       end
 
-      it 'redirects to an absolute path given the same host' do
+      it "redirects to an absolute path given the same host" do
         # note: test.host is the hostname during tests
         post :login,
              params: {
                username: admin.login,
-               password: 'adminADMIN!',
-               back_url: 'http://test.host/work_packages/show/1'
+               password: "adminADMIN!",
+               back_url: "http://test.host/work_packages/show/1"
              }
-        expect(response).to redirect_to '/work_packages/show/1'
+        expect(response).to redirect_to "/work_packages/show/1"
       end
 
-      it 'does not redirect to another host' do
+      it "does not redirect to another host" do
         post :login,
              params: {
                username: admin.login,
-               password: 'adminADMIN!',
-               back_url: 'http://test.foo/work_packages/show/1'
+               password: "adminADMIN!",
+               back_url: "http://test.foo/work_packages/show/1"
              }
-        expect(response).to redirect_to my_page_path
+        expect(response).to redirect_to home_path
       end
 
-      it 'does not redirect to another host with a protocol relative url' do
+      it "does not redirect to another host with a protocol relative url" do
         post :login,
              params: {
                username: admin.login,
-               password: 'adminADMIN!',
-               back_url: '//test.foo/fake'
+               password: "adminADMIN!",
+               back_url: "//test.foo/fake"
              }
-        expect(response).to redirect_to my_page_path
+        expect(response).to redirect_to home_path
       end
 
-      it 'does not redirect to logout' do
+      it "does not redirect to logout" do
         post :login,
              params: {
                username: admin.login,
-               password: 'adminADMIN!',
-               back_url: '/logout'
+               password: "adminADMIN!",
+               back_url: "/logout"
              }
-        expect(response).to redirect_to my_page_path
+        expect(response).to redirect_to home_path
       end
 
-      context 'with an auth source',
-              with_settings: { self_registration: Setting::SelfRegistration.disabled } do
-        let(:auth_source) { create :ldap_auth_source }
-
-        it 'creates the user on the fly' do
-          allow(AuthSource).to receive(:authenticate).and_return(login: 'foo',
-                                                                 firstname: 'Foo',
-                                                                 lastname: 'Smith',
-                                                                 mail: 'foo@bar.com',
-                                                                 auth_source_id: auth_source.id)
-          post :login, params: { username: 'foo', password: 'bar' }
-
-          expect(response).to redirect_to home_url(first_time_user: true)
-          user = User.find_by(login: 'foo')
-          expect(user).to be_an_instance_of User
-          expect(user.auth_source_id).to eq(auth_source.id)
-          expect(user.current_password).to be_nil
-        end
-      end
-
-      context 'with a relative url root' do
-        before do
-          @old_relative_url_root = OpenProject::Configuration['rails_relative_url_root']
-          OpenProject::Configuration['rails_relative_url_root'] = '/openproject'
+      context "with a relative url root" do
+        around do |example|
+          old_relative_url_root = OpenProject::Configuration["rails_relative_url_root"]
+          OpenProject::Configuration["rails_relative_url_root"] = "/openproject"
+          example.run
+        ensure
+          OpenProject::Configuration["rails_relative_url_root"] = old_relative_url_root
         end
 
-        after do
-          OpenProject::Configuration['rails_relative_url_root'] = @old_relative_url_root
-        end
-
-        it 'redirects to the same subdirectory with an absolute path' do
+        it "redirects to the same subdirectory with an absolute path" do
           post :login,
                params: {
                  username: admin.login,
-                 password: 'adminADMIN!',
-                 back_url: 'http://test.host/openproject/work_packages/show/1'
+                 password: "adminADMIN!",
+                 back_url: "http://test.host/openproject/work_packages/show/1"
                }
-          expect(response).to redirect_to '/openproject/work_packages/show/1'
+          expect(response).to redirect_to "/openproject/work_packages/show/1"
         end
 
-        it 'redirects to the same subdirectory with a relative path' do
+        it "redirects to the same subdirectory with a relative path" do
           post :login,
                params: {
                  username: admin.login,
-                 password: 'adminADMIN!',
-                 back_url: '/openproject/work_packages/show/1'
+                 password: "adminADMIN!",
+                 back_url: "/openproject/work_packages/show/1"
                }
-          expect(response).to redirect_to '/openproject/work_packages/show/1'
+          expect(response).to redirect_to "/openproject/work_packages/show/1"
         end
 
-        it 'does not redirect to another subdirectory with an absolute path' do
+        it "does not redirect to another subdirectory with an absolute path" do
           post :login,
                params: {
                  username: admin.login,
-                 password: 'adminADMIN!',
-                 back_url: 'http://test.host/foo/work_packages/show/1'
+                 password: "adminADMIN!",
+                 back_url: "http://test.host/foo/work_packages/show/1"
                }
-          expect(response).to redirect_to my_page_path
+          expect(response).to redirect_to home_path
         end
 
-        it 'does not redirect to another subdirectory with a relative path' do
+        it "does not redirect to another subdirectory with a relative path" do
           post :login,
                params: {
                  username: admin.login,
-                 password: 'adminADMIN!',
-                 back_url: '/foo/work_packages/show/1'
+                 password: "adminADMIN!",
+                 back_url: "/foo/work_packages/show/1"
                }
-          expect(response).to redirect_to my_page_path
+          expect(response).to redirect_to home_path
         end
 
-        it 'does not redirect to another subdirectory by going up the path hierarchy' do
+        it "does not redirect to another subdirectory by going up the path hierarchy" do
           post :login,
                params: {
                  username: admin.login,
-                 password: 'adminADMIN!',
-                 back_url: 'http://test.host/openproject/../foo/work_packages/show/1'
+                 password: "adminADMIN!",
+                 back_url: "http://test.host/openproject/../foo/work_packages/show/1"
                }
-          expect(response).to redirect_to my_page_path
+          expect(response).to redirect_to home_path
         end
 
-        it 'does not redirect to another subdirectory with a protocol relative path' do
+        it "does not redirect to another subdirectory with a protocol relative path" do
           post :login,
                params: {
                  username: admin.login,
-                 password: 'adminADMIN!',
-                 back_url: '//test.host/foo/work_packages/show/1'
+                 password: "adminADMIN!",
+                 back_url: "//test.host/foo/work_packages/show/1"
                }
-          expect(response).to redirect_to my_page_path
+          expect(response).to redirect_to home_path
         end
       end
     end
 
-    context 'GET #logout' do
-      shared_let(:admin) { create :admin }
+    describe "GET #logout" do
+      shared_let(:admin) { create(:admin) }
 
-      it 'calls reset_session' do
-        expect(@controller).to receive(:reset_session).once
-
+      it "calls reset_session" do
+        allow(controller).to receive(:reset_session)
         login_as admin
+
         get :logout
+
+        expect(controller).to have_received(:reset_session).once
         expect(response).to be_redirect
       end
 
-      context 'with a user with an SSO provider attached' do
-        let(:user) { build_stubbed :user, login: 'bob', identity_url: 'saml:foo' }
+      context "with a user with an SSO provider attached" do
+        let(:user) { build_stubbed(:user, login: "bob", authentication_provider: sso_provider) }
         let(:slo_callback) { nil }
         let(:sso_provider) do
-          { name: 'saml',  single_sign_out_callback: slo_callback }
+          { name: "saml", single_sign_out_callback: slo_callback }
         end
 
         before do
-          allow(::OpenProject::Plugins::AuthPlugin)
+          allow(OpenProject::Plugins::AuthPlugin)
             .to(receive(:login_provider_for))
             .and_return(sso_provider)
           login_as user
         end
 
-        context 'with no provider' do
-          it 'will redirect to default' do
+        context "with no provider" do
+          it "redirects to default" do
             get :logout
             expect(response).to redirect_to home_path
           end
         end
 
-        context 'with a redirecting callback' do
+        context "with a redirecting callback" do
           let(:slo_callback) do
             Proc.new do |prev_session, prev_user|
-              if prev_session[:foo] && prev_user[:login] = 'bob'
-                redirect_to '/login'
+              if prev_session[:foo] && prev_user[:login] = "bob"
+                redirect_to "/login"
               end
             end
           end
 
-          context 'with direct login and redirecting callback',
-                  with_settings: { login_required?: true },
-                  with_config: { omniauth_direct_login_provider: 'foo' } do
-            it 'will still call the callback' do
+          context "with direct login and redirecting callback",
+                  with_config: { omniauth_direct_login_provider: "foo" }, with_settings: { login_required?: true } do
+            it "stills call the callback" do
               # Set the previous session
-              session[:foo] = 'bar'
+              session[:foo] = "bar"
 
               get :logout
-              expect(response).to redirect_to '/login'
+              expect(response).to redirect_to "/login"
 
               # Expect session to be cleared
               expect(session[:foo]).to be_nil
             end
           end
 
-          it 'will call the callback' do
+          it "calls the callback" do
             # Set the previous session
-            session[:foo] = 'bar'
+            session[:foo] = "bar"
 
             get :logout
-            expect(response).to redirect_to '/login'
+            expect(response).to redirect_to "/login"
 
             # Expect session to be cleared
             expect(session[:foo]).to be_nil
           end
         end
 
-        context 'with a no-op callback' do
-          it 'will redirect to default if the callback does nothing' do
+        context "with a no-op callback" do
+          it "redirects to default if the callback does nothing" do
             was_called = false
             sso_provider[:single_sign_out_callback] = Proc.new do
               was_called = true
@@ -362,10 +377,10 @@ describe AccountController,
           end
         end
 
-        context 'with a provider that does not have slo_callback' do
+        context "with a provider that does not have slo_callback" do
           let(:slo_callback) { nil }
 
-          it 'will redirect to default if the callback does nothing' do
+          it "redirects to default if the callback does nothing" do
             get :logout
             expect(response).to redirect_to home_path
           end
@@ -373,189 +388,340 @@ describe AccountController,
       end
     end
 
-    describe 'for a user trying to log in via an API request' do
+    describe "for a user trying to log in via an API request" do
       before do
         post :login,
              params: {
                username: admin.login,
-               password: 'adminADMIN!'
+               password: "adminADMIN!"
              },
              format: :json
       end
 
-      it 'returns a 410' do
-        expect(response.code.to_s).to eql('410')
+      it "returns a 410" do
+        expect(response.code.to_s).to eql("410")
       end
 
-      it 'does not login the user' do
-        expect(@controller.send(:current_user).anonymous?).to be_truthy
+      it "does not login the user" do
+        expect(controller.send(:current_user)).to be_anonymous
       end
     end
 
-    context 'with disabled password login' do
+    context "with disabled password login" do
       before do
         allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(true)
 
         post :login
       end
 
-      it 'is not found' do
-        expect(response.status).to eq 404
-      end
-    end
-
-    context 'with an auth source',
-            with_settings: { self_registration: Setting::SelfRegistration.disabled } do
-      let(:auth_source) { create :ldap_auth_source }
-
-      let(:user_attributes) do
-        {
-          login: 's.scallywag',
-          firstname: 'Scarlet',
-          lastname: 'Scallywag',
-          mail: 's.scallywag@openproject.com',
-          auth_source_id: auth_source.id
-        }
-      end
-
-      let(:authenticate) { true }
-
-      before do
-        allow(AuthSource).to receive(:authenticate).and_return(authenticate ? user_attributes : nil)
-
-        # required so that the register view can be rendered
-        allow_any_instance_of(User).to receive(:change_password_allowed?).and_return(false)
-      end
-
-      context 'with user limit reached' do
-        render_views
-
-        before do
-          allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(true)
-
-          post :login, params: { username: 'foo', password: 'bar' }
-        end
-
-        it 'shows the user limit error' do
-          expect(response.body).to have_text "User limit reached"
-        end
-
-        it 'renders the register form' do
-          expect(response.body).to include "/account/register"
-        end
+      it "is not found" do
+        expect(response).to have_http_status :not_found
       end
     end
   end
 
-  describe '#login with omniauth_direct_login enabled',
-           with_config: { omniauth_direct_login_provider: 'some_provider' } do
-    describe 'GET' do
-      it 'redirects to some_provider' do
+  describe "#login with omniauth_direct_login enabled",
+           with_config: { omniauth_direct_login_provider: "some_provider" } do
+    describe "GET" do
+      it "redirects to some_provider" do
         get :login
 
-        expect(response).to redirect_to '/auth/some_provider'
+        expect(response).to redirect_to "/auth/some_provider"
       end
     end
 
-    describe 'POST' do
-      it 'redirects to some_provider' do
-        post :login, params: { username: 'foo', password: 'bar' }
+    describe "POST" do
+      shared_let(:admin) { create(:admin) }
 
-        expect(response).to redirect_to '/auth/some_provider'
+      it "allows to login internally still" do
+        post :login, params: { username: admin.login, password: "adminADMIN!" }
+        expect(response).to redirect_to home_path
       end
     end
   end
 
-  describe 'Login for user with forced password change' do
+  describe "#login with omniauth_direct_login_provider set but empty",
+           with_config: { omniauth_direct_login_provider: "" } do
+    describe "GET" do
+      it "does not redirect to some_provider" do
+        get :login
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
+  describe "Login for user with forced password change" do
     let(:admin) { create(:admin, force_password_change: true) }
 
     before do
-      allow_any_instance_of(User).to receive(:change_password_allowed?).and_return(false)
+      allow_any_instance_of(User).to receive(:change_password_allowed?).and_return(false) # rubocop:disable RSpec/AnyInstance
     end
 
     describe "Missing flash data for user initiated password change" do
       before do
-        post 'change_password',
+        post "change_password",
              flash: {
-               _password_change_user_id: nil
+               _password_change_user: nil
              },
              params: {
                username: admin.login,
-               password: 'whatever',
-               new_password: 'whatever',
-               new_password_confirmation: 'whatever2'
+               password: "whatever",
+               new_password: "whatever",
+               new_password_confirmation: "whatever2"
              }
       end
 
-      it 'renders 404' do
-        expect(response.status).to eq 404
+      it "renders 404" do
+        expect(response).to have_http_status :not_found
       end
     end
 
     describe "User who is not allowed to change password can't login" do
       before do
-        post 'change_password',
+        post "change_password",
              params: {
-               password_change_user_id: admin.id,
-               username: admin.login,
-               password: 'adminADMIN!',
-               new_password: 'adminADMIN!New',
-               new_password_confirmation: 'adminADMIN!New'
+               password_change_user: admin.login,
+               password: "adminADMIN!",
+               new_password: "adminADMIN!New",
+               new_password_confirmation: "adminADMIN!New"
              }
       end
 
-      it 'redirects to the login page' do
-        expect(response).to redirect_to '/login'
+      it "redirects to the login page" do
+        expect(response).to redirect_to "/login"
       end
     end
 
-    describe 'User who is not allowed to change password, is not redirected to the login page' do
+    describe "User who is not allowed to change password, is not redirected to the login page" do
       before do
-        post 'login', params: { username: admin.login, password: 'adminADMIN!' }
+        post "login", params: { username: admin.login, password: "adminADMIN!" }
       end
 
-      it 'redirects to the login page' do
-        expect(response).to redirect_to '/login'
+      it "redirects to the login page" do
+        expect(response).to redirect_to "/login"
       end
     end
   end
 
-  describe 'POST #change_password' do
-    context 'with disabled password login' do
+  describe "POST #change_password" do
+    context "with disabled password login" do
       before do
         allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(true)
         post :change_password
       end
 
-      it 'is not found' do
-        expect(response.status).to eq 404
+      it "is not found" do
+        expect(response).to have_http_status :not_found
+      end
+    end
+
+    context "with brute force protection",
+            with_settings: { brute_force_block_minutes: 30, brute_force_block_after_failed_logins: 20 } do
+      shared_let(:user) { create(:user, login: "testuser", password: "ValidPass123!", password_confirmation: "ValidPass123!") }
+
+      describe "blocks password change attempts after too many failures" do
+        before do
+          user.update_columns(
+            failed_login_count: 20,
+            last_failed_login_on: 1.minute.ago
+          )
+
+          post :change_password,
+               params: {
+                 password_change_user: user.login,
+                 password: "ValidPass123!",
+                 new_password: "NewPass123!",
+                 new_password_confirmation: "NewPass123!"
+               }
+        end
+
+        it "blocks the attempt even with correct password" do
+          expect(response).to have_http_status :unprocessable_entity
+        end
+
+        it "does not change the password" do
+          user.reload
+          expect(user.check_password?("ValidPass123!")).to be true
+          expect(user.check_password?("NewPass123!")).to be false
+        end
+
+        it "shows an error message" do
+          if Setting.brute_force_block_after_failed_logins.to_i > 0
+            expected_message = I18n.t(:notice_account_invalid_credentials_or_blocked)
+          else
+            expected_message = I18n.t(:notice_account_invalid_credentials)
+          end
+          expect(flash[:error]).to eq(expected_message)
+        end
+      end
+
+      describe "logs failed password attempts" do
+        before do
+          user.update_columns(
+            failed_login_count: 0,
+            last_failed_login_on: nil
+          )
+
+          post :change_password,
+               params: {
+                 password_change_user: user.login,
+                 password: "WrongPassword!",
+                 new_password: "NewPass123!",
+                 new_password_confirmation: "NewPass123!"
+               }
+        end
+
+        it "increments failed login count" do
+          user.reload
+          expect(user.failed_login_count).to eq(1)
+        end
+
+        it "updates last failed login timestamp" do
+          user.reload
+          expect(user.last_failed_login_on).to be_within(1.second).of(Time.zone.now)
+        end
+
+        it "does not change the password" do
+          user.reload
+          expect(user.check_password?("ValidPass123!")).to be true
+          expect(user.check_password?("NewPass123!")).to be false
+        end
+      end
+
+      describe "accumulates multiple failed attempts" do
+        it "blocks after reaching the threshold" do
+          user.update_columns(
+            failed_login_count: 0,
+            last_failed_login_on: nil
+          )
+
+          # Make 20 failed attempts
+          20.times do
+            post :change_password,
+                 params: {
+                   password_change_user: user.login,
+                   password: "WrongPassword!",
+                   new_password: "NewPass123!",
+                   new_password_confirmation: "NewPass123!"
+                 }
+          end
+
+          user.reload
+          expect(user.failed_login_count).to eq(20)
+
+          # Next attempt should be blocked even with correct password
+          post :change_password,
+               params: {
+                 password_change_user: user.login,
+                 password: "ValidPass123!",
+                 new_password: "NewPass123!",
+                 new_password_confirmation: "NewPass123!"
+               }
+
+          user.reload
+          expect(user.check_password?("ValidPass123!")).to be true
+          expect(user.check_password?("NewPass123!")).to be false
+        end
+      end
+
+      describe "resets failed login count on successful password change" do
+        before do
+          user.update_columns(
+            failed_login_count: 5,
+            last_failed_login_on: 1.minute.ago
+          )
+
+          post :change_password,
+               params: {
+                 password_change_user: user.login,
+                 password: "ValidPass123!",
+                 new_password: "NewPass123!",
+                 new_password_confirmation: "NewPass123!"
+               }
+        end
+
+        it "resets the failed login count to zero" do
+          user.reload
+          expect(user.failed_login_count).to eq(0)
+        end
+
+        it "changes the password successfully" do
+          user.reload
+          expect(user.check_password?("NewPass123!")).to be true
+          expect(user.check_password?("ValidPass123!")).to be false
+        end
+      end
+
+      describe "allows password change after block time expires" do
+        before do
+          user.update_columns(
+            failed_login_count: 20,
+            last_failed_login_on: 31.minutes.ago
+          )
+
+          post :change_password,
+               params: {
+                 password_change_user: user.login,
+                 password: "ValidPass123!",
+                 new_password: "NewPass123!",
+                 new_password_confirmation: "NewPass123!"
+               }
+        end
+
+        it "allows the password change" do
+          user.reload
+          expect(user.check_password?("NewPass123!")).to be true
+        end
+
+        it "resets the failed login count" do
+          user.reload
+          expect(user.failed_login_count).to eq(0)
+        end
       end
     end
   end
 
-  shared_examples 'registration disabled' do
-    it 'redirects to back the login page' do
+  describe "POST #lost_password" do
+    context "when the user has been invited but not yet activated" do
+      shared_let(:admin) { create(:admin, status: :invited) }
+      shared_let(:token) { create(:recovery_token, user: admin) }
+
+      context "with a valid token" do
+        before do
+          post :lost_password, params: { token: token.value }
+        end
+
+        it "redirects to the login page" do
+          expect(response).to redirect_to "/login"
+        end
+      end
+    end
+  end
+
+  shared_examples "registration disabled" do
+    it "redirects to back the login page" do
       expect(response).to redirect_to signin_path
     end
 
-    it 'informs the user that registration is disabled' do
-      expect(flash[:error]).to eq(I18n.t('account.error_self_registration_disabled'))
+    it "informs the user that registration is disabled" do
+      expect(flash[:error]).to eq(I18n.t("account.error_self_registration_disabled"))
     end
 
-    it 'does not call the user_registered callback' do
+    it "does not call the user_registered callback" do
       expect(hook.registered_user).to be_nil
     end
   end
 
-  context 'GET #register' do
-    context 'with self registration on',
+  describe "GET #register" do
+    context "with self registration on",
             with_settings: { self_registration: Setting::SelfRegistration.automatic } do
-      context 'and password login enabled' do
+      context "and password login enabled" do
         before do
           get :register
         end
 
-        it 'is successful' do
+        it "is successful" do
           expect(subject).to respond_with :success
           expect(response).to render_template :register
           expect(assigns[:user]).not_to be_nil
@@ -563,29 +729,29 @@ describe AccountController,
         end
       end
 
-      context 'and password login disabled' do
+      context "and password login disabled" do
         before do
           allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(true)
 
           get :register
         end
 
-        it_behaves_like 'registration disabled'
+        it_behaves_like "registration disabled"
       end
     end
 
-    context 'with self registration off',
+    context "with self registration off",
             with_settings: { self_registration: Setting::SelfRegistration.disabled } do
       before do
         get :register
       end
 
-      it_behaves_like 'registration disabled'
+      it_behaves_like "registration disabled"
     end
 
-    context 'with self registration off but an ongoing invitation activation',
+    context "with self registration off but an ongoing invitation activation",
             with_settings: { self_registration: Setting::SelfRegistration.disabled } do
-      let(:token) { create :invitation_token }
+      let(:token) { create(:invitation_token) }
 
       before do
         session[:invitation_token] = token.value
@@ -593,7 +759,7 @@ describe AccountController,
         get :register
       end
 
-      it 'is successful' do
+      it "is successful" do
         expect(subject).to respond_with :success
         expect(response).to render_template :register
         expect(assigns[:user]).not_to be_nil
@@ -602,44 +768,44 @@ describe AccountController,
   end
 
   # See integration/account_test.rb for the full test
-  context 'POST #register' do
-    context 'with self registration on automatic',
+  describe "POST #register" do
+    context "with self registration on automatic",
             with_settings: { self_registration: Setting::SelfRegistration.automatic } do
       before do
         allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(false)
       end
 
-      context 'with password login enabled' do
+      context "with password login enabled" do
         # expects `redirect_to_path`
-        shared_examples 'automatic self registration succeeds' do
+        shared_examples "automatic self registration succeeds" do
           before do
             post :register,
                  params: {
                    user: {
-                     login: 'register',
-                     password: 'adminADMIN!',
-                     password_confirmation: 'adminADMIN!',
-                     firstname: 'John',
-                     lastname: 'Doe',
-                     mail: 'register@example.com'
+                     login: "register",
+                     password: "adminADMIN!",
+                     password_confirmation: "adminADMIN!",
+                     firstname: "John",
+                     lastname: "Doe",
+                     mail: "register@example.com"
                    }
                  }
           end
 
-          it 'redirects to the expected path' do
+          it "redirects to the expected path" do
             expect(subject).to respond_with :redirect
             expect(assigns[:user]).not_to be_nil
             expect(subject).to redirect_to(redirect_to_path)
-            expect(User.where(login: 'register').last).not_to be_nil
+            expect(User.where(login: "register").last).not_to be_nil
           end
 
-          it 'set the user status to active' do
-            user = User.where(login: 'register').last
+          it "set the user status to active" do
+            user = User.where(login: "register").last
             expect(user).not_to be_nil
             expect(user).to be_active
           end
 
-          it 'calls the user_registered callback' do
+          it "calls the user_registered callback" do
             user = hook.registered_user
 
             expect(user.mail).to eq "register@example.com"
@@ -647,7 +813,7 @@ describe AccountController,
           end
         end
 
-        it_behaves_like 'automatic self registration succeeds' do
+        it_behaves_like "automatic self registration succeeds" do
           let(:redirect_to_path) { "/?first_time_user=true" }
 
           it "calls the user_first_login callback" do
@@ -658,17 +824,17 @@ describe AccountController,
         end
 
         context "with user limit reached" do
-          let!(:admin) { create :admin }
+          let!(:admin) { create(:admin) }
 
           let(:params) do
             {
               user: {
-                login: 'register',
-                password: 'adminADMIN!',
-                password_confirmation: 'adminADMIN!',
-                firstname: 'John',
-                lastname: 'Doe',
-                mail: 'register@example.com'
+                login: "register",
+                password: "adminADMIN!",
+                password_confirmation: "adminADMIN!",
+                firstname: "John",
+                lastname: "Doe",
+                mail: "register@example.com"
               }
             }
           end
@@ -688,59 +854,59 @@ describe AccountController,
           it "notifies the admins about the issue" do
             perform_enqueued_jobs
 
-            mail = ActionMailer::Base.deliveries.detect { |mail| mail.to.first == admin.mail }
+            mail = ActionMailer::Base.deliveries.detect { |m| m.to.first == admin.mail }
             expect(mail).to be_present
             expect(mail.subject).to match /limit reached/
             expect(mail.body.parts.first.to_s).to match /new user \(#{params[:user][:mail]}\)/
           end
 
-          it 'does not call the user_registered callback' do
+          it "does not call the user_registered callback" do
             expect(hook.registered_user).to be_nil
           end
         end
       end
 
-      context 'with password login disabled' do
+      context "with password login disabled" do
         before do
           allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(true)
 
           post :register
         end
 
-        it_behaves_like 'registration disabled'
+        it_behaves_like "registration disabled"
       end
     end
 
-    context 'with self registration by email',
+    context "with self registration by email",
             with_settings: { self_registration: Setting::SelfRegistration.by_email } do
-      context 'with password login enabled' do
+      context "with password login enabled" do
         before do
           Token::Invitation.delete_all
           post :register,
                params: {
                  user: {
-                   login: 'register',
-                   password: 'adminADMIN!',
-                   password_confirmation: 'adminADMIN!',
-                   firstname: 'John',
-                   lastname: 'Doe',
-                   mail: 'register@example.com'
+                   login: "register",
+                   password: "adminADMIN!",
+                   password_confirmation: "adminADMIN!",
+                   firstname: "John",
+                   lastname: "Doe",
+                   mail: "register@example.com"
                  }
                }
         end
 
-        it 'redirects to the login page' do
-          expect(subject).to redirect_to '/login'
+        it "redirects to the login page" do
+          expect(subject).to redirect_to "/login"
         end
 
         it "doesn't activate the user but sends out a token instead" do
-          expect(User.find_by_login('register')).not_to be_active
+          expect(User.find_by_login("register")).not_to be_active
           token = Token::Invitation.last
-          expect(token.user.mail).to eq('register@example.com')
+          expect(token.user.mail).to eq("register@example.com")
           expect(token).not_to be_expired
         end
 
-        it 'calls the user_registered callback' do
+        it "calls the user_registered callback" do
           user = hook.registered_user
 
           expect(user.mail).to eq "register@example.com"
@@ -748,42 +914,42 @@ describe AccountController,
         end
       end
 
-      context 'with password login disabled' do
+      context "with password login disabled" do
         before do
           allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(true)
 
           post :register
         end
 
-        it_behaves_like 'registration disabled'
+        it_behaves_like "registration disabled"
       end
     end
 
-    context 'with manual activation',
+    context "with manual activation",
             with_settings: { self_registration: Setting::SelfRegistration.manual } do
       let(:user_hash) do
-        { login: 'register',
-          password: 'adminADMIN!',
-          password_confirmation: 'adminADMIN!',
-          firstname: 'John',
-          lastname: 'Doe',
-          mail: 'register@example.com' }
+        { login: "register",
+          password: "adminADMIN!",
+          password_confirmation: "adminADMIN!",
+          firstname: "John",
+          lastname: "Doe",
+          mail: "register@example.com" }
       end
 
-      context 'without back_url' do
+      context "without back_url" do
         before do
           post :register, params: { user: user_hash }
         end
 
-        it 'redirects to the login page' do
-          expect(response).to redirect_to '/login'
+        it "redirects to the login page" do
+          expect(response).to redirect_to "/login"
         end
 
         it "doesn't activate the user" do
-          expect(User.find_by_login('register')).not_to be_active
+          expect(User.find_by_login("register")).not_to be_active
         end
 
-        it 'calls the user_registered callback' do
+        it "calls the user_registered callback" do
           user = hook.registered_user
 
           expect(user.mail).to eq "register@example.com"
@@ -791,18 +957,16 @@ describe AccountController,
         end
       end
 
-      context 'with back_url' do
+      context "with back_url" do
         before do
-          post :register, params: { user: user_hash, back_url: 'https://example.net/some_back_url' }
+          post :register, params: { user: user_hash, back_url: "https://example.net/some_back_url" }
         end
 
-        it 'preserves the back url' do
-          expect(response).to redirect_to(
-            '/login?back_url=https%3A%2F%2Fexample.net%2Fsome_back_url'
-          )
+        it "preserves the back url" do
+          expect(response).to redirect_to("/login?back_url=https%3A%2F%2Fexample.net%2Fsome_back_url")
         end
 
-        it 'calls the user_registered callback' do
+        it "calls the user_registered callback" do
           user = hook.registered_user
 
           expect(user.mail).to eq "register@example.com"
@@ -810,163 +974,181 @@ describe AccountController,
         end
       end
 
-      context 'with password login disabled' do
+      context "with password login disabled" do
         before do
           allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(true)
 
           post :register
         end
 
-        it_behaves_like 'registration disabled'
+        it_behaves_like "registration disabled"
       end
     end
 
-    context 'with self registration off',
+    context "with self registration off",
             with_settings: { self_registration: Setting::SelfRegistration.disabled } do
       before do
         post :register,
              params: {
                user: {
-                 login: 'register',
-                 password: 'adminADMIN!',
-                 password_confirmation: 'adminADMIN!',
-                 firstname: 'John',
-                 lastname: 'Doe',
-                 mail: 'register@example.com'
+                 login: "register",
+                 password: "adminADMIN!",
+                 password_confirmation: "adminADMIN!",
+                 firstname: "John",
+                 lastname: "Doe",
+                 mail: "register@example.com"
                }
              }
       end
 
-      it_behaves_like 'registration disabled'
+      it_behaves_like "registration disabled"
     end
 
-    context 'with on-the-fly registration',
+    context "with on-the-fly registration",
             with_settings: { self_registration: Setting::SelfRegistration.disabled } do
       before do
-        allow_any_instance_of(User).to receive(:change_password_allowed?).and_return(false)
-        allow(AuthSource).to receive(:authenticate).and_return(login: 'foo',
-                                                               lastname: 'Smith',
-                                                               auth_source_id: 66)
+        allow_any_instance_of(User).to receive(:change_password_allowed?).and_return(false) # rubocop:disable RSpec/AnyInstance
       end
 
-      context 'with password login enabled' do
-        before do
-          post :login, params: { username: 'foo', password: 'bar' }
-        end
-
-        it 'registers the user on-the-fly' do
-          expect(subject).to respond_with :success
-          expect(response).to render_template :register
-
-          post :register,
-               params: {
-                 user: {
-                   firstname: 'Foo',
-                   lastname: 'Smith',
-                   mail: 'foo@bar.com'
-                 }
-               }
-          expect(response).to redirect_to home_path(first_time_user: true)
-
-          user = User.find_by_login('foo')
-
-          expect(user).to be_an_instance_of(User)
-          expect(user.auth_source_id).to be 66
-          expect(user.current_password).to be_nil
-        end
-      end
-
-      context 'with password login disabled' do
+      context "with password login disabled" do
         before do
           allow(OpenProject::Configuration).to receive(:disable_password_login?).and_return(true)
         end
 
-        describe 'login' do
-          before do
-            post :login, params: { username: 'foo', password: 'bar' }
-          end
-
-          it 'is not found' do
-            expect(response.status).to eq 404
-          end
-        end
-
-        describe 'registration' do
+        describe "registration" do
           before do
             post :register,
                  params: {
                    user: {
-                     firstname: 'Foo',
-                     lastname: 'Smith',
-                     mail: 'foo@bar.com'
+                     firstname: "Foo",
+                     lastname: "Smith",
+                     mail: "foo@bar.com"
                    }
                  }
           end
 
-          it_behaves_like 'registration disabled'
+          it_behaves_like "registration disabled"
         end
       end
     end
   end
 
-  context 'POST activate' do
-    let!(:admin) { create :admin }
-    let(:user) { create :user, status: }
-    let(:status) { -1 }
+  describe "POST #activate" do
+    describe "account activation" do
+      shared_examples "account activation" do
+        let(:token) { Token::Invitation.create user: }
 
-    let(:token) { Token::Invitation.create!(user_id: user.id) }
+        let(:activation_params) do
+          {
+            token: token.value
+          }
+        end
 
-    before do
-      allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(true)
+        context "with an expired token" do
+          before do
+            token.update_column :expires_on, 1.day.ago
 
-      post :activate, params: { token: token.value }
-    end
+            post :activate, params: activation_params
+          end
 
-    shared_examples "activation is blocked due to user limit" do
-      it "does not activate the user" do
-        expect(user.reload).not_to be_active
+          it "fails and shows an expiration warning" do
+            expect(subject).to redirect_to("/")
+            expect(flash[:warning]).to include "expired"
+          end
+
+          it "deletes the old token and generates a new one" do
+            old_token = Token::Invitation.find_by(id: token.id)
+            new_token = Token::Invitation.find_by(user_id: token.user.id)
+
+            expect(old_token).to be_nil
+            expect(new_token).to be_present
+
+            expect(new_token).not_to be_expired
+          end
+
+          it "sends out a new activation email" do
+            new_token = Token::Invitation.find_by(user_id: token.user.id)
+
+            perform_enqueued_jobs
+
+            mail = ActionMailer::Base.deliveries.last
+            expect(mail.parts.first.body.raw_source).to include "activate?token=#{new_token.value}"
+          end
+        end
       end
 
-      it "redirects back to the login page and shows the user limit error" do
-        expect(response).to redirect_to(signin_path)
-        expect(flash[:error]).to match /user limit reached.*contact.*admin/i
+      context "with an invited user" do
+        it_behaves_like "account activation" do
+          let(:user) { create(:user, status: 4) }
+        end
       end
 
-      it "notifies the admins about the issue" do
-        perform_enqueued_jobs
-
-        mail = ActionMailer::Base.deliveries.detect { |mail| mail.to.first == admin.mail }
-        expect(mail).to be_present
-        expect(mail.subject).to match /limit reached/
+      context "with a registered user" do
+        it_behaves_like "account activation" do
+          let(:user) { create(:user, status: 2) }
+        end
       end
     end
 
-    context 'registered user' do
-      let(:status) { User.statuses[:registered] }
+    describe "user limit" do
+      let!(:admin) { create(:admin) }
+      let(:user) { create(:user, status:) }
+      let(:status) { -1 }
 
-      it_behaves_like "activation is blocked due to user limit"
-    end
+      let(:token) { Token::Invitation.create!(user_id: user.id) }
 
-    context 'invited user' do
-      let(:status) { User.statuses[:invited] }
+      before do
+        allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(true)
 
-      it_behaves_like "activation is blocked due to user limit"
+        post :activate, params: { token: token.value }
+      end
+
+      shared_examples "activation is blocked due to user limit" do
+        it "does not activate the user" do
+          expect(user.reload).not_to be_active
+        end
+
+        it "redirects back to the login page and shows the user limit error" do
+          expect(response).to redirect_to(signin_path)
+          expect(flash[:error]).to match /user limit reached.*contact.*admin/i
+        end
+
+        it "notifies the admins about the issue" do
+          perform_enqueued_jobs
+
+          mail = ActionMailer::Base.deliveries.detect { |m| m.to.first == admin.mail }
+          expect(mail).to be_present
+          expect(mail.subject).to match /limit reached/
+        end
+      end
+
+      context "with an invited user" do
+        let(:status) { User.statuses[:invited] }
+
+        it_behaves_like "activation is blocked due to user limit"
+      end
+
+      context "with a registered user" do
+        let(:status) { User.statuses[:registered] }
+
+        it_behaves_like "activation is blocked due to user limit"
+      end
     end
   end
 
-  describe 'GET #auth_source_sso_failed (/sso)' do
+  describe "GET #auth_source_sso_failed (/sso)" do
     render_views
 
     let(:failure) do
       {
         login:,
-        back_url: '/my/account',
+        back_url: "/my/account",
         ttl: 1
       }
     end
 
-    let(:auth_source) { create :ldap_auth_source }
-    let(:user) { create :user, status: 2, auth_source: }
+    let(:ldap_auth_source) { create(:ldap_auth_source) }
+    let(:user) { create(:user, status: 2, ldap_auth_source:) }
     let(:login) { user.login }
 
     before do
@@ -987,14 +1169,14 @@ describe AccountController,
     end
 
     context "with an invalid user" do
-      let!(:duplicate) { create :user, mail: "login@DerpLAP.net" }
-      let(:login) { 'foo' }
+      let!(:duplicate) { create(:user, mail: "login@DerpLAP.net") }
+      let(:login) { "foo" }
       let(:attrs) do
-        { mail: duplicate.mail, login:, firstname: 'bla', lastname: 'bar' }
+        { mail: duplicate.mail, login:, firstname: "bla", lastname: "bar" }
       end
 
       before do
-        allow(AuthSource).to receive(:find_user).and_return attrs
+        allow(LdapAuthSource).to receive(:get_user_attributes).and_return attrs
       end
 
       it "shows the account creation form with an error" do
@@ -1008,14 +1190,14 @@ describe AccountController,
     end
 
     context "with a missing email" do
-      let!(:duplicate) { create :user, mail: "login@DerpLAP.net" }
-      let(:login) { 'foo' }
+      let!(:duplicate) { create(:user, mail: "login@DerpLAP.net") }
+      let(:login) { "foo" }
       let(:attrs) do
-        { login:, firstname: 'bla', lastname: 'bar' }
+        { login:, firstname: "bla", lastname: "bar" }
       end
 
       before do
-        allow(AuthSource).to receive(:find_user).and_return attrs
+        allow(LdapAuthSource).to receive(:get_user_attributes).and_return attrs
       end
 
       it "shows the account creation form with an error" do
@@ -1029,58 +1211,78 @@ describe AccountController,
     end
   end
 
-  describe 'POST #activate' do
-    shared_examples 'account activation' do
-      let(:token) { Token::Invitation.create user: }
-
-      let(:activation_params) do
-        {
-          token: token.value
-        }
+  describe "registering through auth source" do
+    context "when not providing all required fields" do
+      let(:slug) { "google" }
+      let(:omniauth_strategy) { double("Google Strategy", name: slug) } # rubocop:disable RSpec/VerifiedDoubles
+      let!(:oidc_google) { create(:oidc_provider_google, slug:) }
+      let(:omniauth_hash) do
+        OmniAuth::AuthHash.new(
+          provider: slug,
+          strategy: omniauth_strategy,
+          uid: "123545",
+          info: { name: "foo",
+                  email: "foo@bar.com",
+                  first_name: "foo",
+                  last_name: "bar" }
+        )
       end
 
-      context 'with an expired token' do
+      before do
+        request.env["omniauth.auth"] = omniauth_hash
+        request.env["omniauth.strategy"] = omniauth_strategy
+      end
+
+      it "registers user via post" do
+        allow(OpenProject::OmniAuth::Authorization).to receive(:after_login!)
+
+        auth_source_registration = omniauth_hash.merge(
+          omniauth: true,
+          timestamp: Time.current
+        )
+        session[:auth_source_registration] = auth_source_registration
+        post :register,
+             params: {
+               user: {
+                 login: "login@bar.com",
+                 firstname: "Foo",
+                 lastname: "Smith",
+                 mail: "foo@bar.com"
+               }
+             }
+        expect(response).to redirect_to home_url(first_time_user: true)
+
+        user = User.find_by_login("login@bar.com")
+        expect(OpenProject::OmniAuth::Authorization)
+          .to have_received(:after_login!).with(user, a_hash_including(omniauth_hash), any_args)
+        expect(user).to be_an_instance_of(User)
+        expect(user.ldap_auth_source_id).to be_nil
+        expect(user.current_password).to be_nil
+        expect(user.identity_url).to eql("google:123545")
+      end
+
+      context "when after a timeout expired" do
         before do
-          token.update_column :expires_on, 1.day.ago
-
-          post :activate, params: activation_params
+          session[:auth_source_registration] = omniauth_hash.merge(
+            omniauth: true,
+            timestamp: 42.days.ago
+          )
         end
 
-        it 'fails and shows an expiration warning' do
-          expect(subject).to redirect_to('/')
-          expect(flash[:warning]).to include 'expired'
+        it "does not register the user when providing all the missing fields" do
+          post :register,
+               params: {
+                 user: {
+                   firstname: "Foo",
+                   lastname: "Smith",
+                   mail: "foo@bar.com"
+                 }
+               }
+
+          expect(response).to redirect_to signin_path
+          expect(flash[:error]).to eq(I18n.t(:error_omniauth_registration_timed_out))
+          expect(User.find_by_login("foo@bar.com")).to be_nil
         end
-
-        it 'deletes the old token and generates a new one' do
-          old_token = Token::Invitation.find_by(id: token.id)
-          new_token = Token::Invitation.find_by(user_id: token.user.id)
-
-          expect(old_token).to be_nil
-          expect(new_token).to be_present
-
-          expect(new_token).not_to be_expired
-        end
-
-        it 'sends out a new activation email' do
-          new_token = Token::Invitation.find_by(user_id: token.user.id)
-
-          perform_enqueued_jobs
-
-          mail = ActionMailer::Base.deliveries.last
-          expect(mail.parts.first.body.raw_source).to include "activate?token=#{new_token.value}"
-        end
-      end
-    end
-
-    context 'with an invited user' do
-      it_behaves_like 'account activation' do
-        let(:user) { create :user, status: 4 }
-      end
-    end
-
-    context 'with an registered user' do
-      it_behaves_like 'account activation' do
-        let(:user) { create :user, status: 2 }
       end
     end
   end

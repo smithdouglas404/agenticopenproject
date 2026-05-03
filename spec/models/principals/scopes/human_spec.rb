@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,10 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Principals::Scopes::Human, type: :model do
-  describe '.human' do
+RSpec.describe Principals::Scopes::Human do
+  describe ".human" do
     let!(:anonymous_user) { create(:anonymous) }
     let!(:system_user) { create(:system) }
     let!(:deleted_user) { create(:deleted_user) }
@@ -39,9 +41,9 @@ describe Principals::Scopes::Human, type: :model do
 
     subject { Principal.human }
 
-    it 'returns only actual users and groups' do
+    it "returns only actual users and groups" do
       expect(subject)
-        .to match_array [user, group]
+        .to contain_exactly(user, group)
     end
   end
 end

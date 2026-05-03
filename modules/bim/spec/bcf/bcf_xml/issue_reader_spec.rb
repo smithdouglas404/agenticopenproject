@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +26,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::OpenProject::Bim::BcfXml::IssueReader do
+RSpec.describe OpenProject::Bim::BcfXml::IssueReader do
   let(:absolute_file_path) { "63E78882-7C6A-4BF7-8982-FC478AFB9C97/markup.bcf" }
-  let(:type) { create :type, name: 'Issue', is_standard: true, is_default: true }
+  let(:type) { create(:type, name: "Issue", is_standard: true, is_default: true) }
   let(:project) do
     create(:project,
-           identifier: 'bim_project',
+           identifier: "bim_project",
            types: [type])
   end
   let(:manage_bcf_role) do
     create(
-      :role,
+      :project_role,
       permissions: %i[manage_bcf view_linked_issues view_work_packages edit_work_packages add_work_packages]
     )
   end
@@ -48,7 +48,7 @@ describe ::OpenProject::Bim::BcfXml::IssueReader do
            role: manage_bcf_role,
            type:)
   end
-  let(:priority) { create :default_priority }
+  let(:priority) { create(:default_priority) }
   let(:bcf_manager_member) do
     create(:member,
            project:,
@@ -104,20 +104,20 @@ describe ::OpenProject::Bim::BcfXml::IssueReader do
     allow(User).to receive(:current).and_return(bcf_manager)
   end
 
-  context 'on initial import' do
+  context "on initial import" do
     let(:bcf_issue) { subject.extract! }
 
-    context 'with happy path, everything has a match' do
-      it 'WP start date gets initialized with BCF CreationDate' do
+    context "with happy path, everything has a match" do
+      it "WP start date gets initialized with BCF CreationDate" do
         expect(bcf_issue.work_package.start_date).to eql(subject.extractor.creation_date.to_date)
       end
 
-      it 'Bim::Bcf::Issue get initialized with the GUID form the XML file' do
+      it "Bim::Bcf::Issue get initialized with the GUID form the XML file" do
         expect(bcf_issue.uuid).to eql("63E78882-7C6A-4BF7-8982-FC478AFB9C97")
       end
     end
 
-    context 'Topic does not provide any title, status, type or priority' do
+    context "Topic does not provide any title, status, type or priority" do
       let(:markup) do
         <<-MARKUP
         <Markup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -131,27 +131,79 @@ describe ::OpenProject::Bim::BcfXml::IssueReader do
         MARKUP
       end
 
-      context 'with no import options provided' do
+      context "with no import options provided" do
         let(:bcf_issue) { subject.extract! }
 
-        it 'sets a status' do
+        it "sets a status" do
           expect(bcf_issue.work_package.status).to eql(Status.default)
         end
 
-        it 'sets a type' do
+        it "sets a type" do
           expect(bcf_issue.work_package.type).to eql(type)
         end
 
-        it 'ignores missing priority' do
+        it "ignores missing priority" do
           # as it gets set automatically when creating new work packages.
           expect(bcf_issue.work_package.priority).to eql(priority)
         end
       end
     end
+
+    context "if file references contain invalid formated values" do
+      let(:viewpoint_ref) { "viewpoint.bcfv" }
+      let(:snapshot_ref) { "snapshot.png" }
+      let(:markup) do
+        <<-MARKUP
+        <Markup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <Topic Guid="#{SecureRandom.uuid}">
+            <Title>Path Traversal Attack</Title>
+            <CreationDate>2026-03-03T11:11:11Z</CreationDate>
+            <CreationAuthor>vader@death.star</CreationAuthor>
+          </Topic>
+          <Viewpoints Guid="#{SecureRandom.uuid}">
+            <Viewpoint>#{viewpoint_ref}</Viewpoint>
+            <Snapshot>#{snapshot_ref}</Snapshot>
+          </Viewpoints>
+        </Markup>
+        MARKUP
+      end
+
+      context "with snapshot reference being a relative path" do
+        let(:snapshot_ref) { "../../../etc/verysecretfileonserver" }
+
+        it "raises an error" do
+          expect { subject.extract! }.to raise_error("Snapshot file reference is not a file basename.")
+        end
+      end
+
+      context "with snapshot reference being an absolute path" do
+        let(:snapshot_ref) { "/etc/verysecretfileonserver" }
+
+        it "raises an error" do
+          expect { subject.extract! }.to raise_error("Snapshot file reference is not a file basename.")
+        end
+      end
+
+      context "with viewpoint reference being a relative path" do
+        let(:viewpoint_ref) { "../../../etc/verysecretfileonserver" }
+
+        it "raises an error" do
+          expect { subject.extract! }.to raise_error("Viewpoint file reference is not a file basename.")
+        end
+      end
+
+      context "with viewpoint reference being an absolute path" do
+        let(:viewpoint_ref) { "/etc/verysecretfileonserver" }
+
+        it "raises an error" do
+          expect { subject.extract! }.to raise_error("Viewpoint file reference is not a file basename.")
+        end
+      end
+    end
   end
 
-  context 'on updating import' do
-    describe '#update_comment' do
+  context "on updating import" do
+    describe "#update_comment" do
       let(:work_package) { create(:work_package) }
       let!(:bcf_issue) { create(:bcf_issue_with_comment, work_package:) }
 
@@ -159,18 +211,18 @@ describe ::OpenProject::Bim::BcfXml::IssueReader do
         allow(subject).to receive(:issue).and_return(bcf_issue)
       end
 
-      it '#update_comment' do
+      it "#update_comment" do
         modified_time = Time.now + 1.minute
-        comment_data = { uuid: bcf_issue.comments.first.uuid, comment: 'Updated comment', modified_date: modified_time }
+        comment_data = { uuid: bcf_issue.comments.first.uuid, comment: "Updated comment", modified_date: modified_time }
         expect(subject).to receive(:update_comment_viewpoint_by_uuid)
 
         subject.send(:update_comment, comment_data)
 
-        expect(bcf_issue.comments.first.journal.notes).to eql('Updated comment')
+        expect(bcf_issue.comments.first.journal.notes).to eql("Updated comment")
         expect(bcf_issue.comments.first.journal.created_at.utc.to_s).to eql(modified_time.utc.to_s)
       end
 
-      it '#update_comment_viewpoint_by_uuid' do
+      it "#update_comment_viewpoint_by_uuid" do
         bcf_comment = bcf_issue.comments.first
         viewpoint = bcf_comment.viewpoint
         bcf_comment.viewpoint = nil
@@ -182,7 +234,7 @@ describe ::OpenProject::Bim::BcfXml::IssueReader do
         expect(bcf_comment.viewpoint).to be_nil
       end
 
-      it '#viewpoint_by_uuid' do
+      it "#viewpoint_by_uuid" do
         expect(subject.send(:viewpoint_by_uuid, nil)).to be_nil
         expect(subject.send(:viewpoint_by_uuid,
                             bcf_issue.comments.first.viewpoint.uuid)).to eql(bcf_issue.comments.first.viewpoint)

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,6 +27,9 @@
 //++
 
 import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -40,7 +43,7 @@ import {
 import { StateService, Transition, TransitionService } from '@uirouter/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { EditableAttributeFieldComponent } from 'core-app/shared/components/fields/edit/field/editable-attribute-field.component';
-import { input } from 'reactivestates';
+import { input } from '@openproject/reactivestates';
 import { filter, map, take } from 'rxjs/operators';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
@@ -55,21 +58,27 @@ import { EditingPortalService } from 'core-app/shared/components/fields/edit/edi
 import { EditFormRoutingService } from 'core-app/shared/components/fields/edit/edit-form/edit-form-routing.service';
 import { ResourceChangesetCommit } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { GlobalEditFormChangesTrackerService } from 'core-app/shared/components/fields/edit/services/global-edit-form-changes-tracker/global-edit-form-changes-tracker.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'edit-form,[edit-form]',
-  template: '<ng-content></ng-content>',
+  template: '<ng-content />',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class EditFormComponent extends EditForm<HalResource> implements OnInit, OnDestroy {
-  @Input('resource') resource:HalResource;
+  @Input() resource:HalResource;
 
   @Input('inEditMode') initializeEditMode = false;
 
-  @Input('skippedFields') skippedFields:string[] = [];
+  @Input() skippedFields:string[] = [];
 
   @Output('onSaved') onSavedEmitter = new EventEmitter<{ savedResource:HalResource, isInitial:boolean }>();
 
-  public fields:{ [attribute:string]:EditableAttributeFieldComponent } = {};
+  public fields:Record<string, EditableAttributeFieldComponent> = {};
 
   private registeredFields = input<string[]>();
 
@@ -77,6 +86,8 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
 
   constructor(public readonly injector:Injector,
     protected readonly elementRef:ElementRef,
+    private appRef:ApplicationRef,
+    private readonly cdRef:ChangeDetectorRef,
     protected readonly $transitions:TransitionService,
     protected readonly ConfigurationService:ConfigurationService,
     protected readonly editingPortalService:EditingPortalService,
@@ -85,7 +96,6 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
     @Optional() protected readonly editFormRouting:EditFormRoutingService,
     private globalEditFormChangesTrackerService:GlobalEditFormChangesTrackerService) {
     super(injector);
-
     const confirmText = I18n.t('js.work_packages.confirm_edit_cancel');
     const requiresConfirmation = ConfigurationService.warnOnLeavingUnsaved();
 
@@ -186,14 +196,13 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
   }
 
   public waitForField(name:string):Promise<EditableAttributeFieldComponent> {
-    return this.registeredFields
+    return firstValueFrom(this.registeredFields
       .values$()
       .pipe(
-        filter((keys) => keys.indexOf(name) >= 0),
+        filter((keys) => keys.includes(name)),
         take(1),
         map(() => this.fields[name]),
-      )
-      .toPromise();
+      ));
   }
 
   public start() {
@@ -201,17 +210,17 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
   }
 
   protected focusOnFirstError():void {
+    this.cdRef.detectChanges();
     // Focus the first field that is erroneous
-    jQuery(this.elementRef.nativeElement)
-      .find(`.${activeFieldContainerClassName}.-error .${activeFieldClassName}`)
-      .first()
-      .trigger('focus');
+    this.elementRef.nativeElement
+      .querySelector(`.${activeFieldContainerClassName}.-error .${activeFieldClassName}`)
+      ?.focus();
   }
 
   private skipField(field:EditableAttributeFieldComponent) {
     const { fieldName } = field;
 
-    const isSkipField = this.skippedFields.indexOf(fieldName) !== -1;
+    const isSkipField = this.skippedFields.includes(fieldName);
 
     // Only skip status or type
     if (!isSkipField) {

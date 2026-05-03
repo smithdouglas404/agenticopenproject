@@ -6,7 +6,7 @@ OpenProject plugins are special ruby gems. You may include them in your `Gemfile
 
 You can generate a new plugin directly from OpenProject. Think of a good name and a place (in your filesystem) where the plugin should go. In this example, we have a `plugins` directory right next to the `openproject` directory. Then do
 
-```bash
+```shell
 bundle exec rails generate open_project:plugin my_plugin ../plugins/
 ```
 
@@ -24,7 +24,7 @@ Instead of generating a new plugin you can also just clone the example plugin an
 
 To include the new plugin into OpenProject, we have to add it into `Gemfile.plugins` like any other OpenProject plugin. Add the following lines to `Gemfile.plugins`:
 
-```
+```ruby
 group :opf_plugins do
   gem "openproject-my_plugin", :path => '../plugins/openproject-my_plugin'
 end
@@ -34,7 +34,7 @@ If there already is an `opf_plugins` group, just add the `gem` line to it.
 
 Once you've done that install it via
 
-```bash
+```shell
 bundle install
 ```
 
@@ -46,13 +46,14 @@ To use your plugin in production you have to add it to your [docker](../../insta
 
 You may have a look at some existing OpenProject plugins to get inspiration. It is possible to add new routes, views, models, … and/or overwrite existing ones.
 
-Feel free to ask for help in our [Development Forum](https://community.openproject.com/projects/openproject/forums/7).
+Feel free to ask for help in our [Development Forum](https://community.openproject.org/projects/openproject/forums/7).
 
 ## Steps to release a plugin
 
 The following steps are necessary to release a new plugin:
 
 ### Code Review
+
 A code review should check the whole code and remove glitches like:
 
 - Inappropriate comments
@@ -64,7 +65,8 @@ A code review should check the whole code and remove glitches like:
 1. Check the license and the copyright of the plugin to be released
 
  Usually, this should be GPLv3 and we are the copyright owner. However, some plugins might have additional authors or might originate from code with a different license. These issues have to be resolved first. Also check the years in the copyright. If you need to find all contributors of a repository including their contribution period use the following rake task:
- ```bash
+
+ ```shell
 rake copyright:authors:show['../Path/to/repository/']
  ```
 
@@ -88,13 +90,13 @@ There should be a file README.md containing:
 
 If you’re unsure about if/who to give credit, you should take a look into the changelog:
 
-```bash
+```shell
 git log --pretty=format:%aN | sort | uniq -c | sort -rn
 ```
 
 For your convenience you may use the following rake task, that extracts all authors from a repository
 
-```bash
+```shell
 rake copyright:authors:show['../Path/to/repository/']
 ```
 
@@ -134,11 +136,10 @@ It is probably best to use READMEs of already released plugins as a template.
     Activity, Issue Tracking, Time Tracking, Forums, and Backlogs are default.
     Also, the My Project Page should only show Project Description and Tickets blocks.
 3. Create a news article about the newly released plugin and its features.
-4. Twitter with a link to the news article.
+4. Share a link to the news article on social media.
 5. If the plugin is referenced in our feature tour, add a download link to the plugin in the feature tour
 
-
-# Frontend plugins [WIP]
+## Frontend plugins [WIP]
 
 Plugins that extend the frontend application may be packaged as **npm modules**.
 These plugins must contain a `package.json` in the root directory of the plugin.
@@ -160,10 +161,9 @@ _CAVEAT: npm dependencies for hybrid plugins are not yet resolved._
 
 **To use a hybrid plugin:**
 
-  * declare the dependency in `Gemfile.plugins` within the `:opf_plugins` group
-    using the Bundler DSL.
-
-  * then run `bundle install`.
+* declare the dependency in `Gemfile.plugins` within the `:opf_plugins` group
+  using the Bundler DSL.
+* then run `bundle install`.
 
 Provided Ruby Bundler is aware of these plugins, Webpack (our node-based build pipeline)
 will bundle their assets.

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -24,20 +26,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++require 'rspec'
+#++
 
-require 'spec_helper'
-require_relative './eager_loading_mock_wrapper'
+require "spec_helper"
+require_relative "eager_loading_mock_wrapper"
 
-describe ::API::V3::WorkPackages::EagerLoading::CustomAction do
+RSpec.describe API::V3::WorkPackages::EagerLoading::CustomAction do
   let!(:work_package1) { create(:work_package) }
   let!(:work_package2) { create(:work_package) }
   let!(:user) do
     create(:user,
-           member_in_project: work_package2.project,
-           member_through_role: role)
+           member_with_roles: { work_package2.project => role })
   end
-  let!(:role) { create(:role) }
+  let!(:role) { create(:project_role) }
   let!(:status_custom_action) do
     create(:custom_action,
            conditions: [CustomActions::Conditions::Status.new(work_package1.status_id.to_s)])
@@ -51,8 +52,8 @@ describe ::API::V3::WorkPackages::EagerLoading::CustomAction do
     login_as(user)
   end
 
-  describe '.apply' do
-    it 'preloads the correct custom_actions' do
+  describe ".apply" do
+    it "preloads the correct custom_actions" do
       wrapped = EagerLoadingMockWrapper.wrap(described_class, [work_package1, work_package2])
 
       expect(work_package1)
@@ -61,10 +62,10 @@ describe ::API::V3::WorkPackages::EagerLoading::CustomAction do
         .not_to receive(:custom_actions)
 
       expect(wrapped.detect { |w| w.id == work_package1.id }.custom_actions(user))
-        .to match_array [status_custom_action]
+        .to contain_exactly(status_custom_action)
 
       expect(wrapped.detect { |w| w.id == work_package2.id }.custom_actions(user))
-        .to match_array [role_custom_action]
+        .to contain_exactly(role_custom_action)
     end
   end
 end

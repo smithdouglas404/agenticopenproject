@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe CustomStylesHelper, type: :helper do
+RSpec.describe CustomStylesHelper do
   let(:current_theme) { nil }
   let(:bim_edition?) { false }
 
@@ -37,53 +39,45 @@ describe CustomStylesHelper, type: :helper do
     allow(OpenProject::Configuration).to receive(:bim?).and_return(bim_edition?)
   end
 
-  describe '.apply_custom_styles?' do
+  describe ".apply_custom_styles?" do
     subject { helper.apply_custom_styles? }
 
-    context 'no CustomStyle present' do
-      it 'is falsey' do
+    context "no CustomStyle present" do
+      it "is falsey" do
         expect(subject).to be_falsey
       end
     end
 
-    context 'CustomStyle present' do
+    context "CustomStyle present" do
       let(:current_theme) { build_stubbed(:custom_style) }
 
-      context 'without EE' do
-        before do
-          without_enterprise_token
-        end
-
-        context 'no BIM edition' do
-          it 'is falsey' do
+      context "without EE", with_ee: false do
+        context "no BIM edition" do
+          it "is falsey" do
             expect(subject).to be_falsey
           end
         end
 
-        context 'BIM edition' do
+        context "BIM edition" do
           let(:bim_edition?) { true }
 
-          it 'is truthy' do
+          it "is truthy" do
             expect(subject).to be_truthy
           end
         end
       end
 
-      context 'with EE' do
-        before do
-          with_enterprise_token(:define_custom_style)
-        end
-
-        context 'no BIM edition' do
-          it 'is truthy' do
+      context "with EE", with_ee: %i[define_custom_style] do
+        context "no BIM edition" do
+          it "is truthy" do
             expect(subject).to be_truthy
           end
         end
 
-        context 'BIM edition' do
+        context "BIM edition" do
           let(:bim_edition?) { true }
 
-          it 'is truthy' do
+          it "is truthy" do
             expect(subject).to be_truthy
           end
         end
@@ -91,14 +85,14 @@ describe CustomStylesHelper, type: :helper do
     end
   end
 
-  shared_examples('apply when ee present') do
-    context 'no CustomStyle present' do
-      it 'is falsey' do
+  shared_examples("apply when ee present") do
+    context "no CustomStyle present" do
+      it "is falsey" do
         expect(subject).to be_falsey
       end
     end
 
-    context 'CustomStyle present' do
+    context "CustomStyle present" do
       let(:current_theme) { build_stubbed(:custom_style) }
 
       before do
@@ -106,37 +100,57 @@ describe CustomStylesHelper, type: :helper do
         allow(current_theme).to receive(:touch_icon).and_return(true)
       end
 
-      context 'without EE' do
-        before do
-          without_enterprise_token
-        end
-
-        it 'is falsey' do
+      context "without EE", with_ee: false do
+        it "is falsey" do
           expect(subject).to be_falsey
         end
       end
 
-      context 'with EE' do
-        before do
-          with_enterprise_token(:define_custom_style)
-        end
-
-        it 'is truthy' do
+      context "with EE", with_ee: %i[define_custom_style] do
+        it "is truthy" do
           expect(subject).to be_truthy
         end
       end
     end
   end
 
-  describe '.apply_custom_favicon?' do
+  describe ".apply_custom_favicon?" do
     subject { helper.apply_custom_favicon? }
 
-    it_behaves_like 'apply when ee present'
+    it_behaves_like "apply when ee present"
   end
 
-  describe '.apply_custom_touch_icon?' do
+  describe ".apply_custom_touch_icon?" do
     subject { helper.apply_custom_touch_icon? }
 
-    it_behaves_like 'apply when ee present'
+    it_behaves_like "apply when ee present"
+  end
+
+  describe ".export_fonts_fields" do
+    let(:style) { create(:custom_style_with_export_font_regular) }
+
+    it "returns entries for all four variants with correct delete paths and filename" do
+      fields = helper.export_fonts_fields(style)
+      expect(fields.size).to eq(4)
+
+      names = fields.pluck(:field)
+      expect(names).to contain_exactly(:export_font_regular, :export_font_bold, :export_font_italic, :export_font_bold_italic)
+
+      regular = fields.find { |f| f[:field] == :export_font_regular }
+      expect(regular[:present]).to be_truthy
+      expect(regular[:filename]).to be_present
+      expect(regular[:delete_path]).to eq(custom_style_export_font_regular_delete_path)
+
+      bold = fields.find { |f| f[:field] == :export_font_bold }
+      expect(bold[:present]).to be_falsey
+      expect(bold[:filename]).to be_nil
+      expect(bold[:delete_path]).to eq(custom_style_export_font_bold_delete_path)
+
+      italic = fields.find { |f| f[:field] == :export_font_italic }
+      expect(italic[:delete_path]).to eq(custom_style_export_font_italic_delete_path)
+
+      bold_italic = fields.find { |f| f[:field] == :export_font_bold_italic }
+      expect(bold_italic[:delete_path]).to eq(custom_style_export_font_bold_italic_delete_path)
+    end
   end
 end

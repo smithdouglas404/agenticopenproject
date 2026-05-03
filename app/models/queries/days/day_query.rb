@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Days::DayQuery < Queries::BaseQuery
+class Queries::Days::DayQuery
+  include Queries::BaseQuery
+  include Queries::UnpersistedQuery
+
   def self.model
     Day
   end
@@ -36,14 +41,13 @@ class Queries::Days::DayQuery < Queries::BaseQuery
   end
 
   ##
-  # This override is necessary, the dates interval filter needs to adjust the
-  # `from` clause of the query. To update the `from` clause, we reverse merge the filters,
-  # otherwise the `from` clause of the filter is ignored.
+  # The dates interval filter needs to adjust the `from` clause of the query.
+  # If there are multiple filters with custom from clause (currently not possible),
+  # the first one is applied and the rest is ignored.
   def apply_filters(scope)
-    filters.each do |filter|
-      scope = filter.scope.merge(scope)
-    end
-
+    scope = super(scope) # rubocop:disable Style/SuperArguments
+    from_clause_filter = filters.find(&:from)
+    scope = scope.from(from_clause_filter.from) if from_clause_filter
     scope
   end
 

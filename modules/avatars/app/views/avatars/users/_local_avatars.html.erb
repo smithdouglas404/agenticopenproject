@@ -1,10 +1,10 @@
 <fieldset class="form--fieldset">
-  <legend class="form--fieldset-legend" title="<%= t 'avatars.label_local_avatar' %>"><%= t 'avatars.label_local_avatar' %></legend>
+  <legend class="form--fieldset-legend" title="<%= t "avatars.label_local_avatar" %>"><%= t "avatars.label_local_avatar" %></legend>
   <p>
-    <%= t 'avatars.text_your_local_avatar' %>
+    <%= t "avatars.text_your_local_avatar" %>
     <% if @manager.gravatar_enabled? %>
-      <br/>
-      <%= t 'avatars.text_local_avatar_over_gravatar' %>
+      <br>
+      <%= t "avatars.text_local_avatar_over_gravatar" %>
     <% end %>
   </p>
     <div class="form--field">
@@ -23,12 +23,11 @@
           <% if local_avatar? @user %>
             <%= link_to t(:button_delete),
                         @target_avatar_path,
-                        method: :delete,
-                        class: 'avatars--local-avatar-delete-link',
-                        data: { confirm: t(:are_you_sure_delete_avatar) } %>
+                        class: "avatars--local-avatar-delete-link",
+                        data: { turbo_method: :delete, turbo_confirm: t(:are_you_sure_delete_avatar) } %>
           <% end %>
         </div>
       </div>
     </div>
-    <avatar-upload-form target="<%= @target_avatar_path %>" method="PUT"></avatar-upload-form>
+    <opce-avatar-upload-form target="<%= @target_avatar_path %>" method="PUT"></opce-avatar-upload-form>
 </fieldset>

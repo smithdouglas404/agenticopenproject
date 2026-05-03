@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,13 +29,20 @@ module Bim
   class BasicDataSeeder < ::BasicDataSeeder
     def data_seeder_classes
       [
-        ::BasicData::BuiltinRolesSeeder,
-        ::Bim::BasicData::RoleSeeder,
-        ::Bim::BasicData::ActivitySeeder,
+        ::BasicData::BuiltinUsersSeeder,
+        ::BasicData::ProjectRoleSeeder,
+        ::BasicData::WorkPackageRoleSeeder,
+        ::BasicData::GlobalRoleSeeder,
+        ::BasicData::ProjectQueryRoleSeeder,
+        ::BasicData::TimeEntryActivitySeeder,
         ::BasicData::ColorSeeder,
         ::BasicData::ColorSchemeSeeder,
-        ::Bim::BasicData::WorkflowSeeder,
-        ::Bim::BasicData::PrioritySeeder,
+        ::BasicData::ProjectPhaseColorSeeder,
+        ::BasicData::ProjectPhaseDefinitionSeeder,
+        ::BasicData::StatusSeeder,
+        ::BasicData::TypeSeeder,
+        ::BasicData::WorkflowSeeder,
+        ::BasicData::PrioritySeeder,
         ::Bim::BasicData::SettingSeeder,
         ::Bim::BasicData::ThemeSeeder
       ]

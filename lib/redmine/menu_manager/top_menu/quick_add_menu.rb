@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +30,7 @@
 
 module Redmine::MenuManager::TopMenu::QuickAddMenu
   include OpenProject::StaticRouting::UrlHelpers
+  include OpPrimer::ComponentHelpers
 
   def render_quick_add_menu
     return unless show_quick_add_menu?
@@ -38,45 +41,74 @@ module Redmine::MenuManager::TopMenu::QuickAddMenu
   private
 
   def render_quick_add_dropdown
-    render_menu_dropdown_with_items(
-      label: '',
-      label_options: {
-        title: I18n.t('menus.quick_add.label'),
-        icon: 'icon-add op-quick-add-menu--icon',
-        class: 'op-quick-add-menu--button'
-      },
-      items: first_level_menu_items_for(:quick_add_menu, @project),
-      options: {
-        drop_down_id: 'quick-add-menu',
-        menu_item_class: 'op-quick-add-menu'
-      },
-      project: @project
-    ) do
-      work_package_quick_add_items
-      # Return nil as the yield result is concat as well
-      nil
+    render Primer::Alpha::ActionMenu.new(classes: "op-app-menu--item",
+                                         menu_id: "op-app-header--quick-add-menu",
+                                         anchor_align: :end) do |menu|
+      menu.with_show_button(scheme: :primary,
+                            classes: "op-app-header--primer-button",
+                            test_selector: "quick-add-menu-button",
+                            px: 2) do |button|
+        button.with_leading_visual_icon(icon: :plus)
+        button.with_tooltip(text: I18n.t("menus.quick_add.label"))
+        render(Primer::Beta::Octicon.new(icon: "triangle-down", aria: { label: I18n.t("menus.quick_add.label") }))
+      end
+
+      with_item_group(menu) { add_first_level_items(menu) }
+      with_item_group(menu) { add_second_level_items(menu) }
+    end
+  end
+
+  def add_first_level_items(menu) # rubocop:disable Metrics/AbcSize
+    first_level_menu_items_for(:quick_add_menu, @project).each do |item|
+      html_options = item.html_options
+      html_options[:aria] = { labelledby: id_for_name(item.caption) } if html_options[:aria].blank?
+
+      menu.with_item(
+        href: item.url.present? ? allowed_node_url(item, @project) : "#",
+        content_arguments: {
+          target: html_options.fetch(:target, "_top"),
+          **html_options,
+          test_selector: "quick-add-menu-item"
+        },
+        label_arguments: { id: id_for_name(item.caption) },
+        label: item.caption,
+        test_selector: "op-menu--item-action"
+      ) do |menu_item|
+        menu_item.with_leading_visual_icon(icon: item.icon)
+      end
+    end
+  end
+
+  def add_second_level_items(menu)
+    if work_package_quick_add_items.present?
+      menu.with_group do |menu_group|
+        menu_group.with_heading(title: I18n.t(:label_work_package_plural), align_items: :flex_start)
+
+        work_package_quick_add_items.each do |item|
+          menu_group.with_item(
+            href: item[:href],
+            label: item[:caption],
+            content_arguments: {
+              target: "_top",
+              aria: { labelledby: id_for_name(item[:caption]) }
+            },
+            label_arguments: { id: id_for_name(item[:caption]),
+                               classes: item[:classes] },
+            test_selector: "op-menu--item-action"
+          )
+        end
+      end
     end
   end
 
   def work_package_quick_add_items
     return unless any_types?
 
-    concat content_tag(:hr, '', class: 'op-menu--separator')
-    concat work_package_type_heading
-
     visible_types
       .pluck(:id, :name)
       .uniq
-      .each do |id, name|
-      concat work_package_create_link(id, name)
-    end
-  end
-
-  def work_package_type_heading
-    content_tag(:li, class: 'op-menu--item') do
-      content_tag :span,
-                  I18n.t(:label_work_package_plural),
-                  class: 'op-menu--headline'
+      .map do |id, name|
+      work_package_create_link(id, name)
     end
   end
 
@@ -91,21 +123,23 @@ module Redmine::MenuManager::TopMenu::QuickAddMenu
   end
 
   def work_package_create_link(type_id, type_name)
-    content_tag(:li, class: 'op-menu--item') do
-      if in_project_context?
-        link_to type_name,
-                new_project_work_packages_path(project_id: @project.identifier, type: type_id),
-                class: "__hl_inline_type_#{type_id} op-menu--item-action"
-      else
-        link_to type_name,
-                new_work_packages_path(type: type_id),
-                class: "__hl_inline_type_#{type_id} op-menu--item-action"
-      end
+    if in_project_context?
+      { caption: type_name,
+        href: new_project_work_packages_path(project_id: @project.identifier, type: type_id),
+        classes: "__hl_inline_type_#{type_id}" }
+    else
+      { caption: type_name,
+        href: new_work_package_path(type: type_id),
+        classes: "__hl_inline_type_#{type_id}" }
     end
   end
 
   def user_can_create_work_package?
-    User.current.allowed_to?(:add_work_packages, @project, global: !in_project_context?)
+    if in_project_context?
+      User.current.allowed_in_project?(:add_work_packages, @project)
+    else
+      User.current.allowed_in_any_project?(:add_work_packages)
+    end
   end
 
   def show_quick_add_menu?
@@ -122,17 +156,20 @@ module Redmine::MenuManager::TopMenu::QuickAddMenu
   end
 
   def global_add_permissions?
-    %i[add_project manage_members].any? do |permission|
-      User.current.allowed_to_globally?(permission)
-    end
+    User.current.allowed_globally?(:add_project) ||
+      User.current.allowed_in_any_project?(:manage_members)
   end
 
   def add_subproject_permission?
     in_project_context? &&
-      User.current.allowed_to?(:add_subprojects, @project)
+      User.current.allowed_in_project?(:add_subprojects, @project)
   end
 
   def any_types?
     visible_types.any?
+  end
+
+  def id_for_name(name)
+    "quick-add-menu-item--item-#{name.parameterize(separator: '_')}"
   end
 end

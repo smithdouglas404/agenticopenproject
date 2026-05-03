@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,34 +28,51 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './expected_markdown'
+require "spec_helper"
+require_relative "expected_markdown"
 
-describe OpenProject::TextFormatting,
-         'user provided links' do
-  include_context 'expected markdown modules'
+RSpec.describe OpenProject::TextFormatting, "user provided links" do # rubocop:disable RSpec/SpecFilePathFormat
+  include_context "expected markdown modules"
 
-  context 'hardened against tabnabbing' do
-    it_behaves_like 'format_text produces' do
+  describe "hardened against tabnabbing" do
+    it_behaves_like "format_text produces" do
       let(:raw) do
         <<~RAW
-          this is a <a style="display:none;" href="http://malicious">
+          this is a <a style="display:none;" target="_top" href="http://malicious">
         RAW
       end
 
       let(:expected) do
         <<~EXPECTED
           <p class="op-uc-p">
-            this is a <a href="http://malicious" rel="noopener noreferrer" class="op-uc-link">
+            this is a <a href="http://malicious" target="_top" rel="noopener noreferrer nofollow" class="op-uc-link">
           </p>
         EXPECTED
       end
     end
   end
 
-  context 'autolinks' do
-    context 'for urls' do
-      it_behaves_like 'format_text produces' do
+  describe "strips data-allow-external-link attribute to prevent bypassing link capture" do
+    it_behaves_like "format_text produces" do
+      let(:raw) do
+        <<~RAW
+          this is a <a href="http://external.com" data-allow-external-link="true">external link</a>
+        RAW
+      end
+
+      let(:expected) do
+        <<~EXPECTED
+          <p class="op-uc-p">
+            this is a <a href="http://external.com" rel="noopener noreferrer nofollow" target="_top" class="op-uc-link">external link</a>
+          </p>
+        EXPECTED
+      end
+    end
+  end
+
+  describe "autolinks" do
+    context "for urls" do
+      it_behaves_like "format_text produces" do
         let(:raw) do
           <<~RAW
             Autolink to http://www.google.com
@@ -63,15 +82,15 @@ describe OpenProject::TextFormatting,
         let(:expected) do
           <<~EXPECTED
             <p class="op-uc-p">
-              Autolink to <a href="http://www.google.com" class="op-uc-link">http://www.google.com</a>
+              Autolink to <a href="http://www.google.com" rel="noopener noreferrer nofollow" target="_top" class="op-uc-link">http://www.google.com</a>
             </p>
           EXPECTED
         end
       end
     end
 
-    context 'for email addresses' do
-      it_behaves_like 'format_text produces' do
+    context "for email addresses" do
+      it_behaves_like "format_text produces" do
         let(:raw) do
           <<~RAW
             Mailto link to foo@bar.com
@@ -81,7 +100,7 @@ describe OpenProject::TextFormatting,
         let(:expected) do
           <<~EXPECTED
             <p class="op-uc-p">
-              Mailto link to <a href="mailto:foo@bar.com" class="op-uc-link">foo@bar.com</a>
+              Mailto link to <a href="mailto:foo@bar.com" rel="noopener noreferrer nofollow" target="_top" class="op-uc-link">foo@bar.com</a>
             </p>
           EXPECTED
         end
@@ -89,9 +108,9 @@ describe OpenProject::TextFormatting,
     end
   end
 
-  context 'relative URLS' do
-    context 'path_only is true (default)' do
-      it_behaves_like 'format_text produces' do
+  describe "relative URLS" do
+    context "when path_only is true (default)" do
+      it_behaves_like "format_text produces" do
         let(:raw) do
           <<~RAW
             Link to [relative path](/foo/bar)
@@ -101,17 +120,17 @@ describe OpenProject::TextFormatting,
         let(:expected) do
           <<~EXPECTED
             <p class="op-uc-p">
-              Link to <a href="/foo/bar" class="op-uc-link" rel="noopener noreferrer">relative path</a>
+              Link to <a href="/foo/bar" target="_top" class="op-uc-link" rel="noopener noreferrer nofollow">relative path</a>
             </p>
           EXPECTED
         end
       end
     end
 
-    context 'path_only is false', with_settings: { host_name: "openproject.org" } do
+    context "when path_only is false", with_settings: { host_name: "openproject.org" } do
       let(:options) { { only_path: false } }
 
-      it_behaves_like 'format_text produces' do
+      it_behaves_like "format_text produces" do
         let(:raw) do
           <<~RAW
             Link to [relative path](/foo/bar)
@@ -121,7 +140,7 @@ describe OpenProject::TextFormatting,
         let(:expected) do
           <<~EXPECTED
             <p class="op-uc-p">
-              Link to <a href="http://openproject.org/foo/bar" class="op-uc-link" rel="noopener noreferrer">relative path</a>
+              Link to <a href="http://openproject.org/foo/bar" target="_top" class="op-uc-link" rel="noopener noreferrer nofollow">relative path</a>
             </p>
           EXPECTED
         end

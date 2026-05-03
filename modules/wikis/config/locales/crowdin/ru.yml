@@ -1,0 +1,102 @@
+---
+ru:
+  activerecord:
+    attributes:
+      wikis/xwiki_provider:
+        authentication_method: Метод аутентификации
+        authentication_methods:
+          oauth2_sso: Аутентификация Single-Sign-On посредством поставщика OpenID Connect
+          two_way_oauth2: Двусторонняя аутентификация OAuth 2.0
+        name: Имя
+        token_exchange_scope: Область XWiki
+        universal_identifier: Универсальный идентификатор
+        url: Адрес сервера
+        wiki_audience: Аудитория XWiki
+    errors: {}
+    models:
+      wikis/inline_page_link:
+        one: Ссылка на встроенную страницу
+        few: Ссылки на встроенную страницу
+        many: Ссылки на встроенную страницу
+        other: Ссылки на встроенную страницу
+      wikis/internal_provider: Внутренняя вики
+      wikis/relation_page_link:
+        one: Ссылка на страницу отношения
+        few: Ссылки на страницу отношения
+        many: Ссылки на страницу отношения
+        other: Ссылки на страницу отношения
+      wikis/xwiki_provider: Провайдер XWiki
+  permission_manage_wiki_page_links: Управление ссылками Вики-страницы
+  permission_view_wiki_page_links: Просмотр ссылок на вики-страницы
+  project_module_wiki_platforms: Провайдеры вики
+  wikis:
+    buttons:
+      connect_account: Connect %{provider} account
+      done_continue: Done, continue
+      save_and_continue: Сохранить и продолжить
+      wiki_page: Wiki-страница
+    work_package_wikis_tab_component:
+      inline_page_links: Inline page links
+      referencing_pages: Referenced in
+    page_link_component:
+      remove: Удалить ссылку на страницу
+    relation_page_links_component:
+      empty_heading: Нет связанных страниц
+      empty_text: Добавьте ссылки вручную на другие связанные вики-страницы.
+    oauth_login_component:
+      connect_button: Connect %{provider} account
+    admin:
+      destroy_confirmation_dialog_component:
+        title: Delete wiki provider
+        warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
+      forms:
+        general_info_form_component:
+          xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
+        oauth_application_form_component:
+          application_id: Application ID
+          application_secret: Application secret
+        oauth_client_form_component:
+          client_id: Client ID
+      oauth_application_info_component:
+        confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
+        label_pending: Pending
+        replace_oauth_application: Replace OpenProject OAuth application
+      oauth_client_info_component:
+        confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
+        label_pending: Pending
+        replace_oauth_client: Replace XWiki OAuth application
+      wiki_provider_list_component:
+        label_creation_time: Created
+        label_name: Name
+        label_provider: Provider
+        no_results_description: Add a wiki provider to see them here.
+        no_results_title: You don't have any wiki providers set up yet.
+      wiki_providers:
+        index_description: Добавить внешний вики-сервис, чтобы связать рабочие пакеты с существующими вики-страницами или создать новые прямо из OpenProject.
+        label_add_new: Добавить нового вики-провайдера
+        label_edit: Редактировать провайдера XWiki
+        label_new_xwiki_instance: Новый провайдер XWiki
+        label_wiki_platform: Провайдер Wiki
+        name_caption: Дайте своему хранилищу имя, чтобы пользователи могли различать несколько вики-платформ.
+        name_placeholder: База знаний XWiki
+        new_provider_html: Прочитайте нашу документацию по [настройке интеграции XWiki](docs_url) для получения дополнительной информации.
+        oauth:
+          openproject_oauth: OpenProject OAuth
+        sections:
+          general_information: Basic details
+          oauth_configuration: OAuth configuration
+        url_caption: Пожалуйста, добавьте адрес хоста Вашей вики-платформы, включая https://. Его длина не должна превышать 255 символов.
+        xwiki_instance: Экземпляр XWiki
+        xwiki:
+          oauth:
+            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            provider_oauth: XWiki OAuth
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
+          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+        delete:
+          title: Удалить вики-провайдера
+          warning_html: Вы собираетесь удалить %{wiki_provider}. Это действие необратимо.
+    macro:
+      page_not_found: Linked wiki page no longer available

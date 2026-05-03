@@ -7,11 +7,10 @@ import { WpSingleViewService } from 'core-app/features/work-packages/routing/wp-
   selector: 'op-work-package-mark-notification-button',
   templateUrl: './work-package-mark-notification-button.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageMarkNotificationButtonComponent {
   @Input() public workPackage:WorkPackageResource;
-
-  @Input() public showWithText:boolean;
 
   text = {
     mark_as_read: this.I18n.t('js.notifications.center.mark_as_read'),
@@ -25,5 +24,10 @@ export class WorkPackageMarkNotificationButtonComponent {
 
   markAllBelongingNotificationsAsRead():void {
     this.storeService.markAllAsRead();
+    // emit custom event in order to inform the activity tab stimulus controller
+    // will trigger an update of the activities list
+    document.dispatchEvent(
+      new CustomEvent('work-package-notifications-updated'),
+    );
   }
 }

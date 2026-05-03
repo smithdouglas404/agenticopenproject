@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe WorkPackage, type: :model do
+RSpec.describe WorkPackage do
   describe "#create" do
     it "calls the create hook" do
       subject = "A new work package"
@@ -38,12 +40,12 @@ describe WorkPackage, type: :model do
         expect(context[:work_package].subject).to eq subject
       end
 
-      create :work_package, subject:
+      create(:work_package, subject:)
     end
   end
 
   describe "#update" do
-    let!(:work_package) { create :work_package }
+    let!(:work_package) { create(:work_package) }
 
     it "calls the update hook" do
       expect(OpenProject::Hook).to receive(:call_hook) do |hook, context|

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,9 +27,8 @@
 #++
 
 class WorkPackageCostlogController < ApplicationController
-  model_object WorkPackage
-
   menu_item :work_packages
+
   before_action :find_objects
   before_action :authorize
   before_action :redirect_when_outside_project
@@ -74,7 +73,7 @@ class WorkPackageCostlogController < ApplicationController
   # 1. Work package from :work_package_id and its #project
   # 2. Cost Type from param
   def find_objects
-    find_model_object_and_project :work_package_id
+    @work_package = WorkPackage.visible.find_by(id: params[:work_package_id])
 
     if params[:cost_type_id].present?
       @cost_type = CostType.find(params[:cost_type_id])

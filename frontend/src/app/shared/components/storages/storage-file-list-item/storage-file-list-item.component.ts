@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -43,6 +43,7 @@ import SpotDropAlignmentOption from 'core-app/spot/drop-alignment-options';
   selector: '[op-storage-file-list-item]',
   templateUrl: './storage-file-list-item.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class StorageFileListItemComponent {
   @Input() public content:StorageFileListItem;
@@ -65,5 +66,27 @@ export class StorageFileListItemComponent {
     }
 
     return SpotDropAlignmentOption.TopLeft;
+  }
+
+  /**
+   * This function enables an override of the click on the label for the storage file list items.
+   *
+   * Normal behaviour is, that the label click is associated with the first interactive element,
+   * which usually should be the checkbox if available, or the "enterDirectory" icon button,
+   * if no checkbox is available.
+   *
+   * With this override, the click on the label of a directory element WITH checkbox instead enters the directory.
+   * But if directly targeting the checkbox, the item is checked instead.
+   *
+   * (WorkPackage #44965)
+   */
+  enterDirectoryOnLabel(event:MouseEvent):void {
+    const isCheckboxTarget = (event.target as HTMLElement).className.includes('spot-checkbox');
+
+    if (this.content.isDirectory && !isCheckboxTarget) {
+      this.content.enterDirectory();
+      event.preventDefault();
+      event.stopPropagation();
+    }
   }
 }

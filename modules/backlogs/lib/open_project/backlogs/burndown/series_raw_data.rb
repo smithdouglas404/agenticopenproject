@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +32,7 @@ module OpenProject::Backlogs::Burndown
       @collect = args.pop
       @sprint = args.pop
       @project = args.pop
-      super(*args)
+      super
     end
 
     attr_reader :collect, :sprint, :project
@@ -42,18 +42,18 @@ module OpenProject::Backlogs::Burndown
     end
 
     def unit_for(name)
-      return :points if @collect[:points].include? name
+      :points if @collect[:points].include? name
     end
 
     def collect_data
       initialize_self_for_collection
 
-      data_for_dates(collected_days).each do |day_data|
-        date = day_data['date']
-        date = date.is_a?(Date) ? date : Date.parse(date)
+      data_for_dates.each do |day_data|
+        date = day_data["date"]
+        date = Date.parse(date) unless date.is_a?(Date)
 
         day_data.each do |key, value|
-          next if key == 'date'
+          next if key == "date"
 
           self[key][date] = value.to_f
         end
@@ -75,134 +75,63 @@ module OpenProject::Backlogs::Burndown
     end
 
     def collected_days
-      @collected_days ||= begin
-        days = sprint.days(nil)
-        days.sort.select { |d| d <= Date.today }
-      end
+      @collected_days ||= day_query.where(date: ..Time.zone.today).order(:date).map(&:date)
     end
 
-    def data_for_dates(dates)
-      return [] if dates.empty?
-
+    def data_for_dates
       query_string = <<-SQL
-      SELECT
-        date_journals.date,
-        SUM(work_package_journals.story_points) as story_points
-      FROM
-        work_package_journals
-      JOIN journals AS id_journals
-      ON work_package_journals.id = id_journals.data_id
-        AND id_journals.data_type = '#{Journal::WorkPackageJournal.name}'
-        AND #{version_query}
-        AND #{project_id_query}
-        AND #{type_id_query}
-        #{and_status_query}
-      JOIN
-        (
-          #{authoritative_journal_for_date(dates)}
-        ) AS date_journals
-      ON date_journals.journable_id = id_journals.journable_id
-        AND date_journals.version = id_journals.version
-        AND id_journals.journable_type = 'WorkPackage'
-      GROUP BY date_journals.date
-      ORDER BY date_journals.date
+        SELECT
+          days.date,
+          COALESCE(SUM(work_package_journals.story_points), 0.0) as story_points
+        FROM
+          work_package_journals
+        LEFT JOIN
+          journals
+        ON work_package_journals.id = journals.data_id
+          AND journals.data_type = '#{Journal::WorkPackageJournal.name}'
+          AND #{container_query}
+          AND #{project_id_query}
+          #{and_status_query}
+        JOIN
+          (#{day_query.to_sql}) days
+        ON (days.date::timestamp + interval '23:59:59') AT TIME ZONE '#{User.current.time_zone.tzinfo.name}' <@ journals.validity_period
+        GROUP BY days.date
+        ORDER BY days.date
       SQL
 
       Journal::WorkPackageJournal.connection.select_all query_string
     end
 
-    def authoritative_journal_for_date(dates)
-      raise 'dates must not be empty!' if dates.empty?
-
-      <<-SQL
-      SELECT
-        d.date,
-        j.journable_id,
-        MAX(j.version) as version
-      FROM
-        (
-          #{dates_of_interest_join_table(dates)}
-        ) as d
-      JOIN
-        (
-          SELECT
-            CAST(j.created_at AS DATE) AS created_at,
-            j.journable_id,
-            MAX(j.version) as version
-          FROM
-            journals AS j
-          WHERE
-            j.journable_id IN (
-              SELECT journable_id
-              FROM
-                journals
-              JOIN
-                work_package_journals
-              ON work_package_journals.id = journals.data_id
-                AND journals.data_type = '#{Journal::WorkPackageJournal.name}'
-                AND #{version_query}
-                AND #{project_id_query}
-                AND #{type_id_query}
-                #{and_status_query})
-          GROUP BY
-            CAST(j.created_at AS DATE),
-            j.journable_type,
-            j.journable_id
-          HAVING j.journable_type = 'WorkPackage'
-          ORDER BY j.journable_id, version
-        ) as j
-      ON d.date >= j.created_at
-      GROUP BY d.date, j.journable_id
-      ORDER BY j.journable_id, d.date, version
-      SQL
-    end
-
-    def dates_of_interest_join_table(dates)
-      raise 'dates must not be empty!' if dates.empty?
-
-      @date_join ||= dates.map do |date|
-        "SELECT CAST('#{date}' AS DATE) AS date"
-      end.join(' UNION ')
-    end
-
     def and_status_query
-      @status_query ||= begin
-        non_closed_statuses = Status.where(is_closed: false).select(:id).map(&:id)
+      non_closed_statuses = Status.where(is_closed: false).pluck(:id)
 
-        done_statuses_for_project = project.done_statuses.select(:id).map(&:id)
+      done_statuses_for_project = project.done_statuses.pluck(:id)
 
-        open_status_ids = non_closed_statuses - done_statuses_for_project
+      open_status_ids = non_closed_statuses - done_statuses_for_project
 
-        if open_status_ids.empty?
-          ''
-        else
-          "AND (#{Journal::WorkPackageJournal.table_name}.status_id IN (#{open_status_ids.join(',')}))"
-        end
+      if open_status_ids.empty?
+        ""
+      else
+        "AND (#{Journal::WorkPackageJournal.table_name}.status_id IN (#{open_status_ids.join(',')}))"
       end
     end
 
-    def version_query
-      @version_query ||= "(#{Journal::WorkPackageJournal.table_name}.version_id = #{sprint.id})"
+    def container_query
+      "(#{Journal::WorkPackageJournal.table_name}.sprint_id = #{sprint.id})"
     end
 
     def project_id_query
-      @project_id_query ||= "(#{Journal::WorkPackageJournal.table_name}.project_id = #{project.id})"
+      "(#{Journal::WorkPackageJournal.table_name}.project_id = #{project.id})"
     end
 
-    def type_id_query
-      @type_id_query ||= "(#{Journal::WorkPackageJournal.table_name}.type_id in (#{collected_types.join(',')}))"
-    end
+    def day_query
+      lower_bound = sprint.start_date
+      upper_date = sprint.finish_date
+      upper_bound = Time.zone.today.clamp(lower_bound, upper_date)
 
-    def ignore_if_has_parent
-      @ignore_if_has_parent ||= "(#{Journal::WorkPackageJournal.table_name}.parent_id IS NOT NULL)"
-    end
+      return Day.none unless upper_bound && lower_bound
 
-    def collected_from_children?(key, story)
-      key == 'remaining_hours' && story_has_children?(story)
-    end
-
-    def collected_types
-      @collected_types ||= Story.types << Task.type
+      Day.working.from_range(from: lower_bound, to: upper_bound)
     end
   end
 end

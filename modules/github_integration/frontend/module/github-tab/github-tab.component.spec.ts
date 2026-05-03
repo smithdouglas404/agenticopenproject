@@ -49,7 +49,7 @@ describe('GitHubTabComponent.', () => {
 
   it('should render header and pull requests components', () => {
     const tabHeader = fixture.debugElement.query(By.css('tab-header'));
-    const tabPrs = fixture.debugElement.query(By.css('tab-prs'));
+    const tabPrs = fixture.debugElement.query(By.css('op-tab-prs'));
 
     expect(tabHeader).toBeTruthy();
     expect(tabPrs).toBeTruthy();

@@ -1,5 +1,10 @@
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
-import { Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
@@ -9,6 +14,11 @@ import { WorkPackageRelationsService } from '../wp-relations.service';
 @Component({
   selector: 'wp-relations-create',
   templateUrl: './wp-relation-create.template.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageRelationsCreateComponent {
   @Input() readonly workPackage:WorkPackageResource;
@@ -29,21 +39,13 @@ export class WorkPackageRelationsCreateComponent {
     addNewRelation: this.I18n.t('js.relation_buttons.add_new_relation'),
   };
 
-  constructor(readonly I18n:I18nService,
+  constructor(
+    readonly I18n:I18nService,
     protected wpRelations:WorkPackageRelationsService,
     protected notificationService:WorkPackageNotificationService,
-    protected halEvents:HalEventsService) {
-  }
-
-  public createRelation() {
-    if (!this.selectedRelationType || !this.selectedWpId) {
-      return;
-    }
-
-    this.isDisabled = true;
-    this.createCommonRelation()
-      .catch(() => this.isDisabled = false)
-      .then(() => this.isDisabled = false);
+    protected halEvents:HalEventsService,
+    protected cdRef:ChangeDetectorRef,
+  ) {
   }
 
   public onSelected(workPackage?:WorkPackageResource) {
@@ -64,6 +66,7 @@ export class WorkPackageRelationsCreateComponent {
           relationType: this.selectedRelationType,
         });
         this.notificationService.showSave(this.workPackage);
+        this.wpRelations.updateCounter(this.workPackage);
         this.toggleRelationsCreateForm();
       })
       .catch((err) => {
@@ -76,5 +79,6 @@ export class WorkPackageRelationsCreateComponent {
     this.showRelationsCreateForm = !this.showRelationsCreateForm;
     // Reset value
     this.selectedWpId = '';
+    this.cdRef.markForCheck();
   }
 }

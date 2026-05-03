@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,7 +46,7 @@ module WorkPackage::Exports
     def get_columns
       query
         .columns
-        .reject { |c| c.is_a?(Queries::WorkPackages::Columns::RelationColumn) }
+        .reject { |c| c.is_a?(Queries::WorkPackages::Selects::RelationSelect) }
     end
 
     def page

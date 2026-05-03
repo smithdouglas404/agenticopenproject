@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +29,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { TypedJSON } from 'typedjson';
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 import { Observable, throwError } from 'rxjs';
 import {
   HTTPClientHeaders,

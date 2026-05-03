@@ -1,6 +1,13 @@
 #English strings go here
+---
 vi:
-  label_calendar_plural: "Calendars"
-  permission_view_calendar: "View calendars"
-  permission_manage_calendars: "Manage calendars"
-  project_module_calendar_view: "Calendar"
+  plugin_openproject_calendar:
+    name: Lịch dự án mở
+    description: Cung cấp chế độ xem lịch.
+  label_calendar: Lịch
+  label_calendar_plural: lịch
+  label_new_calendar: Lịch mới
+  permission_view_calendar: Xem lịch
+  permission_manage_calendars: Quản lý lịch
+  permission_share_calendars: Đăng ký iCalendars
+  project_module_calendar_view: lịch

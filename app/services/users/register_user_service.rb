@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,6 +41,8 @@ module Users
         ensure_user_limit_not_reached!
         register_invited_user
         register_ldap_user
+        ensure_provider_not_limited!
+        register_omniauth_user
         ensure_registration_allowed!
         register_by_email_activation
         register_automatically
@@ -56,11 +60,21 @@ module Users
     private
 
     ##
+    # Check whether the associated single sign-on providers
+    # allows for automatic activation of new users
+    def ensure_provider_not_limited!
+      if limited_provider?(user) && Setting::SelfRegistration.disabled?
+        name = provider_name(user)
+        ServiceResult.failure(result: user, message: I18n.t("account.error_self_registration_limited_provider", name:))
+      end
+    end
+
+    ##
     # Check whether the system allows registration
     # for non-invited users
     def ensure_registration_allowed!
       if Setting::SelfRegistration.disabled?
-        ServiceResult.failure(result: user, message: I18n.t('account.error_self_registration_disabled'))
+        ServiceResult.failure(result: user, message: I18n.t("account.error_self_registration_disabled"))
       end
     end
 
@@ -79,6 +93,7 @@ module Users
     def register_invited_user
       return unless user.invited?
 
+      user.activate_custom_field_validations!
       user.activate
 
       with_saved_user_result(success_message: I18n.t(:notice_account_registered_and_logged_in)) do
@@ -88,15 +103,44 @@ module Users
 
     ##
     # Try to register a user with an auth source connection
-    # bypassing regular restrictions
+    # bypassing regular account registration restrictions
     def register_ldap_user
-      return unless user.auth_source_id.present?
+      return if user.ldap_auth_source_id.blank?
 
       user.activate
 
       with_saved_user_result(success_message: I18n.t(:notice_account_registered_and_logged_in)) do
-        Rails.logger.info { "User #{user.login} was successfully activated after invitation." }
+        Rails.logger.info { "User #{user.login} was successfully activated with LDAP association after invitation." }
       end
+    end
+
+    ##
+    # Try to register a user with an existsing omniauth connection
+    # bypassing regular account registration restrictions
+    def register_omniauth_user
+      return if skip_omniauth_user?
+      return if limited_provider?(user)
+
+      user.activate
+
+      with_saved_user_result(success_message: I18n.t(:notice_account_registered_and_logged_in)) do
+        Rails.logger.info { "User #{user.login} was successfully activated after arriving from omniauth." }
+      end
+    end
+
+    def skip_omniauth_user?
+      user.user_auth_provider_links.blank?
+    end
+
+    def limited_provider?(user)
+      provider = provider_name(user)
+      return false if provider.blank?
+
+      OpenProject::Plugins::AuthPlugin.limit_self_registration?(provider:)
+    end
+
+    def provider_name(user)
+      user.authentication_provider&.slug&.downcase
     end
 
     def register_by_email_activation

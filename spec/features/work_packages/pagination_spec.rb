@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,66 +28,69 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-RSpec.describe 'Work package pagination', js: true do
-  shared_let(:admin) { create :admin }
+RSpec.describe "Work package pagination", :js do
+  shared_let(:admin) { create(:admin) }
 
   let(:project) do
-    create(:project, name: 'project1', identifier: 'project1')
+    create(:project, name: "project1", identifier: "project1")
   end
 
-  shared_examples_for 'paginated work package list' do
+  shared_examples_for "paginated work package list" do
     let!(:work_package_1) { create(:work_package, project:) }
     let!(:work_package_2) { create(:work_package, project:) }
 
     before do
       login_as(admin)
-      allow(Setting).to receive(:per_page_options).and_return '1, 50, 100'
+      allow(Setting).to receive(:per_page_options).and_return "1, 50, 100"
 
       visit path
       expect(page).to have_current_path(expected_path, ignore_query: true)
     end
 
     it do
-      expect(page).to have_content('All open')
+      expect(page).to have_content("All open")
 
-      within('.work-packages-partitioned-query-space--container') do
-        expect(page).to     have_content(work_package_1.subject)
-        expect(page).not_to have_content(work_package_2.subject)
+      expect(page).to have_test_selector("op-breadcrumbs--item", text: "Work packages")
+      expect(page).to have_css(".op-breadcrumbs--current", text: "All open", aria: { current: "page" })
+
+      within(".work-packages-partitioned-query-space--container") do
+        expect(page).to have_content(work_package_1.subject)
+        expect(page).to have_no_content(work_package_2.subject)
       end
 
-      within('.op-pagination--pages') do
-        find('.op-pagination--item button', text: '2').click
+      within(".op-pagination--pages") do
+        find(".op-pagination--item button", text: "2").click
       end
 
-      within('.work-packages-partitioned-query-space--container') do
-        expect(page).to     have_content(work_package_2.subject)
-        expect(page).not_to have_content(work_package_1.subject)
+      within(".work-packages-partitioned-query-space--container") do
+        expect(page).to have_content(work_package_2.subject)
+        expect(page).to have_no_content(work_package_1.subject)
       end
 
-      within('.op-pagination--options') do
-        find('.op-pagination--item button', text: '50').click
+      within(".op-pagination--options") do
+        find(".op-pagination--item button", text: "50").click
       end
 
-      within('.work-packages-partitioned-query-space--container') do
+      within(".work-packages-partitioned-query-space--container") do
         expect(page).to have_content(work_package_1.subject)
         expect(page).to have_content(work_package_2.subject)
       end
     end
   end
 
-  context 'with project scope' do
-    it_behaves_like 'paginated work package list' do
+  context "with project scope" do
+    it_behaves_like "paginated work package list" do
       let(:path) { project_work_packages_path(project) }
-      let(:expected_path) { '/projects/project1/work_packages' }
+      let(:expected_path) { "/projects/project1/work_packages" }
     end
   end
 
-  context 'globally' do
-    it_behaves_like 'paginated work package list' do
+  context "globally" do
+    it_behaves_like "paginated work package list" do
       let(:path) { work_packages_path }
-      let(:expected_path) { '/work_packages' }
+      let(:expected_path) { "/work_packages" }
     end
   end
 end

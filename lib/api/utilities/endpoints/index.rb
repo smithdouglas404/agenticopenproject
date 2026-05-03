@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,7 +44,7 @@ module API
         end
 
         def mount
-          raise NotImplementedError
+          raise SubclassResponsibilityError
         end
 
         attr_accessor :model,
@@ -55,7 +55,7 @@ module API
         private
 
         def deduce_render_representer
-          raise NotImplementedError
+          raise SubclassResponsibilityError
         end
 
         def deduce_api_namespace

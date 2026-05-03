@@ -1,3 +1,5 @@
+@import '../../global_styles/openproject/variables'
+
 .op-autocompleter
   &--option-wrapper
     padding: 5px 5px
@@ -18,7 +20,7 @@
 
   &--wp-content
     display: grid
-    grid-template-columns: auto 1fr auto
+    grid-template-columns: 50% 1fr auto
     grid-template-areas: "project idlink status"
     font-size: 0.8rem
     padding: 1px 0 5px 0
@@ -32,10 +34,8 @@
 
   &--wp-id
     grid-area: idlink
-    place-self: right 
     font-style: italic
     margin: 0 0.5rem
-    text-align: center
 
   &--wp-status
     grid-area: status
@@ -43,13 +43,21 @@
     font-style: italic
 
   &--wp-subject
-    font-weight: bold
+    font-weight: var(--base-text-weight-bold)
     display: inline-block
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
 
-  &--option-principal
-    &-wrapper
-      display: flex
-      overflow: hidden
+  &__option-principal-email
+    color: var(--fgColor-muted)
+    font-size: var(--font-size-small)
+    margin-left: var(--stack-gap-condensed)
+
+  @media screen and (max-width: $breakpoint-sm)
+    &__option-principal-email
+      display: block
+      margin-left: 0
+      margin-top: var(--control-xsmall-gap)
+    &--option-principal-avatar + span + &__option-principal-email
+      margin-left: var(--control-small-size)

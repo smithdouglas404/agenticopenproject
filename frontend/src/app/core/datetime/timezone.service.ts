@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -29,34 +29,21 @@
 import { Injectable } from '@angular/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import * as moment from 'moment-timezone';
-import {
-  Moment,
-} from 'moment';
-
-declare module 'moment' {
-  interface Moment {
-    tz():string|undefined;
-
-    tz(timezone:string, keepLocalTime?:boolean):Moment;
-
-    zoneAbbr():string;
-
-    zoneName():string;
-  }
-}
+import moment, { Moment } from 'moment-timezone';
+import { outputChronicDuration } from '../../shared/helpers/chronic_duration';
 
 @Injectable({ providedIn: 'root' })
 export class TimezoneService {
   constructor(
     readonly configurationService:ConfigurationService,
     readonly I18n:I18nService,
-  ) {
-    this.setupLocale();
-  }
+  ) { }
 
-  public setupLocale():void {
-    moment.locale(I18n.locale);
+  /**
+   * Returns the user's configured timezone or guesses it through moment
+   */
+  public userTimezone():string {
+    return this.configurationService.isTimezoneSet() ? this.configurationService.timezone() : moment.tz.guess();
   }
 
   /**
@@ -64,14 +51,9 @@ export class TimezoneService {
    * a local date time moment object.
    */
   public parseDatetime(datetime:string, format?:string):Moment {
-    const d = moment.utc(datetime, format);
-
-    if (this.configurationService.isTimezoneSet()) {
-      d.local();
-      d.tz(this.configurationService.timezone());
-    }
-
-    return d;
+    return moment
+      .utc(datetime, format)
+      .tz(this.userTimezone());
   }
 
   public parseDate(date:Date|string, format?:string):Moment {
@@ -94,9 +76,9 @@ export class TimezoneService {
     return this.parseDate(date, 'YYYY-MM-DD');
   }
 
-  public formattedDate(date:string):string {
+  public formattedDate(date:string, format = this.getDateFormat()):string {
     const d = this.parseDate(date);
-    return d.format(this.getDateFormat());
+    return d.format(format);
   }
 
   /**
@@ -111,8 +93,8 @@ export class TimezoneService {
     return date.diff(today, 'days');
   }
 
-  public formattedTime(datetimeString:string):string {
-    return this.parseDatetime(datetimeString).format(this.getTimeFormat());
+  public formattedTime(datetimeString:string, format?:string):string {
+    return this.parseDatetime(datetimeString).format(format || this.getTimeFormat());
   }
 
   public formattedDatetime(datetimeString:string):string {
@@ -133,6 +115,10 @@ export class TimezoneService {
     ];
   }
 
+  public toSeconds(durationString:string):number {
+    return Number(moment.duration(durationString).asSeconds().toFixed(2));
+  }
+
   public toHours(durationString:string):number {
     return Number(moment.duration(durationString).asHours().toFixed(2));
   }
@@ -142,19 +128,46 @@ export class TimezoneService {
   }
 
   public toISODuration(input:string|number, unit:'hours'|'days'):string {
-    return moment.duration(input, unit).toIsoString();
+    return moment.duration(input, unit).toISOString();
+  }
+
+  public utcDateToLocalDate(date:Date):Date {
+    return new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  }
+
+  public utcDateToISODateString(date:Date):string {
+    return moment.utc(date).format('YYYY-MM-DD');
+  }
+
+  public utcDatesToISODateStrings(dates:Date[]):string[] {
+    return dates.map((date) => this.utcDateToISODateString(date));
   }
 
   public formattedDuration(durationString:string, unit:'hour'|'days' = 'hour'):string {
     switch (unit) {
       case 'hour':
-        return this.I18n.t('js.units.hour', { count: this.toHours(durationString) });
+        return this.I18n.t('js.units.hour', {
+          count: this.toHours(durationString),
+        });
       case 'days':
-        return this.I18n.t('js.units.day', { count: this.toDays(durationString) });
+        return this.I18n.t('js.units.day', {
+          count: this.toDays(durationString),
+        });
       default:
         // Case fallthrough for eslint
         return '';
     }
+  }
+
+  public formattedChronicDuration(durationString:string, opts = {
+    format: this.configurationService.durationFormat(),
+    hoursPerDay: this.configurationService.hoursPerDay(),
+    daysPerMonth: this.configurationService.daysPerMonth(),
+  }):string {
+    // Keep in sync with app/services/duration_converter#output
+    const seconds = this.toSeconds(durationString);
+
+    return outputChronicDuration(seconds, opts) || '0h';
   }
 
   public formattedISODate(date:any):string {

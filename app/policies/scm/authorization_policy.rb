@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -49,18 +51,18 @@ class SCM::AuthorizationPolicy
   # Determines whether the given request is a read access
   # Must be implemented by descendents of this policy.
   def readonly_request?(_params)
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   ##
   # Returns whether the user has read access permission to the repository
   def read_access?
-    user.allowed_to?(:browse_repository, project)
+    user.allowed_in_project?(:browse_repository, project)
   end
 
   ##
   # Returns whether the user has read/write access permission to the repository
   def write_access?
-    user.allowed_to?(:commit_access, project)
+    user.allowed_in_project?(:commit_access, project)
   end
 end

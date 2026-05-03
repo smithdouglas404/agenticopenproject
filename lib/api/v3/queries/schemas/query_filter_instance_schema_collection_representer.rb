@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,9 +32,9 @@ module API
       module Schemas
         class QueryFilterInstanceSchemaCollectionRepresenter < ::API::V3::Schemas::SchemaCollectionRepresenter
           def initialize(filters, ...)
-            filters = filters.reject { ::Queries::Register.excluded_filters.include?(_1.class) }
+            filters = filters.reject { ::Queries::Register.excluded_filters.include?(it.class) }
 
-            super(filters, ...)
+            super
           end
 
           def model_self_link(model)

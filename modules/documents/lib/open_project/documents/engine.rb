@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,27 +34,77 @@ module OpenProject::Documents
 
     include OpenProject::Plugins::ActsAsOpEngine
 
-    register 'openproject-documents',
+    register "openproject-documents",
              author_url: "http://www.openproject.org",
              bundled: true do
-      menu :project_menu,
-           :documents,
-           { controller: '/documents', action: 'index' },
-           caption: :label_document_plural,
-           before: :members,
-           icon: 'icon2 icon-notes'
+      ::Redmine::MenuManager.map(:project_menu) do |menu|
+        menu.push :documents,
+                  { controller: "/documents", action: "index" },
+                  caption: :label_document_plural,
+                  before: :members,
+                  icon: "note"
+
+        menu.push :documents_sub_menu,
+                  { controller: "/documents", action: "index" },
+                  parent: :documents,
+                  partial: "documents/menus/menu",
+                  caption: :label_document_plural
+      end
 
       project_module :documents do |_map|
-        permission :view_documents, documents: %i[index show download]
-        permission :manage_documents, {
-          documents: %i[new create edit update destroy]
-        }, require: :loggedin
+        permission :view_documents,
+                   {
+                     documents: %i[
+                       index search show download
+                       render_avatars render_last_saved_at
+                     ],
+                     "documents/menus": %i[show],
+                     "documents/refresh_tokens": %i[create]
+                   },
+                   permissible_on: :project
+        permission :manage_documents,
+                   {
+                     documents: %i[
+                       new create edit edit_title cancel_title_edit update update_title update_type delete_dialog destroy
+                     ]
+                   },
+                   permissible_on: :project,
+                   require: :loggedin
       end
+
+      menu :admin_menu,
+           :documents,
+           { controller: "/documents/admin/settings/document_types", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :label_document_plural,
+           before: :files,
+           icon: "note"
+
+      menu :admin_menu,
+           :document_types,
+           { controller: "/documents/admin/settings/document_types", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.menu.types",
+           parent: :documents
+
+      menu :admin_menu,
+           :document_collaboration_settings,
+           { controller: "/documents/admin/settings/document_collaboration_settings", action: :show },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.menu.collaboration_settings",
+           parent: :documents
+
+      menu :admin_menu,
+           :document_categories,
+           { controller: "/admin/settings/document_categories", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.label_categories",
+           parent: :files
 
       Redmine::Search.register :documents
     end
 
-    activity_provider :documents, class_name: 'Activities::DocumentActivityProvider', default: false
+    activity_provider :documents, class_name: "Activities::DocumentActivityProvider", default: false
 
     patches %i[Project]
 
@@ -68,13 +120,15 @@ module OpenProject::Documents
       "#{document(id)}/attachments"
     end
 
-    add_api_endpoint 'API::V3::Root' do
+    add_api_path :prepare_attachments_by_document do |id|
+      "#{document(id)}/attachments/prepare"
+    end
+
+    add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Documents::DocumentsAPI
     end
 
     # Add documents to allowed search params
     additional_permitted_attributes search: %i(documents)
-
-    patch_with_namespace :OpenProject, :TextFormatting, :Formats, :Markdown, :TextileConverter
   end
 end

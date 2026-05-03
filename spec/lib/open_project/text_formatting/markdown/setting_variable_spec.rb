@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './expected_markdown'
+require "spec_helper"
+require_relative "expected_markdown"
 
-describe OpenProject::TextFormatting,
-         'Setting variable' do
-  include_context 'expected markdown modules'
+RSpec.describe OpenProject::TextFormatting,
+               "Setting variable" do
+  include_context "expected markdown modules"
 
-  describe 'attribute label macros' do
-    it_behaves_like 'format_text produces' do
+  describe "attribute label macros" do
+    it_behaves_like "format_text produces" do
       let(:raw) do
         <<~RAW
           Inline reference to variable setting: {{opSetting:host_name}}
@@ -42,6 +44,8 @@ describe OpenProject::TextFormatting,
           Inline reference to base_url variable: {{opSetting:base_url}}
 
           [Link with setting]({{opSetting:base_url}}/foo/bar)
+
+          [Saved and transformed link with setting](http://localhost:3000/prefix/%7B%7BopSetting:base_url%7D%7D/foo/bar)
 
           Inline reference to invalid variable: {{opSetting:smtp_password}}
 
@@ -55,11 +59,16 @@ describe OpenProject::TextFormatting,
             Inline reference to variable setting: #{OpenProject::StaticRouting::UrlHelpers.host}
           </p>
           <p class="op-uc-p">
-            Inline reference to base_url variable: #{OpenProject::Application.root_url}
+            Inline reference to base_url variable: <a href="#{Rails.application.root_url}" target="_top" rel="noopener noreferrer nofollow"
+               class="op-uc-link">#{Rails.application.root_url}</a>
           </p>
           <p class="op-uc-p">
-            <a href="#{OpenProject::Application.root_url}/foo/bar" rel="noopener noreferrer"
+            <a href="#{Rails.application.root_url}/foo/bar" target="_top" rel="noopener noreferrer nofollow"
                class="op-uc-link">Link with setting</a>
+          </p>
+          <p class="op-uc-p">
+            <a href="#{Rails.application.root_url}/foo/bar" target="_top" rel="noopener noreferrer nofollow"
+               class="op-uc-link">Saved and transformed link with setting</a>
           </p>
           <p class="op-uc-p">
             Inline reference to invalid variable: {{opSetting:smtp_password}}

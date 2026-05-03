@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -32,13 +32,6 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { I18nService } from 'core-app/core/i18n/i18n.service';
-import {
-  IToast,
-  ToastService,
-  ToastType,
-} from './toast.service';
-import { UploadInProgress } from 'core-app/core/file-upload/op-file-upload.service';
 import {
   BehaviorSubject,
   Observable,
@@ -49,10 +42,14 @@ import {
 } from 'rxjs/operators';
 import { take } from 'rxjs/internal/operators/take';
 
+import { I18nService } from 'core-app/core/i18n/i18n.service';
+import { IToast, ToastService, ToastType } from 'core-app/shared/components/toaster/toast.service';
+
 @Component({
   templateUrl: './toast.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-toast',
+  standalone: false,
 })
 export class ToastComponent implements OnInit {
   @Input() public toast:IToast;
@@ -62,6 +59,8 @@ export class ToastComponent implements OnInit {
   };
 
   public type:ToastType;
+
+  public icon?:string;
 
   public uploadCount = 0;
 
@@ -73,17 +72,20 @@ export class ToastComponent implements OnInit {
 
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(readonly I18n:I18nService,
-    readonly toastService:ToastService) {
+  constructor(
+    readonly I18n:I18nService,
+    readonly toastService:ToastService,
+  ) {
   }
 
   ngOnInit():void {
     this.type = this.toast.type;
+    this.icon = this.toast.icon ? `toast-icon icon-${this.toast.icon}` : '';
 
     this.removable = !['upload', 'loading'].includes(this.type);
 
     if (this.type === 'upload') {
-      const data = this.data as UploadInProgress[];
+      const data = this.data as [File, Observable<unknown>];
       this.removable = false;
       this.canBeHidden = data && data.length > 5;
     }
@@ -128,7 +130,7 @@ export class ToastComponent implements OnInit {
   }
 
   public get uploadText():string {
-    return this.I18n.t('js.label_upload_counter',
-      { done: this.uploadCount, count: (this.data as UploadInProgress[]).length });
+    const count = (this.data as unknown[]).length;
+    return this.I18n.t('js.label_upload_counter', { done: this.uploadCount, count });
   }
 }

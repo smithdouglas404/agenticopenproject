@@ -29,10 +29,10 @@ value:
       href: "/api/v3/projects/123"
       title: "Parent project"
     ancestors:
-      - href: "/api/v3/projects/2"
-        title: "Root project"
-      - href: "/api/v3/projects/12"
-        title: "Grandparent project"
+      - href: "/api/v3/portfolios/2"
+        title: "Root portfolios"
+      - href: "/api/v3/programs/12"
+        title: "Grandparent program"
       - href: "/api/v3/projects/123"
         title: "Parent project"
     status:
@@ -51,6 +51,7 @@ value:
     format: markdown
     raw: Lorem **ipsum** dolor sit amet
     html: "<p>Lorem <strong>ipsum</strong> dolor sit amet</p>"
-  createdAt: '2014-05-21T08:51:20Z'
-  updatedAt: '2014-05-21T08:51:20Z'
+  createdAt: '2014-05-21T08:51:20.396Z'
+  updatedAt: '2014-05-21T08:51:20.396Z'
   customField123: 123
+  customComment123: Why is the value 123?

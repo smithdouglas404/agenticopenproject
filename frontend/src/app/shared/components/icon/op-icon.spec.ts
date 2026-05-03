@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { OpIconComponent } from './icon.component';
@@ -36,14 +36,13 @@ describe('opIcon Directive', () => {
   let fixture:ComponentFixture<OpIconComponent>;
   let element:DebugElement;
 
-  beforeEach(waitForAsync(() => {
-    // noinspection JSIgnoredPromiseFromCall
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         OpIconComponent,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OpIconComponent);
@@ -68,7 +67,7 @@ describe('opIcon Directive', () => {
 
   describe('with a title', () => {
     beforeEach(() => {
-      app.iconTitle = 'blabla';
+      fixture.componentRef.setInput('icon-title', 'blabla');
       fixture.detectChanges();
     });
 

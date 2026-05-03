@@ -55,7 +55,7 @@ export class GridDragAndDropService implements OnDestroy {
 
     // Set the draggedArea's startRow/startColumn properties
     // to the drop zone ones.
-    // The dragged Area should keep it's height and width normally but will
+    // The dragged Area should keep its height and width normally but will
     // shrink if the area would otherwise end outside the grid.
     // we cannot use the widget's original area as moving it while dragging confuses cdkDrag
     this.copyPositionButRestrict(dropArea, this.placeholderArea);

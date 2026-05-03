@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Attachments::CleanupUncontaineredJob, type: :job do
+RSpec.describe Attachments::CleanupUncontaineredJob, type: :job do
   let(:grace_period) { 120 }
 
   let!(:containered_attachment) { create(:attachment) }
@@ -40,13 +42,13 @@ describe Attachments::CleanupUncontaineredJob, type: :job do
   end
 
   let!(:finished_upload) do
-    create(:attachment, created_at: Time.now - grace_period.minutes, digest: "0x42")
+    create(:attachment, created_at: Time.now - grace_period.minutes, status: :uploaded)
   end
   let!(:old_pending_upload) do
-    create(:attachment, created_at: Time.now - grace_period.minutes, digest: "", downloads: -1)
+    create(:attachment, created_at: Time.now - grace_period.minutes, status: :prepared)
   end
   let!(:new_pending_upload) do
-    create(:attachment, created_at: Time.now - (grace_period - 1).minutes, digest: "", downloads: -1)
+    create(:attachment, created_at: Time.now - (grace_period - 1).minutes, status: :prepared)
   end
 
   let(:job) { described_class.new }
@@ -57,10 +59,10 @@ describe Attachments::CleanupUncontaineredJob, type: :job do
       .and_return(grace_period)
   end
 
-  it 'removes all uncontainered attachments and pending uploads that are older than the grace period' do
+  it "removes all uncontainered attachments and pending uploads that are older than the grace period" do
     job.perform
 
     expect(Attachment.all)
-      .to match_array([containered_attachment, new_uncontainered_attachment, finished_upload, new_pending_upload])
+      .to contain_exactly(containered_attachment, new_uncontainered_attachment, finished_upload, new_pending_upload)
   end
 end

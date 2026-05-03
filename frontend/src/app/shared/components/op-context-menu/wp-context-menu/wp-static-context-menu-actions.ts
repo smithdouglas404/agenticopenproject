@@ -1,6 +1,13 @@
-import { WorkPackageAction } from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
+import {
+  WorkPackageAction,
+} from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
 
 export const PERMITTED_CONTEXT_MENU_ACTIONS:WorkPackageAction[] = [
+  {
+    key: 'copy_link_to_clipboard',
+    icon: 'icon-clipboard',
+    link: 'id',
+  },
   {
     key: 'log_time',
     link: 'logTime',
@@ -11,7 +18,8 @@ export const PERMITTED_CONTEXT_MENU_ACTIONS:WorkPackageAction[] = [
     link: 'move',
   },
   {
-    key: 'copy',
+    key: 'duplicate',
+    icon: 'icon-copy',
     link: 'copy',
   },
   {
@@ -24,8 +32,9 @@ export const PERMITTED_CONTEXT_MENU_ACTIONS:WorkPackageAction[] = [
     link: 'delete',
   },
   {
-    key: 'export-pdf',
-    link: 'pdf',
+    key: 'generate_pdf',
+    link: 'generate_pdf',
+    icon: 'icon-export-pdf-with-descriptions',
   },
   {
     key: 'export-atom',

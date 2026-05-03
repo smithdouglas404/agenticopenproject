@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,13 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'digest/md5'
+require "digest/md5"
 
 class Attachment < ApplicationRecord
-  belongs_to :container, polymorphic: true
-  belongs_to :author, class_name: 'User'
+  enum :status, {
+    uploaded: 0,
+    prepared: 1,
+    scanned: 2,
+    quarantined: 3,
+    rescan: 4
+  }, prefix: true
 
-  validates :author, :content_type, :filesize, presence: true
+  belongs_to :container, polymorphic: true
+  belongs_to :author, class_name: "User"
+
+  validates :author, :content_type, :filesize, :status, presence: true
   validates :description, length: { maximum: 255 }
 
   validate :filesize_below_allowed_maximum,
@@ -57,15 +67,15 @@ class Attachment < ApplicationRecord
   acts_as_journalized
   acts_as_event title: -> { file.name },
                 url: (Proc.new do |o|
-                  { controller: '/attachments', action: 'download', id: o.id, filename: o.filename }
+                  { controller: "/attachments", action: "download", id: o.id, filename: o.filename }
                 end)
 
   mount_uploader :file, OpenProject::Configuration.file_uploader
 
-  after_commit :extract_fulltext, on: :create
+  after_commit :enqueue_jobs, on: :create, if: -> { !internal_container? }
 
-  scope :pending_direct_upload, -> { where(digest: "", downloads: -1) }
-  scope :not_pending_direct_upload, -> { where.not(digest: "", downloads: -1) }
+  scope :pending_direct_upload, -> { status_prepared }
+  scope :not_pending_direct_upload, -> { not_status_prepared }
 
   ##
   # Returns an URL if the attachment is stored in an external (fog) attachment storage
@@ -100,7 +110,7 @@ class Attachment < ApplicationRecord
   end
 
   def content_disposition(include_filename: true)
-    disposition = inlineable? ? 'inline' : 'attachment'
+    disposition = inlineable? ? "inline" : "attachment"
 
     if include_filename
       "#{disposition}; filename=#{filename}"
@@ -122,12 +132,17 @@ class Attachment < ApplicationRecord
   end
 
   def prepared?
-    downloads == -1
+    status_prepared?
   end
 
-  # images are sent inline
+  def pending_virus_scan?
+    status_uploaded? && Setting::VirusScanning.enabled?
+  end
+
+  # Determine mime types that we deem safe for inline content disposition
+  # e.g., which will be loaded by the browser without forcing to download them
   def inlineable?
-    is_plain_text? || is_image? || is_movie? || is_pdf?
+    is_text? || is_image? || is_movie? || is_pdf?
   end
 
   # rubocop:disable Naming/PredicateName
@@ -147,11 +162,15 @@ class Attachment < ApplicationRecord
   alias :image? :is_image?
 
   def is_pdf?
-    content_type == 'application/pdf'
+    content_type == "application/pdf"
+  end
+
+  def is_html?
+    content_type == "text/html"
   end
 
   def is_text?
-    content_type =~ /\Atext\/.+/
+    content_type.match?(/\Atext\/.+/) && !is_html?
   end
 
   def is_diff?
@@ -181,7 +200,7 @@ class Attachment < ApplicationRecord
   end
 
   def filename
-    attributes['file'] || super
+    attributes["file"] || super
   end
 
   ##
@@ -215,8 +234,21 @@ class Attachment < ApplicationRecord
     self.digest = Digest::MD5.file(file.path).hexdigest
   end
 
+  ##
+  # Detects the content type of a file based on its actual content.
+  # This method always relies on file content detection (via the `file` command)
+  # and never uses filename-based narrowing (MimeType.narrow_type) to ensure
+  # security-sensitive types like SVG are correctly identified even when the
+  # filename extension doesn't match the actual content.
+  #
+  # @param file_path [String] Path to the file to analyze
+  # @param fallback [String] Default content type if detection fails
+  # @return [String] The detected content type
   def self.content_type_for(file_path, fallback = OpenProject::ContentTypeDetector::SENSIBLE_DEFAULT)
-    content_type = OpenProject::MimeType.narrow_type file_path, OpenProject::ContentTypeDetector.new(file_path).detect
+    # Always use ContentTypeDetector which analyzes file content, not filename
+    # Do NOT use MimeType.narrow_type here as it could incorrectly narrow
+    # security-sensitive types (e.g., SVG with .png extension -> image/png)
+    content_type = OpenProject::ContentTypeDetector.new(file_path).detect
     content_type || fallback
   end
 
@@ -235,10 +267,18 @@ class Attachment < ApplicationRecord
     attachment.save!
   end
 
-  def extract_fulltext
-    return unless OpenProject::Database.allows_tsv? && (!container || container.class.attachment_tsv_extracted?)
+  def enqueue_jobs
+    extract_fulltext
 
-    ExtractFulltextJob.perform_later(id)
+    if pending_virus_scan?
+      Attachments::VirusScanJob.perform_later(self)
+    end
+  end
+
+  def extract_fulltext
+    if OpenProject::Database.allows_tsv? && (!container || container.class.attachment_tsv_extracted?)
+      Attachments::ExtractFulltextJob.perform_later(id)
+    end
   end
 
   # Extract the fulltext of any attachments where fulltext is still nil.
@@ -252,9 +292,9 @@ class Attachment < ApplicationRecord
       .pluck(:id)
       .each do |id|
       if run_now
-        ExtractFulltextJob.perform_now(id)
+        Attachments::ExtractFulltextJob.perform_now(id)
       else
-        ExtractFulltextJob.perform_later(id)
+        Attachments::ExtractFulltextJob.perform_later(id)
       end
     end
   end
@@ -263,7 +303,7 @@ class Attachment < ApplicationRecord
     return unless OpenProject::Database.allows_tsv?
 
     Attachment.pluck(:id).each do |id|
-      ExtractFulltextJob.perform_now(id)
+      Attachments::ExtractFulltextJob.perform_now(id)
     end
   end
 
@@ -299,16 +339,16 @@ class Attachment < ApplicationRecord
     digest == "" && downloads == -1
   end
 
+  def internal_container?
+    container&.is_a?(Export)
+  end
+
   private
 
   def filesize_below_allowed_maximum
     if filesize.to_i > Setting.attachment_max_size.to_i.kilobytes
       errors.add(:file, :file_too_large, count: Setting.attachment_max_size.to_i.kilobytes)
     end
-  end
-
-  def internal_container?
-    container&.is_a?(Export)
   end
 
   def container_changed_more_than_once

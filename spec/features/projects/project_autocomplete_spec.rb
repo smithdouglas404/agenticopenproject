@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,38 +28,43 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Projects autocomplete page', type: :feature, js: true do
-  let!(:user) { create :user }
-  let(:top_menu) { ::Components::Projects::TopMenu.new }
+RSpec.describe "Projects autocomplete page", :js do
+  shared_let(:user) { create(:user) }
+  # we only need the public permissions: view_project, :view_news
+  shared_let(:role) { create(:project_role, permissions: []) }
 
-  let!(:project) do
-    create(:project,
-           name: 'Plain project',
-           identifier: 'plain-project')
+  shared_let(:portfolio) do
+    create(:portfolio, name: "Test Portfolio", members: { user => role })
   end
-
-  let!(:project2) do
-    create(:project,
-           name: '<strong>foobar</strong>',
-           identifier: 'foobar')
+  shared_let(:program) do
+    create(:program, name: "Test Program", members: { user => role })
   end
-
-  let!(:project3) do
+  shared_let(:project) do
+    create(:project, name: "Plain project", identifier: "plain-project", members: { user => role })
+  end
+  shared_let(:project2) do
     create(:project,
-           name: 'Plain other project',
+           name: "<strong>foobar</strong>",
+           identifier: "foobar",
+           members: { user => role })
+  end
+  shared_let(:project3) do
+    create(:project,
+           name: "Plain other project",
            parent: project2,
-           identifier: 'plain-project-2')
+           identifier: "plain-project-2",
+           members: { user => role })
   end
-  let!(:project4) do
+  shared_let(:project4) do
     create(:project,
-           name: 'Project with different name and identifier',
+           name: "Project with different name and identifier",
            parent: project2,
-           identifier: 'plain-project-4')
+           identifier: "plain-project-4",
+           members: { user => role })
   end
-
-  let!(:other_projects) do
+  shared_let(:other_projects) do
     names = [
       "Very long project name with term at the END",
       "INK14 - Foo",
@@ -66,33 +73,22 @@ describe 'Projects autocomplete page', type: :feature, js: true do
     ]
 
     names.map do |name|
-      identifier = name.gsub(/[ \-]+/, "-").downcase
+      identifier = name.gsub(/[ -]+/, "-").downcase
 
-      create :project, name:, identifier:
+      create(:project, name:, identifier:, members: { user => role })
     end
   end
-  let!(:non_member_project) do
-    create :project
-  end
-  let!(:public_project) do
-    create :public_project
-  end
-  # necessary to be able to see public projects
-  let!(:non_member_role) { create :non_member }
-  # we only need the public permissions: view_project, :view_news
-  let(:role) { create(:role, permissions: []) }
+  shared_let(:non_member_project) { create(:project) }
+  shared_let(:public_project) { create(:public_project) }
 
-  include BecomeMember
+  let(:top_menu) { Components::Projects::TopMenu.new }
 
   before do
-    ([project, project2, project3] + other_projects).each do |p|
-      add_user_to_project! user:, project: p, role:
-    end
     login_as user
     visit root_path
   end
 
-  it 'allows to filter and select projects' do
+  it "allows to filter and select projects" do
     retry_block do
       top_menu.toggle unless top_menu.open?
       top_menu.expect_open
@@ -106,69 +102,73 @@ describe 'Projects autocomplete page', type: :feature, js: true do
     end
 
     # Filter for projects
-    top_menu.search '<strong'
+    top_menu.search "<strong"
 
     # Expect highlights
     within(top_menu.search_results) do
-      expect(page).to have_selector('.op-search-highlight', text: '<strong')
-      expect(page).to have_no_selector('strong')
+      expect(page).to have_css(".op-search-highlight", text: "<strong")
+      expect(page).to have_no_css("strong")
     end
 
-    # Expect fuzzy matches for plain
-    top_menu.search 'Plain pr'
-    top_menu.expect_result 'Plain project'
-    top_menu.expect_no_result 'Plain other project'
+    # Expect fuzzy matches for multiple substrings
+    top_menu.search "Plain pr"
+    top_menu.expect_result "Plain project"
+    top_menu.expect_result "Plain other project"
+    top_menu.expect_no_result "Project with different name and identifier"
 
     # Expect search to match names only and not the identifier
     top_menu.clear_search
 
-    top_menu.search 'plain'
-    top_menu.expect_result 'Plain project'
-    top_menu.expect_result 'Plain other project'
-    top_menu.expect_no_result 'Project with different name and identifier'
+    top_menu.search "plain"
+    top_menu.expect_result "Plain project"
+    top_menu.expect_result "Plain other project"
+    top_menu.expect_no_result "Project with different name and identifier"
 
     # Expect hierarchy
     top_menu.clear_search
 
-    top_menu.expect_result 'Plain project'
-    top_menu.expect_result '<strong>foobar</strong>'
-    top_menu.expect_item_with_hierarchy_level hierarchy_level: 2, item_name: 'Plain other project'
+    top_menu.expect_result "Plain project"
+    top_menu.expect_result "<strong>foobar</strong>", disabled: true
+    top_menu.expect_item_with_hierarchy_level hierarchy_level: 2,
+                                              item_name: "Plain other project"
 
     # Show hierarchy of project
-    top_menu.search 'Plain other project'
+    top_menu.search "Plain other project"
 
-    top_menu.expect_result '<strong>foobar</strong>', disabled: true
-    top_menu.expect_item_with_hierarchy_level hierarchy_level: 2, item_name: 'Plain other project'
+    top_menu.expect_result "<strong>foobar</strong>", disabled: true
+    top_menu.expect_item_with_hierarchy_level hierarchy_level: 2,
+                                              item_name: "Plain other project"
 
     # find terms at the end of project names
-    top_menu.search 'END'
-    top_menu.expect_result 'Very long project name with term at the END'
+    top_menu.search "END"
+    top_menu.expect_result "Very long project name with term at the END"
 
     # Find literal matches exclusively if present
-    top_menu.search 'INK15'
-    top_menu.expect_result 'INK15 - Bar'
-    top_menu.expect_no_result 'INK14 - Foo'
-    top_menu.expect_no_result 'INK16 - Baz'
+    top_menu.search "INK15"
+    top_menu.expect_result "INK15 - Bar"
+    top_menu.expect_no_result "INK14 - Foo"
+    top_menu.expect_no_result "INK16 - Baz"
 
     # Visit a project
-    top_menu.search_and_select '<strong'
+    top_menu.search_and_select "<strong"
     top_menu.expect_current_project project2.name
 
     # Keeps the current module
     visit project_news_index_path(project2)
-    expect(page).to have_selector('.news-menu-item.selected')
+    expect(page).to have_css(".news-menu-item.selected")
 
     retry_block do
       top_menu.toggle
       top_menu.expect_open
-      top_menu.search_and_select 'Plain project'
+      top_menu.search_and_select "Plain project"
     end
 
-    expect(page).to have_current_path(project_news_index_path(project), ignore_query: true)
-    expect(page).to have_selector('.news-menu-item.selected')
+    expect(page).to have_current_path(project_news_index_path(project),
+                                      ignore_query: true)
+    expect(page).to have_css(".news-menu-item.selected")
   end
 
-  it 'navigates to the first project upon hitting enter in the search bar' do
+  it "navigates to the first project upon hitting enter in the search bar" do
     retry_block do
       top_menu.toggle unless top_menu.open?
       top_menu.expect_open
@@ -178,11 +178,23 @@ describe 'Projects autocomplete page', type: :feature, js: true do
     end
 
     # Filter for projects
-    top_menu.search '<strong'
+    top_menu.search "<strong"
 
     # Visit a project
     top_menu.autocompleter.send_keys :enter
 
     top_menu.expect_current_project project2.name
+  end
+
+  it "displays workspace type badges for portfolios and programs",
+     with_flag: { portfolio_models: true } do
+    retry_block do
+      top_menu.toggle unless top_menu.open?
+      top_menu.expect_open
+
+      top_menu.expect_result portfolio.name, workspace_badge: "Portfolio"
+      top_menu.expect_result program.name, workspace_badge: "Program"
+      top_menu.expect_result project.name, workspace_badge: false
+    end
   end
 end

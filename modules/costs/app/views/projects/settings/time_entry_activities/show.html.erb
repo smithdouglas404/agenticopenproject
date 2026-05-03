@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +26,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<%= toolbar title: t(:enumeration_activities), html: { class: '-minimum-title' } do -%>
-  <%= render partial: 'projects/settings/form_toolbar', locals: { form_name: "edit_project_#{@project.id}" } %>
-<% end %>
+
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { t(:enumeration_activities) }
+    header.with_breadcrumbs(
+      [{ href: project_overview_path(@project.id), text: @project.name },
+       { href: project_settings_general_path(@project.id), text: I18n.t(:label_project_settings) },
+       t(:enumeration_activities)]
+    )
+  end
+%>
 
 <% if TimeEntryActivity.any? %>
   <%= labelled_tabular_form_for @project,
                                 url: project_settings_time_entry_activities_path(@project) do %>
 
-    <%= render partial: '/projects/settings/time_entry_activities/activities',
+    <%= render partial: "/projects/settings/time_entry_activities/activities",
                locals: { project: @project } %>
   <% end %>
 
-  <br/>
+  <br>
 <% else %>
-  <%= no_results_box custom_title: t('projects.settings.activities.no_results_title_text') %>
+  <%= no_results_box custom_title: t("projects.settings.activities.no_results_title_text") %>
 <% end %>

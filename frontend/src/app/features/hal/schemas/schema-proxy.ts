@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -34,6 +34,7 @@ import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 export interface ISchemaProxy extends SchemaResource {
   ofProperty(property:string):IFieldSchema;
   isAttributeEditable(property:string):boolean;
+  mappedName(property:string):string;
   isEditable:boolean;
 }
 
@@ -83,7 +84,7 @@ export class SchemaProxy implements ProxyHandler<SchemaResource> {
     const propertySchema = this.schema[this.mappedName(property)];
 
     if (propertySchema) {
-      return { ...propertySchema, writable: this.isEditable && propertySchema && propertySchema.writable };
+      return { ...propertySchema, writable: this.isEditable && propertySchema?.writable };
     }
     return null;
   }

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,11 +44,11 @@ module Costs::Patches::PermittedParamsPatch
     def budget
       params.require(:budget).permit(:subject,
                                      :description,
-                                     :fixed_date,
+                                     :fixed_date, :base_amount,
                                      { new_material_budget_item_attributes: %i[units cost_type_id comments amount] },
                                      { new_labor_budget_item_attributes: %i[hours user_id comments amount] },
                                      { existing_material_budget_item_attributes: %i[units cost_type_id comments amount] },
-                                     existing_labor_budget_item_attributes: %i[hours user_id comments amount])
+                                     { existing_labor_budget_item_attributes: %i[hours user_id comments amount] })
     end
 
     def cost_type
@@ -61,6 +63,29 @@ module Costs::Patches::PermittedParamsPatch
     def user_rates
       params.require(:user).permit(new_rate_attributes: %i[valid_from rate],
                                    existing_rate_attributes: %i[valid_from rate])
+    end
+
+    def time_entries
+      additional_fields = []
+
+      additional_fields << :start_time if TimeEntry.can_track_start_and_end_time? || params.dig(:time_entry, :start_time).nil?
+
+      params
+        .require(:time_entry)
+        .permit(
+          *additional_fields,
+          :hours,
+          :comments,
+          :spent_on,
+          :entity_type,
+          :entity_id,
+          :activity_id,
+          :project_id,
+          :issue_id,
+          :user_id,
+          :ongoing
+        )
+        .merge(custom_field_values(:time_entry))
     end
   end
 end

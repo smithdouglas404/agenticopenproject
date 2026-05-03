@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,27 +28,41 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+require_relative "../toasts/expectations"
+require_relative "../flash/expectations"
+require_relative "../capybara/wait_helpers"
+
 module Pages
   class Page
     include Capybara::DSL
     include Capybara::RSpecMatchers
+    include TestSelectorFinders
     include RSpec::Matchers
     include OpenProject::StaticRouting::UrlHelpers
+    include Toasts::Expectations
+    include Flash::Expectations
+    include RSpec::Wait
+    include WaitHelpers
 
     def current_page?
       URI.parse(current_url).path == path
     end
 
     def visit!
-      raise 'No path defined' unless path
+      raise "No path defined" unless path
 
-      visit path
+      visit(path)
 
-      self
+      wait_for_reload
     end
 
     def reload!
-      page.driver.browser.navigate.refresh
+      if using_cuprite?
+        page.driver.browser.refresh
+        wait_for_reload
+      else
+        page.driver.browser.navigate.refresh
+      end
     end
 
     def accept_alert_dialog!
@@ -80,55 +96,40 @@ module Pages
     end
 
     def expect_current_path(query_params = nil)
-      uri = URI.parse(current_url)
-      current_path = uri.path
-      current_path += "?#{uri.query}" if uri.query
-
       expected_path = path
       expected_path += "?#{query_params}" if query_params
 
-      expect(current_path).to eql expected_path
+      expect(page).to have_current_path expected_path, wait: 10
     end
 
-    def expect_toast(message:, type: :success)
-      if toast_type == :angular
-        expect(page).to have_selector(".op-toast.-#{type}", text: message, wait: 20)
-      elsif type == :error
-        expect(page).to have_selector(".errorExplanation", text: message)
-      elsif type == :success
-        expect(page).to have_selector(".flash.notice", text: message)
-      else
-        raise NotImplementedError
-      end
-    end
-
-    def expect_and_dismiss_toaster(message:, type: :success)
-      expect_toast(type: type, message: message)
-      dismiss_toaster!
-      expect_no_toaster(type: type, message: message)
-    end
-
-    def dismiss_toaster!
-      if toast_type == :angular
-        page.find('.op-toast--close').click
-      else
-        page.find('.flash .icon-close').click
-      end
-    end
-
-    def expect_no_toaster(type: :success, message: nil)
-      if type.nil?
-        expect(page).to have_no_selector(".op-toast")
-      else
-        expect(page).to have_no_selector(".op-toast.-#{type}", text: message)
+    def click_to_sort_by(header_name)
+      within ".generic-table thead" do
+        click_link header_name
       end
     end
 
     def drag_and_drop_list(from:, to:, elements:, handler:)
+      if using_cuprite?
+        drag_and_drop_list_cuprite(from:, to:, elements:, handler:)
+      else
+        drag_and_drop_list_selenium(from:, to:, elements:, handler:)
+      end
+    end
+
+    def drag_and_drop_list_cuprite(from:, to:, elements:, handler:)
+      list = page.all(elements, minimum: [from, to].max + 1)
+      source_handler = list[from].find(handler)
+      target_handler = list[to].find(handler)
+
+      # doesn't scroll
+      source_handler.native.drag_to(target_handler.native, delay: 0.1)
+    end
+
+    def drag_and_drop_list_selenium(from:, to:, elements:, handler:)
       # Wait a bit because drag & drop in selenium is easily offended
       sleep 1
 
-      list = page.all(elements)
+      list = page.all(elements, minimum: [from, to].max + 1)
       source = list[from]
       target = list[to]
 
@@ -177,8 +178,16 @@ module Pages
       nil
     end
 
-    def toast_type
-      :angular
+    def navigate_to_modules_menu_item(link_title)
+      visit root_path
+
+      within ".op-app-header" do
+        page.find_test_selector("op-app-header--modules-menu-button").click
+      end
+
+      within "#op-app-header--modules-menu-list", visible: :all do
+        click_on link_title, visible: :all
+      end
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -48,8 +50,7 @@ class Queries::WorkPackages::Filter::CategoryFilter <
     available_categories = all_project_categories.index_by(&:id)
 
     values
-      .map { |category_id| available_categories[category_id.to_i] }
-      .compact
+      .filter_map { |category_id| available_categories[category_id.to_i] }
   end
 
   def ar_object_filter?

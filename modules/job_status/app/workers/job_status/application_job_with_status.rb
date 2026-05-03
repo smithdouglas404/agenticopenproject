@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,8 +27,7 @@
 #++
 module JobStatus
   module ApplicationJobWithStatus
-    # Delayed jobs can have a status:
-    # Delayed::Job::Status
+    # Background jobs can have a status JobStatus::Status
     # which is related to the job via a reference which is an AR model instance.
     def status_reference
       nil
@@ -54,15 +53,12 @@ module JobStatus
     ##
     # Get the current status object, if any
     def job_status
-      ::JobStatus::Status
-        .find_by(job_id:)
+      ::JobStatus::Status.find_by(job_id:)
     end
 
     ##
     # Update the status code for a given job
     def upsert_status(status:, **args)
-      # Can't use upsert, as we only want to insert the user_id once
-      # and not update it repeatedly
       resource = ::JobStatus::Status.find_or_initialize_by(job_id:)
 
       if resource.new_record?
@@ -77,7 +73,16 @@ module JobStatus
         resource.attributes = build_status_attributes(args.merge(status:))
       end
 
+      # There is a possible race condition because of unique job_statuses.job_id
+      # Can't use upsert easily, because before updating we need to know user_id
+      # to set proper locale. Probably, it is possible to get it from
+      # a job's payload, then it would be possible to correctly prepare attributes before using upsert.
+      # Therefore, it is up to possible optimization in future. Now the race condition is handled with
+      # handling ActiveRecord::RecordNotUnique and trying again.
       resource.save!
+    rescue ActiveRecord::RecordNotUnique
+      OpenProject.logger.info("Retrying ApplicationJobWithStatus#upsert_status.")
+      retry
     end
 
     protected
@@ -107,8 +112,8 @@ module JobStatus
 
     ##
     # Crafts a payload for a download result
-    def download_payload(path)
-      { download: path }
+    def download_payload(path, mime_type)
+      { download: path, mime_type: }
     end
   end
 end

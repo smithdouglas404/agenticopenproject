@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +26,8 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Transition } from '@uirouter/core';
-import { Component, Input, OnInit } from '@angular/core';
+import { UIRouterGlobals } from '@uirouter/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -36,31 +36,41 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 @Component({
   templateUrl: './relations-tab.html',
   selector: 'wp-relations-tab',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageRelationsTabComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackageId?:string;
 
-  public workPackage:WorkPackageResource;
+  @Input() public workPackage:WorkPackageResource;
 
-  public constructor(readonly I18n:I18nService,
-    readonly $transition:Transition,
-    readonly apiV3Service:ApiV3Service) {
+  public constructor(
+    readonly I18n:I18nService,
+    readonly uiRouterGlobals:UIRouterGlobals,
+    readonly apiV3Service:ApiV3Service,
+    readonly cdRef:ChangeDetectorRef,
+  ) {
     super();
   }
 
   ngOnInit() {
-    const wpId = this.workPackageId || this.$transition.params('to').workPackageId;
+    const { workPackageId } = this.uiRouterGlobals.params as unknown as { workPackageId:string };
+    this.workPackageId = (this.workPackage.id!) || workPackageId;
+
     this
       .apiV3Service
       .work_packages
-      .id(wpId)
+      .id(this.workPackageId)
       .requireAndStream()
       .pipe(
         this.untilDestroyed(),
       )
       .subscribe((wp) => {
-        this.workPackageId = wp.id!;
         this.workPackage = wp;
+        this.cdRef.markForCheck();
       });
   }
 }

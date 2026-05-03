@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -59,11 +61,11 @@ module BackupHelper
   end
 
   def create_backup_token(user: current_user)
-    token = Token::Backup.create! user: user
+    token = Token::Backup.create!(user:)
 
     # activate token right away as user had to confirm password
     date = instant_backup_threshold_date
-    if allow_instant_backup_for_user? user, date: date
+    if allow_instant_backup_for_user?(user, date:)
       token.update_column :created_at, date
     end
 

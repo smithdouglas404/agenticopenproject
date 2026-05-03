@@ -3,26 +3,15 @@
  * handled by Rails. As such, we disable the default link-hijacking that
  * Angular's HTML5-mode with <base href="/"> results in
  * @param evt
- * @param target
+ * @param linkElement
  */
-export function performAnchorHijacking(evt:JQuery.TriggeredEvent, target:JQuery):void {
-  // Avoid defaulting clicks on elements already removed from DOM
-  if (!document.contains(evt.target as Element)) {
-    evt.preventDefault();
-  }
-
-  // Avoid handling clicks on anything other than a
-  const linkElement = target.closest('a');
-  if (linkElement.length === 0) {
-    return;
-  }
-
-  const link = linkElement.attr('href') || '';
+export function performAnchorHijacking(evt:MouseEvent, linkElement:HTMLAnchorElement):boolean {
+  const link = linkElement.getAttribute('href') || '';
   const hashPos = link.indexOf('#');
 
   // If link is neither empty nor starts with hash, ignore it
   if (link !== '' && hashPos !== 0) {
-    return;
+    return false;
   }
 
   // Set the location to the hash if there is any
@@ -31,5 +20,5 @@ export function performAnchorHijacking(evt:JQuery.TriggeredEvent, target:JQuery)
     window.location.hash = link;
   }
 
-  evt.preventDefault();
+  return true;
 }

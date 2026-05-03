@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,14 +28,24 @@
 
 module OpenProject::Plugins
   module AuthPlugin
-    def register_auth_providers(&)
+    def register_auth_providers(persist: true, &) # rubocop:disable Metrics/AbcSize
+      builder = ProviderBuilder.new
       initializer "#{engine_name}.middleware" do |app|
-        builder = ProviderBuilder.new
         builder.instance_eval(&)
 
         app.config.middleware.use OmniAuth::FlexibleBuilder do
           builder.new_strategies.each do |strategy|
             provider strategy
+          end
+        end
+      end
+
+      config.to_prepare do
+        if persist
+          builder.provider_callbacks.each do |callback|
+            callback.call.each do |config|
+              PluginAuthProvider.register_for_plugin(config)
+            end
           end
         end
       end
@@ -46,14 +56,15 @@ module OpenProject::Plugins
     end
 
     def self.providers_for(strategy)
-      matching = Array(strategies[strategy_key(strategy)])
-      filtered_strategies matching.map(&:call).flatten.map(&:to_hash)
+      key = strategy_key(strategy)
+      matching = Array(strategies[key])
+      filtered_strategies(key, matching.map(&:call).flatten.map(&:to_hash))
     end
 
     def self.login_provider_for(user)
       return unless user.identity_url
 
-      provider_name = user.identity_url.split(':').first
+      provider_name = user.identity_url.split(":").first
       find_provider_by_name(provider_name)
     end
 
@@ -63,19 +74,24 @@ module OpenProject::Plugins
 
     def self.providers
       RequestStore.fetch(:openproject_omniauth_filtered_strategies) do
-        filtered_strategies strategies.values.flatten.map(&:call).flatten.map(&:to_hash)
+        strategies.flat_map do |strategy_key, values|
+          filtered_strategies(strategy_key, values.flat_map(&:call).flat_map(&:to_hash))
+        end
       end
     end
 
-    def self.filtered_strategies(options)
+    def self.filtered_strategies(strategy_key, options)
       options.select do |provider|
-        name = provider[:name]&.to_s
-        next true if !EnterpriseToken.show_banners? || name == 'developer'
+        filtered = filtered_strategy?(strategy_key, provider)
+        warn_unavailable(name) unless filtered
 
-        warn_unavailable(name)
-
-        false
+        filtered
       end
+    end
+
+    def self.filtered_strategy?(_strategy_key, provider)
+      name = provider[:name]&.to_s
+      EnterpriseToken.allows_to?(:sso_auth_providers) || name == "developer"
     end
 
     def self.strategy_key(strategy)
@@ -90,6 +106,15 @@ module OpenProject::Plugins
       end.first
 
       [camelization, name].compact.first.underscore.to_sym
+    end
+
+    ##
+    # Indicates whether or not self registration should be limited for the provider
+    # with the given name.
+    #
+    # @param provider [String] Name of the provider
+    def self.limit_self_registration?(provider:)
+      Hash(find_provider_by_name(provider))[:limit_self_registration]
     end
 
     def self.warn_unavailable(name)
@@ -110,10 +135,16 @@ module OpenProject::Plugins
         AuthPlugin.strategies[key] = [providers]
         new_strategies << strategy
       end
+
+      provider_callbacks.push(providers)
     end
 
     def new_strategies
       @new_strategies ||= []
+    end
+
+    def provider_callbacks
+      @provider_callbacks ||= []
     end
   end
 end

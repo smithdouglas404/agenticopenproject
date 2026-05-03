@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -77,22 +79,11 @@ module API
       end
 
       def calculate_resulting_params(provided_params)
-        calculate_default_params
-          .merge(provided_params.slice('offset', 'pageSize').symbolize_keys)
-          .tap do |params|
-          if query.manually_sorted?
-            params[:query_id] = query.id
-            params[:offset] = 1
-            # Force the setting value in all cases except when 0 is requested explicitly. Fetching with pageSize = 0
-            # is done for performance reasons to simply get the query without the results.
-            params[:pageSize] = pageSizeParam(params) == 0 ? pageSizeParam(params) : Setting.forced_single_page_size
-          else
-            params[:offset] = to_i_or_nil(params[:offset])
-            params[:pageSize] = pageSizeParam(params)
-          end
-
-          params[:select] = nested_from_csv(provided_params['select']) if provided_params['select']
-        end
+        params = calculate_default_params
+                 .merge(provided_params.symbolize_keys.slice(:offset, :pageSize))
+        handle_offset_paging_params(params)
+        handle_select_params(params, provided_params)
+        params
       end
 
       def calculate_default_params
@@ -133,17 +124,19 @@ module API
       end
 
       def format_column_keys(hash_by_column)
-        hash_by_column.map do |column, value|
-          match = /cf_(\d+)/.match(column.name.to_s)
+        hash_by_column.transform_keys do |column|
+          column_name(column)
+        end
+      end
 
-          column_name = if match
-                          "custom_field_#{match[1]}"
-                        else
-                          column.name.to_s
-                        end
+      def column_name(column)
+        match = /cf_(\d+)/.match(column.name.to_s)
 
-          [column_name, value]
-        end.to_h
+        if match
+          "custom_field_#{match[1]}"
+        else
+          column.name.to_s
+        end
       end
 
       def collection_representer(work_packages, params:, project:, groups:, sums:)
@@ -161,15 +154,34 @@ module API
             work_packages,
             self_link: self_link(project),
             project:,
-            query: resulting_params,
+            query_params: resulting_params,
             page: resulting_params[:offset],
             per_page: resulting_params[:pageSize],
             groups:,
             total_sums: sums,
             embed_schemas: true,
-            current_user:
+            current_user:,
+            timestamps: query.timestamps,
+            query:
           )
         end
+      end
+
+      def handle_offset_paging_params(params)
+        if query.manually_sorted?
+          params[:query_id] = query.id
+          params[:offset] = 1
+          # Force the setting value in all cases except when 0 is requested explicitly. Fetching with pageSize = 0
+          # is done for performance reasons to simply get the query without the results.
+          params[:pageSize] = pageSizeParam(params) == 0 ? pageSizeParam(params) : Setting.forced_single_page_size
+        else
+          params[:offset] = to_i_or_nil(params[:offset])
+          params[:pageSize] = pageSizeParam(params)
+        end
+      end
+
+      def handle_select_params(params, provided_params)
+        params[:select] = nested_from_csv(provided_params["select"]) if provided_params["select"]
       end
 
       def to_i_or_nil(value)
@@ -182,7 +194,7 @@ module API
 
       def self_link(project)
         if project
-          api_v3_paths.work_packages_by_project(project.id)
+          api_v3_paths.work_packages_by_workspace(project.id)
         else
           api_v3_paths.work_packages
         end

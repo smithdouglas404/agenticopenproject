@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Members::CreateService < ::BaseServices::Create
+class Members::CreateService < BaseServices::Create
   include Members::Concerns::NotificationSender
 
   around_call :post_process
@@ -44,12 +46,41 @@ class Members::CreateService < ::BaseServices::Create
 
   protected
 
+  # When a Group is being added as a member to a project, an inherited Member
+  # may already exist (created by ancestor group membership propagation).
+  # In that case, find the existing member so we add direct roles to it
+  # rather than failing on the uniqueness constraint.
+  def instance(params)
+    principal = params[:principal]
+    if principal.is_a?(Group)
+      Member.find_or_initialize_by(
+        user_id: principal.id,
+        project_id: params[:project_id],
+        entity_type: params[:entity_type],
+        entity_id: params[:entity_id]
+      )
+    else
+      super
+    end
+  end
+
   def add_group_memberships(member)
     return unless member.principal.is_a?(Group)
 
-    Groups::AddUsersService
-      .new(member.principal, current_user: user, contract_class: EmptyContract)
-      .call(ids: member.principal.user_ids, send_notifications: false)
+    group = member.principal
+    project_ids = member.project_id.nil? ? nil : [member.project_id]
+    principal_ids = inheritable_principal_ids(group)
+
+    Groups::CreateInheritedRolesService
+      .new(group, current_user: user, contract_class: EmptyContract)
+      .call(user_ids: principal_ids, send_notifications: false, project_ids:)
+  end
+
+  def inheritable_principal_ids(group)
+    group_ids = group.descendants.pluck(:id)
+    user_ids = group.self_and_descendants.flat_map(&:user_ids).uniq
+
+    (user_ids + group_ids).uniq
   end
 
   def event_type

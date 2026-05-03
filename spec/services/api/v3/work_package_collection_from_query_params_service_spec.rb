@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,18 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::WorkPackageCollectionFromQueryParamsService,
-         type: :model do
+RSpec.describe API::V3::WorkPackageCollectionFromQueryParamsService,
+               type: :model do
   include API::V3::Utilities::PathHelper
 
   let(:mock_wp_collection_from_query_service) do
-    mock = double('WorkPackageCollectionFromQueryService')
+    mock = double("WorkPackageCollectionFromQueryService")
 
     allow(mock)
       .to receive(:call)
-      .with(params)
       .and_return(mock_wp_collection_service_response)
 
     mock
@@ -51,7 +52,7 @@ describe ::API::V3::WorkPackageCollectionFromQueryParamsService,
 
   let(:mock_wp_collection_service_success) { true }
   let(:mock_wp_collection_service_errors) { nil }
-  let(:mock_wp_collection_service_result) { double('result') }
+  let(:mock_wp_collection_service_result) { double("result") }
 
   let(:query) { build_stubbed(:query) }
   let(:project) { build_stubbed(:project) }
@@ -60,16 +61,16 @@ describe ::API::V3::WorkPackageCollectionFromQueryParamsService,
   let(:instance) { described_class.new(user) }
 
   before do
-    stub_const('::API::V3::WorkPackageCollectionFromQueryService',
+    stub_const("::API::V3::WorkPackageCollectionFromQueryService",
                mock_wp_collection_from_query_service)
 
-    allow(::API::V3::WorkPackageCollectionFromQueryService)
+    allow(API::V3::WorkPackageCollectionFromQueryService)
       .to receive(:new)
       .with(query, user, scope: nil)
       .and_return(mock_wp_collection_from_query_service)
   end
 
-  describe '#call' do
+  describe "#call" do
     let(:params) { { project: } }
 
     subject { instance.call(params) }
@@ -77,11 +78,11 @@ describe ::API::V3::WorkPackageCollectionFromQueryParamsService,
     before do
       allow(Query)
         .to receive(:new_default)
-        .with(name: '_', project:)
+        .with(project:)
         .and_return(query)
     end
 
-    it 'is successful' do
+    it "is successful" do
       expect(subject)
         .to eql(mock_wp_collection_service_response)
     end

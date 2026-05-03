@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,32 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Queries::WorkPackages::Filter::SubjectOrIdFilter, type: :model do
-  let(:value) { 'bogus' }
-  let(:operator) { '**' }
-  let(:subject) { 'Some subject' }
-  let(:work_package) { create(:work_package, subject:) }
-  let(:current_user) { create(:user, member_in_project: work_package.project) }
+RSpec.describe Queries::WorkPackages::Filter::SubjectOrIdFilter do
+  let(:operator) { "**" }
+  let(:work_package) { create(:work_package, subject: "Some subject") }
+  let(:current_user) do
+    create(:user, member_with_permissions: { work_package.project => %i[view_work_packages edit_work_packages] })
+  end
   let(:query) { build_stubbed(:global_query, user: current_user) }
   let(:instance) do
-    described_class.create!(name: :search, context: query, operator:, values: [value])
+    described_class.create!(name: :search, context: query, operator:)
   end
 
   before do
     login_as current_user
   end
 
-  it 'finds in subject' do
-    instance.values = ['Some subject']
+  it "finds in subject" do
+    instance.values = ["Some subject"]
     expect(WorkPackage.eager_load(instance.includes).where(instance.where))
-      .to match_array [work_package]
+      .to contain_exactly(work_package)
   end
 
-  it 'finds in ID' do
+  it "finds in ID" do
     instance.values = [work_package.id.to_s]
     expect(WorkPackage.eager_load(instance.includes).where(instance.where))
-      .to match_array [work_package]
+      .to contain_exactly(work_package)
+  end
+
+  it "finds in ID, even with spaces before and/or after it" do
+    instance.values = [" #{work_package.id} "]
+    expect(WorkPackage.eager_load(instance.includes).where(instance.where))
+      .to contain_exactly(work_package)
   end
 end

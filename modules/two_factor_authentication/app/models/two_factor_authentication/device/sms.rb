@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TwoFactorAuthentication
   class Device::Sms < Device
     validates_presence_of :phone_number
@@ -43,19 +45,19 @@ module TwoFactorAuthentication
     def request_2fa_identifier(channel)
       channel_name =
         if channel == :sms
-          'SMS'
+          "SMS"
         else
-          'Voice'
+          "Voice"
         end
 
-      I18n.t 'two_factor_authentication.devices.sms.request_2fa_identifier',
+      I18n.t "two_factor_authentication.devices.sms.request_2fa_identifier",
              redacted_identifier:, delivery_channel: channel_name
     end
 
     def redacted_identifier
       number = phone_number.dup
-      number[1..-3] = '*' * number[1..-3].length
-      I18n.t 'two_factor_authentication.devices.sms.redacted_identifier',
+      number[1..-3] = "*" * number[1..-3].length
+      I18n.t "two_factor_authentication.devices.sms.redacted_identifier",
              redacted_number: number
     end
 

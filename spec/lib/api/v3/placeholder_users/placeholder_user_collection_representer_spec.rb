@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,33 +28,35 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ::API::V3::PlaceholderUsers::PlaceholderUserCollectionRepresenter do
-  let(:self_base_link) { '/api/v3/placeholder_users' }
-  let(:collection_inner_type) { 'PlaceholderUser' }
+RSpec.describe API::V3::PlaceholderUsers::PlaceholderUserCollectionRepresenter do
+  let(:self_base_link) { "/api/v3/placeholder_users" }
+  let(:collection_inner_type) { "PlaceholderUser" }
   let(:total) { 3 }
   let(:page) { 1 }
   let(:page_size) { 2 }
   let(:actual_count) { 3 }
-  let(:current_user) { build_stubbed :user }
+  let(:current_user) { build_stubbed(:user) }
 
   let(:placeholders) do
     placeholders = build_stubbed_list(:placeholder_user,
                                       actual_count)
-    allow(placeholders)
-      .to receive(:limit)
-      .with(page_size)
-      .and_return(placeholders)
+    without_partial_double_verification do
+      allow(placeholders)
+        .to receive(:limit)
+        .with(page_size)
+        .and_return(placeholders)
 
-    allow(placeholders)
-      .to receive(:offset)
-      .with(page - 1)
-      .and_return(placeholders)
+      allow(placeholders)
+        .to receive(:offset)
+        .with(page - 1)
+        .and_return(placeholders)
 
-    allow(placeholders)
-      .to receive(:count)
-      .and_return(total)
+      allow(placeholders)
+        .to receive(:count)
+        .and_return(total)
+    end
 
     placeholders
   end
@@ -65,9 +69,9 @@ describe ::API::V3::PlaceholderUsers::PlaceholderUserCollectionRepresenter do
                         current_user:)
   end
 
-  context 'generation' do
+  context "generation" do
     subject(:collection) { representer.to_json }
 
-    it_behaves_like 'offset-paginated APIv3 collection'
+    it_behaves_like "offset-paginated APIv3 collection"
   end
 end

@@ -1,7 +1,9 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
-describe ApplicationRecord, type: :model do
-  describe '#most_recently_changed' do
+require "spec_helper"
+
+RSpec.describe ApplicationRecord do
+  describe "#most_recently_changed" do
     let!(:work_package) do
       create(:work_package).tap do |wp|
         wp.update_column(:updated_at, 5.days.from_now)
@@ -14,7 +16,7 @@ describe ApplicationRecord, type: :model do
       end
     end
 
-    let!(:status) { create :status }
+    let!(:status) { create(:status) }
 
     def expect_matched_date(postgres_time, rails_time)
       # Rails uses timestamp without timezone for timestamp columns
@@ -24,7 +26,7 @@ describe ApplicationRecord, type: :model do
       expect(postgres_utc_iso8601).to eq(rails_utc_iso8601)
     end
 
-    it 'returns the most recently changed timestamp of the given resource classes' do
+    it "returns the most recently changed timestamp of the given resource classes" do
       expect_matched_date described_class.most_recently_changed(WorkPackage, Type, Status),
                           work_package.updated_at
 

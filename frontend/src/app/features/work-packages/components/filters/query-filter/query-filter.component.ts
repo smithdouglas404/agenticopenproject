@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,22 +27,42 @@
 //++
 
 import {
-  Component, EventEmitter, Input, OnInit, Output,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
 } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { halHref, compareByHref } from 'core-app/shared/helpers/angular/tracking-functions';
+import {
+  compareByHref,
+  halHref,
+} from 'core-app/shared/helpers/angular/tracking-functions';
 import { BannersService } from 'core-app/core/enterprise/banners.service';
 import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
 import { QueryFilterResource } from 'core-app/features/hal/resources/query-filter-resource';
+import { WorkPackageViewBaselineService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-baseline.service';
 
 @Component({
   selector: '[query-filter]',
+  styleUrls: ['./query-filter.component.sass'],
   templateUrl: './query-filter.component.html',
+  encapsulation: ViewEncapsulation.None,
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class QueryFilterComponent implements OnInit {
+  @HostBinding('class.op-query-filter') className = true;
+
   @Input() public shouldFocus = false;
 
   @Input() public filter:QueryFilterInstanceResource;
@@ -57,7 +77,7 @@ export class QueryFilterComponent implements OnInit {
 
   public eeShowBanners = false;
 
-  public trackByHref = halHref;
+  public baselineIncompatibleFilter = false;
 
   public compareByHref = compareByHref;
 
@@ -65,16 +85,19 @@ export class QueryFilterComponent implements OnInit {
     open_filter: this.I18n.t('js.filter.description.text_open_filter'),
     close_filter: this.I18n.t('js.filter.description.text_close_filter'),
     label_filter_add: this.I18n.t('js.work_packages.label_filter_add'),
-    upsale_for_more: this.I18n.t('js.filter.upsale_for_more'),
-    upsale_link: this.I18n.t('js.filter.upsale_link'),
+    upsell_for_more: this.I18n.t('js.filter.upsell_for_more'),
+    upsell_link: this.I18n.t('js.filter.upsell_link'),
     button_delete: this.I18n.t('js.button_delete'),
+    incompatible_filter: this.I18n.t('js.work_packages.filters.baseline_incompatible'),
   };
 
-  constructor(readonly wpTableFilters:WorkPackageViewFiltersService,
+  constructor(
+    readonly wpTableFilters:WorkPackageViewFiltersService,
+    readonly wpTableBaseline:WorkPackageViewBaselineService,
     readonly schemaCache:SchemaCacheService,
     readonly I18n:I18nService,
     readonly currentProject:CurrentProjectService,
-    readonly bannerService:BannersService) {
+  ) {
   }
 
   public onFilterUpdated(filter:QueryFilterInstanceResource) {
@@ -96,9 +119,9 @@ export class QueryFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.eeShowBanners = this.bannerService.eeShowBanners;
     this.availableOperators = this.schemaCache.of(this.filter).availableOperators;
     this.showValuesInput = this.showValues();
+    this.baselineIncompatibleFilter = this.wpTableBaseline.isActive() && this.wpTableBaseline.isIncompatibleFilter(this.filter.id);
   }
 
   private showValues() {

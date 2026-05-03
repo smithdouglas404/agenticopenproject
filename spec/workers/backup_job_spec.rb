@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe BackupJob, type: :model do
+RSpec.describe BackupJob, type: :model do
   shared_examples "it creates a backup" do |opts = {}|
     let(:job) { BackupJob.new }
 
-    let(:previous_backup) { create :backup }
-    let(:backup) { create :backup }
+    let(:previous_backup) { create(:backup) }
+    let(:backup) { create(:backup) }
     let(:status) { :in_queue }
     let(:job_id) { 42 }
 
@@ -59,7 +61,13 @@ describe BackupJob, type: :model do
 
     let(:arguments) { [{ backup:, user:, **opts.except(:remote_storage) }] }
 
-    let(:user) { create :admin }
+    let(:user) { create(:admin) }
+
+    let(:openproject_sql) do
+      Tempfile.new(["openproject", ".sql"]).tap do |f|
+        f.write("SOME SQL")
+      end
+    end
 
     before do
       previous_backup
@@ -72,23 +80,47 @@ describe BackupJob, type: :model do
       allow(Open3).to receive(:capture3).and_return [nil, "Dump failed", db_dump_process_status]
 
       allow_any_instance_of(BackupJob)
-        .to receive(:tmp_file_name).with("openproject", ".sql").and_return("/tmp/openproject.sql")
+        .to receive(:tmp_file_name).with("openproject", ".sql").and_return(openproject_sql.path)
 
       allow_any_instance_of(BackupJob)
         .to receive(:tmp_file_name).with("openproject-backup", ".zip").and_return("/tmp/openproject.zip")
 
       allow(File).to receive(:read).and_call_original
-      allow(File).to receive(:read).with("/tmp/openproject.sql").and_return "SOME SQL"
     end
 
     def perform
       job.perform **arguments.first
     end
 
-    describe '#pg_env' do
-      subject { job.pg_env }
+    describe "environment variables" do
+      let(:hash_config) do
+        ActiveRecord::DatabaseConfigurations::HashConfig.new("test", "primary", config_double)
+      end
 
-      context 'when config has user reference, not username (regression #44251)' do
+      before do
+        allow(ActiveRecord::Base).to receive(:connection_db_config).and_return(hash_config)
+      end
+
+      context "when config has username" do
+        let(:config_double) do
+          {
+            adapter: :postgresql,
+            password: "blabla",
+            database: "test",
+            username: "foobar"
+          }
+        end
+
+        it "sets PGUSER and other variables" do
+          perform
+
+          expect(Open3).to have_received(:capture3) do |*args|
+            expect(args[0]).to include("PGUSER" => "foobar", "PGPASSWORD" => "blabla", "PGDATABASE" => "test")
+          end
+        end
+      end
+
+      context "when config has user reference, not username (regression #44251)" do
         let(:config_double) do
           {
             adapter: :postgresql,
@@ -98,14 +130,12 @@ describe BackupJob, type: :model do
           }
         end
 
-        before do
-          allow(job).to receive(:database_config).and_return(config_double)
-        end
+        it "still sets PGUSER and other variables" do
+          perform
 
-        it 'still sets a PGUSER' do
-          expect(subject['PGUSER']).to eq 'foobar'
-          expect(subject['PGPASSWORD']).to eq 'blabla'
-          expect(subject['PGDATABASE']).to eq 'test'
+          expect(Open3).to have_received(:capture3) do |*args|
+            expect(args[0]).to include("PGUSER" => "foobar", "PGPASSWORD" => "blabla", "PGDATABASE" => "test")
+          end
         end
       end
     end
@@ -123,8 +153,8 @@ describe BackupJob, type: :model do
     context "with a successful database dump" do
       let(:db_dump_success) { true }
 
-      let!(:attachment) { create :attachment }
-      let!(:pending_direct_upload) { create :pending_direct_upload }
+      let!(:attachment) { create(:attachment) }
+      let!(:pending_direct_upload) { create(:pending_direct_upload) }
       let(:stored_backup) { Attachment.where(container_type: "Export").last }
       let(:backup_files) { Zip::File.open(stored_backup.file.path) { |zip| zip.entries.map(&:name) } }
 
@@ -191,20 +221,18 @@ describe BackupJob, type: :model do
       }
     }
   ) do
-    let(:dummy_path) { "/tmp/op_uploaded_files/1639754082-3468-0002-0911/file.ext" }
+    let(:dummy_file) { Pathname("#{LocalFileUploader.cache_dir}/1639754082-3468-0002-0911/file.ext") }
 
     before do
-      FileUtils.mkdir_p Pathname(dummy_path).parent.to_s
-      File.open(dummy_path, "w") { |f| f.puts 'dummy' }
+      dummy_file.parent.mkpath
+      dummy_file.write("dummy")
 
       allow_any_instance_of(LocalFileUploader).to receive(:cached?).and_return(true)
-      allow_any_instance_of(LocalFileUploader)
-        .to receive(:local_file)
-              .and_return(File.new(dummy_path))
+      allow_any_instance_of(LocalFileUploader).to receive(:local_file).and_return(File.new(dummy_file))
     end
 
     after do
-      FileUtils.rm_rf dummy_path
+      dummy_file.unlink
     end
 
     it_behaves_like "it creates a backup", remote_storage: true

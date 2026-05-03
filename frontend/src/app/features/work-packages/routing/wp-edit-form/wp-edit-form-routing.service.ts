@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -46,7 +46,7 @@ export class WorkPackageEditFormRoutingService extends EditFormRoutingService {
 
     // In new/copy mode, transitions to the same controller are allowed
     if (fromState.name && (/\.(new|copy)$/.exec(fromState.name))) {
-      return !(toState.data && toState.data.allowMovingInEditMode);
+      return !(toState.data?.allowMovingInEditMode);
     }
 
     // When editing an existing WP, transitions on the same WP id are allowed

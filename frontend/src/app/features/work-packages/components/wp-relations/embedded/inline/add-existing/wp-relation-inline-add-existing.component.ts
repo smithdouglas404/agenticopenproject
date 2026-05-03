@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,36 +26,53 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { WorkPackageInlineCreateService } from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.service';
-import { WorkPackageInlineCreateComponent } from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.component';
-import { WorkPackageRelationsService } from 'core-app/features/work-packages/components/wp-relations/wp-relations.service';
-import { WpRelationInlineCreateServiceInterface } from 'core-app/features/work-packages/components/wp-relations/embedded/wp-relation-inline-create.service.interface';
+import {
+  WorkPackageInlineCreateService,
+} from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.service';
+import {
+  WorkPackageInlineCreateComponent,
+} from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.component';
+import {
+  WorkPackageRelationsService,
+} from 'core-app/features/work-packages/components/wp-relations/wp-relations.service';
+import {
+  WpRelationInlineCreateServiceInterface,
+} from 'core-app/features/work-packages/components/wp-relations/embedded/wp-relation-inline-create.service.interface';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { UrlParamsHelperService } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 import { RelationResource } from 'core-app/features/hal/resources/relation-resource';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { ApiV3Filter } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
-import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
+import {
+  WorkPackageNotificationService,
+} from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
+import { IAPIFilter } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
+import { FilterOperator } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 
 @Component({
   templateUrl: './wp-relation-inline-add-existing.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WpRelationInlineAddExistingComponent {
   public selectedWpId:string;
 
   public isDisabled = false;
 
-  public queryFilters = this.buildQueryFilters();
+  public queryFilters:IAPIFilter[] = this.buildQueryFilters();
 
   public text = {
     abort: this.I18n.t('js.relation_buttons.abort'),
   };
 
-  constructor(protected readonly parent:WorkPackageInlineCreateComponent,
+  constructor(
+    protected readonly parent:WorkPackageInlineCreateComponent,
     @Inject(WorkPackageInlineCreateService) protected readonly wpInlineCreate:WpRelationInlineCreateServiceInterface,
     protected apiV3Service:ApiV3Service,
     protected wpRelations:WorkPackageRelationsService,
@@ -63,8 +80,8 @@ export class WpRelationInlineAddExistingComponent {
     protected halEvents:HalEventsService,
     protected urlParamsHelper:UrlParamsHelperService,
     protected querySpace:IsolatedQuerySpace,
-    protected readonly I18n:I18nService) {
-  }
+    protected readonly I18n:I18nService,
+  ) {}
 
   public addExisting() {
     if (_.isNil(this.selectedWpId)) {
@@ -76,7 +93,7 @@ export class WpRelationInlineAddExistingComponent {
 
     this.wpInlineCreate.add(this.workPackage, newRelationId)
       .then(() => {
-        this
+        void this
           .apiV3Service
           .work_packages
           .id(this.workPackage)
@@ -118,7 +135,7 @@ export class WpRelationInlineAddExistingComponent {
     this.parent.resetRow();
   }
 
-  private buildQueryFilters():ApiV3Filter[] {
+  private buildQueryFilters():IAPIFilter[] {
     const query = this.querySpace.query.value;
 
     if (!query) {
@@ -128,9 +145,19 @@ export class WpRelationInlineAddExistingComponent {
     const relationTypes = RelationResource.RELATION_TYPES(true);
     const filters = query.filters.filter((filter) => {
       const id = this.urlParamsHelper.buildV3GetFilterIdFromFilter(filter);
-      return relationTypes.indexOf(id) === -1;
+      return !relationTypes.includes(id);
     });
 
-    return this.urlParamsHelper.buildV3GetFilters(filters);
+    const iApiFilters:IAPIFilter[] = [];
+
+    filters.forEach((filter) => {
+      iApiFilters.push({
+        name: filter.id,
+        operator: filter.operator.id as FilterOperator,
+        values: filter.values.map((f) => (typeof f === 'string' ? f : f.id!)),
+      });
+    });
+
+    return iApiFilters;
   }
 }

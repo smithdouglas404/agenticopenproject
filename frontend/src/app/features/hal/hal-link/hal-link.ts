@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,8 +27,12 @@
 //++
 
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { HTTPSupportedMethods } from 'core-app/features/hal/http/http.interfaces';
+import {
+  HTTPClientHeaders,
+  HTTPSupportedMethods,
+} from 'core-app/features/hal/http/http.interfaces';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
+import { firstValueFrom } from 'rxjs';
 
 export interface HalLinkInterface {
   href:string|null;
@@ -38,6 +42,7 @@ export interface HalLinkInterface {
   payload?:any;
   type?:string;
   identifier?:string;
+  displayId?:string;
 }
 
 export interface HalLinkSource {
@@ -53,12 +58,13 @@ export interface CallableHalLink extends HalLinkInterface {
 export class HalLink implements HalLinkInterface {
   constructor(public requestMethod:(method:HTTPSupportedMethods, href:string, data:any, headers:any) => Promise<HalResource>,
     public href:string|null = null,
-    public title:string = '',
+    public title = '',
     public method:HTTPSupportedMethods = 'get',
-    public templated:boolean = false,
+    public templated = false,
     public payload?:any,
-    public type:string = 'application/json',
-    public identifier?:string) {
+    public type = 'application/json',
+    public identifier?:string,
+    public displayId?:string) {
   }
 
   /**
@@ -66,7 +72,7 @@ export class HalLink implements HalLinkInterface {
    */
   public static fromObject(halResourceService:HalResourceService, link:HalLinkInterface):HalLink {
     return new HalLink(
-      (method:HTTPSupportedMethods, href:string, data:any, headers:any) => halResourceService.request(method, href, data, headers).toPromise(),
+      (method:HTTPSupportedMethods, href:string, data:object, headers:HTTPClientHeaders) => firstValueFrom(halResourceService.request(method, href, data, headers)),
       link.href,
       link.title,
       link.method,
@@ -74,6 +80,7 @@ export class HalLink implements HalLinkInterface {
       link.payload,
       link.type,
       link.identifier,
+      link.displayId,
     );
   }
 
@@ -82,7 +89,7 @@ export class HalLink implements HalLinkInterface {
    */
   public $fetch(...params:any[]):Promise<HalResource> {
     const [data, headers] = params;
-    return this.requestMethod(this.method, this.href as string, data, headers);
+    return this.requestMethod(this.method, this.href!, data, headers);
   }
 
   /**
@@ -90,7 +97,7 @@ export class HalLink implements HalLinkInterface {
    *
    * @returns {CallableHalLink}
    */
-  public $prepare(templateValues:{ [templateKey:string]:string }) {
+  public $prepare(templateValues:Record<string, string>) {
     if (!this.templated) {
       throw new Error(`The link ${this.href} is not templated.`);
     }
@@ -110,6 +117,7 @@ export class HalLink implements HalLinkInterface {
       this.payload,
       this.type,
       this.identifier,
+      this.displayId,
     ).$callable();
   }
 
@@ -130,6 +138,7 @@ export class HalLink implements HalLinkInterface {
       payload: this.payload,
       type: this.type,
       identifier: this.identifier,
+      displayId: this.displayId,
     });
 
     return linkFunc;

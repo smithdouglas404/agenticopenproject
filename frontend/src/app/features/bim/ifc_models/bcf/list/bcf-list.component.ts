@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +27,7 @@
 //++
 
 import {
-  ChangeDetectionStrategy, Component, Input, NgZone, OnInit,
+  ChangeDetectionStrategy, Component, Input, OnInit,
 } from '@angular/core';
 import { UIRouterGlobals } from '@uirouter/core';
 import { States } from 'core-app/core/states/states.service';
@@ -38,6 +38,7 @@ import { BcfApiService } from 'core-app/features/bim/bcf/api/bcf-api.service';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { BcfViewService } from 'core-app/features/bim/ifc_models/pages/viewer/bcf-view.service';
 import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 import { ViewerBridgeService } from 'core-app/features/bim/bcf/bcf-viewer-bridge/viewer-bridge.service';
 import { CausedUpdatesService } from 'core-app/features/boards/board/caused-updates/caused-updates.service';
 import { IfcModelsDataService } from 'core-app/features/bim/ifc_models/pages/viewer/ifc-models-data.service';
@@ -62,6 +63,7 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-bcf-list',
+  standalone: false,
 })
 export class BcfListComponent extends WorkPackageListViewComponent implements UntilDestroyedMixin, OnInit {
   @Input() showResizer = false;
@@ -80,8 +82,6 @@ export class BcfListComponent extends WorkPackageListViewComponent implements Un
 
   @InjectField() bcfApi:BcfApiService;
 
-  @InjectField() zone:NgZone;
-
   public wpTableConfiguration = {
     dragAndDropEnabled: false,
   };
@@ -98,24 +98,13 @@ export class BcfListComponent extends WorkPackageListViewComponent implements Un
       && (viewerState === 'table' || viewerState === 'splitTable');
   }
 
-  public showResizerInCardView():boolean {
-    if (this.noResults && this.ifcModelsService.models.length === 0) {
-      return false;
-    }
-
-    return this.bcfView.currentViewerState() === 'splitCards'
-      || this.bcfView.currentViewerState() === 'splitTable';
-  }
-
   handleWorkPackageClicked(event:{ workPackageId:string; double:boolean }):void {
     const { workPackageId, double } = event;
 
     if (!this.showViewPointInFlight) {
       this.showViewPointInFlight = true;
 
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => { this.showViewPointInFlight = false; }, 500);
-      });
+      setTimeout(() => { this.showViewPointInFlight = false; }, 500);
 
       const wp = this.states.workPackages.get(workPackageId).value;
 
@@ -141,8 +130,10 @@ export class BcfListComponent extends WorkPackageListViewComponent implements Un
       : 'bim.partitioned.show';
     // Passing the card param to the new state because the router doesn't keep
     // it when going to 'bim.partitioned.show'
-    const params = { workPackageId, cards, focus };
+    const routingId = resolveRoutingId(this.states, workPackageId);
+    const params = { workPackageId: routingId, cards, focus };
 
     void this.$state.go(stateToGo, params);
   }
+
 }

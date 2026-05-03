@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,21 +28,93 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'support/pages/work_packages/abstract_work_package'
+require "support/pages/work_packages/abstract_work_package"
 
 module Pages
   class FullWorkPackage < Pages::AbstractWorkPackage
+    def ensure_loaded
+      first(".work-packages--details--subject")
+    end
+
+    def toolbar
+      find_by_id("toolbar-items")
+    end
+
+    def click_share_button
+      within toolbar do
+        # The request to the capabilities endpoint determines
+        # whether the "Share" button is rendered or not.
+        # Instead of waiting for an idle network (which may
+        # include waiting for other network requests unrelated to
+        # sharing), waiting for the button to be present makes
+        # the spec a tad faster.
+        click_button("Share", wait: 10)
+      end
+    end
+
+    def expect_share_button_count(count)
+      page.within_test_selector("op-wp-share-button") do
+        expect(page).to have_css(".badge", text: count, wait: 10)
+      end
+    end
+
+    def expect_reminder_button
+      expect(page).to have_test_selector("op-wp-reminder-button")
+    end
+
+    def expect_reminder_button_alarm_set_icon
+      page.within_test_selector("op-wp-reminder-button") do
+        expect(page).to have_css("svg[op-alarm-set-icon]", wait: 10)
+      end
+    end
+
+    def expect_reminder_button_alarm_not_set_icon
+      expect(page).to have_test_selector("op-wp-reminder-button")
+      expect(page).to have_css("svg[op-alarm-icon]", wait: 10)
+    end
+
+    def expect_no_reminder_button
+      expect(page).not_to have_test_selector("op-wp-reminder-button")
+    end
+
+    def click_reminder_button_with_context_menu(menu_item: "At a particular date/time")
+      click_reminder_button
+
+      within "#reminder-dropdown-menu" do
+        click_link_or_button menu_item
+      end
+    end
+
+    def click_reminder_button
+      within toolbar do
+        # The request to the capabilities endpoint determines
+        # whether the "Reminder" button is rendered or not.
+        # Instead of waiting for an idle network (which may
+        # include waiting for other network requests unrelated to
+        # reminders), waiting for the button to be present makes
+        # the spec a bit faster.
+        find_test_selector("op-wp-reminder-button", wait: 10).click
+      end
+    end
+
+    def select_log_unit_costs_action
+      SeleniumHubWaiter.wait
+      click_button(I18n.t("js.button_more"))
+      find(:menuitem, text: I18n.t(:button_log_costs)).click
+      Pages::WorkPackages::CostEntries.new.wait_for_spent_on_date_field_to_be_loaded
+    end
+
     private
 
     def container
-      find('.work-packages--show-view')
+      find(".work-packages--show-view")
     end
 
-    def path(tab = 'activity')
+    def path(tab = "activity")
       if project
         project_work_package_path(project, work_package.id, tab)
       else
-        work_package_path(work_package.id, tab)
+        project_work_package_path(work_package.project.identifier, work_package.id, tab)
       end
     end
 

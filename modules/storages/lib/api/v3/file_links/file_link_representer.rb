@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,22 +29,27 @@
 #++
 
 module API::V3::FileLinks
-  URN_PERMISSION_VIEW = "#{::API::V3::URN_PREFIX}file-links:permission:View".freeze
-  URN_PERMISSION_NOT_ALLOWED = "#{::API::V3::URN_PREFIX}file-links:permission:NotAllowed".freeze
-  URN_PERMISSION_ERROR = "#{::API::V3::URN_PREFIX}file-links:permission:Error".freeze
+  URN_PERMISSION_VIEW = "#{::API::V3::URN_PREFIX}file-links:permission:ViewAllowed".freeze
+  URN_PERMISSION_NOT_ALLOWED = "#{::API::V3::URN_PREFIX}file-links:permission:ViewNotAllowed".freeze
+  URN_STATUS_NOT_FOUND = "#{::API::V3::URN_PREFIX}file-links:NotFound".freeze
+  URN_STATUS_ERROR = "#{::API::V3::URN_PREFIX}file-links:Error".freeze
 
   PERMISSION_LINKS = {
-    view: {
+    view_allowed: {
       href: URN_PERMISSION_VIEW,
-      title: 'View'
+      title: "View allowed"
     },
-    not_allowed: {
+    view_not_allowed: {
       href: URN_PERMISSION_NOT_ALLOWED,
-      title: 'Not allowed'
+      title: "View not allowed"
+    },
+    not_found: {
+      href: URN_STATUS_NOT_FOUND,
+      title: "Not found"
     },
     error: {
-      href: URN_PERMISSION_ERROR,
-      title: 'Error'
+      href: URN_STATUS_ERROR,
+      title: "Error"
     }
   }.freeze
 
@@ -50,7 +57,6 @@ module API::V3::FileLinks
     include API::Decorators::LinkedResource
     include API::Decorators::DateProperty
     include ::API::Caching::CachedRepresenter
-    include Storages::Peripherals::StorageUrlHelper
 
     property :id
 
@@ -84,27 +90,15 @@ module API::V3::FileLinks
     end
 
     # Show a permission link only if we have actual permission information for a specific user
-    link :permission, uncacheable: true do
-      next if represented.origin_permission.nil?
+    link :status, uncacheable: true do
+      next if represented.origin_status.nil?
 
-      PERMISSION_LINKS[represented.origin_permission]
-    end
-
-    link :originOpen do
-      {
-        href: storage_url_open_file(represented)
-      }
+      PERMISSION_LINKS[represented.origin_status.to_sym]
     end
 
     link :staticOriginOpen do
       {
         href: api_v3_paths.file_link_open(represented.id)
-      }
-    end
-
-    link :originOpenLocation do
-      {
-        href: storage_url_open_file(represented, open_location: true)
       }
     end
 
@@ -126,25 +120,31 @@ module API::V3::FileLinks
                         skip_render: ->(*) { true },
                         getter: ->(*) {},
                         setter: ->(fragment:, **) {
-                          break if fragment['href'].blank?
+                          break if fragment["href"].blank?
 
-                          canonical_url = fragment['href'].gsub(/\/+$/, '')
-                          represented.storage = ::Storages::Storage.find_by(host: canonical_url)
-                          represented.storage ||= ::Storages::Storage::InexistentStorage.new(host: canonical_url)
+                          # remove all trailing slashes except the last one
+                          canonical_url = "#{fragment['href'].gsub(/\/+$/, '')}/"
+                          represented.storage = find_storage_by_url(canonical_url) ||
+                            ::Storages::Storage::InexistentStorage.new(host: canonical_url)
                         }
 
     associated_resource :container,
                         v3_path: :work_package,
-                        representer: ::API::V3::WorkPackages::WorkPackageRepresenter
+                        representer: ::API::V3::WorkPackages::WorkPackageRepresenter,
+                        skip_render: ->(*) { represented.container_id.nil? }
 
     def _type
-      'FileLink'
+      "FileLink"
     end
 
     private
 
     def user_allowed_to_manage?(model)
-      current_user.allowed_to?(:manage_file_links, model.container.project)
+      if model.container.present?
+        current_user.allowed_in_project?(:manage_file_links, model.project)
+      else
+        current_user == model.creator
+      end
     end
 
     def make_origin_data(model)
@@ -159,6 +159,15 @@ module API::V3::FileLinks
       }
     end
 
+    def find_storage_by_url(canonical_url)
+      found = ::Storages::Storage.find_by(host: canonical_url)
+      return found if found.present?
+
+      # Search for storages that are still using the legacy URL format
+      legacy_url_data = canonical_url.chomp("/")
+      ::Storages::Storage.find_by(host: legacy_url_data)
+    end
+
     def parse_origin_data(origin_data)
       {
         origin_id: origin_data["id"].to_s,
@@ -167,10 +176,10 @@ module API::V3::FileLinks
         origin_created_by_name: origin_data["createdByName"],
         origin_last_modified_by_name: origin_data["lastModifiedByName"],
         origin_created_at: ::API::V3::Utilities::DateTimeFormatter.parse_datetime(origin_data["createdAt"],
-                                                                                  'originData.createdAt',
+                                                                                  "originData.createdAt",
                                                                                   allow_nil: true),
         origin_updated_at: ::API::V3::Utilities::DateTimeFormatter.parse_datetime(origin_data["lastModifiedAt"],
-                                                                                  'originData.lastModifiedAt',
+                                                                                  "originData.lastModifiedAt",
                                                                                   allow_nil: true)
       }
     end

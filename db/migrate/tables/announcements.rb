@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'base'
+require_relative "base"
 
 class Tables::Announcements < Tables::Base
   def self.table(migration)
@@ -34,7 +36,7 @@ class Tables::Announcements < Tables::Base
       t.text :text
       t.date :show_until
       t.boolean :active, default: false
-      t.timestamps null: true # compatibility to pre 5.1 migrations
+      t.timestamps precision: nil, null: true # compatibility to pre 5.1 migrations
 
       t.index %i[show_until active]
     end

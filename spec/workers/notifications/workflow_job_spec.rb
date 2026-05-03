@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Notifications::WorkflowJob, type: :model do
+RSpec.describe Notifications::WorkflowJob, type: :model do
   subject(:perform_job) do
     described_class.new.perform(state, *arguments)
   end
@@ -45,8 +47,8 @@ describe Notifications::WorkflowJob, type: :model do
     build_stubbed(:notification, reason: :mentioned)
   end
 
-  describe '#perform' do
-    context 'with the :create_notifications state' do
+  describe "#perform" do
+    context "with the :create_notifications state" do
       let(:state) { :create_notifications }
       let(:arguments) { [resource, send_notification] }
       let(:resource) { build_stubbed(:comment) }
@@ -84,7 +86,7 @@ describe Notifications::WorkflowJob, type: :model do
         service_instance
       end
 
-      it 'calls the service to create notifications' do
+      it "calls the service to create notifications" do
         perform_job
 
         expect(create_service)
@@ -92,14 +94,14 @@ describe Notifications::WorkflowJob, type: :model do
                 .with(send_notification)
       end
 
-      it 'sends mails for all notifications that are marked to send mails and that have a mention reason' do
+      it "sends mails for all notifications that are marked to send mails and that have a mention reason" do
         perform_job
 
         expect(mail_service)
           .to have_received(:call)
       end
 
-      it 'schedules a delayed WorkflowJob for those notifications not to be sent directly' do
+      it "schedules a delayed WorkflowJob for those notifications not to be sent directly" do
         allow(Time)
           .to receive(:current)
                 .and_return(Time.current)
@@ -114,7 +116,7 @@ describe Notifications::WorkflowJob, type: :model do
       end
     end
 
-    context 'with the :send_mails state' do
+    context "with the :send_mails state" do
       let(:state) { :send_mails }
       let(:arguments) { notifications.map(&:id) }
 
@@ -139,7 +141,7 @@ describe Notifications::WorkflowJob, type: :model do
                 .and_return(scope)
       end
 
-      it 'sends mails for all notifications that are marked to send mails' do
+      it "sends mails for all notifications that are marked to send mails" do
         perform_job
 
         expect(mail_service)

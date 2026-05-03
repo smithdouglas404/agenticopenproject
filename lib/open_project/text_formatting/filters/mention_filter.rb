@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module OpenProject::TextFormatting
       include OpenProject::StaticRouting::UrlHelpers
 
       def call
-        doc.search('mention').each do |mention|
+        doc.search("mention").each do |mention|
           anchor = mention_anchor(mention)
           mention.replace(anchor) if anchor
         end
@@ -54,7 +56,7 @@ module OpenProject::TextFormatting
         when User
           user_mention(mention_instance)
         when WorkPackage
-          work_package_mention(mention_instance)
+          work_package_mention(mention_instance, mention)
         else
           mention_instance
         end
@@ -63,41 +65,65 @@ module OpenProject::TextFormatting
       def user_mention(user)
         link_to_user(user,
                      only_path: context[:only_path],
-                     class: 'user-mention')
+                     class: "user-mention")
       end
 
       def group_mention(group)
         link_to_group(group,
                       only_path: context[:only_path],
-                      class: 'user-mention')
+                      class: "user-mention")
       end
 
-      def work_package_mention(work_package)
-        link_to("##{work_package.id}",
-                work_package_path_or_url(id: work_package.id, only_path: context[:only_path]),
-                class: 'issue work_package preview-trigger')
+      def work_package_mention(work_package, mention)
+        case mention.text.count("#")
+        when 3
+          ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
+                                                    "",
+                                                    data: { id: work_package.id, detailed: true }
+        when 2
+          ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
+                                                    "",
+                                                    data: { id: work_package.id, detailed: false }
+        else
+          link_to("##{work_package.id}",
+                  work_package_path_or_url(id: work_package.id, only_path: context[:only_path]),
+                  class: "issue work_package",
+                  data: {
+                    hover_card_trigger_target: "trigger",
+                    hover_card_url: hover_card_work_package_path(work_package.id)
+                  })
+        end
       end
 
       def class_from_mention(mention)
-        mention_class = case mention.attributes['data-type'].value
-                        when 'user'
+        mention_class = case mention.attributes["data-type"].value
+                        when "user"
                           User
-                        when 'group'
+                        when "group"
                           Group
-                        when 'work_package'
+                        when "work_package"
                           WorkPackage
                         else
                           raise ArgumentError
                         end
 
-        mention_class.find_by(id: mention_id(mention)) || mention.text
+        mention_class
+          .visible
+          .find_by(id: mention_id(mention)) || fallback_text(mention)
+      end
+
+      ##
+      # Pass the content of the mention back to Nokogiri
+      # without unescaping any sanitization taken place already.
+      def fallback_text(mention)
+        Nokogiri::XML::Text.new(mention.text, doc)
       end
 
       # For link_to
       def controller; end
 
       def mention_id(mention)
-        attribute_value = mention.attributes['data-id']&.value
+        attribute_value = mention.attributes["data-id"]&.value
 
         id_match = attribute_value&.match(/\d+/)
 

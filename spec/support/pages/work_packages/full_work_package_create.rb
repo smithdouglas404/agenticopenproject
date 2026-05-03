@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,20 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'support/pages/page'
-require 'support/pages/work_packages/abstract_work_package_create'
+require "support/pages/page"
+require "support/pages/work_packages/abstract_work_package_create"
 
 module Pages
   class FullWorkPackageCreate < AbstractWorkPackageCreate
+    def set_status(status)
+      # Scroll back to the top to avoid the activation of the status field
+      # displaying the dropdown overlapping it as it would prevent additional
+      # clicks on it.
+      # When scrolled on top, the dropdown is always under it.
+      scroll_to_top
+      status_field = edit_field(:status)
+      status_field.update(status)
+    end
+
     private
 
     def container
-      find('.work-packages--show-view')
+      find(".work-packages--show-view")
     end
 
     def path
       if original_work_package
-        project_work_package_path(original_work_package.project, original_work_package.id) + '/copy'
+        project_work_package_path(original_work_package.project, original_work_package.id) + "/copy"
       elsif parent_work_package
         new_project_work_packages_path(parent_work_package.project.identifier,
                                        parent_id: parent_work_package.id)

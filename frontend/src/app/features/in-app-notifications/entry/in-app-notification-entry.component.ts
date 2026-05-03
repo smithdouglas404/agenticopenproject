@@ -1,29 +1,18 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Input,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
-import {
-  map,
-  shareReplay,
-  withLatestFrom,
-} from 'rxjs/operators';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { take } from 'rxjs/internal/operators/take';
-import { StateService } from '@uirouter/angular';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { INotification } from 'core-app/core/state/in-app-notifications/in-app-notification.model';
 import { IanCenterService } from 'core-app/features/in-app-notifications/center/state/ian-center.service';
 import { DeviceService } from 'core-app/core/browser/device.service';
+import { UrlParamsService } from 'core-app/core/navigation/url-params.service';
+import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 
 @Component({
   selector: 'op-in-app-notification-entry',
@@ -31,8 +20,9 @@ import { DeviceService } from 'core-app/core/browser/device.service';
   styleUrls: ['./in-app-notification-entry.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
-export class InAppNotificationEntryComponent implements OnInit {
+export class InAppNotificationEntryComponent extends UntilDestroyedMixin implements OnInit {
   @HostBinding('class.op-ian-item') className = true;
 
   @Input() notification:INotification;
@@ -41,24 +31,17 @@ export class InAppNotificationEntryComponent implements OnInit {
 
   workPackage$:Observable<WorkPackageResource>|null = null;
 
-  showDateAlert$:Observable<boolean> = this
-    .storeService
-    .activeReason$
-    .pipe(
-      map((reason) => reason === 'date_alert'),
-      map((dateAlertFiltered) => {
-        const dateAlerts = this.aggregatedNotifications.filter((notification) => notification.reason === 'dateAlert');
-        return dateAlertFiltered || dateAlerts.length === this.aggregatedNotifications.length;
-      }),
-      shareReplay(1),
-    );
+  // Latest streamed work package, cached for synchronous reads from click
+  // handlers (which need displayId to build the URL).
+  private latestWorkPackage:WorkPackageResource|null = null;
+
+  showDateAlert = false;
+  hasReminderAlert = false;
 
   loading$ = this.storeService.query.selectLoading();
 
-  stateChanged$ = this.storeService.stateChanged$;
-
   // The translated reason, if available
-  translatedReasons:{ [reason:string]:number };
+  translatedReasons:Record<string, number>;
 
   project?:{ href:string, title:string, showUrl:string };
 
@@ -68,54 +51,93 @@ export class InAppNotificationEntryComponent implements OnInit {
     mark_as_read: this.I18n.t('js.notifications.center.mark_as_read'),
   };
 
+  private clickTimer:ReturnType<typeof setTimeout>;
+
+  workPackageId:string|null;
+
   constructor(
     readonly apiV3Service:ApiV3Service,
     readonly I18n:I18nService,
     readonly storeService:IanCenterService,
     readonly timezoneService:TimezoneService,
     readonly pathHelper:PathHelperService,
-    readonly state:StateService,
     readonly deviceService:DeviceService,
+    readonly urlParams:UrlParamsService,
   ) {
+    super();
   }
 
   ngOnInit():void {
+    const href = this.notification._links.resource?.href;
+    this.workPackageId = href && HalResource.matchFromLink(href, 'work_packages');
+
+    this.hasReminderAlert = this.hasNotificationReason('reminder');
+    this.showDateAlert = this.hasNotificationReason('dateAlert');
     this.buildTranslatedReason();
     this.buildProject();
     this.loadWorkPackage();
   }
 
-  private loadWorkPackage() {
-    const href = this.notification._links.resource?.href;
-    const id = href && HalResource.matchFromLink(href, 'work_packages');
-    // not a work package reference
-    if (id) {
-      this.workPackage$ = this
-        .apiV3Service
-        .work_packages
-        .id(id)
-        .requireAndStream();
-    }
+  private hasNotificationReason(reason:string):boolean {
+    return this.aggregatedNotifications.some((notification) => notification.reason === reason);
   }
 
-  showDetails():void {
-    if (!this.workPackage$) {
+  private loadWorkPackage() {
+    // not a work package reference
+    if (!this.workPackageId) {
       return;
     }
 
-    this
-      .workPackage$
+    this.workPackage$ = this
+      .apiV3Service
+      .work_packages
+      .id(this.workPackageId)
+      .requireAndStream()
       .pipe(
-        take(1),
-        withLatestFrom(this.showDateAlert$),
-      )
-      .subscribe(([wp, openDetailsTab]) => {
-        const tab = openDetailsTab ? 'overview' : 'activity';
-        this.storeService.openSplitScreen(wp.id, tab);
-      });
+        tap((wp) => { this.latestWorkPackage = wp; }),
+        this.untilDestroyed(),
+      );
   }
 
-  projectClicked(event:MouseEvent):void { // eslint-disable-line class-methods-use-this
+  onClick():void {
+    clearTimeout(this.clickTimer); // Clear timer from the any previous single click events.
+    this.clickTimer = setTimeout(() => {
+      // The single click logic is handled in a timeout, because
+      // it needs to be canceled in case the event is a double click.
+      this.showDetails();
+    }, 250);
+  }
+
+  showDetails():void {
+    if (!this.workPackageId) {
+      return;
+    }
+
+    const tab = this.showDateAlert ? 'overview' : 'activity';
+    const id = this.latestWorkPackage?.displayId ?? this.workPackageId;
+    this.storeService.openSplitScreen(id, tab);
+  }
+
+  onDoubleClick():void {
+    clearTimeout(this.clickTimer); // Clear timer from the single click event onClick.
+    this.showFullView();
+  }
+
+  showFullView():void {
+    if (!this.workPackageId) {
+      return;
+    }
+
+    const id = this.latestWorkPackage?.displayId ?? this.workPackageId;
+    const link = this.pathHelper.workPackagePath(id) + window.location.search;
+    Turbo.visit(link, { action: 'advance' });
+  }
+
+  onLinkClick(e:Event):void {
+    e.stopPropagation();
+  }
+
+  projectClicked(event:MouseEvent):void {
     event.stopPropagation();
   }
 
@@ -129,7 +151,7 @@ export class InAppNotificationEntryComponent implements OnInit {
   }
 
   private buildTranslatedReason() {
-    const reasons:{ [reason:string]:number } = {};
+    const reasons:Record<string, number> = {};
 
     this
       .aggregatedNotifications

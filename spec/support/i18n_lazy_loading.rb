@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,71 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Restricts loaded locales to :en to avoid a 2-seconds penalty when locales are
-# loaded.
-#
-# Disable with +TEST_NO_I18N_LAZY_LOADING+ env variable.
-module I18nLazyLoading
-  # Load additional locales when calling:
-  #
-  # - +Redmine::I18n#all_attribute_translations+
-  # - +Redmine::I18n#ll+
-  module RedmineI18nPatch
-    def all_attribute_translations(locale)
-      I18nLazyLoading.load_locale(locale)
-      super
-    end
+# Enable translations lazy loading by default, except on CI where we want to
+# have all translations loaded during application eager loading to be closer to
+# production configuration.
+return if ENV["CI"]
 
-    def ll(lang, _str, _value = nil)
-      I18nLazyLoading.load_locale(lang)
-      super
-    end
-  end
+# Lazy loading translations avoids a 2 to 4 seconds penalty on first call to
+# `I18n.translate` by loading only the translations for the current locale
+# instead of loading them for all locales.
+require "i18n/backend/lazy_loadable"
 
-  # Load additional locales when calling:
-  #
-  # - +I18n.locale=+
-  # - +Stringex::Localization.locale=+
-  module I18nPatch
-    def locale=(locale)
-      I18nLazyLoading.load_locale(locale)
-      super
-    end
+# Need to make LocaleExtractor recognize our js-<locale>.yaml file format
+class I18n::Backend::LocaleExtractor
+  def self.locale_from_path(path)
+    name = File.basename(path, ".*")
+    locale = name.split("_").first
 
-    def t(*args, **options)
-      I18nLazyLoading.load_locale(options[:locale]) if options[:locale]
-      super
-    end
-  end
-
-  def self.install
-    return if ENV["TEST_NO_I18N_LAZY_LOADING"].present?
-
-    # copy original I18n load path
-    @@original_load_path = I18n.config.load_path.dup
-    # restrict available locales to :en
-    I18n.config.load_path = load_path(:en)
-
-    # patch to load locales on demand
-    Redmine::I18n.prepend(RedmineI18nPatch)
-    I18n.singleton_class.prepend(I18nPatch)
-    Stringex::Localization.singleton_class.prepend(I18nPatch)
-  end
-
-  def self.load_locale(locale)
     return if locale.nil?
-    return if ::I18n.config.available_locales_set.include?(locale)
 
-    I18n.backend.load_translations(load_path(locale))
-    I18n.config.clear_available_locales_set
-  end
-
-  def self.load_path(locale)
-    file_regex = /\/(js-)?#{locale}[.a-z]+$/i
-    @@original_load_path.grep(file_regex)
+    locale.delete_prefix("js-").delete_suffix(".seeders").to_sym
   end
 end
 
-RSpec.configure do
-  I18nLazyLoading.install
-end
+I18n.backend = I18n::Backend::LazyLoadable.new(lazy_load: true)

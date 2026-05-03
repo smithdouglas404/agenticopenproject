@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +39,7 @@ module Members
 
     protected
 
-    def perform(_params = {})
+    def perform
       prune_watchers
       unassign_categories
 
@@ -55,7 +57,7 @@ module Members
       Category
         .where(assigned_to_id: users)
         .where(project_id: project_ids)
-        .where.not(assigned_to_id: Member.assignable.of(projects).select(:user_id))
+        .where.not(assigned_to_id: Member.assignable.of_project(projects).select(:user_id))
         .update_all(assigned_to_id: nil)
     end
 

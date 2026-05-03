@@ -2,7 +2,7 @@
  * A CDK portal implementation to wrap edit-fields in non-angular contexts.
  */
 import {
-  ApplicationRef, ComponentFactoryResolver, Injectable, Injector,
+  ApplicationRef, Injectable, Injector,
 } from '@angular/core';
 import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
 import { EditFormPortalComponent } from 'core-app/shared/components/fields/edit/editing-portal/edit-form-portal.component';
@@ -17,7 +17,6 @@ import { HalResourceEditFieldHandler } from 'core-app/shared/components/fields/e
 @Injectable({ providedIn: 'root' })
 export class EditingPortalService {
   constructor(private readonly appRef:ApplicationRef,
-    private readonly componentFactoryResolver:ComponentFactoryResolver,
     private readonly pathHelper:PathHelperService) {
 
   }
@@ -68,7 +67,10 @@ export class EditingPortalService {
         take(1),
       )
       .toPromise()
-      .then(() => fieldHandler);
+      .then(() => {
+        ref.changeDetectorRef.detectChanges(); // ensure error classes applied in zoneless mode
+        return fieldHandler;
+      });
   }
 
   /**
@@ -80,7 +82,6 @@ export class EditingPortalService {
   private createDomOutlet(hostElement:HTMLElement, injector:Injector) {
     return new DomPortalOutlet(
       hostElement,
-      this.componentFactoryResolver,
       this.appRef,
       injector,
     );

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2020 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,15 +27,14 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 
-require 'spec_helper'
-require_relative './update_resource_examples'
+require "spec_helper"
+require_relative "update_resource_examples"
 
-describe ::API::V3::PlaceholderUsers::PlaceholderUsersAPI,
-         'update',
-         type: :request do
+RSpec.describe API::V3::PlaceholderUsers::PlaceholderUsersAPI,
+               "update" do
   include API::V3::Utilities::PathHelper
 
-  shared_let(:placeholder) { create :placeholder_user, name: 'foo' }
+  shared_let(:placeholder) { create(:placeholder_user, name: "foo") }
 
   let(:parameters) do
     {}
@@ -52,23 +53,23 @@ describe ::API::V3::PlaceholderUsers::PlaceholderUsersAPI,
     send_request
   end
 
-  describe 'admin user' do
+  describe "admin user" do
     let(:user) { build(:admin) }
 
-    it_behaves_like 'updates the placeholder'
+    it_behaves_like "updates the placeholder"
   end
 
-  describe 'user with manage_placeholder_user permission' do
-    let(:user) { create(:user, global_permission: %i[manage_placeholder_user]) }
+  describe "user with manage_placeholder_user permission" do
+    let(:user) { create(:user, global_permissions: %i[manage_placeholder_user]) }
 
-    it_behaves_like 'updates the placeholder'
+    it_behaves_like "updates the placeholder"
   end
 
-  describe 'unauthorized user' do
+  describe "unauthorized user" do
     let(:user) { build(:user) }
 
-    it 'returns a 403 response' do
-      expect(last_response.status).to eq(403)
+    it "returns a 403 response" do
+      expect(last_response).to have_http_status(:forbidden)
     end
   end
 end

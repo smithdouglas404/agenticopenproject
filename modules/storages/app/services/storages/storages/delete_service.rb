@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,5 +31,18 @@
 # See also: create_service.rb for comments
 module Storages::Storages
   class DeleteService < ::BaseServices::Delete
+    def before_perform(*)
+      delete_project_storages
+
+      super
+    end
+
+    private
+
+    def delete_project_storages
+      model.project_storages.map do |project_storage|
+        Storages::ProjectStorages::DeleteService.new(user:, model: project_storage).call
+      end
+    end
   end
 end

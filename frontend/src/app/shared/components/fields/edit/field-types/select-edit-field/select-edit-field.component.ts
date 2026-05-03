@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,26 +26,25 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  Component,
-  InjectFlags,
-  OnInit,
-} from '@angular/core';
-import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { SelectAutocompleterRegisterService } from 'core-app/shared/components/fields/edit/field-types/select-edit-field/select-autocompleter-register.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { StateService, UIRouterGlobals } from '@uirouter/core';
 import { from, Observable } from 'rxjs';
-import {
-  map,
-  tap,
-} from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+
+import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
-import { CreateAutocompleterComponent } from 'core-app/shared/components/autocompleter/create-autocompleter/create-autocompleter.component';
+import {
+  SelectAutocompleterRegisterService,
+} from 'core-app/shared/components/fields/edit/field-types/select-edit-field/select-autocompleter-register.service';
+import {
+  CreateAutocompleterComponent,
+} from 'core-app/shared/components/autocompleter/create-autocompleter/create-autocompleter.component';
 import { EditFormComponent } from 'core-app/shared/components/fields/edit/edit-form/edit-form.component';
-import { StateService } from '@uirouter/core';
 import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { HalResourceSortingService } from 'core-app/features/hal/services/hal-resource-sorting.service';
 import { EditFieldComponent } from '../../edit-field.component';
+import { HalLink } from 'core-app/features/hal/hal-link/hal-link';
 
 export interface ValueOption {
   name:string;
@@ -54,6 +53,8 @@ export interface ValueOption {
 
 @Component({
   templateUrl: './select-edit-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SelectEditFieldComponent extends EditFieldComponent implements OnInit {
   @InjectField() selectAutocompleterRegister:SelectAutocompleterRegisterService;
@@ -64,19 +65,21 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
 
   @InjectField() $state:StateService;
 
-  @InjectField(EditFormComponent, null, InjectFlags.Optional) editFormComponent:EditFormComponent;
+  @InjectField() uiRouterGlobals:UIRouterGlobals;
+
+  @InjectField(EditFormComponent, null, { optional: true }) editFormComponent:EditFormComponent;
 
   public availableOptions:any[];
 
-  public text:{ [key:string]:string };
+  public text:Record<string, string>;
 
   public appendTo:any = null;
 
-  public referenceOutputs:{ [key:string]:Function } = {
+  public referenceOutputs:Record<string, Function> = {
     onCreate: (newElement:HalResource) => this.onCreate(newElement),
     onChange: (value:HalResource) => this.onChange(value),
     onAddNew: (value:HalResource) => this.onNewValueAdded(value),
-    onKeydown: (event:JQuery.TriggeredEvent) => this.handler.handleUserKeydown(event, true),
+    onKeydown: (event:KeyboardEvent) => this.handler.handleUserKeydown(event, true),
     onOpen: () => this.onOpen(),
     onClose: () => this.onClose(),
     onAfterViewInit: (component:CreateAutocompleterComponent) => this._autocompleterComponent = component,
@@ -92,7 +95,7 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
 
     // Special case 'null' value, which angular
     // only understands in ng-options as an empty string.
-    if (option && option.href === '') {
+    if (option?.href === '') {
       option.href = null;
     }
 
@@ -120,9 +123,10 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
         this.untilDestroyed(),
       )
       .subscribe(() => {
-        this.valuesLoadingPromise.then(() => {
-          this._autocompleterComponent.openDirectly = true;
-        });
+        void this.valuesLoadingPromise
+          .then(() => {
+            this._autocompleterComponent.openDirectly = true;
+          });
       });
 
     this._syncUrlParamsOnChangeIfNeeded(this.handler.fieldName, this.editFormComponent?.editMode);
@@ -134,7 +138,9 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
       placeholder: this.I18n.t('js.placeholders.default'),
     };
 
-    this.valuesLoadingPromise = this.change.getForm().then(() => this.initialValueLoading());
+    this.valuesLoadingPromise = this.change.getForm()
+      .then(() => this.initialValueLoading())
+      .catch(() => console.error('Failed to load default form'));
   }
 
   protected initialValueLoading() {
@@ -148,7 +154,8 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
   }
 
   private setValues(availableValues:HalResource[]) {
-    this.availableOptions = this.sortValues(availableValues);
+    const sortedValues = this.sortValues(availableValues);
+    this.availableOptions = this.filterInvalidValues(sortedValues);
     this.addEmptyOption();
   }
 
@@ -193,7 +200,16 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
   }
 
   protected fetchAllowedValueQuery(query?:string):Promise<CollectionResource> {
-    return this.schema.allowedValues.$link.$fetch(this.allowedValuesFilter(query)) as Promise<CollectionResource>;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const link = this.schema.allowedValues?.$link as HalLink|undefined;
+
+    // Race condition: Field was under edit but is no longer editable / values not loadable
+    // which means the schema switched during the period it opened / updated after saved.
+    if (!link) {
+      return new Promise(() => {});
+    }
+
+    return link.$fetch(this.allowedValuesFilter(query)) as Promise<CollectionResource>;
   }
 
   private addValue(val:HalResource) {
@@ -214,9 +230,9 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
   }
 
   public onOpen() {
-    jQuery(this.hiddenOverflowContainer).one('scroll', () => {
+    document.querySelector(this.hiddenOverflowContainer)!.addEventListener('scroll', () => {
       this._autocompleterComponent.closeSelect();
-    });
+    }, { once: true });
   }
 
   public onClose() {
@@ -273,6 +289,10 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
     return this.halSorting.sort(availableValues);
   }
 
+  private filterInvalidValues(availableValues:HalResource[]) {
+    return availableValues.filter((value) => !!value.name);
+  }
+
   // Subclasses shall be able to override the filters with which the
   // allowed values are reduced in the backend.
   protected allowedValuesFilter(query?:string) {
@@ -288,10 +308,12 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
     // in order to keep the form changes (changeset) between route/state changes
     if (fieldName === 'type' && editMode) {
       this.handler.registerOnBeforeSubmit(() => {
-        const newType = this.value?.$source?.id;
+        const oldType = this.uiRouterGlobals.params.type as string|null;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const newType = (this.value as HalResource)?.$source?.id as string;
 
-        if (newType) {
-          this.$state.go('.', { type: newType }, { notify: false });
+        if (oldType && newType) {
+          void this.$state.go('.', { type: newType }, { notify: false });
         }
       });
     }

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'base'
+require_relative "base"
 
 class Tables::UserPasswords < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.integer :user_id, null: false
+      t.bigint :user_id, null: false
       t.string :hashed_password, limit: 128, null: false
       t.string :salt, limit: 64, null: true
-      t.timestamps null: true
+      t.timestamps precision: nil, null: true
       t.string :type, null: false
 
       t.index :user_id

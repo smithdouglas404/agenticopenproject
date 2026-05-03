@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,21 +27,31 @@
 //++
 
 import {
-  Component, Input, EventEmitter, Output,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
 } from '@angular/core';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { WorkPackageRelationsHierarchyService } from 'core-app/features/work-packages/components/wp-relations/wp-relations-hierarchy/wp-relations-hierarchy.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 @Component({
   templateUrl: './wp-breadcrumb-parent.html',
   selector: 'wp-breadcrumb-parent',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageBreadcrumbParentComponent {
-  @Input('workPackage') workPackage:WorkPackageResource;
+  @Input() workPackage:WorkPackageResource;
 
-  @Output('onSwitch') onSwitch = new EventEmitter<boolean>();
+  @Output() onSwitch = new EventEmitter<boolean>();
 
   public isSaving = false;
 
@@ -58,6 +68,7 @@ export class WorkPackageBreadcrumbParentComponent {
     protected readonly I18n:I18nService,
     protected readonly wpRelationsHierarchy:WorkPackageRelationsHierarchyService,
     protected readonly notificationService:WorkPackageNotificationService,
+    protected readonly pathHelper:PathHelperService,
   ) {
   }
 
@@ -101,5 +112,9 @@ export class WorkPackageBreadcrumbParentComponent {
       this.editing = state;
       this.onSwitch.emit(this.editing);
     }
+  }
+
+  public parentLink(parent:WorkPackageResource):string {
+    return this.pathHelper.genericWorkPackagePath(parent.project?.identifier, parent.displayId) + window.location.search;
   }
 }

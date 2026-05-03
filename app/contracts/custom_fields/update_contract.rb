@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,5 +30,19 @@
 
 module CustomFields
   class UpdateContract < BaseContract
+    include CustomFields::EnterpriseGuard
+
+    validate :unique_job, if: -> { model.field_format_calculated_value? }
+
+    private
+
+    def unique_job
+      CustomFields::RecalculateValuesJob.new(
+        user: user,
+        custom_field_id: model.id
+      ).check_concurrency do
+        errors.add :base, :previous_custom_field_recalculation_unprocessed
+      end
+    end
   end
 end

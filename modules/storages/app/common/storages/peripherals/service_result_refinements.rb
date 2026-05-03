@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,29 +28,74 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages::Peripherals
-  module ServiceResultRefinements
-    refine ServiceResult do
-      def match(on_success:, on_failure:)
-        if success?
-          on_success.call(result)
-        else
-          on_failure.call(errors)
-        end
-      end
+module Storages
+  module Peripherals
+    # rubocop:disable Lint/EmptyClass
+    class UnknownSource; end
 
-      def bind
-        return self if failure?
+    # rubocop:enable Lint/EmptyClass
 
-        yield result
-      end
-
-      def >>(other)
-        unless other.respond_to?(:call)
-          raise TypeError, "Expected an object responding to 'call', got #{other.class.name}."
+    module ServiceResultRefinements
+      refine ServiceResult do
+        def match(on_success:, on_failure:)
+          if success?
+            on_success.call(result)
+          else
+            on_failure.call(errors)
+          end
         end
 
-        bind(&other)
+        def bind
+          return self if failure?
+
+          yield result
+        end
+
+        def >>(other)
+          unless other.respond_to?(:call)
+            raise TypeError, "Expected an object responding to 'call', got #{other.class.name}."
+          end
+
+          bind(&other)
+        end
+
+        def error_source
+          if errors.is_a?(::Storages::StorageError) && errors.data&.source.present?
+            errors.data.source
+          else
+            UnknownSource
+          end
+        end
+
+        def error_payload
+          errors.data&.payload
+        end
+
+        def result_or
+          return result if success?
+
+          yield errors
+        end
+
+        alias_method :error_and, :result_or
+
+        def result_and
+          return errors if failure?
+
+          yield result
+        end
+
+        alias_method :error_or, :result_and
+
+        def fail!
+          self.success = false
+          self
+        end
+
+        def to_monad
+          match(on_success: ->(result) { Dry::Monads::Success(result) },
+                on_failure: ->(error) { Dry::Monads::Failure(error) })
+        end
       end
     end
   end

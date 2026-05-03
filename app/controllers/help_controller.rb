@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,14 +29,16 @@
 #++
 
 class HelpController < ApplicationController
+  no_authorization_required! :keyboard_shortcuts, :text_formatting
+
   def keyboard_shortcuts
-    redirect_to OpenProject::Static::Links[:shortcuts][:href]
+    redirect_to OpenProject::Static::Links.url_for(:shortcuts), allow_other_host: true
   end
 
   def text_formatting
-    default_link = OpenProject::Static::Links[:text_formatting][:href]
+    default_link = OpenProject::Static::Links.url_for(:text_formatting)
     help_link = OpenProject::Configuration.force_formatting_help_link.presence || default_link
 
-    redirect_to help_link
+    redirect_to help_link, allow_other_host: true
   end
 end

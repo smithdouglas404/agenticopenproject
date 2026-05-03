@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +31,7 @@ module API
     module News
       class NewsRepresenter < ::API::Decorators::Single
         include API::Decorators::LinkedResource
+        include API::V3::Workspaces::LinkedResource
         include API::Decorators::DateProperty
         include API::Decorators::FormattableProperty
         include API::Caching::CachedRepresenter
@@ -51,20 +52,30 @@ module API
         date_time_property :created_at
         date_time_property :updated_at
 
-        associated_resource :project,
-                            link: ->(*) do
-                              {
-                                href: api_v3_paths.project(represented.project.id),
-                                title: represented.project.name
-                              }
-                            end
+        associated_project
 
         associated_resource :author,
                             v3_path: :user,
                             representer: ::API::V3::Users::UserRepresenter
 
+        link :updateImmediately,
+             cache_if: -> { current_user.allowed_in_project?(:manage_news, represented.project) } do
+          {
+            href: api_v3_paths.news(represented.id),
+            method: :patch
+          }
+        end
+
+        link :delete,
+             cache_if: -> { current_user.allowed_in_project?(:manage_news, represented.project) } do
+          {
+            href: api_v3_paths.news(represented.id),
+            method: :delete
+          }
+        end
+
         def _type
-          'News'
+          "News"
         end
       end
     end

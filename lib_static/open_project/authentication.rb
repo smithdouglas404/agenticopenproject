@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -24,7 +26,7 @@
 #
 #  See COPYRIGHT and LICENSE files for more details.
 
-require 'open_project/authentication/manager'
+require "open_project/authentication/manager"
 
 module OpenProject
   ##
@@ -92,6 +94,8 @@ module OpenProject
     # Plugins can declare new scopes by declaring new constants in this module.
     module Scope
       API_V3 = :api_v3
+      SCIM_V2 = :scim_v2
+      MCP_SCOPE = :mcp
 
       class << self
         def values
@@ -217,8 +221,7 @@ module OpenProject
 
         def find_all(identifiers)
           identifiers
-            .map { |ident| stages.find { |st| st.identifier == ident } }
-            .compact
+            .filter_map { |ident| stages.find { |st| st.identifier == ident } }
         end
 
         def complete_path(identifier, session:, back_url: nil)
@@ -237,54 +240,44 @@ module OpenProject
     module WWWAuthenticate
       module_function
 
-      def pick_auth_scheme(supported_schemes, default_scheme, request_headers = {})
-        req_scheme = request_headers['HTTP_X_AUTHENTICATION_SCHEME']
-
-        if supported_schemes.include? req_scheme
-          req_scheme
-        else
-          default_scheme
-        end
-      end
-
-      def default_auth_scheme
-        'Basic'
-      end
-
       def default_realm
-        'OpenProject API'
+        "OpenProject API"
       end
 
       def scope_realm(scope = nil)
         Manager.scope_config(scope).realm || default_realm
       end
 
-      def response_header(
-        default_auth_scheme: self.default_auth_scheme,
-        scope: nil,
-        request_headers: {}
-      )
-        scheme = pick_auth_scheme auth_schemes(scope), default_auth_scheme, request_headers
+      def response_header(scope: nil, error: nil, error_description: nil)
+        header = %{Bearer realm="#{scope_realm(scope)}", resource_metadata="#{resource_metadata}"}
+        header << %{, scope="#{escape_string scope}"} if scope
 
-        "#{scheme} realm=\"#{scope_realm(scope)}\""
+        if error
+          header << %{, error="#{escape_string error}"}
+          header << %{, error_description="#{escape_string error_description}"} if error_description
+        end
+
+        header
       end
 
-      def auth_schemes(scope)
-        strategies = Array(Manager.scope_config(scope).strategies)
+      def escape_string(string)
+        string.to_s.dump[1..-2]
+      end
 
-        Manager.auth_schemes
-          .select { |_, info| scope.nil? or not (info.strategies & strategies).empty? }
-          .keys
+      def resource_metadata
+        OpenProject::StaticRouting::StaticRouter.new.url_helpers.protected_resource_metadata_url
       end
     end
 
+    # Prepended to the warden basic auth strategy, so when a client already tries to use Basic auth (but fails), they
+    # will receive a Basic WWW-Authenticate header.
     module AuthHeaders
       include WWWAuthenticate
 
       # #scope available from Warden::Strategies::BasicAuth
 
       def auth_scheme
-        pick_auth_scheme auth_schemes(scope), default_auth_scheme, env
+        "Basic"
       end
 
       def realm

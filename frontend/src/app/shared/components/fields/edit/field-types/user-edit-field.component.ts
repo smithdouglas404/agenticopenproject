@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -57,6 +57,7 @@ import { CallableHalLink } from 'core-app/features/hal/hal-link/hal-link';
 @Component({
   templateUrl: './user-edit-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class UserEditFieldComponent extends EditFieldComponent implements OnInit {
   isNew = isNewResource(this.resource);
@@ -89,7 +90,7 @@ export class UserEditFieldComponent extends EditFieldComponent implements OnInit
   initialize():void {
     const link = this.schema.allowedValues as CallableHalLink|undefined;
     if (link) {
-      this.url = link.$link.href as string;
+      this.url = link.$link.href!;
     }
   }
 

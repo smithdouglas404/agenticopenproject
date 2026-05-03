@@ -1,8 +1,11 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { WorkPackageTableConfiguration } from 'core-app/features/work-packages/components/wp-table/wp-table-configuration';
-import { ChartOptions, ChartType } from 'chart.js';
+import { ChartOptions } from 'chart.js';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { GroupObject } from 'core-app/features/hal/resources/wp-collection-resource';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import PrimerColorsPlugin from './../plugin.primer-colors';
 
 export interface WorkPackageEmbeddedGraphDataset {
   label:string;
@@ -19,13 +22,24 @@ interface ChartDataSet {
   selector: 'op-wp-embedded-graph',
   templateUrl: './wp-embedded-graph.html',
   styleUrls: ['./wp-embedded-graph.component.sass'],
+  standalone: true,
+  imports: [
+    BaseChartDirective
+  ],
+  providers: [
+    provideCharts(withDefaultRegisterables(ChartDataLabels, PrimerColorsPlugin)),
+  ],
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class WorkPackageEmbeddedGraphComponent {
+export class WorkPackageEmbeddedGraphComponent implements OnChanges {
   @Input() public datasets:WorkPackageEmbeddedGraphDataset[];
 
   @Input() public chartOptions:ChartOptions;
 
-  @Input() chartType:ChartType = 'horizontalBar';
+  @Input() chartType = 'bar';
 
   public configuration:WorkPackageTableConfiguration;
 
@@ -67,10 +81,10 @@ export class WorkPackageEmbeddedGraphComponent {
     }, [])) as string[];
 
     const labelCountMaps = this.datasets.map((dataset) => {
-      const countMap = (dataset.groups || []).reduce((hash, group) => ({
+      const countMap = (dataset.groups || []).reduce<any>((hash, group) => ({
         ...hash,
         [group.value]: group.count,
-      }), {} as any);
+      }), {});
 
       return {
         label: dataset.label,
@@ -79,7 +93,7 @@ export class WorkPackageEmbeddedGraphComponent {
     });
 
     uniqLabels = uniqLabels.map((label) => {
-      if (!label) {
+      if (label === null) {
         return this.i18n.t('js.placeholders.default');
       }
       return label;
@@ -95,31 +109,77 @@ export class WorkPackageEmbeddedGraphComponent {
   }
 
   protected setChartOptions() {
+    const bodyFontColor= getComputedStyle(document.body).getPropertyValue('--body-font-color');
+    const gridLineColor= getComputedStyle(document.body).getPropertyValue('--borderColor-muted');
+    const backdropColor= getComputedStyle(document.body).getPropertyValue('--overlay-backdrop-bgColor');
+
     const defaults:ChartOptions = {
+      color: bodyFontColor,
       responsive: true,
       maintainAspectRatio: false,
-      legend: {
-        // Only display legends if more than one dataset is provided.
-        display: this.datasets.length > 1,
+      indexAxis: this.chartType === 'horizontalBar' ? 'y' : 'x',
+      scales: {
+        r: {
+          angleLines: {
+            color: this.isRadarChart() ? gridLineColor : 'transparent',
+          },
+          grid: {
+            color: this.isRadarChart() ? gridLineColor : 'transparent',
+          },
+          pointLabels: {
+            color: this.isRadarChart() ? bodyFontColor : 'transparent',
+          },
+          ticks: {
+            color: this.isRadarChart() ? bodyFontColor : 'transparent',
+            backdropColor: this.isRadarChart() ? backdropColor : 'transparent',
+            font: {
+              weight: 'bold',
+              size: 14,
+            },
+          },
+        },
+        y: {
+          ticks: {
+            color: this.isBarChart() ? bodyFontColor : 'transparent',
+          },
+          grid: {
+            color: this.isBarChart() ? gridLineColor : 'transparent',
+          },
+          border: {
+            color: this.isBarChart() ? bodyFontColor : 'transparent',
+          },
+        },
+        x: {
+          ticks: {
+            color: this.isBarChart() ? bodyFontColor : 'transparent',
+          },
+          grid: {
+            color: this.isBarChart() ? gridLineColor : 'transparent',
+          },
+          border: {
+            color: this.isBarChart() ? bodyFontColor : 'transparent',
+          },
+        },
       },
       plugins: {
+        legend: {
+          // Only display legends if more than one dataset is provided.
+          display: this.datasets.length > 1,
+        },
         datalabels: {
+          anchor: 'center',
           align: this.chartType === 'bar' ? 'top' : 'center',
+          color: bodyFontColor,
+          font: {
+            weight: 'bold',
+            size: 14,
+          },
         },
       },
     };
 
-    const chartTypeDefaults:ChartOptions = (() => {
-      if (this.chartType === 'horizontalBar' || this.chartType === 'bar') {
-        return this.setChartAxesValues();
-      }
-
-      return { scales: {} };
-    })();
-
     this.internalChartOptions = {
       ...defaults,
-      ...chartTypeDefaults,
       ...this.chartOptions,
     };
   }
@@ -128,14 +188,31 @@ export class WorkPackageEmbeddedGraphComponent {
     return this.chartData.length > 0 && this.chartData.some((set) => set.data.length > 0);
   }
 
+  public get mappedChartType():string {
+    return this.chartType === 'horizontalBar' ? 'bar' : this.chartType;
+  }
+
+  public get chartDescription():string {
+    const chartDataDescriptions = _.map(this.chartLabels, (label, index) => {
+      if (this.chartData.length === 1) {
+        const allCount = this.chartData[0].data[index];
+        return `${allCount} ${label}`;
+      }
+      const labelCounts = _.map(this.chartData, (dataset) => `${dataset.data[index]} ${dataset.label}`);
+      return `${label}: ${labelCounts.join(', ')}`;
+    });
+
+    return chartDataDescriptions.join('; ');
+  }
+
   private setHeight() {
     if (this.chartType === 'horizontalBar' && this.datasets && this.datasets[0]) {
       const labels:string[] = [];
-      this.datasets.forEach((d) => d.groups!.forEach((g) => {
+      this.datasets.forEach((d) => { d.groups!.forEach((g) => {
         if (!labels.includes(g.value)) {
           labels.push(g.value);
         }
-      }));
+      }); });
       let height = labels.length * 40;
 
       if (this.datasets.length > 1) {
@@ -152,35 +229,16 @@ export class WorkPackageEmbeddedGraphComponent {
     }
   }
 
-  // function to set ticks of axis
-  private setChartAxesValues() {
-    const chartOptions:ChartOptions = { scales: {} };
-    const changeableValuesAxis = [{
-      stacked: true,
-      ticks: {
-        callback: (value:number) => {
-          if (Math.floor(value) === value) {
-            return value;
-          }
-          return null;
-        },
-      },
-    }];
+  private isBarChart() {
+    return this.chartType === 'bar' || this.chartType === 'horizontalBar' || this.chartType === 'line';
+  }
 
-    const constantValuesAxis = [{
-      stacked: true,
-    }];
+  private isRadarChart() {
+    return this.chartType === 'radar' || this.chartType === 'polarArea';
+  }
 
-    if (chartOptions.scales) {
-      if (this.chartType === 'bar') {
-        chartOptions.scales.yAxes = changeableValuesAxis;
-        chartOptions.scales.xAxes = constantValuesAxis;
-      } else if (this.chartType === 'horizontalBar') {
-        chartOptions.scales.xAxes = changeableValuesAxis;
-        chartOptions.scales.yAxes = constantValuesAxis;
-      }
-    }
-
-    return chartOptions;
+  public get chartSummary():string {
+    const chartTypeLabel = this.chartType ? this.i18n.t(`js.chart.types.${this.chartType}`) : '';
+    return this.i18n.t('js.grid.widgets.work_packages_graph.summary', { chartType: chartTypeLabel, description: this.chartDescription });
   }
 }

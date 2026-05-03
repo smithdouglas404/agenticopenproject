@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -54,18 +54,19 @@ module OpenProject
     # attachable journals for the attachment added by themselves. To the user this will look as if one of the actions
     # deleted the other attachment. The next action, Action 3,  will then seem to have readded the attachment,
     # seemingly removed before.
-    def with_advisory_lock_transaction(entry, suffix = nil, &)
+    def with_advisory_lock_transaction(entry, suffix = nil, options = {}, &)
       lock_name = "mutex_on_#{entry.class.name}_#{entry.id}"
       lock_name << "_#{suffix}" if suffix
 
+      options[:transaction] ||= true
       ActiveRecord::Base.transaction do
-        with_advisory_lock(entry.class, lock_name, &)
+        with_advisory_lock(entry.class, lock_name, options, &)
       end
     end
 
-    def with_advisory_lock(resource_class, lock_name)
-      debug_log("Attempting to fetched advisory lock", lock_name)
-      result = resource_class.with_advisory_lock(lock_name, transaction: true) do
+    def with_advisory_lock(resource_class, lock_name, options = {})
+      debug_log("Attempting to fetch advisory lock", lock_name)
+      result = resource_class.with_advisory_lock(lock_name, options) do
         debug_log("Fetched advisory lock", lock_name)
         yield
       end
@@ -79,7 +80,7 @@ module OpenProject
         #{action}:
           * lockname: #{lock_name}
           * thread:  #{Thread.current.object_id}
-          * held locks: #{WithAdvisoryLock::Base.lock_stack.map(&:name).join(', ')}
+          * held locks: #{ActiveRecord::Base.current_advisory_locks.join(', ')}
       MESSAGE
 
       Rails.logger.debug { message }

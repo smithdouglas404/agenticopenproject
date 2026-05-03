@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,38 +36,38 @@ module Components
       include RSpec::Matchers
 
       def add_button_dropdown
-        page.find '.form-configuration--add-group', text: 'Group'
+        page.find ".form-configuration--add-group", text: "Group"
       end
 
       def add_attribute_group_button
-        page.find 'button', text: I18n.t('js.admin.type_form.add_group')
+        page.find "button", text: I18n.t("js.admin.type_form.add_group")
       end
 
       def add_table_button
-        page.find 'button', text: I18n.t('js.admin.type_form.add_table')
+        page.find "button", text: I18n.t("js.admin.type_form.add_table")
       end
 
       def reset_button
-        page.find '.form-configuration--reset'
+        page.find ".form-configuration--reset"
       end
 
       def inactive_group
-        page.find '#type-form-conf-inactive-group'
+        page.find_by_id "type-form-conf-inactive-group"
       end
 
       def inactive_drop
-        page.find '#type-form-conf-inactive-group .attributes'
+        page.find "#type-form-conf-inactive-group .attributes"
       end
 
       def expect_empty
-        expect(page).to have_no_selector('#draggable-groups .group-head')
+        expect(page).to have_no_css("#draggable-groups .group-head")
       end
 
       def find_group(name)
-        head = page.find('.group-head', text: name.upcase)
+        head = page.find(".group-head", text: name.upcase)
 
         # Return the parent of the group-head
-        head.find(:xpath, '..')
+        head.find(:xpath, "..")
       end
 
       def checkbox_selector(attribute)
@@ -88,7 +90,7 @@ module Components
         attribute = page.find(attribute_selector(key))
 
         unless translation.nil?
-          expect(attribute).to have_selector('.attribute-name', text: translation)
+          expect(attribute).to have_css(".attribute-name", text: translation)
         end
       end
 
@@ -101,11 +103,11 @@ module Components
 
       def remove_attribute(attribute)
         attribute = page.find(attribute_selector(attribute))
-        attribute.find('.delete-attribute').click
+        attribute.find(".delete-attribute").click
       end
 
       def drag_and_drop(handle, group)
-        target = group.find('.attributes')
+        target = group.find(".attributes")
 
         scroll_to_element(group)
         page
@@ -127,14 +129,14 @@ module Components
       end
 
       def add_query_group(name, relation_filter, expect: true)
-        SeleniumHubWaiter.wait
+        SeleniumHubWaiter.wait unless using_cuprite?
 
         add_button_dropdown.click
         add_table_button.click
 
         modal = ::Components::WorkPackages::TableConfigurationModal.new
 
-        within find('.relation-filter-selector') do
+        within ".relation-filter-selector" do
           select I18n.t("js.relation_labels.#{relation_filter}")
 
           # While we are here, let's check that all relation filters are present.
@@ -157,27 +159,33 @@ module Components
             expect(page).to have_text(label)
           end
         end
+        yield modal if block_given?
         modal.save
 
-        input = find('.group-edit-in-place--input')
+        input = find(".group-edit-in-place--input")
         input.set(name)
-        input.send_keys(:return)
 
         expect_group(name, name) if expect
       end
 
       def edit_query_group(name)
-        SeleniumHubWaiter.wait
+        if using_cuprite?
+          wait_for_reload
+        else
+          SeleniumHubWaiter.wait
+        end
 
         group = find_group(name)
-        group.find('.type-form-query-group--edit-button').click
+        group.find(".type-form-query-group--edit-button").click
+        # Wait for the modal to appear.
+        expect(page).to have_css(".wp-table--configuration-modal")
       end
 
       def add_attribute_group(name, expect: true)
         add_button_dropdown.click
         add_attribute_group_button.click
 
-        input = find('.group-edit-in-place--input')
+        input = find(".group-edit-in-place--input")
         input.set(name)
         input.send_keys(:return)
 
@@ -187,34 +195,34 @@ module Components
       def save_changes
         # Save configuration
         # click_button doesn't seem to work when the button is out of view!?
-        scroll_to_and_click find('.form-configuration--save')
+        scroll_to_and_click find(".form-configuration--save")
       end
 
       def rename_group(from, to)
-        find('.group-edit-handler', text: from.upcase).click
+        find(".group-edit-handler", text: from.upcase).click
 
-        input = find('.group-edit-in-place--input')
+        input = find(".group-edit-in-place--input")
         input.click
         input.set(to)
         input.send_keys(:return)
 
-        expect(page).to have_selector('.group-edit-handler', text: to.upcase)
+        expect(page).to have_css(".group-edit-handler", text: to.upcase)
       end
 
       def remove_group(name)
-        container = find('.group-head', text: name.upcase)
+        container = find(".group-head", text: name.upcase)
 
-        container.find('.delete-group').click
+        container.find(".delete-group").click
 
-        expect(page).to have_no_selector('.group-head', text: name.upcase)
+        expect(page).to have_no_css(".group-head", text: name.upcase)
       end
 
       def expect_no_attribute(attribute, group)
-        expect(find_group(group)).not_to have_selector(attribute_selector(attribute).to_s)
+        expect(find_group(group)).to have_no_selector(attribute_selector(attribute).to_s)
       end
 
       def expect_group(_label, translation, *attributes)
-        expect(find_group(translation)).to have_selector(".group-edit-handler", text: translation.upcase)
+        expect(find_group(translation)).to have_css(".group-edit-handler", text: translation.upcase)
 
         within find_group(translation) do
           attributes.each do |attribute|
@@ -224,7 +232,7 @@ module Components
       end
 
       def expect_inactive(attribute)
-        expect(inactive_drop).to have_selector(".type-form-conf-attribute[data-key='#{attribute}']")
+        expect(inactive_drop).to have_css(".type-form-conf-attribute[data-key='#{attribute}']")
       end
     end
   end

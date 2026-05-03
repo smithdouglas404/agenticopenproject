@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,8 +35,8 @@ module BaseServices
       super(user:, contract_class:, contract_options:)
     end
 
-    def persist(service_result)
-      service_result = super(service_result)
+    def persist(_service_result)
+      service_result = super
 
       unless destroy(service_result.result)
         service_result.errors = service_result.result.errors

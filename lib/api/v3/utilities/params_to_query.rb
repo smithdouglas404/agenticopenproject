@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +31,8 @@ module API
     module Utilities
       class ParamsToQuery
         class << self
+          include ::API::Helpers::RaiseQueryErrors
+
           def collection_response(scope, current_user, params, representer: nil, self_link: nil)
             model = model_class(scope)
 
@@ -76,11 +78,11 @@ module API
           end
 
           def default_self_link(path, params)
-            [paths.send(path), params.to_query].reject(&:empty?).join('?')
+            [paths.send(path), params.to_query].reject(&:empty?).join("?")
           end
 
           def append_params_to_link(path, params)
-            [path, params.to_query].reject(&:empty?).join('?')
+            [path, params.to_query].reject(&:empty?).join("?")
           end
 
           def model_class(scope)

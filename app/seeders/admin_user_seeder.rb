@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,30 +30,37 @@
 class AdminUserSeeder < Seeder
   def seed_data!
     user = new_admin
-    unless user.save! validate: false
-      puts 'Seeding admin failed:'
+    if user.save!(validate: false)
+      seed_data.store_reference(:openproject_admin, user)
+    else
+      print_error "Seeding admin failed:"
       user.errors.full_messages.each do |msg|
-        puts "  #{msg}"
+        print_error "  #{msg}"
       end
     end
   end
 
   def applicable?
-    User.not_builtin.admin.empty?
+    User.not_builtin.admin.empty? && !User.exists?(mail: Setting.seed_admin_user_mail)
+  end
+
+  def lookup_existing_references
+    seed_data.store_reference(:openproject_admin, User.not_builtin.admin.first)
   end
 
   def not_applicable_message
-    'No need to seed an admin as there already is one.'
+    "No need to seed an admin as there already is one."
   end
 
-  def new_admin
+  def new_admin # rubocop:disable Metrics/AbcSize
     User.new.tap do |user|
       user.admin = true
-      user.login = 'admin'
-      user.password = 'admin'
-      user.firstname = 'OpenProject'
-      user.lastname = 'Admin'
-      user.mail = ENV['ADMIN_EMAIL'].presence || 'admin@example.net'
+      user.login = "admin"
+      user.password = Setting.seed_admin_user_password
+      firstname, lastname = user_name_parts(Setting.seed_admin_user_name)
+      user.firstname = firstname
+      user.lastname = lastname
+      user.mail = Setting.seed_admin_user_mail
       user.language = I18n.locale.to_s
       user.status = User.statuses[:active]
       user.force_password_change = force_password_change?
@@ -59,17 +68,19 @@ class AdminUserSeeder < Seeder
     end
   end
 
+  def user_name_parts(name)
+    return %w[OpenProject Admin] if name.blank?
+
+    if name.include?(" ")
+      name.split(" ", 2)
+    else
+      [name, "Admin"]
+    end
+  end
+
   def force_password_change?
-    !Rails.env.development? && !force_password_change_disabled?
-  end
+    return false if Rails.env.development?
 
-  def force_password_change_disabled?
-    off_values = ["off", "false", "no", "0"]
-
-    off_values.include? ENV.fetch(force_password_change_env_switch_name, nil)
-  end
-
-  def force_password_change_env_switch_name
-    "OP_ADMIN_USER_SEEDER_FORCE_PASSWORD_CHANGE"
+    Setting.seed_admin_user_password_reset?
   end
 end

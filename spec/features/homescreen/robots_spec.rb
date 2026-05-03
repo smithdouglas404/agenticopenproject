@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,21 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'robots.txt', type: :feature do
+RSpec.describe "robots.txt" do
   let!(:project) { create(:public_project) }
 
   before do
-    visit '/robots.txt'
+    visit "/robots.txt"
   end
 
-  it 'disallows global paths and paths from public project' do
-    expect(page).to have_content('Disallow: /calendar')
-    expect(page).to have_content('Disallow: /activity')
+  context "when login_required", with_settings: { login_required: true } do
+    it "disallows everything" do
+      expect(page).to have_content("Disallow: /")
+    end
+  end
 
-    expect(page).to have_content("Disallow: /projects/#{project.identifier}/repository")
-    expect(page).to have_content("Disallow: /projects/#{project.identifier}/work_packages")
-    expect(page).to have_content("Disallow: /projects/#{project.identifier}/activity")
+  context "when not login_required", with_settings: { login_required: false } do
+    it "disallows global paths and paths from public project" do
+      expect(page).to have_content("Disallow: /activity")
+      expect(page).to have_content("Disallow: /activities")
+      expect(page).to have_content("Disallow: /search")
+
+      [project.identifier, project.id].each do |identifier|
+        expect(page).to have_content("Disallow: /projects/#{identifier}/repository")
+        expect(page).to have_content("Disallow: /projects/#{identifier}/work_packages")
+        expect(page).to have_content("Disallow: /projects/#{identifier}/activity")
+        expect(page).to have_content("Disallow: /projects/#{identifier}/search")
+      end
+    end
   end
 end

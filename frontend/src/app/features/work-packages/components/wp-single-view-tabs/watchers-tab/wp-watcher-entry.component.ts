@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -41,6 +41,7 @@ import { WorkPackageWatchersTabComponent } from './watchers-tab.component';
   styleUrls: ['./wp-watcher-entry.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-wp-watcher-entry',
+  standalone: false,
 })
 export class WorkPackageWatcherEntryComponent implements OnInit {
   @Input() public watcher:UserResource;

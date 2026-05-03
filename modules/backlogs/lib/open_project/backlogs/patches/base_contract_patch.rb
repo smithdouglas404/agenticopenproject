@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,19 +32,49 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
   extend ActiveSupport::Concern
 
   included do
-    attribute :remaining_hours
-    attribute :story_points
+    attribute :story_points,
+              writable: -> { model.backlogs_enabled? }
+    attribute :backlog_bucket,
+              permission: :manage_sprint_items
+    attribute :sprint,
+              # This also covers the check for backlogs being active
+              permission: :manage_sprint_items
 
-    validate :validate_has_parents_version
+    validate :backlog_bucket_xor_sprint
+    validate :backlog_bucket_belongs_to_project
+    validate :sprint_shared_with_project
+    validate :validate_sprint_is_assignable
+
+    def assignable_sprints
+      model.try(:assignable_sprints)
+    end
 
     private
 
-    def validate_has_parents_version
-      if model.is_task? &&
-         model.parent && model.parent.in_backlogs_type? &&
-         model.version_id != model.parent.version_id
-        errors.add :version_id, :task_version_must_be_the_same_as_story_version
+    def backlog_bucket_xor_sprint
+      return unless model.backlog_bucket && model.sprint
+
+      errors.add :base, :backlog_bucket_xor_sprint
+    end
+
+    def backlog_bucket_belongs_to_project
+      return unless model.backlog_bucket
+      return if model.backlog_bucket.project == model.project
+
+      errors.add :backlog_bucket, :backlog_bucket_from_another_project
+    end
+
+    def validate_sprint_is_assignable
+      if model.sprint_id && model.assignable_sprints.map(&:id).exclude?(model.sprint_id)
+        errors.add :sprint_id, :inclusion
       end
+    end
+
+    def sprint_shared_with_project
+      return if model.sprint.nil? ||
+                Sprint.for_project(model.project).exists?(id: model.sprint_id)
+
+      errors.add :sprint, :not_shared_with_project
     end
   end
 end

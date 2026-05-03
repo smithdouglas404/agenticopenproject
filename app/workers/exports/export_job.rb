@@ -1,4 +1,34 @@
-require 'active_storage/filename'
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "active_storage/filename"
 
 module Exports
   class ExportJob < ::ApplicationJob
@@ -36,7 +66,11 @@ module Exports
     attr_accessor :export, :current_user, :mime_type, :query, :options
 
     def prepare!
-      raise NotImplementedError
+      raise SubclassResponsibilityError
+    end
+
+    def list_export?
+      true
     end
 
     def export!
@@ -45,8 +79,18 @@ module Exports
     end
 
     def exporter_instance
+      list_export? ? exporter_instance_list : exporter_single_list
+    end
+
+    def exporter_instance_list
       ::Exports::Register
         .list_exporter(model, mime_type)
+        .new(query, options)
+    end
+
+    def exporter_single_list
+      ::Exports::Register
+        .single_exporter(model, mime_type)
         .new(query, options)
     end
 
@@ -90,7 +134,7 @@ module Exports
     end
 
     def with_tempfile(title, content)
-      name_parts = [title[0..title.rindex('.') - 1], title[title.rindex('.')..]]
+      name_parts = [title[0..title.rindex(".") - 1], title[title.rindex(".")..]]
 
       Tempfile.create(name_parts, encoding: content.encoding) do |file|
         file.write content
@@ -103,20 +147,20 @@ module Exports
       filename = clean_filename(export_result)
 
       call = Attachments::CreateService
-               .bypass_whitelist(user: User.current)
-               .call(container:, file:, filename:, description: '')
+               .bypass_allowlist(user: User.current)
+               .call(container:, file:, filename:, description: "")
 
       call.on_success do
         download_url = ::API::V3::Utilities::PathHelper::ApiV3Path.attachment_content(call.result.id)
 
         upsert_status status: :success,
-                      message: I18n.t('export.succeeded'),
-                      payload: download_payload(download_url)
+                      message: I18n.t("export.succeeded"),
+                      payload: download_payload(download_url, export_result.mime_type)
       end
 
       call.on_failure do
         upsert_status status: :failure,
-                      message: I18n.t('export.failed', message: call.message)
+                      message: I18n.t("export.failed", message: call.message)
       end
     end
   end

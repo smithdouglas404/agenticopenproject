@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,9 +46,7 @@ module API
 
         collection :elements,
                    getter: ->(*) {
-                     cost_helper.summarized_cost_entries.map do |kvp|
-                       type = kvp[0]
-                       units = kvp[1]
+                     cost_helper.summarized_cost_entries.map do |type, units|
                        ::API::V3::CostEntries::AggregatedCostEntryRepresenter.new(type, units)
                      end
                    },
@@ -60,7 +58,7 @@ module API
         end
 
         def _type
-          'Collection'
+          "Collection"
         end
       end
     end

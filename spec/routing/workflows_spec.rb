@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'workflows routes', type: :routing do
-  it { expect(get('/workflows')).to route_to('workflows#show') }
+RSpec.describe "workflows routes" do
+  it { expect(get("/workflows")).to route_to("workflows#index") }
 
-  it { expect(get('/workflows/edit')).to route_to('workflows#edit') }
-  it { expect(patch('/workflows')).to route_to('workflows#update') }
+  it { expect(get("/workflows/42/edit")).to route_to("workflows#edit", type_id: "42") }
 
-  it { expect(get('/workflows/copy')).to route_to('workflows#copy') }
-  it { expect(post('/workflows/copy')).to route_to('workflows#copy') }
+  it { expect(get("/workflows/42/tabs/always/edit")).to route_to("workflows/tabs#edit", workflow_type_id: "42", tab: "always") }
+  it { expect(patch("/workflows/42/tabs/always")).to route_to("workflows/tabs#update", workflow_type_id: "42", tab: "always") }
+
+  it { expect(get("/workflows/42/copy/new")).to route_to("workflows/copies#new", workflow_type_id: "42") }
+
+  it do
+    expect(get("/workflows/42/copy/new?source_role_id=23"))
+    .to route_to("workflows/copies#new", workflow_type_id: "42", source_role_id: "23")
+  end
+
+  it { expect(post("/workflows/42/copy/from_type")).to route_to("workflows/copies/from_types#create", workflow_type_id: "42") }
+  it { expect(post("/workflows/42/copy/from_role")).to route_to("workflows/copies/from_roles#create", workflow_type_id: "42") }
+
+  it { expect(get("/workflows/summary")).to route_to("workflows/summaries#show") }
 end

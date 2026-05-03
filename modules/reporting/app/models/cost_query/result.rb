@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,6 +44,7 @@ class CostQuery::Result < Report::Result
 
   class DirectResult < Report::Result::DirectResult
     include BaseAdditions
+
     def display_costs
       self["display_costs"].to_i
     end
@@ -51,10 +52,36 @@ class CostQuery::Result < Report::Result
     def real_costs
       (self["real_costs"] || 0).to_d if display_costs? # FIXME: default value here?
     end
+
+    def start_timestamp
+      return nil if self["start_time"].blank? || self["time_zone"].blank? || self["spent_on"].blank?
+
+      timestamp(self["spent_on"], self["start_time"], self["time_zone"])
+    end
+
+    def end_timestamp
+      return nil if self["units"].blank?
+
+      start = start_timestamp
+      return nil if start.nil?
+
+      start + self["units"].to_f.hours
+    end
+
+    def entity_gid
+      "gid://#{GlobalID.app}/#{self['entity_type']}/#{self['entity_id']}"
+    end
+
+    private
+
+    def timestamp(date, time, time_zone)
+      ActiveSupport::TimeZone[time_zone].local(date.year, date.month, date.day, time / 60, time % 60)
+    end
   end
 
   class WrappedResult < Report::Result::WrappedResult
     include BaseAdditions
+
     def display_costs
       (sum_for :display_costs) >= 1 ? 1 : 0
     end

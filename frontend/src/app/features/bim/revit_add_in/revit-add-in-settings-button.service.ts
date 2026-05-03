@@ -1,4 +1,33 @@
-import { Injectable, Injector } from '@angular/core';
+//-- copyright
+// OpenProject is an open source project management software.
+// Copyright (C) the OpenProject GmbH
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License version 3.
+//
+// OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+// Copyright (C) 2006-2013 Jean-Philippe Lang
+// Copyright (C) 2010-2013 the ChiliProject Team
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+//
+// See COPYRIGHT and LICENSE files for more details.
+//++
+
+import { Injectable } from '@angular/core';
+
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 
 /*
@@ -11,8 +40,9 @@ export class RevitAddInSettingsButtonService {
 
   private readonly groupLabelText:string;
 
-  constructor(readonly injector:Injector,
-    readonly i18n:I18nService) {
+  constructor(
+    private readonly i18n:I18nService,
+  ) {
     const onRevitAddInEnvironment = window.navigator.userAgent.search('Revit') > -1;
 
     if (onRevitAddInEnvironment) {
@@ -25,19 +55,15 @@ export class RevitAddInSettingsButtonService {
   }
 
   public addUserMenuItem():void {
-    const userMenu = document.getElementById('user-menu');
+    const userMenu = document.getElementById('op-app-header--user-menu-list');
 
     if (userMenu) {
-      const menuItem:HTMLElement = document.createElement('li');
-      menuItem.dataset.name = this.labelText;
-      menuItem.innerHTML = `
-        <a class="revit-addin-settings-menu-item ellipsis" title="${this.labelText}" href="#">
-          <span class="menu-item--title ellipsis ">${this.labelText}</span>
-        </a>
-      `;
+      const menuItem:HTMLElement|null = document.getElementById('user-menu--revit-add-in-entry');
 
-      menuItem.addEventListener('click', () => this.goToSettings());
-      userMenu.appendChild(menuItem);
+      if (menuItem) {
+        menuItem.addEventListener('click', () => this.goToSettings());
+        menuItem.closest('li.d-none')?.classList.remove('d-none');
+      }
     }
   }
 
@@ -65,8 +91,7 @@ export class RevitAddInSettingsButtonService {
       loginModal.appendChild(loginMenuItem);
 
       const settingsButton = loginModal.querySelector('.revit-add-in-button');
-
-      settingsButton!.addEventListener('click', () => this.goToSettings());
+      settingsButton?.addEventListener('click', () => this.goToSettings());
     }
   }
 

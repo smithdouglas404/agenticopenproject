@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,26 +26,23 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { OPSharedModule } from 'core-app/shared/shared.module';
+import { OpSharedModule } from 'core-app/shared/shared.module';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { WorkPackagesCalendarComponent } from 'core-app/features/calendar/wp-calendar/wp-calendar.component';
 import { OpenprojectWorkPackagesModule } from 'core-app/features/work-packages/openproject-work-packages.module';
-import { UIRouterModule } from '@uirouter/angular';
 import { TimeEntryCalendarComponent } from 'core-app/features/calendar/te-calendar/te-calendar.component';
 import { OpenprojectFieldsModule } from 'core-app/shared/components/fields/openproject-fields.module';
 import { OpenprojectTimeEntriesModule } from 'core-app/shared/components/time_entries/openproject-time-entries.module';
 import { WorkPackagesCalendarPageComponent } from 'core-app/features/calendar/wp-calendar-page/wp-calendar-page.component';
-import { CALENDAR_ROUTES } from 'core-app/features/calendar/calendar.routes';
-import { CalendarSidemenuComponent } from './sidemenu/calendar-sidemenu.component';
+import { CalendarEntryComponent } from 'core-app/features/calendar/calendar-entry.component';
+import { QueryGetIcalUrlModalComponent } from 'core-app/shared/components/modals/get-ical-url-modal/query-get-ical-url.modal';
 
 @NgModule({
   imports: [
     // Commons
-    OPSharedModule,
-
-    // Routes for /calendar
-    UIRouterModule.forChild({ states: CALENDAR_ROUTES }),
+    OpSharedModule,
 
     // Work Package module
     OpenprojectWorkPackagesModule,
@@ -58,13 +55,17 @@ import { CalendarSidemenuComponent } from './sidemenu/calendar-sidemenu.componen
 
     // Calendar component
     FullCalendarModule,
+
+    // Angular reactive forms, required for QueryGetIcalUrlModalComponent
+    ReactiveFormsModule,
   ],
   declarations: [
     // Work package calendars
+    CalendarEntryComponent,
     WorkPackagesCalendarPageComponent,
     WorkPackagesCalendarComponent,
     TimeEntryCalendarComponent,
-    CalendarSidemenuComponent,
+    QueryGetIcalUrlModalComponent,
   ],
   exports: [
     WorkPackagesCalendarComponent,

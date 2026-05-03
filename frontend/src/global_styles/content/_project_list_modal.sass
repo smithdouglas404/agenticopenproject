@@ -10,7 +10,7 @@
   &--title
     padding: 0
     margin: 0
-    @include spot-subheader-big
+    @include spot-subheader-extra-small
 
   &--body
     flex-shrink: 1
@@ -27,5 +27,5 @@
   &--no-results
     @include spot-body-small(normal, italic)
     margin: $spot-spacing-1-5 $spot-spacing-1
-    color: $spot-color-basic-gray-3
+    color: var(--fgColor-muted)
     flex-grow: 1

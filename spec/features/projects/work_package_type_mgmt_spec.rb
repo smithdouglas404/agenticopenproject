@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,33 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Projects', 'work package type mgmt', type: :feature, js: true do
-  current_user { create(:user, member_in_project: project, member_with_permissions: %i[edit_project manage_types]) }
+RSpec.describe "Projects", "work package type mgmt", :js do
+  current_user { create(:user, member_with_permissions: { project => %i[edit_project manage_types] }) }
 
-  let(:phase_type)     { create(:type, name: 'Phase', is_default: true) }
-  let(:milestone_type) { create(:type, name: 'Milestone', is_default: false) }
-  let!(:project) { create(:project, name: 'Foo project', types: [phase_type, milestone_type]) }
+  let(:phase_type)     { create(:type, name: "Phase", is_default: true) }
+  let(:milestone_type) { create(:type, name: "Milestone", is_default: false) }
+  let!(:project) { create(:project, name: "Foo project", types: [phase_type, milestone_type]) }
 
   it "have the correct types checked for the project's types" do
     visit projects_path
-    click_on 'Foo project'
-    click_on 'Project settings'
-    click_on 'Work package types'
+    click_on "Foo project"
+    click_on "Project settings"
+    click_on "Work packages"
 
-    expect(find_field('Phase', visible: false)['checked'])
-      .to be_truthy
-
-    expect(find_field('Milestone', visible: false)['checked'])
-      .to be_truthy
+    expect(page).to have_checked_field("Phase", visible: :all)
+    expect(page).to have_checked_field("Milestone", visible: :all)
 
     # Disable a type
-    find_field('Milestone', visible: false).click
+    find_field("Milestone", visible: false).click
 
-    click_button 'Save'
+    click_button "Save"
 
-    expect(find_field('Milestone', visible: false)['checked'])
-      .to be_falsey
+    expect(page).to have_unchecked_field("Milestone", visible: :all)
   end
 end

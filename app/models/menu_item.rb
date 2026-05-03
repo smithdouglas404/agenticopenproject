@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,12 +29,12 @@
 #++
 
 class MenuItem < ApplicationRecord
-  belongs_to :parent, class_name: 'MenuItem'
+  belongs_to :parent, class_name: "MenuItem", optional: true
   has_many :children, -> {
-    order('id ASC')
-  }, class_name: 'MenuItem', dependent: :destroy, foreign_key: :parent_id
+    order("id ASC")
+  }, class_name: "MenuItem", dependent: :destroy, foreign_key: :parent_id
 
-  serialize :options, Hash
+  serialize :options, type: Hash
 
   validates :title,
             presence: true,
@@ -48,7 +50,9 @@ class MenuItem < ApplicationRecord
     elsif is_main_item?
       :main_item
     else
-      :sub_item
+      # backwards compatibility for removed configuration option
+      # sub items are not offered anymore and are effectively not visible
+      :no_item
     end
   end
 

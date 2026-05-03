@@ -1,11 +1,6 @@
 # Schema: FileLinkReadModel
 ---
 type: object
-required:
-  - id
-  - _type
-  - originData
-  - _links
 properties:
   id:
     type: integer
@@ -31,45 +26,32 @@ properties:
       - container
     properties:
       storage:
-        $ref: './storage_model.yml'
-      container:
-        $ref: './work_package_model.yml'
+        $ref: './storage_read_model.yml'
   _links:
     type: object
-    required:
-      - self
-      - storage
-      - container
-      - creator
-      - permission
-      - originOpen
-      - staticOriginOpen
-      - originOpenLocation
-      - staticOriginOpenLocation
-      - staticOriginDownload
     properties:
       self:
         allOf:
           - $ref: './link.yml'
           - description: |-
               This file link.
-              
+
               **Resource**: FileLink
       storage:
         allOf:
           - $ref: './link.yml'
           - description: |-
               The storage resource of the linked file.
-              
+
               **Resource**: Storage
       container:
         allOf:
           - $ref: './link.yml'
           - description: |-
               The container the origin file is linked to.
-              
-              Can be one of the following **Resources**: 
-              
+
+              Can be one of the following **Resources**:
+
               - WorkPackage
       creator:
         allOf:
@@ -85,14 +67,16 @@ properties:
               The uri to delete the file link.
 
               **Resource**: N/A
-      permission:
+      status:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              The urn of the user specific file link permission on its storage. Can be one of:
+              The urn of the user specific file link status on its storage. Can be one of:
 
-              - urn:openproject-org:api:v3:file-links:permission:View
-              - urn:openproject-org:api:v3:file-links:permission:NotAllowed
+              - urn:openproject-org:api:v3:file-links:permission:ViewAllowed
+              - urn:openproject-org:api:v3:file-links:permission:ViewNotAllowed
+              - urn:openproject-org:api:v3:file-links:NotFound
+              - urn:openproject-org:api:v3:file-links:Error
 
               **Resource**: N/A
       originOpen:
@@ -100,35 +84,35 @@ properties:
           - $ref: './link.yml'
           - description: |-
               The uri to open the origin file on the origin itself.
-              
+
               **Resource**: N/A
       staticOriginOpen:
         allOf:
           - $ref: './link.yml'
           - description: |-
               A static uri to open the origin file on the storage. Responds with a redirect.
-              
+
               **Resource**: N/A
       originOpenLocation:
         allOf:
           - $ref: './link.yml'
           - description: |-
               The uri to open the location of origin file on the origin itself.
-              
+
               **Resource**: N/A
       staticOriginOpenLocation:
         allOf:
           - $ref: './link.yml'
           - description: |-
               A static uri to open the location of the origin file on the storage. Responds with a redirect.
-              
+
               **Resource**: N/A
       staticOriginDownload:
         allOf:
           - $ref: './link.yml'
           - description: |-
               A static uri to generate a new download URL from the storage. Responds with a redirect.
-              
+
               **Resource**: N/A
 
 example:
@@ -137,7 +121,7 @@ example:
   createdAt: '2021-12-20T13:37:00.211Z'
   updatedAt: '2021-12-20T13:37:00.211Z'
   originData:
-    id: 5503
+    id: "5503"
     name: logo.png
     mimeType: image/png
     size: 16042
@@ -161,27 +145,15 @@ example:
           title: Nextcloud
         origin:
           href: https://nextcloud.deathstar.rocks/
+        open:
+          href: https://example.com/a-link-to-open-the-file
+        authorizationState:
+          href: urn:openproject-org:api:v3:storages:authorization:Connected
     container:
       _hint: Work package resource shortened for brevity
       _type: WorkPackage
-      _links:
-        self:
-          href: "/api/v3/work_packages/1528"
-          title: Develop API
-        schema:
-          href: "/api/v3/work_packages/schemas/11-2"
       id: 1528
       subject: Develop API
-      description:
-        format: markdown
-        raw: Develop super cool OpenProject API.
-        html: "<p>Develop super cool OpenProject API.</p>"
-      scheduleManually: false
-      readonly: false
-      startDate:
-      dueDate:
-      createdAt: '2014-08-29T12:40:53Z'
-      updatedAt: '2014-08-29T12:44:41Z'
   _links:
     self:
       href: /api/v3/work_package/17/file_links/1337
@@ -196,9 +168,9 @@ example:
       title: Obi-Wan Kenobi
     delete:
       href: /api/v3/work_package/17/file_links/1337
-    permission:
-      href: urn:openproject-org:api:v3:file-links:permission:View
-      title: View
+    status:
+      href: urn:openproject-org:api:v3:file-links:permission:ViewAllowed
+      title: View allowed
     originOpen:
       href: https://nextcloud.deathstar.rocks/index.php/f/5503?openfile=1
     staticOriginOpen:

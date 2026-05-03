@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ::Type < ApplicationRecord
-  extend Pagination::Model
-
+class Type < ApplicationRecord
   # Work Package attributes for this type
   # and constraints to specific attributes (by plugins).
   include ::Type::Attributes
@@ -36,7 +36,14 @@ class ::Type < ApplicationRecord
 
   include ::Scopes::Scoped
 
+  attribute :patterns, WorkPackageTypes::Patterns::CollectionType.new
+
+  store_attribute :pdf_export_templates_config, :export_templates_disabled, :json
+  store_attribute :pdf_export_templates_config, :export_templates_order, :json
+
   before_destroy :check_integrity
+
+  belongs_to :color, optional: true, class_name: "Color"
 
   has_many :work_packages
   has_many :workflows, dependent: :delete_all do
@@ -48,12 +55,9 @@ class ::Type < ApplicationRecord
   has_and_belongs_to_many :projects
 
   has_and_belongs_to_many :custom_fields,
-                          class_name: 'WorkPackageCustomField',
+                          class_name: "WorkPackageCustomField",
                           join_table: "#{table_name_prefix}custom_fields_types#{table_name_suffix}",
-                          association_foreign_key: 'custom_field_id'
-
-  belongs_to :color,
-             class_name: 'Color'
+                          association_foreign_key: "custom_field_id"
 
   acts_as_list
 
@@ -62,52 +66,63 @@ class ::Type < ApplicationRecord
             uniqueness: { case_sensitive: false },
             length: { maximum: 255 }
 
-  validates :is_default, :is_milestone, inclusion: { in: [true, false] }
-
   scopes :milestone
 
-  default_scope { order('position ASC') }
+  default_scope { order("position ASC") }
 
-  scope :without_standard, -> {
-    where(is_standard: false)
-      .order(:position)
+  scope :without_standard, -> { where(is_standard: false).order(:position) }
+  scope :default, -> { where(is_default: true) }
+  scope :visible, ->(user = User.current) {
+    if user.allowed_in_any_project?(:view_work_packages) || user.allowed_in_any_project?(:manage_types)
+      all
+    else
+      none
+    end
   }
 
-  def to_s; name end
+  delegate :to_s, to: :name
 
   def <=>(other)
     name <=> other.name
   end
 
-  def self.statuses(types)
+  def self.statuses(types, role: nil, tab: nil) # rubocop:disable Metrics/AbcSize
     workflow_table, status_table = [Workflow, Status].map(&:arel_table)
     old_id_subselect, new_id_subselect = %i[old_status_id new_status_id].map do |foreign_key|
-      workflow_table.project(workflow_table[foreign_key]).where(workflow_table[:type_id].in(types))
+      subquery = workflow_table.project(workflow_table[foreign_key]).where(workflow_table[:type_id].in(types))
+      subquery = subquery.where(workflow_table[:role_id].eq(role.id)) if role
+      subquery = apply_tab_condition(subquery, workflow_table, tab) if tab
+      subquery
     end
     Status.where(status_table[:id].in(old_id_subselect).or(status_table[:id].in(new_id_subselect)))
   end
 
-  def self.standard_type
-    ::Type.where(is_standard: true).first
+  def self.apply_tab_condition(subquery, workflow_table, tab)
+    case tab
+    when "author"
+      subquery.where(workflow_table[:author].eq(true))
+    when "assignee"
+      subquery.where(workflow_table[:assignee].eq(true))
+    else
+      subquery.where(workflow_table[:author].eq(false).and(workflow_table[:assignee].eq(false)))
+    end
   end
 
-  def self.default
-    ::Type.where(is_default: true)
+  def self.standard_type
+    where(is_standard: true).first
   end
 
   def self.enabled_in(project)
-    ::Type.includes(:projects).where(projects: { id: project })
+    includes(:projects).where(projects: { id: project })
   end
 
-  def statuses(include_default: false)
+  def statuses(include_default: false, role: nil, tab: nil)
     if new_record?
       Status.none
     elsif include_default
-      ::Type
-        .statuses([id])
-        .or(Status.where_default)
+      self.class.statuses([id], role:, tab:).or(Status.where_default)
     else
-      ::Type.statuses([id])
+      self.class.statuses([id], role:, tab:)
     end
   end
 
@@ -115,9 +130,24 @@ class ::Type < ApplicationRecord
     object.types.include?(self)
   end
 
+  def replacement_pattern_defined_for?(attribute)
+    enabled_patterns.key?(attribute)
+  end
+
+  def enabled_patterns
+    patterns.all_enabled
+  end
+
+  def pdf_export_templates
+    @pdf_export_templates ||= ::Type::PdfExportTemplates.new(self)
+  end
+
   private
 
   def check_integrity
-    raise "Can't delete type" if WorkPackage.where(type_id: id).any?
+    throw :abort if is_standard?
+    throw :abort if WorkPackage.exists?(type_id: id)
+
+    true
   end
 end

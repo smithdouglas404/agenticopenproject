@@ -1,4 +1,9 @@
-import { InputState, multiInput, MultiInputState, StatesGroup } from 'reactivestates';
+import {
+  InputState,
+  multiInput,
+  MultiInputState,
+  StatesGroup,
+} from '@openproject/reactivestates';
 import { Subject } from 'rxjs';
 import { TypeResource } from 'core-app/features/hal/resources/type-resource';
 import { TimeEntryResource } from 'core-app/features/hal/resources/time-entry-resource';
@@ -56,7 +61,7 @@ export class States extends StatesGroup {
   };
 
   // Additional state map that can be dynamically registered.
-  additional:{ [id:string]:MultiInputState<unknown> } = {};
+  additional:Record<string, MultiInputState<unknown>> = {};
 
   forType<T>(stateName:string):MultiInputState<T> {
     let state = (this as any)[stateName] || this.additional[stateName];

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,7 +41,7 @@ module PageObjects
     def expect_type(type, message)
       raise "Unimplemented type #{type}." unless types.include?(type)
 
-      expect(page).to have_selector(".op-toast.-#{type}", text: message, wait: 10)
+      expect(page).to have_css(".op-toast.-#{type}", text: message, wait: 10)
     end
 
     def expect_success(message)

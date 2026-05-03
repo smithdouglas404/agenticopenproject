@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,16 +26,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
+require_relative "../../spec_helper"
 
-describe CostQuery, type: :model, reporting_query_helper: true do
+RSpec.describe CostQuery, :reporting_query_helper do
   minimal_query
 
   before do
     create(:admin)
     project = create(:project_with_types)
     work_package = create(:work_package, project:)
-    create(:time_entry, work_package:, project:)
+    create(:time_entry, entity: work_package, project:)
   end
 
   describe Report::Transformer do
@@ -59,7 +59,7 @@ describe CostQuery, type: :model, reporting_query_helper: true do
       query.row :user_id
 
       result = query.transformer.column_first.values.first
-      %i[tweek work_package_id].each do |field|
+      %i[tweek entity_gid].each do |field|
         expect(result.fields).to include(field)
         result = result.values.first
       end

@@ -1,4 +1,4 @@
-@import "src/assets/sass/helpers"
+@import "helpers"
 
 .op-wp-breadcrumb
   @include global-breadcrumb-styles
@@ -11,12 +11,8 @@
   &--active-parent-select
     width: 500px
 
-  @media screen and (max-width: 1248px)
-    margin-top: 0
-
   ul.op-breadcrumb li wp-breadcrumb-parent
     white-space: initial
 
   .ng-placeholder
     @include text-shortener
-

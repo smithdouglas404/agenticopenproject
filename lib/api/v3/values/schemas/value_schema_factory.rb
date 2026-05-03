@@ -1,6 +1,6 @@
 # --copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +29,7 @@
 module API::V3::Values::Schemas
   module ValueSchemaFactory
     extend ::API::V3::Utilities::PathHelper
-    SUPPORTED = %w(start_date due_date date).freeze
+    SUPPORTED = %w(start_date due_date date note).freeze
 
     module_function
 
@@ -64,10 +64,13 @@ module API::V3::Values::Schemas
       I18n.t("attributes.#{property}")
     end
 
-    def type_for(_property)
-      # This is but a stub. Currently, only 'start_date' and 'due_date'
-      # need to be supported so this simple approach works.
-      'Date'
+    def type_for(property)
+      case property
+      when "start_date", "due_date", "date"
+        "Date"
+      when "note"
+        "String"
+      end
     end
   end
 end

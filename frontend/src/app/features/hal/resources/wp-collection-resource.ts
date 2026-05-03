@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -45,11 +45,11 @@ export class WorkPackageCollectionResource extends CollectionResource<WorkPackag
 
   public groups:GroupObject[];
 
-  public totalSums?:{ [key:string]:number };
+  public totalSums?:Record<string, number>;
 
   public sumsSchema?:SchemaResource;
 
-  public representations:Array<HalResource>;
+  public representations:HalResource[];
 }
 
 export interface WorkPackageCollectionResource extends WorkPackageCollectionResourceEmbedded {}
@@ -64,7 +64,7 @@ export interface GroupObject {
   collapsed?:boolean;
   index:number;
   identifier:string;
-  sums:{ [attribute:string]:number|null };
+  sums:Record<string, number|null>;
   href:{ href:string }[];
   _links:{
     valueLink:{ href:string }[];

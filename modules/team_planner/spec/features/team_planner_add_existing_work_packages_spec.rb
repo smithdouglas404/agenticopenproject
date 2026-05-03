@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,55 +26,55 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './shared_context'
-require_relative '../support/components/add_existing_pane'
+require "spec_helper"
+require_relative "shared_context"
+require_relative "../support/components/add_existing_pane"
 
-describe 'Team planner add existing work packages', type: :feature, js: true do
-  include_context 'with team planner full access'
+RSpec.describe "Team planner add existing work packages",
+               :js,
+               :selenium do
+  include_context "with team planner full access"
 
-  let(:closed_status) { create :status, is_closed: true }
+  let(:closed_status) { create(:status, is_closed: true) }
   let(:start_of_week) { Time.zone.today.beginning_of_week(:sunday) }
 
   let!(:other_user) do
-    create :user,
-           firstname: 'Bernd',
-           member_in_project: project,
-           member_with_permissions: %w[
-             view_work_packages view_team_planner
-           ]
+    create(:user,
+           firstname: "Bernd",
+           member_with_permissions: { project => %w[view_work_packages view_team_planner] })
   end
 
   let!(:first_wp) do
-    create :work_package,
+    create(:work_package,
            project:,
-           subject: 'Task 1',
+           subject: "Task 1",
            assigned_to: user,
            start_date: start_of_week.next_occurring(:tuesday),
-           due_date: start_of_week.next_occurring(:thursday)
+           due_date: start_of_week.next_occurring(:thursday))
   end
   let!(:second_wp) do
-    create :work_package,
+    create(:work_package,
            project:,
-           subject: 'Task 2',
+           subject: "Task 2",
            parent: first_wp,
            assigned_to: other_user,
            start_date: 10.days.from_now,
-           due_date: 12.days.from_now
+           due_date: 12.days.from_now)
   end
   let!(:third_wp) do
-    create :work_package,
+    create(:work_package,
            project:,
-           subject: 'TA Aufgabe 3',
-           status: closed_status
+           subject: "TA Aufgabe 3",
+           status: closed_status)
   end
 
-  let(:add_existing_pane) { ::Components::AddExistingPane.new }
-  let(:filters) { ::Components::WorkPackages::Filters.new }
+  let(:add_existing_pane) { Components::AddExistingPane.new }
+  let(:filters) { Components::WorkPackages::Filters.new }
+  let(:this_tuesday) { start_of_week.next_occurring(:tuesday) }
+  let(:this_thursday) { start_of_week.next_occurring(:thursday) }
 
-  context 'with full permissions' do
+  context "with full permissions", with_ee: %i[team_planner_view] do
     before do
-      with_enterprise_token(:team_planner_view)
       team_planner.visit!
 
       team_planner.add_assignee user
@@ -90,17 +90,17 @@ describe 'Team planner add existing work packages', type: :feature, js: true do
       add_existing_pane.expect_empty
     end
 
-    context 'with a removable item' do
+    context "with a removable item" do
       let!(:second_wp) do
-        create :work_package,
+        create(:work_package,
                project:,
-               subject: 'Task 2',
+               subject: "Task 2",
                assigned_to: other_user,
                start_date: 10.days.from_now,
-               due_date: 12.days.from_now
+               due_date: 12.days.from_now)
       end
 
-      it 'shows work packages removed from the team planner' do
+      it "shows work packages removed from the team planner" do
         team_planner.within_lane(user) do
           team_planner.expect_event first_wp
         end
@@ -117,9 +117,9 @@ describe 'Team planner add existing work packages', type: :feature, js: true do
       end
     end
 
-    it 'allows to click cards to open split view when open' do
+    it "allows to click cards to open split view when open" do
       # Search for a work package
-      add_existing_pane.search 'Task'
+      add_existing_pane.search "Task"
       add_existing_pane.expect_result second_wp
 
       # Open first wp
@@ -129,54 +129,82 @@ describe 'Team planner add existing work packages', type: :feature, js: true do
 
       # Select work package in add existing
       add_existing_pane.card(second_wp).click
-      split_screen = ::Pages::SplitWorkPackage.new second_wp
-      split_screen.expect_subject
+      split_screen = Pages::SplitWorkPackage.new second_wp
+      # Wait for navigation to complete before checking the split panel DOM
       expect(page).to have_current_path /\/details\/#{second_wp.id}/
+      split_screen.expect_subject
     end
 
-    it 'allows to add work packages via drag&drop from the left hand shortlist' do
+    it "allows to add work packages via drag&drop from the left hand shortlist" do
       # Search for a work package
-      add_existing_pane.search 'Task'
+      add_existing_pane.search "Task"
       add_existing_pane.expect_result second_wp
 
-      sleep 2
-
       # Drag it to the team planner...
-      add_existing_pane.drag_wp_by_pixel second_wp, 800, 0
+      add_existing_pane.drag_wp_to_date(second_wp, this_tuesday)
 
       team_planner.expect_and_dismiss_toaster(message: "Successful update.")
 
       # ... and thus update its attributes. Thereby the duration is maintained
-      second_wp.reload
-      expect(second_wp.start_date).to eq(start_of_week.next_occurring(:tuesday))
-      expect(second_wp.due_date).to eq(start_of_week.next_occurring(:thursday))
-      expect(second_wp.assigned_to_id).to eq(user.id)
+      expect(second_wp.reload).to have_attributes(
+        start_date: this_tuesday,
+        due_date: this_thursday,
+        assigned_to_id: user.id
+      )
 
       # Search for another work package
-      add_existing_pane.search 'Ta'
+      add_existing_pane.search "Ta"
       add_existing_pane.expect_result third_wp
 
-      sleep 2
-
       # Drag it to the team planner...
-      add_existing_pane.drag_wp_by_pixel third_wp, 800, -50
+      add_existing_pane.drag_wp_to_date(third_wp, this_tuesday)
 
       team_planner.expect_and_dismiss_toaster(message: "Successful update.")
 
       # ... and thus update its attributes. Since no dates were set before, start and end date are set to the same day
-      third_wp.reload
-      expect(third_wp.start_date).to eq(start_of_week.next_occurring(:tuesday))
-      expect(third_wp.due_date).to eq(start_of_week.next_occurring(:tuesday))
-      expect(third_wp.assigned_to_id).to eq(user.id)
+      expect(third_wp.reload).to have_attributes(
+        start_date: this_tuesday,
+        due_date: this_tuesday,
+        assigned_to_id: user.id
+      )
 
       # New events are directly clickable
       split_view = team_planner.open_split_view_by_info_icon(third_wp)
-      split_view.expect_open
+      wait_for_turbo_frame do
+        expect(page).to have_current_path /\/details\/#{third_wp.id}/
+        split_view.expect_subject
+      end
     end
 
-    it 'the search applies the filter from the team planner' do
+    context "with non-working days" do
+      shared_let(:working_days) { week_with_saturday_and_sunday_as_weekend }
+
+      it "keeps duration when adding work packages via drag&drop from the left hand shortlist" do
+        # add initial duration to task 3
+        third_wp.update!(duration: 11)
+
+        # Search for a work package
+        add_existing_pane.search third_wp.subject
+        add_existing_pane.expect_result third_wp
+
+        # Drag it to the team planner...
+        add_existing_pane.drag_wp_to_date third_wp, this_tuesday
+        team_planner.expect_and_dismiss_toaster(message: "Successful update.")
+
+        # ... and thus update its attributes. Thereby the duration is maintained
+        # and the due date is set to 15 days from the start date (11 days of
+        # duration + 2x2 non-working days for the weekends)
+        expect(third_wp.reload).to have_attributes(
+          start_date: this_tuesday,
+          due_date: this_tuesday + 14.days,
+          assigned_to_id: user.id
+        )
+      end
+    end
+
+    it "the search applies the filter from the team planner" do
       # Search for a work package
-      add_existing_pane.search 'Task'
+      add_existing_pane.search "Task"
       add_existing_pane.expect_result second_wp
       add_existing_pane.expect_result third_wp, visible: false
 
@@ -185,40 +213,42 @@ describe 'Team planner add existing work packages', type: :feature, js: true do
 
       filters.expect_filter_count 1
       filters.open
-      filters.expect_filter_by 'Status', 'all', nil
+      filters.expect_filter_by "Status", "is not empty", nil
 
       # Change the filter for the whole page
-      filters.set_filter 'Status', 'open', nil
+      filters.set_filter "Status", "open", nil
 
       # Expect the filter to auto update
       add_existing_pane.expect_result second_wp
       add_existing_pane.expect_result third_wp, visible: false
     end
 
-    context 'with a subproject' do
+    context "with a subproject" do
       let!(:sub_project) do
-        create(:project, name: 'Child', parent: project, enabled_module_names: %w[work_package_tracking])
+        create(:project, name: "Child", parent: project, enabled_module_names: %w[work_package_tracking])
       end
 
       let!(:sub_work_package) do
-        create(:work_package, subject: 'Subtask', project: sub_project)
+        create(:work_package, subject: "Subtask", project: sub_project)
+      end
+
+      let(:permissions) do
+        %w[
+          view_work_packages edit_work_packages add_work_packages
+          view_team_planner manage_team_planner
+          save_queries manage_public_queries
+        ]
       end
 
       let!(:user) do
-        create :user,
-               member_in_projects: [project, sub_project],
-               member_with_permissions: %w[
-                 view_work_packages edit_work_packages add_work_packages
-                 view_team_planner manage_team_planner
-                 save_queries manage_public_queries
-               ]
+        create(:user, member_with_permissions: { project => permissions, sub_project => permissions })
       end
 
-      let(:dropdown) { ::Components::ProjectIncludeComponent.new }
+      let(:dropdown) { Components::ProjectIncludeComponent.new }
 
-      it 'applies the project include filter' do
+      it "applies the project include filter" do
         # Search for the work package in the child project
-        add_existing_pane.search 'Subtask'
+        add_existing_pane.search "Subtask"
         add_existing_pane.expect_empty
         add_existing_pane.expect_result sub_work_package, visible: false
 
@@ -231,7 +261,7 @@ describe 'Team planner add existing work packages', type: :feature, js: true do
         dropdown.expect_checkbox(project.id, true)
         dropdown.expect_checkbox(sub_project.id, false)
 
-        dropdown.click_button 'Apply'
+        dropdown.click_button "Apply"
         dropdown.expect_closed
         dropdown.expect_count 1
         dropdown.toggle!
@@ -242,7 +272,7 @@ describe 'Team planner add existing work packages', type: :feature, js: true do
         dropdown.expect_checkbox(project.id, true)
         dropdown.expect_checkbox(sub_project.id, true)
 
-        dropdown.click_button 'Apply'
+        dropdown.click_button "Apply"
         dropdown.expect_closed
         dropdown.expect_count 2
 
@@ -252,15 +282,15 @@ describe 'Team planner add existing work packages', type: :feature, js: true do
     end
   end
 
-  context 'without permission to edit' do
+  context "without permission to edit" do
     current_user { other_user }
 
     before do
       team_planner.visit!
     end
 
-    it 'does not show the button to add existing work packages' do
-      expect(page).not_to have_selector('[data-qa-selector="op-team-planner--add-existing-toggle"]')
+    it "does not show the button to add existing work packages" do
+      expect(page).not_to have_test_selector("op-team-planner--add-existing-toggle")
       add_existing_pane.expect_closed
     end
   end

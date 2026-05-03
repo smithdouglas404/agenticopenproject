@@ -1,5 +1,5 @@
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -34,15 +34,35 @@ module API
         link :self,
              path: { api: :work_package, params: %w(id) },
              column: -> { :id },
-             title: -> { 'subject' }
+             title: -> { "subject" }
 
         link :project,
              path: { api: :project, params: %w(id) },
              column: -> { :project_id },
-             title: -> { 'project_name' },
+             title: -> { "project_name" },
              join: { table: :projects,
-                     condition: 'projects.id = work_packages.project_id',
-                     select: ['projects.name project_name'] }
+                     condition: "projects.id = work_packages.project_id",
+                     select: ["projects.name project_name"] }
+
+        link :status,
+             path: { api: :status, params: %w(id) },
+             column: -> { :status_id },
+             title: -> { "status_name" },
+             join: {
+               table: :statuses,
+               condition: "statuses.id = work_packages.status_id",
+               select: ["statuses.name status_name"]
+             }
+
+        link :type,
+             path: { api: :type, params: %w(id) },
+             column: -> { :type_id },
+             title: -> { "type_name" },
+             join: {
+               table: :types,
+               condition: "types.id = work_packages.type_id",
+               select: ["types.name type_name"]
+             }
 
         associated_user_link :author
 
@@ -56,27 +76,32 @@ module API
 
         property :id
 
+        property :displayId,
+                 representation: ->(*) {
+                   Setting::WorkPackageIdentifier.semantic_mode_active? ? "COALESCE(identifier, id::text)" : "id::text"
+                 }
+
         property :subject
 
         property :startDate, column: :start_date,
                              render_if: ->(*) { "is_milestone != true" },
                              join: { table: :types,
-                                     condition: 'types.id = work_packages.type_id',
-                                     select: 'types.is_milestone is_milestone',
+                                     condition: "types.id = work_packages.type_id",
+                                     select: "types.is_milestone is_milestone",
                                      alias: :types }
 
         property :dueDate, column: :due_date,
                            render_if: ->(*) { "is_milestone != true" },
                            join: { table: :types,
-                                   condition: 'types.id = work_packages.type_id',
-                                   select: 'types.is_milestone is_milestone',
+                                   condition: "types.id = work_packages.type_id",
+                                   select: "types.is_milestone is_milestone",
                                    alias: :types }
 
         property :date, column: :start_date,
                         render_if: ->(*) { "is_milestone = true" },
                         join: { table: :types,
-                                condition: 'types.id = work_packages.type_id',
-                                select: 'types.is_milestone is_milestone',
+                                condition: "types.id = work_packages.type_id",
+                                select: "types.is_milestone is_milestone",
                                 alias: :types }
       end
     end

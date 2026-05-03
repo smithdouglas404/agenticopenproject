@@ -3,7 +3,7 @@
 post:
   parameters:
   - description: The id of the custom action to execute
-    example: '1'
+    example: 1
     in: path
     name: id
     required: true
@@ -72,17 +72,17 @@ post:
               value:
                 _embedded:
                   details:
-                    attribute: delay
+                    attribute: lag
                 _type: Error
                 errorIdentifier: urn:openproject-org:api:v3:errors:PropertyConstraintViolation
-                message: Delay must be a number greater than or equal to 0
+                message: Lag must be a number greater than or equal to 0
       description: Returned if the custom action was not executed successfully e.g.
         when a constraint on a work package property was violated.
       headers: {}
   tags:
   - Custom actions
   description: |-
-    A POST to this end point executes the custom action on the work package provided in the payload. The altered work package will be returned. In order to avoid executing
+    A POST to this endpoint executes the custom action on the work package provided in the payload. The altered work package will be returned. In order to avoid executing
      the custom action unbeknown to a change that has already taken place, the client has to provide the work package's current lockVersion.
   operationId: Execute_custom_action
   requestBody:

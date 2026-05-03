@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,71 +26,71 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative 'support/pages/cost_report_page'
-require_relative 'support/components/cost_reports_base_table'
+require "spec_helper"
+require_relative "support/pages/cost_report_page"
+require_relative "support/components/cost_reports_base_table"
 
-describe 'Updating entries within the cost report', type: :feature, js: true do
-  let(:project) { create :project }
-  let(:user) { create :admin, member_in_project: project, member_with_permissions: %i[work_package_assigned] }
-  let(:work_package) { create :work_package, project: }
+RSpec.describe "Updating entries within the cost report", :js do
+  let(:project) { create(:project) }
+  let(:user) { create(:admin, member_with_permissions: { project => %i[work_package_assigned] }) }
+  let(:work_package) { create(:work_package, project:) }
 
   let!(:time_entry_user) do
-    create :time_entry,
+    create(:time_entry,
            user:,
-           work_package:,
+           entity: work_package,
            project:,
-           hours: 5
+           hours: 5)
   end
 
   let(:cost_type) do
-    type = create :cost_type, name: 'My cool type'
-    create :cost_rate, cost_type: type, rate: 7.00
+    type = create(:cost_type, name: "My cool type")
+    create(:cost_rate, cost_type: type, rate: 7.00)
     type
   end
 
   let!(:cost_entry_user) do
-    create :cost_entry,
-           work_package:,
+    create(:cost_entry,
+           entity: work_package,
            project:,
            units: 3.00,
            cost_type:,
-           user:
+           user:)
   end
 
-  let(:report_page) { ::Pages::CostReportPage.new project }
-  let(:table) { ::Components::CostReportsBaseTable.new }
+  let(:report_page) { Pages::CostReportPage.new project }
+  let(:table) { Components::CostReportsBaseTable.new }
 
   before do
     login_as(user)
     visit cost_reports_path(project)
     report_page.clear
     report_page.apply
-    report_page.show_loading_indicator present: false
+    report_page.wait_for_page_to_reload
   end
 
-  it 'can edit and delete time entries' do
+  it "can edit and delete time entries" do
     table.rows_count 1
 
-    table.expect_action_icon 'edit', 1
-    table.expect_action_icon 'delete', 1
+    table.expect_action_icon "edit", 1
+    table.expect_action_icon "delete", 1
 
-    table.edit_time_entry 2, 1
+    table.edit_time_entry 1, hours: 2
 
     table.delete_entry 1
     table.rows_count 0
   end
 
-  it 'can edit and delete cost entries' do
+  it "can edit and delete cost entries" do
     table.rows_count 1
 
-    report_page.switch_to_type 'My cool type'
-    report_page.show_loading_indicator present: false
+    report_page.switch_to_type "My cool type"
+    report_page.wait_for_page_to_reload
 
     table.rows_count 1
 
-    table.expect_action_icon 'edit', 1
-    table.expect_action_icon 'delete', 1
+    table.expect_action_icon "edit", 1
+    table.expect_action_icon "delete", 1
 
     table.edit_cost_entry 2, 1, cost_entry_user.id.to_s
     visit cost_reports_path(project)
@@ -100,36 +100,35 @@ describe 'Updating entries within the cost report', type: :feature, js: true do
     table.rows_count 0
   end
 
-  it 'shows the action icons after a table refresh' do
+  it "shows the action icons after a table refresh" do
     table.rows_count 1
 
-    table.expect_action_icon 'edit', 1
-    table.expect_action_icon 'delete', 1
+    table.expect_action_icon "edit", 1
+    table.expect_action_icon "delete", 1
 
     # Force a reload of the table (although nothing has changed)
     report_page.apply
     sleep(1)
-    report_page.show_loading_indicator present: false
+    report_page.wait_for_page_to_reload
 
     table.rows_count 1
 
-    table.expect_action_icon 'edit', 1
-    table.expect_action_icon 'delete', 1
+    table.expect_action_icon "edit", 1
+    table.expect_action_icon "delete", 1
   end
 
-  context 'as user without permissions' do
-    let(:role) { create :role, permissions: %i(view_time_entries) }
+  context "as user without permissions" do
+    let(:role) { create(:project_role, permissions: %i(view_time_entries)) }
     let!(:user) do
-      create :user,
-             member_in_project: project,
-             member_through_role: role
+      create(:user,
+             member_with_roles: { project => role })
     end
 
-    it 'cannot edit or delete' do
+    it "cannot edit or delete" do
       table.rows_count 1
 
-      table.expect_action_icon 'edit', 1, present: false
-      table.expect_action_icon 'delete', 1, present: false
+      table.expect_action_icon "edit", 1, present: false
+      table.expect_action_icon "delete", 1, present: false
     end
   end
 end

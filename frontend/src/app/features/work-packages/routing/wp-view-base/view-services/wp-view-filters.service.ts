@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,10 +28,9 @@
 
 import { Injectable } from '@angular/core';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
-import { combine, input, InputState } from 'reactivestates';
+import { combine, input, InputState } from '@openproject/reactivestates';
 import { States } from 'core-app/core/states/states.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { mapTo, take } from 'rxjs/operators';
 import { QuerySchemaResource } from 'core-app/features/hal/resources/query-schema-resource';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
@@ -39,6 +38,8 @@ import { cloneHalResourceCollection } from 'core-app/features/hal/helpers/hal-re
 import { QueryFilterInstanceSchemaResource } from 'core-app/features/hal/resources/query-filter-instance-schema-resource';
 import { QueryFilterResource } from 'core-app/features/hal/resources/query-filter-resource';
 import { WorkPackageQueryStateService } from './wp-view-base.service';
+import { firstValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<QueryFilterInstanceResource[]> {
@@ -145,7 +146,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
     }
 
     const filters = [...this.rawFilters];
-    modifier(filters[index]!);
+    modifier(filters[index]);
     this.update(filters);
 
     return true;
@@ -186,7 +187,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
   public remainingVisibleFilters(filters = this.current) {
     return this
       .remainingFilters(filters)
-      .filter((filter) => this.hidden.indexOf(filter.id) === -1);
+      .filter((filter) => !this.hidden.includes(filter.id));
   }
 
   /**
@@ -307,13 +308,11 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
    * Filters service depends on two states
    */
   public onReady():Promise<null> {
-    return combine(this.pristineState, this.availableState)
-      .values$()
-      .pipe(
-        take(1),
-        mapTo(null),
-      )
-      .toPromise();
+    return firstValueFrom(
+      combine(this.pristineState, this.availableState)
+        .values$()
+        .pipe(map(() => null)),
+    );
   }
 
   /**

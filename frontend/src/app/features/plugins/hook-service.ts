@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +32,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class HookService {
-  private hooks:{ [hook:string]:Function[] } = {};
+  private hooks:Record<string, Function[]> = {};
 
   public register(id:string, callback:Function) {
     if (!callback) {

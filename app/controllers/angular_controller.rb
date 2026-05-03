@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,15 +31,19 @@
 class AngularController < ApplicationController
   before_action :require_login
 
+  no_authorization_required! :empty_layout
+
   def empty_layout
     # Frontend will handle rendering
     # but we will need to render with layout
-    render html: '', layout: 'angular/angular'
+    respond_to do |format|
+      format.html do
+        render html: "", layout: "angular/angular"
+      end
+    end
   end
 
-  def notifications_layout
-    # Frontend will handle rendering
-    # but we will need to render with notification specific layout
-    render html: '', layout: 'angular/notifications'
+  def login_back_url_params
+    params.permit(:state)
   end
 end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -33,16 +33,19 @@ import {
   Input,
   OnInit,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   CalendarOptions,
   DateSelectArg,
+  EventClickArg,
   EventDropArg,
   EventInput,
+  ToolbarInput,
 } from '@fullcalendar/core';
-import { EventClickArg, FullCalendarComponent, ToolbarInput } from '@fullcalendar/angular';
+import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -54,7 +57,6 @@ import {
   WorkPackageViewFiltersService,
 } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { WorkPackagesListService } from 'core-app/features/work-packages/components/wp-list/wp-list.service';
-import { StateService } from '@uirouter/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -67,23 +69,38 @@ import {
   HalResourceEditingService,
 } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
-import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import {
   CalendarViewEvent,
   OpWorkPackagesCalendarService,
 } from 'core-app/features/calendar/op-work-packages-calendar.service';
 import { OpCalendarService } from 'core-app/features/calendar/op-calendar.service';
 import { WeekdayService } from 'core-app/core/days/weekday.service';
+import { DayResourceService } from 'core-app/core/state/days/day.service';
+import { EffectCallback, registerEffectCallbacks } from 'core-app/core/state/effects/effect-handler.decorator';
+import { calendarRefreshRequest } from 'core-app/features/calendar/calendar.actions';
+import { ActionsService } from 'core-app/core/state/actions/actions.service';
+import {
+  addBackgroundEvents,
+  removeBackgroundEvents,
+} from 'core-app/features/team-planner/team-planner/planner/background-events';
+import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
+import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
+import allLocales from '@fullcalendar/core/locales-all';
+import { MeetingResource } from 'core-app/features/hal/resources/meeting-resource';
+import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 @Component({
   templateUrl: './wp-calendar.template.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./wp-calendar.sass'],
   selector: 'op-wp-calendar',
   providers: [
     OpWorkPackagesCalendarService,
     OpCalendarService,
   ],
+  standalone: false,
 })
 export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implements OnInit {
   @ViewChild(FullCalendarComponent) ucCalendar:FullCalendarComponent;
@@ -95,17 +112,20 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
 
   @Input() static = false;
 
+  @Input() showMeetings = false;
+
   calendarOptions$ = new Subject<CalendarOptions>();
 
   private alreadyLoaded = false;
 
   text = {
     cannot_drag_to_non_working_day: this.I18n.t('js.team_planner.cannot_drag_to_non_working_day'),
+    today: this.I18n.t('js.team_planner.today'),
   };
 
   constructor(
+    readonly actions$:ActionsService,
     readonly states:States,
-    readonly $state:StateService,
     readonly wpTableFilters:WorkPackageViewFiltersService,
     readonly wpListService:WorkPackagesListService,
     readonly querySpace:IsolatedQuerySpace,
@@ -122,11 +142,17 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
     readonly halEditing:HalResourceEditingService,
     readonly halNotification:HalResourceNotificationService,
     readonly weekdayService:WeekdayService,
+    readonly dayService:DayResourceService,
+    readonly apiV3Service:ApiV3Service,
+    readonly pathHelper:PathHelperService,
+    readonly timezoneService:TimezoneService,
   ) {
     super();
   }
 
   ngOnInit():void {
+    registerEffectCallbacks(this, this.untilDestroyed());
+
     this.wpTableFilters.hidden.push(
       'project',
     );
@@ -142,12 +168,15 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
     // Clear any old subscribers
     this.querySpace.stopAllSubscriptions.next();
 
-    this.setupWorkPackagesListener();
     this.initializeCalendar();
   }
 
-  public calendarEventsFunction(fetchInfo:{ start:Date, end:Date, timeZone:string },
-    successCallback:(events:EventInput[]) => void):void|PromiseLike<EventInput[]> {
+  public async calendarEventsFunction(
+    fetchInfo:{ start:Date, end:Date, timeZone:string },
+    successCallback:(events:EventInput[]) => void,
+  ):Promise<void> {
+    await this.workPackagesCalendar.updateTimeframe(fetchInfo, this.currentProject.identifier || undefined);
+
     if (this.alreadyLoaded) {
       this.alreadyLoaded = false;
       const events = this.updateResults(this.querySpace.results.value!);
@@ -161,8 +190,50 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
           successCallback(events);
         });
     }
+  }
 
-    void this.workPackagesCalendar.updateTimeframe(fetchInfo, this.currentProject.identifier || undefined);
+  public calendarMeetingsFunction(
+    fetchInfo:{ start:Date, end:Date, timeZone:string },
+    successCallback:(events:EventInput[]) => void,
+  ):void {
+    if (!this.showMeetings) {
+      successCallback([]);
+      return;
+    }
+
+    const startDate = moment(fetchInfo.start).format('YYYY-MM-DD');
+    const endDate = moment(fetchInfo.end).format('YYYY-MM-DD');
+
+    const filters = new ApiV3FilterBuilder();
+    filters.add('datesInterval', '<>d', [startDate, endDate]);
+
+    if (this.currentProject.id) {
+      filters.add('project', '=', [this.currentProject.id]);
+    }
+
+    this
+      .apiV3Service
+      .meetings
+      .filtered(filters, { pageSize: '-1' })
+      .get()
+      .subscribe((meetings) => {
+        const events:EventInput[] = meetings.elements.map((meeting:MeetingResource) => {
+          const sameProject = this.currentProject.id === meeting.project.id;
+          const title:string = sameProject ? meeting.title : `${meeting.project.name}: ${meeting.title}`;
+          return {
+            title,
+            start: this.timezoneService.parseDatetime(meeting.startTime as string).format(),
+            end: this.timezoneService.parseDatetime(meeting.endTime as string).format(),
+            editable: false,
+            durationEditable: false,
+            allDay: false,
+            className: 'fc-event-clickable op-wp-calendar--meeting-resource',
+            meeting,
+          } as EventInput;
+        });
+
+        successCallback(events);
+      });
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -172,13 +243,20 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
   }
 
   private initializeCalendar() {
-    const additionalOptions:{ [key:string]:unknown } = {
+    const additionalOptions:Record<string, unknown> = {
+      locales: allLocales,
+      locale: this.I18n.locale,
       height: '100%',
       headerToolbar: this.buildHeader(),
       eventSources: [
         {
           id: 'work_packages',
           events: this.calendarEventsFunction.bind(this) as unknown,
+        },
+        {
+          id: 'meetings',
+          events: this.calendarMeetingsFunction.bind(this) as unknown,
+          eventDisplay: 'block',
         },
         {
           events: [],
@@ -199,19 +277,27 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       select: this.handleDateClicked.bind(this) as unknown,
       eventResizableFromStart: true,
       editable: true,
+      displayEventTime: true,
+      displayEventEnd: true,
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        meridiem: 'short',
+      },
       eventDidMount: (evt:CalendarViewEvent) => {
         const { el, event } = evt;
-        if (event.source?.id === 'background') {
+        if (event.source?.id !== 'work_packages') {
           return;
         }
         const workPackage = event.extendedProps.workPackage as WorkPackageResource;
-        el.dataset.workPackageId = workPackage.id as string;
+        el.dataset.workPackageId = workPackage.id!;
       },
       eventResize: (resizeInfo:EventResizeDoneArg) => {
         const due = moment(resizeInfo.event.endStr).subtract(1, 'day').toDate();
         const start = moment(resizeInfo.event.startStr).toDate();
         const wp = resizeInfo.event.extendedProps.workPackage as WorkPackageResource;
-        if (!wp.ignoreNonWorkingDays && (this.weekdayService.isNonWorkingDay(start) || this.weekdayService.isNonWorkingDay(due))) {
+        if (!wp.ignoreNonWorkingDays && (this.weekdayService.isNonWorkingDay(start) || this.weekdayService.isNonWorkingDay(due)
+          || this.workPackagesCalendar.isNonWorkingDay(start) || this.workPackagesCalendar.isNonWorkingDay(due))) {
           this.toastService.addError(this.text.cannot_drag_to_non_working_day);
           resizeInfo?.revert();
           return;
@@ -221,7 +307,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       eventDrop: (dropInfo:EventDropArg) => {
         const start = moment(dropInfo.event.startStr).toDate();
         const wp = dropInfo.event.extendedProps.workPackage as WorkPackageResource;
-        if (!wp.ignoreNonWorkingDays && this.weekdayService.isNonWorkingDay(start)) {
+        if (!wp.ignoreNonWorkingDays && (this.weekdayService.isNonWorkingDay(start) || this.workPackagesCalendar.isNonWorkingDay(start))) {
           this.toastService.addError(this.text.cannot_drag_to_non_working_day);
           dropInfo?.revert();
           return;
@@ -234,7 +320,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
           this.addBackgroundEventsForNonWorkingDays();
         }
       },
-      eventResizeStop: () => this.removeBackGroundEvents(),
+      eventResizeStop: () => removeBackgroundEvents(this.ucCalendar.getApi()),
       eventDragStart: (dragInfo:EventDragStartArg) => {
         const wp = dragInfo.event.extendedProps.workPackage as WorkPackageResource;
         if (!wp.ignoreNonWorkingDays) {
@@ -244,19 +330,23 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       eventDragStop: (dragInfo:EventDragStopArg) => {
         const { el } = dragInfo;
         el.style.removeProperty('pointer-events');
-        this.removeBackGroundEvents();
+        removeBackgroundEvents(this.ucCalendar.getApi());
       },
       eventClick: (evt:EventClickArg) => {
-        const workPackageId = (evt.event.extendedProps.workPackage as WorkPackageResource).id as string;
-        // Currently the calendar widget is shown on multiple pages,
-        // but only the calendar module itself is a partitioned query space which can deal with a split screen request
-        if (this.$state.includes('calendar')) {
-          this.workPackagesCalendar.openSplitView(workPackageId);
-        } else {
-          void this.$state.go(
-            'work-packages.show',
-            { workPackageId },
-          );
+        if (evt.event.extendedProps.meeting) {
+          const meeting = evt.event.extendedProps.meeting as MeetingResource;
+          window.location.href = this.pathHelper.meetingPath(meeting.id!);
+        }
+
+        if (evt.event.extendedProps.workPackage) {
+          const wp = evt.event.extendedProps.workPackage as WorkPackageResource;
+          // Currently the calendar widget is shown on multiple pages,
+          // but only the calendar module itself is a partitioned query space which can deal with a split screen request
+          if (window.location.pathname.includes('/calendars/')) {
+            this.workPackagesCalendar.openSplitView(wp.id!);
+          } else {
+            window.location.href = this.pathHelper.workPackagePath(wp.displayId);
+          }
         }
       },
     };
@@ -265,10 +355,8 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       additionalOptions.initialView = 'dayGridWeek';
     }
 
-    void Promise.all([
-      this.configuration.initialized,
-      this.weekdayService.loadWeekdays().toPromise(),
-    ])
+    void this.weekdayService.loadWeekdays()
+      .toPromise()
       .then(() => {
         this.calendarOptions$.next(
           this.workPackagesCalendar.calendarOptions(additionalOptions),
@@ -293,15 +381,8 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       return;
     }
 
-    const workPackageId = eventContainer.dataset.workPackageId as string;
+    const workPackageId = eventContainer.dataset.workPackageId!;
     this.workPackagesCalendar.showEventContextMenu({ workPackageId, event });
-  }
-
-  private setupWorkPackagesListener():void {
-    this.workPackagesCalendar.workPackagesListener$(() => {
-      this.alreadyLoaded = true;
-      this.ucCalendar.getApi().refetchEvents();
-    });
   }
 
   private updateResults(collection:WorkPackageCollectionResource) {
@@ -314,15 +395,20 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       const startDate = this.workPackagesCalendar.eventDate(workPackage, 'start');
       const endDate = this.workPackagesCalendar.eventDate(workPackage, 'due');
 
-      const exclusiveEnd = moment(endDate).add(1, 'days').format('YYYY-MM-DD');
+      const exclusiveEnd = endDate && moment(endDate).add(1, 'days').format('YYYY-MM-DD');
+      // An event is visible on the calendar only if it has a start date.
+      // That's why the end date is used as event start date if the work package
+      // does not have a proper start date.
+      const visibleStart = startDate || endDate;
 
       return {
         title: workPackage.subject,
-        start: startDate,
-        editable: this.workPackagesCalendar.eventDurationEditable(workPackage),
+        start: visibleStart,
+        editable: this.workPackagesCalendar.dateEditable(workPackage),
+        durationEditable: this.workPackagesCalendar.eventDurationEditable(workPackage),
         end: exclusiveEnd,
         allDay: true,
-        className: `__hl_background_type_${workPackage.type.id || ''}`,
+        className: `fc-event-clickable __hl_background_type_${workPackage.type.id ?? ''}`,
         workPackage,
       };
     });
@@ -334,6 +420,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
     try {
       const result = await this.halEditing.save(changeset);
       this.halNotification.showSave(result.resource, result.wasNew);
+      this.reloadOnRefreshRequest();
     } catch (e) {
       this.halNotification.handleRawError(e, changeset.projectedResource);
       info.revert();
@@ -342,7 +429,8 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
 
   private handleDateClicked(info:DateSelectArg) {
     const due = moment(info.endStr).subtract(1, 'day').toDate();
-    const nonWorkingDays = this.weekdayService.isNonWorkingDay(info.start) || this.weekdayService.isNonWorkingDay(due);
+    const nonWorkingDays = this.weekdayService.isNonWorkingDay(info.start) || this.weekdayService.isNonWorkingDay(due)
+      || this.workPackagesCalendar.isNonWorkingDay(info.start) || this.workPackagesCalendar.isNonWorkingDay(due);
 
     const defaults = {
       startDate: info.startStr,
@@ -350,41 +438,25 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       ignoreNonWorkingDays: nonWorkingDays,
     };
 
-    void this.$state.go(
-      splitViewRoute(this.$state, 'new'),
-      {
-        defaults,
-        tabIdentifier: 'overview',
-      },
-    );
+    if (window.location.pathname.includes('/calendars/')) {
+      const extraParams:Record<string, string> = {
+        startDate: defaults.startDate,
+        dueDate: defaults.dueDate,
+        ...(defaults.ignoreNonWorkingDays ? { ignoreNonWorkingDays: 'true' } : {}),
+      };
+      this.workPackagesCalendar.openSplitCreate(extraParams);
+    }
   }
 
-  private removeBackGroundEvents() {
-    this
-      .ucCalendar
-      .getApi()
-      .getEvents()
-      .filter((el) => el.source?.id === 'background')
-      .forEach((el) => el.remove());
+  @EffectCallback(calendarRefreshRequest)
+  reloadOnRefreshRequest():void {
+    this.ucCalendar.getApi().refetchEvents();
   }
 
   private addBackgroundEventsForNonWorkingDays() {
-    const api = this.ucCalendar.getApi();
-    let currentStartDate = this.ucCalendar.getApi().view.activeStart;
-    const currentEndDate = this.ucCalendar.getApi().view.activeEnd;
-    const nonWorkingDays = new Array<{ start:Date|string, end:Date|string }>();
-
-    while (currentStartDate.toString() !== currentEndDate.toString()) {
-      if (this.weekdayService.isNonWorkingDay(currentStartDate)) {
-        nonWorkingDays.push({
-          start: moment(currentStartDate).format('YYYY-MM-DD'),
-          end: moment(currentStartDate).add('1', 'day').format('YYYY-MM-DD'),
-        });
-      }
-      currentStartDate = moment(currentStartDate).add('1', 'day').toDate();
-    }
-    nonWorkingDays.forEach((day) => {
-      api.addEvent({ ...day }, 'background');
-    });
+    addBackgroundEvents(
+      this.ucCalendar.getApi(),
+      (date) => this.weekdayService.isNonWorkingDay(date) || this.workPackagesCalendar.isNonWorkingDay(date),
+    );
   }
 }

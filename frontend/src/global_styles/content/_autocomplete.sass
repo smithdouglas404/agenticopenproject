@@ -1,6 +1,6 @@
 //-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,16 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/***** Auto-complete ****
+%autocomplete-description
+  display: flex
+  align-items: center
+  flex-shrink: 0
+  gap: var(--base-size-4, 4px)
+  color: var(--fgColor-muted)
+  font-size: var(--text-body-size-small, .75rem)
+  font-weight: var(--base-text-weight-normal, 400)
+
+/***** Auto-complete ****/
 
 div.autocomplete
   position: absolute
@@ -45,9 +54,9 @@ div.autocomplete
       padding: 2px
       cursor: pointer
       font-size: 90%
-      border: 1px solid #ccc
-      border-left: 1px solid #ccc
-      border-right: 1px solid #ccc
+      border: 1px solid var(--borderColor-default)
+      border-left: 1px solid var(--borderColor-default)
+      border-right: 1px solid var(--borderColor-default)
       background-color: white
       &.selected
         background-color: #ffb
@@ -61,7 +70,25 @@ div.autocomplete
 // -------------------------- ng-select --------------------------
 .ng-select
   width: 100%
-  font-size: 14px
+  font-size: var(--body-font-size)
+
+  &.-error
+    .ng-select-container
+      border-color: var(--content-form-error-color)
+
+  &.ng-select-disabled
+    .ng-select-container,
+    .ng-select-container .ng-value-container input
+      background-color: var(--control-bgColor-disabled) !important
+      border-color: var(--control-borderColor-disabled) !important
+      box-shadow: none !important
+      color: var(--control-fgColor-disabled) !important
+      cursor: not-allowed !important
+      opacity: 1
+      -webkit-text-fill-color: var(--control-fgColor-disabled)
+
+    &.ng-select-searchable .ng-select-container .ng-value-container .ng-input
+      opacity: 0
 
   .ng-value-container
     min-height: 2rem
@@ -76,12 +103,14 @@ div.autocomplete
     z-index: auto !important
     height: 30px !important
     min-height: 30px !important
+    border-color: var(--borderColor-default) !important
 
     .ng-value-container
       overflow: visible !important
 
       .ng-placeholder
         top: 1px !important
+        color: var(--fgColor-muted)
         @include text-shortener
 
       input
@@ -90,16 +119,50 @@ div.autocomplete
         -webkit-box-sizing: border-box !important
         -moz-box-sizing: border-box !important
         box-sizing: border-box !important
+        color: var(--body-font-color) !important
+
   .ng-value
     @include text-shortener
     line-height: 22px
+
+// Override some basic styles to ensure that ngSelect matches the current theme
+.ng-select-container,
+.ng-optgroup:not(.ng-option-marked, .ng-option-disabled),
+.ng-option:not(.ng-option-marked, .ng-option-disabled),
+.ng-dropdown-panel,
+.ng-dropdown-panel-items,
+.ng-dropdown-footer
+  background-color: var(--body-background) !important
+  color: var(--body-font-color) !important
+  border-color: var(--borderColor-default) !important
+
+.ng-select .ng-arrow-wrapper .ng-arrow
+  border-color: var(--fgColor-muted) transparent transparent
+
+.ng-select.ng-select-opened>.ng-select-container .ng-arrow
+  border-color: transparent transparent var(--fgColor-muted)
+
+.ng-select .ng-clear-wrapper
+  color: var(--fgColor-muted)
 
 .ng-select.ng-select-multiple .ng-select-container
   height: initial !important
   min-height: initial !important
 
-  .ng-value-label
+  .ng-value-label:not(:has(span))
     display: initial !important
+
+  .ng-value-label:has(span)
+    min-width: 0
+
+    .description
+      @extend %autocomplete-description
+
+  .ng-placeholder
+    // Fix overflow by providing a max width to the input
+    //
+    // We subtract the width and right padding of the dropdown arrow
+    max-width: calc(100% - 25px - 5px)
 
 // Ensure dropdown is above modals
 .ng-dropdown-panel
@@ -114,15 +177,24 @@ div.autocomplete
 .ng-option-label
   vertical-align: top
 
-.ng-option
-  font-size: 14px
-  line-height: 22px
+  .description
+    @extend %autocomplete-description
+
+.ng-option, .ng-optgroup
+  font-size: var(--body-font-size)
 
   .op-avatar
     margin-right: 8px
 
   &.ng-option-marked
-    background-color: $spot-color-basic-gray-6 !important
+    background-color: var(--control-transparent-bgColor-hover) !important
+    border-color: var(--list-item-hover--border-color) !important
+    color: var(--list-item-hover--color) !important
+
+  &.ng-option-disabled
+    background-color: var(--bgColor-disabled) !important
+    border-color: var(--borderColor-disabled) !important
+    color: var(--fgColor-disabled) !important
 
 .ng-dropdown-footer
   padding: 0 !important

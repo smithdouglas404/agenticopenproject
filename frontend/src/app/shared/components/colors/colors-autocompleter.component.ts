@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +26,17 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { Highlighting } from 'core-app/features/work-packages/components/wp-fast-table/builders/highlighting/highlighting.functions';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
+import {
+  Highlighting,
+} from 'core-app/features/work-packages/components/wp-fast-table/builders/highlighting/highlighting.functions';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 
-export const colorsAutocompleterSelector = 'colors-autocompleter';
+interface ColorItem {
+  name:string;
+  value:string;
+  selected?:boolean;
+}
 
 @Component({
   template: `
@@ -39,49 +45,60 @@ export const colorsAutocompleterSelector = 'colors-autocompleter';
                bindLabel="name"
                bindValue="value"
                [(ngModel)]="selectedOption"
+               [ngClass]="classes"
                (change)="onModelChange($event)"
                [clearable]="false"
                appendTo="body">
       <ng-template ng-label-tmp let-item="item">
-        <span [ngClass]="highlightColor(item)">{{item.name}}</span>
+        <span [ngClass]="highlightColor(item)">{{ item.name }}</span>
       </ng-template>
       <ng-template ng-option-tmp let-item="item" let-index="index">
-        <span [ngClass]="highlightColor(item)">{{item.name}}</span>
+        <span [ngClass]="highlightColor(item)">{{ item.name }}</span>
       </ng-template>
     </ng-select>
   `,
-  selector: colorsAutocompleterSelector,
+  selector: 'opce-colors-autocompleter',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ColorsAutocompleterComponent implements OnInit {
-  public options:any[];
+  public options:ColorItem[];
 
-  public selectedOption:any;
+  public selectedOption?:ColorItem|string;
 
   private highlightTextInline = false;
+
+  public classes:string;
 
   private updateInputField:HTMLInputElement|undefined;
 
   private selectedColorId:string;
 
-  constructor(protected elementRef:ElementRef,
-    protected readonly I18n:I18nService) {
+  constructor(
+    protected elementRef:ElementRef<HTMLElement>,
+    protected readonly I18n:I18nService,
+  ) {
   }
 
   ngOnInit() {
     this.setColorOptions();
 
-    this.updateInputField = document.getElementsByName(this.elementRef.nativeElement.dataset.updateInput)[0] as HTMLInputElement|undefined;
-    this.highlightTextInline = JSON.parse(this.elementRef.nativeElement.dataset.highlightTextInline);
+    this.updateInputField = document.getElementsByName(this.elementRef.nativeElement.dataset.updateInput!)[0] as HTMLInputElement|undefined;
+    this.highlightTextInline = JSON.parse(this.elementRef.nativeElement.dataset.highlightTextInline || 'false') as boolean;
+    this.classes = this.elementRef.nativeElement.dataset.classes || '';
   }
 
-  public onModelChange(color:any) {
+  public onModelChange(color:{ name:string, value:string }) {
     if (color && this.updateInputField) {
       this.updateInputField.value = color.value;
     }
   }
 
   private setColorOptions() {
-    this.options = JSON.parse(this.elementRef.nativeElement.dataset.colors);
+    this.options = JSON.parse(this.elementRef.nativeElement.dataset.colors!) as {
+      name:string,
+      value:string
+    }[];
     this.options.unshift({ name: this.I18n.t('js.label_no_color'), value: '' });
 
     this.selectedOption = this.options.find((item) => item.selected === true);
@@ -90,14 +107,14 @@ export class ColorsAutocompleterComponent implements OnInit {
       this.selectedOption = this.selectedOption.value;
     } else {
       // Differentiate between "No color" and a color that is now not selectable any more
-      this.selectedColorId = this.elementRef.nativeElement.dataset.selectedColor;
+      this.selectedColorId = this.elementRef.nativeElement.dataset.selectedColor!;
       this.selectedOption = this.selectedColorId ? this.selectedColorId : '';
     }
   }
 
-  private highlightColor(item:any) {
+  highlightColor(item:ColorItem):string|undefined {
     if (item.value === '') {
-      return;
+      return undefined;
     }
 
     let highlightingClass;

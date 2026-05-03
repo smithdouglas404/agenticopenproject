@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,7 @@
 
 class CostQuery::SqlStatement < Report::SqlStatement
   COMMON_FIELDS = %w[
-    user_id project_id work_package_id rate_id
+    user_id project_id entity_type entity_id rate_id
     comments spent_on created_at updated_at tyear tmonth tweek
     costs overridden_costs type
   ]
@@ -37,14 +37,14 @@ class CostQuery::SqlStatement < Report::SqlStatement
   attr_accessor :entry_union
 
   def initialize(table, desc = "")
-    super(table, desc)
+    super
     @entry_union = false
   end
 
   # this is a hack to ensure that additional joins added by filters do not result
   # in additional columns being selected.
   def to_s
-    select(['entries.*']) if select == ['*'] && group_by.empty? && entry_union
+    select(["entries.*"]) if select == ["*"] && group_by.empty? && entry_union
     super
   end
 
@@ -58,7 +58,8 @@ class CostQuery::SqlStatement < Report::SqlStatement
   #   id                        | id                       | id
   #   user_id                   | user_id                  | user_id
   #   project_id                | project_id               | project_id
-  #   work_package_id           | work_package_id          | work_package_id
+  #   entity_type               | entity_type              | entity_type
+  #   entity_id                 | entity_id                | entity_id
   #   rate_id                   | rate_id                  | rate_id
   #   comments                  | comments                 | comments
   #   spent_on                  | spent_on                 | spent_on
@@ -74,6 +75,8 @@ class CostQuery::SqlStatement < Report::SqlStatement
   #   cost_type_id              | -1                       | cost_type_id
   #   type                      | "TimeEntry"              | "CostEntry"
   #   count                     | 1                        | 1
+  #   start_time                | start_time               | nil
+  #   time_zone                 | time_zone                | nil
   #
   # Also: This _should_ handle joining activities and cost_types, as the logic differs for time_entries
   # and cost_entries.
@@ -86,14 +89,17 @@ class CostQuery::SqlStatement < Report::SqlStatement
       query.select COMMON_FIELDS
       query.desc = "Subquery for #{table}"
       query.select({
-                     count: 1, id: [model, :id], display_costs: 1,
+                     count: 1,
+                     id: [model, :id],
+                     display_costs: 1,
                      real_costs: switch("#{table}.overridden_costs IS NULL" => [model, :costs], else: [model, :overridden_costs]),
-                     week: iso_year_week(:spent_on, model),
-                     singleton_value: 1
+                     week: iso_year_week(field_name_for([model, :spent_on])),
+                     singleton_value: 1,
+                     entity_gid: "CONCAT('gid://#{GlobalID.app}/', #{table}.entity_type, '/', #{table}.entity_id)"
                    })
       # FIXME: build this subquery from a sql_statement
       query.from "(SELECT *, #{typed :text, model.model_name.to_s} AS type FROM #{table}) AS #{table}"
-      send("unify_#{table}", query)
+      send(:"unify_#{table}", query)
     end
   end
 
@@ -102,7 +108,7 @@ class CostQuery::SqlStatement < Report::SqlStatement
   #
   # @param [CostQuery::SqlStatement] query The statement to adjust
   def self.unify_time_entries(query)
-    query.select :activity_id, :logged_by_id, units: :hours, cost_type_id: -1
+    query.select :activity_id, :logged_by_id, :start_time, :time_zone, units: :hours, cost_type_id: -1
     query.select cost_type: quoted_label(:caption_labor)
   end
 
@@ -111,7 +117,7 @@ class CostQuery::SqlStatement < Report::SqlStatement
   #
   # @param [CostQuery::SqlStatement] query The statement to adjust
   def self.unify_cost_entries(query)
-    query.select :units, :cost_type_id, :logged_by_id, activity_id: -1
+    query.select :units, :cost_type_id, :logged_by_id, activity_id: -1, start_time: nil, time_zone: nil
     query.select cost_type: "cost_types.name"
     query.join CostType
   end

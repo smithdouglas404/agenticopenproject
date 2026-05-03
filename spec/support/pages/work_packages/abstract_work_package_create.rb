@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'support/pages/page'
-require 'support/pages/work_packages/abstract_work_package'
+require "support/pages/page"
+require "support/pages/work_packages/abstract_work_package"
 
 module Pages
   class AbstractWorkPackageCreate < AbstractWorkPackage
@@ -42,11 +44,12 @@ module Pages
       @parent_work_package = parent_work_package
     end
 
-    def update_attributes(attribute_map)
+    def fill_in_attributes(attribute_map)
       attribute_map.each do |label, value|
         work_package_field(label.downcase).set_value(value)
       end
     end
+    alias :update_attributes :fill_in_attributes
 
     def select_attribute(property, value)
       element = page.first(".inline-edit--container.#{property.downcase} select")
@@ -59,15 +62,15 @@ module Pages
 
     def expect_fully_loaded
       expect_angular_frontend_initialized
-      expect(page).to have_selector '#wp-new-inline-edit--field-subject', wait: 20
+      expect(page).to have_css "#wp-new-inline-edit--field-subject", wait: 20
     end
 
     def save!
-      scroll_to_and_click find('.button', text: I18n.t('js.button_save'))
+      scroll_to_and_click find(".button", text: I18n.t("js.button_save"))
     end
 
     def cancel!
-      scroll_to_and_click find('.button', text: I18n.t('js.button_cancel'))
+      scroll_to_and_click find(".button", text: I18n.t("js.button_cancel"))
     end
   end
 end

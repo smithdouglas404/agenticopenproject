@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,88 +28,82 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe ProjectsHelper, type: :helper do
+RSpec.describe ProjectsHelper do
   include ApplicationHelper
-  include ProjectsHelper
+  include described_class
 
-  describe '#projects_with_level' do
-    let(:root) do
-      stub_descendant_of
-    end
-    let(:child1) { stub_descendant_of(root) }
-    let(:grandchild1) { stub_descendant_of(root, child1) }
-    let(:grandchild2) { stub_descendant_of(root, child1) }
-    let(:grandgrandchild1) { stub_descendant_of(root, child1, grandchild2) }
-    let(:child2) { stub_descendant_of(root) }
+  let(:project_selects) do
+    selects = [
+      Queries::Projects::Selects::Default.new(:name),
+      Queries::Projects::Selects::Default.new(:hierarchy),
+      Queries::Projects::Selects::Default.new(:description),
+      Queries::Projects::Selects::Status.new(:project_status)
+    ]
 
-    def stub_descendant_of(*ancestors)
-      wp = build_stubbed(:project)
+    query_instance = instance_double(ProjectQuery, available_selects: selects)
 
-      allow(wp)
-        .to receive(:is_descendant_of?)
-        .and_return(false)
+    allow(ProjectQuery)
+      .to receive(:new)
+            .and_return(query_instance)
+  end
 
-      ancestors.each do |ancestor|
-        allow(wp)
-          .to receive(:is_descendant_of?)
-          .with(ancestor)
-          .and_return(true)
-      end
+  describe "#short_project_description" do
+    let(:project) { build_stubbed(:project, description: "#{'Abcd ' * 5}\n" * 11) }
 
-      wp
-    end
-
-    context 'when ordered by hierarchy' do
-      let(:projects) do
-        [root,
-         child1,
-         grandchild1,
-         grandchild2,
-         grandgrandchild1,
-         child2]
-      end
-
-      it 'returns the projects in the provided order with the appropriate levels' do
-        expect { |b| helper.projects_with_level(projects, &b) }
-          .to yield_successive_args [root, 0],
-                                    [child1, 1],
-                                    [grandchild1, 2],
-                                    [grandchild2, 2],
-                                    [grandgrandchild1, 3],
-                                    [child2, 1]
-      end
-    end
-
-    context 'when ordered by arbitrarily' do
-      let(:projects) do
-        [grandchild1,
-         child1,
-         grandchild2,
-         grandgrandchild1,
-         child2,
-         root]
-      end
-
-      it 'returns the projects in the provided order with the appropriate levels' do
-        expect { |b| helper.projects_with_level(projects, &b) }
-          .to yield_successive_args [grandchild1, 0],
-                                    [child1, 0],
-                                    [grandchild2, 1],
-                                    [grandgrandchild1, 2],
-                                    [child2, 0],
-                                    [root, 0]
-      end
+    it "returns shortened description" do
+      expect(helper.short_project_description(project))
+        .to eql("#{("#{'Abcd ' * 5}\n" * 10)[0..-2]}...")
     end
   end
 
-  describe '#short_project_description' do
-    let(:project) { build_stubbed(:project, description: (('Abcd ' * 5) + "\n") * 11) }
+  describe "#projects_columns_options" do
+    before do
+      project_selects
+    end
 
-    it 'returns shortened description' do
-      expect(helper.short_project_description(project))
-        .to eql(((('Abcd ' * 5) + "\n") * 10)[0..-2] + '...')
+    it "returns the columns options" do
+      expect(helper.projects_columns_options)
+        .to eql([
+                  { name: "Description", id: :description },
+                  { name: "Name", id: :name },
+                  { name: "Status", id: :project_status }
+                ])
+    end
+  end
+
+  describe "#selected_project_columns_options", with_settings: { enabled_projects_columns: %w[name description] } do
+    before do
+      project_selects
+    end
+
+    it "returns the columns options currently persisted in the setting (in that order)" do
+      expect(helper.selected_projects_columns_options)
+        .to eql([
+                  { name: "Name", id: :name },
+                  { name: "Description", id: :description }
+                ])
+    end
+  end
+
+  describe "#protected_project_columns_options" do
+    before do
+      project_selects
+    end
+
+    it "returns the columns options currently persisted in the setting (in that order)" do
+      expect(helper.protected_projects_columns_options)
+        .to eql([
+                  { name: "Name", id: :name }
+                ])
+    end
+  end
+
+  describe "#supported_export_formats" do
+    it "returns the supported export formats" do
+      expect(helper.supported_export_formats)
+        .to match_array(%w[xls csv pdf])
     end
   end
 end

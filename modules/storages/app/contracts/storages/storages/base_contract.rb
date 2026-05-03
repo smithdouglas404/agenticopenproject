@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,30 +28,67 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'net/http'
-require 'uri'
+require "net/http"
+require "uri"
 
-# Purpose: common functionalities shared by CreateContract and UpdateContract
-# UpdateService by default checks if UpdateContract exists
-# and uses the contract to validate the model under consideration
-# (normally it's a model).
-module Storages::Storages
-  class BaseContract < ::ModelContract
-    MINIMAL_NEXTCLOUD_VERSION = 22
+module Storages
+  module Storages
+    class BaseContract < ::BaseContract
+      include Concerns::ManageStoragesGuarded
 
-    include ::Storages::Storages::Concerns::ManageStoragesGuarded
-    include ActiveModel::Validations
+      class Factory
+        def initialize(contract_class, provider_contract)
+          @contract_class = contract_class
+          @provider_contract = provider_contract
+        end
 
-    attribute :name
-    validates :name, presence: true, length: { maximum: 255 }
+        def new(*, **)
+          @contract_class.new(*, provider_contract: @provider_contract, **)
+        end
 
-    attribute :provider_type
-    validates :provider_type, inclusion: { in: ->(*) { Storages::Storage::PROVIDER_TYPES } }
+        delegate :<=, to: :@contract_class
+      end
 
-    attribute :host
-    validates :host, url: true, length: { maximum: 255 }
-    # Check that a host actually is a storage server.
-    # But only do so if the validations above for URL were successful.
-    validates :host, secure_context_uri: true, nextcloud_compatible_host: true, unless: -> { errors.include?(:host) }
+      class << self
+        def with_provider_contract(provider_contract)
+          Factory.new(self, provider_contract)
+        end
+      end
+
+      attribute :provider_type
+      validates :provider_type, inclusion: { in: -> { Storage.provider_types.values.map(&:to_s) } }, allow_nil: false
+
+      attribute :provider_fields
+
+      validate :provider_type_strategy,
+               unless: -> { errors.include?(:provider_type) || @options.delete(:skip_provider_type_strategy) }
+
+      def initialize(*, provider_contract: nil, **)
+        super(*, **)
+
+        @provider_contract = provider_contract
+      end
+
+      private
+
+      def provider_type_strategy
+        contract = provider_contract.new(model, @user, options: @options)
+
+        # Append the attributes defined in the internal contract
+        # to the list of writable attributes.
+        # Otherwise, we get :readonly validation errors.
+        contract.writable_attributes.append(*writable_attributes)
+
+        validate_and_merge_errors(contract)
+      end
+
+      def provider_contract
+        @provider_contract || default_provider_contract
+      end
+
+      def default_provider_contract
+        ::Storages::Adapters::Registry.resolve("#{model}.contracts.storage")
+      end
+    end
   end
 end

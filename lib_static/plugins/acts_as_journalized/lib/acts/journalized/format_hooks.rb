@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -53,26 +55,15 @@ module Acts::Journalized
 
     module ClassMethods
       # Shortcut to register a formatter for a number of fields
-      def register_on_journal_formatter(formatter, *field_names)
-        formatter = formatter.to_sym
-        journal_class = self.journal_class
+      def register_journal_formatted_fields(*field_names, formatter_key:)
+        journal_data_type = journal_class.name
         field_names.each do |field|
-          JournalFormatter.register_formatted_field(journal_class.name.to_sym, field, formatter)
+          JournalFormatter.register_formatted_field(journal_data_type, field, formatter_key)
         end
       end
 
-      # Shortcut to register a new proc as a named formatter. Overwrites
-      # existing formatters with the same name
-      def register_journal_formatter(formatter, klass = nil, &block)
-        if block_given?
-          klass = Class.new(JournalFormatter::Proc) do
-            @proc = block
-          end
-        end
-
-        raise ArgumentError 'Provide either a class or a block defining the value formatting' if klass.nil?
-
-        JournalFormatter.register formatter.to_sym => klass
+      def register_journal_formatter(formatter_class, formatter_key: formatter_class.name.demodulize.underscore)
+        JournalFormatter.register formatter_key.to_sym => formatter_class
       end
     end
   end

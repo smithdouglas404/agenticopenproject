@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Grids::SetAttributesService < ::BaseServices::SetAttributes
+class Grids::SetAttributesService < BaseServices::SetAttributes
   include Attachments::SetReplacements
 
   private
@@ -34,7 +34,7 @@ class Grids::SetAttributesService < ::BaseServices::SetAttributes
   def set_attributes(attributes)
     widget_attributes = attributes.delete(:widgets)
 
-    ret = super(attributes)
+    ret = super
 
     update_widgets(widget_attributes)
 
@@ -63,11 +63,11 @@ class Grids::SetAttributesService < ::BaseServices::SetAttributes
     to_destroy.each(&:mark_for_destruction)
 
     to_create.each do |widget|
-      model.widgets.build widget.attributes.except('id')
+      model.widgets.build widget.attributes.except("id")
     end
 
     update_map.each do |existing, provided|
-      existing.attributes = provided.attributes.except('id', 'grid_id')
+      existing.attributes = provided.attributes.except("id", "grid_id")
     end
   end
 

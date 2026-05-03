@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -32,18 +32,21 @@ import { IfcModelsDataService } from 'core-app/features/bim/ifc_models/pages/vie
 
 @Component({
   template: `
-    <a *ngIf="manageAllowed"
-       class="button"
-       [href]="manageIFCPath">
-      <op-icon icon-classes="button--icon icon-settings2"></op-icon>
-      <span class="button--text"
-            [textContent]="text.manage"
-            aria-hidden="true"></span>
-    </a>
-
-  `,
+    @if (manageAllowed) {
+      <a
+        class="button"
+        [href]="manageIFCPath">
+        <op-icon icon-classes="button--icon icon-settings2" />
+        <span class="button--text"
+          [textContent]="text.manage"
+        aria-hidden="true"></span>
+      </a>
+    }
+    
+    `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-bcf-manage-ifc-button',
+  standalone: false,
 })
 export class BimManageIfcModelsButtonComponent {
   text = {

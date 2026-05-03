@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +36,7 @@ function createInitialState():IUserPreference {
   return {
     autoHidePopups: true,
     commentSortDescending: false,
-    hideMail: true,
+    disableKeyboardShortcuts: false,
     timeZone: null,
     warnOnLeavingUnsaved: true,
     notifications: [],
@@ -47,6 +47,7 @@ function createInitialState():IUserPreference {
     workdays: [1, 2, 3, 4, 5],
     immediateReminders: {
       mentioned: false,
+      personalReminder: false,
     },
     pauseReminders: {
       enabled: false,

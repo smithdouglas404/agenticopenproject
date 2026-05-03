@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,98 +28,113 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe CustomValue::IntStrategy do
+RSpec.describe CustomValue::IntStrategy do
   let(:instance) { described_class.new(custom_value) }
-  let(:custom_value) do
-    double('CustomValue',
-           value:)
-  end
+  let(:custom_value) { instance_double(CustomValue, value:) }
 
-  describe '#typed_value' do
+  describe "#typed_value" do
     subject { instance.typed_value }
 
-    context 'value is some float string' do
-      let(:value) { '10' }
+    context "when value is an int string" do
+      let(:value) { "12" }
+
+      it { is_expected.to be(12) }
+    end
+
+    context "when value is a float string" do
+      let(:value) { "10.0" }
 
       it { is_expected.to be(10) }
     end
 
-    context 'value is blank' do
-      let(:value) { '' }
+    context "when value is blank" do
+      let(:value) { "" }
 
       it { is_expected.to be_nil }
     end
 
-    context 'value is nil' do
+    context "when value is nil" do
       let(:value) { nil }
 
       it { is_expected.to be_nil }
     end
   end
 
-  describe '#formatted_value' do
-    subject { instance.typed_value }
+  describe "#formatted_value" do
+    subject { instance.formatted_value }
 
-    context 'value is some int string' do
-      let(:value) { '10' }
+    context "when value is an int string" do
+      let(:value) { "10" }
 
-      it { is_expected.to be(10) }
+      it { is_expected.to eql("10") }
     end
 
-    context 'value is blank' do
-      let(:value) { '' }
+    context "when value is a big integer" do
+      let(:value) { "10432501" }
 
-      it { is_expected.to be_nil }
+      it { is_expected.to eql("10,432,501") }
+
+      it "is localized" do
+        I18n.with_locale(:de) do
+          expect(subject).to eql "10.432.501"
+        end
+      end
     end
 
-    context 'value is nil' do
+    context "when value is blank" do
+      let(:value) { "" }
+
+      it { is_expected.to be("") }
+    end
+
+    context "when value is nil" do
       let(:value) { nil }
 
-      it { is_expected.to be_nil }
+      it { is_expected.to be("") }
     end
   end
 
-  describe '#validate_type_of_value' do
+  describe "#validate_type_of_value" do
     subject { instance.validate_type_of_value }
 
-    context 'value is positive int string' do
-      let(:value) { '10' }
+    context "when value is a positive int string" do
+      let(:value) { "10" }
 
-      it 'accepts' do
+      it "accepts" do
         expect(subject).to be_nil
       end
     end
 
-    context 'value is negative int string' do
-      let(:value) { '-10' }
+    context "when value is a negative int string" do
+      let(:value) { "-10" }
 
-      it 'accepts' do
+      it "accepts" do
         expect(subject).to be_nil
       end
     end
 
-    context 'value is not an int string' do
-      let(:value) { 'unicorn' }
+    context "when value is not an int string" do
+      let(:value) { "unicorn" }
 
-      it 'rejects' do
+      it "rejects" do
         expect(subject).to be(:not_an_integer)
       end
     end
 
-    context 'value is an actual int' do
+    context "when value is an actual int" do
       let(:value) { 10 }
 
-      it 'accepts' do
+      it "accepts" do
         expect(subject).to be_nil
       end
     end
 
-    context 'value is a float' do
+    context "when value is a float" do
       let(:value) { 2.3 }
 
-      it 'rejects' do
+      it "rejects" do
         expect(subject).to be(:not_an_integer)
       end
     end

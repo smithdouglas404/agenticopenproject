@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +39,7 @@ class Watcher < ApplicationRecord
   validate :validate_user_allowed_to_watch
 
   def self.prune(user: [], project_id: nil)
-    user_ids = Array(user).compact.map { |u| u.is_a?(User) ? u.id : nil }.compact
+    user_ids = Array(user).compact.filter_map { |u| u.is_a?(User) ? u.id : nil }
 
     projects = project_id ? Project.where(id: project_id) : Project.all
 
@@ -49,14 +51,14 @@ class Watcher < ApplicationRecord
   def validate_active_user
     return if user.blank?
 
-    errors.add :user_id, :locked if user.locked?
+    errors.add :user_id, :locked if user.locked? || user.deleted?
   end
 
   def validate_user_allowed_to_watch
     return if user.blank? || watchable.blank?
     # No need to add a missing permission error on top of the user locked error
     # created by validate_active_user.
-    return if user.locked?
+    return if user.locked? || user.deleted?
 
     errors.add :user_id, :not_allowed_to_view unless watchable.possible_watcher?(user)
   end
@@ -138,7 +140,7 @@ class Watcher < ApplicationRecord
                     .joins(:watchers)
                     .joins(:project)
                     .where(projects: { id: projects.map(&:id) })
-                    .select('watchers.id')
+                    .select("watchers.id")
 
       id_subquery = id_subquery.where(watchers: { user_id: user_ids }) unless user_ids.empty?
 

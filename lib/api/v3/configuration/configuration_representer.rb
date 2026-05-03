@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'api/decorators/single'
+require "api/decorators/single"
 
 module API
   module V3
@@ -56,6 +58,9 @@ module API
         property :maximum_attachment_file_size,
                  getter: ->(*) { attachment_max_size.to_i.kilobyte }
 
+        property :maximum_api_v3_page_size,
+                 getter: ->(*) { apiv3_max_page_size }
+
         property :per_page_options,
                  getter: ->(*) { per_page_options_array }
 
@@ -63,14 +68,26 @@ module API
                  exec_context: :decorator,
                  render_nil: true
 
+        property :duration_format,
+                 render_nil: true
+
         property :time_format,
                  exec_context: :decorator,
+                 render_nil: true
+
+        property :user_default_timezone,
                  render_nil: true
 
         property :start_of_week,
                  getter: ->(*) {
                    Setting.start_of_week.to_i if Setting.start_of_week.present?
                  },
+                 render_nil: true
+
+        property :hours_per_day,
+                 render_nil: true
+
+        property :days_per_month,
                  render_nil: true
 
         property :host_name,
@@ -86,6 +103,19 @@ module API
                      .map { |flag| flag.camelize(:lower) }
                  }
 
+        property :available_features,
+                 getter: ->(*) {
+                   EnterpriseToken.available_features
+                 }
+
+        property :trialling_features,
+                 getter: ->(*) {
+                   EnterpriseToken.trialling_features
+                 }
+
+        property :allowed_link_protocols,
+                 getter: ->(*) { Setting::AllowedLinkProtocols.all }
+
         property :user_preferences,
                  embedded: true,
                  exec_context: :decorator,
@@ -94,7 +124,7 @@ module API
                  }
 
         def _type
-          'Configuration'
+          "Configuration"
         end
 
         def user_preferences
@@ -105,22 +135,22 @@ module API
         def date_format
           reformated(Setting.date_format) do |directive|
             case directive
-            when '%Y'
-              'YYYY'
-            when '%y'
-              'YY'
-            when '%m'
-              'MM'
-            when '%B'
-              'MMMM'
-            when '%b', '%h'
-              'MMM'
-            when '%d'
-              'DD'
-            when '%e'
-              'D'
-            when '%j'
-              'DDDD'
+            when "%Y"
+              "YYYY"
+            when "%y"
+              "YY"
+            when "%m"
+              "MM"
+            when "%B"
+              "MMMM"
+            when "%b", "%h"
+              "MMM"
+            when "%d"
+              "DD"
+            when "%e"
+              "D"
+            when "%j"
+              "DDDD"
             end
           end
         end
@@ -128,20 +158,20 @@ module API
         def time_format
           reformated(Setting.time_format) do |directive|
             case directive
-            when '%H'
-              'HH'
-            when '%k'
-              'H'
-            when '%I'
-              'hh'
-            when '%l'
-              'h'
-            when '%P'
-              'A'
-            when '%p'
-              'a'
-            when '%M'
-              'mm'
+            when "%H"
+              "HH"
+            when "%k"
+              "H"
+            when "%I"
+              "hh"
+            when "%l"
+              "h"
+            when "%P"
+              "A"
+            when "%p"
+              "a"
+            when "%M"
+              "mm"
             end
           end
         end

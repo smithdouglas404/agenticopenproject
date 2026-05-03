@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,21 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Queries::Views::Filters::TypeFilter, type: :model do
+RSpec.describe Queries::Views::Filters::TypeFilter do
   let(:current_user) { create(:user) }
 
   before do
     login_as(current_user)
   end
 
-  it_behaves_like 'basic query filter' do
+  it_behaves_like "basic query filter" do
     let(:class_key) { :type }
     let(:type) { :list_optional }
 
-    describe '#allowed_values' do
-      it 'includes the core views' do
+    describe "#allowed_values" do
+      it "includes the core views" do
         expected_core_views = [
           %w[Views::TeamPlanner Views::TeamPlanner],
           %w[Views::WorkPackagesTable Views::WorkPackagesTable]
@@ -51,7 +53,7 @@ describe Queries::Views::Filters::TypeFilter, type: :model do
     end
   end
 
-  it_behaves_like 'list_optional query filter' do
+  it_behaves_like "list_optional query filter" do
     let(:attribute) { :type }
     let(:model) { View }
     let(:valid_values) { %w[Views::TeamPlanner Views::WorkPackagesTable] }

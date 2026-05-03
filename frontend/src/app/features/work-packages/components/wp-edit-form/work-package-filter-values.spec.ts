@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +38,7 @@ import { WorkPackageCreateService } from 'core-app/features/work-packages/compon
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { TypeResource } from 'core-app/features/hal/resources/type-resource';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { States } from 'core-app/core/states/states.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
@@ -51,8 +51,6 @@ import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/q
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
-import { OpenProjectFileUploadService } from 'core-app/core/file-upload/op-file-upload.service';
-import { OpenProjectDirectFileUploadService } from 'core-app/core/file-upload/op-direct-file-upload.service';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { WeekdayService } from 'core-app/core/days/weekday.service';
 import { of } from 'rxjs';
@@ -75,11 +73,8 @@ describe('WorkPackageFilterValues', () => {
   function setupTestBed() {
     // noinspection JSIgnoredPromiseFromCall
     void TestBed.configureTestingModule({
-      imports: [
-        UIRouterModule.forRoot({}),
-        HttpClientModule,
-      ],
-      providers: [
+    imports: [UIRouterModule.forRoot({})],
+    providers: [
         I18nService,
         { provide: WeekdayService, useValue: WeekdayServiceStub },
         States,
@@ -90,8 +85,6 @@ describe('WorkPackageFilterValues', () => {
         ConfigurationService,
         CurrentUserService,
         HookService,
-        OpenProjectFileUploadService,
-        OpenProjectDirectFileUploadService,
         LoadingIndicatorService,
         HalResourceService,
         ToastService,
@@ -101,8 +94,9 @@ describe('WorkPackageFilterValues', () => {
         WorkPackageCreateService,
         HalResourceEditingService,
         WorkPackagesActivityService,
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+}).compileComponents();
 
     injector = TestBed.inject(Injector);
     halResourceService = injector.get(HalResourceService);

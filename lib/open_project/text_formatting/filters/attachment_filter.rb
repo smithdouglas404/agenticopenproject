@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,10 +43,10 @@ module OpenProject::TextFormatting
 
         rewriter = ::OpenProject::TextFormatting::Helpers::LinkRewriter.new context
 
-        doc.css('img[src]').each do |node|
+        doc.css("img[src]").each do |node|
           # Check for relative URLs and replace them if needed
-          if rewriter.applicable? node['src']
-            node['src'] = rewriter.replace node['src']
+          if rewriter.applicable? node["src"]
+            node["src"] = rewriter.replace node["src"]
             next
           end
 
@@ -61,17 +63,17 @@ module OpenProject::TextFormatting
       ##
       # Lookup a local attachment name
       def lookup_attachment_by_name(node, attachments)
-        filename = node['src'].downcase
+        filename = node["src"].downcase
 
         # We only match a specific set of attributes as before
-        return unless filename =~ matched_filenames_regex
+        return unless filename&.match?(matched_filenames_regex)
 
         # Try to find the attachment
         if (attachment = attachments.detect { |att| att.filename.downcase == filename })
-          node['src'] = url_to_attachment(attachment, only_path: context[:only_path])
+          node["src"] = url_to_attachment(attachment, only_path: context[:only_path])
 
           # Replace alt text with description, unless it has one already
-          node['alt'] = node['alt'].presence || attachment.description
+          node["alt"] = node["alt"].presence || attachment.description
         end
       end
 

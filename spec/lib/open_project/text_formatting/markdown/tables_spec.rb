@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require_relative './expected_markdown'
+require "spec_helper"
+require_relative "expected_markdown"
 
-describe OpenProject::TextFormatting,
-         'tables' do
-  include_context 'expected markdown modules'
+RSpec.describe OpenProject::TextFormatting,
+               "tables" do
+  include_context "expected markdown modules"
 
-  context 'for a markdown table' do
-    it_behaves_like 'format_text produces' do
+  context "for a markdown table" do
+    it_behaves_like "format_text produces" do
       let(:raw) do
         <<~RAW
           This is a table with header cells:
@@ -81,8 +83,8 @@ describe OpenProject::TextFormatting,
     end
   end
 
-  context 'for an html table' do
-    it_behaves_like 'format_text produces' do
+  context "for an html table" do
+    it_behaves_like "format_text produces" do
       let(:raw) do
         <<~RAW
           <table>
@@ -142,8 +144,8 @@ describe OpenProject::TextFormatting,
       end
     end
 
-    context 'already having a figure parent element' do
-      it_behaves_like 'format_text produces' do
+    context "already having a figure parent element" do
+      it_behaves_like "format_text produces" do
         let(:raw) do
           <<~RAW
             <figure>

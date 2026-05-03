@@ -18,12 +18,15 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { DocumentResource } from '../../../../../../../../modules/documents/frontend/module/hal/resources/document-resource';
 
 @Component({
+  selector: 'op-documents-widget',
   templateUrl: './documents.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WidgetDocumentsComponent extends AbstractWidgetComponent implements OnInit {
   public text = {
     noResults: this.i18n.t('js.grid.widgets.documents.no_results'),
+    project: this.i18n.t('js.label_project'),
   };
 
   public entries:DocumentResource[] = [];
@@ -45,8 +48,7 @@ export class WidgetDocumentsComponent extends AbstractWidgetComponent implements
   ngOnInit() {
     this.halResource
       .get<CollectionResource>(this.documentsUrl)
-      .toPromise()
-      .then((collection) => {
+      .subscribe((collection) => {
         this.entries = collection.elements as DocumentResource[];
         this.entriesLoaded = true;
 

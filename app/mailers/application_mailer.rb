@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,11 +29,12 @@
 #++
 
 class ApplicationMailer < ActionMailer::Base
-  layout 'mailer'
+  layout "mailer"
 
   helper :application, # for format_text
          :work_packages, # for css classes
-         :custom_fields # for show_value
+         :custom_fields, # for show_value
+         :mail_layout # for layouting
 
   include OpenProject::LocaleHelper
 
@@ -42,40 +45,56 @@ class ApplicationMailer < ActionMailer::Base
   default from: Proc.new { Setting.mail_from }
 
   class << self
-    # Activates/deactivates email deliveries during +block+
-    def with_deliveries(temporary_state = true, &)
-      old_state = ActionMailer::Base.perform_deliveries
-      ActionMailer::Base.perform_deliveries = temporary_state
-      yield
-    ensure
-      ActionMailer::Base.perform_deliveries = old_state
+    ##
+    # Provide an easy way to get the default from address
+    # which is overridden for SaaS for tenant specific from addresses
+    #
+    # @return [String] the default from address
+    def mail_from
+      default[:from].call
+    end
+
+    ##
+    # Provide an easy way to get the default reply_to address
+    # which is overridden for SaaS for tenant specific from addresses
+    #
+    # @return [String] the default from address
+    def reply_to
+      if default[:reply_to]
+        default[:reply_to].call
+      else
+        mail_from
+      end
+    end
+
+    ##
+    # Return the email address of reply to
+    #
+    # @return [String] the default from address
+    def reply_to_address
+      address = reply_to
+      # Extract email from "Name <email>" format if present
+      address[/<(.+)>/, 1] || address
     end
 
     def host
       if OpenProject::Configuration.rails_relative_url_root.blank?
         Setting.host_name
       else
-        Setting.host_name.to_s.gsub(%r{/.*\z}, '')
+        Setting.host_name.to_s.gsub(%r{/.*\z}, "")
       end
     end
 
-    def protocol
-      Setting.protocol
-    end
+    delegate :protocol, to: :Setting
 
     def default_url_options
-      options = super.merge host: host, protocol: protocol
+      options = super.merge(host:, protocol:)
       if OpenProject::Configuration.rails_relative_url_root.present?
         options[:script_name] = OpenProject::Configuration.rails_relative_url_root
       end
 
       options
     end
-  end
-
-  def mail(headers = {}, &block)
-    block ||= method(:default_formats_for_setting)
-    super(headers, &block)
   end
 
   # Sets a Message-ID header.
@@ -86,7 +105,7 @@ class ApplicationMailer < ActionMailer::Base
   # Because of this, the message id and the value affected by it (In-Reply-To) is not relied upon when an email response
   # is handled by OpenProject.
   def message_id(object, user)
-    headers['Message-ID'] = "<#{message_id_value(object, user)}>"
+    headers["Message-ID"] = "<#{message_id_value(object, user)}>"
   end
 
   # Sets a References header.
@@ -104,7 +123,7 @@ class ApplicationMailer < ActionMailer::Base
       end
     end
 
-    headers['References'] = refs.join(' ')
+    headers["References"] = refs.join(" ")
   end
 
   # Prepends given fields with 'X-OpenProject-' to save some duplication
@@ -119,9 +138,30 @@ class ApplicationMailer < ActionMailer::Base
     format.text
   end
 
-  def send_mail(user, subject)
+  ##
+  # Overwrite mailer method to prevent sending mails to locked users.
+  # Usually this would accept a string for the `to:` argument, but
+  # we always require an actual user object since fed95796.
+  def mail(headers = {}, &block)
+    block ||= method(:default_formats_for_setting)
+    to = headers[:to]
+
+    if to
+      raise ArgumentError, "Recipient needs to be instance of User" unless to.is_a?(User)
+
+      if to.locked? || to.deleted?
+        Rails.logger.info "Not sending #{action_name} mail to locked user #{to.id} (#{to.login})"
+        return
+      end
+    end
+
+    super(headers.merge(to: to.mail), &block)
+  end
+
+  def send_localized_mail(user, delivery_method_options: {})
     with_locale_for(user) do
-      mail to: user.mail, subject:
+      subject = yield
+      mail to: user, subject:, delivery_method_options:
     end
   end
 
@@ -140,12 +180,12 @@ class ApplicationMailer < ActionMailer::Base
                        else
                          "#{object.class.name.demodulize.underscore}-#{object.id}"
                        end
-    hash = 'op' \
-           '.' \
+    hash = "op" \
+           "." \
            "#{object_reference}" \
-           '.' \
+           "." \
            "#{Time.current.strftime('%Y%m%d%H%M%S')}" \
-           '.' \
+           "." \
            "#{recipient.id}"
 
     "#{hash}@#{header_host_value}"
@@ -160,15 +200,15 @@ class ApplicationMailer < ActionMailer::Base
   # It in fact is aimed not not so that similar messages (i.e. those belonging to the same
   # work package and journal) end up being grouped together.
   def references_value(object)
-    hash = 'op' \
-           '.' \
+    hash = "op" \
+           "." \
            "#{object.class.name.demodulize.underscore}-#{object.id}"
 
     "#{hash}@#{header_host_value}"
   end
 
   def header_host_value
-    host = Setting.mail_from.to_s.gsub(%r{\A.*@}, '')
+    host = ApplicationMailer.mail_from.to_s.gsub(%r{\A.*@}, "")
     host = "#{::Socket.gethostname}.openproject" if host.empty?
     host
   end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -33,19 +33,26 @@ import { WorkPackageResource } from 'core-app/features/hal/resources/work-packag
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { CustomActionResource } from 'core-app/features/hal/resources/custom-action-resource';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
+import { BannersService } from 'core-app/core/enterprise/banners.service';
 
 @Component({
   selector: 'wp-custom-actions',
   templateUrl: './wp-custom-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WpCustomActionsComponent extends UntilDestroyedMixin implements OnInit {
   @Input() workPackage:WorkPackageResource;
 
   actions:CustomActionResource[] = [];
 
-  constructor(readonly apiV3Service:ApiV3Service,
-    readonly cdRef:ChangeDetectorRef) {
+  available = this.bannersService.allowsTo('custom_actions');
+
+  constructor(
+    readonly apiV3Service:ApiV3Service,
+    readonly cdRef:ChangeDetectorRef,
+    readonly bannersService:BannersService,
+  ) {
     super();
   }
 
@@ -59,7 +66,7 @@ export class WpCustomActionsComponent extends UntilDestroyedMixin implements OnI
         this.untilDestroyed(),
       )
       .subscribe((wp) => {
-        this.actions = wp.customActions ? [...wp.customActions] : [];
+        this.actions = wp.customActions as CustomActionResource[];
         this.cdRef.detectChanges();
       });
   }

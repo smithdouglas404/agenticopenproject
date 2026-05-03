@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Injector,
-  ViewChild,
+  ViewChild, OnInit,
 } from '@angular/core';
 import { TabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tab-portal-outlet';
 import { WorkPackageViewHighlightingService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-highlighting.service';
@@ -14,20 +14,20 @@ import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/q
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { States } from 'core-app/core/states/states.service';
 import { enterpriseDocsUrl } from 'core-app/core/setup/globals/constants.const';
+import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 
 @Component({
   templateUrl: './highlighting-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-export class WpTableConfigurationHighlightingTabComponent implements TabComponent {
+export class WpTableConfigurationHighlightingTabComponent implements TabComponent, OnInit {
   // Display mode
   public highlightingMode:HighlightingMode = 'inline';
 
   public entireRowMode = false;
 
   public lastEntireRowAttribute:HighlightingMode = 'status';
-
-  public eeShowBanners = false;
 
   public availableInlineHighlightedAttributes:HalResource[] = [];
 
@@ -51,8 +51,6 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
       priority: this.I18n.t('js.work_packages.table_configuration.highlighting_mode.priority'),
       entire_row_by: this.I18n.t('js.work_packages.table_configuration.highlighting_mode.entire_row_by'),
     },
-    upsaleAttributeHighlighting: this.I18n.t('js.work_packages.table_configuration.upsale.attribute_highlighting'),
-    upsaleCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsale.check_out_link'),
     more_info_link: enterpriseDocsUrl.tableHighlighting,
   };
 
@@ -72,13 +70,7 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
     ];
 
     this.setSelectedValues();
-
-    this.eeShowBanners = this.Banners.eeShowBanners;
     this.updateMode(this.wpTableHighlight.current.mode);
-
-    if (this.eeShowBanners) {
-      this.updateMode('none');
-    }
   }
 
   public onSave() {
@@ -93,7 +85,7 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
       this.highlightingMode = mode;
     }
 
-    if (['status', 'priority'].indexOf(this.highlightingMode) !== -1) {
+    if (['status', 'priority'].includes(this.highlightingMode)) {
       this.lastEntireRowAttribute = this.highlightingMode;
       this.entireRowMode = true;
     } else {
@@ -105,21 +97,13 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
     this.selectedAttributes = model;
   }
 
-  public disabledValue(value:boolean):string | null {
-    return value ? 'disabled' : null;
-  }
-
   public get availableHighlightedAttributes():HalResource[] {
     const { schema } = this.querySpace.queryForm.value!;
     return schema.highlightedAttributes.allowedValues;
   }
 
-  public onOpen(component:any) {
-    setTimeout(() => {
-      if (component.dropdownPanel) {
-        component.dropdownPanel._updatePosition();
-      }
-    }, 25);
+  public onOpen(component:unknown) {
+    repositionDropdownBugfix(component);
   }
 
   private setSelectedValues() {

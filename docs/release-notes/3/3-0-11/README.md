@@ -1,9 +1,9 @@
 ---
-  title: OpenProject 3.0.11
-  sidebar_navigation:
-      title: 3.0.11
-  release_version: 3.0.11
-  release_date: 2014-08-06
+title: OpenProject 3.0.11
+sidebar_navigation:
+  title: 3.0.11
+release_version: 3.0.11
+release_date: 2014-08-06
 ---
 
 # OpenProject 3.0.11
@@ -13,7 +13,7 @@ The release 3.0.11 of OpenProject fixes a couple of security threats
 and
 [#14782](https://community.openproject.org/work_packages/14782 "Disable redirection to a different subdirectory after login (closed)"))
 and raises the Rails version to
-[3.2.19](https://weblog.rubyonrails.org/2014/7/2/Rails_3_2_19_4_0_7_and_4_1_3_have_been_released/).
+[3.2.19](https://rubyonrails.org/2014/7/2/Rails_3_2_19_4_0_7_and_4_1_3_have_been_released).
 So we advise everybody to update their OpenProject installation.
 
 When doing so you also benefit from a couple of usability bugfixes. Most
@@ -28,12 +28,10 @@ the story points in the work package page
 With the integration of the repository-authentication plugin into
 OpenProject
 ([#14783](https://community.openproject.org/work_packages/14783 "Port whole functionality of openproject-repository_authentication into the core (closed)")),
-it is now once again possible to manage authentication and authorisation
+it is now once again possible to manage authentication and authorization
 of SVN repositories with OpenProject. The same will be allowed for Git
 repositories with OpenProject 4.0
 ([#3708](https://community.openproject.org/work_packages/3708 "Release OpenProject 4.0 (closed)")).
 
-For a complete list of changes, please refer to the 
+For a complete list of changes, please refer to the
 [OpenProject 3.0.11 query](https://community.openproject.org/versions/423).
-
-

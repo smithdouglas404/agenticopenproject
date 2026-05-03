@@ -1,13 +1,13 @@
 ---
 sidebar_navigation:
   title: Users and permissions
-  priority: 997
+  priority: 990
 description: Manage users and permissions.
 keywords: users, permissions, roles, groups, avatars
 ---
 # Users and permissions
 
-Manage users, placeholder users and permissions in OpenProject.
+In this section of the System Administration guide you can learn how to manage users, placeholder users and permissions in OpenProject.
 
 ## Overview
 
@@ -18,5 +18,5 @@ Manage users, placeholder users and permissions in OpenProject.
 | [Placeholder users](placeholder-users)     | Create and manage placeholder users.                         |
 | [Groups](groups)                           | View groups, create new groups, add users to groups.         |
 | [Roles and permissions](roles-permissions) | See / manage roles and permissions and add new roles.        |
+| [Permissions report](permissions-report)   | View and edit permissions assigned to currently existing roles. |
 | [Avatars](avatars)                         | Activate / deactivate user avatars (profile pictures).       |
-

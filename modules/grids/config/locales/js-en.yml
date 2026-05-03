@@ -2,12 +2,12 @@ en:
   js:
     grid:
       add_widget: 'Add widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Remove widget'
       configure: 'Configure widget'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
+        missing_permission: "You don't have the necessary permissions to view this widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Custom text'
         documents:
@@ -15,22 +15,12 @@ en:
           no_results: 'No documents yet.'
         members:
           title: 'Members'
-          no_results: 'No visible members.'
-          view_all_members: 'View all members'
-          add: 'Member'
-          too_many: 'Displaying %{count} of %{total} members.'
         news:
           title: 'News'
-          at: 'at'
-          no_results: 'Nothing new to report.'
         project_description:
-          title: 'Project description'
-          no_results: "No description has been written yet. One can be provided in the 'Project settings'."
-        project_details:
-          title: 'Project details'
-          no_results: 'No custom fields have been defined for projects.'
+          title: 'Description'
         project_status:
-          title: 'Project status'
+          title: 'Status'
           not_started: 'Not started'
           on_track: 'On track'
           off_track: 'Off track'
@@ -39,8 +29,10 @@ en:
           finished: 'Finished'
           discontinued: 'Discontinued'
         subprojects:
-          title: 'Subprojects'
-          no_results: 'No subprojects.'
+          title: 'Subitems'
+        project_favorites:
+          title: 'Favorite projects'
+          no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
         time_entries_current_user:
           title: 'My spent time'
           displayed_days: 'Days displayed in the widget:'
@@ -59,6 +51,7 @@ en:
           title: 'Work packages table'
         work_packages_graph:
           title: 'Work packages graph'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Calendar'
         work_packages_overview:

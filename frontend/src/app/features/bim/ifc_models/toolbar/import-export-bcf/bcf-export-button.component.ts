@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +27,7 @@
 //++
 
 import {
-  Component, Injector, OnDestroy, OnInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit,
 } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
@@ -37,8 +37,9 @@ import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { UrlParamsHelperService } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 import { StateService } from '@uirouter/core';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
-import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { WpTableExportModalComponent } from 'core-app/shared/components/modals/export-modal/wp-table-export.modal';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from 'core-app/shared/components/toaster/toast.service';
+import { JobStatusModalService } from 'core-app/features/job-status/job-status-modal.service';
 
 @Component({
   template: `
@@ -46,11 +47,16 @@ import { WpTableExportModalComponent } from 'core-app/shared/components/modals/e
        class="button export-bcf-button"
        [attr.href]="exportLink"
        (click)="showDelayedExport($event)">
-      <op-icon icon-classes="button--icon icon-export"></op-icon>
+      <op-icon icon-classes="button--icon icon-export" />
       <span class="button--text"> {{text.export}} </span>
     </a>
   `,
   selector: 'bcf-export-button',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BcfExportButtonComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   public text = {
@@ -67,9 +73,12 @@ export class BcfExportButtonComponent extends UntilDestroyedMixin implements OnI
     readonly bcfPathHelper:BcfPathHelperService,
     readonly querySpace:IsolatedQuerySpace,
     readonly queryUrlParamsHelper:UrlParamsHelperService,
-    readonly opModalService:OpModalService,
+    readonly jobStatusModalService:JobStatusModalService,
+    readonly httpClient:HttpClient,
     readonly injector:Injector,
-    readonly state:StateService) {
+    readonly toastService:ToastService,
+    readonly state:StateService,
+    readonly cdRef:ChangeDetectorRef) {
     super();
   }
 
@@ -88,11 +97,27 @@ export class BcfExportButtonComponent extends UntilDestroyedMixin implements OnI
           projectIdentifier!,
           JSON.stringify(filters),
         );
+        this.cdRef.markForCheck();
       });
   }
 
   public showDelayedExport(event:any) {
-    this.opModalService.show(WpTableExportModalComponent, this.injector, { link: this.exportLink });
+    this.requestExport(this.exportLink);
+
     event.preventDefault();
+  }
+
+  private requestExport(url:string):void {
+    this
+      .httpClient
+      .get(url, { observe: 'body', responseType: 'json' })
+      .subscribe(
+        (json:{ job_id:string }) => this.jobStatusModalService.show(json.job_id),
+        (error:HttpErrorResponse) => this.handleError(error),
+      );
+  }
+
+  private handleError(error:HttpErrorResponse) {
+    this.toastService.addError(error.message || this.I18n.t('js.error.internal'));
   }
 }

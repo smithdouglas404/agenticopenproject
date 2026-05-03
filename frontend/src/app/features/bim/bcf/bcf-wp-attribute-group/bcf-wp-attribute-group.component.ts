@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -59,6 +59,7 @@ import { filter, take } from 'rxjs/operators';
   styleUrls: ['./bcf-wp-attribute-group.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ViewpointsService],
+  standalone: false,
 })
 export class BcfWpAttributeGroupComponent extends UntilDestroyedMixin implements AfterViewInit, OnDestroy, OnInit {
   @Input() workPackage:WorkPackageResource;
@@ -293,14 +294,12 @@ export class BcfWpAttributeGroupComponent extends UntilDestroyedMixin implements
     ];
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public galleryPreviewOpen():void {
-    jQuery('.op-app-header').addClass('-no-z-index');
+    document.querySelector('.op-app-header')?.classList.add('-no-z-index');
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public galleryPreviewClose():void {
-    jQuery('.op-app-header').removeClass('-no-z-index');
+    document.querySelector('.op-app-header')?.classList.remove('-no-z-index');
   }
 
   public selectViewpointInGallery() {

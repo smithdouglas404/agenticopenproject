@@ -1,86 +1,95 @@
 #English strings go here
+---
 fa:
+  ee:
+    upsell:
+      board_view:
+        description: آیا می خواهید گردش کار خود را با تابلوها خودکار کنید؟ بردهای پیشرفته یک افزونه Enterprise هستند. لطفاً به یک طرح پولی ارتقا دهید.
   js:
     boards:
-      create_new: 'Create new board'
-      label_unnamed_board: 'انجمن بدون نام'
-      label_unnamed_list: 'Unnamed list'
-      label_board_type: 'نوع انجمن'
-      upsale:
-        teaser_text: 'Would you like to automate your workflows with Boards? Advanced boards are an Enterprise add-on. Please upgrade to a paid plan.'
-        upgrade: 'هم اکنون ارتقا داده شود'
+      create_new: ایجاد تابلوی‌ اعلانات
+      label_unnamed_board: انجمن بدون نام
+      label_unnamed_list: لیست بدون نام
+      label_board_type: نوع انجمن
       lists:
-        delete: 'حذف لیست'
+        delete: حذف لیست
       version:
-        is_locked: 'Version is locked. No items can be added to this version.'
-        is_closed: 'Version is closed. No items can be added to this version.'
-        close_version: 'بستن نسخه'
-        open_version: 'بازکردن نسخه'
-        lock_version: 'قفل نگارش'
-        unlock_version: 'بازکردن نسخه'
-        edit_version: 'ویرایش نسخه'
-        show_version: 'Show version'
-        locked: 'قفل شده'
-        closed: 'Closed'
-      new_board: 'New board'
-      add_list: 'Add list to board'
-      add_card: 'Add card'
-      error_attribute_not_writable: "Cannot move the work package, %{attribute} is not writable."
-      error_loading_the_list: "Error loading the list: %{error_message}"
-      error_permission_missing: "مجوز ایجاد سؤالات عمومی از بین رفته است"
-      error_cannot_move_into_self: "You can not move a work package into its own column."
-      text_hidden_list_warning: "Not all lists are displayed because you lack the permission. Contact your admin for more information."
-      click_to_remove_list: "Click to remove this list"
+        is_locked: نسخه قفل شده است. هیچ آیتمی را نمیتوان به این نسخه اضافه کرد.
+        is_closed: نسخه بسته شده است. هیچ آیتمی را نمیتوان به این نسخه اضافه کرد.
+        close_version: بستن نسخه
+        open_version: بازکردن نسخه
+        lock_version: قفل نگارش
+        unlock_version: بازکردن نسخه
+        edit_version: ویرایش نسخه
+        show_version: نمایش نسخه
+        locked: قفل شده
+        closed: بسته
+      new_board: تابلوی جدید
+      add_list: افزودن لیست به تابلو
+      add_card: افزودن کارت
+      error_attribute_not_writable: نمی توان بسته کاری را جابجا کرد،%{attribute} قابل نوشتن نیست.
+      error_loading_the_list: خطا در بارگیری لیست%{error_message}
+      error_permission_missing: مجوز ایجاد سؤالات عمومی از بین رفته است
+      error_cannot_move_into_self: شما نمیتوانید یک بسته کاری را به ستون خودش منتقل کنید.
+      text_hidden_list_warning: به دلیل نداشتن مجوز همه لیست ها نمایش داده نمی شوند برای اطلاعات بیشتر با مدیر خود تماس بگیرید.
+      click_to_remove_list: برای حذف این لیست کلیک کنید
       board_type:
-        text: 'نوع انجمن'
-        free: 'basic'
-        select_board_type: 'Please choose the type of board you need.'
-        free_text: >
-          Start from scratch with a blank board. Manually add cards and columns to this board.
-        action: 'Action board'
-        action_by_attribute: 'Action board (%{attribute})'
-        action_text: >
-          A board with filtered lists on %{attribute} attribute. Moving work packages to other lists will update their attribute.
-        action_text_subprojects: >
-          Board with automated columns for subprojects. Dragging work packages to other lists updates the (sub-)project accordingly.
-        action_text_subtasks: >
-          Board with automated columns for sub-elements. Dragging work packages to other lists updates the parent accordingly.
-        action_text_status: >
-          Basic kanban style board with columns for status such as To Do, In Progress, Done.
-        action_text_assignee: >
-          Board with automated columns based on assigned users. Ideal for dispatching work packages.
-        action_text_version: >
-          Board with automated columns based on the version attribute. Ideal for planning product development.
+        text: نوع تابلو
+        free: پایه ای
+        select_board_type: لطفاً نوع تابلویی که نیاز دارید را انتخاب کنید.
+        free_text: 'از ابتدا با یک تخته خالی شروع کنید. به صورت دستی کارت ها و ستون ها را به این تابلو اضافه کنید.
+
+          '
+        action: تابلوی فعالیت
+        action_by_attribute: تابلوی فعالیت (%{attribute})
+        action_text: 'تابلویی با لیست های فیلتر شده در ویژگی%{attribute} انتقال بسته های کاری به لیست های دیگر ویژگی آنها را به روزرسانی میکند.
+
+          '
+        action_text_subprojects: 'تابلویی با ستون های خودکار برای پروژه های فرعی. کشیدن بسته های کاری به لیست های دیگر، پروژه(فرعی) را بر این اساس به روز می کند.
+
+          '
+        action_text_subtasks: 'تابلویی با ستون های خودکار برای عناصر فرعی. کشیدن بسته‌های کاری به فهرست‌های دیگر، والد را متناسب با آن به‌روزرسانی می‌کند.
+
+          '
+        action_text_status: 'ستون هایی برای وضعیت هایی مانند To Do، در حال انجام، انجام شد.
+
+          '
+        action_text_assignee: 'تابلو با ستون های خودکار بر اساس کاربران اختصاص داده شده. ایده آل برای ارسال بسته های کاری.
+
+          '
+        action_text_version: 'تابلویی با ستون های خودکار بر اساس ویژگی نسخه. ایده آل برای برنامه ریزی توسعه محصول.
+
+          '
         action_type:
-          assignee: assignee
-          status: status
-          version: version
-          subproject: subproject
-          subtasks: parent-child
-        board_type_title:
-          assignee: Assignee
-          status: Status
+          assignee: مسئول انجام
+          status: وضعیت
           version: نسخه
           subproject: زیر پروژه
-          subtasks: Parent-child
-          basic: Basic
-        select_attribute: "Action attribute"
+          subtasks: والد-فرزند
+        board_type_title:
+          assignee: نماینده
+          status: وضعیت
+          version: نسخه
+          subproject: زیر پروژه
+          subtasks: والد-فرزند
+          basic: اصول اولیه
+        select_attribute: ویژگی فعالیت
       add_list_modal:
         labels:
-          assignee: Select user to add as a new assignee list
-          status: Select status to add as a new list
-          version: Select version to add as a new list
-          subproject: Select subproject to add as a new list
-          subtasks: Select work package to add as a new list
+          assignee: برای افزودن به لیست مسئول انجام کاربر انتخاب کنید
+          status: وضعیت را برای افزودن به عنوان یک لیست جدید انتخاب کنید
+          version: نسخه را برای افزودن به عنوان یک لیست جدید انتخاب کنید
+          subproject: زیر پروژه را برای افزودن به عنوان یک ليست جدید انتخاب کنید
+          subtasks: انتخاب بسته کاری جهت افزودن به لیست جدید
         warning:
           status: |
-            There is currently no status available. <br>
-            Either there are none or they have all already been added to the board.
-          assignee: There isn't any member matched with your filter value.  <br>
-          no_member: This project currently does not have any members that can be added.  <br>
-          add_members: <a href="%{link}">Add a new member to this project</a> to select users again.
+            در حال حاضر هیچ وضعیت در دسترسی موجود نیست.<br>
+            یا هیچ موردی وجود ندارد و یا همه به تابلو اضافه شده اند.
+          assignee: هیچ عضوی با مقدار فیلتر شما مطابقت ندارد<br>
+          no_member: این پروژه در حال حاضر هیچ عضوی برای اضافه کردن ندارد<br>
+          add_members: <a href="%{link}">برای انتخاب مجدد کاربران</a>یک عضو جدید به این پروژه اضافه کنید.
       configuration_modal:
-        title: 'Configure this board'
+        title: پیکربندی این برد
         display_settings:
-          card_mode: "Display as cards"
-          table_mode: "Display as table"
+          card_mode: نمایش به صورت کارت
+          table_mode: نمایش به عنوان جدول

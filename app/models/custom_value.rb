@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,15 +37,19 @@ class CustomValue < ApplicationRecord
   validate :validate_type_of_value
   validate :validate_length_of_value
 
+  after_create :activate_custom_field_in_customized_project, if: -> { customized.is_a?(Project) }
+
   delegate :typed_value,
            :formatted_value,
            to: :strategy
 
   delegate :editable?,
-           :visible?,
+           :admin_only?,
            :required?,
+           :is_for_all?,
            :max_length,
            :min_length,
+           :calculated_value?,
            to: :custom_field
 
   delegate :to_s, to: :value
@@ -56,12 +62,38 @@ class CustomValue < ApplicationRecord
 
   def strategy
     @strategy ||= begin
-      format = custom_field&.field_format || 'empty'
-      OpenProject::CustomFieldFormat.find_by_name(format).formatter.new(self)
+      format = custom_field&.field_format || "empty"
+      OpenProject::CustomFieldFormat.find_by(name: format).formatter.new(self)
+    end
+  end
+
+  def default?
+    value_is_included_in_multi_value_default? \
+      || value_is_same_as_default?
+  end
+
+  def activate_custom_field_in_customized_project
+    return if default? || value.blank?
+
+    # if a custom value is created for a project via CustomValue.create(...),
+    # the custom field needs to be activated in the project
+    unless customized&.project_custom_fields&.include?(custom_field)
+      customized.project_custom_fields << custom_field
     end
   end
 
   protected
+
+  def value_is_included_in_multi_value_default?
+    return false unless custom_field.multi_value?
+
+    [custom_field.default_value, value].all?(&:blank?) \
+      || custom_field.default_value&.include?(custom_field.cast_value(value))
+  end
+
+  def value_is_same_as_default?
+    custom_field.cast_value(value) == custom_field.default_value
+  end
 
   def validate_presence_of_required_value
     errors.add(:value, :blank) if custom_field.required? && !strategy.value_present?
@@ -69,7 +101,7 @@ class CustomValue < ApplicationRecord
 
   def validate_format_of_value
     if value.present? && custom_field.has_regexp? && !(value =~ Regexp.new(custom_field.regexp))
-      errors.add(:value, :invalid)
+      errors.add(:value, :regex_match_failed, expression: custom_field.regexp)
     end
   rescue RegexpError => e
     errors.add(:base, :regex_invalid)

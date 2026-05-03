@@ -1,10 +1,10 @@
-require 'spec_helper'
-require 'spreadsheet'
-require 'models/projects/exporter/exportable_project_context'
+require "spec_helper"
+require "spreadsheet"
+require "models/projects/exporter/exportable_project_context"
 
-describe XlsExport::Project::Exporter::XLS do
-  include_context 'with a project with an arrangement of custom fields'
-  include_context 'with an instance of the described exporter'
+RSpec.describe XlsExport::Project::Exporter::XLS do
+  include_context "with a project with an arrangement of custom fields"
+  include_context "with an instance of the described exporter"
 
   let(:sheet) do
     io = StringIO.new output
@@ -14,75 +14,180 @@ describe XlsExport::Project::Exporter::XLS do
   let(:header) { sheet.rows.first.compact } # raw values have trailing nil
   let(:rows) { sheet.rows.drop(1) }
 
-  describe 'empty result' do
+  describe "empty result" do
     before do
       allow(instance).to receive(:records).and_return([])
     end
 
-    it 'returns an empty XLS' do
+    it "returns an empty XLS" do
       expect(sheet.rows.count).to eq 1
       expect(rows).to be_empty
     end
   end
 
-  it 'performs a successful export' do
+  it "performs a successful export" do
     expect(rows.count).to eq(1)
-    expect(sheet.row(1)).to eq [project.id.to_s, project.identifier,
-                                project.name, project.description, 'Off track', 'false']
+    expect(sheet.row(1)).to eq [project.name, project.description, "Off track", "false"]
   end
 
-  context 'with status_explanation enabled' do
+  context "with project description containing html" do
     before do
-      Setting.enabled_projects_columns += ["status_explanation"]
+      project.update_column(:description, "This is an <p>html</p> description.")
     end
 
-    it 'performs a successful export' do
+    it "performs a successful export" do
       expect(rows.count).to eq(1)
-      expect(sheet.row(1)).to eq [project.id.to_s, project.identifier,
-                                  project.name, project.description,
-                                  'Off track', project.status_explanation, 'false']
+      expect(sheet.row(1)).to eq [project.name, "This is an html description.", "Off track", "false"]
     end
   end
 
-  describe 'custom field columns selected' do
-    before do
-      Setting.enabled_projects_columns += custom_fields.map { |cf| "cf_#{cf.id}" }
+  context "with status_explanation enabled" do
+    let(:query_columns) { %w[name description project_status status_explanation public] }
+
+    it "performs a successful export" do
+      expect(rows.count).to eq(1)
+      expect(sheet.row(1)).to eq [project.name, project.description,
+                                  "Off track", project.status_explanation, "false"]
     end
+  end
 
-    context 'when ee enabled', with_ee: %i[custom_fields_in_projects_list] do
-      it 'renders all those columns' do
-        expect(rows.count).to eq 1
+  context "with id and identifier enabled" do
+    let(:query_columns) { %w[name description project_status public id identifier] }
 
-        cf_names = custom_fields.map(&:name)
-        expect(header).to eq ['ID', 'Identifier', 'Name', 'Description', 'Status', 'Public', *cf_names]
+    it "performs a successful export" do
+      expect(rows.count).to eq(1)
+      expect(sheet.row(1)).to eq [project.name, project.description, "Off track",
+                                  "false", project.id.to_s, project.identifier]
+    end
+  end
 
-        custom_values = custom_fields.map do |cf|
+  describe "custom field columns selected" do
+    let(:query_columns) { %w[name description project_status public] + global_project_custom_fields.map(&:column_name) }
+
+    context "with admin permission" do
+      let(:current_user) { build_stubbed(:admin) }
+
+      it "renders all those columns" do
+        cf_names = global_project_custom_fields.map(&:name)
+        expect(header).to eq ["Name", "Description", "Status", "Public", *cf_names]
+
+        expect(header).to include not_used_string_cf.name
+        expect(header).to include hidden_cf.name
+
+        custom_values = global_project_custom_fields.map do |cf|
           case cf
           when bool_cf
-            'true'
+            "true"
           when text_cf
             project.typed_custom_value_for(cf)
+          when not_used_string_cf
+            nil
           else
             project.formatted_custom_value_for(cf)
           end
         end
 
         expect(sheet.row(1))
-          .to eq [project.id.to_s, project.identifier, project.name, project.description, 'Off track', 'false', *custom_values]
+          .to eq [project.name, project.description, "Off track", "false", *custom_values]
+
+        # The column for the project-level-disabled custom field is blank
+        expect(sheet.row(1)[header.index(not_used_string_cf.name)]).to be_nil
       end
     end
 
-    context 'when ee not enabled' do
-      it 'renders only the default columns' do
-        expect(header).to eq %w[ID Identifier Name Description Status Public]
+    context "with view_project_attributes permission" do
+      it "renders available project custom fields in the header if enabled in any project" do
+        cf_names = global_project_custom_fields.map(&:name)
+
+        expect(header).to eq ["Name", "Description", "Status", "Public", *cf_names]
+
+        expect(header).not_to include not_used_string_cf.name
+        expect(header).not_to include hidden_cf.name
+
+        custom_values = global_project_custom_fields.map do |cf|
+          case cf
+          when bool_cf
+            "true"
+          when text_cf
+            project.typed_custom_value_for(cf)
+          when not_used_string_cf
+            nil
+          else
+            project.formatted_custom_value_for(cf)
+          end
+        end
+
+        expect(sheet.row(1))
+          .to eq [project.name, project.description, "Off track", "false", *custom_values]
+      end
+    end
+
+    context "without view_project_attributes permission" do
+      let(:permissions) { super() - %i[view_project_attributes] }
+
+      it "does not render project custom fields in the header" do
+        expect(header).to eq %w[Name Description Status Public]
+
+        expect(sheet.row(1))
+          .to eq [project.name, project.description, "Off track", "false"]
       end
     end
   end
 
-  context 'with no project visible' do
+  describe "custom comment columns selected" do
+    let(:query_columns) { %w[name description project_status public] + global_project_custom_fields.map(&:comment_column_name) }
+
+    context "with admin permission" do
+      let(:current_user) { build_stubbed(:admin) }
+
+      it "renders all comment columns" do
+        expect(header).to eq %w[Name Description Status Public] + [version_cf, hidden_cf].map { "#{it.name} comment" }
+
+        expect(sheet.row(1)).to eq [
+          project.name,
+          project.description,
+          "Off track",
+          "false",
+          "Comment visible to members",
+          "Comment visible to admins"
+        ]
+      end
+    end
+
+    context "with view_project_attributes permission" do
+      it "renders comment columns for available project custom fields" do
+        expect(header).to eq %w[Name Description Status Public] + ["#{version_cf.name} comment"]
+
+        expect(sheet.row(1)).to eq [
+          project.name,
+          project.description,
+          "Off track",
+          "false",
+          "Comment visible to members"
+        ]
+      end
+    end
+
+    context "without view_project_attributes permission" do
+      let(:permissions) { super() - %i[view_project_attributes] }
+
+      it "does not render custom comment columns" do
+        expect(header).to eq %w[Name Description Status Public]
+
+        expect(sheet.row(1)).to eq [
+          project.name,
+          project.description,
+          "Off track",
+          "false"
+        ]
+      end
+    end
+  end
+
+  context "with no project visible" do
     let(:current_user) { User.anonymous }
 
-    it 'does not include the project' do
+    it "does not include the project" do
       expect(output).not_to include project.identifier
       expect(rows).to be_empty
     end

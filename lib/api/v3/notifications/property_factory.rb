@@ -1,6 +1,6 @@
 # --copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -64,8 +64,8 @@ module API::V3::Notifications
     # Returns the outward facing notification group attributes
     def groups_for(values)
       group_values = values.except(*DATE_ALERT_REASONS)
-      date_alert_values = values.slice(*DATE_ALERT_REASONS).values.reduce(:+)
-      group_values["dateAlert"] = date_alert_values if date_alert_values
+      date_alert_values = values.slice(*DATE_ALERT_REASONS).values.sum
+      group_values["dateAlert"] = date_alert_values if date_alert_values > 0
       group_values
     end
 
@@ -74,7 +74,7 @@ module API::V3::Notifications
       reason = notification.reason
       case reason
       when *DATE_ALERT_REASONS
-        'dateAlert'
+        "dateAlert"
       else
         reason
       end
@@ -84,11 +84,11 @@ module API::V3::Notifications
       property_name = notification.reason
 
       if notification.reason.in?(DATE_ALERT_REASONS) && notification.resource&.is_milestone?
-        property_name = 'date_alert_date'
+        property_name = "date_alert_date"
       end
 
       @concrete_factory_for ||= Hash.new do |h, property_key|
-        h[property_key] = if API::V3::Notifications::PropertyFactory.const_defined?(property_key.camelcase)
+        h[property_key] = if API::V3::Notifications::PropertyFactory.const_defined?(property_key.camelcase, false)
                             "API::V3::Notifications::PropertyFactory::#{property_key.camelcase}".constantize
                           else
                             API::V3::Notifications::PropertyFactory::Default

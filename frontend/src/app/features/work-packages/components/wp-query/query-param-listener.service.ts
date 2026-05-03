@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -58,7 +58,7 @@ export class QueryParamListenerService {
       const newId:string = params.query_id ? params.query_id.toString() : null;
 
       // Avoid performing any changes when we're going to reload
-      if (options.reload || (options.custom && options.custom.notify === false)) {
+      if (options.reload || (options.custom?.notify === false)) {
         return true;
       }
 

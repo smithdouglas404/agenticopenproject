@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require 'support/permission_specs'
+require "spec_helper"
+require "support/permission_specs"
 
-describe NewsController, 'manage_news permission', type: :controller do
+RSpec.describe NewsController, "manage_news permission", type: :controller do
   include PermissionSpecs
 
-  check_permission_required_for('news#preview', :manage_news)
+  check_permission_required_for("news#preview", :manage_news)
 end

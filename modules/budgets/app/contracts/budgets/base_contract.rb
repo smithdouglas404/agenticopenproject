@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,6 +38,7 @@ module Budgets
     attribute :description
     attribute :fixed_date
     attribute :project
+    attribute :base_amount
     attribute :new_material_budget_item_attributes,
               readable: false
 
@@ -55,7 +56,7 @@ module Budgets
     private
 
     def validate_manage_allowed
-      unless user.allowed_to?(:edit_budgets, model.project)
+      unless user.allowed_in_project?(:edit_budgets, model.project)
         errors.add :base, :error_unauthorized
       end
     end

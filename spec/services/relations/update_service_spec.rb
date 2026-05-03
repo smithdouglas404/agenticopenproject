@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,24 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Relations::UpdateService do
+RSpec.describe Relations::UpdateService do
   let(:work_package1_start_date) { nil }
-  let(:work_package1_due_date) { Date.today }
+  let(:work_package1_due_date) { Date.current }
   let(:work_package2_start_date) { nil }
   let(:work_package2_due_date) { nil }
 
   let(:follows_relation) { false }
-  let(:delay) { 3 }
+  let(:lag) { 3 }
 
   let(:work_package1) do
     build_stubbed(:work_package,
+                  subject: "work_package1",
                   due_date: work_package1_due_date,
                   start_date: work_package1_start_date)
   end
   let(:work_package2) do
     build_stubbed(:work_package,
+                  subject: "work_package2",
                   due_date: work_package2_due_date,
                   start_date: work_package2_start_date)
   end
@@ -63,14 +67,14 @@ describe Relations::UpdateService do
     {
       to: work_package1,
       from: work_package2,
-      delay:
+      lag:
     }
   end
 
   let(:user) { build_stubbed(:user) }
   let(:model_valid) { true }
   let(:contract_valid) { true }
-  let(:contract) { double('contract') }
+  let(:contract) { instance_double(Relations::UpdateContract) }
   let(:symbols_for_base) { [] }
 
   subject do
@@ -91,8 +95,8 @@ describe Relations::UpdateService do
       .and_return(contract_valid)
   end
 
-  context 'when all valid and it is a follows relation' do
-    let(:set_schedule_service) { double('set schedule service') }
+  context "when all valid and it is a follows relation" do
+    let(:set_schedule_service) { instance_double(WorkPackages::SetScheduleService) }
     let(:set_schedule_work_package2_result) do
       ServiceResult.success result: work_package2, errors: work_package2.errors
     end
@@ -105,58 +109,53 @@ describe Relations::UpdateService do
     let(:follows_relation) { true }
 
     before do
-      expect(WorkPackages::SetScheduleService)
+      allow(WorkPackages::SetScheduleService)
         .to receive(:new)
-        .with(user:, work_package: work_package1)
+        .with(user:, work_package: work_package2, switching_to_automatic_mode: [])
         .and_return(set_schedule_service)
 
-      expect(set_schedule_service)
+      allow(set_schedule_service)
         .to receive(:call)
         .and_return(set_schedule_result)
 
       allow(work_package2)
-        .to receive(:changed?)
-        .and_return(true)
-
-      expect(work_package2)
-        .to receive(:save)
-        .and_return(true)
+        .to receive_messages(changed?: true, save: true)
 
       allow(set_schedule_result)
         .to receive(:success=)
     end
 
-    it 'is successful' do
+    it "is successful" do
       expect(subject)
         .to be_success
     end
 
-    it 'returns the relation' do
+    it "returns the relation" do
       expect(subject.result)
         .to eql relation
     end
 
-    it 'has a dependent result for the from-work package' do
+    it "has a dependent result for the from-work package" do
       expect(subject.dependent_results)
-        .to match_array [set_schedule_work_package2_result]
+        .to contain_exactly(set_schedule_work_package2_result)
     end
   end
 
-  context 'when all is valid and it is not a follows relation' do
-    it 'is successful' do
+  context "when all is valid and it is not a follows relation" do
+    it "is successful" do
       expect(subject)
         .to be_success
     end
 
-    it 'returns the relation' do
+    it "returns the relation" do
       expect(subject.result)
         .to eql relation
     end
   end
 
-  context 'when the contract is invalid' do
+  context "when the contract is invalid" do
     let(:contract_valid) { false }
-    let(:contract_errors) { double('contract_errors') }
+    let(:contract_errors) { instance_double(ActiveModel::Errors) }
 
     before do
       allow(contract)
@@ -168,7 +167,7 @@ describe Relations::UpdateService do
         .and_return(symbols_for_base)
     end
 
-    it 'is unsuccessful' do
+    it "is unsuccessful" do
       expect(subject)
         .to be_failure
     end
@@ -179,9 +178,9 @@ describe Relations::UpdateService do
     end
   end
 
-  context 'when the model is invalid' do
+  context "when the model is invalid" do
     let(:model_valid) { false }
-    let(:model_errors) { double('model_errors') }
+    let(:model_errors) { instance_double(ActiveModel::Errors) }
 
     before do
       allow(relation)
@@ -193,7 +192,7 @@ describe Relations::UpdateService do
         .and_return(symbols_for_base)
     end
 
-    it 'is unsuccessful' do
+    it "is unsuccessful" do
       expect(subject)
         .to be_failure
     end

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +26,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
-require File.join(File.dirname(__FILE__), '..', '..', 'support', 'custom_field_filter')
+require_relative "../../spec_helper"
+require_relative "../../support/custom_field_filter"
 
-describe CostQuery, type: :model, reporting_query_helper: true do
+RSpec.describe CostQuery, :reporting_query_helper do
   let!(:type) { create(:type) }
   let!(:project1) { create(:project_with_types, types: [type]) }
   let!(:work_package1) { create(:work_package, project: project1, type:) }
   let!(:time_entry1) do
-    create(:time_entry, work_package: work_package1, project: project1, spent_on: Date.new(2012, 1, 1))
+    create(:time_entry, entity: work_package1, project: project1, spent_on: Date.new(2012, 1, 1))
   end
   let!(:time_entry2) do
     time_entry2 = time_entry1.dup
@@ -43,7 +43,7 @@ describe CostQuery, type: :model, reporting_query_helper: true do
   end
   let!(:budget1) { create(:budget, project: project1) }
   let!(:cost_entry1) do
-    create(:cost_entry, work_package: work_package1, project: project1, spent_on: Date.new(2013, 2, 3))
+    create(:cost_entry, entity: work_package1, project: project1, spent_on: Date.new(2013, 2, 3))
   end
   let!(:cost_entry2) do
     cost_entry2 = cost_entry1.dup
@@ -54,7 +54,7 @@ describe CostQuery, type: :model, reporting_query_helper: true do
   let!(:project2) { create(:project_with_types, types: [type]) }
   let!(:work_package2) { create(:work_package, project: project2, type:) }
   let!(:time_entry3) do
-    create(:time_entry, work_package: work_package2, project: project2, spent_on: Date.new(2013, 2, 3))
+    create(:time_entry, entity: work_package2, project: project2, spent_on: Date.new(2013, 2, 3))
   end
   let!(:time_entry4) do
     time_entry4 = time_entry3.dup
@@ -63,7 +63,7 @@ describe CostQuery, type: :model, reporting_query_helper: true do
   end
   let!(:budget2) { create(:budget, project: project2) }
   let!(:cost_entry3) do
-    create(:cost_entry, work_package: work_package2, project: project2, spent_on: Date.new(2012, 1, 1))
+    create(:cost_entry, entity: work_package2, project: project2, spent_on: Date.new(2012, 1, 1))
   end
   let!(:cost_entry4) do
     cost_entry4 = cost_entry3.dup
@@ -74,6 +74,10 @@ describe CostQuery, type: :model, reporting_query_helper: true do
   minimal_query
 
   describe CostQuery::GroupBy do
+    it "does not fail when grouping by a non-existent column" do
+      expect { query.group_by(:non_existent_column).result }.not_to raise_error
+    end
+
     it "computes group_by on projects" do
       query.group_by :project_id
       expect(query.result.size).to eq(2)
@@ -84,8 +88,8 @@ describe CostQuery, type: :model, reporting_query_helper: true do
       query.group_by :work_package_id
       query.group_by :cost_type_id
       expect(query.all_group_fields).to eq(%w[entries.cost_type_id])
-      expect(query.child.all_group_fields).to eq(%w[entries.cost_type_id entries.work_package_id])
-      expect(query.child.child.all_group_fields).to eq(%w[entries.cost_type_id entries.work_package_id entries.project_id])
+      expect(query.child.all_group_fields).to eq(%w[entries.cost_type_id entries.entity_gid])
+      expect(query.child.child.all_group_fields).to eq(%w[entries.cost_type_id entries.entity_gid entries.project_id])
     end
 
     it "computes group_by WorkPackage" do
@@ -306,7 +310,7 @@ describe CostQuery, type: :model, reporting_query_helper: true do
 
         check_cache
 
-        query.group_by "custom_field_#{custom_field2.id}".to_sym
+        query.group_by custom_field2.attribute_name
         footprint = query.result.each_direct_result.map { |c| [c.count, c.units.to_i] }.sort
         expect(footprint).to eq([[8, 8]])
       end

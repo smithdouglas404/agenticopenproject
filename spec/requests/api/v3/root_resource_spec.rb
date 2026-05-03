@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,58 +28,75 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require 'rack/test'
+require "spec_helper"
+require "rack/test"
 
-describe 'API v3 Root resource' do
+RSpec.describe "API v3 Root resource" do
   include Rack::Test::Methods
   include API::V3::Utilities::PathHelper
 
   let(:current_user) do
-    create(:user, member_in_project: project, member_through_role: role)
+    create(:user, member_with_roles: { project => role })
   end
-  let(:role) { create(:role, permissions: []) }
+  let(:role) { create(:project_role, permissions: []) }
   let(:project) { create(:project, public: false) }
 
-  describe '#get' do
+  describe "#get" do
     let(:response) { last_response }
     let(:get_path) { api_v3_paths.root }
 
     subject { response.body }
 
-    context 'anonymous user' do
+    context "anonymous user" do
       before do
         get get_path
       end
 
-      it 'responds with 200' do
-        expect(response.status).to eq(200)
+      context "when login_required", with_settings: { login_required: true } do
+        it_behaves_like "error response",
+                        401,
+                        "Unauthenticated",
+                        I18n.t("api_v3.errors.code_401")
       end
 
-      it 'responds with a root representer' do
-        expect(subject).to have_json_path('instanceName')
+      context "when not login_required", with_settings: { login_required: false } do
+        it "responds with 200", :aggregate_failures do
+          expect(response).to have_http_status(:ok)
+          expect(subject).to have_json_path("instanceName")
+        end
       end
     end
 
-    context 'logged in user' do
+    context "logged in user" do
       before do
         allow(User).to receive(:current).and_return current_user
 
         get get_path
       end
 
-      it 'responds with 200' do
-        expect(response.status).to eq(200)
+      it "responds with 200" do
+        expect(response).to have_http_status(:ok)
       end
 
-      it 'responds with a root representer' do
-        expect(subject).to have_json_path('instanceName')
+      it "responds with a root representer" do
+        expect(subject).to have_json_path("instanceName")
       end
 
-      context 'without the X-requested-with header', skip_xhr_header: true do
-        it 'returns OK because GET requests are allowed' do
-          expect(response.status).to eq(200)
-          expect(subject).to have_json_path('instanceName')
+      context "without the X-requested-with header", :skip_xhr_header do
+        it "returns OK because GET requests are allowed" do
+          expect(response).to have_http_status(:ok)
+          expect(subject).to have_json_path("instanceName")
+        end
+      end
+
+      context "with content-type application/hal+json" do
+        before do
+          header("Content-Type", "application/hal+json")
+        end
+
+        it "responds with 200" do
+          get get_path
+          expect(response).to have_http_status(:ok)
         end
       end
     end

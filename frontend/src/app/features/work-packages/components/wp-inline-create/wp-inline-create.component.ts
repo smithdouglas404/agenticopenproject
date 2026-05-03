@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +28,7 @@
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -39,17 +40,20 @@ import {
   Output,
 } from '@angular/core';
 import { AuthorisationService } from 'core-app/core/model-auth/model-auth.service';
-import { WorkPackageViewFocusService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-focus.service';
+import {
+  WorkPackageViewFocusService,
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-focus.service';
 import { filter } from 'rxjs/operators';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { WorkPackageInlineCreateService } from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.service';
 import {
-  combineLatest,
-  Subscription,
-} from 'rxjs';
-import { WorkPackageViewColumnsService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-columns.service';
+  WorkPackageInlineCreateService,
+} from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.service';
+import { combineLatest, Subscription } from 'rxjs';
+import {
+  WorkPackageViewColumnsService,
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-columns.service';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
 import { EditForm } from 'core-app/shared/components/fields/edit/edit-form/edit-form';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -62,17 +66,28 @@ import {
 import { WorkPackageCreateService } from '../wp-new/wp-create.service';
 import { WorkPackageTable } from '../wp-fast-table/wp-fast-table';
 import { onClickOrEnter } from '../wp-fast-table/handlers/click-or-enter-handler';
+import {
+  HalResourceEditingService,
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
+import { delegate, DelegateEvent } from '@knowledgecode/delegate';
 
 @Component({
   selector: '[wpInlineCreate]',
   templateUrl: './wp-inline-create.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit {
-  @Input('wp-inline-create--table') table:WorkPackageTable;
+  @Input() colspan:number;
 
-  @Input('wp-inline-create--project-identifier') projectIdentifier:string;
+  @Input() table:WorkPackageTable;
 
-  @Output('wp-inline-create--showing') showing = new EventEmitter<boolean>();
+  @Input() projectIdentifier:string;
+
+  @Output() showing = new EventEmitter<boolean>();
 
   // inner state
   public canAdd = false;
@@ -92,7 +107,7 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
 
   private editingSubscription:Subscription|undefined;
 
-  private $element:JQuery;
+  private element:HTMLElement;
 
   get isActive():boolean {
     return this.mode !== 'inactive';
@@ -108,12 +123,13 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
     protected readonly wpInlineCreate:WorkPackageInlineCreateService,
     protected readonly wpTableColumns:WorkPackageViewColumnsService,
     protected readonly wpTableFocus:WorkPackageViewFocusService,
+    protected readonly halEditing:HalResourceEditingService,
     protected readonly authorisationService:AuthorisationService) {
     super();
   }
 
   ngOnInit() {
-    this.$element = jQuery(this.elementRef.nativeElement);
+    this.element = this.elementRef.nativeElement;
   }
 
   ngAfterViewInit():void {
@@ -146,14 +162,18 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
    * which is dynamically inserted into the action row by the inline create renderer.
    */
   private registerCancelHandler() {
-    this.$element.on('click keydown', `.${inlineCreateCancelClassName}`, (evt:JQuery.TriggeredEvent) => {
-      onClickOrEnter(evt, () => {
+    const handler = (evt:DelegateEvent) => {
+      onClickOrEnter(evt.originalEvent, () => {
         this.resetRow();
       });
 
       evt.stopImmediatePropagation();
       return false;
-    });
+    };
+
+    delegate(this.element)
+      .on('click', `.${inlineCreateCancelClassName}`, handler)
+      .on('keydown', `.${inlineCreateCancelClassName}`, handler);
   }
 
   /**
@@ -227,12 +247,11 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
       .then((change:WorkPackageChangeset) => {
         const wp = this.currentWorkPackage = change.projectedResource;
 
-        this.editingSubscription = this
-          .wpCreate
-          .changesetUpdates$()
-          .pipe(
-            filter(() => !!this.currentWorkPackage),
-          ).subscribe((form) => {
+        change
+          .state
+          ?.values$()
+          .pipe(filter(() => !!this.currentWorkPackage))
+          .subscribe((form) => {
             if (!this.isActive) {
               this.insertRow(wp);
             } else {
@@ -245,11 +264,16 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
 
   private insertRow(wp:WorkPackageResource) {
     // Actually render the row
-    const form = this.workPackageEditForm = this.renderInlineCreateRow(wp);
+    this.workPackageEditForm = this.renderInlineCreateRow(wp);
+    const form = this.workPackageEditForm;
 
     setTimeout(() => {
       // Activate any required fields
-      form.activateMissingFields();
+      void form.activateMissingFields().then((activeFields) => {
+        if (activeFields.length === 0) {
+          void form.submit();
+        }
+      });
 
       // Hide the button row
       this.hideRow();
@@ -258,9 +282,9 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
 
   private refreshRow() {
     const builder = new InlineCreateRowBuilder(this.injector, this.table);
-    const rowElement = this.$element.find(`.${inlineCreateRowClassName}`);
+    const rowElement = this.element.querySelector<HTMLTableRowElement>(`.${inlineCreateRowClassName}`);
 
-    if (rowElement.length && this.currentWorkPackage) {
+    if (rowElement && this.currentWorkPackage) {
       builder.refreshRow(this.currentWorkPackage, rowElement);
     }
   }
@@ -277,7 +301,7 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
     const form = this.table.editing.startEditing(wp, builder.classIdentifier(wp));
 
     const [row] = builder.buildNew(wp, form);
-    this.$element.append(row);
+    this.element.append(row);
 
     return form;
   }
@@ -299,7 +323,7 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
   public removeWorkPackageRow() {
     this.wpCreate.cancelCreation();
     this.currentWorkPackage = null;
-    this.$element.find('.wp-row-new').remove();
+    this.element.querySelector('.wp-row-new')?.remove();
     if (this.editingSubscription) {
       this.editingSubscription.unsubscribe();
     }
@@ -313,9 +337,5 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
   public hideRow() {
     this.mode = 'create';
     this.cdRef.detectChanges();
-  }
-
-  public get colspan():number {
-    return this.wpTableColumns.columnCount + 1;
   }
 }

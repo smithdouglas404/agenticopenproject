@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -26,5 +28,5 @@
 
 # Not that at the time of writing, the usually used UpdateContract does not exist.
 # Currently, this is only used internally, without user input, so it is safe to hand the EmptyContract in.
-class Notifications::UpdateService < ::BaseServices::Update
+class Notifications::UpdateService < BaseServices::Update
 end

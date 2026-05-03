@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,15 +44,28 @@ module API
               fail ::API::Errors::InvalidUserStatusTransition
             end
           end
+
+          def ensure_user_limit_not_reached_for_activation!
+            return unless OpenProject::Enterprise.user_limit_reached?
+
+            fail ::API::Errors::UnprocessableContent.new(I18n.t(:error_enterprise_activation_user_limit))
+          end
         end
 
         resources :users do
-          post &::API::V3::Utilities::Endpoints::Create.new(model: User).mount
+          # The namespace only exists to add the after_validation callback
+          namespace "" do
+            after_validation do
+              authorize_globally(:create_user)
+            end
+
+            post &::API::V3::Utilities::Endpoints::Create.new(model: User).mount
+          end
 
           # The namespace only exists to add the after_validation callback
-          namespace '' do
+          namespace "" do
             after_validation do
-              authorize_by_with_raise(current_user.allowed_to_globally?(:manage_user))
+              authorize_globally(:manage_user)
             end
 
             get &::API::V3::Utilities::Endpoints::SqlFallbackedIndex
@@ -63,15 +78,15 @@ module API
           mount ::API::V3::Users::CreateFormAPI
 
           params do
-            requires :id, desc: 'User\'s id'
+            requires :id, desc: "User's id"
           end
           route_param :id do
             after_validation do
               @user =
-                if params[:id] == 'me'
+                if params[:id] == "me"
                   User.current
                 else
-                  User.find_by_unique!(params[:id])
+                  User.visible.find_by_unique!(params[:id])
                 end
             end
 
@@ -81,6 +96,8 @@ module API
 
             mount ::API::V3::Users::UpdateFormAPI
             mount ::API::V3::UserPreferences::PreferencesByUserAPI
+            mount ::API::V3::UserWorkingHours::WorkingHoursByUserAPI
+            mount ::API::V3::UserNonWorkingTimes::NonWorkingTimesByUserAPI
 
             namespace :lock do
               # Authenticate lock transitions
@@ -88,17 +105,20 @@ module API
                 authorize_admin
               end
 
-              desc 'Set lock on user account'
+              desc "Set lock on user account"
               post do
-                user_transition(@user.active? || @user.locked?) do
+                user_transition(@user.active? || @user.locked? || @user.deleted?) do
                   @user.lock! unless @user.locked?
                 end
               end
 
-              desc 'Remove lock on user account'
+              desc "Remove lock on user account"
               delete do
-                user_transition(@user.locked? || @user.active?) do
-                  @user.activate! unless @user.active?
+                user_transition(@user.locked? || @user.active? || @user.deleted?) do
+                  if @user.locked?
+                    ensure_user_limit_not_reached_for_activation!
+                    @user.activate!
+                  end
                 end
               end
             end

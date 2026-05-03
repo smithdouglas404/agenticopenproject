@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -68,29 +70,29 @@ module Attachments
     end
 
     ##
-    # Validates the content type, if a whitelist is set
+    # Validates the content type, if a allowlist is set
     def validate_content_type
-      # If the whitelist is empty, assume all files are allowed
+      # If the allowlist is empty, assume all files are allowed
       # as before
-      unless matches_whitelist?(attachment_whitelist)
-        Rails.logger.info { "Uploaded file #{model.filename} with type #{model.content_type} does not match whitelist" }
-        errors.add :content_type, :not_whitelisted, value: model.content_type
+      unless matches_allowlist?(attachment_allowlist)
+        Rails.logger.info { "Uploaded file #{model.filename} with type #{model.content_type} does not match allowlist" }
+        errors.add :content_type, :not_allowlisted, value: model.content_type
       end
     end
 
     ##
-    # Get the user-defined whitelist or a custom whitelist
+    # Get the user-defined allowlist or a custom allowlist
     # defined for this invocation
-    def attachment_whitelist
-      Array(options.fetch(:whitelist, Setting.attachment_whitelist))
+    def attachment_allowlist
+      Array(options.fetch(:allowlist, Setting.attachment_whitelist))
     end
 
     ##
-    # Returns whether the attachment matches the whitelist
-    def matches_whitelist?(whitelist)
-      return true if whitelist.empty?
+    # Returns whether the attachment matches the allowlist
+    def matches_allowlist?(allowlist)
+      return true if allowlist.empty?
 
-      whitelist.include?(model.content_type) || whitelist.include?("*#{model.extension}")
+      allowlist.include?(model.content_type) || allowlist.include?("*#{model.extension}")
     end
   end
 end

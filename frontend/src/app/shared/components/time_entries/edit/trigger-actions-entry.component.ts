@@ -1,39 +1,39 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Injector,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Injector } from '@angular/core';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
-import { TimeEntryEditService } from 'core-app/shared/components/time_entries/edit/edit.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
+import {
+  HalResourceEditingService,
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { TimeEntryResource } from 'core-app/features/hal/resources/time-entry-resource';
-
-export const triggerActionsEntryComponentSelector = 'time-entry--trigger-actions-entry';
+import { Observable, switchMap } from 'rxjs';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 
 @Component({
-  selector: triggerActionsEntryComponentSelector,
+  selector: 'opce-time-entry-trigger-actions',
   template: `
     <a (click)="editTimeEntry()"
        [title]="text.edit"
        class="no-decoration-on-hover">
-      <op-icon icon-classes="icon-context icon-edit"></op-icon>
+      <op-icon icon-classes="icon-context icon-edit" />
     </a>
     <a (click)="deleteTimeEntry()"
        [title]="text.delete"
        class="no-decoration-on-hover">
-      <op-icon icon-classes="icon-context icon-delete"></op-icon>
+      <op-icon icon-classes="icon-context icon-delete" />
     </a>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     HalResourceEditingService,
-    TimeEntryEditService,
+    PathHelperService,
+    TurboRequestsService,
   ],
+  standalone: false,
 })
 export class TriggerActionsEntryComponent {
-  @InjectField() readonly timeEntryEditService:TimeEntryEditService;
-
   @InjectField() readonly apiv3Service:ApiV3Service;
 
   @InjectField() readonly toastService:ToastService;
@@ -43,6 +43,10 @@ export class TriggerActionsEntryComponent {
   @InjectField() i18n!:I18nService;
 
   @InjectField() readonly cdRef:ChangeDetectorRef;
+
+  @InjectField() readonly pathHelper:PathHelperService;
+
+  @InjectField() readonly turboRequestService:TurboRequestsService;
 
   public text = {
     edit: this.i18n.t('js.button_edit'),
@@ -55,17 +59,18 @@ export class TriggerActionsEntryComponent {
   }
 
   editTimeEntry() {
-    this.loadEntry()
-      .then((entry) => {
-        this.timeEntryEditService
-          .edit(entry)
-          .then(() => {
-            window.location.reload();
-          })
-          .catch(() => {
-            // User canceled the modal
-          });
+    void this.loadEntry().subscribe((entry:TimeEntryResource) => {
+      document.addEventListener('dialog:close', (event:CustomEvent) => {
+        const { detail: { dialog, submitted } } = event as { detail:{ dialog:HTMLDialogElement, submitted:boolean } };
+        if (dialog.id === 'time-entry-dialog' && submitted) {
+          window.location.reload();
+        }
       });
+      void this.turboRequestService.request(
+        this.pathHelper.timeEntryEditDialog(entry.id!),
+        { method: 'GET' },
+      );
+    });
   }
 
   deleteTimeEntry() {
@@ -74,27 +79,26 @@ export class TriggerActionsEntryComponent {
     }
 
     this.loadEntry()
-      .then((entry) => {
-        this
+      .pipe(
+        switchMap((entry) => this
           .apiv3Service
           .time_entries
           .id(entry)
-          .delete()
-          .subscribe(
-            () => window.location.reload(),
-            (error) => this.toastService.addError(error || this.text.error),
-          );
-      });
+          .delete()),
+      )
+      .subscribe(
+        () => window.location.reload(),
+        (error) => this.toastService.addError(error || this.text.error),
+      );
   }
 
-  protected loadEntry():Promise<TimeEntryResource> {
-    const timeEntryId = this.elementRef.nativeElement.dataset.entry;
+  protected loadEntry():Observable<TimeEntryResource> {
+    const timeEntryId = (this.elementRef.nativeElement as HTMLElement).dataset.entry!;
 
     return this
       .apiv3Service
       .time_entries
       .id(timeEntryId)
-      .get()
-      .toPromise();
+      .get();
   }
 }

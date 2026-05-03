@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,7 @@ import { QueryOrder } from 'core-app/core/apiv3/endpoints/queries/apiv3-query-or
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
 import { ProjectResource } from 'core-app/features/hal/resources/project-resource';
+import { UserResource } from 'core-app/features/hal/resources/user-resource';
 import { QuerySortByResource } from 'core-app/features/hal/resources/query-sort-by-resource';
 import { QueryGroupByResource } from 'core-app/features/hal/resources/query-group-by-resource';
 
@@ -41,6 +42,7 @@ export interface QueryResourceEmbedded {
   columns:QueryColumn[];
   groupBy:QueryGroupByResource|undefined;
   project:ProjectResource;
+  user:UserResource;
   sortBy:QuerySortByResource[];
   filters:QueryFilterInstanceResource[];
 }
@@ -88,11 +90,15 @@ export class QueryResource extends HalResource {
 
   public timelineLabels:TimelineLabels;
 
+  public timestamps:string[];
+
   public showHierarchies:boolean;
 
   public public:boolean;
 
   public hidden:boolean;
+
+  public user:UserResource;
 
   public project:ProjectResource;
 
@@ -117,6 +123,7 @@ export class QueryResource extends HalResource {
 
 export interface QueryResourceLinks {
   updateImmediately?(attributes:any):Promise<any>;
+  icalUrl(payload:unknown):Promise<{ icalUrl:{ href:string } }>;
 }
 
 export interface QueryResource extends QueryResourceLinks {}

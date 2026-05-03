@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,10 +36,30 @@ class Setting
     # Restore the previous Setting.protocol now replaced by https?
     def protocol
       if OpenProject::Configuration.https?
-        'https'
+        "https"
       else
-        'http'
+        "http"
       end
+    end
+
+    ##
+    # Host name without protocol
+    def host_without_protocol
+      Setting.host_name&.split(":")&.first
+    end
+
+    ##
+    # Port from host_name if set
+    def optional_port_from_host_name
+      Setting.host_name&.split(":")&.[](1)
+    end
+
+    ##
+    # Get the names of working days
+    # @return [Array<String>] the names of the working days
+    def working_day_names
+      weekdays = %i[monday tuesday wednesday thursday friday saturday sunday]
+      Setting.working_days.map { |day| weekdays[day - 1] }
     end
   end
 end

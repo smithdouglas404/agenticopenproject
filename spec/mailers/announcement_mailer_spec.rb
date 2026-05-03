@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe AnnouncementMailer, type: :mailer do
-  let(:announcement_subject) { 'Some subject' }
+RSpec.describe AnnouncementMailer do
+  let(:announcement_subject) { "Some subject" }
   let(:recipient) { build_stubbed(:user) }
-  let(:announcement_body) { 'Some body text' }
+  let(:announcement_body) { "Some body text" }
 
-  describe '#announce' do
+  describe "#announce" do
     subject(:mail) do
       described_class.announce(recipient,
                                subject: announcement_subject,
@@ -45,7 +47,7 @@ describe AnnouncementMailer, type: :mailer do
         .to eq announcement_subject
     end
 
-    it 'includes the body' do
+    it "includes the body" do
       expect(mail.body.encoded)
         .to include(announcement_body)
     end
@@ -55,25 +57,17 @@ describe AnnouncementMailer, type: :mailer do
         .to include announcement_subject
     end
 
-    it 'sends to the recipient' do
+    it "sends to the recipient" do
       expect(mail.to)
-        .to match_array [recipient.mail]
+        .to contain_exactly(recipient.mail)
     end
 
-    context 'with custom salutation' do
-      subject(:mail) do
-        described_class.announce(recipient,
-                                 subject: announcement_subject,
-                                 salutation: "What's up %<name>s?",
-                                 body: announcement_body)
-      end
+    context "when user is locked" do
+      let(:recipient) { build_stubbed(:user, status: Principal.statuses[:locked]) }
 
-      it 'includes the body' do
-        expect(mail.body.encoded)
-          .to include("What's up #{recipient.name}")
-
-        expect(mail.body.encoded)
-          .not_to include("Hey #{recipient.name}!")
+      it "does not send an email" do
+        expect(mail.subject).to be_nil
+        expect(mail.to).to be_nil
       end
     end
   end

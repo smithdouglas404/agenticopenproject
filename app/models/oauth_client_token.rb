@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,16 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# OAuthClientToken stores the OAuth2 Bearer+Refresh tokens that
-# an OAuth2 server (Nextcloud or similar) provides after a user
-# has granted access.
 class OAuthClientToken < ApplicationRecord
-  # OAuthClientToken sits between User and OAuthClient
   belongs_to :user, optional: false
   belongs_to :oauth_client, optional: false
+  alias_method :auth_source, :oauth_client
 
   validates :user, uniqueness: { scope: :oauth_client }
 
-  validates :access_token, length: { minimum: 1, maximum: 255 }
-  validates :refresh_token, length: { minimum: 1, maximum: 255 }
+  validates :access_token, presence: true
+  validates :refresh_token, presence: true, if: -> { expires_in.present? }
+
+  scope :for_user_and_client, ->(user, client) { where(user:, oauth_client: client) }
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +34,10 @@ class Queries::Roles::Filters::GrantableFilter < Queries::Roles::Filters::RoleFi
     :list
   end
 
+  def human_name
+    I18n.t(:label_role_grantable)
+  end
+
   def where
     db_values = if values.first == OpenProject::Database::DB_VALUE_TRUE
                   [Role::NON_BUILTIN]
@@ -39,7 +45,7 @@ class Queries::Roles::Filters::GrantableFilter < Queries::Roles::Filters::RoleFi
                   [Role::BUILTIN_ANONYMOUS, Role::BUILTIN_NON_MEMBER]
                 end
 
-    if operator == '='
+    if operator == "="
       ["roles.builtin IN (?)", db_values]
     else
       ["roles.builtin NOT IN (?)", db_values]

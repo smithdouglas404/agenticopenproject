@@ -17,7 +17,7 @@ allOf:
             - "$ref": "./link.yml"
             - description: |-
                 The watcher list
-                
+
                 **Resource**: WatchersModel
               readOnly: true
       _embedded:
@@ -59,11 +59,12 @@ example:
       login: j.sheppard
       firstName: John
       lastName: Sheppard
+      name: John Sheppard
       mail: shep@mail.com
       avatar: https://example.org/users/1/avatar
       status: active
-      createdAt: '2014-05-21T08:51:20Z'
-      updatedAt: '2014-05-21T08:51:20Z'
+      createdAt: '2014-05-21T08:51:20.396Z'
+      updatedAt: '2014-05-21T08:51:20.396Z'
     - _type: User
       _links:
         self:
@@ -81,8 +82,9 @@ example:
       login: j.sheppard2
       firstName: Jim
       lastName: Sheppard
+      name: Jim Sheppard
       mail: shep@mail.net
       avatar: https://example.org/users/1/avatar
       status: active
-      createdAt: '2014-05-21T08:51:20Z'
-      updatedAt: '2014-05-21T08:51:20Z'
+      createdAt: '2014-05-21T08:51:20.396Z'
+      updatedAt: '2014-05-21T08:51:20.396Z'

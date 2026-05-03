@@ -1,19 +1,9 @@
 <div>
-  <op-enterprise-banner
-    class="ee-attribute-highlighting-upsale"
-    *ngIf="eeShowBanners"
-    [linkMessage]="text.upsaleCheckOutLink"
-    [textMessage]="text.upsaleAttributeHighlighting"
-    [moreInfoLink]="text.more_info_link"
-    opReferrer="wp-attribute-highlighting#attribute-highlighting">
-  </op-enterprise-banner>
-
-  <form *ngIf="!eeShowBanners">
+  <form>
     <p [textContent]="text.highlighting_mode.description"></p>
     <div class="form--field">
       <label class="form--label">
         <input type="radio"
-               [attr.disabled]="disabledValue(eeShowBanners)"
                [(ngModel)]="highlightingMode"
                (change)="updateMode($event.target.value)"
                value="inline"
@@ -35,8 +25,8 @@
                      class="form--select-field -multi-select"
                      bindLabel="name"
                      name="highlighting_attributes"
-                     appendTo="body">
-          </ng-select>
+                     placeholder="{{ text.highlighting_mode.inline_all_attributes }}"
+                     appendTo="body" />
         </div>
       </div>
     </div>
@@ -44,7 +34,6 @@
     <div class="form--field">
       <label class="form--label">
         <input type="radio"
-               [attr.disabled]="disabledValue(eeShowBanners)"
                [(ngModel)]="entireRowMode"
                (change)="updateMode('entire-row')"
                [value]="true"
@@ -57,7 +46,6 @@
           <ng-select #rowHighlightNgSelect
                      [items]="availableRowHighlightedAttributes"
                      [(ngModel)]="lastEntireRowAttribute"
-                     [disabled]="disabledValue(eeShowBanners)"
                      [clearable]="false"
                      (open)="onOpen(rowHighlightNgSelect)"
                      (change)="updateMode($event.value)"
@@ -66,8 +54,7 @@
                      name="selected_attribute"
                      appendTo="body"
                      id="selected_attribute"
-                     class="form--select-field">
-          </ng-select>
+                     class="form--select-field" />
         </div>
       </div>
     </div>
@@ -75,7 +62,6 @@
     <div class="form--field">
       <label class="form--label">
         <input type="radio"
-               [attr.disabled]="disabledValue(eeShowBanners)"
                [(ngModel)]="highlightingMode"
                (change)="updateMode($event.target.value)"
                value="none"

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { States } from 'core-app/core/states/states.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { WorkPackageViewHierarchiesService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-hierarchy.service';
@@ -60,16 +58,15 @@ describe('WorkPackageViewIndentation service', () => {
     };
   }
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     parentServiceSpy = jasmine.createSpyObj(
       'WorkPackageRelationHierarchyService',
       ['changeParent'],
     );
 
-    parentServiceSpy.changeParent.and.returnValue(Promise.resolve());
+    parentServiceSpy.changeParent.and.resolveTo();
 
-    // noinspection JSIgnoredPromiseFromCall
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       providers: [
         States,
         IsolatedQuerySpace,
@@ -79,19 +76,17 @@ describe('WorkPackageViewIndentation service', () => {
         { provide: WorkPackageRelationsHierarchyService, useValue: parentServiceSpy },
         WorkPackageViewHierarchyIdentationService,
       ],
-    })
-      .compileComponents()
-      .then(() => {
-        service = TestBed.inject(WorkPackageViewHierarchyIdentationService);
-        querySpace = TestBed.inject(IsolatedQuerySpace);
-        hierarchyServiceStub = TestBed.inject(WorkPackageViewHierarchiesService);
-        states = TestBed.inject(States);
-      });
-  }));
+    }).compileComponents();
+    service = TestBed.inject(WorkPackageViewHierarchyIdentationService);
+    querySpace = TestBed.inject(IsolatedQuerySpace);
+    hierarchyServiceStub = TestBed.inject(WorkPackageViewHierarchiesService);
+    states = TestBed.inject(States);
+  });
 
   describe('canIndent', () => {
     it('Cannot indent without changeParent link', () => {
       const workPackage:any = { id: '1234' };
+
       expect(service.canIndent(workPackage)).toBeFalsy();
     });
 
@@ -102,6 +97,7 @@ describe('WorkPackageViewIndentation service', () => {
       ]);
 
       const workPackage:any = { id: '1234', changeParent: () => 'foo' };
+
       expect(service.canIndent(workPackage)).toBeFalsy();
     });
 
@@ -112,6 +108,7 @@ describe('WorkPackageViewIndentation service', () => {
       ]);
 
       const workPackage:any = { id: '1234', changeParent: () => 'foo', ancestorIds: [] };
+
       expect(service.canIndent(workPackage)).toBeTruthy();
     });
 
@@ -125,6 +122,7 @@ describe('WorkPackageViewIndentation service', () => {
         .and.returnValue(false);
 
       const workPackage:any = { id: '1234', changeParent: () => 'foo', ancestorIds: [] };
+
       expect(service.canIndent(workPackage)).toBeFalsy();
     });
 
@@ -135,6 +133,7 @@ describe('WorkPackageViewIndentation service', () => {
       ]);
 
       const workPackage:any = { id: '1234', changeParent: () => 'foo', ancestorIds: ['2345'] };
+
       expect(service.canIndent(workPackage)).toBeFalsy();
     });
 
@@ -146,6 +145,7 @@ describe('WorkPackageViewIndentation service', () => {
       ]);
 
       const workPackage:any = { id: '1234', changeParent: () => 'foo', ancestorIds: ['2345'] };
+
       expect(service.canIndent(workPackage)).toBeTruthy();
     });
   });
@@ -153,6 +153,7 @@ describe('WorkPackageViewIndentation service', () => {
   describe('canOutdent', () => {
     it('Cannot outdent without changeParent link', () => {
       const workPackage:any = { id: '1234' };
+
       expect(service.canOutdent(workPackage)).toBeFalsy();
     });
 
@@ -188,7 +189,7 @@ describe('WorkPackageViewIndentation service', () => {
       service.indent(workPackage).then(() => {
         expect(parentServiceSpy.changeParent).toHaveBeenCalledWith(workPackage, '2345');
         done();
-      });
+      }).catch(done.fail);
     });
 
     it('Can indent with a predecessor that shares an ancestor chain', (done) => {
@@ -206,7 +207,7 @@ describe('WorkPackageViewIndentation service', () => {
       service.indent(workPackage).then(() => {
         expect(parentServiceSpy.changeParent).toHaveBeenCalledWith(workPackage, '5555');
         done();
-      });
+      }).catch(done.fail);
     });
 
     it('Can indent with a predecessor that shares an ancestor chain', (done) => {
@@ -224,7 +225,7 @@ describe('WorkPackageViewIndentation service', () => {
       service.indent(workPackage).then(() => {
         expect(parentServiceSpy.changeParent).toHaveBeenCalledWith(workPackage, '2345');
         done();
-      });
+      }).catch(done.fail);
     });
   });
 
@@ -241,7 +242,7 @@ describe('WorkPackageViewIndentation service', () => {
       service.outdent(workPackage).then(() => {
         expect(parentServiceSpy.changeParent).toHaveBeenCalledWith(workPackage, '2345');
         done();
-      });
+      }).catch(done.fail);
     });
 
     it('will outdent to null in case of ancestorIds.length < 2', (done) => {
@@ -256,7 +257,7 @@ describe('WorkPackageViewIndentation service', () => {
       service.outdent(workPackage).then(() => {
         expect(parentServiceSpy.changeParent).toHaveBeenCalledWith(workPackage, null);
         done();
-      });
+      }).catch(done.fail);
     });
   });
 });

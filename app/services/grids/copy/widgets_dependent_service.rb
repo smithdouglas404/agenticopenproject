@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,7 +65,7 @@ module Grids::Copy
 
     # Provide a human readable name for the widget
     def widget_model_name(widget)
-      I18n.t('grids.label_widget_in_grid', grid_name: widget.grid.to_s)
+      I18n.t("grids.label_widget_in_grid", grid_name: widget.grid.to_s)
     end
 
     def map_references(widget, params)
@@ -108,11 +110,11 @@ module Grids::Copy
     end
 
     def map_query_filters(filters, _params)
-      ::Queries::Copy::FiltersMapper
-        .new(state, filters)
-        .map_filters!
+      result = ::Queries::Copy::FiltersMapper
+        .new(state)
+        .map_filters(filters)
 
-      ServiceResult.success result: filters
+      ServiceResult.success(result:)
     end
 
     def duplicate_query(query_id, params)

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +31,9 @@ module Grids
     belongs_to :project
 
     set_acts_as_attachable_options view_permission: :view_project,
-                                   delete_permission: :manage_overview,
-                                   add_permission: :manage_overview
+                                   delete_permission: :manage_dashboards,
+                                   add_permission: :manage_dashboards,
+                                   skip_permission_checks: false
 
     def to_s
       "Project '#{project&.name || 'missing'}' #{I18n.t('overviews.label')}"

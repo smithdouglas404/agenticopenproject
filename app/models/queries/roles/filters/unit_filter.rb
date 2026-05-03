@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,9 +35,9 @@ class Queries::Roles::Filters::UnitFilter < Queries::Roles::Filters::RoleFilter
   end
 
   def where
-    if operator == '!'
+    if operator == "!"
       ["roles.type != ?", db_values]
-    elsif values.first == 'project'
+    elsif values.first == "project"
       ["roles.type = ? AND roles.builtin = ?", db_values, Role::NON_BUILTIN]
     else
       ["roles.type = ?", db_values]
@@ -50,10 +52,10 @@ class Queries::Roles::Filters::UnitFilter < Queries::Roles::Filters::RoleFilter
   private
 
   def db_values
-    if values.first == 'system'
+    if values.first == "system"
       [GlobalRole.name.to_s]
     else
-      [Role.name.to_s]
+      [ProjectRole.name.to_s]
     end
   end
 end

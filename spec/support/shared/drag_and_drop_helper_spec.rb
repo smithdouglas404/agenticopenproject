@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,7 +65,7 @@ def drag_n_drop_element(from:, to:, offset_x: nil, offset_y: nil)
 end
 
 def drag_by_pixel(element:, by_x:, by_y:)
-  scroll_to_element(element)
+  scroll_to_element(element, block: :center)
 
   page
     .driver

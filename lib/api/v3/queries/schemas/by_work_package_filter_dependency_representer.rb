@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +38,7 @@ module API
 
           def href_callback
             if filter.project
-              api_v3_paths.work_packages_by_project(filter.project.id)
+              api_v3_paths.work_packages_by_workspace(filter.project.id)
             else
               api_v3_paths.work_packages
             end
@@ -47,7 +47,7 @@ module API
           private
 
           def type
-            '[]WorkPackage'
+            "[]WorkPackage"
           end
         end
       end

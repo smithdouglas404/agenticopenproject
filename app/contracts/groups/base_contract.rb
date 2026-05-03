@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,8 +37,10 @@ module Groups
     # hence we need to put "lastname" as an attribute here
     attribute :name
     attribute :lastname
+    attribute :parent_id
 
     validate :validate_unique_users
+    validate :validate_users_not_in_other_department
 
     private
 
@@ -48,6 +52,26 @@ module Groups
       if user_ids.uniq.length < user_ids.length
         errors.add(:group_users, :taken)
       end
+    end
+
+    def validate_users_not_in_other_department
+      return unless model.organizational_unit?
+
+      new_user_ids = model.group_users.select(&:new_record?).map(&:user_id)
+      return if new_user_ids.empty?
+
+      users_already_in_departments(new_user_ids).each do |user_id, department_id|
+        errors.add(:group_users, :user_already_in_department, user_id:, department_id:)
+      end
+    end
+
+    def users_already_in_departments(user_ids)
+      GroupUser
+        .joins(:group)
+        .merge(Group.organizational_units)
+        .where(user_id: user_ids)
+        .where.not(group_id: model.id)
+        .pluck(:user_id, :group_id)
     end
   end
 end

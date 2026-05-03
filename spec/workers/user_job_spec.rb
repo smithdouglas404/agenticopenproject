@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe UserJob do
+RSpec.describe UserJob do
   let(:test_job) do
-    Class.new(::UserJob) do
+    Class.new(UserJob) do
       def execute(foo:)
         [user.id, User.current.id, user.admin]
       end
@@ -38,13 +40,13 @@ describe UserJob do
   end
 
   subject do
-    test_job.new(user:, foo: 'foo').perform_now
+    test_job.new(user:, foo: "foo").perform_now
   end
 
-  describe 'with system user' do
+  describe "with system user" do
     let(:user) { User.system }
 
-    it 'uses that user' do
+    it "uses that user" do
       given_user, current_user, admin = subject
       expect(given_user).to eq current_user
       expect(given_user).to eq user.id
@@ -52,10 +54,10 @@ describe UserJob do
     end
   end
 
-  describe 'with a regular user' do
-    let(:user) { build_stubbed :user }
+  describe "with a regular user" do
+    let(:user) { build_stubbed(:user) }
 
-    it 'uses that user' do
+    it "uses that user" do
       given_user, current_user, admin = subject
       expect(given_user).to eq current_user
       expect(given_user).to eq user.id

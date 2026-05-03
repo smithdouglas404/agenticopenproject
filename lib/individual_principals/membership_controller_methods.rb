@@ -35,8 +35,6 @@ module IndividualPrincipals
 
     def find_membership
       @membership = Member.visible(current_user).find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render_404
     end
 
     def respond_with_service_call(call, message:)
@@ -46,7 +44,8 @@ module IndividualPrincipals
         flash[:error] = call.errors.full_messages.join("\n")
       end
 
-      redirect_to edit_polymorphic_path(@individual_principal, tab: redirected_to_tab(call.result))
+      redirect_to edit_polymorphic_path(@individual_principal, tab: redirected_to_tab(call.result)),
+                  status: :see_other
     end
   end
 end

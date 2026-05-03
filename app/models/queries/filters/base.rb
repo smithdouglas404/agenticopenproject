@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'queries/operators'
+require "queries/operators"
 
 class Queries::Filters::Base
   include ActiveModel::Validations
@@ -49,7 +51,7 @@ class Queries::Filters::Base
     self.context = options[:context]
 
     self.class.filter_params.each do |param_field|
-      send("#{param_field}=", options[param_field])
+      send(:"#{param_field}=", options[param_field])
     end
   end
 
@@ -57,7 +59,7 @@ class Queries::Filters::Base
   # Treat the constructor as private, as the filter MAY need to check
   # the options before accepting them as a filter.
   #
-  # Use +#create+ instead.
+  # Use +#create!+ instead.
   private_class_method :new
 
   ##
@@ -77,11 +79,11 @@ class Queries::Filters::Base
   end
 
   def human_name
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def type
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def allowed_values
@@ -102,16 +104,16 @@ class Queries::Filters::Base
     type_strategy.default_operator_class
   end
 
-  def scope
-    scope = model.where(where)
-    scope = scope.from(from) if from
-    scope = scope.joins(joins) if joins
-    scope = scope.left_outer_joins(left_outer_joins) if left_outer_joins
-    scope
+  def apply_to(query_scope)
+    query_scope = query_scope.where(where)
+    query_scope = query_scope.from(from) if from
+    query_scope = query_scope.joins(joins) if joins
+    query_scope = query_scope.left_outer_joins(left_outer_joins) if left_outer_joins
+    query_scope
   end
 
   def self.key
-    to_s.demodulize.underscore.gsub(/_filter$/, '').to_sym
+    to_s.demodulize.underscore.gsub(/_filter$/, "").to_sym
   end
 
   def self.connection
@@ -198,7 +200,7 @@ class Queries::Filters::Base
 
   def validate_presence_of_values
     if operator_strategy&.requires_value? && (values.nil? || values.compact_blank.empty?)
-      errors.add(:values, I18n.t('activerecord.errors.messages.blank'))
+      errors.add(:values, I18n.t("activerecord.errors.messages.blank"))
     end
   end
 

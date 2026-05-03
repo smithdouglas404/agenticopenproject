@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,117 +28,117 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Authorization::QueryTransformations do
+RSpec.describe Authorization::QueryTransformations do
   let(:instance) { described_class.new }
 
-  context 'registering a transformation' do
+  context "registering a transformation" do
     before do
       instance.register(:on, :name) do |*args|
         args
       end
     end
 
-    describe '#for?' do
-      it 'is true for the registered name' do
+    describe "#for?" do
+      it "is true for the registered name" do
         expect(instance.for?(:on)).to be_truthy
       end
 
-      it 'is false for another name' do
+      it "is false for another name" do
         expect(instance.for?(:other_name)).to be_falsey
       end
     end
 
-    describe '#for' do
-      it 'returns an array of transformations for the registered name' do
+    describe "#for" do
+      it "returns an array of transformations for the registered name" do
         expect(instance.for(:on).length).to be 1
 
         expect(instance.for(:on)[0].on).to be :on
         expect(instance.for(:on)[0].name).to be :name
-        expect(instance.for(:on)[0].block.call(1, 2, 3)).to match_array [1, 2, 3]
+        expect(instance.for(:on)[0].block.call(1, 2, 3)).to contain_exactly(1, 2, 3)
       end
 
-      it 'is nil for another name' do
+      it "is nil for another name" do
         expect(instance.for(:other_name)).to be_nil
       end
     end
   end
 
-  context 'registering two transformations depending via after' do
+  context "registering two transformations depending via after" do
     before do
       instance.register(:on, :transformation1, after: [:transformation2]) do |*args|
         args
       end
 
       instance.register(:on, :transformation2) do |*args|
-        args.join(', ')
+        args.join(", ")
       end
     end
 
-    describe '#for?' do
-      it 'is true for the registered name' do
+    describe "#for?" do
+      it "is true for the registered name" do
         expect(instance.for?(:on)).to be_truthy
       end
 
-      it 'is false for another name' do
+      it "is false for another name" do
         expect(instance.for?(:other_name)).to be_falsey
       end
     end
 
-    describe '#for' do
-      it 'returns an array of transformations for the registered name' do
+    describe "#for" do
+      it "returns an array of transformations for the registered name" do
         expect(instance.for(:on).length).to be 2
 
         expect(instance.for(:on)[0].on).to be :on
         expect(instance.for(:on)[0].name).to be :transformation2
-        expect(instance.for(:on)[0].block.call(1, 2, 3)).to eql '1, 2, 3'
+        expect(instance.for(:on)[0].block.call(1, 2, 3)).to eql "1, 2, 3"
 
         expect(instance.for(:on)[1].on).to be :on
         expect(instance.for(:on)[1].name).to be :transformation1
-        expect(instance.for(:on)[1].block.call(1, 2, 3)).to match_array [1, 2, 3]
+        expect(instance.for(:on)[1].block.call(1, 2, 3)).to contain_exactly(1, 2, 3)
       end
     end
   end
 
-  context 'registering two transformations depending via before' do
+  context "registering two transformations depending via before" do
     before do
       instance.register(:on, :transformation1) do |*args|
         args
       end
 
       instance.register(:on, :transformation2, before: [:transformation1]) do |*args|
-        args.join(', ')
+        args.join(", ")
       end
     end
 
-    describe '#for?' do
-      it 'is true for the registered name' do
+    describe "#for?" do
+      it "is true for the registered name" do
         expect(instance.for?(:on)).to be_truthy
       end
 
-      it 'is false for another name' do
+      it "is false for another name" do
         expect(instance.for?(:other_name)).to be_falsey
       end
     end
 
-    describe '#for' do
-      it 'returns an array of transformations for the registered name' do
+    describe "#for" do
+      it "returns an array of transformations for the registered name" do
         expect(instance.for(:on).length).to be 2
 
         expect(instance.for(:on)[0].on).to be :on
         expect(instance.for(:on)[0].name).to be :transformation2
-        expect(instance.for(:on)[0].block.call(1, 2, 3)).to eql '1, 2, 3'
+        expect(instance.for(:on)[0].block.call(1, 2, 3)).to eql "1, 2, 3"
 
         expect(instance.for(:on)[1].on).to be :on
         expect(instance.for(:on)[1].name).to be :transformation1
-        expect(instance.for(:on)[1].block.call(1, 2, 3)).to match_array [1, 2, 3]
+        expect(instance.for(:on)[1].block.call(1, 2, 3)).to contain_exactly(1, 2, 3)
       end
     end
   end
 
-  context 'registering two mutually dependent transformations' do
-    it 'fails' do
+  context "registering two mutually dependent transformations" do
+    it "fails" do
       instance.register(:on, :transformation1, before: [:transformation2]) do |*args|
         args
       end
@@ -145,7 +147,7 @@ describe Authorization::QueryTransformations do
 
       expect do
         instance.register(:on, :transformation2, before: [:transformation1]) do |*args|
-          args.join(', ')
+          args.join(", ")
         end
       end.to raise_error "Cannot sort #{expected_order} into the list of transformations"
     end

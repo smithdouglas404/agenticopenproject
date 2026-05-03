@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +30,13 @@
 
 module Queries::Filters::Strategies
   class ListAll < List
-    self.supported_operators = ['=', '!', '*']
+    self.supported_operators = %w[= ! &=]
+
+    def operator_map
+      super_value = super.dup
+      super_value["&="] = ::Queries::Operators::EqualsAll
+
+      super_value
+    end
   end
 end

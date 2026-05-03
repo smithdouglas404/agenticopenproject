@@ -1,3 +1,33 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
 Doorkeeper.configure do
   # Change the ORM that doorkeeper will use (needs plugins)
   orm :active_record
@@ -5,11 +35,12 @@ Doorkeeper.configure do
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
     logged_user = session[:user_id] && User.active.find_by(id: session[:user_id])
-    if logged_user.present?
-      logged_user
-    else
-      redirect_to(signin_path(back_url: request.fullpath))
-    end
+    logged_user.presence || redirect_to(signin_path(back_url: request.fullpath))
+  end
+
+  # Configure to prevent grants when the application is disabled
+  allow_grant_flow_for_client do |_grant_type, client|
+    client.enabled?
   end
 
   # If you are planning to use Doorkeeper in Rails 5 API-only application, then you might
@@ -52,7 +83,11 @@ Doorkeeper.configure do
   # Defaults to ActionController::Base.
   # See https://github.com/doorkeeper-gem/doorkeeper#custom-base-controller
   #
-  base_controller '::OAuth::AuthBaseController'
+  base_controller "::OAuth::AuthBaseController"
+
+  # Require non-confidential clients to use PKCE when using an authorization code
+  # to obtain an access_token (disabled by default)
+  force_pkce
 
   # Enable hashing and bcrypt-hashing of token secrets
   # and application secrets, respectively.
@@ -97,6 +132,8 @@ Doorkeeper.configure do
   # https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Scopes
   #
   default_scopes :api_v3
+
+  optional_scopes :scim_v2, :mcp
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
@@ -197,13 +234,13 @@ Doorkeeper.configure do
   # realm "Doorkeeper"
 end
 
-OpenProject::Application.configure do |application|
+Rails.application.configure do |application|
   application.config.to_prepare do
     # Requiring some classes of Doorkeeper ourselves which for whatever reasons are
     # no longer loaded for us now that we use zeitwerk
-    require 'doorkeeper/application_metal_controller'
-    require 'doorkeeper/application_controller'
-    require 'doorkeeper/tokens_controller'
-    require 'doorkeeper/authorizations_controller'
+    require "doorkeeper/application_metal_controller"
+    require "doorkeeper/application_controller"
+    require "doorkeeper/tokens_controller"
+    require "doorkeeper/authorizations_controller"
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 module Projects
   class UnarchiveService < ::BaseServices::BaseContracted
     include Contracted
-    include Projects::Concerns::UpdateDemoData
+    prepend Projects::Concerns::UpdateDemoData
 
     def initialize(user:, model:, contract_class: Projects::UnarchiveContract)
       super(user:, contract_class:)
@@ -41,6 +43,11 @@ module Projects
     def persist(service_call)
       activate_project(model)
 
+      service_call
+    end
+
+    def after_perform(service_call)
+      OpenProject::Notifications.send(OpenProject::Events::PROJECT_UNARCHIVED, project: model)
       service_call
     end
 

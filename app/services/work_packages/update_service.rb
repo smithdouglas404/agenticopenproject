@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,13 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::UpdateService < ::BaseServices::Update
+class WorkPackages::UpdateService < BaseServices::Update
   include ::WorkPackages::Shared::UpdateAncestors
   include Attachments::ReplaceAttachments
+  include Types::ApplyPatterns
+
+  attr_accessor :cause_of_rescheduling
+
+  def initialize(user:, model:, contract_class: nil, contract_options: {}, cause_of_rescheduling: nil)
+    super(user:, model:, contract_class:, contract_options:)
+    self.cause_of_rescheduling = cause_of_rescheduling || model
+  end
 
   private
 
   def after_perform(service_call)
+    # TODO: code smell here: saving the automatically generated subject depends
+    # on running the UpdateAncestorsService right after. The subject gets saved
+    # only thanks to this. If the UpdateAncestorsService is not run, the subject
+    # is not saved. That's an odd coupling.
+    apply_patterns(service_call.result, save: false)
     update_related_work_packages(service_call)
     cleanup(service_call.result)
 
@@ -40,19 +55,24 @@ class WorkPackages::UpdateService < ::BaseServices::Update
   end
 
   def update_related_work_packages(service_call)
-    update_ancestors([service_call.result]).each do |ancestor_service_call|
+    work_package = service_call.result
+    changed_attributes = work_package.changed_attribute_keys_before_last_save
+    update_ancestors(work_package, changed_attributes).tap do |ancestor_service_call|
       ancestor_service_call.dependent_results.each do |ancestor_dependent_service_call|
         service_call.add_dependent!(ancestor_dependent_service_call)
       end
     end
 
-    update_related(service_call.result).each do |related_service_call|
+    # update saved changes as they might have changed due to the ancestors updates
+    changed_attributes += work_package.changed_attribute_keys_before_last_save
+    changed_attributes.uniq!
+    update_related(work_package, changed_attributes).each do |related_service_call|
       service_call.add_dependent!(related_service_call)
     end
   end
 
-  def update_related(work_package)
-    consolidated_calls(update_descendants(work_package) + reschedule_related(work_package))
+  def update_related(work_package, changed_attributes)
+    consolidated_calls(update_descendants(work_package) + reschedule_related(work_package, changed_attributes))
       .each { |dependent_call| dependent_call.result.save(validate: false) }
   end
 
@@ -81,10 +101,18 @@ class WorkPackages::UpdateService < ::BaseServices::Update
       moved_work_packages = [work_package] + work_package.descendants
       delete_relations(moved_work_packages)
       move_time_entries(moved_work_packages, work_package.project_id)
+      move_work_package_memberships(moved_work_packages, work_package.project_id)
+      update_semantic_ids(moved_work_packages) if Setting::WorkPackageIdentifier.semantic?
     end
     if work_package.saved_change_to_type_id?
       reset_custom_values(work_package)
     end
+  end
+
+  def update_semantic_ids(work_packages)
+    return if work_packages.empty?
+
+    work_packages.first.project.reserve_semantic_id_block!(work_packages.map(&:id))
   end
 
   def delete_relations(work_packages)
@@ -101,29 +129,33 @@ class WorkPackages::UpdateService < ::BaseServices::Update
       .update_all(project_id:)
   end
 
+  def move_work_package_memberships(work_packages, project_id)
+    Member
+      .where(entity: work_packages)
+      .update_all(project_id:)
+  end
+
   def reset_custom_values(work_package)
     work_package.reset_custom_values!
   end
 
-  def reschedule_related(work_package)
-    rescheduled = if work_package.saved_change_to_parent_id? && work_package.parent_id_before_last_save
-                    reschedule_former_siblings(work_package).dependent_results
-                  else
-                    []
-                  end
+  def reschedule_related(work_package, changed_attributes)
+    work_packages_to_reschedule = [work_package]
 
-    rescheduled + reschedule(work_package, [work_package]).dependent_results
-  end
+    # if parent changed, the former parent needs to be rescheduled too.
+    if parent_just_changed?(work_package)
+      former_parent = WorkPackage.visible(user).find_by(id: work_package.parent_id_before_last_save)
+      work_packages_to_reschedule << former_parent if former_parent
+    end
 
-  def reschedule_former_siblings(work_package)
-    reschedule(work_package, WorkPackage.where(parent_id: work_package.parent_id_before_last_save))
-  end
-
-  def reschedule(work_package, work_packages)
     WorkPackages::SetScheduleService
-      .new(user:,
-           work_package: work_packages)
-      .call(work_package.saved_changes.keys.map(&:to_sym))
+      .new(user:, work_package: work_packages_to_reschedule, initiated_by: cause_of_rescheduling)
+      .call(changed_attributes)
+      .dependent_results
+  end
+
+  def parent_just_changed?(work_package)
+    work_package.saved_change_to_parent_id? && work_package.parent_id_before_last_save
   end
 
   # When multiple services change a work package, we still only want one update to the database due to:
@@ -135,11 +167,11 @@ class WorkPackages::UpdateService < ::BaseServices::Update
     service_calls
       .group_by { |sc| sc.result.id }
       .map do |(_, same_work_package_calls)|
-      same_work_package_calls.pop.tap do |master|
-        same_work_package_calls.each do |sc|
-          master.result.attributes = sc.result.changes.transform_values(&:last)
+        same_work_package_calls.pop.tap do |master|
+          same_work_package_calls.each do |sc|
+            master.result.attributes = sc.result.changes.transform_values(&:last)
+          end
         end
-      end
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,33 +34,29 @@ module OpenProject::TextFormatting
       attr_reader :plain, :rich
 
       %i(plain rich).each do |flavor|
-        define_method("#{flavor}_format") do
+        define_method(:"#{flavor}_format") do
           send(flavor).format
         end
 
-        define_method("#{flavor}_formatter") do
+        define_method(:"#{flavor}_formatter") do
           send(flavor).formatter
         end
 
-        define_method("#{flavor}_helper") do
+        define_method(:"#{flavor}_helper") do
           send(flavor).helper
         end
 
-        define_method("register_#{flavor}!") do |klass|
-          instance_variable_set("@#{flavor}", klass)
+        define_method(:"register_#{flavor}!") do |klass|
+          instance_variable_set(:"@#{flavor}", klass)
         end
       end
 
       def supported?(name)
         [plain, rich].map(&:format).include?(name.to_sym)
       end
-
-      def plain?(name)
-        name && plain.format == name.to_sym
-      end
     end
   end
 end
 
-OpenProject::TextFormatting::Formats.register_plain! ::OpenProject::TextFormatting::Formats::Plain::Format
-OpenProject::TextFormatting::Formats.register_rich! ::OpenProject::TextFormatting::Formats::Markdown::Format
+OpenProject::TextFormatting::Formats.register_plain! OpenProject::TextFormatting::Formats::Plain::Format
+OpenProject::TextFormatting::Formats.register_rich! OpenProject::TextFormatting::Formats::Markdown::Format

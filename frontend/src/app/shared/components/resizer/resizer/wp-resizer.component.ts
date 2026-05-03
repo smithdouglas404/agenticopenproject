@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,41 +26,36 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit,
-} from '@angular/core';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
 import { TransitionService } from '@uirouter/core';
-import { BrowserDetector } from 'core-app/core/browser/browser-detector.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { ResizeDelta } from 'core-app/shared/components/resizer/resizer.component';
 import { fromEvent } from 'rxjs';
-import { MainMenuToggleService } from 'core-app/core/main-menu/main-menu-toggle.service';
 
 @Component({
   selector: 'wp-resizer',
   template: `
-    <resizer [customHandler]="false"
+    <op-resizer [customHandler]="false"
              [resizerClass]="resizerClass"
              cursorClass="col-resize"
-             (end)="resizeEnd()"
-             (start)="resizeStart()"
-             (move)="resizeMove($event)">
-    </resizer>
+             (resizeFinished)="resizeEnd()"
+             (resizeStarted)="resizeStart()"
+             (move)="resizeMove($event)" />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-
-export class WpResizerDirective extends UntilDestroyedMixin implements OnInit, AfterViewInit {
+export class WpResizerComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit, OnDestroy {
   @Input() elementClass:string;
 
   @Input() resizeEvent:string;
 
   @Input() localStorageKey:string;
 
-  @Input() resizeStyle:'flexBasis'|'width' = 'flexBasis';
+  @Input() variableName = '--split-screen-width';
 
-  private resizingElement:HTMLElement;
+  private resizingElement:HTMLElement|null;
 
   private elementWidth:number;
 
@@ -69,22 +64,29 @@ export class WpResizerDirective extends UntilDestroyedMixin implements OnInit, A
   private resizer:HTMLElement;
 
   // Min-width this element is allowed to have
-  private elementMinWidth = 530;
+  private elementMinWidth = 550;
 
   public moving = false;
 
   public resizerClass = 'work-packages--resizer icon-resizer-vertical-lines';
 
-  constructor(readonly toggleService:MainMenuToggleService,
-    private elementRef:ElementRef,
+  constructor(
+    private elementRef:ElementRef<HTMLElement>,
     readonly $transitions:TransitionService,
-    readonly browserDetector:BrowserDetector) {
+  ) {
     super();
   }
 
   ngOnInit() {
     // Get element
-    this.resizingElement = <HTMLElement>document.getElementsByClassName(this.elementClass)[0];
+    // We use this more complicated approach of taking the last element of the class as it allows
+    // to still work in case an element is duplicated by Angular.
+    const elements = document.getElementsByClassName(this.elementClass);
+    this.resizingElement = elements[elements.length - 1] as HTMLElement|null;
+
+    if (!this.resizingElement) {
+      return;
+    }
 
     // Get initial width from local storage and apply
     const localStorageValue = this.parseLocalStorageValue();
@@ -99,21 +101,10 @@ export class WpResizerDirective extends UntilDestroyedMixin implements OnInit, A
       this.elementWidth = this.resizingElement.parentElement.offsetWidth / 2;
     }
 
-    this.resizingElement.style[this.resizeStyle] = `${this.elementWidth}px`;
+    this.setWidthVariable(this.elementWidth);
 
     // Add event listener
     this.element = this.elementRef.nativeElement;
-
-    // Listen on sidebar changes and toggle column layout, if necessary
-    this.toggleService.changeData$
-      .pipe(
-        distinctUntilChanged(),
-        this.untilDestroyed(),
-        debounceTime(100),
-      )
-      .subscribe(() => {
-        this.applyColumnLayout();
-      });
 
     // Listen to event
     fromEvent(window, 'resize', { passive: true })
@@ -126,22 +117,20 @@ export class WpResizerDirective extends UntilDestroyedMixin implements OnInit, A
 
   ngAfterViewInit():void {
     // Get the reziser
-    this.resizer = <HTMLElement> this.elementRef.nativeElement.getElementsByClassName(this.resizerClass)[0];
+    this.resizer = this.elementRef.nativeElement.getElementsByClassName(this.resizerClass)[0] as HTMLElement;
 
     this.applyColumnLayout();
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
-    // Reset the style when killing this directive, otherwise the style remains
-    this.resizingElement.style[this.resizeStyle] = '';
   }
 
   resizeStart() {
     // In case we dragged the resizer farther than the element can actually grow,
     // we reset it to the actual width at the start of the new resizing
     const localStorageValue = this.parseLocalStorageValue();
-    const actualElementWidth = this.resizingElement.offsetWidth;
+    const actualElementWidth = this.resizingElement?.offsetWidth || 0;
     if (localStorageValue && localStorageValue > actualElementWidth) {
       this.elementWidth = actualElementWidth;
     }
@@ -184,23 +173,24 @@ export class WpResizerDirective extends UntilDestroyedMixin implements OnInit, A
     this.applyColumnLayout();
 
     // Set new width
-    this.resizingElement.style[this.resizeStyle] = `${newValue}px`;
+    this.setWidthVariable(newValue);
   }
 
   private parseLocalStorageValue():number|undefined {
     const localStorageValue = window.OpenProject.guardedLocalStorage(this.localStorageKey);
     const number = parseInt(localStorageValue || '', 10);
 
-    if (typeof number === 'number' && number !== NaN) {
+    if (typeof number === 'number' && !Number.isNaN(number)) {
       return number;
     }
 
     return undefined;
   }
+
   private applyColumnLayout(checkWidth = 750) {
-    const singleView = document.querySelectorAll("[data-selector='wp-single-view']")[0] as HTMLElement;
+    const singleView = document.querySelector<HTMLElement>("[data-selector='wp-single-view']");
     if (singleView) {
-      jQuery(singleView).toggleClass('work-package--single-view_with-columns', singleView.offsetWidth > checkWidth);
+      singleView.classList.toggle('work-package--single-view_with-columns', singleView.offsetWidth > checkWidth);
     }
   }
 
@@ -212,5 +202,9 @@ export class WpResizerDirective extends UntilDestroyedMixin implements OnInit, A
     if (!shouldBePresent && this.resizer.classList.contains('-error-font')) {
       this.resizer.classList.remove('-error-font');
     }
+  }
+
+  private setWidthVariable(value:number):void {
+    document.documentElement.style.setProperty(this.variableName, `${value}px`);
   }
 }

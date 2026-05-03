@@ -9,9 +9,9 @@ keywords: general settings
 
 You can configure general system settings in OpenProject. Under System settings on the tab **General** you can configure the following options.
 
-1. **Application title**: This title will be displayed on the [application start page](../../../user-guide/start-page).
+1. **Application title**: This title will be displayed on the [application start page](../../../user-guide/home/).
 
-2. **Object per page options** define the options of how many objects  (for example work packages or news entries) you can have displayed on one page. This is used for the pagination in the work package list. You can enter several values, separated by coma. Please note that the higher value you set, the more work packages will be initially loaded and therefore it might take longer time to load a work package page.
+2. **Object per page options** define the options of how many objects  (for example work packages or news entries) you can have displayed on one page. This is used for the pagination in the work package table. You can enter several values, separated by coma. Please note that the higher value you set, the more work packages will be initially loaded and therefore it might take longer time to load a work package page.
 
 3. **Days displayed on project activity** determines how far back the project activities will be traced and displayed in the project's [Activity](../../../user-guide/activity).
 
@@ -19,25 +19,42 @@ You can configure general system settings in OpenProject. Under System settings 
 
 5. **Cache formatted text** allows to save formatted text in cache, which will help load Wiki Pages faster.
 
-6. **Enable feeds** – enables RSS feeds on wiki pages, forums and news via RSS client.
+6. **Allowed link protocols** allows protocols to be rendered as links in work package descriptions, long text fields and comments. Some examples are: 
+   - vis://FE0E3D1D-9DC5-4931-BF6C-9E01216047A4/3/8326584
+   - dict://term lookup
+   - vscode://file/path/to/file
+   - figma://
+   - element://vector/webapp/#/room/!ID
+   - tel://number
+   - sms://number
+   - facetime://number
+   
+   One protocol should be entered per line.
 
-7. Set **feed content limit**.
+> [!NOTE]
+> Protocols http, https, and mailto are always allowed. 
 
-8. **Work packages and projects export limit** defines the maximum items a structured export for work packages and projects can contain (i.e., lines of CSV, XLS etc.). Increasing this value allows you to export more items at once, but at the cost of higher RAM consumption. If you're experiencing errors exporting with a high value, try reducing this number first.
+7. **Enable feeds** – enables RSS feeds on wiki pages, forums and news via RSS client.
 
-9. **Max size of text files displayed inline** defines the maximum file size up to which different versions of a file are displayed next to each other when comparing (diff) two versions in a repository.
+8. Set **feed content limit**.
 
-10. **Max number of diff lines displayed** defines the maximum number of lines displayed when comparing (diff) two versions in a repository.
+9. **Work packages and projects export limit** defines the maximum items a structured export for work packages and projects can contain (i.e., lines of CSV, XLS etc.). Increasing this value allows you to export more items at once, but at the cost of higher RAM consumption. If you're experiencing errors exporting with a high value, try reducing this number first.
 
-11. **Display security badge** enables to display a badge with your installation status in the [Information administration panel](../../information), and on the [start page](../../../user-guide/start-page). It is displayed to administrators only.
+10. **Max size of text files displayed inline** defines the maximum file size up to which different versions of a file are displayed next to each other when comparing (diff) two versions in a repository.
 
-    *Note: if enabled, this will display a badge with your installation status in the* [Information](https://qa.openproject-edge.com/admin/info) *administration panel, and on the home page. It is displayed to administrators only.*
+11. **Max number of diff lines displayed** defines the maximum number of lines displayed when comparing (diff) two versions in a repository.
 
-    *The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit* [the configuration documentation](https://www.openproject.org/docs/system-admin-guide/information/#security-badge)*.*![The general system settings](general-settings-01.png)
+12. **Display security badge** enables to display a badge with your installation status in the [Information administration panel](../../information), and on the [start page](../../../user-guide/home/). It is displayed to administrators only.
+
+> [!NOTE]
+> If enabled, this will display a badge with your installation status in the [Information](https://qa.openproject-edge.com/admin/info) administration panel, and on the home page. It is displayed to administrators only.
+> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit [the configuration documentation](../../../system-admin-guide/information/#security-badge).
+
+![General system settings in OpenProject administration](openproject_system_admin_guide_general_settings.png)
 
 ## Welcome block text
 
-Create a welcome text block to display the most important information to users on your [application start page](../../../user-guide/start-page).
+Create a welcome text block to display the most important information to users on your [application start page](../../../user-guide/home/).
 
 1. Insert a **welcome block title**.
 
@@ -47,5 +64,4 @@ Create a welcome text block to display the most important information to users o
 
 4. Do not forget to **save** your changes.
 
-   ![image-20211209162118090](image-20211209162118090.png)
-
+   ![Welcome block text settings in OpenProject administration](openproject_system_admin_guide_general_settings_welcome_message.png)

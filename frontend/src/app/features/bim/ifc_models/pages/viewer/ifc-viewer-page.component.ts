@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,37 +26,55 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Injector,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+
 import {
   PartitionedQuerySpacePageComponent,
   ToolbarButtonComponentDefinition,
 } from 'core-app/features/work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component';
-import { WorkPackageFilterButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/wp-filter-button/wp-filter-button.component';
-import { ZenModeButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/zen-mode-toggle-button/zen-mode-toggle-button.component';
 import {
+  WorkPackageFilterButtonComponent,
+} from 'core-app/features/work-packages/components/wp-buttons/wp-filter-button/wp-filter-button.component';
+import {
+  ZenModeButtonComponent,
+} from 'core-app/features/work-packages/components/wp-buttons/zen-mode-toggle-button/zen-mode-toggle-button.component';
+import {
+  bcfCardsViewIdentifier,
   bcfSplitViewCardsIdentifier,
+  bcfTableViewIdentifier,
   bcfViewerViewIdentifier,
   BcfViewService,
+  BcfViewState,
 } from 'core-app/features/bim/ifc_models/pages/viewer/bcf-view.service';
-import { BcfViewToggleButtonComponent } from 'core-app/features/bim/ifc_models/toolbar/view-toggle/bcf-view-toggle-button.component';
+import {
+  BcfViewToggleButtonComponent,
+} from 'core-app/features/bim/ifc_models/toolbar/view-toggle/bcf-view-toggle-button.component';
 import { IfcModelsDataService } from 'core-app/features/bim/ifc_models/pages/viewer/ifc-models-data.service';
-import { QueryParamListenerService } from 'core-app/features/work-packages/components/wp-query/query-param-listener.service';
-import { BimManageIfcModelsButtonComponent } from 'core-app/features/bim/ifc_models/toolbar/manage-ifc-models-button/bim-manage-ifc-models-button.component';
-import { WorkPackageCreateButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/wp-create-button/wp-create-button.component';
+import {
+  QueryParamListenerService,
+} from 'core-app/features/work-packages/components/wp-query/query-param-listener.service';
+import {
+  BimManageIfcModelsButtonComponent,
+} from 'core-app/features/bim/ifc_models/toolbar/manage-ifc-models-button/bim-manage-ifc-models-button.component';
+import {
+  WorkPackageCreateButtonComponent,
+} from 'core-app/features/work-packages/components/wp-buttons/wp-create-button/wp-create-button.component';
 import { of } from 'rxjs';
-import { BcfImportButtonComponent } from 'core-app/features/bim/ifc_models/toolbar/import-export-bcf/bcf-import-button.component';
-import { BcfExportButtonComponent } from 'core-app/features/bim/ifc_models/toolbar/import-export-bcf/bcf-export-button.component';
-import { RefreshButtonComponent } from 'core-app/features/bim/ifc_models/toolbar/import-export-bcf/refresh-button.component';
+import {
+  BcfImportButtonComponent,
+} from 'core-app/features/bim/ifc_models/toolbar/import-export-bcf/bcf-import-button.component';
+import {
+  BcfExportButtonComponent,
+} from 'core-app/features/bim/ifc_models/toolbar/import-export-bcf/bcf-export-button.component';
+import {
+  RefreshButtonComponent,
+} from 'core-app/features/bim/ifc_models/toolbar/import-export-bcf/refresh-button.component';
 import { ViewerBridgeService } from 'core-app/features/bim/bcf/bcf-viewer-bridge/viewer-bridge.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
-import { WorkPackageSettingsButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/wp-settings-button/wp-settings-button.component';
+import {
+  WorkPackageSettingsButtonComponent,
+} from 'core-app/features/work-packages/components/wp-buttons/wp-settings-button/wp-settings-button.component';
 
 @Component({
   templateUrl: '../../../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.html',
@@ -71,8 +89,11 @@ import { WorkPackageSettingsButtonComponent } from 'core-app/features/work-packa
     QueryParamListenerService,
   ],
   selector: 'op-ifc-viewer-page',
+  standalone: false,
 })
-export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent implements UntilDestroyedMixin, OnInit {
+export class IFCViewerPageComponent
+  extends PartitionedQuerySpacePageComponent
+  implements UntilDestroyedMixin, OnInit, OnDestroy {
   text = {
     title: this.I18n.t('js.bcf.management'),
     delete: this.I18n.t('js.button_delete'),
@@ -89,7 +110,6 @@ export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent i
       component: WorkPackageCreateButtonComponent,
       inputs: {
         stateName$: of(this.newRoute),
-        allowed: ['work_packages.createWorkPackage', 'work_package.copy'],
       },
     },
     {
@@ -99,12 +119,12 @@ export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent i
     {
       component: BcfImportButtonComponent,
       show: ():boolean => this.ifcData.allowed('manage_bcf'),
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
     },
     {
       component: BcfExportButtonComponent,
       show: ():boolean => this.ifcData.allowed('manage_bcf'),
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
     },
     {
       component: WorkPackageFilterButtonComponent,
@@ -112,11 +132,11 @@ export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent i
     },
     {
       component: BcfViewToggleButtonComponent,
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
     },
     {
       component: ZenModeButtonComponent,
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
     },
     {
       component: BimManageIfcModelsButtonComponent,
@@ -126,7 +146,7 @@ export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent i
     },
     {
       component: WorkPackageSettingsButtonComponent,
-      containerClasses: 'hidden-for-mobile',
+      containerClasses: 'hidden-for-tablet',
       show: ():boolean => this.authorisationService.can('query', 'updateImmediately'),
       inputs: {
         hideTableOptions: true,
@@ -134,10 +154,15 @@ export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent i
     },
   ];
 
-  constructor(readonly ifcData:IfcModelsDataService,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  private removeSubscription:Function;
+
+  constructor(
+    readonly ifcData:IfcModelsDataService,
     readonly bcfView:BcfViewService,
     readonly injector:Injector,
-    readonly viewerBridgeService:ViewerBridgeService) {
+    readonly viewerBridgeService:ViewerBridgeService,
+  ) {
     super(injector);
   }
 
@@ -151,8 +176,36 @@ export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent i
       .subscribe((query) => {
         const dr = query.displayRepresentation || bcfSplitViewCardsIdentifier;
         this.filterAllowed = dr !== bcfViewerViewIdentifier;
+        // When changing the query space by selecting a dropdown option, handle the split screen
+        // and hide it for full views.
+        this.updateSplitScreen(dr as BcfViewState);
         this.cdRef.detectChanges();
       });
+
+    this.removeSubscription = this.$transitions.onSuccess({}, (_transition):void => {
+      // When going back from "details" route to "list" route handle the split screen right side
+      const dr = this.querySpace.query.value?.displayRepresentation;
+      this.updateSplitScreen((dr || bcfTableViewIdentifier) as BcfViewState);
+    });
+  }
+
+  ngOnDestroy() {
+    this.removeSubscription();
+    super.ngOnDestroy();
+  }
+
+  breadcrumbItems() {
+    return [
+      {
+        href: this.pathHelperService.projectPath(this.currentProject.identifier!),
+        text: (this.currentProject.name),
+      },
+      {
+        href: this.pathHelperService.projectBCFPath(this.currentProject.identifier!),
+        text: this.I18n.t('js.bcf.label_bcf'),
+      },
+      this.selectedTitle ?? '',
+    ];
   }
 
   /**
@@ -164,5 +217,19 @@ export class IFCViewerPageComponent extends PartitionedQuerySpacePageComponent i
         this.bcfView.initialize(query, query.results);
         return query;
       });
+  }
+
+  private updateSplitScreen(dr:BcfViewState):void {
+    const isFullViewDisplayRepresentation = [
+      bcfViewerViewIdentifier,
+      bcfCardsViewIdentifier,
+      bcfTableViewIdentifier,
+    ].includes(dr);
+
+    const isListRoute = this.uiRouterGlobals.current.name === 'bim.partitioned.list';
+
+    if (isListRoute && isFullViewDisplayRepresentation) {
+      document.documentElement.style.setProperty('--split-screen-width', '0');
+    }
   }
 }

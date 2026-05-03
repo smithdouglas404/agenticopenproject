@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,37 +32,48 @@ module OpenProject::Backlogs
       module WorkPackageRepresenter
         module_function
 
-        # rubocop:disable Metrics/AbcSize
-        def extension
+        def extension # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
           ->(*) do
             property :position,
                      render_nil: true,
-                     skip_render: ->(*) { !(backlogs_enabled? && type && type.passes_attribute_constraint?(:position)) }
+                     skip_render: ->(*) do
+                       !(backlogs_enabled? && type&.passes_attribute_constraint?(:position, project:))
+                     end
 
             property :story_points,
                      render_nil: true,
-                     skip_render: ->(*) { !(backlogs_enabled? && type && type.passes_attribute_constraint?(:story_points)) }
+                     skip_render: ->(*) do
+                       !(backlogs_enabled? && type&.passes_attribute_constraint?(:story_points, project:))
+                     end
 
-            property :remaining_time,
-                     exec_context: :decorator,
-                     render_nil: true,
-                     skip_render: ->(represented:, **) { !represented.backlogs_enabled? }
-
-            # cannot use def here as it wouldn't define the method on the representer
-            define_method :remaining_time do
-              datetime_formatter.format_duration_from_hours(represented.remaining_hours,
-                                                            allow_nil: true)
-            end
-
-            define_method :remaining_time= do |value|
-              remaining = datetime_formatter.parse_duration_to_hours(value,
-                                                                     'remainingTime',
-                                                                     allow_nil: true)
-              represented.remaining_hours = remaining
-            end
+            resource :sprint,
+                     link_cache_if: ->(*) {
+                       represented.project.present? &&
+                         current_user.allowed_in_project?(:view_sprints, represented.project)
+                     },
+                     link: ->(*) {
+                       if represented.sprint.present?
+                         {
+                           href: api_v3_paths.sprint(represented.sprint_id),
+                           title: represented.sprint.name
+                         }
+                       else
+                         {
+                           href: nil
+                         }
+                       end
+                     },
+                     getter: ->(*) do
+                       if embed_links &&
+                          represented.project.present? &&
+                          represented.sprint.present? &&
+                          current_user.allowed_in_project?(:view_sprints, represented.project)
+                         ::API::V3::Sprints::SprintRepresenter.create(represented.sprint, current_user:)
+                       end
+                     end,
+                     setter: associated_resource_default_setter(:sprint, :sprint, :sprint)
           end
         end
-        # rubocop:enable Metrics/AbcSize
       end
     end
   end

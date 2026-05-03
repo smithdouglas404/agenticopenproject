@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -53,7 +55,7 @@ module Projects
 
         milestone_ids = Type.milestone.pluck(:id).map(&:to_s)
         if milestone_ids.any?
-          default_with_filter.merge!('f' => [{ 'n' => 'type', 'o' => '=', 'v' => milestone_ids }])
+          default_with_filter.merge!("f" => [{ "n" => "type", "o" => "=", "v" => milestone_ids }])
         end
 
         JSON.dump(default_with_filter)
@@ -69,22 +71,22 @@ module Projects
       params = params_from_settings.dup
 
       # Delete the parent filter
-      params['f'] =
-        if params['f']
-          params['f'].reject { |filter| filter['n'] == 'project' }
+      params["f"] =
+        if params["f"]
+          params["f"].reject { |filter| filter["n"] == "project" }
         else
           []
         end
 
       # Ensure grouped by project
-      params['g'] = 'project'
-      params['hi'] = false
+      params["g"] = "project"
+      params["hi"] = false
 
       # Ensure timeline visible
-      params['tv'] = true
+      params["tv"] = true
 
       # Add the parent filter
-      params['f'] << { 'n' => 'project', 'o' => '=', 'v' => selected_project_ids }
+      params["f"] << { "n" => "project", "o" => "=", "v" => selected_project_ids }
 
       params.to_json
     end

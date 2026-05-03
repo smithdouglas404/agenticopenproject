@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,51 +29,57 @@
 #++
 
 class Relation < ApplicationRecord
-  belongs_to :from, class_name: 'WorkPackage'
-  belongs_to :to, class_name: 'WorkPackage'
+  belongs_to :from, class_name: "WorkPackage"
+  belongs_to :to, class_name: "WorkPackage"
 
-  TYPE_RELATES      = 'relates'.freeze
-  TYPE_DUPLICATES   = 'duplicates'.freeze
-  TYPE_DUPLICATED   = 'duplicated'.freeze
-  TYPE_BLOCKS       = 'blocks'.freeze
-  TYPE_BLOCKED      = 'blocked'.freeze
-  TYPE_PRECEDES     = 'precedes'.freeze
-  TYPE_FOLLOWS      = 'follows'.freeze
-  TYPE_INCLUDES     = 'includes'.freeze
-  TYPE_PARTOF       = 'partof'.freeze
-  TYPE_REQUIRES     = 'requires'.freeze
-  TYPE_REQUIRED     = 'required'.freeze
+  TYPE_RELATES      = "relates"
+  TYPE_PRECEDES     = "precedes"
+  TYPE_FOLLOWS      = "follows"
+  TYPE_BLOCKS       = "blocks"
+  TYPE_BLOCKED      = "blocked"
+  TYPE_DUPLICATES   = "duplicates"
+  TYPE_DUPLICATED   = "duplicated"
+  TYPE_INCLUDES     = "includes"
+  TYPE_PARTOF       = "partof"
+  TYPE_REQUIRES     = "requires"
+  TYPE_REQUIRED     = "required"
   # The parent/child relation is maintained separately
   # (in WorkPackage and WorkPackageHierarchy) and a relation cannot
   # have the type 'parent' but this is abstracted to simplify the code.
-  TYPE_PARENT       = 'parent'.freeze
-  TYPE_CHILD        = 'child'.freeze
+  TYPE_PARENT       = "parent"
+  TYPE_CHILD        = "child"
 
+  # The order of the types is important. It's used to build up `ORDERED_TYPES`
+  # which is used to order relations of different kind like in the "Add relation"
+  # menu or the relations tab.
   TYPES = {
     TYPE_RELATES => {
-      name: :label_relates_to, sym_name: :label_relates_to, order: 1, sym: TYPE_RELATES
+      name: :label_relates_to, sym_name: :label_relates_to, order: 1,
+      sym: TYPE_RELATES
     },
-    TYPE_DUPLICATES => {
-      name: :label_duplicates, sym_name: :label_duplicated_by, order: 2, sym: TYPE_DUPLICATED
-    },
-    TYPE_DUPLICATED => {
-      name: :label_duplicated_by, sym_name: :label_duplicates, order: 3,
-      sym: TYPE_DUPLICATES, reverse: TYPE_DUPLICATES
-    },
-    TYPE_BLOCKS => {
-      name: :label_blocks, sym_name: :label_blocked_by, order: 4, sym: TYPE_BLOCKED
-    },
-    TYPE_BLOCKED => {
-      name: :label_blocked_by, sym_name: :label_blocks, order: 5,
-      sym: TYPE_BLOCKS, reverse: TYPE_BLOCKS
+    TYPE_FOLLOWS => {
+      name: :label_follows, sym_name: :label_precedes, order: 7,
+      sym: TYPE_PRECEDES
     },
     TYPE_PRECEDES => {
       name: :label_precedes, sym_name: :label_follows, order: 6,
       sym: TYPE_FOLLOWS, reverse: TYPE_FOLLOWS
     },
-    TYPE_FOLLOWS => {
-      name: :label_follows, sym_name: :label_precedes, order: 7,
-      sym: TYPE_PRECEDES
+    TYPE_DUPLICATES => {
+      name: :label_duplicates, sym_name: :label_duplicated_by, order: 6,
+      sym: TYPE_DUPLICATED
+    },
+    TYPE_DUPLICATED => {
+      name: :label_duplicated_by, sym_name: :label_duplicates, order: 7,
+      sym: TYPE_DUPLICATES, reverse: TYPE_DUPLICATES
+    },
+    TYPE_BLOCKS => {
+      name: :label_blocks, sym_name: :label_blocked_by, order: 4,
+      sym: TYPE_BLOCKED
+    },
+    TYPE_BLOCKED => {
+      name: :label_blocked_by, sym_name: :label_blocks, order: 5,
+      sym: TYPE_BLOCKS, reverse: TYPE_BLOCKS
     },
     TYPE_INCLUDES => {
       name: :label_includes, sym_name: :label_part_of, order: 8,
@@ -91,19 +99,40 @@ class Relation < ApplicationRecord
     }
   }.freeze
 
+  ORDERED_TYPES = [*TYPES.keys, TYPE_PARENT, TYPE_CHILD].freeze
+
+  MAX_LAG = 2_000
+  MIN_LAG = -MAX_LAG
+
   include ::Scopes::Scoped
 
-  scopes :follows_non_manual_ancestors,
+  scopes :used_for_scheduling_of,
          :types,
          :visible
 
   scope :of_work_package,
         ->(work_package) { where(from: work_package).or(where(to: work_package)) }
 
-  scope :follows_with_delay,
-        -> { follows.where("delay > 0") }
+  scope :follows_with_lag,
+        -> { follows.where("lag > 0") }
 
-  validates :delay, numericality: { allow_nil: true }
+  scope :of_predecessor,
+        ->(work_package) { where(to: work_package) }
+
+  scope :of_successor,
+        ->(work_package) { where(from: work_package) }
+
+  scope :not_of_predecessor,
+        ->(work_package) { where.not(to: work_package) }
+
+  scope :not_of_successor,
+        ->(work_package) { where.not(from: work_package) }
+
+  validates :lag, numericality: {
+    allow_nil: true,
+    less_than_or_equal_to: MAX_LAG,
+    greater_than_or_equal_to: MIN_LAG
+  }
 
   validates :to, uniqueness: { scope: :from }
 
@@ -134,11 +163,23 @@ class Relation < ApplicationRecord
     TYPES[relation_type] ? TYPES[relation_type][key] : :unknown
   end
 
+  def predecessor = to
+  def predecessor_id = to_id
+  def successor = from
+  def successor_id = from_id
+
+  def predecessor_date
+    predecessor.due_date || predecessor.start_date
+  end
+
+  def successor_date
+    successor.start_date || successor.due_date
+  end
+
   def successor_soonest_start
-    if follows? && (to.start_date || to.due_date)
-      days = WorkPackages::Shared::Days.for(from)
-      relation_start_date = (to.due_date || to.start_date) + 1.day
-      days.soonest_working_day(relation_start_date, delay:)
+    if follows? && predecessor_date
+      days = WorkPackages::Shared::WorkingDays.new
+      days.with_lag(predecessor_date, lag)
     end
   end
 
@@ -146,15 +187,8 @@ class Relation < ApplicationRecord
     TYPES[relation_type][:order] <=> TYPES[other.relation_type][:order]
   end
 
-  # delay is an attribute of Relation but its getter is masked by delayed_job's #delay method
-  # here we overwrite dj's delay method with the one reading the attribute
-  # since we don't plan to use dj with Relation objects, this should be fine
-  def delay
-    self[:delay]
-  end
-
   TYPES.each_key do |type|
-    define_method "#{type}?" do
+    define_method :"#{type}?" do
       canonical_type == self.class.canonical_type(type)
     end
   end

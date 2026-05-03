@@ -11,12 +11,13 @@ class OpenProject::XlsExport::XlsViews
   def field_representation_map(key, value)
     case key.to_sym
     when :units                     then value.to_i
-    when :spent_on                  then value
-    when :activity_id               then mapped value, Enumeration, I18n.t(:caption_material_costs)
+    when :spent_on                  then value.iso8601
+    when :activity_id               then mapped value, Enumeration, I18n.t("placeholders.default")
     when :project_id                then project_representation(value)
     when :user_id, :assigned_to_id  then user_representation(value)
     when :work_package_id           then work_package_representation(value)
-    else super(key, value)
+    when :entity_gid                then entity_global_id_representation(value)
+    else super
     end
   end
 
@@ -32,7 +33,7 @@ class OpenProject::XlsExport::XlsViews
   def cost_type_unit_label(cost_type_id, cost_type_inst = nil, plural = true)
     case cost_type_id
     when -1 then l_hours(2).split[1..-1].join(" ") # get the plural for hours
-    when 0  then Setting.plugin_costs['costs_currency']
+    when 0  then Setting.costs_currency
     else cost_type_label(cost_type_id, cost_type_inst, plural)
     end
   end
@@ -61,11 +62,19 @@ class OpenProject::XlsExport::XlsViews
   end
 
   def currency_format
-    "#,##0.00 [$#{Setting.plugin_costs['costs_currency']}]"
+    "#,##0.00 [$#{Setting.costs_currency}]"
   end
 
   def number_format
     "0.00"
+  end
+
+  def date_format
+    @date_format ||= Spreadsheet::Format.new(
+      number_format: "yyyy-mm-dd",
+      horizontal_align: :left,
+      vertical_align: :top
+    )
   end
 
   def project_representation(value)
@@ -79,6 +88,16 @@ class OpenProject::XlsExport::XlsViews
   def work_package_representation(value)
     ar_presentation(WorkPackage, value) do |work_package|
       "#{work_package.type} ##{work_package.id}: #{work_package.subject}"
+    end
+  end
+
+  def entity_global_id_representation(value)
+    # TODO: All possible time entry associations need to be checked here
+    entity = GlobalID::Locator.locate(value, only: TimeEntry::ALLOWED_ENTITY_TYPES.map(&:safe_constantize))
+    if entity.is_a?(WorkPackage)
+      "#{entity.type} ##{entity.id}: #{entity.subject}"
+    elsif entity.is_a?(Meeting)
+      "#{Meeting.model_name.human} ##{entity.id}: #{entity.title}"
     end
   end
 

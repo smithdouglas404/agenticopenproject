@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,21 +26,20 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { DatePicker } from 'core-app/shared/components/op-date-picker/datepicker';
+import { DatePicker } from 'core-app/shared/components/datepicker/datepicker';
 import { DateOption } from 'flatpickr/dist/types/options';
 import { DayElement } from 'flatpickr/dist/types/instance';
+import moment from 'moment-timezone';
 
 /**
  * Map the date to the internal format,
  * setting to null if it's empty.
  * @param date
  */
-// eslint-disable-next-line class-methods-use-this
 export function mappedDate(date:string|null):string|null {
   return (date === '') ? null : date;
 }
 
-// eslint-disable-next-line class-methods-use-this
 export function parseDate(date:Date|string):Date|'' {
   if (date instanceof Date) {
     return new Date(date.setHours(0, 0, 0, 0));
@@ -73,9 +72,33 @@ export function keepCurrentlyActiveMonth(datePicker:DatePicker, currentMonth:num
   datePicker.datepickerInstance.currentYear = currentYear;
 }
 
+export function comparableDate(date?:DateOption):number|null {
+  if (!date || typeof date === 'string') {
+    return null;
+  }
+
+  if (typeof date === 'number') {
+    return date;
+  }
+
+  return date.getTime();
+}
+
 export function setDates(dates:DateOption|DateOption[], datePicker:DatePicker, enforceDate?:Date):void {
-  const { currentMonth } = datePicker.datepickerInstance;
-  const { currentYear } = datePicker.datepickerInstance;
+  const { currentMonth, currentYear, selectedDates } = datePicker.datepickerInstance;
+
+  const [newStart, newEnd] = _.castArray(dates);
+  const [selectedStart, selectedEnd] = selectedDates;
+
+  // In case the new times match the current times, do not try to update
+  // the current selected months (Regression #46488)
+  if (selectedDates.length > 0
+    && comparableDate(newStart) === comparableDate(selectedStart)
+    && comparableDate(newEnd) === comparableDate(selectedEnd)
+  ) {
+    return;
+  }
+
   datePicker.setDates(dates);
 
   if (enforceDate) {
@@ -102,16 +125,18 @@ export function onDayCreate(
   dayElem:DayElement,
   ignoreNonWorkingDays:boolean,
   isNonWorkingDay:boolean,
-  minimalDate:Date|null|undefined,
   isDayDisabled:boolean,
 ):void {
-  if (!ignoreNonWorkingDays && isNonWorkingDay) {
-    dayElem.classList.add('flatpickr-non-working-day');
-  }
+  dayElem.setAttribute('data-iso-date', dayElem.dateObj.toISOString());
 
   if (isDayDisabled) {
     dayElem.classList.add('flatpickr-disabled');
+    return;
   }
 
-  dayElem.setAttribute('data-iso-date', dayElem.dateObj.toISOString());
+  if (ignoreNonWorkingDays && isNonWorkingDay) {
+    dayElem.classList.add('flatpickr-non-working-day_enabled');
+  } else if (!ignoreNonWorkingDays && isNonWorkingDay) {
+    dayElem.classList.add('flatpickr-non-working-day');
+  }
 }

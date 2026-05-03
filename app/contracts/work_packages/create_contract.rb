@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,32 +28,55 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'work_packages/base_contract'
+require "work_packages/base_contract"
 
 module WorkPackages
   class CreateContract < BaseContract
+    include AdminWritableTimestamps
+    allow_writable_timestamps :created_at
+
     attribute :author_id,
-              writable: false do
-      errors.add :author_id, :invalid if model.author != user
+              writable: -> { default_attributes_admin_writable? }
+
+    attribute :status_id,
+              # Overriding permission from WP base contract to ignore change_work_package_status for creation,
+              # because we don't require that permission for writable status during WP creation.
+              # Note that nil would not override and [] would ignore the default permission, so we use the default here:
+              permission: :add_work_packages
+
+    attribute :schedule_manually do
+      validate_has_predecessors_or_children if model.schedule_automatically?
     end
 
     default_attribute_permission :add_work_packages
 
     validate :user_allowed_to_add
+    validate :user_allowed_to_manage_file_links
 
     private
 
     def user_allowed_to_add
-      if (model.project && !@user.allowed_to?(:add_work_packages, model.project)) ||
-         !@user.allowed_to_globally?(:add_work_packages)
+      if (model.project && !@user.allowed_in_project?(:add_work_packages, model.project)) ||
+         !@user.allowed_in_any_project?(:add_work_packages)
+        errors.add(:base, :error_unauthorized)
+      end
+    end
 
-        errors.add :base, :error_unauthorized
+    def user_allowed_to_manage_file_links
+      if model.file_links.present? && model.project.present? && !user.allowed_in_project?(:manage_file_links, model.project)
+        errors.add(:base, :error_unauthorized)
       end
     end
 
     def attributes_changed_by_user
       # lock version is initialized by AR itself
-      super - ['lock_version']
+      super - ["lock_version"]
+    end
+
+    def validate_has_predecessors_or_children
+      if Relation.used_for_scheduling_of(model.parent).empty? && model.children.empty?
+        errors.add(:schedule_manually, :cannot_be_automatically_scheduled)
+      end
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,8 +44,8 @@ module Queries
       new_query.sort_criteria = source.sort_criteria if source.sort_criteria
 
       ::Queries::Copy::FiltersMapper
-        .new(state, new_query.filters)
-        .map_filters!
+        .new(state)
+        .map_query!(new_query)
 
       ServiceResult.new(success: new_query.valid?, result: new_query)
     end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,27 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative '../spec_helper'
+require "spec_helper"
+require_module_spec_helper
 
 # Test if the deletion of a ProjectStorage actually deletes related FileLink
 # objects.
-describe 'Delete ProjectStorage with FileLinks', type: :feature, js: true do
+RSpec.describe "Delete ProjectStorage with FileLinks", :js, :webmock do
   let(:user) { create(:user) }
-  let(:role) { create(:existing_role, permissions: [:manage_storages_in_project]) }
+  let(:role) { create(:project_role, permissions: [:manage_files_in_project]) }
   let(:project) do
     create(:project,
-           name: 'Project 1',
-           identifier: 'demo-project',
+           name: "Project 1",
+           identifier: "demo-project",
            members: { user => role },
            enabled_module_names: %i[storages work_package_tracking])
   end
-  let(:storage) { create(:storage, name: "Storage 1") }
+  let(:storage) { create(:nextcloud_storage, name: "Storage 1") }
   let(:work_package) { create(:work_package, project:) }
   let(:project_storage) { create(:project_storage, storage:, project:) }
   let(:file_link) { create(:file_link, storage:, container: work_package) }
   let(:second_file_link) { create(:file_link, container: work_package, storage:) }
+  let(:delete_folder_url) do
+    "#{storage.host}/remote.php/dav/files/#{storage.username}/#{project_storage.managed_project_folder_path.chop}/"
+  end
 
   before do
+    stub_request(:delete, delete_folder_url).to_return(status: 204, body: nil, headers: {})
+
     # The objects defined by let(...) above are lazy instantiated, so we need
     # to "use" (just write their name) below to really create them.
     project_storage
@@ -56,26 +64,46 @@ describe 'Delete ProjectStorage with FileLinks', type: :feature, js: true do
     login_as user
   end
 
-  it 'deletes ProjectStorage with dependent FileLinks' do
+  it "deletes ProjectStorage with dependent FileLinks" do
     # Go to Projects -> Settings -> File Storages
-    visit project_settings_projects_storages_path(project)
+    visit external_file_storages_project_settings_project_storages_path(project)
 
     # The list of enabled file storages should now contain Storage 1
-    expect(page).to have_text('File storages available in this project')
-    expect(page).to have_text('Storage 1')
+    expect(page).to have_heading "Files"
+    expect(page).to have_text(storage.name)
 
     # Press Delete icon to remove the storage from the project
-    page.find('.icon.icon-delete').click
-    alert_text = page.driver.browser.switch_to.alert.text
-    expect(alert_text).to have_text 'Are you sure'
-    page.driver.browser.switch_to.alert.accept
+    page.find(".icon.icon-delete").click
+
+    # Danger dialog confirmation flow
+    within_test_selector("op-project-storages--delete-dialog") do
+      expect(page).to have_text("Delete file storage")
+      expect(page).to have_unchecked_field("I understand that this removal cannot be reversed")
+      expect(page).to have_button("Remove permanently", disabled: true)
+
+      # Cancel Confirmation
+      page.click_button("Cancel")
+    end
+
+    expect(page).to have_current_path external_file_storages_project_settings_project_storages_path(project)
+    expect(page).to have_text(storage.name)
+
+    # Press Delete icon to remove the storage from the project
+    page.find(".icon.icon-delete").click
+
+    within_test_selector("op-project-storages--delete-dialog") do
+      # Approve Confirmation
+      page.check "I understand that this removal cannot be reversed"
+      page.click_button("Remove permanently")
+    end
 
     # List of ProjectStorages empty again
-    expect(page).to have_current_path project_settings_projects_storages_path(project)
-    expect(page).to have_text(I18n.t('storages.no_results'))
+    expect(page).to have_current_path external_file_storages_project_settings_project_storages_path(project)
+    expect(page).to have_text(I18n.t("storages.no_results"))
 
     # Also check in the database that ProjectStorage and dependent FileLinks are gone
     expect(Storages::ProjectStorage.count).to be 0
     expect(Storages::FileLink.count).to be 0
+    expect(Storages::Storage.where(id: storage.id).count).to be 1
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,15 +30,16 @@
 
 module Queries::Operators
   module DateRangeClauses
+    include DateLimits
+
     # Returns a SQL clause for a date or datetime field for a relative range from
     # the end of the day of yesterday + from until the end of today + to.
     def relative_date_range_clause(table, field, from, to)
-      if from
-        from_date = Date.today + from
-      end
-      if to
-        to_date = Date.today + to
-      end
+      today = Time.zone.today
+
+      from_date = today + from if from
+      to_date = today + to if to
+
       date_range_clause(table, field, from_date, to_date)
     end
 
@@ -44,14 +47,27 @@ module Queries::Operators
     # at the beginning of the day of from until the end of the day of to
     def date_range_clause(table, field, from, to)
       s = []
+
       if from
-        s << ("#{table}.#{field} > '%s'" % [quoted_date_from_utc(from.yesterday)])
+        return "1 <> 1" if date_too_big?(from)
+
+        unless date_too_small?(from)
+          s << "#{table}.#{field} > '#{quoted_date_from_utc(from.yesterday)}'"
+        end
       end
+
       if to
-        s << ("#{table}.#{field} <= '%s'" % [quoted_date_from_utc(to)])
+        return "1 <> 1" if date_too_small?(to)
+
+        unless date_too_big?(to)
+          s << "#{table}.#{field} <= '#{quoted_date_from_utc(to)}'"
+        end
       end
-      s.join(' AND ')
+
+      s.join(" AND ").presence || "1 = 1"
     end
+
+    private
 
     def quoted_date_from_utc(value)
       connection.quoted_date(value.to_time(:utc).end_of_day)

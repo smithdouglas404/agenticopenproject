@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Meeting search', type: :feature, js: true do
-  include ::Components::Autocompleter::NgSelectAutocompleteHelpers
-  let(:project) { create :project }
-  let(:user) { create(:user, member_in_project: project, member_through_role: role) }
-  let(:role) { create :role, permissions: %i(view_meetings view_work_packages) }
+RSpec.describe "Meeting search", :js do
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+  let(:project) { create(:project) }
+  let(:role) { create(:project_role, permissions: %i(view_meetings view_work_packages)) }
+  let(:user) { create(:user, member_with_roles: { project => role }) }
 
   let!(:meeting) { create(:meeting, project:) }
+  let!(:agenda_item) { create(:meeting_agenda_item, meeting:) }
+  let(:global_search) { Components::GlobalSearch.new }
 
   before do
     login_as user
@@ -42,15 +46,35 @@ describe 'Meeting search', type: :feature, js: true do
     visit project_path(project)
   end
 
-  context 'global search' do
-    it 'works' do
-      select_autocomplete(page.find('.top-menu-search--input'),
+  context "global search" do
+    it "works with a title" do
+      select_autocomplete(page.find(".top-menu-search--input"),
                           query: "Meeting",
                           select_text: "In this project ↵",
-                          wait_dropdown_open: false)
+                          wait_dropdown_open: true)
 
-      page.find('[data-qa-tab-id="meetings"]').click
-      expect(page.find('#search-results')).to have_text(meeting.title)
+      global_search.open_tab :meetings
+      expect(page.find_by_id("search-results")).to have_text(meeting.title)
+    end
+
+    it "works with an agenda item title" do
+      select_autocomplete(page.find(".top-menu-search--input"),
+                          query: agenda_item.title,
+                          select_text: "In this project ↵",
+                          wait_dropdown_open: true)
+
+      global_search.open_tab :meetings
+      expect(page.find_by_id("search-results")).to have_text(meeting.title)
+    end
+
+    it "works with an agenda item notes" do
+      select_autocomplete(page.find(".top-menu-search--input"),
+                          query: agenda_item.notes,
+                          select_text: "In this project ↵",
+                          wait_dropdown_open: true)
+
+      global_search.open_tab :meetings
+      expect(page.find_by_id("search-results")).to have_text(meeting.title)
     end
   end
 end

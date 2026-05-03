@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,14 +29,14 @@
 #++
 
 class Type::QueryGroup < Type::FormGroup
-  MEMBER_PREFIX = 'query_'.freeze
+  MEMBER_PREFIX = "query_"
 
   def self.query_attribute?(name)
-    name.to_s.match?(/#{Type::QueryGroup::MEMBER_PREFIX}(\d+)/)
+    name.to_s.match?(/#{Type::QueryGroup::MEMBER_PREFIX}(\d+)/o)
   end
 
   def self.query_attribute_id(name)
-    match = name.to_s.match(/#{Type::QueryGroup::MEMBER_PREFIX}(\d+)/)
+    match = name.to_s.match(/#{Type::QueryGroup::MEMBER_PREFIX}(\d+)/o)
 
     match ? match[1] : nil
   end

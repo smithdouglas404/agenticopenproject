@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,26 +27,38 @@
 //++
 
 import { Injector } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
-import { FileLinksResourceService } from 'core-app/core/state/file-links/file-links.service';
 import { AttachmentsResourceService } from 'core-app/core/state/attachments/attachments.service';
+import { IHALCollection } from 'core-app/core/apiv3/types/hal-collection.type';
+import { IFileLink } from 'core-app/core/state/file-links/file-link.model';
 
 export function workPackageFilesCount(
   workPackage:WorkPackageResource,
   injector:Injector,
 ):Observable<number> {
   const attachmentService = injector.get(AttachmentsResourceService);
-  const fileLinkService = injector.get(FileLinksResourceService);
+  const http = injector.get(HttpClient);
+  const attachmentsCollection = workPackage.$links.attachments
+    ? attachmentService.collection(workPackage.$links.attachments.href || '')
+    : of([]);
+  const totalFileLinks = workPackage.$links.fileLinks
+    ? http.get<IHALCollection<IFileLink>>(href(workPackage))
+    : of({ total: 0 });
 
-  return combineLatest(
-    [
-      attachmentService.collection(workPackage.$links.attachments.href || ''),
-      fileLinkService.collection(workPackage.$links.fileLinks?.href || ''),
-    ],
-  ).pipe(
-    map(([a, f]) => a.length + f.length),
-  );
+  return combineLatest([
+    attachmentsCollection,
+    totalFileLinks,
+  ]).pipe(map(([a, f]) => a.length + f.total));
+}
+
+function href(workPackage:WorkPackageResource):string {
+  if (!workPackage.$links.fileLinks) {
+    return '';
+  }
+
+  return `${workPackage.$links.fileLinks.href}?pageSize=0`;
 }

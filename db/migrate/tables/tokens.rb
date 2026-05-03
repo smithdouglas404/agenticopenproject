@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,17 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'base'
+require_relative "base"
 
 class Tables::Tokens < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.integer :user_id, default: 0, null: false
-      t.string :action, limit: 30, default: '', null: false
-      t.string :value, limit: 40, default: '', null: false
-      t.datetime :created_on, null: false
-
-      t.index :user_id, name: 'index_tokens_on_user_id'
+      t.references :user, index: true, foreign_key: true
+      t.string :type
+      t.string :value, default: "", null: false, limit: 128
+      t.datetime :created_at, precision: nil, null: false, default: -> { "CURRENT_TIMESTAMP" }
+      t.datetime :expires_on, precision: nil, null: true
+      t.json :data, null: true
     end
   end
 end

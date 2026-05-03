@@ -1,3 +1,4 @@
+import { computePosition, ComputePositionReturn, flip, Placement, shift } from '@floating-ui/dom';
 import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
 import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -7,9 +8,11 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
  * This will often be a trigger component, but does not have to be.
  */
 export abstract class OpContextMenuHandler extends UntilDestroyedMixin {
-  protected $element:JQuery;
+  protected element:HTMLElement;
 
   protected items:OpContextMenuItem[] = [];
+
+  protected placement:Placement = 'bottom-start';
 
   constructor(readonly opContextMenu:OPContextMenuService) {
     super();
@@ -17,27 +20,33 @@ export abstract class OpContextMenuHandler extends UntilDestroyedMixin {
 
   /**
    * Called when the service closes this context menu
+   *
+   * @param focus Focus on the trigger again
    */
-  public onClose() {
-    this.afterFocusOn.trigger('focus');
+  public onClose(focus = true) {
+    if (focus) {
+      this.afterFocusOn.focus();
+    }
   }
 
-  public onOpen(menu:JQuery) {
-    menu.find('.menu-item').first().trigger('focus');
+  public onOpen(menu:HTMLElement) {
+    menu.querySelector<HTMLElement>('.menu-item')?.focus();
   }
 
   /**
-   * Positioning args for jquery-ui position.
+   * Compute position for Floating UI.
    *
    * @param {Event} openerEvent
    */
-  public positionArgs(openerEvent:JQuery.TriggeredEvent|Event):JQueryUI.JQueryPositionOptions {
-    return {
-      my: 'left top',
-      at: 'right bottom',
-      of: openerEvent,
-      collision: 'flipfit',
-    };
+  public computePosition(floating:HTMLElement, openerEvent:Event):Promise<ComputePositionReturn> {
+    const reference = openerEvent.target as HTMLElement;
+    return computePosition(reference, floating, {
+      placement: this.placement,
+      middleware: [
+        flip(),
+        shift({ padding: 10 }),
+      ],
+    });
   }
 
   /**
@@ -52,11 +61,17 @@ export abstract class OpContextMenuHandler extends UntilDestroyedMixin {
   /**
    * Open this context menu
    */
-  protected open(evt:JQuery.TriggeredEvent):void {
+  protected open(evt:Event):void {
     this.opContextMenu.show(this, evt);
   }
 
-  protected get afterFocusOn():JQuery {
-    return this.$element;
+  protected get afterFocusOn():HTMLElement {
+    const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    if (this.element.matches(focusableSelector)) {
+      return this.element;
+    }
+
+    return this.element.querySelector<HTMLElement>(focusableSelector) ?? this.element;
   }
 }

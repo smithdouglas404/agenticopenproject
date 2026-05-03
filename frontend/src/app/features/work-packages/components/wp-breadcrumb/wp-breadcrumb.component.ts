@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,34 +26,46 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 @Component({
   templateUrl: './wp-breadcrumb.html',
   styleUrls: ['./wp-breadcrumb.sass'],
   selector: 'wp-breadcrumb',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageBreadcrumbComponent {
-  @Input('workPackage') workPackage:WorkPackageResource;
+  @Input() workPackage:WorkPackageResource;
 
   public text = {
     parent: this.I18n.t('js.relations_hierarchy.parent_headline'),
     hierarchy: this.I18n.t('js.relations_hierarchy.hierarchy_headline'),
   };
 
-  constructor(private I18n:I18nService) {
-  }
+  constructor(
+    private I18n:I18nService,
+    private pathHelper:PathHelperService,
+  ) {}
 
   public inputActive = false;
 
   public get hierarchyCount() {
-    return this.workPackage.ancestors.length;
+    return this.workPackage.getAncestors().length;
   }
 
   public get hierarchyLabel() {
     return (this.hierarchyCount === 1) ? this.text.parent : this.text.hierarchy;
+  }
+
+  public ancestorPath(ancestor:WorkPackageResource):string {
+    return this.pathHelper.genericWorkPackagePath(this.workPackage.project?.identifier, ancestor.displayId) + window.location.search;
   }
 
   public updateActiveInput(val:boolean) {

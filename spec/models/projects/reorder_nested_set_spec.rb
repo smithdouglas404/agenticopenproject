@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,42 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Project, 'reordering of nested set', type: :model do
+RSpec.describe Project, "reordering of nested set" do
   # Create some parents in non-alphabetical order
-  shared_let(:parent_project_b) { create(:project, name: 'ParentB') }
-  shared_let(:parent_project_a) { create(:project, name: 'ParentA') }
+  shared_let(:parent_project_b) { create(:project, name: "ParentB") }
+  shared_let(:parent_project_a) { create(:project, name: "ParentA") }
 
   # Create some children in non-alphabetical order
   # including lower case to test case insensitivity
-  shared_let(:child_e) { create :project, name: 'e', parent: parent_project_a }
-  shared_let(:child_c) { create :project, name: 'C', parent: parent_project_a }
-  shared_let(:child_f) { create :project, name: 'F', parent: parent_project_a }
-  shared_let(:child_d) { create :project, name: 'D', parent: parent_project_b }
-  shared_let(:child_b) { create :project, name: 'B', parent: parent_project_b }
+  shared_let(:child_e) { create(:project, name: "e", parent: parent_project_a) }
+  shared_let(:child_c) { create(:project, name: "C", parent: parent_project_a) }
+  shared_let(:child_f) { create(:project, name: "F", parent: parent_project_a) }
+  shared_let(:child_d) { create(:project, name: "D", parent: parent_project_b) }
+  shared_let(:child_b) { create(:project, name: "B", parent: parent_project_b) }
 
   subject { described_class.all.reorder(:lft) }
 
-  it 'has the correct sort' do
+  it "has the correct sort" do
     expect(subject.reload.pluck(:name)).to eq %w[ParentA C e F ParentB B D]
   end
 
-  context 'when renaming a child' do
+  context "when renaming a child" do
     before do
-      child_b.update! name: 'Z'
+      child_b.update! name: "Z"
     end
 
-    it 'updates that order' do
+    it "updates that order" do
       expect(subject.reload.pluck(:name)).to eq %w[ParentA C e F ParentB D Z]
     end
   end
 
-  context 'when adding a new first child to the parent (Regression #40930)' do
-    it 'still resorts them' do
+  context "when adding a new first child to the parent (Regression #40930)" do
+    it "still resorts them" do
       expect(subject.reload.pluck(:name)).to eq %w[ParentA C e F ParentB B D]
 
-      described_class.create!(parent: parent_project_a, name: 'A')
+      create(:project, parent: parent_project_a, name: "A")
 
       expect(subject.reload.pluck(:name)).to eq %w[ParentA A C e F ParentB B D]
     end

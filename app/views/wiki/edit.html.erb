@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,14 +27,21 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 <% html_title t(:label_edit), @page.title %>
-<% breadcrumb_paths(*(@page.ancestors.reverse.collect { |parent| link_to h(parent.breadcrumb_title), {id: parent, project_id: parent.project}} + [h(@page.breadcrumb_title)] )) %>
-<%= labelled_tabular_form_for @content,
-                              as: :content,
-                              url: {action: 'update', id: @page.slug.presence || @old_title},
-                              html: {method: :put, multipart: true, id: 'wiki_form'} do |f| %>
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title_content(@page.title)
+    header.with_breadcrumbs(
+      breadcrumb_for_page(@project, @page)
+    )
+  end
+%>
+<%= labelled_tabular_form_for @page,
+                              as: :page,
+                              url: { action: "update", id: @page.slug.presence || @old_title },
+                              html: { method: :put, multipart: true, id: "wiki_form" } do |f| %>
   <%= f.hidden_field :lock_version %>
 
-  <%= render partial: 'wiki/page_form', locals: {f: f}  %>
+  <%= render partial: "wiki/page_form", locals: { f: f } %>
 
 <% end %>
 
@@ -42,4 +49,3 @@ See COPYRIGHT and LICENSE files for more details.
 <% content_for :header_tags do %>
   <%= robot_exclusion_tag %>
 <% end %>
-

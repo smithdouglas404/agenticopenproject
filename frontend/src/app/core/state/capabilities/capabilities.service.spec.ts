@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,13 +26,8 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { States } from 'core-app/core/states/states.service';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
@@ -43,9 +38,10 @@ import {
 } from 'core-app/core/current-user/current-user.store';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
 import { ICapability } from 'core-app/core/state/capabilities/capability.model';
-import * as URI from 'urijs';
+import URI from 'urijs';
 import { ApiV3ListParameters } from 'core-app/core/apiv3/paths/apiv3-list-resource.interface';
 import { CurrentUserQuery } from 'core-app/core/current-user/current-user.query';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const globalCapability:ICapability = {
   id: 'placeholder_users/read/g-3',
@@ -68,10 +64,10 @@ const globalCapability:ICapability = {
 };
 
 const projectCapabilityp63Update:ICapability = {
-  id: 'memberships/update/p6-3',
+  id: 'memberships/update/w6-3',
   _links: {
     self: {
-      href: '/api/v3/capabilities/memberships/update/p6-3',
+      href: '/api/v3/capabilities/memberships/update/w6-3',
     },
     action: {
       href: '/api/v3/actions/memberships/update',
@@ -88,10 +84,10 @@ const projectCapabilityp63Update:ICapability = {
 };
 
 const projectCapabilityp63Read:ICapability = {
-  id: 'memberships/read/p6-3',
+  id: 'memberships/read/w6-3',
   _links: {
     self: {
-      href: '/api/v3/capabilities/memberships/read/p6-3',
+      href: '/api/v3/capabilities/memberships/read/w6-3',
     },
     action: {
       href: '/api/v3/actions/memberships/read',
@@ -108,10 +104,10 @@ const projectCapabilityp63Read:ICapability = {
 };
 
 const projectCapabilityp53Update:ICapability = {
-  id: 'memberships/update/p5-3',
+  id: 'memberships/update/w5-3',
   _links: {
     self: {
-      href: '/api/v3/capabilities/memberships/update/p5-3',
+      href: '/api/v3/capabilities/memberships/update/w5-3',
     },
     action: {
       href: '/api/v3/actions/memberships/update',
@@ -136,10 +132,8 @@ describe('Capabilities service', () => {
     const ConfigurationServiceStub = {};
 
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [],
+    providers: [
         HalResourceService,
         { provide: ConfigurationService, useValue: ConfigurationServiceStub },
         { provide: States, useValue: new States() },
@@ -147,8 +141,10 @@ describe('Capabilities service', () => {
         CurrentUserStore,
         CurrentUserQuery,
         CurrentUserService,
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
     currentUser = TestBed.inject(CurrentUserService);
     currentUser.setUser(user);
@@ -163,7 +159,7 @@ describe('Capabilities service', () => {
       .forEach((req) => {
         expect(req.request.method).toBe('GET');
         const url = URI(req.request.url);
-        const filterParams = new URLSearchParams(url.query()).get('filters') as string;
+        const filterParams = new URLSearchParams(url.query()).get('filters')!;
         const context = JSON.parse(filterParams)[1].context.values[0] as string;
         let elements:ICapability[];
 
@@ -171,10 +167,10 @@ describe('Capabilities service', () => {
           case 'g':
             elements = [globalCapability];
             break;
-          case 'p6':
+          case 'w6':
             elements = [projectCapabilityp63Read, projectCapabilityp63Update];
             break;
-          case 'p5':
+          case 'w5':
             elements = [projectCapabilityp53Update];
             break;
           default:
@@ -200,7 +196,7 @@ describe('Capabilities service', () => {
   });
 
   describe('When not logged in', () => {
-    beforeEach(() => compile({ id: null, name: null, mail: null }));
+    beforeEach(() => compile({ id: null, name: null, loggedIn: false }));
 
     it('Should have no capabilities', () => {
       service.loadedCapabilities$('global').subscribe((caps) => {
@@ -212,7 +208,7 @@ describe('Capabilities service', () => {
   });
 
   describe('When logged in', () => {
-    beforeEach(() => compile({ id: '1', name: 'Admin', mail: 'admin@example.com' }));
+    beforeEach(() => compile({ id: '1', name: 'Admin', loggedIn: true }));
 
     it('Should have all capabilities', () => {
       const params:ApiV3ListParameters = {
@@ -220,7 +216,7 @@ describe('Capabilities service', () => {
       };
 
       service
-        .require(params)
+        .requireCollection(params)
         .subscribe((caps) => {
           expect(caps.length).toEqual(1);
         });
@@ -234,27 +230,27 @@ describe('Capabilities service', () => {
       };
 
       service
-        .require(params)
+        .requireCollection(params)
         .subscribe((caps) => {
           expect(caps.length).toEqual(1);
         });
 
       params = {
-        filters: [['principal', '=', ['1']], ['context', '=', ['p6']]],
+        filters: [['principal', '=', ['1']], ['context', '=', ['w6']]],
       };
 
       service
-        .require(params)
+        .requireCollection(params)
         .subscribe((caps) => {
           expect(caps.length).toEqual(2);
         });
 
       params = {
-        filters: [['principal', '=', ['1']], ['context', '=', ['p5']]],
+        filters: [['principal', '=', ['1']], ['context', '=', ['w5']]],
       };
 
       service
-        .require(params)
+        .requireCollection(params)
         .subscribe((caps) => {
           expect(caps.length).toEqual(1);
         });

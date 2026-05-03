@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Directive, Input } from '@angular/core';
+import { Directive, Injector, Input } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 import { GridWidgetResource } from 'core-app/features/hal/resources/grid-widget-resource';
@@ -37,18 +37,21 @@ import { GridAreaService } from 'core-app/shared/components/grids/grid/area.serv
 export abstract class WidgetAbstractMenuComponent {
   @Input() resource:GridWidgetResource;
 
-  protected menuItemList:OpContextMenuItem[] = [this.removeItem];
-
-  constructor(readonly i18n:I18nService,
+  constructor(readonly injector:Injector,
+    readonly i18n:I18nService,
     protected readonly remove:GridRemoveWidgetService,
     protected readonly layout:GridAreaService) {
   }
 
-  public get menuItems() {
-    return async () => this.menuItemList;
+  public get menuItemsFactory():() => Promise<OpContextMenuItem[]> {
+    return this.buildItems.bind(this);
   }
 
-  protected get removeItem() {
+  protected async buildItems():Promise<OpContextMenuItem[]> {
+    return [this.removeItem];
+  }
+
+  protected get removeItem():OpContextMenuItem {
     return {
       linkText: this.i18n.t('js.grid.remove'),
       onClick: () => {
@@ -60,5 +63,9 @@ export abstract class WidgetAbstractMenuComponent {
 
   public get hasMenu() {
     return this.layout.isEditable;
+  }
+
+  public widgetMenuLabel():string {
+    return this.i18n.t('js.grid.widget_menu_label', { widgetName: this.resource.options.name });
   }
 }

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,9 +27,10 @@
 #++
 
 class OpenProject::JournalFormatter::ScheduleManually < JournalFormatter::Base
-  def render(key, values, options = { no_html: false })
-    label_text = options[:no_html] ? label(key) : content_tag('strong', label(key))
-    activated_text = values.last ? I18n.t('scheduling.activated') : I18n.t('scheduling.deactivated')
+  def render(key, values, options = { html: true })
+    text = I18n.t("work_packages.datepicker_modal.mode.title")
+    label_text = options[:html] ? content_tag(:strong, text) : text
+    activated_text = values.last ? I18n.t("scheduling.manual") : I18n.t("scheduling.automatic")
 
     I18n.t(:text_journal_label_value, label: label_text, value: activated_text)
   end

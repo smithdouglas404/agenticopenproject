@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,13 +30,15 @@
 
 module Queries::Operators
   class LessThanAgo < Base
-    label 'less_than_ago'
-    set_symbol '>t-'
+    label "less_than_ago"
+    set_symbol ">t-"
 
     extend DateRangeClauses
 
     def self.sql_for_field(values, db_table, db_field)
-      relative_date_range_clause(db_table, db_field, - values.first.to_i, 0)
+      days = values.first.to_i
+
+      relative_date_range_clause(db_table, db_field, -days, 0)
     end
   end
 end

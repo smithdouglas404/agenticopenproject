@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Injector,
   OnInit,
@@ -15,6 +17,11 @@ import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 @Component({
   templateUrl: './wp-table-configuration-relation-selector.html',
   selector: 'wp-table-configuration-relation-selector',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WpTableConfigurationRelationSelectorComponent implements OnInit {
   private relationFilterIds:string[] = [
@@ -59,24 +66,25 @@ export class WpTableConfigurationRelationSelectorComponent implements OnInit {
     readonly I18n:I18nService,
     readonly wpTableFilters:WorkPackageViewFiltersService,
     readonly ConfigurationService:ConfigurationService,
-    readonly schemaCache:SchemaCacheService) {
+    readonly schemaCache:SchemaCacheService,
+    readonly cdRef:ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    const self:WpTableConfigurationRelationSelectorComponent = this;
+    void this.initializeRelationFilters();
+  }
 
-    this.wpTableFilters
-      .onReady()
-      .then(() => {
-        self.availableRelationFilters = self.relationFiltersOf(self.wpTableFilters.availableFilters) as QueryFilterResource[];
-        self.setSelectedRelationFilter();
-      });
+  private async initializeRelationFilters():Promise<void> {
+    await this.wpTableFilters.onReady();
+    this.availableRelationFilters = this.relationFiltersOf(this.wpTableFilters.availableFilters) as QueryFilterResource[];
+    this.setSelectedRelationFilter();
+    this.cdRef.markForCheck();
   }
 
   private setSelectedRelationFilter():void {
     const currentRelationFilters:QueryFilterInstanceResource[] = this.relationFiltersOf(this.wpTableFilters.current) as QueryFilterInstanceResource[];
     if (currentRelationFilters.length > 0) {
-      this.selectedRelationFilter = _.find(this.availableRelationFilters, { id: currentRelationFilters[0].id }) as QueryFilterResource;
+      this.selectedRelationFilter = _.find(this.availableRelationFilters, { id: currentRelationFilters[0].id })!;
     } else {
       this.selectedRelationFilter = this.availableRelationFilters[0];
     }

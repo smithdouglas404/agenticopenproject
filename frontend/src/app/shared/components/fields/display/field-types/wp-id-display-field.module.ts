@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,22 +31,35 @@ import { StateService } from '@uirouter/core';
 import { UiStateLinkBuilder } from 'core-app/features/work-packages/components/wp-fast-table/builders/ui-state-link-builder';
 import { IdDisplayField } from 'core-app/shared/components/fields/display/field-types/id-display-field.module';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 export class WorkPackageIdDisplayField extends IdDisplayField {
   @InjectField() $state!:StateService;
 
   @InjectField() keepTab!:KeepTabService;
 
-  private uiStateBuilder:UiStateLinkBuilder = new UiStateLinkBuilder(this.$state, this.keepTab);
+  @InjectField() currentProject!:CurrentProjectService;
+
+  @InjectField() pathHelper!:PathHelperService;
+
+  private uiStateBuilder:UiStateLinkBuilder = new UiStateLinkBuilder(this.$state, this.keepTab, this.currentProject, this.pathHelper);
+
+  public get valueString():string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
+    return this.resource.displayId ?? this.value?.toString() ?? '';
+  }
 
   public render(element:HTMLElement, displayText:string):void {
     if (!this.value) {
       return;
     }
     const link = this.uiStateBuilder.linkToShow(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       this.value,
       displayText,
-      this.value,
+      displayText,
+      this.valueString,
     );
 
     element.appendChild(link);

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +36,7 @@ module API
               alias :orig_json_cache_key :json_cache_key
 
               def json_cache_key
-                orig_json_cache_key + [filter.custom_field.cache_key]
+                orig_json_cache_key + [filter.custom_field.cache_key_with_version]
               end
             end
           end

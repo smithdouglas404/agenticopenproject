@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,10 +29,7 @@
 #++
 
 module Ldap
-  class SynchronizationJob < ::Cron::CronJob
-    # Run once per night at 11:30pm
-    self.cron_expression = '30 23 * * *'
-
+  class SynchronizationJob < ApplicationJob
     def perform
       run_user_sync
     end

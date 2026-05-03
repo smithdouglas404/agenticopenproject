@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,7 +34,7 @@ class Burndown
 
     series_data = OpenProject::Backlogs::Burndown::SeriesRawData.new(project,
                                                                      sprint,
-                                                                     points: ['story_points'])
+                                                                     points: ["story_points"])
 
     series_data.collect_data
 
@@ -52,7 +52,11 @@ class Burndown
   private
 
   def make_date_series(sprint)
-    @days = sprint.days
+    @days = if sprint.start_date && sprint.finish_date
+              Day.working.from_range(from: sprint.start_date, to: sprint.finish_date).map(&:date)
+            else
+              []
+            end
   end
 
   def calculate_series(series_data)
@@ -65,7 +69,7 @@ class Burndown
   end
 
   def calculate_ideals(data)
-    (['story_points'] & data.collect_names).each do |ideal|
+    (["story_points"] & data.collect_names).each do |ideal|
       calculate_ideal(ideal, data.unit_for(ideal))
     end
   end
@@ -79,14 +83,14 @@ class Burndown
       ideal[i] = max - (delta * i)
     end
 
-    make_series name.to_s + '_ideal', unit, ideal
+    make_series name.to_s + "_ideal", unit, ideal
   end
 
   def make_series(name, units, data)
     @available_series ||= {}
     s = OpenProject::Backlogs::Burndown::Series.new(data, name, units)
     @available_series[name] = s
-    instance_variable_set("@#{name}", s)
+    instance_variable_set(:"@#{name}", s)
   end
 
   def determine_max
@@ -94,16 +98,5 @@ class Burndown
       points: @available_series.values.select { |s| s.unit == :points }.flatten.compact.reject(&:nan?).max || 0.0,
       hours: @available_series.values.select { |s| s.unit == :hours }.flatten.compact.reject(&:nan?).max || 0.0
     }
-  end
-
-  def to_h(keys, values)
-    Hash[*keys.zip(values).flatten]
-  end
-
-  def workday_before(date = Date.today)
-    d = date - 1
-    # TODO: make weekday configurable
-    d = workday_before(d) unless d.wday > 0 and d.wday < 6
-    d
   end
 end

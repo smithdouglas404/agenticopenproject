@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,29 +27,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Meetings', type: :feature, js: true do
-  let(:project) { create :project, enabled_module_names: %w[meetings activity] }
+RSpec.describe "Meetings", :js do
+  let(:project) { create(:project, enabled_module_names: %w[meetings activity]) }
   let(:user) { create(:admin) }
 
-  let!(:meeting) { create :meeting, project:, title: 'Awesome meeting!' }
-  let!(:agenda) { create :meeting_agenda, meeting:, text: 'foo' }
-  let!(:minutes) { create :meeting_minutes, meeting:, text: 'minutes' }
+  let!(:meeting) { create(:meeting, project:, title: "Awesome meeting!") }
 
   before do
     login_as(user)
   end
 
-  describe 'project activity' do
-    it 'can show the meeting in the project activity' do
+  describe "project activity" do
+    it "can show the meeting in the project activity" do
       visit project_activity_index_path(project)
 
-      check 'Meetings'
-      click_on 'Apply'
-
-      expect(page).to have_selector('li.meeting', text: 'Awesome meeting!')
-      expect(page).to have_selector('.meeting-agenda', text: 'Agenda: Awesome meeting!')
+      check "Meetings"
+      click_on "Apply"
+      expect(page).to have_css(".op-activity-list--item-title", text: "Meeting: Awesome meeting!")
     end
   end
 end

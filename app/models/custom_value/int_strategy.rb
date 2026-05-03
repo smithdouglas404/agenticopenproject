@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,10 +29,16 @@
 #++
 
 class CustomValue::IntStrategy < CustomValue::FormatStrategy
+  include ActionView::Helpers::NumberHelper
+
   def typed_value
-    if value.present?
-      value.to_i
-    end
+    value.to_i if value.present?
+  end
+
+  def formatted_value
+    return "" if value.blank?
+
+    number_with_delimiter(value.to_s)
   end
 
   def validate_type_of_value

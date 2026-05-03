@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,17 +30,35 @@
 
 Rails.application.config.after_initialize do
   OpenProject::Notifications.subscribe(OpenProject::Events::JOURNAL_CREATED) do |payload|
-    # A job is scheduled that creates notifications (in app if supported) right away and schedules
-    # jobs to be run for mail and digest mails.
+    journal = payload[:journal]
+    send_notifications = payload[:send_notification]
+
+    # A job is scheduled immediately that handles additional workflows on work packages
+    WorkPackages::WorkflowJob.perform_later(journal, payload[:changes]) if journal.journable_type == "WorkPackage"
+
+    # A job is scheduled immediately that creates notifications (in-app if
+    # supported) right away and schedules jobs to be run for mail and digest
+    # mails.
+    Notifications::WorkflowJob
+      .perform_later(:create_notifications,
+                     journal,
+                     send_notifications)
+
+    # A job is scheduled for the end of the journal aggregation time. If the
+    # journal still exists with a matching updated_at value (it might be updated
+    # because the resource was modified within that time frame), then that job
+    # generates a OpenProject::Events::AGGREGATED_..._JOURNAL_READY event.
+    Journals::CompletedJob.schedule(payload[:journal], payload[:send_notification])
+  end
+
+  OpenProject::Notifications.subscribe(OpenProject::Events::JOURNAL_UPDATED) do |payload|
+    # A job is scheduled immediately that creates notifications (in-app if
+    # supported) right away and schedules jobs to be run for mail and digest
+    # mails.
     Notifications::WorkflowJob
       .perform_later(:create_notifications,
                      payload[:journal],
                      payload[:send_notification])
-
-    # A job is scheduled for the end of the journal aggregation time. If the journal does still exist
-    # at the end (it might be replaced because another journal was created within that timeframe)
-    # that job generates a OpenProject::Events::AGGREGATED_..._JOURNAL_READY event.
-    Journals::CompletedJob.schedule(payload[:journal], payload[:send_notification])
   end
 
   OpenProject::Notifications.subscribe(OpenProject::Events::WATCHER_ADDED) do |payload|
@@ -49,7 +69,7 @@ Rails.application.config.after_initialize do
                      payload[:watcher_setter])
   end
 
-  OpenProject::Notifications.subscribe(OpenProject::Events::WATCHER_REMOVED) do |payload|
+  OpenProject::Notifications.subscribe(OpenProject::Events::WATCHER_DESTROYED) do |payload|
     Mails::WatcherRemovedJob
       .perform_later(payload[:watcher].attributes,
                      payload[:watcher_remover])
@@ -71,6 +91,14 @@ Rails.application.config.after_initialize do
       .perform_later(current_user: User.current,
                      member: payload[:member],
                      message: payload[:message])
+  end
+
+  OpenProject::Notifications.subscribe(OpenProject::Events::WORK_PACKAGE_SHARED) do |payload|
+    next unless payload[:send_notifications]
+
+    Mails::WorkPackageSharedJob
+      .perform_later(current_user: User.current,
+                     work_package_member: payload[:work_package_member])
   end
 
   OpenProject::Notifications.subscribe(OpenProject::Events::NEWS_COMMENT_CREATED) do |payload|

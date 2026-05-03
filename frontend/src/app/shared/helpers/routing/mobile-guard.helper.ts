@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +35,7 @@ import {
 
 export function mobileGuardActivated(state:StateObject):boolean {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-  return state.data && state.data.mobileAlternative && (new DeviceService()).isMobile;
+  return state.data?.mobileAlternative && (new DeviceService()).isMobile;
 }
 
 export function redirectToMobileAlternative(transition:Transition):TargetState {

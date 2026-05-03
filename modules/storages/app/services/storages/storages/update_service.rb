@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,27 +28,50 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# See also: create_service.rb for comments
-module Storages::Storages
-  class UpdateService < ::BaseServices::Update
-    protected
+module Storages
+  # See also: create_service.rb for comments
+  module Storages
+    class UpdateService < ::BaseServices::Update
+      protected
 
-    def after_perform(service_call)
-      super(service_call)
+      def after_validate(service_call)
+        return handle_sharepoint_storage(service_call) if model.is_a? SharepointStorage
 
-      storage = service_call.result
-      if storage.provider_type == 'nextcloud'
-        application = storage.oauth_application
-        persist_service_result = ::OAuth::PersistApplicationService
-         .new(application, user:)
-         .call({
-                 name: "#{storage.name} (#{I18n.t("storages.provider_types.#{storage.provider_type}.name")})",
-                 redirect_uri: File.join(storage.host, "index.php/apps/integration_openproject/oauth-redirect")
-               })
-        service_call.add_dependent!(persist_service_result)
+        service_call
       end
 
-      service_call
+      # rubocop:disable Metrics/AbcSize
+      def handle_sharepoint_storage(service_call)
+        return service_call unless model.automatically_managed? && model.automatically_managed_changed?
+
+        list_result = Adapters::Providers::Sharepoint::Services::CreateManagedListService.new(model).call
+
+        if list_result.success?
+          model.managed_drive_id = list_result.result.id
+          model.managed_drive_name = list_result.result.name
+        else
+          service_call.errors = list_result.errors
+          service_call.success = false
+        end
+        service_call
+      end
+      # rubocop:enable Metrics/AbcSize
+
+      def after_perform(service_call)
+        storage = service_call.result
+        return service_call unless storage.provider_type_nextcloud?
+        return service_call unless storage.oauth_application
+
+        persist_service_result = ::OAuth::Applications::UpdateService
+                                 .new(model: storage.oauth_application, user:)
+                                 .call(
+                                   name: "#{storage.name} (#{I18n.t("storages.provider_types.#{storage}.name")})",
+                                   redirect_uri: File.join(storage.host, "index.php/apps/integration_openproject/oauth-redirect")
+                                 )
+        service_call.add_dependent!(persist_service_result)
+
+        service_call
+      end
     end
   end
 end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -29,17 +29,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 
-import * as sfimport from 'screenfull';
-import { Screenfull } from 'screenfull';
 import { AbstractWorkPackageButtonComponent } from '../wp-buttons.module';
-
-const screenfull:Screenfull = sfimport as any;
-export const zenModeComponentSelector = 'zen-mode-toggle-button';
+import screenfull from 'screenfull';
 
 @Component({
   templateUrl: '../wp-button.template.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: zenModeComponentSelector,
+  selector: 'opce-zen-mode-toggle-button',
+  standalone: false,
 })
 export class ZenModeButtonComponent extends AbstractWorkPackageButtonComponent {
   public buttonId = 'work-packages-zen-mode-toggle-button';
@@ -54,20 +51,23 @@ export class ZenModeButtonComponent extends AbstractWorkPackageButtonComponent {
 
   private deactivateLabel:string;
 
-  constructor(readonly I18n:I18nService,
-    readonly cdRef:ChangeDetectorRef) {
+  constructor(
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    readonly I18n:I18nService,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    readonly cdRef:ChangeDetectorRef
+  ) {
     super(I18n);
 
     this.activateLabel = I18n.t('js.zen_mode.button_activate');
     this.deactivateLabel = I18n.t('js.zen_mode.button_deactivate');
-    const self = this;
 
-    if (screenfull.enabled) {
+    if (screenfull.isEnabled) {
       screenfull.onchange(() => {
         // This event might get triggered several times for once leaving
         // fullscreen mode.
         if (!screenfull.isFullscreen) {
-          self.deactivateZenMode();
+          this.deactivateZenMode();
         }
       });
     }
@@ -86,19 +86,19 @@ export class ZenModeButtonComponent extends AbstractWorkPackageButtonComponent {
 
   private deactivateZenMode():void {
     this.isActive = ZenModeButtonComponent.inZenMode = false;
-    jQuery('body').removeClass('zen-mode');
+    document.body.classList.remove('zen-mode');
     this.disabled = false;
-    if (screenfull.enabled && screenfull.isFullscreen) {
-      screenfull.exit();
+    if (screenfull.isEnabled && screenfull.isFullscreen) {
+      void screenfull.exit();
     }
     this.cdRef.detectChanges();
   }
 
   private activateZenMode() {
     this.isActive = ZenModeButtonComponent.inZenMode = true;
-    jQuery('body').addClass('zen-mode');
-    if (screenfull.enabled) {
-      screenfull.request();
+    document.body.classList.add('zen-mode');
+    if (screenfull.isEnabled) {
+      void screenfull.request();
     }
     this.cdRef.detectChanges();
   }

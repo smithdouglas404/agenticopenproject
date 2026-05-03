@@ -1,7 +1,7 @@
 /* -- copyright
 // OpenProject My Project Page Plugin
 //
-// Copyright (C) 2011-2015 the OpenProject Foundation (OPF)
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -24,7 +24,10 @@
   background-size: 18px 18px
   background-position-x: 8px
   background-position-y: center
-  background-color: #FFF
+  background-color: var(--body-background)
+
+.login-auth-providers a.auth-provider
+  padding: 9px 12px 9px 12px
 
   &.auth-provider--imaged
     padding-left: 2rem
@@ -32,4 +35,5 @@
   &.auth-provider-google,
   &.auth-provider-azure,
   &.auth-provider-heroku
-    padding: 9px 12px 9px 34px
+    padding-left: 34px
+

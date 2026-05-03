@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,4 +30,10 @@
 
 class OAuthClient < ApplicationRecord
   belongs_to :integration, polymorphic: true
+  has_many :remote_identities, as: :auth_source, dependent: :destroy
+  has_many :oauth_client_tokens, dependent: :destroy
+
+  def redirect_uri
+    File.join(Rails.application.root_url, "oauth_clients", client_id, "callback")
+  end
 end

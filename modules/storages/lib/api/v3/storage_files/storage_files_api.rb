@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,58 +31,61 @@
 module API::V3::StorageFiles
   class StorageFilesAPI < ::API::OpenProjectAPI
     using Storages::Peripherals::ServiceResultRefinements
-    helpers Storages::Peripherals::StorageErrorHelper
+    helpers Storages::Peripherals::StorageErrorHelper,
+            Storages::Peripherals::StorageParentFolderExtractor
+
+    helpers do
+      def validate_upload_request(body)
+        if @storage.provider_type.constantize.disallowed_by_enterprise_token?
+          raise API::Errors::EnterpriseTokenMissing.new
+        end
+
+        case body.transform_keys(&:to_sym)
+        in { projectId: project_id, fileName: file_name, parent: parent }
+          authorize_in_project(:manage_file_links, project: Project.find(project_id))
+          ServiceResult.success(result: { folder_id: parent, file_name: })
+        else
+          raise API::Errors::BadRequest.new("Request body malformed!")
+        end
+      end
+
+      def fetch_upload_link
+        lambda do |upload_data|
+          Storages::UploadLinkService.call(storage: @storage, upload_data:, user: current_user)
+        end
+      end
+    end
 
     resources :files do
       get do
-        Storages::Peripherals::StorageRequests
-          .new(storage: @storage)
-          .files_query(user: current_user)
+        Storages::StorageFilesService
+          .call(storage: @storage, user: current_user, folder: params.fetch(:parent, "/"))
           .match(
-            on_success: ->(files_query) {
-              files_query
-                .call(params[:parent])
-                .map do |files|
-                API::V3::StorageFiles::StorageFileCollectionRepresenter.new(
-                  files,
-                  self_link: api_v3_paths.storage_files(@storage.id),
-                  current_user:
-                )
-              end.match(
-                on_success: ->(representer) { representer },
-                on_failure: ->(error) { raise_error(error) }
-              )
-            },
-            on_failure: ->(error) { raise_error(error) }
+            on_success: ->(files) { API::V3::StorageFiles::StorageFilesRepresenter.new(files, @storage, current_user:) },
+            on_failure: ->(error) { raise_service_result_error(error) }
           )
       end
 
-      # RequestBody:
-      # {
-      #   "fileName": "ape.png",
-      #   "parent": "/Pictures"
-      # }
-      post :prepare_upload do
-        raise ::API::Errors::NotFound unless OpenProject::FeatureDecisions.storage_file_upload_active?
+      route_param :file_id, type: String, desc: "Storage file id" do
+        get do
+          Storages::StorageFileService
+            .call(storage: @storage, user: current_user, file_id: params[:file_id])
+            .map { it.to_storage_file.value! }
+            .match(
+              on_success: lambda do |storage_file|
+                API::V3::StorageFiles::StorageFileRepresenter.new(storage_file, @storage, current_user:)
+              end,
+              on_failure: ->(error) { raise_service_result_error(error) }
+            )
+        end
+      end
 
-        Storages::Peripherals::StorageRequests
-          .new(storage: @storage)
-          .upload_link_query(
-            user: current_user,
-            finalize_url: nil # ToDo: api_v3_paths.finalize_upload(@storage.id)
-          )
-          .match(
-            on_success: ->(upload_link_query) {
-              upload_link_query
-                .call(request_body)
-                .map { |link| API::V3::StorageFiles::StorageUploadLinkRepresenter.new(link, current_user:) }
-                .match(
-                  on_success: ->(representer) { representer },
-                  on_failure: ->(error) { raise_error(error) }
-                )
-            },
-            on_failure: ->(error) { raise_error(error) }
-          )
+      post :prepare_upload do
+        result = validate_upload_request(request_body) >> fetch_upload_link
+        result.match(
+          on_success: ->(link) { API::V3::StorageFiles::StorageUploadLinkRepresenter.new(link, current_user:) },
+          on_failure: ->(error) { raise_service_result_error(error) }
+        )
       end
     end
   end

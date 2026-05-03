@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,15 +29,16 @@
 #++
 
 class Storages::Admin::OAuthClientsController < ApplicationController
+  include OpTurbo::ComponentStream
+
   # See https://guides.rubyonrails.org/layouts_and_rendering.html for reference on layout
-  layout 'admin'
+  layout "admin"
 
   # Before executing any action below: Make sure the current user is an admin
   # and set the @<controller_name> variable to the object referenced in the URL.
   before_action :require_admin
 
   before_action :find_storage
-  before_action :delete_current_oauth_client, only: %i[create]
 
   # menu_item is defined in the Redmine::MenuManager::MenuController
   # module, included from ApplicationController.
@@ -44,60 +47,105 @@ class Storages::Admin::OAuthClientsController < ApplicationController
 
   # Show the admin page to create a new OAuthClient object.
   def new
-    @oauth_client = ::OAuthClients::SetAttributesService.new(user: User.current,
-                                                             model: OAuthClient.new,
-                                                             contract_class: EmptyContract)
-                                                        .call
-                                                        .result
-    render '/storages/admin/storages/new_oauth_client'
+    oauth_client = ::OAuthClients::SetAttributesService
+                      .new(user: User.current,
+                           model: OAuthClient.new,
+                           contract_class: EmptyContract)
+                      .call
+                      .result
+
+    update_via_turbo_stream(component: Storages::Admin::Forms::OAuthClientFormComponent.new(@storage, oauth_client:))
+    respond_with_turbo_streams
   end
 
-  # Actually create a OAuthClient object.
-  # Use service pattern to create a new OAuthClient
-  # See also: https://www.openproject.org/docs/development/concepts/contracted-services/
-  # Called by: Global app/config/routes.rb to serve Web page
   def create
-    service_result = ::OAuthClients::CreateService.new(user: User.current)
-                                                  .call(permitted_oauth_client_params.merge(integration: @storage))
-    @oauth_client = service_result.result
-    if service_result.success?
-      flash[:notice] = I18n.t(:notice_successful_create)
-      # admin_settings_storage_path is automagically created by Ruby routes.
-      redirect_to admin_settings_storage_path(@storage)
-    else
-      @errors = service_result.errors
-      render '/storages/admin/storages/new_oauth_client'
+    call_oauth_clients_create_service
+
+    service_result.on_failure do
+      update_via_turbo_stream(component: Storages::Admin::Forms::OAuthClientFormComponent.new(
+        @storage,
+        oauth_client: @oauth_client,
+        in_wizard: in_wizard?
+      ))
+      respond_with_turbo_streams
+    end
+
+    service_result.on_success do
+      respond_for_success
     end
   end
 
-  # Used by: admin layout
-  # Breadcrumbs is something like OpenProject > Admin > Storages.
-  # This returns the name of the last part (Storages admin page)
-  def default_breadcrumb
-    ActionController::Base.helpers.link_to(t(:project_module_storages), admin_settings_storages_path)
+  def update
+    call_oauth_clients_create_service
+
+    service_result.on_failure do
+      update_via_turbo_stream(component: Storages::Admin::Forms::OAuthClientFormComponent.new(
+        @storage,
+        oauth_client: @oauth_client
+      ))
+      respond_with_turbo_streams
+    end
+
+    service_result.on_success do
+      respond_for_success
+    end
   end
 
-  # See: default_breadcrumb above
-  # Defines whether to show breadcrumbs on the page or not.
-  def show_local_breadcrumb
-    true
+  def show_redirect_uri
+    respond_to do |format|
+      format.html { render layout: false }
+    end
+  end
+
+  def finish_setup
+    flash[:op_primer_flash] = { message: I18n.t(:"storages.successful_storage_connection"), scheme: :success }
+
+    redirect_to edit_admin_settings_storage_path(@storage)
   end
 
   private
 
+  attr_reader :service_result
+
+  def call_oauth_clients_create_service
+    @service_result = ::OAuthClients::CreateService
+                        .new(user: User.current)
+                        .call(oauth_client_params.merge(integration: @storage))
+    @oauth_client = service_result.result
+    @storage = @storage.reload
+  end
+
+  def prepare_storage_for_automatic_management_form
+    return unless @storage.automatic_management_unspecified?
+
+    @storage = ::Storages::Storages::SetProviderFieldsAttributesService
+                 .new(user: current_user, model: @storage, contract_class: EmptyContract)
+                 .call
+                 .result
+  end
+
   # Called by create and update above in order to check if the
   # update parameters are correctly set.
-  def permitted_oauth_client_params
+  def oauth_client_params
     params
       .require(:oauth_client)
-      .permit('client_id', 'client_secret')
+      .permit("client_id", "client_secret")
   end
 
   def find_storage
-    @storage = ::Storages::Storage.find(params[:storage_id])
+    @storage = ::Storages::Storage.visible.find(params[:storage_id])
   end
 
-  def delete_current_oauth_client
-    ::OAuthClients::DeleteService.new(user: User.current, model: @storage.oauth_client).call if @storage.oauth_client
+  def respond_for_success
+    if in_wizard?
+      redirect_to(new_admin_settings_storage_path(continue_wizard: @storage.id), status: :see_other)
+    else
+      update_via_turbo_stream(component: Storages::Admin::OAuthClientInfoComponent.new(@storage))
+      respond_with_turbo_streams
+    end
+  end
+
+  def in_wizard?
+    params[:continue_wizard].present?
   end
 end

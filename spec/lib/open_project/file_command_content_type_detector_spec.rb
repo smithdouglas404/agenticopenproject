@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -54,29 +56,45 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'spec_helper'
+require "spec_helper"
 
-describe OpenProject::FileCommandContentTypeDetector do
-  it 'returns a content type based on the content of the file' do
-    tempfile = Tempfile.new('something')
-    tempfile.write('This is a file.')
+RSpec.describe OpenProject::FileCommandContentTypeDetector do
+  it "returns a content type based on the content of the file" do
+    tempfile = Tempfile.new("something")
+    tempfile.write("This is a file.")
     tempfile.rewind
 
-    assert_equal 'text/plain', OpenProject::FileCommandContentTypeDetector.new(tempfile.path).detect
+    expect(described_class.new(tempfile.path).detect).to eq("text/plain")
 
     tempfile.close
   end
 
-  it 'returns a sensible default when the file command is missing' do
-    allow(::Open3).to receive(:capture2).and_raise 'o noes!'
-    @filename = '/path/to/something'
-    assert_equal 'application/binary',
-                 OpenProject::FileCommandContentTypeDetector.new(@filename).detect
+  it "returns a sensible default when the file command is missing" do
+    allow(Open3).to receive(:capture2).and_raise "o noes!"
+    filename = "/path/to/something"
+    expect(described_class.new(filename).detect).to eq("application/binary")
   end
 
-  it 'returns a sensible default on the odd chance that run returns nil' do
-    allow(::Open3).to receive(:capture2).and_return [nil, 0]
-    assert_equal 'application/binary',
-                 OpenProject::FileCommandContentTypeDetector.new('windows').detect
+  it "returns a sensible default on the odd chance that run returns nil" do
+    allow(Open3).to receive(:capture2).and_return [nil, 0]
+    expect(described_class.new("windows").detect).to eq("application/binary")
+  end
+
+  it "returns a sensible default when the file command returns an error code" do
+    allow(Open3).to receive(:capture2).and_return ["text/plain", 1]
+    expect(described_class.new("windows").detect).to eq("application/binary")
+  end
+
+  it "returns a sensible default when the file command returns a type with parentheses" do
+    allow(Open3).to receive(:capture2).and_return ["text/plain (with something)", 0]
+    expect(described_class.new("windows").detect).to eq("application/binary")
+  end
+
+  it "uses end-of-input delimiter to prevent command injection" do
+    allow(Open3).to receive(:capture2)
+
+    described_class.new("--help").detect
+
+    expect(Open3).to have_received(:capture2).with("file", "-b", "--mime", "--", "--help")
   end
 end

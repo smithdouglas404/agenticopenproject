@@ -25,20 +25,20 @@ export class HierarchyRenderPass extends PrimaryRenderPass {
   @InjectField() wpTableHierarchies:WorkPackageViewHierarchiesService;
 
   // Remember which rows were already rendered
-  readonly rendered:{ [workPackageId:string]:boolean } = {};
+  readonly rendered:Record<string, boolean> = {};
 
   // Remember additional parents inserted that are not part of the results table
-  private additionalParents:{ [workPackageId:string]:WorkPackageResource } = {};
+  private additionalParents:Record<string, WorkPackageResource> = {};
 
   // Defer children to be rendered when their parent occurs later in the table
-  private deferred:{ [parentId:string]:WorkPackageResource[] } = {};
+  private deferred:Record<string, WorkPackageResource[]> = {};
 
   // Collapsed state
   private hierarchies:WorkPackageViewHierarchies;
 
   // Build a map of hierarchy elements present in the table
   // with at least a visible child
-  public parentsWithVisibleChildren:{ [id:string]:boolean } = {};
+  public parentsWithVisibleChildren:Record<string, boolean> = {};
 
   constructor(public readonly injector:Injector,
     public workPackageTable:WorkPackageTable,
@@ -52,7 +52,7 @@ export class HierarchyRenderPass extends PrimaryRenderPass {
     this.hierarchies = this.wpTableHierarchies.current;
 
     _.each(this.workPackageTable.originalRowIndex, (row) => {
-      row.object.ancestors.forEach((ancestor:WorkPackageResource) => {
+      row.object.getAncestors().forEach((ancestor:WorkPackageResource) => {
         this.parentsWithVisibleChildren[ancestor.id!] = true;
       });
     });
@@ -73,7 +73,7 @@ export class HierarchyRenderPass extends PrimaryRenderPass {
         return;
       }
 
-      if (workPackage.ancestors.length) {
+      if (workPackage.getAncestors().length) {
         // If we have ancestors, render it
         this.buildWithHierarchy(row);
       } else {
@@ -96,7 +96,7 @@ export class HierarchyRenderPass extends PrimaryRenderPass {
    * @returns {boolean}
    */
   public deferInsertion(workPackage:WorkPackageResource):boolean {
-    const { ancestors } = workPackage;
+    const ancestors = workPackage.getAncestors();
 
     // Will only defer if at least one ancestor exists
     if (ancestors.length === 0) {
@@ -172,7 +172,7 @@ export class HierarchyRenderPass extends PrimaryRenderPass {
 
   private buildWithHierarchy(row:WorkPackageTableRow) {
     // Ancestor data [root, med, thisrow]
-    const { ancestors } = row.object;
+    const ancestors = row.object.getAncestors();
     const ancestorGroups:string[] = [];
 
     // Iterate ancestors

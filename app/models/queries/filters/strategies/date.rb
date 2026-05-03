@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,8 +30,8 @@
 
 module Queries::Filters::Strategies
   class Date < Queries::Filters::Strategies::Integer
-    self.supported_operators = ['<t+', '>t+', 't+', 't', 'w', '>t-', '<t-', 't-', '=d', '<>d']
-    self.default_operator = 't'
+    self.supported_operators = ["<t+", ">t+", "t+", "t", "w", ">t-", "<t-", "t-", "=d", "<>d", "!*"]
+    self.default_operator = "t"
 
     def validate
       if operator == Queries::Operators::OnDate ||
@@ -44,7 +46,7 @@ module Queries::Filters::Strategies
 
     def validate_values_all_date
       unless values.all? { |value| value.blank? || date?(value) }
-        errors.add(:values, I18n.t('activerecord.errors.messages.not_a_date'))
+        errors.add(:values, I18n.t("activerecord.errors.messages.not_a_date"))
       end
     end
 

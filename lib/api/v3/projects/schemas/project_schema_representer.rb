@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,83 +34,126 @@ module API
       module Schemas
         class ProjectSchemaRepresenter < ::API::Decorators::SchemaRepresenter
           extend ::API::V3::Utilities::CustomFieldInjector::RepresenterClass
+
           custom_field_injector type: :schema_representer
 
           schema :id,
-                 type: 'Integer'
+                 type: "Integer"
 
           schema :name,
-                 type: 'String',
+                 type: "String",
                  min_length: 1,
                  max_length: 255
 
           schema :identifier,
-                 type: 'String',
+                 type: "String",
                  required: true,
                  has_default: true,
                  min_length: 1,
                  max_length: 100
 
           schema :description,
-                 type: 'Formattable',
+                 type: "Formattable",
                  required: false
 
           schema :public,
-                 type: 'Boolean',
+                 type: "Boolean",
                  required: false
 
           schema :active,
-                 type: 'Boolean',
+                 type: "Boolean",
                  required: false
 
           schema_with_allowed_collection :status,
-                                         type: 'ProjectStatus',
-                                         name_source: ->(*) { I18n.t('activerecord.attributes.projects/status.code') },
+                                         type: "ProjectStatus",
+                                         name_source: ->(*) { I18n.t("activerecord.attributes.project.status_code") },
                                          required: false,
-                                         writable: ->(*) { represented.writable?(:status) },
+                                         writable: ->(*) { represented.writable?(:status_code) },
                                          values_callback: ->(*) {
-                                           ::Projects::Status.codes.keys
+                                           Project.status_codes.keys
                                          },
                                          value_representer: ::API::V3::Projects::Statuses::StatusRepresenter,
                                          link_factory: ->(value) {
                                            {
                                              href: api_v3_paths.project_status(value),
-                                             title: I18n.t(:"activerecord.attributes.projects/status.codes.#{value}")
+                                             title: I18n.t(:"activerecord.attributes.project.status_codes.#{value}")
                                            }
                                          }
 
           schema :status_explanation,
-                 type: 'Formattable',
-                 name_source: ->(*) { I18n.t('activerecord.attributes.projects/status.explanation') },
+                 type: "Formattable",
+                 name_source: ->(*) { I18n.t("activerecord.attributes.project.status_explanation") },
                  required: false,
-                 writable: ->(*) { represented.writable?(:status) }
+                 writable: ->(*) { represented.writable?(:status_explanation) }
 
           schema_with_allowed_link :parent,
-                                   type: 'Project',
+                                   type: "Workspace",
                                    required: ->(*) {
                                      # Users only having the add_subprojects permission need to provide
                                      # a parent when creating a new project.
                                      represented.model.new_record? &&
-                                       !current_user.allowed_to_globally?(:add_project)
+                                       !current_user.allowed_globally?(:add_project)
                                    },
                                    href_callback: ->(*) {
-                                     query_props = if represented.model.new_record?
-                                                     ''
-                                                   else
-                                                     "?of=#{represented.model.id}"
-                                                   end
+                                     params = if represented.model.new_record?
+                                                { workspace_type: represented.model.workspace_type }
+                                              else
+                                                { of: represented.model.id }
+                                              end
 
-                                     api_v3_paths.projects_available_parents + query_props
+                                     api_v3_paths.projects_available_parents(**params)
                                    }
 
           schema :created_at,
-                 type: 'DateTime'
+                 type: "DateTime"
 
           schema :updated_at,
-                 type: 'DateTime'
+                 type: "DateTime"
 
-          def self.represented_class
-            ::Project
+          # Cannot be cached here due to custom field visibility checks on a user level.
+          # However caching is still applied further down in the `section_representation` method.
+          property :attribute_groups,
+                   name_source: ->(*) { I18n.t("activerecord.attributes.project.attribute_groups") },
+                   as: "_attributeGroups",
+                   exec_context: :decorator,
+                   uncacheable: true
+
+          class << self
+            def represented_class
+              ::Project
+            end
+          end
+
+          def attribute_groups
+            project_custom_field_sections.map do |section|
+              section_representation(section)
+            end
+          end
+
+          private
+
+          def project_custom_field_sections
+            @project_custom_field_sections ||= ProjectCustomFieldSection
+                                                .joins(:custom_fields)
+                                                .includes(:custom_fields)
+                                                .merge(ProjectCustomField.visible(current_user))
+                                                .group(:id, "custom_fields.id")
+                                                .order(:position, :position_in_custom_field_section)
+          end
+
+          def section_representation(section)
+            OpenProject::Cache.fetch(*section_cache_key(section)) do
+              ::API::V3::Projects::Schemas::ProjectCustomFieldSectionRepresenter
+                .new(section, current_user:)
+            end
+          end
+
+          def section_cache_key(section)
+            ["project_schema_custom_field_section",
+             section.id,
+             I18n.locale,
+             represented.model,
+             *represented.model.available_custom_fields.sort_by(&:id)]
           end
         end
       end

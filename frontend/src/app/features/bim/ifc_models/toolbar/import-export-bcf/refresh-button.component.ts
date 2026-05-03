@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -35,13 +35,13 @@ import { StateService } from '@uirouter/core';
     <a [title]="text.refresh_hover"
        class="button refresh-button"
        (click)="refresh()">
-      <op-icon icon-classes="button--icon icon-workflow"></op-icon>
+      <op-icon icon-classes="button--icon icon-workflow" />
     </a>
   `,
   selector: 'op-refresh-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-
 export class RefreshButtonComponent {
   public text = {
     refresh: this.I18n.t('js.bcf.refresh'),

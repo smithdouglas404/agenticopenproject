@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +27,7 @@
 //++
 
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { EditFieldComponent } from 'core-app/shared/components/fields/edit/edit-field.component';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import {
@@ -36,6 +36,9 @@ import {
 } from 'core-app/shared/components/fields/helpers/project-status-helper';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
+import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
+import { target } from 'core-app/shared/helpers/event-helpers';
+import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 
 interface ProjectStatusOption {
   href:string
@@ -43,9 +46,18 @@ interface ProjectStatusOption {
   colorClass:string
 }
 
+interface ProjectStatusResource extends HalResource {
+  status:{ href:string }|null;
+}
+
 @Component({
   templateUrl: './project-status-edit-field.component.html',
   styleUrls: ['./project-status-edit-field.component.sass'],
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProjectStatusEditFieldComponent extends EditFieldComponent implements OnInit {
   @ViewChild(NgSelectComponent, { static: true }) public ngSelectComponent:NgSelectComponent;
@@ -65,48 +77,50 @@ export class ProjectStatusEditFieldComponent extends EditFieldComponent implemen
   public appendToContainer = 'body';
 
   ngOnInit() {
-    this.currentStatusCode = this.resource.status === null ? this.availableStatuses[0].href : this.resource.status.href;
-
-    this.change.getForm().then((form) => {
-      form.schema.status.allowedValues.forEach((status:HalResource) => {
-        this.availableStatuses = [...this.availableStatuses,
-          {
-            href: status.href!,
-            name: status.name,
-            colorClass: projectStatusCodeCssClass(status.id),
-          }];
-      });
-
-      // The timeout takes care that the opening is added to the end of the current call stack.
-      // Thus we can be sure that the select box is rendered and ready to be opened.
-      const that = this;
-      window.setTimeout(() => {
-        that.ngSelectComponent.open();
-      }, 0);
-    });
+    this.currentStatusCode = this.projectStatusResource.status?.href ?? this.availableStatuses[0].href;
+    void this.loadAvailableStatuses();
   }
 
   public onChange() {
-    this.resource.status = this.currentStatusCode === this.availableStatuses[0].href ? null : { href: this.currentStatusCode };
-    this.handler.handleUserSubmit();
+    this.projectStatusResource.status = this.currentStatusCode === this.availableStatuses[0].href ? null : { href: this.currentStatusCode };
+    void this.handler.handleUserSubmit();
   }
 
   public onOpen() {
-    // Force reposition as a workaround for BUG
-    // https://github.com/ng-select/ng-select/issues/1259
-    setTimeout(() => {
-      const component = (this.ngSelectComponent) as any;
-      if (component && component.dropdownPanel) {
-        component.dropdownPanel._updatePosition();
-      }
+    repositionDropdownBugfix(this.ngSelectComponent);
 
-      jQuery(this.hiddenOverflowContainer).one('scroll.autocompleteContainer', () => {
-        this.ngSelectComponent.close();
-      });
-    }, 25);
+    target(document.querySelector(this.hiddenOverflowContainer)!).one('scroll.autocompleteContainer', () => {
+      this.ngSelectComponent.close();
+    });
   }
 
   public onClose() {
-    jQuery(this.hiddenOverflowContainer).off('scroll.autocompleteContainer');
+    target(document.querySelector(this.hiddenOverflowContainer)!).off('scroll.autocompleteContainer');
+  }
+
+  private get projectStatusResource():ProjectStatusResource {
+    return this.resource as ProjectStatusResource;
+  }
+
+  private async loadAvailableStatuses():Promise<void> {
+    await this.change.getForm();
+    const statusSchema = (this.change.schema as { status?:IFieldSchema }).status;
+    const allowedValues = (statusSchema?.allowedValues ?? []) as HalResource[];
+
+    this.availableStatuses = [
+      ...this.availableStatuses,
+      ...allowedValues.map((status:HalResource) => ({
+        href: status.href!,
+        name: status.name,
+        colorClass: projectStatusCodeCssClass(status.id),
+      })),
+    ];
+    this.cdRef.markForCheck();
+
+    // The timeout takes care that the opening is added to the end of the current call stack.
+    // Thus we can be sure that the select box is rendered and ready to be opened.
+    window.setTimeout(() => {
+      this.ngSelectComponent.open();
+    }, 0);
   }
 }

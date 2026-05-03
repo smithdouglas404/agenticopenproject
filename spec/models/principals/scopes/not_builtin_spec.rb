@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,22 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe Principals::Scopes::NotBuiltin, type: :model do
-  describe '.not_builtin' do
+RSpec.describe Principals::Scopes::NotBuiltin do
+  describe ".not_builtin" do
     let!(:anonymous_user) { create(:anonymous) }
     let!(:system_user) { create(:system) }
     let!(:deleted_user) { create(:deleted_user) }
     let!(:group) { create(:group) }
     let!(:user) { create(:user) }
     let!(:placeholder_user) { create(:placeholder_user) }
+    let!(:service_account) { create(:service_account) }
 
     subject { Principal.not_builtin }
 
-    it 'returns only actual users and groups' do
+    it "returns only actual users and groups" do
       expect(subject)
-        .to match_array [user, group, placeholder_user]
+        .to contain_exactly(user, group, placeholder_user)
     end
   end
 end

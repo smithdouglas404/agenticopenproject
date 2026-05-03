@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,17 +29,17 @@
 #++
 
 namespace :setting do
-  desc 'Allow to set a Setting: rake setting:set[key1=value1,key2=value2]'
+  desc "Allow to set a Setting: rake setting:set[key1=value1,key2=value2]"
   task set: :environment do |_t, args|
     args.extras.each do |tuple|
-      key, value = tuple.split('=')
+      key, value = tuple.split("=")
       setting = Setting.find_or_initialize_by(name: key)
       setting.set_value! value, force: true
       setting.save!
     end
   end
 
-  desc 'Allow to get a Setting: rake setting:get[key]'
+  desc "Allow to get a Setting: rake setting:get[key]"
   task :get, [:key] => :environment do |_t, args|
     setting = Setting.find_by(name: args[:key])
     unless setting.nil?
@@ -45,10 +47,10 @@ namespace :setting do
     end
   end
 
-  desc 'Allow to set a Setting read from an ENV var. Example: rake setting:set_to_env[smtp_address=SMTP_HOST]'
+  desc "Allow to set a Setting read from an ENV var. Example: rake setting:set_to_env[smtp_address=SMTP_HOST]"
   task set_to_env: :environment do |_t, args|
     args.extras.each do |tuple|
-      setting_name, env_var_name = tuple.split('=')
+      setting_name, env_var_name = tuple.split("=")
 
       next unless Settings::Definition.exists? setting_name
       next unless ENV.has_key? env_var_name
@@ -59,10 +61,17 @@ namespace :setting do
     end
   end
 
-  desc 'List the supported environment variables to override settings'
+  desc "List the supported environment variables to override settings"
   task available_envs: :environment do
-    Settings::Definition.all.sort_by(&:name).each do |definition|
-      puts "#{Settings::Definition.possible_env_names(definition).first} (default=#{definition.default.inspect})"
+    names_and_definitions = Settings::Definition.all.map do |_, definition|
+      env_name = Settings::Definition.possible_env_names(definition).first
+      env_name = definition.env_alias if definition.env_alias&.start_with?("OPENPROJECT_")
+
+      [env_name, definition]
+    end
+
+    names_and_definitions.sort_by { |env_name, _| env_name.downcase }.each do |env_name, definition|
+      puts "#{env_name} (default=#{definition.default.inspect}) #{definition.description}"
     end
   end
 end

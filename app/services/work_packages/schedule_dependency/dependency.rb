@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -56,18 +58,23 @@ class WorkPackages::ScheduleDependency::Dependency
       follows_relations
         .filter_map(&:successor_soonest_start)
         .max
+        .then { days.soonest_working_day(it) }
   end
 
   def start_date
-    descendants_dates.min
+    alive_descendants_dates.min
   end
 
   def due_date
-    descendants_dates.max
+    alive_descendants_dates.max
   end
 
   def has_descendants?
-    descendants.any?
+    alive_descendants.any?
+  end
+
+  def has_direct_or_indirect_predecessors?
+    follows_relations.any?
   end
 
   private
@@ -76,11 +83,19 @@ class WorkPackages::ScheduleDependency::Dependency
     schedule_dependency.descendants(work_package)
   end
 
+  def alive_descendants
+    descendants.reject(&:destroyed?)
+  end
+
   def follows_relations
     schedule_dependency.follows_relations(work_package)
   end
 
-  def descendants_dates
-    descendants.filter_map(&:due_date) + descendants.filter_map(&:start_date)
+  def alive_descendants_dates
+    alive_descendants.filter_map(&:due_date) + alive_descendants.filter_map(&:start_date)
+  end
+
+  def days
+    WorkPackages::Shared::Days.for(work_package)
   end
 end

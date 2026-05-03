@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -45,6 +45,7 @@ export interface TimelineButtonText extends ButtonControllerText {
   styleUrls: ['./wp-timeline-toggle-button.sass'],
   selector: 'wp-timeline-toggle-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageTimelineButtonComponent extends AbstractWorkPackageButtonComponent implements OnInit {
   public buttonId = 'work-packages-timeline-toggle-button';
@@ -72,12 +73,12 @@ export class WorkPackageTimelineButtonComponent extends AbstractWorkPackageButto
     public wpTableTimeline:WorkPackageViewTimelineService) {
     super(I18n);
 
-    this.activateLabel = I18n.t('js.timelines.button_activate');
-    this.deactivateLabel = I18n.t('js.timelines.button_deactivate');
+    this.activateLabel = I18n.t('js.gantt_chart.button_activate');
+    this.deactivateLabel = I18n.t('js.gantt_chart.button_deactivate');
 
-    this.text.zoomIn = I18n.t('js.timelines.zoom.in');
-    this.text.zoomOut = I18n.t('js.timelines.zoom.out');
-    this.text.zoomAuto = I18n.t('js.timelines.zoom.auto');
+    this.text.zoomIn = I18n.t('js.gantt_chart.zoom.in');
+    this.text.zoomOut = I18n.t('js.gantt_chart.zoom.out');
+    this.text.zoomAuto = I18n.t('js.gantt_chart.zoom.auto');
   }
 
   ngOnInit():void {

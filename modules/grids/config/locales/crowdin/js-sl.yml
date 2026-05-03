@@ -1,66 +1,60 @@
+---
 sl:
   js:
     grid:
-      add_widget: 'Dodaj gradnik'
-      remove: 'Odstrani gradnik'
-      configure: 'Oblikuj gradnik'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
+      add_widget: Dodaj gradnik
+      widget_menu_label: Show menu options for %{widgetName} widget
+      remove: Odstrani gradnik
+      configure: Oblikuj gradnik
       widgets:
+        missing_permission: You don't have the necessary permissions to view this widget.
+        not_available: This widget is currently unavailable.
         custom_text:
-          title: 'Besedilo po meri'
+          title: Besedilo po meri
         documents:
-          title: 'Dokumenti'
+          title: Dokumenti
           no_results: 'Ni še dokumentov. '
         members:
-          title: 'Člani'
-          no_results: 'Ni še vidnih članov. '
-          view_all_members: 'Poglej vse člane'
-          add: 'Član'
-          too_many: 'Prikazanih %{count} od %{total} članov.'
+          title: Člani
         news:
-          title: 'Novice'
-          at: 'na'
-          no_results: 'Ni ničesar novega za poročati.'
+          title: Novice
         project_description:
-          title: 'Opis projekta'
-          no_results: "Opis še ni bil napisan. Lahko ga dodate v 'Projektnih nastavitvah'. "
-        project_details:
-          title: 'Podrobnosti projekta'
-          no_results: 'Za projekte niso bila definirana nobena polja po meri. '
+          title: Description
         project_status:
-          title: 'Status projekta'
-          not_started: 'Not started'
-          on_track: 'Na poti'
-          off_track: 'Izven poti'
-          at_risk: 'Ogroženo'
-          not_set: 'Ni nastavljeno'
-          finished: 'Finished'
-          discontinued: 'Discontinued'
+          title: Status
+          not_started: Ni začeto
+          on_track: Na dobri poti
+          off_track: Izven poti
+          at_risk: Ogroženo
+          not_set: Ni nastavljeno
+          finished: Končano
+          discontinued: Opuščeno
         subprojects:
-          title: 'Podprojekti'
-          no_results: 'Ni podprojektov. '
+          title: Subitems
+        project_favorites:
+          title: Favorite projects
+          no_results: You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.
         time_entries_current_user:
-          title: 'Moj porabljen čas'
+          title: Moj porabljen čas
           displayed_days: 'Dnevi prikazani v gradniku:'
         time_entries_list:
           title: 'Porabljen čas (zadnjih 7 dni) '
           no_results: 'Nobenih zapisov časa zadnjih 7 dni. '
         work_packages_accountable:
-          title: "Delovni paketi, za katere sem odgovoren"
+          title: Delovni paketi, za katere sem odgovoren
         work_packages_assigned:
-          title: 'Delovni paketi, ki so mi bili dodeljeni'
+          title: Delovni paketi, ki so mi bili dodeljeni
         work_packages_created:
-          title: 'Delovni paketi, ki sem jih ustvaril'
+          title: Delovni paketi, ki sem jih ustvaril
         work_packages_watched:
-          title: 'Delovni paketi, ki jih opazujem'
+          title: Delovni paketi, ki jih opazujem
         work_packages_table:
-          title: 'Tabela delovnih paketov'
+          title: Tabela delovnih paketov
         work_packages_graph:
-          title: 'Graf delovnih paketov'
+          title: Graf delovnih paketov
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
-          title: 'Koledar'
+          title: Koledar
         work_packages_overview:
-          title: 'Pregled delovnih paketov'
+          title: Pregled delovnih paketov
           placeholder: 'Klikni za urejanje... '

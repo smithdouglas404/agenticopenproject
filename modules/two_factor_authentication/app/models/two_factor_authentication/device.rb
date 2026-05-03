@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module TwoFactorAuthentication
   class Device < ApplicationRecord
-    default_scope { order('id ASC') }
+    default_scope { order("id ASC") }
 
     belongs_to :user
     validates_presence_of :user_id
@@ -18,11 +20,19 @@ module TwoFactorAuthentication
     end
 
     def self.has_default?(user)
-      Device.where(user_id: user.id, active: true, default: true).exists?
+      Device.exists?(user_id: user.id, active: true, default: true)
     end
 
     def has_default?
       self.class.has_default? user
+    end
+
+    def has_other_default?
+      if persisted?
+        Device.where.not(id:).exists?(active: true, default: true, user:)
+      else
+        has_default?
+      end
     end
 
     ##
@@ -71,7 +81,7 @@ module TwoFactorAuthentication
     end
 
     def channel=(value)
-      super value.to_sym
+      super(value.to_sym)
     end
 
     def channel
@@ -82,12 +92,16 @@ module TwoFactorAuthentication
     end
 
     def self.device_type
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def self.available_channels_in_strategy
       strategy_class = manager.get_strategy(device_type)
       strategy_class.supported_channels & supported_channels
+    end
+
+    def input_based?
+      true
     end
 
     private
@@ -97,7 +111,7 @@ module TwoFactorAuthentication
     end
 
     def cannot_set_default_if_exists
-      if default && has_default?
+      if default && has_other_default?
         errors.add :default, :default_already_exists
       end
 

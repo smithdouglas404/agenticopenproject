@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,45 +29,57 @@
 #++
 
 module ::TypesHelper
+  # rubocop:disable Rails/HelperInstanceVariable
   def types_tabs
     [
       {
-        name: 'settings',
-        partial: 'types/form/settings',
-        path: edit_type_tab_path(id: @type.id, tab: :settings),
-        label: 'types.edit.settings'
+        name: "settings",
+        path: edit_type_settings_path(@type),
+        label: I18n.t("types.edit.settings.tab")
       },
       {
-        name: 'form_configuration',
-        partial: 'types/form/form_configuration',
-        path: edit_type_tab_path(id: @type.id, tab: :form_configuration),
-        label: 'types.edit.form_configuration'
+        name: "form_configuration",
+        path: edit_type_form_configuration_path(@type),
+        label: I18n.t("types.edit.form_configuration.tab")
       },
       {
-        name: 'projects',
-        partial: 'types/form/projects',
-        path: edit_type_tab_path(id: @type.id, tab: :projects),
-        label: 'types.edit.projects'
+        name: "subject_configuration",
+        path: edit_type_subject_configuration_path(type_id: @type.id),
+        label: I18n.t("types.edit.subject_configuration.tab"),
+        enterprise_feature: :work_package_subject_generation
+      },
+      {
+        name: "projects",
+        path: edit_type_projects_path(@type),
+        label: I18n.t("types.edit.projects.tab")
+      },
+      {
+        name: "export_configuration",
+        path: edit_type_pdf_export_template_index_path(type_id: @type.id),
+        label: I18n.t("types.edit.export_configuration.tab"),
+        view_component: WorkPackageTypes::ExportConfigurationComponent
       }
     ]
   end
+
+  # rubocop:enable Rails/HelperInstanceVariable
 
   def icon_for_type(type)
     return unless type
 
     css_class = if type.is_milestone?
-                  'color--milestone-icon'
+                  "color--milestone-icon"
                 else
-                  'color--phase-icon'
+                  "color--phase-icon"
                 end
 
     color = if type.color.present?
               type.color.hexcode
             else
-              '#CCC'
+              "#CCC"
             end
 
-    content_tag(:span, ' ',
+    content_tag(:span, " ",
                 class: css_class,
                 style: "background-color: #{color}")
   end
@@ -95,8 +109,8 @@ module ::TypesHelper
     return nil unless group.group_type == :attribute
 
     group.attributes
-      .select { |key| inactive.delete(key) }
-      .map! { |key| attr_form_map(key, available[key]) }
+         .select { |key| inactive.delete(key) }
+         .map! { |key| attr_form_map(key, available[key]) }
   end
 
   def query_to_query_props(group)

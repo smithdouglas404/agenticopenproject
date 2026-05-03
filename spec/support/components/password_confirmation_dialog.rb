@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,48 +28,58 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+require "support/flash/expectations"
+
 module Components
   class PasswordConfirmationDialog
     include Capybara::DSL
     include Capybara::RSpecMatchers
     include RSpec::Matchers
+    include Flash::Expectations
 
-    def confirm_flow_with(password, should_fail: false)
+    def confirm_flow_with(password, with_keyboard: false, should_fail: false)
       expect_open
 
       expect(submit_button).to be_disabled
-      fill_in 'request_for_confirmation_password', with: password
+      fill_in password_confirmation_field, with: password
 
       expect(submit_button).not_to be_disabled
-      submit(should_fail)
+      submit(should_fail:, with_keyboard:)
     end
 
     def expect_open
-      expect(page).to have_selector(selector)
+      expect(page).to have_test_selector(test_selector)
     end
 
     def expect_closed
-      expect(page).to have_no_selector(selector)
+      expect(page).to have_no_test_selector(test_selector)
     end
 
     def submit_button
-      page.find('[data-qa-selector="confirmation-modal--confirmed"]')
+      page.find('[data-test-selector="op-my--password-confirmation-dialog--submit-button"]')
     end
 
     private
 
-    def selector
-      '.password-confirm-dialog--modal'
+    def test_selector
+      "op-my--password-confirmation-dialog"
     end
 
-    def submit(should_fail)
-      submit_button.click
+    def password_confirmation_field
+      "password_confirmation"
+    end
+
+    def submit(should_fail:, with_keyboard:)
+      if with_keyboard
+        find_field(password_confirmation_field).send_keys :enter
+      else
+        submit_button.click
+      end
 
       if should_fail
-        expect(page).to have_selector('.flash.error',
-                                      text: I18n.t(:notice_password_confirmation_failed))
+        expect_flash(type: :error, message: I18n.t(:notice_password_confirmation_failed))
       else
-        expect(page).to have_no_selector('.flash.error')
+        expect(page).to have_no_css(".op-toast.-error")
       end
     end
   end

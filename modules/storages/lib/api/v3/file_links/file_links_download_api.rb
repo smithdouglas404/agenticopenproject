@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,29 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class API::V3::FileLinks::FileLinksDownloadAPI < ::API::OpenProjectAPI
+class API::V3::FileLinks::FileLinksDownloadAPI < API::OpenProjectAPI
   using Storages::Peripherals::ServiceResultRefinements
-  helpers Storages::Peripherals::StorageUrlHelper, Storages::Peripherals::StorageErrorHelper
+  helpers Storages::Peripherals::StorageErrorHelper
+
+  helpers do
+    def auth_strategy
+      storage = @file_link.storage
+      Storages::Adapters::Registry.resolve("#{storage}.authentication.user_bound").call(current_user, storage)
+    end
+  end
 
   resources :download do
     get do
-      Storages::Peripherals::StorageRequests
-        .new(storage: @file_link.storage)
-        .download_link_query(user: User.current)
-        .match(
-          on_success: ->(download_link_query) {
-            download_link_query
-              .call(@file_link)
-              .match(
-                on_success: ->(url) do
-                  redirect(url, body: "The requested resource can be downloaded from #{url}")
-                  status(303)
-                end,
-                on_failure: ->(error) { raise_error(error) }
-              )
-          },
-          on_failure: ->(error) { raise_error(error) }
-        )
+      Storages::Adapters::Input::DownloadLink.build(file_id: @file_link.origin_id).bind do |input_data|
+        Storages::Adapters::Registry.resolve("#{@file_link.storage}.queries.download_link")
+          .call(storage: @file_link.storage, auth_strategy:, input_data:)
+          .either(
+            ->(url) do
+              redirect(url, body: "The requested resource can be downloaded from #{url}")
+              status(303)
+            end,
+            ->(error) { raise_error(error) }
+          )
+      end
     end
   end
 end

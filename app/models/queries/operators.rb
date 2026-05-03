@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +29,7 @@
 #++
 
 module Queries::Operators
-  operators = [
+  OPERATORS = [
     Queries::Operators::GreaterOrEqual,
     Queries::Operators::LessOrEqual,
     Queries::Operators::Equals,
@@ -35,6 +37,7 @@ module Queries::Operators
     Queries::Operators::None,
     Queries::Operators::All,
     Queries::Operators::Contains,
+    Queries::Operators::StartsWith,
     Queries::Operators::NotContains,
     Queries::Operators::InLessThan,
     Queries::Operators::InMoreThan,
@@ -61,7 +64,5 @@ module Queries::Operators
     Queries::Operators::Parent,
     Queries::Operators::Children,
     Queries::Operators::Child
-  ]
-
-  OPERATORS = Hash[*(operators.map { |o| [o.symbol.to_s, o] }).flatten].freeze
+  ].index_by { |o| o.symbol.to_s }.freeze
 end

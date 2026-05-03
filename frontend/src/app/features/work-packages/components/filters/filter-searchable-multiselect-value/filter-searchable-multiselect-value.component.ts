@@ -1,45 +1,47 @@
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import {
   Observable,
   of,
 } from 'rxjs';
-import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 import {
   map,
   shareReplay,
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { ApiV3ResourceCollection } from 'core-app/core/apiv3/paths/apiv3-resource';
-import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
-import { ApiV3Resource } from 'core-app/core/apiv3/cache/cachable-apiv3-resource';
-import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
-import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
-import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
+import { take } from 'rxjs/internal/operators/take';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  NgZone,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
+
+import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
+import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { ApiV3ResourceCollection } from 'core-app/core/apiv3/paths/apiv3-resource';
+import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
+import { ApiV3Resource } from 'core-app/core/apiv3/cache/cachable-apiv3-resource';
+import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
+import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
+import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
-import { take } from 'rxjs/internal/operators/take';
 import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import { compareByHref } from 'core-app/shared/helpers/angular/tracking-functions';
+import { MAGIC_FILTER_AUTOCOMPLETE_PAGE_SIZE } from 'core-app/core/apiv3/helpers/get-paginated-results';
 
 @Component({
   selector: 'op-filter-searchable-multiselect-value',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './filter-searchable-multiselect-value.component.html',
+  standalone: false,
 })
 export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public filter:QueryFilterInstanceResource;
@@ -48,22 +50,26 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
 
   @Output() public filterChanged = new EventEmitter<QueryFilterInstanceResource>();
 
-  private meValue = this.halResourceService.createHalResource(
-    {
-      _links: {
-        self: {
-          href: this.apiV3Service.users.me.path,
-          title: this.I18n.t('js.label_me'),
-        },
+  private meValue = this.halResourceService.createHalResource({
+    _links: {
+      self: {
+        href: this.apiV3Service.users.me.path,
+        title: this.I18n.t('js.label_me'),
       },
-    }, true,
-  );
+    },
+  }, true);
 
   autocompleterFn = (searchTerm:string):Observable<HalResource[]> => this.autocomplete(searchTerm);
 
   initialRequest$:Observable<CollectionResource>;
 
   itemTracker = (item:HalResource):string => item.href || item.id || item.name;
+
+  groupByFn = (item:HalResource):string|null => {
+    if (!this.isVersionResource) return null;
+    const project = item.definingProject as HalResource | undefined;
+    return project?.name || this.I18n.t('js.project.not_available');
+  };
 
   compareByHref = compareByHref;
 
@@ -79,14 +85,15 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
 
   @ViewChild('ngSelectInstance', { static: true }) ngSelectInstance:NgSelectComponent;
 
-  constructor(readonly halResourceService:HalResourceService,
+  constructor(
+    readonly halResourceService:HalResourceService,
     readonly apiV3Service:ApiV3Service,
     readonly cdRef:ChangeDetectorRef,
     readonly I18n:I18nService,
     protected currentProject:CurrentProjectService,
     protected currentUser:CurrentUserService,
     readonly halNotification:HalResourceNotificationService,
-    readonly ngZone:NgZone) {
+  ) {
     super();
   }
 
@@ -107,19 +114,31 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
       .initialRequest$
       .pipe(
         switchMap((initialLoad) => {
-          // If we already loaded all values, just compare in the frontend
-          if (initialLoad.count === initialLoad.total) {
-            return this.matchingItems(initialLoad.elements, matching);
+          // If we already loaded all values, just compare in the frontend.
+          // However, for work package ID filter, always make XHR requests to use typeahead filter
+          // which supports searching by type and status names.
+          if (this.filter.id !== 'id' && initialLoad.count === initialLoad.total) {
+            return this.matchingItems(this.filterEmptyElements(initialLoad.elements), matching);
           }
 
           // Otherwise, request the matching API call
           return this
             .loadCollection(matching)
             .pipe(
-              switchMap((collection) => this.withMeValue(matching, collection.elements)),
+              switchMap(
+                (collection) =>
+                  this.withMeValue(
+                    matching,
+                    this.filterEmptyElements(collection.elements),
+                  ),
+              ),
             );
         }),
       );
+  }
+
+  private filterEmptyElements(elements:HalResource[]):HalResource[] {
+    return elements.filter((element) => element.name.trim().length !== 0);
   }
 
   matchingItems(elements:HalResource[], matching:string):Observable<HalResource[]> {
@@ -129,7 +148,7 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
       filtered = elements;
     } else {
       const lowered = matching.toLowerCase();
-      filtered = elements.filter((el) => (el.id as string).includes(lowered) || el.name.toLowerCase().includes(lowered));
+      filtered = elements.filter((el) => el.id!.includes(lowered) || el.name.toLowerCase().includes(lowered));
     }
 
     return this.withMeValue(matching, filtered);
@@ -140,7 +159,7 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
 
     return (this.apiV3Service.collectionFromString(this.allowedValuesLink) as
       ApiV3ResourceCollection<HalResource, ApiV3Resource>)
-      .filtered(filters, { pageSize: '-1' })
+      .filtered(filters, { pageSize: `${MAGIC_FILTER_AUTOCOMPLETE_PAGE_SIZE}` })
       .get();
   }
 
@@ -154,14 +173,21 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
     return filters;
   }
 
-  public setValues(val:any) {
-    this.filter.values = val.length > 0 ? (Array.isArray(val) ? val : [val]) : [] as HalResource[];
+  public setValues(val:string|HalResource|HalResource[]) {
+    let values:string[]|HalResource[];
+
+    if (typeof val === 'string') {
+      values = val.length > 0 ? [val] : [];
+    } else {
+      values = Array.isArray(val) ? val : [val];
+    }
+
+    this.filter.values = values;
     this.filterChanged.emit(this.filter);
     this.cdRef.detectChanges();
   }
 
   private get allowedValuesLink():string {
-    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     const { href } = this.filter.currentSchema!.values!.allowedValues as { href:string };
 
     return href;
@@ -191,5 +217,10 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
   private get isUserResource() {
     const type = _.get(this.filter.currentSchema, 'values.type', null) as string;
     return type && type.indexOf('User') > 0;
+  }
+
+  private get isVersionResource() {
+    const type = _.get(this.filter.currentSchema, 'values.type', null) as string;
+    return type && type.indexOf('Version') > 0;
   }
 }

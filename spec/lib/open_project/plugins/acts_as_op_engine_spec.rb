@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,10 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
-require 'roar/decorator'
+require "spec_helper"
+require "roar/decorator"
 
-describe OpenProject::Plugins::ActsAsOpEngine do
+RSpec.describe OpenProject::Plugins::ActsAsOpEngine do
   class ActsAsOpEngineTestEngine < Rails::Engine
     include OpenProject::Plugins::ActsAsOpEngine
   end
@@ -42,9 +44,9 @@ describe OpenProject::Plugins::ActsAsOpEngine do
   it { is_expected.to respond_to(:additional_permitted_attributes) }
   it { is_expected.to respond_to(:register) }
 
-  describe '#name' do
+  describe "#name" do
     subject { engine.name }
 
-    it { is_expected.to eq 'ActsAsOpEngineTestEngine' }
+    it { is_expected.to eq "ActsAsOpEngineTestEngine" }
   end
 end

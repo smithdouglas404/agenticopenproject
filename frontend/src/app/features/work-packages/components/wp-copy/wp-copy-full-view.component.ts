@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -34,7 +34,29 @@ import { WorkPackageCopyController } from 'core-app/features/work-packages/compo
   host: { class: 'work-packages-page--ui-view' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: '../wp-new/wp-new-full-view.html',
+  standalone: false,
 })
 export class WorkPackageCopyFullViewComponent extends WorkPackageCopyController {
   public successState = 'work-packages.show';
+
+  breadcrumbItems() {
+    const items = [];
+    if (this.currentProjectService?.identifier) {
+      items.push({
+        href: this.pathHelper.projectPath(this.currentProjectService.identifier),
+        text: this.currentProjectService.name,
+      });
+    }
+    items.push({
+        href: this.pathHelper.workPackagesPath(this.currentProjectService.identifier),
+        text: this.I18n.t('js.label_work_package_plural'),
+      });
+    items.push({
+        href: this.pathHelper.projectWorkPackagePath(this.currentProjectService.identifier!, this.stateParams.copiedFromWorkPackageId as string),
+        text: this.newWorkPackage.subject,
+      });
+    items.push(I18n.t('js.button_duplicate'));
+
+    return items;
+  }
 }

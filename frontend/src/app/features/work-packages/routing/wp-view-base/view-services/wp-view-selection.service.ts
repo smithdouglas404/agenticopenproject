@@ -6,11 +6,11 @@ import { OPContextMenuService } from 'core-app/shared/components/op-context-menu
 import { WorkPackageViewBaseService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-base.service';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
-import * as Mousetrap from 'mousetrap';
+import Mousetrap from 'mousetrap';
 
 export interface WorkPackageViewSelectionState {
   // Map of selected rows
-  selected:{ [workPackageId:string]:boolean };
+  selected:Record<string, boolean>;
   // Index of current selection
   // required for shift-offsets
   activeRowIndex:number|null;

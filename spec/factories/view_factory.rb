@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,13 +30,21 @@
 
 FactoryBot.define do
   factory :view do
-    type { 'work_packages_table' }
+    type { "work_packages_table" }
     query
   end
 
   factory :view_work_packages_table, parent: :view
 
   factory :view_work_packages_calendar, parent: :view do
-    type { 'work_packages_calendar' }
+    type { "work_packages_calendar" }
+  end
+
+  factory :view_gantt, parent: :view do
+    type { "gantt" }
+  end
+
+  factory :view_bim, parent: :view do
+    type { "bim" }
   end
 end

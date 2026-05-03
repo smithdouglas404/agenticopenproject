@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,12 +27,20 @@
 #++
 
 FactoryBot.define do
-  factory :webhook, class: 'Webhooks::Webhook' do
-    name { "Example Webhook" }
+  factory :webhook, class: "Webhooks::Webhook" do
+    transient do
+      event_names { [] }
+    end
+
+    sequence(:name) { |i| "Example Webhook ##{i}" }
     url { "http://example.net/webhook_receiver/42" }
     description { "This is an example webhook" }
     secret { "42" }
     enabled { true }
     all_projects { true }
+
+    callback(:after_create) do |webhook, evaluator|
+      evaluator.event_names.each { |name| webhook.events.create!(name:) }
+    end
   end
 end

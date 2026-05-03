@@ -35,7 +35,6 @@ $op-team-planner-resource-width: 180px
     overflow: auto
     margin-right: 10px
     z-index: 2
-    font-size: 14px
 
   &--add-existing-toggle
     position: absolute
@@ -54,7 +53,7 @@ $op-team-planner-resource-width: 180px
 
   &--remove-dropzone
     flex: 1
-    border: 1px dashed #1A67A3
+    border: 1px dashed var(--display-blue-bgColor-emphasis)
     box-sizing: border-box
     height: 2.25rem
 
@@ -62,10 +61,8 @@ $op-team-planner-resource-width: 180px
     align-items: center
     justify-content: center
 
-    font-size: 14px
-
     &_active
-      background: #D1E5F5
+      background: var(--display-blue-bgColor-muted)
 
     &_forbidden
       border-color: var(--content-form-danger-zone-bg-color)
@@ -75,16 +72,18 @@ $op-team-planner-resource-width: 180px
 
 
   &--dropzone-label
-    color: #1A67A3
+    color: var(--display-blue-fgColor)
 
   &--no-data
     min-height: 250px
     padding: 2rem
-    background-color: #F3F3F3
+    background-color: var(--data-gray-color-muted)
     display: flex
     flex-direction: column
     justify-content: center
     align-items: center
+    border: 1px solid var(--borderColor-default)
+    border-top: 0px
 
 
   &--empty-state-image

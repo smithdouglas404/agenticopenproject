@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Components
   class GlobalSearch
     include Capybara::DSL
@@ -5,22 +7,30 @@ module Components
     include RSpec::Matchers
 
     def container
-      page.find('.top-menu-search--input')
+      page.find(selector)
     end
 
     def selector
-      '.top-menu-search--input'
+      ".global-search"
     end
 
     def input
-      container.find 'input'
+      container.find "input"
+    end
+
+    def dropdown
+      page.find(".ng-dropdown-panel")
+    end
+
+    def click_input
+      input.hover
+      input.click
     end
 
     def search(query, submit: false)
       SeleniumHubWaiter.wait
-      input.set ''
-      input.hover
-      input.click
+      input.set ""
+      click_input
       input.set query
 
       if submit
@@ -33,8 +43,23 @@ module Components
       SeleniumHubWaiter.wait
     end
 
+    def open_tab(tab_id)
+      page.within_test_selector("search-tabs") do
+        name = tab_id.is_a?(Symbol) ? OpenProject::GlobalSearch.tab_name(tab_id.to_s) : tab_id
+        click_on(name)
+      end
+    end
+
+    def expect_active_tab(id)
+      expect(page).to have_css("#{page.test_selector("search-tab-#{id}")}[aria-current]")
+    end
+
     def expect_open
-      expect(page).to have_selector(container)
+      expect(page).to have_selector(selector)
+    end
+
+    def expect_closed
+      expect(page).to have_no_selector("#{selector}.expanded")
     end
 
     def submit_in_project_and_subproject_scope
@@ -51,32 +76,32 @@ module Components
 
     def expect_global_scope_marked
       expect(page)
-        .to have_selector('.global-search--project-scope[title="all_projects"]', wait: 10)
+        .to have_css('.global-search--project-scope[title="all_projects"]', wait: 10)
     end
 
     def expect_in_project_and_subproject_scope_marked
       expect(page)
-        .to have_selector('.global-search--project-scope[title="current_project_and_all_descendants"]', wait: 10)
+        .to have_css('.global-search--project-scope[title="current_project_and_all_descendants"]', wait: 10)
     end
 
     def expect_scope(text)
       expect(page)
-        .to have_selector('.global-search--project-scope', text:, wait: 10)
+        .to have_css(".global-search--project-scope", text:, wait: 10)
     end
 
     def expect_work_package_marked(wp)
       expect(page)
-        .to have_selector('.ng-option-marked', text: wp.subject.to_s, wait: 10)
+        .to have_css(".ng-option-marked", text: wp.subject.to_s, wait: 10)
     end
 
     def expect_work_package_option(wp)
       expect(page)
-        .to have_selector('.global-search--option', text: wp.subject.to_s, wait: 10)
+        .to have_css(".global-search--option", text: wp.subject.to_s, wait: 10)
     end
 
     def expect_no_work_package_option(wp)
       expect(page)
-        .to have_no_selector('.global-search--option', text: wp.subject.to_s)
+        .to have_no_css(".global-search--option", text: wp.subject.to_s)
     end
 
     def click_work_package(wp)
@@ -88,8 +113,8 @@ module Components
     end
 
     def find_option(text)
-      expect(page).to have_selector('.global-search--wp-subject', text:, wait: 10)
-      find('.global-search--wp-subject', text:)
+      expect(page).to have_css(".global-search--wp-subject", text:, wait: 10)
+      find(".global-search--wp-subject", text:)
     end
 
     def cancel

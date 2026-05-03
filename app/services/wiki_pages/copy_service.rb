@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,8 +43,8 @@ class WikiPages::CopyService
     self.contract_class = contract_class
   end
 
-  def call(send_notifications: true, copy_attachments: true, **attributes)
-    in_context(model, send_notifications) do
+  def call(send_notifications: nil, copy_attachments: true, **attributes)
+    in_context(model, send_notifications:) do
       copy(attributes, copy_attachments)
     end
   end
@@ -69,7 +71,6 @@ class WikiPages::CopyService
   def copied_attributes(override)
     model
       .attributes
-      .merge(model.content.attributes)
       .slice(*writable_attributes)
       .merge(override)
   end
@@ -80,6 +81,11 @@ class WikiPages::CopyService
   end
 
   def copy_wiki_page_attachments(copy)
-    copy_attachments('WikiPage', from_id: model.id, to_id: copy.id)
+    copy_attachments(
+      "WikiPage",
+      from: model,
+      to: copy,
+      references: %i[text]
+    )
   end
 end

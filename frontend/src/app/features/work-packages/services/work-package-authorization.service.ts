@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -48,18 +48,21 @@ export class WorkPackageAuthorization {
       case 'copy':
         link = this.copyLink();
         break;
+      case 'copy_link_to_clipboard':
+        link = this.shortLink();
+        break;
       case 'copy_to_other_project':
         link = this.bulkCopyLink();
         break;
       default:
-        link = (this.workPackage[action.link as string] as HalLink).href as string;
+        link = (this.workPackage[action.link!] as HalLink).href!;
     }
 
     return { ...action, link };
   }
 
   public isPermitted(action:WorkPackageAction):boolean {
-    return this.workPackage[action.link as string] !== undefined;
+    return this.workPackage[action.link!] !== undefined;
   }
 
   public permittedActionKeys(allowedActions:WorkPackageAction[]):string[] {
@@ -75,14 +78,18 @@ export class WorkPackageAuthorization {
   }
 
   private copyLink() {
-    const stateName = this.$state.current.name as string;
-    if (stateName.indexOf('work-packages.partitioned.list.details') === 0) {
-      return this.PathHelper.workPackageDetailsCopyPath(this.project.identifier, this.workPackage.id as string);
+    const stateName = this.$state.current.name!;
+    if (stateName.startsWith('work-packages.partitioned.list.details')) {
+      return this.PathHelper.workPackageDetailsCopyPath(this.project.identifier, this.workPackage.displayId);
     }
-    return this.PathHelper.workPackageCopyPath(this.workPackage.id as string);
+    return this.PathHelper.workPackageCopyPath(this.project.identifier, this.workPackage.displayId);
+  }
+
+  private shortLink() {
+    return this.PathHelper.workPackageShortPath(this.workPackage.displayId);
   }
 
   private bulkCopyLink():string {
-    return `${this.PathHelper.staticBase}/work_packages/move/new?copy=true&ids[]=${this.workPackage.id as string}`;
+    return `${this.PathHelper.staticBase}/work_packages/move/new?copy=true&ids[]=${this.workPackage.id!}`;
   }
 }

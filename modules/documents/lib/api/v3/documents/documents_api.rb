@@ -1,6 +1,11 @@
+# frozen_string_literal: true
+
+require "base64"
+require "json"
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -49,7 +54,7 @@ module API
             end
           end
 
-          route_param :id, type: Integer, desc: 'Document ID' do
+          route_param :id, type: Integer, desc: "Document ID" do
             helpers do
               def document
                 Document.visible.find(params[:id])
@@ -60,6 +65,23 @@ module API
               ::API::V3::Documents::DocumentRepresenter.new(document,
                                                             current_user:,
                                                             embed_links: true)
+            end
+
+            patch do
+              doc = document
+              request_body = JSON.parse(request.body.read)
+
+              result = ::Documents::UpdateService
+                .new(user: current_user, model: doc)
+                .call(request_body)
+
+              if result.success?
+                ::API::V3::Documents::DocumentRepresenter.new(doc,
+                                                              current_user:,
+                                                              embed_links: true)
+              else
+                fail ::API::Errors::ErrorBase.create_and_merge_errors(doc.errors)
+              end
             end
 
             mount ::API::V3::Attachments::AttachmentsByDocumentAPI

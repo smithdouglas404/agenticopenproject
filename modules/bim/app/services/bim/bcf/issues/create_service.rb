@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,11 +31,12 @@ module Bim::Bcf
     class CreateService < ::BaseServices::Create
       private
 
-      def before_perform(params, service_result)
+      def before_perform(service_result)
         wp_call = get_work_package params
         return wp_call if wp_call.failure?
 
-        super issue_params(work_package: wp_call.result, params:), service_result
+        self.params = issue_params(work_package: wp_call.result, params:)
+        super
       end
 
       def issue_params(work_package:, params:)
@@ -56,7 +57,7 @@ module Bim::Bcf
       end
 
       def use_work_package(links:, params:)
-        work_package = WorkPackage.find_by(id: work_package_id_from_links(links))
+        work_package = WorkPackage.visible(user).find_by(id: work_package_id_from_links(links))
         return work_package_not_found_result if work_package.nil?
 
         ::WorkPackages::UpdateService
@@ -88,7 +89,7 @@ module Bim::Bcf
 
       def work_package_not_found_result
         ServiceResult.failure(errors: Bim::Bcf::Issue.new.errors).tap do |r|
-          r.errors.add :work_package, :does_not_exist
+          r.errors.add :base, :error_not_found
         end
       end
 

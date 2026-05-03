@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,34 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe UserPreferences::UpdateService, 'integration', type: :model do
+RSpec.describe UserPreferences::UpdateService, "integration", type: :model do
   shared_let(:current_user) do
     create(:user).tap do |u|
       u.pref.save
     end
   end
-  shared_let(:preferences) do
-    create(:user_preference, user: current_user)
-  end
+  shared_let(:preferences) { current_user.preference }
 
   let(:instance) { described_class.new(user: current_user, model: preferences) }
 
   let(:attributes) { {} }
-  let(:service_result) do
-    instance
-      .call(attributes)
-  end
 
-  let(:updated_pref) do
-    service_result.result
-  end
+  describe "notification_settings" do
+    subject do
+      service_result = instance.call(attributes)
+      service_result.result.notification_settings
+    end
 
-  describe 'notification_settings' do
-    subject { updated_pref.notification_settings }
-
-    context 'with a partial update' do
+    context "with a partial update" do
       let(:attributes) do
         {
           notification_settings: [
@@ -72,7 +67,7 @@ describe UserPreferences::UpdateService, 'integration', type: :model do
         }
       end
 
-      it 'updates the existing one, removes the email one' do
+      it "updates the existing one, removes the email one" do
         default_ian = current_user.notification_settings.first
 
         expect(default_ian.watched).to be true
@@ -99,12 +94,12 @@ describe UserPreferences::UpdateService, 'integration', type: :model do
 
         expect(subject.first).to eq(default_ian.reload)
         expect(current_user.notification_settings.count).to eq(1)
-        expect { default_ian.reload }.not_to raise_error(ActiveRecord::RecordNotFound)
+        expect { default_ian.reload }.not_to raise_error
       end
     end
 
-    context 'with a full replacement' do
-      let(:project) { create :project }
+    context "with a full replacement" do
+      let(:project) { create(:project) }
       let(:attributes) do
         {
           notification_settings: [
@@ -113,7 +108,7 @@ describe UserPreferences::UpdateService, 'integration', type: :model do
         }
       end
 
-      it 'inserts the setting, removing the old one' do
+      it "inserts the setting, removing the old one" do
         default = current_user.notification_settings.to_a
         expect(default.count).to eq 1
 
@@ -126,7 +121,8 @@ describe UserPreferences::UpdateService, 'integration', type: :model do
           NotificationSetting::OVERDUE => nil,
           NotificationSetting::ASSIGNEE => true,
           NotificationSetting::RESPONSIBLE => true,
-          NotificationSetting::WATCHED => true
+          NotificationSetting::WATCHED => true,
+          NotificationSetting::SHARED => true
         }
 
         NotificationSetting.all_settings.each do |key|

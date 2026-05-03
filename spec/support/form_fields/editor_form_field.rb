@@ -1,4 +1,6 @@
-require_relative './form_field'
+# frozen_string_literal: true
+
+require_relative "form_field"
 
 module FormFields
   class EditorFormField < FormField

@@ -1,6 +1,6 @@
 // -- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,39 +28,48 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
+  EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
-  BehaviorSubject,
+  combineLatest,
   Observable,
+  of,
+  throwError,
 } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { CookieService } from 'ngx-cookie-service';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  catchError,
+  filter, first,
+  map,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { IFileLink } from 'core-app/core/state/file-links/file-link.model';
-import { IStorage } from 'core-app/core/state/storages/storage.model';
+import { IFileLink, IFileLinkOriginData } from 'core-app/core/state/file-links/file-link.model';
+import { IPrepareUploadLink, IStorage } from 'core-app/core/state/storages/storage.model';
+import { IProjectStorage } from 'core-app/core/state/project-storages/project-storage.model';
 import { FileLinksResourceService } from 'core-app/core/state/file-links/file-links.service';
 import {
-  fileLinkViewError,
+  fileLinkStatusError,
   nextcloud,
-  storageAuthorizationError,
   storageConnected,
-  storageFailedAuthorization,
 } from 'core-app/shared/components/storages/storages-constants.const';
-import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
-import { StorageActionButton } from 'core-app/shared/components/storages/storage-information/storage-action-button';
 import {
   StorageInformationBox,
 } from 'core-app/shared/components/storages/storage-information/storage-information-box';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import {
   FilePickerModalComponent,
 } from 'core-app/shared/components/storages/file-picker-modal/file-picker-modal.component';
@@ -68,237 +77,516 @@ import { IHalResourceLink } from 'core-app/core/state/hal-resource';
 import {
   LocationPickerModalComponent,
 } from 'core-app/shared/components/storages/location-picker-modal/location-picker-modal.component';
+import { IToast, ToastService } from 'core-app/shared/components/toaster/toast.service';
+import { StorageFilesResourceService } from 'core-app/core/state/storage-files/storage-files.service';
+import { IUploadFile, OpUploadService } from 'core-app/core/upload/upload.service';
+import { IUploadLink } from 'core-app/core/state/storage-files/upload-link.model';
+import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.model';
+import { TimezoneService } from 'core-app/core/datetime/timezone.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import {
+  UploadConflictModalComponent,
+} from 'core-app/shared/components/storages/upload-conflict-modal/upload-conflict-modal.component';
+import { LocationData, UploadData } from 'core-app/shared/components/storages/storage/interfaces';
+import isHttpResponse from 'core-app/core/upload/is-http-response';
+import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
+import { StoragesResourceService } from 'core-app/core/state/storages/storages.service';
+import {
+  StorageInformationService,
+} from 'core-app/shared/components/storages/storage-information/storage-information.service';
+import { storageLocaleString } from 'core-app/shared/components/storages/functions/storages.functions';
+import { storageIconMappings } from 'core-app/shared/components/storages/icons.mapping';
+import {
+  IStorageFileUploadResponse,
+  StorageUploadService,
+} from 'core-app/shared/components/storages/upload/storage-upload.service';
+import {
+  IHalErrorBase, v3ErrorIdentifierMissingEnterpriseToken,
+} from 'core-app/features/hal/resources/error-resource';
 
 @Component({
   selector: 'op-storage',
   templateUrl: './storage.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: OpUploadService, useClass: StorageUploadService }],
+  standalone: false,
 })
-export class StorageComponent extends UntilDestroyedMixin implements OnInit {
+export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @Input() public resource:HalResource;
 
-  @Input() public storage:IStorage;
+  @Input() public projectStorage:IProjectStorage;
 
-  fileLinks$:Observable<IFileLink[]>;
+  @Input() public allowUploading = true;
 
-  allowEditing$:Observable<boolean>;
+  @Input() public allowLinking = true;
 
-  disabled = false;
+  @ViewChild('hiddenFileInput') public filePicker:ElementRef<HTMLInputElement>;
 
-  storageType:string;
+  @Output() public fileRemoved = new EventEmitter<void>();
 
-  storageInformation = new BehaviorSubject<StorageInformationBox[]>([]);
+  @Output() public fileAdded = new EventEmitter<void>();
 
-  showLinkFilesAction = new BehaviorSubject<boolean>(false);
+  fileLinks:Observable<IFileLink[]>;
 
-  private isLoggedIn = false;
+  storage:Observable<IStorage>;
 
-  private readonly storageTypeMap:Record<string, string> = {};
+  disabled:Observable<boolean>;
+
+  storageType:Observable<string>;
+
+  storageErrors:Observable<StorageInformationBox[]>;
+
+  draggingOverDropZone = false;
+
+  dragging = 0;
+
+  icon = {
+    storageHeader: (storageType:string) => storageIconMappings[storageType] || storageIconMappings.default,
+  };
 
   text = {
-    infoBox: {
-      emptyStorageHeader: (storageType:string):string => this.i18n.t('js.storages.link_files_in_storage', { storageType }),
-      emptyStorageContent: (storageType:string):string => this.i18n.t('js.storages.information.no_file_links', { storageType }),
-      emptyStorageButton: (storageType:string):string => this.i18n.t('js.storages.open_storage', { storageType }),
-      fileLinkErrorHeader: this.i18n.t('js.storages.information.live_data_error'),
-      fileLinkErrorContent: (storageType:string):string => this.i18n.t('js.storages.information.live_data_error_description', { storageType }),
-      connectionErrorHeader: (storageType:string):string => this.i18n.t('js.storages.no_connection', { storageType }),
-      connectionErrorContent: (storageType:string):string => this.i18n.t('js.storages.information.connection_error', { storageType }),
-      authorizationFailureHeader: (storageType:string):string => this.i18n.t('js.storages.login_to', { storageType }),
-      authorizationFailureContent: (storageType:string):string => this.i18n.t('js.storages.information.not_logged_in', { storageType }),
-      loginButton: (storageType:string):string => this.i18n.t('js.storages.login', { storageType }),
-    },
     actions: {
       linkExisting: this.i18n.t('js.storages.link_existing_files'),
       uploadFile: this.i18n.t('js.storages.upload_files'),
     },
-    openStorage: ():string => this.i18n.t('js.storages.open_storage', { storageType: this.storageType }),
+    toast: {
+      successFileLinksCreated: (count:number):string => this.i18n.t('js.storages.file_links.success_create', { count }),
+      uploadFailed: (fileName:string):string => this.i18n.t('js.storages.file_links.upload_error.default', { fileName }),
+      uploadFailedNextcloudDetail: this.i18n.t('js.storages.file_links.upload_error.detail.nextcloud'),
+      uploadFailedForbidden: (fileName:string):string => this.i18n.t('js.storages.file_links.upload_error.403', { fileName }),
+      uploadFailedSizeLimit:
+        (fileName:string, storageType:string):string => this.i18n.t(
+          'js.storages.file_links.upload_error.413',
+          {
+            fileName,
+            storageType,
+          },
+        ),
+      uploadFailedQuota: (fileName:string):string => this.i18n.t('js.storages.file_links.upload_error.507', { fileName }),
+      linkingAfterUploadFailed:
+        (fileName:string, workPackageId:string):string => this.i18n.t(
+          'js.storages.file_links.link_uploaded_file_error',
+          {
+            fileName,
+            workPackageId,
+          },
+        ),
+      draggingManyFiles: (storageType:string):string => this.i18n.t('js.storages.files.dragging_many_files', { storageType }),
+      draggingFolder: (storageType:string):string => this.i18n.t('js.storages.files.dragging_folder', { storageType }),
+      uploadingLabel: this.i18n.t('js.label_upload_notification'),
+    },
+    dropBox: {
+      uploadLabel: this.i18n.t('js.storages.upload_files'),
+      dropFiles: (name:string):string => this.i18n.t('js.storages.drop_files', { name }),
+      dropClickFiles: (name:string):string => this.i18n.t('js.storages.drop_or_click_files', { name }),
+    },
+    emptyList: (storageType:string):string => this.i18n.t('js.storages.file_links.empty', { storageType }),
+    openStorage: (storageType:string):string => this.i18n.t('js.storages.open_storage', { storageType }),
   };
 
-  public get storageFileLinkingEnabled():boolean {
-    return this.configurationService.activeFeatureFlags.includes('storageFileLinking');
+  private get addFileLinksHref():string {
+    if (isNewResource(this.resource)) {
+      return this.pathHelperService.fileLinksPath();
+    }
+
+    return (this.resource.$links as { addFileLink:IHalResourceLink }).addFileLink.href;
   }
 
-  public get storageFileUploadEnabled():boolean {
-    return this.configurationService.activeFeatureFlags.includes('storageFileUpload');
-  }
+  private onGlobalDragLeave:(_event:DragEvent) => void = (_event) => {
+    this.dragging = Math.max(this.dragging - 1, 0);
+    this.cdRef.detectChanges();
+  };
 
-  public get storageFilesLocation():string {
-    return this.storage._links.open.href;
+  private onGlobalDragEnd:(_event:DragEvent) => void = (_event) => {
+    this.dragging = 0;
+    this.cdRef.detectChanges();
+  };
+
+  private onGlobalDragEnter:(_event:DragEvent) => void = (_event) => {
+    // When the global drag and drop is active and the dragging happens over the DOM
+    // elements, the dragenter and dragleave events are always fired in pairs.
+    // On dragenter the this.dragging is set to 2 and on dragleave we deduct it to 1,
+    // meaning the drag and drop remains active. When the drag and drop action is canceled
+    // i.e. by the "Escape" key, an extra dragleave event is fired.
+    // In this case this.dragging will be deducted to 0, disabling the active drop areas.
+    this.dragging = 2;
+    this.cdRef.detectChanges();
+  };
+
+  public get openStorageLink() {
+    return this.projectStorage._links.open?.href;
   }
 
   constructor(
     private readonly i18n:I18nService,
-    private readonly cookieService:CookieService,
+    private readonly cdRef:ChangeDetectorRef,
+    private readonly toastService:ToastService,
+    private readonly uploadService:OpUploadService,
     private readonly opModalService:OpModalService,
-    private readonly currentUserService:CurrentUserService,
-    private readonly configurationService:ConfigurationService,
+    private readonly timezoneService:TimezoneService,
+    private readonly pathHelperService:PathHelperService,
+    private readonly storagesResourceService:StoragesResourceService,
     private readonly fileLinkResourceService:FileLinksResourceService,
+    private readonly storageInformationService:StorageInformationService,
+    private readonly storageFilesResourceService:StorageFilesResourceService,
   ) {
     super();
   }
 
   ngOnInit():void {
-    this.initializeStorageTypes();
+    this.storage = this.storagesResourceService.requireEntity(this.projectStorage._links.storage.href);
 
-    this.storageType = this.storageTypeMap[this.storage._links.type.href];
+    this.fileLinks = this.storage.pipe(
+      take(1),
+      switchMap(() =>
+        this.collectionKey().pipe(
+          switchMap((key) => {
+            if (isNewResource(this.resource)) {
+              return this.fileLinkResourceService.collection(key);
+            }
+            return this.fileLinkResourceService.requireCollection(key);
+          }),
+          tap((fileLinks) => {
+            if (isNewResource(this.resource)) {
+              this.resource.fileLinks = { elements: fileLinks.map((a) => a._links?.self) };
+            }
+          }),
+        )),
+    );
 
-    this.disabled = this.storage._links.authorizationState.href !== storageConnected;
+    this.fileLinks.subscribe({ error: (err:string | HttpErrorResponse | IToast) =>
+        this.toastService.addError(err),
+    });
 
-    this.fileLinks$ = this.fileLinkResourceService.collection(this.collectionKey);
+    this.disabled = combineLatest([
+      this.storage,
+      this.fileLinks,
+    ]).pipe(
+      map(([storage, fileLinks]) =>
+        this.hasFileLinkViewErrors(fileLinks) || storage._links.authorizationState.href !== storageConnected),
+    );
 
-    this.currentUserService.isLoggedIn$
-      .pipe(this.untilDestroyed())
-      .subscribe((isLoggedIn) => { this.isLoggedIn = isLoggedIn; });
+    this.storageType = this.storage
+      .pipe(
+        map((storage) => this.i18n.t(storageLocaleString(storage._links.type.href))),
+      );
 
-    this.fileLinks$
-      .pipe(this.untilDestroyed())
-      .subscribe((fileLinks) => {
-        if (isNewResource(this.resource)) {
-          this.resource.fileLinks = { elements: fileLinks.map((a) => a._links?.self) };
-        }
+    this.storage.pipe(take(1)).subscribe((storage) => {
+      (this.uploadService as StorageUploadService).setUploadStrategy(storage._links.type.href);
+    });
 
-        this.storageInformation.next(this.instantiateStorageInformation(fileLinks));
-        this.showLinkFilesAction.next(!this.disabled && fileLinks.length > 0);
-      });
+    this.storageErrors = combineLatest([
+      this.storage,
+      this.fileLinks,
+    ]).pipe(
+      this.untilDestroyed(),
+      switchMap(([storage, fileLinks]) => this.storageInformationService.storageInformation(storage, fileLinks)),
+    );
 
-    this.allowEditing$ = this
-      .currentUserService
-      .hasCapabilities$('file_links/manage', (this.resource.project as unknown&{ id:string }).id);
+    document.body.addEventListener('dragenter', this.onGlobalDragEnter);
+    document.body.addEventListener('dragleave', this.onGlobalDragLeave);
+    document.body.addEventListener('dragend', this.onGlobalDragEnd);
+    document.body.addEventListener('drop', this.onGlobalDragEnd);
+  }
+
+  ngOnDestroy():void {
+    document.body.removeEventListener('dragenter', this.onGlobalDragEnter);
+    document.body.removeEventListener('dragleave', this.onGlobalDragLeave);
+    document.body.removeEventListener('dragend', this.onGlobalDragEnd);
+    document.body.removeEventListener('drop', this.onGlobalDragEnd);
   }
 
   public removeFileLink(fileLink:IFileLink):void {
-    this.fileLinkResourceService.remove(this.collectionKey, fileLink);
+    this.collectionKey()
+      .pipe(
+        switchMap((key) => this.fileLinkResourceService.remove(key, fileLink)),
+      )
+      .subscribe({
+        next: () => { this.fileRemoved.emit(); },
+        error: (error:HttpErrorResponse) => this.toastService.addError(error),
+      });
   }
 
   public openLinkFilesDialog():void {
-    this.fileLinks$
-      .pipe(take(1))
-      .subscribe((fileLinks) => {
+    combineLatest([
+      this.storage,
+      this.fileLinks,
+      this.collectionKey(),
+    ]).pipe(first())
+      .subscribe(([storage, fileLinks, collectionKey]) => {
         const locals = {
-          storageType: this.storage._links.type.href,
-          storageTypeName: this.storageType,
-          storageName: this.storage.name,
-          storageLocation: this.storageFilesLocation,
-          storageLink: this.storage._links.self,
-          addFileLinksHref: (this.resource.$links as unknown&{ addFileLink:IHalResourceLink }).addFileLink.href,
-          collectionKey: this.collectionKey,
+          addFileLinksHref: this.addFileLinksHref,
+          projectFolderHref: this.projectStorage._links.projectFolder?.href ?? null,
+          projectFolderMode: this.projectStorage.projectFolderMode,
+          storage,
+          collectionKey,
           fileLinks,
         };
+
         this.opModalService.show<FilePickerModalComponent>(FilePickerModalComponent, 'global', locals);
       });
   }
 
-  public openSelectLocationDialog():void {
+  public triggerFileInput():void {
+    this.filePicker.nativeElement.click();
+  }
+
+  public onFilePickerChanged():void {
+    const fileList = this.filePicker.nativeElement.files;
+    if (fileList === null) return;
+
+    this.storageFileUpload(fileList[0]);
+    // reset file input, so that selecting the same file again triggers a change
+    this.filePicker.nativeElement.value = '';
+  }
+
+  private storageFileUpload(file:File):void {
+    this.storage
+      .pipe(
+        switchMap((storage) => this.selectUploadLocation(storage)),
+        switchMap((data) => this.resolveUploadConflicts(file, data.files, data.location)),
+      )
+      .subscribe((data) => {
+        this.uploadAndCreateFileLink(data);
+      });
+  }
+
+  private selectUploadLocation(storage:IStorage):Observable<LocationData> {
     const locals = {
-      storageType: this.storage._links.type.href,
-      storageTypeName: this.storageType,
-      storageName: this.storage.name,
-      storageLocation: this.storageFilesLocation,
-      storageLink: this.storage._links.self,
+      projectFolderHref: this.projectStorage._links.projectFolder?.href,
+      projectFolderMode: this.projectStorage.projectFolderMode,
+      createFolderHref: `${this.projectStorage._links.storage.href}/folders`,
+      storage,
     };
-    this.opModalService.show<LocationPickerModalComponent>(LocationPickerModalComponent, 'global', locals);
+
+    return this.opModalService.show<LocationPickerModalComponent>(LocationPickerModalComponent, 'global', locals)
+      .pipe(
+        switchMap((modal) => modal.closingEvent),
+        filter((modal) => modal.submitted),
+        first(),
+        map((modal) => ({ location: modal.location.id as string, files: modal.filesAtLocation })),
+      );
   }
 
-  private instantiateStorageInformation(fileLinks:IFileLink[]):StorageInformationBox[] {
-    if (!this.isLoggedIn) {
-      return [];
+  private resolveUploadConflicts(file:File, storageFiles:IStorageFile[], location:string):Observable<UploadData> {
+    const conflict = storageFiles.find((f) => f.name === file.name);
+    if (!conflict) {
+      return of({ file, location, overwrite: null });
     }
 
-    switch (this.storage._links.authorizationState.href) {
-      case storageFailedAuthorization:
-        return [this.failedAuthorizationInformation];
-      case storageAuthorizationError:
-        return [this.authorizationErrorInformation];
-      case storageConnected:
-        if (fileLinks.length === 0) {
-          return [this.emptyStorageInformation];
-        }
-        if (fileLinks.filter((fileLink) => fileLink._links.permission?.href === fileLinkViewError).length > 0) {
-          this.disabled = true;
-          return [this.fileLinkErrorInformation];
-        }
-        return [];
-      default:
-        return [];
-    }
+    return this.opModalService.show<UploadConflictModalComponent>(UploadConflictModalComponent, 'global', { fileName: file.name })
+      .pipe(
+        switchMap((modal) => modal.closingEvent),
+        filter((modal) => modal.overwrite !== null),
+        take(1),
+        map((modal) => ({ file, location, overwrite: modal.overwrite })),
+      );
   }
 
-  private get failedAuthorizationInformation():StorageInformationBox {
-    return new StorageInformationBox(
-      'import',
-      this.text.infoBox.authorizationFailureHeader(this.storageType),
-      this.text.infoBox.authorizationFailureContent(this.storageType),
-      [new StorageActionButton(
-        this.text.infoBox.loginButton(this.storageType),
-        () => {
-          if (this.storage._links.authorize) {
-            const nonce = uuidv4();
-            this.setAuthorizationCallbackCookie(nonce);
-            window.location.href = StorageComponent.authorizationFailureActionUrl(
-              this.storage._links.authorize.href,
-              nonce,
-            );
-          } else {
-            throw new Error('Authorize link is missing!');
+  private uploadAndCreateFileLink(data:UploadData):void {
+    let isUploadError = false;
+
+    this.storage
+      .pipe(
+        switchMap((storage) => {
+          const link = this.uploadResourceLink(storage, data.file.name, data.location);
+          return this.storageFilesResourceService.uploadLink(link);
+        }),
+        switchMap((link) => this.uploadAndNotify(link, data.file, data.location, data.overwrite)),
+        catchError((error) => {
+          isUploadError = true;
+          return throwError(error);
+        }),
+        switchMap((uploadResponse) => this.createFileLinkData(uploadResponse)),
+        tap((fileLinkCreationData) => {
+          // Update the file link list of this storage only in case of a linked file got updated
+          if (fileLinkCreationData === null) {
+            this.collectionKey()
+              .pipe(switchMap((key) => this.fileLinkResourceService.fetchCollection(key)))
+              .subscribe();
           }
+        }),
+        filter((fileLinkCreationData) => fileLinkCreationData !== null),
+        switchMap((file) =>
+          combineLatest([
+            this.storage.pipe(first()),
+            this.collectionKey(),
+          ])
+            .pipe(
+              switchMap(([storage, collectionKey]) => this.fileLinkResourceService.addFileLinks(
+                collectionKey,
+                this.addFileLinksHref,
+                storage._links.self,
+                [file],
+              )),
+            )),
+      )
+      .subscribe({
+        next: (collection) => {
+          this.toastService.addSuccess(this.text.toast.successFileLinksCreated(collection.count));
+          this.fileAdded.emit();
         },
-      )],
-    );
-  }
+        error: (error) => {
+          if (isUploadError) {
+            this.handleUploadError(error as HttpErrorResponse, data.file.name);
+          } else {
+            this.toastService.addError(this.text.toast.linkingAfterUploadFailed(data.file.name, this.resource.id!));
+          }
 
-  private get authorizationErrorInformation():StorageInformationBox {
-    return new StorageInformationBox(
-      'remove-link',
-      this.text.infoBox.connectionErrorHeader(this.storageType),
-      this.text.infoBox.connectionErrorContent(this.storageType),
-      [],
-    );
-  }
-
-  private get emptyStorageInformation():StorageInformationBox {
-    return new StorageInformationBox(
-      'add-link',
-      this.text.infoBox.emptyStorageHeader(this.storageType),
-      this.text.infoBox.emptyStorageContent(this.storageType),
-      [new StorageActionButton(
-        this.text.infoBox.emptyStorageButton(this.storageType),
-        () => {
-          window.open(this.storageFilesLocation, '_blank');
+          console.error(error);
         },
-      )],
-    );
+      });
   }
 
-  private get fileLinkErrorInformation():StorageInformationBox {
-    return new StorageInformationBox(
-      'error',
-      this.text.infoBox.fileLinkErrorHeader,
-      this.text.infoBox.fileLinkErrorContent(this.storageType),
-      [],
-    );
+  private handleUploadError(error:HttpErrorResponse, fileName:string):void {
+    if (error.status === 500 && (error.error as IHalErrorBase).errorIdentifier === v3ErrorIdentifierMissingEnterpriseToken) {
+      this.toastService.addError(error);
+      return;
+    }
+
+    switch (error.status) {
+      case 403:
+        this.toastService.addError(this.text.toast.uploadFailedForbidden(fileName));
+        break;
+      case 413:
+        this.storage
+          .pipe(first())
+          .subscribe((storage) => {
+            const storageType = this.i18n.t(storageLocaleString(storage._links.type.href));
+            const toast = this.text.toast.uploadFailedSizeLimit(fileName, storageType);
+            this.toastService.addError(toast);
+          });
+        break;
+      case 507:
+        this.toastService.addError(this.text.toast.uploadFailedQuota(fileName));
+        break;
+      default:
+        this.storage
+          .pipe(first())
+          .subscribe((storage) => {
+            const additionalInfo = storage._links.type.href === nextcloud ? this.text.toast.uploadFailedNextcloudDetail : [];
+            this.toastService.addError(this.text.toast.uploadFailed(fileName), additionalInfo);
+          });
+    }
   }
 
-  private get collectionKey():string {
-    return isNewResource(this.resource) ? 'new' : this.fileLinkSelfLink;
+  private uploadAndNotify(link:IUploadLink, file:File, location:string|null, overwrite:boolean|null):Observable<IStorageFileUploadResponse> {
+    const { href } = link._links.destination;
+    const uploadFiles:IUploadFile[] = [{ file, location: location ?? undefined, overwrite: overwrite ?? undefined }];
+    const observable = this.uploadService.upload<IStorageFileUploadResponse>(href, uploadFiles)[0];
+    this.toastService.addUpload(this.text.toast.uploadingLabel, [[file, observable]]);
+
+    return observable
+      .pipe(
+        filter(isHttpResponse),
+        map((ev) => ev.body),
+        map((data) => {
+          if (data === null) {
+            throw new Error('Upload data is null.');
+          }
+
+          return data;
+        }),
+      );
   }
 
-  private get fileLinkSelfLink():string {
-    const fileLinks = this.resource.fileLinks as unknown&{ href:string };
-    return `${fileLinks.href}?filters=[{"storage":{"operator":"=","values":["${this.storage.id}"]}}]`;
+  private createFileLinkData(response:IStorageFileUploadResponse):Observable<IFileLinkOriginData|null> {
+    return this.fileLinks
+      .pipe(
+        take(1),
+        map((fileLinks) => {
+          const existingFileLink = fileLinks.find((l) => String(l.originData.id) === String(response.id));
+          if (existingFileLink) {
+            return null;
+          }
+
+          const now = this.timezoneService.parseDate(new Date()).toISOString();
+          return ({
+            id: response.id,
+            name: response.name,
+            mimeType: response.mimeType,
+            size: response.size,
+            createdAt: now,
+            lastModifiedAt: now,
+          });
+        }),
+      );
   }
 
-  private setAuthorizationCallbackCookie(nonce:string):void {
-    this.cookieService.set(`oauth_state_${nonce}`, window.location.href, {
-      path: '/',
-    });
+  private uploadResourceLink(storage:IStorage, fileName:string, location:string):IPrepareUploadLink {
+    const project = (this.resource.project as { id:string }).id;
+    const link = storage._links.prepareUpload.filter((value) => project === value.payload.projectId.toString());
+    if (link.length === 0) {
+      throw new Error('Cannot upload to this storage. Missing permissions in project.');
+    }
+
+    return {
+      href: link[0].href,
+      method: link[0].method,
+      title: link[0].title,
+      payload: {
+        projectId: link[0].payload.projectId,
+        parent: location,
+        fileName,
+      },
+    };
   }
 
-  private static authorizationFailureActionUrl(baseUrl:string, nonce:string):string {
-    return `${baseUrl}&state=${nonce}`;
+  private hasFileLinkViewErrors(fileLinks:IFileLink[]):boolean {
+    return fileLinks.filter((fileLink) => fileLink._links.status?.href === fileLinkStatusError).length > 0;
   }
 
-  private initializeStorageTypes() {
-    this.storageTypeMap[nextcloud] = this.i18n.t('js.storages.types.nextcloud');
+  private collectionKey():Observable<string> {
+    return isNewResource(this.resource)
+      ? of('new')
+      : this.storage.pipe(
+        first(),
+        map((storage) => this.fileLinkSelfLink(storage)),
+      );
   }
+
+  private fileLinkSelfLink(storage:IStorage):string {
+    const fileLinks = (this.resource as WorkPackageResource).$links.fileLinks;
+    return `${fileLinks?.href}?pageSize=-1&filters=[{"storage":{"operator":"=","values":["${storage.id}"]}}]`;
+  }
+
+  public onDropFiles(event:DragEvent):void {
+    if (event.dataTransfer === null) return;
+
+    this.draggingOverDropZone = false;
+    this.dragging = 0;
+
+    const files = event.dataTransfer.files;
+    const draggingManyFiles = files.length !== 1;
+    const isDirectory = event.dataTransfer.items[0].webkitGetAsEntry()?.isDirectory;
+    if (draggingManyFiles || isDirectory) {
+      this.storageType
+        .pipe(first())
+        .subscribe((storageType) => {
+          const toast = draggingManyFiles
+            ? this.text.toast.draggingManyFiles(storageType)
+            : this.text.toast.draggingFolder(storageType);
+          this.toastService.addError(toast);
+        });
+      return;
+    }
+
+    this.storageFileUpload(files[0]);
+  }
+
+  public onDragOver(event:DragEvent):void {
+    const containsFiles = (dataTransfer:DataTransfer):boolean => dataTransfer.types.includes('Files');
+
+    if (event.dataTransfer !== null && containsFiles(event.dataTransfer)) {
+      event.dataTransfer.dropEffect = 'copy';
+      this.draggingOverDropZone = true;
+    }
+  }
+
+  public onDragLeave(_event:DragEvent):void {
+    this.draggingOverDropZone = false;
+  }
+
+  protected readonly nextcloud = nextcloud;
 }

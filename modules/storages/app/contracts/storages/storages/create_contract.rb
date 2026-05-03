@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,21 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# See also: base_contract.rb for comments
-module Storages::Storages
-  # We create the empty class here, so that other pieces of code that looks for the contract in its default place will
-  # find it. So, the CreateService for Storages will expect its contract to be here.
-  #
-  # We inherit from a BaseContract as the BaseContract here is sharing a lot in common with the UpdateContract.
-  class CreateContract < ::Storages::Storages::BaseContract
-    attribute :creator
-    validate :creator_must_be_user
+module Storages
+  module Storages
+    class CreateContract < BaseContract
+      attribute :creator
+      validate :creator_must_be_user
+      validate :requires_enterprise_token?
 
-    private
+      private
 
-    def creator_must_be_user
-      unless creator == user
-        errors.add(:creator, :invalid)
+      def creator_must_be_user
+        unless creator == user
+          errors.add(:creator, :invalid)
+        end
+      end
+
+      def requires_enterprise_token?
+        if model.disallowed_by_enterprise_token?
+          errors.add(:base, I18n.t("api_v3.errors.code_500_missing_enterprise_token"))
+        end
       end
     end
   end

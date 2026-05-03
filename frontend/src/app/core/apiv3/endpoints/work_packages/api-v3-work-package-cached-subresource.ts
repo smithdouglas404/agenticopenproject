@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -57,7 +57,7 @@ export class ApiV3WorkPackageCachedSubresource extends ApiV3GettableResource<Wor
 
   private updateSchemas(schemas:CollectionResource<SchemaResource>) {
     schemas.elements.forEach((schema) => {
-      this.states.schemas.get(schema.href as string).putValue(schema);
+      this.states.schemas.get(schema.href!).putValue(schema);
     });
   }
 }

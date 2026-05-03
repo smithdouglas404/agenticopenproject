@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,25 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+require_relative "../../flash/expectations"
+
 module Components
   module Common
     class Modal
       include Capybara::DSL
       include Capybara::RSpecMatchers
+      include Flash::Expectations
       include RSpec::Matchers
+      include WaitHelpers
 
-      def expect_title(text)
-        within_modal do
-          expect(page).to have_selector('.spot-modal--header', text:)
-        end
+      def expect_modal(title, wait: Capybara.default_max_wait_time)
+        expect_title(title, wait:)
+        modal = find(:modal, title, wait:)
+        wait_for_size_animation_completion(modal)
+      end
+
+      def expect_title(text, wait: Capybara.default_max_wait_time)
+        expect(page).to have_modal(text, wait:)
       end
 
       def expect_open
-        expect(page).to have_selector(selector, wait: 40)
+        expect(page).to have_modal(wait: 40)
       end
 
       def expect_closed
-        expect(page).to have_no_selector(selector)
+        expect(page).not_to have_modal
       end
 
       def expect_text(text)
@@ -59,16 +69,12 @@ module Components
         end
       end
 
-      def within_modal(&)
-        page.within(selector, &)
+      def within_modal(name = nil, **, &)
+        super
       end
 
       def modal_element
-        page.find(selector)
-      end
-
-      def selector
-        '.spot-modal'
+        find(:modal)
       end
     end
   end

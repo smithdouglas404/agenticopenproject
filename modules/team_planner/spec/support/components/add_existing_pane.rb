@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,11 +33,11 @@ module Components
     include RSpec::Matchers
 
     def selector
-      "[data-qa-selector='add-existing-pane']"
+      "[data-test-selector='add-existing-pane']"
     end
 
     def open
-      page.find('[data-qa-selector="op-team-planner--add-existing-toggle"]').click
+      page.find('[data-test-selector="op-team-planner--add-existing-toggle"]').click
       expect_open
     end
 
@@ -46,32 +46,31 @@ module Components
     end
 
     def expect_closed
-      expect(page).not_to have_selector(selector)
+      expect(page).to have_no_selector(selector)
     end
 
     def expect_empty
-      expect(page).to have_selector("[data-qa-selector='op-add-existing-pane--empty-state']")
+      expect(page).to have_css("[data-test-selector='op-add-existing-pane--empty-state']")
     end
 
     def search(term)
-      page.find("[data-qa-selector='op-add-existing-pane--search-input'] input").set(term)
+      page.find("[data-test-selector='op-add-existing-pane--search-input'] input").set(term)
     end
 
     def expect_result(work_package, visible: true)
       if visible
         expect(page)
-          .to have_selector("[data-qa-selector='op-add-existing-pane--wp-#{work_package.id}']", wait: 10)
+          .to have_css("[data-test-selector='op-add-existing-pane--wp-#{work_package.id}']", wait: 10)
       else
         expect(page)
-          .to have_no_selector("[data-qa-selector='op-add-existing-pane--wp-#{work_package.id}']")
+          .to have_no_css("[data-test-selector='op-add-existing-pane--wp-#{work_package.id}']")
       end
     end
 
-    def drag_wp_by_pixel(work_package, by_x, by_y)
-      source = page
-                 .find("[data-qa-selector='op-add-existing-pane--wp-#{work_package.id}']")
-
-      drag_by_pixel(element: source, by_x:, by_y:)
+    def drag_wp_to_date(work_package, date)
+      wp_card = card(work_package)
+      day_header = page.find(:columnheader, exact_text: date.strftime("%02d %A"))
+      drag_n_drop_element(from: wp_card, to: day_header, offset_y: day_header.native.size.height)
     end
 
     def card(work_package)

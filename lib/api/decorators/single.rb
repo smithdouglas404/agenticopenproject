@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +26,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'roar/decorator'
-require 'roar/hypermedia'
-require 'roar/json/hal'
+require "roar/decorator"
+require "roar/hypermedia"
+require "roar/json/hal"
 
 module API
   module Decorators
@@ -52,7 +52,7 @@ module API
       end
 
       def initialize(model, current_user:, embed_links: false)
-        raise 'no represented object passed' if model_required? && model.nil?
+        raise "no represented object passed" if model_required? && model.nil?
 
         @current_user = current_user
         @embed_links = embed_links
@@ -65,13 +65,15 @@ module API
                render_nil: false,
                writable: false
 
-
+      # List of associations that shall be eager_load'ed when rendering entities represented by this decorator.
+      # This is a hint for renderers of this representer.
       class_attribute :to_eager_load
-      class_attribute :checked_permissions
 
-      def current_user_allowed_to(permission, context: represented.respond_to?(:project) ? represented.project : nil)
-        current_user.allowed_to?(permission, context)
-      end
+      # List of associations that shall be preload'ed when rendering entities represented by this decorator.
+      # This is a hint for renderers of this representer.
+      class_attribute :to_preload
+
+      class_attribute :checked_permissions
 
       # Override in subclasses to specify the JSON indicated "_type" of this representer
       def _type; end

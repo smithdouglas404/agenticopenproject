@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -62,14 +64,14 @@ module Components
 
         def apply
           within_modal do
-            click_button('Apply')
+            click_button("Apply")
           end
         end
 
         private
 
         def within_modal(&)
-          page.within('.wp-table--configuration-modal', &)
+          page.within(".wp-table--configuration-modal", &)
         end
       end
     end

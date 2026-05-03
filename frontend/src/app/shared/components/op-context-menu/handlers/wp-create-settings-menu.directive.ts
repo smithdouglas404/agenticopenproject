@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -35,8 +35,11 @@ import { FormResource } from 'core-app/features/hal/resources/form-resource';
 
 @Directive({
   selector: '[wpCreateSettingsMenu]',
+  standalone: false,
 })
 export class WorkPackageCreateSettingsMenuDirective extends OpContextMenuTrigger {
+  override readonly placement = 'bottom-end';
+  
   constructor(readonly elementRef:ElementRef,
     readonly opContextMenu:OPContextMenuService,
     readonly states:States,
@@ -44,7 +47,7 @@ export class WorkPackageCreateSettingsMenuDirective extends OpContextMenuTrigger
     super(elementRef, opContextMenu);
   }
 
-  protected open(evt:JQuery.TriggeredEvent) {
+  protected open(evt:Event) {
     const wp = this.states.workPackages.get('new').value;
 
     if (wp) {
@@ -56,23 +59,6 @@ export class WorkPackageCreateSettingsMenuDirective extends OpContextMenuTrigger
         },
       );
     }
-  }
-
-  /**
-   * Positioning args for jquery-ui position.
-   *
-   * @param {Event} openerEvent
-   */
-  public positionArgs(evt:JQuery.TriggeredEvent) {
-    const additionalPositionArgs = {
-      my: 'right top',
-      at: 'right bottom',
-    };
-
-    const position = super.positionArgs(evt);
-    _.assign(position, additionalPositionArgs);
-
-    return position;
   }
 
   private buildItems(form:FormResource) {

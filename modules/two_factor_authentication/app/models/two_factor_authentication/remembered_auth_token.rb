@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TwoFactorAuthentication
   class RememberedAuthToken < ::Token::HashedToken
     include ::Token::ExpirableToken
@@ -22,7 +24,7 @@ module TwoFactorAuthentication
 
     def validate_remember_time
       unless self.class.allow_remember_for_days > 0
-        errors.add :base, 'Invalid remember time'
+        errors.add :base, "Invalid remember time"
       end
     end
 

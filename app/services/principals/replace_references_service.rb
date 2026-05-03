@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,6 +32,25 @@
 # No data is to be removed.
 module Principals
   class ReplaceReferencesService
+    class << self
+      attr_reader :replacements, :foreign_keys
+
+      def add_replacements(attributes_by_class_name)
+        attributes_by_class_name.each do |class_name, attributes|
+          Array(attributes).each { |attribute| add_replacement(class_name, attribute) }
+        end
+      end
+
+      def add_replacement(class_name, attribute)
+        @replacements ||= {}
+        @replacements[class_name] ||= Set.new
+        @replacements[class_name] << attribute
+
+        @foreign_keys ||= Set.new
+        @foreign_keys << attribute.to_s
+      end
+    end
+
     def call(from:, to:)
       rewrite_active_models(from, to)
       rewrite_custom_value(from, to)
@@ -42,25 +63,22 @@ module Principals
     private
 
     def rewrite_active_models(from, to)
-      rewrite_author(from, to)
-      rewrite_user(from, to)
-      rewrite_assigned_to(from, to)
-      rewrite_responsible(from, to)
-      rewrite_actor(from, to)
-      rewrite_owner(from, to)
-      rewrite_logged_by(from, to)
+      self.class.replacements.each do |class_name, attributes|
+        klass = class_name.constantize
+        attributes.each { |attribute| rewrite(klass, attribute, from, to) }
+      end
     end
 
     def rewrite_custom_value(from, to)
       CustomValue
-        .where(custom_field_id: CustomField.where(field_format: 'user'))
+        .where(custom_field_id: CustomField.where(field_format: "user"))
         .where(value: from.id.to_s)
         .update_all(value: to.id.to_s)
     end
 
     def rewrite_default_journals(from, to)
       journal_classes.each do |klass|
-        foreign_keys.each do |foreign_key|
+        self.class.foreign_keys.each do |foreign_key|
           if klass.column_names.include? foreign_key
             rewrite(klass, foreign_key, from, to)
           end
@@ -71,71 +89,13 @@ module Principals
     def rewrite_customizable_journals(from, to)
       Journal::CustomizableJournal
         .joins(:custom_field)
-        .where(custom_fields: { field_format: 'user' })
+        .where(custom_fields: { field_format: "user" })
         .where(value: from.id.to_s)
         .update_all(value: to.id.to_s)
     end
 
-    def rewrite_author(from, to)
-      [WorkPackage,
-       Attachment,
-       WikiContent,
-       News,
-       Comment,
-       Message,
-       Budget,
-       MeetingAgenda,
-       MeetingMinutes].each do |klass|
-        rewrite(klass, :author_id, from, to)
-      end
-    end
-
-    def rewrite_user(from, to)
-      [TimeEntry,
-       ::Query,
-       Changeset,
-       CostQuery,
-       MeetingParticipant].each do |klass|
-        rewrite(klass, :user_id, from, to)
-      end
-    end
-
-    def rewrite_actor(from, to)
-      [::Notification].each do |klass|
-        rewrite(klass, :actor_id, from, to)
-      end
-    end
-
-    def rewrite_owner(from, to)
-      [::Doorkeeper::Application].each do |klass|
-        rewrite(klass, :owner_id, from, to)
-      end
-    end
-
-    def rewrite_assigned_to(from, to)
-      [WorkPackage].each do |klass|
-        rewrite(klass, :assigned_to_id, from, to)
-      end
-    end
-
-    def rewrite_responsible(from, to)
-      [WorkPackage].each do |klass|
-        rewrite(klass, :responsible_id, from, to)
-      end
-    end
-
-    def rewrite_logged_by(from, to)
-      [TimeEntry].each do |klass|
-        rewrite(klass, :logged_by_id, from, to)
-      end
-    end
-
     def journal_classes
       [Journal] + Journal::BaseJournal.subclasses
-    end
-
-    def foreign_keys
-      %w[author_id user_id assigned_to_id responsible_id logged_by_id]
     end
 
     def rewrite(klass, attribute, from, to)

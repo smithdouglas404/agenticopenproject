@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,10 +36,38 @@ module Queries::Members
     filter Filters::StatusFilter
     filter Filters::BlockedFilter
     filter Filters::GroupFilter
+    filter Filters::GroupHierarchyFilter
     filter Filters::RoleFilter
     filter Filters::PrincipalFilter
+    filter Filters::PrincipalTypeFilter
     filter Filters::CreatedAtFilter
     filter Filters::UpdatedAtFilter
+    filter Filters::EntityIdFilter
+    filter Filters::EntityTypeFilter
+    filter Filters::AlsoProjectMemberFilter
+    filter Filters::OnlyProjectMemberFilter
+
+    order Orders::DefaultOrder
+    order Orders::NameOrder
+    order Orders::EmailOrder
+    order Orders::StatusOrder
+  end
+
+  ::Queries::Register.register(NonInheritedMemberQuery) do
+    filter Filters::NameFilter
+    filter Filters::AnyNameAttributeFilter
+    filter Filters::ProjectFilter
+    filter Filters::StatusFilter
+    filter Filters::BlockedFilter
+    filter Filters::GroupFilter
+    filter Filters::RoleFilter
+    filter Filters::PrincipalFilter
+    filter Filters::PrincipalTypeFilter
+    filter Filters::CreatedAtFilter
+    filter Filters::UpdatedAtFilter
+    filter Filters::EntityIdFilter
+    filter Filters::EntityTypeFilter
+    filter Filters::AlsoProjectMemberFilter
 
     order Orders::DefaultOrder
     order Orders::NameOrder

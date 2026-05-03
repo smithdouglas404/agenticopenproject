@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -59,7 +59,7 @@ module API
             def link_value_getter_values(represented, custom_field)
               Array(represented.custom_value_for(custom_field)).flat_map do |custom_value|
                 if custom_value && custom_value.value.present?
-                  title = link_value_title(custom_value)
+                  title = link_value_title(custom_value, custom_field)
 
                   [{
                     title:,
@@ -81,10 +81,12 @@ module API
 
             def link_value_path_method(custom_field, custom_value)
               case custom_field.field_format
-              when 'user'
+              when "user"
                 derive_principal_path_method(custom_value)
-              when 'list'
+              when "list"
                 :custom_option
+              when "hierarchy", "weighted_item_list"
+                :custom_field_item
               else
                 custom_field.field_format
               end
@@ -94,9 +96,11 @@ module API
               API::V3::Principals::PrincipalType.for(custom_value.typed_value)
             end
 
-            def link_value_title(custom_value)
+            def link_value_title(custom_value, custom_field)
               if custom_value.typed_value.respond_to?(:name)
                 custom_value.typed_value.name
+              elsif custom_field.hierarchical_list?
+                custom_value.formatted_value
               else
                 custom_value.typed_value
               end

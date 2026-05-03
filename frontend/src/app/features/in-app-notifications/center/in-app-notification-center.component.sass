@@ -7,6 +7,16 @@
 
   &--content
     height: 100%
+    border: 1px solid var(--borderColor-muted)
+    border-radius: var(--borderRadius-medium)
+    border-bottom-left-radius: 0
+    border-bottom-right-radius: 0
+    // Do not remove easily. Otherwise the children will overlap the rounded corners
+    overflow: hidden
+
+    &_empty
+      display: flex
+      align-items: center
 
   &--viewport
     height: 100%
@@ -21,17 +31,13 @@
 
   // While loading, appear to be showing one item row
   &--loading-indicator
-    position: absolute
-    left: 50%
-    top: 50%
-    transform: translate(-50%, -50%)
+    display: flex
+    flex-direction: column
+    align-items: center
     text-align: center
-    max-width: 600px
+    max-width: 677px
+    margin: 0 auto
 
-    @media screen and (max-width: 679px)
-      left: 0
-      top: 2rem
-      transform: none
 
   :host
     .-browser-safari &
@@ -40,7 +46,7 @@
       height: 100%
 
   &-loading-text
-    color: var(--gray-dark)
+    color: var(--fgColor-muted)
     font-size: 18px
 
   &-loading-image

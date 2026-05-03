@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +36,7 @@ module API
           end
 
           after_validation do
-            authorize Backup.permission, global: true
+            authorize_globally(Backup.permission)
           end
 
           params do
@@ -46,7 +46,7 @@ module API
               :attachments,
               type: Boolean,
               default: true,
-              desc: 'Whether or not to include attachments (default: true)'
+              desc: "Whether or not to include attachments (default: true)"
             )
           end
           post do

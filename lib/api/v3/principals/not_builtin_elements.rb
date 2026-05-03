@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,11 @@ module API
         extend ::ActiveSupport::Concern
 
         included do
+          # There is no common representer class for all elements, we thus override the default behaviour
+          # of forwarding eager_loading preferences to the element representer
+          self.to_eager_load = []
+          self.to_preload = []
+
           collection :elements,
                      getter: ->(*) {
                        represented.map do |model|

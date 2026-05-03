@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2022 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -29,9 +29,9 @@ See COPYRIGHT and LICENSE files for more details.
 
 <h1><%= link_to @target_project.name, project_url(@target_project) %></h1>
 
-<p><%= t('copy_project.text.succeeded', source_project_name: @source_project.name, target_project_name: @target_project.name) %></p>
+<p><%= t("copy_project.text.succeeded", source_project_name: @source_project.name, target_project_name: @target_project.name) %></p>
 
 <% unless @errors.empty? %>
-  <hr />
-  <%= render partial: 'user_mailer/errors', locals: { errors: @errors } %>
+  <hr>
+  <%= render partial: "user_mailer/errors", locals: { errors: @errors } %>
 <% end %>

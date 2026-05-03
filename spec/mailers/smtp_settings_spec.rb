@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,9 +27,9 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require 'spec_helper'
+require "spec_helper"
 
-describe "SMTP settings" do
+RSpec.describe "SMTP settings" do
   let(:smtp_settings) { {} }
   let(:enable_starttls_auto) { nil }
   let(:openssl_verify_mode) { nil }
@@ -57,9 +59,11 @@ describe "SMTP settings" do
   end
 
   def send_mail
-    ActionMailer::Base
-      .mail(from: "test@op.com", to: "foo@bar.com", subject: "Test mail", body: "body")
-      .deliver_now
+    Class.new(ActionMailer::Base) do # rubocop:disable Rails/ApplicationMailer
+      def test_mail
+        mail(from: "test@op.com", to: "foo@bar.com", subject: "Test mail", body: "body")
+      end
+    end.test_mail.deliver_now
   end
 
   describe "enable_starttls_auto" do
@@ -117,7 +121,7 @@ describe "SMTP settings" do
 
         expect_any_instance_of(Net::SMTP).to receive(:start) do |instance|
           expect(instance).to be_tls
-          expect(instance.instance_variable_get('@ssl_context_tls').verify_mode).to eq OpenSSL::SSL::VERIFY_PEER
+          expect(instance.instance_variable_get(:@ssl_context_tls).verify_mode).to eq OpenSSL::SSL::VERIFY_PEER
         end
       end
 
@@ -128,15 +132,15 @@ describe "SMTP settings" do
 
     context "with SSL enabled and verification disabled" do
       let(:ssl) { true }
-      let(:openssl_verify_mode) { 'none' }
+      let(:openssl_verify_mode) { "none" }
 
       before do
         expect(smtp_settings[:ssl]).to be true
-        expect(smtp_settings[:openssl_verify_mode]).to eq 'none'
+        expect(smtp_settings[:openssl_verify_mode]).to eq "none"
 
         expect_any_instance_of(Net::SMTP).to receive(:start) do |instance|
           expect(instance).to be_tls
-          expect(instance.instance_variable_get('@ssl_context_tls').verify_mode).to eq OpenSSL::SSL::VERIFY_NONE
+          expect(instance.instance_variable_get(:@ssl_context_tls).verify_mode).to eq OpenSSL::SSL::VERIFY_NONE
         end
       end
 
@@ -157,7 +161,7 @@ describe "SMTP settings" do
         expect_any_instance_of(Net::SMTP).to receive(:start) do |instance|
           expect(instance).to be_tls
           expect(instance).not_to be_starttls_auto
-          expect(instance.instance_variable_get('@ssl_context_tls').verify_mode).to eq OpenSSL::SSL::VERIFY_PEER
+          expect(instance.instance_variable_get(:@ssl_context_tls).verify_mode).to eq OpenSSL::SSL::VERIFY_PEER
         end
       end
 

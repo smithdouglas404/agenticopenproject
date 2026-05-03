@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module Migration
 
     # define all the following methods as class methods
     class << self
-      def squash(aggregated_versions)
+      def squash(aggregated_versions, minimum_version)
         intersection = aggregated_versions & all_versions
 
         if intersection == []
@@ -49,7 +51,7 @@ module Migration
           # All migrations that this migration aggregates have already
           # been applied. In this case, remove the information about those
           # migrations from the schema_migrations table and we're done.
-          ActiveRecord::Base.connection.execute <<-SQL + (intersection.map { |version| <<-CONDITIONS }).join(' OR ')
+          ActiveRecord::Base.connection.execute <<-SQL.squish + (intersection.map { |version| <<-CONDITIONS }).join(" OR ")
             DELETE FROM
               #{quoted_schema_migrations_table_name}
             WHERE
@@ -63,14 +65,17 @@ module Migration
 
           # Only a part of the migrations that this migration aggregates
           # have already been applied. In this case, fail miserably.
-          raise IncompleteMigrationsError, <<-MESSAGE.split("\n").map(&:strip!).join(' ') + "\n"
-            It appears you are migrating from an incompatible version.
-            Your database has only some migrations to be squashed.
-            Please update your installation to a version including all the
-            aggregated migrations and run this migration again.
-            The following migrations are missing: #{missing}
-          MESSAGE
+          raise IncompleteMigrationsError,
+                <<~MESSAGE.squish
+                  It appears you are migrating from an incompatible version.
+                  Your database has only some migrations to be squashed.
 
+                  OpenProject only supports migrating from one major version to the next.
+                  Please update your installation to OpenProject v#{minimum_version} (any minor or patch level) first.
+                  After the migrations in that version ran successfully, reinstall this OpenProject version and rerun the migrations.
+
+                  The following migrations are missing: #{missing}
+                MESSAGE
         end
       end
 
@@ -78,11 +83,11 @@ module Migration
 
       def all_versions
         table = Arel::Table.new(schema_migrations_table_name)
-        ActiveRecord::Base.connection.select_values(table.project(table['version']))
+        ActiveRecord::Base.connection.select_values(table.project(table["version"]))
       end
 
       def schema_migrations_table_name
-        ActiveRecord::SchemaMigration.table_name
+        ActiveRecord::Base.connection.pool.schema_migration.table_name
       end
 
       def quoted_schema_migrations_table_name
@@ -90,7 +95,7 @@ module Migration
       end
 
       def quoted_version_column_name
-        ActiveRecord::Base.connection.quote_table_name('version')
+        ActiveRecord::Base.connection.quote_table_name("version")
       end
 
       def version_column_for_comparison

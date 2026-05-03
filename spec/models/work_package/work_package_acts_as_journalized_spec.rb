@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,605 +28,1041 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe WorkPackage, type: :model do
-  describe '#journal' do
-    let(:type) { create :type }
-    let(:project) do
-      create :project,
-             types: [type]
+RSpec.describe WorkPackage do
+  describe "#journals (and the saving of them)" do
+    shared_let(:user) { create(:user) }
+    shared_let(:type) { create(:type) }
+    shared_let(:other_type) { create(:type) }
+    shared_let(:status) { create(:default_status) }
+    shared_let(:priority) { create(:priority) }
+    shared_let(:project) { create(:project, types: [type, other_type]) }
+    shared_let(:parent_work_package) { create(:work_package) }
+    shared_let(:other_status) { create(:status) }
+    shared_let(:other_priority) { create(:priority) }
+    shared_let(:other_user) { create(:user) }
+    shared_let(:other_project) { create(:project) }
+    shared_let(:category) { create(:category) }
+    shared_let(:version) { create(:version) }
+    shared_let(:other_version) { create(:version) }
+    shared_let(:project_phase_definition) { create(:project_phase_definition) }
+    shared_let(:other_work_package) { build_stubbed(:work_package) }
+    shared_let(:other_user) { create(:user) }
+
+    current_user { user }
+
+    context "on creation" do
+      let(:journable) do
+        described_class.new(author: user)
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Initial subject",
+                         "description" => "Initial description",
+                         "type_id" => :type,
+                         "status_id" => :status,
+                         "priority_id" => :priority,
+                         "project_id" => :project,
+                         "category_id" => :category,
+                         "version_id" => :version,
+                         "start_date" => Date.new(2013, 1, 24),
+                         "due_date" => Date.new(2013, 1, 31),
+                         "done_ratio" => 100,
+                         "estimated_hours" => 40.0,
+                         "derived_estimated_hours" => 50.0,
+                         "remaining_hours" => 3.0,
+                         "story_points" => 10,
+                         "duration" => 8,
+                         "schedule_manually" => false,
+                         "ignore_non_working_days" => false,
+                         "assigned_to_id" => :other_user,
+                         "responsible_id" => :other_user,
+                         "parent_id" => :parent_work_package,
+                         "project_phase_definition_id" => :project_phase_definition
+                       },
+                       expected_values: {
+                         "subject" => [nil, "Initial subject"],
+                         "description" => [nil, "Initial description"],
+                         "type_id" => [nil, :type],
+                         "status_id" => [nil, :status],
+                         "priority_id" => [nil, :priority],
+                         "project_id" => [nil, :project],
+                         "category_id" => [nil, :category],
+                         "version_id" => [nil, :version],
+                         "start_date" => [nil, Date.new(2013, 1, 24)],
+                         "due_date" => [nil, Date.new(2013, 1, 31)],
+                         "done_ratio" => [nil, 100],
+                         "estimated_hours" => [nil, 40.0],
+                         "derived_estimated_hours" => [nil, 50.0],
+                         "remaining_hours" => [nil, 3.0],
+                         "story_points" => [nil, 10],
+                         "duration" => [nil, 8],
+                         "schedule_manually" => [nil, false],
+                         "ignore_non_working_days" => [nil, false],
+                         "assigned_to_id" => [nil, :other_user],
+                         "responsible_id" => [nil, :other_user],
+                         "parent_id" => [nil, :parent_work_package],
+                         "project_phase_definition_id" => [nil, :project_phase_definition]
+                       },
+                       expect_new_journal: true,
+                       expect_predecessor_changed: false do
+        it "results in created_at and updated_at being the same on the work package" do
+          journable.save!
+          # Just to ensure that there actually is nothing hidden in the DB
+          journable.reload
+
+          expect(journable.created_at)
+            .to eql journable.updated_at
+        end
+      end
     end
-    let(:status) { create :default_status }
-    let(:priority) { create :priority }
-    let!(:work_package) do
-      User.execute_as current_user do
+
+    context "when nothing is changed" do
+      context "for a work package that has only been created (single journal)" do
+        shared_let(:journable) do
+          create(:work_package,
+                 journals: {
+                   Time.current => { user:, notes: "First comment" }
+                 })
+        end
+
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
+      end
+
+      context "for a work package that has been updated already (multiple journals)" do
+        shared_let(:journable) do
+          create(:work_package,
+                 journals: {
+                   5.days.ago => { user: },
+                   4.days.ago => { user:, notes: "First comment" }
+                 })
+        end
+
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
+      end
+    end
+
+    context "on changes outside of aggregation time" do
+      shared_let(:journable) do
         create(:work_package,
-               project_id: project.id,
+               subject: "Initial subject",
+               description: "Initial description",
+               project:,
                type:,
-               description: 'Description',
                priority:,
                status:,
-               duration: 1)
+               start_date: Date.new(2026, 1, 9),
+               due_date: nil,
+               duration: 1,
+               estimated_hours: 3.0,
+               schedule_manually: true,
+               assigned_to: user,
+               responsible: user,
+               category: nil,
+               version:,
+               ignore_non_working_days: true,
+               journals: {
+                 10.minutes.ago => { user: }
+               })
       end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject",
+                         "description" => "Changed description",
+                         "type_id" => :other_type,
+                         "status_id" => :other_status,
+                         "priority_id" => :other_priority,
+                         "project_id" => :other_project,
+                         "category_id" => :category,
+                         "version_id" => :other_version,
+                         "start_date" => Date.new(2013, 1, 24),
+                         "due_date" => Date.new(2013, 1, 31),
+                         "done_ratio" => 100,
+                         "estimated_hours" => 40.0,
+                         "derived_estimated_hours" => 50.0,
+                         "remaining_hours" => 3.0,
+                         "story_points" => 10,
+                         "duration" => 8,
+                         "schedule_manually" => false,
+                         "ignore_non_working_days" => false,
+                         "assigned_to_id" => :other_user,
+                         "responsible_id" => nil,
+                         "parent_id" => :parent_work_package,
+                         "project_phase_definition_id" => :project_phase_definition
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"],
+                         "description" => ["Initial description", "Changed description"],
+                         "type_id" => %i[type other_type],
+                         "status_id" => %i[status other_status],
+                         "priority_id" => %i[priority other_priority],
+                         "project_id" => %i[project other_project],
+                         "category_id" => [nil, :category],
+                         "version_id" => %i[version other_version],
+                         "start_date" => [Date.new(2026, 1, 9), Date.new(2013, 1, 24)],
+                         "due_date" => [nil, Date.new(2013, 1, 31)],
+                         "done_ratio" => [nil, 100],
+                         "estimated_hours" => [3.0, 40.0],
+                         "derived_estimated_hours" => [nil, 50.0],
+                         "remaining_hours" => [nil, 3.0],
+                         "story_points" => [nil, 10],
+                         "duration" => [1, 8],
+                         "schedule_manually" => [true, false],
+                         "ignore_non_working_days" => [true, false],
+                         "assigned_to_id" => %i[user other_user],
+                         "responsible_id" => [:current_user, nil],
+                         "parent_id" => [nil, :parent_work_package],
+                         "project_phase_definition_id" => [nil, :project_phase_definition]
+                       },
+                       expect_new_journal: true
     end
 
-    current_user { create(:user) }
-
-    context 'for work package creation' do
-      it { expect(Journal.for_work_package.count).to eq(1) }
-
-      it 'has a journal entry' do
-        expect(Journal.for_work_package.first.journable).to eq(work_package)
-      end
-
-      it 'notes the changes to subject' do
-        expect(work_package.last_journal.details[:subject])
-          .to match_array [nil, work_package.subject]
-      end
-
-      it 'notes the changes to project' do
-        expect(work_package.last_journal.details[:project_id])
-          .to match_array [nil, work_package.project_id]
-      end
-
-      it 'notes the description' do
-        expect(work_package.last_journal.details[:description])
-          .to match_array [nil, work_package.description]
-      end
-
-      it 'notes the scheduling mode' do
-        expect(work_package.last_journal.details[:schedule_manually])
-          .to match_array [nil, false]
-      end
-
-      it 'has the timestamp of the work package update time for created_at' do
-        # This seemingly unnecessary reload leads to the updated_at having the same
-        # precision as the created_at of the Journal. It is database dependent, so it would work without
-        # reload on PG 12 but does not work on PG 9.
-        expect(work_package.last_journal.created_at)
-          .to eql(work_package.reload.updated_at)
-      end
-    end
-
-    context 'when nothing is changed' do
-      it { expect { work_package.save! }.not_to change(Journal, :count) }
-    end
-
-    context 'for different newlines', with_settings: { journal_aggregation_time_minutes: 0 } do
-      let(:description) { "Description\n\nwith newlines\n\nembedded" }
-      let(:changed_description) { description.gsub("\n", "\r\n") }
-      let!(:work_package1) do
+    context "on changes within aggregation time for a work package with no update yet (single journal)" do
+      shared_let(:journable) do
         create(:work_package,
-               project_id: project.id,
+               subject: "Initial subject",
+               description: "Initial description",
+               project:,
                type:,
-               description:,
-               priority:)
+               priority:,
+               status:,
+               start_date: Date.new(2026, 1, 9),
+               due_date: nil,
+               duration: 1,
+               estimated_hours: 3.0,
+               schedule_manually: true,
+               assigned_to: user,
+               responsible: user,
+               category: nil,
+               version:,
+               ignore_non_working_days: true,
+               journals: {
+                 4.minutes.ago => { user: }
+               })
       end
 
-      before do
-        work_package1.description = changed_description
-      end
-
-      context 'when a new journal is created tracking a simultaneously applied change' do
-        before do
-          work_package1.subject += 'changed'
-          work_package1.save!
-        end
-
-        describe 'does not track the changed newline characters' do
-          subject { work_package1.last_journal.data.description }
-
-          it { is_expected.to eq(description) }
-        end
-
-        describe 'tracks only the other change' do
-          subject { work_package1.last_journal.details }
-
-          it { is_expected.to have_key :subject }
-          it { is_expected.not_to have_key :description }
-        end
-      end
-
-      context 'when there is a legacy journal containing non-escaped newlines' do
-        let!(:work_package_journal1) do
-          create(:work_package_journal,
-                 journable_id: work_package1.id,
-                 version: 2,
-                 data: build(:journal_work_package_journal,
-                             description:))
-        end
-        let!(:work_package_journal2) do
-          create(:work_package_journal,
-                 journable_id: work_package1.id,
-                 version: 3,
-                 data: build(:journal_work_package_journal,
-                             description: changed_description))
-        end
-
-        subject { work_package1.last_journal.details }
-
-        it { is_expected.not_to have_key :description }
-      end
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject",
+                         "description" => "Changed description",
+                         "type_id" => :other_type,
+                         "status_id" => :other_status,
+                         "priority_id" => :other_priority,
+                         "project_id" => :other_project,
+                         "category_id" => :category,
+                         "version_id" => :other_version,
+                         "start_date" => Date.new(2013, 1, 24),
+                         "due_date" => Date.new(2013, 1, 31),
+                         "done_ratio" => 100,
+                         "estimated_hours" => 40.0,
+                         "derived_estimated_hours" => 50.0,
+                         "remaining_hours" => 3.0,
+                         "story_points" => 10,
+                         "duration" => 8,
+                         "schedule_manually" => false,
+                         "ignore_non_working_days" => false,
+                         "assigned_to_id" => :other_user,
+                         "responsible_id" => nil,
+                         "parent_id" => :parent_work_package,
+                         "project_phase_definition_id" => :project_phase_definition
+                       },
+                       expected_values: {
+                         "subject" => [nil, "Changed subject"],
+                         "description" => [nil, "Changed description"],
+                         "type_id" => [nil, :other_type],
+                         "status_id" => [nil, :other_status],
+                         "priority_id" => [nil, :other_priority],
+                         "project_id" => [nil, :other_project],
+                         "category_id" => [nil, :category],
+                         "version_id" => [nil, :other_version],
+                         "start_date" => [nil, Date.new(2013, 1, 24)],
+                         "due_date" => [nil, Date.new(2013, 1, 31)],
+                         "done_ratio" => [nil, 100],
+                         "estimated_hours" => [nil, 40.0],
+                         "derived_estimated_hours" => [nil, 50.0],
+                         "remaining_hours" => [nil, 3.0],
+                         "story_points" => [nil, 10],
+                         "duration" => [nil, 8],
+                         "schedule_manually" => [nil, false],
+                         "ignore_non_working_days" => [nil, false],
+                         "assigned_to_id" => [nil, :other_user],
+                         "responsible_id" => [nil, nil],
+                         "parent_id" => [nil, :parent_work_package],
+                         "project_phase_definition_id" => [nil, :project_phase_definition]
+                       },
+                       expect_new_journal: false
     end
 
-    describe 'on work package change', with_settings: { journal_aggregation_time_minutes: 0 } do
-      let(:parent_work_package) do
+    context "on changes within aggregation time for a work package with former updates (multiple journal)" do
+      shared_let(:journable) do
         create(:work_package,
-               project_id: project.id,
+               subject: "Initial subject",
+               description: "Initial description",
+               project:,
                type:,
-               priority:)
-      end
-      let(:type2) { create :type }
-      let(:status2) { create :status }
-      let(:priority2) { create :priority }
-
-      before do
-        project.types << type2
-
-        work_package.subject = 'changed'
-        work_package.description = 'changed'
-        work_package.type = type2
-        work_package.status = status2
-        work_package.priority = priority2
-        work_package.start_date = Date.new(2013, 1, 24)
-        work_package.due_date = Date.new(2013, 1, 31)
-        work_package.duration = 8
-        work_package.estimated_hours = 40.0
-        work_package.assigned_to = User.current
-        work_package.responsible = User.current
-        work_package.parent = parent_work_package
-        work_package.schedule_manually = true
-
-        work_package.save!
+               priority:,
+               status:,
+               start_date: Date.new(2026, 1, 9),
+               due_date: nil,
+               duration: 1,
+               estimated_hours: 3.0,
+               schedule_manually: true,
+               assigned_to: user,
+               responsible: user,
+               category: nil,
+               version:,
+               ignore_non_working_days: true,
+               journals: {
+                 # Both journals will be the exact same snapshot of the current state.
+                 # For the sake of this test, this doesn't matter.
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
+               })
       end
 
-      context 'for last created journal' do
-        subject { work_package.last_journal.details }
-
-        it 'contains all changes' do
-          %i(subject description type_id status_id priority_id
-             start_date due_date estimated_hours assigned_to_id
-             responsible_id parent_id schedule_manually duration).each do |a|
-            expect(subject).to have_key(a.to_s), "Missing change for #{a}"
-          end
-        end
-      end
-
-      shared_examples_for 'old value' do
-        subject { work_package.last_journal.old_value_for(property) }
-
-        it { is_expected.to eq(expected_value) }
-      end
-
-      shared_examples_for 'new value' do
-        subject { work_package.last_journal.new_value_for(property) }
-
-        it { is_expected.to eq(expected_value) }
-      end
-
-      describe 'journaled value for' do
-        describe 'description' do
-          let(:property) { 'description' }
-
-          context 'for old value' do
-            let(:expected_value) { 'Description' }
-
-            it_behaves_like 'old value'
-          end
-
-          context 'for new value' do
-            let(:expected_value) { 'changed' }
-
-            it_behaves_like 'new value'
-          end
-        end
-
-        describe 'schedule_manually' do
-          let(:property) { 'schedule_manually' }
-
-          context 'for old value' do
-            let(:expected_value) { false }
-
-            it_behaves_like 'old value'
-          end
-
-          context 'for new value' do
-            let(:expected_value) { true }
-
-            it_behaves_like 'new value'
-          end
-        end
-
-        describe 'duration' do
-          let(:property) { 'duration' }
-
-          context 'for old value' do
-            let(:expected_value) { 1 }
-
-            it_behaves_like 'old value'
-          end
-
-          context 'for new value' do
-            let(:expected_value) { 8 }
-
-            it_behaves_like 'new value'
-          end
-        end
-      end
-
-      describe 'adding journal with a missing journal and an existing journal' do
-        before do
-          allow(WorkPackages::UpdateContract).to receive(:new).and_return(NoopContract.new)
-          service = WorkPackages::UpdateService.new(user: current_user, model: work_package)
-          service.call(journal_notes: 'note to be deleted', send_notifications: false)
-          work_package.reload
-          service.call(description: 'description v2', send_notifications: false)
-          work_package.reload
-          work_package.journals.reload.find_by(notes: 'note to be deleted').delete
-
-          service.call(description: 'description v4', send_notifications: false)
-        end
-
-        it 'creates a journal for the last change' do
-          last_journal = work_package.last_journal
-
-          expect(last_journal.data.description).to eql('description v4')
-        end
-      end
-
-      it 'has the timestamp of the work package update time for created_at' do
-        # This seemingly unnecessary reload leads to the updated_at having the same
-        # precision as the created_at of the Journal. It is database dependent, so it would work without
-        # reload on PG 12 but does not work on PG 9.
-        expect(work_package.last_journal.created_at)
-          .to eql(work_package.reload.updated_at)
-      end
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject",
+                         "description" => "Changed description",
+                         "type_id" => :other_type,
+                         "status_id" => :other_status,
+                         "priority_id" => :other_priority,
+                         "project_id" => :other_project,
+                         "category_id" => :category,
+                         "version_id" => :other_version,
+                         "start_date" => Date.new(2013, 1, 24),
+                         "due_date" => Date.new(2013, 1, 31),
+                         "done_ratio" => 100,
+                         "estimated_hours" => 40.0,
+                         "derived_estimated_hours" => 50.0,
+                         "remaining_hours" => 3.0,
+                         "story_points" => 10,
+                         "duration" => 8,
+                         "schedule_manually" => false,
+                         "ignore_non_working_days" => false,
+                         "assigned_to_id" => :other_user,
+                         "responsible_id" => nil,
+                         "parent_id" => :parent_work_package,
+                         "project_phase_definition_id" => :project_phase_definition
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"],
+                         "description" => ["Initial description", "Changed description"],
+                         "type_id" => %i[type other_type],
+                         "status_id" => %i[status other_status],
+                         "priority_id" => %i[priority other_priority],
+                         "project_id" => %i[project other_project],
+                         "category_id" => [nil, :category],
+                         "version_id" => %i[version other_version],
+                         "start_date" => [Date.new(2026, 1, 9), Date.new(2013, 1, 24)],
+                         "due_date" => [nil, Date.new(2013, 1, 31)],
+                         "done_ratio" => [nil, 100],
+                         "estimated_hours" => [3.0, 40.0],
+                         "derived_estimated_hours" => [nil, 50.0],
+                         "remaining_hours" => [nil, 3.0],
+                         "story_points" => [nil, 10],
+                         "duration" => [1, 8],
+                         "schedule_manually" => [true, false],
+                         "ignore_non_working_days" => [true, false],
+                         "assigned_to_id" => %i[user other_user],
+                         "responsible_id" => [:user, nil],
+                         "parent_id" => [nil, :parent_work_package],
+                         "project_phase_definition_id" => [nil, :project_phase_definition]
+                       },
+                       expect_new_journal: false
     end
 
-    describe 'attachments', with_settings: { journal_aggregation_time_minutes: 0 } do
-      let(:attachment) { build :attachment }
+    context "on changes within aggregation time for a different user" do
+      shared_let(:journable) do
+        create(:work_package,
+               description: "Initial description",
+               journals: {
+                 4.minutes.ago => { user: other_user }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "description" => "Changed description"
+                       },
+                       expected_values: {
+                         "description" => ["Initial description", "Changed description"]
+                       },
+                       expect_new_journal: true
+    end
+
+    context "on changes with aggregation disabled", with_settings: { journal_aggregation_time_minutes: 0 } do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject",
+               journals: {
+                 # Both journals will be the exact same snapshot of the current state.
+                 # For the sake of this test, this doesn't matter.
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject"
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"]
+                       },
+                       expect_new_journal: true
+    end
+
+    context "on attachment changes", with_settings: { journal_aggregation_time_minutes: 0 } do
+      let(:attachment) { build(:attachment) }
       let(:attachment_id) { "attachments_#{attachment.id}" }
 
-      before do
-        work_package.attachments << attachment
-        work_package.save!
+      shared_let(:journable) do
+        create(:work_package)
       end
 
-      context 'for new attachment' do
-        subject { work_package.last_journal.details }
+      before do
+        journable.attachments << attachment
+        journable.save!
+      end
+
+      context "for new attachment" do
+        subject { journable.last_journal.details }
 
         it { is_expected.to have_key attachment_id }
 
         it { expect(subject[attachment_id]).to eq([nil, attachment.filename]) }
       end
 
-      context 'when attachment saved w/o change' do
+      context "when attachment saved w/o change" do
         it { expect { attachment.save! }.not_to change(Journal, :count) }
       end
     end
 
-    describe 'custom values', with_settings: { journal_aggregation_time_minutes: 0 } do
-      let(:custom_field) { create :work_package_custom_field }
-      let(:custom_value) do
-        build :custom_value,
-              value: 'false',
-              custom_field:
-      end
-
-      let(:custom_field_id) { "custom_fields_#{custom_value.custom_field_id}" }
-
-      shared_context 'for work package with custom value' do
-        before do
+    context "on custom value changes" do
+      # The explicit id is needed so that the accessors ('custom_field_1') can be used
+      shared_let(:custom_field) do
+        create(:boolean_wp_custom_field, id: 1) do |custom_field|
           project.work_package_custom_fields << custom_field
           type.custom_fields << custom_field
-          work_package.reload
-          work_package.custom_values << custom_value
-          work_package.save!
         end
       end
 
-      context 'for new custom value' do
-        include_context 'for work package with custom value'
+      context "when setting a custom value" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 journals: {
+                   1.day.ago => { user: }
+                 })
+        end
 
-        subject { work_package.last_journal.details }
-
-        it { is_expected.to have_key custom_field_id }
-
-        it { expect(subject[custom_field_id]).to eq([nil, custom_value.value]) }
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "custom_field_1" => true
+                         },
+                         expected_values: {
+                           "custom_fields_1" => [nil, "t"]
+                         },
+                         expect_new_journal: true
       end
 
-      context 'for custom value modified' do
-        include_context 'for work package with custom value'
-
-        let(:modified_custom_value) do
-          create(:work_package_custom_value,
-                 value: 'true',
-                 custom_field:)
+      context "when modifying a custom value" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: false,
+                 journals: {
+                   1.day.ago => { user: }
+                 })
         end
 
-        before do
-          work_package.custom_values = [modified_custom_value]
-          work_package.save!
-        end
-
-        subject { work_package.last_journal.details }
-
-        it { is_expected.to have_key custom_field_id }
-
-        it { expect(subject[custom_field_id]).to eq([custom_value.value.to_s, modified_custom_value.value.to_s]) }
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "custom_field_1" => true
+                         },
+                         expected_values: {
+                           "custom_fields_1" => %w[f t]
+                         },
+                         expect_new_journal: true
       end
 
-      context 'when work package saved w/o change' do
-        include_context 'for work package with custom value'
-
-        let(:unmodified_custom_value) do
-          create(:work_package_custom_value,
-                 value: 'false',
-                 custom_field:)
+      context "when a custom value is removed" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: false,
+                 journals: {
+                   1.day.ago => { user: }
+                 })
         end
 
-        before do
-          work_package.custom_values = [unmodified_custom_value]
-        end
-
-        it { expect { work_package.save! }.not_to change(Journal, :count) }
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "custom_field_1" => nil
+                         },
+                         expected_values: {
+                           "custom_fields_1" => ["f", nil]
+                         },
+                         expect_new_journal: true
       end
 
-      context 'when custom value removed' do
-        include_context 'for work package with custom value'
-
-        before do
-          work_package.custom_values.delete(custom_value)
-          work_package.save!
+      context "when nothing changed" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: false,
+                 journals: {
+                   5.days.ago => { user: }
+                 })
         end
 
-        subject { work_package.last_journal.details }
-
-        it { is_expected.to have_key custom_field_id }
-
-        it { expect(subject[custom_field_id]).to eq([custom_value.value, nil]) }
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
       end
 
-      context 'when custom value did not exist before' do
-        let(:custom_field) do
-          create :work_package_custom_field,
-                 is_required: false,
-                 field_format: 'list',
-                 possible_values: ['', '1', '2', '3', '4', '5', '6', '7']
-        end
-        let(:custom_value) do
-          create :custom_value,
-                 value: '',
-                 customized: work_package,
-                 custom_field:
-        end
-
-        describe 'empty values are recognized as unchanged' do
-          include_context 'for work package with custom value'
-
-          it { expect(work_package.last_journal.customizable_journals).to be_empty }
+      context "when nothing changed and a custom field is added after work package creation" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 journals: {
+                   5.days.ago => { user: }
+                 }) do
+            create(:boolean_wp_custom_field, id: 2) do |cf|
+              project.work_package_custom_fields << cf
+              type.custom_fields << cf
+            end
+          end
         end
 
-        describe 'empty values handled as non existing' do
-          include_context 'for work package with custom value'
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
+      end
 
-          it { expect(work_package.last_journal.customizable_journals.count).to eq(0) }
+      context "when nothing changed and the work package has multiple values for the same custom field" do
+        shared_let(:list_cf) do
+          create(:list_wp_custom_field, id: 2, possible_values: %w[A B C D]) do |cf|
+            project.work_package_custom_fields << cf
+            type.custom_fields << cf
+          end
         end
+
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: true,
+                 custom_field_2: [list_cf.custom_options.find_by(value: "A"),
+                                  list_cf.custom_options.find_by(value: "D")],
+                 journals: {
+                   5.days.ago => { user: },
+                   4.days.ago => { user:, notes: "First comment" }
+                 })
+        end
+
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
       end
     end
 
-    context 'for only journal notes adding' do
-      before do
-        work_package.add_journal(User.current, 'some notes')
-        work_package.save
+    context "on file link changes", with_settings: { journal_aggregation_time_minutes: 0 } do
+      let(:file_link) { build(:file_link) }
+      let(:file_link_id) { "file_links_#{file_link.id}" }
+
+      shared_let(:journable) do
+        create(:work_package)
       end
 
-      it 'has the timestamp of the work package update time for created_at' do
-        expect(work_package.last_journal.updated_at)
-          .to eql(work_package.updated_at)
+      before do
+        journable.file_links << file_link
+        journable.save!
+      end
+
+      context "for the new file link" do
+        subject(:journal_details) { journable.last_journal.details }
+
+        it { is_expected.to have_key file_link_id }
+
+        it {
+          expect(journal_details[file_link_id])
+            .to eq([nil, { "link_name" => file_link.origin_name, "storage_name" => nil }])
+        }
+      end
+
+      context "when file link saved w/o change" do
+        it {
+          expect do
+            file_link.save
+            journable.save_journals
+          end.not_to change(Journal, :count)
+        }
       end
     end
 
-    context 'for mixed journal notes and attribute adding' do
-      before do
-        work_package.add_journal(User.current, 'some notes')
-        work_package.subject = 'blubs'
-        work_package.save
+    context "on only journal notes adding outside of aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               journals: {
+                 10.minutes.ago => { user: }
+               })
       end
 
-      it 'has the timestamp of the work package update time for created_at' do
-        expect(work_package.last_journal.updated_at)
-          .to eql(work_package.updated_at)
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_notes" => "Some notes"
+                       },
+                       expected_values: {},
+                       expected_notes: "Some notes",
+                       expect_new_journal: true
+    end
+
+    context "on only journal notes adding within aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               journals: {
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_notes" => "Some notes"
+                       },
+                       expected_values: {},
+                       expected_notes: "Some notes",
+                       expect_new_journal: false
+    end
+
+    context "on only journal notes adding within aggregation time as a different user" do
+      shared_let(:journable) do
+        create(:work_package,
+               journals: {
+                 10.minutes.ago => { user: other_user },
+                 4.minutes.ago => { user: other_user }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_notes" => "Some notes"
+                       },
+                       expected_values: {},
+                       expected_notes: "Some notes",
+                       expect_new_journal: true
+    end
+
+    context "on only journal notes adding within aggregation time with the last journal already having a note" do
+      shared_let(:journable) do
+        create(:work_package,
+               journals: {
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user:, notes: "The former note" }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_notes" => "Some notes"
+                       },
+                       expected_values: {},
+                       expected_notes: "Some notes",
+                       expect_new_journal: true
+    end
+
+    context "on changes within aggregation time for a work package with a journal with notes" do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject",
+               journals: {
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user:, notes: "The former note" }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject"
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"]
+                       },
+                       expected_notes: "The former note",
+                       expect_new_journal: false
+    end
+
+    context "on mixed journal notes and attribute adding outside of aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject",
+               journals: {
+                 10.minutes.ago => { user: }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject",
+                         "journal_notes" => "Some notes"
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"]
+                       },
+                       expected_notes: "Some notes",
+                       expect_new_journal: true
+    end
+
+    context "on only journal cause adding within aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               journals: {
+                 # Adding a second journal (even if it is empty) to avoid the changes
+                 # from the wp creation to mess with the expected values.
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_cause" => {
+                           "type" => "The good cause",
+                           "some_reference" => 42
+                         }
+                       },
+                       expected_values: {},
+                       expected_cause: {
+                         "type" => "The good cause",
+                         "some_reference" => 42
+                       },
+                       expect_new_journal: false
+    end
+
+    context "on adding a different cause within aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               journals: {
+                 4.minutes.ago => { user:, cause: "XYZ" }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_cause" => "ABC"
+                       },
+                       expected_values: {},
+                       expected_cause: "ABC",
+                       expect_new_journal: true
+    end
+
+    context "on adding the same cause within aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject",
+               journals: {
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user:, cause: "ABC" }
+               })
+      end
+
+      # Adding the change to subject here to show that the whole change is aggregated
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_cause" => "ABC",
+                         "subject" => "Changed subject"
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"]
+                       },
+                       expected_cause: "ABC",
+                       expect_new_journal: false
+    end
+
+    context "on mixed journal cause, notes and attribute adding outside of aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject",
+               journals: {
+                 10.minutes.ago => { user: }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject",
+                         "journal_notes" => "Some notes",
+                         "journal_cause" => {
+                           "type" => "The good cause",
+                           "some_reference" => 42
+                         }
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"]
+                       },
+                       expected_notes: "Some notes",
+                       expected_cause: {
+                         "type" => "The good cause",
+                         "some_reference" => 42
+                       },
+                       expect_new_journal: true
+    end
+
+    context "on mixed journal cause, notes and attribute adding within aggregation time" do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject",
+               journals: {
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject",
+                         "journal_notes" => "Some notes",
+                         "journal_cause" => {
+                           "type" => "The good cause",
+                           "some_reference" => 42
+                         }
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"]
+                       },
+                       expected_notes: "Some notes",
+                       expected_cause: {
+                         "type" => "The good cause",
+                         "some_reference" => 42
+                       },
+                       expect_new_journal: false
+    end
+
+    context "on mixed journal cause, notes and attribute adding within aggregation time as a different user" do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject",
+               journals: {
+                 10.minutes.ago => { user: other_user },
+                 4.minutes.ago => { user: other_user }
+               })
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "subject" => "Changed subject",
+                         "journal_notes" => "Some notes",
+                         "journal_cause" => {
+                           "type" => "The good cause",
+                           "some_reference" => 42
+                         }
+                       },
+                       expected_values: {
+                         "subject" => ["Initial subject", "Changed subject"]
+                       },
+                       expected_notes: "Some notes",
+                       expected_cause: {
+                         "type" => "The good cause",
+                         "some_reference" => 42
+                       },
+                       expect_new_journal: true
+    end
+
+    context "when aggregation leads to an empty change (changing back and forth)",
+            with_settings: { journal_aggregation_time_minutes: 1 } do
+      shared_let(:journable) do
+        create(:work_package,
+               :created_in_past,
+               created_at: 5.minutes.ago,
+               project_id: project.id,
+               type:,
+               description: "Description",
+               priority:,
+               status:,
+               duration: 1)
+      end
+
+      let(:other_status) { create(:status) }
+
+      before do
+        journable.status = other_status
+        journable.save!
+        journable.status = status
+        journable.save!
+      end
+
+      it "creates a new journal" do
+        expect(journable.journals.count).to be 2
+      end
+
+      it "has the old state in the last journal`s data" do
+        expect(journable.journals.last.data.status_id).to be status.id
       end
     end
 
-    context 'when updated within aggregation time' do
-      subject(:journals) { work_package.journals }
-
-      let(:current_user) { user1 }
-
-      let(:notes) { nil }
-      let(:user1) { create(:user) }
-      let(:user2) { create(:user) }
-      let(:new_status) { build(:status) }
-      let(:changes) do
-        {
-          status: new_status,
-          journal_notes: notes
-        }.compact
-      end
-
-      before do
-        login_as(new_author)
-
-        work_package.attributes = changes
-        work_package.save!
-      end
-
-      context 'as author of last change' do
-        let(:new_author) { user1 }
-
-        it 'leads to a single journal' do
-          expect(subject.count).to be 1
+    context "on changes to newline characters" do
+      context "when outside of the aggregation time" do
+        shared_let(:journable) do
+          create(:work_package,
+                 description: "Description\n\nwith newlines\n\nembedded",
+                 journals: {
+                   1.day.ago => { user: }
+                 })
         end
 
-        it 'is the initial journal' do
-          expect(subject.first).to be_initial
-        end
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "description" => "New description"
+                         },
+                         expected_values: {
+                           "description" => ["Description\n\nwith newlines\n\nembedded", "New description"]
+                         },
+                         expect_new_journal: true
 
-        it 'contains the changes of both updates with the later overwriting the former' do
-          expect(subject.first.data.status_id)
-            .to eql changes[:status].id
-
-          expect(subject.first.data.type_id)
-            .to eql work_package.type_id
-        end
-
-        context 'with a comment' do
-          let(:notes) { 'This is why I changed it.' }
-
-          it 'leads to a single journal with the comment' do
-            expect(subject.count).to be 1
-            expect(subject.first.notes)
-              .to eql notes
+        context "when multiple values are changed and the change to description is only a newline change" do
+          shared_let(:journable) do
+            create(:work_package,
+                   description: "Description\r\n\r\nwith newlines\r\n\r\nembedded",
+                   subject: "Original subject",
+                   journals: {
+                     1.day.ago => { user: }
+                   })
           end
 
-          context 'when adding a second comment' do
-            let(:second_notes) { 'Another comment, unrelated to the first one.' }
+          include_examples "journaled values for",
+                           new_values_set: {
+                             "description" => "Description\r\n\r\nwith newlines\r\n\r\nembedded",
+                             "subject" => "New subject"
+                           },
+                           expected_values: {
+                             "subject" => ["Original subject", "New subject"]
+                           },
+                           expect_new_journal: true
+        end
 
+        context "when there is a legacy journal containing non-escaped newlines" do
+          shared_let(:journable) do
+            create(:work_package,
+                   description: "Description\r\n\r\nwith newlines\r\n\r\nembedded",
+                   journals: {
+                     3.minutes.ago => { user: }
+                   })
+          end
+
+          include_examples "no journaled value changes for",
+                           new_values_set: {
+                             "description" => "Description\n\nwith newlines\n\nembedded"
+                           },
+                           # The value of description does change which is what causes update_at to change
+                           expect_journable_update_at_changed: true
+        end
+      end
+    end
+
+    # The below test was failing with the following error:
+    # ERROR:  new row for relation "journals" violates check constraint "journals_validity_period_not_empty" (PG::CheckViolation)
+    # DETAIL:  Failing row contains (1178, WorkPackage, 481, 1252, , 2025-12-04 07:58:21.028586+00, 1,
+    #          2025-12-04 07:58:21.028586+00, Journal::WorkPackageJournal, 833, {}, empty, f).
+    context "on adding two notes right after creation" do
+      shared_let(:journable) do
+        create(:work_package,
+               subject: "Initial subject") do |wp|
+          wp.add_journal(user:, notes: "First comment")
+          wp.save!
+        end
+      end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "journal_notes" => "Second comment"
+                       },
+                       expected_values: {},
+                       expected_notes: "Second comment",
+                       expect_new_journal: true
+
+      context "when then changing an attribute" do
+        before do
+          journable.add_journal(user:, notes: "Second comment")
+          journable.save!
+        end
+
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "subject" => "Changed subject"
+                         },
+                         expected_values: {
+                           "subject" => ["Initial subject", "Changed subject"]
+                         },
+                         expected_notes: "Second comment",
+                         expect_new_journal: false
+
+        context "when now adding a note" do
+          before do
+            journable.update!(subject: "Changed subject")
+          end
+
+          include_examples "journaled values for",
+                           new_values_set: {
+                             "journal_notes" => "Third comment"
+                           },
+                           expected_values: {},
+                           expected_notes: "Third comment",
+                           expect_new_journal: true
+
+          context "when now adding another note" do
             before do
-              work_package.add_journal(new_author, second_notes)
-              work_package.save!
+              journable.add_journal(user:, notes: "Third comment")
             end
 
-            it 'returns two journals' do
-              expect(subject.count).to be 2
-              expect(subject.first.notes).to eql notes
-              expect(subject.second.notes).to eql second_notes
-            end
-
-            it 'has one initial journal and one non-initial journal' do
-              expect(subject.first).to be_initial
-              expect(subject.second).not_to be_initial
-            end
+            include_examples "journaled values for",
+                             new_values_set: {
+                               "journal_notes" => "Fourth comment"
+                             },
+                             expected_values: {},
+                             expected_notes: "Fourth comment",
+                             expect_new_journal: true
           end
-
-          context 'when adding another change without comment' do
-            before do
-              work_package.reload # need to update the lock_version, avoiding StaleObjectError
-              work_package.subject = 'foo'
-              work_package.assigned_to = current_user
-              work_package.save!
-            end
-
-            it 'leads to a single journal with the comment of the replaced journal and the state both combined' do
-              expect(subject.count).to eq 1
-
-              expect(subject.first.notes)
-                .to eql notes
-
-              expect(subject.first.data.subject)
-                .to eql 'foo'
-
-              expect(subject.first.data.assigned_to)
-                .to eql current_user
-
-              expect(subject.first.data.status_id)
-                .to eql new_status.id
-            end
-          end
-
-          context 'when adding another change with a customized work package' do
-            let(:custom_field) do
-              create :work_package_custom_field,
-                     is_required: false,
-                     field_format: 'list',
-                     possible_values: ['', '1', '2', '3', '4', '5', '6', '7']
-            end
-            let(:custom_value) do
-              create :custom_value,
-                     value: custom_field.custom_options.find { |co| co.value == '1' }.try(:id),
-                     customized: work_package,
-                     custom_field:
-            end
-
-            before do
-              custom_value
-              work_package.reload # need to update the lock_version, avoiding StaleObjectError
-              work_package.subject = 'foo'
-              work_package.save!
-            end
-
-            it 'leads to a single journal with only one customizable journal' do
-              expect(subject.count).to eq 1
-
-              expect(subject.first.notes)
-                .to eql notes
-
-              expect(subject.first.data.subject)
-                .to eql 'foo'
-
-              expect(subject.first.customizable_journals.count).to eq(1)
-            end
-          end
-        end
-      end
-
-      context 'with a different author' do
-        let(:new_author) { user2 }
-
-        it 'leads to two journals' do
-          expect(subject.count).to be 2
-          expect(subject.first.user)
-            .to eql current_user
-
-          expect(subject.second.user)
-            .to eql new_author
-
-          expect(subject.second.get_changes)
-            .to eql("status_id" => [status.id, new_status.id])
         end
       end
     end
 
-    context 'when updated after aggregation timeout expired', with_settings: { journal_aggregation_time_minutes: 1 } do
-      subject(:journals) { work_package.journals }
-
-      before do
-        work_package.last_journal.update_columns(created_at: 2.minutes.ago,
-                                                 updated_at: 2.minutes.ago)
-
-        work_package.status = build(:status)
-        work_package.save!
-      end
-
-      it 'creates a new journal' do
-        expect(journals.count).to be 2
-      end
-    end
-
-    context 'when updating with aggregation disabled', with_settings: { journal_aggregation_time_minutes: 0 } do
-      subject(:journals) { work_package.journals }
-
-      context 'when WP updated within milliseconds' do
-        before do
-          work_package.status = build(:status)
-          work_package.save!
-        end
-
-        it 'creates a new journal' do
-          expect(journals.count).to be 2
+    context "on having a broken journal chain (e.g. because of legacy data)",
+            with_settings: { journal_aggregation_time_minutes: 0 } do
+      let(:journable) do
+        create(:work_package,
+               description: "Initial description") do |wp|
+          wp.add_journal(notes: "Note to be deleted")
+          wp.save!
+          wp.update!(description: "Changed description")
+          wp.journals.reload.find_by(notes: "Note to be deleted").destroy!
         end
       end
+
+      include_examples "journaled values for",
+                       new_values_set: {
+                         "description" => "Changed again description"
+                       },
+                       expected_values: {
+                         "description" => ["Changed description", "Changed again description"]
+                       },
+                       expect_new_journal: true
     end
   end
 
-  describe '#destroy' do
+  describe "#destroy" do
     let(:project) { create(:project) }
     let(:type) { create(:type) }
     let(:custom_field) do
-      create(:int_wp_custom_field).tap do |cf|
+      create(:integer_wp_custom_field) do |cf|
         project.work_package_custom_fields << cf
         type.custom_fields << cf
       end
@@ -634,35 +1072,140 @@ describe WorkPackage, type: :model do
              project:,
              type:,
              custom_field_values: { custom_field.id => 5 },
-             attachments: [attachment])
+             attachments: [attachment],
+             file_links: [file_link])
     end
     let(:attachment) { build(:attachment) }
+    let(:file_link) { build(:file_link) }
+
     let!(:journal) { work_package.journals.first }
     let!(:customizable_journals) { journal.customizable_journals }
     let!(:attachable_journals) { journal.attachable_journals }
+    let!(:storable_journals) { journal.storable_journals }
 
     before do
       work_package.destroy
     end
 
-    it 'removes the journal' do
+    it "removes the journal" do
       expect(Journal.find_by(id: journal.id))
         .to be_nil
     end
 
-    it 'removes the journal data' do
+    it "removes the journal data" do
       expect(Journal::WorkPackageJournal.find_by(id: journal.data_id))
         .to be_nil
     end
 
-    it 'removes the customizable journals' do
+    it "removes the customizable journals" do
       expect(Journal::CustomizableJournal.find_by(id: customizable_journals.map(&:id)))
         .to be_nil
     end
 
-    it 'removes the attachable journals' do
+    it "removes the attachable journals" do
       expect(Journal::AttachableJournal.find_by(id: attachable_journals.map(&:id)))
         .to be_nil
+    end
+
+    it "removes the storable journals" do
+      expect(Journal::StorableJournal.find_by(id: attachable_journals.map(&:id)))
+        .to be_nil
+    end
+  end
+
+  describe "#journals.internal_visible" do
+    let(:work_package) { create(:work_package) }
+    let(:admin) { create(:admin) }
+    let(:user) { create(:user) }
+
+    let!(:internal_note) do
+      create(:work_package_journal,
+             user: admin,
+             notes: "First comment by admin",
+             journable: work_package,
+             internal: true,
+             version: 2)
+    end
+
+    let!(:public_note) do
+      create(:work_package_journal,
+             user:,
+             notes: "First comment by user",
+             journable: work_package,
+             internal: false,
+             version: 3)
+    end
+
+    subject(:journals) { work_package.journals.internal_visible }
+
+    before do
+      login_as user
+    end
+
+    context "when enterprise token allows internal_comments", with_ee: [:internal_comments] do
+      context "and setting is enabled for the project" do
+        before do
+          work_package.project.enabled_internal_comments = true
+          work_package.project.save!
+        end
+
+        context "when the user cannot see internal journals" do
+          before do
+            mock_permissions_for(user) do |mock|
+              mock.allow_in_work_package :view_work_packages, work_package:
+            end
+          end
+
+          it "does not return the internal journal" do
+            expect(journals.map(&:id)).not_to include(internal_note.id)
+            expect(journals.map(&:id)).to include(public_note.id)
+          end
+        end
+
+        context "when the user can see internal journals" do
+          before do
+            mock_permissions_for(user) do |mock|
+              mock.allow_in_project(:view_internal_comments, project: work_package.project)
+            end
+          end
+
+          it "returns all journals" do
+            expect(journals.map(&:id)).to include(internal_note.id, public_note.id)
+          end
+        end
+      end
+
+      context "and setting is disabled for the project" do
+        before do
+          work_package.project.enabled_internal_comments = false
+          work_package.project.save!
+
+          mock_permissions_for(user) do |mock|
+            mock.allow_in_project(:view_internal_comments, project: work_package.project)
+          end
+        end
+
+        it "does not return the internal journal" do
+          expect(journals.map(&:id)).not_to include(internal_note.id)
+          expect(journals.map(&:id)).to include(public_note.id)
+        end
+      end
+    end
+
+    context "when enterprise token does not allow internal_comments" do
+      before do
+        work_package.project.enabled_internal_comments = true
+        work_package.project.save!
+
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_internal_comments, project: work_package.project)
+        end
+      end
+
+      it "does not return the internal journal regardless of permissions and project setting" do
+        expect(journals.map(&:id)).not_to include(internal_note.id)
+        expect(journals.map(&:id)).to include(public_note.id)
+      end
     end
   end
 end

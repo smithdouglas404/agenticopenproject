@@ -24,6 +24,7 @@ export interface SpotToggleOption<T> {
     multi: true,
   }],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SpotToggleComponent<T> implements ControlValueAccessor {
   // TODO: These old styles will need to be replaced
@@ -86,7 +87,7 @@ export class SpotToggleComponent<T> implements ControlValueAccessor {
 
   onChange = (_:T):void => {};
 
-  onTouched: (t:T) => void = (_:T):void => {};
+  onTouched:(t:T) => void = (_:T):void => {};
 
   registerOnChange(fn:(_:T) => void):void {
     this.onChange = fn;

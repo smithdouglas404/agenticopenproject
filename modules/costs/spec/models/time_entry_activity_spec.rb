@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +26,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'spec_helper'
+require "spec_helper"
 
-describe TimeEntryActivity, type: :model do
+require Rails.root.join("spec/models/enumerations/shared_enumeration_examples").to_s
+
+RSpec.describe TimeEntryActivity do
   let(:new_activity) { described_class.new }
-  let(:saved_activity) { described_class.create name: 'Design' }
+  let(:saved_activity) { described_class.create name: "Design" }
 
-  it 'is an enumeration' do
+  it "is an enumeration" do
     expect(new_activity)
       .to be_a(Enumeration)
   end
 
-  describe '#objects_count' do
-    it 'represents the count of time entries of that activity' do
+  describe "#objects_count" do
+    it "represents the count of time entries of that activity" do
       expect { create(:time_entry, activity: saved_activity) }
         .to change(saved_activity, :objects_count)
               .from(0)
@@ -46,10 +48,14 @@ describe TimeEntryActivity, type: :model do
     end
   end
 
-  describe '#option_name' do
-    it 'is enumeration_activities' do
+  describe "#option_name" do
+    it "is enumeration_activities" do
       expect(new_activity.option_name)
         .to eq :enumeration_activities
     end
+  end
+
+  it_behaves_like "enumeration#active handling", false do
+    let(:enumeration) { described_class.new(attributes_for(:time_entry_activity)) }
   end
 end

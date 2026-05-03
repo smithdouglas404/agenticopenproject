@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +29,13 @@
 #++
 
 class Journal::CustomizableJournal < Journal::AssociatedJournal
-  self.table_name = 'customizable_journals'
+  self.table_name = "customizable_journals"
 
   belongs_to :custom_field
+
+  def as_custom_value(attributes = {})
+    custom_value = CustomValue.new(attributes.merge(custom_field:, value:))
+    custom_value.readonly!
+    custom_value
+  end
 end

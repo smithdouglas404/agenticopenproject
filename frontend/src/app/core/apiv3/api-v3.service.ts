@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,15 +26,9 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  Injectable,
-  Injector,
-} from '@angular/core';
-import {
-  ApiV3GettableResource,
-  ApiV3ResourceCollection,
-} from 'core-app/core/apiv3/paths/apiv3-resource';
-import { Constructor } from '@angular/cdk/table';
+import { Injectable, Injector } from '@angular/core';
+import { ApiV3GettableResource, ApiV3ResourceCollection } from 'core-app/core/apiv3/paths/apiv3-resource';
+import { Constructor } from 'core-app/core/util-types';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ApiV3GridsPaths } from 'core-app/core/apiv3/endpoints/grids/apiv3-grids-paths';
 import { ApiV3TimeEntriesPaths } from 'core-app/core/apiv3/endpoints/time-entries/apiv3-time-entries-paths';
@@ -55,14 +49,19 @@ import { ApiV3HelpTextsPaths } from 'core-app/core/apiv3/endpoints/help_texts/ap
 import { ApiV3ConfigurationPath } from 'core-app/core/apiv3/endpoints/configuration/apiv3-configuration-path';
 import { ApiV3BoardsPaths } from 'core-app/core/apiv3/virtual/apiv3-boards-paths';
 import { RootResource } from 'core-app/features/hal/resources/root-resource';
-import { ApiV3PlaceholderUsersPaths } from 'core-app/core/apiv3/endpoints/placeholder-users/apiv3-placeholder-users-paths';
+import {
+  ApiV3PlaceholderUsersPaths,
+} from 'core-app/core/apiv3/endpoints/placeholder-users/apiv3-placeholder-users-paths';
 import { ApiV3GroupsPaths } from 'core-app/core/apiv3/endpoints/groups/apiv3-groups-paths';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { ApiV3NotificationsPaths } from 'core-app/core/apiv3/endpoints/notifications/apiv3-notifications-paths';
 import { ApiV3ViewsPaths } from 'core-app/core/apiv3/endpoints/views/apiv3-views-paths';
 import { Apiv3BackupsPath } from 'core-app/core/apiv3/endpoints/backups/apiv3-backups-path';
 import { ApiV3DaysPaths } from 'core-app/core/apiv3/endpoints/days/api-v3-days-paths';
-import { Apiv3StoragesPaths } from 'core-app/core/apiv3/endpoints/storages/apiv3-storages-paths';
+import { ApiV3StoragesPaths } from 'core-app/core/apiv3/endpoints/storages/api-v3-storages-paths';
+import {
+  ApiV3ProjectStoragesPaths,
+} from 'core-app/core/apiv3/endpoints/project-storages/api-v3-project-storages-paths';
 
 @Injectable({ providedIn: 'root' })
 export class ApiV3Service {
@@ -87,6 +86,9 @@ export class ApiV3Service {
   // /api/v3/notifications
   public readonly notifications = this.apiV3CustomEndpoint(ApiV3NotificationsPaths);
 
+  // /api/v3/github_pull_requests
+  public readonly github_pull_requests = this.apiV3CollectionEndpoint('github_pull_requests');
+
   // /api/v3/grids
   public readonly grids = this.apiV3CustomEndpoint(ApiV3GridsPaths);
 
@@ -95,6 +97,9 @@ export class ApiV3Service {
 
   // /api/v3/root
   public readonly root = this.apiV3SingularEndpoint<RootResource>('');
+
+  // /api/v3/shares
+  public readonly shares = this.apiV3CollectionEndpoint('shares');
 
   // /api/v3/statuses
   public readonly statuses = this.apiV3CustomEndpoint(ApiV3StatusesPaths);
@@ -114,6 +119,9 @@ export class ApiV3Service {
   // /api/v3/capabilities
   public readonly capabilities = this.apiV3CustomEndpoint(ApiV3CapabilitiesPaths);
 
+  // /api/v3/meetings
+  public readonly meetings = this.apiV3CollectionEndpoint('meetings');
+
   // /api/v3/memberships
   public readonly memberships = this.apiV3CustomEndpoint(ApiV3MembershipsPaths);
 
@@ -121,7 +129,10 @@ export class ApiV3Service {
   public readonly news = this.apiV3CustomEndpoint(ApiV3NewsPaths);
 
   // /api/v3/storages
-  public readonly storages = this.apiV3CustomEndpoint(Apiv3StoragesPaths);
+  public readonly storages = this.apiV3CustomEndpoint(ApiV3StoragesPaths);
+
+  // /api/v3/project_storages
+  public readonly projectStorages = this.apiV3CustomEndpoint(ApiV3ProjectStoragesPaths);
 
   // /api/v3/types
   public readonly types = this.apiV3CustomEndpoint(ApiV3TypesPaths);
@@ -162,9 +173,10 @@ export class ApiV3Service {
   // VIRTUAL boards are /api/v3/grids + a scope filter
   public readonly boards = this.apiV3CustomEndpoint(ApiV3BoardsPaths);
 
-  constructor(readonly injector:Injector,
-    readonly pathHelper:PathHelperService) {
-  }
+  constructor(
+    readonly injector:Injector,
+    readonly pathHelper:PathHelperService,
+  ) { }
 
   /**
    * Returns the part of the API that exists both

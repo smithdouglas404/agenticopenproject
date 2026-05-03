@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,15 +29,16 @@
 #++
 
 class CustomActionsController < ApplicationController
-  include EnterpriseTrialHelper
   before_action :require_admin
-  before_action :require_enterprise_token
 
-  self._model_object = CustomAction
-  before_action :find_model_object, only: %i(edit update destroy)
+  guard_enterprise_feature(:custom_actions, only: %i[new create edit update]) do
+    redirect_to action: :index
+  end
+
+  before_action :find_custom_action, only: %i(edit update destroy)
   before_action :pad_params, only: %i(create update)
 
-  layout 'admin'
+  layout "admin"
 
   def index
     @custom_actions = CustomAction.order_by_position
@@ -45,14 +48,14 @@ class CustomActionsController < ApplicationController
     @custom_action = CustomAction.new
   end
 
+  def edit; end
+
   def create
     CustomActions::CreateService
       .new(user: current_user)
       .call(attributes: permitted_params.custom_action.to_h,
             &index_or_render(:new))
   end
-
-  def edit; end
 
   def update
     CustomActions::UpdateService
@@ -64,39 +67,26 @@ class CustomActionsController < ApplicationController
   def destroy
     @custom_action.destroy
 
-    redirect_to custom_actions_path
+    redirect_to custom_actions_path, status: :see_other
   end
 
   private
 
+  def find_custom_action
+    @custom_action = CustomAction.find(params[:id])
+  end
+
   def index_or_render(render_action)
     ->(call) {
       call.on_success do
-        redirect_to custom_actions_path
+        redirect_to custom_actions_path, status: :see_other
       end
 
       call.on_failure do
         @custom_action = call.result
-        @errors = call.errors
-        render action: render_action
+        render action: render_action, status: :unprocessable_entity
       end
     }
-  end
-
-  def require_enterprise_token
-    return if EnterpriseToken.allows_to?(:custom_actions)
-
-    if request.get?
-      render template: 'common/upsale',
-             locals: {
-               feature_title: I18n.t('custom_actions.upsale.title'),
-               feature_description: I18n.t('custom_actions.upsale.description'),
-               feature_reference: 'custom_actions_admin',
-               feature_video: 'enterprise/custom-actions.mp4'
-             }
-    else
-      render_403
-    end
   end
 
   # If no action/condition is set in the view, the
@@ -108,17 +98,5 @@ class CustomActionsController < ApplicationController
 
     params[:custom_action][:conditions] ||= {}
     params[:custom_action][:actions] ||= {}
-  end
-
-  def default_breadcrumb
-    if action_name == 'index'
-      t('custom_actions.plural')
-    else
-      ActionController::Base.helpers.link_to(t('custom_actions.plural'), custom_actions_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    true
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,17 +31,10 @@
 class Projects::Settings::BacklogsController < Projects::SettingsController
   menu_item :settings_backlogs
 
-  def show
-    @statuses_done_for_project = @project.done_statuses.select(:id).map(&:id)
-  end
+  def show; end
 
   def update
-    selected_statuses = (params[:statuses] || []).map do |work_package_status|
-      Status.find(work_package_status[:status_id].to_i)
-    end.compact
-
-    @project.done_statuses = selected_statuses
-    @project.save!
+    @project.update!(params.expect(project: { done_status_ids: [] }))
 
     flash[:notice] = I18n.t(:notice_successful_update)
 
@@ -47,12 +42,12 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
   end
 
   def rebuild_positions
-    @project.rebuild_positions
-    flash[:notice] = I18n.t('backlogs.positions_rebuilt_successfully')
+    WorkPackages::RebuildPositionsService.new(project: @project).call
+    flash[:notice] = I18n.t("backlogs.positions_rebuilt_successfully")
 
     redirect_to_backlogs_settings
   rescue ActiveRecord::ActiveRecordError
-    flash[:error] = I18n.t('backlogs.positions_could_not_be_rebuilt')
+    flash[:error] = I18n.t("backlogs.positions_could_not_be_rebuilt")
 
     log_rebuild_position_error
 

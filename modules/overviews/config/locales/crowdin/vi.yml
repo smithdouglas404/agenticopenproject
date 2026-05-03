@@ -1,4 +1,6 @@
+---
 vi:
   overviews:
-    label: 'Tổng quan'
-  permission_manage_overview: 'Manage overview page'
+    label_home: "%{workspace_type} nhà"
+    label_dashboard: Trang tổng quan
+    label_overview: tổng quan

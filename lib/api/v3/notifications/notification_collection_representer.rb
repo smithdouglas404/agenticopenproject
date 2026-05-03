@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,13 +30,16 @@ module API
   module V3
     module Notifications
       class NotificationCollectionRepresenter < ::API::Decorators::OffsetPaginatedCollection
+        self.to_eager_load = []
+        self.to_preload = []
+
         property :detailsSchemas,
                  getter: ->(*) { details_schemas },
                  exec_context: :decorator,
                  embedded: true,
                  if: ->(*) { details_schemas.any? }
 
-        def initialize(models, self_link:, current_user:, query: {}, page: nil, per_page: nil, groups: nil)
+        def initialize(models, self_link:, current_user:, query_params: {}, page: nil, per_page: nil, groups: nil)
           super
 
           @represented = ::API::V3::Notifications::NotificationEagerLoadingWrapper.wrap(represented)

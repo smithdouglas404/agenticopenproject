@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require_relative 'list_optional'
+require_relative "list_optional"
 
 module Queries::Filters::Shared
   module CustomFields
@@ -38,6 +40,30 @@ module Queries::Filters::Shared
 
       def allowed_values
         @allowed_values ||= me_allowed_value + super
+      end
+
+      def values_replaced
+        vals = super
+        vals += group_members_added(vals)
+        vals + user_groups_added(vals)
+      end
+
+      private
+
+      def group_members_added(vals)
+        ::User
+          .joins(:groups)
+          .where(groups_users: { id: vals })
+          .pluck(:id)
+          .map(&:to_s)
+      end
+
+      def user_groups_added(vals)
+        Group
+          .joins(:users)
+          .where(users_users: { id: vals })
+          .pluck(:id)
+          .map(&:to_s)
       end
     end
   end

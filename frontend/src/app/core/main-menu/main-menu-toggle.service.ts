@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,20 +28,18 @@
 
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { DeviceService } from 'core-app/core/browser/device.service';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { queryVisible } from 'core-app/shared/helpers/dom-helpers';
 
 @Injectable({ providedIn: 'root' })
 export class MainMenuToggleService {
-  public toggleTitle:string;
-
   private elementWidth:number;
 
   private elementMinWidth = 11;
 
-  private readonly defaultWidth:number = 230;
+  private readonly defaultWidth:number = 280;
 
   private readonly localStorageKey:string = 'openProject-mainMenuWidth';
 
@@ -49,92 +47,131 @@ export class MainMenuToggleService {
 
   @InjectField() currentProject:CurrentProjectService;
 
-  private global = (window as any);
-
   private htmlNode = document.getElementsByTagName('html')[0];
 
-  private mainMenu = jQuery('#main-menu')[0]; // main menu, containing sidebar and resizer
-
-  private hideElements = jQuery('.can-hide-navigation');
-
-  // Title needs to be sync in main-menu-toggle.component.ts and main-menu-resizer.component.ts
-  private titleData = new BehaviorSubject<string>('');
-
-  public titleData$ = this.titleData.asObservable();
+  private get mainMenu():HTMLElement|null {
+    return document.querySelector<HTMLElement>('#main-menu');
+  }
 
   // Notes all changes of the menu size (currently needed in wp-resizer.component.ts)
-  private changeData = new BehaviorSubject<any>({});
-
+  private changeData = new BehaviorSubject<number|undefined>(undefined);
   public changeData$ = this.changeData.asObservable();
 
-  constructor(protected I18n:I18nService,
+  private wasHiddenDueToResize = false;
+
+  private wasCollapsedByUser = false;
+
+  constructor(
     public injector:Injector,
-    readonly deviceService:DeviceService) {
+    readonly deviceService:DeviceService,
+  ) {
+    this.initializeMenu();
+    // Add resize event listener
+    window.addEventListener('resize', this.onWindowResize.bind(this));
   }
 
   public initializeMenu():void {
-    if (!this.mainMenu) {
+    const mainMenu = this.mainMenu;
+    if (!mainMenu) {
       return;
     }
 
-    this.elementWidth = parseInt(window.OpenProject.guardedLocalStorage(this.localStorageKey) as string);
-    const menuCollapsed = window.OpenProject.guardedLocalStorage(this.localStorageStateKey) as string;
+    this.elementWidth = parseInt(window.OpenProject.guardedLocalStorage(this.localStorageKey) as string, 10);
+    const menuCollapsed = window.OpenProject.guardedLocalStorage(this.localStorageStateKey) === 'true';
+
+    // Set the initial value of the collapse tracking flag
+    this.wasCollapsedByUser = menuCollapsed;
 
     if (!this.elementWidth) {
-      this.saveWidth(this.mainMenu.offsetWidth);
-    } else if (menuCollapsed && JSON.parse(menuCollapsed)) {
+      this.saveWidth(mainMenu.offsetWidth);
+    } else if (menuCollapsed) {
       this.closeMenu();
     } else {
       this.setWidth();
     }
 
-    const currentProject:CurrentProjectService = this.injector.get(CurrentProjectService);
-    if (jQuery(document.body).hasClass('controller-my') && this.elementWidth === 0 || currentProject.id === null) {
-      this.saveWidth(this.defaultWidth);
-    }
-
-    // mobile version default: hide menu on initialization
-    this.closeWhenOnMobile();
+    this.adjustMenuVisibility();
   }
 
-  // click on arrow or hamburger icon
-  public toggleNavigation(event?:JQuery.TriggeredEvent|Event):void {
+  private onWindowResize():void {
+    this.adjustMenuVisibility();
+  }
+
+  private adjustMenuVisibility():void {
+    if (window.innerWidth >= 1012) {
+      // On larger screens, reopen the menu if it was hidden only due to screen resizing
+      if (this.wasHiddenDueToResize && !this.wasCollapsedByUser) {
+        this.setWidth(this.defaultWidth);
+        this.wasHiddenDueToResize = false; // Reset the flag since the menu is now shown
+      }
+    } else if (this.showNavigation) {
+        this.closeMenu();
+        this.wasHiddenDueToResize = true; // Indicate that the menu was hidden due to resize
+    }
+  }
+
+  public toggleNavigation(event?:Event):void {
     if (event) {
       event.stopPropagation();
       event.preventDefault();
     }
 
-    if (!this.showNavigation) { // sidebar is hidden -> show menu
-      if (this.deviceService.isMobile) { // mobile version
-        this.setWidth(window.innerWidth);
-      } else { // desktop version
-        const savedWidth = parseInt(window.OpenProject.guardedLocalStorage(this.localStorageKey) as string);
-        const widthToSave = savedWidth >= this.elementMinWidth ? savedWidth : this.defaultWidth;
+    // Update the user collapse flag and clear `wasHiddenDueToResize`
+    this.wasCollapsedByUser = this.showNavigation;
+    this.wasHiddenDueToResize = false; // Reset because a manual toggle overrides any resize behavior
 
-        this.saveWidth(widthToSave);
-      }
-    } else { // sidebar is expanded -> close menu
+    if (this.showNavigation) {
       this.closeMenu();
+    } else {
+      this.openMenu();
     }
 
+    // Save the collapsed state in localStorage
+    window.OpenProject.guardedLocalStorage(this.localStorageStateKey, String(!this.showNavigation));
     // Set focus on first visible main menu item.
     // This needs to be called after AngularJS has rendered the menu, which happens some when after(!) we leave this
     // method here. So we need to set the focus after a timeout.
     setTimeout(() => {
-      jQuery('#main-menu [class*="-menu-item"]:visible').first().focus();
+      const mainMenu = this.mainMenu;
+      if (!mainMenu) return;
+      const firstVisibleMenuItem = queryVisible('[class*="-menu-item"]', mainMenu)[0];
+      firstVisibleMenuItem?.focus();
     }, 500);
   }
 
   public closeMenu():void {
     this.setWidth(0);
-    window.OpenProject.guardedLocalStorage(this.localStorageStateKey, 'true');
-    jQuery('.searchable-menu--search-input').blur();
+    this.changeData.next(0);
+    document.querySelectorAll<HTMLElement>('.searchable-menu--search-input').forEach((input) => input.blur());
   }
 
-  public closeWhenOnMobile():void {
-    if (this.deviceService.isMobile) {
-      this.closeMenu();
-      window.OpenProject.guardedLocalStorage(this.localStorageStateKey, 'false');
+  public openMenu():void {
+    const width = parseInt(window.OpenProject.guardedLocalStorage(this.localStorageKey) as string, 10) || this.defaultWidth;
+    this.setWidth(width);
+    this.changeData.next(width);
+  }
+
+  public setWidth(width?:number):void {
+    if (width !== undefined) {
+      this.elementWidth = width;
+    }
+
+    const mainMenu = this.mainMenu;
+    if (!mainMenu) return;
+
+    // Apply the width directly to the main menu
+    mainMenu.style.width = `${this.elementWidth}px`;
+
+    // Apply to root CSS variable for any related layout adjustments
+    this.htmlNode.style.setProperty('--main-menu-width', `${this.elementWidth}px`);
+
+    // Check if menu is open or closed and apply CSS class if needed
+    this.toggleClassHidden();
+    this.snapBack();
+
+    // Save the width if it's open
+    if (this.elementWidth > 0) {
+      window.OpenProject.guardedLocalStorage(this.localStorageKey, String(this.elementWidth));
     }
   }
 
@@ -144,31 +181,8 @@ export class MainMenuToggleService {
     window.OpenProject.guardedLocalStorage(this.localStorageStateKey, String(this.elementWidth === 0));
   }
 
-  public setWidth(width?:any):void {
-    if (width !== undefined) {
-      // Leave a minimum amount of space for space for the content
-      const maxMenuWidth = this.deviceService.isMobile ? window.innerWidth - 120 : window.innerWidth - 520;
-      if (width > maxMenuWidth) {
-        this.elementWidth = maxMenuWidth;
-      } else {
-        this.elementWidth = width as number;
-      }
-    }
-
-    this.snapBack();
-    this.setToggleTitle();
-    this.toggleClassHidden();
-
-    this.global.showNavigation = this.showNavigation;
-    this.htmlNode.style.setProperty('--main-menu-width', `${this.elementWidth}px`);
-
-    // Send change event when size of menu is changing (menu toggled or resized)
-    const changeEvent = jQuery.Event('change');
-    this.changeData.next(changeEvent);
-  }
-
   public get showNavigation():boolean {
-    return (this.elementWidth >= this.elementMinWidth);
+    return this.elementWidth >= this.elementMinWidth;
   }
 
   private snapBack():void {
@@ -177,16 +191,9 @@ export class MainMenuToggleService {
     }
   }
 
-  private setToggleTitle():void {
-    if (this.showNavigation) {
-      this.toggleTitle = this.I18n.t('js.label_hide_project_menu');
-    } else {
-      this.toggleTitle = this.I18n.t('js.label_expand_project_menu');
-    }
-    this.titleData.next(this.toggleTitle);
-  }
-
   private toggleClassHidden():void {
-    this.hideElements.toggleClass('hidden-navigation', !this.showNavigation);
+    const isHidden = this.elementWidth < this.elementMinWidth;
+    const hideElements = document.querySelectorAll<HTMLElement>('.can-hide-navigation');
+    hideElements.forEach((hideElement) => hideElement.classList.toggle('hidden-navigation', isHidden));
   }
 }

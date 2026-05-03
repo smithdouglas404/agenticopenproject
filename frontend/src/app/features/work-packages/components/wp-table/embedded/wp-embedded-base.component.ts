@@ -1,5 +1,9 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Directive, Input, SimpleChanges,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  Input,
+  SimpleChanges, OnInit, OnChanges,
 } from '@angular/core';
 import {
   WorkPackageTableConfiguration,
@@ -15,9 +19,11 @@ import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decora
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { WorkPackageStatesInitializationService } from '../../wp-list/wp-states-initialization.service';
+import { firstValueFrom } from 'rxjs';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 @Directive()
-export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewBase implements AfterViewInit {
+export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewBase implements AfterViewInit, OnInit, OnChanges {
   @Input('configuration') protected providedConfiguration:WorkPackageTableConfigurationObject;
 
   @Input() public uniqueEmbeddedTableName = `embedded-table-${Date.now()}`;
@@ -48,6 +54,8 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
 
   @InjectField() currentProject:CurrentProjectService;
 
+  @InjectField() pathHelper:PathHelperService;
+
   @InjectField() cdRef:ChangeDetectorRef;
 
   ngOnInit() {
@@ -61,12 +69,12 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
 
   ngAfterViewInit():void {
     // Load initially
-    this.loadQuery(true, false);
+    void this.loadQuery(true, false);
   }
 
   ngOnChanges(changes:SimpleChanges) {
     if (this.initialized && (changes.queryId || changes.queryProps)) {
-      this.loadQuery(this.initialLoadingIndicator, false);
+      void this.loadQuery(this.initialLoadingIndicator, false);
     }
   }
 
@@ -77,11 +85,11 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
     return this.configuration.projectIdentifier || undefined;
   }
 
-  public buildQueryProps() {
+  public buildQueryProps():object {
     const query = this.querySpace.query.value!;
     this.wpStatesInitialization.applyToQuery(query);
 
-    return this.urlParamsHelper.buildV3GetQueryFromQueryResource(query);
+    return this.urlParamsHelper.buildV3GetQueryFromQueryResource(query) as object;
   }
 
   public buildUrlParams() {
@@ -104,12 +112,13 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
       pagination.offset = 1;
     }
 
-    const params = this.urlParamsHelper.buildV3GetQueryFromQueryResource(query, pagination);
-    const promise = this
-      .wpListService
-      .loadQueryFromExisting(query, params, this.queryProjectScope)
-      .toPromise()
-      .then((query) => this.wpStatesInitialization.updateQuerySpace(query, query.results));
+    const params = this.urlParamsHelper.buildV3GetQueryFromQueryResource(query, pagination) as object;
+    const promise = firstValueFrom(
+      this
+        .wpListService
+        .loadQueryFromExisting(query, params, this.queryProjectScope),
+    )
+      .then((updated) => this.wpStatesInitialization.updateQuerySpace(updated, updated.results));
 
     if (visible) {
       this.loadingIndicator = promise;
@@ -121,7 +130,7 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
     return !!this.configuration;
   }
 
-  public set loadingIndicator(promise:Promise<any>) {
+  public set loadingIndicator(promise:Promise<unknown>) {
     if (this.configuration.tableVisible) {
       this.loadingIndicatorService
         .indicator(this.uniqueEmbeddedTableName)
@@ -129,7 +138,7 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
     }
   }
 
-  public abstract loadQuery(visible:boolean, firstPage:boolean):Promise<any>;
+  public abstract loadQuery(visible:boolean, firstPage:boolean):Promise<QueryResource|undefined>;
 
   protected get queryProjectScope() {
     if (!this.configuration.projectContext) {

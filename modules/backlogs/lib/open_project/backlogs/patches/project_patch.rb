@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,25 +29,21 @@
 #++
 
 module OpenProject::Backlogs::Patches::ProjectPatch
-  def self.included(base)
-    base.class_eval do
-      has_and_belongs_to_many :done_statuses, join_table: :done_statuses_for_project, class_name: '::Status'
+  extend ActiveSupport::Concern
+  include Projects::SprintSharing
 
-      include InstanceMethods
-    end
+  included do
+    has_and_belongs_to_many :done_statuses, join_table: :done_statuses_for_project, class_name: "::Status"
+    has_many :sprints, dependent: :destroy
+    has_many :backlog_buckets, dependent: :destroy
   end
 
-  module InstanceMethods
-    def rebuild_positions
-      return unless backlogs_enabled?
+  def backlogs_enabled?
+    module_enabled? "backlogs"
+  end
 
-      shared_versions.each { |v| v.rebuild_positions(self) }
-      nil
-    end
-
-    def backlogs_enabled?
-      module_enabled? 'backlogs'
-    end
+  def assignable_sprints
+    @assignable_sprints ||= Sprint.for_project(self).visible.not_completed
   end
 end
 

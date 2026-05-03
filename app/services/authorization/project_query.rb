@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +35,8 @@ class Authorization::ProjectQuery < Authorization::AbstractQuery
     projects_table[:id]
       .eq(members_table[:project_id])
       .and(members_table[:user_id].eq(user.id))
+      .and(members_table[:entity_type].eq(nil))
+      .and(members_table[:entity_id].eq(nil))
       .and(project_active_condition)
   end
 
@@ -93,11 +97,11 @@ class Authorization::ProjectQuery < Authorization::AbstractQuery
   end
 
   def self.permission_roles_table
-    Role.arel_table.alias('permission_roles')
+    Role.arel_table.alias("permission_roles")
   end
 
   def self.assigned_roles_table
-    Role.arel_table.alias('assigned_roles')
+    Role.arel_table.alias("assigned_roles")
   end
 
   def self.role_has_permission_and_is_assigned(user, action)
@@ -138,7 +142,7 @@ class Authorization::ProjectQuery < Authorization::AbstractQuery
   end
 
   def self.action_project_modules(action)
-    permissions(action).map(&:project_module).compact.uniq
+    permissions(action).filter_map(&:project_module).uniq
   end
 
   def self.action_public?(action)

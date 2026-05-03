@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,10 +30,6 @@
 
 module Admin::Settings
   class ProjectsSettingsController < ::Admin::SettingsController
-    menu_item :settings_projects
-
-    def default_breadcrumb
-      t(:label_project_plural)
-    end
+    menu_item :project_lists_settings
   end
 end

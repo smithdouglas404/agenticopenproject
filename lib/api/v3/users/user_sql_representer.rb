@@ -1,5 +1,5 @@
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -34,25 +34,33 @@ module API
           def user_name_projection(*)
             case Setting.user_format
             when :firstname_lastname
-              'concat(firstname, \' \', lastname)'
+              "concat(firstname, ' ', lastname)"
             when :firstname
-              'firstname'
+              "firstname"
             when :lastname_firstname
-              'concat(lastname, \' \', firstname)'
-            when :lastname_coma_firstname
-              'concat(lastname, \', \', firstname)'
+              "concat(lastname, ' ', firstname)"
+            when :lastname_comma_firstname
+              "concat(lastname, ', ', firstname)"
             when :lastname_n_firstname
-              'concat_ws(lastname, \'\', firstname)'
+              "concat_ws(lastname, '', firstname)"
             when :username
-              'login'
+              "login"
             else
               raise ArgumentError, "Invalid user format"
             end
           end
 
           def render_if_manage_user_or_self(*)
-            if User.current.allowed_to_globally?(:manage_user)
-              'TRUE'
+            if User.current.allowed_globally?(:manage_user)
+              "TRUE"
+            else
+              "id = #{User.current.id}"
+            end
+          end
+
+          def render_if_view_user_email_or_self(*)
+            if User.current.allowed_globally?(:view_user_email)
+              "TRUE"
             else
               "id = #{User.current.id}"
             end
@@ -71,6 +79,10 @@ module API
 
         property :name,
                  representation: method(:user_name_projection)
+
+        property :email,
+                 column: :mail,
+                 render_if: method(:render_if_view_user_email_or_self)
 
         property :firstname,
                  render_if: method(:render_if_manage_user_or_self)

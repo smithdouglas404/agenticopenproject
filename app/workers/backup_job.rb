@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,10 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'tempfile'
-require 'zip'
+require "tempfile"
+require "zip"
 
-class BackupJob < ::ApplicationJob
+class BackupJob < ApplicationJob
+  include OpenProject::PostgresEnvironment
+
   queue_with_priority :above_normal
 
   attr_reader :backup, :user
@@ -64,7 +68,7 @@ class BackupJob < ::ApplicationJob
       db_dump_file_name:
     )
 
-    store_backup file_name, backup: backup, user: user
+    store_backup(file_name, backup:, user:)
     cleanup_previous_backups!
 
     notify_backup_ready!
@@ -132,22 +136,22 @@ class BackupJob < ::ApplicationJob
   def store_backup(file_name, backup:, user:)
     File.open(file_name) do |file|
       call = Attachments::CreateService
-        .bypass_whitelist(user:)
-        .call(container: backup, filename: file_name, file:, description: 'OpenProject backup')
+        .bypass_allowlist(user:)
+        .call(container: backup, filename: file_name, file:, description: "OpenProject backup")
 
       call.on_success do
         download_url = ::API::V3::Utilities::PathHelper::ApiV3Path.attachment_content(call.result.id)
 
         upsert_status(
           status: :success,
-          message: I18n.t('export.succeeded'),
-          payload: download_payload(download_url)
+          message: I18n.t("export.succeeded"),
+          payload: download_payload(download_url, "application/zip")
         )
       end
 
       call.on_failure do
         upsert_status status: :failure,
-                      message: I18n.t('export.failed', message: call.message)
+                      message: I18n.t("export.failed", message: call.message)
       end
     end
   end
@@ -165,8 +169,7 @@ class BackupJob < ::ApplicationJob
 
         paths_to_clean << get_cache_folder_path(attachment) if clean_up && attachment.file.cached?
       end
-
-      zipfile.get_output_stream("openproject.sql") { |f| f.write File.read(db_dump_file_name) }
+      zipfile.add "openproject.sql", db_dump_file_name
     end
 
     remove_paths! paths_to_clean # delete locally cached files that were downloaded just for the backup
@@ -199,7 +202,7 @@ class BackupJob < ::ApplicationJob
   def get_cache_folder_path(attachment)
     # expecting paths like /tmp/op_uploaded_files/1639754082-3468-0002-0911/file.ext
     # just making extra sure so we don't delete anything wrong later on
-    unless attachment.diskfile.path =~ /#{attachment.file.cache_dir}\/[^\/]+\/[^\/]+/
+    unless /#{attachment.file.cache_dir}\/[^\/]+\/[^\/]+/.match?(attachment.diskfile.path)
       raise "Unexpected cache path for attachment ##{attachment.id}: #{attachment.diskfile}"
     end
 
@@ -251,41 +254,11 @@ class BackupJob < ::ApplicationJob
   end
 
   def failure!(error: nil)
-    msg = I18n.t 'backup.failed'
+    msg = I18n.t "backup.failed"
 
     upsert_status(
       status: :failure,
       message: error.present? ? "#{msg}: #{error}" : msg
     )
-  end
-
-  def pg_env
-    entries = pg_env_to_connection_config.map do |key, config_key|
-      possible_keys = Array(config_key)
-      value = possible_keys
-        .lazy
-        .filter_map { |key| database_config[key] }
-        .first
-
-      [key.to_s, value.to_s] if value.present?
-    end
-
-    entries.compact.to_h
-  end
-
-  def database_config
-    @database_config ||= ActiveRecord::Base.connection_db_config.configuration_hash
-  end
-
-  ##
-  # Maps the PG env variable name to the key in the AR connection config.
-  def pg_env_to_connection_config
-    {
-      PGHOST: :host,
-      PGPORT: :port,
-      PGUSER: %i[username user],
-      PGPASSWORD: :password,
-      PGDATABASE: :database
-    }
   end
 end

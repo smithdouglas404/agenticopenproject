@@ -1,120 +1,70 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
-describe 'Work Package table relations', js: true do
-  let(:user) { create :admin }
+require "spec_helper"
 
-  let(:type) { create(:type) }
-  let(:type2) { create(:type) }
-  let(:project) { create(:project, types: [type, type2]) }
+RSpec.describe "Work Package table child relations",
+               :js,
+               with_ee: %i[work_package_query_relation_columns] do
+  shared_let(:user) { create(:admin) }
 
-  let(:wp_table) { Pages::WorkPackagesTable.new(project) }
-  let(:relations) { ::Components::WorkPackages::Relations.new(relations) }
-  let(:columns) { ::Components::WorkPackages::Columns.new }
-  let(:wp_timeline) { Pages::WorkPackagesTimeline.new(project) }
+  shared_let(:type) { create(:type) }
+  shared_let(:project) { create(:project, types: [type]) }
 
-  let!(:wp_from) { create(:work_package, project:, type: type2) }
-  let!(:wp_to) { create(:work_package, project:, type:) }
-  let!(:wp_to2) { create(:work_package, project:, type:) }
-
-  let!(:relation) do
-    create(:relation,
-           from: wp_from,
-           to: wp_to,
-           relation_type: Relation::TYPE_FOLLOWS)
-  end
-  let!(:relation2) do
-    create(:relation,
-           from: wp_from,
-           to: wp_to2,
-           relation_type: Relation::TYPE_FOLLOWS)
-  end
-  let!(:query) do
+  shared_let(:query) do
     query              = build(:query, user:, project:)
-    query.column_names = ['subject']
+    query.column_names = ["subject"]
     query.filters.clear
 
     query.save!
     query
   end
 
-  let(:type_column_id) { "relationsToType#{type.id}" }
-  let(:type_column_follows) { 'relationsOfTypeFollows' }
-  let(:relation_columns_allowed) { true }
+  let(:wp_table) { Pages::WorkPackagesTable.new(project) }
+  let(:relations) { Components::WorkPackages::Relations.new(relations) }
+  let(:columns) { Components::WorkPackages::Columns.new }
+
+  shared_let(:parent) { create(:work_package, subject: "Parent", project:, type:, author: user) }
+  shared_let(:child) { create(:work_package, subject: "Child", parent:, project:, type:, author: user) }
 
   before do
-    # There does not seem to appear a way to generate a valid token
-    # for testing purposes
-    if relation_columns_allowed
-      with_enterprise_token :work_package_query_relation_columns
-    end
-
     login_as(user)
   end
 
-  describe 'with relation columns allowed by the enterprise token' do
-    it 'displays expandable relation columns' do
+  describe "with relation columns allowed by the enterprise token" do
+    it "displays expandable relation columns for the children of a work package" do
       # Now visiting the query for category
       wp_table.visit_query(query)
-      wp_table.expect_work_package_listed(wp_from, wp_to, wp_to2)
+      wp_table.expect_work_package_listed(parent)
 
-      columns.add(type.name, finicky: true)
-      columns.add("follows", finicky: true)
+      columns.add("Children")
 
-      wp_from_row = wp_table.row(wp_from)
-      wp_from_to = wp_table.row(wp_to)
+      parent_row = wp_table.row(parent)
+      child_row = wp_table.row(child)
 
-      # Expect count for wp_from in both columns to be one
-      expect(wp_from_row).to have_selector(".#{type_column_id} .wp-table--relation-count", text: '2')
-      expect(wp_from_row).to have_selector(".#{type_column_follows} .wp-table--relation-count", text: '2')
+      # Expect count for parent to be one
+      expect(parent_row).to have_css(".relationChild .wp-table--relation-count", text: "1")
 
-      # Expect count for wp_to in both columns to be not rendered
-      expect(wp_from_to).to have_no_selector(".#{type_column_id} .wp-table--relation-count")
-      expect(wp_from_to).to have_no_selector(".#{type_column_follows} .wp-table--relation-count")
+      # Expect count for child to be not rendered
+      expect(child_row).to have_no_css(".relationChild .wp-table--relation-count")
 
-      # Expand first column
-      wp_from_row.find(".#{type_column_id} .wp-table--relation-indicator").click
-      expect(page).to have_selector(".__relations-expanded-from-#{wp_from.id}", count: 2)
-      related_row = page.first(".__relations-expanded-from-#{wp_from.id}")
-      expect(related_row).to have_selector('td.wp-table--relation-cell-td', text: "Precedes")
+      # Expand column
+      parent_row.find(".relationChild .wp-table--relation-indicator").click
+      expect(page).to have_css(".__relations-expanded-from-#{parent.id}", count: 1)
+
+      related_row = page.first(".__relations-expanded-from-#{parent.id}")
+      expect(related_row).to have_css("td.wp-table--relation-cell-td", text: "Child")
 
       # Collapse
-      wp_from_row.find(".#{type_column_id} .wp-table--relation-indicator").click
-      expect(page).to have_no_selector(".__relations-expanded-from-#{wp_from.id}")
-
-      # Expand second column
-      wp_from_row.find(".#{type_column_follows} .wp-table--relation-indicator").click
-      expect(page).to have_selector(".__relations-expanded-from-#{wp_from.id}", count: 2)
-      related_row = page.first(".__relations-expanded-from-#{wp_from.id}")
-      expect(related_row).to have_selector('.wp-table--relation-cell-td', text: wp_to.type)
-
-      # Open Timeline
-      # Should be initially closed
-      wp_timeline.expect_timeline!(open: false)
-
-      # Enable timeline
-      wp_timeline.toggle_timeline
-      wp_timeline.expect_timeline!(open: true)
-
-      # 3 WPs + 2 expanded relations
-      wp_timeline.expect_row_count(5)
-
-      # Collapse
-      wp_from_row.find(".#{type_column_follows} .wp-table--relation-indicator").click
-      expect(page).to have_no_selector(".__relations-expanded-from-#{wp_from.id}")
-
-      wp_timeline.expect_row_count(3)
+      parent_row.find(".relationChild .wp-table--relation-indicator").click
+      expect(page).to have_no_css(".__relations-expanded-from-#{parent.id}")
     end
   end
 
-  describe 'with relation columns disallowed by the enterprise token' do
-    let(:relation_columns_allowed) { false }
-
-    it 'has no relation columns available for selection' do
+  describe "with relation columns disallowed by the enterprise token", with_ee: false do
+    it "has no relation columns available for selection" do
       # Now visiting the query for category
       wp_table.visit_query(query)
-
-      columns.expect_column_not_available 'follows relations'
-      columns.expect_column_not_available "Relations to #{type.name}"
+      columns.expect_column_not_available "Children"
     end
   end
 end

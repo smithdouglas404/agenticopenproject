@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,9 +27,12 @@
 //++
 
 import { OpenProjectPluginContext } from 'core-app/features/plugins/plugin-context';
-import { input, InputState } from 'reactivestates';
-import { take } from 'rxjs/operators';
-import { GlobalHelpers } from 'core-app/core/setup/globals/global-helpers';
+import { input, InputState } from '@openproject/reactivestates';
+import { getMetaContent, getMetaValue } from 'core-app/core/setup/globals/global-helpers';
+import { firstValueFrom } from 'rxjs';
+import { ThemeUtils } from './theme-utils';
+
+export type OpenProjectPageState = 'pristine'|'edited'|'submitted';
 
 /**
  * OpenProject instance methods
@@ -37,14 +40,21 @@ import { GlobalHelpers } from 'core-app/core/setup/globals/global-helpers';
 export class OpenProject {
   public pluginContext:InputState<OpenProjectPluginContext> = input<OpenProjectPluginContext>();
 
-  public helpers = new GlobalHelpers();
+  /**
+   * Theme utilities for system theme detection and application
+   */
+  public theme = new ThemeUtils();
 
-  /** Globally setable variable whether the page was edited */
-  public pageWasEdited = false;
+  /** Globally setable variable whether the page was edited or submitted */
+  pageState:OpenProjectPageState = 'pristine';
 
-  /** Globally setable variable whether the page form is submitted.
-   * Necessary to avoid a data loss warning on beforeunload */
-  public pageIsSubmitted = false;
+  public get pageWasEdited():boolean {
+    return this.pageState === 'edited';
+  }
+
+  public get pageWasSubmitted():boolean {
+    return this.pageState === 'submitted';
+  }
 
   /** Globally setable variable whether any of the EditFormComponent
    * contain changes.
@@ -54,22 +64,19 @@ export class OpenProject {
   public editFormsContainModelChanges:boolean;
 
   public getPluginContext():Promise<OpenProjectPluginContext> {
-    return this.pluginContext
-      .values$()
-      .pipe(take(1))
-      .toPromise();
+    return firstValueFrom(this.pluginContext.values$());
   }
 
   public get urlRoot():string {
-    return jQuery('meta[name=app_base_path]').attr('content') || '';
+    return getMetaContent('app_base_path');
   }
 
   public get environment():string {
-    return jQuery('meta[name=openproject_initializer]').data('environment');
+    return getMetaValue('openproject_initializer', 'environment');
   }
 
   public get edition():string {
-    return jQuery('meta[name=openproject_initializer]').data('edition');
+    return getMetaValue('openproject_initializer', 'edition');
   }
 
   public get isStandardEdition():boolean {

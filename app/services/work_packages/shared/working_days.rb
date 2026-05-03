@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,12 +31,37 @@
 module WorkPackages
   module Shared
     class WorkingDays
-      # Returns number of working days between two dates, excluding weekend days
-      # and non working days.
+      class << self
+        def clear_cache
+          RequestStore.delete(:work_package_non_working_dates)
+        end
+      end
+
+      # Returns number of working days between two dates, inclusive, excluding
+      # weekend days and non working days.
       def duration(start_date, due_date)
         return nil unless start_date && due_date
 
-        (start_date..due_date).count { working?(_1) }
+        (start_date..due_date).count { working?(it) }
+      end
+
+      # Returns the number of working days between a predecessor date and
+      # successor date, exclusive.
+      def lag(predecessor_date, successor_date)
+        return nil unless predecessor_date && successor_date
+
+        duration(predecessor_date + 1.day, successor_date - 1.day)
+      end
+
+      def with_lag(date, lag)
+        return nil unless date
+
+        lag ||= 0
+        if lag >= 0
+          add_lag(date, lag)
+        else
+          remove_lag(date, -lag)
+        end
       end
 
       def start_date(due_date, duration)
@@ -61,15 +88,8 @@ module WorkPackages
         due_date
       end
 
-      def soonest_working_day(date, delay: nil)
+      def soonest_working_day(date)
         return unless date
-
-        delay ||= 0
-
-        while delay > 0
-          delay -= 1 if working?(date)
-          date += 1
-        end
 
         until working?(date)
           date += 1
@@ -89,7 +109,27 @@ module WorkPackages
       private
 
       def assert_strictly_positive_duration(duration)
-        raise ArgumentError, 'duration must be strictly positive' if duration.is_a?(Integer) && duration <= 0
+        raise ArgumentError, "duration must be strictly positive" if duration.is_a?(Integer) && duration <= 0
+      end
+
+      def add_lag(date, lag)
+        date_with_lag = date.next_day
+        while lag != 0
+          lag -= 1 if working?(date_with_lag)
+          date_with_lag += 1
+        end
+        date_with_lag
+      end
+
+      def remove_lag(date, lag)
+        date_with_lag = date
+        while lag != 0
+          lag -= 1 if working?(date_with_lag)
+          next if lag == 0
+
+          date_with_lag -= 1
+        end
+        date_with_lag
       end
 
       def latest_working_day(date)
@@ -113,8 +153,8 @@ module WorkPackages
       def assert_some_working_week_days_exist
         return if @working_week_days_exist
 
-        if working_week_days.all? { |working| working == false }
-          raise 'cannot have all week days as non-working days'
+        if working_week_days.all?(false)
+          raise "cannot have all week days as non-working days"
         end
 
         @working_week_days_exist = true

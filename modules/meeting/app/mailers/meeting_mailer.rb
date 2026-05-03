@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,85 +28,168 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'icalendar'
-require 'icalendar/tzinfo'
-
 class MeetingMailer < UserMailer
-  def content_for_review(content, content_type, user)
-    @author = User.current
-    @meeting = content.meeting
-    @content_type = content_type
+  include CalendarAttachment
 
-    open_project_headers 'Project' => @meeting.project.identifier,
-                         'Meeting-Id' => @meeting.id
+  def invited(meeting, user, actor)
+    @actor = actor
+    @meeting = meeting
+    @user = user
 
-    User.execute_as(user) do
-      subject = "[#{@meeting.project.name}] #{I18n.t(:"label_#{content_type}")}: #{@meeting.title}"
-      mail to: user.mail, subject:
+    open_project_headers "Project" => @meeting.project.identifier,
+                         "Meeting-Id" => @meeting.id
+
+    with_attached_ics(meeting, user) do
+      subject = "[#{@meeting.project.name}] #{@meeting.title}"
+      mail(to: user, subject:)
     end
   end
 
-  def icalendar_notification(content, content_type, user)
-    @meeting = content.meeting
-    @content_type = content_type
+  def updated(meeting, user, actor, changes:)
+    @actor = actor
+    @user = user
+    @meeting = meeting
+    @changes = changes
+
+    open_project_headers "Project" => @meeting.project.identifier,
+                         "Meeting-Id" => @meeting.id
+
+    with_attached_ics(meeting, user) do
+      subject = "[#{@meeting.project.name}] "
+      subject << I18n.t("meeting.email.updated.header", title: @meeting.title)
+      mail(to: user, subject:)
+    end
+  end
+
+  def cancelled(meeting, user, actor)
+    @actor = actor
+    @user = user
+    @meeting = meeting
+
+    open_project_headers "Project" => @meeting.project.identifier,
+                         "Meeting-Id" => @meeting.id
+
+    with_attached_ics(meeting, user, cancelled: true) do
+      subject = I18n.t("meeting.email.cancelled.header", title: @meeting.title)
+
+      mail(to: user, subject: "[#{@meeting.project.name}] #{subject}")
+    end
+  end
+
+  def cancelled_series(series, user, actor)
+    @actor = actor
+    @user = user
+    @series = series
+
+    open_project_headers "Project" => @series.project.identifier,
+                         "Meeting-Id" => @series.id
+
+    with_attached_ics(@series, user, cancelled: true) do
+      subject = I18n.t("meeting.email.cancelled.header", title: @series.title)
+
+      mail(to: user, subject: "[#{@series.project.name}] #{subject}")
+    end
+  end
+
+  def ended_series(series, user, actor)
+    @actor = actor
+    @user = user
+    @series = series
+
+    open_project_headers "Project" => @series.project.identifier,
+                         "Meeting-Id" => @series.id
+
+    with_attached_ics(@series, user) do
+      subject = I18n.t("meeting.email.ended.header_series", title: @series.title)
+
+      mail(to: user, subject: "[#{@series.project.name}] #{subject}")
+    end
+  end
+
+  def icalendar_notification(meeting, user, _actor, **)
+    @meeting = meeting
 
     set_headers @meeting
 
-    User.execute_as(user) do
-      timezone = Time.zone || Time.zone_default
+    with_attached_ics(meeting, user) do
+      subject = "[#{@meeting.project.name}] #{@meeting.title}"
+      mail(to: user, subject:)
+    end
+  end
 
-      @formatted_timezone = format_timezone_offset timezone, @meeting.start_time
+  def participant_added(meeting, user, actor, added_participant:)
+    @actor = actor
+    @meeting = meeting
+    @user = user
+    @added_participant = added_participant
 
-      attachments['meeting.ics'] = generate_ical timezone, @meeting, @content_type
-      mail(to: user.mail, subject: ical_subject(@meeting, @content_type))
+    open_project_headers "Project" => @meeting.project.identifier,
+                         "Meeting-Id" => @meeting.id
+
+    with_attached_ics(meeting, user) do
+      subject = I18n.t("meeting.email.participant_added.header", title: @meeting.title)
+      mail(to: user, subject: "[#{@meeting.project.name}] #{subject}")
+    end
+  end
+
+  def participant_removed(meeting, user, actor, removed_participant:)
+    @actor = actor
+    @meeting = meeting
+    @user = user
+    @removed_participant = removed_participant
+
+    open_project_headers "Project" => @meeting.project.identifier,
+                         "Meeting-Id" => @meeting.id
+
+    with_attached_ics(meeting, user) do
+      subject = I18n.t("meeting.email.participant_removed.header", title: @meeting.title)
+      mail(to: user, subject: "[#{@meeting.project.name}] #{subject}")
     end
   end
 
   private
 
-  def set_headers(meeting)
-    open_project_headers 'Project' => meeting.project.identifier, 'Meeting-Id' => meeting.id
-    headers['Content-Type'] = 'text/calendar; charset=utf-8; method="PUBLISH"; name="meeting.ics"'
-    headers['Content-Transfer-Encoding'] = '8bit'
-  end
+  def with_attached_ics(meeting, user, **args)
+    User.execute_as(user) do
+      call = ics_service_call(meeting, user, **args)
 
-  def format_timezone_offset(timezone, time)
-    offset = ::ActiveSupport::TimeZone.seconds_to_utc_offset time.utc_offest_for_timezone(timezone), true
-    "(GMT#{offset}) #{timezone.name}"
-  end
+      call.on_success do
+        ics_content = call.result
+        cancelled = args[:cancelled] || false
 
-  def ical_subject(meeting, content_type)
-    "[#{meeting.project.name}] #{I18n.t(:"label_#{content_type}")}: #{meeting.title}"
-  end
+        # The attachment has to be added before the mail is created
+        add_calendar_attachment(ics_content, cancelled:)
 
-  # rubocop:disable Metrics/AbcSize
-  def generate_ical(timezone, meeting, content_type)
-    calendar = ::Icalendar::Calendar.new
+        message = yield
 
-    tzinfo = timezone.tzinfo
-    calendar.add_timezone tzinfo.ical_timezone(meeting.start_time)
-    tzid = tzinfo.canonical_identifier
+        add_calendar_part(message, ics_content, cancelled:)
 
-    calendar.event do |e|
-      e.dtstart = ical_datetime meeting.start_time, tzid
-      e.dtend = ical_datetime meeting.end_time, tzid
-      e.url = meeting_url(meeting)
-      e.summary = "[#{meeting.project.name}] #{meeting.title}"
-      e.description = ical_subject(meeting, content_type)
-      e.uid = "#{meeting.id}@#{meeting.project.identifier}"
-      e.organizer = ical_organizer meeting
+        message
+      end
+
+      call.on_failure do
+        Rails.logger.error { "Failed to create ICS attachment for meeting #{meeting.id}: #{call.message}" }
+      end
     end
-
-    calendar.publish
-    calendar.to_ical
-  end
-  # rubocop:enable Metrics/AbcSize
-
-  def ical_datetime(time, timezone_id)
-    Icalendar::Values::DateTime.new time.in_time_zone(timezone_id), 'tzid' => timezone_id
   end
 
-  def ical_organizer(meeting)
-    Icalendar::Values::CalAddress.new("mailto:#{meeting.author.mail}", cn: meeting.author.name)
+  def ics_service_call(meeting, user, **args)
+    if meeting.is_a?(RecurringMeeting)
+      ::RecurringMeetings::ICalService
+        .new(user:, series: meeting)
+        .generate_series(**args)
+    elsif meeting.recurring?
+      ::RecurringMeetings::ICalService
+        .new(user:, series: meeting.recurring_meeting)
+        .generate_single_occurrence(meeting: meeting, **args)
+    else
+      ::Meetings::ICalService
+        .new(user:, meeting:)
+        .call(**args)
+    end
+  end
+
+  def set_headers(meeting)
+    open_project_headers "Project" => meeting.project.identifier, "Meeting-Id" => meeting.id
   end
 end

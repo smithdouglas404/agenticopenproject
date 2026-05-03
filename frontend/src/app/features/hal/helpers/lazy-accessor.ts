@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +31,8 @@ import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 export namespace OpenprojectHalModuleHelpers {
   export function lazy(obj:HalResource,
     property:string,
-    getter:{ ():any },
-    setter?:{ (value:any):void }):void {
+    getter:() => any,
+    setter?:(value:any) => void):void {
     if (_.isObject(obj)) {
       let done = false;
       let value:any;

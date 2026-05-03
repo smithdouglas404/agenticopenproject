@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,10 +35,15 @@ class CustomActions::Actions::AssignedTo < CustomActions::Actions::Base
     :assigned_to
   end
 
+  def type
+    :user
+  end
+
   def available_principles
     principal_class
       .not_locked
-      .select(:id, :firstname, :lastname, :type)
+      .select(:id, :type)
+      .select_for_name
       .ordered_by_name
       .map { |u| [u.id, u.name] }
   end

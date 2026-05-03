@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -51,7 +53,11 @@ module OAuthClients
     def oauth_state_cookie
       return nil if @state.blank?
 
-      @cookies["oauth_state_#{@state}"]
+      state_cookie = @cookies["oauth_state_#{@state}"]
+      return nil if state_cookie.blank?
+
+      state_value = MultiJson.load(@cookies["oauth_state_#{@state}"], symbolize_keys: true)
+      state_value[:href]
     end
   end
 end

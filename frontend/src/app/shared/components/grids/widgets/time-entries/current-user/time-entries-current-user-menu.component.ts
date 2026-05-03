@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2022 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,36 +27,37 @@
 //++
 
 import {
-  Component, EventEmitter, Injector, Output,
+  ChangeDetectionStrategy, Component, EventEmitter, Output,
 } from '@angular/core';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { GridRemoveWidgetService } from 'core-app/shared/components/grids/grid/remove-widget.service';
-import { GridAreaService } from 'core-app/shared/components/grids/grid/area.service';
-import { WidgetAbstractMenuComponent } from 'core-app/shared/components/grids/widgets/menu/widget-abstract-menu.component';
-import { TimeEntriesCurrentUserConfigurationModalComponent } from 'core-app/shared/components/grids/widgets/time-entries/current-user/configuration-modal/configuration.modal';
+import {
+  WidgetAbstractMenuComponent,
+} from 'core-app/shared/components/grids/widgets/menu/widget-abstract-menu.component';
+import {
+  TimeEntriesCurrentUserConfigurationModalComponent,
+} from 'core-app/shared/components/grids/widgets/time-entries/current-user/configuration-modal/configuration.modal';
+import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 
 @Component({
   selector: 'widget-time-entries-current-user-menu',
   templateUrl: '../../menu/widget-menu.component.html',
+  standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WidgetTimeEntriesCurrentUserMenuComponent extends WidgetAbstractMenuComponent {
-  @Output()
-  onConfigured:EventEmitter<any> = new EventEmitter();
+  @InjectField() opModalService:OpModalService;
 
-  protected menuItemList = [
-    this.removeItem,
-    this.configureItem,
-  ];
+  @Output() onConfigured = new EventEmitter<any>();
 
-  constructor(private readonly injector:Injector,
-    private readonly opModalService:OpModalService,
-    readonly i18n:I18nService,
-    protected readonly remove:GridRemoveWidgetService,
-    readonly layout:GridAreaService) {
-    super(i18n,
-      remove,
-      layout);
+  protected async buildItems():Promise<OpContextMenuItem[]> {
+    return [
+      this.removeItem,
+      this.configureItem,
+    ];
   }
 
   protected get configureItem() {

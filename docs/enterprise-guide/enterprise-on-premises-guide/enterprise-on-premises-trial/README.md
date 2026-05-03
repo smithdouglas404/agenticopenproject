@@ -7,26 +7,34 @@ keywords: enterprise on-premises, trial, eop
 ---
 # Create an Enterprise on-premises edition trial
 
-You can **test the OpenProject Enterprise on-premises edition 14 days for free**. It will extend your current Community edition with the Enterprise add-ons so you can thoroughly test those Enterprise functionalities.
+You can **test the OpenProject Enterprise on-premises edition for 14 days free of charge**. The trial temporarily extends your existing Community edition with Enterprise add-ons, allowing you to thoroughly evaluate the Enterprise features.
 
-You can start the trial period for OpenProject either via an already installed Community edition or via our website.
+You can start the trial in one of the following ways:
 
-A) To upgrade your Community installation, navigate to your system -> Administration -> Enterprise edition. Here, you can simply click the green **Start free trial button**.
+## Option A: Start a trial from an existing Community installation
 
-![start trial with community edition](start-trial-with-community-edition.png)
+If you already have an OpenProject Community edition installed, you can start the trial directly from your system:
 
-B) To get a free trial from the website, please go to [the Enterprise site on our website](https://www.openproject.org/enterprise-edition/) and press the green **Get free trial license** button.
+1. Navigate to **Administration → Enterprise edition**.
+2. Click the **Start free trial** button.
 
-![create-enterprise-edition-trial](1567610649991.png)
+!["Start trial" button to test the Enterprise edition in OpenProject administration](openproject_enterprise_guide_free_trial_button.png)
 
-A window will appear which explains that you will receive a 14 days free trial license with that you can temporarily upgrade your Community edition.
+## Option B: Request a trial via the OpenProject website
 
-Click the blue **Proceed To Checkout** button.
+Alternatively, you can request a free trial token via the OpenProject website:
 
-Enter you email address. Then your details, First name, last name, company name and phone number.
+1. Go to the [Enterprise edition page](https://www.openproject.org/enterprise-edition/).
+2. Click the **Get a free on-premises trial license** button.
 
-You will then **receive the token** via email with a description how to [activate Enterprise on-premises](../activate-enterprise-on-premises/).
+A dialog will appear explaining that you will receive a **14-day free trial license**, which can be used to temporarily upgrade your Community edition.
 
-![enterprise-edition-trial-license](1567610604159.png)
+3. Click **Continue**.
+4. Enter your email address and provide your details (first name, last name, company name, and phone number).
 
-> **Note**: There is no need to cancel the trial license. The license will run out automatically after 14 days and will bring you back to the Community version.
+You will then **receive the Enterprise on-premises trial token by email**, along with instructions on how to [activate the Enterprise on-premises edition](../activate-enterprise-on-premises/).
+
+![Enterprise on-premises edition free trial via OpenProject website](openproject_enterprise_guide_free_trial_button_website.png)
+
+> [!NOTE]
+> There is no need to cancel the trial. The license expires automatically after 14 day
