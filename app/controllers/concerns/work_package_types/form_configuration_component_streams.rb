@@ -60,8 +60,12 @@ module WorkPackageTypes
     def update_inactive_attributes_via_turbo_stream
       turbo_streams << turbo_stream.replace(
         "type-form-configuration-inactive-container",
-        partial: "work_package_types/form_configuration_tab/inactive_attributes_container",
-        locals: { inactives: form_configuration_groups(@type)[:inactives], type: @type }
+        view_context.render(
+          WorkPackageTypes::FormConfiguration::InactiveAttributesListComponent.new(
+            inactives: form_configuration_groups(@type)[:inactives],
+            type: @type
+          )
+        )
       )
     end
 

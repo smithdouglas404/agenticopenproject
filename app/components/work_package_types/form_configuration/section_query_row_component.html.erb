@@ -33,7 +33,6 @@
             label: t("types.edit.form_configuration.edit_query"),
             test_selector: "type-form-configuration-edit-query-#{@group[:key]}",
             tag: :button,
-            value: "",
             content_arguments: {
               data: { action: "click->admin--type-form-configuration#editQuery" }
             }
@@ -44,7 +43,6 @@
           menu.with_item(
             label: t("types.edit.form_configuration.edit_query"),
             tag: :button,
-            value: "",
             content_arguments: enterprise_upsell_action_arguments(
               "type-form-configuration-edit-query-#{@group[:key]}"
             )

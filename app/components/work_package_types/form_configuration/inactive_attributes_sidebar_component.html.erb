@@ -31,8 +31,10 @@
 
     left.with_row do
       render(
-        partial: "work_package_types/form_configuration_tab/inactive_attributes_container",
-        locals: { inactives: @inactives, type: @type }
+        WorkPackageTypes::FormConfiguration::InactiveAttributesListComponent.new(
+          inactives: @inactives,
+          type: @type
+        )
       )
     end
   end
