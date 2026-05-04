@@ -44,7 +44,8 @@ module OpenProject::ResourceManagement
              author_url: "https://www.openproject.org",
              bundled: true,
              settings: {} do
-      project_module :resource_management do
+      project_module :resource_management,
+                     if: -> { OpenProject::FeatureDecisions.resource_management_active? } do
         # `view_resource_planners` gates access to all CRUD actions. The
         # per-record rules (only owners can change their own private planner;
         # only manage_public users can change public ones) live in the
