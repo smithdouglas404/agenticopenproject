@@ -88,8 +88,8 @@
             "aria-label": t("types.edit.form_configuration.section_actions")
           )
 
-          with_item_group(menu) do
-            if ee_available?
+          if ee_available?
+            with_item_group(menu) do
               menu.with_item(
                 label: t("types.edit.form_configuration.rename_section"),
                 test_selector: "type-form-configuration-section-rename-#{@group[:key]}",
@@ -98,18 +98,6 @@
                 content_arguments: { data: { turbo_stream: true } }
               ) do |item|
                 item.with_leading_visual_icon(icon: :pencil)
-              end
-            else
-              menu.with_item(
-                label: t("types.edit.form_configuration.rename_section"),
-                tag: :button,
-                value: "",
-                content_arguments: enterprise_upsell_action_arguments(
-                  "type-form-configuration-section-rename-#{@group[:key]}"
-                )
-              ) do |item|
-                item.with_leading_visual_icon(icon: :pencil)
-                item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
               end
             end
           end
@@ -126,8 +114,8 @@
             end
           end
 
-          with_item_group(menu) do
-            if ee_available?
+          if ee_available?
+            with_item_group(menu) do
               menu.with_item(
                 label: t("button_delete"),
                 scheme: :danger,
@@ -142,17 +130,6 @@
                 }
               ) do |item|
                 item.with_leading_visual_icon(icon: :trash)
-              end
-            else
-              menu.with_item(
-                label: t("button_delete"),
-                scheme: :danger,
-                tag: :button,
-                value: "",
-                content_arguments: enterprise_upsell_action_arguments
-              ) do |item|
-                item.with_leading_visual_icon(icon: :trash)
-                item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
               end
             end
           end

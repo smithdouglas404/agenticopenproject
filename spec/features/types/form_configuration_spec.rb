@@ -578,26 +578,17 @@ RSpec.describe "form configuration", :js, :selenium do
       end
     end
 
-    it "shows the enterprise hint for protected section actions" do
+    it "hides protected section actions" do
       login_as(admin)
       visit edit_type_form_configuration_path(type)
 
       expect(page).to have_no_test_selector("type-form-configuration-add-button")
 
-      within form.find_group("Details") do
-        find(".Box-header button[aria-haspopup=\"true\"]").click
-      end
-      click_on I18n.t("types.edit.form_configuration.rename_section")
-
-      expect_enterprise_dialog
-      close_enterprise_dialog
-
       menu_id = form.send(:open_group_menu, "Details")
       within "##{menu_id}" do
-        click_on I18n.t("button_delete")
+        expect(page).to have_no_text(I18n.t("types.edit.form_configuration.rename_section"))
+        expect(page).to have_no_text(I18n.t("button_delete"))
       end
-
-      expect_enterprise_dialog
     end
 
     it "shows the enterprise hint for query group editing" do
