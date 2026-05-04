@@ -8,13 +8,13 @@
       main.with_row do
         render(Primer::OpenProject::SubHeader.new(mb: 0)) do |subheader|
           subheader.with_action_button(
-            tag: :button,
-            type: :button,
+            tag: :a,
             scheme: :secondary,
             leading_icon: :undo,
             label: t("types.edit.form_configuration.reset_to_defaults"),
+            href: reset_dialog_type_form_configuration_path(@type),
             "data-test-selector": "type-form-configuration-reset-button",
-            data: { "show-dialog-id": "type-form-configuration-reset-dialog" }
+            data: { controller: "async-dialog" }
           ) do
             t("types.edit.form_configuration.reset_to_defaults")
           end

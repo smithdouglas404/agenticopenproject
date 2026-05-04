@@ -1,0 +1,23 @@
+<%=
+  render(
+    Primer::OpenProject::DangerDialog.new(
+      id: "type-form-configuration-reset-dialog",
+      title: t("js.types.attribute_groups.reset_title"),
+      confirm_button_text: t("js.label_reset"),
+      form_arguments: {
+        action: type_form_configuration_path(@type),
+        method: :patch,
+        data: { turbo_stream: true }
+      }
+    )
+  ) do |dialog|
+    dialog.with_confirmation_message do |message|
+      message.with_heading(tag: :h2) { t("js.types.attribute_groups.reset_title") }
+      message.with_description_content(t("js.types.attribute_groups.confirm_reset"))
+    end
+
+    dialog.with_additional_details do
+      hidden_field_tag("type[attribute_groups]", "[]")
+    end
+  end
+%>

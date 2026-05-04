@@ -36,11 +36,17 @@ module WorkPackageTypes
 
     layout "admin"
 
-    current_menu_item [:edit, :update] do
+    current_menu_item [:edit, :update, :reset_dialog] do
       :types
     end
 
     def edit; end
+
+    def reset_dialog
+      respond_with_dialog(
+        WorkPackageTypes::FormConfiguration::ResetDialogComponent.new(type: @type)
+      )
+    end
 
     def update
       result = WorkPackageTypes::UpdateService
