@@ -6,10 +6,10 @@ da:
         display_name: Navn
         identifier: ID
         secret: Hemmelighed
-        scope: Scope
+        scope: Omfang
         assertion_consumer_service_url: ACS (Assertion consumer service) URL
         limit_self_registration: Begræns selvregistrering
-        sp_entity_id: Tjenestes entity ID
+        sp_entity_id: Tjenesteentitets-ID
         metadata_url: Identitetsudbydermetadata-URL
         name_identifier_format: Navnidentifikatorformat
         idp_sso_service_url: Identitetsudbyder login endpoint
@@ -123,7 +123,7 @@ da:
       idp_sso_service_url: 'URL''en til identitetsudbyderens login-endepunkt.
 
         '
-      idp_slo_service_url: 'The URL of the identity provider logout endpoint.
+      idp_slo_service_url: 'URL''en til identitetsudbyder-udlogningsendepunktet.
 
         '
       idp_cert: 'Angiv det X509 PEM-formaterede offentlige certifikat fra identitetsudbyderen. Flere certifikater kan angives ved at adskille dem med en ny linje.

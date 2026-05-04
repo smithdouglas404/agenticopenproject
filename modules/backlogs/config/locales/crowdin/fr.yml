@@ -139,14 +139,14 @@ fr:
       label_sprint: Sprint
     sprints_component:
       blankslate:
-        title: No sprints present yet
-        settings_link_text: project settings
+        title: Il n'y a pas encore de sprints
+        settings_link_text: paramètres du projet
         receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
         receive_description_text: This project receives shared sprints from a different project, but none are available right now.
         create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
-        create_description_text: To start planning your sprint, create one here.
-        manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
-        no_actions_description_text: No sprints are available for this project yet.
+        create_description_text: Pour commencer à planifier votre sprint, créez-en un ici.
+        manage_description_html: Pour commencer à planifier votre sprint, allez sur %{settings_link} pour trouver les sprints d'un autre projet.
+        no_actions_description_text: Il n'y a pas encore de sprints disponibles pour ce projet.
     backlog_bucket_menu_component:
       label_actions: Actions de la corbeille du carnet de commandes
       action_menu:

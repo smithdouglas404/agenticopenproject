@@ -29,7 +29,7 @@ fa:
       project:
         sprint_sharing: Sprint sharing
       sprint:
-        duration: Duration
+        duration: مدت زمان
         finish_date: Finish date
         goal: Sprint goal
         name: Sprint name

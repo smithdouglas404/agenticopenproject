@@ -107,6 +107,7 @@ class VersionsController < ApplicationController
       flash[:error] << archived_project_mesage if archived_projects.any?
     end
 
+    flash[:notice] = I18n.t :notice_successful_delete
     redirect_to project_settings_versions_path(@project), status: :see_other
   end
 

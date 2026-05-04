@@ -64,6 +64,7 @@ Rails.application.routes.draw do
           to: "backlog#details",
           as: :backlog_details,
           work_package_split_view: true,
+          constraints: { work_package_id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT },
           defaults: { tab: :overview }
 
       resources :backlog_buckets, only: %i[create update destroy] do

@@ -90,6 +90,7 @@ module Backlogs
         story: true,
         controller: "backlogs--story",
         backlogs__story_id_value: story.id,
+        backlogs__story_display_id_value: story.display_id,
         backlogs__story_split_url_value: split_url(story),
         backlogs__story_full_url_value: full_url(story),
         backlogs__story_selected_class: "Box-row--blue",
