@@ -38,7 +38,7 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
 
   let(:wiki_page) { create(:wiki_page) }
   let(:project) { wiki_page.project }
-  let(:work_package) { create(:work_package, project:) }
+  let(:work_package) { create(:work_package) }
   let(:permissions) { %i[view_wiki_pages] }
   let(:link_to_existing_page) do
     create(:relation_wiki_page_link, provider:, linkable: work_package, identifier: wiki_page.id.to_s)
