@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackageTypes::FormConfigurationRowsTabController do
+RSpec.describe WorkPackageTypes::FormConfigurationTabController do
   let(:type) { create(:type) }
   let(:user) { create(:admin) }
 

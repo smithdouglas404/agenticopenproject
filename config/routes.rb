@@ -159,7 +159,7 @@ Rails.application.routes.draw do
           patch :update_query
         end
       end
-      resources :rows, only: %i[destroy], controller: "form_configuration_rows_tab", param: :row_key do
+      resources :rows, only: %i[destroy], controller: "form_configuration_tab", param: :row_key do
         member do
           put :drop
           put :move

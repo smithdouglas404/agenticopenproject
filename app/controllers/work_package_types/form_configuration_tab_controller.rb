@@ -36,7 +36,7 @@ module WorkPackageTypes
 
     layout "admin"
 
-    current_menu_item [:edit, :update, :reset_dialog] do
+    current_menu_item [:edit, :update, :reset_dialog, :move, :drop, :destroy] do
       :types
     end
 
@@ -58,6 +58,30 @@ module WorkPackageTypes
       else
         respond_to_update_failure(result)
       end
+    end
+
+    def move
+      call = ::WorkPackageTypes::FormConfigurationRows::UpdateService
+        .new(user: current_user, type: @type, row_key: row_key_param)
+        .call(move_to: params[:move_to])
+
+      handle_row_update_response(call)
+    end
+
+    def drop
+      call = ::WorkPackageTypes::FormConfigurationRows::UpdateService
+        .new(user: current_user, type: @type, row_key: row_key_param)
+        .call(target_id: params[:target_id], position: params[:position])
+
+      handle_row_update_response(call)
+    end
+
+    def destroy
+      call = ::WorkPackageTypes::FormConfigurationRows::DeleteService
+        .new(user: current_user, type: @type, row_key: row_key_param)
+        .call
+
+      handle_row_update_response(call)
     end
 
     private
@@ -82,9 +106,23 @@ module WorkPackageTypes
       end
     end
 
+    def handle_row_update_response(call)
+      if call.success?
+        update_form_configuration_via_turbo_stream
+      else
+        render_form_configuration_error(call)
+      end
+
+      respond_with_turbo_streams(status: call.success? ? :ok : :unprocessable_entity)
+    end
+
     def find_type
       @type = ::Type.includes(:projects, :custom_fields).find(params[:type_id])
       show_error_not_found unless @type
+    end
+
+    def row_key_param
+      params[:row_key] || params[:id]
     end
 
     def permitted_type_params
