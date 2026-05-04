@@ -100,7 +100,7 @@ See COPYRIGHT and LICENSE files for more details.
         else
           flex_layout(justify_content: :space_between, align_items: :center) do |header|
             header.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
-              left.with_column(mr: 2, classes: "hide-when-print") do
+              left.with_column(mr: 2, classes: "hide-when-print type-form-configuration-page--drag-handle") do
                 render(
                   Primer::OpenProject::DragHandle.new(
                     classes: "section-handle",
@@ -114,12 +114,13 @@ See COPYRIGHT and LICENSE files for more details.
               end
             end
 
-            header.with_column(classes: "hide-when-print") do
+            header.with_column(classes: "hide-when-print type-form-configuration-page--actions") do
               render(Primer::Alpha::ActionMenu.new) do |menu|
                 menu.with_show_button(
                   icon: "kebab-horizontal",
                   scheme: :invisible,
                   size: :small,
+                  classes: "type-form-configuration-page--actions-button",
                   "aria-label": t("types.edit.form_configuration.section_actions"),
                   data: { "test-selector": "type-form-configuration-section-actions-#{@group[:key]}" }
                 )
@@ -232,7 +233,7 @@ See COPYRIGHT and LICENSE files for more details.
         box.with_row do
           flex_layout(justify_content: :space_between, align_items: :center) do |row|
             row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
-              left.with_column(mr: 2, classes: "hide-when-print") do
+              left.with_column(mr: 2, classes: "hide-when-print type-form-configuration-page--drag-spacer") do
                 render(
                   Primer::Box.new(
                     classes: "type-form-configuration-page--row-alignment-spacer",
@@ -248,12 +249,13 @@ See COPYRIGHT and LICENSE files for more details.
               end
             end
 
-            row.with_column(classes: "hide-when-print") do
+            row.with_column(classes: "hide-when-print type-form-configuration-page--actions") do
               render(Primer::Alpha::ActionMenu.new) do |menu|
                 menu.with_show_button(
                   icon: "kebab-horizontal",
                   scheme: :invisible,
                   size: :small,
+                  classes: "type-form-configuration-page--actions-button",
                   "aria-label": t("types.edit.form_configuration.row_actions"),
                   data: { "test-selector": "type-form-configuration-query-actions-#{@group[:key]}" }
                 )
@@ -309,7 +311,7 @@ See COPYRIGHT and LICENSE files for more details.
           ) do
             flex_layout(justify_content: :space_between, align_items: :center) do |row|
               row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
-                left.with_column(mr: 2, classes: "hide-when-print") do
+                left.with_column(mr: 2, classes: "hide-when-print type-form-configuration-page--drag-handle") do
                   render(
                     Primer::OpenProject::DragHandle.new(
                       classes: "attribute-handle",
@@ -323,12 +325,13 @@ See COPYRIGHT and LICENSE files for more details.
                 end
               end
 
-              row.with_column(classes: "hide-when-print") do
+              row.with_column(classes: "hide-when-print type-form-configuration-page--actions") do
                 render(Primer::Alpha::ActionMenu.new) do |menu|
                   menu.with_show_button(
                     icon: "kebab-horizontal",
                     scheme: :invisible,
                     size: :small,
+                    classes: "type-form-configuration-page--actions-button",
                     "aria-label": t("types.edit.form_configuration.row_actions"),
                     data: { "test-selector": "type-form-configuration-attribute-actions-#{attribute[:key]}" }
                   )
