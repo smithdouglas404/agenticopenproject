@@ -1403,6 +1403,7 @@ en:
         blankslate_description: "Add sections using the button above or drag attributes from the left panel."
         section_actions: "Section actions"
         rename_section: "Rename section"
+        confirm_delete_section: "Are you sure you want to delete this section? This action cannot be automatically reversed."
         section_name_label: "Section name"
         row_actions: "Row actions"
         query_group_label: "Work packages table"
@@ -2442,7 +2443,7 @@ en:
             attribute_groups:
               attribute_unknown: "Invalid work package attribute used."
               attribute_unknown_name: "Invalid work package attribute used: %{attribute}"
-              duplicate_group: "Section names must be unique."
+              duplicate_group: "The group name '%{group}' is used more than once. Group names must be unique."
               query_invalid: "The embedded query '%{group}' is invalid: %{details}"
               group_without_name: "Section name can't be blank."
             patterns:

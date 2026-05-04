@@ -390,7 +390,9 @@ RSpec.describe "form configuration", :js, :selenium do
 
         deleted_section = expected_order.last
         initial_updated_at = type.updated_at
-        form.invoke_section_action(deleted_section, I18n.t("button_delete"))
+        accept_confirm I18n.t("types.edit.form_configuration.confirm_delete_section") do
+          form.invoke_section_action(deleted_section, I18n.t("button_delete"))
+        end
         wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
         expected_order.delete(deleted_section)
         expect(persisted_section_order(type)).to eq(expected_order)

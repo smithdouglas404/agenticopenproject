@@ -200,7 +200,13 @@ See COPYRIGHT and LICENSE files for more details.
                     scheme: :danger,
                     tag: :a,
                     href: destroy_path,
-                    content_arguments: { data: { turbo_method: :delete, turbo_stream: true } }
+                    content_arguments: {
+                      data: {
+                        turbo_method: :delete,
+                        turbo_stream: true,
+                        turbo_confirm: t("types.edit.form_configuration.confirm_delete_section")
+                      }
+                    }
                   ) do |item|
                     item.with_leading_visual_icon(icon: :trash)
                   end

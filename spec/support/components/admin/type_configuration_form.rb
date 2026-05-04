@@ -207,9 +207,11 @@ module Components
       end
 
       def remove_group(name)
-        menu_id = open_group_menu(name)
-        within "##{menu_id}" do
-          click_link I18n.t("button_delete")
+        accept_confirm I18n.t("types.edit.form_configuration.confirm_delete_section") do
+          menu_id = open_group_menu(name)
+          within "##{menu_id}" do
+            click_link I18n.t("button_delete")
+          end
         end
 
         expect(page).to have_no_css("[data-group-key]", text: /\b#{Regexp.escape(name)}\b/)
