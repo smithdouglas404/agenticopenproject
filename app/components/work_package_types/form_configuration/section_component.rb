@@ -78,6 +78,15 @@ module WorkPackageTypes
 
       private
 
+      def wrapper_data
+        {
+          group_type: @group[:type].to_s,
+          group_key: @group[:key].to_s,
+          group_query: @group[:query],
+          edit_mode: (true if edit_mode?)
+        }.compact.merge(draggable_item_config)
+      end
+
       def section_name
         @group[:name]
       end

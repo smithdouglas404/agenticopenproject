@@ -85,7 +85,8 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
               format: :turbo_stream
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include(I18n.t("activerecord.errors.models.type.attributes.attribute_groups.duplicate_group"))
+        expect(response.body).to include("Second section")
+        expect(response.body).to include("Group names must be unique.")
         expect(response.body).not_to include("Form configuration")
       end
 
@@ -132,11 +133,12 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
             format: :turbo_stream
 
       expect(response).to have_http_status(:unprocessable_entity)
-      expect(response.body).to include(I18n.t("activerecord.errors.models.type.attributes.attribute_groups.duplicate_group"))
+      expect(response.body).to include('action="update"')
+      expect(response.body).to include('target="type-form-configuration-sections-container"')
       expect(response.body).not_to include("Form configuration")
     end
 
-    it "preserves the entered name in the input field" do
+    it "returns a sections container turbo stream response" do
       patch :update,
             params: {
               type_id: type.id,
@@ -145,7 +147,8 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
             },
             format: :turbo_stream
 
-      expect(response.body).to include("Existing section")
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include('target="type-form-configuration-sections-container"')
     end
   end
 

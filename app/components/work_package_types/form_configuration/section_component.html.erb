@@ -29,12 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   component_wrapper(
-    data: {
-      group_type: @group[:type].to_s,
-      group_key: @group[:key].to_s,
-      group_query: @group[:query],
-      edit_mode: (true if edit_mode?)
-    }.compact.merge(draggable_item_config)
+    data: wrapper_data
   ) do
     render(border_box_container(mt: 3, padding: :condensed, data: row_drop_target_config)) do |box|
       box.with_header(font_weight: :bold) do
@@ -65,7 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
                       "full-width": true,
                       invalid: @validation_message.present?,
                       validation_message: @validation_message,
-                      data: { "test-selector": "type-form-configuration-section-name-input" }
+                      test_selector: "type-form-configuration-section-name-input"
                     )
                   )
                 end
@@ -75,7 +70,7 @@ See COPYRIGHT and LICENSE files for more details.
                     Primer::Beta::Button.new(
                       scheme: :primary,
                       type: :submit,
-                      data: { "test-selector": "type-form-configuration-section-save" }
+                      test_selector: "type-form-configuration-section-save"
                     )
                   ) { t("button_save") }
                 end
@@ -88,9 +83,9 @@ See COPYRIGHT and LICENSE files for more details.
                       href: cancel_edit_path,
                       data: {
                         turbo_method: :post,
-                        turbo_stream: true,
-                        "test-selector": "type-form-configuration-section-cancel"
-                      }
+                        turbo_stream: true
+                      },
+                      test_selector: "type-form-configuration-section-cancel"
                     )
                   ) { t("button_cancel") }
                 end
@@ -121,8 +116,8 @@ See COPYRIGHT and LICENSE files for more details.
                   scheme: :invisible,
                   size: :small,
                   classes: "type-form-configuration-page--actions-button",
-                  "aria-label": t("types.edit.form_configuration.section_actions"),
-                  data: { "test-selector": "type-form-configuration-section-actions-#{@group[:key]}" }
+                  test_selector: "type-form-configuration-section-actions-#{@group[:key]}",
+                  "aria-label": t("types.edit.form_configuration.section_actions")
                 )
 
                 if ee_available?
@@ -256,8 +251,8 @@ See COPYRIGHT and LICENSE files for more details.
                   scheme: :invisible,
                   size: :small,
                   classes: "type-form-configuration-page--actions-button",
-                  "aria-label": t("types.edit.form_configuration.row_actions"),
-                  data: { "test-selector": "type-form-configuration-query-actions-#{@group[:key]}" }
+                  test_selector: "type-form-configuration-query-actions-#{@group[:key]}",
+                  "aria-label": t("types.edit.form_configuration.row_actions")
                 )
 
                 if ee_available?
@@ -332,8 +327,8 @@ See COPYRIGHT and LICENSE files for more details.
                     scheme: :invisible,
                     size: :small,
                     classes: "type-form-configuration-page--actions-button",
-                    "aria-label": t("types.edit.form_configuration.row_actions"),
-                    data: { "test-selector": "type-form-configuration-attribute-actions-#{attribute[:key]}" }
+                    test_selector: "type-form-configuration-attribute-actions-#{attribute[:key]}",
+                    "aria-label": t("types.edit.form_configuration.row_actions")
                   )
 
                   if attribute_can_move_up?(index)
