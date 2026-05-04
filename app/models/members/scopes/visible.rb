@@ -45,12 +45,26 @@ module Members::Scopes
       private
 
       def visible_for_non_admins(user)
+        # Use a subquery so later merges (e.g. joins + role filters on project.members) do not
+        # mis-bind placeholders against the complex OR / work_package visibility SQL.
+        visible_ids = visible_project_members(user).or(shared_work_package_members(user)).select(:id)
+
+        where(id: visible_ids)
+      end
+
+      # Project-wide memberships in projects where the user may view or manage members.
+      def visible_project_members(user)
         view_members = Project.allowed_to(user, :view_members)
         manage_members = Project.allowed_to(user, :manage_members)
-        view_work_packages = Project.allowed_to(user, :view_shared_work_packages)
 
         where(project_id: view_members.or(manage_members).select(:id), entity_type: nil)
-          .or(where(project_id: view_work_packages.select(:id), entity_type: WorkPackage.name))
+      end
+
+      # Work package shares the user may list, limited to entities they can view.
+      def shared_work_package_members(user)
+        where(project_id: Project.allowed_to(user, :view_shared_work_packages).select(:id),
+              entity_type: WorkPackage.name,
+              entity_id: WorkPackage.visible(user).select(:id))
       end
 
       def visible_for_admins
