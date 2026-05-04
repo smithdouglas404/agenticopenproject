@@ -174,6 +174,17 @@ module WorkPackageTypes
           "data-test-selector": test_selector
         }.compact
       end
+
+      def move_action(menu:, href:, label:, icon:)
+        menu.with_item(
+          label:,
+          tag: :a,
+          href:,
+          content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+        ) do |item|
+          item.with_leading_visual_icon(icon:)
+        end
+      end
     end
   end
 end
