@@ -32,7 +32,7 @@ module Backlogs
   class InboxComponent < ApplicationComponent
     include Primer::AttributesHelper
     include OpTurbo::Streamable
-    include Backlogs::CommonHelper
+    include CommonHelper
 
     PAGINATION_THRESHOLD = 70
     FIRST_PAGE_SIZE = 50

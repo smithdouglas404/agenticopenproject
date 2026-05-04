@@ -28,32 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class SprintPageHeaderComponent < ApplicationComponent
-    include ApplicationHelper
-    include CommonHelper
+class Queries::Sprints::Filters::NameFilter < Queries::Sprints::Filters::SprintFilter
+  def self.key
+    :name
+  end
 
-    delegate :with_action_button, to: :@page_header
+  def type
+    :string
+  end
 
-    def initialize(sprint:, project:)
-      super
+  def human_name
+    I18n.t(:label_name)
+  end
 
-      @sprint  = sprint
-      @project = project
-
-      @page_header = Primer::OpenProject::PageHeader.new
+  def where
+    case operator
+    when "="
+      ["LOWER(sprints.name) IN (?)", sql_value]
+    when "!"
+      ["LOWER(sprints.name) NOT IN (?)", sql_value]
+    when "~", "**"
+      ["LOWER(sprints.name) LIKE ?", sql_value]
+    when "!~"
+      ["LOWER(sprints.name) NOT LIKE ?", sql_value]
     end
+  end
 
-    def breadcrumb_items
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: project_backlogs_backlog_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
-    end
+  private
 
-    private
-
-    def date_range
-      [@sprint.start_date, @sprint.finish_date]
+  def sql_value
+    case operator
+    when "=", "!"
+      values.map(&:downcase)
+    when "**", "~", "!~"
+      "%#{values.first.downcase}%"
     end
   end
 end

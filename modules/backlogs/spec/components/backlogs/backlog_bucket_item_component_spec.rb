@@ -42,7 +42,8 @@ RSpec.describe Backlogs::BacklogBucketItemComponent, type: :component do
 
   let(:project) { create(:project) }
   let(:backlog_bucket) { create(:backlog_bucket, project:) }
-  let(:work_package) do
+  let(:show_all_backlog) { false }
+  let!(:work_package) do
     create(:work_package,
            subject: "Bucket Work Package",
            project:,
@@ -52,16 +53,17 @@ RSpec.describe Backlogs::BacklogBucketItemComponent, type: :component do
            position: 1)
   end
 
-  before do
-    work_package
-    render_inline(
-      Backlogs::BacklogBucketComponent.new(
-        backlog_bucket:,
-        project:,
-        current_user: user
-      )
+  def render_component
+    vc_test_controller.params[:all] = "1" if show_all_backlog
+
+    render_inline Backlogs::BacklogBucketComponent.new(
+      backlog_bucket:,
+      project:,
+      current_user: user
     )
   end
+
+  before { render_component }
 
   it "renders the work package card", :aggregate_failures do
     expect(page).to have_text("Bucket Work Package")
@@ -99,6 +101,24 @@ RSpec.describe Backlogs::BacklogBucketItemComponent, type: :component do
       expect(row["data-draggable-type"]).to eq("story")
       expect(row["data-drop-url"])
         .to end_with(move_project_backlogs_inbox_path(project, work_package))
+    end
+  end
+
+  context "when show_all_backlog is active" do
+    let(:show_all_backlog) { true }
+
+    subject(:row) { page.find(".Box-row#work_package_#{work_package.id}") }
+
+    it "includes all=1 in the split-view URL" do
+      expect(row["data-backlogs--story-split-url-value"]).to include("all=1")
+    end
+
+    it "includes all=1 in the drop URL" do
+      expect(row["data-drop-url"]).to include("all=1")
+    end
+
+    it "includes all=1 in the action-menu src" do
+      expect(row).to have_css(%(include-fragment[src*="all=1"]))
     end
   end
 

@@ -28,32 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class SprintPageHeaderComponent < ApplicationComponent
-    include ApplicationHelper
-    include CommonHelper
+require "spec_helper"
 
-    delegate :with_action_button, to: :@page_header
+RSpec.describe Queries::Sprints::Filters::NameFilter do
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :name }
+    let(:human_name) { I18n.t(:label_name) }
+    let(:type) { :string }
+    let(:model) { Agile::Sprint }
 
-    def initialize(sprint:, project:)
-      super
-
-      @sprint  = sprint
-      @project = project
-
-      @page_header = Primer::OpenProject::PageHeader.new
-    end
-
-    def breadcrumb_items
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: project_backlogs_backlog_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
-    end
-
-    private
-
-    def date_range
-      [@sprint.start_date, @sprint.finish_date]
+    describe "#allowed_values" do
+      it "is nil" do
+        expect(instance.allowed_values).to be_nil
+      end
     end
   end
 end

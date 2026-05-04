@@ -32,7 +32,7 @@ module Backlogs
   class BacklogsComponent < ApplicationComponent
     include Primer::AttributesHelper
     include OpTurbo::Streamable
-    include Backlogs::CommonHelper
+    include CommonHelper
 
     attr_reader :inbox_work_packages, :backlog_buckets, :project, :current_user
 

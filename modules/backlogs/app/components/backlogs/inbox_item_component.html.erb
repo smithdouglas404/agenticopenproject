@@ -42,7 +42,7 @@ See COPYRIGHT and LICENSE files for more details.
       <%= render(
             Primer::Alpha::ActionMenu.new(
               menu_id: dom_target(work_package, :menu),
-              src: menu_project_backlogs_inbox_path(project, work_package, **helpers.all_backlogs_params),
+              src: menu_project_backlogs_inbox_path(project, work_package, all_backlogs_params),
               anchor_align: :end,
               classes: "hide-when-print"
             )

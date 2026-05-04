@@ -28,32 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class SprintPageHeaderComponent < ApplicationComponent
-    include ApplicationHelper
-    include CommonHelper
+class Queries::Sprints::Filters::TypeaheadFilter < Queries::Sprints::Filters::NameFilter
+  def self.key
+    :typeahead
+  end
 
-    delegate :with_action_button, to: :@page_header
+  def type
+    :search
+  end
 
-    def initialize(sprint:, project:)
-      super
-
-      @sprint  = sprint
-      @project = project
-
-      @page_header = Primer::OpenProject::PageHeader.new
-    end
-
-    def breadcrumb_items
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: project_backlogs_backlog_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
-    end
-
-    private
-
-    def date_range
-      [@sprint.start_date, @sprint.finish_date]
-    end
+  def human_name
+    I18n.t(:label_search)
   end
 end

@@ -52,7 +52,7 @@ See COPYRIGHT and LICENSE files for more details.
               render Primer::Beta::Button.new(
                 tag: :a,
                 label: Agile::Sprint.human_model_name,
-                href: new_dialog_project_backlogs_sprints_path(@project),
+                href: new_dialog_project_backlogs_sprints_path(@project, all_backlogs_params),
                 data: {
                   controller: "async-dialog",
                   test_selector: "op-sprints--new-sprint-button"

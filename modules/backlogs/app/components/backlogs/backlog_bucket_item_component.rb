@@ -31,6 +31,7 @@
 module Backlogs
   class BacklogBucketItemComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
     with_collection_parameter :work_package
 
@@ -78,8 +79,8 @@ module Backlogs
         story: true,
         controller: "backlogs--story",
         backlogs__story_id_value: work_package.id,
-        backlogs__story_split_url_value: project_backlogs_backlog_details_path(project, work_package),
-        backlogs__story_full_url_value: work_package_path(work_package),
+        backlogs__story_split_url_value: split_url,
+        backlogs__story_full_url_value: full_url,
         backlogs__story_selected_class: "Box-row--blue",
         test_selector: card_test_selector
       )
@@ -91,8 +92,20 @@ module Backlogs
       {
         draggable_id: work_package.id,
         draggable_type: "story",
-        drop_url: move_project_backlogs_inbox_path(project, work_package)
+        drop_url:
       }
+    end
+
+    def drop_url
+      move_project_backlogs_inbox_path(project, work_package, all_backlogs_params)
+    end
+
+    def split_url
+      project_backlogs_backlog_details_path(project, work_package, all_backlogs_params)
+    end
+
+    def full_url
+      work_package_path(work_package)
     end
 
     def card_test_selector

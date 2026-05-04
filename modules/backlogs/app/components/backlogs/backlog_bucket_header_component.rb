@@ -34,7 +34,7 @@ module Backlogs
     include OpTurbo::Streamable
     include Primer::FetchOrFallbackHelper
     include Redmine::I18n
-    include Backlogs::CommonHelper
+    include CommonHelper
 
     attr_reader :backlog_bucket, :project, :work_packages, :collapsed, :current_user
 

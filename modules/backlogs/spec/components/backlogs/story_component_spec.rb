@@ -93,13 +93,12 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
   end
 
   context "when params[:all] is true" do
-    before { vc_test_controller.params.merge!(all: "1") }
+    before { vc_test_controller.params[:all] = "1" }
 
     it "includes the all param on the deferred menu src" do
       render_component
 
-      src = page.find("include-fragment", visible: :all)["src"]
-      expect(src).to match(/all=1/)
+      expect(page).to have_css(%(include-fragment[src*="all=1"]))
     end
   end
 

@@ -33,6 +33,7 @@ module Backlogs
     include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
     FORM_ID = NewBacklogBucketDialogComponent::FORM_ID
 
@@ -53,9 +54,9 @@ module Backlogs
 
     def form_url
       if @backlog_bucket.new_record?
-        project_backlogs_backlog_buckets_path(@backlog_bucket.project)
+        project_backlogs_backlog_buckets_path(@backlog_bucket.project, all_backlogs_params)
       else
-        project_backlogs_backlog_bucket_path(@backlog_bucket.project, @backlog_bucket)
+        project_backlogs_backlog_bucket_path(@backlog_bucket.project, @backlog_bucket, all_backlogs_params)
       end
     end
   end
