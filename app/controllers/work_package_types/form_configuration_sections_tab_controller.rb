@@ -37,13 +37,13 @@ module WorkPackageTypes
     TEMPORARY_SECTION_KEY = "__new_form_configuration_section__"
 
     def edit
-      replace_section_via_turbo_stream(key: section_key_param, edit_mode: true)
+      update_main_content_via_turbo_stream(editing_section_key: section_key_param)
 
       respond_with_turbo_streams
     end
 
     def create
-      update_sections_via_turbo_stream(
+      update_main_content_via_turbo_stream(
         editing_section_key: TEMPORARY_SECTION_KEY,
         temporary_group: temporary_group(group_type: params[:group_type], query: params[:query])
       )
@@ -61,7 +61,7 @@ module WorkPackageTypes
       section = find_section(section_key_param)
       return head :not_found if section.nil?
 
-      replace_section_via_turbo_stream(key: section_key_param, edit_mode: false)
+      update_main_content_via_turbo_stream
       respond_with_turbo_streams
     end
 
@@ -83,7 +83,7 @@ module WorkPackageTypes
       if call.success?
         update_form_configuration_via_turbo_stream
       elsif temporary_section_key?(section_key_param)
-        update_sections_via_turbo_stream(
+        update_main_content_via_turbo_stream(
           editing_section_key: TEMPORARY_SECTION_KEY,
           temporary_group: temporary_group(
             group_type: section_params[:group_type],
@@ -94,9 +94,8 @@ module WorkPackageTypes
         )
       else
         @type.reload
-        replace_section_via_turbo_stream(
-          key: section_key_param,
-          edit_mode: true,
+        update_main_content_via_turbo_stream(
+          editing_section_key: section_key_param,
           validation_message: call.errors.map(&:message).to_sentence,
           input_value: section_params[:name].to_s
         )
@@ -125,7 +124,7 @@ module WorkPackageTypes
         .call(position: params[:position])
 
       if call.success?
-        update_sections_via_turbo_stream
+        update_main_content_via_turbo_stream
       else
         render_form_configuration_error(call)
       end
@@ -139,7 +138,7 @@ module WorkPackageTypes
         .call(move_to: params[:move_to])
 
       if call.success?
-        update_sections_via_turbo_stream
+        update_main_content_via_turbo_stream
       else
         render_form_configuration_error(call)
       end

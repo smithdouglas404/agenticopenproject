@@ -31,6 +31,7 @@
 module WorkPackageTypes
   module FormConfiguration
     class MainContentComponent < ApplicationComponent
+      include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
       def initialize(type:, section_components:, ee_available:)

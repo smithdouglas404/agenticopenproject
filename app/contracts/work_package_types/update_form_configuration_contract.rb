@@ -48,7 +48,9 @@ module WorkPackageTypes
       seen = Set.new
       model.attribute_groups.each do |group|
         errors.add(:attribute_groups, :group_without_name) if group.key.blank?
-        errors.add(:attribute_groups, :duplicate_group, group: group.key) if seen.add?(group.key).nil?
+
+        group_name = visible_group_name(group)
+        errors.add(:attribute_groups, :duplicate_group, group: group_name) if seen.add?(group_name).nil?
       end
     end
 
@@ -123,6 +125,10 @@ module WorkPackageTypes
 
       seen_keys << candidate
       candidate
+    end
+
+    def visible_group_name(group)
+      group.translated_key.to_s.strip
     end
   end
 end

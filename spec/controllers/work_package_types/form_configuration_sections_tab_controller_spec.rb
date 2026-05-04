@@ -134,11 +134,11 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to include('action="update"')
-      expect(response.body).to include('target="type-form-configuration-sections-container"')
+      expect(response.body).to include('target="work-package-types-form-configuration-main-content-component"')
       expect(response.body).not_to include("Form configuration")
     end
 
-    it "returns a sections container turbo stream response" do
+    it "returns a main content turbo stream response" do
       patch :update,
             params: {
               type_id: type.id,
@@ -148,7 +148,23 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
             format: :turbo_stream
 
       expect(response).to have_http_status(:unprocessable_entity)
-      expect(response.body).to include('target="type-form-configuration-sections-container"')
+      expect(response.body).to include('target="work-package-types-form-configuration-main-content-component"')
+    end
+  end
+
+  describe "PATCH #update (create with default section name)", with_ee: %i[edit_attribute_groups] do
+    it "returns an error when creating a section with the visible name of a default section" do
+      patch :update,
+            params: {
+              type_id: type.id,
+              key: temporary_section_key,
+              section: { group_type: "attribute", name: "Details" }
+            },
+            format: :turbo_stream
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include("Details")
+      expect(response.body).to include("Group names must be unique.")
     end
   end
 

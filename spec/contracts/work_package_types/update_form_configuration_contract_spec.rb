@@ -212,6 +212,18 @@ module WorkPackageTypes
           end
         end
 
+        context "when a custom group uses the visible name of a default group" do
+          it "is invalid and adds :duplicate_group error for the visible name" do
+            model.attribute_groups = [
+              [:details, ["priority"]],
+              ["Details", ["assignee"]]
+            ]
+
+            expect(contract).not_to be_valid
+            expect(contract.errors.details[:attribute_groups]).to include(error: :duplicate_group, group: "Details")
+          end
+        end
+
         context "when an attribute group contains unknown attributes" do
           let(:invalid_group) { ["foo", ["unknown_attribute"]] }
 
