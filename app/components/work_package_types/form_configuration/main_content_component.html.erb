@@ -1,0 +1,78 @@
+<%=
+  content_tag(
+    :div,
+    class: "type-form-configuration-page--main-inner",
+    data: main_inner_data
+  ) do
+    flex_layout do |main|
+      main.with_row do
+        render(Primer::OpenProject::SubHeader.new(mb: 0)) do |subheader|
+          subheader.with_action_button(
+            tag: :button,
+            type: :button,
+            scheme: :secondary,
+            leading_icon: :undo,
+            label: t("types.edit.form_configuration.reset_to_defaults"),
+            "data-test-selector": "type-form-configuration-reset-button",
+            data: { "show-dialog-id": "type-form-configuration-reset-dialog" }
+          ) do
+            t("types.edit.form_configuration.reset_to_defaults")
+          end
+
+          if ee_available?
+            subheader.with_action_menu(
+              leading_icon: :plus,
+              label: t("types.edit.form_configuration.add_section_button"),
+              anchor_align: :end,
+              button_arguments: {
+                scheme: :primary,
+                "aria-label": t("types.edit.form_configuration.add_section_button"),
+                "data-test-selector": "type-form-configuration-add-button"
+              }
+            ) do |menu|
+              menu.with_item(
+                label: t("types.edit.form_configuration.add_attribute_group"),
+                tag: :button,
+                value: "",
+                content_arguments: {
+                  data: { action: "click->admin--type-form-configuration#addAttributeSection" }
+                }
+              ) do |item|
+                item.with_leading_visual_icon(icon: :rows)
+              end
+
+              menu.with_item(
+                label: t("types.edit.form_configuration.add_query_group"),
+                tag: :button,
+                value: "",
+                content_arguments: {
+                  data: { action: "click->admin--type-form-configuration#addQuerySection" }
+                }
+              ) do |item|
+                item.with_leading_visual_icon(icon: :table)
+              end
+            end
+          end
+        end
+      end
+
+      main.with_row do
+        content_tag(
+          :div,
+          id: "type-form-configuration-sections-container",
+          data: sections_container_data
+        ) do
+          if @section_components.empty?
+            render(Primer::Beta::Blankslate.new(test_selector: "type-form-configuration-blankslate")) do |blankslate|
+              blankslate.with_visual_icon(icon: :rows)
+              blankslate.with_heading(tag: :h3) { t("types.edit.form_configuration.blankslate_title") }
+              blankslate.with_description { t("types.edit.form_configuration.blankslate_description") }
+            end
+          else
+            safe_join(@section_components.map { |section| render(section) })
+          end
+        end
+      end
+    end
+  end
+%>

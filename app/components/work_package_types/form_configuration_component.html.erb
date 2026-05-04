@@ -29,140 +29,26 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= component_wrapper(
       class: "type-form-configuration-page--wrapper",
-      data: {
-        controller: "admin--type-form-configuration admin--type-form-configuration-rows-drag-and-drop",
-        "admin--type-form-configuration-no-filter-query-value": @no_filter_query,
-        "admin--type-form-configuration-sections-url-value": type_form_configuration_sections_path(@type),
-        "admin--type-form-configuration-update-url-value": type_form_configuration_path(@type),
-        "admin--type-form-configuration-rows-drag-and-drop-handle-selector-value": ".attribute-handle"
-      }
+      data: wrapper_data
     ) do %>
   <%= render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, overflow: :hidden, h: :full, classes: "type-form-configuration-page")) do |content| %>
     <% content.with_sidebar(row_placement: :start, col_placement: :start, border: true, border_bottom: 0, p: 3, overflow: :auto, classes: "type-form-configuration-page--sidebar") do %>
-      <%= flex_layout do |left| %>
-        <% left.with_row(mb: 1) do %>
-          <%= render(Primer::Beta::Heading.new(tag: :h3, font_size: 4)) do %>
-            <%= t("types.edit.form_configuration.inactive_attributes_heading") %>
-          <% end %>
-        <% end %>
-
-        <% left.with_row(mb: 3) do %>
-          <%= render(Primer::Beta::Text.new(color: :subtle, font_size: :small)) do %>
-            <%= t("types.edit.form_configuration.drag_to_activate") %>
-          <% end %>
-        <% end %>
-
-        <% left.with_row(mb: 3) do %>
-          <%= render(
-                Primer::Alpha::TextField.new(
-                  name: "inactive-filter",
-                  label: t("types.edit.form_configuration.filter_inactive"),
-                  visually_hide_label: true,
-                  placeholder: t("types.edit.form_configuration.filter_inactive"),
-                  leading_visual: { icon: :search },
-                  size: :medium,
-                  "full-width": true,
-                  data: {
-                    action: "input->admin--type-form-configuration#filterInactives"
-                  }
-                )
-              ) %>
-        <% end %>
-
-        <% left.with_row do %>
-          <%= render(
-                partial: "work_package_types/form_configuration_tab/inactive_attributes_container",
-                locals: { inactives: @inactives, type: @type }
-              ) %>
-        <% end %>
-      <% end %>
+      <%= render(
+            WorkPackageTypes::FormConfiguration::InactiveAttributesSidebarComponent.new(
+              type: @type,
+              inactives: @inactives
+            )
+          ) %>
     <% end %>
 
     <% content.with_main(overflow: :auto, classes: "type-form-configuration-page--main") do %>
-      <%= content_tag(
-            :div,
-            class: "type-form-configuration-page--main-inner",
-            data: {
-              controller: "admin--type-form-configuration-sections-drag-and-drop",
-              "admin--type-form-configuration-sections-drag-and-drop-handle-selector-value": ".section-handle"
-            }
-          ) do %>
-        <%= flex_layout do |main| %>
-          <% main.with_row do %>
-            <%= render(Primer::OpenProject::SubHeader.new(mb: 0)) do |subheader| %>
-              <% subheader.with_action_button(
-                   tag: :button,
-                   type: :button,
-                   scheme: :secondary,
-                   leading_icon: :undo,
-                   label: t("types.edit.form_configuration.reset_to_defaults"),
-                   "data-test-selector": "type-form-configuration-reset-button",
-                   data: { "show-dialog-id": "type-form-configuration-reset-dialog" }
-                 ) do %>
-                <%= t("types.edit.form_configuration.reset_to_defaults") %>
-              <% end %>
-
-              <% if ee_available? %>
-                <% subheader.with_action_menu(
-                     leading_icon: :plus,
-                     label: t("types.edit.form_configuration.add_section_button"),
-                     anchor_align: :end,
-                     button_arguments: {
-                       scheme: :primary,
-                       "aria-label": t("types.edit.form_configuration.add_section_button"),
-                       "data-test-selector": "type-form-configuration-add-button"
-                     }
-                   ) do |menu| %>
-                  <% menu.with_item(
-                       label: t("types.edit.form_configuration.add_attribute_group"),
-                       tag: :button,
-                       value: "",
-                       content_arguments: {
-                         data: { action: "click->admin--type-form-configuration#addAttributeSection" }
-                       }
-                     ) do |item| %>
-                    <% item.with_leading_visual_icon(icon: :rows) %>
-                  <% end %>
-
-                  <% menu.with_item(
-                       label: t("types.edit.form_configuration.add_query_group"),
-                       tag: :button,
-                       value: "",
-                       content_arguments: {
-                         data: { action: "click->admin--type-form-configuration#addQuerySection" }
-                       }
-                     ) do |item| %>
-                    <% item.with_leading_visual_icon(icon: :table) %>
-                  <% end %>
-                <% end %>
-              <% end %>
-            <% end %>
-          <% end %>
-
-          <% main.with_row do %>
-            <%= content_tag(
-                  :div,
-                  id: "type-form-configuration-sections-container",
-                  data: {
-                    "test-selector": "type-form-configuration-sections-container",
-                    "admin--type-form-configuration-target": "sectionsContainer",
-                    "admin--type-form-configuration-sections-drag-and-drop-target": "container",
-                    "target-allowed-drag-type": "section"
-                  }
-                ) do %>
-              <% if section_components.empty? %>
-                <%= render(Primer::Beta::Blankslate.new(test_selector: "type-form-configuration-blankslate")) do |blankslate| %>
-                  <% blankslate.with_visual_icon(icon: :rows) %>
-                  <% blankslate.with_heading(tag: :h3) { t("types.edit.form_configuration.blankslate_title") } %>
-                  <% blankslate.with_description { t("types.edit.form_configuration.blankslate_description") } %>
-                <% end %>
-              <% else %>
-                <%= safe_join(section_components.map { |section| render(section) }) %>
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
-      <% end %>
+      <%= render(
+            WorkPackageTypes::FormConfiguration::MainContentComponent.new(
+              type: @type,
+              section_components: section_components,
+              ee_available: ee_available?
+            )
+          ) %>
     <% end %>
   <% end %>
 

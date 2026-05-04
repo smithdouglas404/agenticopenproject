@@ -56,6 +56,16 @@ module WorkPackageTypes
       ENTERPRISE_INFORMATION_URL
     end
 
+    def wrapper_data
+      {
+        controller: "admin--type-form-configuration admin--type-form-configuration-rows-drag-and-drop",
+        "admin--type-form-configuration-no-filter-query-value": @no_filter_query,
+        "admin--type-form-configuration-sections-url-value": type_form_configuration_sections_path(@type),
+        "admin--type-form-configuration-update-url-value": type_form_configuration_path(@type),
+        "admin--type-form-configuration-rows-drag-and-drop-handle-selector-value": ".attribute-handle"
+      }
+    end
+
     def section_components
       @groups.map.with_index do |group, i|
         WorkPackageTypes::FormConfiguration::SectionComponent.new(
