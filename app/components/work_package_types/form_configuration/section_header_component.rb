@@ -87,16 +87,6 @@ module WorkPackageTypes
         type_form_configuration_section_path(@type, @group[:key])
       end
 
-      def enterprise_upsell_dialog_id
-        WorkPackageTypes::FormConfigurationComponent::ENTERPRISE_DIALOG_ID
-      end
-
-      def enterprise_upsell_action_arguments(test_selector = nil)
-        {
-          "data-show-dialog-id": enterprise_upsell_dialog_id,
-          "data-test-selector": test_selector
-        }.compact
-      end
 
       def move_action(menu:, href:, label:, icon:)
         menu.with_item(

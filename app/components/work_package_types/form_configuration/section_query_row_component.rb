@@ -44,17 +44,6 @@ module WorkPackageTypes
       def ee_available?
         @ee_available
       end
-
-      def enterprise_upsell_dialog_id
-        WorkPackageTypes::FormConfigurationComponent::ENTERPRISE_DIALOG_ID
-      end
-
-      def enterprise_upsell_action_arguments(test_selector = nil)
-        {
-          "data-show-dialog-id": enterprise_upsell_dialog_id,
-          "data-test-selector": test_selector
-        }.compact
-      end
     end
   end
 end

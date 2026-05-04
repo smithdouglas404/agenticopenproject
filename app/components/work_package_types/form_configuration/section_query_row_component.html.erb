@@ -39,17 +39,6 @@
           ) do |item|
             item.with_leading_visual_icon(icon: :pencil)
           end
-        else
-          menu.with_item(
-            label: t("types.edit.form_configuration.edit_query"),
-            tag: :button,
-            content_arguments: enterprise_upsell_action_arguments(
-              "type-form-configuration-edit-query-#{@group[:key]}"
-            )
-          ) do |item|
-            item.with_leading_visual_icon(icon: :pencil)
-            item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
-          end
         end
       end
     end

@@ -33,9 +33,6 @@ module WorkPackageTypes
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    ENTERPRISE_DIALOG_ID = "type-form-configuration-enterprise-dialog"
-    ENTERPRISE_INFORMATION_URL = "https://www.openproject.org/enterprise-edition/?utm_source=unknown&utm_medium=community-edition&utm_campaign=form-configuration"
-
     def initialize(type:, form_attributes:, no_filter_query:)
       super(type)
       @type = type
@@ -46,14 +43,6 @@ module WorkPackageTypes
 
     def ee_available?
       EnterpriseToken.allows_to?(:edit_attribute_groups)
-    end
-
-    def enterprise_dialog_id
-      ENTERPRISE_DIALOG_ID
-    end
-
-    def enterprise_information_url
-      ENTERPRISE_INFORMATION_URL
     end
 
     def wrapper_data
