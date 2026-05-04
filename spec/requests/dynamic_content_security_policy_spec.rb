@@ -74,5 +74,19 @@ RSpec.describe "" do
       csp = parse_csp(last_response.headers["Content-Security-Policy"])
       expect(csp["font-src"].count("'self'")).to eq(1)
     end
+
+    it "includes 'self' in img-src CSP directive" do
+      get "/"
+
+      csp = parse_csp(last_response.headers["Content-Security-Policy"])
+      expect(csp["img-src"]).to include("'self'")
+    end
+
+    it "does not duplicate 'self' in img-src CSP directive" do
+      get "/"
+
+      csp = parse_csp(last_response.headers["Content-Security-Policy"])
+      expect(csp["img-src"].count("'self'")).to eq(1)
+    end
   end
 end
