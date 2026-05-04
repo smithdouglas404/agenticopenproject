@@ -30,13 +30,11 @@
 
 module WorkPackageTypes
   module FormConfiguration
-    class SectionComponent < ApplicationComponent
-      include OpTurbo::Streamable
+    class SectionHeaderComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      def initialize(group:, type: nil, ee_available: false, first: false, last: false, edit_mode: false,
-                     validation_message: nil, input_value: nil)
-        super(group)
+      def initialize(group:, type:, ee_available:, first:, last:, edit_mode:, validation_message:, input_value:)
+        super
         @group = group
         @type = type
         @ee_available = ee_available
@@ -45,23 +43,20 @@ module WorkPackageTypes
         @edit_mode = edit_mode
         @validation_message = validation_message
         @input_value = input_value
-        @instance_uid = SecureRandom.hex(4)
-      end
-
-      def wrapper_uniq_by
-        @group[:key].presence || @instance_uid
       end
 
       def edit_mode?
         @edit_mode
       end
 
-      def query_group?
-        @group[:type].to_s == "query"
+      private
+
+      def section_name
+        @group[:name]
       end
 
-      def attributes
-        @group[:attributes] || []
+      def ee_available?
+        @ee_available
       end
 
       def first?
@@ -70,50 +65,6 @@ module WorkPackageTypes
 
       def last?
         @last
-      end
-
-      def ee_available?
-        @ee_available
-      end
-
-      private
-
-      def wrapper_data
-        {
-          group_type: @group[:type].to_s,
-          group_key: @group[:key].to_s,
-          group_query: @group[:query],
-          edit_mode: (true if edit_mode?)
-        }.compact.merge(draggable_item_config)
-      end
-
-      def section_name
-        @group[:name]
-      end
-
-      def temporary_group?
-        @group[:temporary]
-      end
-
-      def draggable_item_config
-        return {} if @group[:key].blank? || temporary_group?
-
-        {
-          "draggable-id": @group[:key],
-          "draggable-type": "section",
-          "drop-url": drop_type_form_configuration_section_path(@type, @group[:key])
-        }
-      end
-
-      def row_drop_target_config
-        return {} if query_group? || @group[:key].blank? || temporary_group?
-
-        {
-          "admin--type-form-configuration-rows-drag-and-drop-target": "container",
-          "target-container-accessor": ".Box > ul",
-          "target-id": @group[:key],
-          "target-allowed-drag-type": "attribute"
-        }
       end
 
       def edit_path
@@ -136,8 +87,26 @@ module WorkPackageTypes
         type_form_configuration_section_path(@type, @group[:key])
       end
 
-      def row_drop_path(attribute)
-        drop_type_form_configuration_row_path(@type, attribute[:key])
+      def enterprise_upsell_dialog_id
+        WorkPackageTypes::FormConfigurationComponent::ENTERPRISE_DIALOG_ID
+      end
+
+      def enterprise_upsell_action_arguments(test_selector = nil)
+        {
+          "data-show-dialog-id": enterprise_upsell_dialog_id,
+          "data-test-selector": test_selector
+        }.compact
+      end
+
+      def move_action(menu:, href:, label:, icon:)
+        menu.with_item(
+          label:,
+          tag: :a,
+          href:,
+          content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+        ) do |item|
+          item.with_leading_visual_icon(icon:)
+        end
       end
     end
   end
