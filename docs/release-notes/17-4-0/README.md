@@ -24,7 +24,7 @@ Take a look at our release video showing the most important features introduced 
 
 ### Support basic custom fields migration from Jira
 
-With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly. While the feature is not yet fully complete and still in Beta, it is ready to be tested. We encourage users to try the Jira Migrator and share their feedback. 
+With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly. While the feature is not yet fully complete and still in Beta, it is ready to be tested – preferably first in a non productive environment. We encourage users to try the Jira Migrator and share their feedback. 
 
 > [!NOTE]
 > If you would like to share anonymized data from your Jira Migrator usage to support our development team, please [reach out to us](https://www.openproject.org/contact/). We are happy to sign an NDA to ensure confidentiality.
@@ -45,7 +45,7 @@ Work packages can be moved between buckets, sorted within each bucket, and adjus
 
 ### Backlog card draggable + one-click for side panel
 
-Backlog cards are now fully draggable, making it easier to move work packages during backlog refinement and sprint planning. With a single click, you can open a work package in the side panel to quickly view and edit details without losing context.
+Backlog cards are now fully draggable, making it easier to move work packages during backlog refinement and sprint planning. At the same time, you can still open a work package in the side panel with a single click to quickly view and edit details without losing context.
 
 ### Sprint Start and Complete buttons in the sprint header
 
@@ -66,7 +66,7 @@ You can now copy workflow settings from one role to other roles, using a dedicat
 
 A new "My meetings" widget shows your upcoming meetings directly on the Home and Project Overview pages. It displays the most relevant information at a glance, helping you stay on top of your schedule and quickly access upcoming meetings.
 
-Please note that with this update, the Users widget has been removed and replaced by the "My meetings" widget.
+Please note that with this update, the Users widget on the Home page (showing newest registered users in the instance) has been removed and replaced by the new "My meetings" widget.
 
 ![Project home of "Automotive project" example, My meetings widget highlighted and two clickable meetings with main information (name, time, duration) shown](openproject-17-4-my-meetings-project-home-highlighted.png)
 
