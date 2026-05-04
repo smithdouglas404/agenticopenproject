@@ -31,16 +31,25 @@
 module Import
   class JiraFetchAndImportProjectsJob < ApplicationJob
     include Import::JiraOpenProjectReferenceCreation
+    include Import::MemoryProfiling
 
     def perform(jira_import_id)
       jira_import = Import::JiraImport.find(jira_import_id)
 
-      Import::JiraFetchProjectsJob.perform_now(jira_import_id)
-      fetch_and_save_users_data(jira_import)
+      with_memory_profile("fetch_projects") do
+        Import::JiraFetchProjectsJob.perform_now(jira_import_id)
+      end
+      with_memory_profile("fetch_and_save_users") do
+        fetch_and_save_users_data(jira_import)
+      end
 
       Journal::NotificationConfiguration.with(false) do
-        jira_import.import_users
-        Import::JiraImportProjectsJob.perform_now(jira_import_id)
+        with_memory_profile("import_users") {
+          jira_import.import_users
+        }
+        with_memory_profile("import_projects") {
+          Import::JiraImportProjectsJob.perform_now(jira_import_id)
+        }
       end
 
       jira_import.transition_to!(:imported)
@@ -122,6 +131,7 @@ module Import
         node.children.each { |child| collect_mentions_from_node(child, mention_usernames) }
       end
     end
+
     # rubocop:enable Metrics/AbcSize
 
     def build_users_upsert_data(user_keys, jira_import)
