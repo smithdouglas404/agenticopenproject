@@ -1,5 +1,5 @@
 import { OpenProjectModule } from 'core-app/app.module';
-import { enableProdMode, provideZonelessChangeDetection } from '@angular/core';
+import { CSP_NONCE, enableProdMode, provideZonelessChangeDetection } from '@angular/core';
 
 import 'core-app/core/setup/init-jquery';
 import 'core-app/core/setup/init-js-patches';
@@ -46,5 +46,11 @@ void initializeLocale()
     initializeGlobalListeners();
 
     // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
-    void platformBrowser().bootstrapModule(OpenProjectModule, { applicationProviders: [provideZonelessChangeDetection()], });
+    const cspNonce = document.querySelector<HTMLMetaElement>('meta[name="csp-nonce"]')?.content;
+    void platformBrowser().bootstrapModule(OpenProjectModule, {
+      applicationProviders: [
+        provideZonelessChangeDetection(),
+        ...(cspNonce ? [{ provide: CSP_NONCE, useValue: cspNonce }] : []),
+      ],
+    });
   });

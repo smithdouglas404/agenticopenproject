@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<style type="text/css">
+<style type="text/css" nonce="<%= content_security_policy_nonce %>">
   <%
   is_ru = I18n.locale == :ru
   cs = apply_custom_styles? ? CustomStyle.current : nil

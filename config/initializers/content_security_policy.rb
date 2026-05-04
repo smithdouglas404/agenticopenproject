@@ -128,7 +128,8 @@ Rails.application.config.after_initialize do
       policy.img_src("*", "data:", "blob:")
       policy.script_src(*script_src)
       policy.script_src_attr("'none'")
-      policy.style_src(*assets_src, "'unsafe-inline'")
+      policy.style_src_elem(*assets_src)
+      policy.style_src_attr("'unsafe-inline'")
       policy.object_src(OpenProject::Configuration[:security_badge_url])
       policy.connect_src(*connect_src)
       policy.media_src(*media_src)
@@ -146,6 +147,6 @@ Rails.application.config.after_initialize do
       end
     end
 
-    config.content_security_policy_nonce_directives = %w(script-src)
+    config.content_security_policy_nonce_directives = %w(script-src style-src-elem)
   end
 end

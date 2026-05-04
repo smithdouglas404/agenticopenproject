@@ -42,8 +42,12 @@
 <%= render partial: "custom_styles/inline_css_logo" %>
 <%= render partial: "custom_styles/primer_color_mapping" %>
 <% if apply_custom_styles? %>
-  <% cache(CustomStyle.current) do %>
-    <%= render partial: "custom_styles/inline_css" %>
+  <style type="text/css" nonce="<%= content_security_policy_nonce %>">
+    <% cache([CustomStyle.current, "css"]) do %>
+      <%= render partial: "custom_styles/inline_css" %>
+    <% end %>
+  </style>
+  <% cache([CustomStyle.current, "links"]) do %>
     <% if CustomStyle.current.favicon.present? %>
       <link rel="icon" type="image/png" href="<%= custom_style_favicon_path(digest: CustomStyle.current.digest, filename: CustomStyle.current.favicon_identifier) %>" sizes="32x32">
     <% end %>
