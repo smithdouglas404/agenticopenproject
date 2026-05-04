@@ -1411,6 +1411,10 @@ en:
         invalid_query: "The embedded query configuration is invalid."
         not_found: "The requested form configuration item could not be found."
         untitled_section: "Untitled section"
+        reset_title: "Reset form configuration"
+        confirm_reset: >
+          Warning: Are you sure you want to reset the form configuration?
+          This will reset the attributes to their default group and disable ALL custom fields.
       projects:
         tab: Projects
         enable_all: Enable for all projects
