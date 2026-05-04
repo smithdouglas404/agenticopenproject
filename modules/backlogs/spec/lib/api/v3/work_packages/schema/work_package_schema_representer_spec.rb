@@ -75,7 +75,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         expect(subject).not_to have_json_path("storyPoints")
       end
     end
-
   end
 
   describe "position" do
@@ -96,7 +95,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         expect(subject).not_to have_json_path("position")
       end
     end
-
   end
 
   describe "sprint" do
@@ -111,7 +109,10 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
     end
 
     it_behaves_like "links to allowed values via collection link" do
-      let(:href) { "#{api_v3_paths.project_sprints(project.id)}?pageSize=-1" }
+      let(:filters) do
+        CGI.escape(JSON.dump([{ status: { operator: "!", values: [Agile::Sprint.statuses["completed"]] } }]))
+      end
+      let(:href) { "#{api_v3_paths.project_sprints(project.id)}?filters=#{filters}&pageSize=-1" }
     end
 
     context "when lacking permission to set the sprint" do
@@ -133,6 +134,5 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         expect(subject).not_to have_json_path(path)
       end
     end
-
   end
 end
