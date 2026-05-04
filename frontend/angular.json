@@ -146,11 +146,10 @@
           }
         },
         "test": {
-          "builder": "@angular/build:unit-test",
+          "builder": "@angular-builders/custom-esbuild:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "buildTarget": "::development",
-            "runner": "vitest",
+            "buildTarget": "OpenProject:build",
             "providersFile": "src/test-providers.ts",
             "setupFiles": ["src/test-setup.ts"]
           }
