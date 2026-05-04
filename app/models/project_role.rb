@@ -33,7 +33,15 @@ class ProjectRole < Role
   # role for a non-admin user who creates a project. Without these, the
   # creator cannot complete project setup (filling out the PIR, adding
   # members, etc.).
-  PERMISSIONS_FOR_PROJECT_CREATOR = %i[edit_project_attributes manage_members].freeze
+  PERMISSIONS_FOR_PROJECT_CREATOR = %i[
+    view_project
+
+    view_project_attributes
+    edit_project_attributes
+
+    view_members
+    manage_members
+  ].freeze
 
   has_many :custom_fields_roles,
            foreign_key: "role_id",

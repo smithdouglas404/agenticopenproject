@@ -32,12 +32,8 @@ require "spec_helper"
 
 RSpec.describe "Editing a project role" do
   let!(:admin) { create(:admin) }
-  let!(:default_role) do
-    create(:project_role, permissions: ProjectRole::PERMISSIONS_FOR_PROJECT_CREATOR)
-  end
-  let!(:other_role) do
-    create(:project_role, permissions: ProjectRole::PERMISSIONS_FOR_PROJECT_CREATOR)
-  end
+  let!(:default_role) { create(:project_creator_role) }
+  let!(:other_role) { create(:project_creator_role, name: "Other creator role") }
 
   before do
     login_as admin

@@ -83,10 +83,7 @@ RSpec.describe Admin::Settings::NewProjectSettingsController do
     end
 
     describe "default role for new projects" do
-      let!(:qualifying_role) do
-        create(:project_role, name: "Project lead",
-                              permissions: ProjectRole::PERMISSIONS_FOR_PROJECT_CREATOR)
-      end
+      let!(:qualifying_role) { create(:project_creator_role, name: "Project lead") }
       let!(:non_qualifying_role) do
         create(:project_role, name: "Reader", permissions: %i[view_work_packages])
       end
