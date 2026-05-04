@@ -60,7 +60,8 @@ Layout/MultilineOperationIndentation:
   Enabled: false
 
 Lint/AmbiguousBlockAssociation:
-  AllowedMethods: [change]
+  AllowedMethods:
+    - change
 
 Lint/AmbiguousOperator:
   Enabled: false
@@ -147,9 +148,9 @@ Naming/PredicatePrefix:
 
 Naming/VariableNumber:
   AllowedPatterns:
-    - '\w_20\d\d' # allow dates like christmas_2022 or date_2034_04_12
-    - '\w\d++(_\d++)+' # allow hierarchical data like child1_2_5 (second + in regex is possessive qualifier)
-    - 'custom_field_\d+' # allow custom field method names to be called with send :custom_field_1001
+    - "\\w_20\\d\\d" # allow dates like christmas_2022 or date_2034_04_12
+    - "\\w\\d++(_\\d++)+" # allow hierarchical data like child1_2_5 (second + in regex is possessive qualifier)
+    - "custom_field_\\d+" # allow custom field method names to be called with send :custom_field_1001
 
 OpenProject/AddPreviewForViewComponent:
   Include:
@@ -181,6 +182,10 @@ Rails/DynamicFindBy:
     - find_by_login
     - find_by_mail
     - find_by_plaintext_value
+    - find_by_rss_key
+    - find_by_unique
+    - find_by_unique!
+    - find_by_api_key
 
 # Allow reorder to prevent find each cop triggering
 Rails/FindEach:
@@ -333,6 +338,7 @@ RSpec/SpecFilePathFormat:
   CustomTransform:
     OpenIDConnect: openid_connect
     OAuthClients: oauth_clients
+    XWiki: xwiki
     XWikiProviders: xwiki_providers
   EnforcedInflector: active_support
   IgnoreMethods: true
@@ -402,7 +408,8 @@ Style/FormatString:
   Enabled: false
 
 Style/FormatStringToken:
-  AllowedMethods: [redirect]
+  AllowedMethods:
+    - redirect
 
 Style/FrozenStringLiteralComment:
   Enabled: true

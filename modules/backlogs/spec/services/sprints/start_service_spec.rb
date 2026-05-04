@@ -36,7 +36,7 @@ RSpec.describe Sprints::StartService do
   shared_let(:status2) { create(:status) }
   shared_let(:project) { create(:project, types: [type_task]) }
   let(:status) { "in_planning" }
-  let(:sprint) { create(:agile_sprint, project:, status:) }
+  let(:sprint) { create(:sprint, project:, status:) }
   let(:user) { create(:admin) }
   let(:instance) { described_class.new(user:, model: sprint) }
 
@@ -98,7 +98,7 @@ RSpec.describe Sprints::StartService do
   end
 
   context "when the sprint has no start date" do
-    let(:sprint) { create(:agile_sprint, project:, start_date: nil) }
+    let(:sprint) { create(:sprint, project:, start_date: nil) }
 
     it "fails contract validation without activating the sprint", :aggregate_failures do
       expect(result).not_to be_success
@@ -108,7 +108,7 @@ RSpec.describe Sprints::StartService do
   end
 
   context "when the sprint has no finish date" do
-    let(:sprint) { create(:agile_sprint, project:, finish_date: nil) }
+    let(:sprint) { create(:sprint, project:, finish_date: nil) }
 
     it "fails contract validation without activating the sprint", :aggregate_failures do
       expect(result).not_to be_success
@@ -118,7 +118,7 @@ RSpec.describe Sprints::StartService do
   end
 
   context "when another active sprint exists in the project" do
-    let!(:active_sprint) { create(:agile_sprint, project:, status: "active") }
+    let!(:active_sprint) { create(:sprint, project:, status: "active") }
 
     it "fails contract validation without creating a board", :aggregate_failures do
       expect(result).not_to be_success

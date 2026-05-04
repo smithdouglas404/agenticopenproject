@@ -26,7 +26,9 @@ hi:
     description: This module adds features enabling agile teams to work with OpenProject in Scrum projects.
   activerecord:
     attributes:
-      agile/sprint:
+      project:
+        sprint_sharing: Sprint sharing
+      sprint:
         duration: Duration
         finish_date: Finish date
         goal: Sprint goal
@@ -36,10 +38,6 @@ hi:
           in_planning: In planning
           active: Active
           completed: Completed
-      project:
-        sprint_sharing: Sprint sharing
-      sprint:
-        duration: Sprint duration
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
@@ -60,6 +58,15 @@ hi:
             sprint_sharing:
               share_all_projects_already_taken: cannot be set because project "%{name}" is already sharing with all projects.
               share_all_projects_already_taken_anonymous: cannot be set because another project is already sharing with all projects.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is one work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,17 +80,6 @@ hi:
             sprint:
               not_shared_with_project: is not shared with the project the work package is in.
               not_eligible_for_moving: is not an active sprint in the project which holds the sprint the work package is moved out of.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
-              format: "%{message}"
-            status:
-              not_active: is not active so it cannot be closed.
-        sprint:
-          cannot_end_before_it_starts: स्प्रिंट शुरू होने से पहले खत्म नहीं हो सकता।
     models:
       sprint: Sprint
   backlogs:
@@ -141,16 +137,16 @@ hi:
     move_to_sprint_dialog_component:
       title: Move to sprint
       label_sprint: Sprint
-    backlog:
+    sprints_component:
       blankslate:
         title: No sprints present yet
-        description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
-        create_sprint_description_text: To start planning your sprint, create one here.
-        share_sprint_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
-        no_actions_description_text: No sprints are available for this project yet.
-        receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
-        receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
         settings_link_text: project settings
+        receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
+        receive_description_text: This project receives shared sprints from a different project, but none are available right now.
+        create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
+        create_description_text: To start planning your sprint, create one here.
+        manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
+        no_actions_description_text: No sprints are available for this project yet.
     backlog_bucket_menu_component:
       label_actions: Backlog bucket actions
       action_menu:

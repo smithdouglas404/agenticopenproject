@@ -37,7 +37,7 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
   let(:work_package_priority) { build_stubbed(:priority) }
   let(:work_package_author) { build_stubbed(:user) }
   let(:work_package_story_points) { 5 }
-  let(:work_package_sprint) { build_stubbed(:agile_sprint) }
+  let(:work_package_sprint) { build_stubbed(:sprint) }
   let(:work_package_position) { 5 }
   let(:shared_sprints) { [work_package_sprint] }
   let(:backlogs_enabled) { true }
@@ -61,7 +61,7 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
   before do
     shared_sprints_scope = instance_double(ActiveRecord::Relation)
 
-    allow(Agile::Sprint)
+    allow(Sprint)
       .to receive(:for_project)
             .with(work_package.project)
             .and_return(shared_sprints_scope)
@@ -126,12 +126,12 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
     end
 
     context "when sprint is completed (shared with project but not assignable)" do
-      let(:completed_sprint) { build_stubbed(:agile_sprint, status: :completed) }
+      let(:completed_sprint) { build_stubbed(:sprint, status: :completed) }
       let(:work_package_sprint) { completed_sprint }
 
       before do
         # The sprint is still shared with the project (the outer before mock makes
-        # `Agile::Sprint.for_project.exists?` return true), so `sprint_shared_with_project`
+        # `Sprint.for_project.exists?` return true), so `sprint_shared_with_project`
         # passes. We stub assignable_sprints to exclude it, simulating the `.not_completed`
         # scope, so only `validate_sprint_is_assignable` fires.
         allow(work_package_project).to receive(:assignable_sprints).and_return([])

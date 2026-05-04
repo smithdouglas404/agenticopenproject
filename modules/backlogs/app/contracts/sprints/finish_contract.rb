@@ -35,7 +35,7 @@ module Sprints
     validate :no_unfinished_work_packages
 
     def self.model
-      Agile::Sprint
+      Sprint
     end
 
     private

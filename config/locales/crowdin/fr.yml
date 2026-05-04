@@ -419,7 +419,8 @@ fr:
           error_special_characters: Caractères spéciaux non autorisés
           error_not_fully_uppercased: Doit être en majuscules
           error_in_use: Déjà utilisé comme alias actif d'un autre projet
-          error_reserved: Réservé par l'historique des alias d'un autre projet
+          error_used_in_past: Réservé par l'historique des alias d'un autre projet
+          error_reserved_by_system: Réservé comme mot-clé du système
           error_unknown: Nécessite une vérification manuelle
           remaining_projects:
             one: "... 1 projet supplémentaire"
@@ -460,8 +461,12 @@ fr:
         ignore: Ignorer les changements
         save: Enregistrer les modifications et continuer
       role_selector:
+        title: Sélectionner les rôles
         label: 'Rôle : %{role}'
         no_role: Sélectionner un rôle
+        roles:
+          one: "%{count} rôle sélectionné"
+          other: "%{count} rôles sélectionnés"
       blankslate:
         title: Aucune transition de statut configurée
         description: Ajouter des statuts pour commencer à configurer des workflows pour ce rôle
@@ -1991,6 +1996,29 @@ fr:
         type: Type
         version: Version
         watcher: Observateur
+      ordered_persisted_query_entity:
+        persisted_query: Requête persistante
+        entity: Entité
+        position: Position
+      persisted_query:
+        name: Nom
+        views: Affichages
+        filters: Filtres
+        orders: Commandes
+        selects: Sélectionne
+      persisted_view:
+        name: Nom
+        query: Requête
+        parent: Vue parente
+        public: Public
+      user_card_view:
+        secondary_info: Informations secondaires
+        show_status_badge: Afficher le badge d'état
+        show_email: Afficher l'adresse électronique
+        tag_source: Source des étiquettes
+        tag_limit: Limite des étiquettes
+        card_size: Taille des cartes
+        columns_per_row: Colonne par ligne
     errors:
       messages:
         accepted: doi(ven)t être accepté(e)(s).

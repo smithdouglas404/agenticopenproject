@@ -36,7 +36,7 @@ RSpec.describe Backlogs::BacklogController do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:status) { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint) { create(:agile_sprint, project:) }
+  shared_let(:sprint) { create(:sprint, project:) }
   shared_let(:backlog_bucket) { create(:backlog_bucket, project:) }
   shared_let(:work_package) { create(:work_package, project:, status:) }
 

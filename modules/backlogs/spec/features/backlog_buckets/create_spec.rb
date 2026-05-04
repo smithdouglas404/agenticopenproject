@@ -61,7 +61,7 @@ RSpec.describe "Backlog bucket creation",
     expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
     backlogs_page.expect_bucket_names_in_order("Discovery work")
 
-    bucket = Agile::BacklogBucket.find_by!(project:, name: "Discovery work")
+    bucket = BacklogBucket.find_by!(project:, name: "Discovery work")
     expect(bucket.work_packages).to be_empty
   end
 
@@ -77,7 +77,7 @@ RSpec.describe "Backlog bucket creation",
       expect(page).to have_field "Name", validation_error: "can't be blank"
     end
 
-    expect(Agile::BacklogBucket.where(project:)).to be_empty
+    expect(BacklogBucket.where(project:)).to be_empty
   end
 
   context "without the :create_sprints permission" do

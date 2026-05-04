@@ -32,7 +32,7 @@ class BacklogBuckets::BaseContract < ModelContract
   validate :user_authorized
 
   def self.model
-    Agile::BacklogBucket
+    BacklogBucket
   end
 
   attribute :name

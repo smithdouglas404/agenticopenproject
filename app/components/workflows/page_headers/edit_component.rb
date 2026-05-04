@@ -30,7 +30,7 @@
 
 module Workflows::PageHeaders
   class EditComponent < BaseComponent
-    options :tabs, :role
+    options :tabs, :roles
 
     def type = model
 
@@ -49,7 +49,7 @@ module Workflows::PageHeaders
         mobile_icon: :copy,
         mobile_label: t(:button_copy),
         size: :medium,
-        href: new_workflow_copy_path(type, source_role_id: role&.id),
+        href: new_workflow_copy_path(type, source_role_id: roles&.first&.id),
         aria: { label: helpers.t(:button_copy) },
         title: helpers.t(:button_copy)
       ) do |button|

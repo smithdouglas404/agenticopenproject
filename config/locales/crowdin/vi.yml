@@ -413,7 +413,8 @@ vi:
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             other: "... %{count} more projects"
@@ -452,8 +453,11 @@ vi:
         ignore: Ignore changes
         save: Save changes and continue
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Select role
+        roles:
+          other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
         description: Add statuses to start configuring workflows for this role
@@ -1980,6 +1984,29 @@ vi:
         type: loại
         version: Phiên bản
         watcher: Người quan sát
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: phải được đồng ý
@@ -2535,7 +2562,7 @@ vi:
     base: 'Lỗi tổng quan:'
     body: cơ thể
     category: thể loại
-    comment: bình luận
+    comment: Nhận xét
     comments: bình luận
     content: Nội dung
     color: màu sắc
@@ -4232,7 +4259,7 @@ vi:
   label_used_by: Được dùng bởi
   label_used_by_types: Được sử dụng bởi các loại
   label_used_in_projects: Được sử dụng trong các dự án
-  label_user: người dùng
+  label_user: Người dùng
   label_user_and_permission: Người dùng và quyền
   label_user_named: Người dùng %{name}
   label_user_activity_html: "%{value}'s activity"

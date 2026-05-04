@@ -87,11 +87,11 @@ de:
         type_token_text: Ihr Enterprise-Token-Text
         token_placeholder: Enterprise-Token Text hier einfügen
         token_caption: Weitere Informationen über die Aktivierung der Enterprise Edition finden Sie in unserer [Dokumentation](docs_url).
-      add_token: Enterprise-Edition Support Token hochladen
+      add_token: Enterprise edition Support Token hochladen
       replace_token: Aktuellen Enterprise edition Support Token ersetzen
       order: Enterprise on-premises bestellen
-      paste: Enterprise-Edition Support Token hier einfügen
-      required_for_feature: Dieses Add-on ist nur mit einem aktiven Enterprise-Edition Support-Token verfügbar.
+      paste: Enterprise edition Support Token hier einfügen
+      required_for_feature: Dieses Add-on ist nur mit einem aktiven Enterprise edition Support-Token verfügbar.
       enterprise_link: Klicken Sie hier für weitere Informationen.
       start_trial: Kostenlose Testversion starten
       book_now: Jetzt buchen
@@ -419,7 +419,8 @@ de:
           error_special_characters: Sonderzeichen sind nicht erlaubt
           error_not_fully_uppercased: Muss in Großbuchstaben sein
           error_in_use: Bereits als aktive Kennung für ein anderes Projekt verwendet
-          error_reserved: Reserviert durch eine frühere Kennung eines anderen Projekts
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Benötigt manuelle Überprüfung
           remaining_projects:
             one: "... 1 weiteres Projekt"
@@ -460,8 +461,12 @@ de:
         ignore: Änderungen ignorieren
         save: Änderungen speichern und fortfahren
       role_selector:
+        title: Select roles
         label: 'Rolle: %{role}'
         no_role: Rolle auswählen
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Keine Statusübergänge konfiguriert
         description: Status hinzufügen, um mit der Konfiguration von Arbeitsabläufen für diese Rolle zu beginnen
@@ -1340,10 +1345,10 @@ de:
         tab: Titel konfigurieren
         manually_editable_subjects:
           label: Manuell bearbeitbare Titel
-          caption: Nutzer:innen können die Titel der Arbeitspakete ohne Einschränkungen manuell eingeben und bearbeiten.
+          caption: Benutzer können die Titel der Arbeitspakete ohne Einschränkungen manuell eingeben und bearbeiten.
         automatically_generated_subjects:
           label: Automatisch generierte Titel
-          caption: Definieren Sie ein Schema aus referenzierten Attributen und Freitext für die automatische Generierung von Arbeitspakettiteln. Nutzer:innen können diese nicht manuell editieren.
+          caption: Definieren Sie ein Schema aus referenzierten Attributen und Freitext für die automatische Generierung von Arbeitspakettiteln. Nutzer können diese nicht manuell editieren.
         token:
           label_with_context: "%{attribute_context}: %{attribute_label}"
           context:
@@ -1444,7 +1449,7 @@ de:
           manual_with_children: Hat Unteraufgaben aber ihre Startdaten werden ignoriert.
         title:
           automatic_mobile: Automatisch geplant.
-          automatic_with_children: Unteraufgaben bestimmen Termine.
+          automatic_with_children: Die Termine sind durch untergeordnete Arbeitspakete bestimmt.
           automatic_with_predecessor: Der Anfangstermin wird von einem Vorgänger festgelegt.
           manual_mobile: Manuell geplant.
           manually_scheduled: Manuell geplant – Daten unabhängig von Beziehungen.
@@ -1547,7 +1552,7 @@ de:
       label_child_plural: Unteraufgaben
       new_child: Neue Unteraufgabe
       new_child_description: Erstellt ein zugehöriges Arbeitspaket als Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets
-      child: Unteraufgabe
+      child: Kind
       child_description: Macht das zugehörige Arbeitspaket zu einer Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets
       parent: Übergeordnetes Arbeitspaket
       parent_description: Wandelt das verknüpfte in ein übergeordnetes Arbeitspaket dieses Arbeitspakets um
@@ -1807,7 +1812,7 @@ de:
         column_names: Spalten
         relations_to_type_column: Beziehungen zu %{type}
         relations_of_type_column: 'Beziehungen der Art: %{type}'
-        child_work_packages: Unteraufgaben
+        child_work_packages: Kinder
         group_by: Gruppiere Ergebnisse nach
         sort_by: Ergebnisse sortieren nach
         filters: Filter
@@ -1994,6 +1999,29 @@ de:
         type: Typ
         version: Version
         watcher: Beobachter
+      ordered_persisted_query_entity:
+        persisted_query: Gespeicherte Abfrage
+        entity: Entität
+        position: Position
+      persisted_query:
+        name: Name
+        views: Ansichten
+        filters: Filter
+        orders: Sortierungen
+        selects: Ausgewählte Attribute
+      persisted_view:
+        name: Name
+        query: Abfrage
+        parent: Übergeordnete Ansicht
+        public: Öffentlich
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: muss akzeptiert werden.
@@ -2353,7 +2381,7 @@ de:
               status_transition_invalid: ist ungültig, da kein valider Übergang vom alten zum neuen Status für die aktuelle Rolle des Nutzers existiert.
               status_invalid_in_type: ist ungültig, da der aktuelle Status nicht in diesem Typ vorhanden ist.
             type:
-              cannot_be_milestone_due_to_children: kann kein Meilenstein werden, da dieses Arbeitspaket Unteraufgaben besitzt.
+              cannot_be_milestone_due_to_children: kann kein Meilenstein werden, da dieses Arbeitspaket Unterelemente besitzt.
             priority_id:
               only_active_priorities_allowed: muss aktiv sein.
             category:
@@ -3172,7 +3200,7 @@ de:
   error_custom_option_not_found: Option ist nicht vorhanden.
   error_enterprise_plan_needed: Sie benötigen den Enterprise-Plan %{plan}, um diese Aktion durchzuführen.
   error_enterprise_activation_user_limit: Ihr Konto konnte nicht aktiviert werden (Nutzerlimit erreicht). Bitte kontaktieren Sie Ihren Administrator um Zugriff zu erhalten.
-  error_enterprise_token_invalid_domain: Die Enterprise-Edition ist nicht aktiv. Die aktuelle Domain (%{actual}) entspricht nicht dem erwarteten Hostnamen (%{expected}).
+  error_enterprise_token_invalid_domain: Die Enterprise edition ist nicht aktiv. Die aktuelle Domain (%{actual}) entspricht nicht dem erwarteten Hostnamen (%{expected}).
   error_failed_to_delete_entry: Fehler beim Löschen dieses Eintrags.
   error_in_dependent: 'Fehler beim Versuch, abhängiges Objekt zu ändern: %{dependent_class} #%{related_id} - %{related_subject}: %{error}'
   error_in_new_dependent: 'Fehler beim Versuch, abhängiges Objekt zu erstellen: %{dependent_class} - %{related_subject}: %{error}'
@@ -3459,7 +3487,7 @@ de:
         dates:
           working: "%{date} ist jetzt ein Arbeitstag"
           non_working: "%{date} ist jetzt ein arbeitsfreier Tag"
-      progress_mode_changed_to_status_based: Fortschrittberechnung wurde auf Status-bezogen gesetzt
+      progress_mode_changed_to_status_based: Fortschrittberechnung wurde auf Status-basiert gesetzt
       status_excluded_from_totals_set_to_false_message: jetzt in den Gesamtwerten der Hierarchie enthalten
       status_excluded_from_totals_set_to_true_message: jetzt von den Hierarchie-Gesamtwerten ausgeschlossen
       status_percent_complete_changed: "% abgeschlossen von %{old_value}% auf %{new_value} % geändert"
@@ -3862,7 +3890,7 @@ de:
   label_enumerations: Aufzählungen
   label_enterprise: Enterprise
   label_enterprise_active_users: "%{current}/%{limit} gebuchte aktive Nutzer"
-  label_enterprise_edition: Enterprise Edition
+  label_enterprise_edition: Enterprise edition
   label_enterprise_support: Enterprise Support
   label_environment: Umgebung
   label_estimates_and_progress: Schätzungen und Fortschritt
@@ -4980,7 +5008,7 @@ de:
         Erhöhen Sie diesen Wert zur Verbesserung der Performance, da die Erfassung des genutzten Festplattenspeichers Ressourcen-intensiv ist.
       oauth_application_details_html: 'Der Client Geheimcode wird nach dem Schließen dieses Fensters nicht mehr zugänglich sein. Bitte kopieren Sie diese Werte in die Nextcloud OpenProject Integrationseinstellungen:'
       oauth_application_details_link_text: Zu den Einstellungen gehen
-      setup_documentation_details: 'Wenn Sie Hilfe bei der Konfiguration eines neuen Dateispeichers benötigen, konsultieren Sie bitte die Dokumentation: '
+      setup_documentation_details: 'Wenn Sie Hilfe bei der Konfiguration eines neuen Datei-Speichers benötigen, konsultieren Sie bitte die Dokumentation: '
       setup_documentation_details_link_text: Dateispeicher einrichten
       show_warning_details: Um diesen Dateispeicher nutzen zu können, müssen Sie das Modul und den spezifischen Speicher in den Projekteinstellungen jedes gewünschten Projekts aktivieren.
     subversion:
@@ -5690,7 +5718,7 @@ de:
   warning_user_limit_reached_admin_html: 'Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte [aktualisieren Sie Ihr Abonnement](upgrade_url) um sicherzustellen, dass externe Benutzer auf diese Instanz zugreifen können.
 
     '
-  warning_user_limit_reached_instructions: 'Du hast dein Nutzerlimit erreicht (%{current}/%{max} active users). Bitte kontaktiere sales@openproject.com um deinen Enterprise Edition Plan upzugraden und weitere Nutzer hinzuzufügen.
+  warning_user_limit_reached_instructions: 'Du hast dein Nutzerlimit erreicht (%{current}/%{max} active users). Bitte kontaktiere sales@openproject.com um deinen Enterprise edition Plan upzugraden und weitere Nutzer hinzuzufügen.
 
     '
   warning_protocol_mismatch_html: ''

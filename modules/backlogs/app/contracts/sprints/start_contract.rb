@@ -67,7 +67,7 @@ module Sprints
 
     def validate_no_other_active_sprint
       return unless model.in_planning?
-      return unless Agile::Sprint.where(project: model.project).active.where.not(id: model.id).exists?
+      return unless Sprint.where(project: model.project).active.where.not(id: model.id).exists?
 
       errors.add :status, :only_one_active_sprint_allowed
     end

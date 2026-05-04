@@ -413,7 +413,8 @@ zh-TW:
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             other: "... %{count} more projects"
@@ -452,8 +453,11 @@ zh-TW:
         ignore: Ignore changes
         save: Save changes and continue
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Select role
+        roles:
+          other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
         description: Add statuses to start configuring workflows for this role
@@ -1974,6 +1978,29 @@ zh-TW:
         type: 類型
         version: 版本
         watcher: 監看者
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: 必須被接受
@@ -3829,7 +3856,7 @@ zh-TW:
   label_filter_add: 新增條件
   label_filter_by: 篩選條件：
   label_filter_any_name_attribute: 名稱屬性
-  label_filter_plural: 篩選條件
+  label_filter_plural: 篩選器
   label_filters_toggle: 顯示/隱藏篩選條件
   label_float: 浮點數
   label_folder: 資料夾
@@ -3843,8 +3870,8 @@ zh-TW:
   label_global_modules: 全域模組
   label_global_roles: 全域角色
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: 之前
-  label_group_by: 分類
+  label_greater_or_equal: ">="
+  label_group_by: 分組依據
   label_group_new: 新增群組
   label_group: 群組
   label_group_named: 群組名稱 %{name}
@@ -3856,7 +3883,7 @@ zh-TW:
   label_hierarchy: 階層
   label_hierarchy_leaf: 頁面結構頁
   label_home: Home
-  label_subject_or_id: 名稱或 id
+  label_subject_or_id: 主旨或 id
   label_calendar_subscriptions: 訂閱行事曆
   label_identifier: 識別碼
   label_project_identifier: Project identifier
@@ -3908,7 +3935,7 @@ zh-TW:
   label_latest_revision_plural: 最新版本
   label_ldap_authentication: LDAP 認證
   label_learn_more: 了解更多
-  label_less_or_equal: 之後
+  label_less_or_equal: "<="
   label_less_than_ago: 幾天內
   label_link_url: 連結(URL)
   label_list: 清單

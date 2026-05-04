@@ -78,7 +78,7 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
       end
 
       it "generates a classic identifier from the project name" do
-        expect(project.reload.identifier).to eq(project.name.to_url.first(Projects::Identifier::IDENTIFIER_MAX_LENGTH))
+        expect(project.reload.identifier).to eq(project.name.to_url.first(Projects::Identifier::CLASSIC_IDENTIFIER_MAX_LENGTH))
       end
     end
 

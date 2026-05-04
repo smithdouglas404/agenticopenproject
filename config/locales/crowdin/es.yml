@@ -419,7 +419,8 @@ es:
           error_special_characters: No se permiten caracteres especiales
           error_not_fully_uppercased: Debe estar en mayúsculas
           error_in_use: Ya está en uso como identificador activo de otro proyecto
-          error_reserved: Reservado por el historial de identificadores de otro proyecto
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Necesita revisión manual
           remaining_projects:
             one: "... 1 proyecto más"
@@ -460,8 +461,12 @@ es:
         ignore: Descartar cambios
         save: Guardar cambios y continuar
       role_selector:
+        title: Select roles
         label: 'Rol: %{role}'
         no_role: Seleccionar rol
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: No hay transiciones de estado configuradas
         description: Añade estados para empezar a configurar los flujos de trabajo de este rol
@@ -1446,7 +1451,7 @@ es:
           automatic_with_children: Fechas determinadas por paquetes de trabajo secundarios.
           automatic_with_predecessor: La fecha de inicio la fija un predecesor.
           manual_mobile: Programado manualmente.
-          manually_scheduled: Programado manualmente. No afectadas por relaciones.
+          manually_scheduled: Programado manualmente. Fechas no afectadas por relaciones.
       blankslate:
         title: Sin predecesores
         description: Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano.
@@ -1993,6 +1998,29 @@ es:
         type: Tipo
         version: Versión
         watcher: Observador
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: debe ser aceptado.

@@ -30,29 +30,53 @@
 
 module Wikis
   class PageLinkService
-    def count(linkable)
-      # Incomplete implementation until connection to Wikis API is done to fetch relation wiki page links
-      # from external providers.
-      # TODO: Replace with complete implementation
+    include Dry::Monads[:result]
 
-      Wikis::PageLink.joins(:provider)
-                     .merge(Wikis::Provider.enabled)
-                     .where(linkable:)
-                     .count
+    def count(linkable)
+      relation_page_links = Provider.enabled.sum { |provider| relation_page_link_infos_for(provider:, linkable:).size }
+
+      relation_page_links +
+        inline_page_link_infos_for(linkable:).size +
+        referencing_wiki_page_infos_for(linkable:).size
     end
 
-    def relation_page_links_for(provider:, linkable:)
+    def relation_page_link_infos_for(provider:, linkable:)
       provider.page_links
               .merge(RelationPageLink.all)
               .where(linkable:)
               .order(created_at: :desc)
+              .map { page_info(provider:, identifier: it.identifier) }
     end
 
-    def inline_page_links_for(provider:, linkable:)
-      provider.page_links
-              .merge(InlinePageLink.all)
-              .where(linkable:)
-              .order(created_at: :desc)
+    def inline_page_link_infos_for(linkable:)
+      InlinePageLink.where(linkable:)
+                    .order(created_at: :asc)
+                    .map { page_info(provider: it.provider, identifier: it.identifier) }
+    end
+
+    def referencing_wiki_page_infos_for(linkable:)
+      referenced_in = []
+
+      Adapters::Input::ReferencingPages.build(linkable:).bind do |input|
+        Provider.enabled.each do |provider|
+          provider.resolve("queries.referencing_pages")
+                  .call(input)
+                  # Only return page infos for successful results
+                  .fmap { |page_infos| referenced_in.concat(page_infos.map { Success(it) }) }
+        end
+      end
+
+      referenced_in
+    end
+
+    private
+
+    def page_info(provider:, identifier:)
+      Adapters::Input::PageInfo.build(identifier:).bind { provider.resolve("queries.page_info").call(it) }
+    end
+
+    def page_title_service
+      @page_title_service ||= PageTitleService.new
     end
   end
 end

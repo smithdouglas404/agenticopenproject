@@ -74,8 +74,6 @@ export class WorkPackageQuickinfoMacroComponent implements OnInit {
 
   combinedDateDisplayField = CombinedDateDisplayField;
 
-  workPackageLink:string;
-
   workPackageHoverCardUrl:string;
 
   detailed = false;
@@ -95,7 +93,6 @@ export class WorkPackageQuickinfoMacroComponent implements OnInit {
     const element = this.elementRef.nativeElement as HTMLElement;
     const id:string = element.dataset.id!;
     this.detailed = element.dataset.detailed === 'true';
-    this.workPackageLink = this.pathHelper.workPackagePath(id);
     this.workPackageHoverCardUrl = this.pathHelper.workPackageHoverCardPath(id);
 
     this.workPackage$ = this

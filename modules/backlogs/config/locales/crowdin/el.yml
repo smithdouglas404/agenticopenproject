@@ -26,20 +26,18 @@ el:
     description: This module adds features enabling agile teams to work with OpenProject in Scrum projects.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Διάρκεια
-        finish_date: Ημερομηνία ολοκλήρωσης
-        goal: Στόχος Sprint
-        name: Όνομα Sprint
-        sharing: Κοινή Χρήση
-        statuses:
-          in_planning: Σε σχεδιασμό
-          active: Ενεργό
-          completed: Ολοκληρωμένο
       project:
         sprint_sharing: Διαμοιρασμός Sprint
       sprint:
-        duration: Διάρκεια Sprint
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
@@ -60,6 +58,15 @@ el:
             sprint_sharing:
               share_all_projects_already_taken: δεν μπορεί να οριστεί επειδή το έργο "%{name}" ήδη διαμοιράζεται με όλα τα έργα.
               share_all_projects_already_taken_anonymous: δεν μπορεί να οριστεί επειδή ένα άλλο έργο ήδη διαμοιράζεται με όλα τα έργα.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is one work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,17 +80,6 @@ el:
             sprint:
               not_shared_with_project: δεν διαμοιράζεται με το έργο στο οποίο ανήκει το πακέτο εργασίας.
               not_eligible_for_moving: is not an active sprint in the project which holds the sprint the work package is moved out of.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
-              format: "%{message}"
-            status:
-              not_active: is not active so it cannot be closed.
-        sprint:
-          cannot_end_before_it_starts: Το sprint δεν μπορεί να λήξει πριν αρχίσει.
     models:
       sprint: Sprint
   backlogs:
@@ -141,16 +137,16 @@ el:
     move_to_sprint_dialog_component:
       title: Move to sprint
       label_sprint: Sprint
-    backlog:
+    sprints_component:
       blankslate:
         title: No sprints present yet
-        description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
-        create_sprint_description_text: To start planning your sprint, create one here.
-        share_sprint_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
-        no_actions_description_text: No sprints are available for this project yet.
-        receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
-        receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
         settings_link_text: project settings
+        receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
+        receive_description_text: This project receives shared sprints from a different project, but none are available right now.
+        create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
+        create_description_text: To start planning your sprint, create one here.
+        manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
+        no_actions_description_text: No sprints are available for this project yet.
     backlog_bucket_menu_component:
       label_actions: Backlog bucket actions
       action_menu:

@@ -45,8 +45,8 @@ RSpec.describe "Filter work packages by backlog filters", :js do
            parent: work_package_with_story_type,
            project:)
   end
-  shared_let(:own_sprint) { create(:agile_sprint, project:) }
-  shared_let(:shared_sprint) { create(:agile_sprint, project: create(:project)) }
+  shared_let(:own_sprint) { create(:sprint, project:) }
+  shared_let(:shared_sprint) { create(:sprint, project: create(:project)) }
   shared_let(:work_package_in_own_sprint) { create(:work_package, type: task_type, project:, sprint: own_sprint) }
   shared_let(:work_package_in_shared_sprint) { create(:work_package, type: task_type, project:, sprint: shared_sprint) }
 

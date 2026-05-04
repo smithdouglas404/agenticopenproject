@@ -72,7 +72,7 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
 
     def sprint_shared_with_project
       return if model.sprint.nil? ||
-                Agile::Sprint.for_project(model.project).exists?(id: model.sprint_id)
+                Sprint.for_project(model.project).exists?(id: model.sprint_id)
 
       errors.add :sprint, :not_shared_with_project
     end

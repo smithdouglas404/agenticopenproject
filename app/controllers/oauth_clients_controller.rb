@@ -77,19 +77,20 @@ class OAuthClientsController < ApplicationController
     storage_id = params.fetch(:storage_id)
     oauth_client = OAuthClient.find_by(client_id:, integration_id: storage_id)
 
-    handle_absent_oauth_client unless oauth_client
+    return handle_absent_oauth_client unless oauth_client
 
-    storage = oauth_client.integration
-    # check if the origin is the same
+    integration = oauth_client.integration
     destination_url = destination_url(params.fetch(:destination_url, ""))
-    auth_state = ::Storages::Adapters::Authentication.authorization_state(storage:, user: User.current)
+    configuration = integration.oauth_configuration
+    connection = ::OAuthClients::ConnectionManager.new(user: User.current, configuration:)
+                                                  .get_access_token
 
-    if auth_state == :connected
+    if connection.success?
       redirect_to(destination_url)
     else
       nonce = SecureRandom.uuid
       cookies["oauth_state_#{nonce}"] = { value: { href: destination_url, storageId: storage_id }.to_json, expires: 1.hour }
-      redirect_to(storage.oauth_configuration.authorization_uri(state: nonce), allow_other_host: true)
+      redirect_to(configuration.authorization_uri(state: nonce), allow_other_host: true)
     end
   end
 

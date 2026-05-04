@@ -26,20 +26,18 @@ it:
     description: Questo modulo aggiunge funzionalità che consentono ai team agili di lavorare con i progetti OpenProject in Scrum.
   activerecord:
     attributes:
-      agile/sprint:
-        duration: Durata
-        finish_date: Data di fine
-        goal: Obiettivo dello sprint
-        name: Nome dello sprint
-        sharing: Condivisione
-        statuses:
-          in_planning: In pianificazione
-          active: Attivo
-          completed: Completato
       project:
         sprint_sharing: Condivisione dello sprint
       sprint:
-        duration: Durata dello sprint
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Mostra gli sprint compressi
       work_package:
@@ -60,6 +58,15 @@ it:
             sprint_sharing:
               share_all_projects_already_taken: non può essere impostato perché il progetto "%{name}" è già condiviso con tutti i progetti.
               share_all_projects_already_taken_anonymous: non può essere impostato perché un altro progetto è già condiviso con tutti i progetti.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: There is one work package that was not completed in this sprint.
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,17 +80,6 @@ it:
             sprint:
               not_shared_with_project: non è condiviso con il progetto in cui si trova la macro-attività.
               not_eligible_for_moving: non è uno sprint attivo nel progetto che contiene lo sprint da cui la macro-attività viene spostata.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
-              format: "%{message}"
-            status:
-              not_active: non è attivo, quindi non può essere chiuso.
-        sprint:
-          cannot_end_before_it_starts: Uno sprint non può terminare prima che venga avviato.
     models:
       sprint: Sprint
   backlogs:
@@ -141,16 +137,16 @@ it:
     move_to_sprint_dialog_component:
       title: Sposta nello sprint
       label_sprint: Sprint
-    backlog:
+    sprints_component:
       blankslate:
-        title: Non ci sono ancora sprint
-        description_html: Per iniziare a pianificare il tuo sprint, creane uno qui oppure vai alle %{settings_link} per ricevere sprint da un altro progetto.
-        create_sprint_description_text: Per iniziare a pianificare il tuo sprint, creane uno qui.
-        share_sprint_description_html: Per iniziare a pianificare il tuo sprint, vai alle %{settings_link} per ricevere sprint da un altro progetto.
-        no_actions_description_text: Non ci sono ancora sprint disponibili per questo progetto.
-        receive_shared_description_html: Questo progetto riceve sprint da un altro progetto. Gestisci questa impostazione nelle %{settings_link}.
-        receive_shared_no_actions_description_text: Questo progetto riceve sprint condivisi da un altro progetto, ma al momento non sono disponibili.
-        settings_link_text: impostazioni del progetto
+        title: No sprints present yet
+        settings_link_text: project settings
+        receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
+        receive_description_text: This project receives shared sprints from a different project, but none are available right now.
+        create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
+        create_description_text: To start planning your sprint, create one here.
+        manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
+        no_actions_description_text: No sprints are available for this project yet.
     backlog_bucket_menu_component:
       label_actions: Backlog bucket actions
       action_menu:

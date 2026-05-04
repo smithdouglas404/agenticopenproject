@@ -15,12 +15,24 @@
         end
 
         oauth_client_row.with_row(mb: 3) do
-          render(Wikis::Admin::OAuthClientForm.new(form))
+          render(Primer::OpenProject::InputGroup.new(input_width: :large)) do |input_group|
+            input_group.with_text_input(
+              name: "oauth_client[client_id]",
+              label: t(".client_id"),
+              visually_hide_label: false,
+              value: resolved_oauth_client.client_id,
+              readonly: true
+            )
+            input_group.with_trailing_action_clipboard_copy_button(
+              value: resolved_oauth_client.client_id,
+              aria: { label: t("button_copy_to_clipboard") }
+            )
+          end
         end
 
         oauth_client_row.with_row do
-          render(Wikis::Admin::SubmitOrCancelForm.new(form, wiki_provider:,
-                                                      cancel_button_options: { href: cancel_button_path }))
+          concat(render(Wikis::Admin::SubmitOrCancelForm.new(form, wiki_provider:,
+                                                             cancel_button_options: { href: cancel_button_path })))
         end
       end
     end

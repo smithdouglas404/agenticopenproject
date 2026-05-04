@@ -419,7 +419,8 @@ pt-PT:
           error_special_characters: Caracteres especiais não são permitidos
           error_not_fully_uppercased: Deve estar em maiúsculas
           error_in_use: Já está a ser utilizado como identificador ativo de outro projeto
-          error_reserved: Reservado pelo histórico do identificador de outro projeto
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Precisa de revisão manual
           remaining_projects:
             one: "... mais 1 projeto"
@@ -460,8 +461,12 @@ pt-PT:
         ignore: Ignorar alterações
         save: Guardar as alterações e continuar
       role_selector:
+        title: Select roles
         label: 'Função: %{role}'
         no_role: Selecionar função
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Não há transições de estado configuradas
         description: Adicione estados para começar a configurar fluxos de trabalho para esta função
@@ -1996,6 +2001,29 @@ pt-PT:
         type: Tipo
         version: Versão
         watcher: Monitor
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: deve ser aceite.

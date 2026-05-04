@@ -34,7 +34,7 @@ require_relative "../../support/pages/backlog"
 RSpec.describe "Create", :js do
   shared_let(:project) { create(:project) }
   shared_let(:initial_sprint) do
-    create(:agile_sprint,
+    create(:sprint,
            project:,
            name: "Initial sprint",
            start_date: Date.new(2025, 9, 5),
@@ -152,7 +152,7 @@ RSpec.describe "Create", :js do
 
     describe "proposed sprint names" do
       before do
-        Agile::Sprint.delete_all
+        Sprint.delete_all
       end
 
       it "prefilled with 'Sprint 1' if there are no previous sprints" do
@@ -167,7 +167,7 @@ RSpec.describe "Create", :js do
 
       context "with a previous sprint" do
         before do
-          create(:agile_sprint, name: "Be ambitious 42", project:)
+          create(:sprint, name: "Be ambitious 42", project:)
 
           planning_page.visit!
           planning_page.open_create_sprint_dialog

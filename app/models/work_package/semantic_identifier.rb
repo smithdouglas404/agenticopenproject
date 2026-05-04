@@ -88,6 +88,27 @@ module WorkPackage::SemanticIdentifier
     identifier.presence || id
   end
 
+  # Returns the identifier formatted for inline UI display.
+  # Semantic mode: "PROJ-42" (no prefix — self-describing)
+  # Classic mode: "#42" (hash-prefixed)
+  def formatted_id
+    did = display_id
+    did.is_a?(String) && did.match?(/[A-Za-z]/) ? did : "##{did}"
+  end
+
+  # Override ActiveRecord's default `to_param` so Rails URL helpers
+  # (work_package_path, polymorphic_path, form_for, etc.) automatically
+  # produce semantic-id URLs in semantic mode. In classic mode display_id
+  # returns the integer primary key, so this is behaviourally identical
+  # to the inherited `id&.to_s`.
+  #
+  # API v3 deliberately bypasses this by passing `id:` kwargs explicitly
+  # (see lib/api/v3/work_packages/work_package_representer.rb) so HAL
+  # self-links remain numeric and stable for API consumers.
+  def to_param
+    display_id&.to_s
+  end
+
   # Allocates the next semantic identifier in the current project and assigns it to the WP.
   # Also writes alias rows for every identifier the project has ever used (including "ghost" aliases).
   #

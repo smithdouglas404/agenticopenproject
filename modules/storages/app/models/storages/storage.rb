@@ -159,6 +159,8 @@ module Storages
 
     def configuration_checks = raise SubclassResponsibilityError
 
+    def skip_client_secret_validation? = false
+
     def uri
       return unless host
 
