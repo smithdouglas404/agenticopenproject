@@ -28,13 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Queries::Sprints
-  ::Queries::Register.register(SprintQuery) do
-    filter Filters::NameFilter
-    filter Filters::ProjectFilter
-    filter Filters::StatusFilter
-    filter Filters::TypeaheadFilter
+class Queries::Sprints::Filters::StatusFilter < Queries::Sprints::Filters::SprintFilter
+  def allowed_values
+    Agile::Sprint.statuses.map do |key, value|
+      [I18n.t(:"activerecord.attributes.agile/sprint.statuses.#{key}"), value]
+    end
+  end
 
-    order Orders::DefaultOrder
+  def type
+    :list
   end
 end
