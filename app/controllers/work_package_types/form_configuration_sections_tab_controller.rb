@@ -66,39 +66,12 @@ module WorkPackageTypes
     end
 
     def update
-      call = if temporary_section_key?(section_key_param)
-               ::WorkPackageTypes::FormConfigurationSections::CreateService
-                 .new(user: current_user, type: @type)
-                 .call(
-                   group_type: section_params[:group_type],
-                   name: section_params[:name],
-                   query_props: section_params[:query]
-                 )
-             else
-               ::WorkPackageTypes::FormConfigurationSections::UpdateService
-                 .new(user: current_user, type: @type, section_key: section_key_param)
-                 .call(name: section_params[:name])
-             end
+      call = update_call
 
       if call.success?
         update_form_configuration_via_turbo_stream
-      elsif temporary_section_key?(section_key_param)
-        update_main_content_via_turbo_stream(
-          editing_section_key: TEMPORARY_SECTION_KEY,
-          temporary_group: temporary_group(
-            group_type: section_params[:group_type],
-            query: section_params[:query],
-            name: section_params[:name].to_s
-          ),
-          validation_message: call.errors.map(&:message).to_sentence
-        )
       else
-        @type.reload
-        update_main_content_via_turbo_stream(
-          editing_section_key: section_key_param,
-          validation_message: call.errors.map(&:message).to_sentence,
-          input_value: section_params[:name].to_s
-        )
+        render_update_error(call)
       end
 
       respond_with_turbo_streams(status: turbo_status_for(call))
@@ -196,6 +169,59 @@ module WorkPackageTypes
 
     def turbo_status_for(call)
       call.success? ? :ok : :unprocessable_entity
+    end
+
+    def update_call
+      if temporary_section_key?(section_key_param)
+        create_section_call
+      else
+        rename_section_call
+      end
+    end
+
+    def create_section_call
+      ::WorkPackageTypes::FormConfigurationSections::CreateService
+        .new(user: current_user, type: @type)
+        .call(
+          group_type: section_params[:group_type],
+          name: section_params[:name],
+          query_props: section_params[:query]
+        )
+    end
+
+    def rename_section_call
+      ::WorkPackageTypes::FormConfigurationSections::UpdateService
+        .new(user: current_user, type: @type, section_key: section_key_param)
+        .call(name: section_params[:name])
+    end
+
+    def render_update_error(call)
+      if temporary_section_key?(section_key_param)
+        render_temporary_section_update_error(call)
+      else
+        render_existing_section_update_error(call)
+      end
+    end
+
+    def render_temporary_section_update_error(call)
+      update_main_content_via_turbo_stream(
+        editing_section_key: TEMPORARY_SECTION_KEY,
+        temporary_group: temporary_group(
+          group_type: section_params[:group_type],
+          query: section_params[:query],
+          name: section_params[:name].to_s
+        ),
+        validation_message: call.errors.map(&:message).to_sentence
+      )
+    end
+
+    def render_existing_section_update_error(call)
+      @type.reload
+      update_main_content_via_turbo_stream(
+        editing_section_key: section_key_param,
+        validation_message: call.errors.map(&:message).to_sentence,
+        input_value: section_params[:name].to_s
+      )
     end
   end
 end

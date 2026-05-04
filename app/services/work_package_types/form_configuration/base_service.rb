@@ -82,18 +82,10 @@ module WorkPackageTypes
       end
 
       def persist_groups(groups)
-        type.attribute_groups_will_change!
-        type.attribute_groups_objects = normalized_groups(groups)
-        sync_active_custom_fields!
+        assign_groups(groups)
+        return contract_failure unless form_configuration_contract.validate
 
-        contract = ::WorkPackageTypes::UpdateFormConfigurationContract.new(type, user, options: {})
-        return ServiceResult.failure(result: type, errors: contract.errors) unless contract.validate
-
-        if type.save
-          ServiceResult.success(result: type)
-        else
-          ServiceResult.failure(result: type, errors: type.errors)
-        end
+        persist_type
       end
 
       def failure_with_message(message)
@@ -151,6 +143,28 @@ module WorkPackageTypes
                                   attribute.delete_prefix("custom_field_").to_i
                                 end
                                 .uniq
+      end
+
+      def assign_groups(groups)
+        type.attribute_groups_will_change!
+        type.attribute_groups_objects = normalized_groups(groups)
+        sync_active_custom_fields!
+      end
+
+      def form_configuration_contract
+        @form_configuration_contract ||= ::WorkPackageTypes::UpdateFormConfigurationContract.new(type, user, options: {})
+      end
+
+      def contract_failure
+        ServiceResult.failure(result: type, errors: form_configuration_contract.errors)
+      end
+
+      def persist_type
+        if type.save
+          ServiceResult.success(result: type)
+        else
+          ServiceResult.failure(result: type, errors: type.errors)
+        end
       end
     end
   end

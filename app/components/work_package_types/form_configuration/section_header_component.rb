@@ -87,7 +87,6 @@ module WorkPackageTypes
         type_form_configuration_section_path(@type, @group[:key])
       end
 
-
       def move_action(menu:, href:, label:, icon:)
         menu.with_item(
           label:,

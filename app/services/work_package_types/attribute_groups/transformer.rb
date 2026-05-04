@@ -55,18 +55,9 @@ module WorkPackageTypes
       def transform_attribute_group(group)
         attributes = group[:attributes].pluck(:key)
 
-        if group[:key].present?
-          key = group[:key].to_sym
-          default_label = Type.default_groups[key]
-          default_name = default_label ? I18n.t(default_label, default: key.to_s) : key.to_s
-          display_name = nil
-          display_name = group[:name] if group[:name].present? && group[:name] != default_name
-          result = [key, attributes]
-          result << display_name if display_name.present?
-          result
-        else
-          [group[:name], attributes]
-        end
+        return [group[:name], attributes] if group[:key].blank?
+
+        build_default_attribute_group(group, attributes)
       end
 
       def transform_query_group(group)
@@ -78,6 +69,25 @@ module WorkPackageTypes
         )
 
         [name, [result.result]] if result.success?
+      end
+
+      def build_default_attribute_group(group, attributes)
+        key = group[:key].to_sym
+        display_name = customized_display_name(group, key)
+        result = [key, attributes]
+        result << display_name if display_name.present?
+        result
+      end
+
+      def customized_display_name(group, key)
+        return if group[:name].blank?
+
+        group[:name] unless group[:name] == default_group_name(key)
+      end
+
+      def default_group_name(key)
+        label = Type.default_groups[key]
+        label ? I18n.t(label, default: key.to_s) : key.to_s
       end
     end
   end

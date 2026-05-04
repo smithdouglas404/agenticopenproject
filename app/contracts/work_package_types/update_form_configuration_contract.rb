@@ -67,17 +67,10 @@ module WorkPackageTypes
     end
 
     def validate_query_group(group)
-      query_call = ::WorkPackageTypes::FormConfiguration::EmbeddedQueryBuilder.rebuild(query: group.query, user:)
-      unless query_call.success?
-        errors.add(:attribute_groups, :query_invalid, group: group.key, details: query_call.errors.full_messages.to_sentence)
-        return
-      end
+      query_call = rebuild_query_group(group)
+      return add_invalid_query_error(group, query_call.errors) unless query_call.success?
 
-      contract = Queries::CreateContract.new(query_call.result, user)
-
-      unless contract.validate
-        errors.add(:attribute_groups, :query_invalid, group: group.key, details: contract.errors.full_messages.to_sentence)
-      end
+      validate_rebuilt_query_group(group, query_call.result)
     end
 
     def validate_attribute_group(group)
@@ -129,6 +122,21 @@ module WorkPackageTypes
 
     def visible_group_name(group)
       group.translated_key.to_s.strip
+    end
+
+    def rebuild_query_group(group)
+      ::WorkPackageTypes::FormConfiguration::EmbeddedQueryBuilder.rebuild(query: group.query, user:)
+    end
+
+    def validate_rebuilt_query_group(group, query)
+      contract = Queries::CreateContract.new(query, user)
+      return if contract.validate
+
+      add_invalid_query_error(group, contract.errors)
+    end
+
+    def add_invalid_query_error(group, error_collection)
+      errors.add(:attribute_groups, :query_invalid, group: group.key, details: error_collection.full_messages.to_sentence)
     end
   end
 end
