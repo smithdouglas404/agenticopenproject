@@ -82,8 +82,24 @@ module WorkPackageTypes
 
       if call.success?
         update_form_configuration_via_turbo_stream
+      elsif temporary_section_key?(section_key_param)
+        update_sections_via_turbo_stream(
+          editing_section_key: TEMPORARY_SECTION_KEY,
+          temporary_group: temporary_group(
+            group_type: section_params[:group_type],
+            query: section_params[:query],
+            name: section_params[:name].to_s
+          ),
+          validation_message: call.errors.map(&:message).to_sentence
+        )
       else
-        render_form_configuration_error(call)
+        @type.reload
+        replace_section_via_turbo_stream(
+          key: section_key_param,
+          edit_mode: true,
+          validation_message: call.errors.map(&:message).to_sentence,
+          input_value: section_params[:name].to_s
+        )
       end
 
       respond_with_turbo_streams(status: turbo_status_for(call))
@@ -168,13 +184,13 @@ module WorkPackageTypes
       key.to_s == TEMPORARY_SECTION_KEY
     end
 
-    def temporary_group(group_type:, query:)
+    def temporary_group(group_type:, query:, name: "")
       {
         key: TEMPORARY_SECTION_KEY,
         type: group_type.to_s,
-        name: "",
+        name:,
         attributes: [],
-        query: query,
+        query:,
         temporary: true
       }
     end

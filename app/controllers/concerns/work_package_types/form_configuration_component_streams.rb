@@ -39,20 +39,15 @@ module WorkPackageTypes
       update_inactive_attributes_via_turbo_stream
     end
 
-    def update_sections_via_turbo_stream(editing_section_key: nil, temporary_group: nil)
-      groups = form_configuration_groups(@type)[:actives]
-                 .reject { |group| group[:key].to_s == "__empty" }
+    def update_sections_via_turbo_stream(editing_section_key: nil, temporary_group: nil, validation_message: nil)
+      groups = active_groups_for_turbo_stream
       groups.unshift(temporary_group) if temporary_group.present?
 
       section_components = groups.map.with_index do |group, index|
-        WorkPackageTypes::FormConfiguration::SectionComponent.new(
-          group:,
-          type: @type,
-          ee_available: EnterpriseToken.allows_to?(:edit_attribute_groups),
-          first: index.zero?,
-          last: index == groups.length - 1,
-          edit_mode: editing_section_key.present? && group[:key].to_s == editing_section_key.to_s
-        )
+        is_editing = editing_section_key.present? && group[:key].to_s == editing_section_key.to_s
+        build_section_component(group:, groups:, index:,
+                                edit_mode: is_editing,
+                                validation_message: (validation_message if is_editing))
       end
 
       turbo_streams << turbo_stream.update(
@@ -70,22 +65,33 @@ module WorkPackageTypes
       )
     end
 
-    def replace_section_via_turbo_stream(key:, edit_mode:)
-      groups = form_configuration_groups(@type)[:actives].reject { |group| group[:key].to_s == "__empty" }
+    def replace_section_via_turbo_stream(key:, edit_mode:, validation_message: nil, input_value: nil)
+      groups = active_groups_for_turbo_stream
       group = groups.find { |item| item[:key].to_s == key.to_s }
       return if group.nil?
 
       index = groups.index(group)
 
       replace_via_turbo_stream(
-        component: WorkPackageTypes::FormConfiguration::SectionComponent.new(
-          group:,
-          type: @type,
-          ee_available: EnterpriseToken.allows_to?(:edit_attribute_groups),
-          first: index.zero?,
-          last: index == groups.length - 1,
-          edit_mode:
-        )
+        component: build_section_component(group:, groups:, index:,
+                                           edit_mode:, validation_message:, input_value:)
+      )
+    end
+
+    def active_groups_for_turbo_stream
+      form_configuration_groups(@type)[:actives].reject { |group| group[:key].to_s == "__empty" }
+    end
+
+    def build_section_component(group:, groups:, index:, edit_mode:, validation_message: nil, input_value: nil)
+      WorkPackageTypes::FormConfiguration::SectionComponent.new(
+        group:,
+        type: @type,
+        ee_available: EnterpriseToken.allows_to?(:edit_attribute_groups),
+        first: index.zero?,
+        last: index == groups.length - 1,
+        edit_mode:,
+        validation_message:,
+        input_value:
       )
     end
 

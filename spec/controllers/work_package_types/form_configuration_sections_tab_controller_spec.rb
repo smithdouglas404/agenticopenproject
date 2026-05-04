@@ -66,6 +66,89 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
     end
   end
 
+  describe "PATCH #update (rename)", with_ee: %i[edit_attribute_groups] do
+    before do
+      type.update_column(:attribute_groups, [
+                           ["First section", %w[priority]],
+                           ["Second section", %w[assignee]]
+                         ])
+    end
+
+    context "when renaming to a duplicate name" do
+      it "returns an error without the attribute prefix" do
+        patch :update,
+              params: {
+                type_id: type.id,
+                key: "First section",
+                section: { name: "Second section" }
+              },
+              format: :turbo_stream
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include(I18n.t("activerecord.errors.models.type.attributes.attribute_groups.duplicate_group"))
+        expect(response.body).not_to include("Form configuration")
+      end
+
+      it "preserves the entered name in the input field" do
+        patch :update,
+              params: {
+                type_id: type.id,
+                key: "First section",
+                section: { name: "Second section" }
+              },
+              format: :turbo_stream
+
+        expect(response.body).to include("Second section")
+      end
+    end
+
+    context "when renaming to a blank name" do
+      it "returns an error" do
+        patch :update,
+              params: {
+                type_id: type.id,
+                key: "First section",
+                section: { name: "" }
+              },
+              format: :turbo_stream
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+
+  describe "PATCH #update (create with duplicate name)", with_ee: %i[edit_attribute_groups] do
+    before do
+      type.update_column(:attribute_groups, [["Existing section", %w[priority]]])
+    end
+
+    it "returns an error when creating a section with a duplicate name" do
+      patch :update,
+            params: {
+              type_id: type.id,
+              key: temporary_section_key,
+              section: { group_type: "attribute", name: "Existing section" }
+            },
+            format: :turbo_stream
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include(I18n.t("activerecord.errors.models.type.attributes.attribute_groups.duplicate_group"))
+      expect(response.body).not_to include("Form configuration")
+    end
+
+    it "preserves the entered name in the input field" do
+      patch :update,
+            params: {
+              type_id: type.id,
+              key: temporary_section_key,
+              section: { group_type: "attribute", name: "Existing section" }
+            },
+            format: :turbo_stream
+
+      expect(response.body).to include("Existing section")
+    end
+  end
+
   describe "PUT #drop", with_ee: %i[edit_attribute_groups] do
     it "reorders sections using the requested position" do
       type.update_column(:attribute_groups, [

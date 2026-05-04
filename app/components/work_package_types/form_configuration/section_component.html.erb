@@ -52,17 +52,19 @@ See COPYRIGHT and LICENSE files for more details.
             concat(hidden_field_tag("section[query]", @group[:query])) if @group[:query].present?
 
             concat(
-              flex_layout(align_items: :center) do |header|
+              flex_layout(align_items: :flex_start) do |header|
                 header.with_column(flex: 1, mr: 2) do
                   render(
                     Primer::Alpha::TextField.new(
                       name: "section[name]",
                       label: t("types.edit.form_configuration.section_name_label"),
                       visually_hide_label: true,
-                      value: section_name,
+                      value: @input_value || section_name,
                       autofocus: true,
                       autocomplete: "off",
                       "full-width": true,
+                      invalid: @validation_message.present?,
+                      validation_message: @validation_message,
                       data: { "test-selector": "type-form-configuration-section-name-input" }
                     )
                   )

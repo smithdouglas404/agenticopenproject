@@ -55,7 +55,14 @@ module WorkPackageTypes
 
           section.attributes = query_call.result
         else
-          rename_section(section, name.to_s.strip)
+          stripped_name = name.to_s.strip
+          if stripped_name.blank?
+            return failure_with_message(
+              I18n.t("activerecord.errors.models.type.attributes.attribute_groups.group_without_name")
+            )
+          end
+
+          rename_section(section, stripped_name)
         end
 
         persist_groups(groups).tap do |call|

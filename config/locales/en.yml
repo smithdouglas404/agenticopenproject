@@ -2442,9 +2442,9 @@ en:
             attribute_groups:
               attribute_unknown: "Invalid work package attribute used."
               attribute_unknown_name: "Invalid work package attribute used: %{attribute}"
-              duplicate_group: "The group name '%{group}' is used more than once. Group names must be unique."
+              duplicate_group: "Section names must be unique."
               query_invalid: "The embedded query '%{group}' is invalid: %{details}"
-              group_without_name: "Unnamed groups are not allowed."
+              group_without_name: "Section name can't be blank."
             patterns:
               invalid_tokens: "One or more attributes inside the field are not valid. Please, fix the attributes before saving."
         user:
