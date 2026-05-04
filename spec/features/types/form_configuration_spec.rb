@@ -47,7 +47,7 @@ RSpec.describe "form configuration", :js, :selenium do
   let(:wp_page) { Pages::FullWorkPackage.new(work_package) }
   let(:form) { Components::Admin::TypeConfigurationForm.new }
 
-  describe "with EE token", with_ee: %i[edit_attribute_groups] do
+  describe "query group actions with EE token", with_ee: %i[edit_attribute_groups] do
     describe "default configuration" do
       let(:dialog) { Components::ConfirmationDialog.new }
 
@@ -561,23 +561,6 @@ RSpec.describe "form configuration", :js, :selenium do
   end
 
   describe "without EE token", with_ee: false do
-    let(:dialog) { Components::ConfirmationDialog.new }
-
-    def expect_enterprise_dialog
-      dialog = find_test_selector("type-form-configuration-enterprise-dialog", visible: :all)
-
-      within(dialog) do
-        expect(page).to have_text(I18n.t("js.types.attribute_groups.upgrade_to_ee"))
-        expect(page).to have_text(I18n.t("js.types.attribute_groups.upgrade_to_ee_text"))
-      end
-    end
-
-    def close_enterprise_dialog
-      within_test_selector("type-form-configuration-enterprise-dialog") do
-        click_button I18n.t("js.types.attribute_groups.nevermind")
-      end
-    end
-
     it "hides protected section actions" do
       login_as(admin)
       visit edit_type_form_configuration_path(type)
@@ -591,7 +574,7 @@ RSpec.describe "form configuration", :js, :selenium do
       end
     end
 
-    it "shows the enterprise hint for query group editing" do
+    it "hides protected query group actions" do
       query = build(:global_query, user_id: 0)
       type.attribute_groups = [["Subtasks", [query]]]
       type.save!
@@ -601,10 +584,21 @@ RSpec.describe "form configuration", :js, :selenium do
 
       menu_id = form.open_query_menu("Subtasks")
       within "##{menu_id}" do
-        click_on I18n.t("types.edit.form_configuration.edit_query")
+        expect(page).to have_no_text(I18n.t("types.edit.form_configuration.edit_query"))
       end
+    end
+  end
 
-      expect_enterprise_dialog
+  describe "with EE token", with_ee: %i[edit_attribute_groups] do
+    it "shows protected section actions" do
+      login_as(admin)
+      visit edit_type_form_configuration_path(type)
+
+      menu_id = form.send(:open_group_menu, "Details")
+      within "##{menu_id}" do
+        expect(page).to have_text(I18n.t("types.edit.form_configuration.rename_section"))
+        expect(page).to have_text(I18n.t("button_delete"))
+      end
     end
   end
 

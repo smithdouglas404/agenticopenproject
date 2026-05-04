@@ -60,11 +60,7 @@
           data: sections_container_data
         ) do
           if @section_components.empty?
-            render(Primer::Beta::Blankslate.new(test_selector: "type-form-configuration-blankslate")) do |blankslate|
-              blankslate.with_visual_icon(icon: :rows)
-              blankslate.with_heading(tag: :h3) { t("types.edit.form_configuration.blankslate_title") }
-              blankslate.with_description { t("types.edit.form_configuration.blankslate_description") }
-            end
+            render(WorkPackageTypes::FormConfiguration::BlankslateComponent.new)
           else
             safe_join(@section_components.map { |section| render(section) })
           end
