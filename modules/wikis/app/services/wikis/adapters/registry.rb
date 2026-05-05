@@ -74,10 +74,10 @@ module Wikis
             UnknownProvider.new(provider)
           in [provider, "contracts", model]
             MissingContract.new("No #{model} contract defined for provider: #{provider.camelize}")
-          # in [provider, "commands" | "queries" => type, operation]
-          #   OperationNotSupported.new(
-          #     "#{type.singularize.capitalize} #{operation} not supported by provider: #{provider.camelize}"
-          #   )
+          in [provider, "commands" | "queries" => type, operation]
+            OperationNotSupported.new(
+              "#{type.singularize.capitalize} #{operation} not supported by provider: #{provider.camelize}"
+            )
           end
         end
       end
