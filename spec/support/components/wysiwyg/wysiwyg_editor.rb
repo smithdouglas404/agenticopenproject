@@ -34,9 +34,11 @@ module Components
       wait_until_loaded
 
       textarea = container.find(".op-ckeditor-source-element", visible: :all)
+      last_updated_before = last_updated_for(textarea)
 
       # we set the content using a op:ckeditor:setData custom event.
-      # We need to make sure that CKEditor receives this event by actively calling getData on it again.
+      # We need to make sure that CKEditor receives this event.
+      # We do this by asserting the editable data-last-updated timestamp increases.
       retry_block do
         page.execute_script(
           'arguments[0].dispatchEvent(new CustomEvent("op:ckeditor:setData", { detail: arguments[1] }))',
@@ -44,16 +46,20 @@ module Components
           text
         )
 
-        sleep 0.5
+        last_updated_after = last_updated_for(textarea)
+        expect(last_updated_after).to be >= last_updated_before
+      end
+    end
 
-        data = page.execute_script(<<~JS, textarea.native)
+    def last_updated_for(textarea)
+      page.evaluate_script(<<~JS, textarea.native)
+        (() => {
           const editable = arguments[0].closest('.op-ckeditor--wrapper')
             ?.querySelector('.ck-editor__editable_inline');
-          return editable?.ckeditorInstance?.getData({ trim: false }) ?? null;
-        JS
-
-        expect(data).to be_present
-      end
+          const parsed = Number.parseInt(editable?.dataset?.lastUpdated ?? '0', 10);
+          return Number.isFinite(parsed) ? parsed : 0;
+        })()
+      JS
     end
 
     def clear
