@@ -216,27 +216,27 @@ module Pages
 
     def expect_inbox_show_more
       within_inbox do
-        expect(page).to have_css("#inbox-more-row-#{project.id}")
+        expect(page).to have_css("#inbox_project_#{project.id}_show_more")
       end
     end
 
     def expect_no_inbox_show_more
       wait_for_network_idle
       within_inbox do
-        expect(page).to have_no_css("#inbox-more-row-#{project.id}")
+        expect(page).to have_no_css("#inbox_project_#{project.id}_show_more")
       end
     end
 
     def click_inbox_show_more
       within_inbox do
-        find("#inbox-more-row-#{project.id} a").click
+        find("#inbox_project_#{project.id}_show_more").click
       end
       wait_for_network_idle
     end
 
     def open_sprint_story_details(story)
       within(work_package_selector(story)) do
-        button = find(:button, accessible_name: "Story actions")
+        button = find(:button, accessible_name: "Work package actions")
         open_controlled_menu(button).find(:menuitem, text: I18n.t(:"js.button_open_details")).click
       end
       expect_details_view(story)
@@ -277,7 +277,7 @@ module Pages
 
     def within_sprint_story_menu(story, &)
       within(work_package_selector(story)) do
-        button = find(:button, accessible_name: "Story actions")
+        button = find(:button, accessible_name: "Work package actions")
         within(open_controlled_menu(button), &)
       end
 
@@ -292,7 +292,7 @@ module Pages
 
     def click_in_sprint_story_move_menu(story, item_name)
       button = within(work_package_selector(story)) do
-        find(:button, accessible_name: "Story actions")
+        find(:button, accessible_name: "Work package actions")
       end
       menu = open_controlled_menu(button)
       submenu = open_move_submenu(menu)
@@ -311,7 +311,7 @@ module Pages
 
     def drag_sprint_item_to_inbox(work_package)
       moved_element = find(draggable_work_package_selector(work_package))
-      target_element = find("#inbox_#{project.id}")
+      target_element = find("#inbox_project_#{project.id}")
       moved_element.native.drag_to(target_element.native, delay: 0.1)
     rescue Capybara::Cuprite::ObsoleteNode
       retry
@@ -348,8 +348,13 @@ module Pages
 
     def expect_backlog_bucket_work_package_count(bucket, count)
       within_backlog_bucket(bucket) do
-        label = count == 1 ? "1 story in backlog bucket" : "#{count} stories in backlog bucket"
-        expect(page).to have_css(".Counter", accessible_name: label)
+        expect(page).to have_css(
+          ".Counter",
+          accessible_name: I18n.t(
+            "open_project.common.work_package_card_box_component.header.label_work_package_count",
+            count:
+          )
+        )
       end
     end
 
@@ -463,7 +468,13 @@ module Pages
 
     def expect_sprint_story_count(sprint, count)
       within(sprint_selector(sprint)) do
-        expect(page).to have_css ".Counter", accessible_name: "#{count} stories in sprint"
+        expect(page).to have_css(
+          ".Counter",
+          accessible_name: I18n.t(
+            "open_project.common.work_package_card_box_component.header.label_work_package_count",
+            count:
+          )
+        )
       end
     end
 
@@ -488,7 +499,7 @@ module Pages
 
     def within_story_menu(story, &)
       within_story(story) do
-        button = find(:button, accessible_name: "Story actions")
+        button = find(:button, accessible_name: "Work package actions")
         within(open_controlled_menu(button), &)
       end
     end
@@ -516,7 +527,7 @@ module Pages
     end
 
     def expect_sprint_dialog
-      expect(page).to have_css("#new-sprint-dialog")
+      expect(page).to have_css("#sprint-dialog")
     end
 
     def expect_create_work_package_dialog
@@ -538,6 +549,8 @@ module Pages
         button = find(:button, accessible_name: "Sprint actions")
         within(open_controlled_menu(button), &)
       end
+
+      dismiss_menu(sprint)
     end
 
     def within_work_package_row(work_package, &)
@@ -600,7 +613,7 @@ module Pages
     end
 
     def within_inbox(&)
-      within("#inbox_#{project.id}", &)
+      within("#inbox_project_#{project.id}", &)
     end
 
     def within_backlog_bucket(bucket, &)

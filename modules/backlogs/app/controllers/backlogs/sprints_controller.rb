@@ -52,13 +52,13 @@ module Backlogs
         contract_class: ::EmptyContract
       ).call(attributes: converted_sprint_params)
 
-      respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: call.result)
+      respond_with_dialog Backlogs::SprintDialogComponent.new(sprint: call.result)
     end
 
     def edit_dialog
       @sprint = Sprint.for_project(@project).visible.find(params[:sprint_id])
 
-      respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint, state: :edit)
+      respond_with_dialog Backlogs::SprintDialogComponent.new(sprint: @sprint, state: :edit)
     end
 
     def refresh_form
@@ -71,7 +71,7 @@ module Backlogs
         contract_class: ::EmptyContract
       ).call(attributes: converted_sprint_params)
 
-      update_via_turbo_stream(component: Backlogs::NewSprintFormComponent.new(sprint: call.result))
+      update_via_turbo_stream(component: Backlogs::SprintFormComponent.new(sprint: call.result))
 
       respond_with_turbo_streams
     end
@@ -85,7 +85,7 @@ module Backlogs
         flash[:notice] = I18n.t(:notice_successful_create)
         render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
       else
-        update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
+        update_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
       end
     end
@@ -97,9 +97,9 @@ module Backlogs
 
       if call.success?
         render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
-        update_sprint_header_component_via_turbo_stream(sprint: call.result)
+        update_sprint_component_via_turbo_stream(sprint: call.result)
       else
-        update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
+        update_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
       end
 
       respond_with_turbo_streams
@@ -134,16 +134,16 @@ module Backlogs
 
     private
 
-    def update_sprint_header_component_via_turbo_stream(sprint:)
+    def update_sprint_component_via_turbo_stream(sprint:)
       update_via_turbo_stream(
-        component: Backlogs::SprintHeaderComponent.new(sprint:, project: @project),
+        component: Backlogs::SprintComponent.new(sprint:, project: @project),
         method: :morph
       )
     end
 
-    def update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
+    def update_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
       update_via_turbo_stream(
-        component: Backlogs::NewSprintFormComponent.new(
+        component: Backlogs::SprintFormComponent.new(
           sprint:,
           base_errors:
         ),

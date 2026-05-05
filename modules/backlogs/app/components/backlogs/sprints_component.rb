@@ -33,17 +33,17 @@ module Backlogs
     include Primer::AttributesHelper
     include CommonHelper
 
-    attr_reader :sprints, :stories_by_sprint_id, :active_sprint_ids, :project, :current_user
+    attr_reader :sprints, :work_packages_by_sprint_id, :active_sprint_ids, :project, :current_user
 
     def initialize(sprints:,
-                   stories_by_sprint_id:,
+                   work_packages_by_sprint_id:,
                    active_sprint_ids:,
                    project:,
                    current_user: User.current)
       super()
 
       @sprints = sprints
-      @stories_by_sprint_id = stories_by_sprint_id
+      @work_packages_by_sprint_id = work_packages_by_sprint_id
       @active_sprint_ids = active_sprint_ids
       @project = project
       @current_user = current_user
