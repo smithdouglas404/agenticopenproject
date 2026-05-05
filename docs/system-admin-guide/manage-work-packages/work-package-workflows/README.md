@@ -62,7 +62,7 @@ You can copy an existing workflow by clicking **Copy** in the workflow overview.
 
 ![Copy work package workflow in OpenProject administration](System-admin-guide-work-package-workflows_copy.png)
 
-You will then be able to select which existing workflow should be copied to selected types. Here, you can select as many target types as possible .
+You will then be able to select which existing workflow should be copied to selected types. Here, you can select as many target types as you wish.
 
 
 
