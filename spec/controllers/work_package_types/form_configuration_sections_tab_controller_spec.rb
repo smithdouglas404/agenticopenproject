@@ -39,26 +39,25 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
     allow(User).to receive(:current).and_return(user)
   end
 
-  describe "POST #create", with_ee: %i[edit_attribute_groups] do
+  describe "POST #add_section", with_ee: %i[edit_attribute_groups] do
     it "renders a temporary attribute section from group_type params" do
       expect do
-        post :create, params: { type_id: type.id, group_type: "attribute" }, format: :turbo_stream
+        post :add_section, params: { type_id: type.id, group_type: "attribute" }, format: :turbo_stream
       end.not_to change { type.reload.attribute_groups.count }
 
       expect(response).to have_http_status(:ok)
     end
   end
 
-  describe "PATCH #update", with_ee: %i[edit_attribute_groups] do
-    it "persists a temporary section when saving it" do
+  describe "POST #create", with_ee: %i[edit_attribute_groups] do
+    it "persists a section when saving it" do
       expect do
-        patch :update,
-              params: {
-                type_id: type.id,
-                key: temporary_section_key,
-                section: { group_type: "attribute", name: "New Group" }
-              },
-              format: :turbo_stream
+        post :create,
+             params: {
+               type_id: type.id,
+               section: { group_type: "attribute", name: "New Group" }
+             },
+             format: :turbo_stream
       end.to change { type.reload.attribute_groups.count }.by(1)
 
       expect(response).to have_http_status(:ok)
@@ -118,19 +117,18 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
     end
   end
 
-  describe "PATCH #update (create with duplicate name)", with_ee: %i[edit_attribute_groups] do
+  describe "POST #create (duplicate name)", with_ee: %i[edit_attribute_groups] do
     before do
       type.update_column(:attribute_groups, [["Existing section", %w[priority]]])
     end
 
     it "returns an error when creating a section with a duplicate name" do
-      patch :update,
-            params: {
-              type_id: type.id,
-              key: temporary_section_key,
-              section: { group_type: "attribute", name: "Existing section" }
-            },
-            format: :turbo_stream
+      post :create,
+           params: {
+             type_id: type.id,
+             section: { group_type: "attribute", name: "Existing section" }
+           },
+           format: :turbo_stream
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to include('action="update"')
@@ -139,28 +137,26 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
     end
 
     it "returns a main content turbo stream response" do
-      patch :update,
-            params: {
-              type_id: type.id,
-              key: temporary_section_key,
-              section: { group_type: "attribute", name: "Existing section" }
-            },
-            format: :turbo_stream
+      post :create,
+           params: {
+             type_id: type.id,
+             section: { group_type: "attribute", name: "Existing section" }
+           },
+           format: :turbo_stream
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to include('target="work-package-types-form-configuration-main-content-component"')
     end
   end
 
-  describe "PATCH #update (create with default section name)", with_ee: %i[edit_attribute_groups] do
+  describe "POST #create (default section name)", with_ee: %i[edit_attribute_groups] do
     it "returns an error when creating a section with the visible name of a default section" do
-      patch :update,
-            params: {
-              type_id: type.id,
-              key: temporary_section_key,
-              section: { group_type: "attribute", name: "Details" }
-            },
-            format: :turbo_stream
+      post :create,
+           params: {
+             type_id: type.id,
+             section: { group_type: "attribute", name: "Details" }
+           },
+           format: :turbo_stream
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to include("Details")

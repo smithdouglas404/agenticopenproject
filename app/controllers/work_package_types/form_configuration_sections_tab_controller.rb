@@ -42,13 +42,22 @@ module WorkPackageTypes
       respond_with_turbo_streams
     end
 
-    def create
-      update_main_content_via_turbo_stream(
-        editing_section_key: TEMPORARY_SECTION_KEY,
-        temporary_group: temporary_group(group_type: params[:group_type], query: params[:query])
-      )
+    def add_section
+      render_temporary_section_editor
 
       respond_with_turbo_streams
+    end
+
+    def create
+      call = create_section_call
+
+      if call.success?
+        update_form_configuration_via_turbo_stream
+      else
+        render_create_error(call)
+      end
+
+      respond_with_turbo_streams(status: turbo_status_for(call))
     end
 
     def cancel_edit
@@ -66,12 +75,12 @@ module WorkPackageTypes
     end
 
     def update
-      call = update_call
+      call = rename_section_call
 
       if call.success?
         update_form_configuration_via_turbo_stream
       else
-        render_update_error(call)
+        render_existing_section_update_error(call)
       end
 
       respond_with_turbo_streams(status: turbo_status_for(call))
@@ -171,14 +180,6 @@ module WorkPackageTypes
       call.success? ? :ok : :unprocessable_entity
     end
 
-    def update_call
-      if temporary_section_key?(section_key_param)
-        create_section_call
-      else
-        rename_section_call
-      end
-    end
-
     def create_section_call
       ::WorkPackageTypes::FormConfigurationSections::CreateService
         .new(user: current_user, type: @type)
@@ -195,22 +196,11 @@ module WorkPackageTypes
         .call(name: section_params[:name])
     end
 
-    def render_update_error(call)
-      if temporary_section_key?(section_key_param)
-        render_temporary_section_update_error(call)
-      else
-        render_existing_section_update_error(call)
-      end
-    end
-
-    def render_temporary_section_update_error(call)
-      update_main_content_via_turbo_stream(
-        editing_section_key: TEMPORARY_SECTION_KEY,
-        temporary_group: temporary_group(
-          group_type: section_params[:group_type],
-          query: section_params[:query],
-          name: section_params[:name].to_s
-        ),
+    def render_create_error(call)
+      render_temporary_section_editor(
+        group_type: section_params[:group_type],
+        query: section_params[:query],
+        name: section_params[:name].to_s,
         validation_message: call.errors.map(&:message).to_sentence
       )
     end
@@ -221,6 +211,15 @@ module WorkPackageTypes
         editing_section_key: section_key_param,
         validation_message: call.errors.map(&:message).to_sentence,
         input_value: section_params[:name].to_s
+      )
+    end
+
+    def render_temporary_section_editor(group_type: params[:group_type], query: params[:query], name: "",
+                                        validation_message: nil)
+      update_main_content_via_turbo_stream(
+        section_groups: [temporary_group(group_type:, query:, name:)] + active_section_groups,
+        editing_section_key: TEMPORARY_SECTION_KEY,
+        validation_message:
       )
     end
   end

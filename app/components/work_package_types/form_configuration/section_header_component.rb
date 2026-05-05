@@ -72,7 +72,13 @@ module WorkPackageTypes
       end
 
       def update_path
+        return create_path if temporary_group?
+
         type_form_configuration_section_path(@type, @group[:key])
+      end
+
+      def form_method
+        temporary_group? ? :post : :patch
       end
 
       def cancel_edit_path
@@ -85,6 +91,14 @@ module WorkPackageTypes
 
       def destroy_path
         type_form_configuration_section_path(@type, @group[:key])
+      end
+
+      def temporary_group?
+        @group[:temporary]
+      end
+
+      def create_path
+        type_form_configuration_sections_path(@type)
       end
 
       def move_action(menu:, href:, label:, icon:)

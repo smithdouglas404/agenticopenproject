@@ -39,13 +39,13 @@ module WorkPackageTypes
       update_inactive_attributes_via_turbo_stream
     end
 
-    def update_main_content_via_turbo_stream(editing_section_key: nil, temporary_group: nil,
+    def update_main_content_via_turbo_stream(section_groups: active_section_groups, editing_section_key: nil,
                                              validation_message: nil, input_value: nil)
       ee_available = EnterpriseToken.allows_to?(:edit_attribute_groups)
       section_components = build_section_components(
+        section_groups:,
         ee_available:,
         editing_section_key:,
-        temporary_group:,
         validation_message:,
         input_value:
       )
@@ -75,12 +75,12 @@ module WorkPackageTypes
       render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.to_sentence)
     end
 
-    def build_section_components(ee_available:, editing_section_key:, temporary_group:, validation_message:, input_value:)
-      section_groups(temporary_group:).map.with_index do |group, index|
+    def build_section_components(section_groups:, ee_available:, editing_section_key:, validation_message:, input_value:)
+      section_groups.map.with_index do |group, index|
         build_section_component(
           group:,
           index:,
-          group_count: section_groups(temporary_group:).length,
+          group_count: section_groups.length,
           ee_available:,
           editing_section_key:,
           validation_message:,
@@ -89,10 +89,8 @@ module WorkPackageTypes
       end
     end
 
-    def section_groups(temporary_group:)
-      groups = form_configuration_groups(@type)[:actives].reject { |group| group[:key].to_s == "__empty" }
-      groups.unshift(temporary_group) if temporary_group.present?
-      groups
+    def active_section_groups
+      form_configuration_groups(@type)[:actives].reject { |group| group[:key].to_s == "__empty" }
     end
 
     def build_section_component(group:, index:, group_count:, ee_available:, editing_section_key:, validation_message:,

@@ -152,6 +152,10 @@ Rails.application.routes.draw do
     resource :form_configuration, only: %i[edit update], controller: "form_configuration_tab" do
       get :reset_dialog
       resources :sections, only: %i[create edit update destroy], controller: "form_configuration_sections_tab", param: :key do
+        collection do
+          post :add_section
+        end
+
         member do
           post :cancel_edit
           put :drop

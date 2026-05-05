@@ -217,6 +217,9 @@ en:
           text: "[Placeholder] Embedded calendar"
 
     admin:
+      type_form:
+        edit_query: "Edit query"
+
       working_days:
         calendar:
           empty_state_header: "Non-working days"

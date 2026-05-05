@@ -38,11 +38,13 @@ export default class TypeFormConfigurationController extends Controller {
   declare readonly inactiveContainerTarget:HTMLElement;
 
   static values = {
+    addSectionUrl: String,
     noFilterQuery: String,
     sectionsUrl: String,
     updateUrl: String,
   };
 
+  declare readonly addSectionUrlValue:string;
   declare readonly noFilterQueryValue:string;
   declare readonly sectionsUrlValue:string;
   declare readonly updateUrlValue:string;
@@ -98,7 +100,7 @@ export default class TypeFormConfigurationController extends Controller {
   }
 
   private async postNewSection(groupType:'attribute'|'query', queryProps?:unknown):Promise<void> {
-    const request = new FetchRequest('post', this.sectionsUrlValue, {
+    const request = new FetchRequest('post', this.addSectionUrlValue, {
       body: {
         group_type: groupType,
         query: queryProps ? JSON.stringify(queryProps) : undefined,
