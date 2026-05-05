@@ -85,7 +85,7 @@ RSpec.describe "/oauth_clients/:oauth_client_id/ensure_connection endpoint", :we
               )
               expect(last_response.cookies["oauth_state_#{nonce}"])
                 .to eq(["%7B%22href%22%3A%22http%3A%2F%2F#{CGI.escape(Setting.host_name)}" \
-                        "%2F%22%2C%22storageId%22%3A%22#{storage.id}%22%7D"])
+                        "%2F%22%2C%22integrationId%22%3A%22#{storage.id}%22%7D"])
             end
           end
 
@@ -106,7 +106,7 @@ RSpec.describe "/oauth_clients/:oauth_client_id/ensure_connection endpoint", :we
                 )
                 expect(last_response.cookies["oauth_state_#{nonce}"])
                   .to eq(["%7B%22href%22%3A%22http%3A%2F%2F#{CGI.escape(Setting.host_name)}" \
-                          "%2F123%22%2C%22storageId%22%3A%22#{storage.id}%22%7D"])
+                          "%2F123%22%2C%22integrationId%22%3A%22#{storage.id}%22%7D"])
               end
             end
 
@@ -126,7 +126,7 @@ RSpec.describe "/oauth_clients/:oauth_client_id/ensure_connection endpoint", :we
                 )
                 expect(last_response.cookies["oauth_state_#{nonce}"])
                   .to eq(["%7B%22href%22%3A%22http%3A%2F%2F#{CGI.escape(Setting.host_name)}" \
-                          "%2F%22%2C%22storageId%22%3A%22#{storage.id}%22%7D"])
+                          "%2F%22%2C%22integrationId%22%3A%22#{storage.id}%22%7D"])
               end
             end
           end
