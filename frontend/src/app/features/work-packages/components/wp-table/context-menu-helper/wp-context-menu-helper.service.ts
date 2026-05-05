@@ -115,7 +115,7 @@ export class WorkPackageContextMenuHelperService {
     let link:string|undefined;
     switch (action.key) {
       case 'copy_link_to_clipboard':
-        link = this.PathHelper.workPackageShortPath(workPackage.id!);
+        link = this.PathHelper.workPackageShortPath(workPackage.displayId);
         break;
       default:
         link = action.link ? (workPackage[action.link] as HalLink).href! : undefined;

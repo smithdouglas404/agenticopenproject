@@ -59,7 +59,7 @@ module CustomFields::Inputs::Base::Utils
     @custom_field.is_required?
   end
 
-  def qa_field_name
+  def test_selector
     attribute_name(:kebab_case)
   end
 

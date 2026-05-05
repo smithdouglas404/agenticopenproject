@@ -1,7 +1,10 @@
+<%# locals: (f:, contract:) -%>
+
 <% unless @user.new_record? %>
 <div class="form--field -required">
   <%= f.text_field :login,
                    required: true,
+                   disabled: !contract.writable?(:login),
                    size: 25,
                    container_class: "-middle" %>
 </div>
@@ -10,19 +13,21 @@
 <div class="form--field -required">
   <%= f.text_field :firstname,
                    required: true,
+                   disabled: !contract.writable?(:firstname),
                    container_class: "-middle" %>
 </div>
 
 <div class="form--field -required">
   <%= f.text_field :lastname,
                    required: true,
+                   disabled: !contract.writable?(:lastname),
                    container_class: "-middle" %>
 </div>
 
 <div class="form--field -required">
   <%= f.text_field :mail,
                    required: true,
-                   disabled: !(@user.new_record? || User.current.admin?),
+                   disabled: !contract.writable?(:mail),
                    container_class: "-middle" %>
 </div>
 

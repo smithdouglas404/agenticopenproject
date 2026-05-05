@@ -4,7 +4,6 @@ import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { VersionResource } from 'core-app/features/hal/resources/version-resource';
 import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/link-handling';
-import { StateService } from '@uirouter/core';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { VersionBoardHeaderComponent } from 'core-app/features/boards/board/board-actions/version/version-board-header.component';
 import { FormResource } from 'core-app/features/hal/resources/form-resource';
@@ -22,8 +21,6 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class BoardVersionActionService extends CachedBoardActionService {
-  @InjectField() state:StateService;
-
   @InjectField() halNotification:HalResourceNotificationService;
 
   filterName = 'version';
@@ -119,8 +116,8 @@ export class BoardVersionActionService extends CachedBoardActionService {
       .id(version)
       .patch({ status: newStatus })
       .subscribe(
-        (version) => {
-          this.state.go('.', {}, { reload: true });
+        () => {
+          Turbo.visit(window.location.href, { action: 'replace' });
         },
         (error) => this.halNotification.handleRawError(error),
       );

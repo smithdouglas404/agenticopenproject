@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { States } from 'core-app/core/states/states.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -18,10 +18,14 @@ describe('autocompleter', () => {
       id: 1,
       subject: 'Workpackage 1',
       name: 'Workpackage 1',
+      formattedId: '#1',
       author: {
         href: '/api/v3/users/1',
         name: 'Author1',
       },
+      type: { id: 1, name: 'Task' },
+      status: { id: 1, name: 'Open' },
+      project: { name: 'My Project' },
       description: {
         format: 'markdown',
         raw: 'Description of WP1',
@@ -36,10 +40,14 @@ describe('autocompleter', () => {
       id: 2,
       subject: 'Workpackage 2',
       name: 'Workpackage 2',
+      formattedId: 'PROJ-2',
       author: {
         href: '/api/v3/users/2',
         name: 'Author2',
       },
+      type: { id: 2, name: 'Bug' },
+      status: { id: 2, name: 'Closed' },
+      project: { name: 'My Project' },
       description: {
         format: 'markdown',
         raw: 'Description of WP2',
@@ -52,13 +60,23 @@ describe('autocompleter', () => {
     },
   ];
 
+  type WindowWithOpenProject = Omit<Window, 'OpenProject'> & { OpenProject?:{ environment:string } };
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-    declarations: [OpAutocompleterComponent],
-    schemas: [NO_ERRORS_SCHEMA],
-    imports: [NgSelectModule],
-    providers: [States, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+    (window as WindowWithOpenProject).OpenProject = { environment: 'test' };
+  });
+
+  afterEach(() => {
+    delete (window as WindowWithOpenProject).OpenProject;
+  });
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [OpAutocompleterComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [NgSelectModule],
+      providers: [States, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OpAutocompleterComponent);
     getOptionsFnSpy = jasmine.createSpy('getOptionsFn').and.callFake((searchTerm:string) => {
@@ -69,7 +87,7 @@ describe('autocompleter', () => {
 
     fixture.componentInstance.resource = 'work_packages' as TOpAutocompleterResource;
     fixture.componentInstance.filters = [];
-    fixture.componentInstance.searchKey = 'subjectOrId';
+    fixture.componentInstance.searchKey = 'typeahead';
     fixture.componentInstance.appendTo = 'body';
     fixture.componentInstance.multiple = false;
     fixture.componentInstance.closeOnSelect = true;
@@ -79,62 +97,183 @@ describe('autocompleter', () => {
     fixture.componentInstance.debounceTimeMs = 0;
   });
 
-  it('should load the ng-select correctly', fakeAsync(() => {
-    fixture.detectChanges();
-    tick();
+  it('should load the ng-select correctly', () => {
+    jasmine.clock().install();
+    try {
+      fixture.detectChanges();
+      jasmine.clock().tick(0);
 
-    const autocompleter = document.querySelector('.ng-select-container');
+      const autocompleter = document.querySelector('.ng-select-container');
 
-    expect(document.contains(autocompleter)).toBeTruthy();
-  }));
+      expect(document.contains(autocompleter)).toBeTruthy();
+    } finally {
+      jasmine.clock().uninstall();
+    }
+  });
 
   describe('without debounce', () => {
-    it('should load items', fakeAsync(() => {
-      tick();
-      fixture.detectChanges();
-      fixture.componentInstance.ngAfterViewInit();
-      tick(1000);
-      fixture.detectChanges();
-      const select = fixture.componentInstance.ngSelectInstance;
+    it('should load items', () => {
+      jasmine.clock().install();
+      try {
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
 
-      expect(select.isOpen).toBeFalse();
-      select.open();
-      select.focus();
+        expect(select.isOpen()).toBeFalse();
+        select.open();
+        select.focus();
 
-      expect(select.isOpen).toBeTrue();
+        expect(select.isOpen()).toBeTrue();
 
-      expect(select.itemsList.items.length).toEqual(0);
+        expect(select.itemsList.items.length).toEqual(0);
 
-      const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
-      const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
 
-      fixture.detectChanges();
-      tick();
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
 
-      expect(getOptionsFnSpy).toHaveBeenCalledWith('');
+        expect(getOptionsFnSpy).toHaveBeenCalledWith('');
 
-      inputElement.value = 'Wor';
-      inputElement.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
-      tick();
+        inputElement.value = 'Wor';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
 
-      expect(getOptionsFnSpy).toHaveBeenCalledWith('Wor');
+        expect(getOptionsFnSpy).toHaveBeenCalledWith('Wor');
 
-      fixture.detectChanges();
+        fixture.detectChanges();
 
-      expect(select.itemsList.items.length).toEqual(2);
+        expect(select.itemsList.items.length).toEqual(2);
 
-      inputElement.value = 'package 2';
-      inputElement.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
-      tick();
+        inputElement.value = 'package 2';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
 
-      expect(getOptionsFnSpy).toHaveBeenCalledWith('package 2');
+        expect(getOptionsFnSpy).toHaveBeenCalledWith('package 2');
 
-      fixture.detectChanges();
+        fixture.detectChanges();
 
-      expect(select.itemsList.items.length).toEqual(1);
-    }));
+        expect(select.itemsList.items.length).toEqual(1);
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
+  });
+
+  describe('work package option rendering', () => {
+    it('should display formattedId in dropdown options', () => {
+      jasmine.clock().install();
+      try {
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'Wor';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+
+        const wpIdElements = document.querySelectorAll('.op-autocompleter--wp-id');
+
+        expect(wpIdElements.length).toBeGreaterThanOrEqual(1);
+        // Verify at least one rendered option displays formattedId
+        const renderedIds = Array.from(wpIdElements).map(el => el.textContent?.trim());
+
+        expect(renderedIds).toContain('#1');
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
+
+    it('should display classic formattedId in selected value label', () => {
+      jasmine.clock().install();
+      try {
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'Wor';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+
+        // Select the first item (classic mode: #1)
+        const firstOption = document.querySelector<HTMLElement>('.ng-option')!;
+        firstOption.click();
+        fixture.detectChanges();
+
+        const labelElement = document.querySelector('.ng-value-label');
+
+        expect(labelElement).toBeTruthy();
+        expect(labelElement!.textContent).toContain('#1');
+        expect(labelElement!.textContent).toContain('Workpackage 1');
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
+
+    it('should display semantic formattedId in selected value label', () => {
+      jasmine.clock().install();
+      try {
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'package 2';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+
+        // Select the semantic mode item (PROJ-2)
+        const option = document.querySelector<HTMLElement>('.ng-option')!;
+        option.click();
+        fixture.detectChanges();
+
+        const labelElement = document.querySelector('.ng-value-label');
+
+        expect(labelElement).toBeTruthy();
+        expect(labelElement!.textContent).toContain('PROJ-2');
+        expect(labelElement!.textContent).not.toContain('#PROJ-2');
+        expect(labelElement!.textContent).toContain('Workpackage 2');
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
   });
 
   describe('with debounce', () => {
@@ -142,19 +281,20 @@ describe('autocompleter', () => {
       fixture.componentInstance.debounceTimeMs = 50;
     });
 
-    it('should load items with debounce', fakeAsync(() => {
-      tick();
+    it('should load items with debounce', async () => {
       fixture.detectChanges();
       fixture.componentInstance.ngAfterViewInit();
-      tick(1000);
+
+      // Wait for ngAfterViewInit's internal setTimeout(25ms) and debounce to fire.
+      await new Promise(resolve => setTimeout(resolve, 100));
       fixture.detectChanges();
       const select = fixture.componentInstance.ngSelectInstance;
 
-      expect(select.isOpen).toBeFalse();
+      expect(select.isOpen()).toBeFalse();
       select.open();
       select.focus();
 
-      expect(select.isOpen).toBeTrue();
+      expect(select.isOpen()).toBeTrue();
 
       expect(select.itemsList.items.length).toEqual(0);
 
@@ -163,18 +303,22 @@ describe('autocompleter', () => {
 
       fixture.detectChanges();
 
+      // Wait for the initial '' search to fire via debounce.
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       expect(getOptionsFnSpy).toHaveBeenCalledWith('');
       getOptionsFnSpy.calls.reset();
 
       inputElement.value = 'Wor';
       inputElement.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      tick();
 
       expect(getOptionsFnSpy).not.toHaveBeenCalled();
-      tick(50);
+
+      // Wait for debounce (debounceTimeMs=50, but 0 in test env).
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(getOptionsFnSpy).toHaveBeenCalledWith('Wor');
-    }));
+    });
   });
 });

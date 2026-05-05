@@ -35,14 +35,14 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
   shared_let(:type_task) { create(:type_task) }
   shared_let(:default_status) { create(:default_status) }
   shared_let(:default_priority) { create(:default_priority) }
-  shared_let(:user) { create(:admin) }
+  shared_let(:user) { create(:user) }
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, effective_date: Date.tomorrow) }
+  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:story_points) { 5 }
   let(:story) do
-    create(:story,
+    create(:work_package,
            subject: "Test Story Subject",
            project:,
            type: type_feature,
@@ -50,52 +50,55 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
            priority: default_priority,
            story_points:,
            position: 1,
-           version: sprint)
+           sprint:)
   end
-  let(:max_position) { 3 }
+  let(:permissions) { %i[manage_sprint_items] }
 
   before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
+    mock_permissions_for(current_user) do |mock|
+      mock.allow_in_project(*permissions, project:)
+    end
   end
 
   def render_component
-    render_inline(described_class.new(story:, sprint:, max_position:, current_user: user))
+    render_inline(described_class.new(story:, sprint:, project:, current_user: user))
   end
 
-  describe "rendering" do
-    it "renders Primer::OpenProject::DragHandle" do
+  it "renders WorkPackages::InfoLineComponent" do
+    render_component
+
+    # InfoLine renders type and ID info
+    expect(page).to have_text("FEATURE")
+    expect(page).to have_text("##{story.id}")
+  end
+
+  it "shows story subject in semibold text" do
+    render_component
+
+    expect(page).to have_text("Test Story Subject")
+  end
+
+  it "shows story points" do
+    render_component
+
+    expect(page).to have_text("5 points", normalize_ws: true)
+  end
+
+  it "renders deferred action menu with include-fragment src" do
+    render_component
+
+    expect(page).to have_css("action-menu")
+    expect(page).to have_css(%(include-fragment[src*="menu"]))
+    expect(page).to have_element(:button, id: /\Awork_package_#{story.id}_menu-button\z/)
+  end
+
+  context "when params[:all] is true" do
+    before { vc_test_controller.params[:all] = "1" }
+
+    it "includes the all param on the deferred menu src" do
       render_component
 
-      # DragHandle renders with grabber icon
-      expect(page).to have_octicon(:grabber)
-    end
-
-    it "renders WorkPackages::InfoLineComponent" do
-      render_component
-
-      # InfoLine renders type and ID info
-      expect(page).to have_text("FEATURE")
-      expect(page).to have_text("##{story.id}")
-    end
-
-    it "shows story subject in semibold text" do
-      render_component
-
-      expect(page).to have_text("Test Story Subject")
-    end
-
-    it "shows story points" do
-      render_component
-
-      expect(page).to have_text("5 points", normalize_ws: true)
-    end
-
-    it "renders StoryMenuComponent" do
-      render_component
-
-      expect(page).to have_css("action-menu")
+      expect(page).to have_css(%(include-fragment[src*="all=1"]))
     end
   end
 

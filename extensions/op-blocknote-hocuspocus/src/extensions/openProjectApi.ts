@@ -77,9 +77,6 @@ export class OpenProjectApi implements Extension {
     */
   async onLoadDocument(data: onLoadDocumentPayload) {
     const { resourceUrl } = data.context;
-
-    printLog(`[onLoadDocument] GET ${resourceUrl}`);
-
     const response = await fetchResource(resourceUrl, data.context.token);
 
     if (response.status != 200) {
@@ -110,8 +107,6 @@ export class OpenProjectApi implements Extension {
       console.warn("Readonly user cannot make requests to store the document");
       return;
     }
-
-    printLog(`[onStoreDocument] PATCH ${resourceUrl}`);
 
     const base64Data = Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64");
 

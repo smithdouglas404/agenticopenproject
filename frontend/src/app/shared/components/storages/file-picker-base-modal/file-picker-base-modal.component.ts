@@ -120,10 +120,11 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
           this.breadcrumbs = this.makeBreadcrumbs(storageFiles.ancestors, storageFiles.parent);
           this.storageFiles$.next(storageFiles.files);
           this.loading$.next('success');
+          this.cdRef.detectChanges();
         },
-        error: (error) => {
+        error: () => {
           this.loading$.next('error');
-          throw error;
+          this.cdRef.detectChanges();
         },
       });
   }
@@ -131,6 +132,7 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
   ngOnDestroy():void {
     super.ngOnDestroy();
 
+    this.cancelCurrentLoading();
     this.storageFilesResourceService.reset();
   }
 
@@ -151,6 +153,7 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
   protected changeLevel(ancestor:IStorageFile):void {
     this.cancelCurrentLoading();
     this.loading$.next('loading');
+    this.cdRef.detectChanges();
 
     this.loadingSubscription = this.storageFilesResourceService
       .files(makeFilesCollectionLink(this.storage._links.self, ancestor.location))
@@ -160,10 +163,11 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
           this.breadcrumbs = this.makeBreadcrumbs(storageFiles.ancestors, storageFiles.parent);
           this.storageFiles$.next(storageFiles.files);
           this.loading$.next('success');
+          this.cdRef.detectChanges();
         },
-        error: (error) => {
+        error: () => {
           this.loading$.next('error');
-          throw error;
+          this.cdRef.detectChanges();
         },
       });
   }
@@ -173,7 +177,7 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
       return of('/');
     }
 
-    if (this.locals.projectFolderMode === 'automatic' && this.locals.projectFolderHref === null) {
+    if (this.locals.projectFolderMode === 'automatic' && !this.locals.projectFolderHref) {
       this.showAlert.next('managedFolderNotFound');
       return of('/');
     }

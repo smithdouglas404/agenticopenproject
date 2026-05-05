@@ -1,7 +1,7 @@
 ---
 sidebar_navigation:
   title: Using Hotwire with ViewComponents
-description: An introduction of how we use Hotwire alongside ViewComponets
+description: An introduction of how we use Hotwire alongside ViewComponents
 keywords: Ruby on Rails, Hotwire, ViewComponents
 ---
 

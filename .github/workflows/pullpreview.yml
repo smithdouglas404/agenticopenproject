@@ -44,11 +44,11 @@ jobs:
     - uses: pullpreview/action@v6
       with:
         # allows to ssh to the instance using our GitHub ssh key
-        admins: crohr,HDinger,machisuji,oliverguenther,ulferts,wielinde,cbliard
+        admins: "crohr,HDinger,machisuji,oliverguenther,ulferts,wielinde,cbliard,@collaborators/push"
         compose_files: docker-compose.pullpreview.yml
         provider: hetzner
         region: fsn1
-        instance_type: cx53
+        instance_type: cpx42
         ports: 80,443
         default_port: 443
         ttl: 10d

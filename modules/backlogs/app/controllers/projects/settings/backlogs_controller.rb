@@ -31,17 +31,10 @@
 class Projects::Settings::BacklogsController < Projects::SettingsController
   menu_item :settings_backlogs
 
-  def show
-    @statuses_done_for_project = @project.done_statuses.pluck(:id)
-  end
+  def show; end
 
   def update
-    selected_statuses = (params[:statuses] || []).filter_map do |work_package_status|
-      Status.find(work_package_status[:status_id].to_i)
-    end
-
-    @project.done_statuses = selected_statuses
-    @project.save!
+    @project.update!(params.expect(project: { done_status_ids: [] }))
 
     flash[:notice] = I18n.t(:notice_successful_update)
 
@@ -49,7 +42,7 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
   end
 
   def rebuild_positions
-    @project.rebuild_positions
+    WorkPackages::RebuildPositionsService.new(project: @project).call
     flash[:notice] = I18n.t("backlogs.positions_rebuilt_successfully")
 
     redirect_to_backlogs_settings

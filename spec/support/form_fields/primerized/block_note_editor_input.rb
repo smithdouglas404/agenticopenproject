@@ -42,6 +42,38 @@ module FormFields
         page.find("op-block-note").shadow_root
       end
 
+      # Simulates pasting one or more links into the editor — a common user
+      # interaction (e.g. copying a link from an email or browser and pasting it).
+      #
+      # Uses a synthetic ClipboardEvent because the Ctrl+K link insertion requires
+      # the formatting toolbar to be visible (text must be selected first), which
+      # has no reliable programmatic equivalent in Capybara/Selenium. The synthetic
+      # event exercises the same ProseMirror paste handler code path as a real Ctrl+V.
+      #
+      # @example Single link
+      #   editor.paste_links(text: "Example", url: "https://example.com")
+      #
+      # @example Multiple links
+      #   editor.paste_links(
+      #     { text: "One", url: "https://one.com" },
+      #     { text: "Two", url: "https://two.com" }
+      #   )
+      def paste_links(*links)
+        el = element
+        el.click
+
+        html = links.map { |l| %(<a href="#{l[:url]}">#{l[:text]}</a>) }.join(" ")
+        plain = links.pluck(:text).join(" ")
+
+        page.execute_script(<<~JS, el.native, html, plain)
+          const el = arguments[0];
+          const dt = new DataTransfer();
+          dt.setData('text/html', arguments[1]);
+          dt.setData('text/plain', arguments[2]);
+          el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+        JS
+      end
+
       def element
         shadow_root.find("div[role='textbox']")
       end

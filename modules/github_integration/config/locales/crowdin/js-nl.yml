@@ -19,13 +19,14 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 nl:
   js:
     github_integration:
       work_packages:
-        tab_name: "GitHub"
+        tab_name: GitHub
       tab_header:
-        title: "Pull requests"
+        title: Pull requests
         copy_menu:
           label: Git snippets
           description: Git snippets kopiëren naar klembord
@@ -34,21 +35,21 @@ nl:
           commit_message: Commit bericht
           cmd: Maak branch met lege commit
           title: Snelle snippets voor Git
-          copy_success: '✅ Gekopieerd!'
-          copy_error: '❌ Kopiëren mislukt!'
+          copy_success: "✅ Gekopieerd!"
+          copy_error: "❌ Kopiëren mislukt!"
       tab_prs:
-        empty: 'Er zijn nog geen pull requests gekoppeld. Koppel een bestaande PR door de code <code>OP#%{wp_id}</code> in de PR-beschrijving te gebruiken of maak een nieuwe PR.'
+        empty: Er zijn nog geen pull requests gekoppeld. Koppel een bestaande PR door de code <code>OP#%{wp_id}</code> in de PR-beschrijving te gebruiken of maak een nieuwe PR.
       github_actions: Acties
       pull_requests:
-        message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} has been %{pr_state}."
-        merged_message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} has been %{pr_state} by %{github_user_link}."
-        referenced_message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} referenced this work package."
+        message: 'Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} has been %{pr_state}.'
+        merged_message: 'Pull request #%{pr_number} %{pr_link} for %{repository_link} has been %{pr_state} by %{github_user_link}.'
+        referenced_message: 'Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} referenced this work package.'
         states:
-          opened: 'geopend'
-          closed: 'gesloten'
-          draft: 'drafted'
-          merged: 'samengevoegd'
-          ready_for_review: 'gemarkeerd als klaar voor review'
+          opened: geopend
+          closed: gesloten
+          draft: drafted
+          merged: samengevoegd
+          ready_for_review: gemarkeerd als klaar voor review
     work_packages:
       tabs:
-        github: "GitHub"
+        github: GitHub

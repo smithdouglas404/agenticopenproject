@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   widget_wrapper do
-    if has_spending?
+    if has_spending_data?
       flex_layout do |flex|
         flex.with_row(mt: 3, align: :center) do
           helpers.angular_component_tag(

@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpTools::SearchVersions, with_flag: { mcp_server: true } do
+RSpec.describe McpTools::SearchVersions do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -68,7 +68,7 @@ RSpec.describe McpTools::SearchVersions, with_flag: { mcp_server: true } do
   end
 
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
-    it_behaves_like "MCP response with structured content"
+    it_behaves_like "MCP text tool"
 
     it "finds all versions without filters" do
       subject

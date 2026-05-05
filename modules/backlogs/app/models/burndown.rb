@@ -52,7 +52,11 @@ class Burndown
   private
 
   def make_date_series(sprint)
-    @days = sprint.days
+    @days = if sprint.start_date && sprint.finish_date
+              Day.working.from_range(from: sprint.start_date, to: sprint.finish_date).map(&:date)
+            else
+              []
+            end
   end
 
   def calculate_series(series_data)
@@ -94,16 +98,5 @@ class Burndown
       points: @available_series.values.select { |s| s.unit == :points }.flatten.compact.reject(&:nan?).max || 0.0,
       hours: @available_series.values.select { |s| s.unit == :hours }.flatten.compact.reject(&:nan?).max || 0.0
     }
-  end
-
-  def to_h(keys, values)
-    Hash[*keys.zip(values).flatten]
-  end
-
-  def workday_before(date = Date.today)
-    d = date - 1
-    # TODO: make weekday configurable
-    d = workday_before(d) unless d.wday > 0 and d.wday < 6
-    d
   end
 end

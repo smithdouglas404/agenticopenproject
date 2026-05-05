@@ -12,6 +12,20 @@ on:
         description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
         required: true
         type: string
+      use_test_registry:
+        description: "Use openproject/openproject-test registry instead (for testing)"
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+      DEPLOY_APP_PRIVATE_KEY:
+        required: true
+      OPS_MAIL_SMTP_TOKEN:
+        required: true
   workflow_dispatch:
     inputs:
       branch:
@@ -32,9 +46,6 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 
-env:
-  REGISTRY_IMAGE: openproject/openproject
-
 jobs:
   build-hocuspocus:
     uses: ./.github/workflows/hocuspocus-docker.yml
@@ -42,7 +53,10 @@ jobs:
       use_test_registry: ${{ inputs.use_test_registry }}
       branch: ${{ inputs.branch }}
       tag: ${{ inputs.tag }}
-    secrets: inherit
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DEPLOY_APP_PRIVATE_KEY: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
   setup:
     needs: [build-hocuspocus]
     runs-on: ubuntu-latest
@@ -53,17 +67,21 @@ jobs:
           ref: ${{ inputs.branch }}
       - name: Set version outputs and convert tags
         id: extract_version
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_USE_TEST_REGISTRY: ${{ inputs.use_test_registry }}
+          REGISTRY_IMAGE: ${{ vars.REGISTRY_IMAGE }}
         run: |
           set -e
-          echo "Processing tag: ${{ inputs.tag }}"
-          ./script/gh/docker-tags.rb "${{ inputs.tag }}" --version
-          ./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker
+          echo "Processing tag: $INPUT_TAG"
+          ./script/gh/docker-tags.rb "$INPUT_TAG" --version
+          ./script/gh/docker-tags.rb "$INPUT_TAG" --format-for-docker
 
           # Determine registry image based on workflow_dispatch input
-          if [ "${{ inputs.use_test_registry }}" = "true" ]; then
+          if [ "$INPUT_USE_TEST_REGISTRY" = "true" ]; then
             echo "registry_image=openproject/openproject-test" >> "$GITHUB_OUTPUT"
           else
-            echo "registry_image=${{ env.REGISTRY_IMAGE }}" >> "$GITHUB_OUTPUT"
+            echo "registry_image=$REGISTRY_IMAGE" >> "$GITHUB_OUTPUT"
           fi
       - name: Verify outputs
         run: |
@@ -83,7 +101,7 @@ jobs:
           echo "✓ docker_tags: ${{ steps.extract_version.outputs.docker_tags }}"
           echo "✓ registry_image: ${{ steps.extract_version.outputs.registry_image }}"
       - name: Cache NPM
-        uses: runs-on/cache@v4
+        uses: runs-on/cache@v5
         with:
           path: |
             frontend/node_modules
@@ -91,7 +109,7 @@ jobs:
           key: nodejs-x64-${{ hashFiles('**/package-lock.json') }}
           restore-keys: nodejs-x64-
       - name: Cache angular
-        uses: runs-on/cache@v4
+        uses: runs-on/cache@v5
         with:
           path: frontend/.angular
           key: angular-${{ github.ref }}
@@ -111,7 +129,7 @@ jobs:
           ./docker/prod/setup/precompile-assets.sh
           # public/assets will be saved as artifact, so temporarily copying config file there as well
           cp config/frontend_assets.manifest.json public/assets/frontend_assets.manifest.json
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           path: public/
           name: public-assets-${{ inputs.tag }}-${{ github.sha }}
@@ -124,41 +142,36 @@ jobs:
       docker_tags: ${{ steps.extract_version.outputs.docker_tags }}
       registry_image: ${{ steps.extract_version.outputs.registry_image }}
   build:
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     needs:
       - setup
     runs-on:
-      labels: "runs-on=${{ github.run_id }}/ssh=false/${{ matrix.runner }}"
+      labels: "runs-on=${{ github.run_id }}/ssh=false/${{ matrix.runner }}/volume=100g"
     strategy:
       matrix:
         include:
           - platform: linux/amd64
             digest: amd64-slim
             bim_support: false
-            debian_base: trixie
             target: slim
             runner: runner=4cpu-linux-x64
           - platform: linux/amd64
             digest: amd64-bim
             bim_support: true
-            debian_base: bookworm
             target: slim-bim
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-slim
-            debian_base: trixie
             bim_support: false
             target: slim
             runner: runner=4cpu-linux-arm64
           - platform: linux/amd64
             digest: amd64-aio
-            debian_base: bookworm
             bim_support: true
             target: all-in-one
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-aio
-            debian_base: trixie
             bim_support: false
             target: all-in-one
             runner: runner=4cpu-linux-arm64
@@ -171,7 +184,7 @@ jobs:
         run: |
           cp ./docker/prod/Dockerfile ./Dockerfile
       - name: Download precompiled public assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: public-assets-${{ inputs.tag }}-${{ github.sha }}
           path: public/
@@ -190,18 +203,18 @@ jobs:
           echo "https://github.com/opf/openproject/commits/${{ inputs.branch }}" > PRODUCT_URL
           date -u +"%Y-%m-%dT%H:%M:%SZ" > RELEASE_DATE
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           context: git
           labels: |
@@ -220,27 +233,26 @@ jobs:
         with:
           path: |
             vendor/bundle
-          key: ${{ matrix.platform }}-${{ matrix.debian_base }}-vendor-bundle-${{ github.ref }}
+          key: ${{ matrix.platform }}-trixie-vendor-bundle-${{ github.ref }}
       - name: Include vendor/bundle in this build (so we can use it from the cache above)
         run: |
           sed -i 's/vendor\/bundle//g' .dockerignore
       - name: Build image
         id: build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: ${{ matrix.platform }}
           target: ${{ matrix.target }}
           build-args: |
-            DEBIAN_BASE=${{ matrix.debian_base }}
             BIM_SUPPORT=${{ matrix.bim_support }}
             BUILDKIT_PROGRESS=plain
           pull: true
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
-          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
+          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
+          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
       - name: Extract vendor/bundle from container
         run: |
           docker create --name bundle ${{ steps.build.outputs.imageid }}
@@ -271,25 +283,24 @@ jobs:
             --platform "${{ matrix.platform }}"
       - name: Push image
         id: push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: ${{ matrix.platform }}
           target: ${{ matrix.target }}
           build-args: |
-            DEBIAN_BASE=${{ matrix.debian_base }}
             BIM_SUPPORT=${{ matrix.bim_support }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ needs.setup.outputs.registry_image }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
-          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
+          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
+          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
       - name: Export digest
         run: |
           mkdir -p /tmp/digests
           digest="${{ steps.push.outputs.digest }}"
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: digests-${{ inputs.tag }}-${{ matrix.target }}--${{ matrix.digest }}
           path: /tmp/digests/*
@@ -305,13 +316,13 @@ jobs:
       - build
     steps:
       - name: Merge digests
-        uses: actions/upload-artifact/merge@v6
+        uses: actions/upload-artifact/merge@v7
         with:
           pattern: "digests-${{ inputs.tag }}-${{ matrix.target }}--*"
           overwrite: true
           name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
       - name: Download digests
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
           path: /tmp/digests
@@ -322,10 +333,10 @@ jobs:
           if [ "$suffix" = "-all-in-one" ]; then suffix="" ; fi
           echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ needs.setup.outputs.registry_image }}
           labels: |
@@ -340,7 +351,7 @@ jobs:
           tags: |
             ${{ needs.setup.outputs.docker_tags }}
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -356,7 +367,8 @@ jobs:
     needs: [setup, build, merge]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     uses: ./.github/workflows/email-notification.yml
-    secrets: inherit
+    secrets:
+      OPS_MAIL_SMTP_TOKEN: ${{ secrets.OPS_MAIL_SMTP_TOKEN }}
     with:
       subject: "Docker build failed"
       body: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

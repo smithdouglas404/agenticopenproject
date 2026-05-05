@@ -24,7 +24,7 @@ This is for a single server running OpenProject for up to 200 total users. Depen
 
 ## Database
 
-OpenProject officially supports [PostgreSQL version 16](https://www.postgresql.org/) or above since [OpenProject 16.0.0](https://www.openproject.org/docs/release-notes/16-0-0/).
+OpenProject officially supports [PostgreSQL version 16](https://www.postgresql.org/) or above since [OpenProject 16.0.0](../../release-notes/16/16-0-0/).
 
 PostgreSQL versions 13 - 15 are not officially supported, but MAY continue to work, but could result in incompatibilities and degraded performance in the future. If you are using one of these versions currently, we have a [migration guide on how to upgrade to PostgreSQL 17](../misc/migration-to-postgresql17/) and strongly recommend you to upgrade your DBMS, as there are significant performance improvements.
 
@@ -65,7 +65,7 @@ multiple requests to be made simultaneously. Having just one will work, but page
 These numbers are a guideline only and your mileage may vary.
 It's best to monitor your server and its resource usage. You can always allocate more resources if needed.
 
-### **Scaling horizontally**
+### Scaling horizontally
 
 At some point simply increasing the resources of one single server may not be enough anymore.
 
@@ -99,7 +99,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 
 ## Example configurations
 
-### **Small instance (≤ 200 users, low concurrent activity)**
+### Small instance (≤ 200 users, low concurrent activity)
 
 - **Database**: 2 CPU / 4 GiB RAM
 
@@ -113,7 +113,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 
 - **Disk Space**: 20 GB + additional disk space in case of internal attachment storage
 
-### **Medium instance (~500 users, moderate concurrent activity)**
+### Medium instance (~500 users, moderate concurrent activity)
 
 - **Database**: 2-4 CPU / 8 GiB RAM
 - **CPU**: 4 CPU
@@ -122,7 +122,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 - **Background Workers**: 2 multithreaded workers with 4-6 GiB RAM
 - **Disk Space**: 50 GB + additional disk space in case of internal attachment storage
 
-### **Large instance (~1500 users, medium to high concurrent activity)**
+### Large instance (~1500 users, medium to high concurrent activity)
 
 - **Database**: 4-8 CPU / 16 GiB RAM
 - **CPU**: 8 CPU
@@ -131,7 +131,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 - **Background Workers**: 4-8 multithreaded workers with 4-6GiB RAM, depending on workload
 - **Disk Space**: 100 GB + additional disk space in case of internal attachment storage
 
-### **Enterprise-scale multitenancy instance (~80K - 100K users, high concurrent activity)**
+### Enterprise-scale multitenancy instance (~80K - 100K users, high concurrent activity)
 
 - **Database**: Cluster of two 8 vCPU / 32 GiB RAM (e.g., AWS db.m7g.xlarge, Gravitron 3)
 - **Worker instances**: 2-4 instances of the following
@@ -197,7 +197,7 @@ The all-in-one container will only additionally install [hocuspocus](https://git
 
 OpenProject supports the latest versions of the major browsers.
 
-* [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/products/) (at least ESR version 102)
+* [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/products/) (at least ESR version 128)
 * [Microsoft Edge](https://www.microsoft.com/de-de/windows/microsoft-edge) (only MS Edge version based on Chromium is supported)
 * [Google Chrome](https://www.google.com/chrome/browser/desktop/)
 * [Apple Safari](https://www.apple.com/safari/)
@@ -212,9 +212,9 @@ OpenProject supports the latest versions of the major browsers.
 
 #### Nextcloud Server
 
-* [Nextcloud 30](https://nextcloud.com/changelog/#latest30)
 * [Nextcloud 31](https://nextcloud.com/changelog/#latest31)
 * [Nextcloud 32](https://nextcloud.com/changelog/#latest32)
+* [Nextcloud 33](https://nextcloud.com/changelog/#latest33)
 
 > [!TIP]
 >
@@ -229,7 +229,8 @@ OpenProject supports the latest versions of the major browsers.
 
 ##### OpenProject integration
 
-* [OpenProject Integration 2.11.1](https://github.com/nextcloud/integration_openproject/releases/tag/v2.11.1)
+* [OpenProject Integration 3.0.0](https://github.com/nextcloud/integration_openproject/releases/tag/v3.0.0) — Nextcloud 33 or higher
+* [OpenProject Integration 2.11.2](https://github.com/nextcloud/integration_openproject/releases/tag/v2.11.2) — Nextcloud 31, 32
 
 ##### Team folders
 

@@ -266,6 +266,22 @@ RSpec.describe Projects::SetAttributesService, type: :model do
         end
       end
 
+      describe "work package attachments default value" do
+        context "if global setting is set to show work package attachments",
+                with_settings: { show_work_package_attachments: true } do
+          it "does not deactivate work package attachments" do
+            expect(subject.result.deactivate_work_package_attachments).to be_falsey
+          end
+        end
+
+        context "if global setting is set to hide work package attachments",
+                with_settings: { show_work_package_attachments: false } do
+          it "deactivates work package attachments" do
+            expect(subject.result.deactivate_work_package_attachments).to be_truthy
+          end
+        end
+      end
+
       describe "project status" do
         context "with valid status attributes" do
           let(:status_code) { "on_track" }

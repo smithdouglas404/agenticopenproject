@@ -54,10 +54,6 @@ class MeetingParticipant < ApplicationRecord
     user.present? ? user.mail : I18n.t("user.deleted")
   end
 
-  def <=>(other)
-    to_s.downcase <=> other.to_s.downcase
-  end
-
   def status_sorting_value
     case participation_status
     when "accepted" then 1

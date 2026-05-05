@@ -50,6 +50,7 @@ import { Attachable } from 'core-app/features/hal/resources/mixins/attachable-mi
 import { ICKEditorContext } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { IWorkPackageTimestamp } from 'core-app/features/hal/resources/work-package-timestamp-resource';
+import { formatWorkPackageId } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export interface WorkPackageResourceEmbedded {
   activities:CollectionResource;
@@ -125,6 +126,40 @@ export class WorkPackageBaseResource extends HalResource {
 
   public subject:string;
 
+  /**
+   * The canonical user-facing work package identifier.
+   *
+   * - Semantic mode: `"PROJ-42"` (project-scoped, contains letters)
+   * - Classic mode: `"42"` (numeric only)
+   *
+   * This is the correct value for URL path segments — use this rather
+   * than `id` when constructing work package hrefs. The numeric `id`
+   * (primary key) should only appear in data attributes and internal
+   * state management (selection, focus, hover).
+   *
+   * Falls back to the self link's `displayId` — ancestor/children links
+   * in the API expose `displayId` alongside `href`/`title` because those
+   * HAL resources are built from a link payload alone, without a
+   * top-level `displayId`. Finally falls back to `id` (defensive against
+   * stale cache during rolling deploys, and for resources built from
+   * bare hrefs).
+   */
+  public get displayId():string {
+    return this.$source.displayId?.toString()
+      ?? this.$source._links?.self?.displayId?.toString()
+      ?? this.id?.toString()
+      ?? '';
+  }
+
+  /**
+   * Returns the work package identifier formatted for inline UI display.
+   * Classic mode: `#42` (hash-prefixed numeric ID)
+   * Semantic mode: `PROJ-42` (no prefix — the identifier is self-describing)
+   */
+  public get formattedId():string {
+    return formatWorkPackageId(this.displayId);
+  }
+
   public updatedAt:Date;
 
   public lockVersion:number;
@@ -170,7 +205,7 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   /**
-   * Return "<type name>: <subject> (#<id>)" if type and id are known.
+   * Return "<type name>: <subject> (<formattedId>)" if type and id are known.
    */
   public subjectWithType(truncateSubject = 40):string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -178,10 +213,10 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   /**
-   * Return "<subject> (#<id>)" if the id is known.
+   * Return "<subject> (<formattedId>)" if the id is known.
    */
   public subjectWithId(truncateSubject = 40):string {
-    const id = isNewResource(this) ? '' : ` (#${this.id || ''})`;
+    const id = isNewResource(this) ? '' : ` (${this.formattedId})`;
 
     return `${this.truncatedSubject(truncateSubject)}${id}`;
   }

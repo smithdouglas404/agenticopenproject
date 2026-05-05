@@ -282,6 +282,18 @@ RSpec.describe PermittedParams do
 
       it_behaves_like "allows params"
     end
+
+    describe "custom fields" do
+      let(:hash) { { "custom_field_values" => { "4" => "21" } } }
+
+      it_behaves_like "allows params"
+    end
+
+    describe "custom comments" do
+      let(:hash) { { "custom_comments" => { "4" => "foo" } } }
+
+      it_behaves_like "allows params"
+    end
   end
 
   describe "#new_project" do
@@ -302,6 +314,18 @@ RSpec.describe PermittedParams do
 
     context "with custom_field_values" do
       let(:hash) { { "name" => "Brand New Project", "workspace_type" => "project", "custom_field_values" => { "4" => "21" } } }
+
+      it_behaves_like "allows params"
+    end
+
+    context "with custom_comments" do
+      let(:hash) { { "name" => "Brand New Project", "workspace_type" => "project", "custom_comments" => { "4" => "foo" } } }
+
+      it_behaves_like "allows params"
+    end
+
+    context "with identifier" do
+      let(:hash) { { "name" => "Brand New Project", "workspace_type" => "project", "identifier" => "BNP" } }
 
       it_behaves_like "allows params"
     end
@@ -527,6 +551,12 @@ RSpec.describe PermittedParams do
 
     describe "budget_id" do
       let(:hash) { { "budget_id" => "1" } }
+
+      it_behaves_like "allows params"
+    end
+
+    describe "sprint_id" do
+      let(:hash) { { "sprint_id" => "1" } }
 
       it_behaves_like "allows params"
     end

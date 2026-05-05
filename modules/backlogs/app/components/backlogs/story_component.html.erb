@@ -28,21 +28,6 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <%= grid_layout("op-backlogs-story", tag: :article) do |grid| %>
-  <% grid.with_area(:drag_handle, classes: "hide-when-print") do %>
-    <%=
-      render(
-        Primer::OpenProject::DragHandle.new(
-          role: "button",
-          classes: "op-backlogs-story--drag_handle_button",
-          tabindex: 0,
-          aria: {
-            label: t(".label_drag_story", name: story.subject)
-          }
-        )
-      )
-    %>
-  <% end %>
-
   <% grid.with_area(:info_line) do %>
     <%= render(WorkPackages::InfoLineComponent.new(work_package: story)) %>
   <% end %>
@@ -55,7 +40,23 @@ See COPYRIGHT and LICENSE files for more details.
   <% end %>
 
   <% grid.with_area(:menu) do %>
-    <%= render(Backlogs::StoryMenuComponent.new(story:, sprint:, max_position:)) %>
+    <% if menu_src.present? %>
+      <%= render(
+            Primer::Alpha::ActionMenu.new(
+              menu_id: dom_target(story, :menu),
+              src: menu_src,
+              anchor_align: :end,
+              classes: "hide-when-print"
+            )
+          ) do |menu| %>
+        <% menu.with_show_button(
+             scheme: :invisible,
+             icon: :"kebab-horizontal",
+             "aria-label": t(".label_actions"),
+             tooltip_direction: :se
+           ) %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <% grid.with_area(:subject) do %>

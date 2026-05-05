@@ -74,8 +74,8 @@ class Projects::CreationWizardController < ApplicationController
 
   def create_work_package_artifact # rubocop:disable Metrics/AbcSize
     creation_call = User.execute_as_admin(current_user) do
-      Projects::CreationWizard::CreateArtifactWorkPackageService
-        .new(user: current_user, model: @project)
+      Projects::CreationWizard::SubmitArtifactService
+        .new(user: current_user, project: @project)
         .call
     end
 

@@ -35,6 +35,7 @@ class Journals::CreateService
     ASSOCIATION_NAMES = %i[
       AgendaItemable
       Attachable
+      CustomComment
       Customizable
       ProjectPhase
       Storable

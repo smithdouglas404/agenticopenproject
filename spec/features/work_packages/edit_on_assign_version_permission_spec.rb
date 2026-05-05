@@ -43,7 +43,7 @@ RSpec.describe "edit work package", :js do
 
   context "as a user having only the assign_versions permission" do
     it "can only change the version" do
-      wp_page.update_attributes version: version.name
+      wp_page.fill_in_attributes version: version.name
 
       wp_page.expect_toast(message: "Successful update")
       wp_page.expect_attributes version: version.name

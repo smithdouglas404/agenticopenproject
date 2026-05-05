@@ -34,8 +34,7 @@ require_relative "../support/board_page"
 
 RSpec.describe "Custom field filter in boards",
                :js,
-               :selenium,
-               with_ee: %i[board_view] do
+               :selenium do
   let(:user) do
     create(:user,
            member_with_roles: { project => role })
@@ -111,7 +110,7 @@ RSpec.describe "Custom field filter in boards",
     board_index.visit!
 
     # Create new board
-    board_page = board_index.create_board action: "Status"
+    board_page = board_index.create_board action: "Kanban"
 
     # expect lists of default status
     board_page.expect_list "Open"
@@ -132,6 +131,7 @@ RSpec.describe "Custom field filter in boards",
 
     board_page.add_list option: "Closed", query: "closed"
     board_page.expect_list "Closed"
+    board_page.wait_for_lists_reload
 
     # Expect card to be present
     board_page.expect_card("Open", "Foo", present: true)

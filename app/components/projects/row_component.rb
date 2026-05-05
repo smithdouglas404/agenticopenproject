@@ -73,13 +73,11 @@ module Projects
     end
 
     def column_value(column)
-      if custom_field_column?(column)
-        custom_field_column(column)
-      elsif project_phase_column?(column)
-        project_phase_column(column)
-      else
-        send(column.attribute)
-      end
+      return custom_field_column(column) if custom_field_column?(column)
+      return custom_comment_column(column) if custom_comment_column?(column)
+      return project_phase_column(column) if project_phase_column?(column)
+
+      send(column.attribute)
     end
 
     def custom_field_column(column) # rubocop:disable Metrics/AbcSize
@@ -119,6 +117,21 @@ module Projects
       else
         custom_value
       end
+    end
+
+    def custom_comment_column(column)
+      return nil unless user_can_view_project_attributes?
+
+      cf = column.custom_field
+      comment = cf.comment_for(project)&.text
+      return nil if comment.blank?
+
+      render OpenProject::Common::AttributeComponent.new(
+        "dialog-#{project.id}-cfc-#{cf.id}",
+        column.caption,
+        comment,
+        format: false
+      )
     end
 
     def project_phase_column(column)
@@ -198,17 +211,15 @@ module Projects
     def project_status
       return nil unless user_can_view_project_attributes?
 
-      content = "".html_safe
-
       status_code = project.status_code
-
       if status_code
         classes = helpers.project_status_css_class(status_code)
-        content << content_tag(:span, "", class: "project-status--bulb -inline #{classes}")
-        content << content_tag(:span, helpers.project_status_name(status_code), class: "project-status--name #{classes}")
-      end
 
-      content
+        capture do
+          concat content_tag(:span, "", class: "project-status--bulb -inline #{classes}")
+          concat content_tag(:span, helpers.project_status_name(status_code), class: "project-status--name #{classes}")
+        end
+      end
     end
 
     def status_explanation
@@ -237,7 +248,7 @@ module Projects
 
     def row_css_class
       classes = %w[basics context-menu--reveal op-project-row-component]
-      classes << project_css_classes
+      classes += project_css_classes
       classes << row_css_level_classes
 
       classes.join(" ")
@@ -256,13 +267,13 @@ module Projects
     end
 
     def project_css_classes
-      s = " project ".html_safe
+      output = ["project"]
 
-      s << " root" if project.root?
-      s << " child" if project.child?
-      s << (project.leaf? ? " leaf" : " parent")
+      output << "root" if project.root?
+      output << "child" if project.child?
+      output << (project.leaf? ? "leaf" : "parent")
 
-      s
+      output
     end
 
     def column_css_class(column)
@@ -272,14 +283,10 @@ module Projects
     def additional_css_class(column)
       if column.attribute == :name
         "project--hierarchy #{'archived' if project.archived?}"
-      elsif %i[status_explanation description].include?(column.attribute)
-        "project-long-text-container"
       elsif column.attribute == :favorited
         "-w-abs-45"
       elsif custom_field_column?(column)
-        cf = column.custom_field
-        formattable = cf.field_format == "text" ? " project-long-text-container" : ""
-        "format-#{cf.field_format}#{formattable}"
+        "format-#{column.custom_field.field_format}"
       end
     end
 
@@ -446,6 +453,10 @@ module Projects
 
     def custom_field_column?(column)
       column.is_a?(::Queries::Projects::Selects::CustomField)
+    end
+
+    def custom_comment_column?(column)
+      column.is_a?(::Queries::Projects::Selects::CustomComment)
     end
 
     def project_phase_column?(column)

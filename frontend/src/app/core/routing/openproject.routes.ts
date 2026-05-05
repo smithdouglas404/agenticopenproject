@@ -29,7 +29,7 @@
 import { StateDeclaration, StateService, Transition, TransitionService, UIRouter } from '@uirouter/core';
 import { IToast, ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { Injector } from '@angular/core';
+import { ApplicationRef, Injector } from '@angular/core';
 import { FirstRouteService } from 'core-app/core/routing/first-route-service';
 import { Ng2StateDeclaration, StatesModule } from '@uirouter/angular';
 import { appBaseSelector, ApplicationBaseComponent } from 'core-app/core/routing/base/application-base.component';
@@ -39,8 +39,6 @@ import {
   mobileGuardActivated,
   redirectToMobileAlternative,
 } from 'core-app/shared/helpers/routing/mobile-guard.helper';
-import { TEAM_PLANNER_LAZY_ROUTES } from 'core-app/features/team-planner/team-planner/team-planner.lazy-routes';
-import { CALENDAR_LAZY_ROUTES } from 'core-app/features/calendar/calendar.lazy-routes';
 
 export const OPENPROJECT_ROUTES:Ng2StateDeclaration[] = [
   {
@@ -69,19 +67,11 @@ export const OPENPROJECT_ROUTES:Ng2StateDeclaration[] = [
     },
   },
   {
-    name: 'boards.**',
-    parent: 'optional_project',
-    url: '/boards',
-    loadChildren: () => import('../../features/boards/openproject-boards.module').then((m) => m.OpenprojectBoardsModule),
-  },
-  {
     name: 'bim.**',
     parent: 'optional_project',
     url: '/bcf',
     loadChildren: () => import('../../features/bim/ifc_models/openproject-ifc-models.module').then((m) => m.OpenprojectIFCModelsModule),
   },
-  ...TEAM_PLANNER_LAZY_ROUTES,
-  ...CALENDAR_LAZY_ROUTES,
 ];
 
 /**
@@ -286,5 +276,13 @@ export function initializeUiRouterListeners(injector:Injector) {
     window.OpenProject.pageState = 'pristine';
 
     return true;
+  });
+
+  // In zoneless mode, UIRouter transitions complete in microtasks but
+  // Angular's change detection doesn't run automatically afterwards.
+  // Force a CD cycle after every successful transition so that the new
+  // view is rendered and Stimulus controllers properly disconnect/connect.
+  $transitions.onSuccess({}, () => {
+    injector.get(ApplicationRef).tick();
   });
 }

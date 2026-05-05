@@ -55,10 +55,31 @@ class LiveCollaborationManagerClass {
   }
 
   /**
+   * Conditionally destroys the current collaboration provider if the given provider
+   * instance still owns the shared state.
+   *
+   * During Turbo navigation, the old Stimulus controller's disconnect() fires after the new
+   * controller's connect(). Without an ownership check, the old controller would destroy the
+   * new provider, causing a spurious "connection error" banner.
+   *
+   * @param provider The provider instance requesting destruction; treated as the
+   *                 candidate owner of the current collaboration session.
+   * @returns `true` if the given provider was the current owner and the internal
+   *          provider/doc instances were destroyed; `false` otherwise.
+   */
+  destroyIfOwner(provider:HocuspocusProvider):boolean {
+    if (this.yjsProviderInstance === provider) {
+      this.destroy();
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Cleans up the collaboration provider and Y.Doc instance.
    * This method should be called when a collaboration session is ended
    */
-  destroy():void {
+  private destroy():void {
     this.destroyYjsProvider();
     this.destroyYjsDoc();
 
@@ -90,10 +111,31 @@ class LiveCollaborationManagerClass {
     return this.yjsProviderInstance;
   }
 
+  /**
+   * Registers a listener to be called when the shared YJS provider is ready.
+   *
+   * If a provider is already initialized, the listener is invoked immediately
+   * with the current {@link HocuspocusProvider} instance. Otherwise, the
+   * listener is stored and invoked later once {@link initializeYjsProvider} is called.
+   *
+   * @param listener Callback that receives the ready { @link HocuspocusProvider }
+   *
+   */
   onReady(listener:Listener) {
     this.listeners.push(listener);
     if (this.yjsProviderInstance) {
       listener(this.yjsProviderInstance);
+    }
+  }
+
+  /**
+   * Unregisters a previously registered ready listener.
+   * @param listener The listener function to remove
+   */
+  offReady(listener:Listener):void {
+    const index = this.listeners.indexOf(listener);
+    if (index !== -1) {
+      this.listeners.splice(index, 1);
     }
   }
 }

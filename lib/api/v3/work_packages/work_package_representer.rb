@@ -327,7 +327,8 @@ module API
           visible_children.map do |child|
             {
               href: api_v3_paths.work_package(child.id),
-              title: child.subject
+              title: child.subject,
+              displayId: child.display_id.to_s
             }
           end
         end
@@ -337,13 +338,19 @@ module API
           represented.visible_ancestors(current_user).map do |ancestor|
             {
               href: api_v3_paths.work_package(ancestor.id),
-              title: ancestor.subject
+              title: ancestor.subject,
+              displayId: ancestor.display_id.to_s
             }
           end
         end
 
         property :id,
                  render_nil: true
+
+        property :display_id,
+                 as: :displayId,
+                 render_nil: true,
+                 getter: ->(*) { display_id&.to_s }
 
         property :lock_version,
                  render_nil: true,
@@ -654,10 +661,8 @@ module API
         def current_user_update_allowed?
           return @current_user_update_allowed if defined?(@current_user_update_allowed)
 
-          @current_user_update_allowed =
-            current_user.allowed_in_work_package?(:edit_work_packages, represented) ||
-              current_user.allowed_in_project?(:change_work_package_status, represented.project) ||
-              current_user.allowed_in_project?(:assign_versions, represented.project)
+          @current_user_update_allowed = ::WorkPackages::UpdateContract.update_allowed?(user: current_user,
+                                                                                        work_package: represented)
         end
 
         def view_time_entries_allowed?
@@ -799,7 +804,8 @@ module API
            represented.cache_checksum,
            Setting.work_package_done_ratio,
            Setting.show_work_package_attachments,
-           Setting.feeds_enabled?]
+           Setting.feeds_enabled?,
+           Setting::WorkPackageIdentifier.semantic_mode_active?]
         end
 
         def load_complete_model(model)

@@ -46,6 +46,8 @@ class ProjectCustomField < CustomField
   has_one :role, through: :custom_fields_role
   accepts_nested_attributes_for :custom_fields_role, allow_destroy: true
 
+  scopes :visible
+
   scope :user_field_with_assigned_role, -> do
     joins(:custom_fields_role)
       .where.not(custom_fields_roles: { role_id: nil })
@@ -54,7 +56,7 @@ class ProjectCustomField < CustomField
 
   class << self
     def visible(user = User.current, project: nil)
-      if user.admin?
+      if user.active_admin?
         all
       elsif user.allowed_in_any_project?(:select_project_custom_fields) || user.allowed_globally?(:add_project)
         where(admin_only: false)

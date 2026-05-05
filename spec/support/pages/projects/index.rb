@@ -41,39 +41,33 @@ module Pages
       end
 
       def expect_projects_listed(*projects, archived: false)
-        within_table do
-          projects.each do |project|
-            displayed_name = if archived
-                               "#{project.name} (Archived)"
-                             else
-                               project.name
-                             end
+        projects.each do |project|
+          displayed_name = if archived
+                             "#{project.name} (Archived)"
+                           else
+                             project.name
+                           end
 
-            expect(page).to have_text(displayed_name, normalize_ws: true)
-          end
+          expect(page).to have_css("#project-table", text: displayed_name, normalize_ws: true)
         end
       end
 
       def expect_projects_not_listed(*projects)
-        within_table do
-          projects.each do |project|
-            case project
-            when Project
-              expect(page).to have_no_text(project.name)
-            when String
-              expect(page).to have_no_text(project)
-            else
-              raise ArgumentError, "#{project.inspect} is not a Project or a String"
-            end
+        projects.each do |project|
+          case project
+          when Project
+            expect(page).to have_no_css("#project-table", text: project.name)
+          when String
+            expect(page).to have_no_css("#project-table", text: project)
+          else
+            raise ArgumentError, "#{project.inspect} is not a Project or a String"
           end
         end
       end
 
       def expect_project_at_place(project, place)
-        within_table do
-          expect(page)
-            .to have_css(".project:nth-of-type(#{place}) td.name", text: project.name)
-        end
+        expect(page)
+          .to have_css("#project-table .project:nth-of-type(#{place}) td.name", text: project.name)
       end
 
       def expect_projects_in_order(*projects)
@@ -107,49 +101,56 @@ module Pages
       end
 
       def expect_current_page_number(number)
-        within ".op-pagination--pages" do
-          expect(page).to have_css(".op-pagination--item_current", text: number)
+        within ".PaginationContainer" do
+          expect(page).to have_css("a.Page", text: number.to_s, aria: { current: "page" })
         end
       end
 
       def expect_total_pages(number)
         within ".op-pagination--pages" do
-          expect(page).to have_css(".op-pagination--item", text: number)
-          expect(page).to have_no_css(".op-pagination--item", text: number + 1)
+          expect(page).to have_css(".Page", text: number)
+          expect(page).to have_no_css(".Page", text: number + 1)
         end
       end
 
       def expect_page_link(text)
         within ".op-pagination--pages" do
-          expect(page).to have_css("a.op-pagination--item-link", text:)
+          expect(page).to have_css("a.Page", text:)
         end
       end
 
       def expect_page_links(model:, current_page: 1)
-        within ".op-pagination--pages" do
-          pagination_links = page.all(".op-pagination--item-link")
+        within ".PaginationContainer" do
+          pagination_links = page.all("a.Page")
           expect(pagination_links.size).to be_positive
 
-          page_number_links = pagination_links.reject { |link| link.text =~ /previous|next/i }
-          page_number_links.each.with_index(1) do |pagination_link, page_number|
+          page_number_links = pagination_links.select { |link| link["aria-label"]&.match?(/\APage \d+\z/) }
+
+          page_number_links.each do |pagination_link|
+            page_number = pagination_link.text.to_i
             uri = URI.parse(pagination_link["href"])
             expect(uri.path).to eq(path(model))
             expect(uri.query).to include("page=#{page_number}")
           end
 
           if current_page > 1
-            expect(page).to have_link("Previous", href: "#{path(model)}?#{{ page: current_page - 1 }.to_query}")
+            previous_link = find("a[rel='prev']", visible: true)
+            previous_uri = URI.parse(previous_link["href"])
+            expect(previous_uri.path).to eq(path(model))
+            expect(previous_uri.query).to include("page=#{current_page - 1}")
           else
-            expect(page).to have_link("Next", href: "#{path(model)}?#{{ page: current_page + 1 }.to_query}")
+            next_link = find("a[rel='next']", visible: true)
+            next_uri = URI.parse(next_link["href"])
+            expect(next_uri.path).to eq(path(model))
+            expect(next_uri.query).to include("page=#{current_page + 1}")
           end
         end
       end
 
       def expect_page_sizes(model:)
         within ".op-pagination--options" do
-          pagination_links = page.all(".op-pagination--item-link")
+          pagination_links = page.all("a.Page")
           expect(pagination_links.size).to be_positive
-          expect(page).to have_css(".op-pagination--item_current")
 
           pagination_links.each do |pagination_link|
             uri = URI.parse(pagination_link["href"])
@@ -239,18 +240,26 @@ module Pages
       def set_advanced_filter(name, human_name, human_operator = nil, values = [], send_keys: false)
         selected_filter = select_filter(name, human_name)
 
+        # Detect filter type before apply_operator, which may trigger Turbo stream
+        # updates that make the selected_filter node reference stale (ObsoleteNode)
+        is_autocomplete = autocomplete_filter?(selected_filter)
+        is_date_or_datetime = date_filter?(selected_filter) || date_time_filter?(selected_filter)
+
         within(selected_filter) do
           apply_operator(name, human_operator)
+        end
 
-          return unless values.any?
+        return unless values.any?
 
+        # Re-find element as apply_operator may have triggered DOM updates
+        selected_filter = page.find("li[data-filter-name='#{name}']")
+
+        within(selected_filter) do
           if boolean_filter?(name)
             set_toggle_filter(values)
-          elsif autocomplete_filter?(selected_filter)
-            select(human_operator, from: "operator")
+          elsif is_autocomplete
             set_autocomplete_filter(values)
-          elsif date_filter?(selected_filter) || date_time_filter?(selected_filter)
-            select(human_operator, from: "operator")
+          elsif is_date_or_datetime
             wait_for_network_idle
             set_created_at_filter(human_operator, values, send_keys:)
           end
@@ -276,8 +285,8 @@ module Pages
         columns.each do |column|
           next if remaining_columns.include?(column.downcase)
 
-          select_autocomplete find(".op-draggable-autocomplete--input"),
-                              results_selector: ".ng-dropdown-panel-items",
+          select_autocomplete find("ng-select.op-draggable-autocomplete--input"),
+                              results_selector: "ng-dropdown-panel.op-draggable-autocomplete--input .ng-dropdown-panel-items",
                               query: column
         end
 
@@ -288,14 +297,13 @@ module Pages
         wait_for_network_idle
       end
 
-      def expect_no_config_columns(*columns, element_selector: ".op-draggable-autocomplete--input",
-                                   results_selector: ".ng-dropdown-panel-items")
+      def expect_no_config_columns(*columns)
         open_configure_view
 
         columns.each do |column|
-          expect_no_ng_option find(element_selector),
+          expect_no_ng_option find("ng-select.op-draggable-autocomplete--input"),
                               column,
-                              results_selector:
+                              results_selector: "ng-dropdown-panel.op-draggable-autocomplete--input .ng-dropdown-panel-items"
         end
 
         within "dialog" do
@@ -444,19 +452,19 @@ module Pages
 
       def set_page_size(size)
         within ".op-pagination--options" do
-          find(".op-pagination--item", text: size).click
+          find("a.Page", text: size.to_s).click
         end
       end
 
       def expect_page_size(size)
         within ".op-pagination--options" do
-          expect(page).to have_css(".op-pagination--item_current", text: size)
+          expect(page).to have_css("a.Page", text: /\A#{size}\z/, aria: { current: "page" })
         end
       end
 
       def go_to_page(page_number)
-        within ".op-pagination--pages" do
-          find(".op-pagination--item-link", text: page_number).click
+        within ".PaginationContainer" do
+          click_link accessible_name: "Page #{page_number}"
         end
       end
 

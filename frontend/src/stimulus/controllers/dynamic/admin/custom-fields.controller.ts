@@ -33,65 +33,28 @@ import dragula from 'dragula';
 
 export default class CustomFieldsController extends Controller {
   static targets = [
-    'format',
     'dragContainer',
-    'submitButton',
 
     'customOptionDefaults',
     'customOptionRow',
-
-    'allowNonOpenVersions',
-    'defaultBool',
-    'defaultLongText',
-    'defaultText',
-    'length',
-    'multiSelect',
-    'possibleValues',
-    'regexp',
-    'searchable',
-    'textOrientation',
-
-    'enterpriseBanner',
   ];
 
   static values = {
-    formatConfig: Array,
-    hierarchyEnabled: Boolean,
-    format: String,
+    multiSelect: Boolean,
   };
 
-  declare readonly formatConfigValue:[string, string, string[]][];
-  declare readonly formatValue:string;
-  declare readonly hierarchyEnabledValue:boolean;
+  declare readonly multiSelectValue:boolean;
 
-  declare readonly formatTarget:HTMLInputElement;
   declare readonly dragContainerTarget:HTMLElement;
   declare readonly hasDragContainerTarget:boolean;
-  declare readonly submitButtonTarget:HTMLButtonElement;
-  declare readonly hasSubmitButtonTarget:boolean;
 
   declare readonly customOptionDefaultsTargets:HTMLInputElement[];
   declare readonly customOptionRowTargets:HTMLTableRowElement[];
-
-  declare readonly allowNonOpenVersionsTargets:HTMLElement[];
-  declare readonly defaultBoolTargets:HTMLElement[];
-  declare readonly defaultLongTextTargets:HTMLElement[];
-  declare readonly defaultTextTargets:HTMLElement[];
-  declare readonly lengthTargets:HTMLElement[];
-  declare readonly multiSelectTargets:HTMLElement[];
-  declare readonly possibleValuesTargets:HTMLElement[];
-  declare readonly regexpTargets:HTMLElement[];
-  declare readonly searchableTargets:HTMLInputElement[];
-  declare readonly textOrientationTargets:HTMLElement[];
-
-  declare readonly enterpriseBannerTarget:HTMLElement;
 
   connect() {
     if (this.hasDragContainerTarget) {
       this.setupDragAndDrop();
     }
-
-    this.adaptInputsToFormat(this.formatValue);
   }
 
   moveRowUp(event:{ target:HTMLElement }) {
@@ -183,24 +146,9 @@ export default class CustomFieldsController extends Controller {
   uncheckOtherDefaults(event:{ target:HTMLElement }) {
     const cb = event.target as HTMLInputElement;
 
-    if (cb.checked) {
-      const multi = this.multiSelectTargets[0] as HTMLInputElement|undefined;
-
-      if (multi?.checked === false) {
-        this.customOptionDefaultsTargets.forEach((el) => (el.checked = false));
-        cb.checked = true;
-      }
-    }
-  }
-
-  checkOnlyOne(event:{ target:HTMLElement }) {
-    const cb = event.target as HTMLInputElement;
-
-    if (!cb.checked) {
-      this.customOptionDefaultsTargets
-        .filter((el) => el.checked)
-        .slice(1)
-        .forEach((el) => (el.checked = false));
+    if (cb.checked && !this.multiSelectValue) {
+      this.customOptionDefaultsTargets.forEach((el) => (el.checked = false));
+      cb.checked = true;
     }
   }
 
@@ -233,32 +181,6 @@ export default class CustomFieldsController extends Controller {
           autoScroll: () => drake.dragging,
         },
       );
-    });
-  }
-
-  private setActive(elements:HTMLElement[], active:boolean) {
-    elements.forEach((element) => {
-      element.hidden = !active;
-      element
-        .querySelectorAll<HTMLInputElement>('input, textarea')
-        .forEach((input) => {
-          input.disabled = !active;
-        });
-    });
-  }
-
-  private adaptInputsToFormat(format:string) {
-    if (this.hasSubmitButtonTarget) {
-      this.submitButtonTarget.disabled = format === 'hierarchy' && !this.hierarchyEnabledValue;
-    }
-
-    this.formatConfigValue.forEach(([targetsName, operator, formats]) => {
-      const active = operator === 'only' ? formats.includes(format) : !formats.includes(format);
-
-      const targets = this[`${targetsName}Targets` as keyof typeof this] as HTMLElement[];
-      if (targets) {
-        this.setActive(targets, active);
-      }
     });
   }
 }

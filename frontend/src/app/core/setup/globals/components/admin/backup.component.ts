@@ -96,10 +96,6 @@ export class BackupComponent implements AfterViewInit {
     return this.pathHelper.attachmentDownloadPath(this.lastBackupAttachmentId, undefined);
   }
 
-  public includeAttachmentsTitle():string {
-    return this.mayIncludeAttachments ? '' : this.text.attachmentsDisabled;
-  }
-
   public triggerBackup(event?:Event) {
     if (event) {
       event.stopPropagation();

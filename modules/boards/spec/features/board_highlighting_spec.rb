@@ -30,7 +30,7 @@ require "spec_helper"
 require_relative "support/board_index_page"
 require_relative "support/board_page"
 
-RSpec.describe "Work Package boards spec", :js, :selenium, with_ee: %i[board_view] do
+RSpec.describe "Work Package boards spec", :js, :selenium do
   let(:user) do
     create(:user,
            member_with_roles: { project => role })
@@ -75,7 +75,7 @@ RSpec.describe "Work Package boards spec", :js, :selenium, with_ee: %i[board_vie
   it "navigates from boards to the WP full view and back" do
     board_index.visit!
 
-    board_page = board_index.create_board action: "Status"
+    board_page = board_index.create_board action: "Kanban"
 
     # See the work packages
     board_page.expect_query "Open", editable: false

@@ -1,8 +1,14 @@
 # Lefthook configuration
 #
-# Add commit hooks with `bundle exec lefthook install`
+# Install lefthook with any preferred method (see https://github.com/evilmartians/lefthook?tab=readme-ov-file#install).
+#   example: `gem install lefthook`
 #
-# Refer for explanation to following link:
+# Add commit hooks with `lefthook install`.
+#
+# To override any config, create a `lefthook-local.yml` file - e.g., for changing the run command
+# to be executed in a docker container context.
+#
+# Refer for explanation to the following link:
 # https://github.com/evilmartians/lefthook/blob/master/docs/usage.md
 
 pre-commit:

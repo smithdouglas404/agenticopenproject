@@ -20,7 +20,7 @@ Before downloading the app, please ensure your environment meets the following p
 > [!NOTE]
 > If you have a previous version of OpenProject you can connect your OpenProject instance by asking your administrator to enable the Built in OAuth applications flag under `_{BASE_URL}/admin/settings/experimental_`.        
 *   **Minimum system requirements:**
-    *   **iOS 15** or later
+    *   **iOS 17** or later
     *   **Android 12** or later
 *   **Built-in OAuth applications enabled:** Make sure that the built-in OAuth applications are **enabled in your administration settings** (`{BASE_URL}/admin/oauth/applications`). This is required for successful login from the mobile app.
 ![Applications setting to enable the built-in OAuth in OpenProject](mobile_app_oauth_authentication.png)
@@ -32,8 +32,8 @@ Before downloading the app, please ensure your environment meets the following p
 
 The **OpenProject Mobile App** is available for both major platforms:
 
-*   **iOS:** [App Store link](?).
-*   **Android:** [Google Play link](?).
+*   **iOS:** [App Store link](https://apps.apple.com/us/app/openproject/id6474431879).
+*   **Android:** [Google Play link](https://play.google.com/store/apps/details?id=org.openproject.app&hl=en).
 
 Search for **“OpenProject”** in your app store, or use the direct links above to download the app.
 
@@ -53,7 +53,7 @@ Enter the complete **base URL** of your instance (for example, `https://yourcomp
 ![Mobile app browser sign in screen](mobile-app-browser-sign-in.png)
     
 *   The app will ask you for a permission to have full access to the **OpenProject API v3** to authorize your account and securely connect to your workspace.
-![OpenProject mobile app browser API v3 authorisation screen](mobile-browser-oauth-authorization.png)
+![OpenProject mobile app browser API v3 authorization screen](mobile-browser-oauth-authorization.png)
 
 ## Start Exploring
 

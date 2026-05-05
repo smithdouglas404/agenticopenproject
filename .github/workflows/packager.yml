@@ -1,10 +1,11 @@
 name: Package
 on:
   push:
+    tags:
+      - v*
     branches:
       - packaging/*
       - release/*
-      - stable/*
   workflow_dispatch:
   schedule:
     - cron: '0 3 * * *' # Daily at 03:00
@@ -42,6 +43,12 @@ jobs:
         run: |
           VERSION=$(ruby -r ./lib/open_project/version.rb -e "puts OpenProject::VERSION")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            MAJOR=$(ruby -r ./lib/open_project/version.rb -e "puts OpenProject::VERSION::MAJOR")
+            echo "channel=stable/${MAJOR}" >> $GITHUB_OUTPUT
+          else
+            echo "channel=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
       - name: Package
         uses: pkgr/action/package@main
         id: package
@@ -58,5 +65,5 @@ jobs:
           target: ${{ matrix.target }}
           token: ${{ secrets.PACKAGER_PUBLISH_TOKEN }}
           repository: opf/openproject
-          channel: ${{ github.ref_name }}
+          channel: ${{ steps.setup.outputs.channel }}
           file: ${{ steps.package.outputs.package_path }}

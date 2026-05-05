@@ -167,6 +167,7 @@ Redmine::MenuManager.map :account_menu do |menu|
   menu.push :logout,
             :signout_path,
             icon: :"sign-out",
+            show_divider_before: true,
             scheme: :danger,
             if: ->(_) { User.current.logged? },
             html: {
@@ -275,6 +276,11 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "account" },
             caption: :label_account,
             icon: "person"
+  menu.push :working_hours,
+            { controller: "/my", action: "working_hours" },
+            caption: :label_schedule_and_availability,
+            icon: "calendar",
+            if: ->(_) { OpenProject::FeatureDecisions.user_working_times_active? }
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,
@@ -298,12 +304,8 @@ Redmine::MenuManager.map :my_menu do |menu|
             icon: "devices"
   menu.push :notifications,
             { controller: "/my", action: "notifications" },
-            caption: I18n.t("js.notifications.settings.title"),
+            caption: I18n.t("my_account.notifications_and_email.title"),
             icon: "bell"
-  menu.push :reminders,
-            { controller: "/my", action: "reminders" },
-            caption: I18n.t("js.reminders.settings.title"),
-            icon: "unread"
 end
 
 Redmine::MenuManager.map :admin_menu do |menu|
@@ -360,6 +362,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_group_plural,
             parent: :users_and_permissions
 
+  menu.push :departments,
+            { controller: "/admin/departments" },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.departments_active? },
+            caption: :label_departments,
+            parent: :users_and_permissions
+
   menu.push :roles,
             { controller: "/roles" },
             if: ->(_) { User.current.admin? },
@@ -399,13 +407,19 @@ Redmine::MenuManager.map :admin_menu do |menu|
   menu.push :statuses,
             { controller: "/statuses" },
             if: ->(_) { User.current.admin? },
-            caption: :label_status,
+            caption: :label_status_plural,
             parent: :admin_work_packages
 
   menu.push :priorities,
             { controller: "/admin/settings/work_package_priorities" },
             if: ->(_) { User.current.admin? },
             caption: IssuePriority.model_name.human(count: :other),
+            parent: :admin_work_packages
+
+  menu.push :work_packages_identifier,
+            { controller: "/admin/settings/work_packages_identifier", action: :show },
+            if: ->(_) { OpenProject::FeatureDecisions.semantic_work_package_ids_active? && User.current.admin? },
+            caption: :label_identifier,
             parent: :admin_work_packages
 
   menu.push :progress_tracking,
@@ -415,9 +429,9 @@ Redmine::MenuManager.map :admin_menu do |menu|
             parent: :admin_work_packages
 
   menu.push :workflows,
-            { controller: "/workflows", action: "edit" },
+            { controller: "/workflows", action: "index" },
             if: ->(_) { User.current.admin? },
-            caption: ->(_) { Workflow.model_name.human },
+            caption: ->(_) { I18n.t(:label_workflow_plural) },
             parent: :admin_work_packages
 
   menu.push :admin_projects_settings,
@@ -478,13 +492,13 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :ai,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.ai"),
-            icon: :"sparkle-fill"
+            icon: :sparkle
 
   menu.push :mcp_configurations,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.mcp_configurations"),
             enterprise_feature: "mcp_server",
             parent: :ai
@@ -618,6 +632,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_announcement,
             icon: "megaphone"
 
+  menu.push :admin_integrations,
+            { controller: "/github_integration/admin/settings", action: "show" },
+            if: ->(_) { User.current.admin? },
+            icon: :"git-compare",
+            caption: :label_integrations
+
   menu.push :plugins,
             { controller: "/admin", action: "plugins" },
             if: ->(_) { User.current.admin? },
@@ -657,11 +677,17 @@ Redmine::MenuManager.map :admin_menu do |menu|
             icon: "op-enterprise-addons",
             if: proc { User.current.admin? && OpenProject::Configuration.ee_manager_visible? }
 
-  menu.push :admin_backlogs,
-            { controller: "/backlogs_settings", action: :show },
+  menu.push :import,
+            { controller: "/admin/import/jira/instances", action: :index },
             if: ->(_) { User.current.admin? },
-            caption: :label_backlogs,
-            icon: "op-backlogs"
+            caption: :label_import,
+            icon: "desktop-download"
+
+  menu.push :jira_import,
+            { controller: "/admin/import/jira/instances", action: :index },
+            if: ->(_) { User.current.admin? },
+            caption: :label_jira_import,
+            parent: :import
 end
 
 Redmine::MenuManager.map :project_menu do |menu|

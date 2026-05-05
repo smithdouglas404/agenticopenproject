@@ -18,8 +18,8 @@ The OpenProject Mobile App is a companion to the OpenProject desktop and web app
 
 ## What platforms are supported?
 
-*   **iOS 15 or later**
-*   **Android 10 or later**
+*   **iOS 17 or later**
+*   **Android 12 or later**
 
 The app requires an **active internet connection** to sync data with your OpenProject instance.
 

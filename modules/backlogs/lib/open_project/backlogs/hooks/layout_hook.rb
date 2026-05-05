@@ -28,62 +28,16 @@
 
 module OpenProject::Backlogs::Hooks
   class LayoutHook < OpenProject::Hook::ViewListener
-    include RbCommonHelper
+    include ::Backlogs::CommonHelper
 
     def view_my_settings(context = {})
       context[:controller].send(
         :render_to_string,
         partial: "shared/view_my_settings",
         locals: {
-          user: context[:user],
-          color: context[:user].backlogs_preference(:task_color),
-          versions_default_fold_state:
-            context[:user].backlogs_preference(:versions_default_fold_state)
+          user: context[:user]
         }
       )
-    end
-
-    def controller_work_package_new_after_save(context = {})
-      params = context[:params]
-      work_package = context[:work_package]
-
-      return unless work_package.backlogs_enabled?
-
-      if work_package.is_story?
-        if params[:link_to_original]
-          rel = Relation.new
-
-          rel.from_id = Integer(params[:link_to_original])
-          rel.to_id = work_package.id
-          rel.relation_type = Relation::TYPE_RELATES
-          rel.save
-        end
-
-        if params[:copy_tasks]
-          params[:copy_tasks] += ":" if params[:copy_tasks].exclude?(":")
-          action, id = *params[:copy_tasks].split(":")
-
-          story = (id.nil? ? nil : Story.find(Integer(id)))
-
-          if !story.nil? && action != "none"
-            tasks = story.tasks
-            case action
-            when "open"
-              tasks = tasks.select { |t| !t.closed? }
-            when "all", "none"
-            else
-              raise "Unexpected value #{params[:copy_tasks]}"
-            end
-
-            tasks.each do |t|
-              nt = Task.new
-              nt.copy_from(t)
-              nt.parent_id = work_package.id
-              nt.save
-            end
-          end
-        end
-      end
     end
   end
 end

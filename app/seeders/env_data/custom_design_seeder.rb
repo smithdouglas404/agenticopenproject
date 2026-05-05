@@ -54,7 +54,7 @@ module EnvData
         data = Setting.seed_design[key.to_s]
 
         if data.blank?
-          custom_style.public_send(:"remove_#{key}")
+          custom_style.public_send(:"remove_#{key}!")
         elsif data.match?(/^https?:\/\//)
           seed_remote_url(custom_style, key, data)
         else

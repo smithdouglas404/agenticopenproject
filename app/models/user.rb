@@ -60,6 +60,12 @@ class User < Principal
   has_one :rss_token, class_name: "::Token::RSS", dependent: :destroy
   has_many :api_tokens, class_name: "::Token::API", dependent: :destroy
   has_many :oauth_client_tokens, dependent: :destroy
+  has_many :working_hours, class_name: "UserWorkingHours",
+                           dependent: :destroy,
+                           inverse_of: :user
+  has_many :non_working_times, class_name: "UserNonWorkingTime",
+                               dependent: :destroy,
+                               inverse_of: :user
 
   # The user might have one invitation token
   has_one :invitation_token, class_name: "::Token::Invitation", dependent: :destroy
@@ -132,7 +138,7 @@ class User < Principal
      blocked_if_login_since]
   end
 
-  acts_as_customizable
+  acts_as_customizable admin_only_allowed: true
 
   attr_accessor :password, :password_confirmation, :last_before_login_on
 
@@ -508,6 +514,10 @@ class User < Principal
     !logged?
   end
 
+  def active_admin?
+    admin? && active?
+  end
+
   def consent_expired?
     # Always if the user has not consented
     return true if consented_at.blank?
@@ -673,6 +683,29 @@ class User < Principal
   end
 
   include Scimitar::Resources::Mixin
+
+  def non_working_time_entities_for_year(year)
+    NonWorkingDay.for_year(year).to_a + non_working_times.for_year(year).to_a
+  end
+
+  def non_working_days_for_year(year)
+    working_wdays = Setting.working_days.map { |d| d % 7 }
+    all_dates = system_non_working_dates_for_year(year) | user_non_working_dates_for_year(year)
+    all_dates.select { |d| working_wdays.include?(d.wday) }
+  end
+
+  private
+
+  def system_non_working_dates_for_year(year)
+    NonWorkingDay.for_year(year).pluck(:date).to_set
+  end
+
+  def user_non_working_dates_for_year(year)
+    year_range = Date.new(year, 1, 1)..Date.new(year, 12, 31)
+    non_working_times.for_year(year).flat_map do |t|
+      ([t.start_date, year_range.begin].max..[t.end_date, year_range.end].min).to_a
+    end.to_set
+  end
 
   protected
 

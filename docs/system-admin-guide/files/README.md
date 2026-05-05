@@ -25,5 +25,5 @@ Under categories you can create and manage documentation categories in OpenProje
 
 >  [!NOTE]
 >
-> With 17.0 the *Documents* module was enhanced with live-collaboration features, resulting in a dedicated area in system adminstration. From then on documentation of Categories was moved [here](../documents).
+> With 17.0 the *Documents* module was enhanced with live-collaboration features, resulting in a dedicated area in system administration. From then on documentation of Categories was moved [here](../documents).
 

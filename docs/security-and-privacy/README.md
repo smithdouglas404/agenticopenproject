@@ -17,5 +17,5 @@ The purpose of this document is to equip users of OpenProject with the  necessar
 
 ## Data security
 
-* Security documentation: BSI Grundschutzchecks (coming Q1 2024)
+* Security documentation: **BSI Grundschutz Zertifizierung im Rahmen von openDesk**
 * Statement on data security: [Statement on data security](./statement-on-security)

@@ -19,13 +19,14 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 ms:
   js:
     github_integration:
       work_packages:
-        tab_name: "GitHub"
+        tab_name: GitHub
       tab_header:
-        title: "Tarik permintaan"
+        title: Tarik permintaan
         copy_menu:
           label: Potongan git
           description: Salin potongan git ke papan klip
@@ -34,21 +35,21 @@ ms:
           commit_message: Mesej komit
           cmd: Cipta cabang dengan komit kosong
           title: Potongan cepat untuk Git
-          copy_success: '✅ Disalin!'
-          copy_error: '❌ Salinan gagal!'
+          copy_success: "✅ Disalin!"
+          copy_error: "❌ Salinan gagal!"
       tab_prs:
-        empty: 'Masih belum ada tarik permintaan yang dipautkan lagi. Pautkan PR yang sedia ada menggunakan kod <code>OP#%{wp_id}</code> di deskripsi PR atau ciptakan PR baru.'
+        empty: Masih belum ada tarik permintaan yang dipautkan lagi. Pautkan PR yang sedia ada menggunakan kod <code>OP#%{wp_id}</code> di deskripsi PR atau ciptakan PR baru.
       github_actions: Tindakan
       pull_requests:
-        message: "Tarik permintaan #%{pr_number}%{pr_link} untuk %{repository_link} dikarang oleh %{github_user_link} telah %{pr_state}."
-        merged_message: "Tarik permintaan #%{pr_number} %{pr_link} untuk %{repository_link} telah %{pr_state} oleh %{github_user_link}."
-        referenced_message: "Tarik permintaan #%{pr_number} %{pr_link} untuk %{repository_link} dikarang oleh %{github_user_link} merujuk kepada pakej kerja ini."
+        message: 'Tarik permintaan #%{pr_number}%{pr_link} untuk %{repository_link} dikarang oleh %{github_user_link} telah %{pr_state}.'
+        merged_message: 'Tarik permintaan #%{pr_number} %{pr_link} untuk %{repository_link} telah %{pr_state} oleh %{github_user_link}.'
+        referenced_message: 'Tarik permintaan #%{pr_number} %{pr_link} untuk %{repository_link} dikarang oleh %{github_user_link} merujuk kepada pakej kerja ini.'
         states:
-          opened: 'dibuka'
-          closed: 'ditutup'
-          draft: 'dirangka'
-          merged: 'digabungkan'
-          ready_for_review: 'sedia untuk disemak'
+          opened: dibuka
+          closed: ditutup
+          draft: dirangka
+          merged: digabungkan
+          ready_for_review: sedia untuk disemak
     work_packages:
       tabs:
-        github: "GitHub"
+        github: GitHub

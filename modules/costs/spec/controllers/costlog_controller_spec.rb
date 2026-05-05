@@ -528,6 +528,19 @@ RSpec.describe CostlogController do
     end
   end
 
+  describe "DELETE destroy" do
+    before do
+      cost_entry.save(validate: false)
+      grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
+      request.env["HTTP_REFERER"] = "http://example.com/work_packages"
+    end
+
+    it "redirects with see_other status" do
+      delete :destroy, params: { id: cost_entry.id }
+      expect(response).to have_http_status(:see_other)
+    end
+  end
+
   describe "PUT update" do
     let(:params) do
       { "id" => cost_entry.id.to_s,
@@ -691,7 +704,7 @@ RSpec.describe CostlogController do
       before do
         grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
-        params["cost_entry"]["entity_id"] = "this-id-does-not-exist"
+        params["cost_entry"]["entity_id"] = "999999999"
       end
 
       it_behaves_like "invalid update"

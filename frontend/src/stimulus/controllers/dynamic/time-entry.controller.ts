@@ -35,7 +35,7 @@ import { useMeta } from 'stimulus-use';
 import { durationStringToSeconds, formattedHour } from 'core-stimulus/helpers/chronic-duration-helper';
 
 export default class TimeEntryController extends Controller {
-  static targets = ['startTimeInput', 'endTimeInput', 'hoursInput', 'form'];
+  static targets = ['startTimeInput', 'endTimeInput', 'hoursInput', 'hoursHiddenInput', 'form'];
 
   declare readonly formTarget:HTMLFormElement;
   declare readonly startTimeInputTarget:HTMLInputElement;
@@ -43,6 +43,7 @@ export default class TimeEntryController extends Controller {
   declare readonly endTimeInputTarget:HTMLInputElement;
   declare readonly hasEndTimeInputTarget:boolean;
   declare readonly hoursInputTarget:HTMLInputElement;
+  declare readonly hoursHiddenInputTarget:HTMLInputElement;
   declare oldWorkPackageId:string;
 
   static metaNames = ['csrf-token'];
@@ -142,6 +143,7 @@ export default class TimeEntryController extends Controller {
       hoursInMinutes += exisitingDayGap;
 
       this.hoursInputTarget.value = formattedHour(hoursInMinutes * 60);
+      this.setHoursPrecise(hoursInMinutes / 60);
     } else if (startTimeInMinutes && hoursInMinutes) {
       const newEndTime = (startTimeInMinutes + hoursInMinutes) % (24 * 60);
 
@@ -166,10 +168,15 @@ export default class TimeEntryController extends Controller {
     // backend
     const duration = durationStringToSeconds(this.hoursInputTarget.value);
     this.hoursInputTarget.value = formattedHour(duration);
+    this.setHoursPrecise(duration / 3600);
 
     if (duration !== 0) {
       this.datesChanged(this.hoursInputTarget);
     }
+  }
+
+  private setHoursPrecise(hours:number) {
+    this.hoursHiddenInputTarget.value = String(hours);
   }
 
   hoursKeyEnterPress(event:KeyboardEvent) {

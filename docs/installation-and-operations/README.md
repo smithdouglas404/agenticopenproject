@@ -21,18 +21,20 @@ All editions can be enhanced by adding [the BIM module](../bim-guide/), includin
 
 Compare the features of these versions [on the website](https://www.openproject.org/pricing/#features).
 
-> **Note**: there are some minor options given in the "Other" row of the table below. These are not recommended but you may wish to try them.
+> [!NOTE]
+> There are some minor options given in the "Other" row of the table below. These are not recommended but you may wish to try them.
 
 ## On-premises installation overview
 
-| Main Topics                                 | Content                                                                                    |
-|---------------------------------------------|:-------------------------------------------------------------------------------------------|
-| [System requirements](system-requirements/) | Learn the minimum configuration required to run OpenProject                                |
-| [Installation](installation/)               | How to install OpenProject and the methods available                                       |
+| Main Topics                                 | Content                                                      |
+| ------------------------------------------- | :----------------------------------------------------------- |
+| [System requirements](system-requirements/) | Learn the minimum configuration required to run OpenProject  |
+| [Installation](installation/)               | How to install OpenProject and the methods available         |
 | [Operations & Maintenance](operation/)      | Guides on how to configure, backup, **upgrade**, and monitor your OpenProject installation |
-| [Advanced configuration](configuration/)    | Guides on how to perform advanced configuration of your OpenProject installation           |
-| [Other](misc/)                              | Guides on infrequent operations such as MySQL to PostgreSQL migration                      |
-| [BIM](../bim-guide/)                        | How to install OpenProject BIM edition                                                     |
+| [Advanced configuration](configuration/)    | Guides on how to perform advanced configuration of your OpenProject installation |
+| [Other](misc/)                              | Guides on infrequent operations such as MySQL to PostgreSQL migration |
+| [BIM](../bim-guide/)                        | How to install OpenProject BIM edition                       |
+| [JIRA migration](jira-migration/)           | How to migrate from JIRA to OpenProject                      |
 
 For production environments and when using a [supported distribution](system-requirements), we recommend using the [packaged installation](installation/packaged/). This will install OpenProject as a system dependency using your distribution's package manager, and provide updates in the same fashion that all other system packages do.
 

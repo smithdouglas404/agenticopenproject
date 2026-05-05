@@ -115,7 +115,8 @@ jobs:
     needs: [prepare, seed]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     uses: ./.github/workflows/email-notification.yml
-    secrets: inherit
+    secrets:
+      OPS_MAIL_SMTP_TOKEN: ${{ secrets.OPS_MAIL_SMTP_TOKEN }}
     with:
       to: operations@openproject.com
       subject: "Seeding with some locales failed on ${{ needs.prepare.outputs.ref }}"

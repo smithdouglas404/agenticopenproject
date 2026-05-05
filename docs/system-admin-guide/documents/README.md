@@ -55,7 +55,7 @@ You will see a dialogue informing you of the consequences.
 
 - If a document type is used, you will need to select a different type for reassigning
 
-  ![A warning message when deleting a used document type in OpenProject, asking to reassing documents to a different type](openproject_system_guide_documents_types_delete_message_type_used.png)
+  ![A warning message when deleting a used document type in OpenProject, asking to reassigning documents to a different type](openproject_system_guide_documents_types_delete_message_type_used.png)
 
 - If a document type is the last existing one, you will not be able to delete it. There must always be at least one document type configured. In this case you can create another document type first.
 

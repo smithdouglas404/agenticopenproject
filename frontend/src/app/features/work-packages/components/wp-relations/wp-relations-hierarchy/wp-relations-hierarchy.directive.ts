@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
@@ -43,6 +43,10 @@ import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
   templateUrl: './wp-relations-hierarchy.template.html',
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageRelationsHierarchyComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
@@ -77,7 +81,7 @@ export class WorkPackageRelationsHierarchyComponent extends UntilDestroyedMixin 
   };
 
   ngOnInit() {
-    this.workPackagePath = this.PathHelper.workPackagePath(this.workPackage.id!);
+    this.workPackagePath = this.PathHelper.workPackagePath(this.workPackage.displayId);
     this.canModifyHierarchy = !!this.workPackage.changeParent;
     this.canAddRelation = !!this.workPackage.addRelation;
 

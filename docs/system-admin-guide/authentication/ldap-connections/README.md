@@ -103,7 +103,7 @@ Please see the [advanced configuration guide](../../../installation-and-operatio
 
 By default, OpenProject will synchronize user account details (name, e-mail, login) and their account status from the LDAP through a background worker job every 24 hours.
 
-### **Enable status synchronization**
+### Enable status synchronization
 
 If you wish to synchronize the account status from the LDAP, you can enable status synchronization using the following configuration:
 

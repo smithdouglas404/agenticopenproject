@@ -86,10 +86,6 @@ class RecurringMeeting < ApplicationRecord
            inverse_of: :recurring_meeting,
            dependent: :destroy
 
-  has_many :scheduled_meetings,
-           inverse_of: :recurring_meeting,
-           dependent: :delete_all
-
   has_one :template, -> { where(template: true) },
           class_name: "Meeting"
 
@@ -256,16 +252,20 @@ class RecurringMeeting < ApplicationRecord
     schedule.next_occurrence(from_time)&.to_time
   end
 
-  def first_non_cancelled_occurrence(from_time: Time.current)
-    skipped = []
+  def first_available_occurrence(from_time: Time.current)
+    skipped_cancelled = []
+    skipped_closed = []
     time = from_time
 
     while (occurrence = next_occurrence(from_time: time))
-      if scheduled_meetings.cancelled.exists?(start_time: occurrence)
-        skipped << occurrence
+      if meetings.not_templated.cancelled.exists?(recurrence_start_time: occurrence)
+        skipped_cancelled << occurrence
+        time = occurrence
+      elsif meetings.not_templated.find_by(recurrence_start_time: occurrence)&.closed?
+        skipped_closed << occurrence
         time = occurrence
       else
-        return { occurrence:, skipped: }
+        return { occurrence:, skipped_cancelled:, skipped_closed: }
       end
     end
 
@@ -288,42 +288,48 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def scheduled_instances(upcoming: true)
-    filter_scope = upcoming ? :upcoming : :past
     direction = upcoming ? :asc : :desc
 
-    scheduled_meetings
-      .includes(:meeting)
-      .public_send(filter_scope)
-      .then { |o| filter_scope == :past ? o.not_cancelled : o }
-      .order(start_time: direction)
+    scope = meetings
+      .not_templated
+      .where.not(recurrence_start_time: nil)
+      .order(recurrence_start_time: direction)
+
+    if upcoming
+      scope.where(recurrence_start_time: Time.current..)
+    else
+      scope.not_cancelled.where(recurrence_start_time: ...Time.current)
+    end
   end
 
   def upcoming_instantiated_meetings
-    @upcoming_instantiated_meetings ||= scheduled_meetings
-      .includes(:meeting)
+    @upcoming_instantiated_meetings ||= meetings
+      .not_templated
       .not_cancelled
-      .joins(:meeting)
+      .where.not(recurrence_start_time: nil)
       .where("meetings.start_time + (interval '1 hour' * meetings.duration) >= ?", Time.current)
-      .order(start_time: :asc)
+      .order(recurrence_start_time: :asc)
   end
 
   def ongoing_meetings
     upcoming_instantiated_meetings
-      .includes(:meeting)
-      .where(meetings: { start_time: ..Time.current })
-      .order(start_time: :asc)
+      .where(start_time: ..Time.current)
   end
 
   def upcoming_cancelled_meetings
-    # Include ongoing cancelled meetings by setting a start time in the past
-    scheduled_meetings
+    # Include ongoing cancelled meetings by going back one duration-length in time
+    meetings
+      .not_templated
       .cancelled
-      .where(start_time: (Time.current - template.duration.hours)..)
-      .order(start_time: :asc)
+      .where.not(recurrence_start_time: nil)
+      .where(recurrence_start_time: (Time.current - template.duration.hours)..)
+      .order(recurrence_start_time: :asc)
   end
 
   def instantiated_meetings
-    meetings.not_templated
+    meetings
+      .not_templated
+      .not_cancelled
   end
 
   private

@@ -119,6 +119,47 @@ RSpec.describe Budgets::AggregatedBudgets do
     end
   end
 
+  describe "subproject aggregation for regular projects" do
+    let(:child_project) do
+      create(:project_with_types, parent: project).tap do |p|
+        p.enabled_module_names += %w[budgets]
+        p.save!
+      end
+    end
+
+    before do
+      child_project
+      project.reload
+      create(:member, project: child_project, user:,
+                      roles: [create(:project_role, permissions: %i[view_budgets])])
+    end
+
+    context "with a budget in the child project" do
+      let!(:budget) { create(:budget, project: child_project, base_amount: BigDecimal("4000")) }
+
+      it "includes child project budgets in budget_count" do
+        expect(aggregated.budget_count).to eq(1)
+      end
+
+      it "includes child project base amounts in budgeted_base" do
+        expect(aggregated.budgeted_base).to eq(BigDecimal("4000"))
+      end
+    end
+
+    context "with budgets in both parent and child project" do
+      let!(:parent_budget) { create(:budget, project:, base_amount: BigDecimal("2000")) }
+      let!(:child_budget) { create(:budget, project: child_project, base_amount: BigDecimal("4000")) }
+
+      it "aggregates budget counts from parent and child" do
+        expect(aggregated.budget_count).to eq(2)
+      end
+
+      it "aggregates base amounts from parent and child" do
+        expect(aggregated.budgeted_base).to eq(BigDecimal("6000"))
+      end
+    end
+  end
+
   describe "portfolio project support" do
     let(:portfolio) do
       create(:portfolio).tap do |p|

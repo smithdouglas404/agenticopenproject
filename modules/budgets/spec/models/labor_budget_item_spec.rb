@@ -185,6 +185,29 @@ RSpec.describe LaborBudgetItem do
         expect(item.errors[:user]).to eq([I18n.t("activerecord.errors.messages.blank")])
       end
     end
+
+    describe "WHEN the user is not a member of the budget project" do
+      before do
+        item # trigger build so after(:build) creates the membership first
+        Member.where(project:, principal: user).destroy_all
+      end
+
+      it "is not valid" do
+        expect(item).not_to be_valid
+        expect(item.errors.where(:principal, :not_a_member_of_budget_project)).not_to be_empty
+      end
+    end
+
+    describe "WHEN the budget has no project yet" do
+      before do
+        item.budget = build(:budget, project: nil)
+      end
+
+      it "skips the membership check and does not add a membership error" do
+        item.valid?
+        expect(item.errors.where(:principal, :not_a_member_of_budget_project)).to be_empty
+      end
+    end
   end
 
   describe "#costs_visible_by?" do

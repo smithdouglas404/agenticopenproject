@@ -62,7 +62,7 @@ For more information, please see the [GitHub advisory #GHSA-g62r-9rgf-h53q](http
 
 The application is vulnerable to HTML injection due to improper sanitization of user-supplied input for the project name.
 
-An attacker can inject arbitrary HTML tags into the response, altering the structure of the page. and later while creating workpackages payload is executed.
+An attacker can inject arbitrary HTML tags into the response, altering the structure of the page. and later while creating work packages payload is executed.
 
 
 

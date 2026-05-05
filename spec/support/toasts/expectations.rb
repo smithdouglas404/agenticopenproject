@@ -17,6 +17,11 @@ module Toasts
       page.find(".op-toast--close").click
     end
 
+    def dismiss_specific_toaster!(message:, type: :success)
+      sleep 0.1
+      page.find(".op-toast.-#{type}", text: message).find(".op-toast--close").click
+    end
+
     # Clears a toaster if there is one waiting 1 second max, but do not fail if there is none
     def clear_any_toasters
       if has_button?(I18n.t("js.close_popup_title"), wait: 1)

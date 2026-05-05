@@ -32,7 +32,8 @@ Rails.application.reloader.to_prepare do
   OpenProject::AccessControl.map do |map|
     map.project_module nil, order: 100 do
       map.permission :add_project,
-                     { projects: %i[new create] },
+                     { projects: %i[new create],
+                       "projects/identifier_suggestion": %i[show] },
                      permissible_on: :global,
                      require: :loggedin,
                      contract_actions: { projects: %i[create] }
@@ -80,7 +81,11 @@ Rails.application.reloader.to_prepare do
 
       map.permission :manage_user,
                      {
-                       users: %i[index show edit update change_status change_status_info],
+                       users: %i[index show edit update change_status change_status_info
+                                 update_reminders update_email_alerts update_workdays
+                                 update_participating update_non_participating update_date_alerts
+                                 new_project_settings create_project_settings
+                                 edit_project_settings update_project_settings destroy_project_settings],
                        "users/memberships": %i[create update destroy],
                        admin: %i[index]
                      },
@@ -137,7 +142,7 @@ Rails.application.reloader.to_prepare do
                        "projects/settings/subitems": %i[show update],
                        "projects/settings/template": %i[show update toggle_template],
                        "projects/templated": %i[create destroy],
-                       "projects/identifier": %i[show update],
+                       "projects/identifier": %i[show update identifier_update_dialog],
                        "projects/status": %i[update destroy]
                      },
                      permissible_on: :project,
@@ -248,7 +253,8 @@ Rails.application.reloader.to_prepare do
                      require: :member
 
       map.permission :add_subprojects,
-                     { projects: %i[new create] },
+                     { projects: %i[new create],
+                       "projects/identifier_suggestion": %i[show] },
                      permissible_on: :project,
                      require: :member
 
@@ -286,6 +292,14 @@ Rails.application.reloader.to_prepare do
                      {},
                      permissible_on: :project_query,
                      require: :loggedin
+
+      map.permission :manage_own_working_times,
+                     {},
+                     permissible_on: :global
+
+      map.permission :manage_working_times,
+                     {},
+                     permissible_on: :global
     end
 
     map.project_module :work_package_tracking, order: 90 do |wpt|
@@ -399,7 +413,8 @@ Rails.application.reloader.to_prepare do
       wpt.permission :add_work_package_attachments,
                      {},
                      permissible_on: %i[work_package project],
-                     dependencies: :view_work_packages
+                     dependencies: :view_work_packages,
+                     contract_actions: { work_package_attachments: %i[create] }
 
       # WorkPackage categories
       wpt.permission :manage_categories,
@@ -420,7 +435,7 @@ Rails.application.reloader.to_prepare do
       wpt.permission :delete_work_packages,
                      {
                        work_packages: :destroy,
-                       "work_packages/bulk": %i[destroy reassign]
+                       "work_packages/bulk": %i[delete_dialog destroy reassign]
                      },
                      permissible_on: :project,
                      require: :member,

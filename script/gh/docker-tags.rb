@@ -17,7 +17,11 @@ class Tag
   end
 
   def version
-    @tag.sub(/^v/, "").sub(/-rc$/, "")
+    if semver?
+      @tag.sub(/^v/, "").sub(/-rc$/, "")
+    else
+      @tag.sub(/-rc$/, "")
+    end
   end
 
   def to_semver_docker_tags

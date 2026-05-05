@@ -92,15 +92,15 @@ module OpenProject
       end
 
       def discriminator(request)
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       def default_limit
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       def default_period
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
     end
   end

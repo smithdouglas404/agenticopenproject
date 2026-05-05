@@ -27,32 +27,16 @@
 //++
 
 import { Controller } from '@hotwired/stimulus';
-import { FrameElement, TurboVisitEvent } from '@hotwired/turbo';
+import { FrameElement } from '@hotwired/turbo';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { filter, Subscription } from 'rxjs';
-import StoryController from './backlogs/story.controller';
 
 export default class BacklogsController extends Controller<HTMLElement> {
-  static outlets = ['backlogs--story'];
-  declare backlogsStoryOutlets:StoryController[];
-
-  static values = {
-    listUrl: String,
-  };
-
-  declare listUrlValue:string;
-
-  private abortController:AbortController|null = null;
   private service:HalEventsService|null = null;
   private subscription:Subscription|null = null;
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   async connect() {
-    this.abortController = new AbortController();
-    const { signal } = this.abortController;
-
-    document.addEventListener('turbo:visit', this.updateSelection, { signal });
-
     const { services: { halEvents } } = await window.OpenProject.getPluginContext();
 
     this.service = halEvents;
@@ -65,38 +49,10 @@ export default class BacklogsController extends Controller<HTMLElement> {
     this.subscription?.unsubscribe();
     this.subscription = null;
     this.service = null;
-
-    this.abortController?.abort();
-    this.abortController = null;
-  }
-
-  backlogsStoryOutletConnected(outlet:StoryController) {
-    const selectedId = this.getSelectedIdFromPathname(window.location.pathname);
-    if (selectedId !== null && outlet.idValue === selectedId) {
-      outlet.markAsSelected();
-    }
-  }
-
-  private updateSelection = (event:TurboVisitEvent) => {
-    const url = new URL(event.detail.url, window.location.origin);
-    const selectedId = this.getSelectedIdFromPathname(url.pathname);
-
-    this.backlogsStoryOutlets.forEach((story) => {
-      if (selectedId !== null && story.idValue === selectedId) {
-        story.markAsSelected(event);
-      } else {
-        story.unmarkAsSelected(event);
-      }
-    });
-  };
-
-  private getSelectedIdFromPathname(pathname:string):number|null {
-    const match = /\/details\/(\d+)/.exec(pathname);
-    return match ? Number(match[1]) : null;
   }
 
   private refreshList() {
-    this.listElement.src = this.listUrlValue;
+    void this.listElement.reload();
   }
 
   private get listElement() {

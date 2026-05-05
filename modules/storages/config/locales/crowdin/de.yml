@@ -1,3 +1,4 @@
+---
 de:
   activerecord:
     attributes:
@@ -145,7 +146,7 @@ de:
             hide_inactive_folders:
               permission_not_set: konnte keine Berechtigungen auf %{path} setzen.
             remote_folders:
-              not_allowed: '%{username} hat keinen Zugriff auf den Ordner %{group_folder}. Bitte überprüfen Sie die Ordnerrechte auf Nextcloud.'
+              not_allowed: "%{username} hat keinen Zugriff auf den Ordner %{group_folder}. Bitte überprüfen Sie die Ordnerrechte auf Nextcloud."
               not_found: "%{group_folder} Ordner wurde nicht gefunden. Bitte überprüfen Sie Ihre Nextcloud Konfiguration."
             remove_user_from_group:
               conflict: 'Der Benutzer %{user} konnte aus folgendem Grund nicht aus der %{group} Gruppe entfernt werden: %{reason}'
@@ -203,11 +204,16 @@ de:
         upload_link_service:
           not_found: Der Zielordner %{folder} konnte nicht auf %{storage_name} gefunden werden.
   storages:
+    admin:
+      side_panel:
+        health_notifications_component:
+          sync_now: Jetzt synchronisieren
+          sync_queued: Synchronisierung eingereiht.
     buttons:
       done_continue: Fertig, Fortfahren
       open_storage: Dateispeicher öffnen
       replace_oauth_application: OpenProject OAuth ersetzen
-      replace_oauth_client: '%{provider_type} OAuth ersetzen'
+      replace_oauth_client: "%{provider_type} OAuth ersetzen"
       save_and_continue: Speichern und fortsetzen
       select_folder: Ordner auswählen
     configuration_checks:
@@ -221,13 +227,13 @@ de:
     confirm_replace_oauth_application: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie die Anmeldedaten beim Speicheranbieter erneut eingeben und alle Remote-Benutzer müssen sich erneut gegenüber OpenProject autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     confirm_replace_oauth_client: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie neue Anmeldedaten vom Speicheranbieter eingeben und alle Benutzer müssen sich erneut für %{provider_type} autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     delete_warning:
-      project_storage: Sind Sie sicher, dass Sie %{file_storage} löschen möchten?
       project_storage_delete_result_1: Alle Links zu den entsprechenden Dateien und Ordnern werden entfernt
       project_storage_delete_result_2: Der automatisch verwaltete Projektordner und alle darin enthaltenen Dateien werden gelöscht
-      storage: Sind Sie sicher, dass Sie %{file_storage} als externen Dateispeicher löschen möchten?
+      project_storage_html: Sind Sie sicher, dass Sie %{file_storage} löschen möchten?
       storage_delete_result_1: Der Speicher wird aus allen Projekten, die ihn derzeit verwenden, entfernt
       storage_delete_result_2: Alle Links zu den entsprechenden Dateien und Ordnern werden entfernt
       storage_delete_result_3: Der automatisch verwaltete Projektordner und alle darin enthaltenen Dateien werden gelöscht
+      storage_html: Sind Sie sicher, dass Sie %{file_storage} als externen Dateispeicher löschen möchten?
     dependencies:
       nextcloud:
         group_folders_app: Teamordner
@@ -279,6 +285,8 @@ de:
           drive_contents: Speicherinhalt
           files_request: Teamordnerdateien werden abgerufen
           header: Automatisch verwaltete Projektordner
+          project_folders_exist: Projektordner existieren
+          project_folders_linked: Projektordner verlinkt
           team_folder_app: 'Abhängigkeit: Teamordner'
           team_folder_contents: Inhalt des Teamordners
           team_folder_presence: Teamordner existiert
@@ -322,8 +330,10 @@ de:
         nc_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
         nc_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Remote-Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Protokolle für weitere Informationen.
         nc_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit Nextcloud nicht testen, da der Benutzer sein Nextcloud Konto noch nicht verknüpft hat.
+        nc_project_folder_missing: Der zuvor erstellte Projektordner für das Projekt "%{project}" konnte nicht gefunden werden.
         nc_team_folder_not_found: Der Teamordner konnte nicht gefunden werden.
-        nc_unexpected_content: Unerwarteter Inhalt im verwalteten Teamordner gefunden.
+        nc_unexpected_files: 'Unerwartete Dateien im verwalteten Teamordner gefunden. Zum Beispiel: %{sample}'
+        nc_unlinked_project_folders: Es sind noch nicht alle Projektordner erstellt worden (%{actual} / %{expected}). Dies kann auf Fehler bei der AMPF-Hintergrundsynchronisation hinweisen.
         nc_userless_access_denied: Das konfigurierte App-Passwort ist ungültig.
         not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
         od_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
@@ -372,6 +382,7 @@ de:
         failure: Einige Überprüfungen sind fehlgeschlagen und das System funktioniert nicht wie erwartet.
         success: Alle Verbindungen und Systeme funktionieren wie erwartet.
         warning: Einige Überprüfungen ergaben eine Warnung. Dies kann zu unerwartetem Verhalten führen.
+      synced: 'Zuletzt aktualisiert: %{datetime}'
       title: Gesundheitsstatusbericht
     health_email_notifications:
       description_disabled: Administrator:innen erhalten keine E-Mail-Updates, wenn es wichtige Änderungen gibt.
@@ -390,7 +401,7 @@ de:
       host: Bitte ergänzen Sie die Host-Adresse Ihres Speichers (einschließlich https://). Sie sollte nicht länger als 255 Zeichen sein.
       managed_project_folders_application_password_caption: 'Automatisch verwaltete Ordner aktivieren, indem Sie diesen Wert kopieren: %{provider_type_link}.'
       name: Geben Sie Ihrem Speicher einen Namen, damit Benutzer zwischen mehreren Speichern unterscheiden können.
-      new_storage: Lesen Sie unsere Dokumentation zur <a target='_blank' href='%{provider_link}'>Konfiguration eines %{provider_name} Dateispeichers</a> für weitere Informationen.
+      new_storage_html: Lesen Sie unsere Dokumentation zur [Konfiguration eines %{provider_name} Dateispeichers](docs_url) für weitere Informationen.
       nextcloud:
         application_link_text: Anwendung „OpenProject Integration“
         integration: Nextcloud Administration / OpenProject
@@ -402,8 +413,7 @@ de:
       no_specific_folder: Standardmäßig startet jeder Benutzer in seinem eigenen Home-Ordner, wenn er eine Datei hochlädt.
       no_storage_set_up: Es sind noch keine Dateispeicher eingerichtet.
       not_logged_into_storage: Bitte melden Sie sich zunächst an, um einen Projektordner auszuwählen
-      oauth_application_details: 'Der geheime Client-Schlüssel wird nach dem Schließen dieses Fensters nicht mehr zugänglich sein. Bitte kopieren Sie diese Werte hierher: %{oauth_application_details_link}.'
-      oauth_application_details_link_text: Nextcloud OpenProject Integrationseinstellungen
+      oauth_application_details_html: Das Client Secret wird nach dem Schließen dieses Fensters nicht mehr zugänglich sein. Bitte kopieren Sie diese Werte in die [Nextcloud OpenProject Integrationseinstellungen](oauth_application_details_link).
       one_drive:
         application_link_text: Azure-Portal
         copy_redirect_uri: Umleitungs-URI kopieren
@@ -472,7 +482,7 @@ de:
       access_granted: Zugriff gewährt
       project_settings:
         access_granted_screen_reader: Zugriff gewährt. Sie können nun %{storage} verwenden
-        storage_ready: '%{storage} kann jetzt verwendet werden'
+        storage_ready: "%{storage} kann jetzt verwendet werden"
       storage_admin:
         access_granted_screen_reader: Zugriff gewährt. Sie können nun Projekte zu %{storage} hinzufügen
         storage_ready: Sie können nun Projekte zu %{storage} hinzufügen
@@ -501,8 +511,7 @@ de:
         delete: Dateispeicher löschen?
         subtitle: Fügen Sie einen externen Dateispeicher hinzu, um Dateien in Arbeitspaketen hochzuladen, zu verlinken und zu verwalten.
       managed_project_folders:
-        subtitle: |-
-          Lassen Sie OpenProject Ordner pro Projekt automatisch erstellen. Dies wird empfohlen, da mit dieser Option jedes Teammitglied immer über die richtigen Zugriffsrechte verfügt.
+        subtitle: Lassen Sie OpenProject Ordner pro Projekt automatisch erstellen. Dies wird empfohlen, da mit dieser Option jedes Teammitglied immer über die richtigen Zugriffsrechte verfügt.
         subtitle_short: Lassen Sie OpenProject Ordner im Dateispeicher automatisch für jedes Projekt anlegen.
         title: Automatisch verwaltete Projektordner
       project_settings:
@@ -510,11 +519,11 @@ de:
         members_connection_status: Verbindungsstatus der Mitglieder
         new: Einen Dateispeicher zum Projekt hinzufügen
       project_storage_members:
-        subtitle: Überprüfen Sie den Verbindungsstatus für den Speicher- %{storage_name_link} aller Projektmitglieder.
+        subtitle_html: Überprüfen Sie den Verbindungsstatus für den Speicher- %{storage_name_link} aller Projektmitglieder.
         title: Verbindungsstatus der Mitglieder
       project_storages:
         delete: Dateispeicher aus dem Projekt entfernen?
-    permission_header_explanation: 'Dateiberechtigungen auf externen Speichern werden nur auf Ordner und Dateien in automatisch verwalteten Projektordnern angewendet. Beachten Sie, dass nicht alle Dateiberechtigungen von allen Speicheranbietern unterstützt werden. Weitere Informationen finden Sie in der Dokumentation zu <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>Dateispeicherberechtigungen</a>.'
+    permission_header_explanation: Dateiberechtigungen auf externen Speichern werden nur auf Ordner und Dateien in automatisch verwalteten Projektordnern angewendet. Beachten Sie, dass nicht alle Dateiberechtigungen von allen Speicheranbietern unterstützt werden. Weitere Informationen finden Sie in der Dokumentation zu <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>Dateispeicherberechtigungen</a>.
     provider_types:
       label: Anbieter-Typ
       nextcloud:
@@ -550,10 +559,8 @@ de:
     successful_storage_connection: Speicher erfolgreich verbunden! Denken Sie daran, den Speicher in der Projekt-Registerkarte für jedes gewünschte Projekt zu aktivieren.
     upsell:
       one_drive:
-        description: |-
-          Integrieren Sie Ihr OneDrive als Dateispeicher mit OpenProject. Laden Sie Dateien hoch und verknüpfen Sie diese direkt mit Arbeitspaketen in einem Projekt.
+        description: Integrieren Sie Ihr OneDrive als Dateispeicher mit OpenProject. Laden Sie Dateien hoch und verknüpfen Sie diese direkt mit Arbeitspaketen in einem Projekt.
         title: OneDrive Integration
       sharepoint:
-        description: |-
-          Integrieren Sie Ihr OneDrive als Dateispeicher mit OpenProject. Laden Sie Dateien hoch und verknüpfen Sie diese direkt mit Arbeitspaketen in einem Projekt.
+        description: Integrieren Sie Ihr OneDrive als Dateispeicher mit OpenProject. Laden Sie Dateien hoch und verknüpfen Sie diese direkt mit Arbeitspaketen in einem Projekt.
         title: SharePoint Integration

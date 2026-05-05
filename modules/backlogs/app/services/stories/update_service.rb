@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -34,14 +36,18 @@ class Stories::UpdateService
     self.story = story
   end
 
-  def call(attributes: {}, position: nil)
+  def call(attributes: {}, position: nil, prev_id: nil)
     create_call = WorkPackages::UpdateService
                   .new(user:,
                        model: story)
                   .call(**attributes.to_h.symbolize_keys)
 
-    if create_call.success? && position
-      create_call.result.move_after(position:)
+    if create_call.success?
+      if prev_id
+        create_call.result.move_after(prev_id: prev_id.to_i)
+      elsif position
+        create_call.result.move_after(position:)
+      end
     end
 
     create_call

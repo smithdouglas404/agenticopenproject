@@ -45,7 +45,7 @@ module OpenProject::GitlabIntegration
 
       def process(payload_params) # rubocop:disable Metrics/AbcSize
         @payload = wrap_payload(payload_params)
-        user = User.find_by_id(payload.open_project_user_id) # rubocop:disable Rails/DynamicFindBy
+        user = User.find_by(id: payload.open_project_user_id)
         text = [payload.object_attributes.title, payload.object_attributes.description]
           .compact_blank
           .join(" - ")

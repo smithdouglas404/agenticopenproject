@@ -26,7 +26,7 @@ The URL you entered may be incorrect, inaccessible, or not using HTTPS.
 ## OAuth Application Not Enabled
 
 **Symptom:**  
-Login fails with a browser error such as _“An authorization error has occurred. The client is not authorised to perform this request using this method.”,_ or you are redirected back to the login screen without authentication.
+Login fails with a browser error such as _“An authorization error has occurred. The client is not authorized to perform this request using this method.”, or you are redirected back to the login screen without authentication.
 
 **Cause:**  
 The mobile app uses OAuth 2.0 for secure authentication. If the built-in OAuth applications are not enabled in your instance, the app cannot log you in.
@@ -40,7 +40,7 @@ The mobile app uses OAuth 2.0 for secure authentication. If the built-in OAuth a
 ## Instance Not on Minimum Supported Version
 
 **Symptom:**  
-You know that your instance is running not on the minimum supported version, OpenProject 17.0.0, and the login fails with a browser error such as _“An authorization error has occurred. The client is not authorised to perform this request using this method.”_.
+You know that your instance is running not on the minimum supported version, OpenProject 17.0.0, and the login fails with a browser error such as _“An authorization error has occurred. The client is not authorized to perform this request using this method.”_.
 
 **Cause:**  
 The OpenProject Mobile App requires your instance to be on **OpenProject version 17.0.0 or higher**.  

@@ -486,7 +486,7 @@ es:
         item_6:
           name: Error
       welcome:
-        title: '¡Le damos la bienvenida a OpenProject!'
+        title: "¡Le damos la bienvenida a OpenProject!"
         text: |
           OpenProject es el programa de gestión de proyectos de código abierto líder. Puede ser usado tanto en gestion de proyectos clássica, Agile o híbrida y le proporciona un control total sobre sus datos.
 

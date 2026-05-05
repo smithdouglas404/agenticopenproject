@@ -38,7 +38,7 @@ class WorkPackages::AutoCompletesController < ApplicationController
     @work_packages = work_packages_matching_query_prop
 
     respond_to do |format|
-      format.json { render request.format.to_sym => wp_hashes_with_string(@work_packages) }
+      format.json { render json: wp_hashes_with_string(@work_packages), escape: true }
     end
   end
 

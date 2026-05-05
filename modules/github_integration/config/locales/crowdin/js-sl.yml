@@ -19,13 +19,14 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 sl:
   js:
     github_integration:
       work_packages:
-        tab_name: "GitHub"
+        tab_name: GitHub
       tab_header:
-        title: "Zahteve za prenos"
+        title: Zahteve za prenos
         copy_menu:
           label: Git izseki
           description: Kopiraj git izseke v odložišče
@@ -34,21 +35,21 @@ sl:
           commit_message: Potrdi sporočilo
           cmd: Ustvari vejo s prazno potrditvijo
           title: Hitri izseki za Git
-          copy_success: '✅ Kopirano!'
-          copy_error: '❌ Kopiranje ni uspelo!'
+          copy_success: "✅ Kopirano!"
+          copy_error: "❌ Kopiranje ni uspelo!"
       tab_prs:
-        empty: 'Zaenkrat še ni povezanih pull zahtev. Poveži obstoječ PR z uporabo kode <code>OP#%{wp_id}</code> v PR opisu ali pa kreiraj nov PR.'
+        empty: Zaenkrat še ni povezanih pull zahtev. Poveži obstoječ PR z uporabo kode <code>OP#%{wp_id}</code> v PR opisu ali pa kreiraj nov PR.
       github_actions: Akcije
       pull_requests:
-        message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} has been %{pr_state}."
-        merged_message: "Zahteva za prenos #%{pr_number} %{pr_link} za %{repository_link} je bila %{pr_state} s strani uporabnika %{github_user_link}."
-        referenced_message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} referenced this work package."
+        message: 'Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} has been %{pr_state}.'
+        merged_message: 'Zahteva za prenos #%{pr_number} %{pr_link} za %{repository_link} je bila %{pr_state} s strani uporabnika %{github_user_link}.'
+        referenced_message: 'Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} referenced this work package.'
         states:
-          opened: 'Odprto'
-          closed: 'zaprto'
-          draft: 'pozvan'
-          merged: 'združeno'
-          ready_for_review: 'označeno kot pripravljeno za pregled'
+          opened: Odprto
+          closed: zaprto
+          draft: pozvan
+          merged: združeno
+          ready_for_review: označeno kot pripravljeno za pregled
     work_packages:
       tabs:
-        github: "GitHub"
+        github: GitHub

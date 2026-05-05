@@ -272,7 +272,6 @@ import {
 import { QuerySharingModalComponent } from 'core-app/shared/components/modals/share-modal/query-sharing.modal';
 import { SaveQueryModalComponent } from 'core-app/shared/components/modals/save-modal/save-query.modal';
 import { QuerySharingFormComponent } from 'core-app/shared/components/modals/share-modal/query-sharing-form.component';
-import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-destroy-modal/wp-destroy.modal';
 import {
   WorkPackageTypeStatusComponent,
 } from 'core-app/features/work-packages/components/wp-type-status/wp-type-status.component';
@@ -407,6 +406,9 @@ import {
 import { WorkPackageFullCopyEntryComponent } from 'core-app/features/work-packages/routing/wp-full-copy/wp-full-copy-entry.component';
 import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-packages/routing/wp-full-create/wp-full-create-entry.component';
 import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packages/routing/wp-full-view/wp-full-view-entry.component';
+import {
+  WorkPackageSplitCreateEntryComponent,
+} from 'core-app/features/work-packages/routing/wp-split-create/wp-split-create-entry.component';
 
 @NgModule({
   imports: [
@@ -591,6 +593,7 @@ import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packag
     WorkPackageDetailsViewButtonComponent,
     WorkPackageSplitViewComponent,
     WorkPackageSplitViewEntryComponent,
+    WorkPackageSplitCreateEntryComponent,
     WorkPackageBreadcrumbComponent,
     WorkPackageSplitViewToolbarComponent,
     WorkPackageWatcherButtonComponent,
@@ -617,7 +620,6 @@ import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packag
     QuerySharingFormComponent,
     QuerySharingModalComponent,
     SaveQueryModalComponent,
-    WpDestroyModalComponent,
     WorkPackageShareModalComponent,
     WorkPackageReminderModalComponent,
 

@@ -31,6 +31,9 @@ en:
     name: "OpenProject Documents"
     description: "An OpenProject plugin to allow creation of documents in projects."
 
+  attributes:
+    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+
   activerecord:
     errors:
       models:
@@ -43,7 +46,6 @@ en:
       document:
         content_binary: "Content binary"
         title: "Title"
-
 
   activity:
     filter:
@@ -87,12 +89,10 @@ en:
 
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Unable to open document because the real-time text collaboration server is unreachable.
           Please contact the administrator if the problem persists.
         action: Try again
-      connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
       tabs: "Document tabs"
 
     index_page:
@@ -107,6 +107,10 @@ en:
       collaboration_settings: "Real-time collaboration"
 
     last_updated_at: "Last saved %{time}."
+
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
 
     active_editors: "Active editors"
     active_editors_count:
@@ -148,7 +152,8 @@ en:
           some_unwritable: Some values are configured via environment variables and cannot be edited here.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
-          caption: "The address of a working Hocuspocus server."
+          caption: "The WebSocket address of a working Hocuspocus server."
+          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
         hocuspocus_server_secret:
           label: "Client secret"
           caption: "Paste the secret provided by the Hocuspocus server."
@@ -162,7 +167,6 @@ en:
           Hocuspocus server.
         primary_action: Enable real-time collaboration
         success: Real-time collaboration has been enabled.
-
 
       disable_text_collaboration_dialog:
         title: Disable real-time collaboration

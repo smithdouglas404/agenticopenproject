@@ -11,6 +11,7 @@ import { debugLog, whenDebugging } from 'core-app/shared/helpers/debug_output';
 import { TURBO_EVENTS } from './constants';
 import { StreamActions } from '@hotwired/turbo';
 import { addTurboAngularWrapper } from 'core-turbo/turbo-angular-wrapper';
+import { registerActionMenuMorphRemount } from './action-menu-morph-remount';
 
 Turbo.session.drive = true;
 Turbo.config.drive.progressBarDelay = 100;
@@ -37,6 +38,7 @@ whenDebugging(() => {
 // Register our own actions
 addTurboEventListeners();
 addTurboGlobalListeners();
+registerActionMenuMorphRemount();
 registerDialogStreamAction();
 registerFlashStreamAction();
 registerLiveRegionStreamAction();

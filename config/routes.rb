@@ -218,6 +218,8 @@ Rails.application.routes.draw do
 
       get :attribute_help_text
       put :update_attribute_help_text
+
+      get :list_items
     end
 
     scope module: :admin do
@@ -281,6 +283,7 @@ Rails.application.routes.draw do
   namespace :projects do
     resource :menu, only: %i[show]
     resource :filters, only: %i[show]
+    resource :identifier_suggestion, only: %i[show], controller: "identifier_suggestion"
   end
 
   %w[portfolio project program].each do |workspace_type|
@@ -352,7 +355,9 @@ Rails.application.routes.draw do
           get :dialog
         end
       end
-      resource :identifier, only: %i[show update], controller: "identifier"
+      resource :identifier, only: %i[show update], controller: "identifier" do
+        get :identifier_update_dialog, on: :member, defaults: { format: :turbo_stream }
+      end
       resource :status, only: %i[update destroy], controller: "status"
       resource :creation_wizard, only: %i[show update], controller: "creation_wizard" do
         get :help_text, on: :member
@@ -437,7 +442,7 @@ Rails.application.routes.draw do
       get "/new" => "work_packages#new", on: :collection, as: "new"
 
       get "(/:tab)" => "work_packages#show", on: :member, as: "",
-          constraints: { id: /\d+/, state: /(?!(shares|copy|dialog)).+/ }
+          constraints: { id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT, state: /(?!(shares|copy|dialog)).+/ }
 
       # states managed by client-side routing on work_package#index
       get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog|new)).+/ }
@@ -658,6 +663,10 @@ Rails.application.routes.draw do
       # It is important to have this named something else than "work_packages".
       # Otherwise the angular ui-router will also recognize that as a WorkPackage page and apply according classes.
       resource :work_packages_general, controller: "/admin/settings/work_packages_general", only: %i[show update]
+      resource :work_packages_identifier, controller: "/admin/settings/work_packages_identifier", only: %i[show update] do
+        get :status, on: :member
+        get :confirm_dialog, on: :member, defaults: { format: :turbo_stream }
+      end
       resources :work_package_priorities, except: [:show] do
         member do
           put :move
@@ -694,6 +703,8 @@ Rails.application.routes.draw do
 
           get :attribute_help_text
           put :update_attribute_help_text
+
+          get :list_items
         end
 
         resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
@@ -732,6 +743,40 @@ Rails.application.routes.draw do
       post "plugin/:id", action: :update_plugin
     end
 
+    namespace :import do
+      get "/", to: redirect("/admin/import/jira")
+      resources :jira, controller: "/admin/import/jira/instances" do
+        collection do
+          post :test
+        end
+        member do
+          delete :delete_token
+        end
+        resources :run, controller: "/admin/import/jira/import_runs", module: :jiras do
+          member do
+            get :continue
+            post :continue
+            delete :remove
+
+            get :import_modal
+            get :revert_modal
+            get :finalize_modal
+            get :history
+          end
+
+          resource :select_projects,
+                   controller: "/admin/import/jira/import_runs/select_projects",
+                   only: %i[show update] do
+            post :filter
+            get :switch_page
+            get :check_all
+            get :uncheck_all
+            get :toggle
+          end
+        end
+      end
+    end
+
     resources :quarantined_attachments,
               controller: "/admin/attachments/quarantined_attachments",
               only: %i[index destroy]
@@ -756,13 +801,52 @@ Rails.application.routes.draw do
         post :delete_token
       end
     end
+
+    resources :departments,
+              only: %i[index show edit update destroy],
+              constraints: lambda { |_request| OpenProject::FeatureDecisions.departments_active? } do
+      member do
+        get :new_user
+        post :add_user
+        delete "remove_user/:user_id" => "departments#remove_user", as: :remove_user
+        get :change_parent, action: :change_parent_dialog
+        post :change_parent
+
+        # old routes for old group style management, might remove when new interface
+        patch "/memberships:membership_id" => "departments#edit_membership", as: "membership_of"
+        put "/memberships:membership_id" => "departments#edit_membership"
+        delete "/memberships:membership_id" => "departments#destroy_membership"
+        post "/memberships" => "departments#create_memberships", as: "memberships_of"
+      end
+
+      collection do
+        get :new_department
+        post :add_department
+        get :edit_organization_name
+        patch :cancel_edit_organization_name
+        patch :update_organization_name
+      end
+    end
   end
 
-  resource :workflows, only: %i[edit update show] do
-    member do
-      # We should fix this crappy routing (split up and rename controller methods)
-      match "copy", action: "copy", via: %i[get post]
+  resources :workflows, only: %i[index edit], param: :type_id do
+    scope module: :workflows do
+      resources :tabs, only: %i[edit update], param: :tab do # params[:tab] used in TabsHelper
+        member do
+          get :status_dialog
+          post :confirm_statuses
+        end
+      end
+      resource :copy, only: %i[new] do
+        scope module: :copies do
+          resource :from_type, only: %i[create]
+          resource :from_role, only: %i[create]
+        end
+      end
     end
+  end
+  namespace :workflows do
+    resource :summary, only: %i[show]
   end
 
   namespace :work_packages do
@@ -772,6 +856,7 @@ Rails.application.routes.draw do
     resource :bulk, controller: "bulk", only: %i[edit update destroy] do
       collection do
         match :reassign, via: %i[get delete]
+        get :delete_dialog
       end
     end
   end
@@ -859,7 +944,8 @@ Rails.application.routes.draw do
         on: :member
 
     get "/copy" => "work_packages#copy", on: :member, as: "copy"
-    get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy)).+/ }
+    get "(/:tab)" => "work_packages#show", on: :member, as: "",
+        constraints: { id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT, state: /(?!(shares|new|copy)).+/ }
 
     # states managed by client-side (angular) routing on work_package#show
     get "/" => "work_packages#index", on: :collection, as: "index"
@@ -883,6 +969,12 @@ Rails.application.routes.draw do
 
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
+    resources :working_hours, controller: "users/working_hours", except: [:index]
+    resources :non_working_times, controller: "users/non_working_times", except: [:index] do
+      collection do
+        get :working_days_preview
+      end
+    end
 
     collection do
       get "/invite" => "users/invite#start_dialog"
@@ -895,6 +987,17 @@ Rails.application.routes.draw do
       get "/change_status/:change_action" => "users#change_status_info", as: "change_status_info"
       post :change_status
       post :resend_invitation
+      patch :update_reminders
+      patch :update_workdays
+      patch :update_email_alerts
+      patch :update_participating
+      patch :update_non_participating
+      patch :update_date_alerts
+      get "project_notifications/new" => "users#new_project_settings", as: "new_project_settings"
+      post "project_notifications" => "users#create_project_settings", as: "project_notifications"
+      get "project_notifications/:project_id/edit" => "users#edit_project_settings", as: "edit_project_settings"
+      patch "project_notifications/:project_id" => "users#update_project_settings", as: "project_setting"
+      delete "project_notifications/:project_id" => "users#destroy_project_settings"
       get :deletion_info
     end
   end
@@ -984,10 +1087,23 @@ Rails.application.routes.draw do
     get "/my/locale", action: "locale"
     get "/my/interface", action: "interface"
     get "/my/notifications", action: "notifications"
-    get "/my/reminders", action: "reminders"
+
+    get "/my/working_hours", action: "working_hours"
+    get "/my/non_working_times", action: "non_working_times"
 
     patch "/my/account", action: "update_account"
     patch "/my/settings", action: "update_settings"
+    patch "/my/workdays", action: "update_workdays"
+    patch "/my/email_alerts", action: "update_email_alerts"
+    patch "/my/participating", action: "update_participating"
+    patch "/my/non_participating", action: "update_non_participating"
+    patch "/my/date_alerts", action: "update_date_alerts"
+
+    get "/my/project_notifications/new", action: "new_project_settings", as: "new_my_project_settings"
+    post "/my/project_notifications", action: "create_project_settings", as: "my_project_notifications"
+    get "/my/project_notifications/:project_id/edit", action: "edit_project_settings", as: "edit_my_project_settings"
+    patch "/my/project_notifications/:project_id", action: "update_project_settings", as: "my_project_setting"
+    delete "/my/project_notifications/:project_id", action: "destroy_project_settings"
   end
 
   scope controller: "onboarding" do
@@ -1015,9 +1131,16 @@ Rails.application.routes.draw do
         work_package_split_view: true
   end
 
+  concern :with_split_create do
+    get "details/new",
+        action: :split_create,
+        as: :split_create,
+        work_package_split_create: true
+  end
+
   resources :notifications, only: :index do
     collection do
-      concerns :with_split_view, base_route: :notifications_path
+      concerns :with_split_view
 
       post :mark_all_read
       resource :menu, module: :notifications, only: %i[show], as: :notifications_menu
@@ -1063,6 +1186,7 @@ Rails.application.routes.draw do
     patch :update, controller: "inplace_edit_fields", action: :update
     get :reset, controller: "inplace_edit_fields", action: :reset
     get :edit, controller: "inplace_edit_fields", action: :edit
+    get :dialog, controller: "inplace_edit_fields", action: :dialog
   end
 
   if OpenProject::Configuration.lookbook_enabled?

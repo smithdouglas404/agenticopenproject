@@ -43,6 +43,7 @@ en:
         location: "Location"
         duration: "Duration"
         notes: "Notes"
+        recurrence_start_time: "Scheduled start time"
         participants: "Participants"
         participant:
           one: "1 Participant"
@@ -53,15 +54,25 @@ en:
         start_date: "Date"
         start_time: "Start time"
         start_time_hour: "Start time"
+        end_time: "End time"
+        template: "Template"
+        notify: "Send notifications"
+        sharing: "Sharing"
       meeting_agenda_item:
         title: "Title"
         author: "Author"
         duration_in_minutes: "Duration"
         description: "Notes"
         presenter: "Presenter"
+        item_type: "Type"
+        position: "Position"
+        lock_version: "Lock version"
+        notes: "Notes"
       meeting_section:
         title: "Title"
+        position: "Position"
       recurring_meeting:
+        title: "Title"
         frequency: "Frequency"
         interval: "Interval"
         start_date: "Starts on"
@@ -70,6 +81,12 @@ en:
         end_after: "Meeting series ends"
         end_date: "End date"
         iterations: "Occurrences"
+        time_zone: "Time zone"
+        location: "Location"
+        duration: "Duration"
+        notify: "Send notifications"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Invited"
         attended: "Attended"
@@ -79,7 +96,10 @@ en:
         meeting_participant:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."
@@ -130,6 +150,13 @@ en:
 
   label_meeting: "Meeting"
   label_meeting_plural: "Meetings"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "New Meeting"
   label_meeting_new_dynamic: "New one-time meeting"
   label_meeting_new_recurring: "New recurring meeting"
@@ -193,12 +220,18 @@ en:
   label_notify: "Send for review"
   label_icalendar: "Send iCalendar"
   label_icalendar_download: "Download iCalendar event"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "View meeting series"
   label_meeting_series: "Meeting series"
   label_version: "Version"
   label_time_zone: "Time zone"
   label_start_date: "Start date"
   label_subscribe_icalendar: "Subscribe to calendar"
+
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
 
   meeting:
     participants:
@@ -211,6 +244,7 @@ en:
         manage_participants: "Manage participants"
         no_participants: "No participants"
         show_all: "Show all"
+        apply_to_upcoming_meetings: "Apply these changes to all upcoming meetings in this series"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
@@ -219,7 +253,8 @@ en:
         heading: "No participants"
         description: "There are no participants yet."
     attachments:
-      template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Attached files are available to all meeting participants. You can also drag and drop these into agenda item notes."
     copy:
       title: "Copy meeting: %{title}"
@@ -292,6 +327,11 @@ en:
         heading: "Delete this meeting?"
         confirmation_message_html: >
           This action is not reversible. Please proceed with caution.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"
@@ -372,6 +412,8 @@ en:
             All participants will receive updated calendar invites via email when you add or remove participants.
           disabled: >
             Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             All participants will receive updated calendar invites via email when you add or remove participants.
@@ -404,6 +446,12 @@ en:
     ical_response:
       update_failed: "Could not update participation status."
       meeting_not_found: "Meeting not found for the given UID."
+
+    widgets:
+      blankslate:
+        heading: "No upcoming meetings"
+        description: "Upcoming meetings where you are the organizer or a participant will appear here."
+      view_details: "View all meetings"
 
   meeting_section:
     untitled_title: "Untitled section"
@@ -522,6 +570,7 @@ en:
       title: "End meeting series"
 
   notice_successful_notification: "Email calendar update sent to all participants"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: No time zone is set and %{zone} is assumed. To choose your time zone, please click here.
   notice_meeting_updated: "This page has been updated by someone else. Reload to view changes."
 
@@ -539,6 +588,8 @@ en:
   text_duration_in_hours: "Duration in hours"
   text_in_hours: "in hours"
   text_meeting_agenda_for_meeting: 'agenda for the meeting "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Delete future occurrences?"
   text_meeting_series_end_early: "Ending the series will delete any future open or scheduled meeting occurrences"
   text_meeting_closing_are_you_sure: "Are you sure you want to close the meeting agenda?"
@@ -661,10 +712,19 @@ en:
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
 
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
   text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+
+  label_meeting_template_sharing: "Sharing"
+  label_meeting_template_sharing_none: "Only with this project"
+  label_meeting_template_sharing_descendants: "With subprojects"
+  label_meeting_template_sharing_system: "With all projects"
+  text_meeting_template_sharing_description: "This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied."
 
   text_meeting_not_editable_anymore: "This meeting is not editable anymore."
   text_meeting_not_present_anymore: "This meeting was deleted. Please select another meeting."
@@ -685,9 +745,12 @@ en:
   text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
   text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "This work package is not scheduled in an upcoming meeting agenda yet."
-  text_agenda_item_no_available_occurrence: "All upcoming occurrences have been cancelled."
-  text_agenda_item_dialog_skipping_cancelled_one: "Note: Skipping cancelled occurrence on %{date}."
-  text_agenda_item_dialog_skipping_cancelled_many: "Note: Skipping %{count} cancelled occurrences."
+  text_agenda_item_no_available_occurrence: "No upcoming occurrences are available."
+  text_agenda_item_dialog_skipping_note: "Note: Skipping %{details}."
+  text_agenda_item_dialog_skipping_cancelled_one: "cancelled meeting on %{date}"
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: "closed meeting on %{date}"
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: 'Use the "Add to meeting" button to add this work package to an upcoming meeting.'
   text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
 

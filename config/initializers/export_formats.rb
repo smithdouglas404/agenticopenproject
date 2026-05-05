@@ -54,6 +54,7 @@ Rails.application.configure do |application|
       list Project, Projects::Exports::PDF
       formatter Project, Exports::Formatters::CustomField
       formatter Project, Exports::Formatters::CustomFieldPdf
+      formatter Project, Exports::Formatters::CustomComment
       formatter Project, Projects::Exports::Formatters::Status
       formatter Project, Projects::Exports::Formatters::Description
       formatter Project, Projects::Exports::Formatters::PDF::Public

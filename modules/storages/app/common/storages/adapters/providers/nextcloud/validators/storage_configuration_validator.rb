@@ -72,7 +72,7 @@ module Storages
               dependency = I18n.t("storages.dependencies.nextcloud.integration_app")
 
               if capabilities_result.app_version < min_app_version
-                fail_check(:dependencies_versions, :nc_dependency_version_mismatch, context: { dependency: })
+                warn_check(:dependencies_versions, :nc_dependency_version_mismatch, context: { dependency: })
               else
                 pass_check(:dependencies_versions)
               end

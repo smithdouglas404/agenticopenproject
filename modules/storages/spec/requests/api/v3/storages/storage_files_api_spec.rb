@@ -76,7 +76,7 @@ RSpec.describe "API v3 storage files", :storage_server_helpers, :webmock, conten
                                                        last_modified_at: Time.zone.parse("2024-08-09T11:52:09Z"),
                                                        created_by_name: "Mara Jade",
                                                        last_modified_by_name: nil,
-                                                       location: "/Folder%20with%20spaces",
+                                                       location: "/Folder with spaces",
                                                        permissions: %i[readable writeable]),
           Storages::Adapters::Results::StorageFile.new(id: "562",
                                                        name: "Ümlæûts",
@@ -86,7 +86,7 @@ RSpec.describe "API v3 storage files", :storage_server_helpers, :webmock, conten
                                                        last_modified_at: Time.zone.parse("2024-08-09T11:51:48Z"),
                                                        created_by_name: "Mara Jade",
                                                        last_modified_by_name: nil,
-                                                       location: "/%c3%9cml%c3%a6%c3%bbts",
+                                                       location: "/Ümlæûts",
                                                        permissions: %i[readable writeable])
         ],
         Storages::Adapters::Results::StorageFile.new(id: "385",
@@ -159,7 +159,7 @@ RSpec.describe "API v3 storage files", :storage_server_helpers, :webmock, conten
 
     context "with successful response" do
       let(:response) do
-        Storages::StorageFileInfo.new(
+        Storages::Adapters::Results::StorageFileInfo.new(
           status: "OK",
           status_code: 200,
           id: file_id,
@@ -173,7 +173,7 @@ RSpec.describe "API v3 storage files", :storage_server_helpers, :webmock, conten
           last_modified_by_name: "Darth Sidious",
           last_modified_by_id: "palpatine",
           permissions: "RGDNVCK",
-          location: "/Folder/%C3%9Cml%C3%A6%C3%BBts"
+          location: "/Folder/Ümlæûts"
         )
       end
 
@@ -187,7 +187,7 @@ RSpec.describe "API v3 storage files", :storage_server_helpers, :webmock, conten
         expect(subject).to be_json_eql(response.mime_type.to_json).at_path("mimeType")
 
         expect(subject).to be_json_eql(response.owner_name.to_json).at_path("createdByName")
-        expect(subject).to be_json_eql(response.location.to_json).at_path("location")
+        expect(subject).to be_json_eql("/Folder/%C3%9Cml%C3%A6%C3%BBts".to_json).at_path("location")
         expect(subject).to be_json_eql(response.permissions.to_json).at_path("permissions")
       end
     end

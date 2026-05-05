@@ -63,6 +63,7 @@ module Projects
       set_default_module_names(attribute_keys.include?("enabled_module_names"))
       set_default_types(attribute_keys.include?("types") || attribute_keys.include?("type_ids"))
       set_default_active_work_package_custom_fields(attribute_keys.include?("work_package_custom_fields"))
+      set_default_show_work_package_attachments(attribute_keys.include?("deactivate_work_package_attachments"))
     end
 
     def set_default_public(provided)
@@ -71,6 +72,10 @@ module Projects
 
     def set_default_module_names(provided)
       model.enabled_module_names = Setting.default_projects_modules if !provided && model.enabled_module_names.empty?
+    end
+
+    def set_default_show_work_package_attachments(provided)
+      model.deactivate_work_package_attachments = !Setting.show_work_package_attachments? unless provided
     end
 
     def set_default_types(provided)

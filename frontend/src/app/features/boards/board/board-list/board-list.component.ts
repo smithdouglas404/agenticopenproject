@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Injector,
   Input,
   OnDestroy,
@@ -26,6 +27,8 @@ import { AuthorisationService } from 'core-app/core/model-auth/model-auth.servic
 import { Highlighting } from 'core-app/features/work-packages/components/wp-fast-table/builders/highlighting/highlighting.functions';
 import { WorkPackageCardViewComponent } from 'core-app/features/work-packages/components/wp-card-view/wp-card-view.component';
 import { WorkPackageStatesInitializationService } from 'core-app/features/work-packages/components/wp-list/wp-states-initialization.service';
+import { States } from 'core-app/core/states/states.service';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 import { BoardService } from 'core-app/features/boards/board/board.service';
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
@@ -148,6 +151,8 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   public buttonPlaceholder:DisabledButtonPlaceholder|undefined;
 
+  private readonly states = inject(States);
+
   constructor(
     readonly apiv3Service:ApiV3Service,
     readonly I18n:I18nService,
@@ -185,9 +190,9 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     this.resource.isNewWidget = false;
 
     // Set initial selection if split view open
-    if (this.state.includes(`${this.state.current.data.baseRoute}.details`)) {
-      const wpId = this.state.params.workPackageId;
-      this.wpViewSelectionService.initializeSelection([wpId]);
+    const detailsMatch = window.location.pathname.match(/\/details\/(\d+)/);
+    if (detailsMatch) {
+      this.wpViewSelectionService.initializeSelection([detailsMatch[1]]);
     }
 
     // If this query space changes its focused or selected
@@ -488,20 +493,27 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   openFullViewOnDoubleClick(event:{ workPackageId:string, double:boolean }) {
     if (event.double) {
+      const routingId = resolveRoutingId(this.states, event.workPackageId);
       const projectIdentifier = this.currentProject.identifier;
-      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, event.workPackageId) + window.location.search;
+      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, routingId) + window.location.search;
       Turbo.visit(link, { action: 'advance' });
     }
   }
 
   openStateLink(event:{ workPackageId:string; requestedState:string }) {
-    const params = { workPackageId: event.workPackageId };
-
+    const routingId = resolveRoutingId(this.states, event.workPackageId);
     if (event.requestedState === 'split') {
-      this.keepTab.goCurrentDetailsState(params);
+      this.goToSplitView(routingId);
     } else {
-      this.keepTab.goCurrentShowState(params.workPackageId);
+      this.keepTab.goCurrentShowState(routingId);
     }
+  }
+
+  private goToSplitView(workPackageId:string):void {
+    const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, this.board.id!, workPackageId);
+    const search = window.location.search;
+    const link = search ? `${base}${search}` : base;
+    Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
   }
 
   private schema(workPackage:WorkPackageResource) {

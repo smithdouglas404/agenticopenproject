@@ -51,6 +51,14 @@ FactoryBot.define do
     sequence(:name) { |n| "My Project No. #{n}" }
     sequence(:identifier) { |n| "myproject_no_#{n}" }
 
+    # Use this trait for specs that exercise semantic-mode behaviour.
+    # Produces a deterministic uppercase identifier that satisfies
+    # Projects::Identifier's semantic format constraints
+    # (\A[A-Z][A-Z0-9_]*\z, max 10 chars).
+    trait :semantic do
+      sequence(:identifier) { |n| "PROJ#{n}".first(Projects::Identifier::SEMANTIC_IDENTIFIER_MAX_LENGTH) }
+    end
+
     callback(:after_build) do |_project, evaluator|
       is_build_strategy = evaluator.instance_eval { @build_strategy.is_a? FactoryBot::Strategy::Build }
       uses_member_association = evaluator.member_with_permissions.present? || evaluator.member_with_roles.present?
@@ -82,6 +90,10 @@ FactoryBot.define do
 
     factory :public_project do
       public { true } # Remark: public defaults to true
+    end
+
+    factory :private_project do
+      public { false }
     end
 
     factory :template_project do

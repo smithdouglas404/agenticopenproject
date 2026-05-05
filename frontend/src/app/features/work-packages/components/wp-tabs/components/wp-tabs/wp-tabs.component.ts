@@ -72,13 +72,13 @@ export class WpTabsComponent implements OnInit {
 
         return ({
           ...tab,
-          path: this.pathHelper.genericWorkPackagePath(this.currentProject.identifier, this.workPackage.id!, tab.id),
+          path: this.pathHelper.genericWorkPackagePath(this.currentProject.identifier, this.workPackage.displayId, tab.id),
         });
       });
   }
 
   public switchToFullscreen():void {
-    this.keepTab.goCurrentShowState(this.workPackage.id!);
+    this.keepTab.goCurrentShowState(this.workPackage.displayId);
   }
 
   public close():void {

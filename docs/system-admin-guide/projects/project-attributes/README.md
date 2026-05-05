@@ -8,12 +8,12 @@ keywords: project attributes, create, project settings, attribute help text, hel
 
 # Project attributes
 
-Project attributes are custom fields shown on the [Project home](../../../user-guide/project-home) page. They allow you to communicate key information relevant to a project.
+Project attributes are custom fields shown on the [Project home](../../../user-guide/projects/project-home/) page. They allow you to communicate key information relevant to a project.
 
 > [!NOTE]
 > Prior to version 14.0, these were called "project custom fields" and described under the [Custom fields](../../custom-fields/custom-fields-projects/) page. Starting with 14.0, they are referred to as *project attributes*.
 
-This page describes how instance administrators can create, order, and group project attributes, and assign them to projects. For instructions on editing project attribute values within a project, see the [Project home](../../../user-guide/project-home) page.
+This page describes how instance administrators can create, order, and group project attributes, and assign them to projects. For instructions on editing project attribute values within a project, see the [Project home](../../../user-guide/projects/project-home/) page.
 
 ## View project attributes
 
@@ -82,11 +82,13 @@ This is an example of new project attribute with a format *List*.
 
 ![Create a new attribute form in OpenProject administration](open_project_system_guide_project_attributes_new_attribute.png)
 
-- **Name**: This is the name that will be visible in the [Project home](../../../user-guide/project-home/) page, if the custom field is activated on that project.
+- **Name**: This is the name that will be visible in the [Project home](../../../user-guide/projects/project-home/) page, if the custom field is activated on that project.
 
 - **Section:** If there are sections, you can pick where this new project attribute should appear. [Learn about sections](#sections) for more information.
 
 - **Allow multi-select**: Allows the user to assign multiple values to this custom field.
+
+- **Add a comment text field**: Allows the user to add a comment related to the project attribute when selecting the value in the project overview.
 
 - **Possible values**: Add, define, arrange or remove possible values for this project attribute.
 
@@ -146,7 +148,7 @@ This numeric value is required and can be used in calculations — for example, 
 
 [feature: calculated_values ]
 
-**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., Benefit or Effort in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
+**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., Benefit or Effort in the example below) is changed. This allows teams to calculate project scores and prioritize consistently across the portfolio.
 
 To set up a project attribute of the **Calculated value** type, follow the same procedure as when adding a standard project attribute and select the *Calculated value* option. Define the name, section it will appear in and the calculation formula. 
 
@@ -175,11 +177,11 @@ You can also use the drag handles to the left of each project attribute to drag 
 
 Under **Administration settings** → **Projects** → **Project attributes** select the *More* menu and select *Edit* or simply clicking on the name of the project attribute. This will open a detailed view of the project attribute you selected. 
 
-The *Details* tab will allow you to edit the name, section and visibility. 
+The *Details* tab will allow you to edit the name, section and visibility, and enable a comment text field.
 
 ![OpenProject project attribute details editing](open_project_system_admin_guide_project_attributes_details.png)
 
-The *Enabled in projects* tab will show a list of all the projects this project attributes was activated in. 
+The *Projects* tab will show a list of all the projects this project attributes was activated in. 
 
 ![Project attributes enabled in projects list in OpenProject administration](open_project_system_admin_guide_project_attributes_enabled_in_projects.png)
 
@@ -197,7 +199,7 @@ To add this project attribute to a specific project click the **+Add projects** 
 
 ## Define project attribute help text
 
-To define field caption and help text click on a project attribute and navigate to **Attribute help text** tab. Here you can define the following:
+To define field caption and help text click on a project attribute and navigate to **Help text** tab. Here you can define the following:
 
 - **Caption** - a short text that will be displayed as project attribute caption to provide context.
 - **Help text** - a longer text that will be shown when a user hovers over a question mark next to the project attribute name. Here you can provide more detailed explanation. This is a required field.
@@ -209,4 +211,4 @@ To define field caption and help text click on a project attribute and navigate 
 
 
 
-![Project attribute detailed view, showing *Attribute help texts* tab in OpenProject administration](open_project_system_admin_guide_project_attributes_attribute_text.png)
+![Project attribute detailed view, showing *Help text* tab in OpenProject administration](open_project_system_admin_guide_project_attributes_attribute_text.png)

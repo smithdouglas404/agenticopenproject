@@ -47,15 +47,17 @@ module OpenProject::Meeting
                                   presentation generate_pdf_dialog history],
                      "meetings/menus": %i[show],
                      work_package_meetings_tab: %i[index count],
-                     recurring_meetings: %i[index show new create download_ics]
+                     recurring_meetings: %i[index show new create download_ics],
+                     meeting_templates: %i[index]
                    },
                    permissible_on: :project
         permission :create_meetings,
                    {
-                     meetings: %i[new create copy new_dialog fetch_timezone],
+                     meetings: %i[new create copy new_dialog fetch_timezone fetch_templates],
                      recurring_meetings: %i[new create copy init template_completed],
                      "recurring_meetings/schedule": %i[update_text],
-                     "meetings/menus": %i[show]
+                     "meetings/menus": %i[show],
+                     meeting_templates: %i[new create new_dialog]
                    },
                    dependencies: :view_meetings,
                    permissible_on: :project,
@@ -63,7 +65,7 @@ module OpenProject::Meeting
                    contract_actions: { meetings: %i[create] }
         permission :edit_meetings,
                    {
-                     meetings: %i[edit cancel_edit update update_title change_state toggle_notifications_dialog
+                     meetings: %i[edit cancel_edit update update_title change_state change_sharing toggle_notifications_dialog
                                   details_dialog update_details toggle_notifications exit_draft_mode_dialog exit_draft_mode],
                      recurring_meetings: %i[edit cancel_edit update update_title details_dialog update_details
                                             notify end_series end_series_dialog],
@@ -182,6 +184,7 @@ module OpenProject::Meeting
 
     add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Meetings::MeetingsAPI
+      mount ::API::V3::RecurringMeetings::RecurringMeetingsAPI
     end
 
     config.to_prepare do
@@ -216,6 +219,62 @@ module OpenProject::Meeting
 
     add_api_path :attachments_by_meeting do |id|
       "#{meeting(id)}/attachments"
+    end
+
+    add_api_path :meeting_schema do
+      "#{root}/meetings/schema"
+    end
+
+    add_api_path :create_meeting_form do
+      "#{root}/meetings/form"
+    end
+
+    add_api_path :meeting_form do |id|
+      "#{root}/meetings/#{id}/form"
+    end
+
+    add_api_path :meeting_agenda_items do |meeting_id|
+      "#{meeting(meeting_id)}/agenda_items"
+    end
+
+    add_api_path :meeting_agenda_item do |meeting_id, id|
+      "#{meeting(meeting_id)}/agenda_items/#{id}"
+    end
+
+    add_api_path :meeting_sections do |meeting_id|
+      "#{meeting(meeting_id)}/sections"
+    end
+
+    add_api_path :meeting_section do |meeting_id, id|
+      "#{meeting(meeting_id)}/sections/#{id}"
+    end
+
+    add_api_path :recurring_meetings do
+      "#{root}/recurring_meetings"
+    end
+
+    add_api_path :recurring_meeting do |id|
+      "#{root}/recurring_meetings/#{id}"
+    end
+
+    add_api_path :recurring_meeting_occurrences_upcoming do |id|
+      "#{recurring_meeting(id)}/occurrences/upcoming"
+    end
+
+    add_api_path :recurring_meeting_occurrences_past do |id|
+      "#{recurring_meeting(id)}/occurrences/past"
+    end
+
+    add_api_path :recurring_meeting_occurrences_cancelled do |id|
+      "#{recurring_meeting(id)}/occurrences/cancelled"
+    end
+
+    add_api_path :recurring_meeting_occurrences_open do |id|
+      "#{recurring_meeting(id)}/occurrences/open"
+    end
+
+    add_api_path :recurring_meeting_occurrence do |id, start_time|
+      "#{recurring_meeting(id)}/occurrences/#{start_time}"
     end
   end
 end

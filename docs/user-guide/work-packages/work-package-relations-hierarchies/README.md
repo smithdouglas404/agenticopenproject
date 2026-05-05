@@ -27,7 +27,7 @@ Work package relations indicate that work packages address a similar topic or cr
 
 1. Select a work package, click on **Relations** to open the *Relations* tab and click the **+ Relation**  button.
 2. Select the type of relationship from the dropdown menu.
-3. Enter the ID or name of the work package, to which the relation should be created. The autocomplete will suggest the work package to be added.
+3. Enter the ID or name of the work package, to which the relation should be created. You can also use a work package type and status for finding the correct work package. The autocomplete will suggest the work package to be added.
 4. Enter a description of the relation. It will be visible for both of the related work packages.
 5. Press the Enter key and click the **Save** button.
 

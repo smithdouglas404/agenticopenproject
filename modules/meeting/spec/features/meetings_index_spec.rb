@@ -32,6 +32,12 @@ require "spec_helper"
 require_relative "../support/pages/meetings/index"
 
 RSpec.describe "Meetings", "Index", :js do
+  shared_let(:business_day_at_noon) { Time.zone.local(2025, 1, 8, 12, 0, 0) }
+
+  after do
+    travel_back
+  end
+
   # The order the Projects are created in is important. By naming `project` alphanumerically
   # after `other_project`, we can ensure that subsequent specs that assert sorting is
   # correct for the right reasons (sorting by Project name and not id)
@@ -55,14 +61,14 @@ RSpec.describe "Meetings", "Index", :js do
            :author_participates,
            project:,
            title: "Awesome meeting today!",
-           start_time: Time.current)
+           start_time: business_day_at_noon - 5.minutes)
   end
   shared_let(:tomorrows_meeting) do
     create(:meeting,
            :author_participates,
            project:,
            title: "Awesome meeting tomorrow!",
-           start_time: 1.day.from_now,
+           start_time: business_day_at_noon + 1.day,
            duration: 2.0,
            location: "no-protocol.com")
   end
@@ -71,7 +77,7 @@ RSpec.describe "Meetings", "Index", :js do
            :author_participates,
            project:,
            title: "Boring meeting without a location!",
-           start_time: 1.day.from_now,
+           start_time: business_day_at_noon + 1.day + 5.minutes,
            location: "")
   end
   shared_let(:meeting_with_malicious_location) do
@@ -79,7 +85,7 @@ RSpec.describe "Meetings", "Index", :js do
            :author_participates,
            project:,
            title: "Sneaky meeting!",
-           start_time: 1.day.from_now,
+           start_time: business_day_at_noon + 1.day + 10.minutes,
            location: "<script>alert('Description');</script>")
   end
   shared_let(:yesterdays_meeting) do
@@ -87,7 +93,7 @@ RSpec.describe "Meetings", "Index", :js do
            :author_participates,
            project:,
            title: "Awesome meeting yesterday!",
-           start_time: 1.day.ago)
+           start_time: business_day_at_noon - 1.day)
   end
 
   shared_let(:other_project_meeting) do
@@ -95,7 +101,7 @@ RSpec.describe "Meetings", "Index", :js do
            :author_participates,
            project: other_project,
            title: "Awesome other project meeting!",
-           start_time: 2.days.from_now,
+           start_time: business_day_at_noon + 2.days,
            duration: 2.0,
            location: "not-a-url")
   end
@@ -104,7 +110,7 @@ RSpec.describe "Meetings", "Index", :js do
            :author_participates,
            project:,
            title: "Awesome ongoing meeting!",
-           start_time: 30.minutes.ago)
+           start_time: business_day_at_noon - 30.minutes)
   end
 
   def setup_meeting_involvement
@@ -120,6 +126,7 @@ RSpec.describe "Meetings", "Index", :js do
   end
 
   before do
+    travel_to(business_day_at_noon)
     login_as user
   end
 

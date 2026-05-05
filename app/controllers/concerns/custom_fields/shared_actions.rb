@@ -49,6 +49,14 @@ module CustomFields
         end
       end
 
+      def list_item_path(custom_field, params = {})
+        if custom_field.type == "ProjectCustomField"
+          list_items_admin_settings_project_custom_field_path(**params)
+        else
+          list_items_custom_field_path(**params)
+        end
+      end
+
       def create # rubocop:disable Metrics/AbcSize
         call = ::CustomFields::CreateService
           .new(user: current_user)
@@ -66,10 +74,14 @@ module CustomFields
       end
 
       def update
-        perform_update(get_custom_field_params)
+        if custom_options_attributes
+          perform_update(get_custom_field_params, tab: :list_items)
+        else
+          perform_update(get_custom_field_params)
+        end
       end
 
-      def perform_update(custom_field_params)
+      def perform_update(custom_field_params, tab: :edit)
         call = ::CustomFields::UpdateService
           .new(user: current_user, model: @custom_field)
           .call(custom_field_params)
@@ -77,9 +89,11 @@ module CustomFields
         if call.success?
           flash[:notice] = t(:notice_successful_update)
           call_hook(:controller_custom_fields_edit_after_save, custom_field: @custom_field)
-          redirect_back_or_default(edit_path(@custom_field, id: @custom_field.id))
+
+          redirect_to(update_path(tab))
         else
-          render action: :edit, status: :unprocessable_entity
+          flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+          render tab == :list_items ? :list_items : :edit, status: :unprocessable_entity
         end
       end
 
@@ -89,10 +103,10 @@ module CustomFields
           .sort_by(&:value)
           .each_with_index
           .map do |custom_option, index|
-          { id: custom_option.id, position: index + 1 }
-        end
+            { id: custom_option.id, position: index + 1 }
+          end
 
-        perform_update(custom_options_attributes: reordered_options)
+        perform_update({ custom_options_attributes: reordered_options }, tab: :list_items)
       end
 
       def destroy
@@ -115,7 +129,7 @@ module CustomFields
           flash[:error] = @custom_option.errors.full_messages
         end
 
-        redirect_to edit_path(@custom_field, id: @custom_field.id), status: :see_other
+        redirect_to list_item_path(@custom_field, id: @custom_field.id), status: :see_other
       end
 
       def new_custom_field
@@ -139,12 +153,28 @@ module CustomFields
       end
 
       def prepare_custom_option_position
-        return unless params[:custom_field][:custom_options_attributes]
+        return unless custom_options_attributes
 
         index = 0
 
-        params[:custom_field][:custom_options_attributes].each_value do |attributes|
+        custom_options_attributes.each_value do |attributes|
           attributes[:position] = (index = index + 1)
+        end
+      end
+
+      def custom_options_attributes
+        return unless params[:custom_field]
+
+        params[:custom_field][:custom_options_attributes]
+      end
+
+      private
+
+      def update_path(tab)
+        if tab == :list_items
+          list_item_path(@custom_field, id: @custom_field.id)
+        else
+          edit_path(@custom_field, id: @custom_field.id)
         end
       end
     end

@@ -160,6 +160,20 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       let(:value) { work_package.id }
     end
 
+    describe "displayId" do
+      context "when semantic work package ids are active",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-123", project: workspace) }
+
+        it { is_expected.to be_json_eql("PROJ-123".to_json).at_path("displayId") }
+      end
+
+      context "when semantic work package ids are not active" do
+        it { is_expected.to be_json_eql(work_package.id.to_s.to_json).at_path("displayId") }
+      end
+    end
+
     it_behaves_like "API V3 formattable", "description" do
       let(:format) { "markdown" }
       let(:raw) { work_package.description }
@@ -1107,6 +1121,12 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
               .to eq(intermediate.subject)
             expect(work_package).to have_received(:visible_ancestors)
           end
+
+          it "exposes displayId on each ancestor link" do
+            links = parse_json(subject)["_links"]["ancestors"]
+            expect(links[0]["displayId"]).to eq(root.display_id.to_s)
+            expect(links[1]["displayId"]).to eq(intermediate.display_id.to_s)
+          end
         end
 
         context "when ancestors are invisible" do
@@ -1145,6 +1165,10 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
           it do
             expect(parse_json(subject)["_links"]["children"][0]["title"]).to eq(child.subject)
           end
+
+          it "exposes displayId on each child link" do
+            expect(parse_json(subject)["_links"]["children"][0]["displayId"]).to eq(child.display_id.to_s)
+          end
         end
       end
     end
@@ -1165,14 +1189,27 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       end
     end
 
-      describe "move" do
+    describe "move" do
+      it_behaves_like "has a titled action link" do
+        let(:link) { "move" }
+        let(:href) { "/work_packages/#{work_package.id}/move/new" }
+        let(:permission) { :move_work_packages }
+        let(:title) { "Move work package '#{work_package.subject}'" }
+      end
+
+      context "in semantic mode",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
+
         it_behaves_like "has a titled action link" do
           let(:link) { "move" }
-          let(:href) { "/work_packages/#{work_package.id}/move/new" }
+          let(:href) { "/work_packages/#{work_package.display_id}/move/new" }
           let(:permission) { :move_work_packages }
           let(:title) { "Move work package '#{work_package.subject}'" }
         end
       end
+    end
 
     describe "copy" do
       it_behaves_like "has a titled action link" do
@@ -1180,6 +1217,19 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         let(:href) { work_package_path(work_package, "copy") }
         let(:permission) { :add_work_packages }
         let(:title) { "Copy work package '#{work_package.subject}'" }
+      end
+
+      context "in semantic mode",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
+
+        it_behaves_like "has a titled action link" do
+          let(:link) { "copy" }
+          let(:href) { "/work_packages/#{work_package.display_id}/copy" }
+          let(:permission) { :add_work_packages }
+          let(:title) { "Copy work package '#{work_package.subject}'" }
+        end
       end
     end
 
@@ -1208,6 +1258,37 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         it_behaves_like "has no link" do
           let(:link) { "atom" }
         end
+      end
+    end
+
+    # The HAL contract surface stays numeric in semantic mode so clients
+    # can correlate work packages by comparing href strings (one
+    # resource's `self` === another's `parent`, etc.). Auxiliary
+    # endpoints (`pdf`, `generate_pdf`, `atom`) follow the same convention.
+    context "with semantic identifier mode active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic", feeds_enabled?: true } do
+      let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
+      let(:permissions) { all_permissions + [:export_work_packages] }
+
+      it "self href stays numeric" do
+        expect(subject).to be_json_eql("/api/v3/work_packages/#{work_package.id}".to_json)
+                             .at_path("_links/self/href")
+      end
+
+      it "pdf href stays numeric" do
+        expect(subject).to be_json_eql("/work_packages/#{work_package.id}.pdf".to_json)
+                             .at_path("_links/pdf/href")
+      end
+
+      it "generate_pdf href stays numeric" do
+        expect(subject).to be_json_eql("/work_packages/#{work_package.id}/generate_pdf_dialog".to_json)
+                             .at_path("_links/generate_pdf/href")
+      end
+
+      it "atom href stays numeric" do
+        expect(subject).to be_json_eql("/work_packages/#{work_package.id}.atom".to_json)
+                             .at_path("_links/atom/href")
       end
     end
 
@@ -1708,6 +1789,21 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         expect do
           work_package.updated_at = 20.seconds.from_now
         end.to change(representer, :json_cache_key)
+      end
+
+      it "changes when the work package identifier mode is toggled" do
+        # Without this, JSON rendered while in classic mode keeps serving
+        # numeric `displayId` values after an admin switches to semantic mode,
+        # because nothing else in the cache key reflects the setting flip.
+        with_flags(semantic_work_package_ids: true)
+
+        with_settings(work_packages_identifier: "classic")
+        classic_key = representer.json_cache_key
+
+        with_settings(work_packages_identifier: "semantic")
+        semantic_key = representer.json_cache_key
+
+        expect(semantic_key).not_to eq(classic_key)
       end
 
       it "factors in the eager loaded cache_checksum" do

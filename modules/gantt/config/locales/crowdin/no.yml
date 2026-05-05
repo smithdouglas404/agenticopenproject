@@ -1,3 +1,4 @@
 #English strings go here
-"no":
-  project_module_gantt: "Gantt-diagrammer"
+---
+'no':
+  project_module_gantt: Gantt-diagrammer

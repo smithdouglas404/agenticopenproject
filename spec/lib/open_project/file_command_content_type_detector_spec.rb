@@ -97,12 +97,4 @@ RSpec.describe OpenProject::FileCommandContentTypeDetector do
 
     expect(Open3).to have_received(:capture2).with("file", "-b", "--mime", "--", "--help")
   end
-
-  it "sanitizes the filename to prevent command injection" do
-    allow(Open3).to receive(:capture2)
-
-    described_class.new("'; rm -rf /\"").detect
-
-    expect(Open3).to have_received(:capture2).with("file", "-b", "--mime", "--", "\\'\\;\\ rm\\ -rf\\ /\\\"")
-  end
 end

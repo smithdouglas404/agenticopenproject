@@ -29,6 +29,7 @@
 #++
 
 class WorkPackage < ApplicationRecord
+  include WorkPackage::SemanticIdentifier
   include WorkPackage::Validations
   include WorkPackage::SchedulingRules
   include WorkPackage::StatusTransitions
@@ -318,11 +319,7 @@ class WorkPackage < ApplicationRecord
   end
 
   def hide_attachments?
-    if project&.deactivate_work_package_attachments.nil?
-      !Setting.show_work_package_attachments
-    else
-      project&.deactivate_work_package_attachments?
-    end
+    project&.deactivate_work_package_attachments?
   end
 
   def estimated_hours=(hours)

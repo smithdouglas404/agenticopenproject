@@ -158,10 +158,10 @@ class ApplicationMailer < ActionMailer::Base
     super(headers.merge(to: to.mail), &block)
   end
 
-  def send_localized_mail(user)
+  def send_localized_mail(user, delivery_method_options: {})
     with_locale_for(user) do
       subject = yield
-      mail to: user, subject:
+      mail to: user, subject:, delivery_method_options:
     end
   end
 

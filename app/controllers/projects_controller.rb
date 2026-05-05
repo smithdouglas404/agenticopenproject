@@ -345,13 +345,4 @@ class ProjectsController < ApplicationController
   def login_back_url_params
     params.permit(:parent_id, :template_id, :step, :next_section)
   end
-
-  def portfolio_management_feature_required? = params[:workspace_type].in?(%w[portfolio program])
-
-  def portfolio_management_feature_missing?
-    portfolio_management_feature_required? && !EnterpriseToken.allows_to?(:portfolio_management)
-  end
-
-  helper_method :supported_export_formats,
-                :portfolio_management_feature_missing?
 end

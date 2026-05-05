@@ -29,8 +29,6 @@
 #++
 
 module Exports::PDF::Components::Gantt
-  class InvalidDateRangeError < StandardError; end
-
   class GanttBuilder
     include Redmine::I18n
 

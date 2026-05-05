@@ -40,6 +40,7 @@ module CustomFields
     attribute :editable
     attribute :field_format
     attribute :formula
+    attribute :has_comment
     attribute :is_filter
     attribute :is_for_all
     attribute :is_required do

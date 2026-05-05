@@ -34,8 +34,7 @@ require_relative "../support/board_page"
 
 RSpec.describe "Status action board",
                :js,
-               :selenium,
-               with_ee: %i[board_view] do
+               :selenium do
   let(:user) do
     create(:user,
            member_with_roles: { project => role })
@@ -115,7 +114,7 @@ RSpec.describe "Status action board",
     board_index.visit!
 
     # Create new board
-    board_page = board_index.create_board action: "Status"
+    board_page = board_index.create_board action: "Kanban"
 
     # expect lists of default status
     board_page.expect_list "Open"

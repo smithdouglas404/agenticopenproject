@@ -30,7 +30,7 @@ export function addTurboEventListeners() {
     // Turbo Drive does not send a referrer like turbolinks used to, so let's simulate it here
     const headers = event.detail.fetchOptions.headers as Record<string, string>;
     headers['Turbo-Referrer'] = window.location.href;
-    headers['X-Turbo-Nonce'] = document.getElementsByName('csp-nonce')[0]?.getAttribute('content') || '';
+    headers['X-Turbo-Nonce'] = document.getElementsByName('csp-nonce')[0]?.getAttribute('content') ?? '';
   });
 
   // Turbo adds nonces to all scripts, even though we want to explicitly pass nonces
@@ -45,11 +45,13 @@ export function addTurboEventListeners() {
   document.addEventListener('turbo:before-stream-render', (event) => {
     const fallbackToDefaultActions = event.detail.render;
 
-    event.detail.render = (streamElement) => {
+    event.detail.render = async (streamElement) => {
       const content = streamElement.templateElement.content;
       TurboHelpers.scrubScriptElements(content);
 
-      return fallbackToDefaultActions(streamElement);
+      const result = await fallbackToDefaultActions(streamElement);
+      document.dispatchEvent(new CustomEvent('op:turbo-stream-rendered'));
+      return result;
     };
   });
 

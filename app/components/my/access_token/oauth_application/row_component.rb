@@ -52,7 +52,7 @@ module My
           end
         end
 
-        def last_used_at
+        def last_refreshed_at
           return "—" if oauth_application_tokens.empty?
 
           helpers.format_time(oauth_application_tokens.max_by(&:created_at).created_at)

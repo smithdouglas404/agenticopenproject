@@ -91,7 +91,7 @@ RSpec.describe(
                            edit_project_attributes
                            select_project_custom_fields])
   end
-  shared_let(:new_project_role) { create(:project_role, permissions: %i[]) }
+  shared_let(:new_project_role) { create(:project_creator_role) }
 
   before do
     allow(Setting)

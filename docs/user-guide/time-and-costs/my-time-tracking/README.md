@@ -115,7 +115,7 @@ To log time on the *My time tracking* page, click the **+ Log time** button. A m
 >  - 1:30
 
 
-- **Work package** – Type to search for a work package or select from the list of recently used ones.
+- **Work package** – Type to search for a work package or select from the list of recently used ones. You can find the correct work package by using a work package name, ID, type and status.
 
 - **Activity** – Choose an activity that is active for the project the selected work package belongs to.
 

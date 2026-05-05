@@ -35,11 +35,43 @@ import { renderStreamMessage } from '@hotwired/turbo';
 export default class extends Controller {
   static values = {
     url: String,
+    dialogUrl: String,
   };
 
   declare urlValue:string;
+  declare dialogUrlValue:string;
+  declare hasDialogUrlValue:boolean;
 
-  async request() {
+  private boundFormDataHandler:((e:FormDataEvent) => void) | null = null;
+
+  connect() {
+    const form = this.element.closest('form');
+    if (form) {
+      this.boundFormDataHandler = (e:FormDataEvent) => this.appendStableKeySystemArguments(e);
+      form.addEventListener('formdata', this.boundFormDataHandler);
+    }
+  }
+
+  disconnect() {
+    const form = this.element.closest('form');
+    if (form && this.boundFormDataHandler) {
+      form.removeEventListener('formdata', this.boundFormDataHandler);
+      this.boundFormDataHandler = null;
+    }
+  }
+
+  async request(e:Event):Promise<void> {
+    // Don't trigger edit mode if the user is selecting text or just finished a selection
+    if (window.getSelection()?.toString()) {
+      return;
+    }
+
+    // Don't trigger edit mode if clicking on a link
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'a' || target.closest('a')) {
+      return;
+    }
+
     const response = await fetch(this.urlValue, {
       method: 'GET',
       headers: { Accept: 'text/vnd.turbo-stream.html' },
@@ -51,5 +83,59 @@ export default class extends Controller {
     } else {
       throw new Error(response.statusText);
     }
+  }
+
+  openDialog(event:Event) {
+    // Don't trigger edit mode if the user is selecting text or just finished a selection
+    if (window.getSelection()?.toString()) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+
+    // Check if the event is on an interactive element that should be ignored
+    if (this.isInteractiveElement(target)) {
+      // Don't handle this event, let the child element handle it
+      return;
+    }
+
+    // Prevent default and dispatch custom event for async-dialog to handle
+    event.preventDefault();
+    this.dispatch('open-dialog', { detail: { url: this.dialogUrlValue } });
+  }
+
+  submitForm() {
+    const form = this.element.closest('form');
+    if (form) {
+      form.requestSubmit();
+    }
+  }
+
+  private appendStableKeySystemArguments(e:FormDataEvent):void {
+    const result:Record<string, unknown> = {};
+    document.querySelectorAll<HTMLElement>('[data-inplace-edit-stable-key][data-inplace-edit-system-arguments]').forEach((el) => {
+      const key = el.dataset.inplaceEditStableKey;
+      const raw = el.dataset.inplaceEditSystemArguments;
+      if (key && raw) {
+        try {
+          result[key] = JSON.parse(raw);
+        } catch {
+          // ignore malformed JSON
+        }
+      }
+    });
+    e.formData.set('stable_key_system_arguments', JSON.stringify(result));
+  }
+
+  private isInteractiveElement(element:HTMLElement):boolean {
+    // Check if the element is or is inside an interactive element.
+    let current = element;
+    while (current && current !== this.element) {
+      if (current.matches('button, a, dialog')) {
+        return true;
+      }
+      current = current.parentElement!;
+    }
+    return false;
   }
 }

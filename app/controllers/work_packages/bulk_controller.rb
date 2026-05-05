@@ -38,6 +38,18 @@ class WorkPackages::BulkController < ApplicationController
   include QueriesHelper
 
   include WorkPackages::BulkErrorMessage
+  include OpTurbo::ComponentStream
+
+  def delete_dialog
+    component =
+      if @work_packages.one?
+        WorkPackages::DeleteDialogComponent.new(work_package: @work_packages.first, back_url: params[:back_url])
+      else
+        WorkPackages::BulkDeleteDialogComponent.new(work_packages: @work_packages, back_url: params[:back_url])
+      end
+
+    respond_with_dialog component
+  end
 
   def edit
     setup_edit
@@ -70,20 +82,21 @@ class WorkPackages::BulkController < ApplicationController
     end
   end
 
-  def destroy
+  def destroy # rubocop:disable Metrics/AbcSize
     if WorkPackage.cleanup_associated_before_destructing_if_required(@work_packages, current_user, params[:to_do])
       destroy_work_packages(@work_packages)
 
       respond_to do |format|
         format.html do
-          redirect_to (project_work_packages_path(@work_packages.first.project))
+          redirect_back_or_default(project_work_packages_path(@work_packages.first.project),
+                                   status: :see_other)
         end
         format.json do
           head :ok
         end
       end
     else
-      redirect_to(action: :reassign, ids: @work_packages.map(&:id))
+      redirect_to(action: :reassign, ids: @work_packages.map(&:id), back_url: params[:back_url])
     end
   end
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -41,12 +42,14 @@ module Meetings
       end
     end
 
-    def set_default_attributes(_params)
+    def set_default_attributes(_params) # rubocop:disable Metrics/AbcSize
       model.change_by_system do
         model.author = user
         model.duration ||= 1
         model.state = "draft" if !model.recurring? || model.template?
         model.notify = false
+        model.sharing = "none" if model.onetime_template?
+        model.recurrence_start_time ||= model.start_time if model.recurring? && !model.template?
       end
     end
 
