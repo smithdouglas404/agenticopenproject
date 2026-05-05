@@ -1147,6 +1147,8 @@ cs:
       no_results_title_text: V současné době neexistují žádné zprávy k zobrazení.
       no_results_content_text: Přidat příspěvek
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -4371,6 +4373,7 @@ cs:
   label_role_new: Nová role
   label_role_grantable: Udělitelná role
   label_role_plural: Role
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Přiřadit roli novým členům
   label_scm: SCM
   label_scroll_left: Rolovat vlevo
@@ -5319,6 +5322,9 @@ cs:
   setting_mail_handler_body_delimiter_regex: Zkrátit e-maily odpovídající tomuto regexu
   setting_mail_handler_ignore_filenames: Ignorované přílohy e-mailů
   setting_new_project_user_role_id: Role přiřazená uživateli bez práv administrátora, který projekt vytvořil
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Text notifikace
   setting_password_active_rules: Password requirements

@@ -1115,6 +1115,8 @@ bg:
       no_results_title_text: Няма новини за докладване.
       no_results_content_text: Добави новина
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -4243,6 +4245,7 @@ bg:
   label_role_new: Нова роля
   label_role_grantable: Grantable role
   label_role_plural: Роли
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Assign role to new members
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -5177,6 +5180,9 @@ bg:
   setting_mail_handler_body_delimiter_regex: Съкрати мейл адресите от една област
   setting_mail_handler_ignore_filenames: Ignored mail attachments
   setting_new_project_user_role_id: Role given to a non-admin user who creates a project
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements

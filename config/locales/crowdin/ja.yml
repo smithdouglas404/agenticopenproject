@@ -1099,6 +1099,8 @@ ja:
       no_results_title_text: 現在、報告するニュースはありません。
       no_results_content_text: ニュース項目を追加
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -4186,6 +4188,7 @@ ja:
   label_role_new: 新しいロール
   label_role_grantable: 権限のある役割
   label_role_plural: ロール
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: 新しいメンバーに役割を割り当てる
   label_scm: バージョン管理システム
   label_scroll_left: 左にスクロール
@@ -5113,6 +5116,9 @@ ja:
   setting_mail_handler_body_delimiter_regex: この正規表現に一致するメールを切り捨てる
   setting_mail_handler_ignore_filenames: 無視するメールの添付ファイル
   setting_new_project_user_role_id: システム管理者以外のプロジェクト作成者に設定するロール
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements

@@ -1121,6 +1121,8 @@ hu:
       no_results_title_text: Nincs megjeleníthető hír.
       no_results_content_text: Hír hozzáadása
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -2785,7 +2787,7 @@ hu:
   button_annotate: Jegyzetekkel ellát
   button_apply: Alkalmaz
   button_apply_changes: Változások alkalmazása
-  button_archive: Eltárolt
+  button_archive: Archivál
   button_back: Vissza
   button_cancel: Mégsem
   button_change: Változtat
@@ -4309,6 +4311,7 @@ hu:
   label_role_new: Új szerepkör
   label_role_grantable: Grantable role
   label_role_plural: Szerepkörök
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Szerep hozzárendelése az új tagokhoz
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -5271,6 +5274,9 @@ hu:
   setting_mail_handler_body_delimiter_regex: E-mailek csonkítása a megegyező kifejezéssel
   setting_mail_handler_ignore_filenames: Összes melléklet figyelmen kívül hagyva
   setting_new_project_user_role_id: Szerepkör a  nem admin felhasználónak, aki létrehoz egy projektet,
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements
