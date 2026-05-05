@@ -217,19 +217,6 @@ en:
           text: "[Placeholder] Embedded calendar"
 
     admin:
-      type_form:
-        custom_field: "Custom field"
-        inactive: "Inactive"
-        drag_to_activate: "Drag fields from here to activate them"
-        add_group: "Add attribute group"
-        add_table: "Add table of related work packages"
-        edit_query: "Edit query"
-        new_group: "New group"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
-        reset_to_defaults: "Reset to defaults"
-        drag_to_reorder: "Drag to reorder"
-
       working_days:
         calendar:
           empty_state_header: "Non-working days"
