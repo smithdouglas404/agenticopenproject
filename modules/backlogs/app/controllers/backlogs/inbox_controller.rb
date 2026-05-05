@@ -100,14 +100,14 @@ module Backlogs
 
     def replace_inbox_component_via_turbo_stream
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
-      backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
-                          BacklogBucket.for_project(@project)
-                        end
+      buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
+                  BacklogBucket.for_project(@project)
+                end
 
       replace_via_turbo_stream(
-        component: Backlogs::BacklogsComponent.new(
+        component: Backlogs::BacklogComponent.new(
           inbox_work_packages:,
-          backlog_buckets:,
+          buckets:,
           project: @project
         ),
         method: :morph

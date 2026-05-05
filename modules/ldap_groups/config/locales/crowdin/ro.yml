@@ -64,11 +64,11 @@ ro:
         confirmation: Dacă, continui, grupul sincronizat %{name} și toți utilizatorii %{users_count} sincronizați prin intermediul acestuia vor fi eliminați.
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        Acest modul vă permite să configurați o sincronizare între grupurile LDAP și OpenProject.
-        Depinde de grupurile LDAP trebuie să utilizeze setul de atribute <em>groupOfNames / memberOf</em> pentru a funcționa cu OpenProject.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        Grupurile sunt sincronizate din oră în oră prin intermediul unui job cron.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Vă rugăm să consultați documentația noastră pe această temă</a>.
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: Nu s-au găsit grupuri sincronizate.
       no_members: Acest grup nu are încă niciun membru sincronizat.
       plural: Grupuri LDAP sincronizate

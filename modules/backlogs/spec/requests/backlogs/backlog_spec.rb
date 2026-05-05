@@ -111,7 +111,7 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
         get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include(%(id="inbox_#{project.id}"))
+        expect(response.body).to include(%(id="inbox_project_#{project.id}"))
         expect(response.body).to include('data-generic-drag-and-drop-target="container mirrorContainer"')
       end
 

@@ -1099,6 +1099,8 @@ ms:
       no_results_title_text: Tiada berita untuk dipaparkan buat masa ini.
       no_results_content_text: Tambah item berita
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -1110,6 +1112,8 @@ ms:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Kekal log masuk selama %{num_days}
     sessions:
@@ -4195,6 +4199,7 @@ ms:
   label_role_plural: 'Peranan
 
     '
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Tetapkan peranan ke ahli baharu
   label_scm: SCM
   label_scroll_left: Skrol kiri
@@ -5126,6 +5131,9 @@ ms:
   setting_mail_handler_body_delimiter_regex: Memangkas e-mel yang hampir sama dengan regex ini
   setting_mail_handler_ignore_filenames: Lampiran mel yang diabaikan
   setting_new_project_user_role_id: Peranan yang diberikan kepada pengguna bukan pentadbir yang mencipta projek
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements

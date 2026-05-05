@@ -1114,6 +1114,8 @@ pt-PT:
       no_results_title_text: Atualmente, não existem notícias para comunicar.
       no_results_content_text: Adicione um item de notícias
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Atribua todas as permissões de %{module}
       section_uncheck_all_label: Anular a atribuição de todas as permissões de %{module}
@@ -1125,6 +1127,8 @@ pt-PT:
       matrix_check_uncheck_all_in_row_label_html: Alternar permissão <em>%{permission}</em> para todas as funções
       matrix_check_uncheck_all_in_col_label_html: Alternar todas as permissões %{module} para a função <em>%{role}</em>
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Manter a sessão iniciada durante %{num_days}
     sessions:
@@ -4243,6 +4247,7 @@ pt-PT:
   label_role_new: Nova função
   label_role_grantable: Função concedível
   label_role_plural: Papel
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Atribuir função aos novos membros
   label_scm: SCM
   label_scroll_left: Deslocar para a esquerda
@@ -5166,6 +5171,9 @@ pt-PT:
   setting_mail_handler_body_delimiter_regex: Truncar emails com correspondência a este regex
   setting_mail_handler_ignore_filenames: Anexos de e-mail ignorados
   setting_new_project_user_role_id: Função atribuída a um utilizador não-administrador que cria um projeto
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Enviar notificação ao autor ao criar um novo projeto
   setting_new_project_notification_text: Texto da notificação
   setting_password_active_rules: Password requirements

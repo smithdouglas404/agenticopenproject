@@ -50,7 +50,14 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if page_link_infos.empty?
+    if !user_connected?
+      box.with_row do
+        render(Wikis::OAuthLoginComponent.new(
+          provider,
+          return_url: work_package_url(@work_package, tab: :wikis)
+        ))
+      end
+    elsif page_link_infos.empty?
       box.with_row do
         if user_connected?
           render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
@@ -65,10 +72,10 @@ See COPYRIGHT and LICENSE files for more details.
           )
         end
       end
-    end
-
-    page_link_infos.each do |info|
-      box.with_row { render(Wikis::PageLinkComponent.new(info, actions: [:remove])) }
+    else
+      page_link_infos.each do |info|
+        box.with_row { render(Wikis::PageLinkComponent.new(info, actions: [:remove])) }
+      end
     end
   end
 %>

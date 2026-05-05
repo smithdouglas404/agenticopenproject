@@ -1101,6 +1101,8 @@ vi:
       no_results_title_text: Hiện không có tin tức báo cáo.
       no_results_content_text: Thêm một mục tin tức
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Gán tất cả các quyền %{module}
       section_uncheck_all_label: Bỏ gán tất cả quyền %{module}
@@ -1112,6 +1114,8 @@ vi:
       matrix_check_uncheck_all_in_row_label_html: Chuyển đổi quyền <em>%{permission}</em> cho tất cả các vai trò
       matrix_check_uncheck_all_in_col_label_html: Bật/tắt tất cả quyền truy cập của %{module} cho vai trò <em>%{role}</em>
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Duy trì đăng nhập cho %{num_days}
     sessions:
@@ -4185,6 +4189,7 @@ vi:
   label_role_new: Vai trò mới
   label_role_grantable: Vai trò có thể cấp
   label_role_plural: Vai trò
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Chỉ định vai trò cho các thành viên mới
   label_scm: SCM
   label_scroll_left: Cuộn sang trái
@@ -5126,6 +5131,9 @@ vi:
   setting_mail_handler_body_delimiter_regex: Xén các email phù hợp với biểu thức này
   setting_mail_handler_ignore_filenames: Tập tin đính kèm mail bị bỏ qua
   setting_new_project_user_role_id: Vai trò được cấp cho người dùng không phải quản trị viên tạo dự án
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Gửi thông báo cho tác giả khi tạo dự án mới
   setting_new_project_notification_text: Văn bản thông báo
   setting_password_active_rules: Password requirements

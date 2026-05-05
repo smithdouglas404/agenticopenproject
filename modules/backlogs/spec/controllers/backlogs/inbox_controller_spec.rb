@@ -80,9 +80,9 @@ RSpec.describe Backlogs::InboxController do
     end
 
     context "when service call succeeds" do
-      it "replaces the backlogs component and responds with turbo streams", :aggregate_failures do
+      it "replaces the backlog component and responds with turbo streams", :aggregate_failures do
         expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlogs-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{project.id}"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:work_package)).to eq(work_package)
       end
@@ -99,7 +99,7 @@ RSpec.describe Backlogs::InboxController do
 
     context "when all=1 with an inbox over the pagination threshold" do
       before do
-        stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+        stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
       end
 
       let!(:work_packages) { create_list(:work_package, 5, project:) }
@@ -113,7 +113,7 @@ RSpec.describe Backlogs::InboxController do
 
       it "replaces the inbox without a show-more row in the stream" do
         expect(response).to be_successful
-        expect(response.body).not_to include("inbox-more-row-#{project.id}")
+        expect(response.body).not_to include("inbox_project_#{project.id}_show_more")
       end
     end
 
@@ -124,7 +124,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-backlogs-component-#{project.id}"
+                                                  target: "backlogs-backlog-component-#{project.id}"
       end
     end
 
@@ -159,7 +159,7 @@ RSpec.describe Backlogs::InboxController do
       it "replaces both the inbox and target sprint components", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-backlogs-component-#{project.id}"
+                                              target: "backlogs-backlog-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
                                               target: "backlogs-sprint-component-#{sprint.id}"
 
@@ -175,7 +175,7 @@ RSpec.describe Backlogs::InboxController do
       it "replaces only the inbox component without a flash", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-backlogs-component-#{project.id}"
+                                              target: "backlogs-backlog-component-#{project.id}"
         expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
       end
 
@@ -205,7 +205,7 @@ RSpec.describe Backlogs::InboxController do
 
     context "when all=1 with an inbox over the pagination threshold" do
       before do
-        stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+        stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
       end
 
       let!(:work_packages) { create_list(:work_package, 5, project:) }
@@ -226,7 +226,7 @@ RSpec.describe Backlogs::InboxController do
 
       it "replaces the inbox without a show-more row in the stream" do
         expect(response).to be_successful
-        expect(response.body).not_to include("inbox-more-row-#{project.id}")
+        expect(response.body).not_to include("inbox_project_#{project.id}_show_more")
       end
     end
 
@@ -237,7 +237,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-backlogs-component-#{project.id}"
+                                                  target: "backlogs-backlog-component-#{project.id}"
       end
     end
 

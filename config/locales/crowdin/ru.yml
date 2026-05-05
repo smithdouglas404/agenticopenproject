@@ -1146,6 +1146,8 @@ ru:
       no_results_title_text: На данный момент новостей для отчета нет.
       no_results_content_text: Добавить новость
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Назначьте все разрешения %{module}
       section_uncheck_all_label: Отменить все разрешения %{module}
@@ -1157,6 +1159,8 @@ ru:
       matrix_check_uncheck_all_in_row_label_html: Переключить разрешение <em>%{permission}</em> для всех ролей
       matrix_check_uncheck_all_in_col_label_html: Переключить все разрешения %{module} для роли <em>%{role}</em>
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Оставаться в системе %{num_days}
     sessions:
@@ -4372,6 +4376,7 @@ ru:
   label_role_new: Новая роль
   label_role_grantable: Назначаемая роль
   label_role_plural: Роли
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Назначить роль для новых участников
   label_scm: SCM
   label_scroll_left: Прокрутить влево
@@ -5306,6 +5311,9 @@ ru:
   setting_mail_handler_body_delimiter_regex: Сообщение усекается по этому регулярному выражению
   setting_mail_handler_ignore_filenames: Игнорируемые вложения почты
   setting_new_project_user_role_id: Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Отправить уведомление автору при создании нового проекта
   setting_new_project_notification_text: Текст уведомления
   setting_password_active_rules: Password requirements

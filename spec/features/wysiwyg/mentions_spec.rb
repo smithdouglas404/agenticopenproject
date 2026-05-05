@@ -193,14 +193,20 @@ RSpec.describe "Wysiwyg work package mentions",
     # Test ## trigger
     activity_tab.type_comment("###{other_work_package.id}")
     page.find(".mention-list-item", text: other_work_package.subject, wait: 10).click
-    expect(page).to have_css("a.mention", text: "###{other_work_package.id}")
+    expect(page).to have_css(".op-macro-wp-quickinfo-widget")
+    expect(page).to have_css(
+      "opce-macro-wp-quickinfo[data-id='#{other_work_package.id}'][data-detailed='false']"
+    )
     activity_tab.submit_comment
     activity_tab.expect_journal_notes text: "NONE ##{other_work_package.id}: #{other_work_package.subject}"
 
     # Test ### trigger
     activity_tab.type_comment("####{other_work_package.id}")
     page.find(".mention-list-item", text: other_work_package.subject, wait: 10).click
-    expect(page).to have_css("a.mention", text: "####{other_work_package.id}")
+    expect(page).to have_css(".op-macro-wp-quickinfo-widget")
+    expect(page).to have_css(
+      "opce-macro-wp-quickinfo[data-id='#{other_work_package.id}'][data-detailed='true']"
+    )
     activity_tab.submit_comment
 
     activity_tab.expect_journal_notes text: "Some statusNONE ##{other_work_package.id}: #{other_work_package.subject}"

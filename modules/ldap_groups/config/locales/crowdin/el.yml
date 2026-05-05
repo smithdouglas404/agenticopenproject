@@ -64,11 +64,11 @@ el:
         confirmation: Αν συνεχίσετε, η συγχρονισμένη ομάδα %{name} και οι %{users_count} χρήστες που έχουν συγχρονιστεί μέσω αυτής θα αφαιρεθούν.
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        Αυτή η ενότητα σάς επιτρέπει να ρυθμίσετε συγχρονισμό μεταξύ ομάδων LDAP και OpenProject.
-        Εξαρτάται από τις ομάδες LDAP που πρέπει να χρησιμοποιήσουν το σύνολο χαρακτηριστικών <em> groupOfNames / memberOf </em> που θα λειτουργούν με το OpenProject.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        Οι ομάδες συγχρονίζονται κάθε ώρα μέσω μιας εργασίας cron.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/"> Ανατρέξτε στην τεκμηρίωσή μας σχετικά με αυτό το θέμα </a>.
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: Δεν βρέθηκαν συγχρονισμένες ομάδες.
       no_members: Αυτή η ομάδα δεν έχει συγχρονισμένα μέλη ακόμα.
       plural: Συγχρονισμένες ομάδες LDAP

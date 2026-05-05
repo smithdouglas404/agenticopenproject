@@ -77,7 +77,7 @@ zh-CN:
             version_id:
               task_version_must_be_the_same_as_story_version: 必须与父级故事的版本相同。
             sprint:
-              not_shared_with_project: 未与工作包所在的项目共享。
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: 在该工作包被移出的冲刺所属的项目中，没有处于有效状态的冲刺。
     models:
       sprint: 冲刺

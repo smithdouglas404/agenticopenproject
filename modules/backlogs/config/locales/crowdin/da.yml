@@ -78,7 +78,7 @@ da:
             version_id:
               task_version_must_be_the_same_as_story_version: skal være identisk med hovedhistorieversionen.
             sprint:
-              not_shared_with_project: deles ikke med projektet, som arbejdspakken er en del af.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: ikke er en aktiv sprint i projektet indeholdende den sprint, som arbejdspakken flyttes ud af.
     models:
       sprint: Sprint

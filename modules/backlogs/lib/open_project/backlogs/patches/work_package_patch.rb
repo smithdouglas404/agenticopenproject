@@ -61,10 +61,6 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     def backlogs_enabled?
       project&.backlogs_enabled?
     end
-
-    def assignable_sprints
-      project.try(:assignable_sprints)
-    end
   end
 end
 

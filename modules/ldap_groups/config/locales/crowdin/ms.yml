@@ -64,11 +64,11 @@ ms:
         confirmation: Jika anda teruskan, kumpulan yang diselaraskan %{name} dan semua %{users_count} pengguna yang diselaraskan melaluinya akan dikeluarkan.
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        Modul ini membenarkan anda untuk menyediakan sinkronisasi antara LDAP dan kumpulan-kumpulan OpenProject.
-        Ia bergantung kepada keperluan kumpulan LDAP untuk menggunakan <em>kumpulanNama / ahliKepada</em><br/> set atribut untuk bekerjasama dengan OpenProject.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        Kumpulan diselaraskan setiap jam melalui tugasan cron.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Sila lihat dokumentasi kami berkenaan topik ini</a>.
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: Tiada kumpulan yang diselaraskan ditemui.
       no_members: Kumpulan ini tidak mempunyai ahli yang diselaraskan lagi.
       plural: Kumpulan-kumpulan LDAP yang diselaraskan

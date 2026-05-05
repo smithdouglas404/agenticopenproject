@@ -1131,6 +1131,8 @@ ro:
       no_results_title_text: În acest moment nu există știri de raportat.
       no_results_content_text: Adaugă știre nouă
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -1142,6 +1144,8 @@ ro:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Rămâi conectat pentru %{num_days}
     sessions:
@@ -4307,6 +4311,7 @@ ro:
   label_role_new: Rol nou
   label_role_grantable: Grantable role
   label_role_plural: Roluri
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Atribuirea rolului noilor membri
   label_scm: SCM
   label_scroll_left: Derulează la stânga
@@ -5248,6 +5253,9 @@ ro:
   setting_mail_handler_body_delimiter_regex: Trunchiază email-uri care se potrivesc cu acest regex
   setting_mail_handler_ignore_filenames: Atașamente de e-mail ignorate
   setting_new_project_user_role_id: Rol atribuit unui utilizator non-administrator care crează un proiect
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Trimite notificare autorului la crearea unui proiect nou
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements
