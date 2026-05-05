@@ -39,6 +39,8 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
 
   let(:page_link_service) { instance_double(Wikis::PageLinkService, relation_page_link_infos_for: []) }
 
+  subject(:render_component) { render_inline(described_class.new(provider, work_package:)) }
+
   before do
     login_as(user)
     allow(Wikis::PageLinkService).to receive(:new).and_return(page_link_service)
@@ -47,7 +49,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
   context "when the provider has no oauth client configured" do
     before do
       allow(provider).to receive(:oauth_client).and_return(nil)
-      render_inline(described_class.new(provider, work_package:))
+      render_component
     end
 
     it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
@@ -57,9 +59,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
   context "when the provider does not support OAuth" do
     let(:provider) { create(:internal_wiki_provider) }
 
-    before do
-      render_inline(described_class.new(provider, work_package:))
-    end
+    before { subject }
 
     it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
     it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_text")) }
@@ -69,7 +69,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
   context "when the provider has an oauth client but the user has no token" do
     before do
       allow(provider).to receive(:oauth_client).and_return(oauth_client)
-      render_inline(described_class.new(provider, work_package:))
+      render_component
     end
 
     it { expect(page).to have_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
@@ -79,10 +79,32 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
     before do
       allow(provider).to receive(:oauth_client).and_return(oauth_client)
       create(:oauth_client_token, oauth_client:, user:)
-      render_inline(described_class.new(provider, work_package:))
+      render_component
     end
 
     it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
+    it { expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
+  end
+
+  context "when the user has a token and there are page links" do
+    let(:page_info) do
+      Wikis::Adapters::Results::PageInfo.new(
+        identifier: "MyPage",
+        provider:,
+        title: "My Wiki Page",
+        href: "https://wiki.example.com/MyPage"
+      )
+    end
+
+    before do
+      allow(provider).to receive(:user_connected?).and_return(true)
+      allow(page_link_service).to receive(:relation_page_link_infos_for)
+        .and_return([Dry::Monads::Success(page_info)])
+      render_component
+    end
+
+    it { expect(page).to have_text("My Wiki Page") }
+    it { expect(page).to have_no_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
     it { expect(page).to have_no_text(I18n.t("wikis.oauth_login_component.heading", provider: provider.name)) }
   end
 end
