@@ -56,7 +56,7 @@ RSpec.describe "Plain text content type XSS prevention", :js do
     expect(work_package.attachments.count).to eq 1
     attachment = work_package.attachments.first
 
-    expect(attachment.content_type).to eq "text/x-javascript"
+    expect(attachment.content_type).to eq "text/plain"
     expect(attachment).to be_inlineable
 
     visit home_path
