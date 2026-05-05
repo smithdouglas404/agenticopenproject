@@ -69,6 +69,14 @@ export class CKEditorSetupService {
       .createWatchdog(editorClass, contentWrapper, config)
       .then((watchdog:ICKEditorWatchdog) => {
         const { editor } = watchdog;
+        const updateLastUpdated = () => {
+          const editable = wrapper.querySelector<HTMLElement>('.ck-editor__editable_inline');
+          if (!editable) {
+            return;
+          }
+
+          editable.dataset.lastUpdated = String(new Date().getTime());
+        };
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         toolbarWrapper.appendChild(editor.ui.view.toolbar.element);
 
@@ -78,9 +86,11 @@ export class CKEditorSetupService {
         });
         wrapper.addEventListener('op:ckeditor:setData', (event:CustomEvent<string>) => {
           editor.setData(event.detail);
+          updateLastUpdated();
         });
         wrapper.addEventListener('op:ckeditor:clear', () => {
           editor.setData(' ');
+          updateLastUpdated();
         });
         wrapper.addEventListener('op:ckeditor:getData', (event:CustomEvent<(data:string) => void>) => {
           event.detail(editor.getData({ trim: false }));

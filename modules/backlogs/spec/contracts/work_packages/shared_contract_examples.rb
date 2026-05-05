@@ -39,7 +39,7 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
   let(:work_package_story_points) { 5 }
   let(:work_package_sprint) { build_stubbed(:sprint) }
   let(:work_package_position) { 5 }
-  let(:shared_sprints) { [work_package_sprint] }
+  let(:assignable_sprints) { [work_package_sprint] }
   let(:backlogs_enabled) { true }
   let(:work_package_project) do
     build_stubbed(:project, types: [work_package_type]) do |project|
@@ -59,16 +59,16 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
   let(:effective_permissions) { permissions }
 
   before do
-    shared_sprints_scope = instance_double(ActiveRecord::Relation)
+    assignable_sprints_scope = instance_double(ActiveRecord::Relation)
 
     allow(Sprint)
-      .to receive(:for_project)
-            .with(work_package.project)
-            .and_return(shared_sprints_scope)
+      .to receive(:assignable)
+            .with(project: work_package.project, user:)
+            .and_return(assignable_sprints_scope)
 
-    allow(shared_sprints_scope)
+    allow(assignable_sprints_scope)
       .to receive(:exists?) do |id:|
-      shared_sprints.map(&:id).include?(id.to_i)
+      assignable_sprints.map(&:id).include?(id.to_i)
     end
   end
 
@@ -119,25 +119,10 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
       it_behaves_like "contract is valid"
     end
 
-    context "when sprint is set to a sprint not shared with the wp's project" do
-      let(:shared_sprints) { [] }
+    context "when sprint is set to a sprint not assignable" do
+      let(:assignable_sprints) { [] }
 
-      it_behaves_like "contract is invalid", sprint: :not_shared_with_project
-    end
-
-    context "when sprint is completed (shared with project but not assignable)" do
-      let(:completed_sprint) { build_stubbed(:sprint, status: :completed) }
-      let(:work_package_sprint) { completed_sprint }
-
-      before do
-        # The sprint is still shared with the project (the outer before mock makes
-        # `Sprint.for_project.exists?` return true), so `sprint_shared_with_project`
-        # passes. We stub assignable_sprints to exclude it, simulating the `.not_completed`
-        # scope, so only `validate_sprint_is_assignable` fires.
-        allow(work_package_project).to receive(:assignable_sprints).and_return([])
-      end
-
-      it_behaves_like "contract is invalid", sprint_id: :inclusion
+      it_behaves_like "contract is invalid", sprint: :not_assignable
     end
 
     context "when sprint is set while the user lacks the :manage_sprint_items permission" do

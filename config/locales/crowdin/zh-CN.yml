@@ -1109,6 +1109,8 @@ zh-CN:
       matrix_check_uncheck_all_in_row_label_html: 切换所有角色的“%{permission}”<em></em>权限
       matrix_check_uncheck_all_in_col_label_html: 切换“%{role}”<em></em>角色的 %{module} 权限
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: 保持登录状态 %{num_days}
     sessions:

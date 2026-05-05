@@ -59,7 +59,12 @@ module OpenProject::Backlogs
                                          backlogs_constraint_passed?(:sprint)
                                      },
                                      href_callback: ->(*) {
-                                       api_v3_paths.project_sprints(represented.project_id)
+                                       filters = CGI.escape(JSON.dump(
+                                                              [{ status: { operator: "!",
+                                                                           values: [Sprint.statuses["completed"]] } }]
+                                                            ))
+
+                                       "#{api_v3_paths.project_sprints(represented.project_id)}?filters=#{filters}&pageSize=-1"
                                      }
 
             define_method :backlogs_constraint_passed? do |attribute|

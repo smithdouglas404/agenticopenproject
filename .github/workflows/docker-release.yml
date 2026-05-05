@@ -51,7 +51,11 @@ jobs:
     with:
       branch: ${{ needs.compute-inputs.outputs.branch }}
       tag: ${{ needs.compute-inputs.outputs.tag }}
-    secrets: inherit
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DEPLOY_APP_PRIVATE_KEY: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+      OPS_MAIL_SMTP_TOKEN: ${{ secrets.OPS_MAIL_SMTP_TOKEN }}
 
   trigger_helm_release:
     if: ${{ github.repository == 'opf/openproject' }}

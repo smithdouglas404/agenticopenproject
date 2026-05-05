@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -53,9 +55,6 @@ RSpec.describe WorkPackages::UpdateContract do
   end
 
   before do
-    allow(work_package_project).to receive(:assignable_sprints)
-                        .and_return(shared_sprints)
-
     visible_scope = instance_double(ActiveRecord::Relation)
 
     allow(WorkPackage)
@@ -93,6 +92,19 @@ RSpec.describe WorkPackages::UpdateContract do
         it_behaves_like "contract is invalid",
                         subject: :error_readonly,
                         story_points: :error_readonly
+      end
+
+      context "when sprint is not assignable but the assignment did not change" do
+        let(:completed_sprint) { build_stubbed(:sprint, status: :completed) }
+        let(:work_package_sprint) { completed_sprint }
+        let(:assignable_sprints) { [] }
+
+        before do
+          # So that the changes look like they came out of the database
+          work_package.clear_changes_information
+        end
+
+        it_behaves_like "contract is valid"
       end
     end
 

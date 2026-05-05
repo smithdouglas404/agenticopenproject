@@ -42,11 +42,14 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
 
     validate :backlog_bucket_xor_sprint
     validate :backlog_bucket_belongs_to_project
-    validate :sprint_shared_with_project
     validate :validate_sprint_is_assignable
 
     def assignable_sprints
-      model.try(:assignable_sprints)
+      if model.project
+        Sprint.assignable(project: model.project, user:)
+      else
+        Sprint.none
+      end
     end
 
     private
@@ -65,16 +68,11 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
     end
 
     def validate_sprint_is_assignable
-      if model.sprint_id && model.assignable_sprints.map(&:id).exclude?(model.sprint_id)
-        errors.add :sprint_id, :inclusion
+      if model.sprint_id &&
+         model.sprint_id_changed? &&
+         !assignable_sprints.exists?(id: model.sprint_id)
+        errors.add :sprint, :not_assignable
       end
-    end
-
-    def sprint_shared_with_project
-      return if model.sprint.nil? ||
-                Sprint.for_project(model.project).exists?(id: model.sprint_id)
-
-      errors.add :sprint, :not_shared_with_project
     end
   end
 end

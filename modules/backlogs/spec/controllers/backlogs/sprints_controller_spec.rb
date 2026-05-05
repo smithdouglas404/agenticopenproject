@@ -50,7 +50,7 @@ RSpec.describe Backlogs::SprintsController do
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-new-sprint-dialog-component"
+        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-sprint-dialog-component"
         expect(assigns(:project)).to eq(project)
       end
 
@@ -74,7 +74,7 @@ RSpec.describe Backlogs::SprintsController do
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-new-sprint-dialog-component"
+        expect(response).to have_turbo_stream action: "dialog", target: "backlogs-sprint-dialog-component"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(sprint)
       end
@@ -150,8 +150,8 @@ RSpec.describe Backlogs::SprintsController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response.body).to have_turbo_stream action: "flash"
-        expect(response.body).to have_turbo_stream action: "update", target: "backlogs-sprint-header-component-#{sprint.id}"
-        assert_select %(turbo-stream[action="update"][target="backlogs-sprint-header-component-#{sprint.id}"][method="morph"])
+        expect(response.body).to have_turbo_stream action: "update", target: "backlogs-sprint-component-#{sprint.id}"
+        assert_select %(turbo-stream[action="update"][target="backlogs-sprint-component-#{sprint.id}"][method="morph"])
         expect(response.body).to include("Successful update.")
         expect(sprint.reload.name).to eq("Changed sprint name")
         expect(controller.controller_path).to eq("backlogs/sprints")
@@ -495,7 +495,7 @@ RSpec.describe Backlogs::SprintsController do
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "update", target: "backlogs-new-sprint-form-component"
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-sprint-form-component"
         expect(assigns(:sprint)).to be_nil
       end
 
@@ -524,7 +524,7 @@ RSpec.describe Backlogs::SprintsController do
 
           expect(response).to be_successful
           expect(response).to have_http_status :ok
-          expect(response).to have_turbo_stream action: "update", target: "backlogs-new-sprint-form-component"
+          expect(response).to have_turbo_stream action: "update", target: "backlogs-sprint-form-component"
         end
       end
     end

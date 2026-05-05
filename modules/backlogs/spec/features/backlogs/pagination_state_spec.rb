@@ -44,10 +44,10 @@ RSpec.describe "Backlog pagination state", :js do
   current_user { create(:admin) }
 
   before do
-    # Stub thresholds so only 6 work packages are needed to trigger pagination
-    stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 5)
-    stub_const("Backlogs::InboxComponent::FIRST_PAGE_SIZE", 3)
-    stub_const("Backlogs::InboxComponent::LAST_PAGE_SIZE", 2)
+    # Stub the threshold so only 6 work packages are needed to trigger pagination.
+    # The inbox derives tail = max(truncate_middle / 5, 1) and the truncation
+    # threshold as truncate_middle + tail*2 = 5; 6 > 5 triggers the show-more row.
+    stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 3)
 
     backlogs_page.visit!
     backlogs_page.expect_inbox_show_more

@@ -72,9 +72,7 @@ export class OpProjectIncludeListComponent {
 
   @Input() parentChecked = false;
 
-  public get currentProjectHref():string|null {
-    return this.currentProjectService.apiv3Path;
-  }
+  @Input() queryWorkspaceHref:string|null = null;
 
   public text = {
     does_not_match_search: this.I18n.t('js.include_projects.tooltip.does_not_match_search'),

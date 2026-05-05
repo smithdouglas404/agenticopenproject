@@ -78,7 +78,7 @@ it:
             version_id:
               task_version_must_be_the_same_as_story_version: deve essere uguale alla versione della storia del genitore.
             sprint:
-              not_shared_with_project: non è condiviso con il progetto in cui si trova la macro-attività.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: non è uno sprint attivo nel progetto che contiene lo sprint da cui la macro-attività viene spostata.
     models:
       sprint: Sprint

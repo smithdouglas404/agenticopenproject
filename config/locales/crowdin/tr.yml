@@ -1129,6 +1129,8 @@ tr:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: "%{num_days} için oturumu açık tut"
     sessions:

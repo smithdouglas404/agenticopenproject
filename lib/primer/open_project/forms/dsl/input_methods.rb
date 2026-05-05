@@ -19,7 +19,8 @@ module Primer
             super(**decorate_options(**), &)
           end
 
-          def check_box_group(**, &)
+          def check_box_group(include_hidden: false, **, &)
+            add_input Primer::Forms::Dsl::HiddenInput.new(builder:, form:, multiple: true, value: "", **) if include_hidden
             super(**decorate_options(**), &)
           end
 

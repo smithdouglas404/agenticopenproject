@@ -1128,6 +1128,8 @@ pt-BR:
       matrix_check_uncheck_all_in_row_label_html: Alternar a permissão <em>%{permission}</em> para todas as funções
       matrix_check_uncheck_all_in_col_label_html: Alternar todas as permissões de %{module} para a função <em>%{role}</em>
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Mantenha-se conectado por %{num_days}
     sessions:

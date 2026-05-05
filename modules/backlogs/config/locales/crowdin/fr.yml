@@ -78,7 +78,7 @@ fr:
             version_id:
               task_version_must_be_the_same_as_story_version: doit être identique à la version de l'histoire parente.
             sprint:
-              not_shared_with_project: n'est pas partagé avec le projet dans lequel se trouve le lot de travaux.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: n'est pas un sprint actif dans le projet qui contient le sprint duquel le lot de travail est déplacé.
     models:
       sprint: Sprint

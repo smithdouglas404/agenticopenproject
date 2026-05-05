@@ -1110,6 +1110,8 @@ ko:
       matrix_check_uncheck_all_in_row_label_html: 모든 역할에 대한 <em>%{permission}</em> 권한 토글
       matrix_check_uncheck_all_in_col_label_html: "<em>%{role}</em> 역할에 대한 모든 %{module} 권한 토글"
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: "%{num_days}일 동안 로그인 상태 유지"
     sessions:

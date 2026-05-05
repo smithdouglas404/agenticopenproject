@@ -80,7 +80,7 @@ pl:
             version_id:
               task_version_must_be_the_same_as_story_version: musi być taka sama jak wersja story nadrzędnej.
             sprint:
-              not_shared_with_project: nie jest udostępniany projektowi, w którym znajduje się pakiet roboczy.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: nie jest aktywnym sprintem w projekcie, w którym znajduje się sprint, z którego przenoszony jest pakiet roboczy.
     models:
       sprint: Sprint

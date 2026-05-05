@@ -80,7 +80,7 @@ cs:
             version_id:
               task_version_must_be_the_same_as_story_version: musí být stejná jako verze nadřazeného příběhu.
             sprint:
-              not_shared_with_project: není sdíleno s projektem, ve kterém je pracovní balíček přítomen.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: není aktivní sprint v projektu, v němž se koná sprint, z něhož je pracovní balíček přesunut.
     models:
       sprint: Sprint

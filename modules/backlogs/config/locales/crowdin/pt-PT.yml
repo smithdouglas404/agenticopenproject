@@ -78,7 +78,7 @@ pt-PT:
             version_id:
               task_version_must_be_the_same_as_story_version: tem ser o mesmo que a versão da história do pai.
             sprint:
-              not_shared_with_project: não está partilhado com o projeto em que se encontra o pacote de trabalho.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: não é um sprint ativo no projeto em que está a decorrer o sprint do qual o pacote de trabalho está a ser transferido.
     models:
       sprint: Sprint

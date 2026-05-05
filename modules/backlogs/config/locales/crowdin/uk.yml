@@ -80,7 +80,7 @@ uk:
             version_id:
               task_version_must_be_the_same_as_story_version: має збігатись із версією батьківської історії.
             sprint:
-              not_shared_with_project: не надається проєкту, у якому міститься пакет робіт.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: не є активним спринтом у проєкті, який включає спринт, з якого переміщується пакет робіт.
     models:
       sprint: Спринт

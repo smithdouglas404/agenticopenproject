@@ -1182,6 +1182,8 @@ en:
       matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
 
   users:
+    force_password_change_hint: "The user must set a new password on their next login. Automatically enabled when sending credentials via email."
+    send_information_hint: "Emails the password in plain text. When checked, the user will be required to change their password on first login."
     autologins:
       prompt: "Stay logged in for %{num_days}"
     sessions:
@@ -4873,6 +4875,19 @@ en:
     text_getting_started_description: "Get a quick overview of project management and team collaboration with OpenProject. You can restart this video from the help menu."
     welcome: "Welcome to %{app_title}"
     select_language: "Please select your language"
+
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: "Work package actions"
+      work_package_card_box_component:
+        header:
+          label_actions: "Open menu"
+          label_work_package_count:
+            zero: "No work packages"
+            one: "%{count} work package"
+            other: "%{count} work packages"
 
   permission_add_work_package_comments: "Add comments"
   permission_add_work_packages: "Add work packages"

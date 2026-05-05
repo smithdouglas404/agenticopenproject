@@ -30,7 +30,7 @@
 
 module Backlogs
   # Renders Primer::Alpha::ActionMenu::List for the deferred menu (Backlogs::WorkPackagesController#menu).
-  # +menu_id+ must match the row ActionMenu in StoryComponent.
+  # +menu_id+ must match the row ActionMenu in WorkPackageCardComponent (sprint context).
   class StoryMenuListComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
     include CommonHelper

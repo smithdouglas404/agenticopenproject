@@ -36,7 +36,7 @@ module Calendar
 
       token = Token::ICal.find_by_plaintext_value(ical_token_string)
 
-      if token.present?
+      if token.present? && token.user&.active?
         ServiceResult.success(result: token)
       else
         raise ActiveRecord::RecordNotFound
