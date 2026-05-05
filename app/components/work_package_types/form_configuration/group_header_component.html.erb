@@ -4,7 +4,7 @@
       scope: :section,
       method: form_method,
       url: update_path,
-      test_selector: "type-form-configuration-section-edit-form",
+      test_selector: "type-form-configuration-group-edit-form",
       data: {
         turbo_stream: true
       }
@@ -18,15 +18,15 @@
             render(
               Primer::Alpha::TextField.new(
                 name: "section[name]",
-                label: t("types.edit.form_configuration.section_name_label"),
+                label: t("types.edit.form_configuration.group_name_label"),
                 visually_hide_label: true,
-                value: @input_value || section_name,
+                value: @input_value || group_name,
                 autofocus: true,
                 autocomplete: "off",
                 "full-width": true,
                 invalid: @validation_message.present?,
                 validation_message: @validation_message,
-                data: { "test-selector": "type-form-configuration-section-name-input" }
+                data: { "test-selector": "type-form-configuration-group-name-input" }
               )
             )
           end
@@ -36,7 +36,7 @@
               Primer::Beta::Button.new(
                 scheme: :primary,
                 type: :submit,
-                test_selector: "type-form-configuration-section-save"
+                test_selector: "type-form-configuration-group-save"
               )
             ) { t("button_save") }
           end
@@ -51,7 +51,7 @@
                   turbo_method: :post,
                   turbo_stream: true
                 },
-                test_selector: "type-form-configuration-section-cancel"
+                test_selector: "type-form-configuration-group-cancel"
               )
             ) { t("button_cancel") }
           end
@@ -68,12 +68,12 @@
             Primer::OpenProject::DragHandle.new(
               classes: "section-handle",
               "aria-label": t("types.edit.form_configuration.drag_to_reorder"),
-              test_selector: "type-form-configuration-section-handle-#{@group[:key]}"
+              test_selector: "type-form-configuration-group-handle-#{@group[:key]}"
             )
           )
         end
         left.with_column(flex: 1) do
-          render(Primer::Beta::Text.new(font_weight: :bold)) { section_name }
+          render(Primer::Beta::Text.new(font_weight: :bold)) { group_name }
         end
       end
 
@@ -84,15 +84,15 @@
             scheme: :invisible,
             size: :small,
             classes: "type-form-configuration-page--actions-button",
-            test_selector: "type-form-configuration-section-actions-#{@group[:key]}",
-            "aria-label": t("types.edit.form_configuration.section_actions")
+            test_selector: "type-form-configuration-group-actions-#{@group[:key]}",
+            "aria-label": t("types.edit.form_configuration.group_actions")
           )
 
           if ee_available?
             with_item_group(menu) do
               menu.with_item(
-                label: t("types.edit.form_configuration.rename_section"),
-                test_selector: "type-form-configuration-section-rename-#{@group[:key]}",
+                label: t("types.edit.form_configuration.rename_group"),
+                test_selector: "type-form-configuration-group-rename-#{@group[:key]}",
                 tag: :a,
                 href: edit_path,
                 content_arguments: { data: { turbo_stream: true } }
@@ -125,7 +125,7 @@
                   data: {
                     turbo_method: :delete,
                     turbo_stream: true,
-                    turbo_confirm: t("types.edit.form_configuration.confirm_delete_section")
+                    turbo_confirm: t("types.edit.form_configuration.confirm_delete_group")
                   }
                 }
               ) do |item|

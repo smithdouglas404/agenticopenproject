@@ -58,7 +58,7 @@ class Type::FormGroup
     elsif key.present?
       key
     else
-      I18n.t("types.edit.form_configuration.untitled_section")
+      I18n.t("types.edit.form_configuration.untitled_group")
     end
   end
 

@@ -30,7 +30,7 @@
 
 module WorkPackageTypes
   module FormConfiguration
-    class SectionHeaderComponent < ApplicationComponent
+    class GroupHeaderComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
       def initialize(group:, type:, ee_available:, first:, last:, edit_mode:, validation_message:, input_value:)
@@ -51,7 +51,7 @@ module WorkPackageTypes
 
       private
 
-      def section_name
+      def group_name
         @group[:name]
       end
 

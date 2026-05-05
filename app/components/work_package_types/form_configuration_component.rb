@@ -56,9 +56,9 @@ module WorkPackageTypes
       }
     end
 
-    def section_components
+    def group_components
       @groups.map.with_index do |group, i|
-        WorkPackageTypes::FormConfiguration::SectionComponent.new(
+        WorkPackageTypes::FormConfiguration::GroupComponent.new(
           group:,
           type: @type,
           ee_available: ee_available?,

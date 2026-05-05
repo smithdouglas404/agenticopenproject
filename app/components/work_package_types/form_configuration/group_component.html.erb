@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
     render(border_box_container(mt: 3, padding: :condensed, data: row_drop_target_config)) do |box|
       box.with_header(font_weight: :bold) do
         render(
-          WorkPackageTypes::FormConfiguration::SectionHeaderComponent.new(
+          WorkPackageTypes::FormConfiguration::GroupHeaderComponent.new(
             group: @group,
             type: @type,
             ee_available: ee_available?,
@@ -50,7 +50,7 @@ See COPYRIGHT and LICENSE files for more details.
       if query_group?
         box.with_row do
           render(
-            WorkPackageTypes::FormConfiguration::SectionQueryRowComponent.new(
+            WorkPackageTypes::FormConfiguration::GroupQueryRowComponent.new(
               group: @group,
               ee_available: ee_available?
             )
@@ -60,7 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
         if attributes.empty?
           box.with_row(data: { "empty-list-item": true }) do
             render(Primer::Beta::Text.new(color: :subtle, ml: 2)) do
-              t("types.edit.form_configuration.empty_section_hint")
+              t("types.edit.form_configuration.empty_group_hint")
             end
           end
         end
@@ -77,7 +77,7 @@ See COPYRIGHT and LICENSE files for more details.
             }
           ) do
             render(
-              WorkPackageTypes::FormConfiguration::SectionAttributeRowComponent.new(
+              WorkPackageTypes::FormConfiguration::GroupAttributeRowComponent.new(
                 attribute:,
                 type: @type,
                 index:,

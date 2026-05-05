@@ -21,11 +21,11 @@
           if ee_available?
             subheader.with_action_menu(
               leading_icon: :plus,
-              label: t("types.edit.form_configuration.add_section_button"),
+              label: t(:button_add),
               anchor_align: :end,
               button_arguments: {
                 scheme: :primary,
-                "aria-label": t("types.edit.form_configuration.add_section_button"),
+                "aria-label": t(:button_add),
                 "data-test-selector": "type-form-configuration-add-button"
               }
             ) do |menu|
@@ -59,10 +59,10 @@
           id: "type-form-configuration-sections-container",
           data: sections_container_data
         ) do
-          if @section_components.empty?
+          if @group_components.empty?
             render(WorkPackageTypes::FormConfiguration::BlankslateComponent.new)
           else
-            safe_join(@section_components.map { |section| render(section) })
+            safe_join(@group_components.map { |group| render(group) })
           end
         end
       end

@@ -166,13 +166,12 @@ RSpec.describe "form configuration", :js, :selenium do
         form.rename_group("People", "Cool Stuff")
 
         # Start renaming, but cancel
-        menu_id = form.send(:open_group_menu, "Cool Stuff")
-        within "##{menu_id}" do
-          first("a.ActionListContent", minimum: 1, visible: :all).click
-        end
-        input = find_test_selector("type-form-configuration-section-name-input", wait: 10)
+        group_key = form.send(:find_group, "Cool Stuff")["data-group-key"]
+        form.send(:open_group_menu, "Cool Stuff")
+        page.find_test_selector("type-form-configuration-group-rename-#{group_key}", visible: :all).click
+        input = find_test_selector("type-form-configuration-group-name-input", wait: 10)
         input.set("FOOBAR")
-        page.find_test_selector("type-form-configuration-section-cancel", wait: 10).click
+        page.find_test_selector("type-form-configuration-group-cancel", wait: 10).click
         form.expect_group("Cool Stuff", "Cool Stuff")
         expect(page).to have_no_css("[data-group-key]", text: /\bFOOBAR\b/)
 
@@ -257,37 +256,36 @@ RSpec.describe "form configuration", :js, :selenium do
         loading_indicator_saveguard
       end
 
-      it "removes a newly added unsaved custom section when canceling edit" do
+      it "removes a newly added unsaved custom group when canceling edit" do
         initial_order = form.section_order
 
         form.add_button_dropdown.click
         click_on I18n.t("types.edit.form_configuration.add_attribute_group")
 
-        expect(page.find_test_selector("type-form-configuration-section-name-input", wait: 10).value).to eq("")
+        expect(page.find_test_selector("type-form-configuration-group-name-input", wait: 10).value).to eq("")
 
-        page.find_test_selector("type-form-configuration-section-cancel", wait: 10).click
+        page.find_test_selector("type-form-configuration-group-cancel", wait: 10).click
 
         expect(form.section_order).to eq(initial_order)
       end
 
-      it "keeps a saved custom section when canceling rename" do
-        form.add_attribute_group("Saved custom section")
+      it "keeps a saved custom group when canceling rename" do
+        form.add_attribute_group("Saved custom group")
 
         visit edit_type_form_configuration_path(type)
 
-        menu_id = form.send(:open_group_menu, "Saved custom section")
-        within "##{menu_id}" do
-          first("a.ActionListContent", minimum: 1, visible: :all).click
-        end
+        group_key = form.send(:find_group, "Saved custom group")["data-group-key"]
+        form.send(:open_group_menu, "Saved custom group")
+        page.find_test_selector("type-form-configuration-group-rename-#{group_key}", visible: :all).click
 
-        input = page.find_test_selector("type-form-configuration-section-name-input", wait: 10)
-        expect(input.value).to eq("Saved custom section")
+        input = page.find_test_selector("type-form-configuration-group-name-input", wait: 10)
+        expect(input.value).to eq("Saved custom group")
 
-        input.set("Renamed section")
-        page.find_test_selector("type-form-configuration-section-cancel", wait: 10).click
+        input.set("Renamed group")
+        page.find_test_selector("type-form-configuration-group-cancel", wait: 10).click
 
-        form.expect_group("Saved custom section", "Saved custom section")
-        expect(page).to have_no_css("[data-group-key]", text: /\bRenamed section\b/)
+        form.expect_group("Saved custom group", "Saved custom group")
+        expect(page).to have_no_css("[data-group-key]", text: /\bRenamed group\b/)
       end
 
       it "shows only the edit action for query rows" do
@@ -318,7 +316,7 @@ RSpec.describe "form configuration", :js, :selenium do
         expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_to_bottom"))
       end
 
-      it "shows move actions only where valid for multi-row sections" do
+      it "shows move actions only where valid for multi-row groups" do
         details_order = form.attribute_order("Details")
 
         first_row_menu_id = form.open_attribute_menu(details_order.first)
@@ -356,7 +354,7 @@ RSpec.describe "form configuration", :js, :selenium do
         expect(page).to have_css(".wp-table--configuration-modal")
       end
 
-      it "reorders and deletes sections via section actions" do
+      it "reorders and deletes groups via group actions" do
         expected_order = persisted_section_order(type)
         moving_section = expected_order.second
         initial_updated_at = type.updated_at
@@ -390,7 +388,7 @@ RSpec.describe "form configuration", :js, :selenium do
 
         deleted_section = expected_order.last
         initial_updated_at = type.updated_at
-        accept_confirm I18n.t("types.edit.form_configuration.confirm_delete_section") do
+        accept_confirm I18n.t("types.edit.form_configuration.confirm_delete_group") do
           form.invoke_section_action(deleted_section, I18n.t("button_delete"))
         end
         wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
@@ -561,7 +559,7 @@ RSpec.describe "form configuration", :js, :selenium do
   end
 
   describe "without EE token", with_ee: false do
-    it "hides protected section actions" do
+    it "hides protected group actions" do
       login_as(admin)
       visit edit_type_form_configuration_path(type)
 
@@ -569,7 +567,7 @@ RSpec.describe "form configuration", :js, :selenium do
 
       menu_id = form.send(:open_group_menu, "Details")
       within "##{menu_id}" do
-        expect(page).to have_no_text(I18n.t("types.edit.form_configuration.rename_section"))
+        expect(page).to have_no_text(I18n.t("types.edit.form_configuration.rename_group"))
         expect(page).to have_no_text(I18n.t("button_delete"))
       end
     end
@@ -587,20 +585,20 @@ RSpec.describe "form configuration", :js, :selenium do
   end
 
   describe "with EE token", with_ee: %i[edit_attribute_groups] do
-    it "shows protected section actions" do
+    it "shows protected group actions" do
       login_as(admin)
       visit edit_type_form_configuration_path(type)
 
       menu_id = form.send(:open_group_menu, "Details")
       within "##{menu_id}" do
-        expect(page).to have_text(I18n.t("types.edit.form_configuration.rename_section"))
+        expect(page).to have_text(I18n.t("types.edit.form_configuration.rename_group"))
         expect(page).to have_text(I18n.t("button_delete"))
       end
     end
   end
 
   describe "form submission", :js, with_ee: %i[edit_attribute_groups] do
-    it "only creates one section per add action" do
+    it "only creates one group per add action" do
       call_count = 0
       subscription =
         ActiveSupport::Notifications.subscribe("process_action.action_controller") do |*, payload|
@@ -617,7 +615,7 @@ RSpec.describe "form configuration", :js, :selenium do
       form.add_attribute_group("New Group")
 
       ActiveSupport::Notifications.unsubscribe(subscription)
-      expect(call_count).to eq(1), "Expected 1 section creation but got #{call_count}"
+      expect(call_count).to eq(1), "Expected 1 group creation but got #{call_count}"
     end
   end
 end

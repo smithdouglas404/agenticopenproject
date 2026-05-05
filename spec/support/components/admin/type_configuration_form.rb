@@ -66,7 +66,7 @@ module Components
 
       def find_group_handle(label)
         group_key = find_group(label)["data-group-key"]
-        page.find_test_selector("type-form-configuration-section-handle-#{group_key}", visible: :all)
+        page.find_test_selector("type-form-configuration-group-handle-#{group_key}", visible: :all)
       end
 
       def find_attribute_handle(attribute)
@@ -194,10 +194,9 @@ module Components
       end
 
       def rename_group(from, to)
-        menu_id = open_group_menu(from)
-        within "##{menu_id}" do
-          first("a.ActionListContent", minimum: 1, visible: :all).click
-        end
+        group_key = find_group(from)["data-group-key"]
+        open_group_menu(from)
+        page.find_test_selector("type-form-configuration-group-rename-#{group_key}", visible: :all).click
 
         fill_section_name(to)
         save_section
@@ -206,7 +205,7 @@ module Components
       end
 
       def remove_group(name)
-        accept_confirm I18n.t("types.edit.form_configuration.confirm_delete_section") do
+        accept_confirm I18n.t("types.edit.form_configuration.confirm_delete_group") do
           menu_id = open_group_menu(name)
           within "##{menu_id}" do
             click_link I18n.t("button_delete")
@@ -281,7 +280,7 @@ module Components
       end
 
       def fill_section_name(name)
-        input = page.find_test_selector("type-form-configuration-section-name-input", wait: 10)
+        input = page.find_test_selector("type-form-configuration-group-name-input", wait: 10)
         input.set(name)
       end
 
@@ -303,7 +302,7 @@ module Components
 
       def menu_button_for(name)
         group_key = find_group(name)["data-group-key"]
-        page.find_test_selector("type-form-configuration-section-actions-#{group_key}")
+        page.find_test_selector("type-form-configuration-group-actions-#{group_key}")
       end
 
       def open_menu(button_selector)
@@ -331,8 +330,8 @@ module Components
       end
 
       def save_section
-        page.find_test_selector("type-form-configuration-section-save", wait: 10).click
-        expect(page).to have_no_selector(page.test_selector("type-form-configuration-section-name-input"))
+        page.find_test_selector("type-form-configuration-group-save", wait: 10).click
+        expect(page).to have_no_selector(page.test_selector("type-form-configuration-group-name-input"))
       end
 
       def wait_for_turbo

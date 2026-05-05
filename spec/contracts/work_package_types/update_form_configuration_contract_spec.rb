@@ -160,7 +160,7 @@ module WorkPackageTypes
 
         it "is valid" do
           model.attribute_groups = [
-            [I18n.t("types.edit.form_configuration.untitled_section"), ["assignee"]],
+            [I18n.t("types.edit.form_configuration.untitled_group"), ["assignee"]],
             [:details, ["priority"]]
           ]
 

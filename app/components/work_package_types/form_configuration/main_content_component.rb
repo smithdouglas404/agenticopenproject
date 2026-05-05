@@ -34,10 +34,10 @@ module WorkPackageTypes
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def initialize(type:, section_components:, ee_available:)
+      def initialize(type:, group_components:, ee_available:)
         super
         @type = type
-        @section_components = section_components
+        @group_components = group_components
         @ee_available = ee_available
       end
 

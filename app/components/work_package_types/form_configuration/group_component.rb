@@ -30,7 +30,7 @@
 
 module WorkPackageTypes
   module FormConfiguration
-    class SectionComponent < ApplicationComponent
+    class GroupComponent < ApplicationComponent
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
@@ -87,7 +87,7 @@ module WorkPackageTypes
         }.compact.merge(draggable_item_config)
       end
 
-      def section_name
+      def group_name
         @group[:name]
       end
 

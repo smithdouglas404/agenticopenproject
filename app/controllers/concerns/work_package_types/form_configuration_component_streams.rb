@@ -42,7 +42,7 @@ module WorkPackageTypes
     def update_main_content_via_turbo_stream(section_groups: active_section_groups, editing_section_key: nil,
                                              validation_message: nil, input_value: nil)
       ee_available = EnterpriseToken.allows_to?(:edit_attribute_groups)
-      section_components = build_section_components(
+      group_components = build_group_components(
         section_groups:,
         ee_available:,
         editing_section_key:,
@@ -53,7 +53,7 @@ module WorkPackageTypes
       update_via_turbo_stream(
         component: WorkPackageTypes::FormConfiguration::MainContentComponent.new(
           type: @type,
-          section_components:,
+          group_components:,
           ee_available:
         )
       )
@@ -75,9 +75,9 @@ module WorkPackageTypes
       render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.to_sentence)
     end
 
-    def build_section_components(section_groups:, ee_available:, editing_section_key:, validation_message:, input_value:)
+    def build_group_components(section_groups:, ee_available:, editing_section_key:, validation_message:, input_value:)
       section_groups.map.with_index do |group, index|
-        build_section_component(
+        build_group_component(
           group:,
           index:,
           group_count: section_groups.length,
@@ -93,11 +93,11 @@ module WorkPackageTypes
       form_configuration_groups(@type)[:actives].reject { |group| group[:key].to_s == "__empty" }
     end
 
-    def build_section_component(group:, index:, group_count:, ee_available:, editing_section_key:, validation_message:,
-                                input_value:)
+    def build_group_component(group:, index:, group_count:, ee_available:, editing_section_key:, validation_message:,
+                              input_value:)
       is_editing = editing_section_key.present? && group[:key].to_s == editing_section_key.to_s
 
-      WorkPackageTypes::FormConfiguration::SectionComponent.new(
+      WorkPackageTypes::FormConfiguration::GroupComponent.new(
         group:,
         type: @type,
         ee_available:,

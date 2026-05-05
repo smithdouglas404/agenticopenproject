@@ -120,7 +120,7 @@ module WorkPackageTypes
       end
 
       def next_untitled_section_name(seen_keys)
-        base_name = I18n.t("types.edit.form_configuration.untitled_section")
+        base_name = I18n.t("types.edit.form_configuration.untitled_group")
         candidate = base_name
         suffix = 2
 

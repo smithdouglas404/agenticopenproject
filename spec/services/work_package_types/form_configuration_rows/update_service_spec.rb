@@ -51,11 +51,11 @@ module WorkPackageTypes
         expect(result).to be_success
 
         normalized_group = type.reload.attribute_groups.find do |group|
-          group.translated_key == I18n.t("types.edit.form_configuration.untitled_section")
+          group.translated_key == I18n.t("types.edit.form_configuration.untitled_group")
         end
 
         expect(normalized_group).to be_present
-        expect(normalized_group.key).to eq(I18n.t("types.edit.form_configuration.untitled_section"))
+        expect(normalized_group.key).to eq(I18n.t("types.edit.form_configuration.untitled_group"))
       end
 
       it "finds legacy symbol attribute keys when moving rows" do

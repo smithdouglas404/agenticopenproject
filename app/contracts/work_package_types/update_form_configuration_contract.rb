@@ -107,7 +107,7 @@ module WorkPackageTypes
     end
 
     def normalized_legacy_group_key(seen_keys)
-      base_name = I18n.t("types.edit.form_configuration.untitled_section")
+      base_name = I18n.t("types.edit.form_configuration.untitled_group")
       candidate = base_name
       suffix = 2
 
