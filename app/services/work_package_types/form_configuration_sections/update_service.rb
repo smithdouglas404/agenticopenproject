@@ -56,7 +56,6 @@ module WorkPackageTypes
         return update_query(section, params[:query_props]) if params[:query_props].present?
 
         rename_section!(section, params[:name])
-        nil
       end
 
       def move_section(groups, move_to:, position:)
