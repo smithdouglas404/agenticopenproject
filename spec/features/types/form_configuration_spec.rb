@@ -86,7 +86,7 @@ RSpec.describe "form configuration", :js, :selenium do
         form.reset_button.click
         dialog = find_test_selector("type-form-configuration-reset-dialog", visible: :all)
         within(dialog) do
-          click_button I18n.t("js.label_reset")
+          click_button I18n.t("button_reset")
         end
 
         # Wait for page reload
@@ -582,10 +582,7 @@ RSpec.describe "form configuration", :js, :selenium do
       login_as(admin)
       visit edit_type_form_configuration_path(type)
 
-      menu_id = form.open_query_menu("Subtasks")
-      within "##{menu_id}" do
-        expect(page).to have_no_text(I18n.t("types.edit.form_configuration.edit_query"))
-      end
+      expect(page).to have_no_test_selector("type-form-configuration-query-actions-Subtasks")
     end
   end
 

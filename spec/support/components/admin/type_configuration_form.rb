@@ -57,8 +57,7 @@ module Components
       end
 
       def find_group(name)
-        title = page.first(".Box-header span.text-bold", text: name)
-        title.find(:xpath, "./ancestor::*[@data-group-key][1]")
+        page.find(:xpath, group_xpath(name))
       end
 
       def attribute_selector(attribute)
@@ -341,6 +340,23 @@ module Components
           wait_for_reload
         else
           SeleniumHubWaiter.wait
+        end
+      end
+
+      def group_xpath(name)
+        <<~XPATH.squish
+          //*[@data-group-key]
+            [.//span[contains(concat(' ', normalize-space(@class), ' '), ' text-bold ')
+            and normalize-space()=#{xpath_literal(name)}]]
+        XPATH
+      end
+
+      def xpath_literal(value)
+        if value.include?("'")
+          parts = value.split("'").map { |part| "'#{part}'" }
+          %(concat(#{parts.join(%q{, "'", })}))
+        else
+          "'#{value}'"
         end
       end
     end

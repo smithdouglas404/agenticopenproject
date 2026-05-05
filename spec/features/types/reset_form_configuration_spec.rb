@@ -38,6 +38,7 @@ RSpec.describe "Reset form configuration",
 
   let(:project) { create(:project, types: [type]) }
   let(:form) { Components::Admin::TypeConfigurationForm.new }
+
   describe "with EE token and CFs", with_ee: %i[edit_attribute_groups] do
     let(:custom_fields) { [custom_field] }
     let(:custom_field) { create(:issue_custom_field, :integer, is_required: true, name: "MyNumber") }
@@ -65,7 +66,7 @@ RSpec.describe "Reset form configuration",
       form.reset_button.click
       expect(page).to have_test_selector("type-form-configuration-reset-dialog")
       page.within_test_selector "type-form-configuration-reset-dialog" do
-        click_button I18n.t("js.label_reset")
+        click_button I18n.t("button_reset")
       end
 
       wait_for do
