@@ -59,9 +59,17 @@ See COPYRIGHT and LICENSE files for more details.
       end
     elsif page_link_infos.empty?
       box.with_row do
-        render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
-          blankslate.with_heading(tag: :h2).with_content(t(".empty_heading"))
-          blankslate.with_description { t(".empty_text") }
+        if user_connected?
+          render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
+            blankslate.with_heading(tag: :h2).with_content(t(".empty_heading"))
+            blankslate.with_description { t(".empty_text") }
+          end
+        else
+          render(Wikis::OAuthLoginComponent.new(
+            provider,
+            return_url: work_package_url(@work_package, tab: :wikis)
+            )
+          )
         end
       end
     else

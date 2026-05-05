@@ -78,7 +78,7 @@ RSpec.describe "OAuthClient callback endpoint" do
                                                           refresh_token: "xyzrefreshtoken",
                                                           user_id: "g-root"))
       allow(rack_oauth2_client).to receive(:authorization_code=)
-      state_cookie = CGI.escape({ href: redirect_uri, storageId: oauth_client.integration_id }.to_json)
+      state_cookie = CGI.escape({ href: redirect_uri, integrationId: oauth_client.integration_id }.to_json)
       set_cookie "oauth_state_asdf1234=#{state_cookie}"
     end
 

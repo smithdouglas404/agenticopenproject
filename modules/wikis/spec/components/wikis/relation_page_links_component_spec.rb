@@ -59,7 +59,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
   context "when the provider does not support OAuth" do
     let(:provider) { create(:internal_wiki_provider) }
 
-    before { subject }
+    before { render_component }
 
     it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_heading")) }
     it { expect(page).to have_text(I18n.t("wikis.relation_page_links_component.empty_text")) }
