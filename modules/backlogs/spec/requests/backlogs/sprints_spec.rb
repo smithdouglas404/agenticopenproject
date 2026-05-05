@@ -36,7 +36,7 @@ RSpec.describe "Backlogs::Sprints", :skip_csrf, type: :rails_request do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:status) { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
+  shared_let(:sprint) { create(:sprint, name: "Original sprint name", project:) }
 
   current_user { user }
 

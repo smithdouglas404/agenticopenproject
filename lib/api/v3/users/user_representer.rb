@@ -191,7 +191,7 @@ module API
           ldap_auth_source_id = parse_auth_source_id(data, "authSource") || parse_auth_source_id(data, "auth_source")
 
           if ldap_auth_source_id
-            auth_source = LdapAuthSource.find_by_unique(ldap_auth_source_id) # rubocop:disable Rails/DynamicFindBy
+            auth_source = LdapAuthSource.find_by_unique(ldap_auth_source_id)
             id = auth_source ? auth_source.id : 0
 
             # set id to 0 (as opposed to nil) to produce an auth source not found

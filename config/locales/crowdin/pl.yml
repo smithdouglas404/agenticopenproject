@@ -431,7 +431,8 @@ pl:
           error_special_characters: Znaki specjalne są niedozwolone
           error_not_fully_uppercased: Musi być pisany wielkimi literami
           error_in_use: Już używany jako aktywne dojście innego projektu
-          error_reserved: Zarezerwowany przez historię dojść innego projektu
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Wymaga ręcznego sprawdzenia
           remaining_projects:
             one: "...jeszcze 1 projekt"
@@ -476,8 +477,14 @@ pl:
         ignore: Zignoruj zmiany
         save: Zapisz zmiany i kontynuuj
       role_selector:
+        title: Select roles
         label: 'Rola: %{role}'
         no_role: Wybierz rolę
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Nie skonfigurowano przejść statusów
         description: Dodaj statusy, aby rozpocząć konfigurowanie przepływów pracy dla tej roli
@@ -1139,6 +1146,8 @@ pl:
       no_results_title_text: Nie ma jeszcze żadnych wiadomości do wyświetlenia.
       no_results_content_text: Dodaj nowy element
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Przypisz wszystkie uprawnienia do %{module}
       section_uncheck_all_label: Cofnij przypisanie wszystkich uprawnień do %{module}
@@ -2036,6 +2045,29 @@ pl:
         type: Typ
         version: Wersja
         watcher: Obserwator
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: musi być zaakceptowane.
@@ -4333,6 +4365,7 @@ pl:
   label_role_new: Nowa rola
   label_role_grantable: Przyznawana rola
   label_role_plural: Role
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Przydziel role nowemu członkowi
   label_scm: SCM
   label_scroll_left: Przewiń w lewo
@@ -5273,6 +5306,9 @@ pl:
   setting_mail_handler_body_delimiter_regex: Skróć wiadomości e-mail pasujące to wyrażenia regularnego
   setting_mail_handler_ignore_filenames: Ignorowane załączniki do poczty
   setting_new_project_user_role_id: Rola dla użytkownika bez uprawnień administratora, który tworzy projekt
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Wyślij powiadomienie do autora podczas tworzenia nowego projektu
   setting_new_project_notification_text: Tekst powiadomienia
   setting_password_active_rules: Password requirements

@@ -98,9 +98,9 @@ module OpenProject::Backlogs
 
     def visible_sprints
       if @project
-        Agile::Sprint.for_project(@project)
+        Sprint.for_project(@project)
       else
-        Agile::Sprint
+        Sprint
       end
         .visible
     end

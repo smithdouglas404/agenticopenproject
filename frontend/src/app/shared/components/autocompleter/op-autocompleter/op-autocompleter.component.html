@@ -177,7 +177,7 @@
           <span
             class="op-autocompleter--wp-id"
             [ngOptionHighlight]="search"
-          >#{{ item.id }}</span>
+          >{{ item.formattedId }}</span>
           <span
             [textContent]="item.status?.name"
             [ngClass]="highlighting('status',item.status?.id)"
@@ -232,7 +232,7 @@
         class="ng-value-label"
         [ngOptionHighlight]="search"
         >
-        {{ item.type?.name }} #{{ item.id }} {{ item.subject || item.name }}
+        {{ item.type?.name }} {{ item.formattedId }} {{ item.subject || item.name }}
       </span>
     }
   }

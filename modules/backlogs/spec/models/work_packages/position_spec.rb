@@ -37,8 +37,8 @@ RSpec.describe WorkPackage, "positions" do # rubocop:disable RSpec/SpecFilePathF
 
   shared_let(:project) { create(:project) }
   shared_let(:type) { create(:type) }
-  shared_let(:sprint1) { create(:agile_sprint, project:, name: "Sprint 1") }
-  shared_let(:sprint2) { create(:agile_sprint, project:, name: "Sprint 2") }
+  shared_let(:sprint1) { create(:sprint, project:, name: "Sprint 1") }
+  shared_let(:sprint2) { create(:sprint, project:, name: "Sprint 2") }
 
   let!(:sprint1_wp1) { create_work_package(subject: "Sprint 1 WorkPackage 1", sprint: sprint1) }
   let!(:sprint1_wp2) { create_work_package(subject: "Sprint 1 WorkPackage 2", sprint: sprint1) }

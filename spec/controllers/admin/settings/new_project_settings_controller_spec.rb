@@ -82,6 +82,39 @@ RSpec.describe Admin::Settings::NewProjectSettingsController do
       end
     end
 
+    describe "default role for new projects" do
+      let!(:qualifying_role) { create(:project_creator_role, name: "Project lead") }
+      let!(:non_qualifying_role) do
+        create(:project_role, name: "Reader", permissions: %i[view_work_packages])
+      end
+
+      it "lists only roles with the required permissions" do
+        get "show", params: { tab: "settings" }
+
+        expect(response.body)
+          .to have_css("select[name='settings[new_project_user_role_id]'] option",
+                       text: qualifying_role.name)
+        expect(response.body)
+          .to have_no_css("select[name='settings[new_project_user_role_id]'] option",
+                          text: non_qualifying_role.name)
+      end
+
+      context "when the configured role no longer has the required permissions" do
+        before do
+          Setting.new_project_user_role_id = non_qualifying_role.id
+        end
+
+        it "still lists the configured role, marked as missing required permissions, and selected" do
+          get "show", params: { tab: "settings" }
+
+          expect(response.body)
+            .to have_css("select[name='settings[new_project_user_role_id]'] " \
+                         "option[selected][value='#{non_qualifying_role.id}']",
+                         text: "#{non_qualifying_role.name} (missing required permissions)")
+        end
+      end
+    end
+
     describe "project creation notifications" do
       it "contains a checkbox for sending confirmation emails in the notifications tab" do
         get "show", params: { tab: "notifications" }

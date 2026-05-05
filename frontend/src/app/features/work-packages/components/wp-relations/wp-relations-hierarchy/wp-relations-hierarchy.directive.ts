@@ -81,7 +81,7 @@ export class WorkPackageRelationsHierarchyComponent extends UntilDestroyedMixin 
   };
 
   ngOnInit() {
-    this.workPackagePath = this.PathHelper.workPackagePath(this.workPackage.id!);
+    this.workPackagePath = this.PathHelper.workPackagePath(this.workPackage.displayId);
     this.canModifyHierarchy = !!this.workPackage.changeParent;
     this.canAddRelation = !!this.workPackage.addRelation;
 

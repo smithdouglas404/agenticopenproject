@@ -36,7 +36,7 @@ RSpec.describe Pages::Backlog do
 
   let(:project) { build_stubbed(:project) }
   let(:work_package) { build_stubbed(:work_package) }
-  let(:sprint) { build_stubbed(:agile_sprint) }
+  let(:sprint) { build_stubbed(:sprint) }
 
   describe "#drag_work_package" do
     it "raises when neither before nor into is provided" do

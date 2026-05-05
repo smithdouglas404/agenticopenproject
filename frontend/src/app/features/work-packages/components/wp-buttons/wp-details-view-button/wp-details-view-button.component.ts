@@ -35,6 +35,7 @@ import { AbstractWorkPackageButtonComponent } from 'core-app/features/work-packa
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { States } from 'core-app/core/states/states.service';
 import { KeepTabService } from '../../wp-single-view-tabs/keep-tab/keep-tab.service';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Component({
   templateUrl: '../wp-button.template.html',
@@ -111,8 +112,9 @@ export class WorkPackageDetailsViewButtonComponent extends AbstractWorkPackageBu
   }
 
   public openDetailsView():void {
+    const focused = this.wpTableFocus.focusedWorkPackage;
     const params = {
-      workPackageId: this.wpTableFocus.focusedWorkPackage,
+      workPackageId: focused ? resolveRoutingId(this.states, focused) : focused,
     };
 
     this.keepTab.goCurrentDetailsState(params);

@@ -121,7 +121,7 @@ Rails.application.config.after_initialize do
       # Configure CSP directives
       policy.default_src(*default_src)
       policy.base_uri("'self'")
-      policy.font_src(*assets_src, "data:", "'self'")
+      policy.font_src(*assets_src, "data:")
       policy.form_action(*form_action)
       policy.frame_src(*frame_src, "'self'")
       policy.frame_ancestors("'self'")

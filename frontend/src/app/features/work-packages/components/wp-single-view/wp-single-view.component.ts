@@ -205,7 +205,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
 
       this.projectContext = {
         id: project.id,
-        href: this.PathHelper.projectWorkPackagePath(project.id, workPackageId),
+        href: this.PathHelper.projectWorkPackagePath(project.id, this.workPackage.displayId),
         matches: project.href === this.currentProject.apiv3Path,
       };
     }

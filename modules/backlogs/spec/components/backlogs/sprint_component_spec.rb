@@ -41,7 +41,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
+  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
 
   def render_component
     render_inline(described_class.new(sprint:, project:, current_user: user))
@@ -57,7 +57,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
                priority: default_priority,
                story_points: 5,
                position: 1,
-               sprint: sprint)
+               sprint:)
       end
       let!(:story2) do
         create(:work_package,
@@ -67,7 +67,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
                priority: default_priority,
                story_points: 3,
                position: 2,
-               sprint: sprint)
+               sprint:)
       end
 
       it "renders a Primer::Beta::BorderBox" do
@@ -79,7 +79,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       it "has the sprint ID in the DOM id" do
         render_component
 
-        expect(page).to have_css(".Box#agile_sprint_#{sprint.id}")
+        expect(page).to have_css(".Box#sprint_#{sprint.id}")
       end
 
       it "renders SprintHeaderComponent in header" do
@@ -91,7 +91,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       it "renders a stable id on the sprint header" do
         render_component
 
-        expect(page).to have_element(:div, class: "Box-header", id: /\Aagile_sprint_#{sprint.id}_header\z/)
+        expect(page).to have_element(:div, class: "Box-header", id: /\Asprint_#{sprint.id}_header\z/)
       end
 
       it "renders StoryComponent for each story" do
@@ -120,6 +120,42 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(story_row["data-draggable-type"]).to eq("story")
         expected_path = move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story1.id)
         expect(story_row["data-drop-url"]).to end_with(expected_path)
+      end
+
+      it "builds split-view and full-view URLs from the numeric id in classic mode" do
+        render_component
+
+        story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
+        expect(story_row["data-backlogs--story-id-value"]).to eq(story1.id.to_s)
+        expect(story_row["data-backlogs--story-display-id-value"]).to eq(story1.id.to_s)
+        expect(story_row["data-backlogs--story-split-url-value"])
+          .to end_with(project_backlogs_backlog_details_path(project, story1.id))
+        expect(story_row["data-backlogs--story-full-url-value"])
+          .to end_with(work_package_path(story1.id))
+      end
+
+      context "in semantic mode",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:project) { create(:project, types: [type_feature, type_task], identifier: "SPRINT") }
+
+        it "builds split-view and full-view URLs from the semantic displayId" do
+          render_component
+
+          semantic_id = story1.reload.identifier
+          expect(semantic_id).to start_with("SPRINT-")
+
+          story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
+          expect(story_row["data-backlogs--story-display-id-value"]).to eq(semantic_id)
+          expect(story_row["data-backlogs--story-split-url-value"])
+            .to end_with(project_backlogs_backlog_details_path(project, semantic_id))
+          expect(story_row["data-backlogs--story-split-url-value"])
+            .not_to include("/details/#{story1.id}")
+          expect(story_row["data-backlogs--story-full-url-value"])
+            .to end_with(work_package_path(semantic_id))
+          expect(story_row["data-backlogs--story-full-url-value"])
+            .not_to include("/work_packages/#{story1.id}")
+        end
       end
 
       context "when params[:all] is true" do

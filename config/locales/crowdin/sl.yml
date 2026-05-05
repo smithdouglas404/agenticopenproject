@@ -433,7 +433,8 @@ sl:
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
@@ -478,8 +479,14 @@ sl:
         ignore: Ignore changes
         save: Save changes and continue
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Select role
+        roles:
+          one: "%{count} role selected"
+          two: "%{count} roles selected"
+          few: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
         description: Add statuses to start configuring workflows for this role
@@ -1141,6 +1148,8 @@ sl:
       no_results_title_text: Trenutno ni nobenih novic za poročanje.
       no_results_content_text: Dodajte novico
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -2041,6 +2050,29 @@ sl:
         type: Vrsta
         version: Različica
         watcher: Opazovalec
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: mora biti sprejeto.
@@ -2978,8 +3010,8 @@ sl:
     - avgust
     - september
     - oktober
-    - november
-    - december
+    - November
+    - December
     order:
     - :leto
     - :mesec
@@ -4354,6 +4386,7 @@ sl:
   label_role_new: Nova vloga
   label_role_grantable: Grantable role
   label_role_plural: Vloge
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Dodelite vlogo novim članom
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -5308,6 +5341,9 @@ sl:
   setting_mail_handler_body_delimiter_regex: skrajšaj e-poštna sporočila, ki se ujemajo s tem izražanjem
   setting_mail_handler_ignore_filenames: Zanemarjene priloge e-pošte
   setting_new_project_user_role_id: Vloga, dodeljena neadministratorskemu uporabniku, ki je ustvaril projekt
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements

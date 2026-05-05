@@ -118,7 +118,7 @@ module WorkPackages::Costs
       reassign_to = ::WorkPackage
                       .joins(:project)
                       .merge(Project.allowed_to(user, :edit_cost_entries))
-                      .find_by_id(ids)
+                      .find_by(id: ids)
 
       if reassign_to.nil?
         work_packages.each do |wp|

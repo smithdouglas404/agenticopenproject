@@ -33,7 +33,7 @@ require "services/base_services/behaves_like_update_service"
 
 RSpec.describe BacklogBuckets::UpdateService, type: :model do
   it_behaves_like "BaseServices update service" do
-    let(:model_class) { Agile::BacklogBucket }
+    let(:model_class) { BacklogBucket }
     let(:factory) { :backlog_bucket }
   end
 end

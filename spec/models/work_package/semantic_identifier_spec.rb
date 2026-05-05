@@ -415,6 +415,74 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "#formatted_id" do
+    context "when semantic mode is active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      it "returns the semantic identifier without hash prefix" do
+        expect(work_package.formatted_id).to eq("MYPROJ-1")
+      end
+    end
+
+    context "when semantic mode is active but identifier is nil",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      before { work_package.update_columns(identifier: nil) }
+
+      it "falls back to hash-prefixed numeric id" do
+        expect(work_package.formatted_id).to eq("##{work_package.id}")
+      end
+    end
+
+    context "when semantic mode is not active",
+            with_flag: { semantic_work_package_ids: false } do
+      it "returns hash-prefixed numeric id" do
+        expect(work_package.formatted_id).to eq("##{work_package.id}")
+      end
+    end
+  end
+
+  describe "#to_param" do
+    include Rails.application.routes.url_helpers
+
+    context "when semantic mode is active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      it "returns the semantic identifier" do
+        expect(work_package.to_param).to eq("MYPROJ-1")
+      end
+
+      it "falls back to the numeric id when identifier is missing" do
+        work_package.update_columns(identifier: nil, sequence_number: nil)
+        expect(work_package.to_param).to eq(work_package.id.to_s)
+      end
+
+      it "makes work_package_path produce a semantic URL" do
+        expect(work_package_path(work_package)).to end_with("/work_packages/MYPROJ-1")
+      end
+
+      it "returns nil for new (unsaved) records" do
+        expect(WorkPackage.new.to_param).to be_nil
+      end
+    end
+
+    context "when classic mode is active",
+            with_flag: { semantic_work_package_ids: false },
+            with_settings: { work_packages_identifier: "classic" } do
+      it "returns the numeric id as a string" do
+        expect(work_package.to_param).to eq(work_package.id.to_s)
+      end
+
+      it "makes work_package_path produce a numeric URL" do
+        expect(work_package_path(work_package)).to end_with("/work_packages/#{work_package.id}")
+      end
+
+      it "returns nil for new (unsaved) records" do
+        expect(WorkPackage.new.to_param).to be_nil
+      end
+    end
+  end
+
   describe "semantic_identifier_fields_consistent validation" do
     subject(:wp) { build(:work_package, project:, sequence_number: nil, identifier: nil) }
 

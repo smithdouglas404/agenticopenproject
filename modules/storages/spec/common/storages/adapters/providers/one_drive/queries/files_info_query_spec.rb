@@ -74,7 +74,7 @@ module Storages
                     owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
                     last_modified_by_name: "Eric Schubert",
                     last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
-                    location: "/Folder%20with%20spaces"
+                    location: "/Folder with spaces"
                   ),
                   Results::StorageFileInfo.new(
                     status: "ok",

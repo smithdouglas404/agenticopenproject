@@ -40,6 +40,25 @@ See COPYRIGHT and LICENSE files for more details.
     page_title
   ]) %>
 
+  <%# TODO: temp — move to a dedicated per-user connection status component once designed %>
+  <% if current_user_xwiki_token_missing?(@wiki_provider) %>
+    <% header.with_action_button(
+      tag: :a,
+      scheme: :default,
+      mobile_icon: :plug,
+      mobile_label: t("wikis.buttons.connect_account", provider: @wiki_provider.name),
+      size: :medium,
+      href: oauth_clients_ensure_connection_url(
+        oauth_client_id: @wiki_provider.oauth_client.client_id,
+        storage_id: @wiki_provider.id,
+        destination_url: edit_admin_settings_wiki_provider_url(@wiki_provider)
+      )
+    ) do |button|
+      button.with_leading_visual_icon(icon: :plug)
+      t("wikis.buttons.connect_account", provider: @wiki_provider.name)
+    end %>
+  <% end %>
+
   <% header.with_action_button(
     tag: :a,
     scheme: :danger,

@@ -53,7 +53,7 @@ See COPYRIGHT and LICENSE files for more details.
         head.with_actions do
           render Primer::Beta::Button.new(
             tag: :a,
-            label: Agile::BacklogBucket.human_model_name,
+            label: BacklogBucket.human_model_name,
             href: new_dialog_project_backlogs_backlog_buckets_path(project, all_backlogs_params),
             data: {
               controller: "async-dialog",
@@ -61,7 +61,7 @@ See COPYRIGHT and LICENSE files for more details.
             }
           ) do |button|
             button.with_leading_visual_icon(icon: :plus)
-            Agile::BacklogBucket.human_model_name
+            BacklogBucket.human_model_name
           end
         end
       elsif allow_sprint_creation?(project)

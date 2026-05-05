@@ -35,7 +35,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
   shared_let(:type_task) { create(:type_task) }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
+  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:user) { create(:user) }
   let(:permissions) { [] }
 
@@ -106,7 +106,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
     context "when the sprint is active and has a task board" do
       let(:sprint) do
-        create(:agile_sprint,
+        create(:sprint,
                project:,
                name: "Sprint 1",
                start_date: Date.yesterday,
@@ -133,7 +133,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
     context "when the sprint is completed and has a task board" do
       let(:sprint) do
-        create(:agile_sprint,
+        create(:sprint,
                project:,
                name: "Sprint 1",
                start_date: Date.yesterday,
@@ -153,7 +153,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       let(:source_project) { create(:project, sprint_sharing: "share_all_projects", types: [type_feature, type_task]) }
       let(:project) { create(:project, sprint_sharing: "receive_shared", types: [type_feature, type_task]) }
       let(:sprint) do
-        create(:agile_sprint,
+        create(:sprint,
                project: source_project,
                name: "Shared Sprint",
                start_date: Date.yesterday,

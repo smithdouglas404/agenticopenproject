@@ -57,29 +57,29 @@ RSpec.describe "backlogs/burndown_chart/show" do
     create(:work_package, status: statuses[0],
                           project:,
                           type: type_feature,
-                          sprint: sprint,
+                          sprint:,
                           priority: issue_priority)
   end
   let(:story_b) do
     create(:work_package, status: statuses[1],
                           project:,
                           type: type_feature,
-                          sprint: sprint,
+                          sprint:,
                           priority: issue_priority)
   end
   let(:story_c) do
     create(:work_package, status: statuses[2],
                           project:,
                           type: type_feature,
-                          sprint: sprint,
+                          sprint:,
                           priority: issue_priority)
   end
   let(:stories) { [story_a, story_b, story_c] }
   let(:sprint) do
-    create(:agile_sprint, project:, start_date: Time.zone.today - 1.week, finish_date: Time.zone.today + 1.week)
+    create(:sprint, project:, start_date: Time.zone.today - 1.week, finish_date: Time.zone.today + 1.week)
   end
   let(:task) do
-    task = create(:task, project:, status: statuses[0], sprint: sprint, type: type_task)
+    task = create(:task, project:, status: statuses[0], sprint:, type: type_task)
     # This is necessary as for some unknown reason passing the parent directly
     # leads to the task searching for the parent with 'root_id' is NULL, which
     # is not the case as the story has its own id as root_id

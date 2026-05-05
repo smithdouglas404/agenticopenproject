@@ -40,9 +40,9 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
   shared_let(:project1) { create(:project) }
   shared_let(:project2) { create(:project) }
   shared_let(:type) { create(:type) }
-  shared_let(:sprint1) { create(:agile_sprint, project: project1, name: "Sprint 1") }
-  shared_let(:sprint2) { create(:agile_sprint, project: project1, name: "Sprint 2") }
-  shared_let(:sprint3) { create(:agile_sprint, project: project2, name: "Sprint 2") }
+  shared_let(:sprint1) { create(:sprint, project: project1, name: "Sprint 1") }
+  shared_let(:sprint2) { create(:sprint, project: project1, name: "Sprint 2") }
+  shared_let(:sprint3) { create(:sprint, project: project2, name: "Sprint 2") }
 
   shared_let(:sprint1_wp1) { create_work_package(subject: "Sprint 1 WorkPackage 1", sprint: sprint1, position: nil) }
   shared_let(:sprint1_wp2) { create_work_package(subject: "Sprint 1 WorkPackage 2", sprint: sprint1, position: 1) }

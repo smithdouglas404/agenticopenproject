@@ -431,7 +431,8 @@ uk:
           error_special_characters: Не дозволяється використовувати спеціальні символи
           error_not_fully_uppercased: Літери мають бути великими
           error_in_use: Уже використовується як активний дескриптор іншого проєкту
-          error_reserved: Зарезервовано в історії дескрипторів іншого проєкту
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Потребує ручної перевірки
           remaining_projects:
             one: "… ще 1 проєкт"
@@ -476,8 +477,14 @@ uk:
         ignore: Ігнорувати зміни
         save: Зберегти зміни й продовжити
       role_selector:
+        title: Select roles
         label: 'Роль: %{role}'
         no_role: Виберіть роль
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Переходи статусів не налаштовано
         description: Додайте статуси, щоб почати налаштовувати робочі процеси для цієї ролі
@@ -1140,6 +1147,8 @@ uk:
       no_results_title_text: Наразі немає жодної новини.
       no_results_content_text: Додати новину
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Призначити всі дозволи модуля «%{module}»
       section_uncheck_all_label: Скасувати призначення всіх дозволів модуля «%{module}»
@@ -2035,6 +2044,29 @@ uk:
         type: Тип
         version: Версія
         watcher: Спостерігач
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: повинні бути прийняті.
@@ -4062,7 +4094,7 @@ uk:
   label_index_by_title: Індекс за назвою
   label_information: Інформація
   label_information_plural: Інформація
-  label_installation_guides: Інструкції із встановлення
+  label_installation_guides: Інструкції зі встановлення
   label_integer: Ціле число
   label_interface: Інтерфейс
   label_internal: Власне
@@ -4340,6 +4372,7 @@ uk:
   label_role_new: Нова роль
   label_role_grantable: Роль, що надається
   label_role_plural: Роль
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Призначити роль для нових членів
   label_scm: Тип сховища
   label_scroll_left: Гортати вліво
@@ -5287,6 +5320,9 @@ uk:
   setting_mail_handler_body_delimiter_regex: Обрізати електронні листи, які відповідають цьому регулярному виразу
   setting_mail_handler_ignore_filenames: Проігноровані вкладення пошти
   setting_new_project_user_role_id: Роль, що призначається користувачу, створившому проект
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Надсилати сповіщення автору при створенні нового проєкту
   setting_new_project_notification_text: Текст сповіщення
   setting_password_active_rules: Password requirements

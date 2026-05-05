@@ -35,7 +35,7 @@ RSpec.describe Queries::Sprints::Filters::NameFilter do
     let(:class_key) { :name }
     let(:human_name) { I18n.t(:label_name) }
     let(:type) { :string }
-    let(:model) { Agile::Sprint }
+    let(:model) { Sprint }
 
     describe "#allowed_values" do
       it "is nil" do

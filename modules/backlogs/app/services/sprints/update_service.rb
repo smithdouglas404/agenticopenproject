@@ -30,6 +30,6 @@
 
 class Sprints::UpdateService < BaseServices::Update
   def instance_class
-    Agile::Sprint
+    Sprint
   end
 end

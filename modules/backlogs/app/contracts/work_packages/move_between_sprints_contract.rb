@@ -41,8 +41,8 @@ module WorkPackages
     private
 
     def active_sprint_in_sharer_project
-      unless Agile::Sprint
-               .native_to_sprint_source(Agile::Sprint.find_by(id: model.sprint_id_was).project)
+      unless Sprint
+               .native_to_sprint_source(Sprint.find_by(id: model.sprint_id_was).project)
                .in_planning
                .exists?(id: model.sprint_id)
         errors.add(:sprint, :not_eligible_for_moving)

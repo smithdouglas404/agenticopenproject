@@ -29,7 +29,7 @@
 #++
 
 FactoryBot.define do
-  factory :backlog_bucket, class: "Agile::BacklogBucket" do
+  factory :backlog_bucket do
     sequence(:name) { |n| "#{n} #{'idea'.pluralize(n)} for another name for a bucket list" }
     project
   end

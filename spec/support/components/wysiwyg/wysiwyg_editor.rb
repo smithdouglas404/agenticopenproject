@@ -137,7 +137,7 @@ module Components
       end
     end
 
-    def wait_until_upload_progress_toaster_cleared
+    def wait_until_upload_progress_toaster_cleared # rubocop:disable Naming/PredicateMethod
       page.has_no_selector?("op-toasters-upload-progress")
     end
 
@@ -153,8 +153,10 @@ module Components
 
     def insert_link(link)
       click_toolbar_button "Link"
-      page.find(".ck-input-text").set link
-      page.find(".ck-button-save").click
+      page.within(".ck-balloon-rotator") do
+        fill_in "Link URL", with: link
+        click_button "Insert"
+      end
     end
 
     def click_toolbar_button(label)
@@ -200,7 +202,7 @@ module Components
       # Set alignment left
       editor.click_hover_toolbar_button label
 
-      find(".ck-button-save").click
+      find(".ck-button", text: "Save").click
     end
   end
 end

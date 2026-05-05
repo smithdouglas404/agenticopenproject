@@ -114,6 +114,11 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
 
       # Wait for the filter save to complete before opening the column configuration,
       # otherwise the two saves can race and only one change gets persisted.
+      # The first wait_for_network_idle catches the query-form GET; the sleep gives
+      # JavaScript time to process the form response and start the filter PATCH,
+      # and the second wait_for_network_idle catches that PATCH completing.
+      wait_for_network_idle
+      sleep(0.2)
       wait_for_network_idle
 
       filter_area.configure_wp_table
@@ -177,13 +182,16 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
         expect(filter_area.area)
           .to have_css(".id", text: type_work_package.id)
 
+        # As other_type is filtered out — check this before the subject column check
+        # so that Capybara waits here until the saved type filter is actually applied.
+        # Without this ordering, have_no_css(".subject") can run while the widget is
+        # still in its initial unfiltered state and fail.
+        expect(filter_area.area)
+          .to have_no_css(".id", text: other_type_work_package.id)
+
         # as the Subject column is disabled
         expect(filter_area.area)
           .to have_no_css(".subject", text: type_work_package.subject)
-
-        # As other_type is filtered out
-        expect(filter_area.area)
-          .to have_no_css(".id", text: other_type_work_package.id)
       end
     end
   end

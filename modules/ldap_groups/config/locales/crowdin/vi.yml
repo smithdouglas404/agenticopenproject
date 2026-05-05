@@ -64,11 +64,11 @@ vi:
         confirmation: Nếu bạn tiếp tục, nhóm được đồng bộ hóa %{name} và tất cả người dùng %{users_count} được đồng bộ hóa thông qua nhóm đó sẽ bị xóa.
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        Mô-đun này cho phép bạn thiết lập đồng bộ hóa giữa các nhóm LDAP và OpenProject.
-        Nó phụ thuộc vào các nhóm LDAP cần sử dụng thuộc tính <em>groupOfNames / memberOf</em> để hoạt động với OpenProject.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        Các nhóm được đồng bộ hóa hàng giờ thông qua một công việc định kỳ.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Xin vui lòng xem tài liệu của chúng tôi về chủ đề này</a>.
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: Không tìm thấy nhóm được đồng bộ hóa nào.
       no_members: Nhóm này chưa có thành viên đồng bộ nào.
       plural: Nhóm LDAP được đồng bộ hóa

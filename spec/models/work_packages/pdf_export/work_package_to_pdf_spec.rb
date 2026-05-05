@@ -632,7 +632,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
 
     context "with the backlogs module enabled" do
       let(:enabled_module_names) { %i[backlogs] }
-      let(:sprint) { create(:agile_sprint, name: "Sprint name for export", project:) }
+      let(:sprint) { create(:sprint, name: "Sprint name for export", project:) }
 
       before do
         work_package.sprint = sprint
