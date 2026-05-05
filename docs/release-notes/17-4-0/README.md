@@ -183,9 +183,9 @@ A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deut
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
-- [Phi Công Nguyễn Vũ](https://crowdin.com/profile/nguyenvuphicong), for an outstanding number of translations into Vietnamese.
-- [Mehmet Coşkun](https://crowdin.com/profile/mmehmet.ccoskun), for a great number of translations into Turkish.
-- [Liangzdz](https://crowdin.com/profile/Liangzdz), for a great number of translations into Chinese Simplified.
+- [Samo](https://crowdin.com/profile/samoe), for a great number of translations into Turkish.
+- [NCAA](https://crowdin.com/profile/ncaa), for a great number of translations into Danish.
+- [Christophe Gesché](https://crowdin.com/profile/Moosh-be), for a great number of translations into French.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 
