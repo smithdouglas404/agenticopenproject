@@ -67,12 +67,18 @@ See COPYRIGHT and LICENSE files for more details.
       </span>
     </td>
     <td class="buttons">
-      <button type="button"
-              class="delete-row-button no-decoration-on-hover button--link"
-              aria-label="<%= t(:button_delete) %>"
-              data-action="subform#deleteRow">
-        <%= render(Primer::Beta::Octicon.new(icon: :trash)) %>
-      </button>
+      <%=
+        render(
+          Primer::Beta::IconButton.new(
+            icon: :trash,
+            scheme: :invisible,
+            type: :button,
+            classes: "delete-row-button",
+            aria: { label: t(:button_delete) },
+            data: { action: "subform#deleteRow" }
+          )
+        )
+      %>
     </td>
   <% end %>
 <% end %>

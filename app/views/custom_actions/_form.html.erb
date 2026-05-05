@@ -156,12 +156,18 @@
                                           step: 1 %>
             </div>
           <% end %>
-          <button type="button"
-                  class="spot-link"
-                  aria-label="<%= t(:button_close) %>"
-                  data-action="click->hide-sections#hide">
-            <%= render(Primer::Beta::Octicon.new(icon: :x, size: :small)) %>
-          </button>
+          <%=
+            render(
+              Primer::Beta::IconButton.new(
+                icon: :x,
+                size: :small,
+                scheme: :invisible,
+                type: :button,
+                aria: { label: t(:button_close) },
+                data: { action: "click->hide-sections#hide" }
+              )
+            )
+          %>
         </div>
       </section>
     <% end %>

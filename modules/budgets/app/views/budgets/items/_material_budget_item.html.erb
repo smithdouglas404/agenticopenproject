@@ -97,7 +97,7 @@ See COPYRIGHT and LICENSE files for more details.
         <% cost_value = material_budget_item.amount || material_budget_item.calculated_costs(@budget.fixed_date) %>
         <button type="button"
                 id="<%= id_prefix %>_costs"
-                class="costs--edit-planned-costs-btn icon-context icon-edit button--link"
+                class="costs--edit-planned-costs-btn icon-context icon-edit button--link no-decoration-on-hover"
                 aria-label="<%= t(:help_click_to_edit) %>">
           <%= number_to_currency(cost_value) %>
         </button>
