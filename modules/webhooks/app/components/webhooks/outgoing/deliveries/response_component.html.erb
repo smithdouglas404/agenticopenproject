@@ -1,13 +1,13 @@
 <section
   data-augmented-model-wrapper
-  data-activation-selector='[data-log-response-modal-activation-link="<%= id %>"]'
+  data-activation-selector=".log-response-<%= id %>-modal--activation-link"
   data-modal-class-name="webhooks--response-body-modal">
   <%=
     render(
       Primer::Beta::Button.new(
         scheme: :link,
-        aria: { label: response_body_title },
-        data: { log_response_modal_activation_link: id }
+        classes: "log-response-#{id}-modal--activation-link",
+        aria: { label: response_body_title }
       )
     ) do |link|
       link.with_leading_visual_icon(icon: :info)
