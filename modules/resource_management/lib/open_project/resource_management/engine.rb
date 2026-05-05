@@ -37,7 +37,7 @@ module OpenProject::ResourceManagement
     include OpenProject::Plugins::ActsAsOpEngine
 
     initializer "openproject-resource_management.feature_decisions" do
-      OpenProject::FeatureDecisions.add :resource_management
+      OpenProject::FeatureDecisions.add :resource_management, allow_enabling: Rails.env.local?
     end
 
     register "openproject-resource_management",
