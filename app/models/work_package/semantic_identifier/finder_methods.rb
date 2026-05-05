@@ -56,7 +56,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     end
 
     ids = args.first.is_a?(Array) ? args.first : args
-    if ids.any? { |id| semantic_id?(id) }
+    if ids.any? { semantic_id?(it) }
       raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
             "Semantic identifiers in multi-argument find are not supported. " \
             "Use primary keys for multi-argument lookup, or resolve each identifier " \
@@ -146,7 +146,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
 
   def first_semantic_value(value)
     if value.is_a?(Array)
-      value.detect { |v| semantic_id?(v) }
+      value.detect { semantic_id?(it) }
     elsif semantic_id?(value)
       value
     end
