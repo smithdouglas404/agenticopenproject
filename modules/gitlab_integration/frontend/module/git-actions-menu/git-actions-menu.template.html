@@ -5,7 +5,7 @@
     <div class="copy-wrapper spot-form-field">
       <label class="spot-form-field--label-wrap">
         <div class="spot-form-field--label">{{ snippet.name }}</div>
-        <div class="spot-form-field--input">
+        <div class="spot-form-field--input copy-input">
           @if (snippet.multiline) {
             <textarea class="copy-content op-input" rows="3" readonly>{{ snippet.text() }}</textarea>
           } @else {
