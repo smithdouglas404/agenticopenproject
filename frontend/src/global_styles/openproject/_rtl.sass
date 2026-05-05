@@ -1,0 +1,148 @@
+//-- copyright
+// OpenProject is an open source project management software.
+// Copyright (C) the OpenProject GmbH
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License version 3.
+//
+// See COPYRIGHT and LICENSE files for more details.
+//++
+
+// -------------------- RTL (Right-to-Left) Support --------------------
+// Provides global RTL overrides for Arabic, Hebrew, and Farsi locales.
+// The dir="rtl" attribute is set on the <html> element by the server
+// when the user's locale is RTL.
+
+[dir="rtl"]
+  // -------------------- Text alignment --------------------
+  body,
+  p,
+  td,
+  th,
+  li,
+  dd,
+  dl,
+  label,
+  .form--label,
+  .generic-table--header,
+  .op-tab-row--link
+    text-align: right
+
+  // -------------------- Main layout --------------------
+  #wrapper
+    direction: rtl
+
+  // -------------------- Main menu --------------------
+  #main-menu
+    left: auto
+    right: 0
+
+    .main-menu--children
+      padding-left: 0
+      padding-right: 10px
+
+    .main-item-wrapper
+      .main-menu--arrow-left-to-project
+        left: auto
+        right: 0
+
+  // -------------------- Main menu resizer --------------------
+  .main-menu--resizer
+    left: auto
+    right: calc(var(--main-menu-width) - 0.25rem)
+
+  // -------------------- Breadcrumbs --------------------
+  .op-breadcrumb
+    direction: rtl
+    text-align: right
+
+  // -------------------- Toolbar --------------------
+  .toolbar-container
+    .toolbar-items
+      margin-left: 0
+      margin-right: auto
+
+  // -------------------- Forms --------------------
+  .form--field
+    .form--label
+      text-align: right
+
+    .form--field-container
+      direction: rtl
+
+  // -------------------- Tables --------------------
+  .generic-table
+    direction: rtl
+
+    td, th
+      text-align: right
+
+      &:first-child
+        padding-left: 0
+        padding-right: 6px
+
+      &:last-child
+        padding-right: 0
+        padding-left: 6px
+
+  // -------------------- Work package table --------------------
+  .work-package-table
+    direction: rtl
+
+  // -------------------- Sidebar --------------------
+  #sidebar
+    left: auto
+    right: 0
+
+  // -------------------- Modals/Overlays --------------------
+  .op-modal--modal-container
+    direction: rtl
+    text-align: right
+
+  // -------------------- Buttons --------------------
+  .button--icon + .button--text,
+  .op-icon + span
+    margin-left: 0
+    margin-right: 0.35rem
+
+  // -------------------- Flash messages --------------------
+  .op-toast
+    direction: rtl
+    text-align: right
+
+  // -------------------- Lists --------------------
+  ul, ol
+    padding-left: 0
+    padding-right: 40px
+
+  // -------------------- Input fields --------------------
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  input[type="url"],
+  textarea,
+  select
+    direction: rtl
+    text-align: right
+
+  // -------------------- Checkboxes & radios --------------------
+  input[type="checkbox"],
+  input[type="radio"]
+    margin-left: 0.5rem
+    margin-right: 0
+
+  // -------------------- Gantt chart --------------------
+  // The timeline uses absolute left positioning for bars and grid.
+  // Force LTR on the scroll container and inner elements so JS
+  // positioning and scrollLeft calculations stay valid.
+  .work-packages-tabletimeline--timeline-side,
+  .wp-table-timeline--outer,
+  .wp-table-timeline--container,
+  .wp-table-timeline--body
+    direction: ltr
+
+  // -------------------- Font features for Arabic ligatures --------------------
+  font-feature-settings: "liga" 1, "calt" 1
+  letter-spacing: normal

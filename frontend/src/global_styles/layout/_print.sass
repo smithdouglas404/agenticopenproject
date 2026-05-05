@@ -67,6 +67,22 @@
   h3
     font-size: 1.17em
 
+  // -------------------- RTL / Arabic print support --------------------
+  .-rtl,
+  [dir="rtl"]
+    direction: rtl
+    text-align: right
+    font-feature-settings: "liga" 1, "calt" 1
+    letter-spacing: normal
+    word-spacing: normal
+    text-rendering: optimizeLegibility
+
+    table.list
+      direction: rtl
+
+      th, td
+        text-align: right
+
   .-browser-firefox
     #content-wrapper
       // Needed to prevent an empty first page when printing in Firefox
