@@ -10,9 +10,7 @@ release_date: 2026-04-23
 
  Release date: 2026-04-23
 
- We released OpenProject [OpenProject 17.4.0](https://community.openproject.org/versions/2267).
- The release contains several bug fixes and we recommend updating to the newest version.
- In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+ We released [OpenProject 17.4.0](https://community.openproject.org/versions/2267). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
 <!-- BEGIN CVE AUTOMATED SECTION -->
 
@@ -20,11 +18,81 @@ release_date: 2026-04-23
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+Take a look at our release video showing the most important features introduced in OpenProject 17.4.0:
 
-## Important updates and breaking changes
+![Release video of OpenProject 17.4](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_4_release.mp4)
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+### Support basic custom fields migration from Jira
+
+With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly. While the feature is not yet fully complete and still in Beta, it is ready to be tested – preferably first in a non productive environment. We encourage users to try the Jira Migrator and share their feedback. 
+
+> [!NOTE]
+> If you would like to share anonymized data from your Jira Migrator usage to support our development team, please [reach out to us](https://www.openproject.org/contact/). We are happy to sign an NDA to ensure confidentiality.
+
+It is now possible to migrate basic custom fields from Jira to OpenProject. This includes custom fields that have a corresponding field type in OpenProject, such as text, numbers, dates, and select lists. This helps transfer existing data and maintain a consistent work package structure after migration.
+
+We will continue to expand support for additional custom field types in future releases to enable even more complete migrations.
+
+Screenshot
+
+### Backlog buckets in "Backlog and sprints" view
+
+Backlog buckets are now available. They allow you to group work packages within the backlog into clearly structured lists. Each bucket can be named individually and helps organize large backlogs into manageable sections, making it easier to prioritize work packages and focus on specific groups.
+
+Work packages can be moved between buckets, sorted within each bucket, and adjusted as priorities change.
+
+![Overlay to create a new backlog bucket in OpenProject, user can enter backlog bucket name](openproject-17-4-backlog-bucket-create.png)
+
+### Backlog card draggable + one-click for side panel
+
+Backlog cards are now fully draggable, making it easier to move work packages during backlog refinement and sprint planning. At the same time, you can still open a work package in the side panel with a single click to quickly view and edit details without losing context.
+
+### Sprint Start and Complete buttons in the sprint header
+
+You can now start and complete sprints directly from the sprint header by clicking the respective buttons. This makes these actions easier to access and provides a clearer overview of the sprint status.
+
+> [!NOTE]
+> Please note that these buttons represent actions you can take, such as starting or completing a sprint, and do not indicate the current sprint status.
+
+![OpenProject Backlogs module, Sprints column with marked buttons: "Complete" on top of the active sprint and "Start" on top of the non active sprints](openproject-17-4-backlog-sprints-button-highlighted.png)
+
+### Workflow UX improvement: Apply workflow setting from one role to another role
+
+You can now copy workflow settings from one role to other roles, using a dedicated dialog. This makes it easier to apply consistent workflows across roles and reduces manual configuration effort.
+
+![Overlay in the OpenProject workflow settings: Copy workflow of "Task" to other roles, user can select multiple roles](openproject-17-4-workflow-copy-to-roles.png)
+
+### New widget for upcoming meetings on Project Overview and Home page
+
+A new "My meetings" widget shows your upcoming meetings directly on the Home and Project Overview pages. It displays the most relevant information at a glance, helping you stay on top of your schedule and quickly access upcoming meetings.
+
+Please note that with this update, the Users widget on the Home page (showing newest registered users in the instance) has been removed and replaced by the new "My meetings" widget.
+
+![Project home of "Automotive project" example, My meetings widget highlighted and two clickable meetings with main information (name, time, duration) shown](openproject-17-4-my-meetings-project-home-highlighted.png)
+
+### Demo and trial projects: Updated default modules
+
+The default modules enabled in demo and trial projects have been updated. Budgets and Calendars are now enabled by default in the Demo project. Meetings are now enabled by default in the Scrum project. Please note that for some of the newly enabled modules, example content may not yet be available.
+
+## Important technical updates
+
+### Expose project-based semantic work package identifier on the API
+
+Project-based work package identifiers are now exposed via the API. With upcoming support for semantic identifiers such as `#ABC-123`, a new field `displayId` is available in the API. This field returns the correct identifier format, depending on how the instance is configured.
+
+If you are building or maintaining an application using the OpenProject API V3, we recommend using `displayId` instead of `id` when displaying work package identifiers.
+
+The `id` field will continue to return the internal database ID and should still be used for API requests such as filtering.
+
+For more information on project-based work package identifiers in OpenProject, see the [Epic currently being developed by our team](https://community.openproject.org/wp/41855)
+
+### Meetings and recurring meetings APIv3 endpoints
+
+New APIv3 endpoints are now available for meetings and recurring meetings. These include support for managing agenda items, sections, and occurrences, enabling full access to meeting data via the API.
+
+### Allow webhook secrets for GitHub and GitLab integrations
+
+You can now configure webhook secrets for GitHub and GitLab integrations. This improves the security of incoming webhook requests.
 
 <!--more-->
 
@@ -111,12 +179,13 @@ release_date: 2026-04-23
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Andreas H., Madhu Reddy, Anna Mund.
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Andreas H., Madhu Reddy, and Anna Mund.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [Samo](https://crowdin.com/profile/samoe), for a great number of translations into Turkish.
+- [NCAA](https://crowdin.com/profile/ncaa), for a great number of translations into Danish.
+- [Christophe Gesché](https://crowdin.com/profile/Moosh-be), for a great number of translations into French.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 
