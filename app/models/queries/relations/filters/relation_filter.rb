@@ -37,10 +37,6 @@ module Queries
         def human_name
           Relation.human_attribute_name(name)
         end
-
-        def visibility_checked?
-          false
-        end
       end
     end
   end

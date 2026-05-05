@@ -78,20 +78,15 @@ RSpec.describe Queries::Relations::RelationQuery do
   end
 
   context "with a from filter" do
-    let(:current_user) { build_stubbed(:user) }
-
     before do
-      login_as(current_user)
       instance.where("from_id", "=", ["1"])
     end
 
     describe "#results" do
       it "is the same as handwriting the query (with relation visibility enforced)" do
-        visible_sql = WorkPackage.visible(current_user).select(:id).to_sql
-
         expected = base_scope
                    .merge(Relation
-                          .where("from_id IN ('1') AND to_id IN (#{visible_sql})"))
+                          .where("relations.from_id IN ('1')"))
                    .visible
 
         expect(instance.results.to_sql).to eql expected.to_sql
