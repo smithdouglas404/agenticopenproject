@@ -38,13 +38,16 @@
     position: relative
     margin-bottom: 1rem
 
-  .copy-content
-    width: calc(100% - 3em)
+  .copy-content,
+  .copy-button
     // the min-height should be the size of the copy-icon, which is the sum of:
     // 2 * button padding (0.65em)
     // size of the icon (1rem, size="small" = 16px)
     // 1px where I don't know where it comes from
     min-height: calc(2 * 0.65em + 1rem + 1px)
+
+  .copy-content
+    width: calc(100% - 3em)
     border-radius: 2px 0 0 2px
     padding: 0.65em
     color: var(--fgColor-muted)
@@ -60,6 +63,7 @@
     left: -1px
     position: relative
     font-size: 0.9rem
+    align-self: flex-start
 
     &:hover
       background: var(--button--background-hover-color)
