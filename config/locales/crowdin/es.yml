@@ -1112,6 +1112,8 @@ es:
       no_results_title_text: No hay noticias sobre las que informar por el momento.
       no_results_content_text: Añadir un elemento de noticias
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Asignar todos los permisos de %{module}
       section_uncheck_all_label: Quitar todos los permisos de %{module}
@@ -4236,6 +4238,7 @@ es:
   label_role_new: Nuevo rol
   label_role_grantable: Rol otorgable
   label_role_plural: Perfiles
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Asignar rol a nuevos miembros
   label_scm: SCM
   label_scroll_left: Desplazar hacia la izquierda
@@ -5168,6 +5171,9 @@ es:
   setting_mail_handler_body_delimiter_regex: Truncar correos que coincidan con esta expresión regular
   setting_mail_handler_ignore_filenames: Archivos adjuntos de email ignorados
   setting_new_project_user_role_id: Papel ortorgado a usuario no administrador que crea un proyecto
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Enviar notificación al autor al crear un nuevo proyecto
   setting_new_project_notification_text: Texto de la notificación
   setting_password_active_rules: Password requirements

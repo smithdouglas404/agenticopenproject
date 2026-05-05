@@ -41,11 +41,14 @@ module Wikis
     end
 
     def relation_page_link_infos_for(provider:, linkable:)
-      provider.page_links
-              .merge(RelationPageLink.all)
-              .where(linkable:)
-              .order(created_at: :desc)
-              .map { page_info(provider:, identifier: it.identifier) }
+      Adapters::Input::RelationPageLinks.build(linkable:).bind do |input|
+        provider.resolve("queries.relation_page_links")
+                .call(input)
+                .either(
+                  ->(page_link_infos) { page_link_infos },
+                  -> { [] }
+                )
+      end
     end
 
     def inline_page_link_infos_for(linkable:)
@@ -62,7 +65,7 @@ module Wikis
           provider.resolve("queries.referencing_pages")
                   .call(input)
                   # Only return page infos for successful results
-                  .fmap { |page_infos| referenced_in.concat(page_infos.map { Success(it) }) }
+                  .fmap { referenced_in.concat(it) }
         end
       end
 

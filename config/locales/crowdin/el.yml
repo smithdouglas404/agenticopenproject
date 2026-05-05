@@ -1114,6 +1114,8 @@ el:
       no_results_title_text: Δεν υπάρχουν προς το παρόν νέα για αναφορά.
       no_results_content_text: Προσθέστε ένα στοιχείο νέων
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -4244,6 +4246,7 @@ el:
   label_role_new: Νέος ρόλος
   label_role_grantable: Grantable role
   label_role_plural: Ρόλοι
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Ανάθεση ρόλων σε νέα μέλη
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -5178,6 +5181,9 @@ el:
   setting_mail_handler_body_delimiter_regex: Περικοπή των email που ταιριάζουμε με αυτό το regex
   setting_mail_handler_ignore_filenames: Συνημμένα mail που αγνοήθηκαν
   setting_new_project_user_role_id: Ο ρόλος δόθηκε σε μη-διαχειριστή χρήστη ο οποίος δημιουργεί ένα έργο
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements

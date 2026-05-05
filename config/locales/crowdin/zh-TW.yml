@@ -1099,6 +1099,8 @@ zh-TW:
       no_results_title_text: 目前沒有新消息報告
       no_results_content_text: 新增一個消息
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: 指定所有 %{module} 權限
       section_uncheck_all_label: 取消指定所有 %{module} 權限
@@ -4177,6 +4179,7 @@ zh-TW:
   label_role_new: 新增角色
   label_role_grantable: 可授予的角色
   label_role_plural: 角色
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: 為新成員分配角色
   label_scm: SCM
   label_scroll_left: 向左捲動
@@ -5111,6 +5114,9 @@ zh-TW:
   setting_mail_handler_body_delimiter_regex: 清空符合正規表達式的電子郵件
   setting_mail_handler_ignore_filenames: 依附件名稱排除
   setting_new_project_user_role_id: 非管理員用户新建專案時將被赋予的（在該專案中的）角色
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: 建立新專案時傳送通知給作者
   setting_new_project_notification_text: 通知文字
   setting_password_active_rules: Password requirements

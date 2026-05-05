@@ -184,10 +184,12 @@ sysadmin_docs:
     href: https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions
   ldap:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/ldap-connections/
+  ldap_group_sync:
+    href: https://www.openproject.org/docs/system-admin-guide/authentication/ldap-connections/ldap-group-synchronization/
   mcp_resources:
-   href: https://www.openproject.org/docs/system-admin-guide/integrations/mcp-server/#resources
+    href: https://www.openproject.org/docs/system-admin-guide/integrations/mcp-server/#resources
   mcp_tools:
-   href: https://www.openproject.org/docs/system-admin-guide/integrations/mcp-server/#tools
+    href: https://www.openproject.org/docs/system-admin-guide/integrations/mcp-server/#tools
   oidc:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/openid-providers/
   oidc_acr_values:

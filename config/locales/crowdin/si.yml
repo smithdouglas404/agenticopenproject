@@ -1115,6 +1115,8 @@ si:
       no_results_title_text: වාර්තා කිරීමට දැනට කිසිදු ප්රවෘත්තියක් නොමැත.
       no_results_content_text: ප්රවෘත්ති අයිතමයක් එක් කරන්න
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -4245,6 +4247,7 @@ si:
   label_role_new: නව භූමිකාව
   label_role_grantable: Grantable role
   label_role_plural: භූමිකාවන්
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: නව සාමාජිකයින්ට කාර්යභාරය පැවරීම
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -5183,6 +5186,9 @@ si:
   setting_mail_handler_body_delimiter_regex: මෙම regex ගැලපෙන ඊමේල් Truncate
   setting_mail_handler_ignore_filenames: නොසලකා හරින ලද තැපැල් ඇමුණුම්
   setting_new_project_user_role_id: ව්යාපෘතියක් නිර්මාණය කරන පරිපාලක නොවන පරිශීලකයෙකුට ලබා දී ඇති කාර්යභාරය
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements

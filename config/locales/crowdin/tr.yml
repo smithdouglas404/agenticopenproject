@@ -1116,6 +1116,8 @@ tr:
       no_results_title_text: Şu anda rapor edilecek bir haber yok.
       no_results_content_text: Haber öğesi ekle
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -4250,6 +4252,7 @@ tr:
   label_role_new: Yeni rol
   label_role_grantable: Verilebilir rol
   label_role_plural: Yetkiler
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Yeni üyelere rol atama
   label_scm: YKM
   label_scroll_left: Sola kaydır
@@ -5185,6 +5188,9 @@ tr:
   setting_mail_handler_body_delimiter_regex: Bu düzenli ifade ile uyuşan e-postaları kırp
   setting_mail_handler_ignore_filenames: Yoksayılan posta ekleri
   setting_new_project_user_role_id: Bir proje oluşturan yönetici olmayan bir kullanıcıya verilen rolü
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements
