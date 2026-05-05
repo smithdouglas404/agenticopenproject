@@ -56,12 +56,12 @@ RSpec.describe "form configuration", :js, :selenium do
         visit edit_type_form_configuration_path(type)
       end
 
-      def persisted_section_order(type)
+      def persisted_group_order(type)
         type.reload.attribute_groups.reject { |group| group.key == :__empty }.map(&:translated_key)
       end
 
-      def persisted_attribute_order(type, section_key)
-        type.reload.attribute_groups.find { |group| group.key.to_s == section_key.to_s }&.attributes
+      def persisted_attribute_order(type, group_key)
+        type.reload.attribute_groups.find { |group| group.key.to_s == group_key.to_s }&.attributes
       end
 
       it "resets the form properly after changes" do
@@ -257,7 +257,7 @@ RSpec.describe "form configuration", :js, :selenium do
       end
 
       it "removes a newly added unsaved custom group when canceling edit" do
-        initial_order = form.section_order
+        initial_order = form.group_order
 
         form.add_button_dropdown.click
         click_on I18n.t("types.edit.form_configuration.add_attribute_group")
@@ -266,7 +266,7 @@ RSpec.describe "form configuration", :js, :selenium do
 
         page.find_test_selector("type-form-configuration-group-cancel", wait: 10).click
 
-        expect(form.section_order).to eq(initial_order)
+        expect(form.group_order).to eq(initial_order)
       end
 
       it "keeps a saved custom group when canceling rename" do
@@ -355,45 +355,45 @@ RSpec.describe "form configuration", :js, :selenium do
       end
 
       it "reorders and deletes groups via group actions" do
-        expected_order = persisted_section_order(type)
-        moving_section = expected_order.second
+        expected_order = persisted_group_order(type)
+        moving_group = expected_order.second
         initial_updated_at = type.updated_at
 
-        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_up"))
+        form.invoke_group_action(moving_group, I18n.t("label_agenda_item_move_up"))
         wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
-        index = expected_order.index(moving_section)
+        index = expected_order.index(moving_group)
         expected_order[index], expected_order[index - 1] = expected_order[index - 1], expected_order[index]
-        expect(persisted_section_order(type)).to eq(expected_order)
+        expect(persisted_group_order(type)).to eq(expected_order)
 
         initial_updated_at = type.updated_at
-        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_to_bottom"))
+        form.invoke_group_action(moving_group, I18n.t("label_agenda_item_move_to_bottom"))
         wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
-        expected_order.delete(moving_section)
-        expected_order << moving_section
-        expect(persisted_section_order(type)).to eq(expected_order)
+        expected_order.delete(moving_group)
+        expected_order << moving_group
+        expect(persisted_group_order(type)).to eq(expected_order)
 
         initial_updated_at = type.updated_at
-        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_up"))
+        form.invoke_group_action(moving_group, I18n.t("label_agenda_item_move_up"))
         wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
-        index = expected_order.index(moving_section)
+        index = expected_order.index(moving_group)
         expected_order[index], expected_order[index - 1] = expected_order[index - 1], expected_order[index]
-        expect(persisted_section_order(type)).to eq(expected_order)
+        expect(persisted_group_order(type)).to eq(expected_order)
 
         initial_updated_at = type.updated_at
-        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_to_top"))
+        form.invoke_group_action(moving_group, I18n.t("label_agenda_item_move_to_top"))
         wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
-        expected_order.delete(moving_section)
-        expected_order.unshift(moving_section)
-        expect(persisted_section_order(type)).to eq(expected_order)
+        expected_order.delete(moving_group)
+        expected_order.unshift(moving_group)
+        expect(persisted_group_order(type)).to eq(expected_order)
 
-        deleted_section = expected_order.last
+        deleted_group = expected_order.last
         initial_updated_at = type.updated_at
         accept_confirm I18n.t("types.edit.form_configuration.confirm_delete_group") do
-          form.invoke_section_action(deleted_section, I18n.t("button_delete"))
+          form.invoke_group_action(deleted_group, I18n.t("button_delete"))
         end
         wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
-        expected_order.delete(deleted_section)
-        expect(persisted_section_order(type)).to eq(expected_order)
+        expected_order.delete(deleted_group)
+        expect(persisted_group_order(type)).to eq(expected_order)
       end
 
       it "reorders and deletes attribute rows via row actions" do
@@ -603,7 +603,7 @@ RSpec.describe "form configuration", :js, :selenium do
       subscription =
         ActiveSupport::Notifications.subscribe("process_action.action_controller") do |*, payload|
           payload => { controller:, action: }
-          if controller == "WorkPackageTypes::FormConfigurationSectionsTabController" && action == "create"
+          if controller == "WorkPackageTypes::FormConfigurationGroupsTabController" && action == "create"
             call_count += 1
           end
         end

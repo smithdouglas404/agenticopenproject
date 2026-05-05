@@ -46,13 +46,13 @@ module WorkPackageTypes
         type.attribute_groups.reject { |group| group.key.to_s == "__empty" }
       end
 
-      def find_section(section_key)
-        active_groups.find { |group| group_identifier_match?(group, section_key) }
+      def find_group(group_key)
+        active_groups.find { |group| group_identifier_match?(group, group_key) }
       end
 
-      def find_attribute_section(section_key)
+      def find_attribute_group(group_key)
         type.attribute_groups.find do |group|
-          group.group_type == :attribute && group_identifier_match?(group, section_key)
+          group.group_type == :attribute && group_identifier_match?(group, group_key)
         end
       end
 
@@ -115,11 +115,11 @@ module WorkPackageTypes
       def normalize_group(group, seen_keys:)
         return group if group.key.present?
 
-        group.key = next_untitled_section_name(seen_keys)
+        group.key = next_untitled_group_name(seen_keys)
         group
       end
 
-      def next_untitled_section_name(seen_keys)
+      def next_untitled_group_name(seen_keys)
         base_name = I18n.t("types.edit.form_configuration.untitled_group")
         candidate = base_name
         suffix = 2

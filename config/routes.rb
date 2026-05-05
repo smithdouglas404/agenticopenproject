@@ -151,9 +151,9 @@ Rails.application.routes.draw do
   resources :types, module: "work_package_types", except: [:update] do
     resource :form_configuration, only: %i[edit update], controller: "form_configuration_tab" do
       get :reset_dialog
-      resources :sections, only: %i[create edit update destroy], controller: "form_configuration_sections_tab", param: :key do
+      resources :groups, only: %i[create edit update destroy], controller: "form_configuration_groups_tab", param: :key do
         collection do
-          post :add_section
+          post :add_group
         end
 
         member do

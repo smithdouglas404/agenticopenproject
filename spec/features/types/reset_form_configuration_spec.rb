@@ -81,7 +81,7 @@ RSpec.describe "Reset form configuration",
 
       visit edit_type_form_configuration_path(type)
 
-      expect(form.section_order).to eq([
+      expect(form.group_order).to eq([
                                          "People",
                                          "Estimates and progress",
                                          "Details",

@@ -68,13 +68,13 @@ module WorkPackageTypes
       end
 
       def edit_path
-        edit_type_form_configuration_section_path(@type, @group[:key])
+        edit_type_form_configuration_group_path(@type, @group[:key])
       end
 
       def update_path
         return create_path if temporary_group?
 
-        type_form_configuration_section_path(@type, @group[:key])
+        type_form_configuration_group_path(@type, @group[:key])
       end
 
       def form_method
@@ -82,15 +82,15 @@ module WorkPackageTypes
       end
 
       def cancel_edit_path
-        cancel_edit_type_form_configuration_section_path(@type, @group[:key])
+        cancel_edit_type_form_configuration_group_path(@type, @group[:key])
       end
 
       def move_path(move_to)
-        move_type_form_configuration_section_path(@type, @group[:key], move_to:)
+        move_type_form_configuration_group_path(@type, @group[:key], move_to:)
       end
 
       def destroy_path
-        type_form_configuration_section_path(@type, @group[:key])
+        type_form_configuration_group_path(@type, @group[:key])
       end
 
       def temporary_group?
@@ -98,7 +98,7 @@ module WorkPackageTypes
       end
 
       def create_path
-        type_form_configuration_sections_path(@type)
+        type_form_configuration_groups_path(@type)
       end
 
       def move_action(menu:, href:, label:, icon:)

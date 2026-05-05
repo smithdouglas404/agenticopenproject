@@ -39,13 +39,13 @@ module WorkPackageTypes
       update_inactive_attributes_via_turbo_stream
     end
 
-    def update_main_content_via_turbo_stream(section_groups: active_section_groups, editing_section_key: nil,
+    def update_main_content_via_turbo_stream(groups: active_groups_for_form, editing_group_key: nil,
                                              validation_message: nil, input_value: nil)
       ee_available = EnterpriseToken.allows_to?(:edit_attribute_groups)
       group_components = build_group_components(
-        section_groups:,
+        groups:,
         ee_available:,
-        editing_section_key:,
+        editing_group_key:,
         validation_message:,
         input_value:
       )
@@ -75,27 +75,27 @@ module WorkPackageTypes
       render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.to_sentence)
     end
 
-    def build_group_components(section_groups:, ee_available:, editing_section_key:, validation_message:, input_value:)
-      section_groups.map.with_index do |group, index|
+    def build_group_components(groups:, ee_available:, editing_group_key:, validation_message:, input_value:)
+      groups.map.with_index do |group, index|
         build_group_component(
           group:,
           index:,
-          group_count: section_groups.length,
+          group_count: groups.length,
           ee_available:,
-          editing_section_key:,
+          editing_group_key:,
           validation_message:,
           input_value:
         )
       end
     end
 
-    def active_section_groups
+    def active_groups_for_form
       form_configuration_groups(@type)[:actives].reject { |group| group[:key].to_s == "__empty" }
     end
 
-    def build_group_component(group:, index:, group_count:, ee_available:, editing_section_key:, validation_message:,
+    def build_group_component(group:, index:, group_count:, ee_available:, editing_group_key:, validation_message:,
                               input_value:)
-      is_editing = editing_section_key.present? && group[:key].to_s == editing_section_key.to_s
+      is_editing = editing_group_key.present? && group[:key].to_s == editing_group_key.to_s
 
       WorkPackageTypes::FormConfiguration::GroupComponent.new(
         group:,

@@ -1,7 +1,7 @@
 <% if edit_mode? %>
   <%=
     primer_form_with(
-      scope: :section,
+      scope: :group,
       method: form_method,
       url: update_path,
       test_selector: "type-form-configuration-group-edit-form",
@@ -9,15 +9,15 @@
         turbo_stream: true
       }
     ) do
-      concat(hidden_field_tag("section[group_type]", @group[:type]))
-      concat(hidden_field_tag("section[query]", @group[:query])) if @group[:query].present?
+      concat(hidden_field_tag("group[group_type]", @group[:type]))
+      concat(hidden_field_tag("group[query]", @group[:query])) if @group[:query].present?
 
       concat(
         flex_layout(align_items: :flex_start) do |header|
           header.with_column(flex: 1, mr: 2) do
             render(
               Primer::Alpha::TextField.new(
-                name: "section[name]",
+                name: "group[name]",
                 label: t("types.edit.form_configuration.group_name_label"),
                 visually_hide_label: true,
                 value: @input_value || group_name,
@@ -66,7 +66,7 @@
         left.with_column(mr: 2, classes: "hide-when-print type-form-configuration-page--drag-handle") do
           render(
             Primer::OpenProject::DragHandle.new(
-              classes: "section-handle",
+              classes: "group-handle",
               "aria-label": t("types.edit.form_configuration.drag_to_reorder"),
               test_selector: "type-form-configuration-group-handle-#{@group[:key]}"
             )

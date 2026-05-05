@@ -32,33 +32,33 @@ import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
 
 export default class TypeFormConfigurationController extends Controller {
-  static targets = ['sectionsContainer', 'inactiveContainer'];
+  static targets = ['groupsContainer', 'inactiveContainer'];
 
-  declare readonly sectionsContainerTarget:HTMLElement;
+  declare readonly groupsContainerTarget:HTMLElement;
   declare readonly inactiveContainerTarget:HTMLElement;
 
   static values = {
-    addSectionUrl: String,
+    addGroupUrl: String,
     noFilterQuery: String,
-    sectionsUrl: String,
+    groupsUrl: String,
     updateUrl: String,
   };
 
-  declare readonly addSectionUrlValue:string;
+  declare readonly addGroupUrlValue:string;
   declare readonly noFilterQueryValue:string;
-  declare readonly sectionsUrlValue:string;
+  declare readonly groupsUrlValue:string;
   declare readonly updateUrlValue:string;
 
-  addAttributeSection(event:Event) {
+  addAttributeGroup(event:Event) {
     event.preventDefault();
-    void this.postNewSection('attribute');
+    void this.postNewGroup('attribute');
   }
 
-  addQuerySection(event:Event) {
+  addQueryGroup(event:Event) {
     event.preventDefault();
 
     this.openQueryEditor(this.noFilterQueryValue, (queryProps:unknown) => {
-      void this.postNewSection('query', queryProps);
+      void this.postNewGroup('query', queryProps);
     });
   }
 
@@ -84,23 +84,23 @@ export default class TypeFormConfigurationController extends Controller {
   editQuery(event:Event) {
     event.preventDefault();
 
-    const section = (event.currentTarget as HTMLElement).closest<HTMLElement>('[data-group-key]');
-    if (!section) return;
+    const group = (event.currentTarget as HTMLElement).closest<HTMLElement>('[data-group-key]');
+    if (!group) return;
 
-    this.openQueryEditor(section.dataset.groupQuery ?? this.noFilterQueryValue, (queryProps:unknown) => {
-      const key = section.dataset.groupKey;
+    this.openQueryEditor(group.dataset.groupQuery ?? this.noFilterQueryValue, (queryProps:unknown) => {
+      const key = group.dataset.groupKey;
       if (!key) return;
 
       void this.postQueryUpdate(key, queryProps).then((success) => {
         if (success) {
-          section.dataset.groupQuery = JSON.stringify(queryProps);
+          group.dataset.groupQuery = JSON.stringify(queryProps);
         }
       });
     });
   }
 
-  private async postNewSection(groupType:'attribute'|'query', queryProps?:unknown):Promise<void> {
-    const request = new FetchRequest('post', this.addSectionUrlValue, {
+  private async postNewGroup(groupType:'attribute'|'query', queryProps?:unknown):Promise<void> {
+    const request = new FetchRequest('post', this.addGroupUrlValue, {
       body: {
         group_type: groupType,
         query: queryProps ? JSON.stringify(queryProps) : undefined,
@@ -112,11 +112,11 @@ export default class TypeFormConfigurationController extends Controller {
     if (!response.ok) return;
 
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-    this.focusSectionInput();
+    this.focusGroupInput();
   }
 
-  private async postQueryUpdate(sectionKey:string, queryProps:unknown):Promise<boolean> {
-    const request = new FetchRequest('patch', `${this.sectionsUrlValue}/${encodeURIComponent(sectionKey)}/update_query`, {
+  private async postQueryUpdate(groupKey:string, queryProps:unknown):Promise<boolean> {
+    const request = new FetchRequest('patch', `${this.groupsUrlValue}/${encodeURIComponent(groupKey)}/update_query`, {
       body: {
         query: JSON.stringify(queryProps),
       },
@@ -127,9 +127,9 @@ export default class TypeFormConfigurationController extends Controller {
     return response.ok;
   }
 
-  private focusSectionInput() {
-    const input = this.sectionsContainerTarget
-      .querySelector<HTMLInputElement>('[data-edit-mode="true"] input[name="section[name]"]');
+  private focusGroupInput() {
+    const input = this.groupsContainerTarget
+      .querySelector<HTMLInputElement>('[data-edit-mode="true"] input[name="group[name]"]');
 
     if (!input) return;
 

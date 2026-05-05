@@ -29,27 +29,27 @@
 #++
 
 module WorkPackageTypes
-  class FormConfigurationSectionsTabController < BaseTabController
+  class FormConfigurationGroupsTabController < BaseTabController
     include TypesHelper
     include OpTurbo::ComponentStream
     include WorkPackageTypes::FormConfigurationComponentStreams
 
-    TEMPORARY_SECTION_KEY = "__new_form_configuration_section__"
+    TEMPORARY_GROUP_KEY = "__new_form_configuration_group__"
 
     def edit
-      update_main_content_via_turbo_stream(editing_section_key: section_key_param)
+      update_main_content_via_turbo_stream(editing_group_key: group_key_param)
 
       respond_with_turbo_streams
     end
 
-    def add_section
-      render_temporary_section_editor
+    def add_group
+      render_temporary_group_editor
 
       respond_with_turbo_streams
     end
 
     def create
-      call = create_section_call
+      call = create_group_call
 
       if call.success?
         update_form_configuration_via_turbo_stream
@@ -61,34 +61,34 @@ module WorkPackageTypes
     end
 
     def cancel_edit
-      if temporary_section_key?(section_key_param)
+      if temporary_group_key?(group_key_param)
         update_form_configuration_via_turbo_stream
         respond_with_turbo_streams
         return
       end
 
-      section = find_section(section_key_param)
-      return head :not_found if section.nil?
+      group = find_group(group_key_param)
+      return head :not_found if group.nil?
 
       update_main_content_via_turbo_stream
       respond_with_turbo_streams
     end
 
     def update
-      call = rename_section_call
+      call = rename_group_call
 
       if call.success?
         update_form_configuration_via_turbo_stream
       else
-        render_existing_section_update_error(call)
+        render_existing_group_update_error(call)
       end
 
       respond_with_turbo_streams(status: turbo_status_for(call))
     end
 
     def destroy
-      call = ::WorkPackageTypes::FormConfigurationSections::DeleteService
-        .new(user: current_user, type: @type, section_key: section_key_param)
+      call = ::WorkPackageTypes::FormConfigurationGroups::DeleteService
+        .new(user: current_user, type: @type, group_key: group_key_param)
         .call
 
       if call.success?
@@ -101,8 +101,8 @@ module WorkPackageTypes
     end
 
     def drop
-      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
-        .new(user: current_user, type: @type, section_key: section_key_param)
+      call = ::WorkPackageTypes::FormConfigurationGroups::UpdateService
+        .new(user: current_user, type: @type, group_key: group_key_param)
         .call(position: params[:position])
 
       if call.success?
@@ -115,8 +115,8 @@ module WorkPackageTypes
     end
 
     def move
-      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
-        .new(user: current_user, type: @type, section_key: section_key_param)
+      call = ::WorkPackageTypes::FormConfigurationGroups::UpdateService
+        .new(user: current_user, type: @type, group_key: group_key_param)
         .call(move_to: params[:move_to])
 
       if call.success?
@@ -129,8 +129,8 @@ module WorkPackageTypes
     end
 
     def update_query
-      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
-        .new(user: current_user, type: @type, section_key: section_key_param)
+      call = ::WorkPackageTypes::FormConfigurationGroups::UpdateService
+        .new(user: current_user, type: @type, group_key: group_key_param)
         .call(query_props: params[:query])
 
       if call.success?
@@ -143,11 +143,11 @@ module WorkPackageTypes
 
     private
 
-    def section_params
-      params.expect(section: %i[name group_type query])
+    def group_params
+      params.expect(group: %i[name group_type query])
     end
 
-    def find_section(key)
+    def find_group(key)
       @type.attribute_groups.find do |group|
         [
           group.key,
@@ -157,17 +157,17 @@ module WorkPackageTypes
       end
     end
 
-    def section_key_param
+    def group_key_param
       params[:key] || params[:id]
     end
 
-    def temporary_section_key?(key)
-      key.to_s == TEMPORARY_SECTION_KEY
+    def temporary_group_key?(key)
+      key.to_s == TEMPORARY_GROUP_KEY
     end
 
     def temporary_group(group_type:, query:, name: "")
       {
-        key: TEMPORARY_SECTION_KEY,
+        key: TEMPORARY_GROUP_KEY,
         type: group_type.to_s,
         name:,
         attributes: [],
@@ -180,45 +180,45 @@ module WorkPackageTypes
       call.success? ? :ok : :unprocessable_entity
     end
 
-    def create_section_call
-      ::WorkPackageTypes::FormConfigurationSections::CreateService
+    def create_group_call
+      ::WorkPackageTypes::FormConfigurationGroups::CreateService
         .new(user: current_user, type: @type)
         .call(
-          group_type: section_params[:group_type],
-          name: section_params[:name],
-          query_props: section_params[:query]
+          group_type: group_params[:group_type],
+          name: group_params[:name],
+          query_props: group_params[:query]
         )
     end
 
-    def rename_section_call
-      ::WorkPackageTypes::FormConfigurationSections::UpdateService
-        .new(user: current_user, type: @type, section_key: section_key_param)
-        .call(name: section_params[:name])
+    def rename_group_call
+      ::WorkPackageTypes::FormConfigurationGroups::UpdateService
+        .new(user: current_user, type: @type, group_key: group_key_param)
+        .call(name: group_params[:name])
     end
 
     def render_create_error(call)
-      render_temporary_section_editor(
-        group_type: section_params[:group_type],
-        query: section_params[:query],
-        name: section_params[:name].to_s,
+      render_temporary_group_editor(
+        group_type: group_params[:group_type],
+        query: group_params[:query],
+        name: group_params[:name].to_s,
         validation_message: call.errors.map(&:message).to_sentence
       )
     end
 
-    def render_existing_section_update_error(call)
+    def render_existing_group_update_error(call)
       @type.reload
       update_main_content_via_turbo_stream(
-        editing_section_key: section_key_param,
+        editing_group_key: group_key_param,
         validation_message: call.errors.map(&:message).to_sentence,
-        input_value: section_params[:name].to_s
+        input_value: group_params[:name].to_s
       )
     end
 
-    def render_temporary_section_editor(group_type: params[:group_type], query: params[:query], name: "",
-                                        validation_message: nil)
+    def render_temporary_group_editor(group_type: params[:group_type], query: params[:query], name: "",
+                                      validation_message: nil)
       update_main_content_via_turbo_stream(
-        section_groups: [temporary_group(group_type:, query:, name:)] + active_section_groups,
-        editing_section_key: TEMPORARY_SECTION_KEY,
+        groups: [temporary_group(group_type:, query:, name:)] + active_groups_for_form,
+        editing_group_key: TEMPORARY_GROUP_KEY,
         validation_message:
       )
     end

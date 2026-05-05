@@ -31,7 +31,7 @@
 require "spec_helper"
 
 module WorkPackageTypes
-  module FormConfigurationSections
+  module FormConfigurationGroups
     RSpec.describe CreateService, type: :service, with_ee: %i[edit_attribute_groups] do
       let(:user) { create(:admin) }
       let(:type) { create(:type) }
@@ -47,7 +47,7 @@ module WorkPackageTypes
 
       subject(:service) { described_class.new(user:, type:) }
 
-      it "creates an attribute section from service params" do
+      it "creates an attribute group from service params" do
         result = service.call(group_type: "attribute", name: "New Group")
 
         expect(result).to be_success
@@ -56,7 +56,7 @@ module WorkPackageTypes
         expect(type.reload.attribute_groups.first.key).to eq(result.result.key)
       end
 
-      it "creates a query section from service params" do
+      it "creates a query group from service params" do
         result = service.call(group_type: "query", name: "Related work", query_props: relation_query_props)
 
         expect(result).to be_success

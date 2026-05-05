@@ -33,7 +33,7 @@
                 label: t("types.edit.form_configuration.add_attribute_group"),
                 tag: :button,
                 content_arguments: {
-                  data: { action: "click->admin--type-form-configuration#addAttributeSection" }
+                  data: { action: "click->admin--type-form-configuration#addAttributeGroup" }
                 }
               ) do |item|
                 item.with_leading_visual_icon(icon: :rows)
@@ -43,7 +43,7 @@
                 label: t("types.edit.form_configuration.add_query_group"),
                 tag: :button,
                 content_arguments: {
-                  data: { action: "click->admin--type-form-configuration#addQuerySection" }
+                  data: { action: "click->admin--type-form-configuration#addQueryGroup" }
                 }
               ) do |item|
                 item.with_leading_visual_icon(icon: :table)
@@ -56,8 +56,8 @@
       main.with_row do
         content_tag(
           :div,
-          id: "type-form-configuration-sections-container",
-          data: sections_container_data
+          id: "type-form-configuration-groups-container",
+          data: groups_container_data
         ) do
           if @group_components.empty?
             render(WorkPackageTypes::FormConfiguration::BlankslateComponent.new)

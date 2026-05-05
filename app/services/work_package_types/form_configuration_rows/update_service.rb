@@ -60,7 +60,7 @@ module WorkPackageTypes
 
         return drop_row_to_inactive(row) if inactive_target?(target_id)
 
-        target_group = find_attribute_section(target_id)
+        target_group = find_attribute_group(target_id)
         return failure_with_message(I18n.t("types.edit.form_configuration.not_found")) unless target_group
 
         move_row_to_target_group(row, target_group, position)

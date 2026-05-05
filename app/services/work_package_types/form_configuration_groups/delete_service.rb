@@ -29,38 +29,21 @@
 #++
 
 module WorkPackageTypes
-  module FormConfigurationSections
-    class CreateService < ::WorkPackageTypes::FormConfiguration::BaseService
-      def perform
-        name = params[:name].to_s.strip
-
-        if name.blank?
-          return failure_with_message(
-            I18n.t("activerecord.errors.models.type.attributes.attribute_groups.group_without_name")
-          )
-        end
-
-        section = build_section(name)
-        return section if section.is_a?(ServiceResult)
-
-        groups = active_groups
-        groups.unshift(section)
-
-        persist_groups(groups).tap do |call|
-          call.result = section if call.success?
-        end
+  module FormConfigurationGroups
+    class DeleteService < ::WorkPackageTypes::FormConfiguration::BaseService
+      def initialize(user:, type:, group_key:)
+        super(user:, type:)
+        @group_key = group_key
       end
 
-      private
+      def perform
+        group = find_group(@group_key)
+        return failure_with_message(I18n.t("types.edit.form_configuration.not_found")) unless group
 
-      def build_section(name)
-        if params[:group_type].to_s == "query"
-          query_call = build_query(params[:query_props], name: "Embedded table: #{name}")
-          return query_call if query_call.failure?
+        groups = active_groups.reject { |group| group.key.to_s == @group_key.to_s }
 
-          ::Type::QueryGroup.new(type, name, query_call.result)
-        else
-          ::Type::AttributeGroup.new(type, name, [])
+        persist_groups(groups).tap do |call|
+          call.result = group if call.success?
         end
       end
     end

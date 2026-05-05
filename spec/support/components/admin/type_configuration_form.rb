@@ -37,7 +37,7 @@ module Components
       include Rails.application.routes.url_helpers
 
       def add_button_dropdown
-        page.find_test_selector("type-form-configuration-add-button")
+        page.find(:test_id, "type-form-configuration-add-button", text: /\A#{Regexp.escape(I18n.t(:button_add))}\z/)
       end
 
       def reset_button
@@ -92,7 +92,7 @@ module Components
 
         page.find_test_selector("type-form-configuration-delete-attribute-#{attribute}", visible: :all).click
 
-        page.within_test_selector("type-form-configuration-sections-container") do
+        page.within_test_selector("type-form-configuration-groups-container") do
           expect(page).to have_no_css(attribute_selector(attribute))
         end
       end
@@ -164,8 +164,8 @@ module Components
         yield modal if block_given?
         modal.save if modal.open?
 
-        fill_section_name(name)
-        save_section
+        fill_group_name(name)
+        save_group
 
         expect_group(name, name) if expect
       end
@@ -183,8 +183,8 @@ module Components
         add_button_dropdown.click
         click_on I18n.t("types.edit.form_configuration.add_attribute_group")
 
-        fill_section_name(name)
-        save_section
+        fill_group_name(name)
+        save_group
 
         expect_group(name, name) if expect
       end
@@ -198,8 +198,8 @@ module Components
         open_group_menu(from)
         page.find_test_selector("type-form-configuration-group-rename-#{group_key}", visible: :all).click
 
-        fill_section_name(to)
-        save_section
+        fill_group_name(to)
+        save_group
 
         expect_group(to, to)
       end
@@ -234,8 +234,8 @@ module Components
         expect(inactive_drop).to have_css(attribute_selector(attribute))
       end
 
-      def section_order
-        page.within_test_selector("type-form-configuration-sections-container") do
+      def group_order
+        page.within_test_selector("type-form-configuration-groups-container") do
           all(":scope > [data-group-key] .Box-header span.text-bold", visible: true).map(&:text)
         end
       end
@@ -253,7 +253,7 @@ module Components
         open_menu("type-form-configuration-query-actions-#{group_key}")
       end
 
-      def invoke_section_action(name, label)
+      def invoke_group_action(name, label)
         click_menu_action(-> { open_group_menu(name) }, label)
         wait_for_turbo
       end
@@ -279,7 +279,7 @@ module Components
         I18n.t("js.relation_labels.#{relation_filter}")
       end
 
-      def fill_section_name(name)
+      def fill_group_name(name)
         input = page.find_test_selector("type-form-configuration-group-name-input", wait: 10)
         input.set(name)
       end
@@ -329,7 +329,7 @@ module Components
         end
       end
 
-      def save_section
+      def save_group
         page.find_test_selector("type-form-configuration-group-save", wait: 10).click
         expect(page).to have_no_selector(page.test_selector("type-form-configuration-group-name-input"))
       end

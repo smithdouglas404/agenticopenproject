@@ -30,19 +30,19 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
+RSpec.describe WorkPackageTypes::FormConfigurationGroupsTabController do
   let(:type) { create(:type) }
   let(:user) { create(:admin) }
-  let(:temporary_section_key) { described_class::TEMPORARY_SECTION_KEY }
+  let(:temporary_group_key) { described_class::TEMPORARY_GROUP_KEY }
 
   before do
     allow(User).to receive(:current).and_return(user)
   end
 
-  describe "POST #add_section", with_ee: %i[edit_attribute_groups] do
-    it "renders a temporary attribute section from group_type params" do
+  describe "POST #add_group", with_ee: %i[edit_attribute_groups] do
+    it "renders a temporary attribute group from group_type params" do
       expect do
-        post :add_section, params: { type_id: type.id, group_type: "attribute" }, format: :turbo_stream
+        post :add_group, params: { type_id: type.id, group_type: "attribute" }, format: :turbo_stream
       end.not_to change { type.reload.attribute_groups.count }
 
       expect(response).to have_http_status(:ok)
@@ -50,12 +50,12 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
   end
 
   describe "POST #create", with_ee: %i[edit_attribute_groups] do
-    it "persists a section when saving it" do
+    it "persists a group when saving it" do
       expect do
         post :create,
              params: {
                type_id: type.id,
-               section: { group_type: "attribute", name: "New Group" }
+               group: { group_type: "attribute", name: "New Group" }
              },
              format: :turbo_stream
       end.to change { type.reload.attribute_groups.count }.by(1)
@@ -68,8 +68,8 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
   describe "PATCH #update (rename)", with_ee: %i[edit_attribute_groups] do
     before do
       type.update_column(:attribute_groups, [
-                           ["First section", %w[priority]],
-                           ["Second section", %w[assignee]]
+                           ["First group", %w[priority]],
+                           ["Second group", %w[assignee]]
                          ])
     end
 
@@ -78,13 +78,13 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
         patch :update,
               params: {
                 type_id: type.id,
-                key: "First section",
-                section: { name: "Second section" }
+                key: "First group",
+                group: { name: "Second group" }
               },
               format: :turbo_stream
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include("Second section")
+        expect(response.body).to include("Second group")
         expect(response.body).to include("Group names must be unique.")
         expect(response.body).not_to include("Form configuration")
       end
@@ -93,12 +93,12 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
         patch :update,
               params: {
                 type_id: type.id,
-                key: "First section",
-                section: { name: "Second section" }
+                key: "First group",
+                group: { name: "Second group" }
               },
               format: :turbo_stream
 
-        expect(response.body).to include("Second section")
+        expect(response.body).to include("Second group")
       end
     end
 
@@ -107,8 +107,8 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
         patch :update,
               params: {
                 type_id: type.id,
-                key: "First section",
-                section: { name: "" }
+                key: "First group",
+                group: { name: "" }
               },
               format: :turbo_stream
 
@@ -119,14 +119,14 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
 
   describe "POST #create (duplicate name)", with_ee: %i[edit_attribute_groups] do
     before do
-      type.update_column(:attribute_groups, [["Existing section", %w[priority]]])
+      type.update_column(:attribute_groups, [["Existing group", %w[priority]]])
     end
 
-    it "returns an error when creating a section with a duplicate name" do
+    it "returns an error when creating a group with a duplicate name" do
       post :create,
            params: {
              type_id: type.id,
-             section: { group_type: "attribute", name: "Existing section" }
+             group: { group_type: "attribute", name: "Existing group" }
            },
            format: :turbo_stream
 
@@ -140,7 +140,7 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
       post :create,
            params: {
              type_id: type.id,
-             section: { group_type: "attribute", name: "Existing section" }
+             group: { group_type: "attribute", name: "Existing group" }
            },
            format: :turbo_stream
 
@@ -149,12 +149,12 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
     end
   end
 
-  describe "POST #create (default section name)", with_ee: %i[edit_attribute_groups] do
-    it "returns an error when creating a section with the visible name of a default section" do
+  describe "POST #create (default group name)", with_ee: %i[edit_attribute_groups] do
+    it "returns an error when creating a group with the visible name of a default group" do
       post :create,
            params: {
              type_id: type.id,
-             section: { group_type: "attribute", name: "Details" }
+             group: { group_type: "attribute", name: "Details" }
            },
            format: :turbo_stream
 
@@ -165,7 +165,7 @@ RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
   end
 
   describe "PUT #drop", with_ee: %i[edit_attribute_groups] do
-    it "reorders sections using the requested position" do
+    it "reorders groups using the requested position" do
       type.update_column(:attribute_groups, [
                            [:details, %w[priority]],
                            ["Custom group", %w[version]],
