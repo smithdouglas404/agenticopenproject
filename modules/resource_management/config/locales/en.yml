@@ -1,4 +1,14 @@
 en:
+  activerecord:
+    attributes:
+      resource_planner:
+        name: "Name"
+        start_date: "Start date"
+        end_date: "Finish date"
+        default_view_class_name: "Default view"
+        public: "Public"
+        favorite: "Favorite"
+
   plugin_openproject_resource_management:
     name: "OpenProject Resource Management"
     description: "Provides resource management and capacity planning."
@@ -22,7 +32,15 @@ en:
   resource_management:
     label_resource_planner: "Resource planner"
     label_resource_planner_plural: "Resource planners"
-    label_finish_date: "Finish date"
+    label_new_resource_planner: "New resource planner"
+    public_caption: >
+      Make this view public to all members of the project. This does not affect
+      the visibility of work packages which still depends on each user
+      permission.
+    favorite_caption: >
+      Make this view a favorite to add it on the top section of the sidebar menu.
+    view_types:
+      UserCardView: "Users cards"
     action:
       favorite: "Add to favorites"
       unfavorite: "Remove from favorites"

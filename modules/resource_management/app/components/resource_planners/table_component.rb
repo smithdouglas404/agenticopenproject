@@ -60,7 +60,7 @@ module ResourcePlanners
         [:work_packages, { caption: I18n.t(:label_work_package_plural) }],
         [:members, { caption: I18n.t(:label_member_plural) }],
         [:start_date, { caption: ResourcePlanner.human_attribute_name(:start_date) }],
-        [:finish_date, { caption: I18n.t("resource_management.label_finish_date") }]
+        [:finish_date, { caption: ResourcePlanner.human_attribute_name(:end_date) }]
       ]
     end
 

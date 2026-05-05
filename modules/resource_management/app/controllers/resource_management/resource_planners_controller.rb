@@ -30,6 +30,8 @@
 
 module ::ResourceManagement
   class ResourcePlannersController < BaseController
+    include OpTurbo::ComponentStream
+
     menu_item :resource_management
 
     before_action :find_project_by_project_id
@@ -48,7 +50,12 @@ module ::ResourceManagement
 
     def overview; end
 
-    def new; end
+    def new
+      respond_with_dialog ResourcePlanners::NewDialogComponent.new(
+        resource_planner: @resource_planner,
+        project: @project
+      )
+    end
 
     def edit; end
 
@@ -59,12 +66,7 @@ module ::ResourceManagement
 
       @resource_planner = call.result
 
-      if call.success?
-        flash[:notice] = I18n.t(:notice_successful_create)
-        redirect_to project_resource_planner_path(@project, @resource_planner)
-      else
-        render action: :new, status: :unprocessable_entity
-      end
+      call.success? ? render_create_success : render_create_failure(call)
     end
 
     def update
@@ -121,8 +123,11 @@ module ::ResourceManagement
     end
 
     def create_params
-      permitted = resource_planner_params(extra: %i[default_view_class_name favorite]).to_h
+      extra = %i[default_view_class_name favorite]
+      extra << :public if can_manage_public?
+      permitted = resource_planner_params(extra:).to_h
       permitted[:favorite] = ActiveModel::Type::Boolean.new.cast(permitted[:favorite]) if permitted.key?(:favorite)
+      permitted[:public] = ActiveModel::Type::Boolean.new.cast(permitted[:public]) if permitted.key?(:public)
       permitted.merge(project: @project)
     end
 
@@ -131,9 +136,28 @@ module ::ResourceManagement
     end
 
     def resource_planner_params(extra: [])
-      return ActionController::Parameters.new.permit if params[:resource_planner].blank?
-
       params.expect(resource_planner: %i[name start_date end_date] + extra)
+    end
+
+    def can_manage_public?
+      current_user.allowed_in_project?(:manage_public_resource_planners, @project)
+    end
+
+    def render_create_success
+      flash[:notice] = I18n.t(:notice_successful_create)
+      render turbo_stream: turbo_stream.redirect_to(project_resource_planners_path(@project))
+    end
+
+    def render_create_failure(call)
+      update_via_turbo_stream(
+        component: ResourcePlanners::FormComponent.new(
+          resource_planner: @resource_planner,
+          project: @project,
+          base_errors: call.errors[:base]
+        ),
+        status: :unprocessable_entity
+      )
+      respond_with_turbo_streams
     end
   end
 end

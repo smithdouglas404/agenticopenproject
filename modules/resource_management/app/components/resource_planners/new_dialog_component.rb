@@ -29,20 +29,24 @@
 #++
 
 module ResourcePlanners
-  class CreateContract < BaseContract
-    attribute :project
-    attribute :public
+  class NewDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-    validate :user_allowed_to_set_public
+    DIALOG_ID = "new-resource-planner-dialog"
+    FORM_ID = "new-resource-planner-form"
+
+    def initialize(resource_planner:, project:)
+      super
+
+      @resource_planner = resource_planner
+      @project = project
+    end
 
     private
 
-    def user_allowed_to_set_public
-      return unless model.public?
-      return if model.project.nil?
-      return if user.allowed_in_project?(:manage_public_resource_planners, model.project)
-
-      errors.add :public, :error_unauthorized
+    def title
+      I18n.t("resource_management.label_new_resource_planner")
     end
   end
 end

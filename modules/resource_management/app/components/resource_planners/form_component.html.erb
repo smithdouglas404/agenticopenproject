@@ -1,0 +1,41 @@
+<%=
+  component_wrapper do
+    primer_form_with(
+      id: FORM_ID,
+      model: @resource_planner,
+      scope: :resource_planner,
+      method: :post,
+      url: form_url
+    ) do |f|
+      flex_layout do |flex|
+        if @base_errors&.any?
+          flex.with_row(mb: 3) do
+            render(Primer::Alpha::Banner.new(icon: :stop, scheme: :danger)) { @base_errors.join("\n") }
+          end
+        end
+
+        flex.with_row(mb: 3) do
+          render ResourcePlanners::Forms::DetailsForm.new(f)
+        end
+
+        flex.with_row(mb: 3) do
+          render ResourcePlanners::Forms::DatesForm.new(f)
+        end
+
+        flex.with_row(mb: 3) do
+          render ResourcePlanners::Forms::DefaultViewForm.new(f)
+        end
+
+        if can_manage_public?
+          flex.with_row(mb: 3) do
+            render ResourcePlanners::Forms::PublicForm.new(f)
+          end
+        end
+
+        flex.with_row do
+          render ResourcePlanners::Forms::FavoriteForm.new(f)
+        end
+      end
+    end
+  end
+%>

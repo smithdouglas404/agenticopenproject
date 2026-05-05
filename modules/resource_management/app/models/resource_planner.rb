@@ -31,6 +31,11 @@
 class ResourcePlanner < PersistedView
   self.allowed_children = %w[UserCardView]
 
+  # Virtual attributes used by the new-planner form. They are not persisted on
+  # the planner itself: `default_view_class_name` is consumed when creating the
+  # initial child view, and `favorite` is consumed by `add_favoriting_user`.
+  attr_accessor :default_view_class_name, :favorite
+
   store_attribute :options, :start_date, :date
   store_attribute :options, :end_date, :date
 
