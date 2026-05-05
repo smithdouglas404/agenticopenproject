@@ -145,7 +145,8 @@ module ::ResourceManagement
 
     def render_create_success
       flash[:notice] = I18n.t(:notice_successful_create)
-      render turbo_stream: turbo_stream.redirect_to(project_resource_planners_path(@project))
+      # TODO: Let's check if we can do a proper turbo update here
+      redirect_to project_resource_planners_path(@project)
     end
 
     def render_create_failure(call)
