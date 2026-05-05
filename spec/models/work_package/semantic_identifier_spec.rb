@@ -370,6 +370,77 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "WorkPackage.where_display_id_in" do
+    let(:work_package2) { create(:work_package, project:) }
+    let(:work_package3) { create(:work_package, project:) }
+    let(:other_project) { create(:project, identifier: "OTHER") }
+    let(:other_wp) { create(:work_package, project: other_project) }
+
+    before do
+      work_package2
+      work_package3
+      other_wp
+    end
+
+    it "returns a chainable ActiveRecord relation" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1"])).to be_a(ActiveRecord::Relation)
+    end
+
+    it "returns an empty relation for an empty input" do
+      expect(WorkPackage.where_display_id_in([])).to be_empty
+    end
+
+    it "wraps a single non-array value" do
+      expect(WorkPackage.where_display_id_in("MYPROJ-1")).to contain_exactly(work_package)
+    end
+
+    it "resolves a single numeric string" do
+      expect(WorkPackage.where_display_id_in([work_package.id.to_s])).to contain_exactly(work_package)
+    end
+
+    it "resolves multiple numeric strings" do
+      expect(WorkPackage.where_display_id_in([work_package.id.to_s, work_package2.id.to_s]))
+        .to contain_exactly(work_package, work_package2)
+    end
+
+    it "resolves a single semantic identifier via the identifier column" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1"])).to contain_exactly(work_package)
+    end
+
+    it "resolves multiple semantic identifiers via the identifier column" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1", "MYPROJ-2"]))
+        .to contain_exactly(work_package, work_package2)
+    end
+
+    it "resolves a semantic identifier via the alias table for historical ids" do
+      WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+      expect(WorkPackage.where_display_id_in(["OLDPROJ-1"])).to contain_exactly(work_package)
+    end
+
+    it "resolves a mix of numeric and semantic identifiers in one query" do
+      expect(WorkPackage.where_display_id_in([work_package.id.to_s, "MYPROJ-2", "OTHER-1"]))
+        .to contain_exactly(work_package, work_package2, other_wp)
+    end
+
+    it "drops unknown values without poisoning the rest of the set" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1", "MYPROJ-999", "ZZZ-1"]))
+        .to contain_exactly(work_package)
+    end
+
+    it "is composable with includes and order" do
+      relation = WorkPackage.where_display_id_in(["MYPROJ-1", "MYPROJ-2"])
+                            .includes(:project)
+                            .order(id: :asc)
+      expect(relation.to_a).to eq([work_package, work_package2])
+    end
+
+    it "respects upstream visibility scoping" do
+      member_user = create(:user, member_with_permissions: { project => [:view_work_packages] })
+      expect(WorkPackage.visible(member_user).where_display_id_in(["MYPROJ-1", "OTHER-1"]))
+        .to contain_exactly(work_package)
+    end
+  end
+
   describe "WorkPackage.find_by_display_id!" do
     context "with a semantic identifier" do
       it "resolves via the semantic identifier" do
