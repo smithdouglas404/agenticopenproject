@@ -71,13 +71,13 @@ Navigate to *Administration → Import*. To create a new import configuration, c
 Provide the following details:
 -  A name for the import configuration
 -  Your Jira Server or Data Center URL
--  A Personal Access Token. The migration tool requires a token with admin permissions. Otherwise you will get 403 error during the import process.
+-  A Personal Access Token. The migration tool requires a token with admin permissions. Otherwise, you will get a 403 error during the import process.
 
 ### Test configuration
 
 Click **Test configuration** to verify the connection.
 
-![Define new Jira import in OpenProject adminstration](openproject_admin_import_jira_import_new_config.png)
+![Define new Jira import in OpenProject administration](openproject_admin_import_jira_import_new_config.png)
 If the connection is successful, a confirmation banner will appear.
 
 ![Successful connection message for Jira import](openproject_admin_import_jira_import_new_config_test.png)
@@ -86,7 +86,7 @@ Click **Add configuration** to proceed to the import runs overview. Initially, n
 
 ## Import run
 
-You can import different sets of data with each import run. It is  possible to undo an import run immediately after in review mode but not after approving.
+You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode, but not after approving.
 
 ![Empty import runs overview after creating a Jira import configuration](openproject_admin_import_jira_import_new_config_import_run_button.png)
 
@@ -141,7 +141,7 @@ After the import completes, the data is available in *review mode*. You can:
 
 ### Approve or revert the import
 
-To proceed, choose one of the following actions: Approve or revert the import.
+To proceed, choose one of the following actions: **Approve** or **revert** the import.
 
 ![Approve or revert import buttons in review mode](openproject_admin_import_jira_import_finalize_or_revert_import_buttons.png)
 
