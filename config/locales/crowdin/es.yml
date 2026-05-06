@@ -4716,6 +4716,18 @@ es:
     text_getting_started_description: Obtenga un resumen rápido sobre la gestión de proyectos y la colaboración en equipo con OpenProject. Puedes volver a ver este video des del menú de ayuda.
     welcome: Bienvenido a %{app_title}
     select_language: Seleccione su idioma
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Añadir comentarios
   permission_add_work_packages: Añadir paquetes de trabajo
   permission_add_messages: Publicar mensajes

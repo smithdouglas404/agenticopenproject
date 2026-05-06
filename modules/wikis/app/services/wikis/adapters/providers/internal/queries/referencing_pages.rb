@@ -34,10 +34,20 @@ module Wikis
       module Internal
         module Queries
           class ReferencingPages < BaseQuery
-            def call(_input_data)
-              # noop
+            def call(input_data)
+              success(
+                provider.page_links
+                        .merge(ReverseInlinePageLink.all)
+                        .where(linkable: input_data.linkable)
+                        .order(created_at: :desc)
+                        .map { page_info(provider:, identifier: it.identifier) }
+              )
+            end
 
-              success([])
+            private
+
+            def page_info(provider:, identifier:)
+              Adapters::Input::PageInfo.build(identifier:).bind { provider.resolve("queries.page_info").call(it) }
             end
           end
         end

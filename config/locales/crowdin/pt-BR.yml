@@ -4721,6 +4721,18 @@ pt-BR:
     text_getting_started_description: Obtenha uma visão geral da gestão de projetos e colaboração entre equipes com o OpenProject. Você pode assistir este vídeo novamente no menu de ajuda.
     welcome: Bem-vindo ao %{app_title}
     select_language: Por favor, selecione seu idioma
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Adicionar comentários
   permission_add_work_packages: Adicionar pacotes de trabalho
   permission_add_messages: Postar mensagens

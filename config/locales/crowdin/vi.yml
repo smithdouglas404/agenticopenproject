@@ -4668,6 +4668,18 @@ vi:
     text_getting_started_description: Nhận tổng quan nhanh về quản lý dự án và cộng tác nhóm với OpenProject. Bạn có thể khởi động lại video này từ menu trợ giúp.
     welcome: Chào mừng đến với %{app_title}
     select_language: Vui lòng chọn ngôn ngữ của bạn
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Thêm nhận xét
   permission_add_work_packages: Thêm mới Gói công việc
   permission_add_messages: Đăng tin nhắn

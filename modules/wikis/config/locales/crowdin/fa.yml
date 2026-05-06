@@ -40,10 +40,13 @@ fa:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
     oauth_login_component:
+      heading: Not connected to %{provider}
+      description: Log in to %{provider} to view and manage related wiki pages from this OpenProject instance.
       connect_button: Connect %{provider} account
     admin:
       destroy_confirmation_dialog_component:
         title: Delete wiki provider
+        heading: Delete wiki provider?
         warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
       forms:
         general_info_form_component:
@@ -91,8 +94,5 @@ fa:
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
-        delete:
-          title: Delete wiki provider
-          warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
     macro:
       page_not_found: Linked wiki page no longer available

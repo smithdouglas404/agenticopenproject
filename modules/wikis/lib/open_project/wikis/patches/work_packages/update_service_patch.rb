@@ -28,18 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Wikis::Patches::CreateServicePatch
+module OpenProject::Wikis::Patches::WorkPackages::UpdateServicePatch
   def self.included(base)
     base.prepend InstanceMethods
     base.include Wikis::Concerns::UpdateInlineWikiPageLinks
   end
 
   module InstanceMethods
-    def create(_attributes, work_package)
-      result = super
-      update_inline_wiki_page_links(work_package, work_package.description) if result.success?
+    private
 
-      result
+    def after_perform(_)
+      service_call = super
+
+      work_package = service_call.result
+      if service_call.success? && work_package.changed_attribute_keys_before_last_save.include?(:description)
+        update_inline_wiki_page_links(work_package, work_package.description)
+      end
+
+      service_call
     end
   end
 end

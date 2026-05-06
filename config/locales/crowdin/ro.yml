@@ -4794,6 +4794,18 @@ ro:
     text_getting_started_description: Obține o imagine de ansamblu rapidă a gestionării proiectelor și a colaborării în echipă cu OpenProject. Poți reporni acest videoclip din meniul de ajutor.
     welcome: Bun venit la %{app_title}
     select_language: Te rog selectează limba
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Adaugă pachete de lucru
   permission_add_messages: Publicare mesaje

@@ -33,12 +33,20 @@ require "rails_helper"
 RSpec.describe Backlogs::StoryPointsComponent, type: :component do
   shared_let(:project) { create(:project) }
 
-  it "renders the work package story points" do
+  it "renders the story points number visually" do
     work_package = create(:work_package, project:, story_points: 5)
 
     render_inline(described_class.new(work_package:))
 
-    expect(page).to have_text("5 points", normalize_ws: true)
+    expect(page).to have_css("span", text: "5", aria: { hidden: true })
+  end
+
+  it "renders the story points label for screen readers" do
+    work_package = create(:work_package, project:, story_points: 5)
+
+    render_inline(described_class.new(work_package:))
+
+    expect(page).to have_css(".sr-only", text: "5 story points")
   end
 
   it "renders zero when story points are unset" do
@@ -46,6 +54,7 @@ RSpec.describe Backlogs::StoryPointsComponent, type: :component do
 
     render_inline(described_class.new(work_package:))
 
-    expect(page).to have_text("0 points", normalize_ws: true)
+    expect(page).to have_css("span", text: "0", aria: { hidden: true })
+    expect(page).to have_css(".sr-only", text: "0 story points")
   end
 end

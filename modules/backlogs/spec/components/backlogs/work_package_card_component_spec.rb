@@ -53,7 +53,8 @@ RSpec.describe Backlogs::WorkPackageCardComponent, type: :component do
   end
 
   it "renders story points as the card metric" do
-    expect(rendered_component).to have_text("5 points", normalize_ws: true)
+    expect(rendered_component).to have_css("span", text: "5", aria: { hidden: true })
+    expect(rendered_component).to have_css(".sr-only", text: "5 story points")
   end
 
   it "supports caller-provided metric content" do
@@ -62,7 +63,7 @@ RSpec.describe Backlogs::WorkPackageCardComponent, type: :component do
     end
 
     expect(rendered).to have_text("Custom metric")
-    expect(rendered).to have_no_text("5 points", normalize_ws: true)
+    expect(rendered).to have_no_css(".sr-only", text: "5 story points")
   end
 
   it "passes the menu source to the common card" do
@@ -83,6 +84,7 @@ RSpec.describe Backlogs::WorkPackageCardComponent, type: :component do
       accessible_name: "Backlogs card actions"
     )
     expect(rendered).to have_no_element "include-fragment"
-    expect(rendered).to have_text("5 points", normalize_ws: true)
+    expect(rendered).to have_css("span", text: "5", aria: { hidden: true })
+    expect(rendered).to have_css(".sr-only", text: "5 story points")
   end
 end

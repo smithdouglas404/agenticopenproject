@@ -36,9 +36,7 @@ module Backlogs
 
     with_collection_parameter :backlog_bucket
 
-    attr_reader :backlog_bucket, :project, :current_user
-
-    delegate :work_packages, to: :backlog_bucket
+    attr_reader :backlog_bucket, :work_packages, :project, :current_user
 
     def initialize(backlog_bucket:, project:, current_user: User.current)
       super()
@@ -46,6 +44,7 @@ module Backlogs
       @backlog_bucket = backlog_bucket
       @project = project
       @current_user = current_user
+      @work_packages = backlog_bucket.displayed_work_packages
     end
 
     def wrapper_uniq_by

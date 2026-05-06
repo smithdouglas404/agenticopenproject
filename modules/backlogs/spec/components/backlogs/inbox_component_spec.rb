@@ -100,8 +100,10 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     end
 
     it "renders story points on each work package card" do
-      expect(page).to have_text("2 points", normalize_ws: true)
-      expect(page).to have_text("4 points", normalize_ws: true)
+      expect(page).to have_css("span", text: "2", aria: { hidden: true })
+      expect(page).to have_css(".sr-only", text: "2 story points")
+      expect(page).to have_css("span", text: "4", aria: { hidden: true })
+      expect(page).to have_css(".sr-only", text: "4 story points")
     end
   end
 

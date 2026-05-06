@@ -4861,6 +4861,18 @@ cs:
     text_getting_started_description: Získejte rychlý přehled o řízení projektu a spolupráci týmu s OpenProject. Toto video můžete restartovat z nabídky nápovědy.
     welcome: Vítejte v %{app_title}
     select_language: Vyberte prosím svůj jazyk
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Přidat komentáře
   permission_add_work_packages: Přidat pracovní balíčky
   permission_add_messages: Odesílat zprávy

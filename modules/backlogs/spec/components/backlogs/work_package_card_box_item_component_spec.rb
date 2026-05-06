@@ -146,14 +146,15 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
     subject(:rendered_card) { render_inline(item.card) }
 
     it "builds a Backlogs card with story points" do
-      expect(rendered_card).to have_text("5 points", normalize_ws: true)
+      expect(rendered_card).to have_css("span", text: "5", aria: { hidden: true })
+      expect(rendered_card).to have_css(".sr-only", text: "5 story points")
     end
 
     it "supports caller-provided metric content through the item" do
       item.with_metric { "Custom metric" }
 
       expect(rendered_card).to have_text("Custom metric")
-      expect(rendered_card).to have_no_text("5 points", normalize_ws: true)
+      expect(rendered_card).to have_no_css(".sr-only", text: "5 story points")
     end
 
     context "with a sprint container" do

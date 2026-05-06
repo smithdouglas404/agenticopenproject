@@ -27,7 +27,11 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= grid_layout(card_classes, tag: :article) do |grid| %>
+<%= grid_layout(
+      "op-work-package-card",
+      tag: :article,
+      classes: { "op-work-package-card_with-metric": metric? }
+    ) do |grid| %>
   <% grid.with_area(:info_line) do %>
     <%# TODO(73089): allow callers to pass arguments through to InfoLineComponent (e.g. status presentation, variants). %>
     <%= render(WorkPackages::InfoLineComponent.new(work_package:)) %>

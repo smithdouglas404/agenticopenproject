@@ -4729,6 +4729,18 @@ tr:
     text_getting_started_description: OpenProject ile proje yönetimi ve ekip çalışması konusunda genel bir fikir edinin. Bu videoyu yardım menüsünden yeniden başlatabilirsiniz.
     welcome: "%{app_title}'e hoş geldiniz"
     select_language: Lütfen dilinizi seçin
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Yorum ekle
   permission_add_work_packages: İş paketi eklemek
   permission_add_messages: İleti göndermek

@@ -4670,6 +4670,18 @@ ms:
     text_getting_started_description: Dapatkan gambaran ringkas pengurusan projek dan kolaborasi kumpulan dengan OpenProject. Anda boleh mula semula video ini di menu bantuan.
     welcome: Selamat datang ke %{app_title}
     select_language: Sila pilih bahasa anda
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Tambah pakej kerja
   permission_add_messages: Pos mesej

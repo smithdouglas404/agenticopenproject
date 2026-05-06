@@ -192,30 +192,12 @@ RSpec.describe "Meetings", "Index", :js do
 
           wait_for_network_idle
 
+          sort = [["start_time", "desc"]].to_json
           if context == :global
-            expect(page).to have_current_path(meetings_path(upcoming: false, filters: "[]"))
+            expect(page).to have_current_path(meetings_path(filters: "[]", sortBy: sort))
           else
-            expect(page).to have_current_path(project_meetings_path(project, upcoming: false, filters: "[]"))
+            expect(page).to have_current_path(project_meetings_path(project, filters: "[]", sortBy: sort))
           end
-        end
-      end
-
-      context 'with the "Invitations" filter' do
-        before do
-          meetings_page.set_sidebar_filter "Invitations"
-        end
-
-        it "shows all meetings I've been marked as invited to with a quick filter" do
-          meetings_page.expect_meeting_listed_in_group(tomorrows_meeting, key: :tomorrow)
-          meetings_page.expect_meetings_not_listed(yesterdays_meeting,
-                                                   meeting,
-                                                   ongoing_meeting)
-
-          meetings_page.set_quick_filter upcoming: false
-
-          meetings_page.expect_meetings_listed_in_table(yesterdays_meeting)
-
-          meetings_page.expect_meetings_not_listed(meeting, tomorrows_meeting)
         end
       end
 

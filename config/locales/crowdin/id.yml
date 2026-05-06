@@ -4669,6 +4669,18 @@ id:
     text_getting_started_description: Dapatkan ikhtisar singkat manajemen proyek dan kolaborasi tim dengan OpenProject. Anda dapat memulai ulang video ini dari menu bantuan.
     welcome: Selamat datang di %{app_title}
     select_language: Silakan pilih bahasa Anda
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Tambah Paket-Penugasan
   permission_add_messages: Kirim pesan

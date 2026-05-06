@@ -113,7 +113,8 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
       end
 
       it "renders story points on the work package card" do
-        expect(rendered_component).to have_text("3 points", normalize_ws: true)
+        expect(rendered_component).to have_css("span", text: "3", aria: { hidden: true })
+        expect(rendered_component).to have_css(".sr-only", text: "3 story points")
       end
 
       it "wires the bucket drop-target data on the box" do

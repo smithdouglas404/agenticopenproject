@@ -36,12 +36,13 @@
   margin-bottom: var(--base-size-4)
 
 .op-work-package-card_with-metric
-  grid-template-columns: 1fr minmax(5rem, max-content) auto
+  grid-template-columns: 1fr minmax(2rem, max-content) auto
   grid-template-areas: "info_line metric menu" "subject subject subject"
 
 .op-work-package-card--metric
   margin-left: var(--stack-gap-normal)
   font-variant-numeric: tabular-nums
+  text-align: right
 
 .op-work-package-card--menu
   margin-left: var(--stack-gap-normal)
@@ -50,13 +51,3 @@
   align-self: start // Align to top of second row
   word-wrap: break-word
   overflow-wrap: break-word
-
-// Responsive overrides for the Backlogs page container. The
-// `backlogsListsContainer` named container is established on
-// `.op-backlogs-page`; outside of it these rules are inert.
-@container backlogsListsContainer (max-width: 654px)
-  .op-work-package-card-metric-label
-    display: none
-
-  .op-work-package-card_with-metric
-    grid-template-columns: 1fr minmax(2rem, max-content) auto

@@ -4659,6 +4659,18 @@ ja:
     text_getting_started_description: OpenProject とのプロジェクト管理とチームのコラボレーションの概要を簡単に取得します。ヘルプメニューからこのビデオを再起動できます。
     welcome: "%{app_title} へようこそ"
     select_language: 言語を選択してください
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: コメントの追加
   permission_add_work_packages: ワークパッケージの追加
   permission_add_messages: メッセージの投稿

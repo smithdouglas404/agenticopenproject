@@ -127,7 +127,7 @@ gem "multi_json", "~> 1.20.0"
 gem "oj", "~> 3.17.0"
 
 gem "daemons"
-gem "good_job", "~> 4.18.1" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.18.2" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -383,8 +383,6 @@ group :development, :test do
   # Active Record Doctor helps to keep the database in good shape.
   gem "active_record_doctor", "~> 2.0.1"
 end
-
-gem "bootsnap", "~> 1.24.0", require: false
 
 # API gems
 gem "grape", "~> 3.2.0"

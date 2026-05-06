@@ -253,8 +253,8 @@ en:
               label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
               description: "Select what data you want to import from the available data fetched from the host Jira instance."
               label_supported_data: "Supported data"
-              label_comming_soon: "Comming soon (Q2 2026)"
-              label_comming_later: "Comming later"
+              label_coming_soon: "Coming soon (Q2 2026)"
+              label_coming_later: "Coming later"
               label_available_server_data: "Available data on %{server_info}"
               button_select_projects: "Select projects to import"
               button_continue: "Continue"
@@ -3862,6 +3862,7 @@ en:
   label_age: "Age"
   label_ago: "days ago"
   label_all: "all"
+  label_all_uppercase: "All"
   label_all_time: "all time"
   label_all_words: "All words"
   label_all_open_wps: "All open"
@@ -4617,7 +4618,7 @@ en:
       you_have: "You have"
     logo_alt_text: "Logo"
     mention:
-      subject: "%{user_name} mentioned you in #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: "To notification center"
       see_in_center: "See comment in notification center"
@@ -4655,7 +4656,7 @@ en:
         allowed_actions_html: "You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions."
         create_account: "To access this work package, you will need to create and activate an account on %{instance}."
         open_work_package: "Open work package"
-        subject: "Work package #%{id} was shared with you"
+        subject: "Work package %{id} was shared with you"
         enterprise_text: "Share work packages with users who are not members of the project."
         summary:
           user: "%{user} shared a work package with you with %{role_rights} rights"
@@ -6294,9 +6295,6 @@ en:
       scopes: "Permissions"
       successful_application_revocation: "Revocation of application %{application_name} successful."
       none_given: "No OAuth applications have been granted access to your user account."
-    x_active_tokens:
-      one: "one active token"
-      other: "%{count} active token"
     flows:
       authorization_code: "Authorization code flow"
       client_credentials: "Client credentials flow"
@@ -6306,8 +6304,10 @@ en:
     client_credentials_impersonation_html: >
       By default, OpenProject provides OAuth 2.0 authorization via %{authorization_code_flow_link}.
       You can optionally enable %{client_credentials_flow_link}, but you must provide a user on whose behalf requests will be performed.
+    confirm_revoke_my_application:
+      one: "Do you really want to remove this application? This will revoke one token active for it."
+      other: "Do you really want to remove this application? This will revoke %{count} tokens active for it."
     authorization_error: "An authorization error has occurred."
-    revoke_my_application_confirmation: "Do you really want to remove this application? This will revoke %{token_count} active for it."
     my_registered_applications: "Registered OAuth applications"
 
   oauth_client:

@@ -1116,7 +1116,7 @@ fr:
       no_results_content_text: Ajouter une actualité
   roles:
     edit:
-      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
+      default_for_new_projects_warning: 'Ce rôle est configuré comme le rôle par défaut attribué aux utilisateurs non administrateurs qui créent un projet. Ne supprimez pas les autorisations suivantes, sinon les créateurs de projets ne pourront pas terminer la configuration de leurs projets nouvellement créés :'
     permissions:
       section_check_all_label: Attribuer toutes les autorisations %{module}
       section_uncheck_all_label: Désattribuer toutes les autorisations %{module}
@@ -1128,8 +1128,8 @@ fr:
       matrix_check_uncheck_all_in_row_label_html: Activer/désactiver la permission <em>%{permission}</em> pour tous les rôles
       matrix_check_uncheck_all_in_col_label_html: Activer/désactiver toutes les permissions %{module} pour le rôle <em>%{role}</em>
   users:
-    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
-    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
+    force_password_change_hint: L'utilisateur doit définir un nouveau mot de passe lors de sa prochaine connexion. Automatiquement activé lors de l'envoi d'informations d'identification par courrier électronique.
+    send_information_hint: Envoyer le mot de passe par courrier électronique en texte clair. Si cette case est cochée, l'utilisateur devra modifier son mot de passe lors de sa première connexion.
     autologins:
       prompt: Restez connecté pendant %{num_days}
     sessions:
@@ -4242,7 +4242,7 @@ fr:
   label_role_new: Nouveau rôle
   label_role_grantable: Rôle admissible
   label_role_plural: Rôles
-  label_role_missing_permissions: "%{role} (missing required permissions)"
+  label_role_missing_permissions: "%{role} (permissions manquantes)"
   label_role_search: Assigner un rôle aux nouveaux membres
   label_scm: SCM
   label_scroll_left: Défilement vers la gauche
@@ -4504,7 +4504,7 @@ fr:
       note: 'Note : « %{note} »'
     sharing:
       work_packages:
-        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
+        allowed_actions_html: 'Vous disposez des autorisations suivantes sur ce lot de travail : %{allowed_actions}. Cela peut changer en fonction de votre rôle dans le projet et de vos autorisations.'
         create_account: Pour accéder à ce lot de travaux, vous aurez besoin de créer et activer un compte sur %{instance}.
         open_work_package: Ouvrir ce lot de travaux
         subject: 'Le lot de travaux #%{id} a été partagé avec vous'
@@ -4718,6 +4718,18 @@ fr:
     text_getting_started_description: Obtenez un aperçu rapide de la gestion de projet et de la collaboration en équipe avec OpenProject. Vous pouvez redémarrer cette vidéo à partir du menu d'aide.
     welcome: Bienvenue sur %{app_title}
     select_language: Veuillez sélectionner votre langue
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages
@@ -5179,7 +5191,7 @@ fr:
   setting_mail_handler_body_delimiter_regex: Tronquer les e-mails correspondant à cette expression régulière
   setting_mail_handler_ignore_filenames: Pièces jointes du courrier ignorées
   setting_new_project_user_role_id: Rôle donné à un utilisateur non administrateur qui crée un projet
-  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+  setting_new_project_user_role_id_caption: 'Seuls les rôles permettant de modifier les attributs du projet et de gérer les membres sont répertoriés, afin que le créateur puisse terminer la configuration du projet.
 
     '
   setting_new_project_send_confirmation_email: Envoyer une notification à l'auteur lors de la création d'un nouveau projet

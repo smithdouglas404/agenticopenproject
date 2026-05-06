@@ -4857,6 +4857,18 @@ uk:
     text_getting_started_description: Отримайте стислий огляд управління проєктами та командної роботи в OpenProject. Це відео можна переглянути знову в меню довідки.
     welcome: Вітаємо в додатку %{app_title}
     select_language: Будь ласка, виберіть мову
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Додавання коментарів
   permission_add_work_packages: Додати робочі пакети
   permission_add_messages: Відправка повідомлень

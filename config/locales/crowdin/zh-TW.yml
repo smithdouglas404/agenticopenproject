@@ -4657,6 +4657,18 @@ zh-TW:
     text_getting_started_description: 快速瞭解 OpenProject 的項目管理和團隊協作。您可以從幫助菜單重新啓動此視頻。
     welcome: 歡迎使用 %{app_title}
     select_language: 請選擇您的語言
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: 增加留言
   permission_add_work_packages: 新增工作套件
   permission_add_messages: 張貼訊息

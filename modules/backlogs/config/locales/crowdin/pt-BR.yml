@@ -112,22 +112,30 @@ pt-BR:
     administration_blankslate:
       title: As configurações administrativas do Backlog estão em evolução
       text: Estamos reformulando o módulo de Backlogs. Em breve, você poderá ver aqui as configurações de administração de sprints e backlogs. As configurações do projeto continuam disponíveis normalmente.
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Drag items here to add them.
-    backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
     sprint_component:
       blankslate_title: "%{name} está vazio"
       blankslate_description: Ainda não há itens planejados. Arraste os itens para este espaço para adicioná-los.
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: A caixa de entrada de pendências está vazia
       blankslate_description: Todos os pacotes de trabalho em aberto neste projeto aparecerão automaticamente aqui.
       show_more:
         one: Mostrar mais 1 item
         other: Mostrar mais %{count} itens
-    inbox_item_component:
-      label_actions: Ações do pacote de trabalho
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copiar URL para a área de transferência
@@ -147,25 +155,6 @@ pt-BR:
         create_description_text: To start planning your sprint, create one here.
         manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
         no_actions_description_text: No sprints are available for this project yet.
-    backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
-      action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
-    sprint_header_component:
-      label_start_sprint: Iniciar
-      label_complete_sprint: Concluir
-      start_sprint_disabled_reason_active_sprint: Outra sprint já está ativa.
-      start_sprint_disabled_reason_missing_dates: As datas de início e término são obrigatórias para iniciar a sprint.
-      label_story_count:
-        zero: Nenhuma história na sprint
-        one: "%{count} história na sprint"
-        other: "%{count} histórias na sprint"
     finish_sprint_dialog_component:
       title: Existem itens em andamento
       body: "%{message} O que você gostaria de fazer com isso?"
@@ -176,13 +165,6 @@ pt-BR:
         move_to_sprint: Mover para outra sprint
       select_sprint_label: Selecionar sprint
       button_complete_sprint: Concluir sprint
-    sprint_menu_component:
-      label_actions: Ações da sprint
-      action_menu:
-        edit_sprint: Editar sprint
-        add_work_package: Adicionar pacote de trabalho
-    story_component:
-      label_actions: Ações da história
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copiar URL para a área de transferência

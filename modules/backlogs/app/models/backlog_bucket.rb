@@ -32,13 +32,17 @@ class BacklogBucket < ApplicationRecord
   self.table_name = "backlog_buckets"
 
   belongs_to :project
-  has_many :work_packages, -> { order_by_position }, inverse_of: :backlog_bucket, dependent: :nullify
+  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
+  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
+           -> { visible(User.current).with_status_open.order_by_position },
+           class_name: "WorkPackage",
+           inverse_of: :backlog_bucket
 
   scope :order_alphabetically, -> { order(:name) }
 
   validates :name, :project, presence: true
 
   def self.for_project(project)
-    where(project:).order_alphabetically.includes(:work_packages)
+    where(project:).order_alphabetically.includes(:displayed_work_packages)
   end
 end

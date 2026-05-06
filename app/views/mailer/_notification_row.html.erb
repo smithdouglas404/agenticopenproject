@@ -27,7 +27,7 @@
                   </td>
                   <%= placeholder_cell("8px", vertical: true) %>
                   <td width="100%" style="color: #878787;">
-                    #<%= work_package.id %> - <%= work_package.project %>
+                    <%= work_package.formatted_id %> - <%= work_package.project %>
                     <%= " - " unless unique_reasons.length === 1 && unique_reasons.first.nil? %>
                     <% unique_reasons.each_with_index do |reason, index| %>
                       <%= I18n.t(

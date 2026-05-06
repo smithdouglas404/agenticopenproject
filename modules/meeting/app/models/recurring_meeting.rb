@@ -154,7 +154,7 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def current_schedule_end
-    start_time + template.duration.hours
+    current_schedule_start + template.duration.hours
   end
 
   def time_zone_differs?

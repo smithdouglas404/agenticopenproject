@@ -4860,6 +4860,18 @@ ru:
     text_getting_started_description: Получите быстрый обзор управления проектом и сотрудничества команды с OpenProject. Вы можете перезапустить это видео в меню справки.
     welcome: Добро пожаловать в %{app_title}
     select_language: Пожалуйста, выберите язык
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Добавить комментарии
   permission_add_work_packages: Добавление пакетов работ
   permission_add_messages: Написать сообщения

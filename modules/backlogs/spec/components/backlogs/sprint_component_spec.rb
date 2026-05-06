@@ -80,8 +80,10 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       end
 
       it "renders story points on each work package card" do
-        expect(rendered_component).to have_text("5 points", normalize_ws: true)
-        expect(rendered_component).to have_text("3 points", normalize_ws: true)
+        expect(rendered_component).to have_css("span", text: "5", aria: { hidden: true })
+        expect(rendered_component).to have_css(".sr-only", text: "5 story points")
+        expect(rendered_component).to have_css("span", text: "3", aria: { hidden: true })
+        expect(rendered_component).to have_css(".sr-only", text: "3 story points")
       end
 
       it "renders one Box-row per work package" do

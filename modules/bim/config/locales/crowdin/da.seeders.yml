@@ -80,7 +80,7 @@ da:
               * [(Demo) Bim-projekt]({{opSetting:base_url}}/projects/demo-bim-project): BIM-proces og koordinering.
                   * [(Demo) BCF-håndtering]({{opSetting:base_url}}/projects/demo-bcf-management-project): BCF-håndtering.
 
-          Man kan også oprette et tomt [nyt projekt]({{opSetting:base_url}}/projects/new).
+          Der kan også oprettes et tomt [nyt projekt]({{opSetting:base_url}}/projects/new).
 
           Stop aldrig samarbejdet. Med open source og åbent sind.
 
@@ -89,13 +89,13 @@ da:
         demo-construction-project:
           name: "(Demo) Konstruktionsprojekt"
           status_explanation: Alle opgaver og delprojekter følger tidsplanen. De involverede kender deres opgaver. Systemet er fuldt opsat.
-          description: Dette er et kort resumé af målene for dette demobyggeprojekt.
+          description: Dette er et kort resumé af målene for dette demokonstruktionsprojekt.
           news:
             item_0:
               title: Velkommen til demo-projektet
               summary: |
                 Vi er glade for deltagelsen.
-                I dette modul kan man kommunikere projektnyheder til sine teammedlemmer.
+                I dette modul kan der kommunikeres projektnyheder til teammedlemmerne.
               description: De faktiske nyheder
           categories:
             item_0: Kategori 1 (skal ændres i Projektindstillinger)

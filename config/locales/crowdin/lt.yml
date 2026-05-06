@@ -4860,6 +4860,18 @@ lt:
     text_getting_started_description: Gaukite greitą apžvalgą apie projektų valdymą ir komandos bendradarbiavimą naudojant OpenProject. Šį video galite paleisti iš naujo per pagalbos meniu.
     welcome: Jus sveikina %{app_title}
     select_language: Pasirinkite kalbą
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Pridėti darbų paketų
   permission_add_messages: Skelbti pranešimus

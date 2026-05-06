@@ -55,13 +55,6 @@ module OpenProject
         @work_package = work_package
         @menu_src = menu_src
       end
-
-      def card_classes
-        class_names(
-          "op-work-package-card",
-          "op-work-package-card_with-metric": metric?
-        )
-      end
     end
   end
 end

@@ -118,14 +118,24 @@ uk:
     administration_blankslate:
       title: Ми змінюємо налаштування адміністратора в модулі беклогів
       text: Зараз ми переробляємо модуль невиконаних завдань (беклогів). Налаштування адміністратора для спринтів і беклогів з’являться тут найближчим часом. Налаштування на рівні проєктів залишаються доступними.
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Drag items here to add them.
-    backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
     sprint_component:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: Немає вхідних завдань беклогу
       blankslate_description: Тут автоматично з’являтимуться всі відкриті пакети робіт цього проєкту.
@@ -134,8 +144,6 @@ uk:
         few: Показати ще %{count} елементи
         many: Показати ще %{count} елементів
         other: Показати ще %{count} елемента
-    inbox_item_component:
-      label_actions: Work package actions
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну
@@ -155,25 +163,6 @@ uk:
         create_description_text: To start planning your sprint, create one here.
         manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
         no_actions_description_text: No sprints are available for this project yet.
-    backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
-      action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
-    sprint_header_component:
-      label_start_sprint: Початок
-      label_complete_sprint: Завершити
-      start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.
-      start_sprint_disabled_reason_missing_dates: Щоб запустити спринт, необхідно вказати дату початку й завершення.
-      label_story_count:
-        zero: У спринті немає історій
-        one: У спринті %{count} історія
-        other: 'У спринті стільки історій: %{count}'
     finish_sprint_dialog_component:
       title: Є елементи, роботу над якими ще не завершено
       body: "%{message} Що б ви хотіли з ними зробити?"
@@ -184,13 +173,6 @@ uk:
         move_to_sprint: Перемістити їх в інший спринт
       select_sprint_label: Вибрати спринт
       button_complete_sprint: Завершити спринт
-    sprint_menu_component:
-      label_actions: Дії спринту
-      action_menu:
-        edit_sprint: Редагувати спринт
-        add_work_package: Додати пакет робіт
-    story_component:
-      label_actions: Story actions
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard

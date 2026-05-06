@@ -402,8 +402,6 @@ GEM
       smart_properties
     bigdecimal (4.1.2)
     bindata (2.5.1)
-    bootsnap (1.24.3)
-      msgpack (~> 1.2)
     brakeman (8.0.4)
       racc
     browser (6.2.0)
@@ -633,7 +631,7 @@ GEM
     glob (0.4.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    good_job (4.18.1)
+    good_job (4.18.2)
       activejob (>= 6.1.0)
       activerecord (>= 6.1.0)
       concurrent-ruby (>= 1.3.1)
@@ -1586,7 +1584,6 @@ DEPENDENCIES
   aws-sdk-s3 (~> 1.217)
   axe-core-rspec
   bcrypt (~> 3.1.22)
-  bootsnap (~> 1.24.0)
   brakeman (~> 8.0.1)
   browser (~> 6.2.0)
   budgets!
@@ -1630,7 +1627,7 @@ DEPENDENCIES
   friendly_id (~> 5.6.0)
   fuubar (~> 2.5.0)
   globalid (~> 1.3)
-  good_job (~> 4.18.1)
+  good_job (~> 4.18.2)
   google-apis-gmail_v1
   googleauth
   grape (~> 3.2.0)
@@ -1843,7 +1840,6 @@ CHECKSUMS
   better_html (2.2.0) sha256=e68ab66ab09696b708333bbf35e8aa3c107500ba7892f528e2111624bdd8cf76
   bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
   bindata (2.5.1) sha256=53186a1ec2da943d4cb413583d680644eb810aacbf8902497aac8f191fad9e58
-  bootsnap (1.24.3) sha256=f7fa3d20597e2f0aa52b0a1aba83fb54d4f79e9c2e210ec4fa1e8895514dcad8
   brakeman (8.0.4) sha256=7bf921fa9638544835df9aa7b3e720a9a72c0267f34f92135955edd80d4dcf6f
   browser (6.2.0) sha256=281d5295788825c9396427c292c2d2be0a5c91875c93c390fde6e5d61a5ace2d
   budgets (1.0.0)
@@ -1947,7 +1943,7 @@ CHECKSUMS
   fuubar (2.5.1) sha256=b272a7804b282661c7fab583a3764f92543cb482c365ae39c685cd218fdd4880
   glob (0.4.0) sha256=893dc9e2d24abe13dda907ce0cda576f680ff382f2a6cf9e543f98ecbe29238c
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
-  good_job (4.18.1) sha256=cdd3f764752c47ab5d52b71d6e09097572c51c0a48cabb86157d403ac5269972
+  good_job (4.18.2) sha256=7e557a15865fc7b7ad4ab71644cf1d4189a2a1869d3b381e5e88741c540beca6
   google-apis-core (1.0.2) sha256=ba4579aaadc902d6cc7bc8db88f566ab00f5e31ea87ab41e9f9a032c470f2629
   google-apis-gmail_v1 (0.48.0) sha256=561534bb3d93610032720d0459153c432dc8e47e7096a1250fbe0ee8dcc6540c
   google-cloud-env (2.3.1) sha256=0faac01eb27be78c2591d64433663b1a114f8f7af55a4f819755426cac9178e7

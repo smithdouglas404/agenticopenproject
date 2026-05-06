@@ -109,21 +109,29 @@ ko:
     administration_blankslate:
       title: 백로그 관리자 설정을 개선하는 중입니다
       text: 백로그 모듈을 현재 재설계하는 중입니다. 스프린트 및 백로그에 대한 관리자 설정이 조만간 여기에 표시될 예정입니다. 프로젝트 수준 설정은 계속 사용할 수 있습니다.
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Drag items here to add them.
-    backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
     sprint_component:
       blankslate_title: "%{name}이(가) 비어 있습니다"
       blankslate_description: 아직 계획된 항목이 없습니다. 항목을 추가하려면 여기로 드래그하세요.
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: 백로그 받은 편지함이 비어 있습니다
       blankslate_description: 이 프로젝트에서 열려 있는 모든 작업 패키지가 자동으로 여기에 표시됩니다.
       show_more:
         other: "%{count}개 항목 더 보기"
-    inbox_item_component:
-      label_actions: Work package actions
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: 클립보드에 URL 복사
@@ -143,25 +151,6 @@ ko:
         create_description_text: To start planning your sprint, create one here.
         manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
         no_actions_description_text: No sprints are available for this project yet.
-    backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
-      action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
-    sprint_header_component:
-      label_start_sprint: 시작
-      label_complete_sprint: 완료
-      start_sprint_disabled_reason_active_sprint: 다른 스프린트가 이미 활성화되어 있습니다.
-      start_sprint_disabled_reason_missing_dates: 스프린트를 시작하려면 시작 날짜와 종료 날짜가 필요합니다.
-      label_story_count:
-        zero: 스프린트의 스토리 없음
-        one: 스프린트의 %{count}개 스토리
-        other: 스프린트의 %{count}개 스토리
     finish_sprint_dialog_component:
       title: 진행 중인 작업 항목이 있습니다
       body: "%{message} 이것을 어떻게 처리하시겠습니까?"
@@ -172,13 +161,6 @@ ko:
         move_to_sprint: 다른 스프린트로 이동
       select_sprint_label: 스프린트 선택
       button_complete_sprint: 스프린트 완료
-    sprint_menu_component:
-      label_actions: 스프린트 작업
-      action_menu:
-        edit_sprint: 스프린트 편집
-        add_work_package: 작업 패키지 추가
-    story_component:
-      label_actions: Story actions
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard

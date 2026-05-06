@@ -109,21 +109,29 @@ zh-CN:
     administration_blankslate:
       title: 积压工作管理设置不断演进
       text: 我们目前正在重新设计积压工作模块。冲刺和积压工作的管理设置不久后将显示在此处。项目级设置仍然可用。
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Drag items here to add them.
-    backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
     sprint_component:
       blankslate_title: "%{name} 为空"
       blankslate_description: 尚未计划条目。请将条目拖到此处以添加。
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: 积压工作收件箱为空
       blankslate_description: 此项目中所有未完成的工作包都会自动出现在此处。
       show_more:
         other: 显示其他 %{count} 个条目
-    inbox_item_component:
-      label_actions: 工作包操作
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: 将 URL 复制到剪贴板
@@ -143,25 +151,6 @@ zh-CN:
         create_description_text: To start planning your sprint, create one here.
         manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
         no_actions_description_text: No sprints are available for this project yet.
-    backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
-      action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
-    sprint_header_component:
-      label_start_sprint: 开始
-      label_complete_sprint: 完成
-      start_sprint_disabled_reason_active_sprint: 另一个冲刺已处于有效状态。
-      start_sprint_disabled_reason_missing_dates: 必须设置开始和结束日期才能开始冲刺。
-      label_story_count:
-        zero: 冲刺中没有故事
-        one: 冲刺中有 %{count} 个故事
-        other: 冲刺中有 %{count} 个故事
     finish_sprint_dialog_component:
       title: 有工作正在进行中的条目
       body: "%{message} 您想对它们做什么？"
@@ -172,13 +161,6 @@ zh-CN:
         move_to_sprint: 将它们移动到另一个冲刺
       select_sprint_label: 选择冲刺
       button_complete_sprint: 完成冲刺
-    sprint_menu_component:
-      label_actions: 冲刺操作
-      action_menu:
-        edit_sprint: 编辑冲刺
-        add_work_package: 添加工作包
-    story_component:
-      label_actions: 故事操作
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 将 URL 复制到剪贴板

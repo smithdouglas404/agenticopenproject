@@ -112,22 +112,30 @@ de:
     administration_blankslate:
       title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
       text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
-    backlog_bucket_component:
-      blankslate_title: Eingangs Backlog ist leer
-      blankslate_description: Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
-    backlog_bucket_item_component:
-      label_actions: Arbeitspaket-Aktionen
+    bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
     sprint_component:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: Eingangs-Backlog ist leer
       blankslate_description: Alle offenen Arbeitspakete in diesem Projekt werden automatisch hier angezeigt.
       show_more:
         one: Zeige ein weiteres Element
         other: Zeige %{count} weitere Elemente
-    inbox_item_component:
-      label_actions: Arbeitspaket-Aktionen
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
@@ -147,25 +155,6 @@ de:
         create_description_text: Um mit der Planung Ihres Sprints zu beginnen, erstellen Sie hier einen Sprint.
         manage_description_html: Um mit der Planung Ihres Sprints zu beginnen, gehen Sie auf %{settings_link}, um Sprints aus einem anderen Projekt zu empfangen.
         no_actions_description_text: Für dieses Projekt sind noch keine Sprints vorhanden.
-    backlog_bucket_menu_component:
-      label_actions: Backlog Bucket Aktionen
-      action_menu:
-        edit_backlog_bucket: Backlog Bucket bearbeiten
-        delete_backlog_bucket: Backlog Bucket löschen
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: Keine Arbeitspakete im Backlog Bucket
-        one: "%{count} Arbeitspakete im Backlog Bucket"
-        other: "%{count} Arbeitspakete im Backlog Bucket"
-    sprint_header_component:
-      label_start_sprint: Beginn
-      label_complete_sprint: Fertigstellen
-      start_sprint_disabled_reason_active_sprint: Ein weiterer Sprint ist bereits aktiv.
-      start_sprint_disabled_reason_missing_dates: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
-      label_story_count:
-        zero: Keine Stories im Sprint
-        one: "%{count} Stories im Sprint"
-        other: "%{count} Stories im Sprint"
     finish_sprint_dialog_component:
       title: Der Sprint enthält nicht abgeschlossene Arbeitspakete
       body: "%{message} Was würden Sie gerne damit machen?"
@@ -176,13 +165,6 @@ de:
         move_to_sprint: In einen anderen Sprint schieben
       select_sprint_label: Sprint auswählen
       button_complete_sprint: Sprint abschließen
-    sprint_menu_component:
-      label_actions: Sprint-Aktionen
-      action_menu:
-        edit_sprint: Sprint bearbeiten
-        add_work_package: Arbeitspaket hinzufügen
-    story_component:
-      label_actions: Aktionen
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
