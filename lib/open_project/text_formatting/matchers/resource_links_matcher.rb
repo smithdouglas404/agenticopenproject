@@ -274,8 +274,8 @@ module OpenProject::TextFormatting
         }
       end
 
-      def self.process_match(m, matched_string, context)
-        instance = new(matched_string:, context:, **parse_match(m))
+      def self.process_match(match, matched_string, context)
+        instance = new(matched_string:, context:, **parse_match(match))
         instance.process
       end
 
