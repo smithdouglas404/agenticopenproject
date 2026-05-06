@@ -31,6 +31,74 @@
 require "spec_helper"
 
 RSpec.describe ResourcePlanner do
+  describe "date range validation" do
+    shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
+    shared_let(:owner) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
+
+    let(:planner) { build(:resource_planner, project:, principal: owner, start_date:, end_date:) }
+
+    context "when end_date is after start_date" do
+      let(:start_date) { Date.new(2026, 1, 1) }
+      let(:end_date) { Date.new(2026, 1, 2) }
+
+      it "is valid" do
+        expect(planner).to be_valid
+      end
+    end
+
+    context "when end_date equals start_date" do
+      let(:start_date) { Date.new(2026, 1, 1) }
+      let(:end_date) { Date.new(2026, 1, 1) }
+
+      it "is invalid" do
+        expect(planner).not_to be_valid
+        expect(planner.errors.symbols_for(:end_date)).to include(:greater_than_start_date)
+      end
+
+      it "uses the planner-specific translation" do
+        planner.valid?
+        expect(planner.errors[:end_date]).to include("must be after the start date.")
+      end
+    end
+
+    context "when end_date is before start_date" do
+      let(:start_date) { Date.new(2026, 1, 5) }
+      let(:end_date) { Date.new(2026, 1, 2) }
+
+      it "is invalid" do
+        expect(planner).not_to be_valid
+        expect(planner.errors.symbols_for(:end_date)).to include(:greater_than_start_date)
+      end
+    end
+
+    context "when start_date is missing" do
+      let(:start_date) { nil }
+      let(:end_date) { Date.new(2026, 1, 2) }
+
+      it "is valid" do
+        expect(planner).to be_valid
+      end
+    end
+
+    context "when end_date is missing" do
+      let(:start_date) { Date.new(2026, 1, 2) }
+      let(:end_date) { nil }
+
+      it "is valid" do
+        expect(planner).to be_valid
+      end
+    end
+
+    context "when both dates are missing" do
+      let(:start_date) { nil }
+      let(:end_date) { nil }
+
+      it "is valid" do
+        expect(planner).to be_valid
+      end
+    end
+  end
+
   describe "#visible?" do
     shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
     shared_let(:owner) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }

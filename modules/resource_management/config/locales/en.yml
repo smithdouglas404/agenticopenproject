@@ -8,6 +8,12 @@ en:
         default_view_class_name: "Default view"
         public: "Public"
         favorite: "Favorite"
+    errors:
+      models:
+        resource_planner:
+          attributes:
+            end_date:
+              greater_than_start_date: "must be after the start date."
 
   plugin_openproject_resource_management:
     name: "OpenProject Resource Management"

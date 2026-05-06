@@ -47,6 +47,8 @@ class ResourcePlanner < PersistedView
   validates :principal, :project,
             presence: true
 
+  validate :end_date_after_start_date
+
   after_initialize :set_default_category
 
   def visible?(user)
@@ -60,5 +62,12 @@ class ResourcePlanner < PersistedView
 
   def set_default_category
     self.category ||= "resource_management" if new_record?
+  end
+
+  def end_date_after_start_date
+    return if start_date.blank? || end_date.blank?
+    return if end_date > start_date
+
+    errors.add :end_date, :greater_than_start_date
   end
 end
