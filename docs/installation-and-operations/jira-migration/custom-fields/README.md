@@ -33,7 +33,6 @@ The following Jira custom field types are imported:
 | Multi-user picker            | User                   |               
 | Cascading select             | Hierarchy or List      | 
 | Labels                       | List                   | 
-| Multi-select (string values) | List                   | 
 
 Read more about [OpenProject custom field formats](../../../system-admin-guide/custom-fields/README.md#custom-field-formats) and 
 the [Hierarchy format](../../../system-admin-guide/custom-fields/README.md#hierarchy-custom-field-enterprise-add-on) in particular in the system administration guide.
