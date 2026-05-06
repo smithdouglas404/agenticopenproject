@@ -59,7 +59,7 @@ module Wikis
     end
 
     def extract_origin_user_id(token)
-      resolve("queries.user").call(Wikis::Adapters::Input::UserQuery.new(access_token: token.access_token))
+      resolve("queries.user").call(Wikis::Adapters::Input::User.new(access_token: token.access_token))
     end
 
     def authenticate_via_two_way_oauth2?

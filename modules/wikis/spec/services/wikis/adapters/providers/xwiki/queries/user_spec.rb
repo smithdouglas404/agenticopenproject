@@ -31,10 +31,10 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock do
+RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::User, :webmock do
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.local/") }
   let(:rest_url) { "https://xwiki.local/rest/" }
-  let(:input_data) { Wikis::Adapters::Input::UserQuery.new(access_token: "some-token") }
+  let(:input_data) { Wikis::Adapters::Input::User.new(access_token: "some-token") }
 
   subject(:query) { described_class.new(model: wiki_provider) }
 
@@ -63,7 +63,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
       end
 
       it "returns Failure with :unauthorized code" do
-        result = query.call(Wikis::Adapters::Input::UserQuery.new(access_token: "invalid-token"))
+        result = query.call(Wikis::Adapters::Input::User.new(access_token: "invalid-token"))
         expect(result).to be_failure
         expect(result.failure).to have_attributes(code: :unauthorized)
       end

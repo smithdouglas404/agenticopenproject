@@ -29,5 +29,5 @@
 #++
 
 module Wikis::Adapters::Input
-  UserQuery = Data.define(:access_token)
+  User = Data.define(:access_token)
 end

@@ -33,7 +33,7 @@ module Wikis
     module Providers
       module XWiki
         module Queries
-          class UserQuery < BaseQuery
+          class User < BaseQuery
             def call(input_data)
               url = "#{provider.url.chomp('/')}/rest/"
               handle_response(bearer_http(input_data.access_token).get(url))
