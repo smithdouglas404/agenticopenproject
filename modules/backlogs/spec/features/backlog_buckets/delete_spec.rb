@@ -41,8 +41,11 @@ RSpec.describe "Backlog bucket deletion",
   end
   shared_let(:bucket) { create(:backlog_bucket, project:, name: "Deprecated bucket") }
 
-  shared_let(:bucket_wp1) { create(:work_package, project:, backlog_bucket: bucket, position: 1) }
-  shared_let(:bucket_wp2) { create(:work_package, project:, backlog_bucket: bucket, position: 2) }
+  shared_let(:inbox_wp1) { create(:work_package, project:) }
+  shared_let(:inbox_wp2) { create(:work_package, project:) }
+
+  shared_let(:bucket_wp1) { create(:work_package, project:, backlog_bucket: bucket) }
+  shared_let(:bucket_wp2) { create(:work_package, project:, backlog_bucket: bucket) }
 
   let(:backlogs_page) { Pages::Backlog.new(project) }
 
@@ -57,15 +60,14 @@ RSpec.describe "Backlog bucket deletion",
     backlogs_page.visit!
     backlogs_page.expect_bucket_names_in_order("Deprecated bucket")
 
-    accept_confirm do
-      sleep 0.5
-      backlogs_page.click_in_backlog_bucket_menu(bucket, "Delete backlog bucket")
-    end
+    backlogs_page.click_in_backlog_bucket_menu(bucket, "Delete backlog bucket")
+
+    backlogs_page.expect_and_confirm_backlog_bucket_delete_modal
 
     expect_and_dismiss_flash type: :success, exact_message: "Successful deletion."
     backlogs_page.expect_no_backlog_bucket(bucket)
 
-    backlogs_page.expect_work_packages_in_backlog_inbox_in_order(work_packages: [bucket_wp1, bucket_wp2])
+    backlogs_page.expect_work_packages_in_backlog_inbox_in_order(work_packages: [inbox_wp1, inbox_wp2, bucket_wp1, bucket_wp2])
 
     expect(Agile::BacklogBucket.where(id: bucket.id)).to be_empty
     expect(bucket_wp1.reload.backlog_bucket_id).to be_nil

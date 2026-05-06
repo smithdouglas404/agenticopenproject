@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,16 +26,39 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module WorkPackages
-  # Contract used for moving work packages to the product backlog (sprint = nil, backlog_bucket = nil):
-  #   * at the end of a sprint
-  #   * upon bucket deletion
-  # It does not enforce permissions as this change is carried out in the background.
-  class MoveToBacklogContract < ModelContract
-    attribute :sprint
-    attribute :backlog_bucket
-    attribute :position
+module Backlogs
+  class BacklogBucketDestroyModalComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
+
+    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+
+    attr_reader :backlog_bucket
+
+    def initialize(backlog_bucket:)
+      super()
+      @backlog_bucket = backlog_bucket
+    end
+
+    private
+
+    def title
+      t(".title")
+    end
+
+    def details
+      t(".details", name: backlog_bucket.name)
+    end
+
+    def form_arguments
+      {
+        action: project_backlogs_backlog_bucket_path(backlog_bucket.project,
+                                                     backlog_bucket,
+                                                     helpers.all_backlogs_params),
+        method: :delete
+      }
+    end
   end
 end

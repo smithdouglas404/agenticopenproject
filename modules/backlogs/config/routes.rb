@@ -73,6 +73,7 @@ Rails.application.routes.draw do
 
         member do
           get :edit_dialog
+          get :destroy_dialog
         end
       end
 

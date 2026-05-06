@@ -533,6 +533,14 @@ module Pages
       end
     end
 
+    def expect_and_confirm_backlog_bucket_delete_modal
+      expect(page).to have_selector backlog_bucket_destroy_modal_selector
+
+      within backlog_bucket_destroy_modal_selector do
+        click_button "Delete"
+      end
+    end
+
     def within_sprint_menu(sprint, &)
       within_sprint(sprint) do
         button = find(:button, accessible_name: "Sprint actions")
@@ -647,6 +655,10 @@ module Pages
 
     def sprint_complete_modal_selector
       "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
+    end
+
+    def backlog_bucket_destroy_modal_selector
+      test_selector(Backlogs::BacklogBucketDestroyModalComponent::TEST_SELECTOR)
     end
 
     def open_controlled_menu(button)
