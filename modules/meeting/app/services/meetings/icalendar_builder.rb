@@ -369,13 +369,14 @@ module Meetings
 
     def cancelled_recurrence_dates(recurring_meeting)
       if series_cache_loaded?
-        @excluded_dates_cache[recurring_meeting.id] || []
+        (@excluded_dates_cache[recurring_meeting.id] || [])
+          .select { it >= recurring_meeting.current_schedule_start }
       else
         recurring_meeting
           .meetings
           .not_templated
           .cancelled
-          .where.not(recurrence_start_time: nil)
+          .where(recurrence_start_time: recurring_meeting.current_schedule_start...)
           .pluck(:recurrence_start_time)
       end
     end
