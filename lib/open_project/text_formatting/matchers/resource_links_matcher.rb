@@ -86,19 +86,27 @@ module OpenProject::TextFormatting
       include ActionView::Helpers::UrlHelper
 
       def self.regexp
+        # Hash and revision separators are split into separate alternation
+        # branches so the semantic-id identifier shape only applies to `#`
+        # references — `r` revisions stay numeric-only. Splitting them shifts
+        # the colon-separator group indices; `parse_match` is the single
+        # place that maps regex group numbers to semantic field names.
+        semantic_id = WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT.source
         %r{
-          ([[[:space:]](,~\-\[>]|^) # Leading string
-          (!)? # Escaped marker
-          (([a-z0-9\-_]+):)? # Project identifier
-          (#{allowed_prefixes.join('|')})? # prefix
-          (
-            (\#+|r)(\d+) # separator and its identifier
+          ([[[:space:]](,~\-\[>]|^) # Leading string                                        [1]
+          (!)? # Escaped marker                                                             [2]
+          (([a-z0-9\-_]+):)? # Project identifier wrapper [3] + identifier                  [4]
+          (#{allowed_prefixes.join('|')})? # prefix                                         [5]
+          (                                                                                 # [6] outer
+            (\#+)(#{semantic_id}) # hash sep [7] + identifier (numeric or semantic)         [8]
             |
-            (:) # or colon separator
-            (
-              [^"\s<>][^\s<>]*? # And a non-quoted value [10]
+            (r)(\d+) # revision sep [9] + numeric identifier                                [10]
+            |
+            (:) # colon separator                                                           [11]
+            (                                                                               # [12] non-quoted-or-quoted
+              [^"\s<>][^\s<>]*? # And a non-quoted value
               |
-              "([^"]+)" # Or a quoted value [11]
+              "([^"]+)" # Or a quoted value                                                 [13]
             )
           )
           (?=
@@ -138,11 +146,12 @@ module OpenProject::TextFormatting
       end
 
       # Reader for the link handler. Returns the preloaded WorkPackage for the
-      # given numeric id, or nil if no preload is active (e.g. classic mode,
-      # no `#N` references in the doc, or pipeline path that bypasses
-      # `with_preloaded_resources`).
-      def self.work_package_for(id)
-        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]&.[](id)
+      # given identifier (numeric id as Integer or String, or semantic shape
+      # like "PROJ-7"), or nil if no preload is active (classic mode, no `#N`
+      # references in the doc, or pipeline path that bypasses
+      # `with_preloaded_resources`) or the WP couldn't be resolved.
+      def self.work_package_for(identifier)
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]&.[](identifier.to_s)
       end
 
       # Doc-level preload (called by `PatternMatcherFilter` around the per-node
@@ -168,48 +177,90 @@ module OpenProject::TextFormatting
 
         return yield unless Setting::WorkPackageIdentifier.semantic_mode_active?
 
-        ids = collect_work_package_ids(doc)
-        return yield if ids.empty?
+        identifiers = collect_work_package_identifiers(doc)
+        return yield if identifiers.empty?
 
-        # Only `id` and `identifier` are read downstream (by `display_id` /
-        # `formatted_id`). Skip `description` and other heavy columns — a
-        # comment thread with 50+ `#N` references would otherwise pull in
-        # megabytes of unused payload.
-        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] =
-          WorkPackage.where(id: ids).select(:id, :identifier).index_by(&:id)
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = build_lookup(identifiers)
         yield
       ensure
         RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = previous
       end
 
-      def self.collect_work_package_ids(doc)
-        ids = Set.new
+      def self.collect_work_package_identifiers(doc)
+        identifiers = Set.new
         doc.search(".//text()").each do |node|
           next if OpenProject::TextFormatting::PreformattedBlocks.ancestor?(node)
 
-          node.to_s.scan(regexp) { extract_work_package_id(Regexp.last_match)&.then { |id| ids << id } }
+          node.to_s.scan(regexp) do
+            extract_work_package_identifier(Regexp.last_match)&.then { identifiers << it }
+          end
         end
-        ids
+        identifiers
       end
 
-      # Returns the numeric WP id for a `#N` plain link match, or nil for any
-      # other shape (`##`/`###` quickinfo, prefixed `resource#id` links like
-      # `version#3` / `message#12`, `:`-separator resources, or leading-zero
-      # / non-numeric identifiers we don't link). The `prefix.nil?` guard
-      # mirrors `LinkHandlers::WorkPackages#applicable?` so the preload set
-      # only contains ids the WP handler will actually try to render.
-      def self.extract_work_package_id(match)
+      # Returns the WP identifier string for any `#N` / `##N` / `###N` (or
+      # semantic-shape) reference the WP link handler will try to render —
+      # `#PROJ-1` plain links need the WP record for the `formatted_id`
+      # label and hover-card URL; `##PROJ-1` / `###PROJ-1` quickinfo macros
+      # use it to emit the user-facing `display_id` in `data-id`. Returns
+      # nil for prefixed resource links (`version#3`, `message#12`),
+      # `:`-separator resources, and leading-zero numerics we don't link.
+      def self.extract_work_package_identifier(match)
         parts = parse_match(match)
         identifier = parts[:identifier]
-        return nil unless parts[:prefix].nil? && parts[:sep] == "#" && identifier.present?
-        return nil unless identifier == identifier.to_i.to_s
+        return nil unless parts[:prefix].nil? && parts[:sep]&.start_with?("#") && identifier.present?
 
-        identifier.to_i
+        # Accept either the semantic shape (PROJ-7) or a numeric round-trip
+        # (rejecting leading-zero "0123" forms that hit the regex's numeric
+        # branch but aren't valid PK references).
+        return nil unless WorkPackage::SemanticIdentifier.semantic_id?(identifier) ||
+          identifier == identifier.to_i.to_s
+
+        identifier
       end
 
+      # Builds the per-render WP cache from a Set of identifier strings (mixed
+      # numeric and semantic).
+      #
+      # Step 1 — `where_display_id_in` resolves all references in one SELECT
+      # via id-IN / current-identifier-IN / alias-EXISTS. Rows index by
+      # `id.to_s` and `identifier` (the WP's *current* slug).
+      #
+      # Step 2 — any input still unmapped after Step 1 must have matched via
+      # the alias EXISTS subquery, since the loaded row only carries the
+      # current identifier. One targeted `WorkPackageSemanticAlias` lookup
+      # fills those mappings in. Skipped when no historical aliases are
+      # referenced — the common case stays at 1 SELECT.
+      def self.build_lookup(identifiers)
+        work_packages = WorkPackage.where_display_id_in(identifiers).select(:id, :identifier).to_a
+        lookup = index_by_id_and_identifier(work_packages)
+        fold_in_alias_keys(lookup, identifiers, work_packages)
+        lookup
+      end
+
+      def self.index_by_id_and_identifier(work_packages)
+        work_packages.each_with_object({}) do |wp, lookup|
+          lookup[wp.id.to_s] = wp
+          lookup[wp.identifier] = wp if wp.identifier.present?
+        end
+      end
+      private_class_method :index_by_id_and_identifier
+
+      def self.fold_in_alias_keys(lookup, identifiers, work_packages)
+        unmapped = identifiers.map(&:to_s) - lookup.keys
+        return if unmapped.empty?
+
+        wps_by_id = work_packages.index_by(&:id)
+        WorkPackageSemanticAlias
+          .where(identifier: unmapped)
+          .pluck(:identifier, :work_package_id)
+          .each { |ident, wp_id| lookup[ident] = wps_by_id[wp_id] }
+      end
+      private_class_method :fold_in_alias_keys
+
       # Single source of truth for which regex group means what. Both
-      # `process_match` and `extract_work_package_id` consume this — change
-      # the regex layout in `regexp` and only this site needs to follow.
+      # `process_match` and `extract_work_package_identifier` consume this —
+      # change the regex layout in `regexp` and only this site needs to follow.
       def self.parse_match(match)
         {
           leading: match[1],
@@ -217,9 +268,9 @@ module OpenProject::TextFormatting
           project_prefix: match[3],
           project_identifier: match[4],
           prefix: match[5],
-          sep: match[7] || match[9],
-          raw_identifier: match[8] || match[10],
-          identifier: match[8] || match[11] || match[10]
+          sep: match[7] || match[9] || match[11],
+          raw_identifier: match[8] || match[10] || match[12],
+          identifier: match[8] || match[10] || match[13] || match[12]
         }
       end
 
