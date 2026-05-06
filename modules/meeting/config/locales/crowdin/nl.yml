@@ -446,11 +446,11 @@ nl:
     empty_text: Sleep items hierheen of maak een nieuwe
   meeting_participant:
     participation_status:
-      needs_action: No response
-      accepted: Accepted
-      declined: Declined
-      tentative: Maybe
-      unknown: Unknown
+      needs_action: Geen reactie
+      accepted: Geaccepteerd
+      declined: Afgewezen
+      tentative: Misschien
+      unknown: Onbekend
   recurring_meeting:
     time_zone_difference_banner:
       title: Time zone difference

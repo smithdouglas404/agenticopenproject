@@ -1121,8 +1121,8 @@ fr:
       matrix_check_uncheck_all_in_row_label_html: Activer/désactiver la permission <em>%{permission}</em> pour tous les rôles
       matrix_check_uncheck_all_in_col_label_html: Activer/désactiver toutes les permissions %{module} pour le rôle <em>%{role}</em>
   users:
-    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
-    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
+    force_password_change_hint: L'utilisateur doit définir un nouveau mot de passe lors de sa prochaine connexion. Automatiquement activé lors de l'envoi d'informations d'identification par courrier électronique.
+    send_information_hint: Envoyer le mot de passe par courrier électronique en texte clair. Si cette case est cochée, l'utilisateur devra modifier son mot de passe lors de sa première connexion.
     autologins:
       prompt: Restez connecté pendant %{num_days}
     sessions:
@@ -4473,7 +4473,7 @@ fr:
       note: 'Note : « %{note} »'
     sharing:
       work_packages:
-        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
+        allowed_actions_html: 'Vous disposez des autorisations suivantes sur ce lot de travail : %{allowed_actions}. Cela peut changer en fonction de votre rôle dans le projet et de vos autorisations.'
         create_account: Pour accéder à ce lot de travaux, vous aurez besoin de créer et activer un compte sur %{instance}.
         open_work_package: Ouvrir ce lot de travaux
         subject: 'Le lot de travaux #%{id} a été partagé avec vous'

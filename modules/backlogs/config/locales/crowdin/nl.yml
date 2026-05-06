@@ -37,7 +37,7 @@ nl:
           active: Active
           completed: Completed
       project:
-        sprint_sharing: Sprint sharing
+        sprint_sharing: Sprint delen
       sprint:
         duration: Sprint duration
       user_preference:
@@ -90,16 +90,16 @@ nl:
     caption_sprints_default_fold_state: Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded.
     definition_of_done: Definitie van Klaar
     definition_of_done_caption: Work packages with these statuses are treated as completed in backlog views and reporting.
-    done_status: Done status
+    done_status: Status Gereed
     sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
-    sharing: Sharing
+    sharing: Delen
     label_burndown_chart: Burndown chart
-    label_sprint_board: Sprint board
+    label_sprint_board: Sprint bord
     work_package_is_closed: Het werkpakket is klaar wanneer
     label_is_done_status: Status van %{status_name} betekent gedaan
     points_label:
-      one: point
-      other: points
+      one: punt
+      other: punten
     positions_could_not_be_rebuilt: Posities kon niet worden herbouwd.
     positions_rebuilt_successfully: Posities met succes herbouwd.
     rebuild: Opnieuw opbouwen
@@ -136,10 +136,10 @@ nl:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
-        move_menu: Move
-      label_move_to_sprint: Move to sprint
+        move_menu: Verplaats
+      label_move_to_sprint: Verplaats naar sprint
     move_to_sprint_dialog_component:
-      title: Move to sprint
+      title: Verplaats naar sprint
       label_sprint: Sprint
     backlog:
       blankslate:
@@ -163,7 +163,7 @@ nl:
         other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: Start
-      label_complete_sprint: Complete
+      label_complete_sprint: Voltooid
       start_sprint_disabled_reason_active_sprint: Another sprint is already active.
       start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
       label_story_count:
@@ -178,44 +178,44 @@ nl:
         move_to_top_of_backlog: Move them to the top of the backlog
         move_to_bottom_of_backlog: Move them to the bottom of the backlog
         move_to_sprint: Move them to another sprint
-      select_sprint_label: Select sprint
-      button_complete_sprint: Complete sprint
+      select_sprint_label: Selecteer sprint
+      button_complete_sprint: Voltooi sprint
     sprint_menu_component:
-      label_actions: Sprint actions
+      label_actions: Sprint acties
       action_menu:
-        edit_sprint: Edit sprint
-        add_work_package: Add work package
+        edit_sprint: Sprint bewerken
+        add_work_package: Werkpakketten toevoegen
     story_component:
       label_actions: Story actions
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_sprint: Move to sprint
+        move_menu: Verplaats
+        move_to_sprint: Verplaats naar sprint
     burndown_chart:
       show:
         blankslate_title: No burndown data available
         blankslate_description: Set start and end date for the sprint to generate a burndown chart.
   burndown:
-    story_points: Story points
-    story_points_ideal: Story points (ideal)
+    story_points: Story punten
+    story_points_ideal: Story punten (ideaal)
   label_backlog: Backlog
   label_backlog_bucket_edit: Edit backlog bucket
   label_backlog_bucket_new: New backlog bucket
-  label_inbox: Inbox
+  label_inbox: Postvak in
   label_backlogs: Backlogs
   label_burndown_chart: Burndown chart
-  label_sprint_board: Sprint board
+  label_sprint_board: Sprint bord
   label_points_burn_down: Omlaag
   label_points_burn_up: Omhoog
-  label_sprint_edit: Edit sprint
-  label_sprint_new: New sprint
+  label_sprint_edit: Sprint bewerken
+  label_sprint_new: Nieuwe sprint
   label_backlog_and_sprints: Backlog and sprints
   label_task_board: Taakbord
-  notice_successful_start: The sprint was started.
-  notice_successful_finish: The sprint was completed.
-  notice_unsuccessful_start: The sprint could not be started.
+  notice_successful_start: De sprint is gestart.
+  notice_successful_finish: De sprint is voltooid.
+  notice_unsuccessful_start: De sprint kan niet gestart worden.
   notice_unsuccessful_start_with_reason: 'The sprint could not be started: %{reason}'
   notice_unsuccessful_finish: The sprint could not be completed.
   notice_unsuccessful_finish_with_reason: 'The sprint could not be completed: %{reason}'
@@ -224,7 +224,7 @@ nl:
   permission_select_done_statuses: Selecteer voltooide statussen
   permission_share_sprint: Share sprint
   permission_start_complete_sprint: Start/complete sprint
-  permission_view_sprints: View sprints
+  permission_view_sprints: Sprints bekijken
   project_module_backlogs: Backlogs
   projects:
     settings:

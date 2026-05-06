@@ -100,12 +100,12 @@ nl:
         upgrade: Nu upgraden
         contact: Neem contact met ons op voor een demo
       status:
-        expired: Expired
-        expiring_soon: Expiring soon
+        expired: Verlopen
+        expiring_soon: Verloopt binnenkort
         in_grace_period: In grace period
         invalid_domain: Invalid domain
-        not_active: Not active
-        trial: Trial
+        not_active: Niet actief
+        trial: Proefperiode
     jemalloc_allocator: Jemalloc geheugentoewijzer
     journal_aggregation:
       caption: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
@@ -134,7 +134,7 @@ nl:
         supported_versions: ''
       form:
         fields:
-          name: Name
+          name: Naam
           url: Jira Server/Data Center URL
           personal_access_token: Personal Access Token
         button_add: Add configuration
@@ -188,7 +188,7 @@ nl:
           projects_meta_fetching: Fetching project data
           projects_meta_error: Error fetching project data
           projects_meta_done: Data gathered
-          importing: In progress
+          importing: In uitvoering
           import_error: Error during import
           imported: Review mode
           reverting: Reverting
@@ -216,7 +216,7 @@ nl:
               other: "%{count} types"
             statuses:
               one: 1 status
-              other: "%{count} statuses"
+              other: "%{count} statussen"
             users:
               one: 1 user
               other: "%{count} users"
@@ -444,16 +444,16 @@ nl:
         user_assignee: User is assignee
       status_button: Status
       statuses_dialog:
-        title: Statuses
+        title: Statussen
         label: Statuses enabled for this type
         caption: Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it.
       statuses_removal_dialog:
-        title: Remove statuses
+        title: Statussen verwijderen
         heading:
-          one: Remove 1 status?
-          other: Remove %{count} statuses?
+          one: 1 status verwijderen?
+          other: "%{count} statussen verwijderen?"
         description: Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?
-        confirm: Remove
+        confirm: Verwijder
       leave_confirmation:
         title: Save changes before continuing?
         description: You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?

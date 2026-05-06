@@ -37,7 +37,7 @@ fa:
           active: Active
           completed: Completed
       project:
-        sprint_sharing: Sprint sharing
+        sprint_sharing: اشتراک گذاری اسپرینت
       sprint:
         duration: مدت زمان اسپرینت
       user_preference:
@@ -46,7 +46,7 @@ fa:
         backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Backlog type
         position: Position
-        sprint: Sprint
+        sprint: اسپرینت
         story_points: Story Points
     errors:
       messages:
@@ -61,10 +61,10 @@ fa:
               share_all_projects_already_taken: cannot be set because project "%{name}" is already sharing with all projects.
               share_all_projects_already_taken_anonymous: cannot be set because another project is already sharing with all projects.
         work_package:
-          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
+          backlog_bucket_xor_sprint: نمی توان به صورت همزمان به اسپرینت و بک لاگ اختصاص پیدا کند
           attributes:
             backlog_bucket:
-              backlog_bucket_from_another_project: must belong to the same project as the work package.
+              backlog_bucket_from_another_project: ''
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: can only contain IDs of work packages in the current sprint.
               must_block_at_least_one_work_package: must contain the ID of at least one ticket.
