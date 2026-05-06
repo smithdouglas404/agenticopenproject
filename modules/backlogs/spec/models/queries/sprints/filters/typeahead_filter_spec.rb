@@ -35,6 +35,6 @@ RSpec.describe Queries::Sprints::Filters::TypeaheadFilter do
     let(:class_key) { :typeahead }
     let(:human_name) { I18n.t(:label_search) }
     let(:type) { :search }
-    let(:model) { Agile::Sprint }
+    let(:model) { Sprint }
   end
 end

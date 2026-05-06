@@ -431,7 +431,8 @@ ru:
           error_special_characters: Специальные символы не допускаются
           error_not_fully_uppercased: Должно быть заглавными
           error_in_use: Уже используется в другом проекте
-          error_reserved: Зарезервировано другим проектом
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Требуется ручная проверка
           remaining_projects:
             one: "... еще 1 проект"
@@ -476,8 +477,14 @@ ru:
         ignore: Игнорировать изменения
         save: Сохранить изменения и продолжить
       role_selector:
+        title: Select roles
         label: 'Роль: %{role}'
         no_role: Выберите роль
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Переходы статуса не настроены
         description: Добавьте статусы, чтобы начать настройку рабочих процессов для этой роли
@@ -1139,6 +1146,8 @@ ru:
       no_results_title_text: На данный момент новостей для отчета нет.
       no_results_content_text: Добавить новость
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Назначьте все разрешения %{module}
       section_uncheck_all_label: Отменить все разрешения %{module}
@@ -2043,6 +2052,29 @@ ru:
         type: Тип
         version: Этапы
         watcher: Наблюдатель
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: нужно подтвердить.
@@ -4344,6 +4376,7 @@ ru:
   label_role_new: Новая роль
   label_role_grantable: Назначаемая роль
   label_role_plural: Роли
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Назначить роль для новых участников
   label_scm: SCM
   label_scroll_left: Прокрутить влево
@@ -4827,6 +4860,18 @@ ru:
     text_getting_started_description: Получите быстрый обзор управления проектом и сотрудничества команды с OpenProject. Вы можете перезапустить это видео в меню справки.
     welcome: Добро пожаловать в %{app_title}
     select_language: Пожалуйста, выберите язык
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Добавить комментарии
   permission_add_work_packages: Добавление пакетов работ
   permission_add_messages: Написать сообщения
@@ -5278,6 +5323,9 @@ ru:
   setting_mail_handler_body_delimiter_regex: Сообщение усекается по этому регулярному выражению
   setting_mail_handler_ignore_filenames: Игнорируемые вложения почты
   setting_new_project_user_role_id: Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Отправить уведомление автору при создании нового проекта
   setting_new_project_notification_text: Текст уведомления
   setting_password_active_rules: Password requirements

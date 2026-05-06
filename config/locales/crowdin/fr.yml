@@ -419,7 +419,8 @@ fr:
           error_special_characters: Caractères spéciaux non autorisés
           error_not_fully_uppercased: Doit être en majuscules
           error_in_use: Déjà utilisé comme alias actif d'un autre projet
-          error_reserved: Réservé par l'historique des alias d'un autre projet
+          error_used_in_past: Réservé par l'historique des alias d'un autre projet
+          error_reserved_by_system: Réservé comme mot-clé du système
           error_unknown: Nécessite une vérification manuelle
           remaining_projects:
             one: "... 1 projet supplémentaire"
@@ -460,8 +461,12 @@ fr:
         ignore: Ignorer les changements
         save: Enregistrer les modifications et continuer
       role_selector:
+        title: Sélectionner les rôles
         label: 'Rôle : %{role}'
         no_role: Sélectionner un rôle
+        roles:
+          one: "%{count} rôle sélectionné"
+          other: "%{count} rôles sélectionnés"
       blankslate:
         title: Aucune transition de statut configurée
         description: Ajouter des statuts pour commencer à configurer des workflows pour ce rôle
@@ -1110,6 +1115,8 @@ fr:
       no_results_title_text: Il n'y a actuellement aucune actualité à publier.
       no_results_content_text: Ajouter une actualité
   roles:
+    edit:
+      default_for_new_projects_warning: 'Ce rôle est configuré comme le rôle par défaut attribué aux utilisateurs non administrateurs qui créent un projet. Ne supprimez pas les autorisations suivantes, sinon les créateurs de projets ne pourront pas terminer la configuration de leurs projets nouvellement créés :'
     permissions:
       section_check_all_label: Attribuer toutes les autorisations %{module}
       section_uncheck_all_label: Désattribuer toutes les autorisations %{module}
@@ -1993,6 +2000,29 @@ fr:
         type: Type
         version: Version
         watcher: Observateur
+      ordered_persisted_query_entity:
+        persisted_query: Requête persistante
+        entity: Entité
+        position: Position
+      persisted_query:
+        name: Nom
+        views: Affichages
+        filters: Filtres
+        orders: Commandes
+        selects: Sélectionne
+      persisted_view:
+        name: Nom
+        query: Requête
+        parent: Vue parente
+        public: Public
+      user_card_view:
+        secondary_info: Informations secondaires
+        show_status_badge: Afficher le badge d'état
+        show_email: Afficher l'adresse électronique
+        tag_source: Source des étiquettes
+        tag_limit: Limite des étiquettes
+        card_size: Taille des cartes
+        columns_per_row: Colonne par ligne
     errors:
       messages:
         accepted: doi(ven)t être accepté(e)(s).
@@ -4212,6 +4242,7 @@ fr:
   label_role_new: Nouveau rôle
   label_role_grantable: Rôle admissible
   label_role_plural: Rôles
+  label_role_missing_permissions: "%{role} (permissions manquantes)"
   label_role_search: Assigner un rôle aux nouveaux membres
   label_scm: SCM
   label_scroll_left: Défilement vers la gauche
@@ -4687,6 +4718,18 @@ fr:
     text_getting_started_description: Obtenez un aperçu rapide de la gestion de projet et de la collaboration en équipe avec OpenProject. Vous pouvez redémarrer cette vidéo à partir du menu d'aide.
     welcome: Bienvenue sur %{app_title}
     select_language: Veuillez sélectionner votre langue
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages
@@ -5148,6 +5191,9 @@ fr:
   setting_mail_handler_body_delimiter_regex: Tronquer les e-mails correspondant à cette expression régulière
   setting_mail_handler_ignore_filenames: Pièces jointes du courrier ignorées
   setting_new_project_user_role_id: Rôle donné à un utilisateur non administrateur qui crée un projet
+  setting_new_project_user_role_id_caption: 'Seuls les rôles permettant de modifier les attributs du projet et de gérer les membres sont répertoriés, afin que le créateur puisse terminer la configuration du projet.
+
+    '
   setting_new_project_send_confirmation_email: Envoyer une notification à l'auteur lors de la création d'un nouveau projet
   setting_new_project_notification_text: Texte de la notification
   setting_password_active_rules: Exigences relatives au mot de passe

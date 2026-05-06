@@ -48,6 +48,7 @@ module Wikis
     before_create :generate_universal_identifier
 
     def to_s = self.class.registry_prefix
+    def user_connected?(_user) = raise SubclassResponsibilityError
 
     class << self
       def registry_prefix = raise SubclassResponsibilityError

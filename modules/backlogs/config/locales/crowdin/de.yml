@@ -26,7 +26,9 @@ de:
     description: Dieses Modul fügt Funktionen hinzu, die es agilen Teams ermöglichen, mit OpenProject in Scrum-Projekten zu arbeiten.
   activerecord:
     attributes:
-      agile/sprint:
+      project:
+        sprint_sharing: Sprints teilen
+      sprint:
         duration: Dauer
         finish_date: Endtermin
         goal: Sprint-Ziel
@@ -36,10 +38,6 @@ de:
           in_planning: In Planung
           active: Aktiv
           completed: Abgeschlossen
-      project:
-        sprint_sharing: Sprints teilen
-      sprint:
-        duration: Sprint-Dauer
       user_preference:
         backlogs_versions_default_fold_state: Zeige Versionen eingeklappt
       work_package:
@@ -60,6 +58,15 @@ de:
             sprint_sharing:
               share_all_projects_already_taken: kann nicht gewählt werden, da das Projekt "%{name}" bereits mit allen Projekten teilt.
               share_all_projects_already_taken_anonymous: kann nicht gewählt werden, da ein anderes Projekt bereits mit allen Projekten teilt.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: Es gibt ein Arbeitspaket, das in diesem Sprint nicht abgeschlossen wurde.
+                other: Es gibt %{count} Arbeitspakete, die in diesem Sprint nicht abgeschlossen wurden.
+              format: "%{message}"
+            status:
+              not_active: ist nicht aktiv und kann deshalb nicht geschlossen werden.
         work_package:
           backlog_bucket_xor_sprint: kann nicht gleichzeitig einem Sprint und einem Backlog Bucket zugewiesen werden.
           attributes:
@@ -73,17 +80,6 @@ de:
             sprint:
               not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: ist kein aktiver Sprint in dem Projekt, in dem der Sprint liegt, aus dem das Arbeitspaket verschoben wird.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: Es gibt ein Arbeitspaket, das in diesem Sprint nicht abgeschlossen wurde.
-                other: Es gibt %{count} Arbeitspakete, die in diesem Sprint nicht abgeschlossen wurden.
-              format: "%{message}"
-            status:
-              not_active: ist nicht aktiv und kann deshalb nicht geschlossen werden.
-        sprint:
-          cannot_end_before_it_starts: Sprint kann nicht enden, bevor er begonnen hat.
     models:
       sprint: Sprint
   backlogs:
@@ -116,22 +112,30 @@ de:
     administration_blankslate:
       title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
       text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
-    backlog_bucket_component:
-      blankslate_title: Eingangs Backlog ist leer
-      blankslate_description: Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
-    backlog_bucket_item_component:
-      label_actions: Arbeitspaket-Aktionen
+    bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
     sprint_component:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: Eingangs-Backlog ist leer
       blankslate_description: Alle offenen Arbeitspakete in diesem Projekt werden automatisch hier angezeigt.
       show_more:
         one: Zeige ein weiteres Element
         other: Zeige %{count} weitere Elemente
-    inbox_item_component:
-      label_actions: Arbeitspaket-Aktionen
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
@@ -141,35 +145,16 @@ de:
     move_to_sprint_dialog_component:
       title: Zum Sprint verschieben
       label_sprint: Sprint
-    backlog:
+    sprints_component:
       blankslate:
         title: Noch keine Sprints vorhanden
-        description_html: Um mit der Planung Ihres Sprints zu beginnen, erstellen Sie hier einen Sprint oder gehen Sie auf %{settings_link}, um Sprints aus einem anderen Projekt zu erhalten.
-        create_sprint_description_text: Um mit der Planung Ihres Sprints zu beginnen, erstellen Sie hier einen Sprint.
-        share_sprint_description_html: Um mit der Planung Ihres Sprints zu beginnen, erstellen Sie hier einen Sprint oder gehen Sie auf %{settings_link}, um Sprints aus einem anderen Projekt zu erhalten.
-        no_actions_description_text: Für dieses Projekt sind noch keine Sprints vorhanden.
-        receive_shared_description_html: Dieses Projekt zeigt Sprints aus einem anderen Projekt. Verwalten Sie dies in der %{settings_link}.
-        receive_shared_no_actions_description_text: Dieses Projekt zeigt geteilte Sprints aus einem anderen Projekt, aber derzeit sind keine vorhanden.
         settings_link_text: Projektkonfiguration
-    backlog_bucket_menu_component:
-      label_actions: Backlog Bucket Aktionen
-      action_menu:
-        edit_backlog_bucket: Backlog Bucket bearbeiten
-        delete_backlog_bucket: Backlog Bucket löschen
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: Keine Arbeitspakete im Backlog Bucket
-        one: "%{count} Arbeitspakete im Backlog Bucket"
-        other: "%{count} Arbeitspakete im Backlog Bucket"
-    sprint_header_component:
-      label_start_sprint: Beginn
-      label_complete_sprint: Fertigstellen
-      start_sprint_disabled_reason_active_sprint: Ein weiterer Sprint ist bereits aktiv.
-      start_sprint_disabled_reason_missing_dates: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
-      label_story_count:
-        zero: Keine Stories im Sprint
-        one: "%{count} Stories im Sprint"
-        other: "%{count} Stories im Sprint"
+        receive_and_manage_description_html: Dieses Projekt erhält Sprints aus einem anderen Projekt. Verwalten Sie dies in der %{settings_link}.
+        receive_description_text: Dieses Projekt erhält Sprints aus einem anderen Projekt, aber derzeit sind keine vorhanden.
+        create_and_manage_description_html: Um mit der Planung Ihres Sprints zu beginnen, erstellen Sie hier einen Sprint oder gehen Sie auf %{settings_link}, um Sprints aus einem anderen Projekt zu erhalten.
+        create_description_text: Um mit der Planung Ihres Sprints zu beginnen, erstellen Sie hier einen Sprint.
+        manage_description_html: Um mit der Planung Ihres Sprints zu beginnen, gehen Sie auf %{settings_link}, um Sprints aus einem anderen Projekt zu empfangen.
+        no_actions_description_text: Für dieses Projekt sind noch keine Sprints vorhanden.
     finish_sprint_dialog_component:
       title: Der Sprint enthält nicht abgeschlossene Arbeitspakete
       body: "%{message} Was würden Sie gerne damit machen?"
@@ -180,13 +165,6 @@ de:
         move_to_sprint: In einen anderen Sprint schieben
       select_sprint_label: Sprint auswählen
       button_complete_sprint: Sprint abschließen
-    sprint_menu_component:
-      label_actions: Sprint-Aktionen
-      action_menu:
-        edit_sprint: Sprint bearbeiten
-        add_work_package: Arbeitspaket hinzufügen
-    story_component:
-      label_actions: Aktionen
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren

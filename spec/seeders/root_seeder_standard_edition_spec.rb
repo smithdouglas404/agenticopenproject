@@ -66,7 +66,6 @@ RSpec.describe RootSeeder,
       expect(GlobalRole.count).to eq 2
       expect(Grids::Overview.count).to eq 2
       expect(Version.count).to eq 4
-      expect(VersionSetting.count).to eq 4
       expect(Boards::Grid.count).to eq 5
       expect(Boards::Grid.count { |grid| grid.options.has_key?(:filters) }).to eq 1
       expect(Project::PhaseDefinition.count).to eq 4
@@ -198,7 +197,6 @@ RSpec.describe RootSeeder,
         expect(GlobalRole.count).to eq 2
         expect(Grids::Overview.count).to eq 2
         expect(Version.count).to eq 4
-        expect(VersionSetting.count).to eq 4
         expect(Boards::Grid.count).to eq 5
         expect(Project::PhaseDefinition.count).to eq 4
       end

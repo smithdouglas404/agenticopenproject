@@ -80,13 +80,13 @@ export class WorkPackageAuthorization {
   private copyLink() {
     const stateName = this.$state.current.name!;
     if (stateName.startsWith('work-packages.partitioned.list.details')) {
-      return this.PathHelper.workPackageDetailsCopyPath(this.project.identifier, this.workPackage.id!);
+      return this.PathHelper.workPackageDetailsCopyPath(this.project.identifier, this.workPackage.displayId);
     }
-    return this.PathHelper.workPackageCopyPath(this.project.identifier, this.workPackage.id!);
+    return this.PathHelper.workPackageCopyPath(this.project.identifier, this.workPackage.displayId);
   }
 
   private shortLink() {
-    return this.PathHelper.workPackageShortPath(this.workPackage.id!);
+    return this.PathHelper.workPackageShortPath(this.workPackage.displayId);
   }
 
   private bulkCopyLink():string {

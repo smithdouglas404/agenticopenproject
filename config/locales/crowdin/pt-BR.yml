@@ -419,7 +419,8 @@ pt-BR:
           error_special_characters: Caracteres especiais não são permitidos
           error_not_fully_uppercased: Deve estar em maiúsculas
           error_in_use: Já está em uso como identificador ativo de outro projeto
-          error_reserved: Reservado pelo histórico de identificadores de outro projeto
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Requer revisão manual
           remaining_projects:
             one: "… mais 1 projeto"
@@ -460,8 +461,12 @@ pt-BR:
         ignore: Ignorar alterações
         save: Salvar alterações e continuar
       role_selector:
+        title: Select roles
         label: 'Função: %{role}'
         no_role: Selecionar função
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Nenhuma transição de status configurada
         description: Adicione status para começar a configurar fluxos de trabalho para esta função
@@ -1110,6 +1115,8 @@ pt-BR:
       no_results_title_text: Atualmente, não há notícias para comunicar.
       no_results_content_text: Adicionar um item de notícias
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Atribuir todas as permissões de %{module}
       section_uncheck_all_label: Remover todas as permissões de %{module}
@@ -1997,6 +2004,29 @@ pt-BR:
         type: Tipo
         version: Versão
         watcher: Observador
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: deve ser aceito.
@@ -4216,6 +4246,7 @@ pt-BR:
   label_role_new: Nova função
   label_role_grantable: Função concedível
   label_role_plural: Papéis
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Atribuir papéis aos novos membros
   label_scm: SCM
   label_scroll_left: Rolar para a esquerda
@@ -4690,6 +4721,18 @@ pt-BR:
     text_getting_started_description: Obtenha uma visão geral da gestão de projetos e colaboração entre equipes com o OpenProject. Você pode assistir este vídeo novamente no menu de ajuda.
     welcome: Bem-vindo ao %{app_title}
     select_language: Por favor, selecione seu idioma
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Adicionar comentários
   permission_add_work_packages: Adicionar pacotes de trabalho
   permission_add_messages: Postar mensagens
@@ -5145,6 +5188,9 @@ pt-BR:
   setting_mail_handler_body_delimiter_regex: Truncar e-mails correspondentes a esta expressão regular
   setting_mail_handler_ignore_filenames: Anexos de e-mail ignorados
   setting_new_project_user_role_id: Função atribuída a um usuário não administrador que cria um projeto
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Enviar notificação ao autor ao criar um novo projeto
   setting_new_project_notification_text: Texto de notificação
   setting_password_active_rules: Password requirements

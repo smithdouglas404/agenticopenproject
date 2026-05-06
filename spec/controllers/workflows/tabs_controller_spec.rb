@@ -48,6 +48,11 @@ RSpec.describe Workflows::TabsController do
             .with(role.id.to_s)
             .and_return(role)
 
+    allow(role_scope)
+      .to receive(:where)
+            .with(id: [role.id.to_s])
+            .and_return([role])
+
     role_scope
   end
 
@@ -68,32 +73,58 @@ RSpec.describe Workflows::TabsController do
 
   describe "#edit" do
     context "when not a turbo frame request" do
-      it "redirects to the parent workflow edit path" do
-        get :edit,
-            params: {
-              role_id: role.id.to_s,
-              workflow_type_id: type.id.to_s,
-              tab: "always"
-            }
+      context "with a single role" do
+        it "redirects to the parent workflow edit path" do
+          get :edit,
+              params: {
+                role_ids: [role.id.to_s],
+                workflow_type_id: type.id.to_s,
+                tab: "always"
+              }
 
-        expect(response).to redirect_to(
-          edit_workflow_path(type, role_id: role.id.to_s, tab: "always")
-        )
+          expect(response).to redirect_to(
+            edit_workflow_path(type, role_ids: [role.id.to_s], tab: "always")
+          )
+        end
+
+        it "does not forward status_ids to the redirect" do
+          get :edit,
+              params: {
+                role_ids: [role.id.to_s],
+                workflow_type_id: type.id.to_s,
+                tab: "always",
+                status_ids: ["1", "2"]
+              }
+
+          expect(response).to redirect_to(
+            edit_workflow_path(type, role_ids: [role.id.to_s], tab: "always")
+          )
+          expect(response.location).not_to include("status_ids")
+        end
       end
 
-      it "does not forward status_ids to the redirect" do
-        get :edit,
-            params: {
-              role_id: role.id.to_s,
-              workflow_type_id: type.id.to_s,
-              tab: "always",
-              status_ids: ["1", "2"]
-            }
+      context "with multiple roles" do
+        let(:role2) { build_stubbed(:project_role) }
 
-        expect(response).to redirect_to(
-          edit_workflow_path(type, role_id: role.id.to_s, tab: "always")
-        )
-        expect(response.location).not_to include("status_ids")
+        before do
+          allow(role_scope)
+            .to receive(:where)
+                  .with(id: [role.id.to_s, role2.id.to_s])
+                  .and_return([role, role2])
+        end
+
+        it "redirects preserving all role ids" do
+          get :edit,
+              params: {
+                role_ids: [role.id.to_s, role2.id.to_s],
+                workflow_type_id: type.id.to_s,
+                tab: "always"
+              }
+
+          expect(response).to redirect_to(
+            edit_workflow_path(type, role_ids: [role.id.to_s, role2.id.to_s], tab: "always")
+          )
+        end
       end
     end
   end
@@ -114,7 +145,7 @@ RSpec.describe Workflows::TabsController do
 
         post :confirm_statuses,
              params: {
-               role_id: role.id.to_s,
+               role_ids: [role.id.to_s],
                workflow_type_id: type.id.to_s,
                status_ids: ["1", "2"],
                original_status_ids: ["1", "2"],
@@ -133,7 +164,7 @@ RSpec.describe Workflows::TabsController do
       before do
         post :confirm_statuses,
              params: {
-               role_id: role.id.to_s,
+               role_ids: [role.id.to_s],
                workflow_type_id: type.id.to_s,
                status_ids: ["1"],
                original_status_ids: ["1", "2"],
@@ -152,33 +183,74 @@ RSpec.describe Workflows::TabsController do
 
   describe "#update" do
     let(:status_params) { { "1" => { "2" => ["always"] } } }
-    let(:service) do
-      instance_double(Workflows::BulkUpdateService).tap do |dbl|
-        allow(Workflows::BulkUpdateService)
-          .to receive(:new)
-                .with(role: role, type: type, tab: "always")
-                .and_return(dbl)
+    let(:call_result) { ServiceResult.success }
+
+    context "with a single role" do
+      let(:service) do
+        instance_double(Workflows::BulkUpdateService).tap do |dbl|
+          allow(Workflows::BulkUpdateService)
+            .to receive(:new)
+                  .with(role: role, type: type, tab: "always")
+                  .and_return(dbl)
+        end
+      end
+
+      before do
+        allow(service).to receive(:call).with(status_params).and_return(call_result)
+        allow(controller).to receive(:statuses_for_form).and_return([build_stubbed(:status)])
+        post :update,
+             params: { role_ids: [role.id.to_s], workflow_type_id: type.id, tab: "always", status: status_params },
+             format: :turbo_stream
+      end
+
+      it "calls the service and renders a flash turbo stream" do
+        expect(service).to have_received(:call).with(status_params)
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
       end
     end
-    let(:call_result) { ServiceResult.success }
-    let(:params) do
-      {
-        role_id: role.id,
-        workflow_type_id: type.id,
-        tab: "always",
-        status: status_params
-      }
-    end
 
-    before do
-      allow(service).to receive(:call).with(status_params).and_return(call_result)
-      allow(controller).to receive(:statuses_for_form).and_return([build_stubbed(:status)])
-      post :update, params:, format: :turbo_stream
-    end
+    context "with multiple roles" do
+      let(:role2) { build_stubbed(:project_role) }
+      let(:service1) do
+        instance_double(Workflows::BulkUpdateService).tap do |dbl|
+          allow(Workflows::BulkUpdateService)
+            .to receive(:new)
+                  .with(role: role, type: type, tab: "always")
+                  .and_return(dbl)
+        end
+      end
+      let(:service2) do
+        instance_double(Workflows::BulkUpdateService).tap do |dbl|
+          allow(Workflows::BulkUpdateService)
+            .to receive(:new)
+                  .with(role: role2, type: type, tab: "always")
+                  .and_return(dbl)
+        end
+      end
 
-    it "renders a flash turbo stream" do
-      expect(service).to have_received(:call).with(status_params)
-      expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+      before do
+        allow(role_scope)
+          .to receive(:where)
+                .with(id: [role.id.to_s, role2.id.to_s])
+                .and_return([role, role2])
+        allow(service1).to receive(:call).with(status_params).and_return(call_result)
+        allow(service2).to receive(:call).with(status_params).and_return(call_result)
+        allow(controller).to receive(:statuses_for_form).and_return([build_stubbed(:status)])
+        post :update,
+             params: {
+               role_ids: [role.id.to_s, role2.id.to_s],
+               workflow_type_id: type.id,
+               tab: "always",
+               status: status_params
+             },
+             format: :turbo_stream
+      end
+
+      it "calls the service for each role and renders a flash turbo stream" do
+        expect(service1).to have_received(:call).with(status_params)
+        expect(service2).to have_received(:call).with(status_params)
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+      end
     end
   end
 end

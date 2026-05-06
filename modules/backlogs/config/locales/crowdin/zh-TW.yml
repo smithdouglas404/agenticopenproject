@@ -22,24 +22,22 @@
 ---
 zh-TW:
   plugin_openproject_backlogs:
-    name: OpenProject待辦事項
+    name: OpenProject代辦事項
     description: 此模組新增了讓敏捷團隊能夠在 Scrum 專案中使用 OpenProject 的功能。
   activerecord:
     attributes:
-      agile/sprint:
-        duration: 時長
-        finish_date: 完成日期
-        goal: 衝刺目標
-        name: Sprint 名稱
-        sharing: 分享
-        statuses:
-          in_planning: 規劃中
-          active: 啟用
-          completed: 已完成
       project:
         sprint_sharing: Sprint 共用
       sprint:
-        duration: 衝刺時間
+        duration: Duration
+        finish_date: Finish date
+        goal: Sprint goal
+        name: Sprint name
+        sharing: Sharing
+        statuses:
+          in_planning: In planning
+          active: Active
+          completed: Completed
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
@@ -60,6 +58,14 @@ zh-TW:
             sprint_sharing:
               share_all_projects_already_taken: 無法設定，因為專案 "%{name}" 已經與所有專案共用。
               share_all_projects_already_taken_anonymous: 無法設定，因為另一個專案已經與所有專案共用。
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                other: There are %{count} work packages that were not completed in this sprint.
+              format: "%{message}"
+            status:
+              not_active: is not active so it cannot be closed.
         work_package:
           backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
@@ -73,16 +79,6 @@ zh-TW:
             sprint:
               not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: 工作任務被移出的項目中沒有活耀的衝刺。
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                other: There are %{count} work packages that were not completed in this sprint.
-              format: "%{message}"
-            status:
-              not_active: 未激活，因此無法關閉。
-        sprint:
-          cannot_end_before_it_starts: 進度不可以在開始前結束
     models:
       sprint: 衝刺
   backlogs:
@@ -113,21 +109,29 @@ zh-TW:
     administration_blankslate:
       title: Backlog 管理設定不斷演進
       text: 我們目前正在重新設計 Backlogs 模組。在不久的將來，Sprint 和 Backlogs 的管理設定將在此處顯示。專案層級的設定仍然可用。
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Drag items here to add them.
-    backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
     sprint_component:
       blankslate_title: "%{name} 為空"
       blankslate_description: 尚未規劃任何項目。將項目拖曳至此即可新增。
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: 積壓收件匣為空
       blankslate_description: 此專案中所有開啟的工作任務都會自動出現在這裡。
       show_more:
         other: 再顯示 %{count} 項
-    inbox_item_component:
-      label_actions: 工作項目追蹤
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: 複製連結到剪貼簿
@@ -137,35 +141,16 @@ zh-TW:
     move_to_sprint_dialog_component:
       title: 移動到衝刺
       label_sprint: 衝刺
-    backlog:
+    sprints_component:
       blankslate:
         title: No sprints present yet
-        description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
-        create_sprint_description_text: To start planning your sprint, create one here.
-        share_sprint_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
-        no_actions_description_text: No sprints are available for this project yet.
-        receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
-        receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
         settings_link_text: project settings
-    backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
-      action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
-    sprint_header_component:
-      label_start_sprint: 開始
-      label_complete_sprint: 完成
-      start_sprint_disabled_reason_active_sprint: 另一個衝刺已經展開。
-      start_sprint_disabled_reason_missing_dates: 要開始衝刺，必須要有開始和結束日期。
-      label_story_count:
-        zero: 衝刺階段沒有[故事]
-        one: "%{count} 衝刺中的故事"
-        other: "%{count} 衝刺中的故事"
+        receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
+        receive_description_text: This project receives shared sprints from a different project, but none are available right now.
+        create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
+        create_description_text: To start planning your sprint, create one here.
+        manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
+        no_actions_description_text: No sprints are available for this project yet.
     finish_sprint_dialog_component:
       title: 有進行中的工作項目
       body: "%{message} 您想用這些做什麼？"
@@ -176,13 +161,6 @@ zh-TW:
         move_to_sprint: 將它們移到另一個衝刺階段
       select_sprint_label: 選擇衝刺
       button_complete_sprint: 完成衝刺
-    sprint_menu_component:
-      label_actions: 衝刺行動
-      action_menu:
-        edit_sprint: 編輯衝刺
-        add_work_package: 新增工作項目
-    story_component:
-      label_actions: 故事相關操作
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 複製網址到剪貼簿

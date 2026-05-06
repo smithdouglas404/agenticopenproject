@@ -57,7 +57,6 @@ import {
   WorkPackageViewFiltersService,
 } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { WorkPackagesListService } from 'core-app/features/work-packages/components/wp-list/wp-list.service';
-import { StateService } from '@uirouter/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -70,7 +69,7 @@ import {
   HalResourceEditingService,
 } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
-import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import {
   CalendarViewEvent,
   OpWorkPackagesCalendarService,
@@ -88,7 +87,6 @@ import {
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 import allLocales from '@fullcalendar/core/locales-all';
-import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { MeetingResource } from 'core-app/features/hal/resources/meeting-resource';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
@@ -128,7 +126,6 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
   constructor(
     readonly actions$:ActionsService,
     readonly states:States,
-    readonly $state:StateService,
     readonly wpTableFilters:WorkPackageViewFiltersService,
     readonly wpListService:WorkPackagesListService,
     readonly querySpace:IsolatedQuerySpace,
@@ -342,16 +339,13 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
         }
 
         if (evt.event.extendedProps.workPackage) {
-          const workPackageId = (evt.event.extendedProps.workPackage as WorkPackageResource).id!;
+          const wp = evt.event.extendedProps.workPackage as WorkPackageResource;
           // Currently the calendar widget is shown on multiple pages,
           // but only the calendar module itself is a partitioned query space which can deal with a split screen request
-          if (this.$state.includes('calendar')) {
-            this.workPackagesCalendar.openSplitView(workPackageId);
+          if (window.location.pathname.includes('/calendars/')) {
+            this.workPackagesCalendar.openSplitView(wp.id!);
           } else {
-            void this.$state.go(
-              'work-packages.show',
-              { workPackageId },
-            );
+            window.location.href = this.pathHelper.workPackagePath(wp.displayId);
           }
         }
       },
@@ -414,7 +408,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
         durationEditable: this.workPackagesCalendar.eventDurationEditable(workPackage),
         end: exclusiveEnd,
         allDay: true,
-        className: `fc-event-clickable __hl_background_type_${workPackage.type.id || ''}`,
+        className: `fc-event-clickable __hl_background_type_${workPackage.type.id ?? ''}`,
         workPackage,
       };
     });
@@ -444,13 +438,14 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       ignoreNonWorkingDays: nonWorkingDays,
     };
 
-    void this.$state.go(
-      splitViewRoute(this.$state, 'new'),
-      {
-        defaults,
-        tabIdentifier: 'overview',
-      },
-    );
+    if (window.location.pathname.includes('/calendars/')) {
+      const extraParams:Record<string, string> = {
+        startDate: defaults.startDate,
+        dueDate: defaults.dueDate,
+        ...(defaults.ignoreNonWorkingDays ? { ignoreNonWorkingDays: 'true' } : {}),
+      };
+      this.workPackagesCalendar.openSplitCreate(extraParams);
+    }
   }
 
   @EffectCallback(calendarRefreshRequest)

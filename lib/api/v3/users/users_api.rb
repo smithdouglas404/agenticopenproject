@@ -86,7 +86,7 @@ module API
                 if params[:id] == "me"
                   User.current
                 else
-                  User.visible.find_by_unique!(params[:id]) # rubocop:disable Rails/DynamicFindBy
+                  User.visible.find_by_unique!(params[:id])
                 end
             end
 

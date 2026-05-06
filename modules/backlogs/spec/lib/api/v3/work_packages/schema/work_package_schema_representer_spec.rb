@@ -110,7 +110,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
 
     it_behaves_like "links to allowed values via collection link" do
       let(:filters) do
-        CGI.escape(JSON.dump([{ status: { operator: "!", values: [Agile::Sprint.statuses["completed"]] } }]))
+        CGI.escape(JSON.dump([{ status: { operator: "!", values: [Sprint.statuses["completed"]] } }]))
       end
       let(:href) { "#{api_v3_paths.project_sprints(project.id)}?filters=#{filters}&pageSize=-1" }
     end

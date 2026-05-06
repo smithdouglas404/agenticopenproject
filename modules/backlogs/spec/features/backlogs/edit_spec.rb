@@ -45,7 +45,7 @@ RSpec.describe "Edit", :js do
   let(:planning_page) { Pages::Backlog.new(project) }
 
   let!(:closed_sprint) do
-    create(:agile_sprint,
+    create(:sprint,
            project:,
            status: "completed",
            start_date: Date.new(2025, 8, 25),
@@ -53,14 +53,14 @@ RSpec.describe "Edit", :js do
   end
 
   let!(:first_sprint) do
-    create(:agile_sprint,
+    create(:sprint,
            project:,
            start_date: Date.new(2025, 9, 5),
            finish_date: Date.new(2025, 9, 15))
   end
 
   let!(:second_sprint) do
-    create(:agile_sprint,
+    create(:sprint,
            project:,
            start_date: Date.new(2025, 9, 16),
            finish_date: Date.new(2025, 9, 26))

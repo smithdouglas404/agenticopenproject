@@ -411,7 +411,8 @@ ko:
           error_special_characters: 특수 문자는 허용되지 않음
           error_not_fully_uppercased: 대문자여야 함
           error_in_use: 이미 다른 프로젝트의 활성 핸들로 사용 중입니다
-          error_reserved: 다른 프로젝트의 핸들 기록에 의해 예약되었습니다
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: 수동 검토가 필요합니다
           remaining_projects:
             other: "... %{count}개의 추가 프로젝트"
@@ -450,8 +451,11 @@ ko:
         ignore: 변경 사항 무시
         save: 변경 사항을 저장하고 계속하기
       role_selector:
+        title: Select roles
         label: '역할: %{role}'
         no_role: 역할 선택
+        roles:
+          other: "%{count} roles selected"
       blankslate:
         title: 구성된 상태 전환 없음
         description: 상태를 추가하여 이 역할에 대한 워크플로 구성을 시작합니다
@@ -1093,6 +1097,8 @@ ko:
       no_results_title_text: 보고할 소식이 없습니다.
       no_results_content_text: 소식 항목 추가
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: 모든 %{module} 권한 할당
       section_uncheck_all_label: 모든 %{module} 권한 할당 취소
@@ -1978,6 +1984,29 @@ ko:
         type: 타입
         version: 버전
         watcher: 주시자
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: 허용 되어야 합니다.
@@ -4174,6 +4203,7 @@ ko:
   label_role_new: 새 역할
   label_role_grantable: 부여 가능한 역할
   label_role_plural: 역할
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: 새 멤버에게 역할 할당
   label_scm: SCM
   label_scroll_left: 왼쪽으로 스크롤
@@ -4648,6 +4678,18 @@ ko:
     text_getting_started_description: OpenProject로 프로젝트 관리 및 팀 공동 작업에 대한 간략한 개요를 가져올 수 있습니다. 도움말 메뉴에서 이 동영상을 다시 시작할 수 있습니다.
     welcome: "%{app_title}입니다."
     select_language: 언어를 선택하세요.
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: 코멘트 추가
   permission_add_work_packages: 작업 패키지 추가
   permission_add_messages: 메시지 게시
@@ -5102,6 +5144,9 @@ ko:
   setting_mail_handler_body_delimiter_regex: 이 정규식에 일치하는 이메일을 자름
   setting_mail_handler_ignore_filenames: 무시된 메일 첨부 파일
   setting_new_project_user_role_id: 프로젝트를 만드는 비관리자 사용자에게 지정된 역할
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: 새 프로젝트 생성 시 작성자에게 알림 보내기
   setting_new_project_notification_text: 알림 텍스트
   setting_password_active_rules: Password requirements

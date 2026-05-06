@@ -98,6 +98,11 @@ module OpenProject::Wikis
            icon: "browser"
     end
 
+    patch_with_namespace :WikiPages, :CreateService
+    patch_with_namespace :WikiPages, :UpdateService
+    patch_with_namespace :WorkPackages, :CreateService
+    patch_with_namespace :WorkPackages, :UpdateService
+
     add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
     add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }
   end

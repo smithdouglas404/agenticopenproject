@@ -56,7 +56,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     end
 
     ids = args.first.is_a?(Array) ? args.first : args
-    if ids.any? { |id| semantic_id?(id) }
+    if ids.any? { semantic_id?(it) }
       raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
             "Semantic identifiers in multi-argument find are not supported. " \
             "Use primary keys for multi-argument lookup, or resolve each identifier " \
@@ -105,6 +105,22 @@ module WorkPackage::SemanticIdentifier::FinderMethods
             ))
   end
 
+  # Plural counterpart to find_by_display_id: returns a chainable relation that
+  # matches any work package whose primary key, current identifier, or
+  # historical alias matches one of the supplied display ids. Numeric and
+  # semantic strings may be freely mixed; unknown values produce no match
+  # rather than poisoning the rest of the set.
+  def where_display_id_in(values)
+    values = Array(values).map(&:to_s)
+    return none if values.empty?
+
+    semantic, numeric = values.partition { semantic_id?(it) }
+
+    scope = where(id: numeric.map(&:to_i))
+    scope = scope.or(scope_for_semantic_identifier(semantic)) if semantic.any?
+    scope
+  end
+
   private
 
   def reject_semantic_id_in_find_by!(args)
@@ -130,7 +146,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
 
   def first_semantic_value(value)
     if value.is_a?(Array)
-      value.detect { |v| semantic_id?(v) }
+      value.detect { semantic_id?(it) }
     elsif semantic_id?(value)
       value
     end

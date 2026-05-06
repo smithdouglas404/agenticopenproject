@@ -36,7 +36,7 @@ RSpec.describe "Sprint list", :js do
   shared_let(:other_project) { create(:project) }
   shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] }) }
   shared_let(:sprint) do
-    create(:agile_sprint, project:,
+    create(:sprint, project:,
                           start_date: Date.new(2025, 9, 1),
                           finish_date: Date.new(2025, 9, 14))
   end

@@ -36,13 +36,13 @@ module Backlogs
     before_action :find_backlog_bucket, only: %i[edit_dialog update destroy]
 
     def new_dialog
-      backlog_bucket = Agile::BacklogBucket.new(project: @project)
+      backlog_bucket = BacklogBucket.new(project: @project)
 
-      respond_with_dialog Backlogs::NewBacklogBucketDialogComponent.new(backlog_bucket:)
+      respond_with_dialog Backlogs::BucketDialogComponent.new(backlog_bucket:)
     end
 
     def edit_dialog
-      respond_with_dialog Backlogs::NewBacklogBucketDialogComponent.new(backlog_bucket: @backlog_bucket, state: :edit)
+      respond_with_dialog Backlogs::BucketDialogComponent.new(backlog_bucket: @backlog_bucket, state: :edit)
     end
 
     def create
@@ -54,7 +54,7 @@ module Backlogs
         flash[:notice] = I18n.t(:notice_successful_create)
         redirect_to_backlogs
       else
-        update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
+        update_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
       end
     end
@@ -68,7 +68,7 @@ module Backlogs
         flash[:notice] = I18n.t(:notice_successful_update)
         redirect_to_backlogs
       else
-        update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
+        update_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
       end
     end
@@ -89,9 +89,9 @@ module Backlogs
 
     private
 
-    def update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket:, base_errors: nil)
+    def update_backlog_bucket_form_component_via_turbo_stream(backlog_bucket:, base_errors: nil)
       update_via_turbo_stream(
-        component: Backlogs::NewBacklogBucketFormComponent.new(
+        component: Backlogs::BucketFormComponent.new(
           backlog_bucket:,
           base_errors:
         ),
@@ -104,7 +104,7 @@ module Backlogs
     end
 
     def find_backlog_bucket
-      @backlog_bucket = Agile::BacklogBucket.where(project: @project).find(params[:id])
+      @backlog_bucket = BacklogBucket.where(project: @project).find(params[:id])
     end
 
     def backlog_bucket_params

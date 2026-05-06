@@ -6,6 +6,7 @@ zh-TW:
     description: 該 OpenProject 外掛引入了 BIM 和 BCF 功能。
   bim:
     label_bim: BIM
+    error_direct_upload_failed: Direct upload failed.
   bcf:
     label_bcf: BCF
     label_imported_failed: 無法匯入 BCF 主題

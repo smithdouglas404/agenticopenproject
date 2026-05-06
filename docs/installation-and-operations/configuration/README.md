@@ -715,6 +715,26 @@ To disable rendering the badge, uncheck the setting at Administration &gt; Syste
 OPENPROJECT_SECURITY__BADGE__DISPLAYED="false"
 ```
 
+### Content Security Policy image sources
+
+Configure the allowed sources for the `img-src` CSP directive.
+
+*default: `["*", "data:", "blob:"]`*
+
+OpenProject always adds `'self'` and `rails_asset_host` (if configured) to `img-src` automatically, so same-origin and asset-hosted images remain allowed even if not listed in this setting.
+
+Example to only allow secure remote images (plus data/blob):
+
+```yaml
+OPENPROJECT_CSP__IMG__SRC="https: data: blob:"
+```
+
+Example to restrict to specific hosts:
+
+```yaml
+OPENPROJECT_CSP__IMG__SRC="https://cdn.example.com https://images.example.com data: blob:"
+```
+
 ### Cache configuration options
 
 

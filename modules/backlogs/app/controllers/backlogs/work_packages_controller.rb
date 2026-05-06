@@ -38,7 +38,7 @@ module Backlogs
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
       max_position = @allowed_stories.maximum(:position) || 0
-      open_sprints_exist = Agile::Sprint.for_project(@project).visible.not_completed.where.not(id: @sprint.id).exists?
+      open_sprints_exist = Sprint.for_project(@project).visible.not_completed.where.not(id: @sprint.id).exists?
 
       render(Backlogs::StoryMenuListComponent.new(
                story: @story,
@@ -51,7 +51,7 @@ module Backlogs
              layout: false)
     end
 
-    # Move a story from an Agile::Sprint to another Agile::Sprint, or the Inbox.
+    # Move a story from an Sprint to another Sprint, or the Inbox.
     def move
       # The update service reloads the story internally (via #move_after),
       # so we memoize the previous sprint_id before the call.
@@ -125,15 +125,15 @@ module Backlogs
       render_success_flash_message_via_turbo_stream(
         message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
       )
-      inbox_work_packages = Backlog.inbox_for(project: @project)
-      backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
-                          Agile::BacklogBucket.for_project(@project)
-                        end
+      inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
+      buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
+                  BacklogBucket.for_project(@project)
+                end
 
       replace_via_turbo_stream(
-        component: Backlogs::BacklogsComponent.new(inbox_work_packages:,
-                                                   backlog_buckets:,
-                                                   project: @project),
+        component: Backlogs::BacklogComponent.new(inbox_work_packages:,
+                                                  buckets:,
+                                                  project: @project),
         method: :morph
       )
     end

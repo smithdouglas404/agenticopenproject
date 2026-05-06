@@ -3,14 +3,14 @@ ko:
   activerecord:
     attributes:
       wikis/xwiki_provider:
-        name: 이름
-        url: 인스턴스 URL
-        universal_identifier: Universal identifier
         authentication_method: 인증 방법
         authentication_methods:
           oauth2_sso: OpenID Connect ID 공급자를 통한 Single-Sign-On
           two_way_oauth2: 양방향 OAuth 2.0 인증 코드 흐름
+        name: 이름
         token_exchange_scope: XWiki 범위
+        universal_identifier: Universal identifier
+        url: 인스턴스 URL
         wiki_audience: XWiki 오디언스
     errors: {}
     models:
@@ -25,71 +25,72 @@ ko:
   project_module_wiki_platforms: 위키 공급자
   wikis:
     buttons:
-      save_and_continue: 저장 및 계속
+      connect_account: Connect %{provider} account
       done_continue: Done, continue
+      save_and_continue: 저장 및 계속
       wiki_page: Wiki page
-    inline_page_links_component:
-      empty_heading: No inline links
-      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
-      heading: Inline page links
+    work_package_wikis_tab_component:
+      inline_page_links: Inline page links
+      referencing_pages: Referenced in
     page_link_component:
       remove: Remove page link
     relation_page_links_component:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
-      heading: Related pages
     oauth_login_component:
+      heading: Not connected to %{provider}
+      description: Log in to %{provider} to view and manage related wiki pages from this OpenProject instance.
       connect_button: Connect %{provider} account
     admin:
-      oauth_application_info_component:
-        label_pending: Pending
-        replace_oauth_application: Replace OpenProject OAuth application
-        confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
-      oauth_client_info_component:
-        label_pending: Pending
-        replace_oauth_client: Replace XWiki OAuth application
-        confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
-      wiki_provider_list_component:
-        label_name: Name
-        label_provider: Provider
-        label_creation_time: Created
-        no_results_title: You don't have any wiki providers set up yet.
-        no_results_description: Add a wiki provider to see them here.
       destroy_confirmation_dialog_component:
         title: Delete wiki provider
+        heading: Delete wiki provider?
         warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
       forms:
+        general_info_form_component:
+          xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
         oauth_application_form_component:
           application_id: Application ID
           application_secret: Application secret
-        general_info_form_component:
-          xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
+        oauth_client_form_component:
+          client_id: Client ID
+      oauth_application_info_component:
+        confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
+        label_pending: Pending
+        replace_oauth_application: Replace OpenProject OAuth application
+      oauth_client_info_component:
+        confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
+        label_pending: Pending
+        replace_oauth_client: Replace XWiki OAuth application
+      wiki_provider_list_component:
+        label_creation_time: Created
+        label_name: Name
+        label_provider: Provider
+        no_results_description: Add a wiki provider to see them here.
+        no_results_title: You don't have any wiki providers set up yet.
       wiki_providers:
         index_description: 외부 위키 서비스를 추가하여 작업 패키지를 기존 위키 페이지에 링크하거나 OpenProject에서 직접 새로운 위키 페이지를 만듭니다.
-        label_wiki_platform: 위키 공급자
         label_add_new: 새로운 위키 공급자 추가
-        label_new_xwiki_instance: 새로운 XWiki 공급자
         label_edit: XWiki 공급자 편집
-        name_placeholder: XWiki 지식 베이스
+        label_new_xwiki_instance: 새로운 XWiki 공급자
+        label_wiki_platform: 위키 공급자
         name_caption: 사용자가 여러 위키 플랫폼 간에 구분할 수 있도록 저장소에 이름을 지정하세요.
-        url_caption: https://를 포함하여 위키 플랫폼의 호스트 주소를 추가하세요. 255자 이하여야 합니다.
-        xwiki_instance: XWiki 인스턴스
+        name_placeholder: XWiki 지식 베이스
         new_provider_html: 자세한 내용은 [XWiki 통합 설정] 관련 문서(docs_url)를 참조하세요.
+        oauth:
+          openproject_oauth: OpenProject OAuth
         sections:
           general_information: Basic details
           oauth_configuration: OAuth configuration
-        oauth:
-          openproject_oauth: OpenProject OAuth
+        url_caption: https://를 포함하여 위키 플랫폼의 호스트 주소를 추가하세요. 255자 이하여야 합니다.
+        xwiki_instance: XWiki 인스턴스
         xwiki:
           oauth:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
             provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using an OAuth application. Enter the client credentials from your XWiki OAuth application.
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
-        delete:
-          title: 위키 공급자 삭제
-          warning_html: "%{wiki_provider}을(를) 삭제하려고 합니다. 이 작업은 되돌릴 수 없습니다."
     macro:
       page_not_found: Linked wiki page no longer available

@@ -370,6 +370,77 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "WorkPackage.where_display_id_in" do
+    let(:work_package2) { create(:work_package, project:) }
+    let(:work_package3) { create(:work_package, project:) }
+    let(:other_project) { create(:project, identifier: "OTHER") }
+    let(:other_wp) { create(:work_package, project: other_project) }
+
+    before do
+      work_package2
+      work_package3
+      other_wp
+    end
+
+    it "returns a chainable ActiveRecord relation" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1"])).to be_a(ActiveRecord::Relation)
+    end
+
+    it "returns an empty relation for an empty input" do
+      expect(WorkPackage.where_display_id_in([])).to be_empty
+    end
+
+    it "wraps a single non-array value" do
+      expect(WorkPackage.where_display_id_in("MYPROJ-1")).to contain_exactly(work_package)
+    end
+
+    it "resolves a single numeric string" do
+      expect(WorkPackage.where_display_id_in([work_package.id.to_s])).to contain_exactly(work_package)
+    end
+
+    it "resolves multiple numeric strings" do
+      expect(WorkPackage.where_display_id_in([work_package.id.to_s, work_package2.id.to_s]))
+        .to contain_exactly(work_package, work_package2)
+    end
+
+    it "resolves a single semantic identifier via the identifier column" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1"])).to contain_exactly(work_package)
+    end
+
+    it "resolves multiple semantic identifiers via the identifier column" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1", "MYPROJ-2"]))
+        .to contain_exactly(work_package, work_package2)
+    end
+
+    it "resolves a semantic identifier via the alias table for historical ids" do
+      WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+      expect(WorkPackage.where_display_id_in(["OLDPROJ-1"])).to contain_exactly(work_package)
+    end
+
+    it "resolves a mix of numeric and semantic identifiers in one query" do
+      expect(WorkPackage.where_display_id_in([work_package.id.to_s, "MYPROJ-2", "OTHER-1"]))
+        .to contain_exactly(work_package, work_package2, other_wp)
+    end
+
+    it "drops unknown values without poisoning the rest of the set" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1", "MYPROJ-999", "ZZZ-1"]))
+        .to contain_exactly(work_package)
+    end
+
+    it "is composable with includes and order" do
+      relation = WorkPackage.where_display_id_in(["MYPROJ-1", "MYPROJ-2"])
+                            .includes(:project)
+                            .order(id: :asc)
+      expect(relation.to_a).to eq([work_package, work_package2])
+    end
+
+    it "respects upstream visibility scoping" do
+      member_user = create(:user, member_with_permissions: { project => [:view_work_packages] })
+      expect(WorkPackage.visible(member_user).where_display_id_in(["MYPROJ-1", "OTHER-1"]))
+        .to contain_exactly(work_package)
+    end
+  end
+
   describe "WorkPackage.find_by_display_id!" do
     context "with a semantic identifier" do
       it "resolves via the semantic identifier" do
@@ -411,6 +482,74 @@ RSpec.describe WorkPackage::SemanticIdentifier do
             with_flag: { semantic_work_package_ids: false } do
       it "returns the numeric id" do
         expect(work_package.display_id).to eq(work_package.id)
+      end
+    end
+  end
+
+  describe "#formatted_id" do
+    context "when semantic mode is active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      it "returns the semantic identifier without hash prefix" do
+        expect(work_package.formatted_id).to eq("MYPROJ-1")
+      end
+    end
+
+    context "when semantic mode is active but identifier is nil",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      before { work_package.update_columns(identifier: nil) }
+
+      it "falls back to hash-prefixed numeric id" do
+        expect(work_package.formatted_id).to eq("##{work_package.id}")
+      end
+    end
+
+    context "when semantic mode is not active",
+            with_flag: { semantic_work_package_ids: false } do
+      it "returns hash-prefixed numeric id" do
+        expect(work_package.formatted_id).to eq("##{work_package.id}")
+      end
+    end
+  end
+
+  describe "#to_param" do
+    include Rails.application.routes.url_helpers
+
+    context "when semantic mode is active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      it "returns the semantic identifier" do
+        expect(work_package.to_param).to eq("MYPROJ-1")
+      end
+
+      it "falls back to the numeric id when identifier is missing" do
+        work_package.update_columns(identifier: nil, sequence_number: nil)
+        expect(work_package.to_param).to eq(work_package.id.to_s)
+      end
+
+      it "makes work_package_path produce a semantic URL" do
+        expect(work_package_path(work_package)).to end_with("/work_packages/MYPROJ-1")
+      end
+
+      it "returns nil for new (unsaved) records" do
+        expect(WorkPackage.new.to_param).to be_nil
+      end
+    end
+
+    context "when classic mode is active",
+            with_flag: { semantic_work_package_ids: false },
+            with_settings: { work_packages_identifier: "classic" } do
+      it "returns the numeric id as a string" do
+        expect(work_package.to_param).to eq(work_package.id.to_s)
+      end
+
+      it "makes work_package_path produce a numeric URL" do
+        expect(work_package_path(work_package)).to end_with("/work_packages/#{work_package.id}")
+      end
+
+      it "returns nil for new (unsaved) records" do
+        expect(WorkPackage.new.to_param).to be_nil
       end
     end
   end

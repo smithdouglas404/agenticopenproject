@@ -425,7 +425,8 @@ ro:
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
@@ -468,8 +469,13 @@ ro:
         ignore: Ignore changes
         save: Save changes and continue
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Select role
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
         description: Add statuses to start configuring workflows for this role
@@ -1125,6 +1131,8 @@ ro:
       no_results_title_text: În acest moment nu există știri de raportat.
       no_results_content_text: Adaugă știre nouă
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -2020,6 +2028,29 @@ ro:
         type: Tip
         version: Versiune
         watcher: Observator
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: trebuie acceptat.
@@ -3917,7 +3948,7 @@ ro:
   label_duplicated_by: dublat de
   label_duplicate: duplicat
   label_duplicates: dublează
-  label_edit: Editează
+  label_edit: Editare
   label_edit_x: 'Editare: %{x}'
   label_view_x: 'View: %{x}'
   label_enable_multi_select: Comutare selecție multiplă
@@ -3974,7 +4005,7 @@ ro:
   label_global_roles: Roluri globale
   label_git_path: Calea catre directorul .git
   label_greater_or_equal: ">="
-  label_group_by: Grupează după
+  label_group_by: Grupare după
   label_group_new: Grupare nouă
   label_group: Grup
   label_group_named: Grup %{name}
@@ -4280,6 +4311,7 @@ ro:
   label_role_new: Rol nou
   label_role_grantable: Grantable role
   label_role_plural: Roluri
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Atribuirea rolului noilor membri
   label_scm: SCM
   label_scroll_left: Derulează la stânga
@@ -4762,6 +4794,18 @@ ro:
     text_getting_started_description: Obține o imagine de ansamblu rapidă a gestionării proiectelor și a colaborării în echipă cu OpenProject. Poți reporni acest videoclip din meniul de ajutor.
     welcome: Bun venit la %{app_title}
     select_language: Te rog selectează limba
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Adaugă pachete de lucru
   permission_add_messages: Publicare mesaje
@@ -5221,6 +5265,9 @@ ro:
   setting_mail_handler_body_delimiter_regex: Trunchiază email-uri care se potrivesc cu acest regex
   setting_mail_handler_ignore_filenames: Atașamente de e-mail ignorate
   setting_new_project_user_role_id: Rol atribuit unui utilizator non-administrator care crează un proiect
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Trimite notificare autorului la crearea unui proiect nou
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements

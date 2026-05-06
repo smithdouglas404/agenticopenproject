@@ -30,6 +30,6 @@
 
 class BacklogBuckets::CreateService < BaseServices::Create
   def instance_class
-    Agile::BacklogBucket
+    BacklogBucket
   end
 end

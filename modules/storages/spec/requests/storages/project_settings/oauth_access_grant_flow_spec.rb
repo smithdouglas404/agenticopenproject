@@ -93,7 +93,7 @@ RSpec.describe "GET /projects/:project_id/settings/project_storages/:id/oauth_ac
 
         expect(last_response.cookies["oauth_state_#{nonce}"])
           .to eq([CGI.escape({ href: "http://#{Setting.host_name}/projects/#{project.id}/settings/project_storages/external_file_storages",
-                               storageId: project_storage.storage_id }.to_json)])
+                               integrationId: project_storage.storage_id }.to_json)])
       end
     end
 

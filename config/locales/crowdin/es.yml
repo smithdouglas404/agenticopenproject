@@ -419,7 +419,8 @@ es:
           error_special_characters: No se permiten caracteres especiales
           error_not_fully_uppercased: Debe estar en mayúsculas
           error_in_use: Ya está en uso como identificador activo de otro proyecto
-          error_reserved: Reservado por el historial de identificadores de otro proyecto
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Necesita revisión manual
           remaining_projects:
             one: "... 1 proyecto más"
@@ -460,8 +461,12 @@ es:
         ignore: Descartar cambios
         save: Guardar cambios y continuar
       role_selector:
+        title: Select roles
         label: 'Rol: %{role}'
         no_role: Seleccionar rol
+        roles:
+          one: "%{count} role selected"
+          other: "%{count} roles selected"
       blankslate:
         title: No hay transiciones de estado configuradas
         description: Añade estados para empezar a configurar los flujos de trabajo de este rol
@@ -1107,6 +1112,8 @@ es:
       no_results_title_text: No hay noticias sobre las que informar por el momento.
       no_results_content_text: Añadir un elemento de noticias
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Asignar todos los permisos de %{module}
       section_uncheck_all_label: Quitar todos los permisos de %{module}
@@ -1448,7 +1455,7 @@ es:
           automatic_with_children: Fechas determinadas por paquetes de trabajo secundarios.
           automatic_with_predecessor: La fecha de inicio la fija un predecesor.
           manual_mobile: Programado manualmente.
-          manually_scheduled: Programado manualmente. No afectadas por relaciones.
+          manually_scheduled: Programado manualmente. Fechas no afectadas por relaciones.
       blankslate:
         title: Sin predecesores
         description: Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano.
@@ -1995,6 +2002,29 @@ es:
         type: Tipo
         version: Versión
         watcher: Observador
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: debe ser aceptado.
@@ -4210,6 +4240,7 @@ es:
   label_role_new: Nuevo rol
   label_role_grantable: Rol otorgable
   label_role_plural: Perfiles
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Asignar rol a nuevos miembros
   label_scm: SCM
   label_scroll_left: Desplazar hacia la izquierda
@@ -4685,6 +4716,18 @@ es:
     text_getting_started_description: Obtenga un resumen rápido sobre la gestión de proyectos y la colaboración en equipo con OpenProject. Puedes volver a ver este video des del menú de ayuda.
     welcome: Bienvenido a %{app_title}
     select_language: Seleccione su idioma
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Añadir comentarios
   permission_add_work_packages: Añadir paquetes de trabajo
   permission_add_messages: Publicar mensajes
@@ -5142,6 +5185,9 @@ es:
   setting_mail_handler_body_delimiter_regex: Truncar correos que coincidan con esta expresión regular
   setting_mail_handler_ignore_filenames: Archivos adjuntos de email ignorados
   setting_new_project_user_role_id: Papel ortorgado a usuario no administrador que crea un proyecto
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Enviar notificación al autor al crear un nuevo proyecto
   setting_new_project_notification_text: Texto de la notificación
   setting_password_active_rules: Password requirements
