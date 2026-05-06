@@ -200,6 +200,33 @@ RSpec.describe Exports::PDF::Common::Macro do
         expect(formatted).to eq("<table><tr><td><p><s>#{expected_tag}</s></p></td></tr></table>")
       end
     end
+
+    # Semantic-id support in PDF export is tracked separately in
+    # https://community.openproject.org/wp/74366. Until that ships, any
+    # `#PROJ-1`-shaped reference must fall through to literal text in PDF
+    # output rather than emitting `<mention data-id="0">` (since
+    # `"PROJ-1".to_i == 0`).
+    describe "with semantic identifier (out of scope per WP #74366)" do
+      describe "alone" do
+        let(:markdown) { "see #PROJ-1 here" }
+
+        it "falls through to literal text without emitting a mention" do
+          expect(formatted).to include("#PROJ-1")
+          expect(formatted).not_to include('data-id="0"')
+          expect(formatted).not_to include("<mention")
+        end
+      end
+
+      describe "mixed with a numeric reference" do
+        let(:markdown) { "see #PROJ-1 and ##{work_package.id}" }
+
+        it "renders the numeric reference as a mention but leaves the semantic literal" do
+          expect(formatted).to include("#PROJ-1")
+          expect(formatted).to include(%(data-id="#{work_package.id}"))
+          expect(formatted).not_to include('data-id="0"')
+        end
+      end
+    end
   end
 
   describe "workPackageValue macro" do
