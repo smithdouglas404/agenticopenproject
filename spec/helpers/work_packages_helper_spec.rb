@@ -90,6 +90,25 @@ RSpec.describe WorkPackagesHelper do
         expect(helper.link_to_work_package(stub_work_package)).to have_no_text(text)
       end
     end
+
+    describe "in semantic mode",
+             with_flag: { semantic_work_package_ids: true },
+             with_settings: { work_packages_identifier: "semantic" } do
+      let(:stub_work_package) { build_stubbed(:work_package, type: stub_type, identifier: "MACROPROJ-42") }
+
+      it "uses the semantic identifier in the visible link label" do
+        link_text = Regexp.new("^#{stub_type.name} #{stub_work_package.formatted_id}:$")
+        expect(helper.link_to_work_package(stub_work_package))
+          .to have_css("a[href='#{work_package_path(stub_work_package)}']", text: link_text)
+      end
+
+      it "does not embed the bare numeric `#N` form in the link label" do
+        # The href independently uses display_id (via to_param) and is fine;
+        # the visible label is what this assertion guards.
+        result = helper.link_to_work_package(stub_work_package)
+        expect(result).to have_no_css("a", text: /##{stub_work_package.id}:/)
+      end
+    end
   end
 
   describe "#work_packages_columns_options" do
