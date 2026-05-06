@@ -63,6 +63,26 @@ RSpec.describe WorkPackageTypes::FormConfigurationGroupsTabController do
       expect(response).to have_http_status(:ok)
       expect(type.reload.attribute_groups.first.key).to eq("New Group")
     end
+
+    it "persists a query group with an empty query when saving it" do
+      query = create(:query, user:)
+      query.add_filter("parent", "=", [Queries::Filters::TemplatedValue::KEY])
+      query.save!
+      query_props = API::V3::Queries::QueryParamsRepresenter.new(query).to_json
+
+      post :create,
+           params: {
+             type_id: type.id,
+             group: { group_type: "query", name: "Empty test", query: query_props }
+           },
+           format: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+
+      query_group = type.reload.attribute_groups.detect { |group| group.is_a?(Type::QueryGroup) }
+      expect(query_group.attributes).to be_a(Query)
+      expect(query_group.key).to eq("Empty test")
+    end
   end
 
   describe "PATCH #update (rename)", with_ee: %i[edit_attribute_groups] do

@@ -93,12 +93,8 @@ RSpec.describe "form query configuration", :js do
     end
 
     it "can save an empty query group" do
-      form.add_query_group("Empty test", :children)
-      type_bug.reload
-
-      query_group = type_bug.attribute_groups.detect { |x| x.is_a?(Type::QueryGroup) }
-      expect(query_group.attributes).to be_a(Query)
-      expect(query_group.key).to eq("Empty test")
+      form.add_query_group("Empty test", :children, expect: false)
+      form.expect_group("Empty test", "Empty test")
     end
 
     it "loads the children from the table split view (Regression #28490)" do
