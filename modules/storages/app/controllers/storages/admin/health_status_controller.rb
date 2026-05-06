@@ -49,6 +49,7 @@ module Storages
 
         respond_to do |format|
           format.html
+          format.turbo_stream
           format.text do
             timestamp = (@report&.latest_timestamp || Time.zone.now).iso8601
             filename = "#{@storage.name.underscore}_health_report_#{timestamp}.txt"
@@ -60,7 +61,15 @@ module Storages
       def create
         create_and_cache_report
 
-        redirect_to admin_settings_storage_health_status_report_path(@storage), status: :see_other
+        respond_to do |format|
+          format.turbo_stream do
+            @report = Rails.cache.read(validator.report_cache_key)
+            render :show
+          end
+          format.html do
+            redirect_to admin_settings_storage_health_status_report_path(@storage), status: :see_other
+          end
+        end
       end
 
       def create_health_status_report
