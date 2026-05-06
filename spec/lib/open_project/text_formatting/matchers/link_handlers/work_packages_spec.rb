@@ -6,12 +6,20 @@ require_relative "../../markdown/expected_markdown"
 RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages do
   include_context "expected markdown modules"
 
-  describe "the `#N` plain reference" do
+  # Boilerplate for the typical "current user can view a WP in this project"
+  # setup. Consumers must define `:project`; `author` is realised eagerly via
+  # the stubbed `User.current` so role/membership creation runs once per
+  # example.
+  shared_context "with author signed in" do
     let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
     let(:author) { create(:user, member_with_roles: { project => role }) }
-    let(:work_package) { create(:work_package, project:, author:) }
 
     before { allow(User).to receive(:current).and_return(author) }
+  end
+
+  describe "the `#N` plain reference" do
+    include_context "with author signed in"
+    let(:work_package) { create(:work_package, project:, author:) }
 
     context "in classic mode",
             with_flag: { semantic_work_package_ids: false },
@@ -51,15 +59,13 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
 
       it "falls back to the numeric label and href (no DB error)" do
         # Realise project + author so format_text has a current user, but
-        # do not realise work_package — we want to render a `#N` reference
-        # whose id has no matching record.
+        # do not realise work_package — render a `#N` reference whose id
+        # has no matching record.
         project
         author
 
         rendered = format_text("#999999")
 
-        # Fallback path: the matcher cannot resolve the WP, so it preserves
-        # the legacy `#N` shape rather than 404-ing the render.
         expect(rendered).to include(">#999999<")
         expect(rendered).to include(%(href="/work_packages/999999"))
       end
@@ -73,15 +79,14 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     # text-formatting pipeline while an outer render is mid-iteration. The
     # lookup must save on entry and restore on exit so the outer render's
     # remaining `#N` matchers still see its WPs after the inner call returns.
+    include_context "with author signed in"
+
     let(:project) { create(:project, identifier: "NESTED") }
-    let(:author) { create(:user, member_with_roles: { project => role }) }
-    let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
     let(:outer_wp) { create(:work_package, project:, author:) }
     let(:inner_wp) { create(:work_package, project:, author:) }
     let(:matcher) { OpenProject::TextFormatting::Matchers::ResourceLinksMatcher }
 
     before do
-      allow(User).to receive(:current).and_return(author)
       outer_wp.allocate_and_register_semantic_id
       inner_wp.allocate_and_register_semantic_id
     end
@@ -114,45 +119,34 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     # WorkPackage SELECTs: the preload is a no-op when `display_id` and
     # `formatted_id` would collapse to the numeric form, so the link
     # handler can build the link from the matched id alone.
-    let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
+    include_context "with author signed in"
     let(:project) { create(:project, identifier: "classicproj") }
-    let(:author) { create(:user, member_with_roles: { project => role }) }
-
-    before { allow(User).to receive(:current).and_return(author) }
 
     it "does not query work_packages when rendering #N" do
       wps = create_list(:work_package, 3, project:, author:)
       ids_text = wps.map { |wp| "##{wp.id}" }.join(" ")
 
-      sql = []
-      callback = ->(_, _, _, _, v) { sql << v[:sql] unless %w[CACHE SCHEMA].include?(v[:name]) }
-      ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { format_text(ids_text) }
+      recorder = ActiveRecord::QueryRecorder.new { format_text(ids_text) }
+      wp_selects = recorder.log.grep(/FROM "work_packages"/i)
 
-      wp_selects = sql.grep(/FROM "work_packages"/i)
-      expect(wp_selects).to be_empty, "classic mode added unexpected WP SELECTs:\n#{wp_selects.join("\n")}"
+      expect(wp_selects).to be_empty,
+                            "classic mode added unexpected WP SELECTs:\n#{wp_selects.join("\n")}"
     end
   end
 
-  describe "N+1 query bound" do
-    let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
+  describe "N+1 query bound",
+           with_flag: { semantic_work_package_ids: true },
+           with_settings: { work_packages_identifier: "semantic" } do
+    include_context "with author signed in"
     let(:project) { create(:project, identifier: "NPLUSONE") }
-    let(:author) { create(:user, member_with_roles: { project => role }) }
 
-    before { allow(User).to receive(:current).and_return(author) }
-
-    it "loads referenced work packages with a single SELECT regardless of count",
-       with_flag: { semantic_work_package_ids: true },
-       with_settings: { work_packages_identifier: "semantic" } do
+    it "loads referenced work packages with a single SELECT regardless of count" do
       wps = create_list(:work_package, 5, project:, author:)
       ids_text = wps.map { |wp| "##{wp.id}" }.join(" ")
 
-      sql = []
-      callback = ->(_, _, _, _, v) { sql << v[:sql] unless %w[CACHE SCHEMA].include?(v[:name]) }
-      ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { format_text(ids_text) }
+      recorder = ActiveRecord::QueryRecorder.new { format_text(ids_text) }
+      wp_selects = recorder.log.grep(/FROM "work_packages"/i)
 
-      # Filter to only `work_packages` SELECTs — incidental Setting/User/Project
-      # queries during render are unrelated to the N+1 bound this spec asserts.
-      wp_selects = sql.grep(/FROM "work_packages"/i)
       expect(wp_selects.size).to eq(1),
                                  "expected exactly one work_packages SELECT, got #{wp_selects.size}:\n#{wp_selects.join("\n")}"
     end
@@ -161,15 +155,11 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   describe "the `#PROJ-N` semantic reference",
            with_flag: { semantic_work_package_ids: true },
            with_settings: { work_packages_identifier: "semantic" } do
-    let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
-    let(:author) { create(:user, member_with_roles: { project => role }) }
+    include_context "with author signed in"
     let(:project) { create(:project, identifier: "MACROPROJ") }
     let(:work_package) { create(:work_package, project:, author:) }
 
-    before do
-      allow(User).to receive(:current).and_return(author)
-      work_package.allocate_and_register_semantic_id
-    end
+    before { work_package.allocate_and_register_semantic_id }
 
     it "renders the formatted_id label and display_id href for `#PROJ-N`" do
       wp = work_package.reload
@@ -178,9 +168,8 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
       expect(wp.display_id).to start_with("MACROPROJ-")
       expect(rendered).to include(">#{wp.formatted_id}<")
       expect(rendered).to include(%(href="/work_packages/#{wp.display_id}"))
-      # Hover-card URL also speaks the user-facing identifier — the
-      # controller's HoverCardComponent calls find_by_display_id, so the
-      # numeric and semantic shapes both resolve.
+      # The hover-card route accepts both numeric and semantic ids; pass
+      # display_id so the URL matches the user-facing identifier.
       expect(rendered).to include(%(data-hover-card-url="/work_packages/#{wp.display_id}/hover_card"))
     end
 
@@ -203,10 +192,9 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
       it "falls back to literal text (no DB error, no broken link)" do
         rendered = format_text("see #GHOST-99 here")
 
-        # No `<a>` tag, no quickinfo element — the matcher leaves the literal
-        # text alone when a semantic-shaped reference can't be resolved. This
-        # mirrors the user expectation: a `/work_packages/GHOST-99` URL would
-        # 404, so we'd rather show the bare text.
+        # The matcher leaves the literal text alone when a semantic-shaped
+        # reference can't be resolved — better than emitting a link to
+        # `/work_packages/GHOST-99` that 404s.
         expect(rendered).to include("#GHOST-99")
         expect(rendered).not_to include('href="/work_packages/GHOST-99"')
         expect(rendered).not_to include("opce-macro-wp-quickinfo")
@@ -218,14 +206,12 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
         wps = create_list(:work_package, 2, project:, author:)
         wps.each(&:allocate_and_register_semantic_id)
         loaded = wps.map(&:reload)
-
         text = "see ##{loaded[0].id} and ##{loaded[1].display_id}"
 
-        sql = []
-        callback = ->(_, _, _, _, v) { sql << v[:sql] unless %w[CACHE SCHEMA].include?(v[:name]) }
-        rendered = ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { format_text(text) }
+        rendered = nil
+        recorder = ActiveRecord::QueryRecorder.new { rendered = format_text(text) }
+        wp_selects = recorder.log.grep(/FROM "work_packages"/i)
 
-        wp_selects = sql.grep(/FROM "work_packages"/i)
         expect(wp_selects.size).to eq(1),
                                    "expected exactly one work_packages SELECT, got #{wp_selects.size}:\n#{wp_selects.join("\n")}"
 
@@ -240,26 +226,23 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
       it "resolves via the alias table with two round-trips total" do
         wp = work_package.reload
         # Simulate a project rename: the WP keeps its current MACROPROJ-N
-        # identifier on the row, but a historical OLD-prefix alias row points
-        # at the same WP. Authors writing pre-rename content shouldn't see
-        # broken refs.
+        # identifier on the row, but a historical OLD-prefix alias row
+        # points at the same WP. Authors writing pre-rename content
+        # shouldn't see broken refs.
         WorkPackageSemanticAlias.create!(work_package_id: wp.id, identifier: "OLDPROJ-1")
 
-        sql = []
-        callback = ->(_, _, _, _, v) { sql << v[:sql] unless %w[CACHE SCHEMA].include?(v[:name]) }
-        rendered = ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { format_text("see #OLDPROJ-1") }
+        rendered = nil
+        recorder = ActiveRecord::QueryRecorder.new { rendered = format_text("see #OLDPROJ-1") }
 
         # Two database round-trips: (1) `where_display_id_in` runs a single
         # WP SELECT whose WHERE clause includes an EXISTS subquery against
-        # the alias table (matching by historical identifier); (2) the
-        # sidecar alias pluck maps the historical input string back to its
-        # WP for the cache. Round-trips are what we care about for N+1, not
-        # which tables show up in each query.
-        wp_selects = sql.grep(/FROM "work_packages"/i)
-        standalone_alias_selects = sql.grep(/FROM "work_package_semantic_aliases"/i)
-                                      .grep_v(/FROM "work_packages"/i)
+        # the alias table; (2) the sidecar alias pluck maps the historical
+        # input string back to its WP for the cache.
+        wp_selects = recorder.log.grep(/FROM "work_packages"/i)
+        alias_only_selects = recorder.log.grep(/FROM "work_package_semantic_aliases"/i)
+                                     .grep_v(/FROM "work_packages"/i)
         expect(wp_selects.size).to eq(1)
-        expect(standalone_alias_selects.size).to eq(1)
+        expect(alias_only_selects.size).to eq(1)
 
         # Renders against the WP's CURRENT display_id, not the historical
         # alias the user typed — old content stays alive but points at the
@@ -273,21 +256,16 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   describe "the `#PROJ-N` semantic reference in classic mode",
            with_flag: { semantic_work_package_ids: false },
            with_settings: { work_packages_identifier: "classic" } do
-    let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
+    include_context "with author signed in"
     let(:project) { create(:project, identifier: "macroproj") }
-    let(:author) { create(:user, member_with_roles: { project => role }) }
-
-    before { allow(User).to receive(:current).and_return(author) }
 
     it "leaves `#PROJ-1` as literal text and issues no work_packages SELECTs" do
-      sql = []
-      callback = ->(_, _, _, _, v) { sql << v[:sql] unless %w[CACHE SCHEMA].include?(v[:name]) }
-      rendered = ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { format_text("see #PROJ-1 here") }
+      rendered = nil
+      recorder = ActiveRecord::QueryRecorder.new { rendered = format_text("see #PROJ-1 here") }
+      wp_selects = recorder.log.grep(/FROM "work_packages"/i)
 
       expect(rendered).to include("#PROJ-1")
       expect(rendered).not_to include('href="/work_packages/PROJ-1"')
-
-      wp_selects = sql.grep(/FROM "work_packages"/i)
       expect(wp_selects).to be_empty,
                             "classic mode added unexpected WP SELECTs for semantic input:\n#{wp_selects.join("\n")}"
     end
