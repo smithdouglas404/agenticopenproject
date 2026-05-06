@@ -311,6 +311,22 @@ RSpec.describe RecurringMeeting,
     end
   end
 
+  describe "#current_schedule_end" do
+    let(:recurring_meeting) do
+      create(
+        :recurring_meeting,
+        start_time: DateTime.parse("2026-02-24T13:45:00+01:00"),
+        current_schedule_start: DateTime.parse("2026-05-05T13:45:00+02:00"),
+        duration: 0.25,
+        time_zone: "Europe/Berlin"
+      )
+    end
+
+    it "uses current_schedule_start plus duration" do
+      expect(recurring_meeting.current_schedule_end).to eq(DateTime.parse("2026-05-05T14:00:00+02:00"))
+    end
+  end
+
   describe "#uid" do
     it "assigns a uid on create" do
       series = build(:recurring_meeting)
