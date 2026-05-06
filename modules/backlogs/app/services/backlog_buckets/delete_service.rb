@@ -31,7 +31,7 @@
 class BacklogBuckets::DeleteService < BaseServices::Delete
   private
 
-  def before_perform(service_call)
+  def after_validate(service_call)
     move_to_backlog.each { |result| service_call.add_dependent!(result) }
 
     service_call
