@@ -5789,6 +5789,7 @@ en:
   text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Reassign to work package:"
   text_regexp_multiline: 'The regex is applied in a multi-line mode. e.g., ^---\s+'
+  text_rename_wiki_page: "Rename wiki page"
   text_repository_usernames_mapping: "Select or update the OpenProject user mapped to each username found in the repository log.\nUsers with the same OpenProject and repository username or email are automatically mapped."
   text_status_changed_by_changeset: "Applied in changeset %{value}."
   text_table_difference_description: "In this table the single %{entries} are shown. You can view the difference between any two entries by first selecting the according checkboxes in the table. When clicking on the button below the table the differences are shown."
