@@ -28,14 +28,32 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Be sure to restart your server when you modify this file.
+module Primer
+  module OpenProject
+    module Forms
+      # :nodoc:
+      class SelectTreePanel < Primer::Forms::BaseComponent
+        delegate :builder, :form, to: :@input
 
-# Add new mime types for use in respond_to blocks:
-# Mime::Type.register "text/richtext", :rtf
-# Mime::Type.register_alias "text/html", :iphone
+        def initialize(input:)
+          super()
 
-Mime::SET << Mime[:csv] unless Mime::SET.include?(Mime[:csv])
+          @input = input
+          @input.label_arguments[:id] = label_id
 
-Mime::Type.register "application/pdf", :pdf unless Mime::Type.lookup_by_extension(:pdf)
-Mime::Type.register "image/png", :png unless Mime::Type.lookup_by_extension(:png)
-Mime::Type.register "text/fragment+html", :html_fragment
+          @input.input_arguments[:form_arguments] = {
+            name: @input.name,
+            builder: builder
+          }
+
+          @input.input_arguments[:select_variant] ||= :single
+          @input.input_arguments[:dynamic_label] = true unless @input.input_arguments.key(:dynamic_label)
+        end
+
+        def label_id
+          @label_id ||= "label-#{@input.base_id}"
+        end
+      end
+    end
+  end
+end

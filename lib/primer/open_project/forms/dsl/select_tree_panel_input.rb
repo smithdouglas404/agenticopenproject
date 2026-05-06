@@ -28,14 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Be sure to restart your server when you modify this file.
+module Primer
+  module OpenProject
+    module Forms
+      module Dsl
+        # :nodoc:
+        class SelectTreePanelInput < Primer::Forms::Dsl::Input
+          attr_reader :name, :label, :block
 
-# Add new mime types for use in respond_to blocks:
-# Mime::Type.register "text/richtext", :rtf
-# Mime::Type.register_alias "text/html", :iphone
+          def initialize(name:, label:, **system_arguments, &block)
+            @name = name
+            @label = label
+            @block = block
 
-Mime::SET << Mime[:csv] unless Mime::SET.include?(Mime[:csv])
+            super(**system_arguments)
+          end
 
-Mime::Type.register "application/pdf", :pdf unless Mime::Type.lookup_by_extension(:pdf)
-Mime::Type.register "image/png", :png unless Mime::Type.lookup_by_extension(:png)
-Mime::Type.register "text/fragment+html", :html_fragment
+          def to_component
+            SelectTreePanel.new(input: self)
+          end
+
+          # :nocov:
+          def type
+            :select_tree_panel
+          end
+          # :nocov:
+
+          # :nocov:
+          def focusable?
+            true
+          end
+          # :nocov:
+        end
+      end
+    end
+  end
+end

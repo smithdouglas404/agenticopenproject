@@ -53,7 +53,8 @@ en:
         introduction: >
           Send a POST request to the payload URL below for any event in the project you're subscribed to.
           Payload will correspond to the APIv3 representation of the object being modified.
-        apiv3_doc_url: For more information, visit the API documentation
+
+          Please refer to our [API documentation](docs_url) for more information.
         description:
           placeholder: 'Optional description for the webhook.'
         enabled:
