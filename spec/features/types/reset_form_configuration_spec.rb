@@ -81,13 +81,15 @@ RSpec.describe "Reset form configuration",
 
       visit edit_type_form_configuration_path(type)
 
-      expect(form.group_order).to eq([
-                                         "People",
-                                         "Estimates and progress",
-                                         "Details",
-                                         "Other",
-                                         "Costs"
-                                       ])
+      expect(form.group_order).to eq(
+        [
+          "People",
+          "Estimates and progress",
+          "Details",
+          "Other",
+          "Costs"
+        ]
+      )
 
       expect(type.custom_field_ids).to be_empty
 
