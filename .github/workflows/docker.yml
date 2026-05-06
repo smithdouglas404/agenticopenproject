@@ -205,9 +205,11 @@ jobs:
           echo '!/public/assets' >> .dockerignore
           echo '!/config/frontend_assets.manifest.json' >> .dockerignore
       - name: Add build information
+        env:
+          INPUTS_BRANCH: ${{ inputs.branch }}
         run: |
-          echo "${{ inputs.branch }}" > PRODUCT_VERSION
-          echo "https://github.com/opf/openproject/commits/${{ inputs.branch }}" > PRODUCT_URL
+          echo "$INPUTS_BRANCH" > PRODUCT_VERSION
+          echo "https://github.com/opf/openproject/commits/$INPUTS_BRANCH" > PRODUCT_URL
           date -u +"%Y-%m-%dT%H:%M:%SZ" > RELEASE_DATE
       - name: Set up QEMU
         uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4
@@ -261,8 +263,10 @@ jobs:
           cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
           cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
       - name: Extract vendor/bundle from container
+        env:
+          STEPS_BUILD_OUTPUTS_IMAGEID: ${{ steps.build.outputs.imageid }}
         run: |
-          docker create --name bundle ${{ steps.build.outputs.imageid }}
+          docker create --name bundle $STEPS_BUILD_OUTPUTS_IMAGEID
           if [ -d vendor/bundle ]; then
             mv vendor/bundle vendor/bundle.bak
           fi
@@ -283,9 +287,11 @@ jobs:
             mv vendor/bundle.bak vendor/bundle
           fi
       - name: Validate image
+        env:
+          STEPS_BUILD_OUTPUTS_IMAGEID: ${{ steps.build.outputs.imageid }}
         run: |
           ./script/ci/docker_validate_image.sh \
-            --image "${{ steps.build.outputs.imageid }}" \
+            --image "$STEPS_BUILD_OUTPUTS_IMAGEID" \
             --target "${{ matrix.target }}" \
             --platform "${{ matrix.platform }}"
       - name: Push image
@@ -302,9 +308,11 @@ jobs:
           cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
           cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
       - name: Export digest
+        env:
+          STEPS_PUSH_OUTPUTS_DIGEST: ${{ steps.push.outputs.digest }}
         run: |
           mkdir -p /tmp/digests
-          digest="${{ steps.push.outputs.digest }}"
+          digest="$STEPS_PUSH_OUTPUTS_DIGEST"
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

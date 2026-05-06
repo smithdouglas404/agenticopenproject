@@ -10,3 +10,7 @@ rules:
     ignore:
       # CLA workflow intentionally uses pull_request_target to handle outside contributors
       - cla.yml
+  cache-poisoning:
+    ignore:
+      # Frontend unit tests cache npm packages; only triggered on push/PR from trusted branches
+      - test-frontend-unit.yml

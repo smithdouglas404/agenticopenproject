@@ -17,6 +17,8 @@ jobs:
     name: APIv3 specification (OpenAPI 3.0)
     if: github.repository_owner == 'opf'
     runs-on: [ubuntu-latest]
+    permissions:
+      contents: read
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
