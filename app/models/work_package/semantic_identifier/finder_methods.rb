@@ -152,14 +152,8 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     end
   end
 
-  # Returns true when value looks like a semantic work package identifier (e.g. "PROJ-42").
-  # Non-string values (Integer, Hash, nil, Array) and numeric strings ("123", " 456 ")
-  # return false — these fall through to standard ActiveRecord lookup.
   def semantic_id?(value)
-    return false unless value.is_a?(String)
-
-    stripped = value.strip
-    stripped.to_i.to_s != stripped
+    WorkPackage::SemanticIdentifier.semantic_id?(value)
   end
 
   def find_by_semantic_identifier(identifier)
