@@ -29,11 +29,11 @@
 #++
 
 module Wikis::Adapters::Input
-  PageInfo = Data.define(:identifier) do
+  PageInfo = Data.define(:identifier, :access_token) do
     private_class_method :new
 
-    def self.build(identifier:, contract: PageInfoContract.new)
-      contract.call(identifier:).to_monad.fmap { new(**it.to_h) }
+    def self.build(identifier:, access_token: nil, contract: PageInfoContract.new)
+      contract.call(identifier:, access_token:).to_monad.fmap { new(**it.to_h) }
     end
   end
 end

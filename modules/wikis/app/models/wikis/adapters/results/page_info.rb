@@ -29,5 +29,5 @@
 #++
 
 module Wikis::Adapters::Results
-  PageInfo = Data.define(:identifier, :provider, :title, :href)
+  PageInfo = Data.define(:identifier, :title, :href)
 end

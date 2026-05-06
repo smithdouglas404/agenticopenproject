@@ -34,26 +34,47 @@ module Wikis
       module XWiki
         module Queries
           class PageInfo < BaseQuery
-            def call(input_data)
-              titles = [
-                "What makes XWiki special?",
-                "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject.",
-                "Security considerations for API design",
-                "Syntax overview",
-                "Getting help",
-                "Enterprise support"
-              ]
-              title = titles[Random.new(input_data.identifier.hash).rand(titles.size)]
+            JSON_ACCEPT_HEADERS = { "Accept" => "application/json" }.freeze
 
+            def call(input_data)
+              ref = PageReference.parse(input_data.identifier)
+              return failure(code: :not_found) unless ref
+
+              url = "#{provider.url.chomp('/')}/rest#{ref.rest_path}"
+              handle_response(
+                bearer_http(input_data.access_token).with(headers: JSON_ACCEPT_HEADERS).get(url),
+                identifier: input_data.identifier
+              )
+            end
+
+            private
+
+            def handle_response(response, identifier:)
+              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
+
+              case response
+              in { status: 200..299 }
+                handle_success_response(response, identifier:)
+              in { status: 401 | 403 }
+                failure(code: :unauthorized)
+              in { status: 404 }
+                failure(code: :not_found)
+              else
+                failure(code: :request_failed)
+              end
+            end
+
+            def handle_success_response(response, identifier:)
+              data = JSON.parse(response.body.to_s)
               success(
                 Results::PageInfo.new(
-                  identifier: input_data.identifier,
-                  provider:,
-                  title:,
-                  href: "#"
+                  identifier:,
+                  title: data["title"],
+                  href: data["xwikiAbsoluteUrl"]
                 )
               )
+            rescue JSON::ParserError
+              failure(code: :request_failed)
             end
           end
         end

@@ -36,7 +36,7 @@ module Wikis
           class UserQuery < BaseQuery
             def call(input_data)
               url = "#{provider.url.chomp('/')}/rest/"
-              handle_response(OpenProject.httpx.bearer_auth(input_data.access_token).get(url))
+              handle_response(bearer_http(input_data.access_token).get(url))
             end
 
             private

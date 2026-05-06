@@ -54,6 +54,10 @@ module Wikis
       OAuthClientToken.for_user_and_client(user, oauth_client).exists?
     end
 
+    def user_access_token(user)
+      OAuthClientToken.find_by(user:, oauth_client:)&.access_token
+    end
+
     def extract_origin_user_id(token)
       resolve("queries.user").call(Wikis::Adapters::Input::UserQuery.new(access_token: token.access_token))
     end

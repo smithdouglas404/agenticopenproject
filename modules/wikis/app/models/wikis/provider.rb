@@ -49,6 +49,7 @@ module Wikis
 
     def to_s = self.class.registry_prefix
     def user_connected?(_user) = raise SubclassResponsibilityError
+    def user_access_token(_user) = nil
 
     class << self
       def registry_prefix = raise SubclassResponsibilityError

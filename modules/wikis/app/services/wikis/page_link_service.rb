@@ -75,7 +75,8 @@ module Wikis
     private
 
     def page_info(provider:, identifier:)
-      Adapters::Input::PageInfo.build(identifier:).bind { provider.resolve("queries.page_info").call(it) }
+      access_token = provider.user_access_token(User.current)
+      Adapters::Input::PageInfo.build(identifier:, access_token:).bind { provider.resolve("queries.page_info").call(it) }
     end
 
     def page_title_service

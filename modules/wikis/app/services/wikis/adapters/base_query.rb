@@ -48,6 +48,10 @@ module Wikis::Adapters
       Success(result)
     end
 
+    def bearer_http(token)
+      token.present? ? OpenProject.httpx.bearer_auth(token) : OpenProject.httpx
+    end
+
     def failure(code:)
       Failure(Results::Error.new(source: self.class, code:))
     end

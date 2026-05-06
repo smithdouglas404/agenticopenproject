@@ -30,11 +30,27 @@
 
 module Wikis
   module Adapters
-    module Input
-      class PageInfoContract < DryApplicationContract
-        params do
-          required(:identifier).filled(:string)
-          optional(:access_token).maybe(:string)
+    module Providers
+      module XWiki
+        # Represents a parsed XWiki stable page identifier in canonical document reference format:
+        # "wikiName:Space1.Space2.PageName" — e.g. "xwiki:Main.WebHome"
+        # Maps to the REST API path: /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
+        PageReference = Data.define(:wiki, :spaces, :page) do
+          def self.parse(identifier)
+            wiki, page_path = identifier.split(":", 2)
+            return nil if page_path.blank?
+
+            parts = page_path.split(".")
+            page = parts.pop
+            return nil if parts.empty?
+
+            new(wiki:, spaces: parts, page:)
+          end
+
+          def rest_path
+            spaces_path = spaces.map { "/spaces/#{CGI.escapeURIComponent(it)}" }.join
+            "/wikis/#{CGI.escapeURIComponent(wiki)}#{spaces_path}/pages/#{CGI.escapeURIComponent(page)}"
+          end
         end
       end
     end
