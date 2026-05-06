@@ -33,43 +33,58 @@ require_module_spec_helper
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::PageReference do
   describe ".parse" do
-    it "parses a standard identifier" do
-      ref = described_class.parse("xwiki:Main.WebHome")
-      expect(ref).to have_attributes(wiki: "xwiki", spaces: ["Main"], page: "WebHome")
+    subject { described_class.parse(identifier) }
+
+    context "with a standard identifier" do
+      let(:identifier) { "xwiki:Main.WebHome" }
+
+      it { is_expected.to have_attributes(wiki: "xwiki", spaces: ["Main"], page: "WebHome") }
     end
 
-    it "parses a nested space identifier" do
-      ref = described_class.parse("xwiki:MySpace.SubSpace.PageName")
-      expect(ref).to have_attributes(wiki: "xwiki", spaces: %w[MySpace SubSpace], page: "PageName")
+    context "with a nested space identifier" do
+      let(:identifier) { "xwiki:MySpace.SubSpace.PageName" }
+
+      it { is_expected.to have_attributes(wiki: "xwiki", spaces: %w[MySpace SubSpace], page: "PageName") }
     end
 
-    it "returns nil when there is no colon separator" do
-      expect(described_class.parse("Main.WebHome")).to be_nil
+    context "without a colon separator" do
+      let(:identifier) { "Main.WebHome" }
+
+      it { is_expected.to be_nil }
     end
 
-    it "returns nil when the page path is blank" do
-      expect(described_class.parse("xwiki:")).to be_nil
+    context "with a blank page path" do
+      let(:identifier) { "xwiki:" }
+
+      it { is_expected.to be_nil }
     end
 
-    it "returns nil when there is no space segment" do
-      expect(described_class.parse("xwiki:WebHome")).to be_nil
+    context "without a space segment" do
+      let(:identifier) { "xwiki:WebHome" }
+
+      it { is_expected.to be_nil }
     end
   end
 
   describe "#rest_path" do
-    it "builds a single-space path" do
-      ref = described_class.parse("xwiki:Main.WebHome")
-      expect(ref.rest_path).to eq("/wikis/xwiki/spaces/Main/pages/WebHome")
+    subject { described_class.parse(identifier).rest_path }
+
+    context "with a single-space identifier" do
+      let(:identifier) { "xwiki:Main.WebHome" }
+
+      it { is_expected.to eq("/wikis/xwiki/spaces/Main/pages/WebHome") }
     end
 
-    it "builds a nested-space path" do
-      ref = described_class.parse("xwiki:MySpace.SubSpace.PageName")
-      expect(ref.rest_path).to eq("/wikis/xwiki/spaces/MySpace/spaces/SubSpace/pages/PageName")
+    context "with a nested-space identifier" do
+      let(:identifier) { "xwiki:MySpace.SubSpace.PageName" }
+
+      it { is_expected.to eq("/wikis/xwiki/spaces/MySpace/spaces/SubSpace/pages/PageName") }
     end
 
-    it "percent-encodes special characters in segments" do
-      ref = described_class.parse("xwiki:My Space.My Page")
-      expect(ref.rest_path).to eq("/wikis/xwiki/spaces/My%20Space/pages/My%20Page")
+    context "with special characters in segments" do
+      let(:identifier) { "xwiki:My Space.My Page" }
+
+      it { is_expected.to eq("/wikis/xwiki/spaces/My%20Space/pages/My%20Page") }
     end
   end
 end
