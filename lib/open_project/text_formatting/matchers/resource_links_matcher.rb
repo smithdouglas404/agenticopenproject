@@ -161,22 +161,31 @@ module OpenProject::TextFormatting
       # regardless of viewer permissions — pre-existing behaviour outside
       # this ticket's scope.
       def self.with_preloaded_resources(doc, _context)
+        # Capture the prior lookup unconditionally as the very first statement
+        # so `ensure` can always restore it without a `defined?` guard,
+        # regardless of which early-return branch we take.
+        previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
+
         return yield unless Setting::WorkPackageIdentifier.semantic_mode_active?
 
         ids = collect_work_package_ids(doc)
         return yield if ids.empty?
 
-        previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
-        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = WorkPackage.where(id: ids).index_by(&:id)
+        # Only `id` and `identifier` are read downstream (by `display_id` /
+        # `formatted_id`). Skip `description` and other heavy columns — a
+        # comment thread with 50+ `#N` references would otherwise pull in
+        # megabytes of unused payload.
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] =
+          WorkPackage.where(id: ids).select(:id, :identifier).index_by(&:id)
         yield
       ensure
-        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = previous if defined?(previous)
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = previous
       end
 
       def self.collect_work_package_ids(doc)
         ids = Set.new
         doc.search(".//text()").each do |node|
-          next if has_ancestor_in_preformatted_blocks?(node)
+          next if OpenProject::TextFormatting::PreformattedBlocks.ancestor?(node)
 
           node.to_s.scan(regexp) { extract_work_package_id(Regexp.last_match)&.then { |id| ids << id } }
         end
@@ -190,44 +199,32 @@ module OpenProject::TextFormatting
       # mirrors `LinkHandlers::WorkPackages#applicable?` so the preload set
       # only contains ids the WP handler will actually try to render.
       def self.extract_work_package_id(match)
-        prefix = match[5]
-        sep = match[7] || match[9]
-        identifier = match[8] || match[11] || match[10]
-        return nil unless prefix.nil? && sep == "#" && identifier.present? && identifier == identifier.to_i.to_s
+        parts = parse_match(match)
+        identifier = parts[:identifier]
+        return nil unless parts[:prefix].nil? && parts[:sep] == "#" && identifier.present?
+        return nil unless identifier == identifier.to_i.to_s
 
         identifier.to_i
       end
 
-      ##
-      # Mirror of `PatternMatcherFilter::PREFORMATTED_BLOCKS` ancestry check —
-      # `<pre>`/`<code>` text nodes are not matched, so they shouldn't
-      # contribute to the preload set either.
-      PREFORMATTED_ANCESTORS = %w[pre code].to_set
-      def self.has_ancestor_in_preformatted_blocks?(node)
-        ancestor = node.parent
-        until ancestor.nil? || ancestor.fragment? || ancestor.document?
-          return true if PREFORMATTED_ANCESTORS.include?(ancestor.name)
-
-          ancestor = ancestor.parent
-        end
-        false
+      # Single source of truth for which regex group means what. Both
+      # `process_match` and `extract_work_package_id` consume this — change
+      # the regex layout in `regexp` and only this site needs to follow.
+      def self.parse_match(match)
+        {
+          leading: match[1],
+          escaped: match[2],
+          project_prefix: match[3],
+          project_identifier: match[4],
+          prefix: match[5],
+          sep: match[7] || match[9],
+          raw_identifier: match[8] || match[10],
+          identifier: match[8] || match[11] || match[10]
+        }
       end
 
       def self.process_match(m, matched_string, context)
-        # Leading string before match
-        instance = new(
-          matched_string:,
-          leading: m[1],
-          escaped: m[2],
-          project_prefix: m[3],
-          project_identifier: m[4],
-          prefix: m[5],
-          sep: m[7] || m[9],
-          raw_identifier: m[8] || m[10],
-          identifier: m[8] || m[11] || m[10],
-          context:
-        )
-
+        instance = new(matched_string:, context:, **parse_match(m))
         instance.process
       end
 

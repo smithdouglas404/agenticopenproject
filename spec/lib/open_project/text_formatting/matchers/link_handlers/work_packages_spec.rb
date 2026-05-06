@@ -139,13 +139,21 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
 
     before { allow(User).to receive(:current).and_return(author) }
 
-    it "loads referenced work packages with a single query regardless of count",
+    it "loads referenced work packages with a single SELECT regardless of count",
        with_flag: { semantic_work_package_ids: true },
        with_settings: { work_packages_identifier: "semantic" } do
       wps = create_list(:work_package, 5, project:, author:)
       ids_text = wps.map { |wp| "##{wp.id}" }.join(" ")
 
-      expect { format_text(ids_text) }.to have_a_query_limit(1)
+      sql = []
+      callback = ->(_, _, _, _, v) { sql << v[:sql] unless %w[CACHE SCHEMA].include?(v[:name]) }
+      ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { format_text(ids_text) }
+
+      # Filter to only `work_packages` SELECTs — incidental Setting/User/Project
+      # queries during render are unrelated to the N+1 bound this spec asserts.
+      wp_selects = sql.grep(/FROM "work_packages"/i)
+      expect(wp_selects.size).to eq(1),
+                                 "expected exactly one work_packages SELECT, got #{wp_selects.size}:\n#{wp_selects.join("\n")}"
     end
   end
 end

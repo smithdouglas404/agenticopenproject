@@ -31,9 +31,6 @@
 module OpenProject::TextFormatting
   module Filters
     class PatternMatcherFilter < HTML::Pipeline::Filter
-      # Skip text nodes that are within preformatted blocks
-      PREFORMATTED_BLOCKS = %w(pre code).to_set
-
       class << self
         def append_matcher(matcher)
           matchers << matcher
@@ -70,7 +67,7 @@ module OpenProject::TextFormatting
 
       def process_text_nodes
         doc.search(".//text()").each do |node|
-          next if has_ancestor?(node, PREFORMATTED_BLOCKS)
+          next if has_ancestor?(node, OpenProject::TextFormatting::PreformattedBlocks::BLOCKS)
 
           self.class.matchers.each do |matcher|
             matcher.call(node, doc:, context:)
