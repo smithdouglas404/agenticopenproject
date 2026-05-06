@@ -84,10 +84,10 @@ module OpenProject::TextFormatting::Matchers
         wp = OpenProject::TextFormatting::Matchers::ResourceLinksMatcher.work_package_for(wp_id)
 
         if ["##", "###"].include?(matcher.sep)
-          # Prefer the resolved WP's display_id so `##1234` rendered in
-          # semantic mode also shows the user-facing identifier in the
-          # editor model. Cache miss (classic mode or unknown WP) keeps the
-          # numeric data-id, matching the pre-PR behaviour.
+          # Prefer the resolved WP's display_id so `##1234` typed in
+          # semantic mode renders the user-facing identifier in the
+          # editor model. Falls back to the numeric id when no WP
+          # resolved (classic mode, unknown WP).
           data_id = wp&.display_id || wp_id
           render_work_package_macro(data_id, detailed: matcher.sep == "###")
         else
@@ -106,11 +106,10 @@ module OpenProject::TextFormatting::Matchers
       end
 
       def render_work_package_link(work_package, fallback_id:)
-        # Nil `work_package` means no preload ran (classic mode, no
+        # When no WP is provided — preload skipped (classic mode), no
         # references in the doc, or a render path that bypasses
-        # `PatternMatcherFilter`) OR the WP wasn't found. We fall back to
-        # the legacy `#N` shape rather than running a per-link query inside
-        # the renderer.
+        # `PatternMatcherFilter` — fall back to the bare `#N` shape rather
+        # than running a per-link query inside the renderer.
         label = work_package&.formatted_id || "##{fallback_id}"
         # `display_id` is the semantic identifier (PROJ-7) in semantic mode
         # and the numeric id in classic mode — same field, mode-agnostic.

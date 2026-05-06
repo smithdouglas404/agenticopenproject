@@ -110,9 +110,10 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   describe "classic mode is query-free",
            with_flag: { semantic_work_package_ids: false },
            with_settings: { work_packages_identifier: "classic" } do
-    # Pre-PR-E behaviour: rendering a `#N` reference in classic mode does no
-    # WorkPackage SELECTs. Preserve that — the preload must be a no-op when
-    # `display_id` and `formatted_id` would collapse to the numeric form.
+    # Rendering a `#N` reference in classic mode must not run any
+    # WorkPackage SELECTs: the preload is a no-op when `display_id` and
+    # `formatted_id` would collapse to the numeric form, so the link
+    # handler can build the link from the matched id alone.
     let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
     let(:project) { create(:project, identifier: "classicproj") }
     let(:author) { create(:user, member_with_roles: { project => role }) }
