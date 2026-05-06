@@ -90,7 +90,6 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
     let(:page_info) do
       Wikis::Adapters::Results::PageInfo.new(
         identifier: "MyPage",
-        provider:,
         title: "My Wiki Page",
         href: "https://wiki.example.com/MyPage"
       )

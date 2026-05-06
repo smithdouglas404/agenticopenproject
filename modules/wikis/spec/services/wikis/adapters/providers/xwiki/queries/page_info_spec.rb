@@ -89,11 +89,12 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
     context "with a nested space identifier" do
       let(:identifier) { "xwiki:MySpace.SubSpace.PageName" }
       let(:page_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/MySpace/spaces/SubSpace/pages/PageName" }
+      let(:absolute_url) { "https://xwiki.example.com/bin/view/MySpace/SubSpace/PageName" }
 
       before do
         stub_request(:get, page_url)
           .to_return(status: 200, body: { "title" => "Nested Page",
-                                          "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/MySpace/SubSpace/PageName" }.to_json,
+                                          "xwikiAbsoluteUrl" => absolute_url }.to_json,
                      headers: { "Content-Type" => "application/json" })
       end
 
