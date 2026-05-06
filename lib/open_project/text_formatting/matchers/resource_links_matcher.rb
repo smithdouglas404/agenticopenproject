@@ -70,11 +70,9 @@ module OpenProject::TextFormatting
     #     identifier:source:some/file
     class ResourceLinksMatcher < RegexMatcher
       # Per-render cache of WorkPackage records referenced by `#N` plain links.
-      # Stored on `RequestStore.store` (matching the `Cache`, `Setting`,
-      # `CustomStyle`, and `WorkPackage#available_custom_field_key` patterns
-      # already in this codebase) and managed via `with_preloaded_resources`,
-      # which save/restores around its block to keep nested `format_text`
-      # calls correct.
+      # Stored on `RequestStore.store` and managed via `with_preloaded_resources`,
+      # which save/restores around its block so nested `format_text` calls
+      # don't clobber the outer render's lookup.
       WORK_PACKAGES_LOOKUP_KEY = :text_formatting_work_packages_lookup
       private_constant :WORK_PACKAGES_LOOKUP_KEY
 
@@ -149,23 +147,19 @@ module OpenProject::TextFormatting
 
       # Doc-level preload (called by `PatternMatcherFilter` around the per-node
       # loop). Yields with the WP lookup populated, save/restoring on entry
-      # and exit so nested `format_text` calls — which can happen when a
-      # custom-field formatter or recursive markdown render re-enters the
-      # pipeline mid-iteration — don't clobber the outer render's lookup.
+      # and exit so a nested `format_text` call — e.g. a custom-field
+      # formatter that re-enters the pipeline mid-iteration — doesn't
+      # clobber the outer render's lookup.
       #
-      # Skipped entirely in classic mode: `display_id` and `formatted_id`
-      # collapse to the numeric form, so the link handler renders the legacy
-      # shape from `wp_id` alone — no DB load required, matching pre-PR
-      # behaviour. The yield-without-preload branch keeps the contract
-      # uniform regardless of mode.
+      # Classic mode skips the load: `display_id` and `formatted_id` collapse
+      # to the numeric form, so the link handler renders the link from the
+      # matched id alone with no DB lookup required.
       #
-      # Visibility filtering is intentionally NOT applied. The matcher links
-      # regardless of viewer permissions — pre-existing behaviour outside
-      # this ticket's scope.
+      # The matcher links regardless of viewer permissions; visibility
+      # filtering is out of scope here.
       def self.with_preloaded_resources(doc, _context)
-        # Capture the prior lookup unconditionally as the very first statement
-        # so `ensure` can always restore it without a `defined?` guard,
-        # regardless of which early-return branch we take.
+        # `previous` is captured before any early return so the `ensure`
+        # block can always restore it without a `defined?` guard.
         previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
 
         return yield unless Setting::WorkPackageIdentifier.semantic_mode_active?
@@ -251,9 +245,9 @@ module OpenProject::TextFormatting
       end
       private_class_method :fold_in_alias_keys
 
-      # Single source of truth for which regex group means what. Both
-      # `process_match` and `extract_work_package_identifier` consume this —
-      # change the named groups in `regexp` and only this site needs to follow.
+      # Folds the three alternation branches in `regexp` (hash, revision,
+      # colon) into a flat `:sep` / `:identifier` shape so callers don't
+      # branch on which one matched.
       def self.parse_match(match)
         {
           leading: match[:leading],
