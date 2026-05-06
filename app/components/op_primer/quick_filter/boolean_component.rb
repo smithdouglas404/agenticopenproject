@@ -26,18 +26,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module QuickFilter
-  class SegmentedComponent < ApplicationComponent
-    class Item < ApplicationComponent
-      attr_reader :label, :value
+module OpPrimer
+  module QuickFilter
+    class BooleanComponent < SegmentedComponent
+      def initialize(name:, query:, filter_key:, true_label:, false_label:, path_args:, orders: nil)
+        super(name:, query:, filter_key:, path_args:, orders:)
 
-      def initialize(label:, value:)
-        super
+        @true_label = true_label
+        @false_label = false_label
+      end
 
-        @label = label
-        @value = value
+      def before_render
+        with_item(label: @true_label, value: "t")
+        with_item(label: @false_label, value: "f")
       end
     end
   end

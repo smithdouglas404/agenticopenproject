@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe QuickFilter::SegmentedComponent, type: :component do
+RSpec.describe OpPrimer::QuickFilter::SegmentedComponent, type: :component do
   include QuickFilterHelpers
 
   let(:project) { build_stubbed(:project) }

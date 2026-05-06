@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
   <% end %>
   <% flex.with_column do %>
     <%= render(
-          QuickFilter::SegmentedComponent.new(
+          OpPrimer::QuickFilter::SegmentedComponent.new(
             name: I18n.t(:label_meeting_date_time),
             query: @query,
             filter_key: :time,

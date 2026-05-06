@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe QuickFilter::BooleanComponent, type: :component do
+RSpec.describe OpPrimer::QuickFilter::BooleanComponent, type: :component do
   include QuickFilterHelpers
 
   let(:project) { build_stubbed(:project) }
