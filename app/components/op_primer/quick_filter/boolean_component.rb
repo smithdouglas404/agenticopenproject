@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -28,41 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Meetings
-  # rubocop:disable OpenProject/AddPreviewForViewComponent
-  class IndexSubHeaderComponent < ApplicationComponent
-    # rubocop:enable OpenProject/AddPreviewForViewComponent
-    include ApplicationHelper
+module OpPrimer
+  module QuickFilter
+    class BooleanComponent < SegmentedComponent
+      def initialize(name:, query:, filter_key:, path_args:, true_label: t(:general_text_Yes), false_label: t(:general_text_No),
+                     orders: nil)
+        super(name:, query:, filter_key:, path_args:, orders:)
 
-    def initialize(query:, params:, project: nil)
-      super
-      @query = query
-      @project = project
-      @params = params
-    end
-
-    def render_create_button?
-      if @project
-        User.current.allowed_in_project?(:create_meetings, @project)
-      else
-        User.current.allowed_in_any_project?(:create_meetings)
+        @true_label = true_label
+        @false_label = false_label
       end
-    end
 
-    def id
-      "add-meeting-button"
-    end
-
-    def accessibility_label_text
-      I18n.t(:label_meeting_new)
-    end
-
-    def label_text
-      I18n.t(:label_meeting)
-    end
-
-    def filters_expanded?
-      params[:filters].present?
+      def before_render
+        with_item(label: @true_label, value: "t")
+        with_item(label: @false_label, value: "f")
+      end
     end
   end
 end

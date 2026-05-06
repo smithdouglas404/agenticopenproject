@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,43 +26,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Meetings
-  # rubocop:disable OpenProject/AddPreviewForViewComponent
-  class IndexSubHeaderComponent < ApplicationComponent
-    # rubocop:enable OpenProject/AddPreviewForViewComponent
-    include ApplicationHelper
-
-    def initialize(query:, params:, project: nil)
-      super
-      @query = query
-      @project = project
-      @params = params
+module OpPrimer
+  # @logical_path OpenProject/Primer
+  class QuickFilterPreview < Lookbook::Preview
+    def segmented
+      render_with_template(locals: { query: meeting_query })
     end
 
-    def render_create_button?
-      if @project
-        User.current.allowed_in_project?(:create_meetings, @project)
-      else
-        User.current.allowed_in_any_project?(:create_meetings)
-      end
+    def segmented_with_active_filter
+      query = meeting_query
+      query.where("time", "=", ["future"])
+      render_with_template(locals: { query: })
     end
 
-    def id
-      "add-meeting-button"
+    def boolean
+      query = meeting_query
+      query.where("type", "=", ["t"])
+      render_with_template(locals: { query: })
     end
 
-    def accessibility_label_text
-      I18n.t(:label_meeting_new)
-    end
+    private
 
-    def label_text
-      I18n.t(:label_meeting)
-    end
-
-    def filters_expanded?
-      params[:filters].present?
+    def meeting_query
+      Queries::Meetings::MeetingQuery.new(user: User.current)
     end
   end
 end

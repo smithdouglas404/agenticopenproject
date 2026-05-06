@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,43 +26,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Meetings
-  # rubocop:disable OpenProject/AddPreviewForViewComponent
-  class IndexSubHeaderComponent < ApplicationComponent
-    # rubocop:enable OpenProject/AddPreviewForViewComponent
-    include ApplicationHelper
+module QuickFilterHelpers
+  def build_meeting_query(user: build_stubbed(:user))
+    Queries::Meetings::MeetingQuery.new(user:)
+  end
 
-    def initialize(query:, params:, project: nil)
-      super
-      @query = query
-      @project = project
-      @params = params
-    end
+  def filters_from_link(link)
+    json = CGI.unescape(link[:href].match(/filters=([^&]+)/)[1])
+    JSON.parse(json)
+  end
 
-    def render_create_button?
-      if @project
-        User.current.allowed_in_project?(:create_meetings, @project)
-      else
-        User.current.allowed_in_any_project?(:create_meetings)
-      end
-    end
-
-    def id
-      "add-meeting-button"
-    end
-
-    def accessibility_label_text
-      I18n.t(:label_meeting_new)
-    end
-
-    def label_text
-      I18n.t(:label_meeting)
-    end
-
-    def filters_expanded?
-      params[:filters].present?
-    end
+  def sort_from_link(link)
+    json = CGI.unescape(link[:href].match(/sortBy=([^&]+)/)[1])
+    JSON.parse(json)
   end
 end

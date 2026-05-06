@@ -3862,6 +3862,7 @@ en:
   label_age: "Age"
   label_ago: "days ago"
   label_all: "all"
+  label_all_uppercase: "All"
   label_all_time: "all time"
   label_all_words: "All words"
   label_all_open_wps: "All open"
