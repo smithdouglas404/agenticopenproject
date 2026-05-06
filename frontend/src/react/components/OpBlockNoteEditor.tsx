@@ -40,8 +40,7 @@ import {
   openProjectWorkPackageInlineSpec,
   workPackageSlashMenu,
   useHashWpMenu,
-  useInlineWpEvents,
-  useDeduplicateInstanceIds
+  useOpBlockNoteExtensions
 } from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo } from 'react';
 import * as Y from 'yjs';
@@ -125,8 +124,7 @@ export function OpBlockNoteEditor({
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
 
-  useInlineWpEvents(editor);
-  useDeduplicateInstanceIds(editor); 
+  useOpBlockNoteExtensions(editor);
 
   const theme = useOpTheme();
 
