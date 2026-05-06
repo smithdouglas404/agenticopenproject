@@ -2,6 +2,8 @@
 sidebar_navigation:
   title: Jira migration
   priority: 90
+description: Step-by-step guide for migrating from Jira Data Center to OpenProject using the Jira Migrator. Supported data types, limitations, and best practices for a successful migration.
+keywords: Jira, Jira Migrator, Jira migration, Jira Data Center, Import tool, Migration, Migration guide
 ---
 
 # Migrating from Jira to OpenProject
