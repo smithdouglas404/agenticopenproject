@@ -33,8 +33,14 @@ module OpenProject::TextFormatting
     # OpenProject links matching
     #
     # Examples:
-    #   Issues:
-    #     #52 -> Link to issue #52
+    #   Work packages:
+    #     #52       -> Plain link to work package 52
+    #     ##52      -> Inline quickinfo card for work package 52
+    #     ###52     -> Detailed quickinfo card for work package 52
+    #   Work packages (semantic identifiers, when the instance is in semantic mode):
+    #     #PROJ-7   -> Plain link to the work package whose display id is PROJ-7
+    #     ##PROJ-7  -> Inline quickinfo card
+    #     ###PROJ-7 -> Detailed quickinfo card
     #   Changesets:
     #     r52 -> Link to revision 52
     #     commit:a85130f -> Link to scmid starting with a85130f
@@ -85,43 +91,30 @@ module OpenProject::TextFormatting
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::UrlHelper
 
+      # Hash and revision separators sit on independent alternation branches
+      # so the semantic-id identifier shape applies only to `#` references —
+      # `r` revisions stay numeric-only. Named captures keep `parse_match` as
+      # a flat name-to-name map; adding a branch later doesn't ripple through
+      # group numbers.
       def self.regexp
-        # Hash and revision separators are split into separate alternation
-        # branches so the semantic-id identifier shape only applies to `#`
-        # references — `r` revisions stay numeric-only. Splitting them shifts
-        # the colon-separator group indices; `parse_match` is the single
-        # place that maps regex group numbers to semantic field names.
         semantic_id = WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT.source
+        prefixes = allowed_prefixes.join("|")
         %r{
-          ([[[:space:]](,~\-\[>]|^) # Leading string                                        [1]
-          (!)? # Escaped marker                                                             [2]
-          (([a-z0-9\-_]+):)? # Project identifier wrapper [3] + identifier                  [4]
-          (#{allowed_prefixes.join('|')})? # prefix                                         [5]
-          (                                                                                 # [6] outer
-            (\#+)(#{semantic_id}) # hash sep [7] + identifier (numeric or semantic)         [8]
+          (?<leading>[[[:space:]](,~\-\[>]|^)
+          (?<escaped>!)?
+          (?<project_prefix>(?<project_identifier>[a-z0-9\-_]+):)?
+          (?<prefix>#{prefixes})?
+          (?:
+            (?<hash_sep>\#+)(?<hash_id>#{semantic_id})
             |
-            (r)(\d+) # revision sep [9] + numeric identifier                                [10]
+            (?<rev_sep>r)(?<rev_id>\d+)
             |
-            (:) # colon separator                                                           [11]
-            (                                                                               # [12] non-quoted-or-quoted
-              [^"\s<>][^\s<>]*? # And a non-quoted value
-              |
-              "([^"]+)" # Or a quoted value                                                 [13]
-            )
+            (?<colon_sep>:)(?<colon_value>[^"\s<>][^\s<>]*?|"(?<quoted>[^"]+)")
           )
           (?=
-            (?=
-              [[:punct:]]\W # Includes matches of, e.g., source:foo.ext
-            )
-            |\.\z # Allow matching when string ends with .
-            |, # or with ,
-            |~ # or with ~
-            |\) # or with )
-            |[[:space:]]
-            |\]
-            |<
-            |$
-           )
+            (?=[[:punct:]]\W) # Includes matches of, e.g., source:foo.ext
+            |\.\z|,|~|\)|[[:space:]]|\]|<|$
+          )
         }x
       end
 
@@ -260,17 +253,17 @@ module OpenProject::TextFormatting
 
       # Single source of truth for which regex group means what. Both
       # `process_match` and `extract_work_package_identifier` consume this —
-      # change the regex layout in `regexp` and only this site needs to follow.
+      # change the named groups in `regexp` and only this site needs to follow.
       def self.parse_match(match)
         {
-          leading: match[1],
-          escaped: match[2],
-          project_prefix: match[3],
-          project_identifier: match[4],
-          prefix: match[5],
-          sep: match[7] || match[9] || match[11],
-          raw_identifier: match[8] || match[10] || match[12],
-          identifier: match[8] || match[10] || match[13] || match[12]
+          leading: match[:leading],
+          escaped: match[:escaped],
+          project_prefix: match[:project_prefix],
+          project_identifier: match[:project_identifier],
+          prefix: match[:prefix],
+          sep: match[:hash_sep] || match[:rev_sep] || match[:colon_sep],
+          raw_identifier: match[:hash_id] || match[:rev_id] || match[:colon_value],
+          identifier: match[:hash_id] || match[:rev_id] || match[:quoted] || match[:colon_value]
         }
       end
 
