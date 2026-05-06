@@ -63,9 +63,6 @@ module Projects::Identifier
                       on: :create,
                       if: -> { Setting::WorkPackageIdentifier.semantic? && identifier.blank? }
 
-    # Order matters: uniqueness must declare before the project-identifier validator
-    # so the validator's historical-reservation check can skip when uniqueness has
-    # already added :taken (avoids two :taken errors for the same value).
     validates :identifier,
               presence: true,
               uniqueness: { case_sensitive: false },
