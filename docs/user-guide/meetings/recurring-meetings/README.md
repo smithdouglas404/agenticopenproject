@@ -142,8 +142,6 @@ Clicking this option will display a confirmation dialog. From there, choose wher
 
 ![A confirmation dialogue for moving an agenda item into the the next meeting occurrence in OpenProject](openproject_userguide_meetings_recurring_move_agenda_item_confirmation_dialog.png)
 
-
-
 Confirming will move the agenda item and outcomes (if any exist) into the next immediate meeting occurrence. 
 
 ### Duplicate an agenda item to next meeting
@@ -156,17 +154,14 @@ To do duplicate an agenda item into the next meeting, open the **More (⋯)** me
 
 ![Duplicate an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_duplicate_agenda_item2.png)
 
-
-
 Clicking this option will display a confirmation dialog. You will then need to select a destination from the dropdown menu: either a section of the agenda or the backlog.
 
 ![A confirmation dialogue for duplicating an agenda item into the the next meeting occurrence in OpenProject](openproject_userguide_meetings_recurring_duplicate_agenda_item_confirmation_dialog.png)
 
-
-
 Confirming will create a copy of the agenda item in the next immediate meeting occurrence. The original agenda item will remain in the current meeting, keeping the protocol intact.
 
-> ! [NOTE]: Meeting outcomes will not be duplicated. They will only be copied along if a meeting agenda item is moved.
+> [!NOTE]
+> Meeting outcomes will not be duplicated if a meeting agenda item is duplicated. The outcomes will only be copied if a meeting agenda item is moved.
 
 ## Meeting backlogs for recurring meetings
 
