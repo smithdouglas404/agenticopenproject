@@ -79,15 +79,43 @@ module WorkPackage::SemanticIdentifier
     end
   end
 
-  # Returns true when value looks like a semantic work package identifier
-  # ("PROJ-42"). Non-strings (Integer, Hash, nil, Array) and numeric strings
-  # ("123", " 456 ") return false — these fall through to standard PK lookup.
+  # Routing predicate for WP finders: returns true when value is a String
+  # that needs string-based identifier/alias lookup. Three input kinds
+  # return true:
+  #   - true semantic identifiers ("PROJ-7")
+  #   - non-canonical numerics ("0123", "00")
+  #   - non-numeric strings ("abc")
+  # Only canonical numeric strings ("123") route to PK lookup and return
+  # false here. The predicate's name reflects routing intent, not strict
+  # shape validation — "0123" returns true even though it's clearly not
+  # a "semantic identifier" in the user-facing sense, because it still
+  # belongs on the string-lookup path.
   #
-  # The round-trip check (rather than a regex) is intentional for performance.
-  # Every value that reaches a work-package finder either parses as an integer
-  # or doesn't, and that's enough to dispatch correctly. Don't tighten it.
+  # Non-strings (Integer, Hash, nil) return false — already in PK-lookup
+  # shape.
+  #
+  # The round-trip check (rather than a regex) is intentional for
+  # performance: every value reaching a finder either parses as an
+  # integer or doesn't, and that's enough to dispatch. Don't tighten it.
   def self.semantic_id?(value)
     value.is_a?(String) && value.strip.to_i.to_s != value.strip
+  end
+
+  # Shape predicate: returns true when value is a canonical numeric ID —
+  # an Integer, or a String that round-trips through `to_i.to_s` ("0",
+  # "123"). Rejects leading-zero strings ("0123"), non-numeric strings,
+  # and nil.
+  #
+  # Pairs with `semantic_id?` at call sites that need to gate inputs to
+  # one of two lookup paths. They answer different questions (shape vs
+  # routing) and so are kept independent rather than expressing one as
+  # the negation of the other.
+  def self.numeric_id?(value)
+    case value
+    when Integer then true
+    when String  then value == value.to_i.to_s
+    else false
+    end
   end
 
   # Returns the user-facing identifier for this work package.

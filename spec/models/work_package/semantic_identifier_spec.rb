@@ -459,6 +459,40 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe ".numeric_id? and .semantic_id?" do
+    # `numeric_id?` answers a shape question (canonical numeric ID),
+    # `semantic_id?` answers a routing question (needs identifier/alias
+    # lookup). For Strings the two are mutually exclusive; Integers are
+    # numeric-only (no string-lookup routing applies).
+    [
+      ["123",     :numeric],
+      ["0",       :numeric],
+      [123,       :numeric],
+      [0,         :numeric],
+      ["0123",    :semantic],
+      ["00",      :semantic],
+      ["PROJ-1",  :semantic],
+      ["abc",     :semantic],
+      ["",        :semantic],
+      [nil,       :neither],
+      [{},        :neither]
+    ].each do |value, classification|
+      it "routes #{value.inspect} to #{classification}" do
+        case classification
+        when :numeric
+          expect(described_class.numeric_id?(value)).to be true
+          expect(described_class.semantic_id?(value)).to be false
+        when :semantic
+          expect(described_class.semantic_id?(value)).to be true
+          expect(described_class.numeric_id?(value)).to be false
+        when :neither
+          expect(described_class.numeric_id?(value)).to be false
+          expect(described_class.semantic_id?(value)).to be false
+        end
+      end
+    end
+  end
+
   describe "#display_id" do
     context "when semantic mode is active",
             with_flag: { semantic_work_package_ids: true },

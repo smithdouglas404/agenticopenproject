@@ -53,9 +53,9 @@ module OpenProject::TextFormatting::Matchers
 
           render_for_semantic(identifier, matcher)
         else
-          # Numeric branch: reject leading-zero shapes ("#0123") that round-
-          # trip back to a different integer.
-          return nil if identifier != identifier.to_i.to_s
+          # Numeric branch: reject leading-zero shapes ("#0123") that
+          # aren't canonical PK strings.
+          return nil unless WorkPackage::SemanticIdentifier.numeric_id?(identifier)
 
           render_for_numeric(identifier.to_i, matcher)
         end

@@ -190,18 +190,17 @@ module OpenProject::TextFormatting
       # `#PROJ-1` plain links need the WP record for the `formatted_id`
       # label and hover-card URL; `##PROJ-1` / `###PROJ-1` quickinfo macros
       # use it to emit the user-facing `display_id` in `data-id`. Returns
-      # nil for prefixed resource links (`version#3`, `message#12`),
-      # `:`-separator resources, and leading-zero numerics we don't link.
+      # nil for prefixed resource links (`version#3`, `message#12`) and
+      # `:`-separator resources.
+      #
+      # Leading-zero numerics like "0123" pass through here — the regex's
+      # `\d+` already gates the shape, and the link handler does the
+      # canonical-numeric check at render time so a non-resolving entry
+      # in the cache is harmless.
       def self.extract_work_package_identifier(match)
         parts = parse_match(match)
         identifier = parts[:identifier]
         return nil unless parts[:prefix].nil? && parts[:sep]&.start_with?("#") && identifier.present?
-
-        # Accept either the semantic shape (PROJ-7) or a numeric round-trip
-        # (rejecting leading-zero "0123" forms that hit the regex's numeric
-        # branch but aren't valid PK references).
-        return nil unless WorkPackage::SemanticIdentifier.semantic_id?(identifier) ||
-          identifier == identifier.to_i.to_s
 
         identifier
       end
