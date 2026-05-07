@@ -47,13 +47,13 @@ You can now view search results from different categories or sections of OpenPro
 
 ## Partial-text search
 
-The OpenProject search bar is now also configured to support partial-text search. This means you no longer need to enter  the full word to find relevant results. Simply type part of a word, and the system will display matching items.
+The OpenProject search bar is also configured to support partial-text search. Simply type part of a word, and the system will display matching items.
 
 For example: Entering **"roto"** will return results such as **prototyping**, **prototype**
 
 This feature is especially helpful if you do not remember the exact name of a work package or are unsure of the first few letters.
 
-![Partial text search for work package search in OpenProject](openproject_user_guide_search_partial_text.png)
+![Partial text search for work package search in OpenProject](openproject_userguide_search_partial_text.png)
 
 ## Multi-text search
 
@@ -63,7 +63,7 @@ For example: Entering "**de roto"** will match **Design prototyping.
 
 When you type more than one text, the search will only show results where **all entered items** appear somewhere in the project or workspace name. This helps you find items faster, even if you only remember parts of the name.
 
-![Multi space text for work package search in OpenProject](openproject_user_guide_search_multi_space_text.png)
+![Multi space text for work package search in OpenProject](openproject_userguide_search_multispace_text.png)
 
 ## Full-text search
 
