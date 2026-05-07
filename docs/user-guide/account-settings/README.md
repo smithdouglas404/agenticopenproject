@@ -19,7 +19,7 @@ Change your personal settings under Account settings (earlier called My account)
 | [Two-factor authentication](#two-factor-authentication)   | How to set up a two-factor authentication                    |
 | [Access tokens](#access-tokens)                           | How to set up access tokens in OpenProject                   |
 | [Session management](#sessions-management)                | How to manage your OpenProject sessions                      |
-| [Notification and email](#notifications-settings)         | How to change in-app notifications in OpenProject            |
+| [Notification and email](#notification-and-email)         | How to change in-app notifications in OpenProject            |
 | [Set an Avatar](#set-an-avatar)                           | How to set an avatar in OpenProject and change the profile picture |
 | [Delete account](#delete-account)                         | How to delete my own account                                 |
 
@@ -353,7 +353,9 @@ Sessions expire automatically according to your instance’s authentication sett
 
 ## Notification and email
 
-To configure the notification settings which you receive from the system, navigate to **Account settings** and choose **Notification and email** on the menu.
+To configure the notification settings which you receive from the system, navigate to **Account settings** and choose **Notification and email** from the menu.
+
+### Notification settings
 
 ![Notification settings in OpenProject account settings](openproject_account_settings_notification_settings.png)
 
