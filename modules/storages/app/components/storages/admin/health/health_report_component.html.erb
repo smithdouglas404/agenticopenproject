@@ -48,7 +48,7 @@ See COPYRIGHT and LICENSE files for more details.
           flex_layout do |report_container|
             report_container.with_row do
               concat(render(Primer::Beta::Octicon.new(mr: 2, **summary_icon(@report.tally))))
-              concat(render(Primer::Beta::Text.new(font_weight: :bold)) { @report.humanize_summary })
+              concat(render(Primer::Beta::Text.new(font_weight: :bold)) { humanize_summary(@report.tally) })
             end
 
             report_container.with_row(mt: 2) do
@@ -63,25 +63,25 @@ See COPYRIGHT and LICENSE files for more details.
               end
             end
 
-            @report.each_pair do |_key, group_result|
+            @report.results.each do |result_group|
               report_container.with_row(mt: 3) do
                 render(Primer::Beta::BorderBox.new(test_selector: "op-storages--health-report-group")) do |box|
                   box.with_header do
                     flex_layout(justify_content: :space_between, classes: "flex-wrap") do |header|
                       header.with_column do
-                        render(Primer::Beta::Text.new(font_weight: :bold)) { group_result.humanize_title }
+                        render(Primer::Beta::Text.new(font_weight: :bold)) { I18n.t("storages.health.checks.#{result_group.key}.header") }
                       end
 
                       header.with_column do
-                        concat(render(Primer::Beta::Octicon.new(mr: 2, **summary_icon(group_result.tally))))
-                        concat(render(Primer::Beta::Text.new) { group_result.humanize_summary })
+                        concat(render(Primer::Beta::Octicon.new(mr: 2, **summary_icon(result_group.tally))))
+                        concat(render(Primer::Beta::Text.new) { humanize_summary(result_group.tally) })
                       end
                     end
                   end
 
-                  group_result.each_pair do |_key, value|
+                  result_group.results.each do |value|
                     box.with_row do
-                      render(Storages::Admin::Health::CheckResultComponent.new(group: group_result.key, result: value))
+                      render(Storages::Admin::Health::CheckResultComponent.new(group: result_group.key, result: value))
                     end
                   end
                 end

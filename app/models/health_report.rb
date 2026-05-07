@@ -23,25 +23,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  module Admin
-    module SidePanel
-      class HealthStatusComponent < ApplicationComponent
-        include ApplicationHelper
-        include OpTurbo::Streamable
-        include OpPrimer::ComponentHelpers
+class HealthReport < ApplicationRecord
+  belongs_to :subject, polymorphic: true
 
-        private
+  serialize :results, coder: HealthReport::ResultGroup
 
-        def report
-          model.health_reports.order(created_at: :asc).last
-        end
-      end
+  def healthy? = results.all?(&:success?)
+
+  def unhealthy? = results.any?(&:failure?)
+
+  def warning? = results.any?(&:warning?)
+
+  def group(key)
+    results.find { |group| group.key == key }
+  end
+
+  def tally
+    results.reduce({}) do |tally, group|
+      tally.merge(group.tally) { |_, v1, v2| v1 + v2 }
     end
   end
 end

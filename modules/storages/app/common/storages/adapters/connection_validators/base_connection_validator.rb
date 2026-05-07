@@ -34,11 +34,11 @@ module Storages
       class BaseConnectionValidator
         class << self
           def validation_groups
-            @validation_groups ||= {}
+            @validation_groups ||= []
           end
 
           def register_group(klass, precondition: ->(*) { true })
-            validation_groups[klass.key] = { klass:, precondition: }
+            validation_groups << { klass:, precondition: }
           end
         end
 
@@ -47,15 +47,14 @@ module Storages
         end
 
         def call
-          validation_groups.each_with_object(ValidatorResult.new) do |(key, group_metadata), result|
-            if group_metadata[:precondition].call(@storage, result)
-              result.add_group_result(key, group_metadata[:klass].call(@storage))
+          health_report = @storage.health_reports.build
+          validation_groups.each do |group_metadata|
+            if group_metadata[:precondition].call(@storage, health_report)
+              health_report.results << group_metadata[:klass].call(@storage)
             end
           end
-        end
 
-        def report_cache_key
-          "#{@storage}_storage_#{@storage.id}_health_status_report"
+          health_report
         end
 
         private

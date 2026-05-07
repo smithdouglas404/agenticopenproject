@@ -52,6 +52,17 @@ module Storages
             { icon: :"check-circle", color: :success }
           end
         end
+
+        def humanize_summary(check_tally)
+          case check_tally
+          in { failure: 1.. }
+            I18n.t("health_report.checks.failures", count: check_tally[:failure])
+          in { warning: 1.. }
+            I18n.t("health_report.checks.warnings", count: check_tally[:warning])
+          else
+            I18n.t("health_report.checks.success")
+          end
+        end
       end
     end
   end

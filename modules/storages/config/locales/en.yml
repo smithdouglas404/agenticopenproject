@@ -314,13 +314,6 @@ en:
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
-        failures:
-          one: "%{count} check failed"
-          other: "%{count} checks failed"
-        success: All checks passed
-        warnings:
-          one: "%{count} check returned a warning"
-          other: "%{count} checks returned a warning"
       connection_validation:
         client_id_invalid: The configured OAuth 2 client id is invalid. Please check the configuration.
         client_secret_invalid: The configured OAuth 2 client secret is invalid. Please check the configuration.

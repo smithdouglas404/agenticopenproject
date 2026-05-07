@@ -37,7 +37,7 @@ See COPYRIGHT and LICENSE files for more details.
       header.with_title { page_title }
       header.with_description do
         if @report.present?
-          I18n.t("storages.health.checked", datetime: format_time(@report.latest_timestamp))
+          I18n.t("storages.health.checked", datetime: format_time(@report.created_at))
         else
           I18n.t("storages.health.no_report")
         end

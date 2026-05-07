@@ -42,7 +42,8 @@ module Storages
 
         def initialize(storage)
           @storage = storage
-          @results = ValidationGroupResult.new(self.class.key)
+          @group = HealthReport::ResultGroup.new(key: self.class.key)
+          @pending_checks = []
         end
 
         def call
@@ -50,7 +51,9 @@ module Storages
             validate
           end
 
-          @results
+          @pending_checks.each { @group.results << HealthReport::Result.skipped(it) }
+
+          @group
         end
 
         private
@@ -58,24 +61,25 @@ module Storages
         def validate = raise SubclassResponsibilityError
 
         def register_checks(*keys)
-          keys.each { @results.register_check(it) }
+          @pending_checks.concat(keys)
         end
 
-        def update_result(...)
-          @results.update_result(...)
+        def add_result(key, result)
+          @group.results << result
+          @pending_checks.delete(key)
         end
 
         def pass_check(key)
-          update_result(key, CheckResult.success(key))
+          add_result(key, HealthReport::Result.success(key))
         end
 
         def fail_check(key, code, context: nil)
-          update_result(key, CheckResult.failure(key, code, context))
+          add_result(key, HealthReport::Result.failure(key, code, context))
           throw :interrupted
         end
 
         def warn_check(key, code, context: nil, halt_validation: false)
-          update_result(key, CheckResult.warning(key, code, context))
+          add_result(key, HealthReport::Result.warning(key, code, context))
           throw :interrupted if halt_validation
         end
       end

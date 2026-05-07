@@ -3547,6 +3547,16 @@ en:
   gui_validation_error: "1 error"
   gui_validation_error_plural: "%{count} errors"
 
+  health_report:
+    checks:
+      failures:
+        one: "%{count} check failed"
+        other: "%{count} checks failed"
+      success: All checks passed
+      warnings:
+        one: "%{count} check returned a warning"
+        other: "%{count} checks returned a warning"
+
   homescreen:
     additional:
       projects: "Newest visible projects in this instance."

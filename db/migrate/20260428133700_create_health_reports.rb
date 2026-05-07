@@ -23,25 +23,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  module Admin
-    module SidePanel
-      class HealthStatusComponent < ApplicationComponent
-        include ApplicationHelper
-        include OpTurbo::Streamable
-        include OpPrimer::ComponentHelpers
-
-        private
-
-        def report
-          model.health_reports.order(created_at: :asc).last
-        end
-      end
+class CreateHealthReports < ActiveRecord::Migration[8.1]
+  def change
+    create_table :health_reports do |t|
+      t.belongs_to :subject, null: false, polymorphic: true, index: true
+      t.jsonb :results, null: false, default: {}
+      t.timestamps null: false
     end
   end
 end

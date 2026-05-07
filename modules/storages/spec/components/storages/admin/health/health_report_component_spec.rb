@@ -87,23 +87,22 @@ RSpec.describe Storages::Admin::Health::HealthReportComponent, type: :component 
   private
 
   def generate_test_group(group_key, checks)
-    group = Storages::Adapters::ConnectionValidators::ValidationGroupResult.new(group_key)
+    group = HealthReport::ResultGroup.new(key: group_key)
 
     checks.each_with_index do |check, idx|
       key = :"check_#{idx + 1}"
       result = case check
                when :success
-                 Storages::Adapters::ConnectionValidators::CheckResult.success(key)
+                 HealthReport::Result.success(key)
                when :warning
-                 Storages::Adapters::ConnectionValidators::CheckResult.warning(key, :"#{key}_warning", nil)
+                 HealthReport::Result.warning(key, :"#{key}_warning", nil)
                when :failure
-                 Storages::Adapters::ConnectionValidators::CheckResult.failure(key, :"#{key}_failure", nil)
+                 HealthReport::Result.failure(key, :"#{key}_failure", nil)
                else
-                 Storages::Adapters::ConnectionValidators::CheckResult.skipped(key)
+                 HealthReport::Result.skipped(key)
                end
 
-      group.register_check(key)
-      group.update_result(key, result)
+      group.results << result
       allow(I18n).to receive(:t).with("storages.health.checks.#{group_key}.#{key}").and_return(key.to_s.humanize)
       if result.code.present?
         allow(I18n).to receive(:t).with("storages.health.connection_validation.#{result.code}")
@@ -116,11 +115,10 @@ RSpec.describe Storages::Admin::Health::HealthReportComponent, type: :component 
 
   def generate_test_report(map)
     allow(I18n).to receive(:t).and_call_original
-    report = Storages::Adapters::ConnectionValidators::ValidatorResult.new
+    report = HealthReport.new
 
     map.each_pair do |key, values|
-      result = generate_test_group(key, values)
-      report.add_group_result(key, result)
+      report.results << generate_test_group(key, values)
       allow(I18n).to receive(:t).with("storages.health.checks.#{key}.header").and_return(key.to_s.humanize)
     end
 

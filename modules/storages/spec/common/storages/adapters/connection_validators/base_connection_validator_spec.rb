@@ -47,16 +47,16 @@ module Storages
 
         after { TestValidator.reset_groups! }
 
-        it "returns a ValidationResult" do
-          expect(validator.call).to be_a(ValidatorResult)
+        it "returns a HealthReport" do
+          expect(validator.call).to be_a(HealthReport)
         end
 
         it "only runs a verification if the precondition evaluates as truthy" do
           test_group = class_spy(Providers::Nextcloud::Validators::StorageConfigurationValidator)
           TestValidator.register_group test_group, precondition: ->(_, _) { false }
 
-          result = validator.call
-          expect(result).to be_empty
+          report = validator.call
+          expect(report.results).to be_empty
           expect(test_group).not_to have_received(:call)
         end
 
@@ -69,11 +69,11 @@ module Storages
                                          ).non_failure?
                                        end
 
-          results = TestValidator.new(create(:nextcloud_storage_with_local_connection)).call
+          report = TestValidator.new(create(:nextcloud_storage_with_local_connection)).call
 
-          expect(results).to be_warning
-          expect(results.group(Providers::Nextcloud::Validators::StorageConfigurationValidator.key)).to be_success
-          expect(results.group(Providers::Nextcloud::Validators::AuthenticationValidator.key)).to be_warning
+          expect(report).to be_warning
+          expect(report.group(Providers::Nextcloud::Validators::StorageConfigurationValidator.key)).to be_success
+          expect(report.group(Providers::Nextcloud::Validators::AuthenticationValidator.key)).to be_warning
         end
       end
     end

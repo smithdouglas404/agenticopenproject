@@ -49,16 +49,16 @@ module Storages
             {
               icon: :alert,
               icon_color: :danger,
-              text: I18n.t("storages.health.checks.failures", count: tally[:failure])
+              text: I18n.t("health_report.checks.failures", count: tally[:failure])
             }
           in { warning: 1.. }
             {
               icon: :alert,
               icon_color: :attention,
-              text: I18n.t("storages.health.checks.warnings", count: tally[:warning])
+              text: I18n.t("health_report.checks.warnings", count: tally[:warning])
             }
           else
-            { icon: :"check-circle", icon_color: :success, text: I18n.t("storages.health.checks.success") }
+            { icon: :"check-circle", icon_color: :success, text: I18n.t("health_report.checks.success") }
           end
         end
 
@@ -71,7 +71,7 @@ module Storages
                    I18n.t("storages.health.summary.warning")
                  end
 
-          "#{text} #{I18n.t('storages.health.checked', datetime: helpers.format_time(@result.latest_timestamp))}"
+          "#{text} #{I18n.t('storages.health.checked', datetime: helpers.format_time(@result.created_at))}"
         end
       end
     end

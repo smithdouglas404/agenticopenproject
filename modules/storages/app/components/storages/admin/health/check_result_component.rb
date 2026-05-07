@@ -41,16 +41,15 @@ module Storages
 
         private
 
-        def data
-          @data ||= {
-            text: model.humanize_title(@group),
-            status_color:,
-            status_text:,
-            error_code:,
-            error_text: model.humanize_error_message,
-            docs_href: ::OpenProject::Static::Links.url_for(:storage_docs, :health_status)
-          }
+        def text = I18n.t("storages.health.checks.#{@group}.#{model.key}")
+
+        def error_text
+          return nil if model.code.nil?
+
+          I18n.t("storages.health.connection_validation.#{model.code}", **model.context&.symbolize_keys)
         end
+
+        def docs_href = ::OpenProject::Static::Links.url_for(:storage_docs, :health_status)
 
         def error_code
           if model.failure?
