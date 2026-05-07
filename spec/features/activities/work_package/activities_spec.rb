@@ -1456,10 +1456,6 @@ RSpec.describe "Work package activity", :js, :with_cuprite, with_ee: %i[internal
 
     context "when the current user does not have the activity tab open the whole time" do
       it "raises a conflict warning when the work package is updated by another user while the current user is editing" do
-        pending "This has become obselete with the removal of uiRouter (#67007), because switching tabs now result in a
-               hard reload and no conflict appears like described in these examples.
-               Before removing this, please check the polling controller for possible cleanups.
-               Ticket: https://community.openproject.org/wp/68630"
         using_session(:admin) do
           login_as(admin)
 
