@@ -59,11 +59,11 @@ module Wikis
     end
 
     def enrich_models(metadata)
-      identifier_title_map = metadata.sort_by(&:identifier).to_h { [it.identifier, it.title] }
-      variable_placeholders = Array.new(identifier_title_map.size, "(?,?)").join(",")
+      identifier_title_map = metadata.map { [it.identifier, it.title, it.provider.id] }
+      variable_placeholders = Array.new(identifier_title_map.size, "(?,?,?)").join(",")
       join_string = <<~SQL.squish
-        LEFT JOIN (VALUES #{variable_placeholders}) AS metadata(identifier, title)
-          ON metadata.identifier = wiki_page_links.identifier
+        LEFT JOIN (VALUES #{variable_placeholders}) AS metadata(identifier, title, provider_id)
+          ON metadata.identifier = wiki_page_links.identifier AND metadata.provider_id = wiki_page_links.provider_id
       SQL
 
       join_expression = ActiveRecord::Base.sanitize_sql_array([join_string, *identifier_title_map.flatten])
