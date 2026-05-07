@@ -55,7 +55,7 @@ This feature is especially helpful if you do not remember the exact name of a wo
 
 ![Partial text search for work package search in OpenProject](openproject_userguide_search_partial_text.png)
 
-## Multi-text search
+## Multi-term text search
 
 You can also search using multiple space-separated terms to narrow down results.
 
