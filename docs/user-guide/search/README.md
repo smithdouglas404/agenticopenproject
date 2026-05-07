@@ -51,19 +51,19 @@ The OpenProject search bar is also configured to support partial-text search. Si
 
 For example: Entering **"roto"** will return results such as **prototyping**, **prototype**
 
-This feature is especially helpful if you do not remember the exact name of a work package or are unsure of the first few letters.
+This feature is especially helpful if you do not remember the exact name of a work package or are unsure of the exact spelling.
 
 ![Partial text search for work package search in OpenProject](openproject_userguide_search_partial_text.png)
 
 ## Multi-text search
 
-You can also search using multiple space-separated texts to narrow down results.
+You can also search using multiple space-separated terms to narrow down results.
 
-For example: Entering "**de roto"** will match **Design prototyping.
+For example: Entering "**de roto"** will match **Design prototyping**.
 
-When you type more than one text, the search will only show results where **all entered items** appear somewhere in the project or workspace name. This helps you find items faster, even if you only remember parts of the name.
+When you type more than one text, the search will only show results where **all entered terms** appear somewhere in the project or workspace name. This helps you find items faster, even if you only remember parts of the name.
 
-![Multi space text for work package search in OpenProject](openproject_userguide_search_multispace_text.png)
+![Multi term text search for work package search in OpenProject](openproject_userguide_search_multispace_text.png)
 
 ## Full-text search
 
