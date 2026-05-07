@@ -64,6 +64,8 @@ module Pages
 
       if expected_costs.present?
         wait_for_network_idle
+        sleep(0.15)
+        wait_for_network_idle
         expect(page).to have_css("##{prefix}_costs", text: expected_costs)
       end
     end
@@ -107,6 +109,8 @@ module Pages
       fill_in("#{prefix}_comments", with: comment, **options) if comment.present?
 
       if expected_costs.present?
+        wait_for_network_idle
+        sleep(0.15)
         wait_for_network_idle
         expect(page).to have_css("##{prefix}_costs", text: expected_costs)
       end
