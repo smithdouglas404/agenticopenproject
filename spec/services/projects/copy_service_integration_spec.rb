@@ -381,6 +381,18 @@ RSpec.describe(
       end
     end
 
+    context "when source project has a non-zero wp_sequence_counter",
+            with_settings: { work_packages_identifier: "semantic" } do
+      before do
+        source.update_column(:wp_sequence_counter, 5)
+      end
+
+      it "succeeds and resets wp_sequence_counter to 0 on the copy" do
+        expect(subject).to be_success
+        expect(project_copy.wp_sequence_counter).to eq(0)
+      end
+    end
+
     context "with all modules selected" do
       let(:only_args) { all_modules }
       let(:storage1) { source_automatic_project_storage.storage }
