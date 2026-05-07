@@ -105,7 +105,7 @@
     "@hotwired/turbo-rails": "^8.0.20",
     "@knowledgecode/delegate": "^0.10.3",
     "@kolkov/ngx-gallery": "^2.0.1",
-    "@mantine/core": "^8.3.13",
+    "@mantine/core": "^9.0.1",
     "@mantine/hooks": "^9.0.1",
     "@mantine/utils": "^6.0.22",
     "@ng-select/ng-option-highlight": "^21.8.2",
