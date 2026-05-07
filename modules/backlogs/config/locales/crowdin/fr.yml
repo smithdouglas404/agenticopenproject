@@ -113,23 +113,23 @@ fr:
       title: Les paramètres d'administration du backlog évoluent
       text: Nous sommes en train de redessiner le module Backlogs. Les paramètres d'administration pour les sprints et les backlogs seront visibles ici dans un futur proche. Les paramètres au niveau du projet restent disponibles.
     bucket_component:
-      blankslate_title: Backlog bucket is empty
-      blankslate_description: Drag items here to add them.
-      label_actions: Backlog bucket actions
+      blankslate_title: Le panier de commandes est vide
+      blankslate_description: Faites glisser les éléments ici pour les ajouter.
+      label_actions: Actions de la corbeille du carnet de commandes
       action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
+        edit_backlog_bucket: Modifier le panier de commandes en attente
+        delete_backlog_bucket: Supprimer un seau d'arriérés
     sprint_component:
       blankslate_title: "%{name} est vide"
       blankslate_description: Aucun élément n'a encore été planifié. Faites glisser les éléments ici pour les ajouter.
-      label_actions: Sprint actions
-      label_start_sprint: Start
-      label_complete_sprint: Complete
-      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
-      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      label_actions: Actions du sprint
+      label_start_sprint: Début
+      label_complete_sprint: Terminé
+      start_sprint_disabled_reason_active_sprint: Un autre sprint est déjà en cours.
+      start_sprint_disabled_reason_missing_dates: Les dates de début et de fin sont nécessaires pour lancer le sprint.
       action_menu:
-        edit_sprint: Edit sprint
-        add_work_package: Add work package
+        edit_sprint: Modifier le sprint
+        add_work_package: Ajouter un lot de travaux
     inbox_component:
       blankslate_title: La boîte de réception de backlog est vide
       blankslate_description: Tous les lots de travail ouverts dans ce projet apparaîtront automatiquement ici.

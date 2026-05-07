@@ -27,7 +27,6 @@ uk:
         other: Посилання на пов’язані сторінки
       wikis/xwiki_provider: Постачальник XWiki
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Постачальники Wiki
   wikis:
     buttons:

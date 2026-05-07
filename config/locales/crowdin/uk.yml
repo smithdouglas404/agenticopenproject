@@ -259,8 +259,8 @@ uk:
               label_info: 'Зверніть увагу: цей інструмент доступний лише в бета-версії і не може імпортувати всі типи даних. Ось короткий опис вмісту, доступного для імпорту в хост-екземплярі Jira, а також даних, які інструмент може перенести прямо зараз.'
               description: Виберіть дані, які потрібно імпортувати з доступного вмісту, отриманого з хост-екземпляра Jira.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Виберіть проєкти для імпорту
               button_continue: Продовжити
@@ -2624,6 +2624,7 @@ uk:
       unsupported_storage_type: не є типом сховища, що підтримується.
       storage_error: Помилка з’єднання зі сховищем.
       invalid_input: Введено недійсні дані.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: створено %{datetime} користувачем %{user}
@@ -3845,6 +3846,7 @@ uk:
   label_age: Вік
   label_ago: днів тому
   label_all: всі
+  label_all_uppercase: All
   label_all_time: весь час
   label_all_words: Всі слова
   label_all_open_wps: Всі відкрити
@@ -4605,7 +4607,7 @@ uk:
       you_have: У вас
     logo_alt_text: Логотип
     mention:
-      subject: 'Користувач %{user_name} згадав вас у #%{id} – %{subject}'
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Центр сповіщень
       see_in_center: Переглянути коментарі у центрі сповіщень
@@ -4645,7 +4647,7 @@ uk:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 'Щоб отримати доступ до цього пакета робіт, вам знадобиться створити й активувати обліковий запис в %{instance}. '
         open_work_package: Відкрити пакет робіт
-        subject: 'Вам надано доступ до пакета робіт #%{id}'
+        subject: Work package %{id} was shared with you
         enterprise_text: Діліться пакетами робіт із користувачами, які не належать до учасників проєкту.
         summary:
           user: "%{user} надав(-ла) вам доступ до пакета робіт із такими правами: %{role_rights}"
@@ -4886,7 +4888,6 @@ uk:
   permission_add_work_package_watchers: Додати спостерігачів
   permission_assign_versions: Призначити версії
   permission_browse_repository: Доступ лише на читання з репозиторію (перегляд і перевірка)
-  permission_change_wiki_parent_page: Змінити батьківську wiki сторінку
   permission_change_work_package_status: Змінити статус пакета робіт
   permission_change_work_package_status_explanation: Дає змогу змінювати статус без дозволу «Редагування пакетів робіт»
   permission_comment_news: Коментування новин
@@ -4901,8 +4902,6 @@ uk:
   permission_delete_own_messages: Видалення власних повідомлень
   permission_delete_reportings: Видалити звіти
   permission_delete_timelines: Видалити графіки
-  permission_delete_wiki_pages: Видалення wiki-сторінок
-  permission_delete_wiki_pages_attachments: Видалення прикріплених файлів
   permission_edit_work_package_comments: Модерування коментарів
   permission_edit_work_package_comments_explanation: Увага! Користувачі із цим дозволом можуть редагувати будь-чиї коментарі.
   permission_edit_work_packages: Редагувати робочі пакети
@@ -4922,12 +4921,10 @@ uk:
   permission_edit_wiki_pages: Редагування wiki-сторінок
   permission_export_work_packages: Експорт робочих пакетів
   permission_export_projects: Експорт проєктів
-  permission_export_wiki_pages: Експорт wiki-сторінок
   permission_invite_members_by_email: Запрошення учасників електронною поштою
   permission_invite_members_by_email_explanation: 'Дозвольте запрошувати нових користувачів електронною поштою. Запрошені користувачі отримають лист із посиланням для встановлення пароля й активації облікового запису. На це налаштування впливає дозвіл на керування користувачами.
 
     '
-  permission_list_attachments: Список вкладень
   permission_log_own_time: Реєструвати власний час
   permission_log_time: Реєструвати час для інших користувачів
   permission_manage_forums: Управління форумами
@@ -4942,7 +4939,6 @@ uk:
   permission_manage_subtasks: Керування ієрархіями пакетів робіт
   permission_manage_versions: Управління версіями
   permission_manage_wiki: Управління wiki
-  permission_manage_wiki_menu: Керування wiki-меню
   permission_manage_own_working_times: Керувати власним робочим часом
   permission_manage_own_working_times_explanation: 'Дозволяє користувачам керувати власним робочим часом і особистими неробочими днями.
 
@@ -4952,8 +4948,6 @@ uk:
 
     '
   permission_move_work_packages: Переміщення робочих пакетів
-  permission_protect_wiki_pages: Захист wiki-сторінок
-  permission_rename_wiki_pages: Перейменування wiki-сторінок
   permission_save_queries: Зберегти перегляди
   permission_search_project: Пошук проєктів
   permission_select_custom_fields: Вибирати власні поля
@@ -5751,6 +5745,7 @@ uk:
   text_project_identifier_format: Має починатися з малої літери й містити лише малі літери (a–z), цифри, тире й символи підкреслення.
   text_reassign: 'Перепризначити робочому пакету:'
   text_regexp_multiline: Реестр застосовується в багаторядковому режимі. наприклад, --- ---
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Виберіть або оновіть користувача OpenProject, зіставленого з кожним ім'ям користувача в журналі репозиторію.
     Користувачі з таким самим ім'ям користувача або електронною поштою OpenProject автоматично відображаються.
@@ -6186,11 +6181,6 @@ uk:
       scopes: Дозволи
       successful_application_revocation: Відкликання заявки  %{application_name}  успішне.
       none_given: Жодних програм OAuth не було надано доступ до вашого облікового запису користувача.
-    x_active_tokens:
-      one: один активний маркер
-      few: "%{count} активний маркер"
-      many: "%{count} активний маркер"
-      other: "%{count} активний маркер"
     flows:
       authorization_code: Потік авторизації коду
       client_credentials: Потік облікових даних клієнта
@@ -6200,8 +6190,12 @@ uk:
     client_credentials_impersonation_html: 'За замовчуванням OpenProject надає авторизацію OAuth 2.0 через %{authorization_code_flow_link}. За бажанням можна включити %{client_credentials_flow_link} але ви повинні надати користувачеві, від імені будуть  кого виконуватися запити.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      few: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      many: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Сталася помилка авторизації.
-    revoke_my_application_confirmation: Ви дійсно бажаєте видалити цю програму? Це скасує %{token_count} активація для цього.
     my_registered_applications: Зареєстровані програми OAuth
   oauth_client:
     urn_connection_status:

@@ -23,7 +23,6 @@ es:
         other: Enlaces a la página relacionada
       wikis/xwiki_provider: Proveedor de XWiki
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Proveedores de Wiki
   wikis:
     buttons:

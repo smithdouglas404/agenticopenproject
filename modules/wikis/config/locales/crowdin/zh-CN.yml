@@ -21,7 +21,6 @@ zh-CN:
         other: 关系页面链接
       wikis/xwiki_provider: XWiki 提供商
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Wiki 提供商
   wikis:
     buttons:

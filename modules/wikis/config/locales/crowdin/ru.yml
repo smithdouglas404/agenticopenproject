@@ -27,7 +27,6 @@ ru:
         other: Ссылки на страницу отношения
       wikis/xwiki_provider: Провайдер XWiki
   permission_manage_wiki_page_links: Управление ссылками Вики-страницы
-  permission_view_wiki_page_links: Просмотр ссылок на вики-страницы
   project_module_wiki_platforms: Провайдеры вики
   wikis:
     buttons:
@@ -73,7 +72,7 @@ ru:
         label_name: Name
         label_provider: Provider
         no_results_description: Add a wiki provider to see them here.
-        no_results_title: You don't have any wiki providers set up yet.
+        no_results_title: У вас пока нет ни одного вики-провайдера.
       wiki_providers:
         index_description: Добавить внешний вики-сервис, чтобы связать рабочие пакеты с существующими вики-страницами или создать новые прямо из OpenProject.
         label_add_new: Добавить нового вики-провайдера
@@ -86,17 +85,17 @@ ru:
         oauth:
           openproject_oauth: OpenProject OAuth
         sections:
-          general_information: Basic details
-          oauth_configuration: OAuth configuration
+          general_information: Основные детали
+          oauth_configuration: Конфигурация OAuth
         url_caption: Пожалуйста, добавьте адрес хоста Вашей вики-платформы, включая https://. Его длина не должна превышать 255 символов.
         xwiki_instance: Экземпляр XWiki
         xwiki:
           oauth:
-            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            openproject_oauth_description: Разрешите XWiki получить доступ к данным OpenProject с помощью приложения OAuth. Скопируйте приведенные ниже учетные данные в Ваш экземпляр XWiki.
             provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+            provider_oauth_description: Разрешите OpenProject получить доступ к данным XWiki с помощью OAuth. Идентификатор клиента генерируется автоматически для идентификации OpenProject в XWiki - ручная настройка на стороне XWiki не требуется.
+          openproject_oauth_description: Разрешить XWiki доступ к данным OpenProject с помощью OAuth.
           xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+          xwiki_oauth_description: Разрешить OpenProject доступ к данным XWiki с помощью OAuth.
     macro:
-      page_not_found: Linked wiki page no longer available
+      page_not_found: Связанная вики-страница больше не доступна

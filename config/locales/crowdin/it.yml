@@ -247,8 +247,8 @@ it:
               label_info: Tieni presente che questo strumento di importazione è in versione beta e non può importare tutti i tipi di dati. Ecco un riepilogo di ciò che l'istanza host di Jira offre per l'importazione e di ciò che questo strumento è in grado di importare al momento.
               description: Seleziona i dati che desideri importare tra quelli disponibili recuperati dall'istanza host di Jira.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Seleziona i progetti da importare
               button_continue: Continua
@@ -2547,6 +2547,7 @@ it:
       unsupported_storage_type: non è un tipo di archiviazione supportato.
       storage_error: Si è verificato un errore nella connessione all'archivio.
       invalid_input: L'input non è valido.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: creato da %{user} il %{datetime}
@@ -3722,6 +3723,7 @@ it:
   label_age: Età
   label_ago: giorni fa
   label_all: tutti
+  label_all_uppercase: All
   label_all_time: tutto il tempo
   label_all_words: Tutte le parole
   label_all_open_wps: Apri tutto
@@ -4476,7 +4478,7 @@ it:
       you_have: Hai
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} ti ha menzionato nel n.%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Al centro notifiche
       see_in_center: Vedi commento nel centro notifiche
@@ -4514,7 +4516,7 @@ it:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Per accedere a questa macro-attività è necessario creare e attivare un account su %{instance}
         open_work_package: Apri macro-attività
-        subject: 'La macro-attività #%{id} è stata condivisa con te'
+        subject: Work package %{id} was shared with you
         enterprise_text: Condividi macro-attività con utenti che non sono membri del progetto.
         summary:
           user: "%{user} ha condiviso con te una macro-attività con i diritti %{role_rights}"
@@ -4754,7 +4756,6 @@ it:
   permission_add_work_package_watchers: Aggiungere osservatori
   permission_assign_versions: Assegna versioni
   permission_browse_repository: Accesso in sola lettura all'archivio (consultazione e check-out)
-  permission_change_wiki_parent_page: Cambiare la pagina padre del wiki
   permission_change_work_package_status: Cambia lo stato della macro-attività
   permission_change_work_package_status_explanation: Consente di cambiare lo stato senza l'autorizzazione Modifica macro-attività
   permission_comment_news: Commentare le novità
@@ -4769,8 +4770,6 @@ it:
   permission_delete_own_messages: Cancellare i propri messaggi
   permission_delete_reportings: Eliminare prospetti
   permission_delete_timelines: Elimina cronologie
-  permission_delete_wiki_pages: Eliminare pagine wiki
-  permission_delete_wiki_pages_attachments: Elimina allegati
   permission_edit_work_package_comments: Modera i commenti
   permission_edit_work_package_comments_explanation: 'Attenzione: gli utenti con questa autorizzazione possono modificare i commenti di chiunque.'
   permission_edit_work_packages: Modificare macro-attività
@@ -4790,12 +4789,10 @@ it:
   permission_edit_wiki_pages: Modificare pagine wiki
   permission_export_work_packages: Esportare macro-attività
   permission_export_projects: Esporta progetti
-  permission_export_wiki_pages: Esportare pagine wiki
   permission_invite_members_by_email: Invita i membri via email
   permission_invite_members_by_email_explanation: 'Consente agli utenti di invitare nuovi membri tramite email. Gli utenti invitati riceveranno un''email con un link per impostare la password e attivare il proprio account. Dipende dall''autorizzazione a gestire i membri
 
     '
-  permission_list_attachments: Elencare allegati
   permission_log_own_time: Registrare il proprio tempo
   permission_log_time: Registrare il tempo per gli altri utenti
   permission_manage_forums: Gestire forum
@@ -4810,7 +4807,6 @@ it:
   permission_manage_subtasks: Gestire le gerarchie delle macro-attività
   permission_manage_versions: Gestire le versioni
   permission_manage_wiki: Gestire le pagine wiki
-  permission_manage_wiki_menu: Gestire i menu wiki
   permission_manage_own_working_times: Gestire i propri orari di lavoro
   permission_manage_own_working_times_explanation: 'Consente agli utenti di gestire i propri orari di lavoro e i giorni non lavorativi personali.
 
@@ -4820,8 +4816,6 @@ it:
 
     '
   permission_move_work_packages: Spostare le macro-attività
-  permission_protect_wiki_pages: Proteggere l'accesso a pagine wiki
-  permission_rename_wiki_pages: Rinominare pagine wiki
   permission_save_queries: Salva viste
   permission_search_project: Cerca progetto
   permission_select_custom_fields: Seleziona campi personalizzati
@@ -5615,6 +5609,7 @@ it:
   text_project_identifier_format: Deve iniziare con una lettera minuscola. Sono ammesse solo lettere minuscole (a-z), numeri, trattini e underscore.
   text_reassign: 'Riassegna alla macro-attività:'
   text_regexp_multiline: L'espressione regolare viene applicata in modalità multi-linea. ad esempio, ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: Seleziona o aggiorna l'utente OpenProject mappato per ogni nome utente trovato nel registro dell'archivio. Gli utenti con lo stesso nome utente e repository OpenProject o e-mail vengono mappati automaticamente.
   text_status_changed_by_changeset: Stato variato a partire dalla modifica %{value}.
   text_table_difference_description: In questa tabella sono mostrate le singole %{entries}. È possibile visualizzare le differenze tra due voci selezionando prima le corrispondenti caselle di controllo nella tabella. Cliccando sul pulsante sotto la tabella saranno mostrate le differenze.
@@ -6046,9 +6041,6 @@ it:
       scopes: Permessi
       successful_application_revocation: Revoca dell'applicazione %{application_name} riuscita.
       none_given: Nessuna applicazione OAuth ha il permesso per accedere al tuo account utente.
-    x_active_tokens:
-      one: un token attivo
-      other: "%{count} token attivi"
     flows:
       authorization_code: Flusso del codice di autorizzazione
       client_credentials: Flusso delle credenziali client
@@ -6058,8 +6050,10 @@ it:
     client_credentials_impersonation_html: 'Per impostazione predefinita, OpenProject fornisce l''autorizzazione OAuth 2.0 tramite %{authorization_code_flow_link}. È possibile abilitare facoltativamente %{client_credentials_flow_link}, ma è necessario fornire un utente a cui nome verranno eseguite le richieste.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Si è verificato un errore di autorizzazione.
-    revoke_my_application_confirmation: Vuoi davvero rimuovere questa applicazione? Questo revocherà %{token_count} attivo per essa.
     my_registered_applications: Applicazioni OAuth registrate
   oauth_client:
     urn_connection_status:

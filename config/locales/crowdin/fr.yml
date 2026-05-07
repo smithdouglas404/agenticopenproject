@@ -247,8 +247,8 @@ fr:
               label_info: Veuillez noter que cet outil d'importation est en version bêta et qu'il ne peut pas importer tous les types de données. Voici un résumé de ce que l'instance Jira hôte offre pour l'importation et de ce que cet outil est capable d'importer pour le moment.
               description: Sélectionnez les données que vous souhaitez importer parmi les données disponibles extraites de l'instance Jira hôte.
               label_supported_data: Données prises en charge
-              label_comming_soon: Prochainement (T2 2026)
-              label_comming_later: A venir
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Données disponibles sur %{server_info}
               button_select_projects: Sélectionnez les projets à importer
               button_continue: Continuer
@@ -2540,6 +2540,7 @@ fr:
       unsupported_storage_type: n'est pas un type de stockage pris en charge.
       storage_error: Une erreur s'est produite lors de la connexion à l'espace de stockage.
       invalid_input: L'entrée n'est pas valide.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: créé par %{user} le %{datetime}
@@ -3715,6 +3716,7 @@ fr:
   label_age: Âge
   label_ago: il y a
   label_all: tous
+  label_all_uppercase: All
   label_all_time: tout le temps
   label_all_words: Tous les mots
   label_all_open_wps: Tous les ouverts
@@ -4469,7 +4471,7 @@ fr:
       you_have: Vous avez
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} vous a mentionné dans #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Vers le centre de notifications
       see_in_center: Voir le commentaire dans le centre de notifications
@@ -4507,7 +4509,7 @@ fr:
         allowed_actions_html: 'Vous disposez des autorisations suivantes sur ce lot de travail : %{allowed_actions}. Cela peut changer en fonction de votre rôle dans le projet et de vos autorisations.'
         create_account: Pour accéder à ce lot de travaux, vous aurez besoin de créer et activer un compte sur %{instance}.
         open_work_package: Ouvrir ce lot de travaux
-        subject: 'Le lot de travaux #%{id} a été partagé avec vous'
+        subject: Work package %{id} was shared with you
         enterprise_text: Partagez les lots de travaux avec des utilisateurs qui ne sont pas membres du projet.
         summary:
           user: "%{user} a partagé un lot de travaux avec vous avec les droits %{role_rights}"
@@ -4722,14 +4724,14 @@ fr:
     common:
       work_package_card_component:
         menu:
-          label_actions: Work package actions
+          label_actions: Actions du lot de travaux
       work_package_card_box_component:
         header:
-          label_actions: Open menu
+          label_actions: Ouvrir le menu
           label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+            zero: Pas de lots de travaux
+            one: "%{count} paquet de travail"
+            other: Lots de Travaux %{count}
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages
@@ -4747,7 +4749,6 @@ fr:
   permission_add_work_package_watchers: Ajouter des observateurs
   permission_assign_versions: Assigner les versions
   permission_browse_repository: Accès au dépôt en lecture seule (navigation et « checkout »)
-  permission_change_wiki_parent_page: Changer la page wiki parent
   permission_change_work_package_status: Modifier le statut du lot de travaux
   permission_change_work_package_status_explanation: Permet de modifier le statut sans avoir le droit de modifier les lots de travaux
   permission_comment_news: Commenter les actualités
@@ -4762,8 +4763,6 @@ fr:
   permission_delete_own_messages: Supprimer ses propres messages
   permission_delete_reportings: Supprimer rapports
   permission_delete_timelines: Supprimer lignes du temps
-  permission_delete_wiki_pages: Supprimer des pages wiki
-  permission_delete_wiki_pages_attachments: Supprimer des pièces jointes
   permission_edit_work_package_comments: Modérer les commentaires
   permission_edit_work_package_comments_explanation: 'Attention : les utilisateurs disposant de cette autorisation peuvent modifier les commentaires de n''importe qui.'
   permission_edit_work_packages: Éditer des lots de travaux
@@ -4783,12 +4782,10 @@ fr:
   permission_edit_wiki_pages: Éditer les pages wiki
   permission_export_work_packages: Exporter les lots de travaux
   permission_export_projects: Exporter des projets
-  permission_export_wiki_pages: Exporter les pages wiki
   permission_invite_members_by_email: Inviter des membres par e-mail
   permission_invite_members_by_email_explanation: 'Permet aux utilisateurs d''inviter de nouveaux membres par e-mail. Les utilisateurs invités recevront un e-mail contenant un lien leur permettant de définir leur mot de passe et d''activer leur compte. Cela dépend de l''autorisation de gérer les membres
 
     '
-  permission_list_attachments: Lister les pièces jointes
   permission_log_own_time: Enregistrer son propre temps
   permission_log_time: Saisir le temps pour d'autres utilisateurs
   permission_manage_forums: Gérer les forums
@@ -4803,7 +4800,6 @@ fr:
   permission_manage_subtasks: Gérer les hiérarchies de lots de travaux
   permission_manage_versions: Gérer les versions
   permission_manage_wiki: Gérer le wiki
-  permission_manage_wiki_menu: Gérer le menu Wiki
   permission_manage_own_working_times: Gérer son propre temps de travail
   permission_manage_own_working_times_explanation: 'Permet aux utilisateurs de gérer leur propre temps de travail et leurs jours de congé personnels.
 
@@ -4813,8 +4809,6 @@ fr:
 
     '
   permission_move_work_packages: Déplacer les Lots de Travaux
-  permission_protect_wiki_pages: Protéger les pages wiki
-  permission_rename_wiki_pages: Renommer les pages wiki
   permission_save_queries: Enregistrer les vues
   permission_search_project: Rechercher un projet
   permission_select_custom_fields: Sélectionner les champs personnalisés
@@ -5610,6 +5604,7 @@ fr:
   text_project_identifier_format: Doit commencer par une lettre minuscule. Seules les lettres minuscules (a-z), les chiffres, les tirets et les traits de soulignement sont autorisés.
   text_reassign: 'Réaffecter au lot de travaux :'
   text_regexp_multiline: L'expression régulière est appliquée en mode multi-ligne, e.g. ^---\\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Définir ou modifier les associations entre les utilisateurs d'OpenProject et les utilisateurs trouvés dans le dépôt.
     Les utilisateurs ayant des noms ou des adresses e-mail identiques sont automatiquement associés.
@@ -6043,9 +6038,6 @@ fr:
       scopes: Autorisations
       successful_application_revocation: Révocation de l'application %{application_name} réussie.
       none_given: Aucune application OAuth n'a été autorisée à accéder à votre compte utilisateur.
-    x_active_tokens:
-      one: un jeton actif
-      other: "%{count} jetons actifs"
     flows:
       authorization_code: Flux de code d'autorisation
       client_credentials: Flux des informations d'identification client
@@ -6055,8 +6047,10 @@ fr:
     client_credentials_impersonation_html: 'Par défaut, OpenProject fournit l''autorisation OAuth 2.0 via %{authorization_code_flow_link}. Vous pouvez activer optionnellement %{client_credentials_flow_link}, mais vous devez fournir un utilisateur avec lequel les requêtes de nom seront effectuées.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Une erreur d'autorisation s'est produite.
-    revoke_my_application_confirmation: Voulez-vous vraiment supprimer cette application ? Ceci va révoquer %{token_count} actif pour elle.
     my_registered_applications: Applications OAuth enregistrées
   oauth_client:
     urn_connection_status:

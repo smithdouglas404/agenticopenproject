@@ -220,6 +220,7 @@ uk:
   label_time_zone: Часовий пояс
   label_start_date: Дата початку
   label_subscribe_icalendar: Підписатися на календар
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Виберіть шаблон, щоб автоматично скопіювати з нього пункти порядку денного
   caption_template_project_select: Виберіть проєкт, у якому ви хочете створити цей шаблон наради
   placeholder_meeting_template_select_project_first: Спершу виберіть проєкт

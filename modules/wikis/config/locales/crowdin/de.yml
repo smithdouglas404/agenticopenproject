@@ -23,7 +23,6 @@ de:
         other: Verwandte Seitenlinks
       wikis/xwiki_provider: XWiki-Anbieter
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Wiki-Anbieter
   wikis:
     buttons:

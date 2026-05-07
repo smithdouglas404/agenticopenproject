@@ -241,8 +241,8 @@ ja:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -2511,6 +2511,7 @@ ja:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: "%{user} によって %{datetime} に作成されました"
@@ -3663,6 +3664,7 @@ ja:
   label_age: 経過
   label_ago: "○日前"
   label_all: 全て
+  label_all_uppercase: All
   label_all_time: 全期間
   label_all_words: 全ての単語
   label_all_open_wps: 全ての未完了
@@ -4414,7 +4416,7 @@ ja:
       you_have: あなたへの
     logo_alt_text: ロゴ
     mention:
-      subject: "%{user_name} さんが #%{id} - %{subject} であなたをメンションしました"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: 通知センターへ
       see_in_center: 通知センターにコメントを表示
@@ -4451,7 +4453,7 @@ ja:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: このワークパッケージにアクセスするには、 %{instance} のアカウントを作成して有効化する必要があります。
         open_work_package: ワークパッケージを開く
-        subject: ワークパッケージ%{id} があなたと共有されました
+        subject: Work package %{id} was shared with you
         enterprise_text: プロジェクトのメンバーではないユーザーとワークパッケージを共有します。
         summary:
           user: "%{user} がワークパッケージを %{role_rights} 権限で共有しました"
@@ -4688,7 +4690,6 @@ ja:
   permission_add_work_package_watchers: ウォッチャーの追加
   permission_assign_versions: バージョンの割り当て
   permission_browse_repository: リポジトリに読み取り専用のアクセス (参照およびチェックアウト)
-  permission_change_wiki_parent_page: 親Wikiページの変更
   permission_change_work_package_status: ワークパッケージのステータス変更
   permission_change_work_package_status_explanation: ワークパッケージの編集権限なしで状態を変更できます
   permission_comment_news: ニュースへのコメント
@@ -4703,8 +4704,6 @@ ja:
   permission_delete_own_messages: 自身が投稿したメッセージの削除
   permission_delete_reportings: レポートの削除
   permission_delete_timelines: タイムラインの削除
-  permission_delete_wiki_pages: Wikiページの削除
-  permission_delete_wiki_pages_attachments: 添付ファイルの削除
   permission_edit_work_package_comments: コメントの承認
   permission_edit_work_package_comments_explanation: '注意: この権限を持つユーザは誰のコメントも編集できます。'
   permission_edit_work_packages: ワークパッケージの編集
@@ -4724,12 +4723,10 @@ ja:
   permission_edit_wiki_pages: Wikiページの編集
   permission_export_work_packages: ワークパッケージのエクスポート
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Wikiページのエクスポート
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: 添付ファイルの一覧表
   permission_log_own_time: 作業時間の記録
   permission_log_time: 他のユーザーの作業時間
   permission_manage_forums: フォーラムの管理
@@ -4744,7 +4741,6 @@ ja:
   permission_manage_subtasks: ワークパッケージ階層の管理
   permission_manage_versions: バージョンの管理
   permission_manage_wiki: Wiki の管理
-  permission_manage_wiki_menu: Wikiメニューの管理
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4754,8 +4750,6 @@ ja:
 
     '
   permission_move_work_packages: ワークパッケージの移動
-  permission_protect_wiki_pages: Wikiページの凍結
-  permission_rename_wiki_pages: Wikiページ名の変更
   permission_save_queries: ビューを保存
   permission_search_project: プロジェクトを検索
   permission_select_custom_fields: カスタムフィールドの選択
@@ -5549,6 +5543,7 @@ ja:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'ワークパッケージへの再割り当て:'
   text_regexp_multiline: 正規表現は、複数行モードで適用されます。例えば、^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     リポジトリのログから検出されたユーザ名をどのOpenProjectユーザに関連づけるかを選択してください。
     ログ上のユーザ名またはメールアドレスがOpenProjectのユーザと一致する場合は自動的に関連づけます。
@@ -5981,8 +5976,6 @@ ja:
       scopes: 権限
       successful_application_revocation: アプリケーション %{application_name} の取り消しに成功しました。
       none_given: ユーザーアカウントへのアクセスがOAuthアプリケーションに許可されていません。
-    x_active_tokens:
-      other: "%{count}つの有効なトークン"
     flows:
       authorization_code: 認証コードの流れ
       client_credentials: クライアントの資格情報のフロー
@@ -5992,8 +5985,9 @@ ja:
     client_credentials_impersonation_html: 'デフォルトでは、OpenProjectは %{authorization_code_flow_link} を介してOAuth 2.0認証を提供します。 オプションで %{client_credentials_flow_link} を有効にすることもできますが、その代わりにユーザーに代わってリクエストが実行されるようにする必要があります。
 
       '
+    confirm_revoke_my_application:
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: 認証エラーが発生しました。
-    revoke_my_application_confirmation: 本当にこのアプリケーションを削除しますか？ これにより %{token_count} が無効になります。
     my_registered_applications: 登録済みのOAuthアプリケーション
   oauth_client:
     urn_connection_status:

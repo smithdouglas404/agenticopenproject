@@ -247,8 +247,8 @@ hu:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -2599,6 +2599,7 @@ hu:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: created by %{user} on %{datetime}
@@ -3786,6 +3787,7 @@ hu:
   label_age: Életkor
   label_ago: nappal ezelőtt
   label_all: mind
+  label_all_uppercase: All
   label_all_time: minden alkalommal
   label_all_words: Minden szó
   label_all_open_wps: Nyitottak
@@ -4542,7 +4544,7 @@ hu:
       you_have: Neked van
     logo_alt_text: Logó
     mention:
-      subject: "%{user_name} megemlített téged itt: #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: 'Az értesítési központba
 
@@ -4592,7 +4594,7 @@ hu:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
-        subject: 'Work package #%{id} was shared with you'
+        subject: Work package %{id} was shared with you
         enterprise_text: Share work packages with users who are not members of the project.
         summary:
           user: "%{user} shared a work package with you with %{role_rights} rights"
@@ -4842,7 +4844,6 @@ hu:
   permission_add_work_package_watchers: Megfigyelő hozzáadása
   permission_assign_versions: Hozzárendelt verziók.
   permission_browse_repository: Csak olvasható hozzáférés a tárolóhoz (böngészés és kijelentkezés)
-  permission_change_wiki_parent_page: A szülő wiki oldal megváltoztatása
   permission_change_work_package_status: Change work package status
   permission_change_work_package_status_explanation: Allows changing status without Edit work packages permission
   permission_comment_news: Megjegyzések írása a hírekehez
@@ -4857,8 +4858,6 @@ hu:
   permission_delete_own_messages: Saját üzenetek törlése
   permission_delete_reportings: Jelentések törlése
   permission_delete_timelines: Idővonalak törlése
-  permission_delete_wiki_pages: Wiki oldalak törlése
-  permission_delete_wiki_pages_attachments: Mellékletek törlése
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: feladatcsoportok szerkesztése
@@ -4878,12 +4877,10 @@ hu:
   permission_edit_wiki_pages: Wiki lapok szerkesztése
   permission_export_work_packages: feladatcsoportok exportálása
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Wiki oldalak exportálása
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: Mellékletek listája
   permission_log_own_time: Saját idő naplózása
   permission_log_time: Mások idejének naplózása
   permission_manage_forums: Fórum kezelése
@@ -4898,7 +4895,6 @@ hu:
   permission_manage_subtasks: feladatcsoport hierarchiák kezelése
   permission_manage_versions: Verziók kezelése
   permission_manage_wiki: Wiki kezelése
-  permission_manage_wiki_menu: Wiki menü kezelése
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4908,8 +4904,6 @@ hu:
 
     '
   permission_move_work_packages: Feladatcsoportok áthelyezése
-  permission_protect_wiki_pages: Védett wiki oldalak
-  permission_rename_wiki_pages: Wiki oldalak átnevezése
   permission_save_queries: Nézet mentése
   permission_search_project: Search project
   permission_select_custom_fields: Egyedi mezők kiválasztása
@@ -5709,6 +5703,7 @@ hu:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'A munkacsomag ismételt hozzárendelése:'
   text_regexp_multiline: A reguláris kifejezés többsoros módban legyen alkalmazva. pld. ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: Jelölje be, vagy frissítse az alkalmazás felhasználóit, minden felhasználónév eltárolva, megtalálhatóak a csomagtároló naplóban. A felhasználók ugyanazzal az alkalmazási és csomagtárolói felhasználó névvel vagy email címmel automatikusan tárolódnak.
   text_status_changed_by_changeset: A %{value} commit-ban hozzáadva.
   text_table_difference_description: Ebben a táblázatban látható az egyszeri %{entries}. Megtekintheti a két bejegyzés közötti különbséget azáltal, hogy először kiválasztja a megfelelő jelölőnégyzeteket a táblázatban. A táblázat alatti gombra kattintva a különbségek jelennek meg.
@@ -6162,9 +6157,6 @@ hu:
       none_given: 'Egyetlen OAuth -alkalmazás sem kapott hozzáférést a felhasználói fiókjához.
 
         '
-    x_active_tokens:
-      one: egy aktív token
-      other: "%{count} aktív token"
     flows:
       authorization_code: 'Hitelesítő kód:'
       client_credentials: 'Ügyfél hitelesítő adatok forgalma
@@ -6182,10 +6174,10 @@ hu:
     client_credentials_impersonation_html: 'Alapértelmezés szerint az OpenProject az OAuth 2.0 engedélyezést a %{authorization_code_flow_link} segítségével biztosítja. Opcionálisan engedélyezheti a %{client_credentials_flow_link} opciót, de meg kell adnia egy felhasználót, akinek a nevében a kérések végrehajtásra kerülnek.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Engedélyezési hiba történt.
-    revoke_my_application_confirmation: 'Tényleg el akarja távolítani ezt az alkalmazást? Ez visszavonja az aktív %{token_count} értéket.
-
-      '
     my_registered_applications: Regisztrált OAuth alkalmazások
   oauth_client:
     urn_connection_status:

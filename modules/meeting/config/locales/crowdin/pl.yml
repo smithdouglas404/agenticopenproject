@@ -220,6 +220,7 @@ pl:
   label_time_zone: Strefa czasowa
   label_start_date: Data rozpoczęcia
   label_subscribe_icalendar: Subskrybuj kalendarz
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Wybierz szablon, aby automatycznie skopiować z niego punkty planu spotkania
   caption_template_project_select: Wybierz projekt, w którym ma zostać utworzony ten szablon spotkania
   placeholder_meeting_template_select_project_first: Najpierw wybierz projekt

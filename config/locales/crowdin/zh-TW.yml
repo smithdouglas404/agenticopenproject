@@ -241,8 +241,8 @@ zh-TW:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -2504,6 +2504,7 @@ zh-TW:
       unsupported_storage_type: 不是支援的儲存類型。
       storage_error: 儲存連線出錯。
       invalid_input: 輸入無效。
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: 由 %{user} 於 %{datetime} 新增
@@ -3654,6 +3655,7 @@ zh-TW:
   label_age: 年齡
   label_ago: 天前
   label_all: 所有
+  label_all_uppercase: All
   label_all_time: 所有的時間
   label_all_words: 所以的詞
   label_all_open_wps: 所有「未關閉」工作套件
@@ -4405,7 +4407,7 @@ zh-TW:
       you_have: 你擁有
     logo_alt_text: 商標
     mention:
-      subject: "%{user_name} 在「 #%{id} - %{subject} 」提到您"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: 顯示通知中心
       see_in_center: 詳見通知中心留言
@@ -4445,7 +4447,7 @@ zh-TW:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 要存取此工作套件，您需要建立一個 %{instance} 帳戶。
         open_work_package: 開啟工作套件
-        subject: '有個工作套件 #%{id} 與您共同參與'
+        subject: Work package %{id} was shared with you
         enterprise_text: 與不是專案成員的使用者共同參與工作套件。
         summary:
           user: '%{user} 將一個工作套件邀請您參與，權限：%{role_rights}"'
@@ -4686,7 +4688,6 @@ zh-TW:
   permission_add_work_package_watchers: 新增監看者
   permission_assign_versions: 指派版本
   permission_browse_repository: 唯讀版本庫 (瀏覽和 Checkout)
-  permission_change_wiki_parent_page: 更改上層 Wiki 頁面
   permission_change_work_package_status: 變更工作套件狀態
   permission_change_work_package_status_explanation: 允許在無編輯工作套件權限的情況下更改狀態
   permission_comment_news: 在「最新消息」留言
@@ -4701,8 +4702,6 @@ zh-TW:
   permission_delete_own_messages: 刪除自己張貼的訊息
   permission_delete_reportings: 刪除報表
   permission_delete_timelines: 刪除時間軸
-  permission_delete_wiki_pages: 刪除維基頁面
-  permission_delete_wiki_pages_attachments: 刪除附件
   permission_edit_work_package_comments: 審閱留言
   permission_edit_work_package_comments_explanation: 注意：擁有此權限的使用者可以編輯任何人的註解。
   permission_edit_work_packages: 編輯工作套件
@@ -4722,12 +4721,10 @@ zh-TW:
   permission_edit_wiki_pages: 編輯維基頁面
   permission_export_work_packages: 匯出工作套件
   permission_export_projects: 匯出專案
-  permission_export_wiki_pages: 匯出維基頁面
   permission_invite_members_by_email: 透過電子郵件邀請會員
   permission_invite_members_by_email_explanation: '允許使用者透過電子郵件邀請新會員。受邀的使用者會收到一封電子郵件，內含設定密碼和啟動帳戶的連結。取決於管理會員的權限
 
     '
-  permission_list_attachments: 列出附件
   permission_log_own_time: 記錄個人耗時
   permission_log_time: 紀錄他人耗時
   permission_manage_forums: 管理討論區
@@ -4742,7 +4739,6 @@ zh-TW:
   permission_manage_subtasks: 管理工作套件階層
   permission_manage_versions: 管理版本
   permission_manage_wiki: 管理維基
-  permission_manage_wiki_menu: 管理維基選單
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4752,8 +4748,6 @@ zh-TW:
 
     '
   permission_move_work_packages: 移動工作套件
-  permission_protect_wiki_pages: 專案維基頁面
-  permission_rename_wiki_pages: 重新命名維基頁面
   permission_save_queries: 儲存版面
   permission_search_project: 搜尋專案
   permission_select_custom_fields: 選擇客製欄位
@@ -5551,6 +5545,7 @@ zh-TW:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 重新指派到工作套件：
   text_regexp_multiline: 這個正規表達式套用在多行模式。 e.g., ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     選擇或更新與版本庫中的帳號所對應的OpenProject使用者。
     版本庫中與OpenProject的使用者具有相同名稱或email將被自動對應。
@@ -5989,8 +5984,6 @@ zh-TW:
       scopes: 權限
       successful_application_revocation: 已成功撤銷應用程序 %{application_name}。
       none_given: 沒有 OAuth 應用程序已獲得訪問您的用戶帳戶的權限。
-    x_active_tokens:
-      other: "%{count} 已啟用令牌(Token)"
     flows:
       authorization_code: 授權碼流程
       client_credentials: 客戶端憑據流
@@ -6000,8 +5993,9 @@ zh-TW:
     client_credentials_impersonation_html: '默認情況下，OpenProject 通過 %{authorization_code_flow_link} 提供 OAuth 2.0 授權。您可以選擇啓用 %{client_credentials_flow_link}，但您必須提供代其執行請求的用戶。
 
       '
+    confirm_revoke_my_application:
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: 授權錯誤。
-    revoke_my_application_confirmation: 確定想要移除此應用程序嗎？這將撤銷對其有效的 %{token_count}。
     my_registered_applications: 已註冊的 OAuth 應用程式
   oauth_client:
     urn_connection_status:

@@ -241,8 +241,8 @@ zh-CN:
               label_info: 请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入摘要，以及此工具目前能够导入的内容。
               description: 在从主机 Jira 实例获取的可用数据中选择要导入的数据。
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: 选择要导入的项目
               button_continue: 继续
@@ -2504,6 +2504,7 @@ zh-CN:
       unsupported_storage_type: 不是支持的存储空间类型。
       storage_error: 连接存储空间时出错。
       invalid_input: 输入无效。
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: '由 %{user} 创建于 %{datetime} '
@@ -3656,6 +3657,7 @@ zh-CN:
   label_age: 年龄
   label_ago: 天前
   label_all: 所有
+  label_all_uppercase: All
   label_all_time: 所有的时间
   label_all_words: 所有的词
   label_all_open_wps: 全部打开
@@ -4407,7 +4409,7 @@ zh-CN:
       you_have: 您有
     logo_alt_text: 徽标
     mention:
-      subject: "%{user_name} 在 #%{id} - %{subject} 中提及了您"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: 前往通知中心
       see_in_center: 在通知中心查看评论
@@ -4444,7 +4446,7 @@ zh-CN:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 要访问此工作包，您需要创建一个 %{instance} 帐户。
         open_work_package: 打开工作包
-        subject: '工作包 #%{id} 已被分享给你'
+        subject: Work package %{id} was shared with you
         enterprise_text: 与非此项目成员的用户共享工作包。
         summary:
           user: "%{user} 向您共享了一个拥有 %{role_rights} 权限的工作包"
@@ -4686,7 +4688,6 @@ zh-CN:
   permission_add_work_package_watchers: 添加关注者
   permission_assign_versions: 分配版本
   permission_browse_repository: 只读访问存储库 (浏览和检出)
-  permission_change_wiki_parent_page: 更改上级维基页面
   permission_change_work_package_status: 更改工作包状态
   permission_change_work_package_status_explanation: 允许在不编辑工作包权限的情况下更改状态
   permission_comment_news: 评论新闻
@@ -4701,8 +4702,6 @@ zh-CN:
   permission_delete_own_messages: 删除自己的消息
   permission_delete_reportings: 删除报告
   permission_delete_timelines: 删除时间线
-  permission_delete_wiki_pages: 删除维基页面
-  permission_delete_wiki_pages_attachments: 删除附件
   permission_edit_work_package_comments: 审核评论
   permission_edit_work_package_comments_explanation: 注意：拥有此权限的用户可以编辑任何人的评论。
   permission_edit_work_packages: 编辑工作包
@@ -4722,12 +4721,10 @@ zh-CN:
   permission_edit_wiki_pages: 编辑维基页面
   permission_export_work_packages: 导出工作包
   permission_export_projects: 导出项目
-  permission_export_wiki_pages: 导出维基页面
   permission_invite_members_by_email: 通过电子邮件邀请成员
   permission_invite_members_by_email_explanation: '允许用户通过电子邮件邀请新会员。邀请用户将收到一封包含链接的电子邮件来设置密码并激活他们的帐户。 依赖于管理会员的权限
 
     '
-  permission_list_attachments: 列出附件
   permission_log_own_time: 记录自己的时间
   permission_log_time: 记录其他用户的时间
   permission_manage_forums: 管理论坛
@@ -4742,7 +4739,6 @@ zh-CN:
   permission_manage_subtasks: 管理工作包层次结构
   permission_manage_versions: 管理版本
   permission_manage_wiki: 管理维基
-  permission_manage_wiki_menu: 管理维基菜单
   permission_manage_own_working_times: 管理自己的工作时间
   permission_manage_own_working_times_explanation: '允许用户管理自己的工作时间和个人非工作日。
 
@@ -4752,8 +4748,6 @@ zh-CN:
 
     '
   permission_move_work_packages: 移动工作包
-  permission_protect_wiki_pages: 保护维基页面
-  permission_rename_wiki_pages: 重命名维基页面
   permission_save_queries: 保存界面设置
   permission_search_project: 搜索项目
   permission_select_custom_fields: 选择自定义字段
@@ -5541,6 +5535,7 @@ zh-CN:
   text_project_identifier_format: 必须以小写字母开头。仅允许使用小写字母 (a-z)、数字、 短划线和下划线。
   text_reassign: '重新分配工作包:'
   text_regexp_multiline: 以多行模式应用正则表达式，如 ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     选择或更新每个在存储库日志中发现的用户名所映射到的 OpenProject 用户。
     使用相同 OpenProject 和存储库用户名或电子邮件的用户已被自动映射。
@@ -5973,8 +5968,6 @@ zh-CN:
       scopes: 权限
       successful_application_revocation: 已成功撤销应用程序 %{application_name}。
       none_given: 没有 OAuth 应用程序已获得访问您的用户帐户的权限。
-    x_active_tokens:
-      other: "%{count} 个有效令牌"
     flows:
       authorization_code: 授权码流
       client_credentials: 客户端凭据流
@@ -5984,8 +5977,9 @@ zh-CN:
     client_credentials_impersonation_html: '默认情况下，OpenProject 通过 %{authorization_code_flow_link} 提供 OAuth 2.0 授权。您可以选择启用 %{client_credentials_flow_link}，但您必须提供代其执行请求的用户。
 
       '
+    confirm_revoke_my_application:
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: 发生了验证错误。
-    revoke_my_application_confirmation: 确定想要移除此应用程序吗？这将撤销对其有效的 %{token_count}。
     my_registered_applications: 已注册的 OAuth 应用程序
   oauth_client:
     urn_connection_status:

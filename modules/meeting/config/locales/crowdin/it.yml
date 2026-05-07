@@ -210,6 +210,7 @@ it:
   label_time_zone: Fuso orario
   label_start_date: Data di inizio
   label_subscribe_icalendar: Iscriviti al calendario
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Seleziona un modello per copiare automaticamente i suoi elementi dell'ordine del giorno
   caption_template_project_select: Seleziona il progetto in cui creare questo modello di riunione
   placeholder_meeting_template_select_project_first: Seleziona prima un progetto

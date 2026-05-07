@@ -220,6 +220,7 @@ lt:
   label_time_zone: Laiko juosta
   label_start_date: Pradžios data
   label_subscribe_icalendar: Prenumeruoti kalendorių
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first

@@ -23,7 +23,6 @@ fr:
         other: Liens de la page de relation
       wikis/xwiki_provider: Fournisseur XWiki
   permission_manage_wiki_page_links: Gérer les liens de la page Wiki
-  permission_view_wiki_page_links: Gérer les liens de la page Wiki
   project_module_wiki_platforms: Fournisseurs de wiki
   wikis:
     buttons:
@@ -40,13 +39,13 @@ fr:
       empty_heading: Pas de pages liées
       empty_text: Ajouter manuellement des liens vers d'autres pages wiki liées.
     oauth_login_component:
-      heading: Not connected to %{provider}
-      description: Log in to %{provider} to view and manage related wiki pages from this OpenProject instance.
+      heading: Non connecté à %{provider}
+      description: Connectez-vous à %{provider} pour voir et gérer les pages wiki liées à cette instance d'OpenProject.
       connect_button: Connectez votre compte %{provider}
     admin:
       destroy_confirmation_dialog_component:
         title: Supprimer le fournisseur de wiki
-        heading: Delete wiki provider?
+        heading: Supprimer le fournisseur de wiki ?
         warning_html: Vous êtes sur le point de supprimer %{wiki_provider}. Cette action est irréversible.
       forms:
         general_info_form_component:

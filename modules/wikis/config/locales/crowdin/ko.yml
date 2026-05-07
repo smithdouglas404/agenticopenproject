@@ -21,7 +21,6 @@ ko:
         other: 관련 페이지 링크
       wikis/xwiki_provider: XWiki 공급자
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: 위키 공급자
   wikis:
     buttons:

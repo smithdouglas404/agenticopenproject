@@ -247,8 +247,8 @@ bg:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -2545,6 +2545,7 @@ bg:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: created by %{user} on %{datetime}
@@ -3720,6 +3721,7 @@ bg:
   label_age: Възраст
   label_ago: преди
   label_all: всички
+  label_all_uppercase: All
   label_all_time: всички времена
   label_all_words: Всички думи
   label_all_open_wps: Всичко отворено
@@ -4474,7 +4476,7 @@ bg:
       you_have: Имате
     logo_alt_text: Лого
     mention:
-      subject: "%{user_name} ви споменах в #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Към центъра за известия
       see_in_center: Вижте коментар в центъра за уведомяване
@@ -4512,7 +4514,7 @@ bg:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
-        subject: 'Work package #%{id} was shared with you'
+        subject: Work package %{id} was shared with you
         enterprise_text: Share work packages with users who are not members of the project.
         summary:
           user: "%{user} shared a work package with you with %{role_rights} rights"
@@ -4750,7 +4752,6 @@ bg:
   permission_add_work_package_watchers: Добавяне на наблюдатели
   permission_assign_versions: Assign versions
   permission_browse_repository: Read-only access to repository (browse and checkout)
-  permission_change_wiki_parent_page: Change parent wiki page
   permission_change_work_package_status: Change work package status
   permission_change_work_package_status_explanation: Allows changing status without Edit work packages permission
   permission_comment_news: Comment news
@@ -4765,8 +4766,6 @@ bg:
   permission_delete_own_messages: Delete own messages
   permission_delete_reportings: Delete reportings
   permission_delete_timelines: Delete timelines
-  permission_delete_wiki_pages: Delete wiki pages
-  permission_delete_wiki_pages_attachments: Delete attachments
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Edit work packages
@@ -4786,12 +4785,10 @@ bg:
   permission_edit_wiki_pages: Edit wiki pages
   permission_export_work_packages: Export work packages
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Export wiki pages
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: List attachments
   permission_log_own_time: Log own time
   permission_log_time: Log time for other users
   permission_manage_forums: Manage forums
@@ -4806,7 +4803,6 @@ bg:
   permission_manage_subtasks: Управление йерархията на работните пакети
   permission_manage_versions: Управление на версиите
   permission_manage_wiki: Управление на уикипедия
-  permission_manage_wiki_menu: Управление на менюто на уикипедия
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4816,8 +4812,6 @@ bg:
 
     '
   permission_move_work_packages: Преместване на работни пакети
-  permission_protect_wiki_pages: Защита на страници в уикипедия
-  permission_rename_wiki_pages: Преименуване на страници в уикипедия
   permission_save_queries: Запазване на изгледи
   permission_search_project: Търесене на проект
   permission_select_custom_fields: Изберете потребителски полета
@@ -5613,6 +5607,7 @@ bg:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Reassign to work package:'
   text_regexp_multiline: Уеднаквяването се прилага в многоредов режим. например ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Select or update the OpenProject user mapped to each username found in the repository log.
     Users with the same OpenProject and repository username or email are automatically mapped.
@@ -6046,9 +6041,6 @@ bg:
       scopes: Права
       successful_application_revocation: Revocation of application %{application_name} successful.
       none_given: No OAuth applications have been granted access to your user account.
-    x_active_tokens:
-      one: one active token
-      other: "%{count} active token"
     flows:
       authorization_code: Authorization code flow
       client_credentials: Client credentials flow
@@ -6058,8 +6050,10 @@ bg:
     client_credentials_impersonation_html: 'By default, OpenProject provides OAuth 2.0 authorization via %{authorization_code_flow_link}. You can optionally enable %{client_credentials_flow_link}, but you must provide a user on whose behalf requests will be performed.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: An authorization error has occurred.
-    revoke_my_application_confirmation: Do you really want to remove this application? This will revoke %{token_count} active for it.
     my_registered_applications: Registered OAuth applications
   oauth_client:
     urn_connection_status:

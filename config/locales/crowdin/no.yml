@@ -247,8 +247,8 @@
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -2545,6 +2545,7 @@
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: skapt av %{user} på %{datetime}
@@ -3720,6 +3721,7 @@
   label_age: Alder
   label_ago: dager siden
   label_all: alle
+  label_all_uppercase: All
   label_all_time: alle tidspunkt
   label_all_words: Alle ord
   label_all_open_wps: Alle åpne
@@ -4474,7 +4476,7 @@
       you_have: Du har
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} har nevnt deg i #%{id} – %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Til varslingssenter
       see_in_center: Se kommentar i varslingssenter
@@ -4512,7 +4514,7 @@
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: For å få tilgang til denne arbeidspakken, må du opprette og aktivere en konto for %{instance}.
         open_work_package: Åpne arbeidspakke
-        subject: 'Arbeidspakke #%{id} ble delt med deg'
+        subject: Work package %{id} was shared with you
         enterprise_text: Del arbeidspakker med brukere som ikke er medlemmer i prosjektet.
         summary:
           user: "%{user} delte en arbeidspakke med deg %{role_rights} rettigheter"
@@ -4752,7 +4754,6 @@
   permission_add_work_package_watchers: Legg til overvåker
   permission_assign_versions: Tilordne versjoner
   permission_browse_repository: Skrivebeskyttet tilgang til arkivet (bla og utsjekking)
-  permission_change_wiki_parent_page: Endre overordnet wiki-side
   permission_change_work_package_status: Endre status på arbeidspakke
   permission_change_work_package_status_explanation: Tillater endring av status uten å legge til arbeidspakker
   permission_comment_news: Kommenter nyheter
@@ -4767,8 +4768,6 @@
   permission_delete_own_messages: Slette egne meldinger
   permission_delete_reportings: Slett rapporteringer
   permission_delete_timelines: Slett tidslinjer
-  permission_delete_wiki_pages: Slett wiki-sider
-  permission_delete_wiki_pages_attachments: Slett vedlegg
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Rediger arbeidspakker
@@ -4788,12 +4787,10 @@
   permission_edit_wiki_pages: Rediger wiki-sider
   permission_export_work_packages: Eksporter arbeidspakker
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Eksportèr wiki-sider
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: List vedlegg
   permission_log_own_time: Logg egen tid
   permission_log_time: Logg tid for andre brukere
   permission_manage_forums: Administrere forum
@@ -4808,7 +4805,6 @@
   permission_manage_subtasks: Administrere arbeidspakkehierarkier
   permission_manage_versions: Administrere versjoner
   permission_manage_wiki: Administrere wiki
-  permission_manage_wiki_menu: Administrere wiki-meny
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4818,8 +4814,6 @@
 
     '
   permission_move_work_packages: Flytt arbeidspakker
-  permission_protect_wiki_pages: Beskytt wiki-sider
-  permission_rename_wiki_pages: Gi nytt navn til wiki-sider
   permission_save_queries: Lagre visninger
   permission_search_project: Søk i prosjekt
   permission_select_custom_fields: Velg egendefinerte felt
@@ -5617,6 +5611,7 @@
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Tilordne til arbeidspakke:'
   text_regexp_multiline: Denne regexen brukes i flerlinjemodus. f.eks ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Velg eller oppdater OpenProject-brukeren knyttet til hvert enkelt brukernavn i pakkebrønn-loggen.
     Brukere med samme OpenProject- og pakkebrønn-brukernavn eller e-post tilknyttes automatisk.
@@ -6050,9 +6045,6 @@
       scopes: Tilganger
       successful_application_revocation: Tilbaketrekking av appen %{application_name} vellykket.
       none_given: Ingen OAuth-applikasjoner har blitt gitt tilgang til brukerkontoen din.
-    x_active_tokens:
-      one: en aktiv nøkkel
-      other: "%{count} aktive nøkler"
     flows:
       authorization_code: Autorisasjon kode flyt
       client_credentials: Kundens innloggingsflyt
@@ -6062,8 +6054,10 @@
     client_credentials_impersonation_html: 'Som standard gir OpenProject OAuth 2.0 autorisasjon via %{authorization_code_flow_link}. Du kan eventuelt aktivere %{client_credentials_flow_link}, men du må oppgi en bruker som forespørselen blir utført på vegne av.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Det oppstod en godkjenningsfeil.
-    revoke_my_application_confirmation: Vil du virkelig fjerne denne applikasjonen? Dette vil fjerne %{token_count} aktive nøkler for den.
     my_registered_applications: Registrerte OAuth-søknader
   oauth_client:
     urn_connection_status:

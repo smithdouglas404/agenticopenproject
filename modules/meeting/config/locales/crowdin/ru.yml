@@ -32,7 +32,7 @@ ru:
         location: Расположение
         duration: Длительность
         notes: Заметки
-        recurrence_start_time: Scheduled start time
+        recurrence_start_time: Запланированное время начала
         participants: Участники
         participant:
           one: 1 Участник
@@ -57,7 +57,7 @@ ru:
         presenter: Ведущий
         item_type: Тип
         position: Позиция
-        lock_version: Lock version
+        lock_version: Зафиксировать версию
         notes: Примечания
       meeting_section:
         title: Заголовок
@@ -220,6 +220,7 @@ ru:
   label_time_zone: Часовой пояс
   label_start_date: Дата начала
   label_subscribe_icalendar: Подписаться на календарь
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Выберите шаблон для автоматического копирования его повестки дня
   caption_template_project_select: Пожалуйста, выберите проект, в котором будет создан этот шаблон совещания
   placeholder_meeting_template_select_project_first: Сначала выберите проект
@@ -691,9 +692,9 @@ ru:
   text_exit_draft_mode_dialog_template_title: Открыть первое совещание из этой серии?
   text_exit_draft_mode_dialog_template_subtitle: После этого Вы не сможете вернуться в режим черновика.
   label_meeting_template_sharing: Совместное использование
-  label_meeting_template_sharing_none: Only with this project
-  label_meeting_template_sharing_descendants: With subprojects
-  label_meeting_template_sharing_system: With all projects
+  label_meeting_template_sharing_none: Только с этим проектом
+  label_meeting_template_sharing_descendants: С подпроектами
+  label_meeting_template_sharing_system: Со всеми проектами
   text_meeting_template_sharing_description: Этот шаблон можно использовать совместно с подпроектами или другими проектами. Будут скопированы только пункты повестки дня и вложения.
   text_meeting_not_editable_anymore: Это совещание больше нельзя редактировать.
   text_meeting_not_present_anymore: Это совещание было удалено. Пожалуйста, выберите другое.
@@ -712,12 +713,12 @@ ru:
   text_agenda_item_duplicate_in_next_meeting: Вы уверены, что хотите добавить копию этого пункта повестки дня к следующему совещанию на %{date} в %{time}? Результаты не будут дублироваться.
   text_agenda_item_duplicated_in_next_meeting: Пункт повестки дня дублируется на следующем совещании %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Этот пакет работ пока не включен в повестку предстоящего совещания.
-  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
-  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
-  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
-  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
-  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
-  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
+  text_agenda_item_no_available_occurrence: Предстоящие события отсутствуют.
+  text_agenda_item_dialog_skipping_note: 'Примечание: Пропуск %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: отмененная встреча на %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} отмененных встреч"
+  text_agenda_item_dialog_skipping_closed_one: отмененная встреча на %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} отмененных встреч"
   text_work_package_add_to_meeting_hint: Используйте кнопку "Добавить к совещанию", чтобы добавить этот пакет работ к предстоящему совещанию.
   text_work_package_has_no_past_meeting_agenda_items: Этот рабочий пакет не был добавлен в качестве пункта повестки дня на прошлом совещании.
   text_email_updates_muted: Обновления календаря по электронной почте отключены. Участники не будут получать обновленные приглашения по электронной почте, когда Вы вносите изменения.
