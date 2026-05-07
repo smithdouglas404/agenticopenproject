@@ -36,6 +36,13 @@ module Projects::Identifier
   # Classic identifier format: lowercase letters, digits, hyphens, underscores — but not all-numeric.
   CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/
 
+  # Unanchored shape of a semantic project identifier ("PROJ",
+  # "MY_PROJECT_1"). Composed into `SEMANTIC_ID_PATTERN` (the
+  # `<project>-<seq>` work-package id shape). The validator uses anchored
+  # split patterns of its own to produce distinct error messages, so it
+  # doesn't reach in here.
+  SEMANTIC_FORMAT = /[A-Z][A-Z0-9_]*/
+
   RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_update_dialog identifier_suggestion].freeze
 
   included do

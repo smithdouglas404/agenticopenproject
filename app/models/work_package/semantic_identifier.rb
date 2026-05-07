@@ -31,10 +31,16 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
+  # Just the semantic-identifier shape ("PROJ-42"), used wherever the
+  # numeric branch lives outside the alternation (e.g. text-macro parsers
+  # that need different trailing-boundary rules per branch). Composes
+  # the project-identifier shape from `Projects::Identifier::SEMANTIC_FORMAT`.
+  SEMANTIC_ID_PATTERN = /#{Projects::Identifier::SEMANTIC_FORMAT.source}-\d+/
+
   # Matches either a numeric ID ("12345") or a semantic identifier ("PROJ-42").
   # Used in Rails route constraints so both forms are accepted in URLs.
   # The frontend equivalent lives in WP_ID_URL_PATTERN (work-package-id-pattern.ts).
-  ID_ROUTE_CONSTRAINT = /\d+|[A-Z][A-Z0-9_]*-\d+/
+  ID_ROUTE_CONSTRAINT = /\d+|#{SEMANTIC_ID_PATTERN.source}/
 
   # Raised when a finder is invoked in a way that cannot resolve a semantic
   # identifier — e.g. find_by(id: "PROJ-42") which reduces to a raw SQL

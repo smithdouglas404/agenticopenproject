@@ -30,6 +30,9 @@
 
 module Projects
   class IdentifierValidator < ActiveModel::EachValidator
+    # Split into two anchored patterns (rather than a single full-shape
+    # regex) so each rule produces a distinct error message. The full
+    # unanchored shape lives at `Projects::Identifier::SEMANTIC_FORMAT`.
     SEMANTIC_START_FORMAT = /\A[A-Z]/
     SEMANTIC_BODY_FORMAT  = /\A[A-Z0-9_]*\z/
 

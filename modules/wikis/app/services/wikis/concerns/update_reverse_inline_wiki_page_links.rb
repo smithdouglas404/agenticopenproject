@@ -51,8 +51,19 @@ module Wikis::Concerns
     # The trailing `(?!\w)` boundary on the semantic branch prevents
     # `#PROJ-1abc` from incorrectly matching `#PROJ-1`; the numeric branch
     # intentionally has no trailing boundary to preserve historic behaviour
-    # for inputs like `#13-blubb`.
-    WP_REF_RE = /(?:[[:space:],~>#\(\[\-]|^)#(?:(\d+)|([A-Z][A-Z0-9_]*-\d+)(?!\w))/ # rubocop:disable Style/RedundantRegexpEscape
+    # for inputs like `#13-blubb`. Numeric and semantic shapes live on
+    # separate alternation branches rather than sharing the union form
+    # `ID_ROUTE_CONSTRAINT`.
+    # rubocop:disable Style/RedundantRegexpEscape
+    WP_REF_RE = /
+      (?:[[:space:],~>\#\(\[\-]|^)\#
+      (?:
+        (\d+)
+        |
+        (#{WorkPackage::SemanticIdentifier::SEMANTIC_ID_PATTERN.source})(?!\w)
+      )
+    /x
+    # rubocop:enable Style/RedundantRegexpEscape
 
     private
 
