@@ -182,33 +182,69 @@ RSpec.describe "Wysiwyg work package mentions",
     expect(page).to have_css("span", text: "👍")
   end
 
-  it "can autocomplete work packages with different triggers" do
-    # Test # trigger
-    activity_tab.type_comment("##{other_work_package.id}")
-    page.find(".mention-list-item", text: other_work_package.subject, wait: 10).click
-    expect(page).to have_css("a.mention", text: "##{other_work_package.id}")
-    activity_tab.submit_comment
-    activity_tab.expect_journal_notes text: "##{other_work_package.id}"
+  shared_examples "work package mention with all triggers" do
+    it "can autocomplete work packages with different triggers" do
+      wp = other_work_package
+      # `wp_id` is what the user types after the marker. In classic mode
+      # this is the numeric primary key; in semantic mode it's the
+      # project-based identifier (e.g. `PROJ-7`). The frontend autocomplete
+      # already speaks `displayId` for both shapes.
+      wp_id = wp.display_id
 
-    # Test ## trigger
-    activity_tab.type_comment("###{other_work_package.id}")
-    page.find(".mention-list-item", text: other_work_package.subject, wait: 10).click
-    expect(page).to have_css(".op-macro-wp-quickinfo-widget")
-    expect(page).to have_css(
-      "opce-macro-wp-quickinfo[data-id='#{other_work_package.id}'][data-detailed='false']"
-    )
-    activity_tab.submit_comment
-    activity_tab.expect_journal_notes text: "NONE ##{other_work_package.id}: #{other_work_package.subject}"
+      # Test # trigger
+      activity_tab.type_comment("##{wp_id}")
+      page.find(".mention-list-item", text: wp.subject, wait: 10).click
+      # Inside the editor the mention text is `prefix + displayId` (so `#1234`
+      # in classic, `#PROJ-7` in semantic). Once rendered, the macro
+      # pipeline strips the `#` and uses `formatted_id` as the link label —
+      # `#1234` for classic (since formatted_id keeps the `#` for numerics)
+      # or `PROJ-7` for semantic (no `#`).
+      expect(page).to have_css("a.mention", text: "##{wp_id}")
+      activity_tab.submit_comment
+      activity_tab.expect_journal_notes text: wp.formatted_id
 
-    # Test ### trigger
-    activity_tab.type_comment("####{other_work_package.id}")
-    page.find(".mention-list-item", text: other_work_package.subject, wait: 10).click
-    expect(page).to have_css(".op-macro-wp-quickinfo-widget")
-    expect(page).to have_css(
-      "opce-macro-wp-quickinfo[data-id='#{other_work_package.id}'][data-detailed='true']"
-    )
-    activity_tab.submit_comment
+      # Test ## trigger
+      activity_tab.type_comment("###{wp_id}")
+      page.find(".mention-list-item", text: wp.subject, wait: 10).click
+      expect(page).to have_css(".op-macro-wp-quickinfo-widget")
+      expect(page).to have_css(
+        "opce-macro-wp-quickinfo[data-id='#{wp_id}'][data-detailed='false']"
+      )
+      activity_tab.submit_comment
+      activity_tab.expect_journal_notes text: "NONE #{wp.formatted_id}: #{wp.subject}"
 
-    activity_tab.expect_journal_notes text: "Some statusNONE ##{other_work_package.id}: #{other_work_package.subject}"
+      # Test ### trigger
+      activity_tab.type_comment("####{wp_id}")
+      page.find(".mention-list-item", text: wp.subject, wait: 10).click
+      expect(page).to have_css(".op-macro-wp-quickinfo-widget")
+      expect(page).to have_css(
+        "opce-macro-wp-quickinfo[data-id='#{wp_id}'][data-detailed='true']"
+      )
+      activity_tab.submit_comment
+
+      activity_tab.expect_journal_notes text: "Some statusNONE #{wp.formatted_id}: #{wp.subject}"
+    end
+  end
+
+  context "in classic mode",
+          with_flag: { semantic_work_package_ids: false },
+          with_settings: { work_packages_identifier: "classic" } do
+    include_examples "work package mention with all triggers"
+  end
+
+  context "in semantic mode",
+          with_flag: { semantic_work_package_ids: true },
+          with_settings: { work_packages_identifier: "semantic" } do
+    let!(:project) do
+      create(:project, :semantic, enabled_module_names: %w[work_package_tracking])
+    end
+    let!(:other_work_package) do
+      create(:work_package, subject: "Other work package", status:, author: user, project:).tap do |wp|
+        wp.allocate_and_register_semantic_id
+        wp.reload
+      end
+    end
+
+    include_examples "work package mention with all triggers"
   end
 end
