@@ -41,10 +41,7 @@ module Wikis
     def call(relation)
       metadata = relation.group_by(&:provider).flat_map do |provider, page_links|
         build_inputs(page_links).filter_map do |input_data|
-          provider.resolve("queries.page_info").call(input_data).value_or do |error|
-            add_wiki_error(error)
-            next
-          end
+          provider.resolve("queries.page_info").call(input_data).value_or(nil)
         end
       end
 
@@ -56,19 +53,8 @@ module Wikis
 
     def build_inputs(page_links)
       page_links.filter_map do |page_link|
-        Adapters::Input::PageInfo.build(identifier: page_link.identifier).value_or do |validation_failure|
-          add_validation_error(validation_failure)
-          next
-        end
+        Adapters::Input::PageInfo.build(identifier: page_link.identifier).value_or(nil)
       end
-    end
-
-    def add_wiki_error(error)
-      @result.errors.add(:base, error.code)
-    end
-
-    def add_validation_error(error)
-      @result.errors.add(:identifiers, error.message, options: error.to_h)
     end
 
     def enrich_models(page_links, metadata)

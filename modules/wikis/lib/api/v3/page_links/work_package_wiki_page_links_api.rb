@@ -51,11 +51,7 @@ module API
               raise ::API::Errors::InvalidQuery.new(message)
             end
 
-            relation = if current_user.allowed_in_project?(:view_work_packages, @work_package.project)
-                         query.results.where(linkable: @work_package)
-                       else
-                         []
-                       end
+            relation = query.results.where(linkable: @work_package)
 
             PageLinkCollectionRepresenter.new(
               enrich_models_with_wiki_metadata(relation).result,
