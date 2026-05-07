@@ -138,7 +138,7 @@ In addition to all the options available when clicking on the three-dot **More**
 
 ![Move an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_move_agenda_item.png)
 
-Clicking this option will display a confirmation dialog.  You will also be required to select the destination of the item from the drop-down menu: either to a desired section of the agenda or to the backlog. 
+Clicking this option will display a confirmation dialog. From there, choose where to move the item: a section of the agenda or the backlog.
 
 ![A confirmation dialogue for moving an agenda item into the the next meeting occurrence in OpenProject](openproject_userguide_meetings_recurring_move_agenda_item_confirmation_dialog.png)
 
@@ -152,13 +152,13 @@ If you don’t want to move an agenda item to the next meeting (and remove it fr
 
 This can be useful, for example, if an item was discussed but needs a follow-up in the next meeting, while the current meeting minutes should remain complete.
 
-To do duplicate an agenda item into the next meeting, open the three-dot **More (⋯)** menu of an agenda item and select Duplicate → Duplicate in next meeting. 
+To do duplicate an agenda item into the next meeting, open the **More (⋯)** menu of an agenda item and select Duplicate → Duplicate in next meeting. 
 
 ![Duplicate an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_duplicate_agenda_item2.png)
 
 
 
-Clicking this option will display a confirmation dialog. You will also be required to select the destination of the item from the drop-down menu: either to a desired section of the agenda or to the backlog. 
+Clicking this option will display a confirmation dialog. You will then need to select a destination from the dropdown menu: either a section of the agenda or the backlog.
 
 ![A confirmation dialogue for duplicating an agenda item into the the next meeting occurrence in OpenProject](openproject_userguide_meetings_recurring_duplicate_agenda_item_confirmation_dialog.png)
 
