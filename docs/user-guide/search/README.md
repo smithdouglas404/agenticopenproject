@@ -59,7 +59,7 @@ This feature is especially helpful if you do not remember the exact name of a wo
 
 You can also search using multiple space-separated terms to narrow down results.
 
-For example: Entering "**de roto"** will match **Design prototyping**.
+For example: Entering **"de roto"** will match **Design prototyping**.
 
 When you type more than one text, the search will only show results where **all entered terms** appear somewhere in the project or workspace name. This helps you find items faster, even if you only remember parts of the name.
 
