@@ -143,7 +143,7 @@ After the import completes, the data is available in *review mode*. You can:
 
 To proceed, choose one of the following actions: **Approve** or **revert** the import.
 
-![Approve or revert import buttons in review mode](openproject_admin_import_jira_import_finalize_or_revert_import_buttons.png)
+![Approve or revert import buttons in review mode](openproject_admin_import_jira_import_approve_or_revert_import_buttons.png)
 
 #### Approve import
 

@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: Custom fields
+  title: Custom fields migration
 description: Migration of Jira custom fields to OpenProject during a Jira Data Center migration. Supported field types, edge cases, and limitations.
 keywords: Jira custom fields, OpenProject custom fields, field type mapping, field contexts, unsupported field types
 ---
