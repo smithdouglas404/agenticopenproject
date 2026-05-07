@@ -30,35 +30,13 @@
 
 module Wikis
   module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery < BaseQuery
-            def call(auth_strategy:)
-              url = "#{provider.url.chomp('/')}/rest/"
-              Authentication[auth_strategy].call(provider:) do |http|
-                handle_response(http.get(url))
-              end
-            end
+    module Input
+      class StrategyContract < DryApplicationContract
+        AUTH_METHODS = %i[bearer_token].to_set.freeze
 
-            private
-
-            def handle_response(response)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
-
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                failure(code: :request_failed)
-              end
-            end
-
-            def handle_success_response(response)
-              xwiki_user = response.headers["xwiki-user"]
-              xwiki_user.present? ? success(xwiki_user) : failure(code: :unauthorized)
-            end
-          end
+        params do
+          required(:key).filled(:symbol, included_in?: AUTH_METHODS)
+          optional(:token).maybe(:string)
         end
       end
     end

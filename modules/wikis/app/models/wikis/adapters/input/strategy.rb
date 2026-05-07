@@ -28,39 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery < BaseQuery
-            def call(auth_strategy:)
-              url = "#{provider.url.chomp('/')}/rest/"
-              Authentication[auth_strategy].call(provider:) do |http|
-                handle_response(http.get(url))
-              end
-            end
+module Wikis::Adapters::Input
+  Strategy = Data.define(:key, :token) do
+    private_class_method :new
 
-            private
-
-            def handle_response(response)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
-
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                failure(code: :request_failed)
-              end
-            end
-
-            def handle_success_response(response)
-              xwiki_user = response.headers["xwiki-user"]
-              xwiki_user.present? ? success(xwiki_user) : failure(code: :unauthorized)
-            end
-          end
-        end
-      end
+    def self.build(key:, token: nil, contract: StrategyContract.new)
+      contract.call(key:, token:).to_monad.fmap { new(**it.to_h) }
     end
   end
 end

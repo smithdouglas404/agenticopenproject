@@ -28,39 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery < BaseQuery
-            def call(auth_strategy:)
-              url = "#{provider.url.chomp('/')}/rest/"
-              Authentication[auth_strategy].call(provider:) do |http|
-                handle_response(http.get(url))
-              end
-            end
+require "spec_helper"
+require_module_spec_helper
 
-            private
+RSpec.describe Wikis::Adapters::Input::Strategy do
+  describe ".build" do
+    subject(:result) { described_class.build(key:, token:) }
 
-            def handle_response(response)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
+    let(:token) { "some-token" }
 
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                failure(code: :request_failed)
-              end
-            end
+    context "with a valid key and token" do
+      let(:key) { :bearer_token }
 
-            def handle_success_response(response)
-              xwiki_user = response.headers["xwiki-user"]
-              xwiki_user.present? ? success(xwiki_user) : failure(code: :unauthorized)
-            end
-          end
-        end
-      end
+      it { is_expected.to be_success }
+      it { is_expected.to have_attributes(value!: have_attributes(key: :bearer_token, token: "some-token")) }
+    end
+
+    context "without a token" do
+      let(:key) { :bearer_token }
+      let(:token) { nil }
+
+      it { is_expected.to be_success }
+      it { is_expected.to have_attributes(value!: have_attributes(key: :bearer_token, token: nil)) }
+    end
+
+    context "with an unknown key" do
+      let(:key) { :unknown }
+
+      it { is_expected.to be_failure }
     end
   end
 end

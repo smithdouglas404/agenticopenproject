@@ -28,38 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery < BaseQuery
-            def call(auth_strategy:)
-              url = "#{provider.url.chomp('/')}/rest/"
-              Authentication[auth_strategy].call(provider:) do |http|
-                handle_response(http.get(url))
-              end
-            end
+require "spec_helper"
+require_module_spec_helper
 
-            private
+RSpec.describe Wikis::Adapters::Authentication do
+  describe ".[]" do
+    subject(:strategy_object) { described_class[strategy] }
 
-            def handle_response(response)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
+    context "with a bearer_token strategy" do
+      let(:strategy) { Wikis::Adapters::Input::Strategy.build(key: :bearer_token, token: "t") }
 
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                failure(code: :request_failed)
-              end
-            end
+      it { is_expected.to be_a(Wikis::Adapters::AuthenticationStrategies::BearerToken) }
+    end
 
-            def handle_success_response(response)
-              xwiki_user = response.headers["xwiki-user"]
-              xwiki_user.present? ? success(xwiki_user) : failure(code: :unauthorized)
-            end
-          end
-        end
+    context "with a unknown strategy" do
+      let(:strategy) { Wikis::Adapters::Input::Strategy.build(key: :unknown) }
+
+      it "raises ArgumentError" do
+        expect { strategy_object }.to raise_error(ArgumentError)
       end
     end
   end

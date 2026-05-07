@@ -28,6 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters::Input
-  UserQuery = Data.define(:access_token)
+module Wikis
+  module Adapters
+    module AuthenticationStrategies
+      class BearerToken
+        def initialize(token)
+          @token = token
+        end
+
+        def call(http_options: {}, **)
+          yield OpenProject.httpx.bearer_auth(@token).with(http_options)
+        end
+      end
+    end
+  end
 end

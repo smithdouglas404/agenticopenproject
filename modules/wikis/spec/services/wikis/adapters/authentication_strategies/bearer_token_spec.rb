@@ -28,39 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery < BaseQuery
-            def call(auth_strategy:)
-              url = "#{provider.url.chomp('/')}/rest/"
-              Authentication[auth_strategy].call(provider:) do |http|
-                handle_response(http.get(url))
-              end
-            end
+require "spec_helper"
+require_module_spec_helper
 
-            private
+RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock do
+  let(:url) { "https://xwiki.local/rest/" }
 
-            def handle_response(response)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
+  subject(:strategy) { described_class.new("test-token") }
 
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                failure(code: :request_failed)
-              end
-            end
+  describe "#call" do
+    it "yields an http client configured with the bearer token" do
+      request_stub = stub_request(:get, url)
+        .with(headers: { "Authorization" => "Bearer test-token" })
+        .to_return(status: 200, body: "")
 
-            def handle_success_response(response)
-              xwiki_user = response.headers["xwiki-user"]
-              xwiki_user.present? ? success(xwiki_user) : failure(code: :unauthorized)
-            end
-          end
-        end
-      end
+      strategy.call { |http| http.get(url) }
+
+      expect(request_stub).to have_been_requested
+    end
+
+    it "forwards http_options to the http client" do
+      request_stub = stub_request(:get, url)
+        .with(headers: { "Authorization" => "Bearer test-token", "Accept" => "application/json" })
+        .to_return(status: 200, body: "")
+
+      strategy.call(http_options: { headers: { "Accept" => "application/json" } }) { |http| http.get(url) }
+
+      expect(request_stub).to have_been_requested
     end
   end
 end
