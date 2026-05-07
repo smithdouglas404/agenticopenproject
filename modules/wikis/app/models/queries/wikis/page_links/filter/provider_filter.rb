@@ -42,7 +42,7 @@ module Queries
           end
 
           def allowed_values
-            ::Wikis::Provider.enabled.pluck(:universal_identifier).map { |uid| [uid, uid.to_s] }
+            ::Wikis::Provider.enabled.pluck(:universal_identifier).map { |uid| [uid, uid] }
           end
 
           def left_outer_joins = :provider
