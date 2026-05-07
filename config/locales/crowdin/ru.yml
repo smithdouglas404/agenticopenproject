@@ -128,7 +128,7 @@ ru:
       banner:
         title: Beta - Try it out!
         description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
-        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+        contribution_callout: 'Пожалуйста, помогите нам улучшить Jira Migrator с помощью Ваших отзывов и частных пожертвований данных. Вы можете [присоединиться к сообществу разработчиков](link) Jira Migrator.
 
           '
         supported_versions: ''
@@ -258,10 +258,10 @@ ru:
               caption_done: Завершено
               label_info: Пожалуйста, обратите внимание, что этот инструмент импорта находится в бета-версии и не может импортировать все типы данных. Вот краткая информация о том, что хост Jira предлагает для импорта, и что этот инструмент может импортировать прямо сейчас.
               description: Выберите, какие данные Вы хотите импортировать из доступных, полученных из хоста Jira.
-              label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
-              label_available_server_data: Available data on %{server_info}
+              label_supported_data: Поддерживаемые данные
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
+              label_available_server_data: Имеющиеся данные на сайте %{server_info}
               button_select_projects: Выберите проекты для импорта
               button_continue: Продолжить
               label_import: Выберите проекты, которые Вы хотите импортировать.
@@ -270,22 +270,22 @@ ru:
               label_progress: Получение данных из Jira...
               elements:
                 relations: Отношения между проблемами
-                project_ids: Project identifiers
-                issue_ids: Issues identifiers
-                sprints: Sprint assignments
+                project_ids: Идентификаторы проекта
+                issue_ids: Идентификаторы задач
+                sprints: Назначения спринта
                 workflows: Рабочие процессы на уровне проекта
                 schemes: Схемы
-                permissions: Permissions
-                projects: Projects
-                issues: Issues
-                issue_details: Issue description, history, comments and attachments
-                custom_fields: A subset of custom fields
-                users: Involved users and groups
+                permissions: Разрешения
+                projects: Проекты
+                issues: Задачи
+                issue_details: Описание задачи, история, комментарии и вложения
+                custom_fields: Подмножество настраиваемых полей
+                users: Вовлеченные пользователи и группы
             confirm_import:
               title: Импорт данных
               caption: Просмотрите настройки импорта и начните импорт
               caption_done: Завершено
-              label_available_data: Data to be imported
+              label_available_data: Данные для импорта
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Начать импорт
               description: Вы собираетесь начать импорт со следующими настройками.
@@ -294,21 +294,21 @@ ru:
             import_result:
               title: Результаты запуска импорта
               caption: Просмотрите выполнение импорта или отмените импорт
-              info: Import run was successful.
+              info: Импорт успешно запущен.
               label_results: Импортировано
               label_revert: Откатить импорт
               button_revert: Откатить импорт
-              button_done: Approve import
-              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Approve import
-              label_finalizing: Approving import...
-              label_finalizing_done: Import approved.
+              button_done: Завершить импорт
+              preview_description: В настоящее время импортированные данные находятся в режиме просмотра. Нажмите "Завершить импорт", чтобы сохранить результаты импорта, или "Отменить импорт", чтобы отменить все изменения, сделанные в ходе запуска импорта.
+              label_finalize_import: Завершить импорт
+              label_finalizing: Завершение импорта...
+              label_finalizing_done: Импорт завершён.
               label_revert_progress: Отмена импорта...
               label_reverted: Импорт отменен.
           select_dialog:
             filter_projects: Фильтр по тексту
           import_dialog:
-            title: Please make sure you have a backup!
+            title: Пожалуйста, убедитесь, что у Вас есть резервная копия!
             confirm_button: Начать импорт
             description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
@@ -714,8 +714,8 @@ ru:
     confirmation_live_message_checked: Кнопка для продолжения активна.
     confirmation_live_message_unchecked: Кнопка для продолжения неактивна. Чтобы продолжить, поставьте галочку.
   departments:
-    edit: Edit department
-    add_user: Add user
+    edit: Редактировать подразделение
+    add_user: Добавить пользователя
     add_department: Add department
     blankslate:
       heading: Your organization has no departments
@@ -1415,18 +1415,18 @@ ru:
     copies:
       form:
         source_role_id:
-          label: Source role
+          label: Исходная роль
         target_role_ids:
-          label: Target roles
+          label: Целевые роли
         target_type_ids:
-          label: Target types
+          label: Целевые типы
         mode:
           from_role:
-            label: Copy to other roles
-            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+            label: Копировать в другие роли
+            caption: Скопируйте текущий рабочий процесс в одну или несколько ролей внутри одного и того же типа пакета работ. Если выбранная роль уже имеет рабочий процесс, текущий будет перезаписан.
           from_type:
-            label: Copy to another type
-            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+            label: Копировать в другой тип
+            caption: Скопируйте текущий рабочий процесс в другой тип пакетов работ. Если у выбранного типа уже есть рабочий процесс, текущий рабочий процесс будет перезаписан. Это влияет на все роли.
       from_roles:
         create:
           notice:
@@ -1463,19 +1463,19 @@ ru:
       no_results_title_text: В данный момент рабочих потоков нет.
   work_packages:
     delete_dialog:
-      title: Delete work package
+      title: Удалить пакеты работ
       heading: Permanently delete this work package?
       description: Are you sure you want to delete the work package "%{name}"?
       confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
       cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      title: Удалить %{count} пакетов работ
+      heading: Окончательно удалить эти %{count} пакеты работ?
+      description: 'Следующие рабочие пакеты, включая дочерние и все связанные с ними данные, будут навсегда удалены:'
+      description_with_children: 'Следующие рабочие пакеты, включая дочерние пакеты работ и все связанные с ними данные, будут навсегда удалены:'
+      confirm_children_deletion: Я подтверждаю, что все выбранные пакеты работ, включая дочерние, будут удалены навсегда.
+      cross_project_warning: 'Эти пакеты работ охватывают несколько проектов: %{projects}'
+      children_label: 'Следующие дочерние пакеты работ также будут удалены:'
     datepicker_modal:
       banner:
         description:
@@ -1942,7 +1942,7 @@ ru:
         identity_url: URL идентификации
         parent: Родительская группа
         organizational_unit: Подразделение организации
-        group_users: Group users
+        group_users: Пользователи группы
       group_detail:
         parent: Родительская группа
         organizational_unit: Подразделение организации
@@ -2017,7 +2017,7 @@ ru:
         duration: Продолжительность
         end_insertion: Завершение вставки
         end_deletion: Завершение удаления
-        identifier: Identifier
+        identifier: Идентификатор
         ignore_non_working_days: Игнорировать нерабочие дни
         include_non_working_days:
           title: Рабочие дни
@@ -2033,7 +2033,7 @@ ru:
         readonly: Только для чтения
         remaining_hours: Оставшиеся часы
         remaining_time: Оставшиеся часы
-        sequence_number: Sequence number
+        sequence_number: Порядковый номер
         shared_with_users: В общем доступе с
         schedule_manually: Ручное планирование
         spent_hours: Затраченное время
@@ -2062,7 +2062,7 @@ ru:
         confirmation: не совпадает со значением поля %{attribute}.
         could_not_be_copied: "%{dependency} не может быть скопировано (полностью)."
         does_not_exist: не существует.
-        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
+        user_already_in_department: Пользователь %{user_id} уже является членом департамента %{department_id}.
         error_enterprise_only: "%{action} доступно только в корпоративной версии OpenProject."
         error_unauthorized: не доступен.
         error_readonly: запись не разрешена.
@@ -2086,7 +2086,7 @@ ru:
         inclusion: не задано ни одно из допустимых значений.
         inclusion_nested: не задано одно из допустимых значений в пути '%{path}'.
         invalid: неверно.
-        invalid_uri: must be a valid URI.
+        invalid_uri: должен быть допустимым URI.
         invalid_url: не является допустимым URL-адресом.
         invalid_url_scheme: 'не является поддерживаемым протоколом (разрешены следующие: %{allowed_schemes}).'
         less_than_or_equal_to: должно быть меньше или равно %{count}.
@@ -2100,7 +2100,7 @@ ru:
         not_a_datetime: дата и время не являются допустимыми.
         not_a_number: не является числом.
         not_allowed: неверно, ввиду отсутствия прав.
-        host_not_allowed: is not an allowed host.
+        host_not_allowed: не является разрешенным хостом.
         not_json: не может быть разобран как JSON.
         not_json_object: не является объектом JSON.
         not_an_integer: не является целым числом.
@@ -2131,7 +2131,7 @@ ru:
           attributes:
             parent_id:
               circular_dependency: создаст круговую иерархию групп.
-              organizational_unit_mismatch: must have the same organizational unit setting as the group.
+              organizational_unit_mismatch: должен иметь те же организационные подразделения, что и группа.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2320,7 +2320,7 @@ ru:
           not_whitelisted: не допускается конфигурацией.
           invalid_url: не допустимый URL или путь к репозиторию.
           must_not_be_ssh: не должно быть URL-адресом SSH.
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: не должен указывать на каталог репозитория, управляемого OpenProject.
           no_directory: не является каталогом.
         role:
           attributes:
@@ -2372,7 +2372,7 @@ ru:
               cannot_add_child_because_of_lack_of_permission: Не удается добавить дочерний пакет, потому что вы не имеете разрешения на редактирование выбранного пакета работ.
               blank: ID не может быть пустым.
             identifier:
-              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
+              semantic_identifier_incomplete: и sequence_number должны быть установлены одновременно.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2441,7 +2441,7 @@ ru:
               confirmation: Подтверждение пароля не совпадает с паролем.
               format: "%{message}"
             password:
-              requirements_not_met: 'Must include characters of the following types: %{rules}'
+              requirements_not_met: 'Должны включать символы следующих типов: %{rules}'
               lowercase: нижний регистр (например «а»)
               uppercase: прописные буквы (например, "A")
               numeric: цифры (например "1")
@@ -3698,7 +3698,7 @@ ru:
         personal_reminder: Уведомлять меня о личных напоминаниях
       daily_reminders:
         title: Отправлять мне ежедневные напоминания по электронной почте о непрочитанных уведомлениях
-        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: Вы будете получать эти напоминания только для непрочитанных уведомлений и только в указанные Вами часы. Пока Вы не настроите часовой пояс для своей учетной записи, время будет интерпретироваться как UTC.
         enabled: Включить ежедневные напоминания по электронной почте
         add_time: Добавить время
         remove_time: Удалить время
@@ -3712,7 +3712,7 @@ ru:
         date_range: Период приостановки
       email_alerts:
         title: Уведомления по электронной почте для других элементов (которые не являются пакетами работ)
-        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        description: Уведомления на сегодня ограничены пакетами работ. Вы можете продолжать получать уведомления по электронной почте об этих событиях до тех пор, пока они не будут включены в уведомления.
         news_added: Новость добавлена
         news_commented: Комментарий к новости
         document_added: Документ добавлен
@@ -3725,7 +3725,7 @@ ru:
     notifications:
       participating:
         title: Участие
-        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        description: Уведомления обо всех действиях в пакетах работ, в которых Вы участвуете (назначенный, подотчетный или наблюдатель).
         submit_button: Обновить настройки
         mentioned: Упомянутый
         watched: Отслеживает
@@ -3734,7 +3734,7 @@ ru:
         shared: Доступные мне
       date_alerts:
         title: Дата оповещения
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        description: Автоматическое уведомление, когда приближаются важные даты открытия пакетов работ, в которых вы участвуете (исполнитель, ответственный или наблюдатель).
         submit_button: Обновить дату оповещения
         start_date: Дата начала
         due_date: Дата окончания
@@ -3749,7 +3749,7 @@ ru:
           seven_days_after: Через 7 дней после
       non_participating:
         title: Неучастие
-        description: Additional notifications for activities in all projects.
+        description: Дополнительные уведомления для деятельности во всех проектах.
         submit_button: Обновить настройки
         work_package_created: Новые пакеты работ
         work_package_commented: Все новые комментарии
@@ -3758,7 +3758,7 @@ ru:
         work_package_scheduled: Все изменения дат
       project_specific_settings:
         title: Настройки уведомлений для конкретного проекта
-        description: These project-specific settings override default settings above.
+        description: Эти настройки для конкретного проекта переопределяют параметры по умолчанию.
         add_button: Добавить уведомления по проекту
         dialog_title: Добавить уведомления по проекту
         list_header: Проекты с особыми уведомлениями
@@ -3918,7 +3918,7 @@ ru:
   label_commits_per_month: Зафиксировано в месяц
   label_confirmation: Подтверждение
   label_contains: содержит
-  label_starts_with: starts with
+  label_starts_with: начинается с
   label_content: Содержание
   label_color_plural: Цвета
   label_copied: Скопировано
@@ -3926,8 +3926,8 @@ ru:
   label_copy_source: Источник
   label_copy_target: Цель
   label_copy_workflow_from: Копировать рабочий поток из
-  label_copy_workflow_from_type: Copy to another type
-  label_copy_workflow_from_role: Copy to other roles
+  label_copy_workflow_from_type: Копировать в другой тип
+  label_copy_workflow_from_role: Копировать в другие роли
   label_copy_project: Копировать проект
   label_core_version: Текущая версия
   label_core_build: Сборка ядра
@@ -4126,8 +4126,8 @@ ru:
   label_custom_pdf_export_settings: Настройки экспорта PDF
   label_custom_favicon: Пользовательские иконки
   label_custom_touch_icon: Пользовательский значок логотипа
-  label_departments: Organization
-  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+  label_departments: Департаменты
+  label_departments_description_html: 'Определите структуру вашей компании создавая отделы и подразделения иерархическим образом. Это позволяет отразить линии отчетности и поддерживать четкий, структурированный обзор вашей организации в рамках OpenProject. Вы также можете импортировать существующую структуру организации через [синхронизацию групп LDAP](ldap_docs_article).
 
     '
   label_logout: Выход
@@ -4235,10 +4235,10 @@ ru:
   label_password_rule_numeric: Числовые символы
   label_password_rule_special: Специальные символы
   label_password_rule_uppercase: Верхний регистр
-  label_password_requirement_lowercase: Must contain at least one lowercase character.
-  label_password_requirement_numeric: Must contain at least one numeric character.
-  label_password_requirement_special: Must contain at least one special character.
-  label_password_requirement_uppercase: Must contain at least one uppercase character.
+  label_password_requirement_lowercase: Должен содержать хотя бы один символ в нижнем регистре.
+  label_password_requirement_numeric: Должен содержать не менее одного числового символа.
+  label_password_requirement_special: Должен содержать хотя бы один специальный символ.
+  label_password_requirement_uppercase: Должен содержать хотя бы один символ в верхнем регистре.
   label_path_encoding: Кодирование пути
   label_per_page: 'На странице:'
   label_people: Люди
@@ -5202,7 +5202,7 @@ ru:
     '
   setting_app_subtitle: Второе название приложения
   setting_app_title: Название приложения
-  setting_organization_name: Organization name
+  setting_organization_name: Название организации
   setting_attachment_max_size: Максимальный размер вложения
   setting_show_work_package_attachments: По умолчанию показывать вложения на вкладке "Файлы".
   setting_antivirus_scan_mode: Режим сканирования
@@ -5280,7 +5280,7 @@ ru:
   setting_new_project_user_role_id: Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором
   setting_new_project_send_confirmation_email: Отправить уведомление автору при создании нового проекта
   setting_new_project_notification_text: Текст уведомления
-  setting_password_active_rules: Password requirements
+  setting_password_active_rules: Требования к паролю
   setting_password_count_former_banned: Количество паролей, запрещенных для повторного использования
   setting_password_days_valid: Количество дней, после которого требуется смена пароля
   setting_password_min_length: Минимальная длина
@@ -5869,13 +5869,13 @@ ru:
           same_as_work: Установите то же значение, что и для Работы.
     permissions:
       comment: Комментарий
-      comment_verb: comment
+      comment_verb: комментировать
       comment_description: Может просматривать и комментировать этот пакет работ.
       edit: Правка
-      edit_verb: edit
+      edit_verb: редактировать
       edit_description: Может просматривать, комментировать и редактировать этот пакет работ.
       view: Вид
-      view_verb: view
+      view_verb: просматривать
       view_description: Может просматривать этот пакет работ.
     reminders:
       label_remind_at: Дата

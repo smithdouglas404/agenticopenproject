@@ -37,7 +37,7 @@ ru:
     inline_page_links_component:
       empty_heading: Нет встроенных ссылок
       empty_text: Встроенные ссылки на вики-страницы в описании пакета работ также будут автоматически отображаться здесь.
-      heading: Inline page links
+      heading: Ссылки на внутренние страницы
     page_link_component:
       remove: Удалить ссылку на страницу
     relation_page_links_component:
@@ -59,7 +59,7 @@ ru:
         label_name: Name
         label_provider: Provider
         label_creation_time: Created
-        no_results_title: You don't have any wiki providers set up yet.
+        no_results_title: У вас пока нет ни одного вики-провайдера.
         no_results_description: Add a wiki provider to see them here.
       destroy_confirmation_dialog_component:
         title: Delete wiki provider
@@ -82,20 +82,20 @@ ru:
         xwiki_instance: Экземпляр XWiki
         new_provider_html: Прочитайте нашу документацию по [настройке интеграции XWiki](docs_url) для получения дополнительной информации.
         sections:
-          general_information: Basic details
-          oauth_configuration: OAuth configuration
+          general_information: Основные детали
+          oauth_configuration: Конфигурация OAuth
         oauth:
           openproject_oauth: OpenProject OAuth
         xwiki:
           oauth:
-            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            openproject_oauth_description: Разрешите XWiki получить доступ к данным OpenProject с помощью приложения OAuth. Скопируйте приведенные ниже учетные данные в Ваш экземпляр XWiki.
             provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using an OAuth application. Enter the client credentials from your XWiki OAuth application.
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+            provider_oauth_description: Разрешите OpenProject получить доступ к данным XWiki с помощью приложения OAuth. Введите учетные данные клиента из Вашего приложения XWiki OAuth.
+          openproject_oauth_description: Разрешить XWiki доступ к данным OpenProject с помощью OAuth.
           xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+          xwiki_oauth_description: Разрешить OpenProject доступ к данным XWiki с помощью OAuth.
         delete:
           title: Удалить вики-провайдера
           warning_html: Вы собираетесь удалить %{wiki_provider}. Это действие необратимо.
     macro:
-      page_not_found: Linked wiki page no longer available
+      page_not_found: Связанная вики-страница больше не доступна

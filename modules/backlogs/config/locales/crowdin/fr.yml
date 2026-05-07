@@ -119,6 +119,9 @@ fr:
     backlog_bucket_component:
       blankslate_title: Le panier de commandes est vide
       blankslate_description: Faites glisser les éléments ici pour les ajouter.
+    backlog_bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     backlog_bucket_item_component:
       label_actions: Actions du paquet de travail
     sprint_component:

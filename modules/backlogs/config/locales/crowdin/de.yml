@@ -119,6 +119,9 @@ de:
     backlog_bucket_component:
       blankslate_title: Eingangs Backlog ist leer
       blankslate_description: Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
+    backlog_bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     backlog_bucket_item_component:
       label_actions: Arbeitspaket-Aktionen
     sprint_component:

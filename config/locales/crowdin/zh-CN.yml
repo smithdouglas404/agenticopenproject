@@ -241,8 +241,8 @@ zh-CN:
               label_info: 请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入摘要，以及此工具目前能够导入的内容。
               description: 在从主机 Jira 实例获取的可用数据中选择要导入的数据。
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: 选择要导入的项目
               button_continue: 继续

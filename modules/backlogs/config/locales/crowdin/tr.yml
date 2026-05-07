@@ -119,6 +119,9 @@ tr:
     backlog_bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Öğeleri eklemek için buraya sürükleyin.
+    backlog_bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     backlog_bucket_item_component:
       label_actions: İş paketi eylemleri
     sprint_component:
