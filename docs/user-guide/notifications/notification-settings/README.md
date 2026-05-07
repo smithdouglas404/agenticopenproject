@@ -7,7 +7,7 @@ keywords: notifications settings
 ---
 # Notification settings
 
-You can configure how and for what events you wish to be notified through Notifications. To access these settings, you can either click on your avatar on the top right corner > *Account settings* > *Notification settings* or click on **Settings** on the top right corner of the Notifications inbox.
+You can configure how and for what events you wish to be notified through notifications. To access these settings, you can either click on your avatar on the top right corner > *Account settings* > *Notification settings* or click on **Settings** on the top right corner of the notifications inbox.
 
 ![A screenshot of Notification center with the Notification settings button highlighted](Notification-settings-12.4-fromNotificationCenter.png)
 
@@ -92,7 +92,6 @@ Then select a project from the overlay form that will appear and specify notific
 
 Once you do so, you will see a list of projects, for which project-specific notification settings were defined. You can modify these settings at any later point.
 
-table with a column for that project and and the same three sections (Participating, Date alerts, Non-participating) as your overall notification settings. You can now select and unselect any number of options from this list for more specific project-level notification settings.
 
 ![Text](Notification-settings-12.4-projectSpecific.png)
 

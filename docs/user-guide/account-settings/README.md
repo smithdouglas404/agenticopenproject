@@ -19,7 +19,7 @@ Change your personal settings under Account settings (earlier called My account)
 | [Two-factor authentication](#two-factor-authentication)   | How to set up a two-factor authentication                    |
 | [Access tokens](#access-tokens)                           | How to set up access tokens in OpenProject                   |
 | [Session management](#sessions-management)                | How to manage your OpenProject sessions                      |
-| [Notification and email](#notification-and-email)         | How to change in-app notifications in OpenProject            |
+| [Notification and email](#notification-and-email)         | How to change in-app notifications and email reminders in OpenProject |
 | [Set an Avatar](#set-an-avatar)                           | How to set an avatar in OpenProject and change the profile picture |
 | [Delete account](#delete-account)                         | How to delete my own account                                 |
 
