@@ -7,9 +7,9 @@ keywords: Jira custom fields, OpenProject custom fields, field type mapping, fie
 
 # Custom fields migration from Jira to OpenProject
 
-The Jira Migrator automatically detects custom fields that are actually used in your imported issues and 
+The Jira Migrator automatically detects custom fields that are actually used in your imported issues, and 
 creates matching OpenProject custom fields for them. 
-Fields that exist in Jira but carry no values in any imported issue are ignored.
+Fields that exist in Jira but contain no values in any imported issue are ignored.
 
 All newly created custom fields are placed in a **Jira import** group in the work package form configuration and 
 are not assigned to any existing project by default.
@@ -64,11 +64,11 @@ A single Jira checkbox field can result in multiple OpenProject custom fields.
 
 ### Cascading select
 
-Jira cascading select fields have two import modes depending on your OpenProject plan:
+Jira cascading select fields have two import modes depending on your OpenProject edition:
 
-- **Enterprise plan (custom field hierarchies enabled)**: The field is imported as an OpenProject **Hierarchy** custom field. 
+- **Enterprise edition (custom field hierarchies are enabled)**: The field is imported as an OpenProject **Hierarchy** custom field. 
   The full parent-child tree is preserved. A selected value of `Animals > Cat` is stored as the `Cat` item under the `Animals` parent.
-- **Community/Basic plan**: The field is imported as a **List** custom field. 
+- **Community edition**: The field is imported as a **List** custom field. 
   The option list is flattened and each level is stored as a full path string. For example, `Animals > Cat` produces both `Animals` and `Animals / Cat` as separate list options. 
   The selected value on each issue becomes the deepest matching path.
 
