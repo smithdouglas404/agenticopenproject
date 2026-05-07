@@ -40,7 +40,7 @@ RSpec.describe "API v3 wiki page links resource" do
 
   let(:project) { work_package.project }
 
-  let(:user) { create(:user, member_with_permissions: { project => %i(view_work_packages view_wiki_page_links) }) }
+  let(:user) { create(:user, member_with_permissions: { project => %i(view_work_packages) }) }
 
   let(:relation_page_links) { create_list(:relation_wiki_page_link, 3, provider: xwiki_provider, linkable: work_package) }
   let(:inline_page_links) { create_list(:inline_wiki_page_link, 3, provider: internal_wiki, linkable: work_package) }
@@ -62,7 +62,7 @@ RSpec.describe "API v3 wiki page links resource" do
       before { get path }
 
       it_behaves_like "API V3 collection response", 6, 6, "WikiPageLink", "WikiPageLinkCollection" do
-        let(:elements) { Wikis::PageLink.where(linkable: work_package).order(id: :asc).all }
+        let(:elements) { Wikis::PageLink.where(linkable: work_package).order(id: :desc).all }
       end
     end
 
@@ -74,7 +74,7 @@ RSpec.describe "API v3 wiki page links resource" do
       end
 
       it_behaves_like "API V3 collection response", 3, 3, "WikiPageLink", "WikiPageLinkCollection" do
-        let(:elements) { Wikis::PageLink.where(linkable: work_package, provider: internal_wiki).order(id: :asc).all }
+        let(:elements) { Wikis::PageLink.where(linkable: work_package, provider: internal_wiki).order(id: :desc).all }
       end
     end
   end

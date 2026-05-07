@@ -51,7 +51,7 @@ module API
               raise ::API::Errors::InvalidQuery.new(message)
             end
 
-            relation = if current_user.allowed_in_project?(:view_wiki_page_links, @work_package.project)
+            relation = if current_user.allowed_in_project?(:view_work_packages, @work_package.project)
                          query.results.where(linkable: @work_package)
                        else
                          []

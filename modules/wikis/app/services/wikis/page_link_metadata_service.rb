@@ -39,13 +39,16 @@ module Wikis
     end
 
     def call(relation)
-      metadata = relation.group_by(&:provider).filter_map do |provider, page_links|
+      metadata = relation.group_by(&:provider).flat_map do |provider, page_links|
         build_inputs(page_links).filter_map do |input_data|
-          provider.resolve("queries.page_info").call(input_data).value_or { add_wiki_error(it) and next }
+          provider.resolve("queries.page_info").call(input_data).value_or do |error|
+            add_wiki_error(error)
+            next
+          end
         end
       end
 
-      @result.result = enrich_models(relation, metadata.flatten)
+      @result.result = enrich_models(relation, metadata)
       @result
     end
 
@@ -53,7 +56,10 @@ module Wikis
 
     def build_inputs(page_links)
       page_links.filter_map do |page_link|
-        Adapters::Input::PageInfo.build(identifier: page_link.identifier).value_or { add_validation_error(it) }
+        Adapters::Input::PageInfo.build(identifier: page_link.identifier).value_or do |validation_failure|
+          add_validation_error(validation_failure)
+          next
+        end
       end
     end
 
@@ -66,15 +72,14 @@ module Wikis
     end
 
     def enrich_models(page_links, metadata)
-      # Expectation is that the result from the PagesQuery is an array of "Result::Pages"
       identifier_title_map = metadata.sort_by(&:identifier).to_h { [it.identifier, it.title] }
       variable_placeholders = build_placeholders(identifier_title_map.size)
 
-      result_scope(page_links.pluck(:id), metadata_join_sql(variable_placeholders, identifier_title_map))
+      result_scope(page_links, metadata_join_sql(variable_placeholders, identifier_title_map))
     end
 
-    def result_scope(ids, join_expression)
-      PageLink.where(id: ids).order(:id).joins(join_expression).select("wiki_page_links.*, metadata.title as title")
+    def result_scope(page_links, join_expression)
+      page_links.joins(join_expression).select("wiki_page_links.*, metadata.title as title")
     end
 
     def metadata_join_sql(variable_placeholders, identifier_title_map)
