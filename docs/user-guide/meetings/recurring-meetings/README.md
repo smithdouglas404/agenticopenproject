@@ -164,7 +164,9 @@ Clicking this option will display a confirmation dialog. You will then need to s
 
 
 
-Confirming will create a copy of the agenda item in the next immediate meeting occurrence. Outcomes will not be duplicated. The original agenda item will remain in the current meeting, keeping the protocol intact.
+Confirming will create a copy of the agenda item in the next immediate meeting occurrence. The original agenda item will remain in the current meeting, keeping the protocol intact.
+
+> ! [NOTE]: Meeting outcomes will not be duplicated. They will only be copied along if a meeting agenda item is moved.
 
 ## Meeting backlogs for recurring meetings
 
