@@ -28,6 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters::Input
-  User = Data.define(:access_token)
+module Wikis
+  module Adapters
+    module AuthenticationStrategies
+      class BearerToken
+        include Dry::Monads[:result]
+
+        def initialize(token)
+          @token = token
+        end
+
+        def call(_provider: nil)
+          yield OpenProject.httpx.bearer_auth(@token)
+        end
+      end
+    end
+  end
 end

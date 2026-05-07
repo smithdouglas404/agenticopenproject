@@ -38,7 +38,7 @@ module Wikis::Adapters
       @provider = model
     end
 
-    def call(_input_data)
+    def call(_input_data, **)
       raise SubclassResponsibilityError
     end
 
@@ -46,10 +46,6 @@ module Wikis::Adapters
 
     def success(result)
       Success(result)
-    end
-
-    def bearer_http(token)
-      token.present? ? OpenProject.httpx.bearer_auth(token) : OpenProject.httpx
     end
 
     def failure(code:)

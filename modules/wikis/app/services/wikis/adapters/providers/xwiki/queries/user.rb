@@ -34,9 +34,11 @@ module Wikis
       module XWiki
         module Queries
           class User < BaseQuery
-            def call(input_data)
+            def call(auth_strategy:)
               url = "#{provider.url.chomp('/')}/rest/"
-              handle_response(bearer_http(input_data.access_token).get(url))
+              auth_strategy.call(provider:) do |http|
+                handle_response(http.get(url))
+              end
             end
 
             private

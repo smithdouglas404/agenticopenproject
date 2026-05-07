@@ -36,15 +36,17 @@ module Wikis
           class PageInfo < BaseQuery
             JSON_ACCEPT_HEADERS = { "Accept" => "application/json" }.freeze
 
-            def call(input_data)
+            def call(input_data, auth_strategy:)
               ref = PageReference.parse(input_data.identifier)
               return failure(code: :not_found) unless ref
 
               url = "#{provider.url.chomp('/')}/rest#{ref.rest_path}"
-              handle_response(
-                bearer_http(input_data.access_token).with(headers: JSON_ACCEPT_HEADERS).get(url),
-                identifier: input_data.identifier
-              )
+              auth_strategy.call(provider:) do |http|
+                handle_response(
+                  http.with(headers: JSON_ACCEPT_HEADERS).get(url),
+                  identifier: input_data.identifier
+                )
+              end
             end
 
             private

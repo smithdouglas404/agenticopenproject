@@ -34,7 +34,7 @@ require_module_spec_helper
 RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::User, :webmock do
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.local/") }
   let(:rest_url) { "https://xwiki.local/rest/" }
-  let(:input_data) { Wikis::Adapters::Input::User.new(access_token: "some-token") }
+  let(:auth_strategy) { Wikis::Adapters::AuthenticationStrategies::BearerToken.new("some-token") }
 
   subject(:query) { described_class.new(model: wiki_provider) }
 
@@ -50,7 +50,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::User, :webmock do
       end
 
       it "returns Success with the xwiki-user header value" do
-        result = query.call(input_data)
+        result = query.call(auth_strategy:)
         expect(result).to be_success
         expect(result.value!).to eq("XWiki.admin")
       end
@@ -63,7 +63,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::User, :webmock do
       end
 
       it "returns Failure with :unauthorized code" do
-        result = query.call(Wikis::Adapters::Input::User.new(access_token: "invalid-token"))
+        result = query.call(auth_strategy: Wikis::Adapters::AuthenticationStrategies::BearerToken.new("invalid-token"))
         expect(result).to be_failure
         expect(result.failure).to have_attributes(code: :unauthorized)
       end
@@ -75,7 +75,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::User, :webmock do
       end
 
       it "returns Failure with :request_failed code" do
-        result = query.call(input_data)
+        result = query.call(auth_strategy:)
         expect(result).to be_failure
         expect(result.failure).to have_attributes(code: :request_failed)
       end
@@ -85,7 +85,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::User, :webmock do
       before { stub_request(:get, rest_url).to_timeout }
 
       it "returns Failure with :connection_error code" do
-        result = query.call(input_data)
+        result = query.call(auth_strategy:)
         expect(result).to be_failure
         expect(result.failure).to have_attributes(code: :connection_error)
       end

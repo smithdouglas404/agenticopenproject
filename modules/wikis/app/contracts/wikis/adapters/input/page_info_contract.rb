@@ -34,7 +34,6 @@ module Wikis
       class PageInfoContract < DryApplicationContract
         params do
           required(:identifier).filled(:string)
-          optional(:access_token).maybe(:string)
         end
       end
     end
