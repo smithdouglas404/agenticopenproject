@@ -19,7 +19,8 @@ Change your personal settings under Account settings (earlier called My account)
 | [Two-factor authentication](#two-factor-authentication)   | How to set up a two-factor authentication                    |
 | [Access tokens](#access-tokens)                           | How to set up access tokens in OpenProject                   |
 | [Session management](#sessions-management)                | How to manage your OpenProject sessions                      |
-| [Notification and email](#notifications-settings)         | How to change in-app notifications in OpenProject            |
+| [Notifications settings](#notifications-settings)         | How to change in-app notifications in OpenProject            |
+| [Email reminders](#email-reminders)                       | How to change email reminders sent by OpenProject            |
 | [Set an Avatar](#set-an-avatar)                           | How to set an avatar in OpenProject and change the profile picture |
 | [Delete account](#delete-account)                         | How to delete my own account                                 |
 
@@ -160,9 +161,7 @@ In order to reset your password, navigate to  **Account settings** and choose **
 
 Enter your current password.
 
-Enter your new password and ensure all password requirements are met.
-
-Confirm it a second time.
+Enter your new password and confirm it a second time.
 
 Press the **Save** button in order to confirm the password changes.
 
@@ -351,9 +350,9 @@ Sessions expire automatically according to your instance’s authentication sett
 > [!NOTE]
 > Closing a browser does not necessarily terminate the session. It might still be displayed in the list and will be reactivated if you open the browser. This depends on both your browser's and the OpenProject instance's settings.
 
-## Notification and email
+## Notifications settings
 
-To configure the notification settings which you receive from the system, navigate to **Account settings** and choose **Notification and email** on the menu.
+To configure the notification settings which you receive from the system, navigate to **Account settings** and choose **Notifications settings** in the menu.
 
 ![Notification settings in OpenProject account settings](openproject_account_settings_notification_settings.png)
 
@@ -361,11 +360,9 @@ In-app notifications can be configured and customized various ways. For a detail
 
 Please also see our detailed [in-app notifications](../../user-guide/notifications/) guide to gain a general understanding.
 
-### Email reminders
+## Email reminders
 
-To configure the email reminders which you receive from the system, switch to the **email reminders tab.** Your system administrator can also set them for you or change the global default settings.
-
-![Email reminders in OpenProject account settings](openproject_account_settings_email_reminders1.png)
+To configure the email reminders which you receive from the system, navigate to **Account settings** and choose **Email reminders** in the menu. Your system administrator can also set them for you or change the global default settings.
 
 ![Email reminders in OpenProject account settings](openproject_account_settings_email_reminders.png)
 
