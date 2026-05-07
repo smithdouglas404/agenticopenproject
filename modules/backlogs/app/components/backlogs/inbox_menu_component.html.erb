@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
       id: dom_target(work_package, :menu, :open_details),
       tag: :a,
       label: t(:"js.button_open_details"),
-      href: project_backlogs_backlog_details_path(project, work_package),
+      href: project_backlogs_backlog_details_path(project, work_package, all_backlogs_params),
       content_arguments: { data: { turbo_frame: "content-bodyRight", turbo_action: "advance" } }
     ) do |item|
       item.with_leading_visual_icon(icon: :"op-view-split")
@@ -87,7 +87,7 @@ See COPYRIGHT and LICENSE files for more details.
             move_menu.with_item(
               id: dom_target(work_package, :menu, :move_to_sprint),
               label: t(".label_move_to_sprint"),
-              href: move_to_sprint_dialog_project_backlogs_inbox_path(project, work_package),
+              href: move_to_sprint_dialog_project_backlogs_inbox_path(project, work_package, all_backlogs_params),
               content_arguments: { data: { controller: "async-dialog" } }
             ) do |item|
               item.with_leading_visual_icon(icon: :zap)

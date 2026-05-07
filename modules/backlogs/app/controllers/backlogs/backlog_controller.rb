@@ -29,18 +29,18 @@
 #++
 
 module Backlogs
-  class BacklogController < ::RbApplicationController
+  class BacklogController < BaseController
     include WorkPackages::WithSplitView
 
     current_menu_item %i[show details] do
       :backlog
     end
 
-    before_action :load_backlogs, only: :show
-
     def show
       case turbo_frame_request_id
       when "backlogs_container"
+        load_backlogs
+
         render partial: "backlogs/backlog/backlog_list", layout: false
       else
         render "backlogs/backlog/show"
@@ -52,6 +52,7 @@ module Backlogs
         render "work_packages/split_view", layout: false
       else
         load_backlogs
+
         render "backlogs/backlog/show"
       end
     end
@@ -63,14 +64,22 @@ module Backlogs
     end
 
     def load_backlogs
-      @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
-      @stories_by_sprint_id = WorkPackage
-                               .where(sprint: @sprints, project: @project)
-                               .includes(:type, :status)
-                               .order_by_position
-                               .group_by(&:sprint_id)
+      if OpenProject::FeatureDecisions.backlog_buckets_active?
+        @backlog_buckets = BacklogBucket.for_project(@project)
+      end
+
+      @sprints = Sprint.for_project(@project)
+                       .not_completed
+                       .order_by_date
+                       .includes(:project, :task_boards)
+
+      @work_packages_by_sprint_id = WorkPackage
+                                      .where(sprint: @sprints, project: @project)
+                                      .includes(:type, :status)
+                                      .order_by_position
+                                      .group_by(&:sprint_id)
       @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-      @inbox_work_packages = Backlog.inbox_for(project: @project)
+      @inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
     end
   end
 end

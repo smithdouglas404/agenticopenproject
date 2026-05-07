@@ -73,7 +73,7 @@ module Queries::WorkPackages::Filter
 
     def sprints
       @sprints ||= begin
-        scope = Agile::Sprint.visible
+        scope = Sprint.visible
         project ? scope.for_project(project) : scope
       end
     end

@@ -28,7 +28,7 @@
 
 module OpenProject::Backlogs::Hooks
   class LayoutHook < OpenProject::Hook::ViewListener
-    include RbCommonHelper
+    include ::Backlogs::CommonHelper
 
     def view_my_settings(context = {})
       context[:controller].send(

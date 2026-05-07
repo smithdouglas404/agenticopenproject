@@ -815,6 +815,9 @@ module Settings
       },
       password_active_rules: {
         default: %w[lowercase uppercase numeric special],
+        default_by_env: {
+          test: []
+        },
         allowed: %w[lowercase uppercase numeric special]
       },
       password_count_former_banned: {
@@ -824,10 +827,9 @@ module Settings
         default: 0
       },
       password_min_length: {
-        default: 10
-      },
-      password_min_adhered_rules: {
-        default: 0
+        default: 10,
+        format: :integer,
+        allowed: -> { 1..Setting::PASSWORD_MAX_LENGTH }
       },
       # TODO: turn into array of ints
       # Requires a migration to be written
@@ -954,6 +956,13 @@ module Settings
         default: nil,
         writable: false,
         description: "Host the frontend uses to download files, which has to be added to the CSP."
+      },
+      # Content Security Policy
+      csp_img_src: {
+        format: :array,
+        default: %w(* data: blob:),
+        writable: false,
+        description: "Allowed sources for the CSP img-src directive."
       },
       report_incoming_email_errors: {
         description: "Respond to incoming mails with error details",

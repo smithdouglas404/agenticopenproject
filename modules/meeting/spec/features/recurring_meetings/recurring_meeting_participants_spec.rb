@@ -76,7 +76,7 @@ RSpec.describe "Series template participant management",
       end
 
       it "does not add participants to occurrences" do
-        open_scheduled = create(:scheduled_meeting, :persisted, recurring_meeting:, start_time: 1.day.from_now)
+        open_scheduled = create(:recurring_meeting_occurrence, recurring_meeting:, start_time: 1.day.from_now)
 
         template_page.open_participant_form
         template_page.in_participant_form do
@@ -91,7 +91,7 @@ RSpec.describe "Series template participant management",
           end
         end
 
-        expect(open_scheduled.meeting.participants.pluck(:user_id))
+        expect(open_scheduled.participants.pluck(:user_id))
           .not_to include(participant_a.id, participant_b.id)
       end
     end
@@ -123,9 +123,9 @@ RSpec.describe "Series template participant management",
       end
 
       it "does not remove participants from occurrences" do
-        open_scheduled = create(:scheduled_meeting, :persisted, recurring_meeting:, start_time: 1.day.from_now)
-        create(:meeting_participant, meeting: open_scheduled.meeting, user: participant_a, invited: true)
-        create(:meeting_participant, meeting: open_scheduled.meeting, user: participant_b, invited: true)
+        open_scheduled = create(:recurring_meeting_occurrence, recurring_meeting:, start_time: 1.day.from_now)
+        create(:meeting_participant, meeting: open_scheduled, user: participant_a, invited: true)
+        create(:meeting_participant, meeting: open_scheduled, user: participant_b, invited: true)
 
         template_page.open_participant_form
         template_page.in_participant_form do
@@ -140,7 +140,7 @@ RSpec.describe "Series template participant management",
           end
         end
 
-        expect(open_scheduled.meeting.participants.reload.pluck(:user_id))
+        expect(open_scheduled.participants.reload.pluck(:user_id))
           .to include(participant_a.id, participant_b.id)
       end
     end

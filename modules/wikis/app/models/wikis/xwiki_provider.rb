@@ -31,28 +31,39 @@
 module Wikis
   class XWikiProvider < Provider
     AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
+      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2"
+      # AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso" # not yet implemented
     ].freeze
+
+    has_one :oauth_client, as: :integration, dependent: :destroy
+    has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
 
     store_attribute :options, :url, :string
     store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
     store_attribute :options, :wiki_audience, :string
     store_attribute :options, :token_exchange_scope, :string
 
-    validates :url, presence: true, length: { maximum: 255 }
-    validate :url_is_https
-
     class << self
       def registry_prefix = "xwiki"
+      def generate_client_id = SecureRandom.uuid
     end
 
-    private
+    def user_connected?(user)
+      return true if oauth_client.blank?
 
-    def url_is_https
-      return if url.blank?
+      OAuthClientToken.for_user_and_client(user, oauth_client).exists?
+    end
 
-      errors.add(:url, :invalid) unless url.start_with?("https://")
+    def extract_origin_user_id(token)
+      resolve("queries.user").call(Wikis::Adapters::Input::UserQuery.new(access_token: token.access_token))
+    end
+
+    def authenticate_via_two_way_oauth2?
+      authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
+    end
+
+    def oauth_configuration
+      Wikis::Adapters::Providers::XWiki::OAuthConfiguration.new(self)
     end
   end
 end

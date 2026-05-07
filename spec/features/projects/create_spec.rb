@@ -428,7 +428,7 @@ RSpec.describe "Projects", "creation",
 
         it "enables custom fields with default values if not set to blank explicitly" do
           # don't touch the default value
-          click_on "Complete"
+          wait_for_turbo { click_on "Complete" }
 
           expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -479,9 +479,7 @@ RSpec.describe "Projects", "creation",
 
             fill_in "Text for Admins only", with: "foo"
 
-            wait_for_turbo do
-              click_on "Complete"
-            end
+            click_on "Complete"
 
             expect_and_dismiss_flash type: :success, message: "Successful creation."
 

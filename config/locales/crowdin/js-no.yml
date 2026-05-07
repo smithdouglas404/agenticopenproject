@@ -515,12 +515,6 @@
         sidebar_arrow: Bruk returpilen i øvre venstre hjørne for å gå tilbake til prosjektets <b>hovedmeny</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: I <b>wiki</b> kan du dokumentere og dele kunnskap sammen med teamet.
-        backlogs:
-          overview: Administrer arbeidet ditt i <b>- backlogs</b> -visningen.
-          sprints: Til høyre har du produktet etterslep og feilloggen, til venstre har du de respektive stegene. Her kan du lage <b>epics, brukerhistorier og bugs</b>, prioriterer du via dra og slipp og legge dem til et steg.
-          task_board_arrow: For å se <b>oppgavetavle</b>, åpne steg fra nedtrekksmenyen...
-          task_board_select: "...og velg <b>oppgavetavlens</b> oppføring."
-          task_board: Oppgavetavlen visualiserer <b>fremdriften for denne etappen</b>. Klikk på plussikonet (+) ved siden av en brukerhistorie for å legge til nye oppgaver eller hindringer. <br> Statusen kan oppdateres ved å dra og slipp.
         boards:
           overview: Velg <b>tavler</b> for å skift visningen og administrere prosjektet ved hjelp av den dynamiske tavlevisningen.
           lists_kanban: Her kan du opprette flere lister (kolonner) i tavlen. Denne funksjonen lar deg for eksempel opprette en <b>Kanban tavle</b>.
@@ -987,13 +981,6 @@
       form_submit:
         title: Bekreft for å fortsette
         text: Er du sikker på at du vil utføre denne handlingen?
-      destroy_work_package:
-        title: Bekreft sletting av %{label}
-        single_text: Er du sikker på at du vil slette arbeidspakken
-        bulk_text: Er du sikker på at du vil slette følgende %{label}?
-        has_children: 'Arbeidspakken har %{childUnits}:'
-        confirm_deletion_children: Jeg erkjenner at ALLE underordnede av listede arbeidspakker vil fjernes samtidig.
-        deletes_children: Alle underordnede arbeidspakker og tilhørende vil også bli slettet samtidig.
       destroy_time_entry:
         title: Bekreft sletting av tidsregistrering
         text: Er du sikker på at du vil slette følgende tidsregistrering?

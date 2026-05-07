@@ -442,7 +442,7 @@ Rails.application.routes.draw do
       get "/new" => "work_packages#new", on: :collection, as: "new"
 
       get "(/:tab)" => "work_packages#show", on: :member, as: "",
-          constraints: { id: /\d+/, state: /(?!(shares|copy|dialog)).+/ }
+          constraints: { id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT, state: /(?!(shares|copy|dialog)).+/ }
 
       # states managed by client-side routing on work_package#index
       get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog|new)).+/ }
@@ -743,7 +743,7 @@ Rails.application.routes.draw do
       post "plugin/:id", action: :update_plugin
     end
 
-    namespace :import, constraints: lambda { |_request| OpenProject::FeatureDecisions.jira_import_active? } do
+    namespace :import do
       get "/", to: redirect("/admin/import/jira")
       resources :jira, controller: "/admin/import/jira/instances" do
         collection do
@@ -829,15 +829,24 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :workflows, only: %i[index edit update], param: :type_id do
-    collection do
-      # We should fix this crappy routing (split up and rename controller methods)
-      match "copy", action: "copy", via: %i[get post]
-      get "summarized"
-      get :status_dialog
-      post :confirm_statuses
-      post :confirmation_dialog
+  resources :workflows, only: %i[index edit], param: :type_id do
+    scope module: :workflows do
+      resources :tabs, only: %i[edit update], param: :tab do # params[:tab] used in TabsHelper
+        member do
+          get :status_dialog
+          post :confirm_statuses
+        end
+      end
+      resource :copy, only: %i[new] do
+        scope module: :copies do
+          resource :from_type, only: %i[create]
+          resource :from_role, only: %i[create]
+        end
+      end
     end
+  end
+  namespace :workflows do
+    resource :summary, only: %i[show]
   end
 
   namespace :work_packages do
@@ -935,7 +944,8 @@ Rails.application.routes.draw do
         on: :member
 
     get "/copy" => "work_packages#copy", on: :member, as: "copy"
-    get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy)).+/ }
+    get "(/:tab)" => "work_packages#show", on: :member, as: "",
+        constraints: { id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT, state: /(?!(shares|new|copy)).+/ }
 
     # states managed by client-side (angular) routing on work_package#show
     get "/" => "work_packages#index", on: :collection, as: "index"
@@ -1121,9 +1131,16 @@ Rails.application.routes.draw do
         work_package_split_view: true
   end
 
+  concern :with_split_create do
+    get "details/new",
+        action: :split_create,
+        as: :split_create,
+        work_package_split_create: true
+  end
+
   resources :notifications, only: :index do
     collection do
-      concerns :with_split_view, base_route: :notifications_path
+      concerns :with_split_view
 
       post :mark_all_read
       resource :menu, module: :notifications, only: %i[show], as: :notifications_menu

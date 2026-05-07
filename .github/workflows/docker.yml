@@ -17,6 +17,15 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+      DEPLOY_APP_PRIVATE_KEY:
+        required: true
+      OPS_MAIL_SMTP_TOKEN:
+        required: true
   workflow_dispatch:
     inputs:
       branch:
@@ -44,7 +53,10 @@ jobs:
       use_test_registry: ${{ inputs.use_test_registry }}
       branch: ${{ inputs.branch }}
       tag: ${{ inputs.tag }}
-    secrets: inherit
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DEPLOY_APP_PRIVATE_KEY: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
   setup:
     needs: [build-hocuspocus]
     runs-on: ubuntu-latest
@@ -55,17 +67,21 @@ jobs:
           ref: ${{ inputs.branch }}
       - name: Set version outputs and convert tags
         id: extract_version
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_USE_TEST_REGISTRY: ${{ inputs.use_test_registry }}
+          REGISTRY_IMAGE: ${{ vars.REGISTRY_IMAGE }}
         run: |
           set -e
-          echo "Processing tag: ${{ inputs.tag }}"
-          ./script/gh/docker-tags.rb "${{ inputs.tag }}" --version
-          ./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker
+          echo "Processing tag: $INPUT_TAG"
+          ./script/gh/docker-tags.rb "$INPUT_TAG" --version
+          ./script/gh/docker-tags.rb "$INPUT_TAG" --format-for-docker
 
           # Determine registry image based on workflow_dispatch input
-          if [ "${{ inputs.use_test_registry }}" = "true" ]; then
+          if [ "$INPUT_USE_TEST_REGISTRY" = "true" ]; then
             echo "registry_image=openproject/openproject-test" >> "$GITHUB_OUTPUT"
           else
-            echo "registry_image=${{ vars.REGISTRY_IMAGE }}" >> "$GITHUB_OUTPUT"
+            echo "registry_image=$REGISTRY_IMAGE" >> "$GITHUB_OUTPUT"
           fi
       - name: Verify outputs
         run: |
@@ -85,7 +101,7 @@ jobs:
           echo "✓ docker_tags: ${{ steps.extract_version.outputs.docker_tags }}"
           echo "✓ registry_image: ${{ steps.extract_version.outputs.registry_image }}"
       - name: Cache NPM
-        uses: runs-on/cache@v4
+        uses: runs-on/cache@v5
         with:
           path: |
             frontend/node_modules
@@ -93,7 +109,7 @@ jobs:
           key: nodejs-x64-${{ hashFiles('**/package-lock.json') }}
           restore-keys: nodejs-x64-
       - name: Cache angular
-        uses: runs-on/cache@v4
+        uses: runs-on/cache@v5
         with:
           path: frontend/.angular
           key: angular-${{ github.ref }}
@@ -130,7 +146,7 @@ jobs:
     needs:
       - setup
     runs-on:
-      labels: "runs-on=${{ github.run_id }}/ssh=false/${{ matrix.runner }}"
+      labels: "runs-on=${{ github.run_id }}/ssh=false/${{ matrix.runner }}/volume=100g"
     strategy:
       matrix:
         include:
@@ -351,7 +367,8 @@ jobs:
     needs: [setup, build, merge]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     uses: ./.github/workflows/email-notification.yml
-    secrets: inherit
+    secrets:
+      OPS_MAIL_SMTP_TOKEN: ${{ secrets.OPS_MAIL_SMTP_TOKEN }}
     with:
       subject: "Docker build failed"
       body: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

@@ -57,7 +57,7 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
                         contract_options: {})
   end
   let(:project) { create(:project) }
-  let(:sprint) { Agile::Sprint.new }
+  let(:sprint) { Sprint.new }
   let(:params) { { project: } }
 
   subject(:service_call) { instance.call(params) }
@@ -89,9 +89,9 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
       end
 
       it "does not persist the sprint" do
-        expect(sprint).not_to have_received(:save)
-
         service_call
+
+        expect(sprint).not_to have_received(:save)
       end
     end
 
@@ -130,7 +130,7 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
     end
 
     describe "default attributes" do
-      let(:sprint) { Agile::Sprint.new }
+      let(:sprint) { Sprint.new }
 
       it "sets default status to in_planning" do
         service_call
@@ -139,7 +139,7 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
       end
 
       context "when status is already set" do
-        let(:sprint) { Agile::Sprint.new(status: "active") }
+        let(:sprint) { Sprint.new(status: "active") }
 
         it "does not override the existing status" do
           service_call
@@ -152,7 +152,7 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
 
   describe "assigning a name" do
     context "when sprint is not a new record" do
-      let(:sprint) { create(:agile_sprint, project:, name: "Existing Sprint") }
+      let(:sprint) { create(:sprint, project:, name: "Existing Sprint") }
 
       it "assigns the current name" do
         service_call
@@ -162,7 +162,7 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
     end
 
     context "when sprint is a new record" do
-      let(:sprint) { Agile::Sprint.new(project:) }
+      let(:sprint) { Sprint.new(project:) }
 
       context "when there is no predecessor sprint" do
         it "assigns a default name for the first sprint" do
@@ -175,42 +175,42 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
 
       context "when there is a predecessor sprint with a name ending in a number" do
         it "increments the number for single-digit numbers" do
-          create(:agile_sprint, project:, name: "Sprint 1")
+          create(:sprint, project:, name: "Sprint 1")
 
           service_call
           expect(sprint.name).to eq("Sprint 2")
         end
 
         it "increments the number for multi-digit numbers" do
-          create(:agile_sprint, project:, name: "Sprint 42")
+          create(:sprint, project:, name: "Sprint 42")
 
           service_call
           expect(sprint.name).to eq("Sprint 43")
         end
 
         it "increments the number for custom names ending in numbers" do
-          create(:agile_sprint, project:, name: "Be ambitious 42")
+          create(:sprint, project:, name: "Be ambitious 42")
 
           service_call
           expect(sprint.name).to eq("Be ambitious 43")
         end
 
         it "handles names with multiple spaces before the number" do
-          create(:agile_sprint, project:, name: "Release  99")
+          create(:sprint, project:, name: "Release  99")
 
           service_call
           expect(sprint.name).to eq("Release  100")
         end
 
         it "increments from 9 to 10" do
-          create(:agile_sprint, project:, name: "Sprint 9")
+          create(:sprint, project:, name: "Sprint 9")
 
           service_call
           expect(sprint.name).to eq("Sprint 10")
         end
 
         it "increments from 99 to 100" do
-          create(:agile_sprint, project:, name: "Sprint 99")
+          create(:sprint, project:, name: "Sprint 99")
 
           service_call
           expect(sprint.name).to eq("Sprint 100")
@@ -219,21 +219,21 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
 
       context "when there is a predecessor sprint with a custom name not ending in a number" do
         it "assigns an empty string" do
-          create(:agile_sprint, project:, name: "Custom Sprint Name")
+          create(:sprint, project:, name: "Custom Sprint Name")
 
           service_call
           expect(sprint.name).to eq("")
         end
 
         it "assigns an empty string for names with numbers in the middle" do
-          create(:agile_sprint, project:, name: "Sprint 2023 Planning")
+          create(:sprint, project:, name: "Sprint 2023 Planning")
 
           service_call
           expect(sprint.name).to eq("")
         end
 
         it "assigns an empty string for names ending with non-numeric characters" do
-          create(:agile_sprint, project:, name: "Sprint Alpha")
+          create(:sprint, project:, name: "Sprint Alpha")
 
           service_call
           expect(sprint.name).to eq("")
@@ -242,16 +242,16 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
 
       context "when there are multiple predecessor sprints" do
         it "uses the most recent sprint" do
-          create(:agile_sprint, project:, name: "Sprint 1", created_at: 2.days.ago)
-          create(:agile_sprint, project:, name: "Sprint 2", created_at: 1.day.ago)
+          create(:sprint, project:, name: "Sprint 1", created_at: 2.days.ago)
+          create(:sprint, project:, name: "Sprint 2", created_at: 1.day.ago)
 
           service_call
           expect(sprint.name).to eq("Sprint 3")
         end
 
         it "handles mixed naming patterns by using the most recent" do
-          create(:agile_sprint, project:, name: "Sprint 1", created_at: 2.days.ago)
-          create(:agile_sprint, project:, name: "Custom Name", created_at: 1.day.ago)
+          create(:sprint, project:, name: "Sprint 1", created_at: 2.days.ago)
+          create(:sprint, project:, name: "Custom Name", created_at: 1.day.ago)
 
           service_call
           expect(sprint.name).to eq("")
@@ -262,15 +262,15 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
         let(:other_project) { create(:project) }
 
         it "ignores sprints from other projects" do
-          create(:agile_sprint, project: other_project, name: "Other Sprint 5")
+          create(:sprint, project: other_project, name: "Other Sprint 5")
 
           service_call
           expect(sprint.name).to eq("#{I18n.t('activerecord.models.sprint')} 1")
         end
 
         it "only considers sprints from the same project" do
-          create(:agile_sprint, project: other_project, name: "Other Sprint 5")
-          create(:agile_sprint, project:, name: "Sprint 3")
+          create(:sprint, project: other_project, name: "Other Sprint 5")
+          create(:sprint, project:, name: "Sprint 3")
 
           service_call
           expect(sprint.name).to eq("Sprint 4")

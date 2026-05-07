@@ -118,6 +118,7 @@ lt:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -125,8 +126,12 @@ lt:
         title: Jira configuration
         new: New configuration
       banner:
-        title: Limited import capabilities
-        description: 'This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Name
@@ -253,8 +258,10 @@ lt:
               caption_done: Completed
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
-              label_available_data: Available data
-              label_not_available_data: Not available for import
+              label_supported_data: Supported data
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
               label_import: Select which projects you would like to import.
@@ -263,16 +270,23 @@ lt:
               label_progress: Fetching data from Jira...
               elements:
                 relations: Relations between issues
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Project-level workflows
-                users: Users
-                sprints: Sprints
                 schemes: Schemas
-                permissions: User, group and project permissions
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Import data
               caption: Review your import settings and start the import
               caption_done: Completed
-              label_available_data: Available data to import
+              label_available_data: Data to be imported
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -280,33 +294,33 @@ lt:
             import_result:
               title: Import run results
               caption: Review import run or revert import
-              info: Import run successful.
+              info: Import run was successful.
               label_results: Imported
               label_revert: Revert import
               button_revert: Revert import
-              button_done: Finalize import
-              preview_description: The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Finalize import
-              label_finalizing: Finalizing import...
-              label_finalizing_done: Import finalized.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Reverting import...
               label_reverted: Import reverted.
           select_dialog:
             filter_projects: Filter by text
           import_dialog:
-            title: Start this import?
+            title: Please make sure you have a backup!
             confirm_button: Start import
-            description: 'This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: I understand and made the necessary preparations
+            confirm: I understand and have a backup
           revert_dialog:
             title: Permanently revert this import?
-            description: This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject.
+            description: This will delete all imported objects (including whole projects).
             confirm: I understand that this reversion will delete data permanently
           finalize_dialog:
-            title: Finalize this import?
-            description: Once finalized, this import can no longer be reverted. All imported data will become permanently imported.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: I understand that this action cannot be undone
             confirm_button: Understood
           select_projects:
@@ -413,11 +427,12 @@ lt:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
@@ -435,16 +450,13 @@ lt:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -465,8 +477,14 @@ lt:
         ignore: Ignore changes
         save: Save changes and continue
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Select role
+        roles:
+          one: "%{count} role selected"
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
         description: Add statuses to start configuring workflows for this role
@@ -702,6 +720,37 @@ lt:
   danger_dialog:
     confirmation_live_message_checked: The button to proceed is now active.
     confirmation_live_message_unchecked: The button to proceed is now inactive. You need to tick the checkbox to continue.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Pagination
     prev: Previous
@@ -1097,6 +1146,8 @@ lt:
       no_results_title_text: Nėra jokių naujienų.
       no_results_content_text: Pridėti kaip naujieną
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -1108,6 +1159,8 @@ lt:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Likti prisijungus %{num_days}
     sessions:
@@ -1366,6 +1419,37 @@ lt:
     index:
       no_results_content_text: Pridėti naują wiki puslapį
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            few: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            few: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1375,10 +1459,30 @@ lt:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Šiuo metu darbo sekų.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1843,6 +1947,7 @@ lt:
         identity_url: Identiteto URL
         parent: Parent group
         organizational_unit: Organizational unit
+        group_users: Group users
       group_detail:
         parent: Parent group
         organizational_unit: Organizational unit
@@ -1917,6 +2022,7 @@ lt:
         duration: Trukmė
         end_insertion: Įterpimo pabaigoje
         end_deletion: Ištrynimo pabaigoje
+        identifier: Identifier
         ignore_non_working_days: Ignoruoti nedarbo dienas
         include_non_working_days:
           title: Darbo dienos
@@ -1932,6 +2038,7 @@ lt:
         readonly: Tik skaitymui
         remaining_hours: Liko darbo
         remaining_time: Liko darbo
+        sequence_number: Sequence number
         shared_with_users: Dalinamasi su
         schedule_manually: Rankinis laiko parinkimas
         spent_hours: Praleista laiko
@@ -1941,6 +2048,29 @@ lt:
         type: Tipas
         version: Versija
         watcher: Stebėtojas
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: turi būti patvirtinta.
@@ -1960,6 +2090,7 @@ lt:
         confirmation: nesutampa su %{attribute}.
         could_not_be_copied: "%{dependency} negali (pilnai) būti nukopijuota(s)."
         does_not_exist: neegzistuoja.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: negali būti pasiektas.
         error_readonly: bandytas įrašyti, bet įrašyti nebuvo galima.
@@ -1983,6 +2114,7 @@ lt:
         inclusion: nenustatyta kaip viena iš leidžiamų reikšmių.
         inclusion_nested: nėra nustatytas į vieną iš leidžiamų reikšmių kelyje „%{path}“.
         invalid: " neteisingas."
+        invalid_uri: must be a valid URI.
         invalid_url: nėra tinkamas URL.
         invalid_url_scheme: 'nėra palaikomos protokolas (leidžiamas: %{allowed_schemes}).'
         less_than_or_equal_to: turi būti mažesnis arba lygus %{count}.
@@ -1996,6 +2128,7 @@ lt:
         not_a_datetime: nėra tinkama data ir laikas.
         not_a_number: nėra skaičius.
         not_allowed: netinkamas dėl trūkstamų teisių.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: nėra sveikasis skaičius.
@@ -2026,6 +2159,7 @@ lt:
           attributes:
             parent_id:
               circular_dependency: would create a circular group hierarchy.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2214,6 +2348,7 @@ lt:
           not_whitelisted: neleidžiama pagal konfigūraciją.
           invalid_url: nėra tinkamas repozitorijos URL ar kelias.
           must_not_be_ssh: neturi būti SSH URL.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nėra aplankas.
         role:
           attributes:
@@ -2264,6 +2399,8 @@ lt:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID negali būti tuščias.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2332,7 +2469,7 @@ lt:
               confirmation: Slaptažodžio patvirtinimas nesutampa su įvestu slaptažodžiu.
               format: "%{message}"
             password:
-              weak: 'Turi turėti simbolius iš šitų klasių (mažiausiai %{min_count} iš %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: mažosios raidės (pvz., „a“)
               uppercase: didžiosios raidės (pvz., „A“)
               numeric: skaitinė reikšmė (pvz., „1“)
@@ -2487,6 +2624,7 @@ lt:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: "%{datetime} sukūrė %{user}"
@@ -2548,7 +2686,6 @@ lt:
     avatar: Nuotrauka
     base: 'Bendroji klaida:'
     body: Body
-    blocks_ids: Blokuotų darbų paketų ID reikšmės
     category: Kategorija
     comment: Komentaras
     comments: Komentaras
@@ -3421,18 +3558,17 @@ lt:
         header: Skaitykite apie naujas savybes ir produkto atnaujinimus.
         learn_about: Learn more about all new features
         missing: There are no highlighted features yet.
-        '17_3':
+        '17_4':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Pagerinti į Enterprise versiją
       postgres_migration: Migruojame jūsų instaliaciją į PostgreSQL
@@ -3591,7 +3727,7 @@ lt:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3605,6 +3741,7 @@ lt:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3617,6 +3754,7 @@ lt:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3625,6 +3763,7 @@ lt:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3639,6 +3778,7 @@ lt:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3647,6 +3787,7 @@ lt:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3705,6 +3846,7 @@ lt:
   label_age: Amžius
   label_ago: dienų prieš
   label_all: visi
+  label_all_uppercase: All
   label_all_time: visas laikas
   label_all_words: Visi žodžiai
   label_all_open_wps: Visi atviri
@@ -3806,6 +3948,7 @@ lt:
   label_commits_per_month: Komentarai pagal mėnesį
   label_confirmation: Patvirtinimas
   label_contains: turi
+  label_starts_with: starts with
   label_content: Turinys
   label_color_plural: Spalvos
   label_copied: nukopijuotas
@@ -3813,6 +3956,8 @@ lt:
   label_copy_source: Šaltinis
   label_copy_target: Tikslas
   label_copy_workflow_from: Kopijuoti darbų eigą iš
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Kopijuoti projektą
   label_core_version: Branduolio versija
   label_core_build: Branduolio versija
@@ -4011,6 +4156,10 @@ lt:
   label_custom_pdf_export_settings: Savi PDF eksporto nustatymai
   label_custom_favicon: Pasirinktinė piktograma
   label_custom_touch_icon: Pasirinktinė prisilietimo piktograma
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Atsijungti
   label_mapping_for: 'Mapping for: %{attribute}'
   label_main_menu: Šoninis meniu
@@ -4116,6 +4265,10 @@ lt:
   label_password_rule_numeric: Skaitiniai simboliai
   label_password_rule_special: Specialūs simboliai
   label_password_rule_uppercase: Didžiosios raidės
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Kelio koduotė
   label_per_page: 'Puslapyje:'
   label_people: Žmonės
@@ -4221,6 +4374,7 @@ lt:
   label_role_new: Naujas vaidmuo
   label_role_grantable: Grantable role
   label_role_plural: Vaidmenys
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Priskirti vaidmenį naujiems nariams
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -4453,7 +4607,7 @@ lt:
       you_have: Jūs turite
     logo_alt_text: Logotipas
     mention:
-      subject: "%{user_name} paminėjo jus #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Į pranešimų centrą
       see_in_center: Žiūrėkite komentarą pranešimų centre
@@ -4490,10 +4644,10 @@ lt:
       note: 'Note: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Kad prieitumėte prie darbo paketo, jums reikės sukurti ir aktyvuoti %{instance}  paskyrą.
         open_work_package: Atverti darbo paketą
-        subject: 'Su jumis buvo pabendrintas darbo paketas #%{id}'
+        subject: Work package %{id} was shared with you
         enterprise_text: Dalintis darbo paketais su naudotojais, kurie nėra projekto nariai.
         summary:
           user: "%{user} bendrino darbo paketą su jumis su teisėmis %{role_rights}"
@@ -4708,6 +4862,18 @@ lt:
     text_getting_started_description: Gaukite greitą apžvalgą apie projektų valdymą ir komandos bendradarbiavimą naudojant OpenProject. Šį video galite paleisti iš naujo per pagalbos meniu.
     welcome: Jus sveikina %{app_title}
     select_language: Pasirinkite kalbą
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Pridėti darbų paketų
   permission_add_messages: Skelbti pranešimus
@@ -4725,7 +4891,6 @@ lt:
   permission_add_work_package_watchers: Pridėti stebėtojus
   permission_assign_versions: Priskirti versijas
   permission_browse_repository: Tik skaityti prieiga prie repozitorijos (naršyti ir pasiimti)
-  permission_change_wiki_parent_page: Pakeisti tėvinį wiki puslapį
   permission_change_work_package_status: Keisti darbo paketo būseną
   permission_change_work_package_status_explanation: Leidžia keisti būseną neturint darbo paketo keitimo teisių
   permission_comment_news: Komentuoti naujienas
@@ -4740,8 +4905,6 @@ lt:
   permission_delete_own_messages: Pašalinti savo pranešimus
   permission_delete_reportings: Šalinti ataskaitas
   permission_delete_timelines: Šalinti laiko juostas
-  permission_delete_wiki_pages: Pašalinti wiki puslapius
-  permission_delete_wiki_pages_attachments: Pašalinti priedus
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Redaguoti darbų paketus
@@ -4761,12 +4924,10 @@ lt:
   permission_edit_wiki_pages: Redaguoti wiki puslapius
   permission_export_work_packages: Eksportuoti darbų paketus
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Eksportuoti wiki puslapius
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: Pateikti priedus
   permission_log_own_time: Registruoti savo laiką
   permission_log_time: Registruoti kitų naudotojų laiką
   permission_manage_forums: Valdyti forumus
@@ -4781,7 +4942,6 @@ lt:
   permission_manage_subtasks: Valdyti darbų paketo hierarchijas
   permission_manage_versions: Valdyti versijas
   permission_manage_wiki: Valdyti wiki
-  permission_manage_wiki_menu: Valdyti wiki meniu
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4791,8 +4951,6 @@ lt:
 
     '
   permission_move_work_packages: Perkelti darbų paketus
-  permission_protect_wiki_pages: Apsaugoti wiki puslapius
-  permission_rename_wiki_pages: Pervadinti wiki puslapius
   permission_save_queries: Įrašyti vaizdus
   permission_search_project: Ieškoti projekte
   permission_select_custom_fields: Parinkite savo laukus
@@ -5089,6 +5247,7 @@ lt:
     '
   setting_app_subtitle: Programos paantraštė
   setting_app_title: Programos pavadinimas
+  setting_organization_name: Organization name
   setting_attachment_max_size: Didžiausias prisegamo failo dydis
   setting_show_work_package_attachments: Pagal nutylėjimą rodyti priedus failų kortelėje
   setting_antivirus_scan_mode: Skenavimo režimas
@@ -5164,13 +5323,15 @@ lt:
   setting_mail_handler_body_delimiter_regex: Sutrumpinti laiškus, atitinkančius šią reguliarią išraišką
   setting_mail_handler_ignore_filenames: Ignoruoti laiško priedai
   setting_new_project_user_role_id: Vaidmuo suteiktas naudotojui, kuris nėra administratorius ir kuris kuria projektą
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Aktyvios savybių klasės
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Vėliausiai uždraustų pakartotinai naudoti slaptažodžių skaičius
   setting_password_days_valid: Dienų skaičius, po kurio versti pasikeisti slaptažodį
   setting_password_min_length: Minimalus ilgis
-  setting_password_min_adhered_rules: Minimalus reikalingų klasių skaičius
   setting_per_page_options: Įrašų puslapyje nustatymai
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: No change
@@ -5579,6 +5740,7 @@ lt:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Iš naujo priskirti darbų paketui:'
   text_regexp_multiline: Reguliarioji išraiška yra pritaikoma daug eilučių režime, pvz., ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Parinkite ar atnaujinkite OpenProject naudotoją, kuris paminėtas repozitorijos žurnale.
     Naudotojai, turintys tą patį OpenProject ir repozitorijos vardą ar el. paštą yra automatiškai surišti.
@@ -5760,10 +5922,13 @@ lt:
           same_as_work: Set to same value as Work.
     permissions:
       comment: Komentaras
+      comment_verb: comment
       comment_description: Gali žiūrėti ir komentuoti šį darbo paketą.
       edit: Redaguoti
+      edit_verb: edit
       edit_description: Gali žiūrėti, komentuoti ir keisti šį darbo paketą.
       view: Peržiūrėti
+      view_verb: view
       view_description: Gali žiūrėti šį darbo paketą.
     reminders:
       label_remind_at: Data
@@ -6015,11 +6180,6 @@ lt:
       scopes: Leidimai
       successful_application_revocation: Aplikacijos %{application_name} atšaukimas sėkmingas.
       none_given: Jokioms OAuth aplikacijoms nesuteikta prieiga prie jūsų paskyros.
-    x_active_tokens:
-      one: vienas akytus žetonas
-      few: "%{count} aktyvių žetonų"
-      many: "%{count} aktyvių žetonų"
-      other: "%{count} aktyvių žetonų"
     flows:
       authorization_code: Autorizacijos kodo eiga
       client_credentials: Kliento įgaliojimų eiga
@@ -6029,8 +6189,12 @@ lt:
     client_credentials_impersonation_html: 'Pagal nutylėjimą OpenProject teikia OAuth 2.0 autorizaciją per %{authorization_code_flow_link}. Pasirinktinai galite įjungti %{client_credentials_flow_link}, bet privalote pateikti naudotoją, kurio vardu bus vykdomos visos užklausos.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      few: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      many: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Įvyko autorizacijos klaida.
-    revoke_my_application_confirmation: Ar tikrai norite išimti šią aplikaciją? Tai atšauks %{token_count} aktyvių žetonų.
     my_registered_applications: Registruotos OAuth aplikacijos
   oauth_client:
     urn_connection_status:

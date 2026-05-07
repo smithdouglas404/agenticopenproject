@@ -81,7 +81,7 @@ RSpec.describe MeetingAgendaItems::UpdateContract do
       context "when the section belongs to a different meeting in the same series" do
         let(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
         let(:occurrence) do
-          create(:meeting, project:, recurring_meeting:, template: false)
+          create(:recurring_meeting_occurrence, project:, recurring_meeting:, template: false)
         end
         let(:item) { create(:meeting_agenda_item, meeting: recurring_meeting.template) }
         let(:new_section) { create(:meeting_section, meeting: occurrence) }
@@ -118,6 +118,33 @@ RSpec.describe MeetingAgendaItems::UpdateContract do
             expect(contract.errors[:presenter]).not_to include(presenter.name)
           end
         end
+      end
+    end
+
+    context "when changing work_package_id" do
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i[manage_agendas view_work_packages] })
+      end
+      let(:other_project) { create(:project) }
+      let(:visible_work_package) { create(:work_package, project:) }
+      let(:other_visible_work_package) { create(:work_package, project:) }
+      let(:other_work_package) { create(:work_package, project: other_project) }
+      let(:item) { create(:wp_meeting_agenda_item, meeting:, work_package: visible_work_package) }
+
+      context "when the new work package is visible" do
+        before do
+          item.work_package = other_visible_work_package
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when the new work package is not visible" do
+        before do
+          item.work_package = other_work_package
+        end
+
+        it_behaves_like "contract is invalid", work_package: :error_not_found
       end
     end
   end

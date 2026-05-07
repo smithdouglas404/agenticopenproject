@@ -69,7 +69,8 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
+                   { "backlogs/backlog_buckets": %i[new_dialog create edit_dialog update destroy_dialog destroy],
+                     "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
@@ -81,7 +82,7 @@ module OpenProject::Backlogs
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items]
 
         permission :manage_sprint_items,
-                   { "backlogs/work_packages": %i[move reorder],
+                   { "backlogs/work_packages": %i[move reorder move_to_sprint_dialog],
                      "backlogs/inbox": %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,
@@ -92,6 +93,14 @@ module OpenProject::Backlogs
                    permissible_on: :project,
                    require: :member,
                    dependencies: :create_sprints
+      end
+
+      ::Redmine::MenuManager.map(:admin_menu) do |menu|
+        menu.push :admin_backlogs,
+                  { controller: "/backlogs/settings", action: :show },
+                  if: ->(_) { User.current.admin? },
+                  caption: :label_backlogs,
+                  icon: "op-backlogs"
       end
 
       menu :project_menu,
@@ -121,21 +130,16 @@ module OpenProject::Backlogs
 
     patches %i[PermittedParams
                WorkPackage
-               Project
-               Version]
+               Project]
 
     patch_with_namespace :BasicData, :SettingSeeder
-    patch_with_namespace :DemoData, :ProjectSeeder
     patch_with_namespace :WorkPackages, :SetAttributesService
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
+    patch_with_namespace :API, :V3, :WorkPackages, :Schema, :SpecificWorkPackageSchema
 
     config.to_prepare do
-      next if Versions::BaseContract.include?(OpenProject::Backlogs::Patches::Versions::BaseContractPatch)
-
-      Versions::BaseContract.prepend(OpenProject::Backlogs::Patches::Versions::BaseContractPatch)
-
       # Add available settings to the user preferences
       UserPreferences::Schema.merge!(
         "definitions/UserPreferences/properties",
@@ -220,6 +224,7 @@ module OpenProject::Backlogs
         filter Queries::WorkPackages::Filter::SprintFilter
 
         select OpenProject::Backlogs::QueryBacklogsSelect
+        select OpenProject::Backlogs::WorkPackageSprintSelect
       end
     end
   end

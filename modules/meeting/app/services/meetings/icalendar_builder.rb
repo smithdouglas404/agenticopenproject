@@ -124,9 +124,8 @@ module Meetings
       add_virtual_occurences_for_interim_responses(recurring_meeting: recurring_meeting)
     end
 
-    def add_single_recurring_occurrence(scheduled_meeting:, cancelled: false) # rubocop:disable Metrics/AbcSize
-      recurring_meeting = scheduled_meeting.recurring_meeting
-      meeting = scheduled_meeting.meeting
+    def add_single_recurring_occurrence(meeting:, cancelled: false) # rubocop:disable Metrics/AbcSize
+      recurring_meeting = meeting.recurring_meeting
 
       calendar.event do |e|
         e.uid = recurring_meeting.uid
@@ -143,13 +142,13 @@ module Meetings
         e.last_modified = meeting.updated_at.utc
         e.sequence = [meeting.lock_version, recurring_meeting.template.lock_version].max
 
-        e.recurrence_id = ical_datetime(scheduled_meeting.start_time, timezone: recurring_meeting.time_zone)
+        e.recurrence_id = ical_datetime(meeting.recurrence_start_time, timezone: recurring_meeting.time_zone)
         e.dtstart = ical_datetime(meeting.start_time, timezone: recurring_meeting.time_zone)
         e.dtend = ical_datetime(meeting.end_time, timezone: recurring_meeting.time_zone)
         e.location = meeting.location.presence
 
         add_attendees(event: e, meeting: meeting)
-        e.status = if cancelled || scheduled_meeting.cancelled?
+        e.status = if cancelled || meeting.cancelled?
                      "CANCELLED"
                    else
                      "CONFIRMED"
@@ -171,19 +170,22 @@ module Meetings
       calendar.to_ical
     end
 
-    def preload_for_recurring_meetings(recurring_meetings:)
-      @excluded_dates_cache = ScheduledMeeting
+    def preload_for_recurring_meetings(recurring_meetings:) # rubocop:disable Metrics/AbcSize
+      @excluded_dates_cache = Meeting
+        .not_templated
         .cancelled
         .where(recurring_meeting: recurring_meetings)
+        .where.not(recurrence_start_time: nil)
         .group(:recurring_meeting_id)
-        .pluck(:recurring_meeting_id, "array_agg(start_time)")
+        .pluck(:recurring_meeting_id, "array_agg(recurrence_start_time)")
         .to_h
 
-      @instantiated_occurrences_cache = ScheduledMeeting
-        .where(recurring_meeting: recurring_meetings)
+      @instantiated_occurrences_cache = Meeting
+        .not_templated
         .not_cancelled
-        .instantiated
-        .includes(meeting: [:project], recurring_meeting: [:project])
+        .where(recurring_meeting: recurring_meetings)
+        .where.not(recurrence_start_time: nil)
+        .includes(:project, recurring_meeting: [:project])
         .group_by(&:recurring_meeting_id)
 
       @interim_responses_cache = RecurringMeetingInterimResponse
@@ -299,8 +301,8 @@ module Meetings
 
     # Methods for recurring meetings
     def add_instantiated_occurrences(recurring_meeting:)
-      upcoming_instantiated_schedules(recurring_meeting).each do |scheduled_meeting|
-        add_single_recurring_occurrence(scheduled_meeting:)
+      upcoming_instantiated_schedules(recurring_meeting).each do |meeting|
+        add_single_recurring_occurrence(meeting:)
       end
     end
 
@@ -345,9 +347,11 @@ module Meetings
                        @excluded_dates_cache[recurring_meeting.id] || []
                      else
                        recurring_meeting
-                         .scheduled_meetings
+                         .meetings
+                         .not_templated
                          .cancelled
-                         .pluck(:start_time)
+                         .where.not(recurrence_start_time: nil)
+                         .pluck(:recurrence_start_time)
                      end.map { ical_datetime(it, timezone: recurring_meeting.time_zone) }
     end
 
@@ -356,10 +360,11 @@ module Meetings
         @instantiated_occurrences_cache[recurring_meeting.id] || []
       else
         recurring_meeting
-          .scheduled_meetings
+          .meetings
+          .not_templated
           .not_cancelled
-          .instantiated
-          .includes(meeting: [:project], recurring_meeting: [:project])
+          .where.not(recurrence_start_time: nil)
+          .includes(:project, recurring_meeting: [:project])
       end
     end
 

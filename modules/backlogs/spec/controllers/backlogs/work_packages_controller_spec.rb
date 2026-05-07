@@ -39,8 +39,8 @@ RSpec.describe Backlogs::WorkPackagesController do
   let(:user) { create(:admin) }
   let(:project) { create(:project) }
   let(:status) { create(:status, name: "status 1", is_default: true) }
-  let(:agile_sprint) { create(:agile_sprint, name: "Agile Sprint 1", project:) }
-  let(:story) { create(:work_package, status:, sprint: agile_sprint, project:) }
+  let(:sprint) { create(:sprint, name: "Agile Sprint 1", project:) }
+  let(:story) { create(:work_package, status:, sprint:, project:) }
 
   describe "load_story" do
     subject do
@@ -52,7 +52,7 @@ RSpec.describe Backlogs::WorkPackagesController do
     let(:load_story_id) { story.id }
 
     context "when the work package is in the requested sprint" do
-      let(:requested_sprint) { agile_sprint }
+      let(:requested_sprint) { sprint }
 
       it "assigns the visible work package", :aggregate_failures do
         subject
@@ -63,7 +63,7 @@ RSpec.describe Backlogs::WorkPackagesController do
     end
 
     context "when the work package is not in the requested sprint" do
-      let(:requested_sprint) { create(:agile_sprint, name: "Other Sprint load_story", project:) }
+      let(:requested_sprint) { create(:sprint, name: "Other Sprint load_story", project:) }
 
       it { is_expected.to have_http_status :not_found }
     end
@@ -71,15 +71,15 @@ RSpec.describe Backlogs::WorkPackagesController do
 
   describe "POST #reorder" do
     it "responds with success", :aggregate_failures do
-      post :reorder, params: { project_id: project.id, sprint_id: agile_sprint.id, id: story.id, direction: "highest" },
+      post :reorder, params: { project_id: project.id, sprint_id: sprint.id, id: story.id, direction: "highest" },
                      format: :turbo_stream
 
       expect(response).to be_successful
       expect(response).to have_http_status :ok
-      expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
-      assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"][method="morph"])
+      expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{sprint.id}"
+      assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{sprint.id}"][method="morph"])
       expect(assigns(:project)).to eq(project)
-      expect(assigns(:sprint)).to eq(agile_sprint)
+      expect(assigns(:sprint)).to eq(sprint)
       expect(assigns(:story)).to eq(story)
     end
 
@@ -95,42 +95,42 @@ RSpec.describe Backlogs::WorkPackagesController do
       end
 
       it "renders an error flash with 422", :aggregate_failures do
-        post :reorder, params: { project_id: project.id, sprint_id: agile_sprint.id, id: story.id, direction: "highest" },
+        post :reorder, params: { project_id: project.id, sprint_id: sprint.id, id: story.id, direction: "highest" },
                        format: :turbo_stream
 
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{sprint.id}"
       end
     end
   end
 
   describe "PUT #move" do
-    let(:story_in_agile_sprint) { create(:work_package, status:, sprint: agile_sprint, project:) }
+    let(:story_in_sprint) { create(:work_package, status:, sprint:, project:) }
 
-    context "with another Agile::Sprint as target" do
-      let(:other_agile_sprint) { create(:agile_sprint, name: "Agile Sprint 2", project:) }
+    context "with another Sprint as target" do
+      let(:other_sprint) { create(:sprint, name: "Agile Sprint 2", project:) }
 
-      it "responds with success and moves story to another Agile::Sprint", :aggregate_failures do
+      it "responds with success and moves story to another Sprint", :aggregate_failures do
         put :move, params: {
                      project_id: project.id,
-                     sprint_id: agile_sprint.id,
-                     id: story_in_agile_sprint.id,
-                     target_id: "sprint:#{other_agile_sprint.id}",
+                     sprint_id: sprint.id,
+                     id: story_in_sprint.id,
+                     target_id: "sprint:#{other_sprint.id}",
                      prev_id: nil
                    },
                    format: :turbo_stream
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{other_agile_sprint.id}"
-        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{other_agile_sprint.id}"])
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{other_sprint.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{sprint.id}"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{other_sprint.id}"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
-        expect(assigns(:sprint)).to eq(agile_sprint)
-        expect(assigns(:story)).to eq(story_in_agile_sprint)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:story)).to eq(story_in_sprint)
       end
     end
 
@@ -140,8 +140,8 @@ RSpec.describe Backlogs::WorkPackagesController do
       it "responds with success and moves story to Inbox at the given position", :aggregate_failures do
         put :move, params: {
                      project_id: project.id,
-                     sprint_id: agile_sprint.id,
-                     id: story_in_agile_sprint.id,
+                     sprint_id: sprint.id,
+                     id: story_in_sprint.id,
                      target_id: "inbox",
                      prev_id: existing_inbox_item.id
                    },
@@ -149,21 +149,43 @@ RSpec.describe Backlogs::WorkPackagesController do
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
-        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-inbox-component-#{project.id}"][method="morph"])
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{project.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{sprint.id}"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{project.id}"][method="morph"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
-        expect(assigns(:sprint)).to eq(agile_sprint)
-        expect(assigns(:story)).to eq(story_in_agile_sprint)
-        expect(story_in_agile_sprint.reload.sprint).to be_nil
-        expect(story_in_agile_sprint.reload.position).to eq(2)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:story)).to eq(story_in_sprint)
+        expect(story_in_sprint.reload.sprint).to be_nil
+        expect(story_in_sprint.reload.position).to eq(2)
+      end
+
+      context "when all=1 with an inbox over the pagination threshold" do
+        before do
+          stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
+          create_list(:work_package, 4, project:, status:)
+        end
+
+        it "replaces the inbox without a show-more row in the stream" do
+          put :move, params: {
+                       project_id: project.id,
+                       sprint_id: sprint.id,
+                       id: story_in_sprint.id,
+                       target_id: "inbox",
+                       prev_id: existing_inbox_item.id,
+                       all: "1"
+                     },
+                     format: :turbo_stream
+
+          expect(response).to be_successful
+          expect(response.body).not_to include("inbox_project_#{project.id}_show_more")
+        end
       end
     end
 
     context "when service call fails" do
-      let(:other_agile_sprint) { create(:agile_sprint, name: "Agile Sprint 2", project:) }
+      let(:other_sprint) { create(:sprint, name: "Agile Sprint 2", project:) }
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
 
       before do
@@ -177,29 +199,115 @@ RSpec.describe Backlogs::WorkPackagesController do
       it "renders an error flash with 422", :aggregate_failures do
         put :move, params: {
                      project_id: project.id,
-                     sprint_id: agile_sprint.id,
-                     id: story_in_agile_sprint.id,
-                     target_id: "sprint:#{other_agile_sprint.id}",
+                     sprint_id: sprint.id,
+                     id: story_in_sprint.id,
+                     target_id: "sprint:#{other_sprint.id}",
                      position: 1
                    },
                    format: :turbo_stream
 
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{sprint.id}"
       end
     end
   end
 
   describe "GET #menu" do
     subject do
-      get :menu, params: { project_id: project.id, sprint_id: agile_sprint.id, id: story.id }, format: :html
+      get :menu, params: { project_id: project.id, sprint_id: sprint.id, id: story.id }, format: :html
     end
 
     it "returns deferred action menu list HTML", :aggregate_failures do
       subject
       expect(response).to have_http_status :ok
       expect(response.body).to include(I18n.t(:"js.button_open_details"))
+    end
+
+    context "when all=1 is in params" do
+      subject do
+        get :menu,
+            params: { project_id: project.id, sprint_id: sprint.id, id: story.id, all: "1" },
+            format: :html
+      end
+
+      it "embeds the all query in deferred action URLs" do
+        subject
+        expect(response.body).to match(/all=1/)
+      end
+    end
+
+    context "when another open sprint exists" do
+      let!(:other_open_sprint) { create(:sprint, name: "Sprint 2", project:) }
+
+      before { allow(Backlogs::StoryMenuListComponent).to receive(:new).and_call_original }
+
+      it "passes open_sprints_exist: true to the menu component" do
+        subject
+
+        expect(Backlogs::StoryMenuListComponent)
+          .to have_received(:new)
+          .with(hash_including(open_sprints_exist: true))
+      end
+    end
+
+    context "when no other open sprints exist" do
+      before { allow(Backlogs::StoryMenuListComponent).to receive(:new).and_call_original }
+
+      it "passes open_sprints_exist: false to the menu component" do
+        subject
+
+        expect(Backlogs::StoryMenuListComponent)
+          .to have_received(:new)
+          .with(hash_including(open_sprints_exist: false))
+      end
+    end
+
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 404" do
+        subject
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
+
+  describe "GET #move_to_sprint_dialog" do
+    subject do
+      get :move_to_sprint_dialog,
+          params: { project_id: project.id, sprint_id: sprint.id, id: story.id },
+          format: :turbo_stream
+    end
+
+    context "when user has manage_sprint_items permission" do
+      it "responds with a dialog turbo stream", :aggregate_failures do
+        subject
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "dialog"
+      end
+    end
+
+    context "when all=1 is in params" do
+      subject do
+        get :move_to_sprint_dialog,
+            params: { project_id: project.id, sprint_id: sprint.id, id: story.id, all: "1" },
+            format: :turbo_stream
+      end
+
+      it "embeds the all query in the dialog form action URL" do
+        subject
+        expect(response.body).to match(/all=1/)
+      end
+    end
+
+    context "with a user lacking manage_sprint_items permission" do
+      let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] }) }
+
+      it "responds with 403" do
+        subject
+        expect(response).to have_http_status :forbidden
+      end
     end
 
     context "with a user lacking project permission" do

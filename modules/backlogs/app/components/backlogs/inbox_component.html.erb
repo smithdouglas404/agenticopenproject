@@ -26,90 +26,56 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
-<%= component_wrapper(tag: "turbo-frame", refresh: :morph, style: "display:contents") do %>
-  <%=
-    render(Primer::Beta::Subhead.new(hide_border: true, pb: 0)) do |head|
-      head.with_heading(
-        tag: :h3,
-        size: :medium,
-        font_weight: :bold,
-        display: :inline_flex,
-        align_items: :center,
-        classes: "gap-2"
-      ) do
-        concat t(:label_backlog)
-        concat render(
-          Primer::Beta::Counter.new(
-            scheme: :default,
-            count: total,
-            round: true,
-            limit: 1_000,
-            hide_if_zero: true
-          )
+
+<%= component_wrapper(tag: :section) do %>
+  <%= render(
+        OpenProject::Common::WorkPackageCardBoxComponent.new(
+          project:,
+          container: dom_target(:inbox, project),
+          drag_and_drop: {
+            target_id: "inbox",
+            allowed_drag_type: "story"
+          },
+          item_component_klass: Backlogs::WorkPackageCardBoxItemComponent,
+          params: all_backlogs_params,
+          current_user:,
+          data: { test_selector: "backlog-inbox" }
         )
-      end
+      ) do |box| %>
+    <% box.with_empty_state(
+         title: t(".blankslate_title"),
+         description: t(".blankslate_description"),
+         icon: :"op-backlogs",
+         spacious: true
+       ) %>
 
-      if allow_sprint_creation?(project)
-        # Ugly hack:
-        # This button will not be rendered, but still takes up space to push the left side down a bit.
-        # Remove as soon as the `+ Sprint` button moves from the Subhead into a SubHeader.
-        head.with_actions do
-          render(Primer::Beta::Button.new(tag: :a, visibility: :hidden)) { "spacer" }
-        end
-      end
-    end
-  %>
+    <% visible_work_packages.each.with_index do |work_package, index| %>
+      <% box.with_work_package_item(work_package:) %>
 
-  <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
-    <% if work_packages.empty? %>
-      <% border_box.with_row(data: { empty_list_item: true }) do %>
-        <%=
-          render Primer::Beta::Blankslate.new(spacious: true, role: "status", aria: { live: "polite" }) do |blankslate|
-            blankslate.with_visual_icon(icon: :"op-backlogs")
-            blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title"))
-            blankslate.with_description_content(t(".blankslate_description"))
-          end
-        %>
+      <% if truncated? && index == TRUNCATE_MIDDLE - 1 %>
+        <% box.with_item(
+             scheme: :neutral,
+             classes: "op-work-package-card-box--show-more-row",
+             data: { draggable_id: last_omitted_id }
+           ) do %>
+          <%= render(
+                Primer::Beta::Button.new(
+                  id: show_more_id,
+                  scheme: :link,
+                  tag: :a,
+                  size: :large,
+                  block: true,
+                  align_content: :start,
+                  underline: true,
+                  href: project_backlogs_backlog_path(project, all: 1),
+                  data: {
+                    turbo_frame: "backlogs_container",
+                    turbo_action: :advance
+                  }
+                )
+              ) { show_more_label } %>
+        <% end %>
       <% end %>
-    <% end %>
-
-    <%= render Backlogs::InboxItemComponent.with_collection(
-          paginate? ? first_page : work_packages,
-          container: border_box,
-          project:
-        ) %>
-
-    <% if paginate? %>
-      <% border_box.with_row(
-           id: "inbox-more-row-#{project.id}", scheme: :neutral,
-           classes: "backlogs-inbox-component--show-more-row",
-           # This exists for the edge case of a user dragging a work package just below the fold.
-           # The dragged work package is then placed just after the last work package omitted
-           # by the placeholder.
-           data: {
-             draggable_id: id_of_last_omitted_in_middle
-           }
-         ) do %>
-        <%=
-          render(
-            Primer::Beta::Button.new(
-              scheme: :link,
-              tag: :a,
-              size: :large,
-              block: true,
-              align_content: :start,
-              underline: true,
-              href: project_backlogs_backlog_path(project, all: 1)
-            )
-          ) { t(".show_more", count: middle_count) }
-        %>
-      <% end %>
-
-      <%= render Backlogs::InboxItemComponent.with_collection(
-            last_page,
-            container: border_box,
-            project:
-          ) %>
     <% end %>
   <% end %>
 <% end %>

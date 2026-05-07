@@ -84,11 +84,14 @@ RSpec.describe "API v3 Recurring Meeting Occurrences", content_type: :json do
 
   describe "GET .../occurrences/cancelled" do
     let(:path) { api_v3_paths.recurring_meeting_occurrences_cancelled(recurring_meeting.id) }
-    let!(:cancelled_schedule) do
-      create(:scheduled_meeting,
+    let!(:cancelled_occurrence) do
+      create(:meeting,
+             project:,
+             author: current_user,
              recurring_meeting:,
              start_time: recurring_meeting.first_occurrence,
-             cancelled: true)
+             recurrence_start_time: recurring_meeting.first_occurrence,
+             state: :cancelled)
     end
 
     before { get path }
@@ -132,9 +135,9 @@ RSpec.describe "API v3 Recurring Meeting Occurrences", content_type: :json do
         .at_path("_type")
     end
 
-    it "creates a scheduled meeting record" do
+    it "creates an occurrence meeting" do
       response
-      expect(recurring_meeting.scheduled_meetings.where(start_time:)).to exist
+      expect(recurring_meeting.meetings.not_templated.where(recurrence_start_time: start_time)).to exist
     end
   end
 
@@ -150,10 +153,10 @@ RSpec.describe "API v3 Recurring Meeting Occurrences", content_type: :json do
       expect(subject.status).to eq 204
     end
 
-    it "creates a cancelled scheduled meeting" do
-      scheduled = recurring_meeting.scheduled_meetings.find_by(start_time:)
-      expect(scheduled).to be_present
-      expect(scheduled.cancelled).to be true
+    it "creates a cancelled occurrence" do
+      occurrence = recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: start_time)
+      expect(occurrence).to be_present
+      expect(occurrence).to be_cancelled
     end
 
     context "without edit_meetings permission" do

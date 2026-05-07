@@ -39,5 +39,23 @@ module Wikis
     def providers
       Wikis::Provider.enabled
     end
+
+    def show_inline_and_references_section?
+      inline_page_links.any? || referencing_wiki_pages.any?
+    end
+
+    def inline_page_links
+      @inline_page_links ||= page_link_service.inline_page_link_infos_for(linkable: work_package)
+    end
+
+    def referencing_wiki_pages
+      @referencing_wiki_pages ||= page_link_service.referencing_wiki_page_infos_for(linkable: work_package)
+    end
+
+    private
+
+    def page_link_service
+      @page_link_service ||= PageLinkService.new
+    end
   end
 end

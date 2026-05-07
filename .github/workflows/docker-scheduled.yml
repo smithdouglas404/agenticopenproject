@@ -13,13 +13,21 @@ jobs:
     with:
       branch: dev
       tag: dev
-    secrets: inherit
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DEPLOY_APP_PRIVATE_KEY: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+      OPS_MAIL_SMTP_TOKEN: ${{ secrets.OPS_MAIL_SMTP_TOKEN }}
   build-release-candidate:
     if: github.repository == 'opf/openproject'
     # References to release/X.Y and X.Y-rc are being
     # updated from the devkit (UpdateWorkflows step) whenever a new release branch is created
-    uses: opf/openproject/.github/workflows/docker.yml@release/17.3
+    uses: opf/openproject/.github/workflows/docker.yml@release/17.4
     with:
-      branch: release/17.3
-      tag: 17.3-rc
-    secrets: inherit
+      branch: release/17.4
+      tag: 17.4-rc
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DEPLOY_APP_PRIVATE_KEY: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+      OPS_MAIL_SMTP_TOKEN: ${{ secrets.OPS_MAIL_SMTP_TOKEN }}

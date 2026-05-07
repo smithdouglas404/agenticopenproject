@@ -6,6 +6,7 @@ en:
 
   bim:
     label_bim: 'BIM'
+    error_direct_upload_failed: 'Direct upload failed.'
 
   bcf:
     label_bcf: 'BCF'

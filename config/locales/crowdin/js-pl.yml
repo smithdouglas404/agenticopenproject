@@ -515,12 +515,6 @@ pl:
         sidebar_arrow: Użyj strzałki powrotu w lewym górnym rogu, aby wrócić do <b>menu głównego</b> projektu.
         welcome: "Poświęć trzy minuty na zapoznanie się z <b>najważniejszymi funkcjami</b>. \n <br> Zalecamy wykonanie tych kroków do końca. Zwiedzanie można w każdej chwili zacząć od nowa."
         wiki: W <b>wiki</b> możesz dokumentować wiedzę i dzielić się nią z zespołem.
-        backlogs:
-          overview: Zarządzaj swoją pracą w widoku <b>backlogs</b>.
-          sprints: Po prawej stronie znajduje się backlog produktu i backlog usterek, a po lewej stronie znajdują się odpowiednie sprinty. Tutaj można tworzyć <b>wydarzenia, wpisy użytkownika i usterki</b>, nadawać priorytety metodą przeciągania i upuszczania oraz dodawać je do sprintu.
-          task_board_arrow: Aby zobaczyć swój <b>panel zadań</b>, otwórz menu rozwijane sprint...
-          task_board_select: "...i wybierz wpis <b>panel zadań</b>."
-          task_board: Panel zadań przedstawia <b>postęp tego sprintu</b>. Dodaj nowe zadania lub przeszkody, klikając ikonę (+) obok wpisu użytkownika. <br>Stan można zaktualizować metodą przeciągania i upuszczania.
         boards:
           overview: Wybierz <b>tablice</b>, aby zmienić widok i zarządzać projektem za pomocą widoku tablic.
           lists_kanban: Tutaj możesz utworzyć wiele list (kolumn) w jednym widoku tablicy. Ta funkcja pozwala ci na przykład na utworzenie <b>tablicy Kanban</b>.
@@ -989,13 +983,6 @@ pl:
       form_submit:
         title: Potwierdź, aby kontynuować
         text: Czy na pewno chcesz wykonać tę akcję?
-      destroy_work_package:
-        title: Potwierdź usunięcie %{label}
-        single_text: Czy na pewno chcesz usunąć pakiet roboczy
-        bulk_text: Czy na pewno chcesz usunąć %{label}?
-        has_children: 'Pakiet roboczy zawiera %{childUnits}:'
-        confirm_deletion_children: Potwierdzam, że WSZYSTKIE elementy potomne pakietów roboczych z listy będą rekurencyjnie usuwane.
-        deletes_children: Wszystkie pakiety podrzędne i ich elementy potomne również będą rekursywnie usuwane.
       destroy_time_entry:
         title: Potwierdź usunięcie wpisu
         text: Na pewno chcesz skasować?

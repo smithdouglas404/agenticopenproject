@@ -76,11 +76,11 @@ hu:
         confirmation: Az összes szinkronizált csoport%{name} és az összes %{users_count} amit létrehozott törölve lesz, ha folytatja.
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        Ez a modul lehetővé teszi az LDAP és az OpenProject csoportok közötti szinkronizálást.
-        Attól függ, hogy az LDAP-csoportoknak az OpenProject használatához a <em> groupOfNames / memberOf </em> attribútumot kell használniuk.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        A csoportokat óránként szinkronizáljuk egy cron feladattal.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/"> Kérjük, olvassa el a témával kapcsolatos dokumentációinkat </a>.
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: Nem található szinkronizálható csoport
       no_members: Ez a csoport nem tartalmaz szinkronizált felhasználót még
       plural: Szinkronizált LDAP csoportok

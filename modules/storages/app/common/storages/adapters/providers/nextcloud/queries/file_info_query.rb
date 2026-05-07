@@ -108,7 +108,7 @@ module Storages
 
               idx += prefix.length - 1
 
-              UrlBuilder.path(file_path[idx..])
+              file_path[idx..].chomp("/")
             end
           end
         end

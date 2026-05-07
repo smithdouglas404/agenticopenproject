@@ -101,11 +101,11 @@ export default class FiltersFormController extends Controller {
     this.formLoadedResolver = resolve;
   });
 
-  private boundListener = this.sendForm.bind(this);
+  private boundListener:() => void;
 
   initialize() {
     // Initialize runs anytime an element with a controller connected to the DOM for the first time
-    this.sendForm = debounce(this.boundListener, 300);
+    this.boundListener = debounce(this.sendForm.bind(this), 300);
   }
 
   connect() {

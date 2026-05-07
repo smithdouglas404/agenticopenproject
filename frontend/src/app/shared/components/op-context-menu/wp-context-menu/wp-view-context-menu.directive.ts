@@ -61,7 +61,13 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   );
 
   // Get the base route for the current route to ensure we always link correctly
-  protected baseRoute = this.$state.current.data.baseRoute || this.$state.current.name;
+  protected baseRoute = this.$state.current.data?.baseRoute ?? this.$state.current.name;
+
+  // Whether we are running inside a uiRouter context (e.g. work packages list/board).
+  // Calendar and Team Planner render without uiRouter and rely on Turbo navigation instead.
+  protected get hasUiRouterContext():boolean {
+    return this.$state.current.name !== '';
+  }
 
   protected items = this.buildItems();
 
@@ -122,7 +128,14 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
         break;
 
       case 'relation-new-child':
-        this.wpRelationsHierarchyService.addNewChildWp(this.baseRoute, this.workPackage);
+        if (this.hasUiRouterContext) {
+          this.wpRelationsHierarchyService.addNewChildWp(this.baseRoute, this.workPackage);
+        } else {
+          const newChildPath = `${window.location.pathname.replace(/\/details\/.*$/, '')}/details/new`;
+          const childParams = new URLSearchParams(window.location.search);
+          childParams.set('parent_id', id);
+          Turbo.visit(`${newChildPath}?${childParams.toString()}`, { frame: 'content-bodyRight', action: 'advance' });
+        }
         break;
 
       case 'log_time':
@@ -134,10 +147,15 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
         break;
 
       case 'relations':
-        void this.$state.go(
-          `${splitViewRoute(this.$state)}.tabs`,
-          { workPackageId: this.workPackageId, tabIdentifier: 'relations' },
-        );
+        if (this.hasUiRouterContext) {
+          void this.$state.go(
+            `${splitViewRoute(this.$state)}.tabs`,
+            { workPackageId: this.workPackage.displayId, tabIdentifier: 'relations' },
+          );
+        } else {
+          const relationsPath = `${window.location.pathname.replace(/\/details\/.*$/, '')}/details/${this.workPackage.displayId}${window.location.search}`;
+          Turbo.visit(relationsPath, { frame: 'content-bodyRight', action: 'advance' });
+        }
         break;
 
       default:
@@ -212,7 +230,7 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
 
     if (selected.length === 1 && !isNewResource(this.workPackage)) {
       const projectIdentifier = this.currentProject.identifier;
-      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, this.workPackageId) + window.location.search;
+      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, this.workPackage.displayId) + window.location.search;
 
       items.unshift({
         disabled: false,
@@ -232,24 +250,32 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
       });
 
       if (selected.length === 1 && this.allowSplitScreenActions) {
+        const splitViewHref = this.hasUiRouterContext
+          ? this.$state.href(
+            `${splitViewRoute(this.$state)}.tabs`,
+            { workPackageId: this.workPackage.displayId, tabIdentifier: 'overview' },
+          )
+          : `${window.location.pathname.replace(/\/details\/.*$/, '')}/details/${this.workPackage.displayId}${window.location.search}`;
+
         items.unshift({
           disabled: false,
           icon: 'icon-view-split',
           class: 'detailsViewMenuItem',
-          href: this.$state.href(
-            `${splitViewRoute(this.$state)}.tabs`,
-            { workPackageId: this.workPackageId, tabIdentifier: 'overview' },
-          ),
+          href: splitViewHref,
           linkText: I18n.t('js.button_open_details'),
           onClick: (event) => {
             if (isClickedWithModifier(event)) {
               return false;
             }
 
-            this.$state.go(
-              `${splitViewRoute(this.$state)}.tabs`,
-              { workPackageId: this.workPackageId, tabIdentifier: 'overview' },
-            );
+            if (this.hasUiRouterContext) {
+              this.$state.go(
+                `${splitViewRoute(this.$state)}.tabs`,
+                { workPackageId: this.workPackage.displayId, tabIdentifier: 'overview' },
+              );
+            } else {
+              Turbo.visit(splitViewHref, { frame: 'content-bodyRight', action: 'advance' });
+            }
             return true;
           },
         });

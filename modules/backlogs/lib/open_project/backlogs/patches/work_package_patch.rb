@@ -43,9 +43,12 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
                                              less_than: 10_000,
                                              if: -> { backlogs_enabled? }
 
-    belongs_to :sprint, class_name: "Agile::Sprint", optional: true
+    belongs_to :sprint, optional: true
+    belongs_to :backlog_bucket, optional: true
 
     include OpenProject::Backlogs::List
+
+    scopes :backlogs_inbox_for
   end
 
   module ClassMethods
@@ -55,10 +58,6 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
   end
 
   module InstanceMethods
-    def done?
-      project.done_statuses.to_a.include?(status)
-    end
-
     def backlogs_enabled?
       project&.backlogs_enabled?
     end

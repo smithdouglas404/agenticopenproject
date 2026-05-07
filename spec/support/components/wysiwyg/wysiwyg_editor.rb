@@ -34,11 +34,32 @@ module Components
       wait_until_loaded
 
       textarea = container.find(".op-ckeditor-source-element", visible: :all)
-      page.execute_script(
-        'arguments[0].dispatchEvent(new CustomEvent("op:ckeditor:setData", { detail: arguments[1] }))',
-        textarea.native,
-        text
-      )
+      last_updated_before = last_updated_for(textarea)
+
+      # we set the content using a op:ckeditor:setData custom event.
+      # We need to make sure that CKEditor receives this event.
+      # We do this by asserting the editable data-last-updated timestamp increases.
+      retry_block do
+        page.execute_script(
+          'arguments[0].dispatchEvent(new CustomEvent("op:ckeditor:setData", { detail: arguments[1] }))',
+          textarea.native,
+          text
+        )
+
+        last_updated_after = last_updated_for(textarea)
+        expect(last_updated_after).to be >= last_updated_before
+      end
+    end
+
+    def last_updated_for(textarea)
+      page.evaluate_script(<<~JS, textarea.native)
+        (() => {
+          const editable = arguments[0].closest('.op-ckeditor--wrapper')
+            ?.querySelector('.ck-editor__editable_inline');
+          const parsed = Number.parseInt(editable?.dataset?.lastUpdated ?? '0', 10);
+          return Number.isFinite(parsed) ? parsed : 0;
+        })()
+      JS
     end
 
     def clear
@@ -137,7 +158,7 @@ module Components
       end
     end
 
-    def wait_until_upload_progress_toaster_cleared
+    def wait_until_upload_progress_toaster_cleared # rubocop:disable Naming/PredicateMethod
       page.has_no_selector?("op-toasters-upload-progress")
     end
 
@@ -153,8 +174,10 @@ module Components
 
     def insert_link(link)
       click_toolbar_button "Link"
-      page.find(".ck-input-text").set link
-      page.find(".ck-button-save").click
+      page.within(".ck-balloon-rotator") do
+        fill_in "Link URL", with: link
+        click_button "Insert"
+      end
     end
 
     def click_toolbar_button(label)
@@ -200,7 +223,7 @@ module Components
       # Set alignment left
       editor.click_hover_toolbar_button label
 
-      find(".ck-button-save").click
+      find(".ck-button", text: "Save").click
     end
   end
 end

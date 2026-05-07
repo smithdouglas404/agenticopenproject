@@ -227,7 +227,7 @@ RSpec.describe AllMeetings::ICalService, type: :model do
         entry = ical.events.second
 
         expect(entry.uid).to eq(recurring_meeting.uid)
-        expect(entry.recurrence_id).to eq(meeting.scheduled_meeting.start_time)
+        expect(entry.recurrence_id).to eq(meeting.recurrence_start_time)
         expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to_address}")
         expect(entry.attendee).to be_empty
         expect(entry.summary).to eq "Recurring meeting"
@@ -247,7 +247,7 @@ RSpec.describe AllMeetings::ICalService, type: :model do
 
       context "when the single occurence was cancelled" do
         before do
-          meeting.scheduled_meeting.update!(cancelled: true)
+          meeting.update_column(:state, Meeting.states[:cancelled])
         end
 
         it "renders the ICS file with the recurring meeting and the cancelled derived meeting", :aggregate_failures do
@@ -260,7 +260,7 @@ RSpec.describe AllMeetings::ICalService, type: :model do
           recurring_entry = ical.events.first
           expect(recurring_entry.uid).to eq(recurring_meeting.uid)
           expect(recurring_entry.recurrence_id).to be_blank
-          expect(recurring_entry.exdate).to contain_exactly(meeting.scheduled_meeting.start_time)
+          expect(recurring_entry.exdate).to contain_exactly(meeting.recurrence_start_time)
         end
       end
     end

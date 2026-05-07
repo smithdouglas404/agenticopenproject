@@ -30,14 +30,20 @@
 
 module RecurringMeetings
   class RowComponent < ::OpPrimer::BorderBoxRowComponent
-    delegate :meeting, to: :model
-    delegate :cancelled?, to: :model
-    delegate :recurring_meeting, to: :model
+    delegate :recurring_meeting, :cancelled?, to: :model
     delegate :project, to: :recurring_meeting
-    delegate :schedule, to: :meeting
+
+    def meeting
+      model.is_a?(Meeting) ? model : nil
+    end
 
     def instantiated?
-      meeting.present?
+      meeting.present? && !cancelled?
+    end
+
+    # The canonical scheduled time for this occurrence slot.
+    def occurrence_time
+      model.recurrence_start_time
     end
 
     def start_time
@@ -57,25 +63,25 @@ module RecurringMeetings
     end
 
     def old_time
-      render(Primer::Beta::Text.new(tag: :s)) { formatted_time(model.start_time) }
+      render(Primer::Beta::Text.new(tag: :s)) { formatted_time(occurrence_time) }
     end
 
     def start_time_title
       if start_time_changed?
         old_time + simple_format("\n#{formatted_time(meeting.start_time)}")
       else
-        formatted_time(model.start_time)
+        formatted_time(occurrence_time)
       end
     end
 
     def relative_time
-      time = start_time_changed? ? meeting.start_time : model.start_time
+      time = start_time_changed? ? meeting.start_time : occurrence_time
 
       render(OpPrimer::RelativeTimeComponent.new(datetime: user_time_zone(time), prefix: I18n.t(:label_on)))
     end
 
     def state
-      if model.cancelled?
+      if cancelled?
         "cancelled"
       elsif instantiated?
         meeting.state
@@ -112,7 +118,7 @@ module RecurringMeetings
           size: :medium,
           tag: :a,
           data: { "turbo-method": "post" },
-          href: init_project_recurring_meeting_path(project, model.recurring_meeting.id, start_time: model.start_time.iso8601)
+          href: init_project_recurring_meeting_path(project, recurring_meeting.id, start_time: occurrence_time.iso8601)
         )
       ) do |_c|
         I18n.t(:label_recurring_meeting_create)
@@ -150,8 +156,8 @@ module RecurringMeetings
         tag: :a,
         href: init_project_recurring_meeting_path(
           project,
-          model.recurring_meeting.id,
-          start_time: model.start_time.iso8601
+          recurring_meeting.id,
+          start_time: occurrence_time.iso8601
         ),
         content_arguments: {
           data: { turbo_method: :post }
@@ -166,11 +172,11 @@ module RecurringMeetings
     end
 
     def ical_action(menu)
-      return unless instantiated? && !cancelled?
+      return unless instantiated?
 
       menu.with_item(label: I18n.t(:label_icalendar_download),
                      href: download_ics_project_recurring_meeting_path(project,
-                                                                       model.recurring_meeting,
+                                                                       recurring_meeting,
                                                                        occurrence_id: meeting.id),
                      content_arguments: {
                        data: { turbo: false }
@@ -202,8 +208,8 @@ module RecurringMeetings
         label: I18n.t(:label_recurring_meeting_cancel),
         scheme: :danger,
         href: delete_scheduled_dialog_project_recurring_meeting_path(project,
-                                                                     model.recurring_meeting,
-                                                                     start_time: model.start_time.iso8601),
+                                                                     recurring_meeting,
+                                                                     start_time: occurrence_time.iso8601),
         tag: :a,
         content_arguments: {
           data: { controller: "async-dialog" }
@@ -218,7 +224,7 @@ module RecurringMeetings
 
       menu.with_item(
         label: I18n.t(:label_recurring_meeting_restore),
-        href: init_project_recurring_meeting_path(project, recurring_meeting, start_time: model.start_time.iso8601),
+        href: init_project_recurring_meeting_path(project, recurring_meeting, start_time: occurrence_time.iso8601),
         form_arguments: {
           method: :post
         }
@@ -235,12 +241,14 @@ module RecurringMeetings
       User.current.allowed_in_project?(:create_meetings, project)
     end
 
+    # A non-cancelled meeting whose actual start_time differs from its canonical
+    # recurrence_start_time slot has been moved to a different time.
     def start_time_changed?
-      meeting && meeting.start_time != model.start_time
+      instantiated? && meeting.start_time != occurrence_time
     end
 
     def past?
-      model.start_time < Time.current
+      occurrence_time < Time.current
     end
   end
 end

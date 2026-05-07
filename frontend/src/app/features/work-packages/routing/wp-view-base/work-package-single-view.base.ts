@@ -141,6 +141,12 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
   /**
    * Observe changes of work package and re-run initialization.
    * Needs to be run explicitly by descendants.
+   *
+   * Note: this.workPackageId may be a semantic identifier (e.g. "PROJ-7")
+   * from the route param. The API resolves it correctly, but the cache key
+   * would be "PROJ-7" while list queries cache the same WP under "42".
+   * After the first load we normalize to the numeric PK to prevent
+   * dual cache entries.
    */
   protected observeWorkPackage():void {
     this
@@ -150,6 +156,13 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
       .requireAndStream()
       .pipe(this.untilDestroyed())
       .subscribe((wp:WorkPackageResource) => {
+        // Normalize semantic route param (e.g. "PROJ-7") to numeric PK
+        // for cache coherence — downstream code uses this.workPackageId
+        // as a cache key, and the canonical key is always numeric.
+        if (this.workPackageId !== wp.id && wp.id) {
+          this.workPackageId = wp.id;
+        }
+
         if (!this.workPackage) {
           this.workPackage = wp;
           this.init();

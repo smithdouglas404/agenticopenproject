@@ -6,7 +6,7 @@ el:
     description: Κατάλογος και κατάσταση των εργασιών παρασκηνίου.
   job_status_dialog:
     download_starts: Η λήψη θα πρέπει να ξεκινήσει αυτόματα.
-    click_to_download: Or, [click here](download_url) to download.
+    click_to_download: Or [click here](download_url) to download.
     title: Κατάσταση εργασίας παρασκηνίου
     redirect: Ανακατευθύνεστε.
     redirect_link: Παρακαλώ κάντε κλικ εδώ για να συνεχίσετε.

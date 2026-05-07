@@ -35,17 +35,21 @@ module Wikis
     has_many :page_links, dependent: :destroy
 
     scope :enabled, -> { where(enabled: true) }
+    scope :visible, ->(_user = User.current) { all }
 
     validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
 
     before_create :generate_universal_identifier
 
+    def to_s = self.class.registry_prefix
+    def user_connected?(_user) = raise SubclassResponsibilityError
+
     class << self
       def registry_prefix = raise SubclassResponsibilityError
     end
 
-    def resolve(registry_path)
-      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(self)
+    def resolve(registry_path, **init_options)
+      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(model: self, **init_options)
     end
 
     private

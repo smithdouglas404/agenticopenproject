@@ -57,8 +57,8 @@ RSpec.describe "Create work package in sprint", :js do
   let!(:priority) { create(:default_priority) }
   let!(:status) { create(:default_status) }
 
-  let!(:sprint1) { create(:agile_sprint, project:) }
-  let!(:sprint2) { create(:agile_sprint, project:) }
+  let!(:sprint1) { create(:sprint, project:) }
+  let!(:sprint2) { create(:sprint, project:) }
 
   let!(:sprint1_wp1) { create(:work_package, sprint: sprint1, type:, project:) }
   let!(:sprint1_wp2) { create(:work_package, sprint: sprint1, type:, project:) }

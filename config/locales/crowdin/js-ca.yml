@@ -515,12 +515,6 @@ ca:
         sidebar_arrow: Utilitza la fletxa de retorn a la cantonada esquerra per tornar al <b>menú principal</b> del projecte.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: Dintre de la <b>wiki</b> pots documentar i compartir el coneixement conjuntament amb el teu equip.
-        backlogs:
-          overview: Administra la teva feina en vistes de <b>treballs pendents</b>.
-          sprints: A la dreta hi tens els treballs pendents del producte i errors, a l'esquerra hi tens els "sprint" respectius. Aquí pots crear <b>èpiques, històries d'usuari i errors</b>, prioritza'ls arrossegant-los i afegeix-los a un "sprint".
-          task_board_arrow: Per veure el teu <b>Tauler de tasques</b>, obri el desplegable "sprint"...
-          task_board_select: "... i seleccioni l'entrada del <b>tauler de tasca</b>."
-          task_board: En el tauler de tasques es pot visualitzar el <b> progrés d'aquest "sprint"</b>. Fes clic a la icona més (+) al costat d'una història d'usuari per afegir noves tasques o impediments. <br> L'estat es pot actualitzar arrossegant.
         boards:
           overview: Selecciona els <b>taulers</b> per canviar la vista i administra el teu projecte utilitza la vista de taulers "agile".
           lists_kanban: Aquí pots crear múltiples llistes (columnes) en el teu taulell. Aquesta funció, per exemple, permet crear un <b>taulell Kanban</b>.
@@ -987,13 +981,6 @@ ca:
       form_submit:
         title: Confirma per continuar
         text: Estàs segur que vols realitzar aquesta acció?
-      destroy_work_package:
-        title: Confirma l'eliminació de %{label}
-        single_text: Estàs segur que vols eliminar aquest paquet de treball
-        bulk_text: Estàs segur que vols eliminar el següent %{label}?
-        has_children: 'Aquest paquet de treball té %{childUnits}:'
-        confirm_deletion_children: Entenc que TOTS els descendents dels paquets de treball llistats seran eliminats recursivament.
-        deletes_children: Tots els paquets de treball fills i els seus descendents també seran eliminats recursivament.
       destroy_time_entry:
         title: Confirma l'eliminació de l'entrada temporal
         text: Estàs segur que vols eliminar la següent l'entrada temporal?

@@ -45,7 +45,11 @@ module Meetings
       def meetings
         @meetings ||=
           if project_scoped?
-            project.meetings.visible(current_user).upcoming
+            project
+              .meetings
+              .visible(current_user)
+              .participated_by(current_user)
+              .upcoming
           else
             ::Meeting
               .visible(current_user)
@@ -56,7 +60,7 @@ module Meetings
       end
 
       def title
-        global_scoped? ? t(:label_my_meetings) : t(:label_meeting_plural)
+        t(:label_my_meetings)
       end
 
       def render?
@@ -99,7 +103,7 @@ module Meetings
         if global_scoped?
           meetings_path
         else
-          project_meetings_path(project, filters: [{ invited_user_id: { operator: "*", values: [] } }].to_json)
+          project_meetings_path(project)
         end
       end
 

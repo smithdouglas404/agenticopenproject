@@ -205,7 +205,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
 
       this.projectContext = {
         id: project.id,
-        href: this.PathHelper.projectWorkPackagePath(project.id, workPackageId),
+        href: this.PathHelper.projectWorkPackagePath(project.id, this.workPackage.displayId),
         matches: project.href === this.currentProject.apiv3Path,
       };
     }
@@ -294,7 +294,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
    * Returns the work package label
    */
   public get idLabel():string {
-    return `#${this.workPackage.id || ''}`;
+    return this.workPackage.formattedId;
   }
 
   public showSwitchToProjectBanner():boolean {

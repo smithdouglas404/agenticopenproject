@@ -56,16 +56,15 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
            roles: [create(:project_role, permissions:)])
   end
 
-  def render_component(position: 2, max_position: 3, open_sprints_exist: true)
+  def render_component(position: 2, max_position: 3, open_sprints_exist: true, show_all_backlog: false)
     work_package.update!(position:)
-    render_inline(
-      described_class.new(
-        work_package:,
-        project:,
-        max_position:,
-        open_sprints_exist:,
-        current_user: user
-      )
+    vc_test_controller.params[:all] = "1" if show_all_backlog
+    render_inline described_class.new(
+      work_package:,
+      project:,
+      max_position:,
+      open_sprints_exist:,
+      current_user: user
     )
   end
 
@@ -89,6 +88,14 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
         "a[data-turbo-frame='content-bodyRight'][data-turbo-action='advance']",
         text: I18n.t(:"js.button_open_details")
       )
+    end
+
+    context "when the show_all_backlog is true" do
+      it "adds the all param to the open details link" do
+        render_component(show_all_backlog: true)
+
+        expect(page).to have_css(%(#work_package_#{work_package.id}_menu_open_details[href*="all=1"]))
+      end
     end
 
     it "shows Open fullscreen link (full page)" do
@@ -124,6 +131,38 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
         value: work_package.id.to_s,
         text: I18n.t("backlogs.inbox_menu_component.action_menu.copy_work_package_id")
       )
+    end
+
+    context "in semantic mode",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      let(:project) { create(:project, identifier: "INBOX") }
+
+      it "uses the semantic displayId in the open details, fullscreen, and clipboard URLs" do
+        render_component
+
+        semantic_id = work_package.reload.identifier
+        expect(semantic_id).to start_with("INBOX-")
+
+        details = page.find_by_id("work_package_#{work_package.id}_menu_open_details")
+        expect(details[:href]).to include("/details/#{semantic_id}")
+        expect(details[:href]).not_to include("/details/#{work_package.id}")
+
+        fullscreen = page.find_by_id("work_package_#{work_package.id}_menu_open_fullscreen")
+        expect(fullscreen[:href]).to end_with("/work_packages/#{semantic_id}")
+        expect(fullscreen[:href]).not_to include("/work_packages/#{work_package.id}")
+
+        clipboard = page.find("clipboard-copy##{"work_package_#{work_package.id}_menu_copy_url_to_clipboard"}")
+        expect(clipboard[:value]).to end_with("/work_packages/#{semantic_id}")
+        expect(clipboard[:value]).not_to include("/work_packages/#{work_package.id}")
+      end
+
+      it "still copies the numeric primary key for the 'Copy work package ID' action" do
+        render_component
+
+        clipboard_id = page.find("clipboard-copy##{"work_package_#{work_package.id}_menu_copy_work_package_id"}")
+        expect(clipboard_id[:value]).to eq(work_package.id.to_s)
+      end
     end
   end
 

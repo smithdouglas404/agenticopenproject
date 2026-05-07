@@ -515,12 +515,6 @@ lt:
         sidebar_arrow: Pasinaudokite grįžimo rodykle viršutiniame kairiajame kampe grįžimui į projekto <b>pagrindinį meniu</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: "<b>Wiki</b>'yje galite dokumentuoti ir dalintis žiniomis su savo komandos nariais."
-        backlogs:
-          overview: Valdykite savo darbus <b>Darbų sąrašo</b> vaizde.
-          sprints: Kairėje jūs matote produkto darbų sąrašą ir klaidų darbų sąrašą, dešinėje -- atitinkamus sprintus. Čia jūs galite kurti <b>epics, user stories ir bugs</b>, prioritetizuoti vilkdami į reikiamą vietą ir priskirti sprintui.
-          task_board_arrow: Norėdami matyti jūsų <b>užduočių lentą</b>, atverkite sprinto iškrentantį meniu...
-          task_board_select: "... ir pasirinkite <b>task board</b> elementą."
-          task_board: Užduočių lenta vaizduoja <b>sprinto progresą</b>. Nuspauskite pliuso (+) ženklą prie user story norėdami pridėti naujas užduotis arba trukdžius. <br> Būsena gali būti pakeista nuvelkant į reikiamą vietą.
         boards:
           overview: Pasirinkite <b>lentas</b> siekdami pakeisti vaizdą ir valdyti projektą naudodami agile lentų vaizdą.
           lists_kanban: Lentoje galite sukurti keletą sąrašų (stulpelių) . Ši funkcija leidžia sukurti <b>Kanban lentą</b>.
@@ -989,13 +983,6 @@ lt:
       form_submit:
         title: Norėdami tęsti, patvirtinkite
         text: Ar tikrai norite atlikti šį veiksmą?
-      destroy_work_package:
-        title: Patvirtinkite, jog %{label} ištrinamas
-        single_text: Ar tikrai norite ištrinti darbo paketą
-        bulk_text: Ar tikrai norite ištrinti %{label}?
-        has_children: 'Darbų paketas turi %{childUnits}:'
-        confirm_deletion_children: Aš sutinku, kad VISI šio darbų paketo palikuoniai bus rekursiškai ištrinti.
-        deletes_children: Visi darbų paketo vaikai ir jų palikuoniai taip pat bus rekursiškai ištrinti.
       destroy_time_entry:
         title: Patvirtinkite laiko įrašo trynimą.
         text: Ar Jūs tikrai norite ištrinti šį laiko įrašą?

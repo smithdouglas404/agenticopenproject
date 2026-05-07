@@ -677,21 +677,15 @@ Redmine::MenuManager.map :admin_menu do |menu|
             icon: "op-enterprise-addons",
             if: proc { User.current.admin? && OpenProject::Configuration.ee_manager_visible? }
 
-  menu.push :admin_backlogs,
-            { controller: "/backlogs_settings", action: :show },
-            if: ->(_) { User.current.admin? },
-            caption: :label_backlogs,
-            icon: "op-backlogs"
-
   menu.push :import,
             { controller: "/admin/import/jira/instances", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.jira_import_active? },
+            if: ->(_) { User.current.admin? },
             caption: :label_import,
             icon: "desktop-download"
 
   menu.push :jira_import,
             { controller: "/admin/import/jira/instances", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.jira_import_active? },
+            if: ->(_) { User.current.admin? },
             caption: :label_jira_import,
             parent: :import
 end

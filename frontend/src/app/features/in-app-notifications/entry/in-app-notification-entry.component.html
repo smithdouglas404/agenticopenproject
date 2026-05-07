@@ -7,7 +7,7 @@
   (keydown.space)="$event.preventDefault(); onClick()"
   (dblclick)="onDoubleClick()"
   >
-  @if (workPackage$ && (workPackage$ | async); as workPackage) {
+  @if (workPackage$ | async; as workPackage) {
     <div
       class="op-ian-item--top-line"
       >
@@ -18,8 +18,8 @@
         class="op-ian-item--work-package-id-link spot-link"
         [class.spot-link_inactive]="isMobile()"
         [attr.title]="workPackage.subject"
-        [textContent]="'#' + workPackage.id"
-        [attr.href]="fullScreenLink()"
+        [textContent]="workPackage.formattedId"
+        [attr.href]="pathHelper.workPackagePath(workPackage.displayId)"
         (click)="onLinkClick($event)"
         >
       </a>
@@ -108,7 +108,7 @@
 </div>
 } @else {
   <div class="op-ian-item--loading">
-    @if (workPackage$) {
+    @if (workPackageId) {
       <op-content-loader
         class="op-ian-item--loading-indicator"
         viewBox="0 0 200 20"

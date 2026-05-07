@@ -118,6 +118,7 @@ vi:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -125,8 +126,12 @@ vi:
         title: Jira configuration
         new: New configuration
       banner:
-        title: Limited import capabilities
-        description: 'This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Name
@@ -235,8 +240,10 @@ vi:
               caption_done: Completed
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
-              label_available_data: Available data
-              label_not_available_data: Not available for import
+              label_supported_data: Supported data
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
               label_import: Select which projects you would like to import.
@@ -245,16 +252,23 @@ vi:
               label_progress: Fetching data from Jira...
               elements:
                 relations: Relations between issues
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Project-level workflows
-                users: Users
-                sprints: Sprints
                 schemes: Schemas
-                permissions: User, group and project permissions
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Import data
               caption: Review your import settings and start the import
               caption_done: Completed
-              label_available_data: Available data to import
+              label_available_data: Data to be imported
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -262,33 +276,33 @@ vi:
             import_result:
               title: Import run results
               caption: Review import run or revert import
-              info: Import run successful.
+              info: Import run was successful.
               label_results: Imported
               label_revert: Revert import
               button_revert: Revert import
-              button_done: Finalize import
-              preview_description: The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Finalize import
-              label_finalizing: Finalizing import...
-              label_finalizing_done: Import finalized.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Reverting import...
               label_reverted: Import reverted.
           select_dialog:
             filter_projects: Filter by text
           import_dialog:
-            title: Start this import?
+            title: Please make sure you have a backup!
             confirm_button: Start import
-            description: 'This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: I understand and made the necessary preparations
+            confirm: I understand and have a backup
           revert_dialog:
             title: Permanently revert this import?
-            description: This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject.
+            description: This will delete all imported objects (including whole projects).
             confirm: I understand that this reversion will delete data permanently
           finalize_dialog:
-            title: Finalize this import?
-            description: Once finalized, this import can no longer be reverted. All imported data will become permanently imported.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: I understand that this action cannot be undone
             confirm_button: Understood
           select_projects:
@@ -395,11 +409,12 @@ vi:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             other: "... %{count} more projects"
@@ -414,16 +429,13 @@ vi:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Chuyển tiếp mặc định
         user_author: Người dùng là tác giả
         user_assignee: Người dùng là người được chuyển nhượng
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -441,8 +453,11 @@ vi:
         ignore: Ignore changes
         save: Save changes and continue
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Select role
+        roles:
+          other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
         description: Add statuses to start configuring workflows for this role
@@ -681,6 +696,37 @@ vi:
   danger_dialog:
     confirmation_live_message_checked: Nút để tiếp tục hiện đang hoạt động.
     confirmation_live_message_unchecked: Nút để tiếp tục hiện không hoạt động. Bạn cần đánh dấu vào hộp kiểm để tiếp tục.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Pagination
     prev: Previous
@@ -1055,6 +1101,8 @@ vi:
       no_results_title_text: Hiện không có tin tức báo cáo.
       no_results_content_text: Thêm một mục tin tức
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Gán tất cả các quyền %{module}
       section_uncheck_all_label: Bỏ gán tất cả quyền %{module}
@@ -1066,6 +1114,8 @@ vi:
       matrix_check_uncheck_all_in_row_label_html: Chuyển đổi quyền <em>%{permission}</em> cho tất cả các vai trò
       matrix_check_uncheck_all_in_col_label_html: Bật/tắt tất cả quyền truy cập của %{module} cho vai trò <em>%{role}</em>
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Duy trì đăng nhập cho %{num_days}
     sessions:
@@ -1318,6 +1368,31 @@ vi:
     index:
       no_results_content_text: Thêm một trang wiki mới
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Ma trận quy trình công việc
       matrix_caption_assignee: Ma trận quy trình công việc cho người được giao
@@ -1327,10 +1402,30 @@ vi:
       matrix_uncheck_all_label: Không cho phép tất cả các chuyển đổi
       matrix_check_uncheck_all_in_row_label_html: Chuyển đổi các chuyển đổi từ <em>%{old_status}</em> sang tất cả các trạng thái mới
       matrix_check_uncheck_all_in_col_label_html: Chuyển đổi trạng thái từ tất cả các trạng thái cũ sang <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Hiện tại không có quy trình làm việc nào.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1792,6 +1887,7 @@ vi:
         identity_url: URL nhận dạng
         parent: Parent group
         organizational_unit: Organizational unit
+        group_users: Group users
       group_detail:
         parent: Parent group
         organizational_unit: Organizational unit
@@ -1866,6 +1962,7 @@ vi:
         duration: thời lượng
         end_insertion: Kết thúc chèn
         end_deletion: Kết thúc quá trình xóa
+        identifier: Identifier
         ignore_non_working_days: Bỏ qua những ngày không làm việc
         include_non_working_days:
           title: Ngày làm việc
@@ -1881,6 +1978,7 @@ vi:
         readonly: Chỉ đọc
         remaining_hours: Công việc còn lại
         remaining_time: Công việc còn lại
+        sequence_number: Sequence number
         shared_with_users: Được chia sẻ với
         schedule_manually: Lên lịch thủ công
         spent_hours: dành thời gian
@@ -1890,6 +1988,29 @@ vi:
         type: loại
         version: Phiên bản
         watcher: Người quan sát
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: phải được đồng ý
@@ -1909,6 +2030,7 @@ vi:
         confirmation: không khớp %{attribute}.
         could_not_be_copied: "%{dependency} không thể sao chép (đầy đủ)."
         does_not_exist: không tồn tại
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} chỉ có trong phiên bản OpenProject Enterprise."
         error_unauthorized: Có thể không được truy cập.
         error_readonly: đã được cố gắng viết nhưng không thể ghi được.
@@ -1932,6 +2054,7 @@ vi:
         inclusion: không nằm trong các giá trị cho phép
         inclusion_nested: không được đặt thành một trong các giá trị được phép tại đường dẫn '%{path}'.
         invalid: không hợp lệ
+        invalid_uri: must be a valid URI.
         invalid_url: không phải là một URL hợp lệ.
         invalid_url_scheme: 'không phải là giao thức được hỗ trợ  (được phép: %{allowed_schemes}).'
         less_than_or_equal_to: phải nhỏ hơn hoặc bằng %{count}
@@ -1945,6 +2068,7 @@ vi:
         not_a_datetime: không phải là thời gian hợp lệ
         not_a_number: không phải là số
         not_allowed: không hợp lệ vì thiếu quyền.
+        host_not_allowed: is not an allowed host.
         not_json: không thể phân tích cú pháp dưới dạng JSON.
         not_json_object: không phải là một đối tượng JSON.
         not_an_integer: không phải là một số nguyên
@@ -1975,6 +2099,7 @@ vi:
           attributes:
             parent_id:
               circular_dependency: would create a circular group hierarchy.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2160,6 +2285,7 @@ vi:
           not_whitelisted: không được cấu hình cho phép.
           invalid_url: không phải là đường dẫn hoặc URL kho lưu trữ hợp lệ.
           must_not_be_ssh: không được là đường dẫn SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: không phải là một thư mục.
         role:
           attributes:
@@ -2210,6 +2336,8 @@ vi:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Không thể thêm con vì bạn không có quyền chỉnh sửa gói công việc đã chọn.
               blank: ID không được để trống.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2278,7 +2406,7 @@ vi:
               confirmation: Xác nhận mật khẩu không khớp với mật khẩu.
               format: "%{message}"
             password:
-              weak: 'Phải chứa các ký tự thuộc các lớp sau (ít nhất %{min_count} trong số %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: chữ thường (ví dụ như 'a')
               uppercase: chữ hoa (ví dụ như ' A')
               numeric: số (ví dụ như ' 1')
@@ -2382,6 +2510,7 @@ vi:
       unsupported_storage_type: không phải là loại lưu trữ được hỗ trợ.
       storage_error: Đã xảy ra lỗi với kết nối lưu trữ.
       invalid_input: Đầu vào không hợp lệ.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: được tạo bởi %{user} vào %{datetime}
@@ -2437,7 +2566,6 @@ vi:
     avatar: hình đại diện
     base: 'Lỗi tổng quan:'
     body: cơ thể
-    blocks_ids: ID của các work package bị chặn
     category: thể loại
     comment: Nhận xét
     comments: bình luận
@@ -3247,18 +3375,17 @@ vi:
         header: Đọc về các tính năng mới và cập nhật sản phẩm.
         learn_about: Tìm hiểu thêm về tất cả các tính năng mới
         missing: Chưa có tính năng nổi bật nào.
-        '17_3':
+        '17_4':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Nâng cấp lên phiên bản Enterprise
       postgres_migration: Di chuyển cài đặt của bạn sang PostgreSQL
@@ -3417,7 +3544,7 @@ vi:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3431,6 +3558,7 @@ vi:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3443,6 +3571,7 @@ vi:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3451,6 +3580,7 @@ vi:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3465,6 +3595,7 @@ vi:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3473,6 +3604,7 @@ vi:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3531,6 +3663,7 @@ vi:
   label_age: Tuổi
   label_ago: vài ngày trước
   label_all: tất cả
+  label_all_uppercase: All
   label_all_time: tất cả thời gian
   label_all_words: Tất cả các từ
   label_all_open_wps: Mở tất cả
@@ -3632,6 +3765,7 @@ vi:
   label_commits_per_month: Commits mỗi tháng
   label_confirmation: xác nhận
   label_contains: bao gồm
+  label_starts_with: starts with
   label_content: Nội dung
   label_color_plural: Màu sắc
   label_copied: đã sao chép
@@ -3639,6 +3773,8 @@ vi:
   label_copy_source: Nguồn
   label_copy_target: Mục tiêu
   label_copy_workflow_from: Sao chép quy trình từ
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Sao chép dự án
   label_core_version: Phiên bản lõi
   label_core_build: Xây dựng cốt lõi
@@ -3837,6 +3973,10 @@ vi:
   label_custom_pdf_export_settings: Cài đặt xuất PDF tùy chỉnh
   label_custom_favicon: Favicon tuỳ chỉnh
   label_custom_touch_icon: Tùy chỉnh biểu tượng ICON
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Đăng xuất
   label_mapping_for: 'Ánh xạ cho: %{attribute}'
   label_main_menu: Menu bên
@@ -3942,6 +4082,10 @@ vi:
   label_password_rule_numeric: Kiểu số
   label_password_rule_special: Ký tự đặc biệt
   label_password_rule_uppercase: Chữ hoa
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Mã hóa đường dẫn
   label_per_page: 'Mỗi trang:'
   label_people: mọi người
@@ -4047,6 +4191,7 @@ vi:
   label_role_new: Vai trò mới
   label_role_grantable: Vai trò có thể cấp
   label_role_plural: Vai trò
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Chỉ định vai trò cho các thành viên mới
   label_scm: SCM
   label_scroll_left: Cuộn sang trái
@@ -4270,7 +4415,7 @@ vi:
       you_have: bạn có
     logo_alt_text: biểu tượng
     mention:
-      subject: "%{user_name} đã nhắc đến bạn trong #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Đến trung tâm thông báo
       see_in_center: Xem bình luận trong trung tâm thông báo
@@ -4304,10 +4449,10 @@ vi:
       note: 'Lưu ý: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Để truy cập gói công việc này, bạn cần tạo và kích hoạt tài khoản trên %{instance}.
         open_work_package: Mở gói công việc
-        subject: 'Gói công việc #%{id} đã được chia sẻ với bạn'
+        subject: Work package %{id} was shared with you
         enterprise_text: Chia sẻ các gói công việc với người dùng không phải là thành viên của dự án.
         summary:
           user: "%{user} đã chia sẻ gói công việc với bạn với quyền %{role_rights}"
@@ -4525,6 +4670,18 @@ vi:
     text_getting_started_description: Nhận tổng quan nhanh về quản lý dự án và cộng tác nhóm với OpenProject. Bạn có thể khởi động lại video này từ menu trợ giúp.
     welcome: Chào mừng đến với %{app_title}
     select_language: Vui lòng chọn ngôn ngữ của bạn
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_box_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Thêm nhận xét
   permission_add_work_packages: Thêm mới Gói công việc
   permission_add_messages: Đăng tin nhắn
@@ -4542,7 +4699,6 @@ vi:
   permission_add_work_package_watchers: Thêm người theo dõi
   permission_assign_versions: Chỉ định phiên bản
   permission_browse_repository: Quyền truy cập chỉ đọc vào kho lưu trữ (duyệt và kiểm tra)
-  permission_change_wiki_parent_page: Thay đổi trang wiki cha
   permission_change_work_package_status: Thay đổi trạng thái gói công việc
   permission_change_work_package_status_explanation: Cho phép thay đổi trạng thái mà không có quyền Chỉnh sửa gói công việc
   permission_comment_news: Chú thích vào tin mới
@@ -4557,8 +4713,6 @@ vi:
   permission_delete_own_messages: Xóa tin nhắn của tôi
   permission_delete_reportings: Xóa các báo cáo
   permission_delete_timelines: Xóa dòng thời gian
-  permission_delete_wiki_pages: Xóa các trang wiki
-  permission_delete_wiki_pages_attachments: Xóa tệp đính kèm
   permission_edit_work_package_comments: Kiểm duyệt bình luận
   permission_edit_work_package_comments_explanation: 'Thận trọng: Người dùng có quyền này có thể chỉnh sửa nhận xét của bất kỳ ai.'
   permission_edit_work_packages: Chỉnh sửa gói công việc
@@ -4578,12 +4732,10 @@ vi:
   permission_edit_wiki_pages: Chỉnh sửa trang wiki
   permission_export_work_packages: Xuất gói công việc
   permission_export_projects: Dự án xuất khẩu
-  permission_export_wiki_pages: Xuất trang wiki
   permission_invite_members_by_email: Mời thành viên qua email
   permission_invite_members_by_email_explanation: 'Cho phép người dùng mời thành viên mới qua email. Người dùng được mời sẽ nhận được email có liên kết để đặt mật khẩu và kích hoạt tài khoản của họ. Phụ thuộc vào quyền quản lý thành viên
 
     '
-  permission_list_attachments: Liệt kê tệp đính kèm
   permission_log_own_time: Đăng nhập thời gian riêng
   permission_log_time: Đăng nhập thời gian cho người dùng khác
   permission_manage_forums: Quản lý diễn đàn
@@ -4598,7 +4750,6 @@ vi:
   permission_manage_subtasks: Quản lý phân cấp gói công việc
   permission_manage_versions: Quản lý phiên bản
   permission_manage_wiki: Quản lý wiki
-  permission_manage_wiki_menu: Quản lý menu wiki
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4608,8 +4759,6 @@ vi:
 
     '
   permission_move_work_packages: Di chuyển gói công việc
-  permission_protect_wiki_pages: Bảo vệ các trang wiki
-  permission_rename_wiki_pages: Đổi tên các trang wiki
   permission_save_queries: Lưu các chế độ xem
   permission_search_project: Tìm kiếm dự án
   permission_select_custom_fields: Chọn trường tùy chỉnh
@@ -4912,6 +5061,7 @@ vi:
     '
   setting_app_subtitle: phụ đề ứng dụng
   setting_app_title: Tiêu đề ứng dụng
+  setting_organization_name: Organization name
   setting_attachment_max_size: Tệp đính kèm tối đa. kích cỡ
   setting_show_work_package_attachments: Hiển thị tệp đính kèm trong tab tệp theo mặc định
   setting_antivirus_scan_mode: Chế độ quét
@@ -4987,13 +5137,15 @@ vi:
   setting_mail_handler_body_delimiter_regex: Xén các email phù hợp với biểu thức này
   setting_mail_handler_ignore_filenames: Tập tin đính kèm mail bị bỏ qua
   setting_new_project_user_role_id: Vai trò được cấp cho người dùng không phải quản trị viên tạo dự án
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Gửi thông báo cho tác giả khi tạo dự án mới
   setting_new_project_notification_text: Văn bản thông báo
-  setting_password_active_rules: Lớp nhân vật hoạt động
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Số lượng mật khẩu được sử dụng gần đây nhất bị cấm sử dụng lại
   setting_password_days_valid: Số ngày thực hiện thay đổi mật khẩu sau đó
   setting_password_min_length: Chiều dài tối thiểu
-  setting_password_min_adhered_rules: Số lượng lớp học yêu cầu tối thiểu
   setting_per_page_options: Tùy chọn đối tượng trên mỗi trang
   setting_percent_complete_on_status_closed: "% Hoàn thành khi trạng thái đóng"
   setting_percent_complete_on_status_closed_no_change: Không thay đổi
@@ -5406,6 +5558,7 @@ vi:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Phân công lại cho gói công việc:'
   text_regexp_multiline: 'Biểu thức được áp dụng ở chế độ đa dòng. Ví dụ: ^---\s+'
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Chọn hoặc cập nhật người dùng OpenProject được ánh xạ tới từng tên người dùng được tìm thấy trong nhật ký kho lưu trữ.
     Người dùng có cùng tên người dùng hoặc email của OpenProject và kho lưu trữ sẽ được tự động ánh xạ.
@@ -5584,10 +5737,13 @@ vi:
           same_as_work: Đặt thành cùng giá trị với Công việc.
     permissions:
       comment: bình luận
+      comment_verb: comment
       comment_description: Có thể xem và nhận xét gói công việc này.
       edit: Chỉnh sửa
+      edit_verb: edit
       edit_description: Có thể xem, bình luận và chỉnh sửa gói công việc này.
       view: lượt xem
+      view_verb: view
       view_description: Có thể xem gói công việc này.
     reminders:
       label_remind_at: ngày
@@ -5835,8 +5991,6 @@ vi:
       scopes: quyền
       successful_application_revocation: Thu hồi ứng dụng %{application_name} thành công.
       none_given: Không có ứng dụng OAuth nào được cấp quyền truy cập vào tài khoản người dùng của bạn.
-    x_active_tokens:
-      other: "%{count} mã thông báo hoạt động"
     flows:
       authorization_code: Luồng mã ủy quyền
       client_credentials: Luồng thông tin xác thực của khách hàng
@@ -5846,8 +6000,9 @@ vi:
     client_credentials_impersonation_html: 'Theo mặc định, OpenProject cung cấp ủy quyền OAuth 2.0 thông qua %{authorization_code_flow_link}. Bạn có thể tùy ý bật %{client_credentials_flow_link}, nhưng bạn phải cung cấp người dùng mà yêu cầu của họ sẽ được thực hiện thay mặt họ.
 
       '
+    confirm_revoke_my_application:
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Đã xảy ra lỗi ủy quyền.
-    revoke_my_application_confirmation: Bạn có thực sự muốn xóa ứng dụng này? Điều này sẽ thu hồi %{token_count} hoạt động cho nó.
     my_registered_applications: Ứng dụng OAuth đã đăng ký
   oauth_client:
     urn_connection_status:

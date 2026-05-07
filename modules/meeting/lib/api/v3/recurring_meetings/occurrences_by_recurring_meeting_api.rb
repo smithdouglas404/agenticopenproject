@@ -33,17 +33,17 @@ module API
     module RecurringMeetings
       class OccurrencesByRecurringMeetingAPI < ::API::OpenProjectAPI
         helpers do
-          def build_occurrence(start_time:, scheduled_meeting: nil)
+          def build_occurrence(start_time:, meeting: nil)
             Occurrence.new(
               start_time:,
               recurring_meeting_id: @recurring_meeting.id,
-              meeting_id: scheduled_meeting&.meeting_id,
-              cancelled: scheduled_meeting&.cancelled || false
+              meeting_id: meeting&.id,
+              cancelled: meeting&.cancelled? || false
             )
           end
 
-          def occurrences_from_scheduled(scheduled_meetings)
-            scheduled_meetings.map { |sm| build_occurrence(start_time: sm.start_time, scheduled_meeting: sm) }
+          def occurrences_from_meetings(meetings)
+            meetings.map { |m| build_occurrence(start_time: m.recurrence_start_time, meeting: m) }
           end
 
           def occurrence_collection(occurrences, self_link:)
@@ -51,12 +51,15 @@ module API
           end
 
           def persisted_upcoming
-            @recurring_meeting.scheduled_meetings.upcoming.index_by(&:start_time)
+            @recurring_meeting.meetings
+              .recurring_occurrence
+              .where(recurrence_start_time: Time.current..)
+              .index_by(&:recurrence_start_time)
           end
 
           def opened_start_times(persisted)
             persisted
-              .select { |_, sm| sm.meeting_id.present? && !sm.cancelled }
+              .reject { |_, m| m.cancelled? }
               .keys
               .to_set
           end
@@ -73,7 +76,7 @@ module API
             persisted = persisted_upcoming
             opened_times = opened_start_times(persisted)
             all_times = (opened_times.to_a + computed_start_times(opened_times, limit)).sort
-            all_times.map { |t| build_occurrence(start_time: t, scheduled_meeting: persisted[t]) }
+            all_times.map { |t| build_occurrence(start_time: t, meeting: persisted[t]) }
           end
         end
 
@@ -94,7 +97,7 @@ module API
           namespace :past do
             get do
               occurrence_collection(
-                occurrences_from_scheduled(@recurring_meeting.scheduled_meetings.past.not_cancelled),
+                occurrences_from_meetings(@recurring_meeting.meetings.recurring_occurrence.past.not_cancelled),
                 self_link: api_v3_paths.recurring_meeting_occurrences_past(@recurring_meeting.id)
               )
             end
@@ -103,7 +106,7 @@ module API
           namespace :cancelled do
             get do
               occurrence_collection(
-                occurrences_from_scheduled(@recurring_meeting.scheduled_meetings.cancelled),
+                occurrences_from_meetings(@recurring_meeting.meetings.recurring_occurrence.cancelled),
                 self_link: api_v3_paths.recurring_meeting_occurrences_cancelled(@recurring_meeting.id)
               )
             end
@@ -112,7 +115,7 @@ module API
           namespace :open do
             get do
               occurrence_collection(
-                occurrences_from_scheduled(@recurring_meeting.scheduled_meetings.instantiated.not_cancelled),
+                occurrences_from_meetings(@recurring_meeting.meetings.recurring_occurrence.not_cancelled),
                 self_link: api_v3_paths.recurring_meeting_occurrences_open(@recurring_meeting.id)
               )
             end
@@ -139,20 +142,29 @@ module API
               start_time = declared_params[:start_time]
               authorize_in_project(:edit_meetings, project: @recurring_meeting.project)
 
-              scheduled = @recurring_meeting.scheduled_meetings.find_or_initialize_by(start_time:)
+              existing = @recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: start_time)
 
-              if scheduled.meeting_id.present?
+              if existing.present? && !existing.cancelled?
                 fail ::API::Errors::Conflict.new(
                   message: "Cannot cancel an already instantiated occurrence. Delete the meeting instead."
                 )
               end
 
-              scheduled.cancelled = true
-              if scheduled.save
-                status 204
-              else
-                fail ::API::Errors::ErrorBase.create_and_merge_errors(scheduled.errors)
+              unless existing
+                template = @recurring_meeting.template
+                @recurring_meeting.meetings.create!(
+                  project: @recurring_meeting.project,
+                  author: current_user,
+                  start_time:,
+                  recurrence_start_time: start_time,
+                  state: :cancelled,
+                  template: false,
+                  title: template.title,
+                  duration: template.duration
+                )
               end
+
+              status 204
             end
           end
         end

@@ -29,11 +29,13 @@
 #++
 
 module WorkPackages
-  # Contract used for moving work packages to the product backlog (sprint = nil)
-  # at the end of a sprint. It does not enforce permissions as this change is
-  # carried out in the background.
+  # Contract used for moving work packages to the product backlog (sprint = nil, backlog_bucket = nil):
+  #   * at the end of a sprint
+  #   * upon bucket deletion
+  # It does not enforce permissions as this change is carried out in the background.
   class MoveToBacklogContract < ModelContract
     attribute :sprint
+    attribute :backlog_bucket
     attribute :position
   end
 end

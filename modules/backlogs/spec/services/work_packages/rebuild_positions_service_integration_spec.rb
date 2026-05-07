@@ -32,7 +32,8 @@ require "spec_helper"
 
 RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :model do
   def create_work_package(options)
-    create(:work_package, options.reverse_merge(project: options[:sprint]&.project, type_id: type.id)) do |wp|
+    create(:work_package, options.reverse_merge(project: options[:sprint]&.project || options[:backlog_bucket]&.project,
+                                                type_id: type.id)) do |wp|
       wp.update_column(:position, options[:position]) if options.key?(:position)
     end
   end
@@ -40,9 +41,11 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
   shared_let(:project1) { create(:project) }
   shared_let(:project2) { create(:project) }
   shared_let(:type) { create(:type) }
-  shared_let(:sprint1) { create(:agile_sprint, project: project1, name: "Sprint 1") }
-  shared_let(:sprint2) { create(:agile_sprint, project: project1, name: "Sprint 2") }
-  shared_let(:sprint3) { create(:agile_sprint, project: project2, name: "Sprint 2") }
+  shared_let(:sprint1) { create(:sprint, project: project1, name: "Sprint 1") }
+  shared_let(:sprint2) { create(:sprint, project: project1, name: "Sprint 2") }
+  shared_let(:sprint3) { create(:sprint, project: project2, name: "Sprint 2") }
+  shared_let(:bucket1) { create(:backlog_bucket, project: project1, name: "Bucket 1") }
+  shared_let(:bucket2) { create(:backlog_bucket, project: project2, name: "Bucket 2") }
 
   shared_let(:sprint1_wp1) { create_work_package(subject: "Sprint 1 WorkPackage 1", sprint: sprint1, position: nil) }
   shared_let(:sprint1_wp2) { create_work_package(subject: "Sprint 1 WorkPackage 2", sprint: sprint1, position: 1) }
@@ -71,22 +74,36 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
   shared_let(:sprint3_wp2) { create_work_package(subject: "Sprint 3 WorkPackage 2", sprint: sprint3, position: nil) }
   shared_let(:sprint3_wp3) { create_work_package(subject: "Sprint 3 WorkPackage 3", sprint: sprint3, position: nil) }
 
-  shared_let(:no_sprint_wp1) do
-    create_work_package(subject: "No sprint WorkPackage 1", project: project1, sprint: nil, position: nil)
+  shared_let(:inbox_wp1) do
+    create_work_package(subject: "Inbox WorkPackage 1", project: project1, position: nil)
   end
-  shared_let(:no_sprint_wp2) do
-    create_work_package(subject: "No sprint WorkPackage 2", project: project1, sprint: nil, position: nil)
+  shared_let(:inbox_wp2) do
+    create_work_package(subject: "Inbox WorkPackage 2", project: project1, position: nil)
   end
-  shared_let(:no_sprint_wp3) do
-    create_work_package(subject: "No sprint WorkPackage 3", project: project1, sprint: nil, position: nil)
+  shared_let(:inbox_wp3) do
+    create_work_package(subject: "Inbox WorkPackage 3", project: project1, position: nil)
   end
+
+  shared_let(:bucket1_wp1) { create_work_package(subject: "Bucket 1 WorkPackage 1", backlog_bucket: bucket1, position: nil) }
+  shared_let(:bucket1_wp2) { create_work_package(subject: "Bucket 1 WorkPackage 2", backlog_bucket: bucket1, position: 2) }
+  shared_let(:bucket1_wp3) do
+    create_work_package(subject: "Bucket 1 WorkPackage 3", backlog_bucket: bucket1, position: 1).tap do
+      # acts_as_list inserts shift earlier siblings; restore them so
+      # the DB starts from the positions the test actually sets.
+      bucket1_wp2.update_column(:position, 2)
+    end
+  end
+
+  shared_let(:bucket2_wp1) { create_work_package(subject: "Bucket 2 WorkPackage 1", backlog_bucket: bucket2, position: nil) }
+  shared_let(:bucket2_wp2) { create_work_package(subject: "Bucket 2 WorkPackage 2", backlog_bucket: bucket2, position: nil) }
+  shared_let(:bucket2_wp3) { create_work_package(subject: "Bucket 2 WorkPackage 3", backlog_bucket: bucket2, position: nil) }
 
   context "with the project provided" do
     before do
       described_class.new(project: project1).call
     end
 
-    it "fixes the positions in that project while keeping those that have some in the same order" do # rubocop:disable Rspec/ExampleLength
+    it "fixes the positions in that project while keeping those that have some in the same order" do # rubocop:disable RSpec/ExampleLength
       expect(WorkPackage.where(sprint: sprint1).to_h { [it.subject, it.position] })
         .to eql(
           sprint1_wp2.subject => 1,
@@ -103,11 +120,11 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
           sprint2_wp1.subject => 3
         )
 
-      expect(WorkPackage.where(sprint: nil).to_h { [it.subject, it.position] })
+      expect(WorkPackage.where(sprint: nil, backlog_bucket: nil, project: project1).to_h { [it.subject, it.position] })
         .to eql(
-          no_sprint_wp1.subject => 1,
-          no_sprint_wp2.subject => 2,
-          no_sprint_wp3.subject => 3
+          inbox_wp1.subject => 1,
+          inbox_wp2.subject => 2,
+          inbox_wp3.subject => 3
         )
 
       expect(WorkPackage.where(sprint: sprint3).to_h { [it.subject, it.position] })
@@ -115,6 +132,20 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
           sprint3_wp1.subject => nil,
           sprint3_wp2.subject => nil,
           sprint3_wp3.subject => nil
+        )
+
+      expect(WorkPackage.where(backlog_bucket: bucket1).to_h { [it.subject, it.position] })
+        .to eql(
+          bucket1_wp3.subject => 1,
+          bucket1_wp2.subject => 2,
+          bucket1_wp1.subject => 3
+        )
+
+      expect(WorkPackage.where(backlog_bucket: bucket2).to_h { [it.subject, it.position] })
+        .to eql(
+          bucket2_wp1.subject => nil,
+          bucket2_wp2.subject => nil,
+          bucket2_wp3.subject => nil
         )
     end
   end
@@ -124,7 +155,7 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
       described_class.new(project: project2).call
     end
 
-    it "fixes only the work packages in the other project" do # rubocop:disable Rspec/ExampleLength
+    it "fixes only the work packages in the other project" do # rubocop:disable RSpec/ExampleLength
       expect(WorkPackage.where(sprint: sprint1).to_h { [it.subject, it.position] })
         .to eql(
           sprint1_wp1.subject => nil,
@@ -141,11 +172,11 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
           sprint2_wp1.subject => 3
         )
 
-      expect(WorkPackage.where(sprint: nil).to_h { [it.subject, it.position] })
+      expect(WorkPackage.where(sprint: nil, backlog_bucket: nil, project: project1).to_h { [it.subject, it.position] })
         .to eql(
-          no_sprint_wp1.subject => nil,
-          no_sprint_wp2.subject => nil,
-          no_sprint_wp3.subject => nil
+          inbox_wp1.subject => nil,
+          inbox_wp2.subject => nil,
+          inbox_wp3.subject => nil
         )
 
       expect(WorkPackage.where(sprint: sprint3).to_h { [it.subject, it.position] })
@@ -153,6 +184,20 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
           sprint3_wp1.subject => 1,
           sprint3_wp2.subject => 2,
           sprint3_wp3.subject => 3
+        )
+
+      expect(WorkPackage.where(backlog_bucket: bucket1).to_h { [it.subject, it.position] })
+        .to eql(
+          bucket1_wp1.subject => nil,
+          bucket1_wp2.subject => 2,
+          bucket1_wp3.subject => 1
+        )
+
+      expect(WorkPackage.where(backlog_bucket: bucket2).to_h { [it.subject, it.position] })
+        .to eql(
+          bucket2_wp1.subject => 1,
+          bucket2_wp2.subject => 2,
+          bucket2_wp3.subject => 3
         )
     end
   end
@@ -162,7 +207,7 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
       described_class.new(project: nil).call
     end
 
-    it "fixes the positions while keeping those that have some in the same order in all projects" do # rubocop:disable Rspec/ExampleLength
+    it "fixes the positions while keeping those that have some in the same order in all projects" do # rubocop:disable RSpec/ExampleLength
       expect(WorkPackage.where(sprint: sprint1).to_h { [it.subject, it.position] })
         .to eql(
           sprint1_wp2.subject => 1,
@@ -179,11 +224,11 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
           sprint2_wp1.subject => 3
         )
 
-      expect(WorkPackage.where(sprint: nil).to_h { [it.subject, it.position] })
+      expect(WorkPackage.where(sprint: nil, backlog_bucket: nil, project: project1).to_h { [it.subject, it.position] })
         .to eql(
-          no_sprint_wp1.subject => 1,
-          no_sprint_wp2.subject => 2,
-          no_sprint_wp3.subject => 3
+          inbox_wp1.subject => 1,
+          inbox_wp2.subject => 2,
+          inbox_wp3.subject => 3
         )
 
       expect(WorkPackage.where(sprint: sprint3).to_h { [it.subject, it.position] })
@@ -191,6 +236,20 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
           sprint3_wp1.subject => 1,
           sprint3_wp2.subject => 2,
           sprint3_wp3.subject => 3
+        )
+
+      expect(WorkPackage.where(backlog_bucket: bucket1).to_h { [it.subject, it.position] })
+        .to eql(
+          bucket1_wp3.subject => 1,
+          bucket1_wp2.subject => 2,
+          bucket1_wp1.subject => 3
+        )
+
+      expect(WorkPackage.where(backlog_bucket: bucket2).to_h { [it.subject, it.position] })
+        .to eql(
+          bucket2_wp1.subject => 1,
+          bucket2_wp2.subject => 2,
+          bucket2_wp3.subject => 3
         )
     end
   end

@@ -38,7 +38,7 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:status)  { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint)  { create(:agile_sprint, project:) }
+  shared_let(:sprint)  { create(:sprint, project:) }
   shared_let(:story) { create(:work_package, status:, sprint:, project:) }
 
   current_user { user }
@@ -91,10 +91,10 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
 
       context "with no sprints available" do
         before do
-          allow(Agile::Sprint)
+          allow(Sprint)
             .to receive(:for_project)
             .with(project)
-            .and_return(Agile::Sprint.none)
+            .and_return(Sprint.none)
         end
 
         it "still renders the sprint planning container for turbo-frame requests" do
@@ -104,6 +104,26 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
           expect(response).to have_http_status(:ok)
           expect(response.body).to include('id="owner_backlogs_container"')
           expect(response.body).to include('id="sprint_backlogs_container"')
+        end
+      end
+
+      it "uses the inbox border box as the drag mirror container" do
+        get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(%(id="inbox_project_#{project.id}"))
+        expect(response.body).to include('data-generic-drag-and-drop-target="container mirrorContainer"')
+      end
+
+      context "with backlog buckets enabled", with_flag: { backlog_buckets: true } do
+        shared_let(:backlog_bucket) { create(:backlog_bucket, project:) }
+
+        it "uses each backlog bucket border box as the drag mirror container" do
+          get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include(%(data-test-selector="backlog-bucket-#{backlog_bucket.id}"))
+          expect(response.body).to include('data-generic-drag-and-drop-target="container mirrorContainer"')
         end
       end
     end

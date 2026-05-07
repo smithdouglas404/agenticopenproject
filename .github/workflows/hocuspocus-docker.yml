@@ -42,6 +42,13 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+      DEPLOY_APP_PRIVATE_KEY:
+        required: true
 
 jobs:
   build:
@@ -62,19 +69,25 @@ jobs:
           echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
       - name: Determine tags
         id: tags
+        env:
+          INPUT_USE_TEST_REGISTRY: ${{ inputs.use_test_registry }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+          FALLBACK_BRANCH: ${{ github.ref_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          SHORT_SHA: ${{ steps.short-sha.outputs.short_sha }}
         run: |
           REGISTRY=openproject/hocuspocus
 
-          if [ "${{ inputs.use_test_registry }}" = "true" ]; then
+          if [ "$INPUT_USE_TEST_REGISTRY" = "true" ]; then
             REGISTRY=openproject/hocuspocus-test
           fi
 
-          BRANCH=$(echo '${{ inputs.branch || github.ref_name }}' | tr / -)
-          SPECIFIC_TAG=$BRANCH-${{ steps.short-sha.outputs.short_sha }}
+          BRANCH=$(echo "${INPUT_BRANCH:-$FALLBACK_BRANCH}" | tr / -)
+          SPECIFIC_TAG=$BRANCH-$SHORT_SHA
           LATEST_TAG=$BRANCH-latest
 
-          if [ -n "${{ inputs.tag }}" ]; then
-            SPECIFIC_TAG=$(echo '${{ inputs.tag }}' | tr -d v)
+          if [ -n "$INPUT_TAG" ]; then
+            SPECIFIC_TAG=$(echo "$INPUT_TAG" | tr -d v)
             LATEST_TAG=latest
           fi
 
@@ -146,7 +159,7 @@ jobs:
 
       - name: Deploy STAGE
         # make sure to always use the latest release branch here
-        if: github.ref == 'refs/heads/release/17.3' && github.repository == 'opf/openproject'
+        if: github.ref == 'refs/heads/release/17.4' && github.repository == 'opf/openproject'
         uses: benc-uk/workflow-dispatch@7a027648b88c2413826b6ddd6c76114894dc5ec4
         with:
           workflow: stage-deploy-shards.yml

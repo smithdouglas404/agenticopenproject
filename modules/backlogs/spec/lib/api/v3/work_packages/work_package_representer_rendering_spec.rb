@@ -51,7 +51,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering" do
 
   let(:story_points) { 23 }
   let(:position) { 123 }
-  let(:sprint) { build_stubbed(:agile_sprint) }
+  let(:sprint) { build_stubbed(:sprint) }
   let(:embed_links) { true }
   let(:representer) do
     described_class.create(work_package, current_user:, embed_links:)

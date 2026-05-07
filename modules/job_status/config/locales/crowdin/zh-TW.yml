@@ -6,7 +6,7 @@ zh-TW:
     description: 背景工作列表及狀態
   job_status_dialog:
     download_starts: 將自動開始下載
-    click_to_download: Or, [click here](download_url) to download.
+    click_to_download: Or [click here](download_url) to download.
     title: 背景工作狀態
     redirect: 正在重新導向。
     redirect_link: 請點擊此處繼續。

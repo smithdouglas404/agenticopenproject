@@ -51,6 +51,7 @@ RSpec.describe WorkPackages::CreateContract do
       view_work_packages
       add_work_packages
       manage_sprint_items
+      view_sprints
     ]
   end
 

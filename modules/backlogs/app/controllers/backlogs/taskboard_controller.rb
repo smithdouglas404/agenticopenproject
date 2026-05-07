@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class TaskboardController < ::RbApplicationController
+  class TaskboardController < BaseController
     menu_item :backlogs
 
     def show

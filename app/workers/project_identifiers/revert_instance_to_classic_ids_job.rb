@@ -28,10 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# Reverts all projects to classic identifier mode. Triggered explicitly when the
+# admin switches the instance back to classic mode via the admin UI
+# (Admin::Settings::WorkPackagesIdentifierController#switch_to_classic).
+#
+# The global Setting.work_packages_identifier is expected to already be "classic"
+# before this job runs — it is set by the controller before enqueueing.
 class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
   good_job_control_concurrency_with(total_limit: 1)
+  retry_on StandardError, wait: :polynomially_longer, attempts: 8
 
-  def perform(*); end
+  def perform
+    raise "expected Setting.work_packages_identifier to be classic" unless Setting::WorkPackageIdentifier.classic?
+
+    Project.find_each do |project|
+      next if Project.classic_identifier_format?(project.identifier)
+
+      ProjectIdentifiers::RevertProjectToClassicService.new(project).call
+    end
+  end
 end

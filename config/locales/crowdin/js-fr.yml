@@ -515,12 +515,6 @@ fr:
         sidebar_arrow: Utilisez la flèche de retour dans le coin supérieur gauche pour retourner au <b>menu principal</b> du projet.
         welcome: Faites une visite d’introduction de trois minutes pour apprendre <b>les fonctionnalités les plus importantes</b>.<br>Il est recommandé d’effectuer les étapes jusqu'à la fin. Vous pouvez redémarrer cette visite à tout moment.
         wiki: Dans le <b>wiki</b> vous pouvez documenter et partager vos connaissances avec votre équipe.
-        backlogs:
-          overview: Gérez votre travail dans la vue <b>backlogs</b>.
-          sprints: Sur la droite, vous avez le backlog de produit et le backlog des bugs. Sur la gauche, vous avez leurs sprints respectifs. Ici, vous pouvez créer des <b>epics, user stories et bugs</b>, les prioriser via glisser-déposer et les ajouter à un sprint.
-          task_board_arrow: Pour voir votre <b>Tableau de bord des Tâches</b>, ouvrez le menu déroulant Sprint...
-          task_board_select: "…et sélectionnez l'entrée <b>Tableau de bord des Tâches</b>."
-          task_board: Le tableau des tâches visualise la <b>progression pour ce sprint</b>. Cliquez sur l'icône plus (+) à côté d'une user story pour ajouter de nouvelles tâches ou de nouveaux obstacles. <br> Le statut peut être mis à jour par glisser-déposer.
         boards:
           overview: Sélectionnez <b>tableaux</b> pour déplacer la vue et gérer votre projet en utilisant la vue des tableaux agiles.
           lists_kanban: Ici, vous pouvez créer plusieurs listes (colonnes) dans votre tableau. Cette fonctionnalité vous permet de créer un <b>tableau Kanban</b>, par exemple.
@@ -987,13 +981,6 @@ fr:
       form_submit:
         title: Confirmez pour continuer
         text: Êtes-vous sûr de vouloir effectuer cette action ?
-      destroy_work_package:
-        title: Confirmer la suppression de %{label}
-        single_text: Voulez-vous vraiment supprimer le lot de travaux
-        bulk_text: Voulez-vous vraiment supprimer le %{label} suivant ?
-        has_children: 'Le lot de travaux a %{childUnits} :'
-        confirm_deletion_children: Je reconnais que TOUS les descendants des lots de travaux de la liste seront supprimés récursivement.
-        deletes_children: Tous les lots de travaux enfants et leurs descendants seront également supprimés récursivement.
       destroy_time_entry:
         title: Confirmer la suppression de l’entrée de temps
         text: Êtes-vous sur de vouloir supprimer l'entrée de temps suivante ?

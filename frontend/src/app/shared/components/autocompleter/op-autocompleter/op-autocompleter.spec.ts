@@ -18,10 +18,14 @@ describe('autocompleter', () => {
       id: 1,
       subject: 'Workpackage 1',
       name: 'Workpackage 1',
+      formattedId: '#1',
       author: {
         href: '/api/v3/users/1',
         name: 'Author1',
       },
+      type: { id: 1, name: 'Task' },
+      status: { id: 1, name: 'Open' },
+      project: { name: 'My Project' },
       description: {
         format: 'markdown',
         raw: 'Description of WP1',
@@ -36,10 +40,14 @@ describe('autocompleter', () => {
       id: 2,
       subject: 'Workpackage 2',
       name: 'Workpackage 2',
+      formattedId: 'PROJ-2',
       author: {
         href: '/api/v3/users/2',
         name: 'Author2',
       },
+      type: { id: 2, name: 'Bug' },
+      status: { id: 2, name: 'Closed' },
+      project: { name: 'My Project' },
       description: {
         format: 'markdown',
         raw: 'Description of WP2',
@@ -51,6 +59,16 @@ describe('autocompleter', () => {
       startDate: '2021-03-26T10:42:14Z',
     },
   ];
+
+  type WindowWithOpenProject = Omit<Window, 'OpenProject'> & { OpenProject?:{ environment:string } };
+
+  beforeEach(() => {
+    (window as WindowWithOpenProject).OpenProject = { environment: 'test' };
+  });
+
+  afterEach(() => {
+    delete (window as WindowWithOpenProject).OpenProject;
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -104,11 +122,11 @@ describe('autocompleter', () => {
         fixture.detectChanges();
         const select = fixture.componentInstance.ngSelectInstance;
 
-        expect(select.isOpen).toBeFalse();
+        expect(select.isOpen()).toBeFalse();
         select.open();
         select.focus();
 
-        expect(select.isOpen).toBeTrue();
+        expect(select.isOpen()).toBeTrue();
 
         expect(select.itemsList.items.length).toEqual(0);
 
@@ -147,6 +165,117 @@ describe('autocompleter', () => {
     });
   });
 
+  describe('work package option rendering', () => {
+    it('should display formattedId in dropdown options', () => {
+      jasmine.clock().install();
+      try {
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'Wor';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+
+        const wpIdElements = document.querySelectorAll('.op-autocompleter--wp-id');
+
+        expect(wpIdElements.length).toBeGreaterThanOrEqual(1);
+        // Verify at least one rendered option displays formattedId
+        const renderedIds = Array.from(wpIdElements).map(el => el.textContent?.trim());
+
+        expect(renderedIds).toContain('#1');
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
+
+    it('should display classic formattedId in selected value label', () => {
+      jasmine.clock().install();
+      try {
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'Wor';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+
+        // Select the first item (classic mode: #1)
+        const firstOption = document.querySelector<HTMLElement>('.ng-option')!;
+        firstOption.click();
+        fixture.detectChanges();
+
+        const labelElement = document.querySelector('.ng-value-label');
+
+        expect(labelElement).toBeTruthy();
+        expect(labelElement!.textContent).toContain('#1');
+        expect(labelElement!.textContent).toContain('Workpackage 1');
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
+
+    it('should display semantic formattedId in selected value label', () => {
+      jasmine.clock().install();
+      try {
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'package 2';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        jasmine.clock().tick(0);
+        fixture.detectChanges();
+
+        // Select the semantic mode item (PROJ-2)
+        const option = document.querySelector<HTMLElement>('.ng-option')!;
+        option.click();
+        fixture.detectChanges();
+
+        const labelElement = document.querySelector('.ng-value-label');
+
+        expect(labelElement).toBeTruthy();
+        expect(labelElement!.textContent).toContain('PROJ-2');
+        expect(labelElement!.textContent).not.toContain('#PROJ-2');
+        expect(labelElement!.textContent).toContain('Workpackage 2');
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
+  });
+
   describe('with debounce', () => {
     beforeEach(() => {
       fixture.componentInstance.debounceTimeMs = 50;
@@ -161,11 +290,11 @@ describe('autocompleter', () => {
       fixture.detectChanges();
       const select = fixture.componentInstance.ngSelectInstance;
 
-      expect(select.isOpen).toBeFalse();
+      expect(select.isOpen()).toBeFalse();
       select.open();
       select.focus();
 
-      expect(select.isOpen).toBeTrue();
+      expect(select.isOpen()).toBeTrue();
 
       expect(select.itemsList.items.length).toEqual(0);
 

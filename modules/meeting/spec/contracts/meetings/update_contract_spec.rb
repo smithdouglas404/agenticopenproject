@@ -66,12 +66,57 @@ RSpec.describe Meetings::UpdateContract do
 
       it_behaves_like "contract is invalid", base: :error_conflict
     end
+
+    context "when meeting is closed" do
+      before do
+        meeting.update_column(:state, :closed)
+      end
+
+      it_behaves_like "contract is invalid", base: I18n.t(:text_meeting_not_editable_anymore)
+    end
   end
 
   context "without permission" do
     let(:user) { build_stubbed(:user) }
 
     it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  context "when moving to another project" do
+    let(:target_project) { create(:project) }
+
+    before do
+      meeting.project_id = target_project.id
+      meeting.title = "Moved Meeting Title"
+    end
+
+    context "when only authorized in target project" do
+      let(:user) do
+        create(:user, member_with_permissions: { target_project => [:edit_meetings] })
+      end
+
+      it_behaves_like "contract is invalid", base: :error_unauthorized
+    end
+
+    context "when only authorized in source project" do
+      let(:user) do
+        create(:user, member_with_permissions: { project => [:edit_meetings] })
+      end
+
+      it_behaves_like "contract is invalid", base: :error_unauthorized
+    end
+
+    context "when authorized in both projects" do
+      let(:user) do
+        create(:user,
+               member_with_permissions: {
+                 project => [:edit_meetings],
+                 target_project => [:edit_meetings]
+               })
+      end
+
+      it_behaves_like "contract is valid"
+    end
   end
 
   include_examples "contract reuses the model errors" do

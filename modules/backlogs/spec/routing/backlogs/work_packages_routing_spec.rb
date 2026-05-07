@@ -61,5 +61,15 @@ RSpec.describe Backlogs::WorkPackagesController do
         id: "85"
       )
     }
+
+    it {
+      expect(get("/projects/project_42/backlogs/sprints/21/work_packages/85/move_to_sprint_dialog")).to route_to(
+        controller: "backlogs/work_packages",
+        action: "move_to_sprint_dialog",
+        project_id: "project_42",
+        sprint_id: "21",
+        id: "85"
+      )
+    }
   end
 end

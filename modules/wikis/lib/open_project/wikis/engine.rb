@@ -58,22 +58,18 @@ module OpenProject::Wikis
         :wikisAvailable,
         getter: ->(*) { ::Wikis::Provider.enabled.exists? }
       )
+
+      OpenProject::TextFormatting::Filters::PatternMatcherFilter.append_matcher ::Wikis::TextFormatting::WikiLinkMatcher
     end
 
     replace_principal_references "Wikis::PageLink" => %i[author_id]
 
     register "openproject-wikis", author_url: "https://openproject.org" do
       project_module :work_package_tracking do
-        permission :view_wiki_page_links,
-                   {},
-                   permissible_on: :project,
-                   dependencies: %i[view_work_packages],
-                   contract_actions: { wiki_page_links: %i[view] }
-
         permission :manage_wiki_page_links,
                    {},
                    permissible_on: :project,
-                   dependencies: %i[view_work_packages],
+                   dependencies: %i[edit_work_packages],
                    contract_actions: { wiki_page_links: %i[manage] }
       end
 
@@ -95,6 +91,11 @@ module OpenProject::Wikis
            caption: :project_module_wiki_platforms,
            icon: "browser"
     end
+
+    patch_with_namespace :WikiPages, :CreateService
+    patch_with_namespace :WikiPages, :UpdateService
+    patch_with_namespace :WorkPackages, :CreateService
+    patch_with_namespace :WorkPackages, :UpdateService
 
     add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
     add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }

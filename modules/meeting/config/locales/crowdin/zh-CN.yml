@@ -32,6 +32,7 @@ zh-CN:
         location: 地点
         duration: 时长
         notes: 备注
+        recurrence_start_time: Scheduled start time
         participants: 参加者
         participant:
           other: "%{count}位参与者"
@@ -204,6 +205,7 @@ zh-CN:
   label_time_zone: 时区
   label_start_date: 开始日期
   label_subscribe_icalendar: 订阅日历
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: 选择一个模板，以自动复制其议程条目
   caption_template_project_select: 请选择要在其中创建此会议模板的项目
   placeholder_meeting_template_select_project_first: 先选择项目
@@ -669,9 +671,9 @@ zh-CN:
   text_exit_draft_mode_dialog_template_title: 是否打开此会议系列的第一个会议？
   text_exit_draft_mode_dialog_template_subtitle: 在此之后，您将无法返回到草稿模式。
   label_meeting_template_sharing: 共享中
-  label_meeting_template_sharing_none: 仅此项目
-  label_meeting_template_sharing_descendants: 子项目
-  label_meeting_template_sharing_system: 所有项目
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: 此模板可以与此实例中的子项目或其他项目共享。仅复制议程条目和附件。
   text_meeting_not_editable_anymore: 本次会议已不可编辑。
   text_meeting_not_present_anymore: 此次会议已被删除。请选择另一次会议。
@@ -690,9 +692,12 @@ zh-CN:
   text_agenda_item_duplicate_in_next_meeting: 确定要将此议程条目的副本添加到 %{date} %{time} 的下一个会议吗？结果不会复制。
   text_agenda_item_duplicated_in_next_meeting: 在 %{date}的下一个会议中复制的议程条目
   text_work_package_has_no_upcoming_meeting_agenda_items: 该工作包尚未被安排到即将举行的会议议程中。
-  text_agenda_item_no_available_occurrence: 所有即将发生的事件均已取消。
-  text_agenda_item_dialog_skipping_cancelled_one: 注：跳过 %{date} 已取消的事件。
-  text_agenda_item_dialog_skipping_cancelled_many: 注：跳过 %{count} 个已取消的事件。
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: 使用"添加到会议"按钮将此工作包添加到即将举行的会议。
   text_work_package_has_no_past_meeting_agenda_items: 此工作包未作为过往会议中的议程条目添加。
   text_email_updates_muted: 电子邮件日历更新已静音。当您进行更改时，与会者将不会通过电子邮件收到更新的邀请。

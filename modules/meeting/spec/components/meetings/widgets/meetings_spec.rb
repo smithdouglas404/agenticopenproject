@@ -110,17 +110,25 @@ RSpec.describe Meetings::Widgets::Meetings, type: :component do
 
   context "with project" do
     let(:project) { project_red }
-    # these meetings from another project should not be visible
-    let!(:other_project_meeting) { create(:meeting, project: project_blue, author:) }
+    # this meeting from another project should not be visible
+    let!(:other_project_meeting) do
+      create(:meeting, project: project_blue, author:, start_time: 1.week.from_now, duration: 1) do |meeting|
+        create(:meeting_participant, meeting:, user: admin, invited: true)
+      end
+    end
 
     context "with no meetings in this project" do
       it_behaves_like "empty-state with action"
     end
 
     context "with meetings" do
-      let!(:meeting_red) { create(:meeting, project: project_red, author:, start_time: 1.week.from_now, duration: 1) }
+      let!(:meeting_red) do
+        create(:meeting, project: project_red, author:, start_time: 1.week.from_now, duration: 1).tap do |meeting|
+          create(:meeting_participant, meeting:, user: admin, invited: true)
+        end
+      end
 
-      it "renders only this project’s meetings" do
+      it "renders only this project’s meetings which the user participates in" do
         expect(rendered_component).to have_list_item(count: 2)
         expect(rendered_component).to have_list_item(position: 1) do |item|
           expect(item).to have_link href: project_meeting_path(project_red, meeting_red)
@@ -129,9 +137,7 @@ RSpec.describe Meetings::Widgets::Meetings, type: :component do
         end
 
         expect(rendered_component).to have_list_item(position: 2) do |item|
-          expect(item).to have_link href: project_meetings_path(project_red,
-                                                                filters: [{ invited_user_id: { operator: "*",
-                                                                                               values: [] } }].to_json)
+          expect(item).to have_link href: project_meetings_path(project_red)
           expect(item).to have_content("View all meetings")
         end
       end

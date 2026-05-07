@@ -620,13 +620,13 @@ RSpec.describe "Open the Meetings tab",
             create(:recurring_meeting, project:)
           end
           shared_let(:empty_recurring_meeting_occurrence) do
-            create(:meeting,
+            create(:recurring_meeting_occurrence,
                    project:,
                    recurring_meeting:,
                    start_time: 3.hours.from_now)
           end
           shared_let(:recurring_meeting_occurrence) do
-            create(:meeting,
+            create(:recurring_meeting_occurrence,
                    project:,
                    recurring_meeting:,
                    start_time: 4.hours.from_now).tap do |meeting|

@@ -457,9 +457,11 @@ RSpec.describe OpenProject::TextFormatting,
         title = '<script>alert("FOO")</script>'
         subject { format_text("[[#{title}]]") }
 
-        it {
-          expect(subject).to be_html_eql("<p class='op-uc-p'><a class=\"wiki-page op-uc-link\" target=\"_top\" href=\"/projects/#{project.identifier}/wiki/alert-foo\">#{h(title)}</a></p>")
-        }
+        it "renders as plain text because the script tag is stripped from the title" do
+          # SanitizationFilter removes <script>…</script> from the title, leaving [[]]
+          # which the wiki-link regex ignores (empty title).
+          expect(subject).to be_html_eql("<p class='op-uc-p'>[[]]</p>")
+        end
       end
 
       context "Plain wiki page link" do

@@ -46,7 +46,7 @@ class WorkPackages::RebuildPositionsService
         SELECT
           id,
           ROW_NUMBER() OVER (
-            PARTITION BY project_id, sprint_id
+            PARTITION BY project_id, backlog_bucket_id, sprint_id
             ORDER BY position, created_at
           ) AS new_position
         FROM work_packages

@@ -29,8 +29,10 @@
 #++
 
 module Backlogs
-  class BurndownChartController < ::RbApplicationController
-    helper :burndown_charts
+  class BurndownChartController < BaseController
+    menu_item :backlogs
+
+    helper "backlogs/burndown_chart"
 
     def show
       @burndown = Burndown.new(@sprint, @project) if @sprint.date_range_set?

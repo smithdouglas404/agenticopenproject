@@ -515,12 +515,6 @@ nl:
         sidebar_arrow: Gebruik de terug pijl in de linkerbovenhoek om terug te keren naar het project <b>hoofdmenu</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: Binnen de <b>wiki</b> kunt u kennis delen en documenteren met uw team.
-        backlogs:
-          overview: Beheer uw werk in de <b>backlogs</b> weergave.
-          sprints: Aan de rechterkant hebt u de product backlog en de bug backlog, aan de linkerkant de respectievelijke sprints. Hier kunt u <b>epics, user stories en bugs</b> maken, prioriteren door ze te slepen en ze toevoegen aan een sprint.
-          task_board_arrow: Om uw <b>taakbord</b>te zien, opent u de sprint drop-down...
-          task_board_select: "...en selecteer het <b>taakbord</b> item."
-          task_board: Het taakbord geeft de <b>vooruitgang voor deze sprint</b> weer. Klik op het plus (+) pictogram naast een verhaal om nieuwe taken of belemmeringen toe te voegen. <br> De status kan worden bijgewerkt door slepen en neerzetten.
         boards:
           overview: Selecteer <b>borden</b> om het overzicht te verschuiven en uw project te beheren met behulp van de agile borden weergave.
           lists_kanban: Hier kunt u meerdere lijsten (kolommen) binnen uw bord maken. Met deze functie kunt u bijvoorbeeld een <b>Kanban board</b>maken.
@@ -987,13 +981,6 @@ nl:
       form_submit:
         title: Bevestigen om verder te gaan
         text: Weet u zeker dat u deze actie wilt uitvoeren?
-      destroy_work_package:
-        title: Bevestig verwijdering van %{label}
-        single_text: Weet u zeker dat u het werkpakket wilt verwijderen
-        bulk_text: Weet u zeker dat u de volgende %{label} wilt verwijderen?
-        has_children: 'Het werkpakket heeft %{childUnits}:'
-        confirm_deletion_children: Ik erken dat alle onderliggende werkpakketten van de weergegeven werkpakketten verwijderd worden.
-        deletes_children: Alle onderliggende werkpakketten en hun nakomelingen ook worden verwijderd.
       destroy_time_entry:
         title: Confirm deletion of time entry
         text: Are you sure you want to delete the following time entry?

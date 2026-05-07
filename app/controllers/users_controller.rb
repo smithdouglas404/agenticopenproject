@@ -404,6 +404,12 @@ class UsersController < ApplicationController
     elsif set_password? params
       update_params[:password] = params[:user][:password]
       update_params[:password_confirmation] = params[:user][:password_confirmation]
+      # Force a password change when the plain-text password will be emailed.
+      # - For invited users, the account-information email is always sent
+      # - For active users, it is only sent when the admin explicitly requests it.
+      if params[:send_information].present? || @user.invited?
+        update_params[:force_password_change] = true
+      end
     end
 
     update_params

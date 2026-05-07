@@ -54,4 +54,12 @@ RSpec.describe OpenProject::Backlogs::Engine do
       expect(backlog.url(project)).to eq(controller: "/backlogs/backlog", action: :show)
     end
   end
+
+  describe "admin menu" do
+    it "registers the Backlogs entry from the engine" do
+      admin_backlogs = Redmine::MenuManager.items(:admin_menu).children.find { |item| item.name == :admin_backlogs }
+
+      expect(admin_backlogs.url).to eq(controller: "/backlogs/settings", action: :show)
+    end
+  end
 end

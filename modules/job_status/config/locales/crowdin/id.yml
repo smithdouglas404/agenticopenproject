@@ -6,7 +6,7 @@ id:
     description: Daftar dan status pekerjaan latar belakang.
   job_status_dialog:
     download_starts: Unduhan dimulai secara otomatis.
-    click_to_download: Or, [click here](download_url) to download.
+    click_to_download: Or [click here](download_url) to download.
     title: Latar belakang status pekerjaan
     redirect: Anda akan diarahkan.
     redirect_link: Silakan klik disini untuk melanjutkan.
