@@ -60,25 +60,15 @@ module Wikis
 
     def enrich_models(metadata)
       identifier_title_map = metadata.sort_by(&:identifier).to_h { [it.identifier, it.title] }
-      variable_placeholders = build_placeholders(identifier_title_map.size)
-
-      result_scope(metadata_join_sql(variable_placeholders, identifier_title_map))
-    end
-
-    def result_scope(join_expression)
-      relation.joins(join_expression).select("wiki_page_links.*, metadata.title as title")
-    end
-
-    def metadata_join_sql(variable_placeholders, identifier_title_map)
-      ActiveRecord::Base.sanitize_sql_array([variable_placeholders, *identifier_title_map.flatten])
-    end
-
-    def build_placeholders(amount)
-      variable_placeholders = Array.new(amount, "(?,?)").join(",")
-      <<~SQL.squish
+      variable_placeholders = Array.new(identifier_title_map.size, "(?,?)").join(",")
+      join_string = <<~SQL.squish
         LEFT JOIN (VALUES #{variable_placeholders}) AS metadata(identifier, title)
           ON metadata.identifier = wiki_page_links.identifier
       SQL
+
+      join_expression = ActiveRecord::Base.sanitize_sql_array([join_string, *identifier_title_map.flatten])
+
+      relation.joins(join_expression).select("wiki_page_links.*, metadata.title as title")
     end
   end
 end
