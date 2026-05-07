@@ -96,25 +96,24 @@ module Exports::PDF::Common::Markdown
 
     def expand_wp_mention(work_package, content)
       detail_level = content.count("#")
-      return content if detail_level == 1
+      return work_package.formatted_id if detail_level == 1
 
-      # ##1234: {Type} #{ID}: {Subject}
-      content = "#{work_package.type} ##{work_package.id}: #{work_package.subject}"
+      # ##: {Type} {formatted_id}: {Subject}
+      content = "#{work_package.type} #{work_package.formatted_id}: #{work_package.subject}"
       return content if detail_level == 2
 
-      # ###1234: {Status} {Type} #{ID}: {Subject} ({Start Date} - {End Date})
+      # ###: {Status} {Type} {formatted_id}: {Subject} ({Start Date} - {End Date})
       "#{work_package.status.name} #{content}#{work_package_dates(work_package)}"
     end
 
     def wp_mention_macro(content, id, opts)
-      id = id[/\d+/]
       return [text_hash(content, opts)] if id.blank?
 
-      work_package = WorkPackage.find_by(id: id)
+      work_package = WorkPackage.find_by_display_id(id)
       return [text_hash(content, opts)] unless work_package&.visible?
 
       content = expand_wp_mention(work_package, content)
-      [text_hash(content, opts.merge({ link: url_helpers.work_package_url(id) }))]
+      [text_hash(content, opts.merge({ link: url_helpers.work_package_url(work_package) }))]
     end
 
     def work_package_dates(work_package)
