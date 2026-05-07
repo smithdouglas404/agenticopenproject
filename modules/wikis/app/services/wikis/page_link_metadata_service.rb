@@ -30,26 +30,27 @@
 
 module Wikis
   class PageLinkMetadataService
-    # @param relation [ActiveRecord::Relation<Wikis::PageLink>]
-    # @return [ServiceResult<ActiveRecord::Relation<Wikis::PageLink>]
-    def self.call(relation) = new.call(relation)
-
-    def initialize
+    # @param page_links [ActiveRecord::Relation<Wikis::PageLink>]
+    def initialize(page_links)
       @result = ServiceResult.success(errors: ActiveModel::Errors.new(self))
+      @relation = page_links
     end
 
-    def call(relation)
+    # @return [ServiceResult<ActiveRecord::Relation<Wikis::PageLink>]
+    def call
       metadata = relation.group_by(&:provider).flat_map do |provider, page_links|
         build_inputs(page_links).filter_map do |input_data|
           provider.resolve("queries.page_info").call(input_data).value_or(nil)
         end
       end
 
-      @result.result = enrich_models(relation, metadata)
+      @result.result = enrich_models(metadata)
       @result
     end
 
     private
+
+    attr_reader :relation
 
     def build_inputs(page_links)
       page_links.filter_map do |page_link|
@@ -57,15 +58,15 @@ module Wikis
       end
     end
 
-    def enrich_models(page_links, metadata)
+    def enrich_models(metadata)
       identifier_title_map = metadata.sort_by(&:identifier).to_h { [it.identifier, it.title] }
       variable_placeholders = build_placeholders(identifier_title_map.size)
 
-      result_scope(page_links, metadata_join_sql(variable_placeholders, identifier_title_map))
+      result_scope(metadata_join_sql(variable_placeholders, identifier_title_map))
     end
 
-    def result_scope(page_links, join_expression)
-      page_links.joins(join_expression).select("wiki_page_links.*, metadata.title as title")
+    def result_scope(join_expression)
+      relation.joins(join_expression).select("wiki_page_links.*, metadata.title as title")
     end
 
     def metadata_join_sql(variable_placeholders, identifier_title_map)

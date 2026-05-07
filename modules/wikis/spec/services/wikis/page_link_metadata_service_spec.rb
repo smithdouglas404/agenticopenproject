@@ -38,7 +38,7 @@ module Wikis
     shared_let(:provider) { create(:internal_wiki_provider) }
     shared_let(:page_links) { create_list(:relation_wiki_page_link, 3, provider:) }
 
-    subject(:service) { described_class }
+    subject(:service) { described_class.new(relation) }
 
     before do
       query_double = instance_double(Adapters::Providers::Internal::Queries::PageInfo)
@@ -58,7 +58,7 @@ module Wikis
     end
 
     it "returns a new relation" do
-      service_result = service.call(relation)
+      service_result = service.call
 
       expect(service_result).to be_success
       expect(service_result.errors).to be_empty
@@ -66,7 +66,7 @@ module Wikis
     end
 
     it "adds the title attribute to the metadata association" do
-      service_result = service.call(relation)
+      service_result = service.call
       expect(service_result).to be_success
 
       page_links = service_result.result

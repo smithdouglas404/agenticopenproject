@@ -34,7 +34,7 @@ module API
       class WorkPackageWikiPageLinksAPI < OpenProjectAPI
         helpers do
           def enrich_models_with_wiki_metadata(relation)
-            Wikis::PageLinkMetadataService.call(relation)
+            Wikis::PageLinkMetadataService.new(relation).call
           end
         end
 
