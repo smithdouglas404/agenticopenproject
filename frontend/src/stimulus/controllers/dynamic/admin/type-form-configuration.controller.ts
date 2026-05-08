@@ -32,10 +32,11 @@ import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
 
 export default class TypeFormConfigurationController extends Controller {
-  static targets = ['groupsContainer', 'inactiveContainer'];
+  static targets = ['groupsContainer', 'inactiveContainer', 'inactiveFilterInput'];
 
   declare readonly groupsContainerTarget:HTMLElement;
   declare readonly inactiveContainerTarget:HTMLElement;
+  declare readonly inactiveFilterInputTarget:HTMLInputElement;
 
   static values = {
     addGroupUrl: String,
@@ -69,7 +70,15 @@ export default class TypeFormConfigurationController extends Controller {
 
   filterInactives(event:Event) {
     const input = event.currentTarget as HTMLInputElement;
-    const query = input.value.trim().toLowerCase();
+    this.applyInactiveFilter(input.value);
+  }
+
+  inactiveContainerTargetConnected() {
+    this.applyInactiveFilter(this.inactiveFilterInputTarget.value);
+  }
+
+  private applyInactiveFilter(rawQuery:string) {
+    const query = rawQuery.trim().toLowerCase();
     const inactiveList = this.inactiveContainerTarget.querySelector<HTMLElement>(
       '[data-test-selector="type-form-configuration-inactive-list"]',
     );
