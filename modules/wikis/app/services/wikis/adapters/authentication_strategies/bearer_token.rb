@@ -32,12 +32,13 @@ module Wikis
   module Adapters
     module AuthenticationStrategies
       class BearerToken
-        def initialize(token)
-          @token = token
+        def initialize(user)
+          @user = user
         end
 
-        def call(http_options: {}, **)
-          yield OpenProject.httpx.bearer_auth(@token).with(http_options)
+        def call(provider:, http_options: {}, **)
+          token = OAuthClientToken.for_user_and_client(@user, provider.oauth_client).first
+          yield OpenProject.httpx.bearer_auth(token&.access_token).with(http_options)
         end
       end
     end

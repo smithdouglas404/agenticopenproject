@@ -54,10 +54,8 @@ module Wikis
       OAuthClientToken.for_user_and_client(user, oauth_client).exists?
     end
 
-    def extract_origin_user_id(token)
-      auth_strategy = Wikis::Adapters::Registry
-        .resolve("xwiki.authentication.user_bound")
-        .call(token.access_token)
+    def extract_origin_user_id(user)
+      auth_strategy = auth_strategy_for(user)
       resolve("queries.user").call(auth_strategy:)
     end
 

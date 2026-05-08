@@ -44,6 +44,10 @@ module Wikis
     def to_s = self.class.registry_prefix
     def user_connected?(_user) = raise SubclassResponsibilityError
 
+    def auth_strategy_for(user)
+      resolve("authentication.user_bound").call(user)
+    end
+
     class << self
       def registry_prefix = raise SubclassResponsibilityError
     end
