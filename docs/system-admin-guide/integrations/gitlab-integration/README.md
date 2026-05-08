@@ -36,7 +36,7 @@ You will first have to configure both OpenProject and GitLab for the integration
 
 ### OpenProject
 
-First you will need to create a user in OpenProject that has the permission to make comments. This role only requires two permissions, *View work packages* and *Add notes*, which you will find in the **Work packages and Gantt charts** section under  [**Roles and Permissions**](../../users-permissions/roles-permissions/).
+First you will need to create a user in OpenProject that has the permission to make comments. This role only requires three permissions, *View work packages*,  *Add comments* and *Edit own comments*, which you will find in the **Work packages and Gantt charts** section under  [**Roles and Permissions**](../../users-permissions/roles-permissions/).
 
 ![GitLab role with required permissions in OpenProject](openproject-system-guide-gitlab-integration-role.png)
 
@@ -56,11 +56,11 @@ Once the user is created you need to generate an OpenProject API token for this 
 
 You can then configure the necessary webhook in [GitLab](#gitlab).
 
-Finally you will need to activate the GitLab module under [Project settings](../../../user-guide/projects/project-settings/modules/) so that all information pulling through from GitLab will be shown in the work packages.
+Finally you will need to activate the GitLab module for each project under its [Project settings](../../../user-guide/projects/project-settings/modules/) so that all information pulling through from GitLab will be shown in the work packages.
 
 ![Activate a GitLab module in OpenProject](openproject-system-guide-gitlab-integration-project-modules.png)
 
-Seeing the **GitLab** tab requires **Show GitLab content** permission, so this permission needs to be granted to all roles in a project allowed to see the tab.
+Seeing the **GitLab** tab requires **Show GitLab content** permission, so this permission needs to be granted to all roles in a project allowed to see the tab. This can be added in the [**Roles and Permissions**](../../users-permissions/roles-permissions/) settings. 
 
 ![Grant permission to show GitLab content to user roles in OpenProject](openproject-system-guide-gitlab-integration-gitlab-content-role-permission.png)
 
