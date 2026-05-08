@@ -80,7 +80,13 @@ In OpenProject, authentication is an important element to guarantee a data prote
 
 ### Backlogs
 
-Backlogs is a [module](#module) in OpenProject that brings features that support the Scrum methodology in OpenProject, such as a product backlog and sprint backlogs, a sprint board that is automatically created with a sprint start, estimation of story points, a burndown chart and a Scrum wiki. In order to use backlogs in OpenProject, the backlogs module has to be activated in the [project settings](#project-settings) by a project admin. [Read how to work with backlogs in OpenProject](../user-guide/backlogs-scrum).
+Backlogs is a [module](#module) in OpenProject that brings features that support [Agile project management](#agile-project-management), in particular the Scrum methodology, such as a product backlog and sprint backlogs.
+
+It includes functionality for planning and managing sprints, including a sprint board that is automatically created when a sprint is started, estimation of story points, a burndown chart and a Scrum wiki. Within the backlog, work packages can be organized using backlog buckets. These allow teams to group and structure backlog items into clearly defined sections, making it easier to prioritize and manage large backlogs.
+
+To use backlogs in OpenProject, the backlogs module has to be activated in the [project settings](#project-settings) by a project admin.
+
+[Read how to work with backlogs in OpenProject](../user-guide/backlogs-scrum).
 
 ### Baseline comparison
 
@@ -245,6 +251,18 @@ In OpenProject, you can choose from several integrations, such as the [Excel syn
 ### Internal comment
 
 Internal comments are available as [Enterprise add-on](#enterprise-add-on) in OpenProject. If enabled, users can choose whether their comment in a work package Activity tab is visible to everyone that has access to the work package – or if it is internal. An internal comment is only visible to users with a dedicated permission – by default, those with a project admin role. [Learn more about internal comments for work packages in OpenProject in this blog article](https://www.openproject.org/blog/internal-comments/).
+
+## J
+
+### Jira Migrator
+
+The OpenProject Jira Migrator is a guided wizard that supports organizations in their Jira exit. It guides administrators through a structured process to import data from Jira into OpenProject.
+
+**More information on migration from Jira to OpenProject**
+
+- [Watch a short video and learn more about the Jira Migrator in our documentation](../installation-and-operations/jira-migration/).
+- [Read our blog article about importing basic custom fields](https://www.openproject.org/blog/jira-migrator-custom-fields).
+- [Learn more about switching from Atlassian Data Center to OpenProject](https://www.openproject.org/alternative-atlassian-jira-data-center/).
 
 ## L
 
