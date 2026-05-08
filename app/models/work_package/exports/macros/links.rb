@@ -34,7 +34,7 @@ module WorkPackage::Exports
       # PDF export only handles canonical numeric `#N` references. Semantic and
       # leading-zero shapes fall through to literal text to avoid emitting a
       # `<mention data-id="0">` (since `"PROJ-1".to_i == 0`). Semantic-id
-      # support in PDF export is tracked in https://community.openproject.org/wp/74366.
+      # support in PDF export is tracked in https://community.openproject.org/wp/74766.
       def applicable?
         hash_trigger? &&
           matcher.prefix.blank? &&

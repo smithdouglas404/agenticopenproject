@@ -69,20 +69,12 @@ module OpenProject::TextFormatting
     #     identifier:version:1.0.0
     #     identifier:source:some/file
     class ResourceLinksMatcher < RegexMatcher
-      # Per-render cache of WorkPackage records referenced by `#N` plain links.
-      # Stored on `RequestStore.store` and managed via `with_preloaded_resources`,
-      # which save/restores around its block so nested `format_text` calls
-      # don't clobber the outer render's lookup.
       WORK_PACKAGES_LOOKUP_KEY = :text_formatting_work_packages_lookup
       private_constant :WORK_PACKAGES_LOOKUP_KEY
 
-      # Hard cap on the per-render preload IN-list. The doc walker reads
-      # identifiers out of user-pasted CKEditor content; without a bound a
-      # multi-megabyte comment could push thousands of values into a single
-      # SQL IN-list. References past the cap render via the link handler's
-      # cache-miss fallback (numeric → bare `#N` link, semantic → literal
-      # text), which is graceful enough for an edge case that we don't
-      # expect in normal authoring.
+      # Cap the preload IN-list so a multi-megabyte user-pasted comment
+      # can't push thousands of values into one SQL query. References past
+      # the cap fall through to the link handler's cache-miss path.
       MAX_PRELOAD_IDENTIFIERS = 500
 
       include ::OpenProject::TextFormatting::Truncation
@@ -99,10 +91,8 @@ module OpenProject::TextFormatting
       include ActionView::Helpers::UrlHelper
 
       # Hash and revision separators sit on independent alternation branches
-      # so the semantic-id identifier shape applies only to `#` references —
-      # `r` revisions stay numeric-only. Named captures keep `parse_match` as
-      # a flat name-to-name map; adding a branch later doesn't ripple through
-      # group numbers.
+      # so semantic ids apply only to `#` references — `r` revisions stay
+      # numeric-only.
       def self.regexp
         semantic_id = WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT.source
         prefixes = allowed_prefixes.join("|")
@@ -145,30 +135,19 @@ module OpenProject::TextFormatting
         ]
       end
 
-      # Reader for the link handler. Returns the preloaded WorkPackage for the
-      # given identifier (numeric id as Integer or String, or semantic shape
-      # like "PROJ-7"), or nil if no preload is active (classic mode, no `#N`
-      # references in the doc, or pipeline path that bypasses
-      # `with_preloaded_resources`) or the WP couldn't be resolved.
+      # Returns the preloaded WorkPackage for the given identifier (numeric
+      # or semantic), or nil if no preload is active (classic mode, no `#N`
+      # references) or the WP couldn't be resolved.
       def self.work_package_for(identifier)
         RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]&.[](identifier.to_s)
       end
 
-      # Doc-level preload (called by `PatternMatcherFilter` around the per-node
-      # loop). Yields with the WP lookup populated, save/restoring on entry
-      # and exit so a nested `format_text` call — e.g. a custom-field
-      # formatter that re-enters the pipeline mid-iteration — doesn't
-      # clobber the outer render's lookup.
-      #
-      # Classic mode skips the load: `display_id` and `formatted_id` collapse
-      # to the numeric form, so the link handler renders the link from the
-      # matched id alone with no DB lookup required.
-      #
-      # The matcher links regardless of viewer permissions; visibility
-      # filtering is out of scope here.
+      # Doc-level preload called by `PatternMatcherFilter`. Save/restores
+      # the lookup so a nested `format_text` (e.g. custom-field formatter
+      # re-entering the pipeline) doesn't clobber the outer render. Classic
+      # mode skips the load — `display_id` collapses to numeric, so the
+      # link handler can render from the matched id alone.
       def self.with_preloaded_resources(doc, _context)
-        # `previous` is captured before any early return so the `ensure`
-        # block can always restore it without a `defined?` guard.
         previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
 
         return yield unless Setting::WorkPackageIdentifier.semantic_mode_active?
@@ -196,18 +175,11 @@ module OpenProject::TextFormatting
         identifiers
       end
 
-      # Returns the WP identifier string for any `#N` / `##N` / `###N` (or
-      # semantic-shape) reference the WP link handler will try to render —
-      # `#PROJ-1` plain links need the WP record for the `formatted_id`
-      # label and hover-card URL; `##PROJ-1` / `###PROJ-1` quickinfo macros
-      # use it to emit the user-facing `display_id` in `data-id`. Returns
-      # nil for prefixed resource links (`version#3`, `message#12`) and
-      # `:`-separator resources.
-      #
-      # Leading-zero numerics like "0123" pass through here — the regex's
-      # `\d+` already gates the shape, and the link handler does the
-      # canonical-numeric check at render time so a non-resolving entry
-      # in the cache is harmless.
+      # Returns the WP identifier for any `#N` / `##N` / `###N` (or
+      # semantic-shape) reference. Returns nil for prefixed resource links
+      # (`version#3`, `message#12`) and `:`-separator resources. Leading-zero
+      # numerics ("0123") pass through here — the link handler rejects them
+      # at render time, so a non-resolving cache entry is harmless.
       def self.extract_work_package_identifier(match)
         parts = parse_match(match)
         identifier = parts[:identifier]
@@ -216,18 +188,10 @@ module OpenProject::TextFormatting
         identifier
       end
 
-      # Builds the per-render WP cache from a Set of identifier strings (mixed
-      # numeric and semantic).
-      #
-      # Step 1 — `where_display_id_in` resolves all references in one SELECT
-      # via id-IN / current-identifier-IN / alias-EXISTS. Rows index by
-      # `id.to_s` and `identifier` (the WP's *current* slug).
-      #
-      # Step 2 — any input still unmapped after Step 1 must have matched via
-      # the alias EXISTS subquery, since the loaded row only carries the
-      # current identifier. One targeted `WorkPackageSemanticAlias` lookup
-      # fills those mappings in. Skipped when no historical aliases are
-      # referenced — the common case stays at 1 SELECT.
+      # 1 SELECT in the common case. A second targeted SELECT only fires
+      # when references hit historical aliases — the loaded WP row carries
+      # only its current identifier, so unmapped inputs must be filled in
+      # from `WorkPackageSemanticAlias`.
       def self.build_lookup(identifiers)
         work_packages = WorkPackage.where_display_id_in(identifiers).select(:id, :identifier).to_a
         lookup = index_by_id_and_identifier(work_packages)
@@ -255,9 +219,8 @@ module OpenProject::TextFormatting
       end
       private_class_method :fold_in_alias_keys
 
-      # Folds the three alternation branches in `regexp` (hash, revision,
-      # colon) into a flat `:sep` / `:identifier` shape so callers don't
-      # branch on which one matched.
+      # Flattens the three alternation branches into a single `:sep` /
+      # `:identifier` shape so callers don't branch on which one matched.
       def self.parse_match(match)
         {
           leading: match[:leading],

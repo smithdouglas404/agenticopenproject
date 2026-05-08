@@ -31,10 +31,10 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
-  # Just the semantic-identifier shape ("PROJ-42"), used wherever the
-  # numeric branch lives outside the alternation (e.g. text-macro parsers
-  # that need different trailing-boundary rules per branch). Composes
-  # the project-identifier shape from `Projects::Identifier::SEMANTIC_FORMAT`.
+  # Semantic-identifier shape ("PROJ-42"). Use this when the numeric branch
+  # lives on a separate alternation (e.g. text-macro parsers that need
+  # different trailing-boundary rules per branch); use `ID_ROUTE_CONSTRAINT`
+  # when both branches share one regex.
   SEMANTIC_ID_PATTERN = /#{Projects::Identifier::SEMANTIC_FORMAT.source}-\d+/
 
   # Matches either a numeric ID ("12345") or a semantic identifier ("PROJ-42").
@@ -85,26 +85,17 @@ module WorkPackage::SemanticIdentifier
     end
   end
 
-  # Returns true when value looks like a semantic work package identifier
-  # ("PROJ-42"). Non-strings (Integer, Hash, nil, Array) and numeric strings
-  # ("123", " 456 ") return false — these fall through to standard PK lookup.
-  #
-  # The round-trip check (rather than a regex) is intentional for performance.
-  # Every value that reaches a work-package finder either parses as an integer
-  # or doesn't, and that's enough to dispatch correctly. Don't tighten it.
+  # True for strings that look like a semantic identifier ("PROJ-42").
+  # Returns false for non-strings and numeric strings ("123") so they fall
+  # through to standard PK lookup. The round-trip `to_i.to_s` check (rather
+  # than a regex) is intentional for performance — don't tighten it.
   def self.semantic_id?(value)
     value.is_a?(String) && value.strip.to_i.to_s != value.strip
   end
 
-  # Returns true when value is a canonical numeric ID —
-  # an Integer, or a String that round-trips through `to_i.to_s` ("0", "123").
-  # Rejects leading-zero strings ("0123"), non-numeric strings, and nil.
-  #
-  # For Strings the predicate is the exact complement of `semantic_id?`,
-  # so the routing question (lookup by primary key vs by identifier/alias)
-  # has a single source of truth. For non-String inputs the two diverge:
-  # Integers are numeric-only (no string-lookup routing applies); nil and
-  # other types are neither and both return false.
+  # True for canonical numeric IDs: any Integer, or a String that round-trips
+  # through `to_i.to_s` ("0", "123" — not "0123"). For Strings the exact
+  # complement of `semantic_id?` so PK-vs-alias routing has a single source.
   def self.numeric_id?(value)
     case value
     when Integer then true

@@ -30,10 +30,9 @@
 
 module OpenProject
   module TextFormatting
-    # Shared single-source-of-truth for the `<pre>`/`<code>` ancestry skip
-    # invariant. Filters call `has_ancestor?(node, BLOCKS)` (via
-    # HTML::Pipeline's instance helper); matchers that need the same
-    # invariant from a class-level context call `ancestor?(node)` here.
+    # `<pre>`/`<code>` ancestry skip. Filters call
+    # `has_ancestor?(node, BLOCKS)` via HTML::Pipeline's instance helper;
+    # matchers without that helper call `ancestor?(node)` here.
     module PreformattedBlocks
       BLOCKS = %w[pre code].to_set.freeze
 

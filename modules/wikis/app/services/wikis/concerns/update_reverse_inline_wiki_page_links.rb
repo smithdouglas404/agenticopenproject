@@ -51,14 +51,10 @@ module Wikis::Concerns
       end
     end
 
-    # Mirrors the prefix character class of the inline-text macro matcher
-    # (lib/open_project/text_formatting/matchers/resource_links_matcher.rb).
-    # The trailing `(?!\w)` boundary on the semantic branch prevents
-    # `#PROJ-1abc` from incorrectly matching `#PROJ-1`; the numeric branch
-    # intentionally has no trailing boundary to preserve historic behaviour
-    # for inputs like `#13-blubb`. Numeric and semantic shapes live on
-    # separate alternation branches rather than sharing the union form
-    # `ID_ROUTE_CONSTRAINT`.
+    # Mirrors the prefix character class of the inline-text macro matcher.
+    # The trailing `(?!\w)` on the semantic branch keeps `#PROJ-1abc` from
+    # matching `#PROJ-1`; the numeric branch deliberately has no trailing
+    # boundary to preserve historic behaviour for inputs like `#13-blubb`.
     # rubocop:disable Style/RedundantRegexpEscape
     WP_REF_RE = /
       (?:[[:space:],~>\#\(\[\-]|^)\#

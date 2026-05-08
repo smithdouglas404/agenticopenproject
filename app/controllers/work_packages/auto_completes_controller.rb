@@ -57,11 +57,6 @@ class WorkPackages::AutoCompletesController < ApplicationController
 
   def wp_hashes_with_string(work_packages)
     work_packages.map do |work_package|
-      # `displayId` collapses to the numeric id in classic mode and to the
-      # semantic identifier in semantic mode. The CKEditor mention plugin
-      # reads it to insert `#PROJ-7` (or `#1234`) into the markdown source
-      # and to build the mention's link URL. Stringified for parity with
-      # APIv3 (`WorkPackageRepresenter` serialises `displayId` as a string).
       work_package.attributes.merge(
         "to_s" => work_package.to_s,
         "displayId" => work_package.display_id.to_s
