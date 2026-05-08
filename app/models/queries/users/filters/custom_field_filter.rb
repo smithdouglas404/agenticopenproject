@@ -28,27 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserQuery < PersistedQuery
-  def self.model
-    User
-  end
+class Queries::Users::Filters::CustomFieldFilter < Queries::Users::Filters::UserFilter
+  include Queries::Filters::Shared::CustomFieldFilter
 
-  def default_scope
-    # Excludes the SystemUser, DeletedUser, AnonymousUser STI descendants of User.
-    User.user
-  end
-
-  register_query do
-    filter Queries::Users::Filters::NameFilter
-    filter Queries::Users::Filters::AnyNameAttributeFilter
-    filter Queries::Users::Filters::GroupFilter
-    filter Queries::Users::Filters::StatusFilter
-    filter Queries::Users::Filters::LoginFilter
-    filter Queries::Users::Filters::BlockedFilter
-    filter Queries::Users::Filters::CustomFieldFilter
-
-    order Queries::Users::Orders::DefaultOrder
-    order Queries::Users::Orders::NameOrder
-    order Queries::Users::Orders::GroupOrder
-  end
+  self.custom_field_context = ::Queries::Users::CustomFieldContext
 end

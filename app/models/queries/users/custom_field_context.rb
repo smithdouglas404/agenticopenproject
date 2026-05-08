@@ -28,27 +28,46 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserQuery < PersistedQuery
-  def self.model
-    User
-  end
+module Queries::Users::CustomFieldContext
+  class << self
+    def custom_field_class
+      ::UserCustomField
+    end
 
-  def default_scope
-    # Excludes the SystemUser, DeletedUser, AnonymousUser STI descendants of User.
-    User.user
-  end
+    def model
+      ::User
+    end
 
-  register_query do
-    filter Queries::Users::Filters::NameFilter
-    filter Queries::Users::Filters::AnyNameAttributeFilter
-    filter Queries::Users::Filters::GroupFilter
-    filter Queries::Users::Filters::StatusFilter
-    filter Queries::Users::Filters::LoginFilter
-    filter Queries::Users::Filters::BlockedFilter
-    filter Queries::Users::Filters::CustomFieldFilter
+    # User / Group / PlaceholderUser all persist as Principal in
+    # custom_values.customized_type (STI base class). Constraining the
+    # join by `custom_field_id` to a UserCustomField scopes us to user CFs.
+    def customized_type
+      "Principal"
+    end
 
-    order Queries::Users::Orders::DefaultOrder
-    order Queries::Users::Orders::NameOrder
-    order Queries::Users::Orders::GroupOrder
+    def custom_fields(_context = nil)
+      custom_field_class.visible
+    end
+
+    def where_subselect_joins(custom_field)
+      # Custom values are stored against Principal (the STI base class of User / Group /
+      # PlaceholderUser), all sharing the `users` table. Constraining the join by
+      # `custom_field_id` to a UserCustomField is what scopes the rows to users.
+      <<~SQL.squish
+        LEFT OUTER JOIN #{cv_db_table}
+          ON #{cv_db_table}.customized_type = 'Principal'
+          AND #{cv_db_table}.customized_id = #{users_db_table}.id
+          AND #{cv_db_table}.custom_field_id = #{custom_field.id}
+      SQL
+    end
+
+    def where_subselect_conditions
+      nil
+    end
+
+    private
+
+    def cv_db_table = CustomValue.table_name
+    def users_db_table = User.table_name
   end
 end
