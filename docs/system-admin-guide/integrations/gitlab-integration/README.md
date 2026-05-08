@@ -56,6 +56,21 @@ Once the user is created you need to generate an OpenProject API token for this 
 
 You can then configure the necessary webhook in [GitLab](#gitlab).
 
+### Configure GitLab integration settings
+
+Go to **Administration → Integrations → GitLab** and configure the GitLab integration settings.
+
+You can optionally define which OpenProject user is used to authenticate incoming webhook requests. When configured, only requests authenticated with that user’s API token are accepted. This user is also used for automated deploy-status comments on work packages. If no user is selected, OpenProject falls back to the system user.
+
+You can also define a webhook secret shared between GitLab and OpenProject. When a secret is configured, OpenProject validates the `X-Gitlab-Token` header for every incoming webhook request and rejects requests with invalid tokens.
+
+> [!IMPORTANT]
+> If no webhook secret is configured, webhook requests are accepted without verification. This may allow unauthorized actors to forge events. We strongly recommend configuring a webhook secret.
+
+Click **Save**.
+
+![Form to define GitLab actor and webhook secrets in OpenProject administration](openproject-system-guide-gitlab-webhook-secret.png)
+
 Finally you will need to activate the GitLab module for each project under its [Project settings](../../../user-guide/projects/project-settings/modules/) so that all information pulling through from GitLab will be shown in the work packages.
 
 ![Activate a GitLab module in OpenProject](openproject-system-guide-gitlab-integration-project-modules.png)
