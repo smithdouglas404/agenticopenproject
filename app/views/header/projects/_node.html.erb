@@ -1,0 +1,82 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<% project = node[:project] %>
+<% children = node[:children] %>
+<% is_current = project.id == current_project_id %>
+<% is_favorited = favorited_ids.include?(project.id) %>
+<% href = jump.present? ? project_path(project.identifier, jump:) : project_path(project.identifier) %>
+<% subtree_contains_current = ->(n) { n[:project].id == current_project_id || n[:children].any? { |c| subtree_contains_current.call(c) } } %>
+<% is_expanded = subtree_contains_current.call(node) %>
+
+<% add_icons = ->(tree_node) do
+     if is_current
+       tree_node.with_trailing_action_button(
+         icon: :"x-circle",
+         tag: :a,
+         href: home_path(jump:),
+         show_tooltip: false,
+         aria: { label: t("header_project_select.leave_project") }
+       )
+     end
+     if is_favorited
+       tree_node.with_trailing_visual_icon(icon: :"star-fill", classes: "op-primer--star-icon")
+     end
+   end %>
+
+<% if children.any? %>
+  <% component.with_sub_tree(
+       label: project.name,
+       select_variant: :none,
+       current: is_current,
+       expanded: is_expanded,
+       href:,
+       data: { node_id: project.id }
+     ) do |sub| %>
+    <% add_icons.call(sub) %>
+    <% children.each do |child_node| %>
+      <%= render "header/projects/node",
+                 component: sub,
+                 node: child_node,
+                 current_project_id: current_project_id,
+                 favorited_ids: favorited_ids,
+                 jump: %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% component.with_leaf(
+       label: project.name,
+       select_variant: :none,
+       current: is_current,
+       href:,
+       data: { node_id: project.id }
+     ) do |leaf| %>
+    <% add_icons.call(leaf) %>
+  <% end %>
+<% end %>

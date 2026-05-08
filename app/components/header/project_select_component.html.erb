@@ -1,0 +1,81 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%= render(
+      Primer::Alpha::Overlay.new(
+        title: t("header_project_select.title"),
+        visually_hide_title: true,
+        anchor_side: :outside_bottom,
+        anchor_align: :start,
+        size: :auto,
+        padding: :none
+      )
+    ) do |overlay| %>
+  <% overlay.with_show_button(
+       id: "projects-menu",
+       classes: "op-project-select--trigger-button",
+       scheme: :invisible,
+       data: { "test-selector": "op-projects-menu" }
+     ) do |button| %>
+     <%= trigger_label %>
+    <% button.with_trailing_visual_icon(icon: :"triangle-down") %>
+  <% end %>
+
+  <% overlay.with_body(classes: "op-project-select--body", data: { controller: "header-project-select" }) do %>
+    <%= render(
+          Primer::OpenProject::FilterableTreeView.new(
+            src: tree_src,
+            include_sub_items_check_box_arguments: { hidden: true },
+            filter_mode_control_arguments: logged_in? ? {} : { hidden: true }
+          )
+        ) do |tree_view| %>
+      <% if logged_in? %>
+        <% tree_view.with_filter_mode(name: "all", label: t("filterable_tree_view.filter_mode.all"), selected: true) %>
+        <% tree_view.with_filter_mode(name: "favorited", label: t("header_project_select.favorites")) %>
+      <% end %>
+    <% end %>
+
+    <% unless OpenProject::FeatureDecisions.portfolio_models_active? %>
+      <%= helpers.flex_layout(justify_content: :flex_end, p: 2) do |bar| %>
+        <% bar.with_column(mr: 2) do %>
+          <%= render(Primer::Beta::Button.new(tag: :a, href: projects_path)) do %>
+            <%= t("header_project_select.all_projects") %>
+          <% end %>
+        <% end %>
+        <% if can_create_projects? %>
+          <% bar.with_column do %>
+            <%= render(Primer::Beta::Button.new(tag: :a, href: new_project_path, scheme: :primary)) do %>
+              <%= t("header_project_select.new_project") %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -163,8 +163,8 @@ RSpec.describe "Top menu items", :js do
   describe "Projects" do
     let(:top_menu) { find_by_id("projects-menu") }
 
-    let(:all_projects) { I18n.t("js.label_project_list") }
-    let(:add_project) { I18n.t("js.label_project") }
+    let(:all_projects) { I18n.t("label_project_list") }
+    let(:add_project) { I18n.t("label_project") }
 
     context "as an admin" do
       let(:user) { create(:admin) }
