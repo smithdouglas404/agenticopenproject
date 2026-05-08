@@ -110,6 +110,10 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   # historical alias matches one of the supplied display ids. Numeric and
   # semantic strings may be freely mixed; unknown values produce no match
   # rather than poisoning the rest of the set.
+  #
+  # @param values [Array<String, Integer>, String, Integer] one or many
+  #   display ids. A bare String/Integer is wrapped via Array() so callers
+  #   can pass `where_display_id_in("PROJ-1")` and get a one-element relation.
   def where_display_id_in(values)
     values = Array(values).map(&:to_s)
     return none if values.empty?
