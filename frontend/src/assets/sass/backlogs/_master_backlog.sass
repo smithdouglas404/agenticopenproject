@@ -38,7 +38,7 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 
   // Base layout restores padding-right: 1rem on #content-body when the
   // split pane is open (specificity 0,3,0,0). Override it back to 0.
-  #content:has(#content-bodyRight > *)
+  @include split-pane-active
     #content-body
       padding-right: 0
 
