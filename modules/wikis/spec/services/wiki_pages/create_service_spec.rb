@@ -179,6 +179,20 @@ RSpec.describe WikiPages::CreateService do
     end
   end
 
+  context "when a numeric reference is immediately followed by alphanumeric text" do
+    # The numeric branch of WP_REF_RE has no trailing `(?!\w)` boundary —
+    # historic behaviour matches `#13` inside `#13-blubb` and similar
+    # shapes. Locked here so a future tightening of the boundary can't
+    # silently strip reverse-links from existing wiki content.
+    let(:text) { "Trailing: ##{work_package.id}abc" }
+
+    it "still creates a reverse page link from the numeric prefix" do
+      subject
+
+      expect(reverse_link_finder.count).to eq(1)
+    end
+  end
+
   context "when the internal provider is disabled" do
     let(:internal_provider) { create(:internal_wiki_provider, enabled: false) }
 
