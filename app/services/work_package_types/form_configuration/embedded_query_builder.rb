@@ -45,7 +45,7 @@ module WorkPackageTypes
         return query_call if query_call.failure?
 
         query.show_hierarchies = false
-        ServiceResult.success(result: query)
+        query_call
       end
 
       def rebuild(query:, user:)
