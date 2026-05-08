@@ -28,21 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Providers
-      class ProviderRepresenter < Decorators::Single
-        include Decorators::LinkedResource
-        include Decorators::DateProperty
+require "dry/container/stub"
+require "dry/monads"
 
-        property :universal_identifier
-        property :name
+RSpec.configure do |config|
+  config.include Dry::Monads[:result]
 
-        date_time_property :created_at
-        date_time_property :updated_at
-
-        self_link(path: :wiki_provider, id_attribute: :universal_identifier)
-      end
-    end
+  config.prepend_before do
+    Wikis::Adapters::Registry.enable_stubs!
+  end
+  config.append_after do
+    Wikis::Adapters::Registry.unstub
   end
 end

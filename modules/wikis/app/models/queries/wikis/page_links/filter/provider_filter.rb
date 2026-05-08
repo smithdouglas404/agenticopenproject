@@ -28,20 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Providers
-      class ProviderRepresenter < Decorators::Single
-        include Decorators::LinkedResource
-        include Decorators::DateProperty
+module Queries
+  module Wikis
+    module PageLinks
+      module Filter
+        class ProviderFilter < Filters::Base
+          self.model = ::Wikis::PageLink
 
-        property :universal_identifier
-        property :name
+          def type = :list
 
-        date_time_property :created_at
-        date_time_property :updated_at
+          def human_name
+            ::Wikis::PageLink.human_attribute_name(name)
+          end
 
-        self_link(path: :wiki_provider, id_attribute: :universal_identifier)
+          def allowed_values
+            ::Wikis::Provider.enabled.pluck(:universal_identifier).map { |uid| [uid, uid] }
+          end
+
+          def left_outer_joins = :provider
+
+          def where
+            operator_strategy.sql_for_field(values, ::Wikis::Provider.table_name, "universal_identifier")
+          end
+        end
       end
     end
   end

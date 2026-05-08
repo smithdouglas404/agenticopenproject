@@ -165,7 +165,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
 
         it "uses the configured drag-and-drop data" do
           expect(rendered_component).to have_css(".Box") do |box|
-            expect(box["data-generic-drag-and-drop-target"]).to eq("container mirrorContainer")
+            expect(box["data-generic-drag-and-drop-target"]).to eq("container")
             expect(box["data-target-container-accessor"]).to eq(":scope > ul")
             expect(box["data-target-id"]).to eq("sprint:#{sprint.id}")
             expect(box["data-target-allowed-drag-type"]).to eq("story")

@@ -119,7 +119,7 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
 
       it "wires the bucket drop-target data on the box" do
         expect(rendered_component).to have_css(".Box") do |box|
-          expect(box["data-generic-drag-and-drop-target"]).to eq("container mirrorContainer")
+          expect(box["data-generic-drag-and-drop-target"]).to eq("container")
           expect(box["data-target-id"]).to eq("backlog_bucket:#{backlog_bucket.id}")
           expect(box["data-target-allowed-drag-type"]).to eq("story")
         end

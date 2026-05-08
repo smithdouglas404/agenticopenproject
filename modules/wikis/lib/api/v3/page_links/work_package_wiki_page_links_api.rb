@@ -28,47 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-
 module API
   module V3
-    module Providers
-      RSpec.describe ProviderRepresenter, :rendering do
-        let(:xwiki_provider) { build_stubbed(:xwiki_provider) }
-        let(:internal_provider) { build_stubbed(:internal_wiki_provider) }
-        let(:embed_links) { false }
-        let(:current_user) { build_stubbed(:user) }
-
-        let(:represented) { xwiki_provider }
-        let(:representer) { described_class.new(represented, current_user:, embed_links:) }
-
-        subject(:rendered) { representer.to_json }
-
-        describe "_links" do
-          describe "self" do
-            it_behaves_like "has a titled link" do
-              let(:link) { "self" }
-              let(:href) { "/api/v3/wiki_providers/#{represented.universal_identifier}" }
-              let(:title) { represented.name }
-            end
+    module PageLinks
+      class WorkPackageWikiPageLinksAPI < OpenProjectAPI
+        helpers do
+          def enrich_models_with_wiki_metadata(relation)
+            Wikis::PageLinkMetadataService.new(relation).call
           end
         end
 
-        describe "properties" do
-          it_behaves_like "property", :name do
-            let(:value) { represented.name }
-          end
+        resources :wiki_page_links do
+          get do
+            query = ParamsToQueryService.new(
+              ::Wikis::PageLink,
+              current_user,
+              query_class: ::Queries::Wikis::PageLinks::PageLinkQuery
+            ).call(params)
 
-          it_behaves_like "property", :universalIdentifier do
-            let(:value) { represented.universal_identifier }
-          end
+            unless query.valid?
+              message = I18n.t("api_v3.errors.missing_or_malformed_parameter", parameter: "filters")
+              raise ::API::Errors::InvalidQuery.new(message)
+            end
 
-          it_behaves_like "datetime property", :createdAt do
-            let(:value) { represented.created_at }
-          end
+            relation = query.results.where(linkable: @work_package)
 
-          it_behaves_like "datetime property", :updatedAt do
-            let(:value) { represented.updated_at }
+            PageLinkCollectionRepresenter.new(
+              enrich_models_with_wiki_metadata(relation).result,
+              per_page: params[:pageSize],
+              self_link: api_v3_paths.work_package_page_links(@work_package.id),
+              current_user:
+            )
           end
         end
       end

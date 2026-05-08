@@ -28,20 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Providers
-      class ProviderRepresenter < Decorators::Single
-        include Decorators::LinkedResource
-        include Decorators::DateProperty
+module Queries
+  module Wikis
+    module PageLinks
+      class PageLinkQuery
+        include BaseQuery
+        include UnpersistedQuery
 
-        property :universal_identifier
-        property :name
+        def self.model
+          @model ||= ::Wikis::PageLink
+        end
 
-        date_time_property :created_at
-        date_time_property :updated_at
-
-        self_link(path: :wiki_provider, id_attribute: :universal_identifier)
+        def default_scope
+          ::Wikis::PageLink.includes(:provider).all
+        end
       end
     end
   end

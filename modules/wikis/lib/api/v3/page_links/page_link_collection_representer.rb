@@ -30,18 +30,9 @@
 
 module API
   module V3
-    module Providers
-      class ProviderRepresenter < Decorators::Single
-        include Decorators::LinkedResource
-        include Decorators::DateProperty
-
-        property :universal_identifier
-        property :name
-
-        date_time_property :created_at
-        date_time_property :updated_at
-
-        self_link(path: :wiki_provider, id_attribute: :universal_identifier)
+    module PageLinks
+      class PageLinkCollectionRepresenter < Decorators::OffsetPaginatedCollection
+        def _type = "WikiPageLinkCollection"
       end
     end
   end

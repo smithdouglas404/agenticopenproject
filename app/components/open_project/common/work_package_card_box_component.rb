@@ -297,7 +297,7 @@ module OpenProject
         {
           # Existing callers share one mirror container target on the page until
           # parent-specific DnD handling is extracted in follow-up work.
-          generic_drag_and_drop_target: "container mirrorContainer",
+          generic_drag_and_drop_target: "container",
           target_container_accessor: ":scope > ul",
           target_id: drag_and_drop.fetch(:target_id),
           target_allowed_drag_type: drag_and_drop.fetch(:allowed_drag_type)
