@@ -23,27 +23,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module Wikis
   module Adapters
-    class Authentication
-      class << self
-        # @param strategy [Input::Strategy]
-        def [](strategy)
-          auth = strategy.value_or { raise ArgumentError, "Invalid authentication strategy '#{it.inspect}'" }
+    module AuthenticationStrategies
+      class InternalUser
+        def initialize(user)
+          @user = user
+        end
 
-          case auth.key
-          when :bearer_token
-            AuthenticationStrategies::BearerToken.new(auth.user)
-          when :internal
-            AuthenticationStrategies::InternalUser.new(auth.user)
-          else
-            raise ArgumentError, "Unknown authentication scheme: #{auth.key}"
-          end
+        def call(**)
+          yield @user
         end
       end
     end
