@@ -48,12 +48,10 @@ module OpenProject::TextFormatting
 
       private
 
-      # Recursively wraps the per-node loop in each matcher's
-      # `with_preloaded_resources` block (a yielding hook). This lets matchers
-      # warm per-render caches AND save/restore the previous state, so nested
-      # `format_text` calls — e.g. a custom-field formatter that re-enters the
-      # pipeline mid-render — don't clobber the outer render's lookup. Opt-in:
-      # matchers without the hook are skipped.
+      # Wraps the per-node loop in each matcher's `with_preloaded_resources`
+      # hook so matchers can warm per-render caches and save/restore them
+      # around nested `format_text` calls. Opt-in: matchers without the hook
+      # are skipped.
       def with_matcher_preloads(matchers, &)
         matcher = matchers.shift
         return yield if matcher.nil?

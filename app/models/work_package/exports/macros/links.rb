@@ -31,15 +31,10 @@
 module WorkPackage::Exports
   module Macros
     class WorkPackagesLinkHandler < OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
-      # PDF export currently only renders canonical numeric `#N` references.
-      # Semantic `#PROJ-1` shapes and leading-zero numerics like `#0123`
-      # match the parent regex (because `Macros::Links` subclasses
-      # `ResourceLinksMatcher`) but are rejected here so they fall through
-      # to literal text rather than emitting a broken `<mention data-id="0">`
-      # (since `"PROJ-1".to_i == 0`).
-      #
-      # Semantic-id support in PDF export is tracked separately in
-      # https://community.openproject.org/wp/74366.
+      # PDF export only handles canonical numeric `#N` references. Semantic and
+      # leading-zero shapes fall through to literal text to avoid emitting a
+      # `<mention data-id="0">` (since `"PROJ-1".to_i == 0`). Semantic-id
+      # support in PDF export is tracked in https://community.openproject.org/wp/74766.
       def applicable?
         %w(# ## ###).include?(matcher.sep) &&
           matcher.prefix.blank? &&

@@ -202,11 +202,11 @@ RSpec.describe Exports::PDF::Common::Macro do
     end
 
     # Semantic-id support in PDF export is tracked separately in
-    # https://community.openproject.org/wp/74366. Until that ships, any
+    # https://community.openproject.org/wp/74766. Until that ships, any
     # `#PROJ-1`-shaped reference must fall through to literal text in PDF
     # output rather than emitting `<mention data-id="0">` (since
     # `"PROJ-1".to_i == 0`).
-    describe "with semantic identifier (out of scope per WP #74366)" do
+    describe "with semantic identifier (out of scope per WP #74766)" do
       describe "alone" do
         let(:markdown) { "see #PROJ-1 here" }
 
