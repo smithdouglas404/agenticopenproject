@@ -34,7 +34,7 @@ module Wikis
       module XWiki
         Registry = Dry::Container::Namespace.new("xwiki") do
           namespace("authentication") do
-            register(:user_bound, ->(token) { Input::Strategy.build(key: :bearer_token, token:) })
+            register(:user_bound, Authentication::UserBound)
           end
 
           namespace("commands") do
