@@ -76,6 +76,15 @@ module OpenProject::TextFormatting
       WORK_PACKAGES_LOOKUP_KEY = :text_formatting_work_packages_lookup
       private_constant :WORK_PACKAGES_LOOKUP_KEY
 
+      # Hard cap on the per-render preload IN-list. The doc walker reads
+      # identifiers out of user-pasted CKEditor content; without a bound a
+      # multi-megabyte comment could push thousands of values into a single
+      # SQL IN-list. References past the cap render via the link handler's
+      # cache-miss fallback (numeric → bare `#N` link, semantic → literal
+      # text), which is graceful enough for an edge case that we don't
+      # expect in normal authoring.
+      MAX_PRELOAD_IDENTIFIERS = 500
+
       include ::OpenProject::TextFormatting::Truncation
       # used for the work package quick links
       include WorkPackagesHelper
@@ -180,7 +189,9 @@ module OpenProject::TextFormatting
 
           node.to_s.scan(regexp) do
             extract_work_package_identifier(Regexp.last_match)&.then { identifiers << it }
+            break if identifiers.size >= MAX_PRELOAD_IDENTIFIERS
           end
+          break if identifiers.size >= MAX_PRELOAD_IDENTIFIERS
         end
         identifiers
       end

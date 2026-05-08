@@ -38,7 +38,12 @@ module Wikis::Concerns
 
       Wikis::ReverseInlinePageLink.where(provider:, identifier: wiki_page.id).delete_all
 
-      identifiers = find_wp_links(wiki_page.text).uniq
+      # Cap matches the inline-text macro preload — wiki page text is the
+      # same kind of user-controlled input and shouldn't be able to push an
+      # unbounded IN-list into PostgreSQL on save.
+      identifiers = find_wp_links(wiki_page.text)
+                      .uniq
+                      .first(OpenProject::TextFormatting::Matchers::ResourceLinksMatcher::MAX_PRELOAD_IDENTIFIERS)
       return if identifiers.empty?
 
       WorkPackage.where_display_id_in(identifiers).find_each do |wp|
