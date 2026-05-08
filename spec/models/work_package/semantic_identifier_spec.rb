@@ -467,6 +467,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     [
       ["123",     :numeric],
       ["0",       :numeric],
+      [" 123 ",   :numeric],
       [123,       :numeric],
       [0,         :numeric],
       ["0123",    :semantic],
