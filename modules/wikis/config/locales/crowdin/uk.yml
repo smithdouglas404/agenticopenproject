@@ -43,7 +43,7 @@ uk:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
     oauth_login_component:
-      heading: Not connected to %{provider}
+      heading: Немає підключення до %{provider}
       description: Log in to %{provider} to view and manage related wiki pages from this OpenProject instance.
       connect_button: Connect %{provider} account
     admin:
@@ -95,7 +95,7 @@ uk:
             provider_oauth: XWiki OAuth
             provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
-          xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+          xwiki_oauth: OAuth для XWiki
+          xwiki_oauth_description: Надайте OpenProject доступ до даних XWiki за допомогою OAuth.
     macro:
       page_not_found: Linked wiki page no longer available

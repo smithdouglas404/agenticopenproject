@@ -45,9 +45,13 @@ class UserQuery < PersistedQuery
     filter Queries::Users::Filters::StatusFilter
     filter Queries::Users::Filters::LoginFilter
     filter Queries::Users::Filters::BlockedFilter
+    filter Queries::Users::Filters::CustomFieldFilter
 
     order Queries::Users::Orders::DefaultOrder
     order Queries::Users::Orders::NameOrder
     order Queries::Users::Orders::GroupOrder
+    order Queries::Users::Orders::CustomFieldOrder
+
+    select Queries::Users::Selects::CustomField
   end
 end

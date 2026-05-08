@@ -118,7 +118,7 @@ ru:
       description: Используйте этот инструмент для импорта данных из Вашего экземпляра Jira. Вы можете настроить несколько узлов Jira и выбрать, что импортировать в каждом запуске импорта.
       errors:
         cannot_delete_with_imports: Невозможно удалить хост Jira с существующими импортами
-        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
+        custom_field_creation_failed: 'Не удалось создать пользовательское поле ''%{name}'': %{message}'
       blank:
         title: Хосты Jira еще не настроены
         description: Настройте хост Jira, чтобы начать импортировать элементы из Jira в этот экземпляр OpenProject.
@@ -126,8 +126,8 @@ ru:
         title: Конфигурация Jira
         new: Новая конфигурация
       banner:
-        title: Beta - Try it out!
-        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        title: Бета-версия - попробовать!
+        description: Этот мигратор Jira в настоящее время находится в бета-версии. В настоящее время мы поддерживаем только Jira Server/Data Center версии 10. и 11.x. Облачные экземпляры в данный момент не поддерживаются.
         contribution_callout: 'Пожалуйста, помогите нам улучшить Jira Migrator с помощью Ваших отзывов и частных пожертвований данных. Вы можете [присоединиться к сообществу разработчиков](link) Jira Migrator.
 
           '
@@ -259,8 +259,8 @@ ru:
               label_info: Пожалуйста, обратите внимание, что этот инструмент импорта находится в бета-версии и не может импортировать все типы данных. Вот краткая информация о том, что хост Jira предлагает для импорта, и что этот инструмент может импортировать прямо сейчас.
               description: Выберите, какие данные Вы хотите импортировать из доступных, полученных из хоста Jira.
               label_supported_data: Поддерживаемые данные
-              label_coming_soon: Coming soon (Q2 2026)
-              label_coming_later: Coming later
+              label_coming_soon: Ожидается (Q2 2026)
+              label_coming_later: Ожидается позже
               label_available_server_data: Имеющиеся данные на сайте %{server_info}
               button_select_projects: Выберите проекты для импорта
               button_continue: Продолжить
@@ -286,7 +286,7 @@ ru:
               caption: Просмотрите настройки импорта и начните импорт
               caption_done: Завершено
               label_available_data: Данные для импорта
-              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
+              label_users_import_explanation: Пользователи, участвующие в выбранных проектах (с учетом членства в группах)
               button_start: Начать импорт
               description: Вы собираетесь начать импорт со следующими настройками.
               label_progress: Идёт импорт...
@@ -310,17 +310,17 @@ ru:
           import_dialog:
             title: Пожалуйста, убедитесь, что у Вас есть резервная копия!
             confirm_button: Начать импорт
-            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
+            description: 'Импорт изменяет конфигурацию OpenProject. После импорта у вас будет возможность просмотреть изменения. На этапе проверки, у вас есть возможность отменить или утвердить импорт. После подтверждения отменить импорт будет невозможно. Поэтому перед продолжением убедитесь, что у вас есть [резервная копия вашего экземпляра OpenProjects](link).
 
               '
-            confirm: I understand and have a backup
+            confirm: Я понимаю и имею резервную копию
           revert_dialog:
             title: Отменить этот импорт?
-            description: This will delete all imported objects (including whole projects).
+            description: Это приведет к удалению всех импортированных объектов (включая целые проекты).
             confirm: Я понимаю, что при отмене данные будут удалены навсегда
           finalize_dialog:
-            title: Approve this import?
-            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
+            title: Завершить импорт?
+            description: После завершения импорта его уже нельзя будет отменить. Все импортированные данные будут импортированы навсегда.
             confirm: Я понимаю, что это действие не может быть отменено
             confirm_button: Понятно
           select_projects:
@@ -427,12 +427,12 @@ ru:
         autofix_preview:
           error_too_long: Должно быть 10 символов или меньше
           error_numerical: Не может быть чисто числовым
-          error_does_not_start_with_letter: Must start with an uppercase letter
+          error_does_not_start_with_letter: Должен начинаться с заглавной буквы
           error_special_characters: Специальные символы не допускаются
           error_not_fully_uppercased: Должно быть заглавными
           error_in_use: Уже используется в другом проекте
-          error_used_in_past: Reserved by another project's handle history
-          error_reserved_by_system: Reserved as a system keyword
+          error_used_in_past: Зарезервировано другим проектом
+          error_reserved_by_system: Зарезервировано как системное ключевое слово
           error_unknown: Требуется ручная проверка
           remaining_projects:
             one: "... еще 1 проект"
@@ -450,8 +450,8 @@ ru:
           checkbox_label: Я понимаю, что это навсегда изменит все идентификаторы пакета работ
         success_banner: Формат идентификатора пакета работ успешно обновлен.
         in_progress:
-          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          converting_banner_message: Идентификаторы проекта в настоящее время обновляются до семантических идентификаторов. Это может занять некоторое время.
+          reverting_banner_message: В настоящее время идентификаторы проектов возвращаются к классическому формату. Это может занять некоторое время.
     workflows:
       tabs:
         default_transitions: Переходы по умолчанию
@@ -484,7 +484,7 @@ ru:
           one: "%{count} role selected"
           few: "%{count} roles selected"
           many: "%{count} roles selected"
-          other: "%{count} roles selected"
+          other: "%{count} ролей выбрано"
       blankslate:
         title: Переходы статуса не настроены
         description: Добавьте статусы, чтобы начать настройку рабочих процессов для этой роли
@@ -723,34 +723,34 @@ ru:
   departments:
     edit: Редактировать подразделение
     add_user: Добавить пользователя
-    add_department: Add department
+    add_department: Добавить подразделения
     blankslate:
-      heading: Your organization has no departments
-      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+      heading: У вашей организации нет департаментов
+      description: 'Начните с добавления подразделений или пользователей в организацию. Каждое подразделение может быть использовано для создания иерархии, чтобы перемещаться и создавать подразделы внутри иерархии, нажмите на созданный элемент.
 
         '
-      add_button: Add
+      add_button: Добавить
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
+      heading: Это подразделение не имеет дочерних подразделений
       description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      add_button: Добавить
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: Наименование подразделения
+      name_placeholder: Введите название подразделения
     move_user_dialog:
-      title: User already in a department
-      heading: Move user to this department?
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      title: Пользователь уже в департаменте
+      heading: Переместить пользователя в этот департамент?
+      description: "%{user} в настоящее время является членом %{from_department}. Перемещение удалит их из этого подразделения."
+      confirm: Переместить пользователя
     context_menu:
-      add_sub_department: Add sub-department
-      add_user: Add user
+      add_sub_department: Добавить дочернее подразделение
+      add_user: Добавить пользователя
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: Пользователь успешно добавлен в подразделение.
+      user_removed: Пользователь успешно удалён из подразделения.
+      department_created: Подразделение было успешно создано.
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: Не удалось переместить пользователя между подразделениями.
   pagination:
     label: Разделение на страницы
     prev: Назад
@@ -1159,8 +1159,8 @@ ru:
       matrix_check_uncheck_all_in_row_label_html: Переключить разрешение <em>%{permission}</em> для всех ролей
       matrix_check_uncheck_all_in_col_label_html: Переключить все разрешения %{module} для роли <em>%{role}</em>
   users:
-    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
-    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
+    force_password_change_hint: Пользователь должен установить новый пароль при следующем входе в систему. При отправке учётных данных по электронной почте автоматически включено.
+    send_information_hint: Отправляет пароль по электронной почте простым текстом. Когда флажок установлен, пользователь будет обязан сменить свой пароль при первом входе в систему.
     autologins:
       prompt: Оставаться в системе %{num_days}
     sessions:
@@ -1439,19 +1439,19 @@ ru:
       from_roles:
         create:
           notice:
-            one: Successfully copied workflow to '%{role_name}' role.
+            one: Рабочий процесс успешно скопирован в роль '%{role_name}'.
             few: Successfully copied workflow to %{count} roles.
             many: Successfully copied workflow to %{count} roles.
-            other: Successfully copied workflow to %{count} roles.
+            other: Рабочий процесс успешно скопирован в %{count} ролей.
       from_types:
         create:
           notice:
-            one: Successfully copied workflow to '%{type_name}' type.
+            one: Рабочий процесс успешно скопирован в тип '%{type_name}'.
             few: Successfully copied workflow to %{count} types.
             many: Successfully copied workflow to %{count} types.
-            other: Successfully copied workflow to %{count} types.
+            other: Рабочий процесс успешно скопирован в %{count} типов.
       new:
-        title: Copy workflow of "%{source_type}"
+        title: Копировать рабочий процесс из типа "%{source_type}"
     form:
       matrix_caption: Матрица рабочего процесса
       matrix_caption_assignee: Матрица рабочего процесса для назначенного
@@ -1463,20 +1463,20 @@ ru:
       matrix_check_uncheck_all_in_col_label_html: Переключить переходы от всех старых статусов к <em>%{new_status}</em>
     index:
       type_filter:
-        label: Filter by type name…
+        label: Фильтр по имени типа…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: Настроить переходы статусов для каждого типа пакета работ.
   work_flows:
     index:
       no_results_title_text: В данный момент рабочих потоков нет.
   work_packages:
     delete_dialog:
       title: Удалить пакеты работ
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      heading: Удалить этот пакет работ навсегда?
+      description: Вы уверены, что хотите удалить пакет работ "%{name}"?
+      confirm_descendants_deletion: Я подтверждаю, что ВСЕ дочерние элементы этого пакета работ будут рекурсивно удалены.
+      cross_project_warning: 'Пакеты работ из следующих проектов будут удалены: %{projects}'
     bulk_delete_dialog:
       title: Удалить %{count} пакетов работ
       heading: Окончательно удалить эти %{count} пакеты работ?
@@ -2073,7 +2073,7 @@ ru:
         show_email: Показать адрес эл. почты
         tag_source: Tag source
         tag_limit: Tag limit
-        card_size: Card size
+        card_size: Размер карты
         columns_per_row: Columns per row
     errors:
       messages:
@@ -2626,7 +2626,7 @@ ru:
       unsupported_storage_type: не является поддерживаемым типом хранения.
       storage_error: Произошла ошибка при подключении к хранилищу.
       invalid_input: Введены неверные данные.
-      invalid_child_for_parent: is not allowed as a parent for this view type.
+      invalid_child_for_parent: не может быть родителем для этого типа представления.
   activity:
     item:
       created_by_on: создано %{user} %{datetime}
@@ -3104,7 +3104,7 @@ ru:
     units:
       minute_abbreviated:
         one: мин
-        few: минуты
+        few: минут
         many: минут
         other: мин
       hour:
@@ -3549,6 +3549,30 @@ ru:
   general_text_false: Ложно
   gui_validation_error: 1 ошибка
   gui_validation_error_plural: "%{count} ошибок"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          few: "%{count} checks failed"
+          many: "%{count} checks failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          few: "%{count} checks returned a warning"
+          many: "%{count} checks returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Новые видимые проекты в данном экземпляре.
@@ -3563,16 +3587,16 @@ ru:
         learn_about: Узнайте больше о всех новых функциях
         missing: Нет выделенных функций.
         '17_4':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Релиз содержит различные новые функции и улучшения, такие как:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_0: Мигратор Jira с поддержкой базовых пользовательских полей.
+            line_1: Сегменты бэклога для структурирования и приоритизации пакетов работ во время уточнения бэклога.
+            line_2: Более удобное перетаскивание и улучшенные опции перемещения в Бэклогах.
+            line_3: Кнопки начала и завершения спринта в заголовке спринта.
+            line_4: Копирование настроек рабочего процесса между ролями.
+            line_5: Виджет «Мои встречи» на главной странице и странице «Обзор проектов».
     links:
       upgrade_enterprise_edition: Обновить до корпоративной версии
       postgres_migration: Перенос вашей установки в PostgreSQL
@@ -3850,7 +3874,7 @@ ru:
   label_age: Возраст
   label_ago: дней назад
   label_all: все
-  label_all_uppercase: All
+  label_all_uppercase: Всё
   label_all_time: все время
   label_all_words: Все слова
   label_all_open_wps: Все открытые
@@ -4422,7 +4446,7 @@ ru:
   label_system_storage: Информация хранилища
   label_table_of_contents: Содержание
   label_tag: Тег
-  label_team_planner: Менеджер команды
+  label_team_planner: Командный планировщик
   label_template: Шаблон
   label_templates: Шаблоны
   label_text: Длинный текст
@@ -4611,7 +4635,7 @@ ru:
       you_have: У вас
     logo_alt_text: Логотип
     mention:
-      subject: "%{user_name} mentioned you in %{id} - %{subject}"
+      subject: "%{user_name} упомянул вас в #%{id} - %{subject}"
     notification:
       center: В центр уведомлений
       see_in_center: Смотрите комментарий в центре уведомлений
@@ -4648,10 +4672,10 @@ ru:
       note: 'Примечание: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
+        allowed_actions_html: 'У вас есть следующие права на этот пакет работ: %{allowed_actions}. Это может измениться в зависимости от роли и прав вашего проекта.'
         create_account: Для доступа к этому пакету работ необходимо создать и активировать учетную запись на %{instance}.
         open_work_package: Открыть пакет работ
-        subject: Work package %{id} was shared with you
+        subject: Вам был предоставлен общий доступ к пакету работ %{id}
         enterprise_text: Поделиться пакетом работ с пользователями, которые не являются участниками проекта.
         summary:
           user: "%{user} поделился с вами пакетом работ с правами %{role_rights}"
@@ -5317,7 +5341,7 @@ ru:
   setting_mail_handler_body_delimiter_regex: Сообщение усекается по этому регулярному выражению
   setting_mail_handler_ignore_filenames: Игнорируемые вложения почты
   setting_new_project_user_role_id: Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором
-  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+  setting_new_project_user_role_id_caption: 'В список попадают только роли, имеющие права на редактирование атрибутов проекта и управление участниками, чтобы создатель мог завершить настройку проекта.
 
     '
   setting_new_project_send_confirmation_email: Отправить уведомление автору при создании нового проекта
@@ -5732,7 +5756,7 @@ ru:
   text_project_identifier_format: Должен начинаться со строчной буквы. Допускаются только строчные буквы (a-z), цифры, тире и подчеркивания.
   text_reassign: 'Переназначить для пакета работ:'
   text_regexp_multiline: 'Регулярное выражение применяется в многострочном режиме. Например: ^---\s+'
-  text_rename_wiki_page: Rename wiki page
+  text_rename_wiki_page: Переименовать wiki-страницу
   text_repository_usernames_mapping: Выберете или обновите пользователя OpenProject сопоставленного с именами пользователей найдеными в журнале репозитория. Пользователи с одинаковыми именами в OpenProject и в репозитории или почте будут сопоставлены автоматически.
   text_status_changed_by_changeset: Применены в наборе изменений %{value}.
   text_table_difference_description: В этой таблице показаны одинарные %{entries}. Посмотреть разницу между любыми двумя записями можно, выбрав флажки и нажав на кнопку. Под таблицей будут показаны различия.
@@ -6176,10 +6200,10 @@ ru:
 
       '
     confirm_revoke_my_application:
-      one: Do you really want to remove this application? This will revoke one token active for it.
+      one: Вы действительно хотите удалить это приложение? Это приведет к отзыву одного активного токена.
       few: Do you really want to remove this application? This will revoke %{count} tokens active for it.
       many: Do you really want to remove this application? This will revoke %{count} tokens active for it.
-      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      other: Вы действительно хотите удалить это приложение? Это приведет к отзыву %{count} активных токенов.
     authorization_error: Произошла ошибка авторизации.
     my_registered_applications: Зарегистрированные OAuth приложения
   oauth_client:

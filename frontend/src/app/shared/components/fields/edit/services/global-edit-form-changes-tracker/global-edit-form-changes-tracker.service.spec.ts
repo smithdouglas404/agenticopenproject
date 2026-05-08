@@ -20,7 +20,7 @@ describe('GlobalEditFormChangesTrackerService', () => {
   });
 
   it('should report no changes when empty', () => {
-    expect(service.thereAreFormsWithUnsavedChanges).toBeFalse();
+    expect(service.thereAreFormsWithUnsavedChanges).toBe(false);
   });
 
   it('should report no changes when one form has no changes', () => {
@@ -28,7 +28,7 @@ describe('GlobalEditFormChangesTrackerService', () => {
 
     service.addToActiveForms(form);
 
-    expect(service.thereAreFormsWithUnsavedChanges).toBeFalse();
+    expect(service.thereAreFormsWithUnsavedChanges).toBe(false);
   });
 
   it('should report no changes when multiple forms have no changes', () => {
@@ -40,7 +40,7 @@ describe('GlobalEditFormChangesTrackerService', () => {
     service.addToActiveForms(form2);
     service.addToActiveForms(form3);
 
-    expect(service.thereAreFormsWithUnsavedChanges).toBeFalse();
+    expect(service.thereAreFormsWithUnsavedChanges).toBe(false);
   });
 
   it('should report no changes when the only form with changes is removed', () => {
@@ -49,7 +49,7 @@ describe('GlobalEditFormChangesTrackerService', () => {
     service.addToActiveForms(form);
     service.removeFromActiveForms(form);
 
-    expect(service.thereAreFormsWithUnsavedChanges).toBeFalse();
+    expect(service.thereAreFormsWithUnsavedChanges).toBe(false);
   });
 
   it('should report changes when one form has changes', () => {
@@ -57,7 +57,7 @@ describe('GlobalEditFormChangesTrackerService', () => {
 
     service.addToActiveForms(form);
 
-    expect(service.thereAreFormsWithUnsavedChanges).toBeTrue();
+    expect(service.thereAreFormsWithUnsavedChanges).toBe(true);
   });
 
   it('should report forms with changes when multiple form have changes', () => {
@@ -69,13 +69,13 @@ describe('GlobalEditFormChangesTrackerService', () => {
     service.addToActiveForms(form2);
     service.addToActiveForms(form3);
 
-    expect(service.thereAreFormsWithUnsavedChanges).toBeTrue();
+    expect(service.thereAreFormsWithUnsavedChanges).toBe(true);
   });
 
   it('should call thereAreFormsWithUnsavedChangesSpy on beforeunload', () => {
-    const thereAreFormsWithUnsavedChangesSpy = spyOnProperty(service, 'thereAreFormsWithUnsavedChanges', 'get');
+    const thereAreFormsWithUnsavedChangesSpy = vi.spyOn(service, 'thereAreFormsWithUnsavedChanges', 'get');
 
-    window.onbeforeunload = jasmine.createSpy();
+    window.onbeforeunload = vi.fn();
 
     window.dispatchEvent(new Event('beforeunload'));
 

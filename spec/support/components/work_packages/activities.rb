@@ -291,12 +291,12 @@ module Components
           end
         end
 
+        wait_for_network_idle
+
         if save
           # wait for the comment to be loaded
           expect(page).to have_test_selector("op-journal-notes-body", text:, wait: 10)
         end
-
-        wait_for_network_idle
       end
 
       def edit_comment(journal, text: nil, save: true)

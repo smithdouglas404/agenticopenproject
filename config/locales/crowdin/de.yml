@@ -118,7 +118,7 @@ de:
       description: Verwenden Sie dieses Tool, um Daten aus Ihrer Jira-Instanz zu importieren. Sie können mehrere Jira-Hosts konfigurieren und auswählen, was bei jedem Importlauf importiert werden soll.
       errors:
         cannot_delete_with_imports: Jira-Hosts mit laufenden Importen können nicht gelöscht werden
-        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
+        custom_field_creation_failed: 'Das nutzerdefinierte Feld ''%{name}'' konnte nicht erstellt werden: %{message}'
       blank:
         title: Noch keine Jira-Hosts konfiguriert
         description: Konfigurieren Sie einen Jira-Host, um mit dem Import von Elementen aus Jira in diese OpenProject-Instanz zu beginnen.
@@ -159,7 +159,7 @@ de:
         connection_timeout: 'Die Verbindung zum Jira-Server wurde unterbrochen: %{message}'
         parse_error: 'Die Jira API-Antwort konnte nicht gelesen werden: %{message}'
         api_error: Jira API hat den Fehlerstatus %{status} zurückgegeben
-        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        401_error: Jira API hat einen 401-Fehler zurückgegeben. Ihr Authentifizierungs-Token ist möglicherweise abgelaufen oder Sie haben nicht die erforderlichen Berechtigungen. Bitte stellen Sie sicher, dass das Token einem Jira-Administrator gehört.
       columns:
         projects: Projekte
         last_change: Letzte Änderung
@@ -247,8 +247,8 @@ de:
               label_info: Bitte beachten Sie, dass dieses Import-Tool in der Beta ist und nicht alle Arten von Daten importieren kann. Hier ist eine Zusammenfassung dessen, was die Jira Instanz für den Import bietet und was dieses Tool gerade importieren kann.
               description: Wählen Sie aus den verfügbaren Daten, die Sie aus der Host-Jira-Instanz abrufen, die Daten aus, die Sie importieren möchten.
               label_supported_data: Unterstützte Daten
-              label_coming_soon: Coming soon (Q2 2026)
-              label_coming_later: Coming later
+              label_coming_soon: Kommt bald (Q2 2026)
+              label_coming_later: Kommt später
               label_available_server_data: Verfügbare Daten auf %{server_info}
               button_select_projects: Projekte zum Importieren auswählen
               button_continue: Fortfahren
@@ -274,7 +274,7 @@ de:
               caption: Überprüfen Sie Ihre Importeinstellungen und starten Sie den Import
               caption_done: Abgeschlossen
               label_available_data: Zu importierende Daten
-              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
+              label_users_import_explanation: Nutzer, die an ausgewählten Projekten beteiligt sind (einschließlich Gruppenmitgliedschaften)
               button_start: Import starten
               description: Sie sind dabei, einen Import mit den folgenden Einstellungen zu starten.
               label_progress: Import läuft...
@@ -3416,6 +3416,26 @@ de:
   general_text_false: falsch
   gui_validation_error: 1 Fehler
   gui_validation_error_plural: "%{count} Fehler"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Neueste sichtbare Projekte in dieser Instanz.

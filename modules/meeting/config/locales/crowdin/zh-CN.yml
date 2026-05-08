@@ -32,7 +32,7 @@ zh-CN:
         location: 地点
         duration: 时长
         notes: 备注
-        recurrence_start_time: Scheduled start time
+        recurrence_start_time: 计划开始时间
         participants: 参加者
         participant:
           other: "%{count}位参与者"
@@ -42,9 +42,9 @@ zh-CN:
         start_date: 日期
         start_time: 开始时间
         start_time_hour: 开始时间
-        end_time: End time
-        template: Template
-        notify: Send notifications
+        end_time: 结束时间
+        template: 模板
+        notify: 发送通知
         sharing: 共享中
       meeting_agenda_item:
         title: 标题
@@ -52,15 +52,15 @@ zh-CN:
         duration_in_minutes: 持续时间
         description: 备注
         presenter: 演讲者
-        item_type: Type
-        position: Position
-        lock_version: Lock version
-        notes: Notes
+        item_type: 类型
+        position: 位置
+        lock_version: 锁定版本
+        notes: 备注
       meeting_section:
         title: 标题
-        position: Position
+        position: 位置
       recurring_meeting:
-        title: Title
+        title: 标题
         frequency: 周期
         interval: 间隔
         start_date: 开始日期：
@@ -69,10 +69,10 @@ zh-CN:
         end_after: 会议系列结束
         end_date: 结束日期
         iterations: 事件
-        time_zone: Time zone
-        location: Location
-        duration: Duration
-        notify: Send notifications
+        time_zone: 时区
+        location: 地点
+        duration: 持续时间
+        notify: 发送通知
       recurring_meeting_interim_response:
         start_time: 开始时间
       meeting_participant:
@@ -205,7 +205,7 @@ zh-CN:
   label_time_zone: 时区
   label_start_date: 开始日期
   label_subscribe_icalendar: 订阅日历
-  label_recurring_filter: Recurring filter
+  label_recurring_filter: 重复过滤器
   caption_meeting_template_select: 选择一个模板，以自动复制其议程条目
   caption_template_project_select: 请选择要在其中创建此会议模板的项目
   placeholder_meeting_template_select_project_first: 先选择项目
@@ -432,9 +432,9 @@ zh-CN:
       meeting_not_found: 找不到与给定 UID 匹配的会议。
     widgets:
       blankslate:
-        heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
-      view_details: View all meetings
+        heading: 无会议安排
+        description: 您组织或参与的即将举行的会议将显示在这里。
+      view_details: 查看所有会议
   meeting_section:
     untitled_title: 无标题章节
     delete_confirmation: 删除该属性也会删除其在所有项目中的值。您确定要这样做吗？
@@ -671,9 +671,9 @@ zh-CN:
   text_exit_draft_mode_dialog_template_title: 是否打开此会议系列的第一个会议？
   text_exit_draft_mode_dialog_template_subtitle: 在此之后，您将无法返回到草稿模式。
   label_meeting_template_sharing: 共享中
-  label_meeting_template_sharing_none: Only with this project
-  label_meeting_template_sharing_descendants: With subprojects
-  label_meeting_template_sharing_system: With all projects
+  label_meeting_template_sharing_none: 仅使用此项目
+  label_meeting_template_sharing_descendants: 包含所有子项目
+  label_meeting_template_sharing_system: 包含所有项目
   text_meeting_template_sharing_description: 此模板可以与此实例中的子项目或其他项目共享。仅复制议程条目和附件。
   text_meeting_not_editable_anymore: 本次会议已不可编辑。
   text_meeting_not_present_anymore: 此次会议已被删除。请选择另一次会议。
@@ -693,9 +693,9 @@ zh-CN:
   text_agenda_item_duplicated_in_next_meeting: 在 %{date}的下一个会议中复制的议程条目
   text_work_package_has_no_upcoming_meeting_agenda_items: 该工作包尚未被安排到即将举行的会议议程中。
   text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
-  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
-  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
-  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_note: 注：跳过 %{details}。
+  text_agenda_item_dialog_skipping_cancelled_one: 取消会议 %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} 取消的会议"
   text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
   text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: 使用"添加到会议"按钮将此工作包添加到即将举行的会议。

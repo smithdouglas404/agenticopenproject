@@ -20,34 +20,34 @@ zh-CN:
       wikis/relation_page_link:
         other: 关系页面链接
       wikis/xwiki_provider: XWiki 提供商
-  permission_manage_wiki_page_links: Manage Wiki Page Links
+  permission_manage_wiki_page_links: 管理 Wiki 页面链接
   project_module_wiki_platforms: Wiki 提供商
   wikis:
     buttons:
       connect_account: Connect %{provider} account
-      done_continue: Done, continue
+      done_continue: 完成, 继续
       save_and_continue: 保存并继续
-      wiki_page: Wiki page
+      wiki_page: Wiki 页面
     work_package_wikis_tab_component:
-      inline_page_links: Inline page links
-      referencing_pages: Referenced in
+      inline_page_links: 内联页面链接
+      referencing_pages: 引用于
     page_link_component:
-      remove: Remove page link
+      remove: 删除页面链接
     relation_page_links_component:
-      empty_heading: No related pages
-      empty_text: Manually add links to other related wiki pages.
+      empty_heading: 无相关页面
+      empty_text: 手动添加链接到其他相关Wiki页面。
     oauth_login_component:
-      heading: Not connected to %{provider}
-      description: Log in to %{provider} to view and manage related wiki pages from this OpenProject instance.
-      connect_button: Connect %{provider} account
+      heading: 未连接至 %{provider}
+      description: 登录 %{provider} ，查看和管理此 OpenProject 实例的相关Wiki页面。
+      connect_button: 连接 %{provider} 账户
     admin:
       destroy_confirmation_dialog_component:
-        title: Delete wiki provider
-        heading: Delete wiki provider?
-        warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
+        title: 删除 wiki 提供商
+        heading: 删除维基提供者？
+        warning_html: 您即将删除 %{wiki_provider}。此操作无法撤消。
       forms:
         general_info_form_component:
-          xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
+          xwiki_instance_description: 在进行设置之前，请确保您在 XWiki 实例中具有管理权限。
         oauth_application_form_component:
           application_id: Application ID
           application_secret: Application secret
@@ -55,11 +55,11 @@ zh-CN:
           client_id: Client ID
       oauth_application_info_component:
         confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
-        label_pending: Pending
+        label_pending: 待处理
         replace_oauth_application: Replace OpenProject OAuth application
       oauth_client_info_component:
         confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
-        label_pending: Pending
+        label_pending: 待处理
         replace_oauth_client: Replace XWiki OAuth application
       wiki_provider_list_component:
         label_creation_time: Created

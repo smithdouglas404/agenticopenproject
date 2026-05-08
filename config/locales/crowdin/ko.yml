@@ -711,18 +711,18 @@ ko:
       name_placeholder: Enter department name
     move_user_dialog:
       title: User already in a department
-      heading: Move user to this department?
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      heading: 이 부서로 사용자를 이동하시겠습니까?
+      description: "%{user}은(는) 현재 %{from_department}의 멤버입니다. 사용자를 이동하면 해당 부서에서 제거됩니다."
+      confirm: 사용자 이동
     context_menu:
-      add_sub_department: Add sub-department
-      add_user: Add user
+      add_sub_department: 하위 부서 추가
+      add_user: 사용자 추가
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: 사용자가 부서에 추가되었습니다.
+      user_removed: 사용자가 부서에서 제거되었습니다.
+      department_created: 부서가 생성되었습니다.
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: 부서 간에 사용자를 이동하지 못했습니다.
   pagination:
     label: 페이지 매김
     prev: 이전
@@ -1098,7 +1098,7 @@ ko:
       no_results_content_text: 소식 항목 추가
   roles:
     edit:
-      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
+      default_for_new_projects_warning: '이 역할은 프로젝트를 만드는 비관리자 사용자에게 지정된 기본 역할로 구성됩니다. 다음 권한을 제거하지 마세요. 그렇지 않으면 프로젝트 생성자가 새로 생성된 프로젝트의 설정을 완료할 수 없게 됩니다:'
     permissions:
       section_check_all_label: 모든 %{module} 권한 할당
       section_uncheck_all_label: 모든 %{module} 권한 할당 취소
@@ -1367,14 +1367,14 @@ ko:
     copies:
       form:
         source_role_id:
-          label: Source role
+          label: 소스 역할
         target_role_ids:
-          label: Target roles
+          label: 대상 역할
         target_type_ids:
-          label: Target types
+          label: 대상 유형
         mode:
           from_role:
-            label: Copy to other roles
+            label: 다른 역할에 복사
             caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
           from_type:
             label: Copy to another type
@@ -1421,7 +1421,7 @@ ko:
       description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
       confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
       cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      children_label: '다음 자식도 삭제됩니다:'
     datepicker_modal:
       banner:
         description:
@@ -1883,7 +1883,7 @@ ko:
         identity_url: ID URL
         parent: 부모 그룹
         organizational_unit: 조직 단위
-        group_users: Group users
+        group_users: 그룹 사용자
       group_detail:
         parent: 부모 그룹
         organizational_unit: 조직 단위
@@ -1958,7 +1958,7 @@ ko:
         duration: 기간
         end_insertion: 삽입 끝
         end_deletion: 삭제 끝
-        identifier: Identifier
+        identifier: 식별자
         ignore_non_working_days: 휴무일 무시
         include_non_working_days:
           title: 근무일
@@ -1974,7 +1974,7 @@ ko:
         readonly: 읽기 전용
         remaining_hours: 남은 작업
         remaining_time: 남은 작업
-        sequence_number: Sequence number
+        sequence_number: 시퀀스 번호
         shared_with_users: 공유 대상
         schedule_manually: 수동 스케줄링
         spent_hours: 소비한 시간
@@ -1985,28 +1985,28 @@ ko:
         version: 버전
         watcher: 주시자
       ordered_persisted_query_entity:
-        persisted_query: Persisted query
-        entity: Entity
-        position: Position
+        persisted_query: 지속 쿼리
+        entity: 엔티티
+        position: 위치
       persisted_query:
-        name: Name
-        views: Views
-        filters: Filters
-        orders: Orders
-        selects: Selects
+        name: 이름
+        views: 보기
+        filters: 필터
+        orders: 주문
+        selects: 선택
       persisted_view:
-        name: Name
-        query: Query
-        parent: Parent view
-        public: Public
+        name: 이름
+        query: 쿼리
+        parent: 부모 보기
+        public: 공개
       user_card_view:
-        secondary_info: Secondary info
-        show_status_badge: Show status badge
-        show_email: Show email
-        tag_source: Tag source
-        tag_limit: Tag limit
-        card_size: Card size
-        columns_per_row: Columns per row
+        secondary_info: 보조 정보
+        show_status_badge: 상태 배지 표시
+        show_email: 이메일 표시
+        tag_source: 태그 소스
+        tag_limit: 태그 제한
+        card_size: 카드 크기
+        columns_per_row: 행별 열
     errors:
       messages:
         accepted: 허용 되어야 합니다.
@@ -2026,7 +2026,7 @@ ko:
         confirmation: "%{attribute} 속성에 부합하지 않습니다."
         could_not_be_copied: "%{dependency}을(를) (완전히) 복사할 수 없습니다."
         does_not_exist: 존재하지 않음
-        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
+        user_already_in_department: "%{user_id} 사용자는 이미 %{department_id} 부서의 멤버입니다."
         error_enterprise_only: "%{action}은(는) OpenProject Enterprise Edition에서만 사용할 수 있습니다."
         error_unauthorized: 액세스하지 못할 수 있습니다.
         error_readonly: "- 쓰려고 했지만 쓸 수 없습니다."
@@ -2050,7 +2050,7 @@ ko:
         inclusion: 은(는) 허용되는 값이 아닙니다.
         inclusion_nested: "- 경로 '%{path}'에서 허용되는 값 중 하나로 설정되지 않았습니다."
         invalid: 은(는) 올바르지 않은 값입니다
-        invalid_uri: must be a valid URI.
+        invalid_uri: "- 유효한 URI여야 합니다."
         invalid_url: 은(는) 올바른 URL이 아닙니다.
         invalid_url_scheme: '은(는) 지원되는 프로토콜(허용: %{allowed_schemes})이 아닙니다.'
         less_than_or_equal_to: 은(는) %{count} 보다 작거나 같아야 합니다
@@ -2064,7 +2064,7 @@ ko:
         not_a_datetime: 은(는) 유효한 날짜가 아닙니다.
         not_a_number: 은(는) 숫자가 아닙니다.
         not_allowed: "- 사용 권한이 없어 유효하지 않습니다."
-        host_not_allowed: is not an allowed host.
+        host_not_allowed: "- 허용되는 호스트가 아닙니다."
         not_json: "- JSON으로 구문 분석할 수 없습니다."
         not_json_object: "- JSON 개체가 아닙니다."
         not_an_integer: 은(는) 정수가 아닙니다.
@@ -3016,7 +3016,7 @@ ko:
       title: Enterprise 추가 기능
       plan_title: Enterprise %{plan} 추가 기능
       plan_name: "%{plan} Enterprise 플랜"
-      trial_text: This feature is included in your active Enterprise trial.
+      trial_text: 이 기능은 활성 Enterprise 평가판에 포함되어 있습니다.
       plan_text_html: "%{plan_name}부터 사용 가능합니다."
       unlimited: 무제한
       already_have_token: '이미 토큰이 있으신가요? 아래 버튼을 사용하여 토큰을 추가하고 예약한 Enterprise 플랜으로 업그레이드하세요.
@@ -3376,6 +3376,24 @@ ko:
   general_text_false: 'false'
   gui_validation_error: 1개 오류
   gui_validation_error_plural: "%{count}개 오류"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: 이 경우 최신 표시 프로젝트입니다.
@@ -3558,7 +3576,7 @@ ko:
         personal_reminder: 개인 미리 알림 보내기
       daily_reminders:
         title: 읽지 않은 알림에 대한 일일 이메일 미리 알림 보내기
-        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: 읽지 않은 알림에 대해서만 그리고 사용자가 지정한 시간에만 이러한 미리 알림이 전송됩니다. 계정의 표준 시간대를 구성할 때까지, 시간은 UTC로 적용됩니다.
         enabled: 일일 이메일 미리 알림 활성화
         add_time: 시간 추가
         remove_time: 시간 제거
@@ -3572,7 +3590,7 @@ ko:
         date_range: 일시 중지 기간
       email_alerts:
         title: 작업 패키지가 아닌 기타 항목에 대한 이메일 알림
-        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        description: 오늘 알림은 작업 패키지로 제한됩니다. 알림에 포함될 때까지 이러한 이벤트에 대한 이메일 알림을 계속 받도록 선택할 수 있습니다.
         news_added: 뉴스 추가됨
         news_commented: 뉴스 항목의 코멘트
         document_added: 문서 추가됨
@@ -3585,7 +3603,7 @@ ko:
     notifications:
       participating:
         title: 참여
-        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        description: 내가 참여하고 있는 작업 패키지의 모든 활동에 대한 알림(담당자, 책임자 또는 주시자).
         submit_button: 기본 설정 업데이트
         mentioned: 멘션됨
         watched: 지켜보는 중
@@ -3594,7 +3612,7 @@ ko:
         shared: 나와 공유됨
       date_alerts:
         title: 날짜 알림
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        description: 내가 참여하고 있는 오픈 작업 패키지에 대한 중요 날짜가 다가올 때 자동 알림(담당자, 책임자 또는 주시자).
         submit_button: 날짜 알림 업데이트
         start_date: 시작 날짜
         due_date: 완료 날짜
@@ -3609,7 +3627,7 @@ ko:
           seven_days_after: 7일 후
       non_participating:
         title: 참여하지 않음
-        description: Additional notifications for activities in all projects.
+        description: 모든 프로젝트의 활동에 대한 추가 알림.
         submit_button: 기본 설정 업데이트
         work_package_created: 새 작업 패키지
         work_package_commented: 모든 새로운 코멘트
@@ -3618,7 +3636,7 @@ ko:
         work_package_scheduled: 모든 날짜 변경 사항
       project_specific_settings:
         title: 프로젝트별 알림 설정
-        description: These project-specific settings override default settings above.
+        description: 이러한 프로젝트별 설정은 위의 기본 설정을 재정의합니다.
         add_button: 프로젝트별 알림 추가
         dialog_title: 프로젝트별 알림 추가
         list_header: 특정 알림이 있는 프로젝트
@@ -3677,7 +3695,7 @@ ko:
   label_age: 기간
   label_ago: 일 전
   label_all: 모두
-  label_all_uppercase: All
+  label_all_uppercase: 모두
   label_all_time: 모든 시간
   label_all_words: 모든 단어
   label_all_open_wps: 모두 열림
@@ -3779,7 +3797,7 @@ ko:
   label_commits_per_month: 월별 커밋
   label_confirmation: 확인
   label_contains: 포함
-  label_starts_with: starts with
+  label_starts_with: 다음으로 시작
   label_content: 내용
   label_color_plural: 색상
   label_copied: 복사됨
@@ -3787,8 +3805,8 @@ ko:
   label_copy_source: 소스
   label_copy_target: 대상
   label_copy_workflow_from: 다음에서 워크플로 복사
-  label_copy_workflow_from_type: Copy to another type
-  label_copy_workflow_from_role: Copy to other roles
+  label_copy_workflow_from_type: 다른 유형에 복사
+  label_copy_workflow_from_role: 다른 역할에 복사
   label_copy_project: 프로젝트 복사
   label_core_version: 코어 버전
   label_core_build: 코어 빌드
@@ -3987,7 +4005,7 @@ ko:
   label_custom_pdf_export_settings: 사용자 지정 PDF 내보내기 설정
   label_custom_favicon: 사용자 지정 favicon
   label_custom_touch_icon: 사용자 지정 터치 아이콘
-  label_departments: Organization
+  label_departments: 조직
   label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
 
     '

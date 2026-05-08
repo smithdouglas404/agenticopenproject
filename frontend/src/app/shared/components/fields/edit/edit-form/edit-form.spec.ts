@@ -33,12 +33,7 @@ import { EditFieldHandler } from 'core-app/shared/components/fields/edit/editing
 import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 
 class TestEditForm extends EditForm<HalResource> {
-  constructor(
-    injector:Injector,
-    private readonly requireVisibleSpy:(fieldName:string) => Promise<void>,
-    private readonly activateFieldSpy:() => Promise<EditFieldHandler>,
-    private readonly resetSpy:(fieldName:string, focus?:boolean) => void,
-  ) {
+  constructor(injector:Injector, private readonly requireVisibleSpy:(fieldName:string) => Promise<void>, private readonly activateFieldSpy:() => Promise<EditFieldHandler>, private readonly resetSpy:(fieldName:string, focus?:boolean) => void) {
     super(injector);
   }
 
@@ -61,12 +56,12 @@ class TestEditForm extends EditForm<HalResource> {
 
 describe('EditForm', () => {
   it('does not require visibility twice for newly erroneous inactive fields', async () => {
-    const tick = jasmine.createSpy('tick');
-    const requireVisible = jasmine.createSpy('requireVisible').and.resolveTo();
-    const activateField = jasmine.createSpy('activateField').and.resolveTo({} as EditFieldHandler);
-    const reset = jasmine.createSpy('reset');
+    const tick = vi.fn();
+    const requireVisible = vi.fn().mockResolvedValue(undefined);
+    const activateField = vi.fn().mockResolvedValue({} as EditFieldHandler);
+    const reset = vi.fn();
     const injector = {
-      get: jasmine.createSpy('get').and.callFake((token:unknown) => {
+      get: vi.fn().mockImplementation((token:unknown) => {
         if (token === ApplicationRef) {
           return { tick };
         }
@@ -79,25 +74,27 @@ describe('EditForm', () => {
     const change = {
       inFlight: false,
       schema: {
-        ofProperty: jasmine.createSpy('ofProperty').and.returnValue({
+        ofProperty: vi.fn().mockReturnValue({
           writable: true,
           name: 'Foo',
         } as IFieldSchema),
       },
-      getForm: jasmine.createSpy('getForm').and.resolveTo(),
+      getForm: vi.fn().mockResolvedValue(undefined),
     };
 
     form.resource = { id: 1 } as unknown as HalResource;
     form.halEditing = {
-      changeFor: jasmine.createSpy('changeFor').and.returnValue(change),
+      changeFor: vi.fn().mockReturnValue(change),
     } as never;
     form.halNotification = {
-      handleRawError: jasmine.createSpy('handleRawError'),
-      showEditingBlockedError: jasmine.createSpy('showEditingBlockedError'),
+      handleRawError: vi.fn(),
+      showEditingBlockedError: vi.fn(),
     } as never;
     form.errorsPerAttribute = { foo: ['Required'] };
 
-    (form as unknown as { setErrorsForFields:(fields:string[]) => void }).setErrorsForFields(['foo']);
+    (form as unknown as {
+      setErrorsForFields:(fields:string[]) => void;
+    }).setErrorsForFields(['foo']);
     await Promise.resolve();
     await Promise.resolve();
 

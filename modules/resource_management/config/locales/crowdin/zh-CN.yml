@@ -43,13 +43,13 @@ zh-CN:
       UserCardView: Users cards
     action:
       favorite: Add to favorites
-      unfavorite: Remove from favorites
-      make_public: Make public
-      make_private: Make private
-      delete: Delete
+      unfavorite: 取消收藏
+      make_public: 设为公开
+      make_private: 设为私有
+      delete: 删除
     sidebar:
-      public: Public
-      private: Private
+      public: 公开
+      private: 私用
     blankslate:
       title: No resource planners yet
       desc: Create a resource planner to start planning capacity for this project.

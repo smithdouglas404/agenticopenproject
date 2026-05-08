@@ -209,6 +209,19 @@ pt-BR:
         health_notifications_component:
           sync_now: Sincronizar agora
           sync_queued: Sincronização em fila.
+        validation_result_component:
+          checks:
+            failures:
+              one: "%{count} check failed"
+              other: "%{count} checks failed"
+            success: All checks passed
+            warnings:
+              one: "%{count} check returned a warning"
+              other: "%{count} checks returned a warning"
+          summary:
+            failure: Some checks failed and the system does not work as expected.
+            success: All connections and systems are working as expected.
+            warning: Some checks returned a warning. This can lead to unexpected behaviour.
     buttons:
       done_continue: Pronto, continuar
       open_storage: Abrir o armazenamento de arquivo
@@ -314,74 +327,59 @@ pt-BR:
           host_url_accessible: URL do host acessível
           storage_configured: Configuração concluída
           tenant_id: ID do cliente
-        failures:
-          one: "%{count} teste falhou"
-          other: "%{count} testes falharam"
-        success: Verificações concluídas com êxito
-        warnings:
-          one: "%{count} teste retornou com um aviso"
-          other: "%{count} testes retornaram com um aviso"
-      connection_validation:
-        client_id_invalid: O ID do cliente OAuth 2 configurado é inválido. Verifique a configuração.
-        client_secret_invalid: O segredo do cliente OAuth 2 configurado é inválido. Verifique a configuração.
-        nc_dependency_missing: 'Uma dependência necessária está faltando no armazenamento de arquivos. Adicione a seguinte dependência: %{dependency}.'
-        nc_dependency_version_mismatch: A versão do aplicativo %{dependency} não é compatível. Atualize seu servidor Nextcloud.
-        nc_host_not_found: Nenhum servidor Nextcloud encontrado na URL de host configurada. Verifique a configuração.
-        nc_oauth_request_not_found: O endpoint para recuperar o usuário conectado não foi encontrado. Verifique os logs do servidor para mais detalhes.
-        nc_oauth_request_unauthorized: O usuário atual não está autorizado a acessar o armazenamento remoto de arquivos. Verifique os logs do servidor para mais informações.
-        nc_oauth_token_missing: O OpenProject não pode testar a comunicação do usuário com o Nextcloud, pois a conta do Nextcloud ainda não foi vinculada.
-        nc_project_folder_missing: A pasta de projeto criada anteriormente para o projeto “%{project}” não foi encontrada.
-        nc_team_folder_not_found: A pasta da equipe não pôde ser localizada.
-        nc_unexpected_files: 'Arquivos inesperados encontrados na pasta gerenciada da equipe. Por exemplo: %{sample}'
-        nc_unlinked_project_folders: Nem todas as pastas de projeto foram criadas ainda (%{actual} / %{expected}). Isso pode indicar erros durante a sincronização em segundo plano do AMPF.
-        nc_userless_access_denied: A senha configurada do aplicativo não é válida.
-        not_configured: A conexão não pôde ser validada. Conclua a configuração primeiro.
-        od_client_cant_delete_folder: O cliente está com dificuldades para excluir pastas. Verifique a documentação de configuração do seu armazenamento.
-        od_client_write_permission_missing: O cliente parece não ter permissão para gravar. Verifique a documentação de configuração do armazenamento.
-        od_drive_id_invalid: O Id da unidade configurada parece ser inválido. Verifique a configuração.
-        od_drive_id_not_found: O drive Id configurado não foi encontrado. Verifique a configuração.
-        od_oauth_request_not_found: O endpoint para recuperar o usuário conectado não foi encontrado. Verifique os logs do servidor para mais detalhes.
-        od_oauth_request_unauthorized: O usuário atual não está autorizado a acessar o armazenamento remoto de arquivos. Verifique os logs do servidor para mais informações.
-        od_oauth_token_missing: O OpenProject não pode testar a comunicação do usuário com o OneDrive, pois a conta do Microsoft ainda não foi vinculada.
-        od_tenant_id_wrong: O ID do diretório (inquilino) configurado é inválido. Verifique a configuração.
-        od_test_folder_exists: A pasta %{folder_name}, necessária para o teste, já existe. Exclua-a e tente novamente.
-        od_unexpected_content: Conteúdo inesperado encontrado na unidade.
-        offline_access_scope_missing: É recomendável configurar o provedor OpenID Connect para solicitar o escopo offline_access. A integração pode continuar funcionando, mas é importante garantir que os tokens de atualização não expirem.
-        oidc_cant_refresh_token: Ocorreu um erro ao tentar verificar seu acesso ao armazenamento. Verifique os logs do servidor para mais informações.
-        oidc_non_oidc_user: O usuário atual, embora provisionado, não foi provisionado por um Provedor de Identidade OpenID Connect (OIDC). Execute a verificação novamente com um usuário provisionado pelo OIDC.
-        oidc_non_provisioned_user: O usuário atual não foi fornecido por um Provedor de Identidade OpenID Connect. Execute a verificação novamente com um usuário fornecido.
-        oidc_provider_cant_exchange: O provedor OpenID Connect não oferece suporte à troca de token, embora essa funcionalidade esteja configurada para o armazenamento.
-        oidc_token_acquisition_failed: A configuração do seu OpenID Connect não fornece o público-alvo necessário nem oferece recursos de troca de tokens. Consulte nossa documentação para mais informações.
-        oidc_token_exchange_failed: Parece haver um problema na configuração da troca de tokens no seu provedor OpenID Connect. Verifique as configurações e tente novamente.
-        oidc_token_refresh_failed: Ocorreu um erro ao tentar verificar seu acesso ao armazenamento. Verifique os logs do servidor para mais informações.
-        sp_client_cant_delete_folder: O cliente está com dificuldades para excluir pastas no SharePoint. Verifique a documentação de configuração do seu armazenamento.
-        sp_client_id_missing: O ID de cliente OAuth 2 configurado está ausente para o SharePoint. Verifique a configuração.
-        sp_client_secret_missing: O segredo de cliente OAuth 2 configurado está ausente para o SharePoint. Verifique a configuração.
-        sp_client_write_permission_missing: O cliente parece não ter permissão para gravar no SharePoint. Verifique a documentação de configuração do armazenamento.
-        sp_existing_test_folder: A pasta %{folder_name}, necessária para o teste, já existe no SharePoint. Exclua-a e tente novamente.
-        sp_oauth_request_error: A solicitação vinculada ao usuário para o SharePoint falhou. Verifique os logs do servidor para mais informações.
-        sp_oauth_request_unauthorized: O usuário atual não está autorizado a acessar o armazenamento remoto de arquivos. Verifique os logs do servidor para mais informações.
-        sp_oauth_token_missing: O OpenProject não pode testar a comunicação do usuário com o SharePoint, pois a conta do SharePoint ainda não foi vinculada.
-        sp_tenant_id_missing: O id de do diretório (cliente) configurado está ausente para o SharePoint. Verifique a configuração.
-        sp_unexpected_content: Conteúdo inesperado encontrado na Biblioteca de documentos do SharePoint.
-        unknown_error: A conexão não pôde ser validada. Ocorreu um erro desconhecido. Verifique os registros do servidor para obter mais informações.
+        errors:
+          client_id_invalid: The configured OAuth 2 client id is invalid. Please check the configuration.
+          client_secret_invalid: The configured OAuth 2 client secret is invalid. Please check the configuration.
+          nc_dependency_missing: 'A required dependency is missing on the file storage. Please add the following dependency: %{dependency}.'
+          nc_dependency_version_mismatch: The %{dependency} app version is not supported. Please update your Nextcloud server.
+          nc_host_not_found: No Nextcloud server found at the configured host url. Please check the configuration.
+          nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
+          nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+          nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
+          nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
+          nc_team_folder_not_found: The team folder could not be found.
+          nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+          nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
+          nc_userless_access_denied: The configured app password is invalid.
+          not_configured: The connection could not be validated. Please finish configuration first.
+          od_client_cant_delete_folder: The client is having trouble deleting folders. Please check the setup documentation for your storage.
+          od_client_write_permission_missing: The client seems to have write permissions missing. Please check the setup documentation for your storage.
+          od_drive_id_invalid: The configured drive id seems invalid. Please check the configuration.
+          od_drive_id_not_found: The configured drive id could not be found. Please check the configuration.
+          od_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
+          od_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+          od_oauth_token_missing: OpenProject cannot test the user level communication with OneDrive as the user did not yet link their Microsoft account.
+          od_tenant_id_wrong: The configured directory (tenant) id is invalid. Please check the configuration.
+          od_test_folder_exists: The folder %{folder_name} needed for testing already exists. Please delete it and try again.
+          od_unexpected_content: Unexpected content found in the drive.
+          offline_access_scope_missing: It is recommended to configure the OpenID Connect provider to request the offline_access scope. The integration may still work anyways, but make sure that refresh tokens do not expire.
+          oidc_cant_refresh_token: There was an error while trying to check your access to the storage. Please check the server logs for further information.
+          oidc_non_oidc_user: The current user, while provisioned, wasn't provisioned by an OpenID Connect (OIDC) Identity Provider. Please re-run the check with an OIDC provisioned user.
+          oidc_non_provisioned_user: The current user isn't provided by an OpenID Connect Identity Provider. Please re-run the check with a provided user.
+          oidc_provider_cant_exchange: The OpenID Connect provider does not seem to support token exchange, but token exchange was configured for the storage.
+          oidc_token_acquisition_failed: Your OpenID Connect setup doesn't provide the necessary audience, nor does it provide token exchange capabilities. Please check out our documentation for more information.
+          oidc_token_exchange_failed: There seems to be a problem with the Token Exchange setup on your OpenID Connect Provider. Please check its configuration and try again.
+          oidc_token_refresh_failed: There was an error while trying to check your access to the storage. Please check the server logs for further information.
+          sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
+          sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
+          sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
+          sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
+          sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
+          sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
+          sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+          sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
+          sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
+          sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
+          unknown_error: The connection could not be validated. An unknown error occurred. Please check the server logs for further information.
       label_error: Erro
-      label_failed: Falhou
       label_healthy: Saudável
-      label_passed: Passou
       label_pending: Pendente
-      label_skipped: Pulada
-      label_warning: Aviso
       no_report: Nenhum relatório disponível
       no_report_description: Execute os testes agora para obter um relatório completo sobre o status de integridade deste armazenamento de arquivos.
       open_report: Abrir relatório completo de integridade
       project_folders:
         subtitle: Pastas do projeto gerenciadas automaticamente
       since: desde %{datetime}
-      summary:
-        failure: Alguns testes não passaram e o sistema não está funcionando corretamente.
-        success: Todas as conexões e sistemas estão operando normalmente.
-        warning: Alguns testes retornaram um alerta. Isso pode causar comportamentos inesperados.
       synced: 'Última sincronização: %{datetime}'
       title: Relatório de status de integridade
     health_email_notifications:

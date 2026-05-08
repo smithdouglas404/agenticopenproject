@@ -70,7 +70,7 @@ ru:
         start_time: Время начала
         start_time_hour: Время начала
         end_after: Серия совещаний заканчивается
-        end_date: Дате окончания
+        end_date: Дата окончания
         iterations: События
         time_zone: Часовой пояс
         location: Местоположение

@@ -722,36 +722,36 @@ uk:
     confirmation_live_message_checked: Кнопка для продовження активна.
     confirmation_live_message_unchecked: Кнопка для продовження зараз неактивна. Щоб продовжити, поставте прапорець.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: Редагувати відділ
+    add_user: Додати користувача
+    add_department: Додати відділ
     blankslate:
-      heading: Your organization has no departments
-      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+      heading: Ваша організація не має відділів
+      description: 'Спочатку додайте в організацію відділи або користувачів. Для кожного відділу можна створити ієрархію нижчого рівня. Для навігації і створення підвідділів в ієрархії натисніть створений елемент.
 
         '
-      add_button: Add
+      add_button: Додати
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      heading: Цей відділ не має ієрархії нижчого рівня
+      description: Додавайте відділи або користувачів, щоб створювати піделементи.
+      add_button: Додати
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: Назва відділу
+      name_placeholder: Введіть назву відділу
     move_user_dialog:
-      title: User already in a department
-      heading: Move user to this department?
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      title: Користувач уже належить до відділу
+      heading: Перемістити користувача в цей відділ?
+      description: "%{user} зараз є членом відділу «%{from_department}», але в разі переміщення більше ним не буде."
+      confirm: Перемістити користувача
     context_menu:
-      add_sub_department: Add sub-department
-      add_user: Add user
+      add_sub_department: Додати підвідділ
+      add_user: Додати користувача
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: Користувача успішно додано у відділ.
+      user_removed: Користувача успішно вилучено з відділу.
+      department_created: Відділ успішно створено.
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: Не вдалося перемістити користувача між відділами.
   pagination:
     label: Розбиття на сторінки
     prev: Попереднє
@@ -2062,11 +2062,11 @@ uk:
       user_card_view:
         secondary_info: Secondary info
         show_status_badge: Show status badge
-        show_email: Show email
-        tag_source: Tag source
-        tag_limit: Tag limit
-        card_size: Card size
-        columns_per_row: Columns per row
+        show_email: Показати електронну адресу
+        tag_source: Джерело тегів
+        tag_limit: Ліміт тегів
+        card_size: Розмір картки
+        columns_per_row: Стовпців у рядку
     errors:
       messages:
         accepted: повинні бути прийняті.
@@ -2086,7 +2086,7 @@ uk:
         confirmation: не збігається %{attribute}
         could_not_be_copied: "%{dependency} не вдалося скопіювати (повністю)."
         does_not_exist: не існує.
-        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
+        user_already_in_department: Користувач %{user_id} уже є членом відділу «%{department_id}».
         error_enterprise_only: "%{action} можна лише у версії OpenProject Enterprise."
         error_unauthorized: "– можливо, немає доступу."
         error_readonly: "– було здійснено спробу запису, але елемент недоступний для запису."
@@ -2110,7 +2110,7 @@ uk:
         inclusion: не встановлено в одному з допустимих значень
         inclusion_nested: "– не призначено одне з дозволених значень за шляхом «%{path}»."
         invalid: зазначено невірно
-        invalid_uri: must be a valid URI.
+        invalid_uri: має бути дійсною URL-адресою.
         invalid_url: не є дійсною URL-адресою.
         invalid_url_scheme: 'не є підтримуваним протоколом (дозволено: %{allowed_schemes}).'
         less_than_or_equal_to: має бути меншим або рівним %{count}
@@ -2124,7 +2124,7 @@ uk:
         not_a_datetime: не є дійсним датою.
         not_a_number: не є числом
         not_allowed: недійсний через відсутність дозволів.
-        host_not_allowed: is not an allowed host.
+        host_not_allowed: не є дозволеним хостом.
         not_json: не аналізується як JSON.
         not_json_object: не є об’єктом JSON.
         not_an_integer: не є цілим числом
@@ -2157,7 +2157,7 @@ uk:
           attributes:
             parent_id:
               circular_dependency: призведе до створення ієрархії циклічної групи.
-              organizational_unit_mismatch: must have the same organizational unit setting as the group.
+              organizational_unit_mismatch: має включати той самий організаційний підрозділ, що й група.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2348,7 +2348,7 @@ uk:
           not_whitelisted: не дозволяється конфігурацією.
           invalid_url: не є дійсним URL-адресою або контуром сховища.
           must_not_be_ssh: не повинна бути URL-адресою SSH.
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: не має вказувати на каталог репозиторію, яким керує OpenProject.
           no_directory: не є каталогом.
         role:
           attributes:
@@ -2400,7 +2400,7 @@ uk:
               cannot_add_child_because_of_lack_of_permission: Не вдалося додати дочірній елемент, оскільки у вас немає дозволів для редагування вибраного пакета робіт.
               blank: Поле «ID» не може бути порожнє.
             identifier:
-              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
+              semantic_identifier_incomplete: і sequence_number мають бути вказані одночасно.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2469,7 +2469,7 @@ uk:
               confirmation: Підтвердження пароля та пароль не збігаються.
               format: "%{message}"
             password:
-              requirements_not_met: 'Must include characters of the following types: %{rules}'
+              requirements_not_met: 'Має містити такі типи символів: %{rules}'
               lowercase: нижній реєстр шрифту (наприклад, 'a')
               uppercase: верхній реєстр шрифту (наприклад, 'А')
               numeric: числовий (наприклад, '1')
@@ -2624,7 +2624,7 @@ uk:
       unsupported_storage_type: не є типом сховища, що підтримується.
       storage_error: Помилка з’єднання зі сховищем.
       invalid_input: Введено недійсні дані.
-      invalid_child_for_parent: is not allowed as a parent for this view type.
+      invalid_child_for_parent: не допускається як батьківський елемент для цього типу подання.
   activity:
     item:
       created_by_on: створено %{datetime} користувачем %{user}
@@ -3545,6 +3545,30 @@ uk:
   general_text_false: хибне значення
   gui_validation_error: 1 помилка
   gui_validation_error_plural: "%{count} помилок"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          few: "%{count} checks failed"
+          many: "%{count} checks failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          few: "%{count} checks returned a warning"
+          many: "%{count} checks returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Нові видимі проекти в цьому екземплярі.
@@ -4156,8 +4180,8 @@ uk:
   label_custom_pdf_export_settings: Налаштування експорту PDF
   label_custom_favicon: призначені для користувача іконки
   label_custom_touch_icon: Призначений для користувача значок логотипу
-  label_departments: Organization
-  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+  label_departments: Організація
+  label_departments_description_html: 'Визначте структуру своєї компанії, створивши відділи й підвідділи у вигляді ієрархій. Це дає змогу відобразити порядок підпорядкування й забезпечити чітку, структуровану візуалізацію вашої організації в OpenProject. Ви також можете імпортувати наявну структуру організації за допомогою [синхронізації груп LDAP](ldap_docs_article).
 
     '
   label_logout: Вийти
@@ -6191,10 +6215,10 @@ uk:
 
       '
     confirm_revoke_my_application:
-      one: Do you really want to remove this application? This will revoke one token active for it.
-      few: Do you really want to remove this application? This will revoke %{count} tokens active for it.
-      many: Do you really want to remove this application? This will revoke %{count} tokens active for it.
-      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      one: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування одного активного маркера.
+      few: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування %{count} активних маркерів.
+      many: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування %{count} активних маркерів.
+      other: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування %{count} активного маркера.
     authorization_error: Сталася помилка авторизації.
     my_registered_applications: Зареєстровані програми OAuth
   oauth_client:

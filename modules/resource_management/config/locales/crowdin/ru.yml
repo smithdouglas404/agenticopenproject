@@ -3,55 +3,55 @@ ru:
   activerecord:
     attributes:
       resource_planner:
-        name: Name
-        start_date: Start date
-        end_date: Finish date
-        default_view_class_name: Default view
-        public: Public
-        favorite: Favorite
+        name: Название
+        start_date: Дата начала
+        end_date: Дата окончания
+        default_view_class_name: Представление по умолчанию
+        public: Публичный
+        favorite: Избранное
     errors:
       models:
         resource_planner:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: должно быть после даты начала.
   plugin_openproject_resource_management:
-    name: OpenProject Resource Management
-    description: Provides resource management and capacity planning.
-  project_module_resource_management: Resource management
-  permission_view_resource_planners: View resource planners
-  permission_view_resource_planners_explanation: 'Allows users to access resource planners. It allows them to create and manage their own resource planners and view public resource planners. It does not allow users to view resource planners created by other users that are not shared publicly.
+    name: Управление ресурсами OpenProject
+    description: Обеспечивает управление ресурсами и планирование возможностей.
+  project_module_resource_management: Управление ресурсами
+  permission_view_resource_planners: Просмотр планировщиков ресурсов
+  permission_view_resource_planners_explanation: 'Позволяет пользователям получить доступ к планировщику ресурсов. Это позволяет создавать и управлять своими собственными планировщиками ресурсов и просматривать общедоступные планировщики ресурсов. Он не позволяет пользователям просматривать планировщики ресурсов, созданные другими пользователями, которые не являются общедоступными.
 
     '
-  permission_manage_public_resource_planners: Manage public resource planners
-  permission_manage_public_resource_planners_explanation: 'Allows users to create and manage public resource planners. It allows them to view, create, manage and publish their own resource planners. It does not allow users to view resource planners created by other users that are not shared publicly.
+  permission_manage_public_resource_planners: Управление общедоступными планировщиками ресурсов
+  permission_manage_public_resource_planners_explanation: 'Позволяет пользователям создавать и управлять общедоступными планировщиками ресурсов. Это позволяет просматривать, создавать, управлять и публиковать свои собственные планировщики ресурсов. Он не позволяет пользователям просматривать планировщики ресурсов, созданные другими пользователями, которые не являются общедоступными.
 
     '
-  label_resource_management: Resource planning
-  button_next: Save
+  label_resource_management: Планирование ресурсов
+  button_next: Сохранить
   resource_management:
-    label_resource_planner: Resource planner
-    label_resource_planner_plural: Resource planners
-    label_new_resource_planner: New resource planner
-    public_caption: 'Make this view public to all members of the project. This does not affect the visibility of work packages which still depends on each user permission.
+    label_resource_planner: Планировщик ресурсов
+    label_resource_planner_plural: Планировщики ресурсов
+    label_new_resource_planner: Новый планировщик ресурсов
+    public_caption: 'Сделать публичным для всех участников проекта. Это не влияет на видимость пакетов работ, которые все еще зависят от разрешения каждого пользователя.
 
       '
-    favorite_caption: 'Make this view a favorite to add it on the top section of the sidebar menu.
+    favorite_caption: 'Сделайте это представление избранным, чтобы добавить его в верхний раздел меню боковой панели.
 
       '
     view_types:
-      UserCardView: Users cards
+      UserCardView: Карточки пользователей
     action:
-      favorite: Add to favorites
-      unfavorite: Remove from favorites
-      make_public: Make public
-      make_private: Make private
-      delete: Delete
+      favorite: Добавить в избранное
+      unfavorite: Удалить из избранного
+      make_public: Сделать общедоступным
+      make_private: Сделать личным
+      delete: Удалить
     sidebar:
-      public: Public
-      private: Private
+      public: Общий
+      private: Личный
     blankslate:
-      title: No resource planners yet
-      desc: Create a resource planner to start planning capacity for this project.
+      title: Нет планировщиков ресурсов
+      desc: Создать планировщик ресурсов, чтобы начать планировать этот проект.
     show:
-      placeholder: The detailed view for this resource planner is coming soon.
+      placeholder: Подробный обзор для этого планировщика ресурсов скоро будет доступен.
