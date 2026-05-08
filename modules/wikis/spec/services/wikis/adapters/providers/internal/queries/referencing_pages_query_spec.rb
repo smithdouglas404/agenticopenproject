@@ -31,10 +31,11 @@
 require "spec_helper"
 
 RSpec.describe Wikis::Adapters::Providers::Internal::Queries::ReferencingPages do
-  subject { described_class.new(model: provider).call(input_data) }
+  subject { described_class.new(model: provider).call(input_data:, auth_strategy:) }
 
   let(:provider) { create(:internal_wiki_provider) }
   let(:input_data) { Wikis::Adapters::Input::ReferencingPages.build(linkable:).value! }
+  let(:auth_strategy) { provider.auth_strategy_for(current_user) }
   let(:linkable) { create(:work_package) }
 
   let(:wiki_page) { create(:wiki_page) }

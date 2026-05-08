@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -31,26 +31,21 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Wikis::Adapters::Input::Strategy do
-  describe ".build" do
-    let(:user) { build_stubbed(:user) }
+RSpec.describe Wikis::Adapters::Providers::Internal::Authentication::UserBound do
+  let(:provider) { build_stubbed(:internal_wiki_provider) }
+  let(:user) { build_stubbed(:user) }
 
-    context "with a :bearer_token key and a user" do
-      subject(:result) { described_class.build(key: :bearer_token, user:) }
+  subject(:user_bound) { described_class.new(model: provider) }
 
-      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :bearer_token, user:)) }
-    end
+  it "is registered" do
+    expect(Wikis::Adapters::Registry.resolve("internal.authentication.user_bound")).to eq(described_class)
+  end
 
-    context "with an :internal key and a user" do
-      subject(:result) { described_class.build(key: :internal, user:) }
-
-      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :internal, user:)) }
-    end
-
-    context "with an unknown key" do
-      subject(:result) { described_class.build(key: :unknown) }
-
-      it { is_expected.to be_failure }
+  describe "#call" do
+    it "returns a Success with an internal strategy carrying the user" do
+      result = user_bound.call(user)
+      expect(result).to be_success
+      expect(result.value!).to have_attributes(key: :internal, user:)
     end
   end
 end

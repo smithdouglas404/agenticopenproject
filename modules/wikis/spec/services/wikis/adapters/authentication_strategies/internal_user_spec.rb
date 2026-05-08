@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -31,26 +31,16 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Wikis::Adapters::Input::Strategy do
-  describe ".build" do
-    let(:user) { build_stubbed(:user) }
+RSpec.describe Wikis::Adapters::AuthenticationStrategies::InternalUser do
+  let(:user) { build_stubbed(:user) }
 
-    context "with a :bearer_token key and a user" do
-      subject(:result) { described_class.build(key: :bearer_token, user:) }
+  subject(:strategy) { described_class.new(user) }
 
-      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :bearer_token, user:)) }
-    end
-
-    context "with an :internal key and a user" do
-      subject(:result) { described_class.build(key: :internal, user:) }
-
-      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :internal, user:)) }
-    end
-
-    context "with an unknown key" do
-      subject(:result) { described_class.build(key: :unknown) }
-
-      it { is_expected.to be_failure }
+  describe "#call" do
+    it "yields the user" do
+      yielded = nil
+      strategy.call { |u| yielded = u }
+      expect(yielded).to eq(user)
     end
   end
 end

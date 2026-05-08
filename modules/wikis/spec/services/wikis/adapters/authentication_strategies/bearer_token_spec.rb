@@ -33,8 +33,17 @@ require_module_spec_helper
 
 RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock do
   let(:url) { "https://xwiki.local/rest/" }
+  let(:user) { build_stubbed(:user) }
+  let(:oauth_client) { build_stubbed(:oauth_client) }
+  let(:provider) { instance_double(Wikis::XWikiProvider, oauth_client:) }
+  let(:oauth_client_token) { instance_double(OAuthClientToken, access_token: "test-token") }
 
-  subject(:strategy) { described_class.new("test-token") }
+  subject(:strategy) { described_class.new(user) }
+
+  before do
+    allow(OAuthClientToken).to receive(:for_user_and_client).with(user, oauth_client)
+      .and_return(instance_double(ActiveRecord::Relation, first: oauth_client_token))
+  end
 
   describe "#call" do
     it "yields an http client configured with the bearer token" do
@@ -42,7 +51,7 @@ RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock 
         .with(headers: { "Authorization" => "Bearer test-token" })
         .to_return(status: 200, body: "")
 
-      strategy.call { |http| http.get(url) }
+      strategy.call(provider:) { |http| http.get(url) }
 
       expect(request_stub).to have_been_requested
     end
@@ -52,7 +61,7 @@ RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock 
         .with(headers: { "Authorization" => "Bearer test-token", "Accept" => "application/json" })
         .to_return(status: 200, body: "")
 
-      strategy.call(http_options: { headers: { "Accept" => "application/json" } }) { |http| http.get(url) }
+      strategy.call(provider:, http_options: { headers: { "Accept" => "application/json" } }) { |http| http.get(url) }
 
       expect(request_stub).to have_been_requested
     end
