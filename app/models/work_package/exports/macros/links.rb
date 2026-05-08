@@ -36,15 +36,14 @@ module WorkPackage::Exports
       # `<mention data-id="0">` (since `"PROJ-1".to_i == 0`). Semantic-id
       # support in PDF export is tracked in https://community.openproject.org/wp/74766.
       def applicable?
-        %w(# ## ###).include?(matcher.sep) &&
+        hash_trigger? &&
           matcher.prefix.blank? &&
           WorkPackage::SemanticIdentifier.numeric_id?(matcher.identifier)
       end
 
-      # PDF rendering walks Markly nodes via `app/models/exports/pdf/common/macro.rb`,
-      # not through `PatternMatcherFilter`'s preload pipeline, so the parent's
-      # cache-driven `call` would miss every reference. Render the legacy
-      # numeric mention directly from the matched id.
+      # PDF rendering walks Markly nodes directly and bypasses the
+      # `PatternMatcherFilter` preload pipeline, so the parent's cache-driven
+      # `call` would miss every reference.
       def call
         render_link(matcher.identifier.to_i, matcher)
       end
