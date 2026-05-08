@@ -459,6 +459,27 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "ID_ROUTE_CONSTRAINT" do
+    # Rails wraps route-constraint regexps with `\A…\z` when matching a path
+    # segment, so the spec uses an anchored regex to model the way the
+    # constant is actually used. This pins the composition with
+    # SEMANTIC_ID_PATTERN so a future change to the upstream prefix or
+    # sequence shape can't silently widen what the routes accept.
+    let(:anchored) { /\A(?:#{described_class::ID_ROUTE_CONSTRAINT.source})\z/ }
+
+    it "matches numeric work package ids" do
+      expect(anchored.match?("123")).to be true
+    end
+
+    it "matches semantic work package identifiers" do
+      expect(anchored.match?("PROJ-7")).to be true
+    end
+
+    it "rejects lowercased semantic shapes" do
+      expect(anchored.match?("proj-7")).to be false
+    end
+  end
+
   describe ".numeric_id? and .semantic_id?" do
     # `numeric_id?` answers a shape question (canonical numeric ID),
     # `semantic_id?` answers a routing question (needs identifier/alias
