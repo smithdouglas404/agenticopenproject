@@ -737,7 +737,6 @@ describe('HalResource', () => {
             });
 
             expect(getStub).toHaveBeenCalled();
-            ;
           });
 
           it('should be loaded', async () => {
@@ -746,11 +745,15 @@ describe('HalResource', () => {
             expect(resource.$loaded).toBeTruthy();
           });
 
-          it('should be updated', () => {
+          it('should be updated', async () => {
+            await promise;
+
             expect(newResult.name).toEqual('name');
           });
 
-          it('should have properties that have a getter and setter', () => {
+          it('should have properties that have a getter and setter', async () => {
+            await promise;
+
             const descriptor = Object.getOwnPropertyDescriptor(newResult, 'foo');
 
             expect(descriptor).toBeDefined();
@@ -759,12 +762,11 @@ describe('HalResource', () => {
             expect(descriptor!.set).toBeDefined();
           });
 
-          it('should return itself in a promise if already loaded', () => {
+          it('should return itself in a promise if already loaded', async () => {
             resource.$loaded = true;
 
-            resource.$load().then((result:HalResource) => {
-              expect(result).toEqual(resource);
-            });
+            const result = await resource.$load();
+            expect(result).toEqual(resource);
           });
         });
       });
