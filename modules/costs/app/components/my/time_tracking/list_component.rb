@@ -33,6 +33,7 @@ module My
     class ListComponent < ApplicationComponent
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
+      include My::TimeTrackingHelper
 
       options time_entries: [],
               mode: :week,
@@ -82,9 +83,6 @@ module My
         date.all_month.map(&:beginning_of_week).uniq
       end
 
-      def week_date_range(date)
-        SubHeaderComponent.new(mode: :week, date:, view_mode: :list).title
-      end
 
       def week_start_day
         case Setting.start_of_week
