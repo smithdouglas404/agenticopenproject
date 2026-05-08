@@ -270,4 +270,31 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
                             "classic mode added unexpected WP SELECTs for semantic input:\n#{wp_selects.join("\n")}"
     end
   end
+
+  describe "prefixed resource refs with semantic-shaped identifiers",
+           with_flag: { semantic_work_package_ids: true },
+           with_settings: { work_packages_identifier: "semantic" } do
+    # `version#PROJ-1`, `message#PROJ-1`, etc. share the regex with the WP
+    # macro because `\d+|PROJ-\d+` is a single alternation. The prefixed
+    # branches address tables keyed by numeric primary key, so a semantic
+    # identifier paired with a prefix must short-circuit before the handler
+    # would otherwise issue `find_by(id: 0)` (the round-trip of any
+    # non-numeric string through `to_i`).
+    include_context "with author signed in"
+    let(:project) { create(:project, identifier: "MACROPROJ") }
+
+    it "does not query the prefixed resource table for `version#PROJ-1`" do
+      project
+      author
+
+      rendered = nil
+      recorder = ActiveRecord::QueryRecorder.new { rendered = format_text("see version#PROJ-1 here") }
+      version_selects = recorder.log.grep(/FROM "versions"/i)
+
+      expect(version_selects).to be_empty,
+                                 "expected zero versions SELECTs for semantic-shaped input, got:\n" \
+                                 "#{version_selects.join("\n")}"
+      expect(rendered).to include("version#PROJ-1")
+    end
+  end
 end

@@ -39,8 +39,11 @@ module OpenProject::TextFormatting::Matchers
       # Hash-separated object links
       # Condition: Separator is '#'
       # Condition: Prefix is present, checked to be one of the allowed values
+      # Condition: Identifier is numeric — prefixed resources address rows by
+      # primary key, so a semantic-shaped identifier (PROJ-1) would `to_i` to 0
+      # and run a guaranteed-miss `find_by(id: 0)`.
       def applicable?
-        matcher.sep == "#" && valid_prefix? && oid.present?
+        matcher.sep == "#" && valid_prefix? && WorkPackage::SemanticIdentifier.numeric_id?(matcher.identifier)
       end
 
       # Examples:
