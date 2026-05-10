@@ -98,20 +98,12 @@ module Backlogs
     end
 
     def card_data
-      data = {
-        story: true,
-        controller: "backlogs--story",
-        backlogs__story_id_value: work_package.id,
-        backlogs__story_display_id_value: work_package.display_id,
-        backlogs__story_split_url_value: split_url,
-        backlogs__story_full_url_value: full_url,
-        backlogs__story_selected_class: "Box-row--blue"
-      }
+      data = { story: true }
 
       return data unless draggable?
 
       data.merge(
-        controller: "#{data[:controller]} work-package-card-box--item",
+        controller: "work-package-card-box--item",
         work_package_card_box_target: "item",
         work_package_card_box_item_id: work_package.id,
         work_package_card_box__item_item_id_value: work_package.id,

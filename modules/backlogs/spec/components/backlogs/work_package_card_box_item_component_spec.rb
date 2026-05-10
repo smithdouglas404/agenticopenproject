@@ -100,8 +100,6 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
       it "uses sprint routes" do
         card = rendered_card.css(".op-backlogs-story").first
 
-        expect(card["data-backlogs--story-split-url-value"])
-          .to end_with(project_backlogs_backlog_details_path(project, work_package))
         expect(card["data-drop-url"])
           .to end_with(move_project_backlogs_work_package_path(project, sprint, work_package))
       end
@@ -131,7 +129,6 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
       it "passes params into card URLs" do
         card = rendered_card.css(".op-backlogs-story").first
 
-        expect(card["data-backlogs--story-split-url-value"]).to match(/all=1/)
         expect(card["data-drop-url"]).to match(/all=1/)
       end
     end
@@ -145,14 +142,11 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
       expect(rendered_card).to have_css(".sr-only", text: "5 story points")
     end
 
-    it "wires the card as a Backlogs story" do
-      expect(rendered_card).to have_css(
-        ".op-backlogs-story[data-controller~='backlogs--story']" \
-        "[data-backlogs--story-id-value='#{work_package.id}']" \
-        "[data-backlogs--story-display-id-value='#{work_package.display_id}']" \
-        "[data-backlogs--story-full-url-value='#{work_package_path(work_package)}']" \
-        "[data-backlogs--story-selected-class='Box-row--blue']"
-      )
+    it "does not connect the old Backlogs story controller" do
+      expect(rendered_card).to have_css(".op-backlogs-story")
+      expect(rendered_card).to have_no_css(".op-backlogs-story[data-controller~='backlogs--story']")
+      expect(rendered_card).to have_no_css(".op-backlogs-story[data-backlogs--story-id-value]")
+      expect(rendered_card).to have_no_css(".op-backlogs-story[data-backlogs--story-split-url-value]")
     end
 
     it "wires the card as the draggable item" do

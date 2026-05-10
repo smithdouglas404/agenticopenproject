@@ -135,16 +135,12 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
 
       it "wires draggable data through the shared card" do
         expect(rendered_component).to have_css(".op-backlogs-story") do |card|
-          expect(card["data-controller"]).to eq("backlogs--story work-package-card-box--item")
+          expect(card["data-controller"]).to eq("work-package-card-box--item")
           expect(card["data-work-package-card-box-item-id"]).to eq(work_package.id.to_s)
           expect(card["data-work-package-card-box--item-item-id-value"]).to eq(work_package.id.to_s)
           expect(card["data-work-package-card-box--item-source-id-value"]).to eq("backlog_bucket:#{backlog_bucket.id}")
           expect(card["data-drop-url"]).to end_with(move_project_backlogs_inbox_path(project, work_package))
           expect(card["data-bulk-drop-url"]).to end_with(project_backlogs_bulk_move_work_packages_path(project))
-          expect(card["data-backlogs--story-split-url-value"])
-            .to end_with(project_backlogs_backlog_details_path(project, work_package))
-          expect(card["data-backlogs--story-full-url-value"])
-            .to end_with(work_package_path(work_package))
           expect(card["draggable"]).to eq("true")
         end
       end
@@ -173,9 +169,9 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
              position: 1)
     end
 
-    it "includes all=1 in the split-view URL" do
+    it "does not emit split-view controller data" do
       expect(rendered_component).to have_css(".op-backlogs-story") do |card|
-        expect(card["data-backlogs--story-split-url-value"]).to include("all=1")
+        expect(card["data-backlogs--story-split-url-value"]).to be_nil
       end
     end
 

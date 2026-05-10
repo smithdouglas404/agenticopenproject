@@ -40,17 +40,17 @@ export default class WorkPackageCardBoxController extends Controller<HTMLElement
   }
 
   toggleSelection = (event:MouseEvent) => {
-    if (!event.metaKey && !event.ctrlKey && !event.shiftKey) {
+    const item = this.findItem(event.target);
+    if (!item) {
+      return;
+    }
+
+    if (!this.shouldHandleSelection(event, item)) {
       return;
     }
 
     event.preventDefault();
     event.stopImmediatePropagation();
-
-    const item = this.findItem(event.target);
-    if (!item) {
-      return;
-    }
 
     this.clearPeerSelections();
 
@@ -75,6 +75,15 @@ export default class WorkPackageCardBoxController extends Controller<HTMLElement
     this.lastSelectedItemId = null;
     this.renderSelection();
     this.dispatchSelectionChange();
+  }
+
+  private shouldHandleSelection(event:MouseEvent, item:HTMLElement):boolean {
+    return (
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      this.selectedItemIds.has(this.itemId(item))
+    );
   }
 
   private toggleItem(item:HTMLElement) {

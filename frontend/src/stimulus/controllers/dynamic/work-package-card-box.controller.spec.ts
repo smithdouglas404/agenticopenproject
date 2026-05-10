@@ -99,6 +99,19 @@ describe('WorkPackageCardBoxController', () => {
     expect(item.hasAttribute('aria-selected')).toBe(false);
   });
 
+  it('deselects a selected item with a plain click', async () => {
+    appendBox({ id: 'box-a', sourceId: 'inbox', itemIds: ['1', '2', '3'] });
+    await settleStimulus();
+
+    clickItem('box-a-2', { metaKey: true });
+    await nextFrame();
+
+    clickItem('box-a-2');
+    await nextFrame();
+
+    expect(selectedIds('box-a')).toEqual([]);
+  });
+
   it('range selects from the last selected item with a shift click', async () => {
     appendBox({ id: 'box-a', sourceId: 'inbox', itemIds: ['1', '2', '3', '4'] });
     await settleStimulus();

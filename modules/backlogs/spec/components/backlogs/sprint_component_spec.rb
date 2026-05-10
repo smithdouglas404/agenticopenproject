@@ -108,12 +108,11 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
 
       it "wires draggable data on work package cards" do
         expect(rendered_component).to have_css(".Box-row#work_package_#{work_package1.id} .op-backlogs-story") do |card|
-          expect(card["data-controller"]).to eq("backlogs--story work-package-card-box--item")
+          expect(card["data-controller"]).to eq("work-package-card-box--item")
           expect(card["data-work-package-card-box-item-id"]).to eq(work_package1.id.to_s)
           expect(card["data-work-package-card-box--item-item-id-value"]).to eq(work_package1.id.to_s)
           expect(card["data-work-package-card-box--item-source-id-value"]).to eq("sprint:#{sprint.id}")
           expect(card["data-work-package-card-box--item-drag-type-value"]).to eq("backlogs-item")
-          expect(card["data-backlogs--story-display-id-value"]).to eq(work_package1.display_id.to_s)
           expect(card["data-drop-url"])
             .to end_with(move_project_backlogs_work_package_path(project, sprint, work_package1))
           expect(card["data-bulk-drop-url"])
