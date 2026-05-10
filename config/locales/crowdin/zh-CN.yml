@@ -126,9 +126,9 @@ zh-CN:
         title: Jira 配置
         new: 新配置
       banner:
-        title: Beta - Try it out!
-        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
-        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+        title: 测试版 - 试试吧！
+        description: 此 Jira Migrator 目前处于测试阶段。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。
+        contribution_callout: '请通过提供您的反馈和捐赠您的私有数据，帮助我们改进 Jira Migrator。您可以[加入 Jira Migrator 的开发社区](link)。
 
           '
         supported_versions: ''
@@ -1109,8 +1109,8 @@ zh-CN:
       matrix_check_uncheck_all_in_row_label_html: 切换所有角色的“%{permission}”<em></em>权限
       matrix_check_uncheck_all_in_col_label_html: 切换“%{role}”<em></em>角色的 %{module} 权限
   users:
-    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
-    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
+    force_password_change_hint: 用户在下次登录时必须设置新密码。通过电子邮件发送凭据时会自动启用。
+    send_information_hint: 通过电子邮件发送纯文本形式的密码。选中后，用户将需要在首次登录时更改密码。
     autologins:
       prompt: 保持登录状态 %{num_days}
     sessions:
@@ -1376,17 +1376,17 @@ zh-CN:
             caption: 将当前工作流复制到同一工作包类型中的一个或多个角色。如果所选角色已具有工作流，则当前工作流将被覆盖。
           from_type:
             label: 复制到其他类型
-            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+            caption: 将当前工作流复制到其他工作包类型中。如果所选类型已具有工作流，则当前工作流将被覆盖。这会影响所有角色。
       from_roles:
         create:
           notice:
-            other: Successfully copied workflow to %{count} roles.
+            other: 已成功将工作流复制到 %{count} 个角色。
       from_types:
         create:
           notice:
-            other: Successfully copied workflow to %{count} types.
+            other: 已成功将工作流复制到 %{count} 个类型。
       new:
-        title: Copy workflow of "%{source_type}"
+        title: 复制“%{source_type}”的工作流
     form:
       matrix_caption: 工作流矩阵
       matrix_caption_assignee: 受理人的工作流矩阵
@@ -1398,22 +1398,22 @@ zh-CN:
       matrix_check_uncheck_all_in_col_label_html: 切换从所有旧状态到“%{new_status}”<em></em>的转换
     index:
       type_filter:
-        label: Filter by type name…
+        label: 按类型名称筛选…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: 为每个工作包类型配置状态过渡。
   work_flows:
     index:
       no_results_title_text: 目前没有工作流。
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: 删除工作包
+      heading: 是否永久删除此工作包？
+      description: 确定要删除工作包“%{name}”吗？
+      confirm_descendants_deletion: 我确认此工作包的所有子工作包都将被递归移除。
+      cross_project_warning: 将删除以下项目中的工作包：%{projects}
     bulk_delete_dialog:
-      title: Delete %{count} work packages
+      title: 删除 %{count} 个工作包
       heading: 永久删除这些 %{count} 工作包？
       description: 以下工作包，包括子工作包和所有相关数据，将被永久删除：
       description_with_children: 以下工作包（包括子工作包）和所有相关数据将被永久删除：
@@ -2048,7 +2048,7 @@ zh-CN:
         inclusion: 未设置为允许的值之一。
         inclusion_nested: 未设置为路径“%{path}”中允许的值之一。
         invalid: 是无效的。
-        invalid_uri: must be a valid URI.
+        invalid_uri: 必须是有效的 URI。
         invalid_url: 不是有效的 URL。
         invalid_url_scheme: 不是受支持的协议（允许：%{allowed_schemes}）。
         less_than_or_equal_to: 必须小于或等于 %{count}。
@@ -2062,7 +2062,7 @@ zh-CN:
         not_a_datetime: 不是有效的日期时间。
         not_a_number: 不是一个数字。
         not_allowed: 没有权限使用。
-        host_not_allowed: is not an allowed host.
+        host_not_allowed: 不是允许的主机。
         not_json: 无法解析为 JSON。
         not_json_object: 不是 JSON 对象。
         not_an_integer: 不是一个整数。
@@ -2093,7 +2093,7 @@ zh-CN:
           attributes:
             parent_id:
               circular_dependency: 将创建循环群组层次结构。
-              organizational_unit_mismatch: must have the same organizational unit setting as the group.
+              organizational_unit_mismatch: 必须与该群组具有相同的组织单位设置。
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2279,7 +2279,7 @@ zh-CN:
           not_whitelisted: 配置所不允许的。
           invalid_url: 不是有效的存储库 URL 或路径。
           must_not_be_ssh: 不能是 SSH url。
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: 不得指向 OpenProject 管理的存储库目录。
           no_directory: 不是一个目录。
         role:
           attributes:
@@ -2331,7 +2331,7 @@ zh-CN:
               cannot_add_child_because_of_lack_of_permission: 无法添加子项目，因为您没有权限编辑选定的工作包。
               blank: ID不能为空。
             identifier:
-              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
+              semantic_identifier_incomplete: 并且 sequence_number 必须同时设置。
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2400,7 +2400,7 @@ zh-CN:
               confirmation: 确认密码与密码不一致。
               format: "%{message}"
             password:
-              requirements_not_met: 'Must include characters of the following types: %{rules}'
+              requirements_not_met: 必须包括以下类型的字符：%{rules}
               lowercase: 小写字母 （如 'a')
               uppercase: 大写字母 (如 'A')
               numeric: 数值 （例如 ' 1')
@@ -2504,7 +2504,7 @@ zh-CN:
       unsupported_storage_type: 不是支持的存储空间类型。
       storage_error: 连接存储空间时出错。
       invalid_input: 输入无效。
-      invalid_child_for_parent: is not allowed as a parent for this view type.
+      invalid_child_for_parent: 不允许作为此视图类型的父项。
   activity:
     item:
       created_by_on: '由 %{user} 创建于 %{datetime} '
@@ -2996,7 +2996,7 @@ zh-CN:
       title: 企业附加组件
       plan_title: 企业 %{plan} 附加组件
       plan_name: "%{plan} 企业计划"
-      trial_text: This feature is included in your active Enterprise trial.
+      trial_text: 此功能包含在您激活的企业试用版中。
       plan_text_html: 从 %{plan_name} 开始可用。
       unlimited: 无限制
       already_have_token: '已经有令牌？使用下方按钮添加以升级到预订的企业版方案。
@@ -3360,20 +3360,20 @@ zh-CN:
     report_component:
       checks:
         failures:
-          other: "%{count} checks failed"
-        success: All checks passed
+          other: "%{count} 次检查失败"
+        success: 所有检查已通过
         warnings:
-          other: "%{count} checks returned a warning"
+          other: "%{count} 次检查返回警告"
       summary:
-        failure: Some checks failed and the system does not work as expected.
-        success: All connections and systems are working as expected.
-        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+        failure: 某些检查失败，系统无法按预期运行。
+        success: 所有连接和系统均按预期运行。
+        warning: 某些检查返回警告。这可能导致出现异常行为。
     result_component:
       status:
-        failed: Failed
-        passed: Passed
-        skipped: Skipped
-        warning: Warning
+        failed: 失败
+        passed: 通过
+        skipped: 已跳过
+        warning: 警告
   homescreen:
     additional:
       projects: 此 OpenProject 实例中的最新可见项目。
@@ -3388,16 +3388,16 @@ zh-CN:
         learn_about: 详细了解所有新功能
         missing: 目前还没有高亮显示的功能。
         '17_4':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: '此版本包含多项新功能和改进，例如：
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
+            line_0: Jira Migrator，支持基本自定义字段。
             line_1: 积压工作存储桶，用于在完善积压工作时构建工作包并确定其优先次序。
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_2: 在积压工作模块中更轻松地拖放，移动选项也得到了改进。
+            line_3: 冲刺标题中的冲刺“开始”和“完成”按钮。
             line_4: 复制角色之间的工作流设置。
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_5: "“首页”和“项目概览”页面上的“我的会议”微件。"
     links:
       upgrade_enterprise_edition: 升级到企业版
       postgres_migration: 将您的安装迁移到 PostgreSQL
@@ -3556,7 +3556,7 @@ zh-CN:
         personal_reminder: 有个人提醒时通知我
       daily_reminders:
         title: 向我发送针对未读通知的每日电子邮件提醒
-        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: 您仅会收到针对未读通知的提醒，且仅会在您指定的时间收到提醒。在您为帐户配置时区前，时间将解释为采用 UTC 格式。
         enabled: 启用每日电子邮件提醒
         add_time: 添加时间
         remove_time: 移除时间
@@ -3570,7 +3570,7 @@ zh-CN:
         date_range: 暂停时间段
       email_alerts:
         title: 其他条目（非工作包）的电子邮件提醒
-        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        description: 今日提醒仅限于工作包。您可以选择继续接收这些事件的电子邮件提醒，直到它们被包含在通知中。
         news_added: 新闻已添加
         news_commented: 评论新闻条目
         document_added: 文档已添加
@@ -3583,7 +3583,7 @@ zh-CN:
     notifications:
       participating:
         title: 参与
-        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        description: 您（作为受理人、负责人或关注者）参与的工作包中所有活动的通知。
         submit_button: 更新偏好设置
         mentioned: 被提及
         watched: 关注中
@@ -3592,7 +3592,7 @@ zh-CN:
         shared: 与我共享
       date_alerts:
         title: 日期提醒
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        description: 当您（作为受理人、负责人或关注者）参与的已打开工作包的重要日期临近时，会自动发出通知。
         submit_button: 更新日期提醒
         start_date: 开始日期
         due_date: 完成日期
@@ -3607,7 +3607,7 @@ zh-CN:
           seven_days_after: 推后 7 天
       non_participating:
         title: 不参与
-        description: Additional notifications for activities in all projects.
+        description: 所有项目中活动的其他通知。
         submit_button: 更新偏好设置
         work_package_created: 新工作包
         work_package_commented: 所有新评论
@@ -3616,7 +3616,7 @@ zh-CN:
         work_package_scheduled: 所有日期更改
       project_specific_settings:
         title: 项目特定通知设置
-        description: These project-specific settings override default settings above.
+        description: 这些项目特定设置会覆盖上方的默认设置。
         add_button: 添加项目特定通知
         dialog_title: 添加项目特定通知
         list_header: 具有特定通知的项目
@@ -4427,7 +4427,7 @@ zh-CN:
       you_have: 您有
     logo_alt_text: 徽标
     mention:
-      subject: "%{user_name} mentioned you in %{id} - %{subject}"
+      subject: "%{user_name} 在 %{id} - %{subject} 中提及了您"
     notification:
       center: 前往通知中心
       see_in_center: 在通知中心查看评论
@@ -4461,10 +4461,10 @@ zh-CN:
       note: 注："%{note}"
     sharing:
       work_packages:
-        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
+        allowed_actions_html: 您对此工作包具有以下权限：%{allowed_actions}。允许的操作根据您的项目角色和权限而变化。
         create_account: 要访问此工作包，您需要创建一个 %{instance} 帐户。
         open_work_package: 打开工作包
-        subject: Work package %{id} was shared with you
+        subject: 工作包 %{id} 已与您共享
         enterprise_text: 与非此项目成员的用户共享工作包。
         summary:
           user: "%{user} 向您共享了一个拥有 %{role_rights} 权限的工作包"

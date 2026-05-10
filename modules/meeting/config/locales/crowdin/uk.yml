@@ -32,7 +32,7 @@ uk:
         location: Місцезнаходження
         duration: Тривалість
         notes: Примітки
-        recurrence_start_time: Scheduled start time
+        recurrence_start_time: Запланований час початку
         participants: Учасники
         participant:
           one: 1 учасник
@@ -45,9 +45,9 @@ uk:
         start_date: Дата
         start_time: Час початку
         start_time_hour: Час початку
-        end_time: End time
-        template: Template
-        notify: Send notifications
+        end_time: Час завершення
+        template: Шаблон
+        notify: Надсилання сповіщень
         sharing: Надання доступу
       meeting_agenda_item:
         title: 'Назва '
@@ -55,15 +55,15 @@ uk:
         duration_in_minutes: Тривалість
         description: Примітки
         presenter: Доповідач
-        item_type: Type
-        position: Position
-        lock_version: Lock version
-        notes: Notes
+        item_type: Тип
+        position: Позиція
+        lock_version: Заблокувати версію
+        notes: Нотатки
       meeting_section:
         title: 'Назва '
-        position: Position
+        position: Позиція
       recurring_meeting:
-        title: Title
+        title: Назва
         frequency: Частота
         interval: Інтервал
         start_date: Починається
@@ -72,10 +72,10 @@ uk:
         end_after: Серія нарад завершується
         end_date: Дата завершення
         iterations: Повторення
-        time_zone: Time zone
-        location: Location
-        duration: Duration
-        notify: Send notifications
+        time_zone: Часовий пояс
+        location: Місцезнаходження
+        duration: Тривалість
+        notify: Надсилання сповіщень
       recurring_meeting_interim_response:
         start_time: Час початку
       meeting_participant:

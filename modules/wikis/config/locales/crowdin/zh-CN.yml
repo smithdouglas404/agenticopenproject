@@ -3,7 +3,7 @@ zh-CN:
   activerecord:
     attributes:
       wikis/page_link:
-        provider: Wiki Provider
+        provider: Wiki 提供商
       wikis/xwiki_provider:
         authentication_method: 身份验证方式
         authentication_methods:
@@ -11,7 +11,7 @@ zh-CN:
           two_way_oauth2: 双向 OAuth 2.0 授权代码流
         name: 名称
         token_exchange_scope: XWiki 范围
-        universal_identifier: Universal identifier
+        universal_identifier: 通用标识符
         url: 实例 URL
         wiki_audience: XWiki 受众
     errors: {}
@@ -26,7 +26,7 @@ zh-CN:
   project_module_wiki_platforms: Wiki 提供商
   wikis:
     buttons:
-      connect_account: Connect %{provider} account
+      connect_account: 连接 %{provider} 帐户
       done_continue: 完成, 继续
       save_and_continue: 保存并继续
       wiki_page: Wiki 页面
@@ -51,24 +51,24 @@ zh-CN:
         general_info_form_component:
           xwiki_instance_description: 在进行设置之前，请确保您在 XWiki 实例中具有管理权限。
         oauth_application_form_component:
-          application_id: Application ID
-          application_secret: Application secret
+          application_id: 应用程序 ID
+          application_secret: 应用程序密钥
         oauth_client_form_component:
-          client_id: Client ID
+          client_id: 客户端 ID
       oauth_application_info_component:
-        confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
+        confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在 XWiki 实例中重新输入凭据，所有用户都必须重新授权。确定要继续吗？
         label_pending: 待处理
-        replace_oauth_application: Replace OpenProject OAuth application
+        replace_oauth_application: 替换 OpenProject OAuth 应用程序
       oauth_client_info_component:
-        confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
+        confirm_replace_oauth_client: 此操作将重置当前的 XWiki OAuth 凭据。所有用户都需要针对 XWiki 进行重新授权。确定要继续吗？
         label_pending: 待处理
-        replace_oauth_client: Replace XWiki OAuth application
+        replace_oauth_client: 替换 XWiki OAuth 应用程序
       wiki_provider_list_component:
-        label_creation_time: Created
-        label_name: Name
-        label_provider: Provider
-        no_results_description: Add a wiki provider to see them here.
-        no_results_title: You don't have any wiki providers set up yet.
+        label_creation_time: 已创建
+        label_name: 名称
+        label_provider: 提供商
+        no_results_description: 添加 Wiki 提供商，以在此处查看。
+        no_results_title: 您尚未设置任何 Wiki 提供商。
       wiki_providers:
         index_description: 添加外部 Wiki 服务，以将工作包链接到现有 Wiki 页面，或直接从 OpenProject 创建新页面。
         label_add_new: 添加新 Wiki 提供商
@@ -81,17 +81,17 @@ zh-CN:
         oauth:
           openproject_oauth: OpenProject OAuth
         sections:
-          general_information: Basic details
-          oauth_configuration: OAuth configuration
+          general_information: 基本信息
+          oauth_configuration: OAuth 配置
         url_caption: 请添加您的 Wiki 平台的主机地址（包含 https://）。该地址的长度不应超过 255 个字符。
         xwiki_instance: XWiki 实例
         xwiki:
           oauth:
-            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            openproject_oauth_description: 允许 XWiki 使用 OAuth 应用程序访问 OpenProject 数据。请将以下凭据复制到您的 XWiki 实例。
             provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+            provider_oauth_description: 允许 OpenProject 使用 OAuth 访问 XWiki 数据。将自动生成一个客户端 ID，以向 XWiki 标识 OpenProject — 无需在 XWiki 端进行手动配置。
+          openproject_oauth_description: 允许 XWiki 使用 OAuth 访问 OpenProject 数据。
           xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+          xwiki_oauth_description: 允许 OpenProject 使用 OAuth 访问 XWiki 数据。
     macro:
-      page_not_found: Linked wiki page no longer available
+      page_not_found: 链接的 Wiki 页面不再可用

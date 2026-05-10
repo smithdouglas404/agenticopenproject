@@ -272,20 +272,20 @@ uk:
                 relations: Зв’язки між задачами
                 project_ids: Ідентифікатори проєктів
                 issue_ids: Ідентифікатори задач
-                sprints: Sprint assignments
+                sprints: Призначення спринту
                 workflows: Робочі процеси на рівні проєктів
                 schemes: Схеми
-                permissions: Permissions
-                projects: Projects
-                issues: Issues
-                issue_details: Issue description, history, comments and attachments
-                custom_fields: A subset of custom fields
-                users: Involved users and groups
+                permissions: Дозволи
+                projects: Проєкти
+                issues: Задачі
+                issue_details: Опис задачі, історія, коментарі й вкладення
+                custom_fields: Підмножина користувацьких полів
+                users: Залучені користувачі й групи
             confirm_import:
               title: Імпортуйте дані
               caption: Перегляньте налаштування імпорту й запустіть його
               caption_done: Завершено
-              label_available_data: Data to be imported
+              label_available_data: Дані, які імпортуватимуться
               label_users_import_explanation: Користувачі, залучені до вибраних проєктів (зокрема, члени груп)
               button_start: Почати імпорт
               description: Ви збираєтеся запустити імпорт із наведеними далі налаштуваннями.
@@ -294,21 +294,21 @@ uk:
             import_result:
               title: Результати циклу імпорту
               caption: Перегляньте дані про цикл імпорту або скасуйте внесені зміни
-              info: Import run was successful.
+              info: Циклу імпорту успішно виконано.
               label_results: Імпортовано
               label_revert: Скасувати імпорт
               button_revert: Скасувати імпорт
-              button_done: Approve import
-              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Approve import
-              label_finalizing: Approving import...
-              label_finalizing_done: Import approved.
+              button_done: Схвалити імпорт
+              preview_description: Імпортовані дані зараз перебувають у режимі перевірки. Натисніть «Схвалити імпорт», щоб застосувати зміни, або «Скасувати імпорт», щоб скасувати всі зміни, внесені під час цього циклу.
+              label_finalize_import: Схвалити імпорт
+              label_finalizing: Схвалення імпорту…
+              label_finalizing_done: Імпорт схвалено.
               label_revert_progress: Скасування імпорту…
               label_reverted: Імпорт скасовано.
           select_dialog:
             filter_projects: Фільтрування за текстом
           import_dialog:
-            title: Please make sure you have a backup!
+            title: Переконайтеся, що у вас є резервна копія!
             confirm_button: Почати імпорт
             description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
