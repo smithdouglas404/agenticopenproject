@@ -41,11 +41,17 @@ export default class ItemController extends Controller<HTMLElement> {
       draggable({
         element: this.element,
         getInitialData: () => this.getItemData(),
+        getInitialDataForExternal: () => ({ 
+          'text/plain': `#${this.itemIdValue}`,
+          'text/uri-list': `https://community.openproject.org/wp/${this.itemIdValue}`
+        }),
         onDragStart: () => {
           this.setState({ type: 'is-dragging' });
+          this.element.setAttribute('data-dragging', 'source');
         },
         onDrop: () => {
           this.setState(idle);
+          this.element.removeAttribute('data-dragging');
         },
       }),
       dropTargetForElements({
@@ -64,7 +70,7 @@ export default class ItemController extends Controller<HTMLElement> {
             allowedEdges: ['top', 'bottom'],
           });
         },
-        getIsSticky: () => true,
+        //getIsSticky: () => true,
         onDragEnter: ({ self }) => {
           const closestEdge = extractClosestEdge(self.data);
           this.setState({ type: 'is-dragging-over', closestEdge });
@@ -111,7 +117,7 @@ export default class ItemController extends Controller<HTMLElement> {
   }
 
   private renderState() {
-    this.element.classList.toggle('op-backlogs-story--dragging', this.state.type === 'is-dragging');
+    this.element.classList.toggle('.Box-card--dragging', this.state.type === 'is-dragging');
 
     // create/update/remove drop indicator here based on:
     // this.state.type === 'is-dragging-over' && this.state.closestEdge

@@ -56,6 +56,10 @@ module OpenProject
         @work_package = work_package
         @menu_src = menu_src
         @system_arguments = system_arguments
+        @system_arguments[:classes] = class_names(
+          @system_arguments[:classes],
+          "Box-card"
+        )
       end
 
       def card_arguments
