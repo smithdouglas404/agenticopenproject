@@ -2,7 +2,7 @@ import {
   attachClosestEdge,
   type Edge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
-import { type Input } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
+import { type Input } from '@atlaskit/pragmatic-drag-and-drop/types';
 
 export interface ItemData extends Record<string | symbol, unknown> {
   type:'item';
@@ -52,9 +52,11 @@ export function resolveListTargetId(element:Element):string|null {
 export function resolveFallbackDropTarget({
   input,
   root,
+  sourceElement,
 }:{
   input:Input;
   root:HTMLElement;
+  sourceElement?:HTMLElement;
 }):FallbackDropTarget|null {
   const elementAtPoint = root.ownerDocument.elementFromPoint(input.clientX, input.clientY);
 
@@ -63,7 +65,7 @@ export function resolveFallbackDropTarget({
   }
 
   const item = elementAtPoint.closest<HTMLElement>(itemSelector);
-  if (item && root.contains(item)) {
+  if (item && item !== sourceElement && root.contains(item)) {
     const itemId = resolveItemId(item);
 
     if (itemId) {

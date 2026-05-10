@@ -1,6 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
-import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import {
   attachClosestEdge,
@@ -27,6 +26,7 @@ type ItemState =
     };
 
 const idle:ItemState = { type: 'idle' };
+type CleanupFn = () => void;
 
 export default class ItemController extends Controller<HTMLElement> {
   static values = { itemId: String };

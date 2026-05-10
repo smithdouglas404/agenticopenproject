@@ -75,6 +75,17 @@ describe('backlogs drag and drop helpers', () => {
       expect(resolvePreviousItemId({ sourceItemId: '2', targetItem: target, closestEdge: 'top' })).toEqual('1');
     });
 
+    it('treats a missing closest edge as dropping before the target item', () => {
+      const list = document.createElement('ul');
+      const first = itemRow('1');
+      const targetRow = itemRow('3');
+      const target = targetRow.querySelector<HTMLElement>('article')!;
+
+      list.append(first, targetRow);
+
+      expect(resolvePreviousItemId({ sourceItemId: '2', targetItem: target, closestEdge: null })).toEqual('1');
+    });
+
     it('skips the source item and non-card rows when resolving the previous item', () => {
       const list = document.createElement('ul');
       const first = itemRow('1');
@@ -190,6 +201,30 @@ describe('backlogs drag and drop helpers', () => {
       const target = resolveFallbackDropTarget({
         input: input(),
         root,
+      });
+
+      expect(target?.element).toBe(list);
+      expect(target?.isItem).toBe(false);
+      expect(target?.data.targetId).toEqual('backlog_bucket:7');
+    });
+
+    it('resolves the containing list instead of the dragged source item', () => {
+      const root = document.createElement('div');
+      const list = document.createElement('div');
+      const row = itemRow('42');
+      const item = row.querySelector<HTMLElement>('[data-backlogs--item-item-id-value]')!;
+
+      list.setAttribute('data-backlogs-target', 'list');
+      list.setAttribute('data-backlogs-target-id', 'backlog_bucket:7');
+      list.appendChild(row);
+      root.appendChild(list);
+      document.body.appendChild(root);
+      stubElementFromPoint(item);
+
+      const target = resolveFallbackDropTarget({
+        input: input(),
+        root,
+        sourceElement: item,
       });
 
       expect(target?.element).toBe(list);

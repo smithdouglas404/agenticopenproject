@@ -28,8 +28,11 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
-import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
-import { dropTargetForElements, monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import {
+  dropTargetForElements,
+  type ElementEventPayloadMap,
+  monitorForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 
@@ -41,6 +44,9 @@ import {
   resolveListTargetId,
   resolvePreviousItemId,
 } from './backlogs/drag-and-drop';
+
+type CleanupFn = () => void;
+type ElementDropPayload = ElementEventPayloadMap['onDrop'];
 
 export default class BacklogsController extends Controller<HTMLElement> {
   static targets = ['list'];
@@ -71,7 +77,7 @@ export default class BacklogsController extends Controller<HTMLElement> {
       element,
       canDrop: ({ source }) => isItemData(source.data),
       getData: () => ({ type: 'list', targetId: resolveListTargetId(element) }),
-      getIsSticky: () => true,
+      getIsSticky: () => false,
     });
 
     this.listCleanupFns.set(element, cleanup);
@@ -82,7 +88,7 @@ export default class BacklogsController extends Controller<HTMLElement> {
     this.listCleanupFns.delete(element);
   }
 
-  private async handleDrop({ location, source }:Parameters<NonNullable<Parameters<typeof monitorForElements>[0]['onDrop']>>[0]) {
+  private async handleDrop({ location, source }:ElementDropPayload) {
     if (!isItemData(source.data) || !(source.element instanceof HTMLElement)) {
       return;
     }
@@ -96,7 +102,11 @@ export default class BacklogsController extends Controller<HTMLElement> {
       isItemData(data) && element instanceof HTMLElement
     ));
     const fallbackTarget = location.current.dropTargets.length === 0
-      ? resolveFallbackDropTarget({ input: location.current.input, root: this.element })
+      ? resolveFallbackDropTarget({
+        input: location.current.input,
+        root: this.element,
+        sourceElement: source.element,
+      })
       : null;
     const fallbackItem = fallbackTarget?.isItem ? fallbackTarget : null;
     const resolvedTargetItem = targetItem ?? fallbackItem;
