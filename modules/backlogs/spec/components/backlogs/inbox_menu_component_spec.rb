@@ -192,6 +192,20 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
         expect(page).to have_text(I18n.t(:label_sort_lowest))
       end
 
+      it "marks reorder actions as bulk-aware while keeping standard actions single-card" do
+        render_component(position: 2, max_position: 3)
+
+        expect(page).to have_no_css("#work_package_#{work_package.id}_menu_open_details[data-backlogs-bulk-action]")
+        expect(page).to have_css(
+          "#work_package_#{work_package.id}_menu_higher" \
+          "[data-backlogs-bulk-action='reorder']" \
+          "[data-backlogs-bulk-item-id='#{work_package.id}']" \
+          "[data-backlogs-bulk-source-id='inbox']" \
+          "[data-backlogs-bulk-direction='higher']" \
+          "[data-backlogs-bulk-url]"
+        )
+      end
+
       it "shows only downward move options when item is first" do
         render_component(position: 1, max_position: 3)
 
@@ -224,6 +238,13 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
           render_component(open_sprints_exist: true)
 
           expect(page).to have_link(I18n.t("backlogs.inbox_menu_component.label_move_to_sprint"))
+          expect(page).to have_css(
+            "#work_package_#{work_package.id}_menu_move_to_sprint" \
+            "[data-backlogs-bulk-action='move-to-sprint']" \
+            "[data-backlogs-bulk-item-id='#{work_package.id}']" \
+            "[data-backlogs-bulk-source-id='inbox']" \
+            "[data-backlogs-bulk-url]"
+          )
         end
       end
 

@@ -3,13 +3,18 @@ import {
   type Edge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { type Input } from '@atlaskit/pragmatic-drag-and-drop/types';
+import {
+  itemData as commonItemData,
+  isItemData,
+  resolveItemId,
+  type WorkPackageCardBoxItemData,
+  workPackageCardBoxItemSelector,
+} from '../work-package-card-box/drag-and-drop';
 
-export interface ItemData extends Record<string | symbol, unknown> {
-  type:'item';
-  itemId:string;
-}
+export type ItemData = WorkPackageCardBoxItemData;
+export { isItemData, resolveItemId };
 
-const itemSelector = '[data-backlogs--item-item-id-value]';
+const itemSelector = workPackageCardBoxItemSelector;
 const listSelector = '[data-backlogs-target~="list"]';
 
 export interface FallbackDropTarget {
@@ -18,31 +23,35 @@ export interface FallbackDropTarget {
   isItem:boolean;
 }
 
-export function isItemData(data:Record<string | symbol, unknown>):data is ItemData {
-  return data.type === 'item' && typeof data.itemId === 'string' && data.itemId.length > 0;
-}
-
-export function itemData(itemId:string):ItemData {
-  return { type: 'item', itemId };
-}
-
 export function buildMoveFormData({
   targetId,
   previousItemId,
+  sourceId,
+  workPackageIds,
 }:{
   targetId:string;
   previousItemId:string|null;
+  sourceId?:string;
+  workPackageIds?:string[];
 }):FormData {
   const data = new FormData();
 
   data.append('target_id', targetId);
   data.append('prev_id', previousItemId ?? '');
+  if (sourceId) {
+    data.append('source_id', sourceId);
+  }
+  workPackageIds?.forEach((workPackageId) => data.append('work_package_ids[]', workPackageId));
 
   return data;
 }
 
-export function resolveItemId(element:Element):string|null {
-  return element.getAttribute('data-backlogs--item-item-id-value');
+export function itemData(itemId:string):ItemData {
+  return commonItemData({
+    dragType: 'backlogs-item',
+    itemId,
+    sourceId: 'backlogs',
+  });
 }
 
 export function resolveListTargetId(element:Element):string|null {
@@ -53,12 +62,15 @@ export function resolveFallbackDropTarget({
   input,
   root,
   sourceElement,
+  sourceItemIds = [],
 }:{
   input:Input;
   root:HTMLElement;
   sourceElement?:HTMLElement;
+  sourceItemIds?:string[];
 }):FallbackDropTarget|null {
   const elementAtPoint = root.ownerDocument.elementFromPoint(input.clientX, input.clientY);
+  const sourceItemIdSet = new Set(sourceItemIds);
 
   if (!(elementAtPoint instanceof HTMLElement) || !root.contains(elementAtPoint)) {
     return null;
@@ -68,10 +80,14 @@ export function resolveFallbackDropTarget({
   if (item && item !== sourceElement && root.contains(item)) {
     const itemId = resolveItemId(item);
 
-    if (itemId) {
+    if (itemId && !sourceItemIdSet.has(itemId)) {
       return {
         element: item,
-        data: attachClosestEdge(itemData(itemId), {
+        data: attachClosestEdge(commonItemData({
+          dragType: 'backlogs-item',
+          itemId,
+          sourceId: resolveListTargetId(item) ?? '',
+        }), {
           element: item,
           input,
           allowedEdges: ['top', 'bottom'],
@@ -94,16 +110,17 @@ export function resolveFallbackDropTarget({
 }
 
 export function resolvePreviousItemId({
-  sourceItemId,
+  sourceItemIds,
   targetItem,
   closestEdge,
 }:{
-  sourceItemId:string;
+  sourceItemIds:string[];
   targetItem:HTMLElement;
   closestEdge:Edge | null;
 }):string|null {
+  const sourceItemIdSet = new Set(sourceItemIds);
   const targetItemId = resolveItemId(targetItem);
-  if (closestEdge === 'bottom' && targetItemId !== sourceItemId) {
+  if (closestEdge === 'bottom' && targetItemId && !sourceItemIdSet.has(targetItemId)) {
     return targetItemId;
   }
 
@@ -113,7 +130,7 @@ export function resolvePreviousItemId({
   while (row) {
     const item = row.querySelector<HTMLElement>(itemSelector);
     const itemId = item ? resolveItemId(item) : null;
-    if (itemId && itemId !== sourceItemId) {
+    if (itemId && !sourceItemIdSet.has(itemId)) {
       return itemId;
     }
 
@@ -124,18 +141,19 @@ export function resolvePreviousItemId({
 }
 
 export function resolveListPreviousItemId({
-  sourceItemId,
+  sourceItemIds,
   list,
 }:{
-  sourceItemId:string;
+  sourceItemIds:string[];
   list:Element;
 }):string|null {
+  const sourceItemIdSet = new Set(sourceItemIds);
   const rows = Array.from(list.querySelectorAll(':scope > li, :scope > ul > li')).reverse();
 
   for (const row of rows) {
     const item = row.querySelector<HTMLElement>(itemSelector);
     const itemId = item ? resolveItemId(item) : null;
-    if (itemId && itemId !== sourceItemId) {
+    if (itemId && !sourceItemIdSet.has(itemId)) {
       return itemId;
     }
   }

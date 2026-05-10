@@ -71,6 +71,10 @@ module Backlogs
       end
     end
 
+    def bulk_drop_url
+      url_helpers.project_backlogs_bulk_move_work_packages_path(project, params)
+    end
+
     def menu_src
       if uses_inbox_routes?
         url_helpers.menu_project_backlogs_inbox_path(project, work_package, params)
@@ -107,10 +111,25 @@ module Backlogs
       return data unless draggable?
 
       data.merge(
-        controller: "#{data[:controller]} backlogs--item",
-        backlogs__item_item_id_value: work_package.id,
-        drop_url:
+        controller: "#{data[:controller]} work-package-card-box--item",
+        work_package_card_box_target: "item",
+        work_package_card_box_item_id: work_package.id,
+        work_package_card_box__item_item_id_value: work_package.id,
+        work_package_card_box__item_source_id_value: source_id,
+        work_package_card_box__item_drag_type_value: "backlogs-item",
+        drop_url:,
+        bulk_drop_url:
       )
+    end
+
+    def source_id
+      if container.is_a?(Sprint)
+        "sprint:#{container.id}"
+      elsif container.is_a?(BacklogBucket)
+        "backlog_bucket:#{container.id}"
+      else
+        "inbox"
+      end
     end
 
     # Keep row data generic; Backlogs-specific Stimulus wiring belongs to the

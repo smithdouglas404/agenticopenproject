@@ -38,6 +38,13 @@ See COPYRIGHT and LICENSE files for more details.
         id: FORM_ID,
         data: { turbo_stream: true }
       ) do
+        if bulk?
+          concat hidden_field_tag(:source_id, source_id)
+          work_package_ids.each do |work_package_id|
+            concat hidden_field_tag("work_package_ids[]", work_package_id, id: nil)
+          end
+        end
+
         render(
           Primer::Alpha::Select.new(
             name: "target_id",

@@ -36,16 +36,22 @@ module Backlogs
     DIALOG_ID = "move-to-sprint-dialog"
     FORM_ID = "move-to-sprint-dialog-form"
 
-    attr_reader :work_package, :project, :sprints, :move_action
+    attr_reader :work_package, :project, :sprints, :move_action, :work_package_ids, :source_id
 
-    def initialize(work_package:, project:, move_action:)
+    def initialize(work_package:, project:, move_action:, work_package_ids: nil, source_id: nil)
       super()
 
       @work_package = work_package
       @project = project
       @move_action = move_action
+      @work_package_ids = work_package_ids
+      @source_id = source_id
       @sprints = Sprint.for_project(@project).visible.not_completed.order_by_date
       @sprints = @sprints.where.not(id: work_package.sprint_id) if work_package.sprint_id
+    end
+
+    def bulk?
+      work_package_ids.present? && source_id.present?
     end
   end
 end

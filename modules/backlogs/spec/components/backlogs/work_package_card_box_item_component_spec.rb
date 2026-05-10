@@ -157,9 +157,14 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
 
     it "wires the card as the draggable item" do
       expect(rendered_card).to have_css(
-        ".op-backlogs-story[data-controller~='backlogs--item']" \
-        "[data-backlogs--item-item-id-value='#{work_package.id}']" \
+        ".op-backlogs-story[data-controller~='work-package-card-box--item']" \
+        "[data-work-package-card-box-target~='item']" \
+        "[data-work-package-card-box-item-id='#{work_package.id}']" \
+        "[data-work-package-card-box--item-item-id-value='#{work_package.id}']" \
+        "[data-work-package-card-box--item-source-id-value='sprint:#{sprint.id}']" \
+        "[data-work-package-card-box--item-drag-type-value='backlogs-item']" \
         "[data-drop-url]" \
+        "[data-bulk-drop-url]" \
         "[draggable='true']"
       )
     end

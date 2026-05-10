@@ -178,6 +178,20 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
   end
 
   describe "move menu items" do
+    it "marks reorder actions as bulk-aware while keeping standard actions single-card" do
+      render_component
+
+      expect(page).to have_no_css("#work_package_#{story.id}_menu_open_details[data-backlogs-bulk-action]")
+      expect(page).to have_css(
+        "#work_package_#{story.id}_menu_higher" \
+        "[data-backlogs-bulk-action='reorder']" \
+        "[data-backlogs-bulk-item-id='#{story.id}']" \
+        "[data-backlogs-bulk-source-id='sprint:#{sprint.id}']" \
+        "[data-backlogs-bulk-direction='higher']" \
+        "[data-backlogs-bulk-url]"
+      )
+    end
+
     it "shows Move to top item with move-to-top icon" do
       render_component
 
@@ -277,6 +291,13 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
       render_component(open_sprints_exist: true)
 
       expect(page).to have_element(:a, id: /\Awork_package_#{story.id}_menu_move_to_sprint\z/)
+      expect(page).to have_css(
+        "#work_package_#{story.id}_menu_move_to_sprint" \
+        "[data-backlogs-bulk-action='move-to-sprint']" \
+        "[data-backlogs-bulk-item-id='#{story.id}']" \
+        "[data-backlogs-bulk-source-id='sprint:#{sprint.id}']" \
+        "[data-backlogs-bulk-url]"
+      )
       expect(page).to have_octicon(:zap)
       expect(page).to have_text(I18n.t(:"backlogs.story_menu_list_component.action_menu.move_to_sprint"))
     end

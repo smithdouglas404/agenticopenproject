@@ -113,6 +113,8 @@ export default class StoryController extends Controller<HTMLElement> implements 
   }
 
   private onClick(event:MouseEvent):void {
+    if (event.metaKey || event.ctrlKey || event.shiftKey) return;
+
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 

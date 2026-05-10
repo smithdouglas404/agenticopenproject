@@ -479,7 +479,7 @@ module Pages
     end
 
     def expect_and_dismiss_error(message)
-      expect(page).to have_content message
+      expect(page).to have_text message
 
       click_on "Cancel"
     end
@@ -663,7 +663,7 @@ module Pages
     end
 
     def draggable_work_package_selector(work_package)
-      "#{work_package_selector(work_package)} [data-backlogs--item-item-id-value]"
+      "#{work_package_selector(work_package)} [data-work-package-card-box-item-id]"
     end
 
     def sprint_complete_modal_selector

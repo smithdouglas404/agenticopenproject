@@ -295,8 +295,12 @@ module OpenProject
 
       def drag_and_drop_data
         {
+          controller: "work-package-card-box",
           backlogs_target: "list",
-          backlogs_target_id: drag_and_drop.fetch(:target_id)
+          backlogs_target_id: drag_and_drop.fetch(:target_id),
+          work_package_card_box_source_id_value: drag_and_drop.fetch(:target_id),
+          work_package_card_box_selection_group_value: drag_and_drop.fetch(:selection_group, "work-package-card-box"),
+          work_package_card_box_selected_class: drag_and_drop.fetch(:selected_class, "Box-card--multi-selected")
         }
       end
     end

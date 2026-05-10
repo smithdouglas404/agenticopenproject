@@ -13,7 +13,7 @@ describe('backlogs drag and drop helpers', () => {
     const row = document.createElement('li');
     const item = document.createElement('article');
 
-    item.setAttribute('data-backlogs--item-item-id-value', id);
+    item.setAttribute('data-work-package-card-box-item-id', id);
     row.appendChild(item);
 
     return row;
@@ -29,15 +29,27 @@ describe('backlogs drag and drop helpers', () => {
 
   describe('isItemData', () => {
     it('accepts backlogs item data', () => {
-      expect(isItemData({ type: 'item', itemId: '42' })).toBe(true);
+      expect(isItemData({
+        type: 'work-package-card-box-item',
+        dragType: 'backlogs-item',
+        itemId: '42',
+        itemIds: ['42'],
+        sourceId: 'inbox',
+      })).toBe(true);
     });
 
     it('rejects data without an item id', () => {
-      expect(isItemData({ type: 'item' })).toBe(false);
+      expect(isItemData({ type: 'work-package-card-box-item' })).toBe(false);
     });
 
     it('rejects data with a blank item id', () => {
-      expect(isItemData({ type: 'item', itemId: '' })).toBe(false);
+      expect(isItemData({
+        type: 'work-package-card-box-item',
+        dragType: 'backlogs-item',
+        itemId: '',
+        itemIds: [],
+        sourceId: 'inbox',
+      })).toBe(false);
     });
   });
 
@@ -61,7 +73,7 @@ describe('backlogs drag and drop helpers', () => {
     it('uses the target item as previous item when dropping on the bottom edge', () => {
       const target = itemRow('3').querySelector<HTMLElement>('article')!;
 
-      expect(resolvePreviousItemId({ sourceItemId: '1', targetItem: target, closestEdge: 'bottom' })).toEqual('3');
+      expect(resolvePreviousItemId({ sourceItemIds: ['1'], targetItem: target, closestEdge: 'bottom' })).toEqual('3');
     });
 
     it('uses the previous row item when dropping on the top edge', () => {
@@ -72,7 +84,7 @@ describe('backlogs drag and drop helpers', () => {
 
       list.append(first, targetRow);
 
-      expect(resolvePreviousItemId({ sourceItemId: '2', targetItem: target, closestEdge: 'top' })).toEqual('1');
+      expect(resolvePreviousItemId({ sourceItemIds: ['2'], targetItem: target, closestEdge: 'top' })).toEqual('1');
     });
 
     it('treats a missing closest edge as dropping before the target item', () => {
@@ -83,7 +95,7 @@ describe('backlogs drag and drop helpers', () => {
 
       list.append(first, targetRow);
 
-      expect(resolvePreviousItemId({ sourceItemId: '2', targetItem: target, closestEdge: null })).toEqual('1');
+      expect(resolvePreviousItemId({ sourceItemIds: ['2'], targetItem: target, closestEdge: null })).toEqual('1');
     });
 
     it('skips the source item and non-card rows when resolving the previous item', () => {
@@ -95,13 +107,26 @@ describe('backlogs drag and drop helpers', () => {
 
       list.append(first, showMoreRow(), source, targetRow);
 
-      expect(resolvePreviousItemId({ sourceItemId: '2', targetItem: target, closestEdge: 'top' })).toEqual('1');
+      expect(resolvePreviousItemId({ sourceItemIds: ['2'], targetItem: target, closestEdge: 'top' })).toEqual('1');
+    });
+
+    it('skips every dragged item when resolving the previous item for a selected block', () => {
+      const list = document.createElement('ul');
+      const first = itemRow('1');
+      const selectedPrevious = itemRow('2');
+      const selectedSource = itemRow('3');
+      const targetRow = itemRow('4');
+      const target = targetRow.querySelector<HTMLElement>('article')!;
+
+      list.append(first, selectedPrevious, selectedSource, targetRow);
+
+      expect(resolvePreviousItemId({ sourceItemIds: ['2', '3'], targetItem: target, closestEdge: 'top' })).toEqual('1');
     });
 
     it('returns null when dropping before the first item', () => {
       const target = itemRow('1').querySelector<HTMLElement>('article')!;
 
-      expect(resolvePreviousItemId({ sourceItemId: '2', targetItem: target, closestEdge: 'top' })).toBeNull();
+      expect(resolvePreviousItemId({ sourceItemIds: ['2'], targetItem: target, closestEdge: 'top' })).toBeNull();
     });
   });
 
@@ -165,7 +190,7 @@ describe('backlogs drag and drop helpers', () => {
       const root = document.createElement('div');
       const list = document.createElement('div');
       const row = itemRow('42');
-      const item = row.querySelector<HTMLElement>('[data-backlogs--item-item-id-value]')!;
+      const item = row.querySelector<HTMLElement>('[data-work-package-card-box-item-id]')!;
 
       list.setAttribute('data-backlogs-target', 'list');
       list.setAttribute('data-backlogs-target-id', 'backlog_bucket:7');
@@ -212,7 +237,7 @@ describe('backlogs drag and drop helpers', () => {
       const root = document.createElement('div');
       const list = document.createElement('div');
       const row = itemRow('42');
-      const item = row.querySelector<HTMLElement>('[data-backlogs--item-item-id-value]')!;
+      const item = row.querySelector<HTMLElement>('[data-work-package-card-box-item-id]')!;
 
       list.setAttribute('data-backlogs-target', 'list');
       list.setAttribute('data-backlogs-target-id', 'backlog_bucket:7');
@@ -225,6 +250,7 @@ describe('backlogs drag and drop helpers', () => {
         input: input(),
         root,
         sourceElement: item,
+        sourceItemIds: ['42'],
       });
 
       expect(target?.element).toBe(list);
@@ -252,7 +278,15 @@ describe('backlogs drag and drop helpers', () => {
 
       list.append(itemRow('1'), showMoreRow(), itemRow('2'), itemRow('3'));
 
-      expect(resolveListPreviousItemId({ sourceItemId: '3', list })).toEqual('2');
+      expect(resolveListPreviousItemId({ sourceItemIds: ['3'], list })).toEqual('2');
+    });
+
+    it('returns the last non-dragged item in a list while skipping a selected block', () => {
+      const list = document.createElement('ul');
+
+      list.append(itemRow('1'), showMoreRow(), itemRow('2'), itemRow('3'));
+
+      expect(resolveListPreviousItemId({ sourceItemIds: ['2', '3'], list })).toEqual('1');
     });
 
     it('returns null when the list has no other items', () => {
@@ -260,7 +294,7 @@ describe('backlogs drag and drop helpers', () => {
 
       list.append(showMoreRow(), itemRow('1'));
 
-      expect(resolveListPreviousItemId({ sourceItemId: '1', list })).toBeNull();
+      expect(resolveListPreviousItemId({ sourceItemIds: ['1'], list })).toBeNull();
     });
   });
 });

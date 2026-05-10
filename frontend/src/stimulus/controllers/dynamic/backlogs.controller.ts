@@ -55,8 +55,14 @@ export default class BacklogsController extends Controller<HTMLElement> {
 
   private cleanupFn?:CleanupFn;
   private listCleanupFns = new Map<HTMLElement, CleanupFn>();
+  private abortController:AbortController|null = null;
 
   connect():void {
+    this.abortController = new AbortController();
+    this.element.addEventListener('click', this.handleBulkMoveAction, {
+      capture: true,
+      signal: this.abortController.signal,
+    });
     this.cleanupFn = monitorForElements({
       canMonitor: ({ source }) => isItemData(source.data),
       onDrop: (args) => {
@@ -66,6 +72,8 @@ export default class BacklogsController extends Controller<HTMLElement> {
   }
 
   disconnect():void {
+    this.abortController?.abort();
+    this.abortController = null;
     this.cleanupFn?.();
     this.cleanupFn = undefined;
     this.listCleanupFns.forEach((cleanup) => cleanup());
@@ -88,12 +96,44 @@ export default class BacklogsController extends Controller<HTMLElement> {
     this.listCleanupFns.delete(element);
   }
 
+  private handleBulkMoveAction = (event:MouseEvent):void => {
+    const action = this.findBulkMoveAction(event.target);
+    if (!action) {
+      return;
+    }
+
+    const itemId = action.dataset.backlogsBulkItemId;
+    const sourceId = action.dataset.backlogsBulkSourceId;
+    const url = action.dataset.backlogsBulkUrl;
+    const actionType = action.dataset.backlogsBulkAction;
+    const selectedItemIds = sourceId ? this.selectedItemIdsFor(sourceId) : [];
+
+    if (!itemId || !sourceId || !url || selectedItemIds.length <= 1 || !selectedItemIds.includes(itemId)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    if (actionType === 'move-to-sprint') {
+      void this.openBulkMoveToSprintDialog({ url, selectedItemIds, sourceId });
+    } else {
+      const direction = action.dataset.backlogsBulkDirection;
+      if (direction) {
+        void this.performBulkReorder({ url, selectedItemIds, sourceId, direction });
+      }
+    }
+  };
+
   private async handleDrop({ location, source }:ElementDropPayload) {
     if (!isItemData(source.data) || !(source.element instanceof HTMLElement)) {
       return;
     }
 
-    const dropUrl = source.element.getAttribute('data-drop-url');
+    const isBulkMove = source.data.itemIds.length > 1;
+    const dropUrl = isBulkMove
+      ? source.element.getAttribute('data-bulk-drop-url')
+      : source.element.getAttribute('data-drop-url');
     if (!dropUrl) {
       return;
     }
@@ -106,6 +146,7 @@ export default class BacklogsController extends Controller<HTMLElement> {
         input: location.current.input,
         root: this.element,
         sourceElement: source.element,
+        sourceItemIds: source.data.itemIds,
       })
       : null;
     const fallbackItem = fallbackTarget?.isItem ? fallbackTarget : null;
@@ -123,12 +164,12 @@ export default class BacklogsController extends Controller<HTMLElement> {
 
     const previousItemId = resolvedTargetItem?.element instanceof HTMLElement
       ? resolvePreviousItemId({
-        sourceItemId: source.data.itemId,
+        sourceItemIds: source.data.itemIds,
         targetItem: resolvedTargetItem.element,
         closestEdge: extractClosestEdge(resolvedTargetItem.data),
       })
       : resolveListPreviousItemId({
-        sourceItemId: source.data.itemId,
+        sourceItemIds: source.data.itemIds,
         list: targetElement,
       });
 
@@ -136,7 +177,12 @@ export default class BacklogsController extends Controller<HTMLElement> {
       'put',
       dropUrl,
       {
-        body: buildMoveFormData({ targetId, previousItemId }),
+        body: buildMoveFormData({
+          targetId,
+          previousItemId,
+          sourceId: isBulkMove ? source.data.sourceId : undefined,
+          workPackageIds: isBulkMove ? source.data.itemIds : undefined,
+        }),
         responseKind: 'turbo-stream',
       },
     );
@@ -149,6 +195,76 @@ export default class BacklogsController extends Controller<HTMLElement> {
       }
     } catch (error) {
       debugLog('Failed to move backlogs item due to request error', error);
+    }
+  }
+
+  private selectedItemIdsFor(sourceId:string):string[] {
+    return Array
+      .from(this.element.querySelectorAll<HTMLElement>('[data-work-package-card-box-selected="true"]'))
+      .filter((item) => item.getAttribute('data-work-package-card-box--item-source-id-value') === sourceId)
+      .map((item) => item.dataset.workPackageCardBoxItemId)
+      .filter((itemId):itemId is string => !!itemId);
+  }
+
+  private findBulkMoveAction(target:EventTarget|null):HTMLElement|null {
+    if (!(target instanceof HTMLElement)) {
+      return null;
+    }
+
+    return target.closest<HTMLElement>('[data-backlogs-bulk-action]');
+  }
+
+  private async performBulkReorder({
+    url,
+    selectedItemIds,
+    sourceId,
+    direction,
+  }:{
+    url:string;
+    selectedItemIds:string[];
+    sourceId:string;
+    direction:string;
+  }) {
+    const body = new FormData();
+    body.append('source_id', sourceId);
+    body.append('direction', direction);
+    selectedItemIds.forEach((itemId) => body.append('work_package_ids[]', itemId));
+
+    await this.performTurboStreamRequest('post', url, body);
+  }
+
+  private async openBulkMoveToSprintDialog({
+    url,
+    selectedItemIds,
+    sourceId,
+  }:{
+    url:string;
+    selectedItemIds:string[];
+    sourceId:string;
+  }) {
+    const bulkUrl = new URL(url, window.location.origin);
+
+    bulkUrl.searchParams.set('source_id', sourceId);
+    selectedItemIds.forEach((itemId) => bulkUrl.searchParams.append('work_package_ids[]', itemId));
+
+    await this.performTurboStreamRequest('get', bulkUrl.toString());
+  }
+
+  private async performTurboStreamRequest(
+    method:'get' | 'post' | 'put',
+    url:string,
+    body?:FormData,
+  ) {
+    const request = new FetchRequest(method, url, { body, responseKind: 'turbo-stream' });
+
+    try {
+      const response = await request.perform();
+
+      if (!response.ok) {
+        debugLog(`Failed to perform backlogs bulk move action: ${response.statusCode}`);
+      }
+    } catch (error) {
+      debugLog('Failed to perform backlogs bulk move action due to request error', error);
     }
   }
 }

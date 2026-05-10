@@ -87,6 +87,7 @@ module Backlogs
         label:,
         tag: :button,
         href: reorder_project_backlogs_inbox_path(project, work_package, all_backlogs_params),
+        content_arguments: { data: bulk_reorder_data(direction) },
         form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)
@@ -99,6 +100,34 @@ module Backlogs
 
     def last_item?
       work_package.position == max_position
+    end
+
+    def source_id
+      if work_package.backlog_bucket_id
+        "backlog_bucket:#{work_package.backlog_bucket_id}"
+      else
+        "inbox"
+      end
+    end
+
+    def bulk_reorder_data(direction)
+      {
+        backlogs_bulk_action: "reorder",
+        backlogs_bulk_item_id: work_package.id,
+        backlogs_bulk_source_id: source_id,
+        backlogs_bulk_url: project_backlogs_bulk_reorder_work_packages_path(project, all_backlogs_params),
+        backlogs_bulk_direction: direction
+      }
+    end
+
+    def bulk_move_to_sprint_data
+      {
+        controller: "async-dialog",
+        backlogs_bulk_action: "move-to-sprint",
+        backlogs_bulk_item_id: work_package.id,
+        backlogs_bulk_source_id: source_id,
+        backlogs_bulk_url: project_backlogs_bulk_move_to_sprint_dialog_work_packages_path(project, all_backlogs_params)
+      }
     end
   end
 end

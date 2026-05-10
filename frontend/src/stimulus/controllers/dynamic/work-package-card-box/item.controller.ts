@@ -7,15 +7,16 @@ import {
   extractClosestEdge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 
-import { itemData, isItemData, type ItemData } from './drag-and-drop';
+import {
+  itemData,
+  isItemData,
+  selectedItemIdsFor,
+  type WorkPackageCardBoxItemData,
+} from './drag-and-drop';
 
 type ItemState =
   | {
       type:'idle';
-    }
-  | {
-      type:'preview';
-      container:HTMLElement;
     }
   | {
       type:'is-dragging';
@@ -29,9 +30,15 @@ const idle:ItemState = { type: 'idle' };
 type CleanupFn = () => void;
 
 export default class ItemController extends Controller<HTMLElement> {
-  static values = { itemId: String };
+  static values = {
+    dragType: String,
+    itemId: String,
+    sourceId: String,
+  };
 
+  declare dragTypeValue:string;
   declare itemIdValue:string;
+  declare sourceIdValue:string;
 
   private state:ItemState = idle;
   private cleanupFn?:CleanupFn;
@@ -46,22 +53,28 @@ export default class ItemController extends Controller<HTMLElement> {
           'text/uri-list': `https://community.openproject.org/wp/${this.itemIdValue}`,
         }),
         onDragStart: () => {
+          const itemIds = this.getItemData().itemIds;
+
           this.setState({ type: 'is-dragging' });
           this.element.setAttribute('data-dragging', 'source');
+          if (itemIds.length > 1) {
+            this.element.dataset.dragCount = String(itemIds.length);
+          }
         },
         onDrop: () => {
           this.setState(idle);
           this.element.removeAttribute('data-dragging');
+          delete this.element.dataset.dragCount;
         },
       }),
       dropTargetForElements({
         element: this.element,
         canDrop: ({ source }) => {
-          if (source.element === this.element) {
+          if (source.element === this.element || !isItemData(source.data)) {
             return false;
           }
 
-          return isItemData(source.data);
+          return !source.data.itemIds.includes(this.itemIdValue);
         },
         getData: ({ input }) => {
           return attachClosestEdge(this.getItemData(), {
@@ -126,7 +139,12 @@ export default class ItemController extends Controller<HTMLElement> {
     }
   }
 
-  private getItemData():ItemData {
-    return itemData(this.itemIdValue);
+  private getItemData():WorkPackageCardBoxItemData {
+    return itemData({
+      dragType: this.dragTypeValue,
+      itemId: this.itemIdValue,
+      itemIds: selectedItemIdsFor(this.element),
+      sourceId: this.sourceIdValue,
+    });
   }
 }
