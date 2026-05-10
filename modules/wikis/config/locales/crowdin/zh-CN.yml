@@ -92,4 +92,4 @@ zh-CN:
           title: 删除 Wiki 提供商
           warning_html: 您即将删除 %{wiki_provider}。此操作无法撤消。
     macro:
-      page_not_found: 链接的 Wiki 页面不再可用
+      page_not_found: 关联的 Wiki 页面不再可用

@@ -129,7 +129,7 @@ uk:
       title: Видалити сегмент беклогу?
       details: Сегмент беклогу «%{name}» буде видалено, а всі пакети робіт — переміщено у вхідні завдання беклогу. Пакети робіт не видаляться.
     backlog_bucket_item_component:
-      label_actions: Дії пакета робіт
+      label_actions: Дії з пакетом робіт
     sprint_component:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
@@ -142,7 +142,7 @@ uk:
         many: Показати ще %{count} елементів
         other: Показати ще %{count} елемента
     inbox_item_component:
-      label_actions: Дії пакета робіт
+      label_actions: Дії з пакетом робіт
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну

@@ -27,7 +27,7 @@ uk:
         other: Посилання на пов’язані сторінки
       wikis/xwiki_provider: Постачальник XWiki
   permission_manage_wiki_page_links: Керування посиланнями на сторінки Wiki
-  permission_view_wiki_page_links: View Wiki Page Links
+  permission_view_wiki_page_links: Переглянути посилання на сторінки Wiki
   project_module_wiki_platforms: Постачальники Wiki
   wikis:
     buttons:
@@ -35,26 +35,26 @@ uk:
       done_continue: Виконано, продовжити
       wiki_page: Сторінка Wiki
     inline_page_links_component:
-      empty_heading: No inline links
-      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
-      heading: Inline page links
+      empty_heading: Немає вставлених посилань
+      empty_text: Вставлені посилання на сторінки Wiki з опису пакета робіт також автоматично з’являться тут.
+      heading: Вставлені посилання на сторінки
     page_link_component:
       remove: Видалити посилання на сторінку
     relation_page_links_component:
       empty_heading: Немає пов’язаних сторінок
       empty_text: Додайте посилання на інші пов’язані сторінки Wiki вручну.
-      heading: Related pages
+      heading: Пов’язані сторінки
     oauth_login_component:
       connect_button: Підключити обліковий запис %{provider}
     admin:
       oauth_application_info_component:
-        label_pending: Pending
-        replace_oauth_application: Replace OpenProject OAuth application
-        confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
+        label_pending: В обробці
+        replace_oauth_application: Замінити застосунок OpenProject OAuth
+        confirm_replace_oauth_application: Ця дія призведе до скидання поточних облікових даних OAuth. Коли ви підтвердите дію, вам потрібно буде повторно ввести облікові дані у своєму екземплярі XWiki. У такому разі всім користувачам знадобиться знову пройти авторизацію. Продовжити?
       oauth_client_info_component:
-        label_pending: Pending
-        replace_oauth_client: Replace XWiki OAuth application
-        confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
+        label_pending: В обробці
+        replace_oauth_client: Замінити застосунок XWiki OAuth
+        confirm_replace_oauth_client: Ця дія призведе до скидання поточних облікових даних XWiki OAuth. Усім користувачам знадобиться знову пройти авторизацію в XWiki. Продовжити?
       wiki_provider_list_component:
         label_name: Назва
         label_provider: Постачальник
@@ -88,7 +88,7 @@ uk:
           openproject_oauth: OpenProject OAuth
         xwiki:
           oauth:
-            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            openproject_oauth_description: Надайте XWiki доступ до даних OpenProject із використанням OAuth. Скопіюйте наведені нижче облікові дані у свій екземпляр XWiki.
             provider_oauth: OAuth для XWiki
             provider_oauth_description: Надайте OpenProject доступ до даних XWiki за допомогою застосунку OAuth. Введіть облікові дані клієнта з вашого застосунку XWiki OAuth.
           openproject_oauth_description: Надайте XWiki доступ до даних OpenProject за допомогою OAuth.
@@ -98,4 +98,4 @@ uk:
           title: Видалити постачальника Wiki
           warning_html: Ви збираєтеся видалити %{wiki_provider}. Ця дія є незворотною.
     macro:
-      page_not_found: Linked wiki page no longer available
+      page_not_found: Зв’язана сторінка Wiki більше не доступна

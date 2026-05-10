@@ -310,13 +310,13 @@ uk:
           import_dialog:
             title: Переконайтеся, що у вас є резервна копія!
             confirm_button: Почати імпорт
-            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
+            description: 'Імпорт змінює конфігурацію OpenProject. У вас буде можливість переглянути зміни після імпорту й скасувати або схвалити його. Якщо схвалити імпорт, скасувати внесені зміни буде неможливо. Тому переконайтеся, що у вас є [резервна копія екземпляра OpenProject](link), перш ніж продовжувати.
 
               '
-            confirm: I understand and have a backup
+            confirm: Я розумію і маю резервну копію
           revert_dialog:
             title: Остаточно скасувати цей імпорт?
-            description: This will delete all imported objects (including whole projects).
+            description: Це призведе до видалення всіх імпортованих об’єктів (зокрема цілих проєктів).
             confirm: Я розумію, що скасування внесених змін призведе до остаточного видалення даних
           finalize_dialog:
             title: Схвалити цей імпорт?
@@ -1411,34 +1411,34 @@ uk:
     copies:
       form:
         source_role_id:
-          label: Source role
+          label: Вихідна роль
         target_role_ids:
-          label: Target roles
+          label: Цільові ролі
         target_type_ids:
-          label: Target types
+          label: Цільові типи
         mode:
           from_role:
-            label: Copy to other roles
-            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+            label: Копіювати в інші ролі
+            caption: Скопіюйте поточний робочий процес в одну або кілька ролей одного типу пакетів робіт. Якщо у вибраної ролі вже є робочий процес, поточний буде перезаписано.
           from_type:
-            label: Copy to another type
-            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+            label: Копіювати в інший тип
+            caption: Скопіюйте поточний робочий процес в інший тип пакетів робіт. Якщо вибраний тип вже має робочий процес, поточний буде перезаписано. Це впливає на всі ролі.
       from_roles:
         create:
           notice:
-            one: Successfully copied workflow to '%{role_name}' role.
-            few: Successfully copied workflow to %{count} roles.
-            many: Successfully copied workflow to %{count} roles.
-            other: Successfully copied workflow to %{count} roles.
+            one: Робочий процес успішно скопійовано в роль «%{role_name}».
+            few: Робочий процес успішно скопійовано в %{count} ролі.
+            many: Робочий процес успішно скопійовано в %{count} ролей.
+            other: Робочий процес успішно скопійовано в %{count} ролі.
       from_types:
         create:
           notice:
-            one: Successfully copied workflow to '%{type_name}' type.
-            few: Successfully copied workflow to %{count} types.
-            many: Successfully copied workflow to %{count} types.
-            other: Successfully copied workflow to %{count} types.
+            one: Робочий процес успішно скопійовано в тип «%{type_name}».
+            few: Робочий процес успішно скопійовано в %{count} типи.
+            many: Робочий процес успішно скопійовано в %{count} типів.
+            other: Робочий процес успішно скопійовано в %{count} типу.
       new:
-        title: Copy workflow of "%{source_type}"
+        title: Скопіювати робочий процес типу «%{source_type}»
     form:
       matrix_caption: Матриця робочого процесу
       matrix_caption_assignee: Матриця робочого процесу для виконавця
@@ -1450,28 +1450,28 @@ uk:
       matrix_check_uncheck_all_in_col_label_html: Перемикач зміни всіх старих статусів на статус <em>%{new_status}</em>
     index:
       type_filter:
-        label: Filter by type name…
+        label: Фільтрувати за назвою типу…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: Налаштуйте переходи статусів для кожного типу пакета робіт.
   work_flows:
     index:
       no_results_title_text: Наразі немає робочих процесів.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: Видалити пакет робіт
+      heading: Видалити цей пакет робіт остаточно?
+      description: Справді видалити пакет робіт «%{name}»?
+      confirm_descendants_deletion: Я усвідомлюю, що ВСІХ нащадків цього пакета робіт буде рекурсивно видалено.
+      cross_project_warning: 'Буде видалено пакети робіт із наступних проєктів: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      title: Видалити пакети робіт (%{count})
+      heading: Видалити ці пакети робіт (%{count}) остаточно?
+      description: 'Наведені нижче пакети робіт, зокрема їх дочірні елементи й усі пов’язані дані, буде видалено назавжди:'
+      description_with_children: 'Наведені нижче пакети робіт, зокрема дочірні пакети робіт і всі пов’язані дані, буде видалено назавжди:'
+      confirm_children_deletion: Я усвідомлюю, що всі вибрані пакети робіт і їх дочірні елементи буде видалено назавжди.
+      cross_project_warning: 'Ці пакети робіт використовуються в кількох проєктах: %{projects}'
+      children_label: 'Наведені нижче дочірні елементи також видаляться:'
     datepicker_modal:
       banner:
         description:
@@ -1934,7 +1934,7 @@ uk:
         identity_url: URL-адреса ідентичності
         parent: Батьківська група
         organizational_unit: Організаційний підрозділ
-        group_users: Group users
+        group_users: Користувачі групи
       group_detail:
         parent: Батьківська група
         organizational_unit: Організаційний підрозділ
@@ -2009,7 +2009,7 @@ uk:
         duration: Тривалість
         end_insertion: Кінець вставки
         end_deletion: Кінець видалення
-        identifier: Identifier
+        identifier: Ідентифікатор
         ignore_non_working_days: Ігнорувати неробочі дні
         include_non_working_days:
           title: Робочі дні
@@ -2025,7 +2025,7 @@ uk:
         readonly: Лише читання
         remaining_hours: Залишок роботи
         remaining_time: Залишок роботи
-        sequence_number: Sequence number
+        sequence_number: Порядковий номер
         shared_with_users: Доступ мають
         schedule_manually: Ручне планування
         spent_hours: Витрачений час
@@ -3914,7 +3914,7 @@ uk:
   label_commits_per_month: Комітів на місяць
   label_confirmation: Підтвердження
   label_contains: містить
-  label_starts_with: starts with
+  label_starts_with: починається з
   label_content: Контент
   label_color_plural: Кольори
   label_copied: скопійовано
@@ -3922,8 +3922,8 @@ uk:
   label_copy_source: Джерело
   label_copy_target: Ціль
   label_copy_workflow_from: Копіювати робочий процес з
-  label_copy_workflow_from_type: Copy to another type
-  label_copy_workflow_from_role: Copy to other roles
+  label_copy_workflow_from_type: Копіювати в інший тип
+  label_copy_workflow_from_role: Копіювати в інші ролі
   label_copy_project: Копіювати проект
   label_core_version: Версія ядра
   label_core_build: Збірка ядра
@@ -4231,10 +4231,10 @@ uk:
   label_password_rule_numeric: Цифрові символи
   label_password_rule_special: Спеціальні символи
   label_password_rule_uppercase: Верхній регістр
-  label_password_requirement_lowercase: Must contain at least one lowercase character.
-  label_password_requirement_numeric: Must contain at least one numeric character.
-  label_password_requirement_special: Must contain at least one special character.
-  label_password_requirement_uppercase: Must contain at least one uppercase character.
+  label_password_requirement_lowercase: Має містити хоча б один символ нижнього регістру.
+  label_password_requirement_numeric: Має містити хоча б один числовий знак.
+  label_password_requirement_special: Має містити хоча б один спеціальний символ.
+  label_password_requirement_uppercase: Має містити хоча б один символ верхнього регістру.
   label_path_encoding: Кодування шляху
   label_per_page: 'К-сть на сторінку:'
   label_people: Люди
@@ -4609,7 +4609,7 @@ uk:
       note: 'Примітка: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: 'Ви маєте такі дозволи в цьому пакеті робіт: %{allowed_actions}. Однак вони можуть змінюватися залежно від ролі й дозволів, які є у вас у проєкті.'
+        allowed_actions_html: 'Ви маєте такі дозволи в цьому пакеті робіт: %{allowed_actions}. Однак вони можуть змінюватися залежно від ролі й дозволів, які у вас є в проєкті.'
         create_account: 'Щоб отримати доступ до цього пакета робіт, вам знадобиться створити й активувати обліковий запис в %{instance}. '
         open_work_package: Відкрити пакет робіт
         subject: 'Вам надано доступ до пакета робіт #%{id}'
@@ -5211,7 +5211,7 @@ uk:
     '
   setting_app_subtitle: Підзаголовок додатку
   setting_app_title: Назва додатку
-  setting_organization_name: Organization name
+  setting_organization_name: Назва організації
   setting_attachment_max_size: Максимальний розмір вкладення
   setting_show_work_package_attachments: За замовчуванням показувати вкладення на вкладці «Файли»
   setting_antivirus_scan_mode: Режим перевірки
@@ -5289,7 +5289,7 @@ uk:
   setting_new_project_user_role_id: Роль, що призначається користувачу, створившому проект
   setting_new_project_send_confirmation_email: Надсилати сповіщення автору при створенні нового проєкту
   setting_new_project_notification_text: Текст сповіщення
-  setting_password_active_rules: Password requirements
+  setting_password_active_rules: Вимоги до пароля
   setting_password_count_former_banned: Кількість останніх використаних паролів, заборонених для повторного використання
   setting_password_days_valid: Кількість днів, після чого змінюється пароль
   setting_password_min_length: Мінімальна довжина
