@@ -147,8 +147,8 @@ module OpenProject
       #   DOM id and related ids via `dom_target`.
       # @param work_packages [Enumerable<WorkPackage>] the work packages to render
       #   as cards.
-      # @param drag_and_drop [Hash, NilClass] optional generic drag-and-drop
-      #   target data. Requires `:target_id` and `:allowed_drag_type` when set.
+      # @param drag_and_drop [Hash, NilClass] optional drag-and-drop target
+      #   data. Requires `:target_id` when set.
       # @param item_component_klass [Class] item class used for automatically
       #   built work package items.
       # @param params [Hash] optional URL params passed to work package items
@@ -295,12 +295,12 @@ module OpenProject
 
       def drag_and_drop_data
         {
-          # Existing callers share one mirror container target on the page until
-          # parent-specific DnD handling is extracted in follow-up work.
-          generic_drag_and_drop_target: "container",
-          target_container_accessor: ":scope > ul",
-          target_id: drag_and_drop.fetch(:target_id),
-          target_allowed_drag_type: drag_and_drop.fetch(:allowed_drag_type)
+          controller: "work-package-card-box",
+          backlogs_target: "list",
+          backlogs_target_id: drag_and_drop.fetch(:target_id),
+          work_package_card_box_source_id_value: drag_and_drop.fetch(:target_id),
+          work_package_card_box_selection_group_value: drag_and_drop.fetch(:selection_group, "work-package-card-box"),
+          work_package_card_box_selected_class: drag_and_drop.fetch(:selected_class, "Box-card--multi-selected")
         }
       end
     end

@@ -91,6 +91,16 @@ Rails.application.routes.draw do
         end
       end
 
+      put "work_packages/bulk_move",
+          to: "bulk_moves#move",
+          as: :bulk_move_work_packages
+      post "work_packages/bulk_reorder",
+           to: "bulk_moves#reorder",
+           as: :bulk_reorder_work_packages
+      get "work_packages/bulk_move_to_sprint_dialog",
+          to: "bulk_moves#move_to_sprint_dialog",
+          as: :bulk_move_to_sprint_dialog_work_packages
+
       scope "sprints/:sprint_id" do
         resources :work_packages, controller: :work_packages, only: [] do
           member do

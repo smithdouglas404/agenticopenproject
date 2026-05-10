@@ -64,29 +64,18 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
   end
 
   describe "#row_args" do
-    it "marks the row as clickable and controlled by the Backlogs story controller" do
+    it "marks the row as clickable and keeps row data generic" do
       expect(item.row_args[:classes]).to include(
         "Box-row--hover-blue",
         "Box-row--focus-gray",
         "Box-row--clickable"
       )
-      expect(item.row_args[:data]).to include(
-        story: true,
-        controller: "backlogs--story",
-        backlogs__story_id_value: work_package.id,
-        backlogs__story_display_id_value: work_package.display_id,
-        backlogs__story_full_url_value: work_package_path(work_package),
-        backlogs__story_selected_class: "Box-row--blue",
-        test_selector: "work-package-#{work_package.id}"
-      )
+      expect(item.row_args[:data]).to eq(test_selector: "work-package-#{work_package.id}")
     end
 
     it "marks the row as draggable for users allowed to manage sprint items" do
       expect(item.row_args[:classes]).to include("Box-row--draggable")
-      expect(item.row_args[:data]).to include(
-        draggable_id: work_package.id,
-        draggable_type: "story"
-      )
+      expect(item.row_args[:data]).not_to include(:draggable_id, :draggable_type, :drop_url)
     end
 
     context "when the user cannot manage sprint items" do
@@ -105,11 +94,13 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
   end
 
   describe "URL derivation by container" do
+    subject(:rendered_card) { render_inline(item.card) }
+
     context "with a sprint container" do
       it "uses sprint routes" do
-        expect(item.row_args.dig(:data, :backlogs__story_split_url_value))
-          .to end_with(project_backlogs_backlog_details_path(project, work_package))
-        expect(item.row_args.dig(:data, :drop_url))
+        card = rendered_card.css(".op-backlogs-story").first
+
+        expect(card["data-drop-url"])
           .to end_with(move_project_backlogs_work_package_path(project, sprint, work_package))
       end
     end
@@ -118,7 +109,7 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
       let(:container) { backlog_bucket }
 
       it "uses inbox routes" do
-        expect(item.row_args.dig(:data, :drop_url))
+        expect(rendered_card.css(".op-backlogs-story").first["data-drop-url"])
           .to end_with(move_project_backlogs_inbox_path(project, work_package))
       end
     end
@@ -127,7 +118,7 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
       let(:container) { "inbox_project_#{project.id}" }
 
       it "uses inbox routes" do
-        expect(item.row_args.dig(:data, :drop_url))
+        expect(rendered_card.css(".op-backlogs-story").first["data-drop-url"])
           .to end_with(move_project_backlogs_inbox_path(project, work_package))
       end
     end
@@ -135,9 +126,10 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
     context "with params" do
       let(:params) { { all: 1 } }
 
-      it "passes params into row URLs" do
-        expect(item.row_args.dig(:data, :backlogs__story_split_url_value)).to match(/all=1/)
-        expect(item.row_args.dig(:data, :drop_url)).to match(/all=1/)
+      it "passes params into card URLs" do
+        card = rendered_card.css(".op-backlogs-story").first
+
+        expect(card["data-drop-url"]).to match(/all=1/)
       end
     end
   end
@@ -148,6 +140,27 @@ RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
     it "builds a Backlogs card with story points" do
       expect(rendered_card).to have_css("span", text: "5", aria: { hidden: true })
       expect(rendered_card).to have_css(".sr-only", text: "5 story points")
+    end
+
+    it "does not connect the old Backlogs story controller" do
+      expect(rendered_card).to have_css(".op-backlogs-story")
+      expect(rendered_card).to have_no_css(".op-backlogs-story[data-controller~='backlogs--story']")
+      expect(rendered_card).to have_no_css(".op-backlogs-story[data-backlogs--story-id-value]")
+      expect(rendered_card).to have_no_css(".op-backlogs-story[data-backlogs--story-split-url-value]")
+    end
+
+    it "wires the card as the draggable item" do
+      expect(rendered_card).to have_css(
+        ".op-backlogs-story[data-controller~='work-package-card-box--item']" \
+        "[data-work-package-card-box-target~='item']" \
+        "[data-work-package-card-box-item-id='#{work_package.id}']" \
+        "[data-work-package-card-box--item-item-id-value='#{work_package.id}']" \
+        "[data-work-package-card-box--item-source-id-value='sprint:#{sprint.id}']" \
+        "[data-work-package-card-box--item-drag-type-value='backlogs-item']" \
+        "[data-drop-url]" \
+        "[data-bulk-drop-url]" \
+        "[draggable='true']"
+      )
     end
 
     it "supports caller-provided metric content through the item" do

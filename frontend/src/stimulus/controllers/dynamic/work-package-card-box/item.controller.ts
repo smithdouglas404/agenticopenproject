@@ -1,0 +1,150 @@
+import { Controller } from '@hotwired/stimulus';
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import {
+  attachClosestEdge,
+  type Edge,
+  extractClosestEdge,
+} from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+
+import {
+  itemData,
+  isItemData,
+  selectedItemIdsFor,
+  type WorkPackageCardBoxItemData,
+} from './drag-and-drop';
+
+type ItemState =
+  | {
+      type:'idle';
+    }
+  | {
+      type:'is-dragging';
+    }
+  | {
+      type:'is-dragging-over';
+      closestEdge:Edge | null;
+    };
+
+const idle:ItemState = { type: 'idle' };
+type CleanupFn = () => void;
+
+export default class ItemController extends Controller<HTMLElement> {
+  static values = {
+    dragType: String,
+    itemId: String,
+    sourceId: String,
+  };
+
+  declare dragTypeValue:string;
+  declare itemIdValue:string;
+  declare sourceIdValue:string;
+
+  private state:ItemState = idle;
+  private cleanupFn?:CleanupFn;
+
+  connect() {
+    this.cleanupFn = combine(
+      draggable({
+        element: this.element,
+        getInitialData: () => this.getItemData(),
+        getInitialDataForExternal: () => ({
+          'text/plain': `#${this.itemIdValue}`,
+          'text/uri-list': `https://community.openproject.org/wp/${this.itemIdValue}`,
+        }),
+        onDragStart: () => {
+          const itemIds = this.getItemData().itemIds;
+
+          this.setState({ type: 'is-dragging' });
+          this.element.setAttribute('data-dragging', 'source');
+          if (itemIds.length > 1) {
+            this.element.dataset.dragCount = String(itemIds.length);
+          }
+        },
+        onDrop: () => {
+          this.setState(idle);
+          this.element.removeAttribute('data-dragging');
+          delete this.element.dataset.dragCount;
+        },
+      }),
+      dropTargetForElements({
+        element: this.element,
+        canDrop: ({ source }) => {
+          if (source.element === this.element || !isItemData(source.data)) {
+            return false;
+          }
+
+          return !source.data.itemIds.includes(this.itemIdValue);
+        },
+        getData: ({ input }) => {
+          return attachClosestEdge(this.getItemData(), {
+            element: this.element,
+            input,
+            allowedEdges: ['top', 'bottom'],
+          });
+        },
+        getIsSticky: () => true,
+        onDragEnter: ({ self }) => {
+          const closestEdge = extractClosestEdge(self.data);
+          this.setState({ type: 'is-dragging-over', closestEdge });
+        },
+        onDrag: ({ self }) => {
+          const closestEdge = extractClosestEdge(self.data);
+
+          this.setState((current) => {
+            if (current.type === 'is-dragging-over' && current.closestEdge === closestEdge) {
+              return current;
+            }
+
+            return { type: 'is-dragging-over', closestEdge };
+          });
+        },
+        onDragLeave: () => {
+          this.setState(idle);
+        },
+        onDrop: () => {
+          this.setState(idle);
+        },
+      }),
+    );
+  }
+
+  disconnect() {
+    this.cleanupFn?.();
+  }
+
+  private setState(next:ItemState | ((current:ItemState) => ItemState)) {
+    const newState = typeof next === 'function' ? next(this.state) : next;
+
+    if (
+      this.state.type === newState.type &&
+      this.state.type === 'is-dragging-over' &&
+      newState.type === 'is-dragging-over' &&
+      this.state.closestEdge === newState.closestEdge
+    ) {
+      return;
+    }
+
+    this.state = newState;
+    this.renderState();
+  }
+
+  private renderState() {
+    this.element.classList.toggle('Box-card--dragging', this.state.type === 'is-dragging');
+
+    if (this.state.type === 'is-dragging-over' && this.state.closestEdge) {
+      this.element.dataset.dropPosition = this.state.closestEdge;
+    } else {
+      delete this.element.dataset.dropPosition;
+    }
+  }
+
+  private getItemData():WorkPackageCardBoxItemData {
+    return itemData({
+      dragType: this.dragTypeValue,
+      itemId: this.itemIdValue,
+      itemIds: selectedItemIdsFor(this.element),
+      sourceId: this.sourceIdValue,
+    });
+  }
+}

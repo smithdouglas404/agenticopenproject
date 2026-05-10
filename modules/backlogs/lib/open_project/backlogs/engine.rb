@@ -83,7 +83,8 @@ module OpenProject::Backlogs
 
         permission :manage_sprint_items,
                    { "backlogs/work_packages": %i[move reorder move_to_sprint_dialog],
-                     "backlogs/inbox": %i[move reorder move_to_sprint_dialog] },
+                     "backlogs/inbox": %i[move reorder move_to_sprint_dialog],
+                     "backlogs/bulk_moves": %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
