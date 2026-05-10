@@ -41,9 +41,9 @@ export default class ItemController extends Controller<HTMLElement> {
       draggable({
         element: this.element,
         getInitialData: () => this.getItemData(),
-        getInitialDataForExternal: () => ({ 
+        getInitialDataForExternal: () => ({
           'text/plain': `#${this.itemIdValue}`,
-          'text/uri-list': `https://community.openproject.org/wp/${this.itemIdValue}`
+          'text/uri-list': `https://community.openproject.org/wp/${this.itemIdValue}`,
         }),
         onDragStart: () => {
           this.setState({ type: 'is-dragging' });
@@ -70,7 +70,7 @@ export default class ItemController extends Controller<HTMLElement> {
             allowedEdges: ['top', 'bottom'],
           });
         },
-        //getIsSticky: () => true,
+        getIsSticky: () => true,
         onDragEnter: ({ self }) => {
           const closestEdge = extractClosestEdge(self.data);
           this.setState({ type: 'is-dragging-over', closestEdge });
@@ -117,10 +117,13 @@ export default class ItemController extends Controller<HTMLElement> {
   }
 
   private renderState() {
-    this.element.classList.toggle('.Box-card--dragging', this.state.type === 'is-dragging');
+    this.element.classList.toggle('Box-card--dragging', this.state.type === 'is-dragging');
 
-    // create/update/remove drop indicator here based on:
-    // this.state.type === 'is-dragging-over' && this.state.closestEdge
+    if (this.state.type === 'is-dragging-over' && this.state.closestEdge) {
+      this.element.dataset.dropPosition = this.state.closestEdge;
+    } else {
+      delete this.element.dataset.dropPosition;
+    }
   }
 
   private getItemData():ItemData {
