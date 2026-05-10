@@ -336,7 +336,7 @@ zh-CN:
           nc_oauth_token_missing: OpenProject 无法测试与 Nextcloud 之间的用户级通信，因为该用户尚未关联其 Nextcloud 帐户。
           nc_project_folder_missing: 找不到先前为项目“%{project}”创建的项目文件夹。
           nc_team_folder_not_found: 找不到该团队文件夹。
-          nc_unexpected_files: 在受管理的团队文件夹中找到非预期文件。例如：%{sample}
+          nc_unexpected_files: 在受管理的团队文件夹中找到意想不到的文件。例如：%{sample}
           nc_unlinked_project_folders: 部分项目文件夹尚未创建 (%{actual}/%{expected})。这可能表明 AMPF 后台同步过程中出错。
           nc_userless_access_denied: 配置的应用密码无效。
           not_configured: 无法验证连接。请先完成配置。

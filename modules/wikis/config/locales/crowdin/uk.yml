@@ -3,7 +3,7 @@ uk:
   activerecord:
     attributes:
       wikis/page_link:
-        provider: Wiki Provider
+        provider: Постачальник Wiki
       wikis/xwiki_provider:
         authentication_method: Метод автентифікації
         authentication_methods:
@@ -62,13 +62,13 @@ uk:
         oauth_client_form_component:
           client_id: Ідентифікатор клієнта
       oauth_application_info_component:
-        confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
-        label_pending: Pending
-        replace_oauth_application: Replace OpenProject OAuth application
+        confirm_replace_oauth_application: Ця дія призведе до скидання поточних облікових даних OAuth. Коли ви підтвердите дію, вам потрібно буде повторно ввести облікові дані у своєму екземплярі XWiki. У такому разі всім користувачам знадобиться знову пройти авторизацію. Продовжити?
+        label_pending: В обробці
+        replace_oauth_application: Замінити застосунок OpenProject OAuth
       oauth_client_info_component:
-        confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
-        label_pending: Pending
-        replace_oauth_client: Replace XWiki OAuth application
+        confirm_replace_oauth_client: Ця дія призведе до скидання поточних облікових даних XWiki OAuth. Усім користувачам знадобиться знову пройти авторизацію в XWiki. Продовжити?
+        label_pending: В обробці
+        replace_oauth_client: Замінити застосунок XWiki OAuth
       wiki_provider_list_component:
         label_creation_time: Створено
         label_name: Назва
@@ -93,11 +93,11 @@ uk:
         xwiki_instance: Екземпляр XWiki
         xwiki:
           oauth:
-            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            openproject_oauth_description: Надайте XWiki доступ до даних OpenProject із використанням OAuth. Скопіюйте наведені нижче облікові дані у свій екземпляр XWiki.
             provider_oauth: OAuth для XWiki
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
+            provider_oauth_description: Надайте OpenProject доступ до даних XWiki з використанням OAuth. Ідентифікатор клієнта для розпізнавання OpenProject в XWiki генерується автоматично — на стороні XWiki не доведеться вибирати налаштування вручну.
           openproject_oauth_description: Надайте XWiki доступ до даних OpenProject за допомогою OAuth.
           xwiki_oauth: OAuth для XWiki
           xwiki_oauth_description: Надайте OpenProject доступ до даних XWiki за допомогою OAuth.
     macro:
-      page_not_found: Linked wiki page no longer available
+      page_not_found: Зв’язана сторінка Wiki більше не доступна

@@ -697,7 +697,7 @@ zh-CN:
     add_department: 添加部门
     blankslate:
       heading: 您的组织没有部门
-      description: '首先，将部门或用户添加到组织中。每个部门都可以用于在其下方创建一个层次结构，要在一个层次结构中导航和创建子部门，请点击已创建的条目。
+      description: '首先，将部门或用户添加到组织中。每个部门可用于在其下方创建一个层次结构，要在层次结构中导航和创建子部门，请点击已创建的条目。
 
         '
       add_button: 添加
@@ -2331,7 +2331,7 @@ zh-CN:
               cannot_add_child_because_of_lack_of_permission: 无法添加子项目，因为您没有权限编辑选定的工作包。
               blank: ID不能为空。
             identifier:
-              semantic_identifier_incomplete: 并且 sequence_number 必须同时设置。
+              semantic_identifier_incomplete: 并且必须同时设置 sequence_number。
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -3616,7 +3616,7 @@ zh-CN:
         work_package_scheduled: 所有日期更改
       project_specific_settings:
         title: 项目特定通知设置
-        description: 这些项目特定设置会覆盖上方的默认设置。
+        description: 这些项目特定的设置会覆盖上方的默认设置。
         add_button: 添加项目特定通知
         dialog_title: 添加项目特定通知
         list_header: 具有特定通知的项目

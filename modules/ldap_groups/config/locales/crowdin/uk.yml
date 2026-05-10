@@ -46,7 +46,7 @@ uk:
         zero: Груп за фільтром не знайдено
       destroy:
         title: Вилучити синхронізований фільтр %{name}
-        heading: Remove synchronized filter %{name}?
+        heading: Вилучити синхронізований фільтр «%{name}»?
         confirmation: Якщо ви продовжите, синхронізований фільтр %{name} і всі групи (%{groups_count}), створені через нього, буде вилучено.
         removed_groups: Увага! Це призведе до вилучення наведених нижче груп з OpenProject і з усіх проєктів!
         verification_html: Введіть назву фільтра «%{name}», щоб підтвердити видалення.
@@ -60,15 +60,15 @@ uk:
       add_new: Додати синхронізовану групу LDAP
       destroy:
         title: Вилучити синхронізовану групу %{name}
-        heading: Remove synchronized group %{name}?
+        heading: Вилучити синхронізовану групу «%{name}»?
         confirmation: Якщо ви продовжите, синхронізовану групу %{name} і всіх користувачі (%{users_count}), синхронізованих через неї, буде вилучено.
-        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
+        info: Групу OpenProject і учасників, доданих з-поза меж цієї синхронізації LDAP, не буде вилучено.
       help_text_html: |
-        This module allows you to set up a synchronization between LDAP and OpenProject groups.
-        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
+        Цей модуль дає змогу налаштувати синхронізацію між групами LDAP й OpenProject.
+        Для роботи з OpenProject групам LDAP потрібно використовувати набір атрибутів <em>groupOfNames / memberOf</em>.
         <br/>
-        Groups are synchronized hourly through a cron job.
-        [Please see our documentation on this topic](docs_url).
+        Групи синхронізуються щогодини за допомогою запланованого завдання (cron).
+        [Перегляньте нашу документацію на цю тему](docs_url).
       no_results: Не знайдено синхронізованих груп.
       no_members: У цієї групи поки немає синхронізованих учасників.
       plural: Синхронізовані групи LDAP

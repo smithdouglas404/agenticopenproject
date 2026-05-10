@@ -94,4 +94,4 @@ zh-CN:
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: 允许 OpenProject 使用 OAuth 访问 XWiki 数据。
     macro:
-      page_not_found: 链接的 Wiki 页面不再可用
+      page_not_found: 关联的 Wiki 页面不再可用
