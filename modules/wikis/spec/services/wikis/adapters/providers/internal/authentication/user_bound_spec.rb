@@ -42,10 +42,10 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Authentication::UserBound d
   end
 
   describe "#call" do
-    it "returns a Success with an internal strategy carrying the user" do
+    it "returns a Success with an internal strategy carrying the user and provider" do
       result = user_bound.call(user)
       expect(result).to be_success
-      expect(result.value!).to have_attributes(key: :internal, user:)
+      expect(result.value!).to have_attributes(key: :internal, user:, provider:)
     end
   end
 end

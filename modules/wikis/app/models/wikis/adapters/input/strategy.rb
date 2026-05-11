@@ -29,11 +29,11 @@
 #++
 
 module Wikis::Adapters::Input
-  Strategy = Data.define(:key, :user) do
+  Strategy = Data.define(:key, :user, :provider) do
     private_class_method :new
 
-    def self.build(key:, user: nil, contract: StrategyContract.new)
-      contract.call(key:, user:).to_monad.fmap { new(**it.to_h) }
+    def self.build(key:, user: nil, provider: nil, contract: StrategyContract.new)
+      contract.call(key:, user:, provider:).to_monad.fmap { new(**it.to_h) }
     end
   end
 end

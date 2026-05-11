@@ -32,19 +32,20 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::Authentication::UserBound do
+  let(:provider) { build_stubbed(:xwiki_provider) }
   let(:user) { build_stubbed(:user) }
 
-  subject(:user_bound) { described_class.new(model: nil) }
+  subject(:user_bound) { described_class.new(model: provider) }
 
   it "is registered" do
     expect(Wikis::Adapters::Registry.resolve("xwiki.authentication.user_bound")).to eq(described_class)
   end
 
   describe "#call" do
-    it "returns a Success with a bearer_token strategy carrying the user" do
+    it "returns a Success with a bearer_token strategy carrying the user and provider" do
       result = user_bound.call(user)
       expect(result).to be_success
-      expect(result.value!).to have_attributes(key: :bearer_token, user:)
+      expect(result.value!).to have_attributes(key: :bearer_token, user:, provider:)
     end
   end
 end

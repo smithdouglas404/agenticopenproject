@@ -36,7 +36,7 @@ module Wikis
         def [](strategy)
           case strategy.key
           when :bearer_token
-            AuthenticationStrategies::BearerToken.new(strategy.user)
+            AuthenticationStrategies::BearerToken.new(strategy.user, strategy.provider)
           when :internal
             AuthenticationStrategies::InternalUser.new(strategy.user)
           end

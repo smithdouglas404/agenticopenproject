@@ -38,7 +38,7 @@ RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock 
   let(:provider) { instance_double(Wikis::XWikiProvider, oauth_client:) }
   let(:oauth_client_token) { instance_double(OAuthClientToken, access_token: "test-token") }
 
-  subject(:strategy) { described_class.new(user) }
+  subject(:strategy) { described_class.new(user, provider) }
 
   before do
     allow(OAuthClientToken).to receive(:for_user_and_client).with(user, oauth_client)
@@ -51,7 +51,7 @@ RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock 
         .with(headers: { "Authorization" => "Bearer test-token" })
         .to_return(status: 200, body: "")
 
-      strategy.call(provider:) { |http| http.get(url) }
+      strategy.call { |http| http.get(url) }
 
       expect(request_stub).to have_been_requested
     end
@@ -61,7 +61,7 @@ RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock 
         .with(headers: { "Authorization" => "Bearer test-token", "Accept" => "application/json" })
         .to_return(status: 200, body: "")
 
-      strategy.call(provider:, http_options: { headers: { "Accept" => "application/json" } }) { |http| http.get(url) }
+      strategy.call(http_options: { headers: { "Accept" => "application/json" } }) { |http| http.get(url) }
 
       expect(request_stub).to have_been_requested
     end
@@ -70,9 +70,9 @@ RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock 
       let(:oauth_client_token) { nil }
 
       it "returns a missing_token failure without yielding" do
-        expect { |b| strategy.call(provider:, &b) }.not_to yield_control
+        expect { |b| strategy.call(&b) }.not_to yield_control
 
-        result = strategy.call(provider:) { raise "should not be called" }
+        result = strategy.call { raise "should not be called" }
         expect(result).to be_failure
         expect(result.failure.code).to eq(:missing_token)
       end

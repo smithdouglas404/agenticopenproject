@@ -34,20 +34,21 @@ module Wikis
       class BearerToken
         include Dry::Monads[:result]
 
-        def initialize(user)
+        def initialize(user, provider)
           @user = user
+          @provider = provider
         end
 
-        def call(provider:, http_options: {}, **)
-          token = fetch_user_token(provider).value_or { return Failure(it) }
+        def call(http_options: {}, **)
+          token = fetch_user_token.value_or { return Failure(it) }
 
           yield OpenProject.httpx.bearer_auth(token.access_token).with(http_options)
         end
 
         private
 
-        def fetch_user_token(provider)
-          token = OAuthClientToken.for_user_and_client(@user, provider.oauth_client).first
+        def fetch_user_token
+          token = OAuthClientToken.for_user_and_client(@user, @provider.oauth_client).first
           return Success(token) if token
 
           Failure(Results::Error.new(source: self.class, code: :missing_token))
