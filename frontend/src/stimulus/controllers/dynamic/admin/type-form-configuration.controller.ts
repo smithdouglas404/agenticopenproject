@@ -92,9 +92,6 @@ export default class TypeFormConfigurationController extends Controller {
 
     const response = await request.perform();
     if (!response.ok) return;
-
-    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-    this.focusGroupInput();
   }
 
   private async postQueryUpdate(groupKey:string, queryProps:unknown):Promise<boolean> {
@@ -107,16 +104,6 @@ export default class TypeFormConfigurationController extends Controller {
 
     const response = await request.perform();
     return response.ok;
-  }
-
-  private focusGroupInput() {
-    const input = this.groupsContainerTarget
-      .querySelector<HTMLInputElement>('[data-edit-mode="true"] input[name="group[name]"]');
-
-    if (!input) return;
-
-    input.focus();
-    input.setSelectionRange(input.value.length, input.value.length);
   }
 
   private openQueryEditor(queryJson:string, callback:(queryProps:unknown) => void) {
