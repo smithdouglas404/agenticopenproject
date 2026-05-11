@@ -478,7 +478,7 @@ en:
         label: "Role: %{role}"
         no_role: "Select role"
         roles:
-          one: "%{count} role selected"
+          one: "One role selected"
           other: "%{count} roles selected"
       blankslate:
         title: "No status transitions configured"
