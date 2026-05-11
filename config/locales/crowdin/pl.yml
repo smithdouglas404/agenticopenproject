@@ -5142,7 +5142,7 @@ pl:
 
     '
   setting_after_login_default_redirect_url: Przekierowanie po zalogowaniu
-  setting_after_login_default_redirect_url_text_html: 'Ustaw domyślną ścieżkę przekierowania użytkowników po zalogowaniu, jeśli nie zapewniono linku do powrotu. Jeśli nie jest ustawiona, przekierowuje na stronę główną. <br/> Przykład: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Współdzielenie zasobów między źródłami (CORS)

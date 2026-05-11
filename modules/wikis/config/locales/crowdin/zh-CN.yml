@@ -52,7 +52,7 @@ zh-CN:
       wiki_provider_list_component:
         label_name: 名称
         label_provider: 提供商
-        label_creation_time: 已创建
+        label_creation_time: 创建时间
         no_results_title: 您尚未设置任何 Wiki 提供商。
         no_results_description: 添加 Wiki 提供商，以在此处查看。
       destroy_confirmation_dialog_component:

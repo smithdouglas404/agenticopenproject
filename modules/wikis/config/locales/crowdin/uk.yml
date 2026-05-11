@@ -26,8 +26,8 @@ uk:
         many: Посилання на пов’язані сторінки
         other: Посилання на пов’язані сторінки
       wikis/xwiki_provider: Постачальник XWiki
-  permission_manage_wiki_page_links: Керування посиланнями на сторінки Wiki
-  permission_view_wiki_page_links: Переглянути посилання на сторінки Wiki
+  permission_manage_wiki_page_links: Керувати посиланнями на сторінки Wiki
+  permission_view_wiki_page_links: Переглядати посилання на сторінки Wiki
   project_module_wiki_platforms: Постачальники Wiki
   wikis:
     buttons:
@@ -88,7 +88,7 @@ uk:
           openproject_oauth: OpenProject OAuth
         xwiki:
           oauth:
-            openproject_oauth_description: Надайте XWiki доступ до даних OpenProject із використанням OAuth. Скопіюйте наведені нижче облікові дані у свій екземпляр XWiki.
+            openproject_oauth_description: Надайте XWiki доступ до даних OpenProject із використанням застосунку OAuth. Скопіюйте наведені нижче облікові дані у свій екземпляр XWiki.
             provider_oauth: OAuth для XWiki
             provider_oauth_description: Надайте OpenProject доступ до даних XWiki за допомогою застосунку OAuth. Введіть облікові дані клієнта з вашого застосунку XWiki OAuth.
           openproject_oauth_description: Надайте XWiki доступ до даних OpenProject за допомогою OAuth.

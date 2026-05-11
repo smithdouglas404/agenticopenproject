@@ -5147,7 +5147,7 @@ ru:
 
     '
   setting_after_login_default_redirect_url: Перенаправление после входа
-  setting_after_login_default_redirect_url_text_html: 'Задайте путь по-умолчанию для перенаправления пользователей после входа в систему. Если не задано, то пользователь будет перенаправлен на домашнюю страницу. <br/> Например: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Совместное использование ресурсов между источниками (Cross-Origin Resource Sharing, CORS)

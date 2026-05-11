@@ -4958,7 +4958,7 @@ ja:
 
     '
   setting_after_login_default_redirect_url: ログインリダイレクト後
-  setting_after_login_default_redirect_url_text_html: 'バックリンクが指定されていない場合、ログイン後にユーザーをリダイレクトするデフォルトのパスを設定します。 設定されていない場合はホームページにリダイレクトします。 <br/> 例: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: クロスオリジン資源共有 (CORS)

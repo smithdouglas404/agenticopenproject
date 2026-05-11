@@ -5024,7 +5024,7 @@ it:
 
     '
   setting_after_login_default_redirect_url: Dopo il reindirizzamento dell'accesso
-  setting_after_login_default_redirect_url_text_html: 'Imposta un percorso predefinito per reindirizzare gli utenti dopo l''accesso, se non è stato fornito alcun link di ritorno. Reindirizza alla home page se non impostato. <br/> Esempio: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Condivisione incrociata delle risorse (CORS - Cross-Origin Resource Sharing)

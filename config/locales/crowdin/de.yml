@@ -5022,7 +5022,7 @@ de:
 
     '
   setting_after_login_default_redirect_url: Weiterleitung nach Anmeldung
-  setting_after_login_default_redirect_url_text_html: 'Legen Sie einen Standardpfad für die Weiterleitung von Benutzern nach der Anmeldung fest, wenn kein Back-Link angegeben wurde. Falls nicht gesetzt, wird der Nutzer auf die Startseite geleitet. <br/> Beispiel: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Cross-Origin Resource Sharing (CORS)

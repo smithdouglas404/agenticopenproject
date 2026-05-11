@@ -49,7 +49,7 @@ es:
               not_a_member_of_budget_project: no es miembro del proyecto presupuestario
     models:
       budget: Presupuesto
-      labor_budget_item: Planned labor cost
+      labor_budget_item: Costo laboral previsto
       material_budget_item: Unidad
   activity:
     filter:

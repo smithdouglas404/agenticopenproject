@@ -163,7 +163,7 @@ uk:
         receive_shared_no_actions_description_text: Цей проєкт може використовувати спринти з іншого проєкту, до яких надано доступ. Однак зараз доступних спринтів немає.
         settings_link_text: налаштування проєкту
     backlog_bucket_menu_component:
-      label_actions: Дії сегмента беклогу
+      label_actions: Дії із сегментом беклогу
       action_menu:
         edit_backlog_bucket: Змінити сегмент беклогу
         delete_backlog_bucket: Видалити сегмент беклогу
@@ -192,12 +192,12 @@ uk:
       select_sprint_label: Вибрати спринт
       button_complete_sprint: Завершити спринт
     sprint_menu_component:
-      label_actions: Дії в спринті
+      label_actions: Дії зі спринтом
       action_menu:
         edit_sprint: Редагувати спринт
         add_work_package: Додати пакет робіт
     story_component:
-      label_actions: Дії історії
+      label_actions: Дії з історією
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну

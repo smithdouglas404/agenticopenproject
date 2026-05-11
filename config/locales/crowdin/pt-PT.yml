@@ -5009,7 +5009,7 @@ pt-PT:
 
     '
   setting_after_login_default_redirect_url: Redirecionamento após o início de sessão
-  setting_after_login_default_redirect_url_text_html: 'Define um caminho predefinido para redirecionar os utilizadores após o início de sessão, se não tiver sido fornecida uma ligação de retorno. Redireciona para a página inicial se não for definido. <br/> Exemplo: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Partilha de recursos entre origens (CORS)
