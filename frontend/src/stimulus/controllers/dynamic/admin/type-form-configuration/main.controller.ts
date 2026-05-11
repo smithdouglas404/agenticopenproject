@@ -29,7 +29,10 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { FetchRequest } from '@rails/request.js';
+import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import {
+  ExternalRelationQueryConfigurationService,
+} from 'core-app/features/work-packages/components/wp-table/external-configuration/external-relation-query-configuration.service';
 
 export default class TypeFormConfigurationController extends Controller {
   static targets = ['groupsContainer', 'inactiveContainer'];
@@ -46,6 +49,19 @@ export default class TypeFormConfigurationController extends Controller {
   declare readonly addGroupUrlValue:string;
   declare readonly noFilterQueryValue:string;
   declare readonly groupsUrlValue:string;
+
+  private turboRequests:TurboRequestsService;
+  private externalRelationQueryConfiguration:ExternalRelationQueryConfigurationService;
+
+  connect() {
+    void this.initializeServices();
+  }
+
+  private async initializeServices() {
+    const context = await window.OpenProject.getPluginContext();
+    this.turboRequests = context.services.turboRequests;
+    this.externalRelationQueryConfiguration = context.services.externalRelationQueryConfiguration;
+  }
 
   addQueryGroup(event:Event) {
     event.preventDefault();
@@ -82,28 +98,35 @@ export default class TypeFormConfigurationController extends Controller {
   }
 
   private async postNewGroup(groupType:'attribute'|'query', queryProps?:unknown):Promise<void> {
-    const request = new FetchRequest('post', this.addGroupUrlValue, {
-      body: {
-        group_type: groupType,
-        query: queryProps ? JSON.stringify(queryProps) : undefined,
-      },
-      responseKind: 'turbo-stream',
+    const body = new URLSearchParams({
+      group_type: groupType,
     });
 
-    const response = await request.perform();
-    if (!response.ok) return;
+    if (queryProps) {
+      body.set('query', JSON.stringify(queryProps));
+    }
+
+    await this.turboRequests.request(this.addGroupUrlValue, {
+      method: 'POST',
+      headers: {
+        Accept: 'text/vnd.turbo-stream.html',
+      },
+      body,
+    });
   }
 
   private async postQueryUpdate(groupKey:string, queryProps:unknown):Promise<boolean> {
-    const request = new FetchRequest('patch', `${this.groupsUrlValue}/${encodeURIComponent(groupKey)}/update_query`, {
-      body: {
-        query: JSON.stringify(queryProps),
+    await this.turboRequests.request(`${this.groupsUrlValue}/${encodeURIComponent(groupKey)}/update_query`, {
+      method: 'PATCH',
+      headers: {
+        Accept: 'text/vnd.turbo-stream.html',
       },
-      responseKind: 'turbo-stream',
+      body: new URLSearchParams({
+        query: JSON.stringify(queryProps),
+      }),
     });
 
-    const response = await request.perform();
-    return response.ok;
+    return true;
   }
 
   private openQueryEditor(queryJson:string, callback:(queryProps:unknown) => void) {
@@ -113,14 +136,12 @@ export default class TypeFormConfigurationController extends Controller {
       timelines: I18n.t('js.work_packages.table_configuration.embedded_tab_disabled'),
     };
 
-    void window.OpenProject.getPluginContext().then((ctx) => {
-      if (!this.element.isConnected) return;
+    if (!this.element.isConnected) return;
 
-      ctx.services.externalRelationQueryConfiguration.show({
-        currentQuery,
-        callback,
-        disabledTabs,
-      });
+    this.externalRelationQueryConfiguration.show({
+      currentQuery,
+      callback,
+      disabledTabs,
     });
   }
 }
