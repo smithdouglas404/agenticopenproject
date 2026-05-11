@@ -78,15 +78,17 @@ The default modules enabled in demo and trial projects have been updated. Budget
 
 ## Important technical updates
 
-### Expose project-based semantic work package identifier on the API
+### Developers of API V3 clients prepare for 17.5: use the new `displayId` field for rendering work package identifiers instead of `id`
 
-Project-based work package identifiers are now exposed via the API. With upcoming support for semantic identifiers such as `#ABC-123`, a new field `displayId` is available in the API. This field returns the correct identifier format, depending on how the instance is configured.
+As part of our efforts to simplify migrations from Jira to OpenProject, the next release (17.5) will introduce project-based work package identifiers such as `#ABC-123`. Developers of API V3 clients can and should already prepare for this change now. With the current release (17.4), the API V3 exposes a dedicated field, `displayId`, which contains the work package’s current identifier. API clients should use this field whenever rendering links or captions intended for human users.
 
-If you are building or maintaining an application using the OpenProject API V3, we recommend using `displayId` instead of `id` when displaying work package identifiers.
+Starting with 17.5, administrators will be able to switch from the current numeric identifiers, such as `#12345`, to project-based identifiers like `#ABC-123`. The `displayId` field will return the correct identifier format depending on how the instance is configured.
+
+If you are building or maintaining an application that uses the OpenProject API V3, we recommend using `displayId` instead of `id` when displaying work package identifiers.
 
 The `id` field will continue to return the internal database ID and should still be used for API requests such as filtering.
 
-For more information on project-based work package identifiers in OpenProject, see the [Epic currently being developed by our team](https://community.openproject.org/wp/41855)
+For more information about project-based work package identifiers in OpenProject, see the [Epic currently being developed by our team](https://community.openproject.org/wp/41855)
 
 ### Meetings and recurring meetings APIv3 endpoints
 
