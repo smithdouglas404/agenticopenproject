@@ -33,7 +33,7 @@ module WorkPackageTypes
     class GroupHeaderComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      def initialize(group:, type:, ee_available:, first:, last:, edit_mode:, validation_message:, input_value:)
+      def initialize(group:, type:, ee_available:, first:, last:, edit_mode:, form_model: nil)
         super
         @group = group
         @type = type
@@ -41,8 +41,7 @@ module WorkPackageTypes
         @first = first
         @last = last
         @edit_mode = edit_mode
-        @validation_message = validation_message
-        @input_value = input_value
+        @form_model = form_model
       end
 
       def edit_mode?
@@ -53,6 +52,10 @@ module WorkPackageTypes
 
       def group_name
         @group[:name]
+      end
+
+      def form_model
+        @form_model || WorkPackageTypes::FormConfiguration::GroupFormModel.from_group(@group)
       end
 
       def ee_available?

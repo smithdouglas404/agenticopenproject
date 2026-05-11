@@ -41,8 +41,7 @@ See COPYRIGHT and LICENSE files for more details.
             first: first?,
             last: last?,
             edit_mode: edit_mode?,
-            validation_message: @validation_message,
-            input_value: @input_value
+            form_model: @form_model
           )
         )
       end
@@ -56,15 +55,13 @@ See COPYRIGHT and LICENSE files for more details.
             )
           )
         end
-      else
-        if attributes.empty?
-          box.with_row(data: { "empty-list-item": true }) do
-            render(Primer::Beta::Text.new(color: :subtle, ml: 2)) do
-              t("types.edit.form_configuration.empty_group_hint")
-            end
+      elsif attributes.empty?
+        box.with_row(data: { "empty-list-item": true }) do
+          render(Primer::Beta::Text.new(color: :subtle, ml: 2)) do
+            t("types.edit.form_configuration.empty_group_hint")
           end
         end
-
+      else
         attributes.each_with_index do |attribute, index|
           box.with_row(
             data: {

@@ -39,15 +39,13 @@ module WorkPackageTypes
       update_inactive_attributes_via_turbo_stream
     end
 
-    def update_main_content_via_turbo_stream(groups: active_groups_for_form, editing_group_key: nil,
-                                             validation_message: nil, input_value: nil)
+    def update_main_content_via_turbo_stream(groups: active_groups_for_form, editing_group_key: nil, form_model: nil)
       ee_available = EnterpriseToken.allows_to?(:edit_attribute_groups)
       group_components = build_group_components(
         groups:,
         ee_available:,
         editing_group_key:,
-        validation_message:,
-        input_value:
+        form_model:
       )
 
       update_via_turbo_stream(
@@ -75,38 +73,24 @@ module WorkPackageTypes
       render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.to_sentence)
     end
 
-    def build_group_components(groups:, ee_available:, editing_group_key:, validation_message:, input_value:)
+    def build_group_components(groups:, ee_available:, editing_group_key:, form_model:)
       groups.map.with_index do |group, index|
-        build_group_component(
+        is_editing = editing_group_key.present? && group[:key].to_s == editing_group_key.to_s
+
+        WorkPackageTypes::FormConfiguration::GroupComponent.new(
           group:,
-          index:,
-          group_count: groups.length,
+          type: @type,
           ee_available:,
-          editing_group_key:,
-          validation_message:,
-          input_value:
+          first: index.zero?,
+          last: index == groups.length - 1,
+          edit_mode: is_editing,
+          form_model: (form_model if is_editing)
         )
       end
     end
 
     def active_groups_for_form
       form_configuration_groups(@type)[:actives].reject { |group| group[:key].to_s == "__empty" }
-    end
-
-    def build_group_component(group:, index:, group_count:, ee_available:, editing_group_key:, validation_message:,
-                              input_value:)
-      is_editing = editing_group_key.present? && group[:key].to_s == editing_group_key.to_s
-
-      WorkPackageTypes::FormConfiguration::GroupComponent.new(
-        group:,
-        type: @type,
-        ee_available:,
-        first: index.zero?,
-        last: index == group_count - 1,
-        edit_mode: is_editing,
-        validation_message: (validation_message if is_editing),
-        input_value: (input_value if is_editing)
-      )
     end
   end
 end

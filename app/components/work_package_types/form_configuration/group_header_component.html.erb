@@ -1,6 +1,7 @@
 <% if edit_mode? %>
   <%=
     primer_form_with(
+      model: form_model,
       scope: :group,
       method: form_method,
       url: update_path,
@@ -8,54 +9,12 @@
       data: {
         turbo_stream: true
       }
-    ) do
-      concat(hidden_field_tag("group[group_type]", @group[:type]))
-      concat(hidden_field_tag("group[query]", @group[:query])) if @group[:query].present?
-
-      concat(
-        flex_layout(align_items: :flex_start) do |header|
-          header.with_column(flex: 1, mr: 2) do
-            render(
-              Primer::Alpha::TextField.new(
-                name: "group[name]",
-                label: t("types.edit.form_configuration.group_name_label"),
-                visually_hide_label: true,
-                value: @input_value || group_name,
-                autofocus: true,
-                autocomplete: "off",
-                "full-width": true,
-                invalid: @validation_message.present?,
-                validation_message: @validation_message,
-                data: { "test-selector": "type-form-configuration-group-name-input" }
-              )
-            )
-          end
-
-          header.with_column(mr: 2) do
-            render(
-              Primer::Beta::Button.new(
-                scheme: :primary,
-                type: :submit,
-                test_selector: "type-form-configuration-group-save"
-              )
-            ) { t("button_save") }
-          end
-
-          header.with_column do
-            render(
-              Primer::Beta::Button.new(
-                scheme: :secondary,
-                tag: :a,
-                href: cancel_edit_path,
-                data: {
-                  turbo_method: :post,
-                  turbo_stream: true
-                },
-                test_selector: "type-form-configuration-group-cancel"
-              )
-            ) { t("button_cancel") }
-          end
-        end
+    ) do |form|
+      render(
+        WorkPackageTypes::FormConfiguration::GroupForm.new(
+          form,
+          cancel_path: cancel_edit_path
+        )
       )
     end
   %>

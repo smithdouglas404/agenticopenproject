@@ -197,30 +197,43 @@ module WorkPackageTypes
     end
 
     def render_create_error(call)
-      render_temporary_group_editor(
+      group = temporary_group(
         group_type: group_params[:group_type],
         query: group_params[:query],
-        name: group_params[:name].to_s,
-        validation_message: call.errors.map(&:message).to_sentence
+        name: group_params[:name].to_s
+      )
+
+      render_temporary_group_editor(
+        group:,
+        form_model: group_form_model(group:, validation_message: call.errors.map(&:message).to_sentence)
       )
     end
 
     def render_existing_group_update_error(call)
       @type.reload
+      group = active_groups_for_form.find { |active_group| active_group[:key].to_s == group_key_param.to_s }
+
       update_main_content_via_turbo_stream(
         editing_group_key: group_key_param,
-        validation_message: call.errors.map(&:message).to_sentence,
-        input_value: group_params[:name].to_s
+        form_model: group_form_model(
+          group:,
+          name: group_params[:name].to_s,
+          validation_message: call.errors.map(&:message).to_sentence
+        )
       )
     end
 
-    def render_temporary_group_editor(group_type: params[:group_type], query: params[:query], name: "",
-                                      validation_message: nil)
+    def render_temporary_group_editor(group: temporary_group(group_type: params[:group_type], query: params[:query]),
+                                      form_model: nil)
       update_main_content_via_turbo_stream(
-        groups: [temporary_group(group_type:, query:, name:)] + active_groups_for_form,
+        groups: [group] + active_groups_for_form,
         editing_group_key: TEMPORARY_GROUP_KEY,
-        validation_message:
+        form_model:
       )
+    end
+
+    def group_form_model(group:, name: group[:name], validation_message: nil)
+      WorkPackageTypes::FormConfiguration::GroupFormModel.from_group(group, name:, validation_message:)
     end
   end
 end
