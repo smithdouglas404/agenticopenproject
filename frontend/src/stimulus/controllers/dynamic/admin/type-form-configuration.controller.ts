@@ -32,23 +32,20 @@ import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
 
 export default class TypeFormConfigurationController extends Controller {
-  static targets = ['groupsContainer', 'inactiveContainer', 'inactiveFilterInput'];
+  static targets = ['groupsContainer', 'inactiveContainer'];
 
   declare readonly groupsContainerTarget:HTMLElement;
   declare readonly inactiveContainerTarget:HTMLElement;
-  declare readonly inactiveFilterInputTarget:HTMLInputElement;
 
   static values = {
     addGroupUrl: String,
     noFilterQuery: String,
     groupsUrl: String,
-    updateUrl: String,
   };
 
   declare readonly addGroupUrlValue:string;
   declare readonly noFilterQueryValue:string;
   declare readonly groupsUrlValue:string;
-  declare readonly updateUrlValue:string;
 
   addQueryGroup(event:Event) {
     event.preventDefault();
@@ -58,31 +55,12 @@ export default class TypeFormConfigurationController extends Controller {
     });
   }
 
-  confirmReset(event:Event) {
-    event.preventDefault();
-    void this.resetToDefaults();
-  }
-
-  filterInactives(event:Event) {
-    const input = event.currentTarget as HTMLInputElement;
-    this.applyInactiveFilter(input.value);
-  }
-
   inactiveContainerTargetConnected() {
-    this.applyInactiveFilter(this.inactiveFilterInputTarget.value);
-  }
+    const filterListElement = this.element.querySelector<HTMLElement>('[data-controller~="filter--filter-list"]');
+    if (!filterListElement) return;
 
-  private applyInactiveFilter(rawQuery:string) {
-    const query = rawQuery.trim().toLowerCase();
-    const inactiveList = this.inactiveContainerTarget.querySelector<HTMLElement>(
-      '[data-test-selector="type-form-configuration-inactive-list"]',
-    );
-    if (!inactiveList) return;
-
-    inactiveList.querySelectorAll<HTMLElement>('li[data-attr-key]').forEach((row) => {
-      const match = !query || (row.dataset.attrTranslation ?? '').toLowerCase().includes(query);
-      row.style.display = match ? '' : 'none';
-    });
+    const filterListController = this.application.getControllerForElementAndIdentifier(filterListElement, 'filter--filter-list') as { filterLists:() => void }|null;
+    filterListController?.filterLists();
   }
 
   editQuery(event:Event) {
@@ -139,18 +117,6 @@ export default class TypeFormConfigurationController extends Controller {
 
     input.focus();
     input.setSelectionRange(input.value.length, input.value.length);
-  }
-
-  private async resetToDefaults():Promise<void> {
-    const body = new FormData();
-    body.append('type[attribute_groups]', '[]');
-
-    const request = new FetchRequest('patch', this.updateUrlValue, {
-      body,
-      responseKind: 'turbo-stream',
-    });
-
-    await request.perform();
   }
 
   private openQueryEditor(queryJson:string, callback:(queryProps:unknown) => void) {

@@ -17,7 +17,7 @@
           disabled: true,
           classes: "type-form-configuration-page--inactive-empty",
           content_arguments: { tag: :div },
-          data: { "empty-list-item": true }
+          data: { "empty-list-item": true, "filter--filter-list-target": "searchItem" }
         )
       else
         @inactive_attributes.each do |attribute|
@@ -25,7 +25,7 @@
             label: attribute[:translation],
             classes: "type-form-configuration-page--inactive-item",
             content_arguments: { tag: :div },
-            data: item_data(attribute)
+            data: item_data(attribute).merge("filter--filter-list-target": "searchItem")
           ) do |item|
             item.with_leading_visual_raw_content do
               render(

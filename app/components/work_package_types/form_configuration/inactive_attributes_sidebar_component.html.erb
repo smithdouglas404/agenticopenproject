@@ -1,5 +1,5 @@
 <%=
-  flex_layout do |flex|
+  flex_layout(data: { controller: "filter--filter-list" }) do |flex|
     flex.with_row(mb: 1) do
       render(Primer::Beta::Heading.new(tag: :h3, font_size: 4)) do
         t("types.edit.form_configuration.inactive_attributes_heading")
@@ -23,8 +23,8 @@
           size: :medium,
           "full-width": true,
           data: {
-            "admin--type-form-configuration-target": "inactiveFilterInput",
-            action: "input->admin--type-form-configuration#filterInactives"
+            action: "input->filter--filter-list#filterLists",
+            "filter--filter-list-target": "filter"
           }
         )
       )
