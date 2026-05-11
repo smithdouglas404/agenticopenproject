@@ -36,8 +36,8 @@ module Wikis
 
         params do
           required(:key).filled(:symbol, included_in?: AUTH_METHODS)
-          optional(:user).maybe
-          optional(:provider).maybe
+          optional(:user).maybe(type?: User)
+          optional(:provider).maybe(type?: Provider)
         end
       end
     end
