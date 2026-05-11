@@ -118,7 +118,7 @@ zh-CN:
       description: 使用此工具从您的 Jira 实例中导入数据。您可以配置多个 Jira 主机，并选择每次导入运行要导入的内容。
       errors:
         cannot_delete_with_imports: 无法删除具有现有导入的 Jira 主机
-        custom_field_creation_failed: 无法创建自定义字段“%{name}”：%{message}
+        custom_field_creation_failed: 无法创建自定义字段 '%{name}'：%{message}
       blank:
         title: 尚未配置 Jira 主机
         description: 配置 Jira 主机，以开始将 Jira 中的条目导入此 OpenProject 实例。
@@ -159,7 +159,7 @@ zh-CN:
         connection_timeout: 与 Jira 服务器的连接超时：%{message}
         parse_error: 无法解析 Jira API 响应：%{message}
         api_error: Jira API 返回错误状态 %{status}
-        401_error: Jira API 返回 401 错误。您的身份验证令牌可能已过期或缺少所需的权限。请确保该令牌属于 Jira 管理员。
+        401_error: Jira API 返回 401 错误。您的身份验证令牌可能已过期或缺少所需权限。请确保该令牌属于 Jira 管理员。
       columns:
         projects: 项目
         last_change: 上次更改
@@ -707,14 +707,14 @@ zh-CN:
     move_user_dialog:
       title: 用户已经在一个部门
       heading: 将用户移动到此部门？
-      description: "%{user} 目前是 %{from_department} 的成员。移动他们会将其从该部门中移除。"
+      description: "%{user} 目前是%{from_department}的成员。移动他们会将其从该部门中移除。"
       confirm: 移动用户
     context_menu:
       add_sub_department: 添加子部门
       add_user: 添加用户
     flash:
-      user_added: 用户已成功添加到该部门。
-      user_removed: 用户已成功从该部门中移除。
+      user_added: 用户已被成功添加到该部门。
+      user_removed: 用户已被成功从该部门中移除。
       department_created: 部门已成功创建。
     errors:
       move_user_failed: 无法在部门之间移动用户。
@@ -1367,10 +1367,10 @@ zh-CN:
         mode:
           from_role:
             label: 复制到其他角色
-            caption: 将当前工作流复制到同一工作包类型中的一个或多个角色。如果所选角色已具有工作流，则当前工作流将被覆盖。
+            caption: 将当前工作流复制到同一工作包类型中的一个或多个角色。如果所选角色已具有工作流，当前工作流将被覆盖。
           from_type:
             label: 复制到其他类型
-            caption: 将当前工作流复制到其他工作包类型中。如果所选类型已具有工作流，则当前工作流将被覆盖。这会影响所有角色。
+            caption: 将当前工作流复制到其他工作包类型中。如果所选类型已具有工作流，当前工作流将被覆盖。这会影响所有角色。
       from_roles:
         create:
           notice:
@@ -2966,7 +2966,7 @@ zh-CN:
       title: 企业附加组件
       plan_title: 企业 %{plan} 附加组件
       plan_name: "%{plan} 企业计划"
-      trial_text: 此功能包含在您激活的企业试用版中。
+      trial_text: 此功能包含在您的有效 Enterprise 试用版中。
       plan_text_html: 从 %{plan_name} 开始可用。
       unlimited: 无限制
       already_have_token: '已经有令牌？使用下方按钮添加以升级到预订的企业版方案。
@@ -3522,7 +3522,7 @@ zh-CN:
         date_range: 暂停时间段
       email_alerts:
         title: 其他条目（非工作包）的电子邮件提醒
-        description: 今日提醒仅限于工作包。您可以选择继续接收这些事件的电子邮件提醒，直到它们被包含在通知中。
+        description: 今天的通知仅限于工作包。您可以选择继续接收这些事件的电子邮件提醒，直到它们被包含在通知中。
         news_added: 新闻已添加
         news_commented: 评论新闻条目
         document_added: 文档已添加

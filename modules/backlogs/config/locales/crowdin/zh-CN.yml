@@ -61,7 +61,7 @@ zh-CN:
               share_all_projects_already_taken: 无法设置，因为项目“%{name}”已经与所有项目共享。
               share_all_projects_already_taken_anonymous: 无法设置，因为另一个项目已经与所有项目共享。
         work_package:
-          backlog_bucket_xor_sprint: 无法同时分配给冲刺和积压工作存储桶。
+          backlog_bucket_xor_sprint: 无法同时指定至冲刺和积压工作存储桶。
           attributes:
             backlog_bucket:
               backlog_bucket_from_another_project: 必须与工作包属于同一个项目。

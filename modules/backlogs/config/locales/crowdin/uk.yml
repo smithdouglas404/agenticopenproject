@@ -192,7 +192,7 @@ uk:
       select_sprint_label: Вибрати спринт
       button_complete_sprint: Завершити спринт
     sprint_menu_component:
-      label_actions: Дії спринту
+      label_actions: Дії в спринті
       action_menu:
         edit_sprint: Редагувати спринт
         add_work_package: Додати пакет робіт
