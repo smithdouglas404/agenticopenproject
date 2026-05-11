@@ -174,8 +174,10 @@ module Components
         wait_for_turbo
 
         group_key = find_group(name)["data-group-key"]
-        page.find_test_selector("type-form-configuration-query-actions-#{group_key}").click
-        page.find_test_selector("type-form-configuration-edit-query-#{group_key}", visible: :all).click
+        menu_id = open_query_menu(name)
+        page.find("##{menu_id}", visible: :all)
+            .find(:test_id, "type-form-configuration-edit-query-#{group_key}", visible: :all)
+            .click
         expect(page).to have_css(".wp-table--configuration-modal")
       end
 
@@ -312,7 +314,9 @@ module Components
           menu_button = page.find_test_selector(button_selector)
           menu_id = menu_button[:"aria-controls"]
           menu_button.click
-
+          return menu_id if page.has_css?("##{menu_id}", visible: :all, wait: 2)
+        rescue Capybara::Cuprite::MouseEventFailed
+          menu_button.trigger("click")
           return menu_id if page.has_css?("##{menu_id}", visible: :all, wait: 2)
         rescue Selenium::WebDriver::Error::StaleElementReferenceError, Capybara::ElementNotFound
           next
