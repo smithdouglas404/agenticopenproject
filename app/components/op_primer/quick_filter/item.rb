@@ -26,20 +26,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 module OpPrimer
   module QuickFilter
-    class SegmentedComponent < ApplicationComponent
-      class Item < ApplicationComponent
-        attr_reader :label, :value
+    class Item < ApplicationComponent
+      attr_reader :label, :value
 
-        def initialize(label:, value:)
-          super
+      def initialize(label:, value:)
+        super
 
-          @label = label
-          @value = value
-        end
+        @label = label
+        @value = value
       end
     end
   end

@@ -30,19 +30,19 @@
 
 module OpPrimer
   module QuickFilter
-    class SegmentedComponent < ApplicationComponent
+    class SelectPanelComponent < ApplicationComponent
       include ApplicationHelper
 
       renders_many :items, OpPrimer::QuickFilter::Item
 
-      def initialize(name:, query:, filter_key:, path_args:, orders: nil)
+      def initialize(name:, query:, filter_key:, path_args:, operator: "=")
         super
 
         @name = name
         @query = query
         @filter_key = filter_key
         @path_args = path_args
-        @orders = orders
+        @operator = operator
       end
 
       def render?
@@ -51,38 +51,40 @@ module OpPrimer
 
       private
 
-      def current_value
-        @query.find_active_filter(@filter_key)&.values&.first
+      def current_values
+        @query.find_active_filter(@filter_key)&.values&.map(&:to_s) || []
       end
 
-      def href_for(value)
-        params = {}
-        filters = filters_params(value)
-        params[:filters] = filters.to_json if filters.any?
+      def current_label
+        return @name if current_values.empty?
 
-        sort = sort_params(value)
-        params[:sortBy] = sort.to_json if sort.any?
+        selected = items.select { |item| current_values.include?(item.value.to_s) }
+        return @name if selected.empty?
 
-        polymorphic_path(@path_args, params)
+        return selected.first.label if selected.size == 1
+
+        I18n.t(:label_x_items_selected, count: selected.size)
       end
 
-      def sort_params(value)
-        order_override = @orders && @orders[value]
-        if order_override
-          order_override.map { |attribute, direction| [attribute.to_s, direction.to_s] }
-        else
-          @query.orders.map { |order| [order.name, order.direction.to_s] }
+      def base_url
+        polymorphic_path(@path_args, base_url_params)
+      end
+
+      def base_url_params
+        {}.tap do |params|
+          params[:filters] = other_filters.to_json if other_filters.any?
+          params[:sortBy] = sort.to_json if sort.any?
         end
       end
 
-      def filters_params(value)
-        filters = @query.filters
+      def other_filters
+        @query.filters
           .reject { |f| f.name == @filter_key }
           .map { |f| { f.class.key.to_s => { "operator" => f.operator.to_s, "values" => f.values } } }
+      end
 
-        filters << { @filter_key.to_s => { "operator" => "=", "values" => [value] } } if value
-
-        filters
+      def sort
+        @query.orders.map { |order| [order.name, order.direction.to_s] }
       end
     end
   end
