@@ -49,7 +49,7 @@ See COPYRIGHT and LICENSE files for more details.
         )
       end
 
-      if allow_backlog_bucket_creation?(project) && OpenProject::FeatureDecisions.backlog_buckets_active?
+      if allow_backlog_bucket_creation?(project)
         head.with_actions do
           render Primer::Beta::Button.new(
             tag: :a,
@@ -75,9 +75,7 @@ See COPYRIGHT and LICENSE files for more details.
     end
   %>
 
-  <% if OpenProject::FeatureDecisions.backlog_buckets_active? %>
-    <%= render Backlogs::BucketComponent.with_collection(buckets, project:) %>
-  <% end %>
+  <%= render Backlogs::BucketComponent.with_collection(buckets, project:) %>
 
   <%=
     render Backlogs::InboxComponent.new(

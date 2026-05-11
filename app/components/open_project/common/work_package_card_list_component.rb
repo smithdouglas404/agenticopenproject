@@ -30,7 +30,7 @@
 
 module OpenProject
   module Common
-    class WorkPackageCardBoxComponent < ApplicationComponent
+    class WorkPackageCardListComponent < ApplicationComponent
       include Primer::AttributesHelper
       include OpPrimer::ComponentHelpers
 
@@ -68,12 +68,13 @@ module OpenProject
       }
 
       # @!parse
-      #   # Adds a work package item row to the box. When at least one item is
-      #   # added manually, the box does not build rows from `work_packages:`.
+      #   # Adds a work package item row to the list. When at least one item
+      #   # is added manually, the list does not build rows from
+      #   # `work_packages:`.
       #   #
       #   # @param work_package [WorkPackage] the work package rendered in the row.
       #   # @param component_klass [Class] row bridge class used instead of the
-      #   #   default item class. Defaults to the box's configured
+      #   #   default item class. Defaults to the list's configured
       #   #   `item_component_klass`. It must accept the arguments documented on
       #   #   `#build_item`, expose `#row_args` with valid
       #   #   `Primer::Beta::BorderBox#with_row` keyword arguments, and expose
@@ -88,7 +89,7 @@ module OpenProject
       #   end
 
       # @!parse
-      #   # Adds a custom empty item row to the box. This can be used instead of
+      #   # Adds a custom empty item row to the list. This can be used instead of
       #   # the `empty_state` slot when the caller owns item iteration. It cannot
       #   # be combined with `work_packages:`, `with_work_package_item`, or
       #   # `with_item`.
@@ -99,8 +100,8 @@ module OpenProject
       #   end
 
       # @!parse
-      #   # Adds a generic item to the box. When at least one item is added
-      #   # manually, the box does not build rows from `work_packages:`.
+      #   # Adds a generic item to the list. When at least one item is added
+      #   # manually, the list does not build rows from `work_packages:`.
       #   #
       #   # @param system_arguments [Hash] forwarded to
       #   #   `Primer::Beta::BorderBox#with_row`.
@@ -140,11 +141,11 @@ module OpenProject
                   :params,
                   :current_user
 
-      # @param project [Project] the project this card box is rendered in. May
+      # @param project [Project] the project this card list is rendered in. May
       #   differ from individual `work_package.project` values when sprints or
       #   buckets are shared across projects.
-      # @param container [Symbol, String, Class, ApplicationRecord] drives the box
-      #   DOM id and related ids via `dom_target`.
+      # @param container [Symbol, String, Class, ApplicationRecord] drives the
+      #   list DOM id and related ids via `dom_target`.
       # @param work_packages [Enumerable<WorkPackage>] the work packages to render
       #   as cards.
       # @param drag_and_drop [Hash, NilClass] optional generic drag-and-drop
@@ -194,9 +195,9 @@ module OpenProject
         validate_empty_state!
       end
 
-      # Builds a new work package item without adding it to the box. Use this
+      # Builds a new work package item without adding it to the list. Use this
       # instead of the `#with_work_package_item` slot when rendering additional
-      # items outside this box, such as in a separately-loaded page.
+      # items outside this list, such as in a separately-loaded page.
       #
       # @param work_package [WorkPackage] the work package rendered in the row.
       # @param component_klass [Class] item class used instead of the configured

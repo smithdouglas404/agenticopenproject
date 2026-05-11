@@ -30,28 +30,21 @@
 
 module OpenProject
   module Common
-    class WorkPackageCardBoxComponent
-      # Item bridge for caller-provided content.
-      class ContentItem < ApplicationComponent
-        def initialize(**system_arguments)
-          super()
-
-          @system_arguments = system_arguments
-        end
+    class WorkPackageCardListComponent
+      # Row bridge for caller-provided empty content.
+      class EmptyItem < ContentItem
+        include Primer::AttributesHelper
 
         def row_args
-          @system_arguments.deep_dup
+          system_arguments = @system_arguments.deep_dup
+          system_arguments[:data] = merge_data(
+            { data: { empty_list_item: true } },
+            system_arguments
+          )
+          system_arguments
         end
 
-        def card
-          self
-        end
-
-        def empty_item? = false
-
-        def call
-          content
-        end
+        def empty_item? = true
       end
     end
   end

@@ -37,7 +37,7 @@ module Backlogs
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
-      backlog_items_scope = if OpenProject::FeatureDecisions.backlog_buckets_active? && @work_package.backlog_bucket_id
+      backlog_items_scope = if @work_package.backlog_bucket_id
                               @work_package.backlog_bucket.work_packages
                             else
                               WorkPackage.backlogs_inbox_for(project: @project)
@@ -100,9 +100,7 @@ module Backlogs
 
     def replace_inbox_component_via_turbo_stream
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
-      buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
-                  BacklogBucket.for_project(@project)
-                end
+      buckets = BacklogBucket.for_project(@project)
 
       replace_via_turbo_stream(
         component: Backlogs::BacklogComponent.new(

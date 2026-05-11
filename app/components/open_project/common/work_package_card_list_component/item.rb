@@ -30,9 +30,9 @@
 
 module OpenProject
   module Common
-    class WorkPackageCardBoxComponent
-      # Internal row bridge between the card box and the visual card. It owns the
-      # surrounding BorderBox row arguments while `WorkPackageCardComponent`
+    class WorkPackageCardListComponent
+      # Internal row bridge between the card list and the visual card. It owns
+      # the surrounding BorderBox row arguments while `WorkPackageCardComponent`
       # renders the card body.
       class Item < ApplicationComponent
         include ActionView::RecordIdentifier

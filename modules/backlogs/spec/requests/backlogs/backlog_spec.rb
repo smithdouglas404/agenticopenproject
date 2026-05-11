@@ -98,8 +98,7 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
         end
 
         it "still renders the sprint planning container for turbo-frame requests" do
-          get "/projects/#{project.identifier}/backlogs/backlog",
-              headers: { "Turbo-Frame" => "backlogs_container" }
+          get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
 
           expect(response).to have_http_status(:ok)
           expect(response.body).to include('id="owner_backlogs_container"')

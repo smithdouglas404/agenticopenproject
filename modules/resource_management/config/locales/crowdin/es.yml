@@ -3,55 +3,55 @@ es:
   activerecord:
     attributes:
       resource_planner:
-        name: Name
-        start_date: Start date
-        end_date: Finish date
-        default_view_class_name: Default view
-        public: Public
-        favorite: Favorite
+        name: Nombre
+        start_date: Fecha de inicio
+        end_date: Fecha de finalización
+        default_view_class_name: Vista por defecto
+        public: Público
+        favorite: Favorito
     errors:
       models:
         resource_planner:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: debe ser posterior a la fecha de inicio.
   plugin_openproject_resource_management:
-    name: OpenProject Resource Management
-    description: Provides resource management and capacity planning.
-  project_module_resource_management: Resource management
-  permission_view_resource_planners: View resource planners
-  permission_view_resource_planners_explanation: 'Allows users to access resource planners. It allows them to create and manage their own resource planners and view public resource planners. It does not allow users to view resource planners created by other users that are not shared publicly.
+    name: Gestión de recursos de OpenProject
+    description: Proporciona gestión de recursos y planificación de capacidades.
+  project_module_resource_management: Gestión de recursos
+  permission_view_resource_planners: Ver planificadores de recursos
+  permission_view_resource_planners_explanation: 'Permite a los usuarios acceder a los planificadores de recursos. Les permite crear y gestionar sus propios planificadores de recursos, así como consultar los planificadores de recursos públicos. No permite a los usuarios consultar los planificadores de recursos creados por otros usuarios que no se hayan compartido públicamente.
 
     '
-  permission_manage_public_resource_planners: Manage public resource planners
-  permission_manage_public_resource_planners_explanation: 'Allows users to create and manage public resource planners. It allows them to view, create, manage and publish their own resource planners. It does not allow users to view resource planners created by other users that are not shared publicly.
+  permission_manage_public_resource_planners: Gestionar los planificadores de recursos públicos
+  permission_manage_public_resource_planners_explanation: 'Permite a los usuarios crear y gestionar planificadores de recursos públicos. Les permite ver, crear, gestionar y publicar sus propios planificadores de recursos. No permite a los usuarios ver los planificadores de recursos creados por otros usuarios que no se hayan compartido públicamente.
 
     '
-  label_resource_management: Resource planning
-  button_next: Save
+  label_resource_management: Planificación de recursos
+  button_next: Guardar
   resource_management:
-    label_resource_planner: Resource planner
-    label_resource_planner_plural: Resource planners
-    label_new_resource_planner: New resource planner
-    public_caption: 'Make this view public to all members of the project. This does not affect the visibility of work packages which still depends on each user permission.
+    label_resource_planner: Planificador de recursos
+    label_resource_planner_plural: Planificadores de recursos
+    label_new_resource_planner: Nuevo planificador de recursos
+    public_caption: 'Haga que esta vista sea pública para todos los miembros del proyecto. Esto no afecta a la visibilidad de los paquetes de trabajo, que sigue dependiendo de los permisos de cada usuario.
 
       '
-    favorite_caption: 'Make this view a favorite to add it on the top section of the sidebar menu.
+    favorite_caption: 'Convierta esta vista en favorita para añadirla a la sección superior del menú de la barra lateral.
 
       '
     view_types:
-      UserCardView: Users cards
+      UserCardView: Tarjetas de usuario
     action:
-      favorite: Add to favorites
-      unfavorite: Remove from favorites
-      make_public: Make public
-      make_private: Make private
-      delete: Delete
+      favorite: Añadir a favoritos
+      unfavorite: Eliminar de favoritos
+      make_public: Marcar como público
+      make_private: Marcar como privado
+      delete: Eliminar
     sidebar:
-      public: Public
-      private: Private
+      public: Público
+      private: Privado
     blankslate:
-      title: No resource planners yet
-      desc: Create a resource planner to start planning capacity for this project.
+      title: Aún no hay planificadores de recursos
+      desc: Cree un planificador de recursos para empezar a planificar la capacidad de este proyecto.
     show:
-      placeholder: The detailed view for this resource planner is coming soon.
+      placeholder: La vista detallada de este planificador de recursos estará disponible en breve.

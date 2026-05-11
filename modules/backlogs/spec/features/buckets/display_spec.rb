@@ -31,9 +31,7 @@
 require "spec_helper"
 require_relative "../../support/pages/backlog"
 
-RSpec.describe "Backlog bucket display",
-               :js,
-               with_flag: { backlog_buckets: true } do
+RSpec.describe "Backlog bucket display", :js do
   create_shared_association_defaults_for_work_package_factory
 
   shared_let(:closed_status) { create(:status, is_closed: true) }
@@ -86,16 +84,6 @@ RSpec.describe "Backlog bucket display",
     backlogs_page.visit!
 
     backlogs_page.expect_new_backlog_bucket_button
-  end
-
-  context "when the feature flag is disabled", with_flag: { backlog_buckets: false } do
-    it "shows the legacy inbox instead of backlog buckets" do
-      backlogs_page.visit!
-
-      backlogs_page.expect_no_new_backlog_bucket_button
-      backlogs_page.expect_no_backlog_bucket(bucket_alpha)
-      expect(page).to have_css("#inbox_project_#{project.id}")
-    end
   end
 
   context "without the :create_sprints permission" do

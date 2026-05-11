@@ -181,7 +181,6 @@ cs:
   label_previous_week: Předchozí týden
   label_previous_month: Předchozí měsíc
   label_specific_day: Den %{day}
-  label_specific_week: Kalendářní týden %{week}
   label_specific_month: Měsíc %{month}
   label_list: Seznam
   label_month: Měsíc

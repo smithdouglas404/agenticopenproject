@@ -64,11 +64,11 @@ pt-BR:
         confirmation: Se você continuar, o grupo sincronizado %{name} e todos os %{users_count} usuários sincronizados por meio dele serão removidos.
         info: O próprio grupo OpenProject e os membros adicionados fora desta sincronização LDAP não serão removidos.
       help_text_html: |
-        This module allows you to set up a synchronization between LDAP and OpenProject groups.
-        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
+        Este módulo permite configurar uma sincronização entre grupos LDAP e grupos do OpenProject.
+        Ele depende de grupos LDAP que utilizem o conjunto de atributos <em>groupOfNames / memberOf</em> para funcionar com o OpenProject.
         <br/>
-        Groups are synchronized hourly through a cron job.
-        [Please see our documentation on this topic](docs_url).
+        Os grupos são sincronizados a cada hora por meio de uma tarefa cron.
+        [Consulte nossa documentação sobre este tópico](docs_url).
       no_results: Nenhum grupo sincronizado encontrado.
       no_members: Este grupo ainda não tem membros sincronizados.
       plural: Grupos LDAP sincronizados

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :component do
+RSpec.describe OpenProject::Common::WorkPackageCardListComponent::Item, type: :component do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:default_status) { create(:default_status) }
   shared_let(:default_priority) { create(:default_priority) }
@@ -56,7 +56,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :co
   end
   let(:draggable_item_class) do
     stub_const(
-      "DraggableWorkPackageCardBoxItem",
+      "DraggableWorkPackageCardListItem",
       Class.new(described_class) do
         private
 

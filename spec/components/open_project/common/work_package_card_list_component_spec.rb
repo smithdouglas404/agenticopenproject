@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :component do
+RSpec.describe OpenProject::Common::WorkPackageCardListComponent, type: :component do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:default_status) { create(:default_status) }
   shared_let(:default_priority) { create(:default_priority) }
@@ -55,7 +55,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
 
   let(:custom_item_component_class) do
     stub_const(
-      "CustomWorkPackageCardBoxItem",
+      "CustomWorkPackageCardListItem",
       Class.new(ApplicationComponent) do
         def initialize(
           work_package:,
@@ -86,7 +86,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
         end
 
         def card
-          CustomWorkPackageCardBoxItemCard.new(subject: @work_package.subject)
+          CustomWorkPackageCardListItemCard.new(subject: @work_package.subject)
         end
 
         def render? = false
@@ -120,7 +120,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
 
   before do
     stub_const(
-      "CustomWorkPackageCardBoxItemCard",
+      "CustomWorkPackageCardListItemCard",
       Class.new(ApplicationComponent) do
         def initialize(subject:)
           super()

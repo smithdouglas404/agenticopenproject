@@ -30,7 +30,7 @@
 
 module OpenProject
   module Common
-    class WorkPackageCardBoxComponent
+    class WorkPackageCardListComponent
       class Header < ApplicationComponent
         include OpPrimer::ComponentHelpers
 

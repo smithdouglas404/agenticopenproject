@@ -173,7 +173,6 @@ nl:
   label_previous_week: Vorige week
   label_previous_month: Vorige maand
   label_specific_day: Dag %{day}
-  label_specific_week: Kalenderweek %{week}
   label_specific_month: Maand %{month}
   label_list: Lijst
   label_month: Maand

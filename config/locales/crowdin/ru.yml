@@ -481,10 +481,10 @@ ru:
         label: 'Роль: %{role}'
         no_role: Выберите роль
         roles:
-          one: "%{count} role selected"
+          one: One role selected
           few: "%{count} roles selected"
           many: "%{count} roles selected"
-          other: "%{count} ролей выбрано"
+          other: "%{count} roles selected"
       blankslate:
         title: Переходы статуса не настроены
         description: Добавьте статусы, чтобы начать настройку рабочих процессов для этой роли
@@ -4891,13 +4891,13 @@ ru:
       work_package_card_component:
         menu:
           label_actions: Действия с пакетом работ
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
-          label_actions: Открыть меню
+          label_actions: Open menu
           label_work_package_count:
-            zero: Пакетов работ нет
-            one: "%{count} пакет работ"
-            other: "%{count} пакетов работ"
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Добавить комментарии
   permission_add_work_packages: Добавление пакетов работ
   permission_add_messages: Написать сообщения

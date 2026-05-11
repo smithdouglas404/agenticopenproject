@@ -33,16 +33,10 @@ module WorkPackages::Scopes::BacklogsInboxFor
 
   class_methods do
     def backlogs_inbox_for(project:)
-      inbox_condition = if OpenProject::FeatureDecisions.backlog_buckets_active?
-                          { sprint_id: nil, backlog_bucket_id: nil }
-                        else
-                          { sprint_id: nil }
-                        end
-
       WorkPackage
         .visible
         .with_status_open
-        .where(project:, **inbox_condition)
+        .where(project:, sprint_id: nil, backlog_bucket_id: nil)
         .includes(:type)
         .order_by_position
         .order(WorkPackage.arel_table[:id].asc)

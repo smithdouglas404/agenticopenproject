@@ -31,7 +31,7 @@
 module OpenProject
   module Common
     # @logical_path OpenProject/Common
-    class WorkPackageCardBoxComponentPreview < ViewComponent::Preview
+    class WorkPackageCardListComponentPreview < ViewComponent::Preview
       include ActionView::RecordIdentifier
 
       def sprint_with_cards
@@ -40,16 +40,16 @@ module OpenProject
         return preview_message("No sprints in the database.") unless sprint && project
 
         work_packages = sprint.work_packages_for(project).limit(3)
-        render OpenProject::Common::WorkPackageCardBoxComponent.new(
+        render OpenProject::Common::WorkPackageCardListComponent.new(
           work_packages:,
           project:,
           container: sprint
-        ) do |box|
-          box.with_header(title: sprint.name, count: work_packages.size) do |header|
+        ) do |list|
+          list.with_header(title: sprint.name, count: work_packages.size) do |header|
             points = work_packages.sum { |w| w.story_points || 0 }
             header.with_description { "#{points} points" }
           end
-          box.with_empty_state(title: "Sprint is empty", description: "Drag work packages here")
+          list.with_empty_state(title: "Sprint is empty", description: "Drag work packages here")
         end
       end
 
@@ -58,13 +58,13 @@ module OpenProject
         project = sprint&.project
         return preview_message("No sprints in the database.") unless sprint && project
 
-        render OpenProject::Common::WorkPackageCardBoxComponent.new(
+        render OpenProject::Common::WorkPackageCardListComponent.new(
           work_packages: [], project:, container: sprint
-        ) do |box|
-          box.with_header(title: sprint.name, count: 0) do |header|
+        ) do |list|
+          list.with_header(title: sprint.name, count: 0) do |header|
             header.with_description { "0 points" }
           end
-          box.with_empty_state(title: "Sprint is empty", description: "Drag work packages here")
+          list.with_empty_state(title: "Sprint is empty", description: "Drag work packages here")
         end
       end
 
@@ -72,12 +72,12 @@ module OpenProject
         project = Project.first
         return preview_message("No project in the database.") unless project
 
-        render OpenProject::Common::WorkPackageCardBoxComponent.new(
+        render OpenProject::Common::WorkPackageCardListComponent.new(
           work_packages: [],
           project:,
           container: dom_target(:inbox, project)
-        ) do |box|
-          box.with_empty_state(title: "Inbox is empty", description: "All caught up",
+        ) do |list|
+          list.with_empty_state(title: "Inbox is empty", description: "All caught up",
                                icon: :"op-backlogs")
         end
       end
@@ -87,13 +87,13 @@ module OpenProject
         project = work_package&.project
         return preview_message("No work packages in the database.") unless work_package && project
 
-        render OpenProject::Common::WorkPackageCardBoxComponent.new(
+        render OpenProject::Common::WorkPackageCardListComponent.new(
           project:,
           container: :manual_item_demo
-        ) do |box|
-          box.with_empty_state(title: "No items", description: "Manual items can be added by callers")
-          box.with_work_package_item(work_package:)
-          box.with_item(scheme: :neutral) { "Caller-provided item" }
+        ) do |list|
+          list.with_empty_state(title: "No items", description: "Manual items can be added by callers")
+          list.with_work_package_item(work_package:)
+          list.with_item(scheme: :neutral) { "Caller-provided item" }
         end
       end
 

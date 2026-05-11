@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::WorkPackageCardBoxItemComponent, type: :component do
+RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
   include Rails.application.routes.url_helpers
 
   shared_let(:type_feature) { create(:type_feature) }

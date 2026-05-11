@@ -55,8 +55,7 @@ RSpec.describe "Backlog pagination state", :js do
     backlogs_page.expect_no_inbox_show_more
   end
 
-  it "preserves the expanded backlog state after sprint and backlog bucket actions",
-     with_flag: { backlog_buckets: true } do
+  it "preserves the expanded backlog state after sprint and backlog bucket actions" do
     # Create sprint
     backlogs_page.open_create_sprint_dialog
 

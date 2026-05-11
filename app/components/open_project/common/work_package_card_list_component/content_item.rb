@@ -28,28 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+module OpenProject
+  module Common
+    class WorkPackageCardListComponent
+      # Item bridge for caller-provided content.
+      class ContentItem < ApplicationComponent
+        def initialize(**system_arguments)
+          super()
 
-RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::EmptyItem, type: :component do
-  describe "#row_args" do
-    it "marks the row as an empty list item by default" do
-      item = described_class.new
+          @system_arguments = system_arguments
+        end
 
-      expect(item.row_args[:data]).to include(empty_list_item: true)
-    end
+        def row_args
+          @system_arguments.deep_dup
+        end
 
-    it "lets caller-supplied data override the default empty item data" do
-      item = described_class.new(
-        data: {
-          empty_list_item: false,
-          test_selector: "custom-empty-row"
-        }
-      )
+        def card
+          self
+        end
 
-      expect(item.row_args[:data]).to include(
-        empty_list_item: false,
-        test_selector: "custom-empty-row"
-      )
+        def empty_item? = false
+
+        def call
+          content
+        end
+      end
     end
   end
 end

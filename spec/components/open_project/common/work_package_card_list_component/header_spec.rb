@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Header, type: :component do
+RSpec.describe OpenProject::Common::WorkPackageCardListComponent::Header, type: :component do
   shared_let(:user) { create(:admin) }
   current_user { user }
 

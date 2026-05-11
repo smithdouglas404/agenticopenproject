@@ -483,7 +483,7 @@ sl:
         label: 'Role: %{role}'
         no_role: Select role
         roles:
-          one: "%{count} role selected"
+          one: One role selected
           two: "%{count} roles selected"
           few: "%{count} roles selected"
           other: "%{count} roles selected"
@@ -4907,7 +4907,7 @@ sl:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:

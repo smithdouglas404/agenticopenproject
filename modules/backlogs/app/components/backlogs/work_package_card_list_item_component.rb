@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class WorkPackageCardBoxItemComponent < OpenProject::Common::WorkPackageCardBoxComponent::Item
+  class WorkPackageCardListItemComponent < OpenProject::Common::WorkPackageCardListComponent::Item
     def card
       @card ||= WorkPackageCardComponent.new(work_package:, menu_src:)
     end

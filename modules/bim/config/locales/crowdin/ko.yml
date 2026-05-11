@@ -6,7 +6,7 @@ ko:
     description: 이 OpenProject 플러그인은 BIM 및 BCF 기능을 도입합니다.
   bim:
     label_bim: BIM
-    error_direct_upload_failed: Direct upload failed.
+    error_direct_upload_failed: 직접 업로드에 실패했습니다.
   bcf:
     label_bcf: BCF
     label_imported_failed: BCF 항목 가져오기 실패
