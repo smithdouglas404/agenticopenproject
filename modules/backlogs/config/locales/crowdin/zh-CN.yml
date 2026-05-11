@@ -67,7 +67,7 @@ zh-CN:
             status:
               not_active: 未激活，无法关闭。
         work_package:
-          backlog_bucket_xor_sprint: 无法同时分配给冲刺和积压工作存储桶。
+          backlog_bucket_xor_sprint: 无法同时指定至冲刺和积压工作存储桶。
           attributes:
             backlog_bucket:
               backlog_bucket_from_another_project: 必须与工作包属于同一个项目。

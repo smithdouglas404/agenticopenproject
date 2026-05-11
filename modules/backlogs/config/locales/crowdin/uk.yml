@@ -131,7 +131,7 @@ uk:
     sprint_component:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
-      label_actions: Дії спринту
+      label_actions: Дії в спринті
       label_start_sprint: Почати
       label_complete_sprint: Завершити
       start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.

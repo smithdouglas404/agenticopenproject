@@ -212,10 +212,10 @@ zh-CN:
         validation_result_component:
           checks:
             failures:
-              other: "%{count} 次检查失败"
+              other: "%{count} 个检查失败"
             success: 所有检查均通过
             warnings:
-              other: "%{count} 次检查返回警告"
+              other: "%{count} 个检查返回警告"
           summary:
             failure: 某些检查失败，系统无法按预期运行。
             success: 所有连接和系统均按预期运行。
@@ -328,7 +328,7 @@ zh-CN:
         errors:
           client_id_invalid: 配置的 OAuth 2 客户端 ID 无效。请检查配置。
           client_secret_invalid: 配置的 OAuth 2 客户端密钥无效。请检查配置。
-          nc_dependency_missing: 文件存储空间中缺少所需的依赖关系。请添加以下依赖关系：%{dependency}。
+          nc_dependency_missing: 文件存储空间中缺少所需依赖项。请添加以下依赖项：%{dependency}。
           nc_dependency_version_mismatch: "%{dependency} 应用版本不受支持。请更新您的 Nextcloud 服务器。"
           nc_host_not_found: 未在配置的主机 URL 中找到 Nextcloud 服务器。请检查配置。
           nc_oauth_request_not_found: 未找到用于获取当前连接用户的端点。请查看服务器日志，了解更多信息。
