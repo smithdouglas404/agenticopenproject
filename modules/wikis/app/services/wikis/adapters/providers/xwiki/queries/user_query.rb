@@ -36,7 +36,7 @@ module Wikis
           class UserQuery < BaseQuery
             def call(auth_strategy:)
               url = "#{provider.url.chomp('/')}/rest/"
-              Authentication[auth_strategy].call do |http|
+              Adapters::Authentication[auth_strategy].call do |http|
                 handle_response(http.get(url))
               end
             end

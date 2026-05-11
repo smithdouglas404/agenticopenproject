@@ -54,8 +54,8 @@ module Wikis
       OAuthClientToken.for_user_and_client(user, oauth_client).exists?
     end
 
-    def extract_origin_user_id(user)
-      auth_strategy_for(user).bind do |auth_strategy|
+    def extract_origin_user_id(token)
+      auth_strategy_for(token.user).bind do |auth_strategy|
         resolve("queries.user").call(auth_strategy:)
       end
     end

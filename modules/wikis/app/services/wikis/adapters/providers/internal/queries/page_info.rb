@@ -35,7 +35,7 @@ module Wikis
         module Queries
           class PageInfo < BaseQuery
             def call(input_data:, auth_strategy:)
-              Authentication[auth_strategy].call do |user|
+              Adapters::Authentication[auth_strategy].call do |user|
                 wiki_page = WikiPage.visible(user).find_by(id: input_data.identifier)
                 return failure(code: :not_found) if wiki_page.nil?
 
