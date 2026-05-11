@@ -43,14 +43,6 @@ module Wikis
                         .map { page_info(identifier: it.identifier, auth_strategy:) }
               )
             end
-
-            private
-
-            def page_info(identifier:, auth_strategy:)
-              Adapters::Input::PageInfo.build(identifier:).bind do |input|
-                provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
-              end
-            end
           end
         end
       end

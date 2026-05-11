@@ -40,9 +40,9 @@ module Wikis
         end
 
         def call(http_options: {}, **)
-          token = fetch_user_token.value_or { return Failure(it) }
-
-          yield OpenProject.httpx.bearer_auth(token.access_token).with(http_options)
+          fetch_user_token.bind do |token|
+            yield OpenProject.httpx.bearer_auth(token.access_token).with(http_options)
+          end
         end
 
         private
