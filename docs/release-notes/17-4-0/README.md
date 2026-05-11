@@ -184,7 +184,7 @@ You can now configure webhook secrets for GitHub and GitLab integrations. This i
 
 A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Andreas H., Madhu Reddy, and Anna Mund.
 
-We also want to thank Community contributor [K. Uihlein](https://github.com/kuihlein) for updating our documentation of the OpenProject GitLab Integration. This is much appreciated.
+We also want to thank Community contributor [K. Uihlein](https://github.com/kuihlein) for contributing to our documentation of the OpenProject GitLab Integration. This is much appreciated.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
