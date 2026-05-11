@@ -37,6 +37,8 @@ We will continue to expand support for additional custom field types in future r
 
 ![Comparison between Jira (right) and OpenProject (left), with highlight on imported custom fields of different types](openproject-jira-migrator-custom-fields-comparison.png)
 
+See our documentation to learn more about [the OpenProject Jira Migrator](../../installation-and-operations/jira-migration/).
+
 ### Backlog buckets in "Backlog and sprints" view
 
 Backlog buckets are now available. They allow you to group work packages within the backlog into clearly structured lists. Each bucket can be named individually and helps organize large backlogs into manageable sections, making it easier to prioritize work packages and focus on specific groups.
@@ -44,6 +46,8 @@ Backlog buckets are now available. They allow you to group work packages within 
 Work packages can be moved between buckets, sorted within each bucket, and adjusted as priorities change.
 
 ![Overlay to create a new backlog bucket in OpenProject, user can enter backlog bucket name](openproject-17-4-backlog-bucket-create.png)
+
+[Learn more about Backlog and sprints with OpenProject](../../user-guide/backlogs-scrum/).
 
 ### Backlog card draggable + one-click for side panel
 
@@ -63,6 +67,8 @@ You can now start and complete sprints directly from the sprint header by clicki
 You can now copy workflow settings from one role to other roles, using a dedicated dialog. This makes it easier to apply consistent workflows across roles and reduces manual configuration effort.
 
 ![Overlay in the OpenProject workflow settings: Copy workflow of "Task" to other roles, user can select multiple roles](openproject-17-4-workflow-copy-to-roles.png)
+
+[See our system admin guide to learn about work package workflows in OpenProject](../../system-admin-guide/manage-work-packages/work-package-workflows/).
 
 ### New widget for upcoming meetings on Project Overview and Home page
 
