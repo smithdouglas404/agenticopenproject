@@ -10,7 +10,7 @@
   ) do |subheader|
     subheader.with_quick_filter do
       render(
-        OpPrimer::QuickFilter::SegmentedComponent.new(
+        OpPrimer::QuickFilter::SegmentedControlComponent.new(
           name: I18n.t(:label_meeting_date_time),
           query: @query,
           filter_key: :time,
