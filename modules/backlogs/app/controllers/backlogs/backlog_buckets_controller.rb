@@ -32,7 +32,6 @@ module Backlogs
   class BacklogBucketsController < BaseController
     include OpTurbo::ComponentStream
 
-    before_action :check_feature_flag
     before_action :find_backlog_bucket, only: %i[edit_dialog destroy_dialog update destroy]
 
     def new_dialog
@@ -101,10 +100,6 @@ module Backlogs
         ),
         status: :bad_request
       )
-    end
-
-    def check_feature_flag
-      render_404 unless OpenProject::FeatureDecisions.backlog_buckets_active?
     end
 
     def find_backlog_bucket
