@@ -62,7 +62,7 @@ module WorkPackageTypes
         "type-form-configuration-inactive-container",
         view_context.render(
           WorkPackageTypes::FormConfiguration::InactiveAttributesListComponent.new(
-            inactives: form_configuration_groups(@type)[:inactives],
+            inactive_attributes: form_configuration_groups(@type)[:inactives],
             type: @type
           )
         )

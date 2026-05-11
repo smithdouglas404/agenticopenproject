@@ -37,7 +37,7 @@ module WorkPackageTypes
       super(type)
       @type = type
       @groups = form_attributes[:actives].reject { |g| g[:key].to_s == "__empty" }
-      @inactives = form_attributes[:inactives]
+      @inactive_attributes = form_attributes[:inactives]
       @no_filter_query = no_filter_query
     end
 

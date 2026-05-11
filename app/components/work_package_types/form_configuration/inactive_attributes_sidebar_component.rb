@@ -33,10 +33,10 @@ module WorkPackageTypes
     class InactiveAttributesSidebarComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      def initialize(type:, inactives:)
+      def initialize(type:, inactive_attributes:)
         super
         @type = type
-        @inactives = inactives
+        @inactive_attributes = inactive_attributes
       end
     end
   end

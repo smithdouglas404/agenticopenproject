@@ -31,10 +31,10 @@
 module WorkPackageTypes
   module FormConfiguration
     class InactiveAttributesListComponent < ApplicationComponent
-      def initialize(type:, inactives:)
+      def initialize(type:, inactive_attributes:)
         super
         @type = type
-        @inactives = inactives
+        @inactive_attributes = inactive_attributes
       end
 
       private

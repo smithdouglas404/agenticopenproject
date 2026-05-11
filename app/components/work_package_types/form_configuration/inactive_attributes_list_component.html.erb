@@ -11,7 +11,7 @@
         data: { "test-selector": "type-form-configuration-inactive-list" }
       )
     ) do |list|
-      if @inactives.empty?
+      if @inactive_attributes.empty?
         list.with_item(
           label: t("types.edit.form_configuration.no_inactive_attributes"),
           disabled: true,
@@ -20,7 +20,7 @@
           data: { "empty-list-item": true }
         )
       else
-        @inactives.each do |attribute|
+        @inactive_attributes.each do |attribute|
           list.with_item(
             label: attribute[:translation],
             classes: "type-form-configuration-page--inactive-item",
