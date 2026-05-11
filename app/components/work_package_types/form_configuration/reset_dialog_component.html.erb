@@ -13,8 +13,8 @@
     )
   ) do |dialog|
     dialog.with_confirmation_message do |message|
-      message.with_heading(tag: :h2) { t("types.edit.form_configuration.reset_title") }
-      message.with_description_content(t("types.edit.form_configuration.confirm_reset"))
+      message.with_heading(tag: :h2) { t("types.edit.form_configuration.confirm_reset") }
+      message.with_description_content(t("types.edit.form_configuration.reset_description"))
     end
 
     dialog.with_additional_details do
