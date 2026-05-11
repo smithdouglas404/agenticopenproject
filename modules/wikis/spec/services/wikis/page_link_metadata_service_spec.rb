@@ -47,7 +47,7 @@ module Wikis
       Adapters::Registry.stub("internal.queries.page_info", query_class_double)
 
       build_inputs.each do |input|
-        allow(query_double).to receive(:call).with(input).and_return(
+        allow(query_double).to receive(:call).with(input_data: input, auth_strategy: anything).and_return(
           Success(
             Adapters::Results::PageInfo.new(title: "Wikis, now with more cheese! Part #{input.identifier}",
                                             identifier: input.identifier,
@@ -89,7 +89,7 @@ module Wikis
 
         new_page_links.map do |pl|
           input = Adapters::Input::PageInfo.build(identifier: pl.identifier).value_or(nil)
-          allow(new_double).to receive(:call).with(input).and_return(
+          allow(new_double).to receive(:call).with(input_data: input, auth_strategy: anything).and_return(
             Success(
               Adapters::Results::PageInfo.new(title: "Wikis, now with more cheese! Part #{pl.id}",
                                               identifier: input.identifier,
