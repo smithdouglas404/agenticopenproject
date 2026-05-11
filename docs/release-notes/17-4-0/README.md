@@ -26,6 +26,8 @@ Take a look at our release video showing the most important features introduced 
 
 With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly. While the feature is not yet fully complete and still in Beta, it is ready to be tested – preferably first in a non productive environment. We encourage users to try the Jira Migrator and share their feedback. 
 
+![OpenProject Jira Migrator with note that it is a Beta version, listing supported data and what is coming soon or later](openproject-jira-migrator-beta.png)
+
 > [!NOTE]
 > If you would like to share anonymized data from your Jira Migrator usage to support our development team, please [reach out to us](https://www.openproject.org/contact/). We are happy to sign an NDA to ensure confidentiality.
 
@@ -33,7 +35,7 @@ It is now possible to migrate basic custom fields from Jira to OpenProject. This
 
 We will continue to expand support for additional custom field types in future releases to enable even more complete migrations.
 
-Screenshot
+![Comparison between Jira (right) and OpenProject (left), with highlight on imported custom fields of different types](openproject-jira-migrator-custom-fields-comparison.png)
 
 ### Backlog buckets in "Backlog and sprints" view
 
@@ -179,7 +181,10 @@ You can now configure webhook secrets for GitHub and GitLab integrations. This i
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
+
 A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Andreas H., Madhu Reddy, and Anna Mund.
+
+We also want to thank Community contributor [K. Uihlein](https://github.com/kuihlein) for updating our documentation of the OpenProject GitLab Integration. This is much appreciated.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
