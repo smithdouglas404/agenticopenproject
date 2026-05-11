@@ -36,13 +36,13 @@ RSpec.describe Wikis::Adapters::Authentication do
     subject(:strategy_object) { described_class[strategy] }
 
     context "with a bearer_token strategy" do
-      let(:strategy) { Wikis::Adapters::Input::Strategy.build(key: :bearer_token, user: build_stubbed(:user)).value! }
+      let(:strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user: build_stubbed(:user)).value! }
 
       it { is_expected.to be_a(Wikis::Adapters::AuthenticationStrategies::BearerToken) }
     end
 
     context "with an internal strategy" do
-      let(:strategy) { Wikis::Adapters::Input::Strategy.build(key: :internal, user: build_stubbed(:user)).value! }
+      let(:strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :internal, user: build_stubbed(:user)).value! }
 
       it { is_expected.to be_a(Wikis::Adapters::AuthenticationStrategies::InternalUser) }
     end

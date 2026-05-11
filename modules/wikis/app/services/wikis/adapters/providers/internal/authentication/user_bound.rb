@@ -39,7 +39,7 @@ module Wikis
             end
 
             def call(user)
-              Input::Strategy.build(key: :internal, user:, provider: @model)
+              Input::AuthStrategy.build(key: :internal, user:, provider: @model)
             end
           end
         end

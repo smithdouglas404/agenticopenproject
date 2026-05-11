@@ -28,18 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Input
-      class StrategyContract < DryApplicationContract
-        AUTH_METHODS = %i[bearer_token internal].to_set.freeze
+require "spec_helper"
+require_module_spec_helper
 
-        params do
-          required(:key).filled(:symbol, included_in?: AUTH_METHODS)
-          optional(:user).maybe
-          optional(:provider).maybe
-        end
-      end
+RSpec.describe Wikis::Adapters::Input::AuthStrategy do
+  describe ".build" do
+    let(:user) { build_stubbed(:user) }
+
+    context "with a :bearer_token key and a user" do
+      subject(:result) { described_class.build(key: :bearer_token, user:) }
+
+      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :bearer_token, user:)) }
+    end
+
+    context "with an :internal key and a user" do
+      subject(:result) { described_class.build(key: :internal, user:) }
+
+      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :internal, user:)) }
+    end
+
+    context "with an unknown key" do
+      subject(:result) { described_class.build(key: :unknown) }
+
+      it { is_expected.to be_failure }
     end
   end
 end

@@ -32,7 +32,7 @@ module Wikis
   module Adapters
     class Authentication
       class << self
-        # @param strategy [Input::Strategy]
+        # @param strategy [Input::AuthStrategy]
         def [](strategy)
           case strategy.key
           when :bearer_token

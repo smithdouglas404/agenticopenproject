@@ -28,12 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters::Input
-  Strategy = Data.define(:key, :user, :provider) do
-    private_class_method :new
+module Wikis
+  module Adapters
+    module Input
+      class AuthStrategyContract < DryApplicationContract
+        AUTH_METHODS = %i[bearer_token internal].to_set.freeze
 
-    def self.build(key:, user: nil, provider: nil, contract: StrategyContract.new)
-      contract.call(key:, user:, provider:).to_monad.fmap { new(**it.to_h) }
+        params do
+          required(:key).filled(:symbol, included_in?: AUTH_METHODS)
+          optional(:user).maybe
+          optional(:provider).maybe
+        end
+      end
     end
   end
 end

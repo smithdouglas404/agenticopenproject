@@ -28,29 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require_module_spec_helper
+module Wikis::Adapters::Input
+  AuthStrategy = Data.define(:key, :user, :provider) do
+    private_class_method :new
 
-RSpec.describe Wikis::Adapters::Input::Strategy do
-  describe ".build" do
-    let(:user) { build_stubbed(:user) }
-
-    context "with a :bearer_token key and a user" do
-      subject(:result) { described_class.build(key: :bearer_token, user:) }
-
-      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :bearer_token, user:)) }
-    end
-
-    context "with an :internal key and a user" do
-      subject(:result) { described_class.build(key: :internal, user:) }
-
-      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :internal, user:)) }
-    end
-
-    context "with an unknown key" do
-      subject(:result) { described_class.build(key: :unknown) }
-
-      it { is_expected.to be_failure }
+    def self.build(key:, user: nil, provider: nil, contract: AuthStrategyContract.new)
+      contract.call(key:, user:, provider:).to_monad.fmap { new(**it.to_h) }
     end
   end
 end

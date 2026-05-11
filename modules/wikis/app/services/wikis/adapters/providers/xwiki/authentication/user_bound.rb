@@ -39,7 +39,7 @@ module Wikis
             end
 
             def call(user)
-              Input::Strategy.build(key: :bearer_token, user:, provider: @model)
+              Input::AuthStrategy.build(key: :bearer_token, user:, provider: @model)
             end
           end
         end
