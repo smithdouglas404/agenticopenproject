@@ -35,10 +35,10 @@ class Header::ProjectsController < ApplicationController
 
   def index
     @current_project_id = params[:current_project_id]&.to_i
-    @jump               = params[:jump].presence
-    @projects           = load_projects
-    @favorited_ids      = load_favorited_ids
-    @tree               = build_tree(@projects)
+    @jump = params[:jump].presence
+    @projects = load_projects
+    @favorited_ids = load_favorited_ids
+    @tree = build_tree(@projects)
 
     render layout: false
   end
@@ -54,30 +54,29 @@ class Header::ProjectsController < ApplicationController
   end
 
   def load_projects
+    projects = base_scope.to_a
+    ensure_current_project_present(projects)
+  end
+
+  def base_scope
     scope = Project.visible.active.order(:lft).limit(MAX_NUMBER_OF_PROJECTS)
-
     scope = scope.where("LOWER(name) LIKE LOWER(?)", "%#{ActiveRecord::Base.sanitize_sql_like(query)}%") if query.present?
+    scope = scope.where(id: favorite_project_ids) if filter_mode == "favorited" && User.current.logged?
+    scope
+  end
 
-    if filter_mode == "favorited" && User.current.logged?
-      favorite_ids = Favorite.where(favorited_type: "Project", user_id: User.current.id).select(:favorited_id)
-      scope = scope.where(id: favorite_ids)
-    end
+  def ensure_current_project_present(projects)
+    return projects if query.present? || @current_project_id.blank?
+    return projects if projects.any? { |p| p.id == @current_project_id }
 
-    projects = scope.to_a
+    current = Project.visible.active.find_by(id: @current_project_id)
+    return projects unless current
 
-    # When not searching, ensure the current project is always present in the result
-    # even if it sits beyond the MAX_NUMBER_OF_PROJECTS limit (e.g. large instances).
-    if query.blank? && @current_project_id.present? && projects.none? { |p| p.id == @current_project_id }
-      current = Project.visible.active.find_by(id: @current_project_id)
+    (projects + current.self_and_ancestors.active.to_a).uniq(&:id).sort_by(&:lft)
+  end
 
-      if current
-        # Include its ancestors so the tree path is intact.
-        extras = current.self_and_ancestors.active.to_a
-        projects = (projects + extras).uniq(&:id).sort_by(&:lft)
-      end
-    end
-
-    projects
+  def favorite_project_ids
+    Favorite.where(favorited_type: "Project", user_id: User.current.id).select(:favorited_id)
   end
 
   def load_favorited_ids
@@ -91,6 +90,7 @@ class Header::ProjectsController < ApplicationController
 
   # Builds a nested structure from a flat, lft-ordered list of projects.
   # Projects whose parent is not in the result set appear as roots.
+  # Each level is sorted alphabetically by project name.
   def build_tree(projects)
     nodes = projects.index_by(&:id).transform_values { |p| { project: p, children: [] } }
 
@@ -106,6 +106,13 @@ class Header::ProjectsController < ApplicationController
       end
     end
 
-    roots
+    sort_nodes(roots)
+  end
+
+  def sort_nodes(nodes)
+    nodes.sort_by { |n| n[:project].name.downcase }.each do |node|
+      node[:children] = sort_nodes(node[:children])
+      node[:expanded] = node[:children].any? { |c| c[:project].id == @current_project_id || c[:expanded] }
+    end
   end
 end

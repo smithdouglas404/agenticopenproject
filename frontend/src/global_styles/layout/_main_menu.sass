@@ -89,7 +89,7 @@ $arrow-left-width: 36px
         align-items: center
 
     // -------------------- MAIN menu items ---------------------------
-    li a
+    li a:not(.Button)
       // work around due to dom manipulation on document: ready:
       // this isn't scoped to .main-item-wrapper to avoid flickering
       padding-left: var(--main-menu-x-spacing)

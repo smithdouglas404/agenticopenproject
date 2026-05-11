@@ -34,8 +34,8 @@ module Header
 
     def initialize(current_project: nil, current_user: User.current, current_menu_item: nil)
       super()
-      @current_project   = current_project
-      @current_user      = current_user
+      @current_project = current_project
+      @current_user = current_user
       @current_menu_item = current_menu_item
     end
 
