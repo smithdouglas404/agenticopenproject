@@ -309,6 +309,7 @@ module Components
 
       def open_menu(button_selector)
         menu_id = nil
+        menu_button = nil
 
         3.times do
           menu_button = page.find_test_selector(button_selector)
@@ -316,7 +317,7 @@ module Components
           menu_button.click
           return menu_id if page.has_css?("##{menu_id}", visible: :all, wait: 2)
         rescue Capybara::Cuprite::MouseEventFailed
-          menu_button.trigger("click")
+          menu_button&.trigger("click")
           return menu_id if page.has_css?("##{menu_id}", visible: :all, wait: 2)
         rescue Selenium::WebDriver::Error::StaleElementReferenceError, Capybara::ElementNotFound
           next
