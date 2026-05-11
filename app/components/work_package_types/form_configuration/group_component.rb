@@ -108,7 +108,7 @@ module WorkPackageTypes
         return {} if query_group? || @group[:key].blank? || temporary_group?
 
         {
-          "admin--type-form-configuration-rows-drag-and-drop-target": "container",
+          "admin--type-form-configuration--rows-drag-and-drop-target": "container",
           "target-container-accessor": ".Box > ul",
           "target-id": @group[:key],
           "target-allowed-drag-type": "attribute"

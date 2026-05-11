@@ -28,36 +28,37 @@
  * ++
  */
 
-import TypeFormConfigurationDragAndDropController from './type-form-configuration-drag-and-drop.controller';
-import type { Drake } from 'dragula';
-import type { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
+import GenericDragAndDropController from '../../generic-drag-and-drop.controller';
 
-interface ReconnectableDragAndDropController {
-  drake:Drake|null;
-  autoscroll:DomAutoscrollService|null;
-  connect:() => void;
-}
+export default class extends GenericDragAndDropController {
+  protected buildData(el:Element, target:Element):FormData {
+    const data = super.buildData(el, target);
 
-export default class TypeFormConfigurationRowsDragAndDropController extends TypeFormConfigurationDragAndDropController {
-  static targets = ['container', 'scrollContainer'];
+    if (!data.get('target_id')) {
+      const targetId = this.formConfigurationTargetId(target);
+      if (targetId) {
+        data.append('target_id', targetId);
+      }
+    }
+
+    return data;
+  }
 
   async drop(el:Element, target:Element, source:Element|null, sibling:Element|null) {
+    if (this.element.querySelector('[data-edit-mode="true"]')) {
+      if (!window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
+        this.cancelDrag();
+        return;
+      }
+    }
+
     await super.drop(el, target, source, sibling);
+  }
 
-    // After drop completes and DOM updates, reinitialize dragula
-    setTimeout(() => {
-      if (!this.element.isConnected) return;
-
-      const parent = this as unknown as ReconnectableDragAndDropController;
-      if (parent.drake) {
-        parent.drake.destroy();
-        parent.drake = null;
-      }
-      if (parent.autoscroll) {
-        parent.autoscroll.destroy();
-        parent.autoscroll = null;
-      }
-      super.connect();
-    }, 300);
+  private formConfigurationTargetId(target:Element):string|null {
+    return target.closest<HTMLElement>('[data-group-key]')?.dataset.groupKey
+      ?? target.getAttribute('data-target-id')
+      ?? target.closest<HTMLElement>('[data-target-id]')?.getAttribute('data-target-id')
+      ?? null;
   }
 }

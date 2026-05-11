@@ -42,8 +42,8 @@ module WorkPackageTypes
       def container_data
         {
           "test-selector": "type-form-configuration-inactive-container",
-          "admin--type-form-configuration-target": "inactiveContainer",
-          "admin--type-form-configuration-rows-drag-and-drop-target": "container",
+          "admin--type-form-configuration--main-target": "inactiveContainer",
+          "admin--type-form-configuration--rows-drag-and-drop-target": "container",
           "target-container-accessor": "[data-test-selector='type-form-configuration-inactive-list']",
           "target-id": "inactive",
           "target-allowed-drag-type": "attribute"

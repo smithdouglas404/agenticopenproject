@@ -47,11 +47,11 @@ module WorkPackageTypes
 
     def wrapper_data
       {
-        controller: "admin--type-form-configuration admin--type-form-configuration-rows-drag-and-drop",
-        "admin--type-form-configuration-no-filter-query-value": @no_filter_query,
-        "admin--type-form-configuration-add-group-url-value": add_group_type_form_configuration_groups_path(@type),
-        "admin--type-form-configuration-groups-url-value": type_form_configuration_groups_path(@type),
-        "admin--type-form-configuration-rows-drag-and-drop-handle-selector-value": ".attribute-handle"
+        controller: "admin--type-form-configuration--main admin--type-form-configuration--rows-drag-and-drop",
+        "admin--type-form-configuration--main-no-filter-query-value": @no_filter_query,
+        "admin--type-form-configuration--main-add-group-url-value": add_group_type_form_configuration_groups_path(@type),
+        "admin--type-form-configuration--main-groups-url-value": type_form_configuration_groups_path(@type),
+        "admin--type-form-configuration--rows-drag-and-drop-handle-selector-value": ".attribute-handle"
       }
     end
 
