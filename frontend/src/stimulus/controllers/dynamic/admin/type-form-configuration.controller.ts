@@ -50,11 +50,6 @@ export default class TypeFormConfigurationController extends Controller {
   declare readonly groupsUrlValue:string;
   declare readonly updateUrlValue:string;
 
-  addAttributeGroup(event:Event) {
-    event.preventDefault();
-    void this.postNewGroup('attribute');
-  }
-
   addQueryGroup(event:Event) {
     event.preventDefault();
 

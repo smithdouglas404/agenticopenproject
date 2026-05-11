@@ -32,9 +32,10 @@
             ) do |menu|
               menu.with_item(
                 label: t("types.edit.form_configuration.add_attribute_group"),
-                tag: :button,
+                tag: :a,
+                href: add_group_type_form_configuration_groups_path(@type, group_type: :attribute),
                 content_arguments: {
-                  data: { action: "click->admin--type-form-configuration#addAttributeGroup" }
+                  data: { turbo_method: :post, turbo_stream: true }
                 }
               ) do |item|
                 item.with_leading_visual_icon(icon: :rows)
