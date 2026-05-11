@@ -36,7 +36,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
   let(:oauth_client) { build_stubbed(:oauth_client) }
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.local/") }
   let(:rest_url) { "https://xwiki.local/rest/" }
-  let(:auth_strategy) { Wikis::Adapters::Input::Strategy.build(key: :bearer_token, user:) }
+  let(:auth_strategy) { Wikis::Adapters::Input::Strategy.build(key: :bearer_token, user:).value! }
 
   subject(:query) { described_class.new(model: wiki_provider) }
 

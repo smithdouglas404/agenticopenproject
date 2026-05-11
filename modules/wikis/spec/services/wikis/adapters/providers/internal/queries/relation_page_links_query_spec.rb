@@ -35,7 +35,7 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
 
   let(:provider) { create(:internal_wiki_provider) }
   let(:input_data) { Wikis::Adapters::Input::RelationPageLinks.build(linkable: work_package).value! }
-  let(:auth_strategy) { provider.auth_strategy_for(current_user) }
+  let(:auth_strategy) { provider.auth_strategy_for(current_user).value! }
 
   let(:wiki_page) { create(:wiki_page) }
   let(:project) { wiki_page.project }

@@ -55,8 +55,9 @@ module Wikis
     end
 
     def extract_origin_user_id(user)
-      auth_strategy = auth_strategy_for(user)
-      resolve("queries.user").call(auth_strategy:)
+      auth_strategy_for(user).bind do |auth_strategy|
+        resolve("queries.user").call(auth_strategy:)
+      end
     end
 
     def authenticate_via_two_way_oauth2?

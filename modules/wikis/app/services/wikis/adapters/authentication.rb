@@ -34,15 +34,11 @@ module Wikis
       class << self
         # @param strategy [Input::Strategy]
         def [](strategy)
-          auth = strategy.value_or { raise ArgumentError, "Invalid authentication strategy '#{it.inspect}'" }
-
-          case auth.key
+          case strategy.key
           when :bearer_token
-            AuthenticationStrategies::BearerToken.new(auth.user)
+            AuthenticationStrategies::BearerToken.new(strategy.user)
           when :internal
-            AuthenticationStrategies::InternalUser.new(auth.user)
-          else
-            raise ArgumentError, "Unknown authentication scheme: #{auth.key}"
+            AuthenticationStrategies::InternalUser.new(strategy.user)
           end
         end
       end

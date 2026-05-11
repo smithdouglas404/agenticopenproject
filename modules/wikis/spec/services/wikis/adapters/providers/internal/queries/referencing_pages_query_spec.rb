@@ -35,7 +35,7 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::ReferencingPages d
 
   let(:provider) { create(:internal_wiki_provider) }
   let(:input_data) { Wikis::Adapters::Input::ReferencingPages.build(linkable:).value! }
-  let(:auth_strategy) { provider.auth_strategy_for(current_user) }
+  let(:auth_strategy) { provider.auth_strategy_for(current_user).value! }
   let(:linkable) { create(:work_package) }
 
   let(:wiki_page) { create(:wiki_page) }
