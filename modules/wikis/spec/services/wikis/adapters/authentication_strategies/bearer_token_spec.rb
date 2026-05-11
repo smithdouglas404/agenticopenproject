@@ -65,5 +65,17 @@ RSpec.describe Wikis::Adapters::AuthenticationStrategies::BearerToken, :webmock 
 
       expect(request_stub).to have_been_requested
     end
+
+    context "when no OAuth token exists for the user" do
+      let(:oauth_client_token) { nil }
+
+      it "returns a missing_token failure without yielding" do
+        expect { |b| strategy.call(provider:, &b) }.not_to yield_control
+
+        result = strategy.call(provider:) { raise "should not be called" }
+        expect(result).to be_failure
+        expect(result.failure.code).to eq(:missing_token)
+      end
+    end
   end
 end

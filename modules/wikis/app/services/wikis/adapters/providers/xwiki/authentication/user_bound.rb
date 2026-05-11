@@ -34,7 +34,7 @@ module Wikis
       module XWiki
         module Authentication
           class UserBound
-            def initialize(_model:); end
+            def initialize(**); end
 
             def call(user)
               Input::Strategy.build(key: :bearer_token, user:)

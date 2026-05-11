@@ -34,7 +34,7 @@ module Wikis
       module XWiki
         module Queries
           class PageInfo < BaseQuery
-            def call(input_data:, _auth_strategy:)
+            def call(input_data:, **)
               titles = [
                 "What makes XWiki special?",
                 "API documentation",

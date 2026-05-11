@@ -34,7 +34,7 @@ module Wikis
       module Internal
         module Authentication
           class UserBound
-            def initialize(_model:); end
+            def initialize(**); end
 
             def call(user)
               Input::Strategy.build(key: :internal, user:)

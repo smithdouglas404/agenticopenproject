@@ -34,7 +34,7 @@ module Wikis
       module XWiki
         module Queries
           class RelationPageLinks < BaseQuery
-            def call(input_data:, _auth_strategy:) # rubocop:disable Metrics/AbcSize
+            def call(input_data:, **) # rubocop:disable Metrics/AbcSize
               # TODO: use real API endpoints once available
 
               title = [

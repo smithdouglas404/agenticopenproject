@@ -34,7 +34,7 @@ module Wikis
       module XWiki
         module Queries
           class ReferencingPages < BaseQuery
-            def call(input_data:, _auth_strategy:)
+            def call(input_data:, **)
               # TODO: use real API endpoints once available
 
               title = [
