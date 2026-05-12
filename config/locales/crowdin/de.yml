@@ -436,8 +436,8 @@ de:
           checkbox_label: Mir ist bewusst, dass dies alle Arbeitspaket-Kennungen dauerhaft ändern wird
         success_banner: Das Format der Arbeitspaket-Kennung wurde erfolgreich aktualisiert.
         in_progress:
-          converting_banner_message: Projektkennungen werden derzeit in das semantische Format konvertiert. Dies kann einige Zeit dauern.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          converting_to_semantic_banner_message: Projektkennungen werden derzeit in das semantische Format konvertiert. Dies kann einige Zeit dauern.
+          converting_to_classic_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Standard-Übergänge

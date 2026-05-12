@@ -427,8 +427,8 @@ ko:
           checkbox_label: 이렇게 하면 모든 작업 패키지 ID가 영구적으로 변경됨을 이해합니다
         success_banner: 작업 패키지 식별자 형식을 업데이트했습니다.
         in_progress:
-          converting_banner_message: 프로젝트 식별자를 시맨틱 형식으로 현재 변환하는 중입니다. 시간이 다소 걸릴 수 있습니다.
-          reverting_banner_message: 프로젝트 식별자를 클래식 형식으로 현재 되돌리는 중입니다. 시간이 다소 걸릴 수 있습니다.
+          converting_to_semantic_banner_message: 프로젝트 식별자를 시맨틱 형식으로 현재 변환하는 중입니다. 시간이 다소 걸릴 수 있습니다.
+          converting_to_classic_banner_message: 프로젝트 식별자를 클래식 형식으로 현재 되돌리는 중입니다. 시간이 다소 걸릴 수 있습니다.
     workflows:
       tabs:
         default_transitions: 기본 전환

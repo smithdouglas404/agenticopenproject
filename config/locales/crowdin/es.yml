@@ -436,8 +436,8 @@ es:
           checkbox_label: Entiendo que esto cambiará de forma permanente todos los ID de los paquetes de trabajo
         success_banner: Se ha actualizado correctamente el formato del identificador del paquete de trabajo.
         in_progress:
-          converting_banner_message: Actualmente se están convirtiendo los identificadores de proyectos a formato semántico. Esto puede llevar algún tiempo.
-          reverting_banner_message: Actualmente se están volviendo a establecer los identificadores de proyectos en su formato clásico. Esto puede llevar algún tiempo.
+          converting_to_semantic_banner_message: Actualmente se están convirtiendo los identificadores de proyectos a formato semántico. Esto puede llevar algún tiempo.
+          converting_to_classic_banner_message: Actualmente se están volviendo a establecer los identificadores de proyectos en su formato clásico. Esto puede llevar algún tiempo.
     workflows:
       tabs:
         default_transitions: Transiciones predeterminadas
