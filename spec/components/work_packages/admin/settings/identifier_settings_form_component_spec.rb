@@ -73,11 +73,14 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     end
 
     context "when reversion is in progress" do
-      before { allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(true) }
+      before do
+        allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(true)
+        allow(Project).to receive(:with_non_classic_identifier).and_return(double(count: 3))
+      end
 
-      it "renders the reverting banner message without a count" do
+      it "renders the converting-to-classic banner with the pending project count" do
         render_component(component)
-        expect(page).to have_text("Project identifiers are currently being reverted to classic format.")
+        expect(page).to have_text("3 projects remaining")
         expect(ProjectIdentifiers::PendingProjectsFinder).not_to have_received(:project_ids)
       end
     end

@@ -452,7 +452,9 @@ en:
           converting_banner_message:
             one: Project identifiers are being converted to semantic format. 1 project remaining.
             other: Project identifiers are being converted to semantic format. %{count} projects remaining.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          reverting_banner_message:
+            one: Project identifiers are being converted to classic format. 1 project remaining.
+            other: Project identifiers are being converted to classic format. %{count} projects remaining.
     workflows:
       tabs:
         default_transitions: "Default transitions"

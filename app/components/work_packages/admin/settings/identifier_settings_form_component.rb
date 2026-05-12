@@ -65,7 +65,9 @@ module WorkPackages
 
         def in_progress_banner_message
           if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
-            I18n.t("admin.settings.work_packages_identifier.in_progress.reverting_banner_message")
+            pending_count = Project.with_non_classic_identifier.count
+            I18n.t("admin.settings.work_packages_identifier.in_progress.reverting_banner_message",
+                   count: pending_count)
           else
             pending_count = ProjectIdentifiers::PendingProjectsFinder.project_ids.size
             I18n.t("admin.settings.work_packages_identifier.in_progress.converting_banner_message",
