@@ -35,7 +35,7 @@ It is now possible to migrate basic custom fields from Jira to OpenProject. This
 
 We will continue to expand support for additional custom field types in future releases to enable even more complete migrations.
 
-![Comparison between Jira (right) and OpenProject (left), with highlight on imported custom fields of different types](openproject-jira-migrator-custom-fields-comparison.png)
+![Work package in OpenProject with imported custom fields from Jira](openproject-17-4-jira-migrator-custom-fields-work-package.png)
 
 See our documentation to learn more about [the OpenProject Jira Migrator](../../installation-and-operations/jira-migration/).
 
