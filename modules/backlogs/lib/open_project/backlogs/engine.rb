@@ -86,7 +86,7 @@ module OpenProject::Backlogs
                      "backlogs/inbox": %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,
-                   dependencies: :view_sprints
+                   dependencies: %i[view_sprints edit_work_packages]
 
         permission :share_sprint,
                    { "projects/settings/backlog_sharings": %i[show update] },
