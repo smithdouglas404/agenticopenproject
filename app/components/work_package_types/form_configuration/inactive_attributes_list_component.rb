@@ -31,6 +31,8 @@
 module WorkPackageTypes
   module FormConfiguration
     class InactiveAttributesListComponent < ApplicationComponent
+      include OpTurbo::Streamable
+
       def initialize(type:, inactive_attributes:)
         super
         @type = type
