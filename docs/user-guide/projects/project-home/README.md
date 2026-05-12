@@ -49,12 +49,14 @@ The **Overview** tab is a pre-configured to provide a concise summary of the pro
   - [Status](./project-widgets/#status-widget) 
 
   - [Subitems](./project-widgets/#subitems-widget) 
+  - [Meetings](project-widgets/#meetings-widget)
+    > [!TIP]
+    > If you do not see the meeting widgets displayed, make sure the Meetings module is activated for the project. 
 
   - [Members](./project-widgets/#members-widget) 
 
   - [News](project-widgets/#news-widget) 
 
-  - [Meetings](project-widgets/#meetings-widget)
     
     > [!TIP]
     > If you do not see the meeting widgets displayed, make sure the Meetings module is activated for the project.
