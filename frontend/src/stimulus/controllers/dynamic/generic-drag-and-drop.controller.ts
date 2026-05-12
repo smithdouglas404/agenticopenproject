@@ -179,15 +179,19 @@ export default class GenericDragAndDropController extends Controller {
       return;
     }
 
+    (el as HTMLElement).hidden = true;
+
     try {
       const request = new FetchRequest('put', dropUrl, { body: data, responseKind: 'turbo-stream' });
       const response = await request.perform();
 
       if (!response.ok) {
+        (el as HTMLElement).hidden = false;
         this.revertDrop(el);
         debugLog(`Failed to sort item: ${response.statusCode}`);
       }
     } catch (error) {
+      (el as HTMLElement).hidden = false;
       this.revertDrop(el);
       debugLog('Failed to sort item due to request error', error);
     } finally {
