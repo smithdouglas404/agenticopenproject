@@ -46,8 +46,8 @@ module Wikis
               results = []
 
               if input_data.linkable.id % 2 == 0
-                results << Success(Results::PageInfo.new(identifier: "1337", title: title.sample, href: "#"))
-                results << Success(Results::PageInfo.new(identifier: "1338", title: title.sample, href: "#"))
+                results << Success(Results::PageInfo.new(identifier: "1337", title: title.sample, href: "#", provider:))
+                results << Success(Results::PageInfo.new(identifier: "1338", title: title.sample, href: "#", provider:))
               end
 
               success(results)

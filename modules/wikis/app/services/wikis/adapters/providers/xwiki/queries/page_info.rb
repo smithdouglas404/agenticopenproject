@@ -72,7 +72,8 @@ module Wikis
                 Results::PageInfo.new(
                   identifier:,
                   title: data["title"],
-                  href: data["xwikiAbsoluteUrl"]
+                  href: data["xwikiAbsoluteUrl"],
+                  provider:
                 )
               )
             rescue JSON::ParserError
