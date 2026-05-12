@@ -56,11 +56,6 @@ The **Overview** tab is a pre-configured to provide a concise summary of the pro
   - [Members](./project-widgets/#members-widget) 
 
   - [News](project-widgets/#news-widget) 
-
-    
-    > [!TIP]
-    > If you do not see the meeting widgets displayed, make sure the Meetings module is activated for the project.
-    
   - [Budgets](project-widgets/#budgets-widgets)
 
     > [!TIP]
