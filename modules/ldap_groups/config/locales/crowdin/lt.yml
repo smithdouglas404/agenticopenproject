@@ -46,6 +46,7 @@ lt:
         zero: Nei vienos grupės nerasta pagal filtrą
       destroy:
         title: Panaikinti sinchronizavimo filtrą %{name}
+        heading: Remove synchronized filter %{name}?
         confirmation: Jei tęsite, sinchronizavimo filtras %{name} ir visos grupės (%{groups_count}), kurias jis sukūrė, bus panaikintos.
         removed_groups: 'Dėmesio: Tai OpenProjecte panaikins tokias grupes ir ištrins jas iš visų projektų!'
         verification_html: Enter the filter name %{name} to verify the deletion.
@@ -59,9 +60,9 @@ lt:
       add_new: Pridėti sinchronizuotą LDAP grupę
       destroy:
         title: Išimti sinchronizuotą grupę %{name}
+        heading: Remove synchronized group %{name}?
         confirmation: Jei tęsite, sinchronizuota grupė %{name} ir visi %{users_count} per ją sinchronizuotų naudotojų bus pašalinti.
-        info: 'Pastaba: OpenProject grupė pati ir nariai, pridėti už šios LDAP sinchronizacijos, nebus pašalinti.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
         Šis modulis leidžia jums nustatyti sinchronizavimą tarp LDAP ir OpenProject grupių.
         Jis remiasi tuo, kad LDAP grupės turi naudoti <em>groupOfNames / memberOf</em> atributų rinkinį, kad dirbtų su OpenProject.

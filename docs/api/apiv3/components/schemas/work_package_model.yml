@@ -12,6 +12,14 @@ allOf:
         description: Work package id
         readOnly: true
         minimum: 1
+      displayId:
+        type: string
+        description: |-
+          The user-facing identifier for the work package.
+          Its format depends on the `work_packages_identifier` setting.
+          When set to `semantic`: the project-based identifier (e.g. "PROJ-42").
+          When set to `classic`: the numeric ID as a string (e.g. "123").
+        readOnly: true
       lockVersion:
         type: integer
         description: The version of the item as used for optimistic locking

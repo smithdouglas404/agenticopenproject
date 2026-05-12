@@ -65,7 +65,7 @@ module ::Widget
     ##
     # Render this widget. Abstract method. Needs to call #write at least once
     def render
-      raise NotImplementedError, "#render is missing in my subclass #{self.class}"
+      raise SubclassResponsibilityError, "#render is missing in subclass #{self.class}"
     end
 
     ##

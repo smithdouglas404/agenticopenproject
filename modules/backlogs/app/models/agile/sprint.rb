@@ -45,7 +45,8 @@ module Agile
              inverse_of: :linked,
              dependent: :nullify
 
-    scopes :for_project,
+    scopes :assignable,
+           :for_project,
            :not_completed,
            :order_by_date,
            :receiving_projects,
@@ -86,7 +87,7 @@ module Agile
     end
 
     def task_board_for(project)
-      task_boards.find_by(project:)
+      task_boards.find { it.project_id == project.id }
     end
 
     def work_packages_for(project)

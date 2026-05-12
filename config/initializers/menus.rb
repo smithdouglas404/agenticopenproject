@@ -167,6 +167,7 @@ Redmine::MenuManager.map :account_menu do |menu|
   menu.push :logout,
             :signout_path,
             icon: :"sign-out",
+            show_divider_before: true,
             scheme: :danger,
             if: ->(_) { User.current.logged? },
             html: {
@@ -303,12 +304,8 @@ Redmine::MenuManager.map :my_menu do |menu|
             icon: "devices"
   menu.push :notifications,
             { controller: "/my", action: "notifications" },
-            caption: I18n.t("js.notifications.settings.title"),
+            caption: I18n.t("my_account.notifications_and_email.title"),
             icon: "bell"
-  menu.push :reminders,
-            { controller: "/my", action: "reminders" },
-            caption: I18n.t("js.reminders.settings.title"),
-            icon: "unread"
 end
 
 Redmine::MenuManager.map :admin_menu do |menu|
@@ -363,6 +360,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             { controller: "/groups" },
             if: ->(_) { User.current.admin? },
             caption: :label_group_plural,
+            parent: :users_and_permissions
+
+  menu.push :departments,
+            { controller: "/admin/departments" },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.departments_active? },
+            caption: :label_departments,
             parent: :users_and_permissions
 
   menu.push :roles,
@@ -629,6 +632,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_announcement,
             icon: "megaphone"
 
+  menu.push :admin_integrations,
+            { controller: "/github_integration/admin/settings", action: "show" },
+            if: ->(_) { User.current.admin? },
+            icon: :"git-compare",
+            caption: :label_integrations
+
   menu.push :plugins,
             { controller: "/admin", action: "plugins" },
             if: ->(_) { User.current.admin? },
@@ -668,21 +677,15 @@ Redmine::MenuManager.map :admin_menu do |menu|
             icon: "op-enterprise-addons",
             if: proc { User.current.admin? && OpenProject::Configuration.ee_manager_visible? }
 
-  menu.push :admin_backlogs,
-            { controller: "/backlogs_settings", action: :show },
-            if: ->(_) { User.current.admin? },
-            caption: :label_backlogs,
-            icon: "op-backlogs"
-
   menu.push :import,
             { controller: "/admin/import/jira/instances", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.jira_import_active? },
+            if: ->(_) { User.current.admin? },
             caption: :label_import,
             icon: "desktop-download"
 
   menu.push :jira_import,
             { controller: "/admin/import/jira/instances", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.jira_import_active? },
+            if: ->(_) { User.current.admin? },
             caption: :label_jira_import,
             parent: :import
 end

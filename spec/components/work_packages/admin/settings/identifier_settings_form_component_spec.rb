@@ -34,7 +34,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
   subject(:component) { described_class.new(state:) }
 
   let(:empty_result) do
-    WorkPackages::IdentifierAutofix::PreviewQuery::Result.new(projects_data: [], total_count: 0)
+    ProjectIdentifiers::IdentifierAutofix::PreviewQuery::Result.new(projects_data: [], total_count: 0)
   end
 
   def render_component(component)
@@ -46,8 +46,8 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
   end
 
   before do
-    preview_stub = instance_double(WorkPackages::IdentifierAutofix::PreviewQuery, call: empty_result)
-    allow(WorkPackages::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(preview_stub)
+    preview_stub = instance_double(ProjectIdentifiers::IdentifierAutofix::PreviewQuery, call: empty_result)
+    allow(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(preview_stub)
   end
 
   context "when state is :change_in_progress" do
@@ -55,7 +55,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
+      expect(page).to have_text("Project identifiers are currently being converted to semantic format.")
     end
 
     it "does not render the success banner" do
@@ -66,7 +66,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     it "renders the radio buttons as disabled" do
       render_component(component)
       expect(page).to have_field("Instance-wide numerical sequence (default)", disabled: true)
-      expect(page).to have_field("Project-based alphanumerical identifiers", disabled: true)
+      expect(page).to have_field("Project-based semantic identifiers", disabled: true)
     end
 
     it "does not render the save or autofix buttons" do
@@ -77,7 +77,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not call PreviewQuery" do
       render_component(component)
-      expect(WorkPackages::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
+      expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
     end
   end
 
@@ -91,18 +91,34 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
     end
 
     it "renders the radio buttons as enabled" do
       render_component(component)
       expect(page).to have_field("Instance-wide numerical sequence (default)", disabled: false)
-      expect(page).to have_field("Project-based alphanumerical identifiers", disabled: false)
+      expect(page).to have_field("Project-based semantic identifiers", disabled: false)
     end
 
     it "does not call PreviewQuery" do
       render_component(component)
-      expect(WorkPackages::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
+      expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
+    end
+
+    context "with semantic setting", with_settings: { work_packages_identifier: "semantic" } do
+      it "shows semantic as selected" do
+        render_component(component)
+        expect(page).to have_field("Project-based semantic identifiers", checked: true)
+        expect(page).to have_field("Instance-wide numerical sequence (default)", checked: false)
+      end
+    end
+
+    context "with classic setting", with_settings: { work_packages_identifier: "classic" } do
+      it "shows classic as selected" do
+        render_component(component)
+        expect(page).to have_field("Instance-wide numerical sequence (default)", checked: true)
+        expect(page).to have_field("Project-based semantic identifiers", checked: false)
+      end
     end
   end
 
@@ -111,7 +127,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "calls PreviewQuery" do
       render_component(component)
-      expect(WorkPackages::IdentifierAutofix::PreviewQuery).to have_received(:new).once
+      expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to have_received(:new).once
     end
 
     it "renders the save button" do
@@ -121,15 +137,15 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render in-progress or success content" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
       expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 
-    context "with problematic projects and alphanumeric setting",
-            with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "with problematic projects and semantic setting",
+            with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { instance_double(Project, name: "Bad Project", id: 1, to_param: "bad-proj") }
       let(:problematic_result) do
-        WorkPackages::IdentifierAutofix::PreviewQuery::Result.new(
+        ProjectIdentifiers::IdentifierAutofix::PreviewQuery::Result.new(
           projects_data: [
             { project:, current_identifier: "bad-proj", suggested_identifier: "BP", error_reason: :special_characters }
           ],
@@ -138,8 +154,8 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       end
 
       before do
-        stub = instance_double(WorkPackages::IdentifierAutofix::PreviewQuery, call: problematic_result)
-        allow(WorkPackages::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(stub)
+        stub = instance_double(ProjectIdentifiers::IdentifierAutofix::PreviewQuery, call: problematic_result)
+        allow(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(stub)
       end
 
       it "hides the plain save button" do

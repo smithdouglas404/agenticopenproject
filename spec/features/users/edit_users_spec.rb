@@ -64,6 +64,60 @@ RSpec.describe "edit users", :js do
 
       expect(page).to have_no_field("#user_password")
     end
+
+    # send_information defaults to unchecked — the admin must explicitly opt in
+    # to emailing the password.
+    context "when the admin is about to email credentials to the user" do
+      it "is not locked on page load because send_information defaults to unchecked" do
+        expect(find_by_id("user_force_password_change")).not_to be_disabled
+      end
+
+      it "locks force_password_change when send_information is checked" do
+        check "send_information"
+
+        expect(find_by_id("user_force_password_change")).to be_checked
+        expect(find_by_id("user_force_password_change")).to be_disabled
+      end
+
+      it "unlocks force_password_change when send_information is unchecked again" do
+        check "send_information"
+        expect(find_by_id("user_force_password_change")).to be_disabled
+
+        uncheck "send_information"
+        expect(find_by_id("user_force_password_change")).not_to be_disabled
+      end
+
+      it "locks force_password_change and forces send_information when assign_random_password is checked" do
+        check "user_assign_random_password"
+
+        expect(find_by_id("send_information")).to be_checked
+        expect(find_by_id("send_information")).to be_disabled
+        expect(find_by_id("user_force_password_change")).to be_checked
+        expect(find_by_id("user_force_password_change")).to be_disabled
+      end
+
+      it "saves force_password_change as true when the email is sent" do
+        check "send_information"
+
+        user_password.set("SomePass!123")
+        find_by_id("user_password_confirmation").set("SomePass!123")
+
+        click_on "Save"
+
+        expect_flash(message: I18n.t(:notice_successful_update))
+        expect(user.reload.force_password_change).to be(true)
+      end
+
+      it "does not force a password change when send_information is left unchecked" do
+        user_password.set("SomePass!123")
+        find_by_id("user_password_confirmation").set("SomePass!123")
+
+        click_on "Save"
+
+        expect_flash(message: I18n.t(:notice_successful_update))
+        expect(user.reload.force_password_change).to be(false)
+      end
+    end
   end
 
   context "with external authentication" do

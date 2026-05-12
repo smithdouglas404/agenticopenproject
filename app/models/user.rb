@@ -514,6 +514,10 @@ class User < Principal
     !logged?
   end
 
+  def active_admin?
+    admin? && active?
+  end
+
   def consent_expired?
     # Always if the user has not consented
     return true if consented_at.blank?

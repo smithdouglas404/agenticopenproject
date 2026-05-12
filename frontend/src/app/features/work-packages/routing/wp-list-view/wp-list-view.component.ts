@@ -33,7 +33,6 @@ import {
   ElementRef,
   inject,
   Injector,
-  NgZone,
   OnInit,
 } from '@angular/core';
 import { take } from 'rxjs/operators';
@@ -83,8 +82,7 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
   readonly CurrentProject = inject(CurrentProjectService);
   readonly wpDisplayRepresentation = inject(WorkPackageViewDisplayRepresentationService);
   readonly cdRef = inject(ChangeDetectorRef);
-  readonly elementRef = inject(ElementRef);
-  readonly ngZone = inject(NgZone);
+  readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly wpTableBaseline = inject(WorkPackageViewBaselineService);
   readonly pathHelper = inject(PathHelperService);
 
@@ -135,24 +133,21 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
     // the 'back button', the last selected card is visible on this list.
     // ngAfterViewInit doesn't find the .-checked elements on components
     // that inherit from this class (BcfListContainerComponent) so
-    // opting for a timeout 'runOutsideAngular' to avoid running change
-    // detection on the entire app
-    this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        const selectedRow = this.elementRef.nativeElement.querySelector('.wp-table--row.-checked');
-        const selectedCard = this.elementRef.nativeElement.querySelector('[data-test-selector="op-wp-single-card"].-checked');
+    // opting for a timeout to defer until the DOM is ready
+    setTimeout(() => {
+      const selectedRow = this.elementRef.nativeElement.querySelector('.wp-table--row.-checked');
+      const selectedCard = this.elementRef.nativeElement.querySelector('[data-test-selector="op-wp-single-card"].-checked');
 
-        // The header of the table hides the scrolledIntoView element
-        // so we scrollIntoView the previous element, if any
-        if (selectedRow?.previousSibling) {
-          selectedRow.previousSibling.scrollIntoView({ block: 'start' });
-        }
+      // The header of the table hides the scrolledIntoView element
+      // so we scrollIntoView the previous element, if any
+      if (selectedRow?.previousElementSibling) {
+        selectedRow.previousElementSibling.scrollIntoView({ block: 'start' });
+      }
 
-        if (selectedCard) {
-          selectedCard.scrollIntoView({ block: 'start' });
-        }
-      }, 0);
-    });
+      if (selectedCard) {
+        selectedCard.scrollIntoView({ block: 'start' });
+      }
+    }, 0);
   }
 
   protected setupInformationLoadedListener() {

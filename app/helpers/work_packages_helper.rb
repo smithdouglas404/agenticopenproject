@@ -102,7 +102,9 @@ module WorkPackagesHelper
   end
 
   def back_url_is_wp_show?
-    route = Rails.application.routes.recognize_path(params[:back_url] || request.env["HTTP_REFERER"])
+    route = OpenProject::StaticRouting.recognize_route(params[:back_url] || request.env["HTTP_REFERER"])
+    return false if route.nil?
+
     route[:controller] == "work_packages" && route[:action] == "index" && route[:state]&.match?(/^\d+/)
   end
 

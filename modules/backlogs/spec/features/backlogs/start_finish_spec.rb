@@ -32,10 +32,7 @@ require "spec_helper"
 require_relative "../../support/pages/backlog"
 require_relative "../../../../boards/spec/features/support/board_page"
 
-RSpec.describe "Start and finish sprints",
-               :js,
-               with_ee: %i[board_view],
-               with_flag: { scrum_projects: true } do
+RSpec.describe "Start and finish sprints", :js do
   shared_let(:project) do
     create(:project, enabled_module_names: %i[backlogs work_package_tracking board_view])
   end
@@ -50,7 +47,6 @@ RSpec.describe "Start and finish sprints",
     create(:user, member_with_permissions: { project => permissions })
   end
   let(:planning_page) { Pages::Backlog.new(project) }
-  let(:task_statuses) { Type.find(Task.type).statuses }
   let(:story_type) { create(:type_feature) }
   let(:task_type) do
     type = create(:type_task)
@@ -58,6 +54,7 @@ RSpec.describe "Start and finish sprints",
 
     type
   end
+  let(:task_statuses) { task_type.statuses }
   let!(:first_sprint) do
     create(:agile_sprint,
            project:,
@@ -81,17 +78,13 @@ RSpec.describe "Start and finish sprints",
   before do
     login_as(user)
 
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [story_type.id.to_s], "task_type" => task_type.id.to_s)
-
     create(:workflow, type: task_type, old_status: default_status, new_status: default_status, role: create(:project_role))
 
     planning_page.visit!
   end
 
   it "starts the sprint and redirects to the board" do
-    planning_page.click_in_sprint_menu(first_sprint, "Start sprint")
+    planning_page.click_start_sprint_button(first_sprint)
 
     expect_and_dismiss_flash type: :success, message: "The sprint was started."
 
@@ -141,11 +134,8 @@ RSpec.describe "Start and finish sprints",
     end
     let!(:task_board) { create(:board_grid_with_query, project:, linked: first_sprint) }
 
-    it "finishes the sprint and returns to the backlog" do
-      planning_page.within_sprint_menu(first_sprint) do |menu|
-        expect(menu).to have_selector :menuitem, "Complete sprint"
-        menu.find(:button, "Complete sprint").click
-      end
+    it "completes the sprint and returns to the backlog" do
+      planning_page.click_complete_sprint_button(first_sprint)
 
       planning_page.expect_current_path
       expect_and_dismiss_flash type: :success, message: "The sprint was completed."
@@ -203,9 +193,9 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the next sprint" do
-        planning_page.click_to_finish_sprint(first_sprint)
+        planning_page.click_to_complete_sprint(first_sprint)
 
-        planning_page.expect_sprint_finishing_modal
+        planning_page.expect_sprint_completing_modal
 
         planning_page.expect_sprints_to_choose_for_moving_unfinished_work_packages_to second_sprint
         planning_page.choose_to_move_unfinished_work_packages_to_sprint second_sprint.name
@@ -223,9 +213,9 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the top of the backlog" do
-        planning_page.click_to_finish_sprint(first_sprint)
+        planning_page.click_to_complete_sprint(first_sprint)
 
-        planning_page.expect_sprint_finishing_modal
+        planning_page.expect_sprint_completing_modal
         planning_page.choose_to_move_unfinished_work_packages_to_top_of_backlog
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
@@ -238,9 +228,9 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the bottom of the backlog" do
-        planning_page.click_to_finish_sprint(first_sprint)
+        planning_page.click_to_complete_sprint(first_sprint)
 
-        planning_page.expect_sprint_finishing_modal
+        planning_page.expect_sprint_completing_modal
         planning_page.choose_to_move_unfinished_work_packages_to_bottom_of_backlog
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."

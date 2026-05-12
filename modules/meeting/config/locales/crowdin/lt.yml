@@ -32,6 +32,7 @@ lt:
         location: Vieta
         duration: Trukmė
         notes: Pastabos
+        recurrence_start_time: Scheduled start time
         participants: Dalyviai
         participant:
           one: 1 dalyvis
@@ -44,6 +45,9 @@ lt:
         start_date: Data
         start_time: Pradžios laikas
         start_time_hour: Pradžios laikas
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Pavadinimas
@@ -51,9 +55,15 @@ lt:
         duration_in_minutes: Trukmė
         description: Pastabos
         presenter: Pateikėjas
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Pavadinimas
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frequency
         interval: Interval
         start_date: Starts on
@@ -62,6 +72,10 @@ lt:
         end_after: Meeting series ends
         end_date: Pabaigos data
         iterations: Occurrences
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -199,6 +213,7 @@ lt:
   label_notify: Siųsti peržiūrai
   label_icalendar: Siųsti iCalendar formatu
   label_icalendar_download: Atsisiųsti iCalendar įvykį
+  label_view_meeting: View meeting
   label_view_meeting_series: View meeting series
   label_meeting_series: Meeting series
   label_version: Versija
@@ -429,6 +444,11 @@ lt:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Bevardė skiltis
     delete_confirmation: Ištrynus skiltį taipogi bus ištrinti ir visi jos plano elementai. Ar tikrai norite tai padaryti?
@@ -671,9 +691,9 @@ lt:
   text_exit_draft_mode_dialog_template_title: Open the first occurrence of this meeting series?
   text_exit_draft_mode_dialog_template_subtitle: You cannot return to draft mode after this.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Šis susitikimas daugiau neberedaguojamas
   text_meeting_not_present_anymore: Šis susitikimas buvo ištrintas. Prašome parinkti kitą susitikimą.
@@ -692,9 +712,12 @@ lt:
   text_agenda_item_duplicate_in_next_meeting: Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated.
   text_agenda_item_duplicated_in_next_meeting: Agenda item duplicated in the next meeting, on %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Šis darbo paketas dar nesuplanuotas artėjančio susitikimo plane.
-  text_agenda_item_no_available_occurrence: All upcoming occurrences have been cancelled.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Note: Skipping cancelled occurrence on %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Note: Skipping %{count} cancelled occurrences.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Naudokite mygtuką „Pridėti į susitikimą“, kad pridėtumėte šį darbo paketą į ateinantį susitikimą.
   text_work_package_has_no_past_meeting_agenda_items: This work package was not added as an agenda item in a past meeting.
   text_email_updates_muted: Email calendar updates are muted. Participants will not receive updated invites via email when you make changes.

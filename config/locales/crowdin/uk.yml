@@ -114,10 +114,11 @@ uk:
     import:
       title: Iмпорт
     jira:
-      title: Імпорт із Jira
+      title: Jira Migrator
       description: Використовуйте цей інструмент для імпорту даних зі свого екземпляра Jira. Ви можете налаштувати кілька хостів Jira й вибрати, що імпортувати в кожному циклі імпорту.
       errors:
         cannot_delete_with_imports: Не вдається видалити хост Jira з наявними процесами імпорту
+        custom_field_creation_failed: 'Не вдалося створити користувацьке поле «%{name}»: %{message}'
       blank:
         title: Ще немає налаштованих хостів Jira
         description: Налаштуйте хост Jira, щоб почати імпорт елементів із Jira в цей екземпляр OpenProject.
@@ -125,8 +126,12 @@ uk:
         title: Конфігурація Jira
         new: Нова конфігурація
       banner:
-        title: Обмежений імпорт
-        description: 'Цей інструмент зараз доступний лише як бета-версія і може імпортувати тільки основні дані: проєкти, задачі (назву, заголовок, опис, вкладення), користувачів (ім’я, електронну адресу, дані про участь у проєктах), статуси й типи. Він не може імпортувати робочі процеси, користувацькі поля, зв’язки між задачами чи дозволи. Зараз ми підтримуємо лише версії Jira Server / Data Center 10.x і 11.x. Хмарні екземпляри поки що не підтримуються.'
+        title: Спробуйте бета-версію!
+        description: Інструмент Jira Migrator зараз доступний тільки як бета-версія. Зараз ми підтримуємо лише версії Jira Server / Data Center 10.x і 11.x. Хмарні екземпляри поки що не підтримуються.
+        contribution_callout: 'Допоможіть нам покращити Jira Migrator, надіславши відгук і пожертвувавши приватні дані. Ви можете [приєднатися до спільноти розробників](link) Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Назва
@@ -154,6 +159,7 @@ uk:
         connection_timeout: 'Час очікування на встановлення з’єднання до сервера Jira минув: %{message}'
         parse_error: 'Не вдалося проаналізувати відповідь Jira API: %{message}'
         api_error: Інтерфейс Jira API повернув статус помилки «%{status}»
+        401_error: Інтерфейс Jira API повернув помилку 401. Можливо, закінчився строк дії вашого маркера автентифікації або в нього немає необхідних дозволів. Переконайтеся, що маркер належить адміністратору Jira.
       columns:
         projects: Проєкти
         last_change: Остання зміна
@@ -162,7 +168,7 @@ uk:
       run:
         title: Цикл імпорту
         history: Історія
-        remove_error: Імпорт Jira не можна видалити, поки він виконується
+        remove_error: Цикл імпорту Jira не можна видалити, поки він виконується
         import_blocked_error: Зараз виконується або очікує на перевірку ще один цикл імпорту Jira. Завершіть або скасуйте його, якщо потрібно почати новий імпорт.
         project_identifier_taken: 'Ви намагаєтесь імпортувати проєкт з ідентифікатором, який уже використовується: %{taken_identifier}. Будь ласка, оновіть ідентифікатор проєкту в Jira, а потім натисніть на кнопку «Повторити спробу».'
         blank:
@@ -252,8 +258,10 @@ uk:
               caption_done: Завершено
               label_info: 'Зверніть увагу: цей інструмент доступний лише в бета-версії і не може імпортувати всі типи даних. Ось короткий опис вмісту, доступного для імпорту в хост-екземплярі Jira, а також даних, які інструмент може перенести прямо зараз.'
               description: Виберіть дані, які потрібно імпортувати з доступного вмісту, отриманого з хост-екземпляра Jira.
-              label_available_data: Доступні дані
-              label_not_available_data: Недоступно для імпорту
+              label_supported_data: Підтримувані дані
+              label_coming_soon: З’явиться незабаром (у 2 кв. 2026 р.)
+              label_coming_later: З’явиться пізніше
+              label_available_server_data: Дані, доступні на сервері %{server_info}
               button_select_projects: Виберіть проєкти для імпорту
               button_continue: Продовжити
               label_import: Виберіть проєкти, які ви хочете імпортувати.
@@ -262,16 +270,23 @@ uk:
               label_progress: Отримання даних із Jira…
               elements:
                 relations: Зв’язки між задачами
+                project_ids: Ідентифікатори проєктів
+                issue_ids: Ідентифікатори задач
+                sprints: Призначення спринту
                 workflows: Робочі процеси на рівні проєктів
-                users: Користувачі
-                sprints: Спринти
                 schemes: Схеми
-                permissions: Дозволи для користувачів, груп і проєктів
+                permissions: Дозволи
+                projects: Проєкти
+                issues: Задачі
+                issue_details: Опис задачі, історія, коментарі й вкладення
+                custom_fields: Підмножина користувацьких полів
+                users: Залучені користувачі й групи
             confirm_import:
               title: Імпортуйте дані
               caption: Перегляньте налаштування імпорту й запустіть його
               caption_done: Завершено
-              label_available_data: Дані, доступні для імпорту
+              label_available_data: Дані, які імпортуватимуться
+              label_users_import_explanation: Користувачі, залучені до вибраних проєктів (зокрема, члени груп)
               button_start: Почати імпорт
               description: Ви збираєтеся запустити імпорт із наведеними далі налаштуваннями.
               label_progress: Виконується імпорт…
@@ -283,29 +298,29 @@ uk:
               label_results: Імпортовано
               label_revert: Скасувати імпорт
               button_revert: Скасувати імпорт
-              button_done: Завершити імпорт
-              preview_description: Імпортовані дані зараз перебувають у режимі перевірки. Натисніть «Завершити імпорт», щоб застосувати зміни, або «Скасувати імпорт», щоб скасувати всі зміни, внесені під час цього циклу.
-              label_finalize_import: Завершити імпорт
-              label_finalizing: Завершення імпорту…
-              label_finalizing_done: Імпорт завершено.
+              button_done: Схвалити імпорт
+              preview_description: Імпортовані дані зараз перебувають у режимі перевірки. Натисніть «Схвалити імпорт», щоб застосувати зміни, або «Скасувати імпорт», щоб скасувати всі зміни, внесені під час цього циклу.
+              label_finalize_import: Схвалити імпорт
+              label_finalizing: Схвалення імпорту…
+              label_finalizing_done: Імпорт схвалено.
               label_revert_progress: Скасування імпорту…
               label_reverted: Імпорт скасовано.
           select_dialog:
             filter_projects: Фільтрування за текстом
           import_dialog:
-            title: Почати цей імпорт?
+            title: Переконайтеся, що у вас є резервна копія!
             confirm_button: Почати імпорт
-            description: 'Цей модуль імпорту є альфа-функцією. Він ще не може імпортувати всі дані з Jira, тому в результаті в екземплярі OpenProject можуть бути неповні дані. <b>Не використовуйте середовище для експлуатації і створіть резервну копію даних OpenProject, перш ніж починати роботу із цією функцією.</b>
+            description: 'Імпорт змінює конфігурацію OpenProject. У вас буде можливість переглянути зміни після імпорту й скасувати або схвалити його. Якщо схвалити імпорт, скасувати внесені зміни буде неможливо. Тому переконайтеся, що у вас є [резервна копія екземпляра OpenProject](link), перш ніж продовжувати.
 
               '
-            confirm: Я розумію; відповідну підготовку виконано
+            confirm: Я розумію і маю резервну копію
           revert_dialog:
             title: Остаточно скасувати цей імпорт?
-            description: Буде видалено всі імпортовані об’єкти (зокрема цілі проєкти), навіть якщо користувачі виконували з ними дії в OpenProject після імпорту.
+            description: Це призведе до видалення всіх імпортованих об’єктів (зокрема цілих проєктів).
             confirm: Я розумію, що скасування внесених змін призведе до остаточного видалення даних
           finalize_dialog:
-            title: Завершити цей імпорт?
-            description: Якщо ви завершите цей імпорт, то більше не зможете його скасувати. Усі імпортовані дані буде остаточно збережено в системі.
+            title: Схвалити цей імпорт?
+            description: Якщо ви схвалите цей імпорт, то більше не зможете його скасувати. Усі імпортовані дані буде остаточно збережено в системі.
             confirm: Я розумію, що цю дію не можна відмінити
             confirm_button: Зрозуміло
           select_projects:
@@ -399,9 +414,9 @@ uk:
         notification_text_default: "<p>Вітаємо,</p> <p>Новий проєкт створено: projectValue:name</p> <p>Дякуємо</p>\n"
       work_packages_identifier:
         page_header:
-          description: Виберіть звичайні числові ідентифікатори пакетів робіт або ідентифікатори із зазначенням проєкту (до ідентифікатора пакета робіт додається префікс з ідентифікатором проєкту).
+          description: Виберіть класичні числові ідентифікатори пакетів робіт або семантичні із зазначенням проєкту (до ідентифікатора пакета робіт додається префікс з ідентифікатором проєкту).
         banner:
-          existing_identifiers_notice: 'Наявні ідентифікатори для кількох проєктів (%{project_count}) не відповідають вимогам до буквено-цифрових ідентифікаторів із зазначенням проєктів. OpenProject може автоматично оновити їх, щоб вони стали дійсними, як показано в прикладах нижче. Натисніть кнопку «Виправити й зберегти», щоб оновити в такий спосіб ідентифікатори для всіх проєктів і ввімкнути буквено-цифрові ідентифікатори із зазначенням проєктів.
+          existing_identifiers_notice: 'Наявні ідентифікатори для кількох проєктів (%{project_count}) не відповідають вимогам до семантичних ідентифікаторів із зазначенням проєктів. OpenProject може автоматично оновити їх, щоб вони стали дійсними, як показано в прикладах нижче. Натисніть кнопку «Виправити й зберегти», щоб оновити в такий спосіб ідентифікатори для всіх проєктів і ввімкнути семантичні ідентифікатори із зазначенням проєктів.
 
             '
         box_header:
@@ -410,10 +425,14 @@ uk:
           label_autofixed_suggestion: Майбутній ідентифікатор
           label_example_work_package_id: Приклад ідентифікатора пакета робіт
         autofix_preview:
-          error_too_long: Має містити менше ніж 5 символів
+          error_too_long: Має містити щонайбільше 10 символів
+          error_numerical: Не може містити лише числа
+          error_does_not_start_with_letter: Має починатися з великої літери
           error_special_characters: Не дозволяється використовувати спеціальні символи
+          error_not_fully_uppercased: Літери мають бути великими
           error_in_use: Уже використовується як активний дескриптор іншого проєкту
           error_reserved: Зарезервовано в історії дескрипторів іншого проєкту
+          error_unknown: Потребує ручної перевірки
           remaining_projects:
             one: "… ще 1 проєкт"
             few: "… ще %{count} проєкти"
@@ -430,16 +449,13 @@ uk:
           checkbox_label: Я розумію, що ця дія назавжди змінить усі ідентифікатори пакетів робіт
         success_banner: Формат ідентифікаторів пакетів робіт успішно оновлено.
         in_progress:
-          banner_message: Ідентифікатори проєктів зараз замінюються на буквено-цифрові ідентифікатори із зазначенням проєктів. Це може зайняти деякий час.
+          converting_banner_message: Ідентифікатори проєктів зараз конвертуються в семантичний формат. Це може зайняти деякий час.
+          reverting_banner_message: Ідентифікатори проєктів зараз конвертуються назад у класичний формат. Це може зайняти деякий час.
     workflows:
       tabs:
         default_transitions: Стандартні переходи
         user_author: Користувач є автором
         user_assignee: Користувач є призначеною особою
-      index:
-        description: Налаштуйте переходи статусів для кожного типу пакета робіт.
-        type_filter:
-          label: Фільтрувати за назвою типу…
       status_button: Статус
       statuses_dialog:
         title: Статуси
@@ -698,6 +714,37 @@ uk:
   danger_dialog:
     confirmation_live_message_checked: Кнопка для продовження активна.
     confirmation_live_message_unchecked: Кнопка для продовження зараз неактивна. Щоб продовжити, поставте прапорець.
+  departments:
+    edit: Редагувати відділ
+    add_user: Додати користувача
+    add_department: Додати відділ
+    blankslate:
+      heading: Ваша організація не має відділів
+      description: 'Спочатку додайте в організацію відділи або користувачів. Для кожного відділу можна створити ієрархію нижчого рівня. Для навігації і створення підвідділів в ієрархії натисніть створений елемент.
+
+        '
+      add_button: Додати
+    detail_blankslate:
+      heading: Цей відділ не має ієрархії нижчого рівня
+      description: Додавайте відділи або користувачів, щоб створювати піделементи.
+      add_button: Додати
+    add_department_form:
+      name_label: Назва відділу
+      name_placeholder: Введіть назву відділу
+    move_user_dialog:
+      title: Користувач уже належить до відділу
+      heading: Перемістити користувача в цей відділ?
+      description: "%{user} зараз є членом відділу «%{from_department}», але в разі переміщення більше ним не буде."
+      confirm: Перемістити користувача
+    context_menu:
+      add_sub_department: Додати підвідділ
+      add_user: Додати користувача
+    flash:
+      user_added: Користувача успішно додано у відділ.
+      user_removed: Користувача успішно вилучено з відділу.
+      department_created: Відділ успішно створено.
+    errors:
+      move_user_failed: Не вдалося перемістити користувача між відділами.
   pagination:
     label: Розбиття на сторінки
     prev: Попереднє
@@ -1104,6 +1151,8 @@ uk:
       matrix_check_uncheck_all_in_row_label_html: Перемикач дозволу <em>%{permission}</em> для всіх ролей
       matrix_check_uncheck_all_in_col_label_html: Перемикач усіх дозволів модуля «%{module}» для ролі <em>%{role}</em>
   users:
+    force_password_change_hint: Коли користувач ввійде в обліковий запис наступного разу, йому знадобиться встановити новий пароль. Автоматично вмикається при надсиланні облікових даних електронною поштою.
+    send_information_hint: Пароль буде надіслано електронною поштою як звичайний текст. Якщо вибрати цю опцію, користувачу знадобиться змінити пароль, коли він ввійде в обліковий запис уперше.
     autologins:
       prompt: Не виходити %{num_days}
     sessions:
@@ -1359,6 +1408,37 @@ uk:
     index:
       no_results_content_text: Додати нову wiki-сторінку
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Вихідна роль
+        target_role_ids:
+          label: Цільові ролі
+        target_type_ids:
+          label: Цільові типи
+        mode:
+          from_role:
+            label: Копіювати в інші ролі
+            caption: Скопіюйте поточний робочий процес в одну або кілька ролей у межах одного типу пакетів робіт. Якщо у вибраної ролі вже є робочий процес, поточний буде перезаписано.
+          from_type:
+            label: Копіювати в інший тип
+            caption: Скопіюйте поточний робочий процес в інший тип пакетів робіт. Якщо вибраний тип уже має робочий процес, поточний буде перезаписано. Це впливає на всі ролі.
+      from_roles:
+        create:
+          notice:
+            one: Робочий процес успішно скопійовано в роль «%{role_name}».
+            few: Робочий процес успішно скопійовано в %{count} ролі.
+            many: Робочий процес успішно скопійовано в %{count} ролей.
+            other: Робочий процес успішно скопійовано в %{count} ролі.
+      from_types:
+        create:
+          notice:
+            one: Робочий процес успішно скопійовано в тип «%{type_name}».
+            few: Робочий процес успішно скопійовано в %{count} типи.
+            many: Робочий процес успішно скопійовано в %{count} типів.
+            other: Робочий процес успішно скопійовано в %{count} типу.
+      new:
+        title: Скопіювати робочий процес типу «%{source_type}»
     form:
       matrix_caption: Матриця робочого процесу
       matrix_caption_assignee: Матриця робочого процесу для виконавця
@@ -1368,10 +1448,30 @@ uk:
       matrix_uncheck_all_label: Заборонити всі зміни
       matrix_check_uncheck_all_in_row_label_html: Перемикач зміни статусу <em>%{old_status}</em> на всі нові статуси
       matrix_check_uncheck_all_in_col_label_html: Перемикач зміни всіх старих статусів на статус <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Фільтрувати за назвою типу…
+    page_headers:
+      index_component:
+        description: Налаштуйте переходи статусів для кожного типу пакета робіт.
   work_flows:
     index:
       no_results_title_text: Наразі немає робочих процесів.
   work_packages:
+    delete_dialog:
+      title: Видалити пакет робіт
+      heading: Видалити цей пакет робіт остаточно?
+      description: Справді видалити пакет робіт «%{name}»?
+      confirm_descendants_deletion: Я усвідомлюю, що ВСІХ нащадків цього пакета робіт буде рекурсивно видалено.
+      cross_project_warning: 'Буде видалено пакети робіт із наступних проєктів: %{projects}'
+    bulk_delete_dialog:
+      title: Видалити пакети робіт (%{count})
+      heading: Видалити ці пакети робіт (%{count}) остаточно?
+      description: 'Наведені нижче пакети робіт, зокрема їх дочірні елементи й усі пов’язані дані, буде видалено назавжди:'
+      description_with_children: 'Наведені нижче пакети робіт, зокрема дочірні пакети робіт і всі пов’язані дані, буде видалено назавжди:'
+      confirm_children_deletion: Я усвідомлюю, що всі вибрані пакети робіт і їх дочірні елементи буде видалено назавжди.
+      cross_project_warning: 'Ці пакети робіт використовуються в кількох проєктах: %{projects}'
+      children_label: 'Також видаляться наведені нижче дочірні елементи:'
     datepicker_modal:
       banner:
         description:
@@ -1567,6 +1667,9 @@ uk:
         dependencies: Залежності
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Ідентифікатор
+        work_package: Робочий пакет
       jira_import:
         projects: Проєкти
       import/jira:
@@ -1575,7 +1678,7 @@ uk:
         personal_access_token: Персональний маркер доступу
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Імпорт із Jira
+        jira_import: Jira Migrator
       announcements:
         show_until: Показувати до
       attachment:
@@ -1831,6 +1934,7 @@ uk:
         identity_url: URL-адреса ідентичності
         parent: Батьківська група
         organizational_unit: Організаційний підрозділ
+        group_users: Користувачі групи
       group_detail:
         parent: Батьківська група
         organizational_unit: Організаційний підрозділ
@@ -1905,6 +2009,7 @@ uk:
         duration: Тривалість
         end_insertion: Кінець вставки
         end_deletion: Кінець видалення
+        identifier: Ідентифікатор
         ignore_non_working_days: Ігнорувати неробочі дні
         include_non_working_days:
           title: Робочі дні
@@ -1920,6 +2025,7 @@ uk:
         readonly: Лише читання
         remaining_hours: Залишок роботи
         remaining_time: Залишок роботи
+        sequence_number: Порядковий номер
         shared_with_users: Доступ мають
         schedule_manually: Ручне планування
         spent_hours: Витрачений час
@@ -1948,6 +2054,7 @@ uk:
         confirmation: не збігається %{attribute}
         could_not_be_copied: "%{dependency} не вдалося скопіювати (повністю)."
         does_not_exist: не існує.
+        user_already_in_department: Користувач %{user_id} уже є членом відділу «%{department_id}».
         error_enterprise_only: "%{action} можна лише у версії OpenProject Enterprise."
         error_unauthorized: "– можливо, немає доступу."
         error_readonly: "– було здійснено спробу запису, але елемент недоступний для запису."
@@ -1971,6 +2078,7 @@ uk:
         inclusion: не встановлено в одному з допустимих значень
         inclusion_nested: "– не призначено одне з дозволених значень за шляхом «%{path}»."
         invalid: зазначено невірно
+        invalid_uri: має бути дійсною URL-адресою.
         invalid_url: не є дійсною URL-адресою.
         invalid_url_scheme: 'не є підтримуваним протоколом (дозволено: %{allowed_schemes}).'
         less_than_or_equal_to: має бути меншим або рівним %{count}
@@ -1984,6 +2092,7 @@ uk:
         not_a_datetime: не є дійсним датою.
         not_a_number: не є числом
         not_allowed: недійсний через відсутність дозволів.
+        host_not_allowed: не є дозволеним хостом.
         not_json: не аналізується як JSON.
         not_json_object: не є об’єктом JSON.
         not_an_integer: не є цілим числом
@@ -2016,6 +2125,7 @@ uk:
           attributes:
             parent_id:
               circular_dependency: призведе до створення ієрархії циклічної групи.
+              organizational_unit_mismatch: має включати той самий організаційний підрозділ, що й група.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2206,7 +2316,7 @@ uk:
           not_whitelisted: не дозволяється конфігурацією.
           invalid_url: не є дійсним URL-адресою або контуром сховища.
           must_not_be_ssh: не повинна бути URL-адресою SSH.
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: не має вказувати на каталог репозиторію, яким керує OpenProject.
           no_directory: не є каталогом.
         role:
           attributes:
@@ -2257,6 +2367,8 @@ uk:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Не вдалося додати дочірній елемент, оскільки у вас немає дозволів для редагування вибраного пакета робіт.
               blank: Поле «ID» не може бути порожнє.
+            identifier:
+              semantic_identifier_incomplete: і sequence_number мають бути вказані одночасно.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2325,7 +2437,7 @@ uk:
               confirmation: Підтвердження пароля та пароль не збігаються.
               format: "%{message}"
             password:
-              weak: 'Має містити символи таких класів (принаймні %{min_count} з %{all_count}): %{rules}'
+              requirements_not_met: 'Має містити такі типи символів: %{rules}'
               lowercase: нижній реєстр шрифту (наприклад, 'a')
               uppercase: верхній реєстр шрифту (наприклад, 'А')
               numeric: числовий (наприклад, '1')
@@ -2541,7 +2653,6 @@ uk:
     avatar: Аватар
     base: 'Загальна помилка:'
     body: Текст
-    blocks_ids: Ідентифікатори заблокованих робочих пакетів
     category: Категорія
     comment: Коментар
     comments: Коментар
@@ -3038,6 +3149,7 @@ uk:
       title: Доповнення версії Enterprise
       plan_title: Доповнення версії Enterprise %{plan}
       plan_name: Версія Enterprise %{plan}
+      trial_text: Ця функція є у вашій активній пробній версії Enterprise.
       plan_text_html: Доступно, починаючи з версії %{plan_name}.
       unlimited: Без обмежень
       already_have_token: 'Уже маєте маркер? Додайте його за допомогою кнопки нижче, щоб перейти на вже замовлений план Enterprise.
@@ -3413,18 +3525,17 @@ uk:
         header: Читайте про нові функції і оновлення продуктів.
         learn_about: Дізнайтеся більше про всі нові функції
         missing: Ще немає виділених функцій.
-        '17_3':
-          new_features_title: 'Цей випуск містить різноманітні нові функції та покращення, такі як:
+        '17_4':
+          new_features_title: 'Цей випуск містить різноманітні нові функції і покращення, зокрема:
 
             '
           new_features_list:
-            line_0: 'Велике оновлення Agile: спеціальні об’єкти спринтів, відображення всіх пакетів робіт у розділі беклогів, а також автоматичне створення дощок спринтів.'
-            line_1: Редагування атрибутів проєкту на місці на сторінці «Огляд проєкту».
-            line_2: Надання доступу до шаблонів нарад (починаючи з тарифного плану Basic).
-            line_3: Покращений пошук у розділах «Час і витрати», «Дошки» тощо.
-            line_4: Налаштування, що дає змогу безпечно змінювати ідентифікатори проєктів.
-            line_5: Покращене налаштування робочих процесів для адміністраторів.
-            line_6: Випуск дощок дій для версії Community.
+            line_0: Jira Migrator із підтримкою базових користувацьких полів;
+            line_1: сегменти беклогу, які дають змогу структурувати пакети робіт і визначати їх пріоритет під час уточнення беклогу;
+            line_2: зручнішу функцію перетягування й покращені опції переміщення в модулі беклогів;
+            line_3: кнопки для початку й завершення спринту в його заголовку;
+            line_4: функцію копіювання налаштувань робочих процесів з однієї ролі в інші;
+            line_5: віджет «Мої наради» на головній сторінці й сторінці «Огляд проєкту».
     links:
       upgrade_enterprise_edition: Оновлення до версії Enterprise
       postgres_migration: Міграція інсталяції в PostgreSQL
@@ -3509,6 +3620,11 @@ uk:
     quick_add:
       label: Додати…
   my_account:
+    notifications_and_email:
+      title: Сповіщення й електронні листи
+      tabs:
+        notifications: Налаштування сповіщень
+        email_reminders: Нагадування електронною поштою
     access_tokens:
       description: Маркери постачальника послуг випускаються в OpenProject, що дає змогу іншим додаткам отримувати до них доступ. Клієнтські маркери випускаються іншими додатками, що дає змогу OpenProject отримати до них доступ.
       no_results:
@@ -3571,6 +3687,77 @@ uk:
         disabled_text: Маркери API не ввімкнено адміністратором. Зверніться до нього, якщо вам потрібна ця функція.
       storages:
         unknown_storage: Невідоме сховище
+    email_reminders:
+      immediate_reminders:
+        title: Надсилати мені нагадування електронною поштою
+        mentioned: Повідомляти мене, коли мене згадують
+        personal_reminder: Повідомляти мене про персональні нагадування
+      daily_reminders:
+        title: Надсилати мені щоденні нагадування електронною поштою про непрочитані сповіщення
+        description: Ви отримуватимете лише нагадування про непрочитані сповіщення, і вони надходитимуть тільки у вказаний вами час. Доки ви не налаштуєте для свого облікового запису часовий пояс, використовуватиметься UTC.
+        enabled: Увімкнути щоденні нагадування електронною поштою
+        add_time: Додати час
+        remove_time: Вилучити час
+        time_slot_label: Час нагадування (UTC)
+      workdays:
+        title: Отримувати нагадування електронною поштою в ці дні
+        submit_button: Оновити дні нагадувань
+      pause_reminders:
+        title: Призупинити сповіщення електронною поштою
+        enabled: Тимчасово призупинити щоденні нагадування, що надсилаються електронною поштою
+        date_range: Період призупинення
+      email_alerts:
+        title: Сповіщення електронною поштою для інших елементів, які не є пакетами робіт
+        description: Сьогодні надходитимуть лише сповіщення про пакети робіт. Ви можете й надалі отримувати повідомлення про ці події електронною поштою, якщо їх не буде включено в сповіщення.
+        news_added: Новину додано
+        news_commented: Коментар щодо новини
+        document_added: Документ додано
+        forum_messages: Повідомлення на форумі опубліковано
+        wiki_page_added: Wiki-сторінку додано
+        wiki_page_updated: Wiki-сторінку оновлено
+        membership_added: Членство додано
+        membership_updated: Членство оновлено
+        submit_button: Оновити сповіщення
+    notifications:
+      participating:
+        title: Бере участь
+        description: Сповіщення про всі дії з пакетами робіт, з якими ви працюєте (як виконавець, відповідальний або спостерігач).
+        submit_button: Оновити налаштування
+        mentioned: Вас згадали
+        watched: Відстеження
+        assignee: Виконавець
+        responsible: Відповідальний
+        shared: Доступ надано мені
+      date_alerts:
+        title: Сповіщення про дати
+        description: Автоматичні сповіщення про наближення важливих дат для відкритих пакетів робіт, з якими ви працюєте (як виконавець, відповідальний або спостерігач).
+        submit_button: Оновити сповіщення про дати
+        start_date: Дата початку
+        due_date: Дата завершення
+        overdue: Прострочено
+        times:
+          same_day: Того самого дня
+          one_day_before: За 1 день
+          three_days_before: За 3 дні
+          seven_days_before: За 7 днів
+          one_day_after: Через 1 день
+          three_days_after: Через 3 дні
+          seven_days_after: Через 7 днів
+      non_participating:
+        title: Не бере участі
+        description: Додаткові сповіщення про дії в усіх проєктах.
+        submit_button: Оновити налаштування
+        work_package_created: Нові пакети робіт
+        work_package_commented: Усі нові коментарі
+        work_package_processed: Усі зміни статусу
+        work_package_prioritized: Усі зміни пріоритету
+        work_package_scheduled: Усі зміни дат
+      project_specific_settings:
+        title: Налаштування сповіщень щодо проєктів
+        description: Ці налаштування для конкретного проєкту перевизначають типові налаштування, указані вище.
+        add_button: Додати сповіщення щодо проєктів
+        dialog_title: Додати сповіщення щодо проєктів
+        list_header: Проєкти зі спеціальними сповіщеннями
   notifications:
     reasons:
       assigned: Виконавець
@@ -3602,6 +3789,7 @@ uk:
       invalid_filter: Недійсний фільтр сповіщень
   label_accessibility: Розробникам також потрібно оплачувати свої рахунки. З доступністю
   label_account: Обліковий запис
+  label_actions: Дії
   label_active: Активні
   label_activate_user: Активні користувачі
   label_active_in_new_projects: Активна участь в нових проектах
@@ -3642,6 +3830,7 @@ uk:
   label_ical_access_key_generation_hint: Автоматично створено під час оформлення підписки на календар.
   label_ical_access_key_latest: останні
   label_ical_access_key_revoke: Анулювати
+  label_integrations: Інтеграції
   label_add_column: Додати стовпець
   label_applied_status: Застосовний статус
   label_archive_project: Архівний проект
@@ -3725,6 +3914,7 @@ uk:
   label_commits_per_month: Комітів на місяць
   label_confirmation: Підтвердження
   label_contains: містить
+  label_starts_with: починається з
   label_content: Контент
   label_color_plural: Кольори
   label_copied: скопійовано
@@ -3732,6 +3922,8 @@ uk:
   label_copy_source: Джерело
   label_copy_target: Ціль
   label_copy_workflow_from: Копіювати робочий процес з
+  label_copy_workflow_from_type: Копіювати в інший тип
+  label_copy_workflow_from_role: Копіювати в інші ролі
   label_copy_project: Копіювати проект
   label_core_version: Версія ядра
   label_core_build: Збірка ядра
@@ -3892,7 +4084,7 @@ uk:
   label_external_links: Зовнішні посилання
   label_locale: Мова й регіон
   label_jump_to_a_project: Перейти до проекту...
-  label_jira_import: Імпорт із Jira
+  label_jira_import: Jira Migrator
   label_keyword_plural: Ключові слова
   label_language_based: На основі мови користувача
   label_last_activity: Остання активність
@@ -3930,6 +4122,10 @@ uk:
   label_custom_pdf_export_settings: Налаштування експорту PDF
   label_custom_favicon: призначені для користувача іконки
   label_custom_touch_icon: Призначений для користувача значок логотипу
+  label_departments: Організація
+  label_departments_description_html: 'Визначте структуру своєї компанії, створивши відділи й підвідділи у вигляді ієрархій. Це дає змогу відобразити лінії підпорядкування й забезпечити чітку, структуровану візуалізацію вашої організації в OpenProject. Ви також можете імпортувати наявну структуру організації за допомогою [синхронізації груп LDAP](ldap_docs_article).
+
+    '
   label_logout: Вийти
   label_mapping_for: 'Зіставлення для: %{attribute}'
   label_main_menu: Бокове меню
@@ -4035,6 +4231,10 @@ uk:
   label_password_rule_numeric: Цифрові символи
   label_password_rule_special: Спеціальні символи
   label_password_rule_uppercase: Верхній регістр
+  label_password_requirement_lowercase: Має містити хоча б один символ нижнього регістру.
+  label_password_requirement_numeric: Має містити хоча б один числовий знак.
+  label_password_requirement_special: Має містити хоча б один спеціальний символ.
+  label_password_requirement_uppercase: Має містити хоча б один символ верхнього регістру.
   label_path_encoding: Кодування шляху
   label_per_page: 'К-сть на сторінку:'
   label_people: Люди
@@ -4409,7 +4609,7 @@ uk:
       note: 'Примітка: "%{note}"'
     sharing:
       work_packages:
-        allowed_actions_html: Ви можете %{allowed_actions} у цьому пакеті робіт, але це залежить від вашої ролі й дозволів у проєкті.
+        allowed_actions_html: 'Ви маєте такі дозволи в цьому пакеті робіт: %{allowed_actions}. Однак вони можуть змінюватися залежно від ролі й дозволів, які у вас є в проєкті.'
         create_account: 'Щоб отримати доступ до цього пакета робіт, вам знадобиться створити й активувати обліковий запис в %{instance}. '
         open_work_package: Відкрити пакет робіт
         subject: 'Вам надано доступ до пакета робіт #%{id}'
@@ -4956,7 +5156,7 @@ uk:
 
     '
   setting_after_login_default_redirect_url: Переспрямування після входу
-  setting_after_login_default_redirect_url_text_html: 'Задайте шлях за замовчуванням для переспрямування користувачів після входу, якщо зворотне посилання не надано. Якщо не задано, користувачі переспрямовуються на головну сторінку. <br/>Приклад: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Спільне використання ресурсів із різних джерел (CORS)
@@ -5011,6 +5211,7 @@ uk:
     '
   setting_app_subtitle: Підзаголовок додатку
   setting_app_title: Назва додатку
+  setting_organization_name: Назва організації
   setting_attachment_max_size: Максимальний розмір вкладення
   setting_show_work_package_attachments: За замовчуванням показувати вкладення на вкладці «Файли»
   setting_antivirus_scan_mode: Режим перевірки
@@ -5088,11 +5289,10 @@ uk:
   setting_new_project_user_role_id: Роль, що призначається користувачу, створившому проект
   setting_new_project_send_confirmation_email: Надсилати сповіщення автору при створенні нового проєкту
   setting_new_project_notification_text: Текст сповіщення
-  setting_password_active_rules: Активні класи символів
+  setting_password_active_rules: Вимоги до пароля
   setting_password_count_former_banned: Кількість останніх використаних паролів, заборонених для повторного використання
   setting_password_days_valid: Кількість днів, після чого змінюється пароль
   setting_password_min_length: Мінімальна довжина
-  setting_password_min_adhered_rules: Мінімальна кількість необхідних класів
   setting_per_page_options: Кількість записів на сторінку
   setting_percent_complete_on_status_closed: "% Завершення, коли статус закрито"
   setting_percent_complete_on_status_closed_no_change: Без змін
@@ -5157,12 +5357,12 @@ uk:
   setting_welcome_text: Текст блоку привітання
   setting_welcome_title: Заголовок вітального блоку
   setting_welcome_on_homescreen: Відображати вітальний блок на робочому столі
-  setting_work_packages_identifier_numeric: Числова послідовність для всього екземпляра (за умовчанням)
-  setting_work_packages_identifier_numeric_caption: 'Кожному пакету робіт присвоюється порядковий номер, який починається з одиниці й збільшується з кожним новим пакетом. Номери є унікальними в межах цього екземпляра, тому залишаються незмінними, навіть якщо пакети робіт переміщуються між проєктами.
+  setting_work_packages_identifier_classic: Числова послідовність для всього екземпляра (за умовчанням)
+  setting_work_packages_identifier_classic_caption: 'Кожному пакету робіт присвоюється порядковий номер, який починається з одиниці й збільшується з кожним новим пакетом. Номери є унікальними в межах цього екземпляра, тому залишаються незмінними, навіть якщо пакети робіт переміщуються між проєктами.
 
     '
-  setting_work_packages_identifier_alphanumeric: Буквено-цифрові ідентифікатори із зазначенням проєктів
-  setting_work_packages_identifier_alphanumeric_caption: 'Кожен проєкт має унікальний ідентифікатор, який додається як префікс до ідентифікатора пакета робіт. Якщо пакет робіт переміщується в інший проєкт, генерується новий ідентифікатор, однак старий продовжує працювати.
+  setting_work_packages_identifier_semantic: Семантичні ідентифікатори із зазначенням проєктів
+  setting_work_packages_identifier_semantic_caption: 'Кожен проєкт має унікальний ідентифікатор, який додається як префікс до ідентифікатора пакета робіт. Якщо пакет робіт переміщується в інший проєкт, генерується новий ідентифікатор, однак старий продовжує працювати.
 
     '
   setting_work_package_list_default_highlighting_mode: Режим виділення за умовчанням
@@ -5684,10 +5884,13 @@ uk:
           same_as_work: Збігається зі значенням атрибута «Робота».
     permissions:
       comment: Коментування
+      comment_verb: коментувати
       comment_description: Може переглядати й коментувати цей пакет робіт.
       edit: Редагування
+      edit_verb: змінювати
       edit_description: Може переглядати, коментувати й редагувати цей пакет робіт.
       view: Перегляд
+      view_verb: переглядати
       view_description: Може переглядати цей пакет робіт.
     reminders:
       label_remind_at: Дата

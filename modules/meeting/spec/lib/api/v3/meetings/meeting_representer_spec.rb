@@ -90,7 +90,7 @@ RSpec.describe API::V3::Meetings::MeetingRepresenter do
       expect(subject).to be_json_eql(meeting.lock_version.to_json).at_path("lockVersion")
       expect(subject).to be_json_eql(meeting.start_time.utc.iso8601(3).to_json).at_path("startTime")
       expect(subject).to be_json_eql(meeting.end_time.utc.iso8601(3).to_json).at_path("endTime")
-      expect(subject).to be_json_eql(meeting.duration.to_json).at_path("duration")
+      expect(subject).to be_json_eql("PT1H".to_json).at_path("duration")
       expect(subject).to be_json_eql(meeting.location.to_json).at_path("location")
 
       expect(subject).to be_json_eql(meeting.created_at.utc.iso8601(3).to_json).at_path("createdAt")

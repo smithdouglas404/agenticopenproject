@@ -42,7 +42,7 @@ module Principals::Scopes
 
     class_methods do
       def visible(user = ::User.current)
-        if user.allowed_globally?(:view_all_principals) || user.admin?
+        if user.allowed_globally?(:view_all_principals)
           all
         else
           in_visible_project_or_me_or_same_groups(user)

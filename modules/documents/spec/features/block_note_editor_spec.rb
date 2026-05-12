@@ -31,17 +31,14 @@
 require "rails_helper"
 
 RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { real_time_text_collaboration_enabled: true } do
+  include_context "with hocuspocus"
+
   let(:admin) { create(:admin) }
   let(:document) { create(:document, :collaborative) }
   let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
 
   before do
     login_as(admin)
-
-    # This is here while we don't have a setting defined for enabling/disabling collaboration
-    # rubocop:disable RSpec/AnyInstance
-    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
-    # rubocop:enable RSpec/AnyInstance
   end
 
   it "renders the BlockNote editor in the users locale" do
@@ -66,6 +63,21 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
     expect(editor.content).to include("Heading")
   end
 
+  context "when real time text collaboration is disabled",
+          with_settings: { real_time_text_collaboration_enabled: false } do
+    it "does not render the BlockNote editor" do
+      visit document_path(document)
+
+      expect(page).to have_no_test_selector("blocknote-document-description")
+      expect(page).to have_test_selector(
+        "collaboration-disabled-notice",
+        text: "Unable to open document because real-time text collaboration is disabled. " \
+              "Please contact your administrator to enable real-time text collaboration " \
+              "if you want to access this document."
+      )
+    end
+  end
+
   describe "with op-blocknote-extensions" do
     it "renders the BlockNote editor with custom menu entries for work package linking" do
       visit document_path(document)
@@ -84,7 +96,7 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
       expect(page).to have_test_selector("blocknote-document-description")
 
       editor.open_add_work_package_dialog
-      editor.element.fill_in("Link existing work package", with: "test")
+      editor.search_work_package("test")
       expect(editor.element).to have_content("AAA test") # wait for dropdown to open
       expect(editor.element.text).to match(/AAA test.*CCC test.*BBB test/m)
     end
@@ -102,10 +114,10 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
       expect(page).to have_test_selector("blocknote-document-description")
 
       editor.open_add_work_package_dialog
-      editor.element.fill_in("Link existing work package", with: "tiger")
-      editor.element.all("div", text: "pet a tiger").last.click
+      editor.search_and_select_work_package("tiger", "pet a tiger")
 
-      expect(editor.element).to have_no_content("Link existing work package") # search dialog is closed
+      expect(editor.element).to have_no_text("Link existing work package") # search dialog is closed
+      expect(editor.element).to have_no_text("Loading") # work package is loaded
       expect(editor.element.text).to match(/LIFE GOALS\s#\d+\sOpen\spet a tiger/)
 
       # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property

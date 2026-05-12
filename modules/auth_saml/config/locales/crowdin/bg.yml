@@ -34,6 +34,7 @@ bg:
   saml:
     menu_title: Доставчици на SAML
     delete_title: Изтриване на SAML доставчик
+    delete_heading: Delete this SAML provider?
     info:
       title: Параметри на конфигурацията на протокола SAML
       description: 'Използвайте тези параметри, за да конфигурирате връзката на вашия доставчик на идентичност с OpenProject.

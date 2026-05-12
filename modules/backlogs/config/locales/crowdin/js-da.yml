@@ -24,7 +24,7 @@ da:
   js:
     work_packages:
       properties:
-        storyPoints: Historiepunkter
+        storyPoints: Historiepoint
     burndown:
-      day: Day
-      points: Points
+      day: Dag
+      points: Point

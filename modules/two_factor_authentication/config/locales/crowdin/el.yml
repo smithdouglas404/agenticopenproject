@@ -37,18 +37,14 @@ el:
     error_invalid_backup_code: Μη έγκυρος κωδικός αντιγράφων ασφαλείας 2FA
     channel_unavailable: Το κανάλι διανομής %{channel} δεν είναι διαθέσιμο.
     no_valid_phone_number: Δεν υπάρχει έγκυρος αριθμός τηλεφώνου.
-    label_pwd_confirmation: Κωδικός
-    notice_pwd_confirmation: Πρέπει να επιβεβαιώσετε τον κωδικό πρόσβασης σας μόλις κάνετε αλλαγές σε αυτές τις ρυθμίσεις.
     label_device_type: Τύπος συσκευής
     label_default_device: Προεπιλεγμένη συσκευή 2FA
     label_device: Συσκευή 2FA
     label_devices: Συσκευές 2FA
-    label_one_time_password: Κωδικός μιάς χρήσης
     label_2fa_enabled: Η ταυτοποίηση δύο παραγόντων είναι ενεργή
     label_2fa_disabled: Η ταυτοποίηση δύο παραγόντων δεν είναι ενεργή
     text_otp_delivery_message_sms: Ο %{app_title} κωδικός πρόσβασης μια χρήσης σας είναι %{token}
     text_otp_delivery_message_voice: 'Ο %{app_title} κωδικός πρόσβασης μια χρήσης σας είναι %{pause} %{token}. %{pause} Επαναλαμβάνω: %{pause} %{token}'
-    text_enter_2fa: Παρακαλούμε εισάγετε τον κωδικό πρόσβασης μιας χρήσης από την συσκευή σας.
     text_2fa_enabled: Κατά κάθε σύνδεση, θα σας ζητείται να εισάγετε ένα OPT token από την προεπιλεγμένη 2FA συσκευή σας.
     text_2fa_disabled: Για να ενεργοποιήσετε την ταυτοποίηση δύο παραγόντων, χρησιμοποιήστε το παραπάνω κουμπί για να καταχωρήσετε μια καινούργια 2FA συσκευή.
     login:
@@ -69,7 +65,6 @@ el:
       text_remember: 'Ορίστε αυτό μεγαλύτερο από μηδέν για να επιτρέψετε στους χρήστες να θυμούνται την 2FA ταυτοποίηση τους για το δοσμένο αριθμό ημερών. Δεν θα τους ζητηθεί να την εισάγουν ξανά για αυτή την περίοδο. Μπορεί να οριστεί μόνο όταν δεν επιβάλλεται από τη διαμόρφωση.
 
         '
-      error_invalid_settings: Οι στρατηγικές 2FA που επιλέξατε δεν είναι έγκυρες
       failed_to_save_settings: 'Αποτυχία ενημέρωσης των ρυθμίσεων 2FA: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@ el:
       text_2fa_enabled: Upon every login, this user will be requested to enter a OTP token from their default 2FA device.
       text_2fa_disabled: The user did not set up a 2FA device through their 'My account page'
       only_sms_allowed: Μπορούν να ρυθμιστούν μόνο αποστολές SMS για άλλους χρήστες.
-    upsell:
-      title: Ταυτοποίηση δύο παραγόντων
-      description: Strenghten την ασφάλεια του OpenProject σας προσφέροντας (ή επιβάλλοντας) ταυτοποίηση δύο παραγόντων σε όλα τα μέλη του έργου.
     backup_codes:
-      none_found: Δεν υπάρχουν κωδικοί αντιγράφων ασφαλείας για αυτό τον λογαριασμό.
       singular: Κωδικός αντιγράφων ασφαλείας
       plural: Κωδικοί αντιγράφων ασφαλείας
-      your_codes: για τον %{app_name} λογαριασμό σας %{login}
       overview_description: |
         Αν δεν μπορείτε να αποκτήσετε πρόσβαση στις συσκευές δύο παραγόντων σας, μπορείτε να χρησιμοποιήσετε έναν κωδικό αντιγράφων ασφαλείας για να ανακτήσετε και πάλι πρόσβαση στο λογαριασμό σας.
         Χρησιμοποιήστε το παρακάτω κουμπί για να δημιουργήσετε ένα νέο σύνολο κωδικών αντιγράφων ασφαλείας.
@@ -173,19 +163,15 @@ el:
       clear_cookie: Κάντε κλικ εδώ για να αφαιρέσετε όλες την απομνημονευμένες συνεδρίες 2FA.
       cookie_removed: Όλες οι απομνημονευμένες συνεδρίες 2FA έχουν αφαιρεθεί.
       dont_ask_again: Δημιουργήστε ένα cookie για να απομνημονευτεί η ταυτοποίηση 2FA σε αυτό την περιηγητή για %{days} ημέρες.
-  field_phone: Κινητό τηλέφωνο
   field_otp: Κωδικός μιάς χρήσης
   notice_account_otp_invalid: Μη έγκυρος κωδικός πρόσβασης μιας χρήσης.
   notice_account_otp_expired: Ο κωδικός μιας χρήσης που εισάγατε έχει λήξει.
   notice_developer_strategy_otp: 'Η στρατηγική προγραμματιστή δημιούργησε τον ακόλουθο κωδικό μιας χρήστης: %{token} (Κανάλι: %{channel})'
   notice_account_otp_send_failed: Ο κωδικός πρόσβασης μιας χρήσης δεν ήταν δυνατό να αποσταλεί.
   notice_account_has_no_phone: Δεν υπάρχει αριθμός κινητού τηλεφώνου που να σχετίζεται με αυτό τον λογαριασμό.
-  label_expiration_hint: "%{date} ή κατά την αποσύνδεση"
-  label_actions: Ενέργειες
   label_confirmed: Επιβεβαιωμένο
   button_continue: Συνέχεια
   button_make_default: Ορισμός ως προεπιλογή
-  label_unverified_phone: Το κινητό τηλέφωνο δεν έχει επαληθευτεί ακόμη
   notice_phone_number_format: 'Καταχωρίστε τον αριθμό με την ακόλουθη μορφή: + XX XXXXXXXX.'
   text_otp_not_receive: Άλλες μέθοδοι επαλήθευσης
   text_send_otp_again: 'Αποστολή ξανά του κωδικού πρόσβασης μιας χρήσης μέσω:'

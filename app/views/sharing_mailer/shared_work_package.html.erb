@@ -36,9 +36,9 @@
           <tr>
             <td style="<%= placeholder_text_styles %>">
               <%
-                allowed_actions = @allowed_work_package_actions.map do |action|
-                  content_tag(:span, action.downcase, class: "-bold")
-                end.to_sentence
+                allowed_actions = to_sentence(
+                  @allowed_work_package_actions.map { |action| content_tag(:span, action, style: "font-weight: bold") }
+                )
               %>
 
               <%= t("mail.sharing.work_packages.allowed_actions_html", allowed_actions:) %>
@@ -49,7 +49,7 @@
 
       <%= render partial: "mailer/notification_settings_table",
                  locals: {
-                   button_url: my_reminders_url,
+                   button_url: my_notifications_url(tab: "reminders"),
                    button_text: I18n.t(:"mail.notification.settings")
                  } %>
 

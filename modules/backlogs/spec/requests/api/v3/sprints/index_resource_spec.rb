@@ -52,7 +52,7 @@ RSpec.describe "API v3 Sprint resource", content_type: :json do
            })
   end
 
-  describe "GET /api/v3/sprints", with_flag: :scrum_projects do
+  describe "GET /api/v3/sprints" do
     let(:get_path) { api_v3_paths.path_for(:sprints, filters:, page_size:, offset:) }
     let(:filters) { [] }
     let(:page_size) { nil }
@@ -78,10 +78,6 @@ RSpec.describe "API v3 Sprint resource", content_type: :json do
       let(:current_user) { User.anonymous }
 
       it_behaves_like "unauthenticated access"
-    end
-
-    context "when the feature flag is turned off", with_flag: { scrum_projects: false } do
-      it_behaves_like "not found"
     end
 
     context "with a page_size parameter and offset parameter" do

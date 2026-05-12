@@ -30,7 +30,13 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   content_tag("turbo-frame", id: "work-package-wikis-tab-content") do
     component_wrapper do
-      render(Primer::Beta::Text.new) { "Hi 👋" }
+      flex_layout(test_selector: "op-work-package-wikis-tab-container") do |flex|
+        providers.each do |provider|
+          flex.with_row(mb: 3) do
+            render(Wikis::ProviderLinkGroupComponent.new(provider, work_package:))
+          end
+        end
+      end
     end
   end
 %>

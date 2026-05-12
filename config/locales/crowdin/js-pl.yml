@@ -515,12 +515,6 @@ pl:
         sidebar_arrow: Użyj strzałki powrotu w lewym górnym rogu, aby wrócić do <b>menu głównego</b> projektu.
         welcome: "Poświęć trzy minuty na zapoznanie się z <b>najważniejszymi funkcjami</b>. \n <br> Zalecamy wykonanie tych kroków do końca. Zwiedzanie można w każdej chwili zacząć od nowa."
         wiki: W <b>wiki</b> możesz dokumentować wiedzę i dzielić się nią z zespołem.
-        backlogs:
-          overview: Zarządzaj swoją pracą w widoku <b>backlogs</b>.
-          sprints: Po prawej stronie znajduje się backlog produktu i backlog usterek, a po lewej stronie znajdują się odpowiednie sprinty. Tutaj można tworzyć <b>wydarzenia, wpisy użytkownika i usterki</b>, nadawać priorytety metodą przeciągania i upuszczania oraz dodawać je do sprintu.
-          task_board_arrow: Aby zobaczyć swój <b>panel zadań</b>, otwórz menu rozwijane sprint...
-          task_board_select: "...i wybierz wpis <b>panel zadań</b>."
-          task_board: Panel zadań przedstawia <b>postęp tego sprintu</b>. Dodaj nowe zadania lub przeszkody, klikając ikonę (+) obok wpisu użytkownika. <br>Stan można zaktualizować metodą przeciągania i upuszczania.
         boards:
           overview: Wybierz <b>tablice</b>, aby zmienić widok i zarządzać projektem za pomocą widoku tablic.
           lists_kanban: Tutaj możesz utworzyć wiele list (kolumn) w jednym widoku tablicy. Ta funkcja pozwala ci na przykład na utworzenie <b>tablicy Kanban</b>.
@@ -594,49 +588,6 @@ pl:
       settings:
         change_notification_settings: Możesz zmodyfikować <a target="_blank" href="%{url}">ustawienia powiadomień</a>, aby upewnić się, że nigdy nie przegapisz ważnej aktualizacji.
         title: Ustawienia powiadomień
-        notify_me: Powiadom mnie
-        reminders:
-          no_notification: Bez powiadomienia
-          timeframes:
-            normal:
-              PT0S: tego samego dnia
-              P1D: 1 dzień przed
-              P3D: 3 dni przed
-              P7D: 1 tydzień przed
-            overdue:
-              P1D: codziennie
-              P3D: co 3 dni
-              P7D: co tydzień
-        reasons:
-          mentioned:
-            title: Wzmianka
-            description: Otrzymuj powiadomienie za każdym razem, gdy pojawi się o tobie wzmianka gdziekolwiek
-          assignee: Przypisany do
-          responsible: Osoba odpowiedzialna
-          shared: Udostępniono
-          watched: Obserwator
-          work_package_commented: Wszystkie nowe komentarze
-          work_package_created: Nowe pakiety robocze
-          work_package_processed: Wszystkie zmiany statusu
-          work_package_prioritized: Wszystkie zmiany priorytetów
-          work_package_scheduled: Wszystkie zmiany daty
-        global:
-          immediately:
-            title: Uczestnictwo
-            description: Powiadomienia dotyczące wszystkich działań w pakietach roboczych, do których Cię zaangażowano (jako osobę przypisaną, odpowiedzialną lub obserwator)
-          delayed:
-            title: Brak uczestnictwa
-            description: Dodatkowe powiadomienia dotyczące działań we wszystkich projektach
-          date_alerts:
-            title: Alerty dotyczące dat
-            description: 'Automatyczne powiadomienia, gdy zbliżają się ważne daty otwartych pakietów roboczych, do których Cię zaangażowano (jako osobę: przypisaną, odpowiedzialną lub obserwatora)'
-          overdue: Po upływie terminu
-        project_specific:
-          title: Ustawienia powiadomień dla danego projektu
-          description: Te ustawienia dla danego projektu zastępują powyższe ustawienia domyślne.
-          add: Dodaj ustawienie dla projektu
-          already_selected: Ten projekt jest już wybrany
-          remove: Usuń ustawienia projektu
     pagination:
       no_other_page: Jesteś na jedynej stronie.
       pages_skipped: Pominięte strony.
@@ -660,39 +611,6 @@ pl:
       required_outside_context: 'Wybierz projekt, w którym chcesz utworzyć pakiet roboczy, aby zobaczyć wszystkie atrybuty. Możesz wybrać tylko projekty, które mają aktywowany powyższy typ.
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: Dodaj czas
-          enable: Włącz codzienne przypomnienia e-mail
-          explanation: Otrzymasz te przypomnienia tylko dla nieprzeczytanych powiadomień i tylko w określonych przez Ciebie godzinach. %{no_time_zone}
-          no_time_zone: Dopóki nie skonfigurujesz strefy czasowej dla swojego konta, czas będzie interpretowany jako UTC.
-          time_label: 'Czas %{counter}:'
-          title: Wyślij mi codzienne przypomnienia e-mail dla nieprzeczytanych powiadomień
-        workdays:
-          title: Otrzymuj przypomnienia e-mail w tych dniach
-        immediate:
-          title: Wyślij mi przypomnienie e-mail
-          mentioned: Natychmiast, gdy pojawi się @wzmianka o mnie
-          personal_reminder: Natychmiast po otrzymaniu osobistego przypomnienia
-        alerts:
-          title: Powiadomienia e-mail dla innych elementów (które nie są pakietami roboczymi)
-          explanation: 'Dzisiaj powiadomienia są ograniczone do pakietów roboczych. Możesz nadal otrzymywać powiadomienia e-mail dla tych zdarzeń, dopóki nie zostaną one zawarte w powiadomieniach:
-
-            '
-          news_added: Wiadomość dodana
-          news_commented: Komentarz do nowości
-          document_added: Dodanie dokumentu
-          forum_messages: Nowe wiadomości na forum
-          wiki_page_added: Dodano stronę wiki
-          wiki_page_updated: Zaktualizowano stronę wiki
-          membership_added: Dodanie członkostwa
-          membership_updated: Aktualizacja członkostwa
-        title: Przypomnienia e-mail
-        pause:
-          label: Tymczasowo wstrzymuj codzienne przypomnienia e-mail
-          first_day: Pierwszy dzień
-          last_day: Ostatni dzień
     text_are_you_sure: Jesteś pewny?
     text_are_you_sure_to_cancel: Na tej stronie znajdują się niezapisane zmiany. Czy na pewno chcesz je odrzucić?
     breadcrumb: Ścieżka
@@ -1065,13 +983,6 @@ pl:
       form_submit:
         title: Potwierdź, aby kontynuować
         text: Czy na pewno chcesz wykonać tę akcję?
-      destroy_work_package:
-        title: Potwierdź usunięcie %{label}
-        single_text: Czy na pewno chcesz usunąć pakiet roboczy
-        bulk_text: Czy na pewno chcesz usunąć %{label}?
-        has_children: 'Pakiet roboczy zawiera %{childUnits}:'
-        confirm_deletion_children: Potwierdzam, że WSZYSTKIE elementy potomne pakietów roboczych z listy będą rekurencyjnie usuwane.
-        deletes_children: Wszystkie pakiety podrzędne i ich elementy potomne również będą rekursywnie usuwane.
       destroy_time_entry:
         title: Potwierdź usunięcie wpisu
         text: Na pewno chcesz skasować?

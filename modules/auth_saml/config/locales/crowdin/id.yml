@@ -34,6 +34,7 @@ id:
   saml:
     menu_title: Penyedia SAML
     delete_title: Hapus penyedia SAML
+    delete_heading: Delete this SAML provider?
     info:
       title: Parameter Konfigurasi Protokol SAML
       description: 'Gunakan parameter ini untuk mengkonfigurasi koneksi penyedia identitas Anda ke OpenProject.

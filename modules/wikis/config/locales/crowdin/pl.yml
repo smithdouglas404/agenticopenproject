@@ -3,12 +3,14 @@ pl:
   activerecord:
     attributes:
       wikis/xwiki_provider:
+        name: Nazwa
+        url: Adres URL wystąpienia
+        universal_identifier: Uniwersalny identyfikator
         authentication_method: Metoda uwierzytelniania
         authentication_methods:
           oauth2_sso: Logowanie jednokrotne za pośrednictwem dostawcy tożsamości OpenID Connect
           two_way_oauth2: Przepływ kodu autoryzacji dwukierunkowego OAuth 2.0
         token_exchange_scope: Zakres XWiki
-        url: Adres URL wystąpienia
         wiki_audience: Odbiorcy XWiki
     errors: {}
     models:
@@ -24,4 +26,76 @@ pl:
         many: Linki stron relacji
         other: Linki strony relacji
       wikis/xwiki_provider: Dostawca XWiki
-  wikis: {}
+  permission_manage_wiki_page_links: Zarządzanie linkami do stron Wiki
+  permission_view_wiki_page_links: Wyświetl linki do stron wiki
+  project_module_wiki_platforms: Dostawcy wiki
+  wikis:
+    buttons:
+      save_and_continue: Zapisz i kontynuuj
+      done_continue: Gotowe, kontynuuj
+      wiki_page: Strona wiki
+    inline_page_links_component:
+      empty_heading: Brak wbudowanych linków
+      empty_text: Linki do stron wiki wbudowane w opis pakietu roboczego automatycznie pojawią się również tutaj.
+      heading: Wbudowane linki strony
+    page_link_component:
+      remove: Usuń link do strony
+    relation_page_links_component:
+      empty_heading: Brak powiązanych stron
+      empty_text: Ręcznie dodaj linki do innych powiązanych stron wiki.
+      heading: Powiązane strony
+    oauth_login_component:
+      connect_button: Podłącz konto %{provider}
+    admin:
+      oauth_application_info_component:
+        label_pending: Oczekiwanie
+        replace_oauth_application: Zastąp aplikację OAuth OpenProject
+        confirm_replace_oauth_application: To działanie spowoduje zresetowanie bieżących poświadczeń OAuth. Po potwierdzeniu trzeba będzie ponownie wprowadzić poświadczenia w swoim wystąpieniu XWiki, a wszyscy użytkownicy będą musieli dokonać ponownej autoryzacji. Czy na pewno chcesz kontynuować?
+      oauth_client_info_component:
+        label_pending: Oczekiwanie
+        replace_oauth_client: Zastąp aplikację XWiki OAuth
+        confirm_replace_oauth_client: To działanie spowoduje zresetowanie bieżących poświadczeń OAuth w XWiki. Wszyscy użytkownicy będą musieli ponownie dokonać autoryzacji w XWiki. Czy na pewno chcesz kontynuować?
+      wiki_provider_list_component:
+        label_name: Nazwa
+        label_provider: Dostawca
+        label_creation_time: Utworzono
+        no_results_title: Nie masz jeszcze skonfigurowanych żadnych dostawców wiki.
+        no_results_description: Dodaj dostawcę wiki, aby zobaczyć go tutaj.
+      destroy_confirmation_dialog_component:
+        title: Usuń dostawcę wiki
+        warning_html: W ten sposób usuniesz %{wiki_provider}. To działanie jest nieodwracalne.
+      forms:
+        oauth_application_form_component:
+          application_id: Identyfikator aplikacji
+          application_secret: Klucz tajny aplikacji
+        general_info_form_component:
+          xwiki_instance_description: Przed wykonaniem konfiguracji upewnij się, że masz uprawnienia administracyjne w swoim wystąpieniu XWiki.
+      wiki_providers:
+        index_description: Dodaj zewnętrzną usługę wiki, aby powiązać pakiety robocze z istniejącymi stronami wiki lub utworzyć nowe bezpośrednio z OpenProject.
+        label_wiki_platform: Dostawca wiki
+        label_add_new: Dodaj nowego dostawcę wiki
+        label_new_xwiki_instance: Nowy dostawca XWiki
+        label_edit: Edytuj dostawcę XWiki
+        name_placeholder: Baza wiedzy XWiki
+        name_caption: Nadaj swojemu magazynowi nazwę, aby użytkownicy mogli rozróżniać różne platformy wiki.
+        url_caption: Dodaj adres hosta swojej platformy wiki, w tym prefiks https://. Adres powinien być nie dłuższy niż 255 znaków.
+        xwiki_instance: Wystąpienie XWiki
+        new_provider_html: Przeczytaj naszą dokumentację na temat [konfiguracja integracji XWiki](docs_url), aby uzyskać więcej informacji.
+        sections:
+          general_information: Podstawowe szczegóły
+          oauth_configuration: Konfiguracja OAuth
+        oauth:
+          openproject_oauth: OpenProject OAuth
+        xwiki:
+          oauth:
+            openproject_oauth_description: Zezwól XWiki na dostęp do danych OpenProject za pomocą aplikacji OAuth. Skopiuj dane logowania do swojego wystąpienia XWiki.
+            provider_oauth: XWiki OAuth
+            provider_oauth_description: Zezwól OpenProject na dostęp do danych XWiki za pomocą aplikacji OAuth. Wprowadź poświadczenia klienta z aplikacji XWiki OAuth.
+          openproject_oauth_description: Zezwalaj XWiki na dostęp do danych OpenProject za pomocą OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Zezwalaj OpenProject na dostęp do danych XWiki za pomocą OAuth.
+        delete:
+          title: Usuń dostawcę wiki
+          warning_html: W ten sposób usuniesz %{wiki_provider}. To działanie jest nieodwracalne.
+    macro:
+      page_not_found: Powiązana linkiem strona wiki nie jest już dostępna

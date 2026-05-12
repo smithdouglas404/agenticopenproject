@@ -46,6 +46,7 @@ ko:
         zero: 필터로 그룹 찾지 못함
       destroy:
         title: 동기화된 필터 %{name} 제거
+        heading: 동기화된 필터 %{name}을(를) 제거하시겠습니까?
         confirmation: 계속하는 경우, 동기화된 필터 %{name} 및 이를 통해 생성된 모든 그룹 %{groups_count}개가 제거됩니다.
         removed_groups: '경고: 이렇게 하면 OpenProject에서 다음 그룹이 제거되고 모든 프로젝트에서 이것이 제거됩니다.'
         verification_html: 삭제를 확인하려면 필터 이름 %{name}(을)를 입력하세요.
@@ -59,9 +60,9 @@ ko:
       add_new: 동기화된 LDAP 그룹 추가
       destroy:
         title: 동기화된 그룹 %{name} 제거
+        heading: 동기화된 그룹 %{name}을(를) 제거하시겠습니까?
         confirmation: 계속하는 경우, 동기화된 그룹 %{name} 및 이를 통해 동기화된 %{users_count}명의 사용자 모두가 제거됩니다.
-        info: '참고: OpenProject 그룹 자체 그리고 이 LDAP 동기화 이외에서 추가된 멤버는 제거되지 않습니다.'
-        verification_html: 삭제를 확인하려면 프로젝트 이름 %{name}(을)를 입력하세요.
+        info: OpenProject 그룹 자체 그리고 이 LDAP 동기화 외부에서 추가된 멤버는 제거되지 않습니다.
       help_text_html: |
         이 모듈을 통해 LDAP 및 OpenProject 그룹 간에 동기화를 설정할 수 있습니다.
         LDAP 그룹은 OpenProject와 작동하도록 설정된 <em>groupOfNames / memberOf</em> 특성을 사용해야 합니다.

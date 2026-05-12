@@ -26,5 +26,5 @@ ro:
       properties:
         storyPoints: Puncte cerință
     burndown:
-      day: Day
-      points: Points
+      day: Zi
+      points: Puncte

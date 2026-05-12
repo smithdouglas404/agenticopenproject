@@ -223,10 +223,12 @@ class Query < ApplicationRecord
   end
 
   def self.available_columns(project = nil)
-    Queries::Register
-      .selects[self]
-      .map { |col| col.instances(project) }
-      .flatten
+    RequestStore.fetch(:"available_columns_#{project&.id}") do
+      Queries::Register
+        .selects[self]
+        .map { |col| col.instances(project) }
+        .flatten
+    end
   end
 
   def self.displayable_columns

@@ -114,10 +114,11 @@ ro:
     import:
       title: Import
     jira:
-      title: Jira Import
+      title: Jira Migrator
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -125,8 +126,12 @@ ro:
         title: Jira configuration
         new: New configuration
       banner:
-        title: Limited import
-        description: 'This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Name
@@ -154,6 +159,7 @@ ro:
         connection_timeout: 'Connection to Jira server timed out: %{message}'
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projects
         last_change: Last change
@@ -162,7 +168,7 @@ ro:
       run:
         title: Import run
         history: History
-        remove_error: A Jira import cannot be removed while it is running
+        remove_error: A Jira import run cannot be removed while it is running
         import_blocked_error: Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import.
         project_identifier_taken: 'You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry.'
         blank:
@@ -246,8 +252,10 @@ ro:
               caption_done: Completed
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
-              label_available_data: Available data
-              label_not_available_data: Not available for import
+              label_supported_data: Supported data
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
               label_import: Select which projects you would like to import.
@@ -256,16 +264,23 @@ ro:
               label_progress: Fetching data from Jira...
               elements:
                 relations: Relations between issues
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Project-level workflows
-                users: Users
-                sprints: Sprints
                 schemes: Schemas
-                permissions: User, group and project permissions
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Import data
               caption: Review your import settings and start the import
               caption_done: Completed
-              label_available_data: Available data to import
+              label_available_data: Data to be imported
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -273,33 +288,33 @@ ro:
             import_result:
               title: Import run results
               caption: Review import run or revert import
-              info: Import run successful.
+              info: Import run was successful.
               label_results: Imported
               label_revert: Revert import
               button_revert: Revert import
-              button_done: Finalize import
-              preview_description: The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Finalize import
-              label_finalizing: Finalizing import...
-              label_finalizing_done: Import finalized.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Reverting import...
               label_reverted: Import reverted.
           select_dialog:
             filter_projects: Filter by text
           import_dialog:
-            title: Start this import?
+            title: Please make sure you have a backup!
             confirm_button: Start import
-            description: 'This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: I understand and made the necessary preparations
+            confirm: I understand and have a backup
           revert_dialog:
             title: Permanently revert this import?
-            description: This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject.
+            description: This will delete all imported objects (including whole projects).
             confirm: I understand that this reversion will delete data permanently
           finalize_dialog:
-            title: Finalize this import?
-            description: Once finalized, this import can no longer be reverted. All imported data will become permanently imported.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: I understand that this action cannot be undone
             confirm_button: Understood
           select_projects:
@@ -393,9 +408,9 @@ ro:
         notification_text_default: "<p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>\n"
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -404,10 +419,14 @@ ro:
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
             few: "... %{count} more projects"
@@ -423,16 +442,13 @@ ro:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -690,6 +706,37 @@ ro:
   danger_dialog:
     confirmation_live_message_checked: The button to proceed is now active.
     confirmation_live_message_unchecked: The button to proceed is now inactive. You need to tick the checkbox to continue.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Pagination
     prev: Previous
@@ -1089,6 +1136,8 @@ ro:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Rămâi conectat pentru %{num_days}
     sessions:
@@ -1345,6 +1394,35 @@ ro:
     index:
       no_results_content_text: Adaugă pagină wiki nouă
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            few: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            few: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1354,10 +1432,30 @@ ro:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: În acest moment nu există fluxuri de lucru.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1554,6 +1652,9 @@ ro:
         dependencies: Dependenţe
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identifier
+        work_package: Work package
       jira_import:
         projects: Projects
       import/jira:
@@ -1562,7 +1663,7 @@ ro:
         personal_access_token: Personal access token
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Jira import
+        jira_import: Jira Migrator
       announcements:
         show_until: Afişare până la
       attachment:
@@ -1818,6 +1919,7 @@ ro:
         identity_url: Identity URL
         parent: Parent group
         organizational_unit: Organizational unit
+        group_users: Group users
       group_detail:
         parent: Parent group
         organizational_unit: Organizational unit
@@ -1892,6 +1994,7 @@ ro:
         duration: Durată
         end_insertion: Sfârșitul inserării
         end_deletion: Sfârșit de ștergere
+        identifier: Identifier
         ignore_non_working_days: Ignoră zilele nelucrătoare
         include_non_working_days:
           title: Zile lucrătoare
@@ -1907,6 +2010,7 @@ ro:
         readonly: Doar citire
         remaining_hours: Muncă rămasă
         remaining_time: Muncă rămasă
+        sequence_number: Sequence number
         shared_with_users: Partajate cu
         schedule_manually: Programare manuală
         spent_hours: Timp consumat
@@ -1935,6 +2039,7 @@ ro:
         confirmation: nu se potrivește cu %{attribute}.
         could_not_be_copied: "%{dependency} nu a putut fi copiat (integral)."
         does_not_exist: nu există.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: nu pot fi accesate.
         error_readonly: a fost încercat să fie scris, dar nu este inscriptibil.
@@ -1958,6 +2063,7 @@ ro:
         inclusion: nu este setată la una din valorile permise.
         inclusion_nested: nu este setată la una dintre valorile permise la calea '%{path}'.
         invalid: este invalid.
+        invalid_uri: must be a valid URI.
         invalid_url: nu este o adresa URL validă.
         invalid_url_scheme: 'nu este un protocol permis (allowed: %{allowed_schemes}).'
         less_than_or_equal_to: trebuie să fie mai mic sau egal cu %{count}.
@@ -1971,6 +2077,7 @@ ro:
         not_a_datetime: nu este o dată-ora validă.
         not_a_number: nu este un număr.
         not_allowed: nu este valabilă din cauza lipsei de permisiuni.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: nu este un întreg.
@@ -2001,6 +2108,7 @@ ro:
           attributes:
             parent_id:
               circular_dependency: would create a circular group hierarchy.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2239,6 +2347,8 @@ ro:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Nu poți adăuga un copil deoarece nu ai permisiunea de a edita pachetul de lucru selectat.
               blank: ID nu poate fi gol.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2307,7 +2417,7 @@ ro:
               confirmation: Confirmarea parolei nu se potrivește cu parola.
               format: "%{message}"
             password:
-              weak: 'Trebuie să conţină caractere din următoarele clase (cel puţin %{min_count} din %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: litere mici (ex. 'a')
               uppercase: litere mari (ex. 'A')
               numeric: cifre (ex. ' 1')
@@ -2504,7 +2614,6 @@ ro:
     avatar: Avatar
     base: 'Eroare generală:'
     body: Body
-    blocks_ids: ID-urile pachetelor de lucru blocate
     category: Categorie
     comment: Comentariu
     comments: Comentariu
@@ -2981,6 +3090,7 @@ ro:
       title: Enterprise add-on
       plan_title: Enterprise %{plan} add-on
       plan_name: "%{plan} enterprise plan"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Available starting with the %{plan_name}.
       unlimited: Nelimitat
       already_have_token: 'Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
@@ -3355,18 +3465,17 @@ ro:
         header: Citește despre noile caracteristici și actualizări de produse.
         learn_about: Learn more about all new features
         missing: There are no highlighted features yet.
-        '17_3':
+        '17_4':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Actualizează la ediția Enterprise
       postgres_migration: Migrarea instalației dvs. către PostgreSQL
@@ -3451,6 +3560,11 @@ ro:
     quick_add:
       label: Add…
   my_account:
+    notifications_and_email:
+      title: Notification and email
+      tabs:
+        notifications: Notification settings
+        email_reminders: Email reminders
     access_tokens:
       description: Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them.
       no_results:
@@ -3513,6 +3627,77 @@ ro:
         disabled_text: RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature.
       storages:
         unknown_storage: Unknown storage
+    email_reminders:
+      immediate_reminders:
+        title: Send me an email reminder
+        mentioned: Notify me when I am mentioned
+        personal_reminder: Notify me for personal reminders
+      daily_reminders:
+        title: Send me daily email reminders for unread notifications
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        enabled: Enable daily email reminders
+        add_time: Add time
+        remove_time: Remove time
+        time_slot_label: Reminder time (UTC)
+      workdays:
+        title: Receive email reminders on these days
+        submit_button: Update reminder days
+      pause_reminders:
+        title: Pause email notifications
+        enabled: Temporarily pause daily email reminders
+        date_range: Pause period
+      email_alerts:
+        title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        news_added: News added
+        news_commented: Comment on a news item
+        document_added: Document added
+        forum_messages: Forum message posted
+        wiki_page_added: Wiki page added
+        wiki_page_updated: Wiki page updated
+        membership_added: Membership added
+        membership_updated: Membership updated
+        submit_button: Update alerts
+    notifications:
+      participating:
+        title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        submit_button: Update preferences
+        mentioned: Mentioned
+        watched: Watching
+        assignee: Assignee
+        responsible: Accountable
+        shared: Shared with me
+      date_alerts:
+        title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        submit_button: Update date alerts
+        start_date: Start date
+        due_date: Finish date
+        overdue: Overdue
+        times:
+          same_day: On the same day
+          one_day_before: 1 day before
+          three_days_before: 3 days before
+          seven_days_before: 7 days before
+          one_day_after: 1 day after
+          three_days_after: 3 days after
+          seven_days_after: 7 days after
+      non_participating:
+        title: Non-participating
+        description: Additional notifications for activities in all projects.
+        submit_button: Update preferences
+        work_package_created: New work packages
+        work_package_commented: All new comments
+        work_package_processed: All status changes
+        work_package_prioritized: All priority changes
+        work_package_scheduled: All date changes
+      project_specific_settings:
+        title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
+        add_button: Add project-specific notifications
+        dialog_title: Add project-specific notifications
+        list_header: Projects with specific notifications
   notifications:
     reasons:
       assigned: Executant
@@ -3544,6 +3729,7 @@ ro:
       invalid_filter: Filtru de notificare invalid
   label_accessibility: Accesibilitate
   label_account: Cont
+  label_actions: Acțiuni
   label_active: Activ
   label_activate_user: Activați utilizatorul
   label_active_in_new_projects: Activ în proiecte noi
@@ -3584,6 +3770,7 @@ ro:
   label_ical_access_key_generation_hint: Automatically generated when subscribing to a calendar.
   label_ical_access_key_latest: latest
   label_ical_access_key_revoke: Revocă
+  label_integrations: Integrations
   label_add_column: Adaugă coloană
   label_applied_status: Stare aplicată
   label_archive_project: Arhivează proiect
@@ -3667,6 +3854,7 @@ ro:
   label_commits_per_month: Încărcări pe lună
   label_confirmation: Confirmare
   label_contains: conţine
+  label_starts_with: starts with
   label_content: Conținut
   label_color_plural: Culori
   label_copied: copiat
@@ -3674,6 +3862,8 @@ ro:
   label_copy_source: Sursă
   label_copy_target: Destinație
   label_copy_workflow_from: Copiază flux de la
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Copiază proiect
   label_core_version: Versiune de bază
   label_core_build: Core build
@@ -3834,7 +4024,7 @@ ro:
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Salt la un proiect...
-  label_jira_import: Jira Import
+  label_jira_import: Jira Migrator
   label_keyword_plural: Cuvinte cheie
   label_language_based: Bazat pe limba utilizatorului
   label_last_activity: Ultima activitate
@@ -3872,6 +4062,10 @@ ro:
   label_custom_pdf_export_settings: Custom PDF export settings
   label_custom_favicon: Pictogramă personalizată
   label_custom_touch_icon: Pictogramă touch personalizată
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Deconectare
   label_mapping_for: 'Mapping for: %{attribute}'
   label_main_menu: Meniu lateral
@@ -3977,6 +4171,10 @@ ro:
   label_password_rule_numeric: Cifre
   label_password_rule_special: Caractere speciale
   label_password_rule_uppercase: Majuscule
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Codificare cale
   label_per_page: 'Per pagină:'
   label_people: Persoane
@@ -4347,7 +4545,7 @@ ro:
       note: 'Notă: „%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
         subject: 'Work package #%{id} was shared with you'
@@ -4892,7 +5090,7 @@ ro:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Cross-Origin Resource Sharing (CORS)
@@ -4947,6 +5145,7 @@ ro:
     '
   setting_app_subtitle: Subtitlu aplicație
   setting_app_title: Titlu aplicație
+  setting_organization_name: Organization name
   setting_attachment_max_size: Dimensiune maximă atașament
   setting_show_work_package_attachments: Show attachments in the files tab by default
   setting_antivirus_scan_mode: Scan mode
@@ -5024,11 +5223,10 @@ ro:
   setting_new_project_user_role_id: Rol atribuit unui utilizator non-administrator care crează un proiect
   setting_new_project_send_confirmation_email: Trimite notificare autorului la crearea unui proiect nou
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Clase de caractere active
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Numărul celor mai recente parole folosite interzise spre a fi reutilizate
   setting_password_days_valid: Numărul de zile după care este obligatorie schimbarea parolei
   setting_password_min_length: Lungime minimă
-  setting_password_min_adhered_rules: Numărul minim de clase necesare
   setting_per_page_options: Opțiuni pentru obiecte pe pagină
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: Nicio modificare
@@ -5093,12 +5291,12 @@ ro:
   setting_welcome_text: Text bloc "bun venit"
   setting_welcome_title: Titlu bloc "bun venit"
   setting_welcome_on_homescreen: Afişare bloc "bun venit" pe ecranul de start
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
 
     '
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
 
     '
   setting_work_package_list_default_highlighting_mode: Mod de evidențiere implicit
@@ -5617,10 +5815,13 @@ ro:
           same_as_work: Set to same value as Work.
     permissions:
       comment: Comentariu
+      comment_verb: comment
       comment_description: Can view and comment this work package.
       edit: Editează
+      edit_verb: edit
       edit_description: Can view, comment and edit this work package.
       view: Vizualizează
+      view_verb: view
       view_description: Can view this work package.
     reminders:
       label_remind_at: Dată

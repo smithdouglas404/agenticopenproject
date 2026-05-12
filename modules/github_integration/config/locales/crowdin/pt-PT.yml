@@ -43,6 +43,17 @@ pt-PT:
   label_github_integration: Integração GitHub
   notice_deploy_target_created: Destino de implementação criado
   notice_deploy_target_destroyed: Destino de implementação eliminado
+  label_github_comment_user: Interveniente no GitHub
+  label_github_webhook_secret: Segredo do webhook
+  text_github_comment_user_info: 'O utilizador do OpenProject cuja chave API deve ser utilizada para autenticar os pedidos de webhook recebidos. Quando definido, os pedidos autenticados com as credenciais de qualquer outro utilizador são rejeitados. Este utilizador também publica comentários deploy-status automáticos nos pacotes de trabalho. Quando não definido, a predefinição é o utilizador do sistema.
+
+    '
+  text_github_webhook_secret_missing_warning: 'Não está configurado nenhum segredo de webhook. Qualquer solicitação para o ponto de extremidade do webhook do GitHub será aceite sem verificação, o que pode permitir que atores não autorizados simulem eventos. É altamente recomendável definir um segredo.
+
+    '
+  text_github_webhook_secret_info: 'Um token secreto partilhado com GitHub ao configurar o webhook. Quando definido, o OpenProject verifica o cabeçalho X-Hub-Signature-256 em cada pedido recebido, rejeitando cargas que não correspondam. Deixe em branco para ignorar a verificação (não recomendado).
+
+    '
   plugin_openproject_github_integration:
     name: Integração do OpenProject GitHub
     description: Integra o OpenProject e o GitHub para um melhor fluxo de trabalho

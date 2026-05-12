@@ -80,111 +80,126 @@ RSpec.describe "Edit", :js do
     planning_page.visit!
   end
 
-  context "with the feature flag active", with_flag: { scrum_projects: true } do
-    it "lists all open sprints" do
-      planning_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
+  it "lists all open sprints" do
+    planning_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
 
-      planning_page.expect_story_in_sprint(work_package, first_sprint)
-      planning_page.expect_story_not_in_sprint(work_package, second_sprint)
+    planning_page.expect_story_in_sprint(work_package, first_sprint)
+    planning_page.expect_story_not_in_sprint(work_package, second_sprint)
+  end
+
+  it "adds a work package to a sprint" do
+    planning_page.click_in_sprint_menu(first_sprint, "Add work package")
+    planning_page.expect_create_work_package_dialog
+
+    page.within("#create-work-package-dialog") do
+      page.fill_in "Subject", with: "Story created in sprint"
+
+      click_on "Create"
     end
 
-    it "adds a work package to a sprint" do
-      planning_page.click_in_sprint_menu(first_sprint, "Add work package")
-      planning_page.expect_create_work_package_dialog
+    wait_for_reload
 
-      page.within("#create-work-package-dialog") do
-        page.fill_in "Subject", with: "Story created in sprint"
+    expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
+    created_wp = first_sprint.reload.work_packages.last
+    expect(created_wp.subject).to eq("Story created in sprint")
+    planning_page.expect_story_in_sprint(created_wp, first_sprint)
+  end
 
-        click_on "Create"
-      end
-
-      wait_for_reload
-
-      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
-      created_wp = first_sprint.reload.work_packages.last
-      expect(created_wp.subject).to eq("Story created in sprint")
-      planning_page.expect_story_in_sprint(created_wp, first_sprint)
-    end
-
-    context "with the 'create_sprints' permissions" do
-      context "when editing a sprint" do
-        it "displays all menu entries" do
-          planning_page.within_sprint_menu(first_sprint) do |menu|
-            expect(menu).to have_selector :menuitem, count: 3
-            expect(menu).to have_selector :menuitem, "Start sprint"
-            expect(menu).to have_selector :menuitem, "Edit sprint"
-            expect(menu).to have_selector :menuitem, "Add work package"
-            expect(menu).to have_css "form[action='#{start_project_sprint_path(project, first_sprint)}'][data-turbo='false']"
-          end
-        end
-
-        it "edits the sprint name" do
-          planning_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
-
-          planning_page.click_in_sprint_menu(first_sprint, "Edit sprint")
-          planning_page.expect_sprint_dialog
-
-          within_dialog "Edit sprint" do
-            page.fill_in "Sprint name", with: "Changed name"
-            page.click_button "Save"
-          end
-
-          wait_for_reload
-          planning_page.expect_sprint_names_in_order("Changed name", second_sprint.name)
-        end
-
-        context "when lacking the 'manage_sprint_items' permission" do
-          let(:permissions) { all_permissions - %i[manage_sprint_items] }
-
-          it "has no menu entry for creating a new story" do
-            planning_page.within_sprint_menu(first_sprint) do |menu|
-              expect(menu).to have_selector :menuitem, count: 2
-              expect(menu).to have_selector :menuitem, "Start sprint"
-              expect(menu).to have_selector :menuitem, "Edit sprint"
-
-              expect(menu).to have_no_selector :menuitem, "Add work package"
-            end
-          end
-        end
-
-        describe "validations" do
-          context "when sprint status is active" do
-            before { first_sprint.update!(status: "active") }
-
-            it "validates required fields are present" do
-              planning_page.click_in_sprint_menu(first_sprint, "Edit sprint")
-              planning_page.expect_sprint_dialog
-
-              within_dialog "Edit sprint" do
-                page.fill_in "Sprint name", with: ""
-                page.fill_in "Start date", with: ""
-                page.fill_in "Finish date", with: ""
-
-                page.click_button "Save"
-
-                expect(page).to have_field "Sprint name", validation_error: "can't be blank"
-                expect(page).to have_field "Start date", validation_error: "can't be blank"
-                expect(page).to have_field "Finish date", validation_error: "can't be blank"
-              end
-            end
-          end
-        end
-      end
-    end
-
-    context "without the necessary permissions" do
-      let(:permissions) { all_permissions - %i[create_sprints start_complete_sprint] }
-
-      it "is missing the 'new sprint' button" do
-        expect(page).to have_no_button "Create"
-        expect(page).not_to have_test_selector("op-sprints--new-sprint-button")
-      end
-
-      it "has no menu entry for editing a sprint" do
+  context "with the 'create_sprints' permissions" do
+    context "when editing a sprint" do
+      it "displays all menu entries" do
         planning_page.within_sprint_menu(first_sprint) do |menu|
-          expect(menu).to have_no_selector :menuitem, "Edit sprint"
-          expect(menu).to have_no_selector :menuitem, "Start sprint"
+          expect(menu).to have_selector :menuitem, count: 2
+          expect(menu).to have_selector :menuitem, "Edit sprint"
+          expect(menu).to have_selector :menuitem, "Add work package"
         end
+      end
+
+      it "edits the sprint name" do
+        planning_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
+
+        planning_page.click_in_sprint_menu(first_sprint, "Edit sprint")
+        planning_page.expect_sprint_dialog
+
+        within_dialog "Edit sprint" do
+          page.fill_in "Sprint name", with: "Changed name"
+          page.click_button "Save"
+        end
+
+        wait_for_reload
+        planning_page.expect_sprint_names_in_order("Changed name", second_sprint.name)
+      end
+
+      context "when lacking the 'manage_sprint_items' permission" do
+        let(:permissions) { all_permissions - %i[manage_sprint_items] }
+
+        it "has no menu entry for creating a new story" do
+          planning_page.within_sprint_menu(first_sprint) do |menu|
+            expect(menu).to have_selector :menuitem, count: 1
+            expect(menu).to have_selector :menuitem, "Edit sprint"
+
+            expect(menu).to have_no_selector :menuitem, "Add work package"
+          end
+        end
+      end
+
+      describe "validations" do
+        context "when sprint status is active" do
+          before { first_sprint.update!(status: "active") }
+
+          it "validates required fields are present" do
+            planning_page.click_in_sprint_menu(first_sprint, "Edit sprint")
+            planning_page.expect_sprint_dialog
+
+            within_dialog "Edit sprint" do
+              page.fill_in "Sprint name", with: ""
+              page.fill_in "Start date", with: ""
+              page.fill_in "Finish date", with: ""
+
+              page.click_button "Save"
+
+              expect(page).to have_field "Sprint name", validation_error: "can't be blank"
+              expect(page).to have_field "Start date", validation_error: "can't be blank"
+              expect(page).to have_field "Finish date", validation_error: "can't be blank"
+            end
+          end
+        end
+      end
+    end
+  end
+
+  context "when moving work packages from sprints" do
+    describe "moving to a different sprint" do
+      it "moves a work package to a different sprint" do
+        planning_page.expect_story_in_sprint(work_package, first_sprint)
+
+        planning_page.click_in_sprint_story_move_menu(work_package, "Move to sprint")
+
+        within("#move-to-sprint-dialog") do
+          expect(page).to have_no_select("target_id", with_options: [first_sprint.name])
+          expect(page).to have_select("target_id", with_options: [second_sprint.name])
+
+          select second_sprint.name, from: "target_id"
+          click_on "Move"
+        end
+
+        planning_page.expect_story_not_in_sprint(work_package, first_sprint)
+        planning_page.expect_story_in_sprint(work_package, second_sprint)
+      end
+    end
+  end
+
+  context "without the necessary permissions" do
+    let(:permissions) { all_permissions - %i[create_sprints start_complete_sprint] }
+
+    it "is missing the 'new sprint' button" do
+      expect(page).to have_no_button "Create"
+      expect(page).not_to have_test_selector("op-sprints--new-sprint-button")
+    end
+
+    it "has no menu entry for editing a sprint" do
+      planning_page.within_sprint_menu(first_sprint) do |menu|
+        expect(menu).to have_no_selector :menuitem, "Edit sprint"
       end
     end
   end

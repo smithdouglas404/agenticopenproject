@@ -330,4 +330,23 @@ RSpec.describe "updating a budget", :js, with_settings: { costs_currency: "EUR" 
       expect(budget_page.labor_costs_at(1)).to have_no_content "125.00 EUR"
     end
   end
+
+  describe "with a group as planned labor cost" do
+    let(:group) { create(:group, member_with_permissions: { project => %i[work_package_assigned] }) }
+    let(:budget_page) { Pages::EditBudget.new budget.id }
+
+    before { group }
+
+    it "saves the budget without error and displays the group on the show page" do
+      budget_page.visit!
+      click_on "Update"
+
+      budget_page.add_labor_costs! 5, user_name: group.name, comment: "team work"
+
+      click_on "Submit"
+      expect(budget_page).to have_content("Successful update")
+
+      expect(page).to have_css(".labor_budget_items tbody td", text: group.name)
+    end
+  end
 end

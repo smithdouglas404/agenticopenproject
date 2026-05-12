@@ -46,6 +46,7 @@
         zero: Ingen grupper ble funnet av filteret
       destroy:
         title: Fjern synkronisert filter %{name}
+        heading: Remove synchronized filter %{name}?
         confirmation: Hvis du fortsetter, fjernes det synkroniserte filteret %{name} og alle gruppene %{groups_count} opprettet gjennom det.
         removed_groups: 'Advarsel: Dette fjerner følgende grupper fra OpenProject og fjerner dem fra alle prosjekter!'
         verification_html: Enter the filter name %{name} to verify the deletion.
@@ -59,9 +60,9 @@
       add_new: Legg til synkronisert LDAP-gruppe
       destroy:
         title: Fjern synkronisert gruppe %{name}
+        heading: Remove synchronized group %{name}?
         confirmation: Hvis du fortsetter, fjernes den synkroniserte gruppen %{name} og alle %{users_count} brukere som er synkronisert gjennom den.
-        info: 'Merk: Selve OpenProject-gruppen og medlemmer lagt til utenfor denne LDAP-synkroniseringen vil ikke bli fjernet.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
         Denne modulen lar deg sette opp en synkronisering mellom LDAP og OpenProject-grupper.
         Det avhenger av at LDAP-grupper bruker <em>groupOfNames/memberOf</em>-attributten for å fungere med OpenProject.

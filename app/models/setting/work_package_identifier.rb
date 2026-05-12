@@ -30,11 +30,12 @@
 
 class Setting
   module WorkPackageIdentifier
-    NUMERIC      = "numeric"
-    ALPHANUMERIC = "alphanumeric"
-    ALLOWED_VALUES = [NUMERIC, ALPHANUMERIC].freeze
+    CLASSIC  = "classic"
+    SEMANTIC = "semantic"
+    ALLOWED_VALUES = [CLASSIC, SEMANTIC].freeze
 
-    def self.alphanumeric? = Setting[:work_packages_identifier] == ALPHANUMERIC
-    def self.numeric?      = Setting[:work_packages_identifier] == NUMERIC
+    def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
+    def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
+    def self.semantic_mode_active? = semantic? && OpenProject::FeatureDecisions.semantic_work_package_ids_active?
   end
 end

@@ -330,12 +330,12 @@ zh-CN:
         nc_oauth_token_missing: OpenProject 无法测试用户与 Nextcloud 之间的通信，因为用户尚未链接他们的 Nextcloud 帐户。
         nc_project_folder_missing: 找不到先前为项目“%{project}”创建的项目文件夹。
         nc_team_folder_not_found: 找不到该团队文件夹。
-        nc_unexpected_files: 在受管理的团队文件夹中找到非预期文件。例如：%{sample}
+        nc_unexpected_files: 在托管团队文件夹中找到意外文件。例如：%{sample}
         nc_unlinked_project_folders: 部分项目文件夹尚未创建 (%{actual}/%{expected})。这可能表明 AMPF 后台同步过程中出错。
         nc_userless_access_denied: 已配置的应用密码无效。
         not_configured: 无法验证连接。请先完成配置。
-        od_client_cant_delete_folder: 客户端在删除文件夹时遇到问题。请检查您的存储的设置文档。
-        od_client_write_permission_missing: 客户端似乎没有写入权限。请检查您的存储的设置文档。
+        od_client_cant_delete_folder: 客户端在删除文件夹时遇到问题。请查看您的存储空间的设置文档。
+        od_client_write_permission_missing: 客户端似乎没有写入权限。请查看您的存储空间的设置文档。
         od_drive_id_invalid: 配置的驱动器 ID 似乎无效。请检查配置。
         od_drive_id_not_found: 找不到配置的驱动器 ID。请检查配置。
         od_oauth_request_not_found: 未找到获取当前连接用户的端点。请检查服务器日志以获取更多信息。
@@ -356,9 +356,9 @@ zh-CN:
         sp_client_id_missing: SharePoint 缺少配置的 OAuth 2 客户端 id。请检查配置。
         sp_client_secret_missing: SharePoint 缺少配置的 OAuth 2 客户端密钥。请检查配置。
         sp_client_write_permission_missing: 客户端似乎在 SharePoint 中没有写入权限。请查看您的存储空间的设置文档。
-        sp_existing_test_folder: 测试所需的文件夹 %{folder_name} 已存在于 SharePoint 中。请删除此文件夹并重试。
-        sp_oauth_request_error: 向 SharePoint 发送的用户绑定请求失败。请查看服务器日志以获取更多信息。
-        sp_oauth_request_unauthorized: 当前用户无权访问远程文件存储空间。请查看服务器日志，了解更多信息。
+        sp_existing_test_folder: SharePoint 中已存在测试所需的文件夹 %{folder_name}。请删除此文件夹并重试。
+        sp_oauth_request_error: 向 SharePoint 发送的用户绑定请求失败。如需了解详情，请查看服务器日志。
+        sp_oauth_request_unauthorized: 当前用户无权访问远程文件存储空间。如需了解详情，请查看服务器日志。
         sp_oauth_token_missing: OpenProject 无法测试与 SharePoint 的用户级通信，因为用户尚未关联他们的 SharePoint 帐户。
         sp_tenant_id_missing: SharePoint 缺少配置的目录（租户）id。请检查配置。
         sp_unexpected_content: 在 SharePoint 文档库中发现意外内容。

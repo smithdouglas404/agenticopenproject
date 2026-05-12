@@ -46,6 +46,7 @@ ja:
         zero: このフィルタではグループが見つかりませんでした
       destroy:
         title: 同期されたフィルター %{name} を削除
+        heading: Remove synchronized filter %{name}?
         confirmation: 続行すると、同期フィルター %{name} とそれを通して作成されたすべてのグループ %{groups_count} が削除されます。
         removed_groups: '警告: 以下のグループを OpenProject から削除し、すべてのプロジェクトから削除します!'
         verification_html: Enter the filter name %{name} to verify the deletion.
@@ -59,9 +60,9 @@ ja:
       add_new: 同期済 LDAP グループを追加
       destroy:
         title: 同期済グループ %{name} を削除
+        heading: Remove synchronized group %{name}?
         confirmation: 続行すると、同期済グループ %{name} と、それを通じて同期された %{users_count} ユーザーがすべて削除されます。
-        info: '注: OpenProject グループ自体と、この LDAP 同期外で追加されたメンバーは削除されません。'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
         このモジュールは LDAP グループと Op​​enProject グループ間の同期を可能にします。
         これは LDAPグループ が OpenProject で動作するように設定された<em> groupOfNames / memberOf </em>属性を使用する必要があるかどうかに依存します。

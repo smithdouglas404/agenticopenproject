@@ -59,6 +59,8 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
 
   private pane:Element;
 
+  private resizeObserver:ResizeObserver;
+
   private debouncedTabActivationTimeout:ReturnType<typeof setTimeout>|null;
 
   private dragTargetStack = 0;
@@ -75,7 +77,9 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
     this.container = this.scrollContainer.nativeElement as HTMLElement;
     this.pane = this.scrollPane.nativeElement as HTMLElement;
 
-    this.updateScrollableArea();
+    this.resizeObserver = new ResizeObserver(() => this.updateScrollableArea());
+    this.resizeObserver.observe(this.container);
+
     this
       .uiRouterGlobals
       .params$
@@ -87,6 +91,11 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
           this.currentTabId = params.tabIdentifier as string;
         }
       });
+  }
+
+  override ngOnDestroy():void {
+    this.resizeObserver?.disconnect();
+    super.ngOnDestroy();
   }
 
   ngOnChanges(_changes:SimpleChanges):void {
@@ -107,7 +116,11 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
     return this.counters[tab.id];
   }
 
-  private updateScrollableArea() {
+  private updateScrollableArea():void {
+    if (!this.pane || !this.container) {
+      return;
+    }
+
     this.determineScrollButtonVisibility();
     if (this.currentTabId != null) {
       this.scrollIntoVisibleArea(this.currentTabId);
@@ -192,7 +205,11 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
   }
 
   private scrollIntoVisibleArea(tabId:string) {
-    const tab = this.pane.querySelector<HTMLElement>(`[data-tab-id=${tabId}]`)!;
+    const tab = this.pane.querySelector<HTMLElement>(`[data-tab-id=${tabId}]`);
+    if (!tab) {
+      return;
+    }
+
     const position = getPosition(tab);
     const tabRightBorderAt = position.left + tab.offsetWidth;
 

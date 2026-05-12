@@ -43,6 +43,17 @@ pl:
   label_github_integration: Integracja z GitHub
   notice_deploy_target_created: Utworzono cel wdrożenia
   notice_deploy_target_destroyed: Usunięto cel wdrożenia
+  label_github_comment_user: Użytkownik GitHub
+  label_github_webhook_secret: Klucz tajny obiektu webhook
+  text_github_comment_user_info: 'Użytkownik OpenProject, którego klucz interfejsu API musi być używany do uwierzytelniania przychodzących żądań obiektu webhoo. Po jego ustawieniu żądania uwierzytelnione przy użyciu poświadczeń dowolnego innego użytkownika są odrzucane. Ten użytkownik publikuje również automatyczne komentarze dotyczące stanu wdrożenia pakietów roboczych. Domyślnie ustawiany jest użytkownik systemowy.
+
+    '
+  text_github_webhook_secret_missing_warning: 'Nie skonfigurowano klucza tajnego obiektu webhook. Każde żądanie do punktu końcowego obiektu webhook GitHub zostanie zaakceptowane bez weryfikacji, co może pozwolić nieautoryzowanym użytkownikom na fałszowanie zdarzeń. Zdecydowanie zalecane jest ustawienie klucza tajnego.
+
+    '
+  text_github_webhook_secret_info: 'Tajny token udostępniany serwisowi GitHub podczas konfigurowania obiektu webhook. Po jego ustawieniu OpenProject weryfikuje nagłówek X-Hub-Signature-256 w każdym przychodzącym żądaniu i odrzuca niezgodną zawartość. Pozostaw puste, aby pomijać weryfikację (niezalecane).
+
+    '
   plugin_openproject_github_integration:
     name: Integracja OpenProject z GitHub
     description: Integruje OpenProject i GitHub dla lepszego przepływu pracy

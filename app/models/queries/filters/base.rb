@@ -79,11 +79,11 @@ class Queries::Filters::Base
   end
 
   def human_name
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def type
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def allowed_values

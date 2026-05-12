@@ -515,12 +515,6 @@ zh-TW:
         sidebar_arrow: 用左上方的返回鍵，返回至專案的 <b>主選單</b>.
         welcome: 觀看三分鐘的介紹導覽, 以瞭解最多 <b>重要功能</b>。 <br> 我們建議完成所有步驟直到結束。您可以隨時重新開始導覽。
         wiki: 在 <b>wiki</b> 中, 您可以與您的團隊一起記錄和分享知識。
-        backlogs:
-          overview: " 在<b>backlogs</b> 檢視中，管理您的工作。"
-          sprints: 在待辦工作版面中管理您的工作。 在右邊, 你有專案待辦或錯誤紀錄, 在左邊, 你將有各自的衝刺。在這裡, 您可以創建 <b>史詩、使用者故事和錯誤</b>, 通過拖曳進行優先排序, 並將它們添加到衝刺中。
-          task_board_arrow: 要查看您的<b>任務面板</b>，請打開衝刺（sprint）下拉選單…
-          task_board_select: "…並選擇<b>任務面板</b>條目。"
-          task_board: 任務面板可以將<b>此衝刺 （sprint） 的進度</b>可視化。點擊用戶故事旁邊的加號 (+) 圖標可添加新任務或障礙。<br>狀態可以通過拖放更新。
         boards:
           overview: 選擇<b>面板</b>以切換視圖並使用敏捷面板視圖管理您的項目。
           lists_kanban: 在此，您可以在面板中創建多個列表(列)。例如，此功使讓您可以創建<b>看板面板</b>。
@@ -591,51 +585,6 @@ zh-TW:
       settings:
         change_notification_settings: 您可以修改 <a target="_blank" href="%{url}">通知設定</a>，以確保您不會錯過重要更新。
         title: 通知設定
-        notify_me: 通知我
-        reminders:
-          no_notification: 无通知
-          timeframes:
-            normal:
-              PT0S: 當日
-              P1D: 一天前
-              P3D: 3 天前
-              P7D: 1 週前
-            overdue:
-              P1D: 每天
-              P3D: 每 3 天
-              P7D: 每週
-        reasons:
-          mentioned:
-            title: 被提及
-            description: 每當有人提及我時都收到通知
-          assignee: 執行者
-          responsible: 負責人
-          shared: 參與
-          watched: '監看者
-
-            '
-          work_package_commented: 有新留言
-          work_package_created: 新增工作套件
-          work_package_processed: 所有狀態改變
-          work_package_prioritized: 優先順序已變更
-          work_package_scheduled: 所有日期變更
-        global:
-          immediately:
-            title: 參與中
-            description: 你參與的工作套件中所有活動的通知（執行者、負責人或監看者）。
-          delayed:
-            title: 未參與之工作套件
-            description: 額外通知
-          date_alerts:
-            title: 日期提醒
-            description: 當「執行者、負責人或監看者」之開啟的工作套件，其重要日期臨近時，自動發出通知。
-          overdue: 逾期
-        project_specific:
-          title: 特定專案通知設定
-          description: 特別專案通知設定將覆蓋上列標準設定。
-          add: 新增設定
-          already_selected: 已選取此專案
-          remove: 移除專案設定
     pagination:
       no_other_page: 您位於唯一頁面上。
       pages_skipped: 跳過的頁面。
@@ -659,39 +608,6 @@ zh-TW:
       required_outside_context: '請選擇專案以便新增工作套件以及檢視屬性。您只能選擇啟用中的專案。
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: 加入時間
-          enable: 啟用每日電子郵件提醒
-          explanation: 只有當未讀取通知時，您才會在指定的時間收到這些提醒。%{no_time_zone}
-          no_time_zone: 除非您為帳戶配置時區，否則將以 UTC 顯示時間。
-          time_label: '時間 %{counter}:'
-          title: 每日將尚未讀取之通知，寄提醒郵件給我
-        workdays:
-          title: 在以下日期收到電子郵件提醒
-        immediate:
-          title: 寄發提醒郵件給我
-          mentioned: 當有人使用「@帳號」提到我，系統立即發信通知我
-          personal_reminder: 當我收到個人提醒時立即通知
-        alerts:
-          title: 其他非工作套件之提醒
-          explanation: '目前的通知僅限於工作套件。您可以選擇在這些事件納入通知系統之前，繼續透過電子郵件接收提醒：
-
-            '
-          news_added: 有最新消息
-          news_commented: 最新消息有留言
-          document_added: 文件已新增
-          forum_messages: 有新的討論區訊息
-          wiki_page_added: 新增維基頁面
-          wiki_page_updated: 維基頁面有更新
-          membership_added: 成員加入
-          membership_updated: 成員更新
-        title: 電子郵件提醒
-        pause:
-          label: 暫時暫停每日電子郵件提醒
-          first_day: 第一天
-          last_day: 最後一天
     text_are_you_sure: 是否確定？
     text_are_you_sure_to_cancel: 您在此頁面上有未儲存的變更。您確定要捨棄它們嗎？
     breadcrumb: 導覽軌跡
@@ -1064,13 +980,6 @@ zh-TW:
       form_submit:
         title: 確認以繼續
         text: 確定要執行此操作嗎？
-      destroy_work_package:
-        title: 確認刪除 %{label}
-        single_text: 確定要刪除此工作套件嗎
-        bulk_text: 確定要刪除以下%{label} 嗎？
-        has_children: 此工作套件包含 %{childUnits}：
-        confirm_deletion_children: 我確認列出的工作套件的所有細項全部都將被刪除。
-        deletes_children: 所有子工作套件及相關套件也全部將被刪除。
       destroy_time_entry:
         title: 確認刪除時間條目
         text: 確定要刪除以下時間條目？

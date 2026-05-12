@@ -29,36 +29,41 @@
 $op-backlogs-header--points-min-width: 5rem
 $op-backlogs-header--points-min-width-narrow: 2rem
 
-.action-sprint_planning
+.controller-backlogs\/backlog.action-show,
+.controller-backlogs\/backlog.action-details
   @include extended-content--bottom
 
-.op-backlogs-header
+  #content-body
+    padding-right: 0
+
+  // Base layout restores padding-right: 1rem on #content-body when the
+  // split pane is open (specificity 0,3,0,0). Override it back to 0.
+  @include split-pane-active
+    #content-body
+      padding-right: 0
+
+.op-sprint-header
   display: grid
   grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
-  grid-template-areas: "collapsible points menu"
+  grid-template-areas: "collapsible actions menu"
   align-items: center
 
-.op-backlogs-header--collapsible
-  margin-left: calc(var(--stack-padding-normal) / 2)
+  &--actions,
+  &--menu
+    margin-left: var(--stack-gap-normal)
+    align-self: flex-start
+    // Unfortunately, the invisible button style bites us here again.
+    margin-top: -6px
 
-.op-backlogs-header--points
-  margin-left: var(--stack-gap-normal)
-  font-variant-numeric: tabular-nums
-
-.op-backlogs-header--menu
-  margin-left: var(--stack-gap-normal)
 
 .op-backlogs-story
   display: grid
-  grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
+  grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
   grid-template-rows: auto auto
-  grid-template-areas: "drag_handle info_line points menu" ". subject subject subject"
+  grid-template-areas: "info_line points menu" "subject subject subject"
   align-items: center
   margin-top: calc(-1 * var(--base-size-4))
   margin-bottom: var(--base-size-4)
-
-.op-backlogs-story--drag_handle_button
-  padding: var(--base-size-4)
 
 .op-backlogs-story--points
   margin-left: var(--stack-gap-normal)
@@ -78,7 +83,7 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   container-name: backlogsListsContainer
   container-type: inline-size
 
-.op-backlogs-container, .op-sprint-planning-container
+.op-sprint-planning-container
   display: flex
   flex-direction: row
   gap: var(--stack-gap-normal)
@@ -87,7 +92,7 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   overflow: hidden
 
 
-.op-backlogs-lists, .op-sprint-planning-lists
+.op-sprint-planning-lists
   display: flex
   flex-direction: column
   gap: var(--stack-gap-normal)
@@ -95,65 +100,26 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   min-height: 0
   overflow-y: auto
   overflow-x: hidden
-
-.op-sprint-planning-lists
   padding-top: var(--stack-padding-normal)
   padding-bottom: var(--stack-padding-normal)
 
-//------------------ Header form responsive styling -----------------------
-// Note: Using hardcoded values because Sass doesn't interpolate variables in
-// @container query conditions.
-// Note: 1102px is twice the small breakpoint plus the 16px gap. Since we show two boxes next to each other,
-// we thus assure that the form wraps at the small breakpoint.
-@container backlogsListsContainer (min-width: 1102px)
-  .op-backlogs-header-form
-    .FormControl-spacingWrapper
-      flex-direction: row
-      column-gap: 0.5rem
-      flex-wrap: wrap
-
-      & > :first-child
-        flex: 1 1 33%
-
-@container backlogsListsContainer (min-width: 1550px)
-  .op-backlogs-header-form
-    .FormControl-spacingWrapper
-      & > :first-child
-        flex-basis: 25%
-
-//------------------ Header responsive styling -----------------------
-// Note: 1143px is matching the the breakpoint we use within PVC for the container query.
-// Thus the layout switches at the exact same point.
-@container backlogsListsContainer (max-width: 1443px)
-  .op-backlogs-header
-    grid-template-rows: 1fr auto
-    grid-template-areas: "collapsible points menu" "collapsible . . "
-    align-items: baseline
-
-    &--menu
-      align-self: flex-start
-      // Unfortunately, the invisible button style bites us here again.
-      margin-top: -6px
-
-
 //------------------ Sprint planning divider (side-by-side only) ----
 @container backlogsListsContainer (min-width: 655px)
-  .op-sprint-planning-lists:not(:last-child)
-    border-right: 1px solid var(--borderColor-default)
+  .op-sprint-planning-lists
     padding-right: var(--stack-gap-normal)
+
+    &:not(:last-child)
+      border-right: 1px solid var(--borderColor-default)
 
 //------------------ Mobile responsive styling -----------------------
 @container backlogsListsContainer (max-width: 654px)
-  .op-backlogs-header
-    grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
-
   .op-backlogs-points-label
     display: none
 
   .op-backlogs-story
-    grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
+    grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
 
-  .op-backlogs-container, .op-sprint-planning-container
+  .op-sprint-planning-container
     height: unset
     overflow: auto
     flex-direction: column

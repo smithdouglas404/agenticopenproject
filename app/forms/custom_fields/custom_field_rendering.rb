@@ -69,7 +69,7 @@ module CustomFields::CustomFieldRendering
   end
 
   def custom_fields
-    raise NotImplementedError, "#custom_fields method needs to be overwritten and provide all custom fields we want to show"
+    raise SubclassResponsibilityError, "#custom_fields needs to be overwritten and provide all custom fields we want to show"
   end
 
   private

@@ -34,6 +34,7 @@ zh-TW:
   saml:
     menu_title: SAML 提供商
     delete_title: 刪除 SAML 提供者
+    delete_heading: Delete this SAML provider?
     info:
       title: SAML 通訊協定組態參數
       description: '使用這些參數設定您與 OpenProject 的身分提供者連線。

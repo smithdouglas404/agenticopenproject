@@ -36,6 +36,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { UserResource } from 'core-app/features/hal/resources/user-resource';
+import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 
 @Component({
   templateUrl: './multi-select-edit-field.component.html',
@@ -152,9 +153,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
   }
 
   public repositionDropdown() {
-    if (this.ngSelectComponent && this.ngSelectComponent.dropdownPanel) {
-      setTimeout(() => this.ngSelectComponent.dropdownPanel.adjustPosition(), 0);
-    }
+    repositionDropdownBugfix(this.ngSelectComponent);
   }
 
   private openAutocompleteSelectField() {

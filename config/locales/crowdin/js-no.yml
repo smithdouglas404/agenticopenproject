@@ -515,12 +515,6 @@
         sidebar_arrow: Bruk returpilen i øvre venstre hjørne for å gå tilbake til prosjektets <b>hovedmeny</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: I <b>wiki</b> kan du dokumentere og dele kunnskap sammen med teamet.
-        backlogs:
-          overview: Administrer arbeidet ditt i <b>- backlogs</b> -visningen.
-          sprints: Til høyre har du produktet etterslep og feilloggen, til venstre har du de respektive stegene. Her kan du lage <b>epics, brukerhistorier og bugs</b>, prioriterer du via dra og slipp og legge dem til et steg.
-          task_board_arrow: For å se <b>oppgavetavle</b>, åpne steg fra nedtrekksmenyen...
-          task_board_select: "...og velg <b>oppgavetavlens</b> oppføring."
-          task_board: Oppgavetavlen visualiserer <b>fremdriften for denne etappen</b>. Klikk på plussikonet (+) ved siden av en brukerhistorie for å legge til nye oppgaver eller hindringer. <br> Statusen kan oppdateres ved å dra og slipp.
         boards:
           overview: Velg <b>tavler</b> for å skift visningen og administrere prosjektet ved hjelp av den dynamiske tavlevisningen.
           lists_kanban: Her kan du opprette flere lister (kolonner) i tavlen. Denne funksjonen lar deg for eksempel opprette en <b>Kanban tavle</b>.
@@ -592,49 +586,6 @@
       settings:
         change_notification_settings: Du kan endre <a target="_blank" href="%{url}">varslingsinnstillinger</a> for å sikre at du aldri går glipp av en viktig oppdatering.
         title: Varslingsinnstillinger
-        notify_me: Gi meg beskjed
-        reminders:
-          no_notification: Ingen varsling
-          timeframes:
-            normal:
-              PT0S: samme dag
-              P1D: 1 dag før
-              P3D: 3 dager før
-              P7D: en uke før
-            overdue:
-              P1D: hver dag
-              P3D: hver 3. dag
-              P7D: hver uke
-        reasons:
-          mentioned:
-            title: Nevnt
-            description: Motta en melding hver gang noen nevner meg hvor som helst
-          assignee: Deltaker
-          responsible: Ansvarlig
-          shared: Delt
-          watched: Overvåker
-          work_package_commented: Alle nye kommentarer
-          work_package_created: Nye arbeidspakker
-          work_package_processed: Alle statusendringer
-          work_package_prioritized: Alle endringer i prioritet
-          work_package_scheduled: Alle dato endringer
-        global:
-          immediately:
-            title: Deltar
-            description: Varsler for alle aktiviteter i arbeidspakker du er involvert i (oppdragstaker, ansvarlig eller overvåker).
-          delayed:
-            title: Ikke-deltakende
-            description: Melding om ytterligere aktiviteter i alle prosjekter.
-          date_alerts:
-            title: Dato varsler
-            description: Automatiske varsler når viktige datoer nærmer seg for åpne arbeidspakker du er med i (oppdragstaker, ansvarlig eller overvåker).
-          overdue: Når forfalt
-        project_specific:
-          title: Prosjekt-spesifikke varslingsinnstillinger
-          description: Disse prosjektspesifikke innstillingene overstyrer standardinnstillingene ovenfor.
-          add: Legg til innstilling for prosjekt
-          already_selected: Dette prosjektet er allerede valgt
-          remove: Fjern prosjektinnstillinger
     pagination:
       no_other_page: Du er på den eneste siden.
       pages_skipped: Pages skipped.
@@ -658,39 +609,6 @@
       required_outside_context: 'Velg et prosjekt for å opprette arbeidspakken og se alle egenskaper. Du kan bare velge prosjekter som har typen ovenfor aktivert.
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: Legg til tid
-          enable: Aktiver daglige e-postpåminnelser
-          explanation: Du får bare disse påminnelsene for uleste varslinger og bare på tider du angir. %{no_time_zone}
-          no_time_zone: Fram til du konfigurerer en tidssone for kontoen din, vil tidene bli tolket til å være i UTC.
-          time_label: 'Tid %{counter}:'
-          title: Send meg daglige e-postpåminnelser for uleste varslinger
-        workdays:
-          title: Motta e-postpåminnelser for disse dagene
-        immediate:
-          title: Send meg en påminnelse
-          mentioned: Umiddelbart hvis noen @nevner meg
-          personal_reminder: Immediately when I receive a personal reminder
-        alerts:
-          title: Epost varsler for andre produkter (som ikke er arbeidspakker)
-          explanation: 'Varsler i dag er begrenset til arbeidspakker. Du kan velge å fortsette å motta e-postvarsler for disse hendelsene inntil de er inkludert i varsler:
-
-            '
-          news_added: Lagt til nyhet
-          news_commented: Kommenter en nyhet
-          document_added: Dokumenter lagt til
-          forum_messages: Nye forummeldinger
-          wiki_page_added: Wiki-side lagt til
-          wiki_page_updated: Wiki-side oppdatert
-          membership_added: Medlemskap lagt til
-          membership_updated: Medlemskapet er oppdatert
-        title: E-postpåminnelser
-        pause:
-          label: pause daglige e-postpåminnelser midlertidig
-          first_day: 'Første dag '
-          last_day: Siste dag
     text_are_you_sure: Er du sikker?
     text_are_you_sure_to_cancel: You have unsaved changes on this page. Are you sure you want to discard them?
     breadcrumb: Brødsmule
@@ -1063,13 +981,6 @@
       form_submit:
         title: Bekreft for å fortsette
         text: Er du sikker på at du vil utføre denne handlingen?
-      destroy_work_package:
-        title: Bekreft sletting av %{label}
-        single_text: Er du sikker på at du vil slette arbeidspakken
-        bulk_text: Er du sikker på at du vil slette følgende %{label}?
-        has_children: 'Arbeidspakken har %{childUnits}:'
-        confirm_deletion_children: Jeg erkjenner at ALLE underordnede av listede arbeidspakker vil fjernes samtidig.
-        deletes_children: Alle underordnede arbeidspakker og tilhørende vil også bli slettet samtidig.
       destroy_time_entry:
         title: Bekreft sletting av tidsregistrering
         text: Er du sikker på at du vil slette følgende tidsregistrering?

@@ -31,19 +31,33 @@
 class UsersController < ApplicationController
   include OpTurbo::ComponentStream
   include WorkingTimesAuthorization
+  include Notifications::NotificationSettingsActions
 
   layout "admin"
 
   before_action :authorize_global, except: %i[show deletion_info destroy]
 
+  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_user, only: %i[show
                                      edit
                                      update
+                                     update_reminders
+                                     update_workdays
+                                     update_email_alerts
+                                     update_participating
+                                     update_non_participating
+                                     update_date_alerts
+                                     new_project_settings
+                                     create_project_settings
+                                     edit_project_settings
+                                     update_project_settings
+                                     destroy_project_settings
                                      change_status_info
                                      change_status
                                      destroy
                                      deletion_info
                                      resend_invitation]
+  # rubocop:enable Rails/LexicallyScopedActionFilter
   # should also contain destroy but post data can not be redirected
   before_action :require_login, only: [:deletion_info]
   before_action :authorize_for_user, only: [:destroy]
@@ -107,6 +121,30 @@ class UsersController < ApplicationController
       @contract = Users::CreateContract.new(@user, current_user)
       render action: :new, status: :unprocessable_entity
     end
+  end
+
+  def update_email_alerts
+    global_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+    persist_notification_setting(global_setting, permitted_params.notification_setting_email_alerts)
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
+  end
+
+  def update_reminders
+    call = ::Users::UpdateService.new(model: @user, user: current_user).call(pref: permitted_params.pref.to_h)
+    flash[call.success? ? :notice : :error] = update_service_flash_message(call)
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
+  end
+
+  def update_participating
+    update_user_notification_setting(permitted_params.notification_setting_participating)
+  end
+
+  def update_non_participating
+    update_user_notification_setting(permitted_params.notification_setting_non_participating)
+  end
+
+  def update_date_alerts
+    update_user_notification_setting(build_date_alerts_params)
   end
 
   def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
@@ -261,6 +299,28 @@ class UsersController < ApplicationController
 
   private
 
+  def update_user_notification_setting(update_params)
+    global_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+    persist_notification_setting(global_setting, update_params)
+    redirect_back_or_to edit_user_path(@user, tab: "notifications")
+  end
+
+  def notifications_settings_path
+    edit_user_path(@user, tab: "notifications")
+  end
+
+  def workdays_redirect_path
+    edit_user_path(@user, tab: "reminders")
+  end
+
+  def project_notifications_create_url
+    project_notifications_user_path(@user)
+  end
+
+  def project_setting_form_url(project_id)
+    project_setting_user_path(@user, project_id:)
+  end
+
   def can_show_user?
     return true if can_manage_or_create_users?
     return true if @user == User.current
@@ -344,6 +404,12 @@ class UsersController < ApplicationController
     elsif set_password? params
       update_params[:password] = params[:user][:password]
       update_params[:password_confirmation] = params[:user][:password_confirmation]
+      # Force a password change when the plain-text password will be emailed.
+      # - For invited users, the account-information email is always sent
+      # - For active users, it is only sent when the admin explicitly requests it.
+      if params[:send_information].present? || @user.invited?
+        update_params[:force_password_change] = true
+      end
     end
 
     update_params

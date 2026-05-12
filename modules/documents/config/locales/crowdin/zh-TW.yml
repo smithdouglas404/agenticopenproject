@@ -71,12 +71,10 @@ zh-TW:
         如果您要存取此文件，請聯絡您的管理員啟用即時文字協作。
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           由於即時文字協作伺服器無法連線，因此無法開啟文件。
           如果問題仍然存在，請聯絡管理員。
         action: 再試一次
-      connection_recovery_notice:
-        description: 與即時文字協作伺服器的連線已恢復。
       tabs: 文件標籤
     index_page:
       name: 名稱
@@ -88,6 +86,9 @@ zh-TW:
       types: 類型
       collaboration_settings: 即時協作
     last_updated_at: 最後儲存 %{time}。
+    info_line:
+      currently_offline: 你目前狀態為離線。
+      connection_restored: 您現在已經重新上線。
     active_editors: 活躍的編輯者
     active_editors_count:
       other: "%{count} 活躍的編輯"
