@@ -29,6 +29,6 @@
 #++
 
 module ResourcePlanners
-  class UpdateService < ::BaseServices::Update
+  class UpdateContract < BaseContract
   end
 end
