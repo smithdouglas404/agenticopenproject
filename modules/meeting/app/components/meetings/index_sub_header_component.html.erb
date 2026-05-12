@@ -23,6 +23,23 @@
       end
     end
 
+    if @project.nil?
+      subheader.with_quick_filter do
+        render(
+          OpPrimer::QuickFilter::SelectPanelComponent.new(
+            name: I18n.t(:label_project),
+            query: @query,
+            filter_key: :project_id,
+            path_args: [@project, :meetings]
+          )
+        ) do |component|
+          project_items.each do |project|
+            component.with_item(label: project.name, value: project.id)
+          end
+        end
+      end
+    end
+
     subheader.with_filter_component do
       render(Meetings::MeetingFilterButtonComponent.new(query: @query, project: @project))
     end

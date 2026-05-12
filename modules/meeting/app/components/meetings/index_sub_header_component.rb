@@ -41,6 +41,8 @@ module Meetings
       @params = params
     end
 
+    private
+
     def render_create_button?
       if @project
         User.current.allowed_in_project?(:create_meetings, @project)
@@ -63,6 +65,10 @@ module Meetings
 
     def filters_expanded?
       params[:filters].present?
+    end
+
+    def project_items
+      Project.visible.order(:name)
     end
   end
 end

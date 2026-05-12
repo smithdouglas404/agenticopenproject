@@ -149,6 +149,22 @@ module Pages::Meetings
       wait_for_network_idle
     end
 
+    def set_project_filter(*projects)
+      page.within("#content-body") do
+        click_link_or_button I18n.t(:label_project), exact: true
+      end
+
+      projects.each do |project|
+        find("[role='option']", text: project.name).click
+      end
+
+      within("[data-controller='quick-filter--select-panel']") do
+        click_link_or_button I18n.t(:button_apply)
+      end
+
+      wait_for_network_idle
+    end
+
     def expect_no_meetings_listed
       within "#content-wrapper" do
         expect(page)
