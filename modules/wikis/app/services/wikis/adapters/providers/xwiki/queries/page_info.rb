@@ -71,7 +71,6 @@ module Wikis
               success(
                 Results::PageInfo.new(
                   identifier:,
-                  provider:,
                   title: data["title"],
                   href: data["xwikiAbsoluteUrl"]
                 )

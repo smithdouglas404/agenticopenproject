@@ -51,8 +51,7 @@ module Wikis
           Success(
             Adapters::Results::PageInfo.new(title: "Wikis, now with more cheese! Part #{input.identifier}",
                                             identifier: input.identifier,
-                                            href: "totally_valid_url",
-                                            provider:)
+                                            href: "totally_valid_url")
           )
         )
       end
@@ -93,8 +92,7 @@ module Wikis
             Success(
               Adapters::Results::PageInfo.new(title: "Wikis, now with more cheese! Part #{pl.id}",
                                               identifier: input.identifier,
-                                              href: "totally_valid_url",
-                                              provider: xwiki_provider)
+                                              href: "totally_valid_url")
             )
           )
         end

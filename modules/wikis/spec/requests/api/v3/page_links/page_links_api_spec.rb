@@ -107,7 +107,7 @@ RSpec.describe "API v3 wiki page links resource" do
 
   def build_page_info(link)
     Wikis::Adapters::Results::PageInfo.new(
-      identifier: link.identifier, href: "valid_uri", title: "Title of #{link.identifier}", provider: link.provider
+      identifier: link.identifier, href: "valid_uri", title: "Title of #{link.identifier}"
     )
   end
 end
