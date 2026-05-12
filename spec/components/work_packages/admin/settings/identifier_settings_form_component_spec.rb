@@ -53,9 +53,33 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
   context "when state is :change_in_progress" do
     let(:state) { :change_in_progress }
 
-    it "renders the in-progress spinner message" do
+    before do
+      allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(false)
+      allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new(1..7))
+    end
+
+    it "renders the converting banner with the pending project count" do
       render_component(component)
-      expect(page).to have_text("Project identifiers are currently being converted to semantic format.")
+      expect(page).to have_text("7 projects remaining")
+    end
+
+    context "with 1 project remaining" do
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[42]) }
+
+      it "uses the singular form" do
+        render_component(component)
+        expect(page).to have_text("1 project remaining")
+      end
+    end
+
+    context "when reversion is in progress" do
+      before { allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(true) }
+
+      it "renders the reverting banner message without a count" do
+        render_component(component)
+        expect(page).to have_text("Project identifiers are currently being reverted to classic format.")
+        expect(ProjectIdentifiers::PendingProjectsFinder).not_to have_received(:project_ids)
+      end
     end
 
     it "does not render the success banner" do
@@ -91,7 +115,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
+      expect(page).to have_no_text("projects remaining")
     end
 
     it "renders the radio buttons as enabled" do
@@ -137,7 +161,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render in-progress or success content" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
+      expect(page).to have_no_text("projects remaining")
       expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 
