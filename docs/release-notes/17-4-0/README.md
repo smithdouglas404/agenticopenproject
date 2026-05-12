@@ -53,6 +53,8 @@ Work packages can be moved between buckets, sorted within each bucket, and adjus
 
 Backlog cards are now fully draggable, making it easier to move work packages during backlog refinement and sprint planning. At the same time, you can still open a work package in the side panel with a single click to quickly view and edit details without losing context.
 
+![Gif showing Backlog and sprints in OpenProject, dragging a work package from Backlog bucket to Sprints and then opening it per click in the middle of the card](openproject-17-4-backlog-drag-drop.gif)
+
 ### Sprint Start and Complete buttons in the sprint header
 
 You can now start and complete sprints directly from the sprint header by clicking the respective buttons. This makes these actions easier to access and provides a clearer overview of the sprint status.
