@@ -31,7 +31,7 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock do
+RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::User, :webmock do
   let(:user) { build_stubbed(:user) }
   let(:oauth_client) { build_stubbed(:oauth_client) }
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.local/") }

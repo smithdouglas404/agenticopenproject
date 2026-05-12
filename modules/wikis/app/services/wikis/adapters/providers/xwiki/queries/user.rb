@@ -33,7 +33,7 @@ module Wikis
     module Providers
       module XWiki
         module Queries
-          class UserQuery < BaseQuery
+          class User < BaseQuery
             def call(auth_strategy:)
               url = "#{provider.url.chomp('/')}/rest/"
               Adapters::Authentication[auth_strategy].call do |http|
