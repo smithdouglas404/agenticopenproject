@@ -429,8 +429,8 @@ id:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          converting_to_semantic_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
-          converting_to_classic_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions

@@ -436,8 +436,8 @@ fr:
           checkbox_label: Je comprends que cela changera définitivement tous les identifiants du lot de travaux
         success_banner: Le format de l'identifiant du lot de travaux a été mis à jour.
         in_progress:
-          converting_to_semantic_banner_message: Les identifiants du projet sont actuellement convertis en format sémantique. Cela peut prendre un certain temps.
-          converting_to_classic_banner_message: Les identifiants du projet sont en cours de réinitialisation au format classique. Cela peut prendre un certain temps.
+          converting_banner_message: Les identifiants du projet sont actuellement convertis en format sémantique. Cela peut prendre un certain temps.
+          reverting_banner_message: Les identifiants du projet sont en cours de réinitialisation au format classique. Cela peut prendre un certain temps.
     workflows:
       tabs:
         default_transitions: Transitions par défaut

@@ -450,8 +450,8 @@ pl:
           checkbox_label: Rozumiem, że spowoduje to trwałą zmianę wszystkich identyfikatorów pakietów roboczych
         success_banner: Pomyślnie zaktualizowano format identyfikatora pakietu roboczego.
         in_progress:
-          converting_to_semantic_banner_message: Identyfikatory projektów są obecnie konwertowane na format semantyczny. Może to zająć trochę czasu.
-          converting_to_classic_banner_message: Identyfikatory projektów są obecnie konwertowane na format klasyczny. Może to zająć trochę czasu.
+          converting_banner_message: Identyfikatory projektów są obecnie konwertowane na format semantyczny. Może to zająć trochę czasu.
+          reverting_banner_message: Identyfikatory projektów są obecnie konwertowane na format klasyczny. Może to zająć trochę czasu.
     workflows:
       tabs:
         default_transitions: Przejścia domyślne
