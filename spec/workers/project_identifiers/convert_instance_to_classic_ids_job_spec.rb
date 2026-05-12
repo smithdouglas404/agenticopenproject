@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
+RSpec.describe ProjectIdentifiers::ConvertInstanceToClassicIdsJob do
   describe "#perform" do
     context "when the setting is not classic" do
       before { allow(Setting::WorkPackageIdentifier).to receive(:classic?).and_return(false) }
@@ -51,10 +51,10 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
           end
         end
 
-        it "calls RevertProjectToClassicService for each project" do
+        it "calls ConvertProjectToClassicService for each project" do
           services = projects.map do |project|
-            instance_double(ProjectIdentifiers::RevertProjectToClassicService, call: nil).tap do |service|
-              allow(ProjectIdentifiers::RevertProjectToClassicService).to receive(:new).with(project).and_return(service)
+            instance_double(ProjectIdentifiers::ConvertProjectToClassicService, call: nil).tap do |service|
+              allow(ProjectIdentifiers::ConvertProjectToClassicService).to receive(:new).with(project).and_return(service)
             end
           end
 
@@ -67,18 +67,18 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
       context "when a project already has a classic identifier" do
         let!(:project) { create(:project) }
 
-        it "skips it and does not call RevertProjectToClassicService" do
-          allow(ProjectIdentifiers::RevertProjectToClassicService).to receive(:new)
+        it "skips it and does not call ConvertProjectToClassicService" do
+          allow(ProjectIdentifiers::ConvertProjectToClassicService).to receive(:new)
           described_class.new.perform
-          expect(ProjectIdentifiers::RevertProjectToClassicService).not_to have_received(:new)
+          expect(ProjectIdentifiers::ConvertProjectToClassicService).not_to have_received(:new)
         end
       end
 
       context "when there are no projects" do
-        it "does not call RevertProjectToClassicService" do
-          allow(ProjectIdentifiers::RevertProjectToClassicService).to receive(:new)
+        it "does not call ConvertProjectToClassicService" do
+          allow(ProjectIdentifiers::ConvertProjectToClassicService).to receive(:new)
           described_class.new.perform
-          expect(ProjectIdentifiers::RevertProjectToClassicService).not_to have_received(:new)
+          expect(ProjectIdentifiers::ConvertProjectToClassicService).not_to have_received(:new)
         end
       end
 

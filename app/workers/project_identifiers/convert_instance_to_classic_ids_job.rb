@@ -28,32 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectIdentifiers
-  # Reverts a single project back to classic identifier mode by restoring its
-  # project identifier to the most-recent classic-format slug from FriendlyId
-  # history. If no classic slug exists (e.g. the project was created in semantic
-  # mode), a new classic identifier is generated via Project.suggest_identifier.
-  #
-  # WP sequence_number/identifier, WorkPackageSemanticAlias rows, and
-  # wp_sequence_counter are intentionally left intact so that a back-switch to
-  # semantic mode can resume without data loss.
-  class RevertProjectToClassicService
-    def initialize(project)
-      @project = project
-    end
+# Reverts all projects to classic identifier mode. Triggered explicitly when the
+# admin switches the instance back to classic mode via the admin UI
+# (Admin::Settings::WorkPackagesIdentifierController#switch_to_classic).
+#
+# The global Setting.work_packages_identifier is expected to already be "classic"
+# before this job runs — it is set by the controller before enqueueing.
+class ProjectIdentifiers::ConvertInstanceToClassicIdsJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
 
-    def call
-      restore_classic_identifier
-    end
+  good_job_control_concurrency_with(total_limit: 1)
+  retry_on StandardError, wait: :polynomially_longer, attempts: 8
 
-    private
+  def perform
+    raise "expected Setting.work_packages_identifier to be classic" unless Setting::WorkPackageIdentifier.classic?
 
-    attr_reader :project
+    Project.find_each do |project|
+      next if Project.classic_identifier_format?(project.identifier)
 
-    def restore_classic_identifier
-      generator = ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new
-      classic = generator.restore_identifier(project) || generator.suggest_identifier(project.name)
-      project.update!(identifier: classic)
+      ProjectIdentifiers::ConvertProjectToClassicService.new(project).call
     end
   end
 end

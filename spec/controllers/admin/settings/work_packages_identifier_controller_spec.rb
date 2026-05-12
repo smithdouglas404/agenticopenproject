@@ -62,10 +62,10 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
     end
 
     context "when work_packages_identifier is 'classic'" do
-      it "updates the setting to classic, enqueues RevertInstanceToClassicIdsJob, and redirects" do
+      it "updates the setting to classic, enqueues ConvertInstanceToClassicIdsJob, and redirects" do
         expect do
           patch :update, params: { settings: { work_packages_identifier: "classic" } }
-        end.to have_enqueued_job(ProjectIdentifiers::RevertInstanceToClassicIdsJob)
+        end.to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToClassicIdsJob)
 
         expect(Setting.work_packages_identifier).to eq("classic")
         expect(response).to redirect_to(action: "show")
@@ -79,7 +79,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
         it "does not enqueue another job but still updates the setting and redirects" do
           expect do
             patch :update, params: { settings: { work_packages_identifier: "classic" } }
-          end.not_to have_enqueued_job(ProjectIdentifiers::RevertInstanceToClassicIdsJob)
+          end.not_to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToClassicIdsJob)
 
           expect(Setting.work_packages_identifier).to eq("classic")
           expect(response).to redirect_to(action: "show")
@@ -93,7 +93,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
         expect(response).to have_http_status(:bad_request)
         expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_been_enqueued
-        expect(ProjectIdentifiers::RevertInstanceToClassicIdsJob).not_to have_been_enqueued
+        expect(ProjectIdentifiers::ConvertInstanceToClassicIdsJob).not_to have_been_enqueued
       end
     end
 
@@ -103,7 +103,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
         expect(response).to have_http_status(:bad_request)
         expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_been_enqueued
-        expect(ProjectIdentifiers::RevertInstanceToClassicIdsJob).not_to have_been_enqueued
+        expect(ProjectIdentifiers::ConvertInstanceToClassicIdsJob).not_to have_been_enqueued
       end
     end
   end
