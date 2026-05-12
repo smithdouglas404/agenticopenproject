@@ -35,9 +35,8 @@ module WorkPackageTypes
         name = params[:name].to_s.strip
 
         if name.blank?
-          return failure_with_message(
-            I18n.t("activerecord.errors.models.type.attributes.attribute_groups.group_without_name")
-          )
+          seen_keys = active_groups.map { |g| g.key.to_s }
+          name = Type::FormGroup.next_untitled_key(seen_keys)
         end
 
         group = build_group(name)
