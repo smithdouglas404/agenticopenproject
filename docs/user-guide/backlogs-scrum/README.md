@@ -42,7 +42,7 @@ A work package:
 
 You can sort work packages within a backlog bucket via drag and drop or by using the **Move** option from the work package menu.
 
-### Create a backlog bucket
+#### Create a backlog bucket
 
 To create a backlog bucket, click the **+ Backlog bucket** button in the Backlog and sprints view. This will open a dialog where you can enter the bucket name. Click **Create** to proceed.
 
@@ -51,7 +51,7 @@ To create a backlog bucket, click the **+ Backlog bucket** button in the Backlog
 
 ![Backlogs module in OpenProject showing backlog items and multiple sprints with work packages](openproject_user_guide_backlog_add_bucket.png)
 
-### Rename or delete a backlog bucket
+#### Rename or delete a backlog bucket
 
 Open the **More (three dots)** menu of a backlog bucket to:
 
@@ -105,7 +105,7 @@ Depending on the current location of the work package, you can move it:
 > [!IMPORTANT]
 > Starting with the OpenProject 17.3 release, Sprints are new objects no longer linked to versions (as was the case with previous OpenProject versions).
 
-A **Sprint** is a planned and time-boxed period in which a Scrum team completes a defined set of tasks. They are containers where work packages can be manually added or removed from the Inbox backlog or backlog buckets via drag and drop or the work package menu.
+A **Sprint** is a planned and time-boxed period in which a Scrum team completes a defined set of tasks. They are containers where work packages can be manually added or removed from the Inbox backlog or backlog buckets via drag and drop or the menu.
 
 ### Create a sprint
 
