@@ -264,10 +264,11 @@ group :test do
   gem "rack-test", "~> 2.2.0"
   gem "shoulda-context", "~> 2.0"
 
+  gem "parallel_tests", "~> 5.7"
   # Test prof provides factories from code
   # and other niceties
   gem "test-prof", "~> 1.6.0"
-  gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
+  gem "turbo_tests", github: "opf/turbo_tests", ref: "2_2_5_with_patches"
 
   gem "rack_session_access"
   gem "rspec", "~> 3.13.2"
@@ -316,8 +317,6 @@ group :test do
   gem "equivalent-xml", "~> 0.6"
   gem "json_spec", "~> 1.1.4"
   gem "shoulda-matchers", "~> 7.0", require: nil
-
-  gem "parallel_tests", "~> 4.0"
 end
 
 group :ldap do
