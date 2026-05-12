@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "dry/container/stub"
+require "dry/core/container/stub"
 require "dry/monads"
 
 RSpec.configure do |config|
