@@ -100,7 +100,7 @@ RSpec.describe "API v3 wiki page links resource" do
   def stub_query_calls(links, query)
     links.each do |link|
       Wikis::Adapters::Input::PageInfo.build(identifier: link.identifier).bind do |input|
-        allow(query).to receive(:call).with(input).and_return(Success(build_page_info(link)))
+        allow(query).to receive(:call).with(input_data: input, auth_strategy: anything).and_return(Success(build_page_info(link)))
       end
     end
   end

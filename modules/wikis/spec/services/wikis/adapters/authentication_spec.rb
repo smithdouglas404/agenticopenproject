@@ -28,34 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters
-  class BaseQuery
-    include Dry::Monads[:result]
+require "spec_helper"
+require_module_spec_helper
 
-    attr_reader :provider
+RSpec.describe Wikis::Adapters::Authentication do
+  describe ".[]" do
+    subject(:strategy_object) { described_class[strategy] }
 
-    def initialize(model:)
-      @provider = model
+    context "with a bearer_token strategy" do
+      let(:strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user: build_stubbed(:user)).value! }
+
+      it { is_expected.to be_a(Wikis::Adapters::AuthenticationStrategies::BearerToken) }
     end
 
-    def call(_input_data)
-      raise SubclassResponsibilityError
-    end
+    context "with an internal strategy" do
+      let(:strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :internal, user: build_stubbed(:user)).value! }
 
-    private
-
-    def success(result)
-      Success(result)
-    end
-
-    def failure(code:)
-      Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def page_info(identifier:, auth_strategy:)
-      Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
-      end
+      it { is_expected.to be_a(Wikis::Adapters::AuthenticationStrategies::InternalUser) }
     end
   end
 end

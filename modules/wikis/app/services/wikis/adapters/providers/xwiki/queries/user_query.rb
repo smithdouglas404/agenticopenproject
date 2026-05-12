@@ -34,9 +34,11 @@ module Wikis
       module XWiki
         module Queries
           class UserQuery < BaseQuery
-            def call(input_data)
+            def call(auth_strategy:)
               url = "#{provider.url.chomp('/')}/rest/"
-              handle_response(OpenProject.httpx.bearer_auth(input_data.access_token).get(url))
+              Adapters::Authentication[auth_strategy].call do |http|
+                handle_response(http.get(url))
+              end
             end
 
             private

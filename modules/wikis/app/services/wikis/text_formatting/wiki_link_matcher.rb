@@ -78,7 +78,9 @@ module Wikis
         return Failure() if provider.nil?
 
         Wikis::Adapters::Input::PageInfo.build(identifier:).bind do |input|
-          provider.resolve("queries.page_info").call(input)
+          provider.auth_strategy_for(User.current).bind do |auth_strategy|
+            provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
+          end
         end
       end
 

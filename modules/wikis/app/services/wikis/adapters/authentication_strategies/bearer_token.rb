@@ -28,33 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters
-  class BaseQuery
-    include Dry::Monads[:result]
+module Wikis
+  module Adapters
+    module AuthenticationStrategies
+      class BearerToken
+        include Dry::Monads[:result]
 
-    attr_reader :provider
+        def initialize(user, provider)
+          @user = user
+          @provider = provider
+        end
 
-    def initialize(model:)
-      @provider = model
-    end
+        def call(http_options: {}, **)
+          fetch_user_token.bind do |token|
+            yield OpenProject.httpx.bearer_auth(token.access_token).with(http_options)
+          end
+        end
 
-    def call(_input_data)
-      raise SubclassResponsibilityError
-    end
+        private
 
-    private
+        def fetch_user_token
+          token = OAuthClientToken.for_user_and_client(@user, @provider.oauth_client).first
+          return Success(token) if token
 
-    def success(result)
-      Success(result)
-    end
-
-    def failure(code:)
-      Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def page_info(identifier:, auth_strategy:)
-      Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
+          Failure(Results::Error.new(source: self.class, code: :missing_token))
+        end
       end
     end
   end

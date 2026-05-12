@@ -23,39 +23,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters
-  class BaseQuery
-    include Dry::Monads[:result]
+require "spec_helper"
+require_module_spec_helper
 
-    attr_reader :provider
+RSpec.describe Wikis::Adapters::Providers::XWiki::Authentication::UserBound do
+  let(:provider) { build_stubbed(:xwiki_provider) }
+  let(:user) { build_stubbed(:user) }
 
-    def initialize(model:)
-      @provider = model
-    end
+  subject(:user_bound) { described_class.new(model: provider) }
 
-    def call(_input_data)
-      raise SubclassResponsibilityError
-    end
+  it "is registered" do
+    expect(Wikis::Adapters::Registry.resolve("xwiki.authentication.user_bound")).to eq(described_class)
+  end
 
-    private
-
-    def success(result)
-      Success(result)
-    end
-
-    def failure(code:)
-      Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def page_info(identifier:, auth_strategy:)
-      Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
-      end
+  describe "#call" do
+    it "returns a Success with a bearer_token strategy carrying the user and provider" do
+      result = user_bound.call(user)
+      expect(result).to be_success
+      expect(result.value!).to have_attributes(key: :bearer_token, user:, provider:)
     end
   end
 end

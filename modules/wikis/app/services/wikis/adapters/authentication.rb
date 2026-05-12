@@ -28,33 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters
-  class BaseQuery
-    include Dry::Monads[:result]
-
-    attr_reader :provider
-
-    def initialize(model:)
-      @provider = model
-    end
-
-    def call(_input_data)
-      raise SubclassResponsibilityError
-    end
-
-    private
-
-    def success(result)
-      Success(result)
-    end
-
-    def failure(code:)
-      Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def page_info(identifier:, auth_strategy:)
-      Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
+module Wikis
+  module Adapters
+    class Authentication
+      class << self
+        # @param strategy [Input::AuthStrategy]
+        def [](strategy)
+          case strategy.key
+          when :bearer_token
+            AuthenticationStrategies::BearerToken.new(strategy.user, strategy.provider)
+          when :internal
+            AuthenticationStrategies::InternalUser.new(strategy.user)
+          end
+        end
       end
     end
   end

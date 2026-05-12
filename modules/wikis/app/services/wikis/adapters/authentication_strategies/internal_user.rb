@@ -23,38 +23,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters
-  class BaseQuery
-    include Dry::Monads[:result]
+module Wikis
+  module Adapters
+    module AuthenticationStrategies
+      class InternalUser
+        def initialize(user)
+          @user = user
+        end
 
-    attr_reader :provider
-
-    def initialize(model:)
-      @provider = model
-    end
-
-    def call(_input_data)
-      raise SubclassResponsibilityError
-    end
-
-    private
-
-    def success(result)
-      Success(result)
-    end
-
-    def failure(code:)
-      Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def page_info(identifier:, auth_strategy:)
-      Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
+        def call(**)
+          yield @user
+        end
       end
     end
   end

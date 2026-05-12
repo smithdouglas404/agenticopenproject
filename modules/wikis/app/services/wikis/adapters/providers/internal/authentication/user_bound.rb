@@ -28,6 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters::Input
-  UserQuery = Data.define(:access_token)
+module Wikis
+  module Adapters
+    module Providers
+      module Internal
+        module Authentication
+          class UserBound
+            def initialize(model:)
+              @model = model
+            end
+
+            def call(user)
+              Input::AuthStrategy.build(key: :internal, user:, provider: @model)
+            end
+          end
+        end
+      end
+    end
+  end
 end

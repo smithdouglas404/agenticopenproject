@@ -23,39 +23,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters
-  class BaseQuery
-    include Dry::Monads[:result]
+require "spec_helper"
+require_module_spec_helper
 
-    attr_reader :provider
+RSpec.describe Wikis::Adapters::AuthenticationStrategies::InternalUser do
+  let(:user) { build_stubbed(:user) }
 
-    def initialize(model:)
-      @provider = model
-    end
+  subject(:strategy) { described_class.new(user) }
 
-    def call(_input_data)
-      raise SubclassResponsibilityError
-    end
-
-    private
-
-    def success(result)
-      Success(result)
-    end
-
-    def failure(code:)
-      Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def page_info(identifier:, auth_strategy:)
-      Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
-      end
+  describe "#call" do
+    it "yields the user" do
+      yielded = nil
+      strategy.call { |u| yielded = u }
+      expect(yielded).to eq(user)
     end
   end
 end

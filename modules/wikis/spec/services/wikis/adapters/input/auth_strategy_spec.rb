@@ -28,34 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters
-  class BaseQuery
-    include Dry::Monads[:result]
+require "spec_helper"
+require_module_spec_helper
 
-    attr_reader :provider
+RSpec.describe Wikis::Adapters::Input::AuthStrategy do
+  describe ".build" do
+    let(:user) { build_stubbed(:user) }
 
-    def initialize(model:)
-      @provider = model
+    context "with a :bearer_token key and a user" do
+      subject(:result) { described_class.build(key: :bearer_token, user:) }
+
+      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :bearer_token, user:)) }
     end
 
-    def call(_input_data)
-      raise SubclassResponsibilityError
+    context "with an :internal key and a user" do
+      subject(:result) { described_class.build(key: :internal, user:) }
+
+      it { is_expected.to be_success.and have_attributes(value!: have_attributes(key: :internal, user:)) }
     end
 
-    private
+    context "with an unknown key" do
+      subject(:result) { described_class.build(key: :unknown) }
 
-    def success(result)
-      Success(result)
-    end
-
-    def failure(code:)
-      Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def page_info(identifier:, auth_strategy:)
-      Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
-      end
+      it { is_expected.to be_failure }
     end
   end
 end

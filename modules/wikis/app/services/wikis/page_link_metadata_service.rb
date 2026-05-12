@@ -40,7 +40,9 @@ module Wikis
     def call
       metadata = relation.group_by(&:provider).flat_map do |provider, page_links|
         build_inputs(page_links).filter_map do |input_data|
-          provider.resolve("queries.page_info").call(input_data).value_or(nil)
+          provider.auth_strategy_for(User.current).bind do |auth_strategy|
+            provider.resolve("queries.page_info").call(input_data:, auth_strategy:)
+          end.value_or(nil)
         end
       end
 

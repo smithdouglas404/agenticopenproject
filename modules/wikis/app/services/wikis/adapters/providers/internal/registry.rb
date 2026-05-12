@@ -34,7 +34,7 @@ module Wikis
       module Internal
         Registry = Dry::Container::Namespace.new("internal") do
           namespace("authentication") do
-            # ...
+            register(:user_bound, Authentication::UserBound)
           end
 
           namespace("commands") do
