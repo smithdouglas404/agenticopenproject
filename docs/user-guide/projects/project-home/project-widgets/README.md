@@ -241,7 +241,7 @@ This widget provides an overview of your relevant and upcoming meetings.
 > [!NOTE] 
 > The Meetings widget is only displayed on the **Overview tab** of a project home page.
 
-For the meetings widget to be displayed on your project home page, the Meetings module has to be activated first. Once activated, all meetings where you are the organizer or participant are displayed.
+For the meetings widget to be displayed on your project home page, the Meetings module has to be activated first. Once activated, all meetings you are participating in are displayed.
 
 ![Meetings widget displayed under Over tab on Project home page in OpenProject](openproject_user_guide_project_overview_all_meetings_widget.png)
 
