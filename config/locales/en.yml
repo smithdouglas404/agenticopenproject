@@ -4902,8 +4902,11 @@ en:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: "Drag to reorder"
         menu:
           label_actions: "Work package actions"
+        parent: "Parent"
       work_package_card_list_component:
         header:
           label_actions: "Open menu"

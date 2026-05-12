@@ -32,37 +32,99 @@ module OpenProject
   module Common
     # @logical_path OpenProject/Common
     class WorkPackageCardComponentPreview < ViewComponent::Preview
+      # See the [component documentation](/lookbook/pages/components/work_packages/card) for more details.
+      #
+      # @param show_assignee toggle
+      # @param show_priority toggle
+      # @param show_drag_handle toggle
+      # @param show_parent_link toggle
+      # @param show_metric toggle
+      # @param show_menu toggle
+      # @param show_bottom toggle
+      # @param status_scheme select [default, secondary]
+      def playground(show_assignee: false, show_priority: false, show_drag_handle: false,
+                     show_parent_link: false, show_metric: false, show_menu: false,
+                     show_bottom: false, status_scheme: :default)
+        work_package = WorkPackage.visible.where.not(parent_id: nil).first || WorkPackage.visible.first
+        return preview_message("No work packages in the database.") unless work_package
+
+        render_with_template(template: "open_project/common/work_package_card_component_preview/playground",
+                             locals: {
+                               work_package:,
+                               show_assignee:,
+                               show_priority:,
+                               show_drag_handle:,
+                               show_parent_link:,
+                               show_metric:,
+                               show_menu:,
+                               show_bottom:,
+                               status_scheme:
+                             })
+      end
+
+      # Minimal card showing only the info line, subject and actions menu.
       def default
-        work_package = WorkPackage.first
+        work_package = WorkPackage.visible.first
+        return preview_message("No work packages in the database.") unless work_package
+
+        render OpenProject::Common::WorkPackageCardComponent.new(work_package:)
+      end
+
+      # Card with a numeric metric (e.g. story points) in the top-right area.
+      def with_metric
+        work_package = WorkPackage.visible.first
+        return preview_message("No work packages in the database.") unless work_package
+
+        render OpenProject::Common::WorkPackageCardComponent.new(work_package:) do |card|
+          card.with_metric { (work_package.try(:story_points) || 8).to_s }
+        end
+      end
+
+      # Card with a custom actions menu.
+      def with_menu
+        work_package = WorkPackage.visible.first
+        return preview_message("No work packages in the database.") unless work_package
+
+        render OpenProject::Common::WorkPackageCardComponent.new(work_package:) do |card|
+          card.with_menu do |menu|
+            menu.with_item(label: "Open", href: "/work_packages/#{work_package.id}")
+            menu.with_item(label: "Edit", href: "/work_packages/#{work_package.id}/edit")
+            menu.with_divider
+            menu.with_item(label: "Delete", scheme: :danger)
+          end
+        end
+      end
+
+      # Card with a drag handle icon for reorderable lists.
+      def with_drag_handle
+        work_package = WorkPackage.visible.first
         return preview_message("No work packages in the database.") unless work_package
 
         render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
+          work_package:,
+          show_drag_handle: true
         )
       end
 
-      def with_metric
-        work_package = WorkPackage.first
-        return preview_message("No work packages in the database.") unless work_package
+      # Card with show_parent_link enabled. Renders a link to the parent work package in row 3.
+      # Only visible when the work package actually has a parent.
+      def with_parent_link
+        work_package = WorkPackage.visible.where.not(parent_id: nil).first
+        return preview_message("No work packages with a parent found.") unless work_package
 
         render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        ) do |card|
-          card.with_metric_content(10)
-        end
+          work_package:,
+          show_parent_link: true
+        )
       end
 
-      def with_menu
-        work_package = WorkPackage.first
+      # Card with additional content in the bottom slot (row 3), rendered alongside the parent link.
+      def with_bottom_line
+        work_package = WorkPackage.visible.first
         return preview_message("No work packages in the database.") unless work_package
 
-        render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        ) do |card|
-          card.with_menu do |menu|
-            menu.with_item(label: "Open", href: "/work_packages/#{work_package.id}")
-          end
-        end
+        render_with_template(template: "open_project/common/work_package_card_component_preview/with_bottom_line",
+                             locals: { work_package: })
       end
 
       private

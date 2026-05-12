@@ -43,17 +43,38 @@ module OpenProject
           **system_arguments
         )
       }
+      renders_one :bottom_line, Primer::Content
 
-      attr_reader :work_package, :menu_src
+      attr_reader :work_package, :menu_src, :show_drag_handle, :show_assignee, :show_priority,
+                  :show_parent_link, :status_scheme
 
       # @param work_package [WorkPackage] the work package this card represents.
       # @param menu_src [String, NilClass] optional lazy menu source. Prefer the
       #   `with_menu(src:)` slot for new call sites.
-      def initialize(work_package:, menu_src: nil)
+      # @param show_drag_handle [Boolean] whether to show a drag handle icon.
+      # @param show_assignee [Boolean] whether to show the assignee (icon + name when space allows).
+      # @param show_priority [Boolean] whether to show the priority badge.
+      # @param show_parent_link [Boolean] whether to show a link to the parent work package in row 3.
+      #   Only rendered when the work package actually has a parent.
+      # @param status_scheme [Symbol] status label scheme for the info line. One of :default or :secondary.
+      def initialize(work_package:, menu_src: nil, show_drag_handle: false,
+                     show_assignee: false, show_priority: false, show_parent_link: false,
+                     status_scheme: :default)
         super()
 
         @work_package = work_package
         @menu_src = menu_src
+        @show_drag_handle = show_drag_handle
+        @show_assignee = show_assignee
+        @show_priority = show_priority
+        @show_parent_link = show_parent_link
+        @status_scheme = status_scheme
+      end
+
+      private
+
+      def show_footer?
+        bottom_line? || (show_parent_link && work_package.parent.present?)
       end
     end
   end

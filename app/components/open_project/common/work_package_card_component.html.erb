@@ -30,20 +30,44 @@ See COPYRIGHT and LICENSE files for more details.
 <%= grid_layout(
       "op-work-package-card",
       tag: :article,
-      classes: { "op-work-package-card_with-metric": metric? }
+      classes: {
+        "op-work-package-card_with-drag-handle": show_drag_handle,
+        "op-work-package-card_with-footer": show_footer?
+      }
     ) do |grid| %>
-  <% grid.with_area(:info_line) do %>
-    <%# TODO(73089): allow callers to pass arguments through to InfoLineComponent (e.g. status presentation, variants). %>
-    <%= render(WorkPackages::InfoLineComponent.new(work_package:)) %>
-  <% end %>
-
-  <% if metric? %>
-    <% grid.with_area(:metric) do %>
-      <%= metric %>
+  <% if show_drag_handle %>
+    <% grid.with_area(:drag_handle) do %>
+      <%= render(Primer::Beta::Octicon.new(icon: :grabber, "aria-label": t(".drag_handle.label"))) %>
     <% end %>
   <% end %>
 
-  <% grid.with_area(:menu) do %>
+  <% grid.with_area(:info_line) do %>
+    <%= render(WorkPackages::InfoLineComponent.new(work_package:, status_scheme:)) %>
+  <% end %>
+
+  <% grid.with_area(:actions) do %>
+    <% if show_assignee && work_package.assigned_to %>
+      <%= render(
+            Users::AvatarComponent.new(
+              user: work_package.assigned_to, size: "mini", link: false, show_name: true,
+              name_classes: "op-work-package-card--assignee-name"
+            )
+          ) %>
+    <% end %>
+
+    <% if metric? %>
+      <span class="op-work-package-card--metric"><%= metric %></span>
+    <% end %>
+
+    <% if show_priority && work_package.priority %>
+      <%= render(
+            Primer::Beta::Text.new(
+              tag: :span,
+              classes: "__hl_inline_priority_#{work_package.priority.id} __hl_inline__small_dot"
+            )
+          ) { work_package.priority.name } %>
+    <% end %>
+
     <% if menu? %>
       <%= menu %>
     <% else %>
@@ -58,6 +82,33 @@ See COPYRIGHT and LICENSE files for more details.
   <% end %>
 
   <% grid.with_area(:subject) do %>
-    <%= render(Primer::Beta::Text.new(font_weight: :semibold)) { work_package.subject } %>
+    <%= render(Primer::Beta::Link.new(href: work_package_path(work_package), font_weight: :semibold)) { work_package.subject } %>
+  <% end %>
+
+  <% if show_footer? %>
+    <% grid.with_area(:footer) do %>
+      <% flex_layout do |flex| %>
+        <% if show_parent_link && work_package.parent.present? %>
+          <% flex.with_row do %>
+            <%= render(
+                  Primer::Beta::Link.new(
+                    href: work_package_path(work_package.parent),
+                    underline: false,
+                    color: :default
+                  )
+                ) do %>
+              <%= render(Primer::Beta::Text.new(color: :subtle)) { "#{t('.parent')}: " } %>
+              <%= work_package.parent.subject %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <% if bottom_line? %>
+          <% flex.with_row do %>
+            <%= bottom_line %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

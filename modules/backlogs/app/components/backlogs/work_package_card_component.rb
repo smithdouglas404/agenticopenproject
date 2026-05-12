@@ -54,7 +54,14 @@ module Backlogs
     private
 
     def card
-      @card ||= OpenProject::Common::WorkPackageCardComponent.new(work_package:, menu_src:)
+      @card ||= OpenProject::Common::WorkPackageCardComponent.new(
+        work_package:,
+        menu_src:,
+        show_assignee: true,
+        show_priority: true,
+        show_parent_link: true,
+        status_scheme: :secondary
+      )
     end
 
     def before_render
