@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
   component_wrapper(
     data: wrapper_data
   ) do
-    render(border_box_container(mt: 3, padding: :condensed, data: row_drop_target_config)) do |box|
+    render(border_box_container(mt: 3, mb: (last? ? 3 : 0), padding: :condensed, data: row_drop_target_config)) do |box|
       box.with_header(font_weight: :bold) do
         render(
           WorkPackageTypes::FormConfiguration::GroupHeaderComponent.new(
@@ -57,8 +57,13 @@ See COPYRIGHT and LICENSE files for more details.
         end
       elsif attributes.empty?
         box.with_row(data: { "empty-list-item": true }) do
-          render(Primer::Beta::Text.new(color: :subtle, ml: 2)) do
-            t("types.edit.form_configuration.empty_group_hint")
+          flex_layout(align_items: :center) do |empty_row|
+            empty_row.with_column(mr: 2, classes: "type-form-configuration-page--row-alignment-spacer")
+            empty_row.with_column(flex: 1) do
+              render(Primer::Beta::Text.new(color: :subtle)) do
+                t("types.edit.form_configuration.empty_group_hint")
+              end
+            end
           end
         end
       else
