@@ -43,7 +43,6 @@ module Wikis
 
     def to_s = self.class.registry_prefix
     def user_connected?(_user) = raise SubclassResponsibilityError
-    def user_access_token(_user) = nil
 
     def auth_strategy_for(user)
       resolve("authentication.user_bound").call(user)
