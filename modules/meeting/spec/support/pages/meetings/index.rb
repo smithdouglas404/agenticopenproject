@@ -150,12 +150,11 @@ module Pages::Meetings
     end
 
     def set_project_filter(*projects)
-      page.within("#content-body") do
-        click_link_or_button I18n.t(:label_project), exact: true
-      end
+      find_test_selector("quick-filter-select-panel-button").click
 
       projects.each do |project|
-        find("[role='option']", text: project.name).click
+        option = find("[role='option']", text: project.name)
+        option.click unless option[:"aria-selected"] == "true"
       end
 
       within("[data-controller='quick-filter--select-panel']") do

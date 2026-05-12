@@ -40,7 +40,7 @@ See COPYRIGHT and LICENSE files for more details.
           dynamic_label_prefix: current_values.any? ? @name : nil
         )
       ) do |panel| %>
-    <% panel.with_show_button(scheme: :secondary) do |button|
+    <% panel.with_show_button(scheme: :secondary, data: { test_selector: "quick-filter-select-panel-button" }) do |button|
          button.with_trailing_visual_icon(icon: :"triangle-down")
          current_label
        end %>
