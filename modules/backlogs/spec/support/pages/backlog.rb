@@ -351,7 +351,7 @@ module Pages
         expect(page).to have_css(
           ".Counter",
           accessible_name: I18n.t(
-            "open_project.common.work_package_card_box_component.header.label_work_package_count",
+            "open_project.common.work_package_card_list_component.header.label_work_package_count",
             count:
           )
         )
@@ -471,7 +471,7 @@ module Pages
         expect(page).to have_css(
           ".Counter",
           accessible_name: I18n.t(
-            "open_project.common.work_package_card_box_component.header.label_work_package_count",
+            "open_project.common.work_package_card_list_component.header.label_work_package_count",
             count:
           )
         )
@@ -541,6 +541,14 @@ module Pages
     def expect_sprints_to_choose_for_moving_unfinished_work_packages_to(*sprints)
       within sprint_complete_modal_selector do
         expect(page).to have_select("Select sprint", options: sprints.map(&:name))
+      end
+    end
+
+    def expect_and_confirm_backlog_bucket_delete_modal
+      expect(page).to have_selector backlog_bucket_destroy_modal_selector
+
+      within backlog_bucket_destroy_modal_selector do
+        click_button "Delete"
       end
     end
 
@@ -660,6 +668,10 @@ module Pages
 
     def sprint_complete_modal_selector
       "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
+    end
+
+    def backlog_bucket_destroy_modal_selector
+      test_selector(Backlogs::BacklogBucketDestroyModalComponent::TEST_SELECTOR)
     end
 
     def open_controlled_menu(button)

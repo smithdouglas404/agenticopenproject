@@ -34,22 +34,24 @@ module Wikis
       module Internal
         module Queries
           class PageInfo < BaseQuery
-            def call(input_data, _auth_strategy: nil)
-              # TODO: should we accept implicit User.current or do we want to pass in a user explicitly?
-              wiki_page = WikiPage.visible.find_by(id: input_data.identifier)
-              return failure(code: :not_found) if wiki_page.nil?
+            def call(input_data:, auth_strategy:)
+              Adapters::Authentication[auth_strategy].call do |user|
+                wiki_page = WikiPage.visible(user).find_by(id: input_data.identifier)
+                return failure(code: :not_found) if wiki_page.nil?
 
-              success(
-                Results::PageInfo.new(
-                  identifier: input_data.identifier,
-                  title: wiki_page.title,
-                  href: url_for(only_path: true,
-                                controller: "/wiki",
-                                action: "show",
-                                project_id: wiki_page.project.identifier,
-                                id: wiki_page.slug)
+                success(
+                  Results::PageInfo.new(
+                    identifier: input_data.identifier,
+                    provider:,
+                    title: wiki_page.title,
+                    href: url_for(only_path: true,
+                                  controller: "/wiki",
+                                  action: "show",
+                                  project_id: wiki_page.project.identifier,
+                                  id: wiki_page.slug)
+                  )
                 )
-              )
+              end
             end
 
             private

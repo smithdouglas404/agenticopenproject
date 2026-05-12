@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import {
   KeepTabService,
 } from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
@@ -28,6 +28,8 @@ export class WpTabsComponent implements OnInit {
   @Input() routedFromAngular = true;
 
   @Input() public currentTabId:string|null = null;
+
+  @Output() public tabSelected = new EventEmitter<TabDefinition>();
 
   public tabs:TabDefinition[];
 

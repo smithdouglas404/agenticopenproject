@@ -209,6 +209,19 @@ de:
         health_notifications_component:
           sync_now: Jetzt synchronisieren
           sync_queued: Synchronisierung eingereiht.
+        validation_result_component:
+          checks:
+            failures:
+              one: "%{count} Überprüfung fehlgeschlagen"
+              other: "%{count} Überprüfungen fehlgeschlagen"
+            success: Alle Überprüfungen bestanden
+            warnings:
+              one: "%{count} Überprüfung hat eine Warnung zurückgegeben"
+              other: "%{count} Überprüfungen haben eine Warnung zurückgegeben"
+          summary:
+            failure: Einige Überprüfungen sind fehlgeschlagen und das System funktioniert nicht wie erwartet.
+            success: Alle Verbindungen und Systeme funktionieren wie erwartet.
+            warning: Einige Überprüfungen ergaben eine Warnung. Dies kann zu unerwartetem Verhalten führen.
     buttons:
       done_continue: Fertig, Fortfahren
       open_storage: Dateispeicher öffnen
@@ -314,74 +327,59 @@ de:
           host_url_accessible: Host-URL erreichbar
           storage_configured: Konfiguration abgeschlossen
           tenant_id: Tenant ID
-        failures:
-          one: "%{count} Überprüfung fehlgeschlagen"
-          other: "%{count} Überprüfungen fehlgeschlagen"
-        success: Alle Überprüfungen bestanden
-        warnings:
-          one: "%{count} Überprüfung hat eine Warnung zurückgegeben"
-          other: "%{count} Überprüfungen haben eine Warnung zurückgegeben"
-      connection_validation:
-        client_id_invalid: Die konfigurierte OAuth 2-Client-ID ist ungültig. Bitte überprüfen Sie die Konfiguration.
-        client_secret_invalid: Das konfigurierte OAuth 2-Client-Geheimnis ist ungültig. Bitte überprüfen Sie die Konfiguration.
-        nc_dependency_missing: 'Eine erforderliche Abhängigkeit fehlt auf dem Datei-Speicher. Bitte fügen Sie die folgende Abhängigkeit hinzu: %{dependency}.'
-        nc_dependency_version_mismatch: Die %{dependency} App-Version wird nicht unterstützt. Bitte aktualisieren Sie Ihren Nextcloud Server.
-        nc_host_not_found: Kein Nextcloud-Server unter der konfigurierten Host-URL gefunden. Bitte überprüfen Sie die Konfiguration.
-        nc_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
-        nc_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Remote-Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Protokolle für weitere Informationen.
-        nc_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit Nextcloud nicht testen, da der Benutzer sein Nextcloud Konto noch nicht verknüpft hat.
-        nc_project_folder_missing: Der zuvor erstellte Projektordner für das Projekt "%{project}" konnte nicht gefunden werden.
-        nc_team_folder_not_found: Der Teamordner konnte nicht gefunden werden.
-        nc_unexpected_files: 'Unerwartete Dateien im verwalteten Teamordner gefunden. Zum Beispiel: %{sample}'
-        nc_unlinked_project_folders: Es sind noch nicht alle Projektordner erstellt worden (%{actual} / %{expected}). Dies kann auf Fehler bei der AMPF-Hintergrundsynchronisation hinweisen.
-        nc_userless_access_denied: Das konfigurierte App-Passwort ist ungültig.
-        not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
-        od_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
-        od_client_write_permission_missing: Der Client hat anscheinend keine Schreibberechtigungen. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
-        od_drive_id_invalid: Die konfigurierte Laufwerks-ID scheint ungültig. Bitte überprüfen Sie die Konfiguration.
-        od_drive_id_not_found: Die konfigurierte Laufwerks-ID konnte nicht gefunden werden. Bitte überprüfen Sie die Konfiguration.
-        od_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
-        od_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Remote-Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Protokolle für weitere Informationen.
-        od_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit OneDrive nicht testen, da der Benutzer sein Microsoft-Konto noch nicht verknüpft hat.
-        od_tenant_id_wrong: Die konfigurierte Verzeichnis-(Mandanten-)ID ist ungültig. Bitte überprüfen Sie die Konfiguration.
-        od_test_folder_exists: Der für den Test benötigte Ordner %{folder_name} existiert bereits. Bitte löschen Sie ihn und versuchen Sie es erneut.
-        od_unexpected_content: Unerwarteter Inhalt auf dem Laufwerk gefunden.
-        offline_access_scope_missing: Es wird empfohlen, den OpenID Connect-Anbieter so zu konfigurieren, dass er den Scope offline_access anfordert. Die Integration kann trotzdem funktionieren, aber stellen Sie sicher, dass die Aktualisierungstoken nicht ablaufen.
-        oidc_cant_refresh_token: Beim Überprüfen Ihres Zugriffs auf den Speicher ist ein Fehler aufgetreten. Bitte sehen Sie die Serverprotokolle für weitere Informationen ein.
-        oidc_non_oidc_user: Der aktuelle Benutzer wurde zwar bereitgestellt, aber nicht von einem OpenID Connect (OIDC) Identity Provider. Bitte wiederholen Sie die Prüfung mit einem OIDC-bereitgestellten Benutzer.
-        oidc_non_provisioned_user: Der aktuelle Benutzer wird nicht von einem OpenID Connect Identity Provider bereitgestellt. Bitte führen Sie die Prüfung mit einem bereitgestellten Benutzer erneut durch.
-        oidc_provider_cant_exchange: Der OpenID Connect-Provider scheint den Token-Austausch nicht zu unterstützen, aber der Token-Austausch wurde für die Speicherung konfiguriert.
-        oidc_token_acquisition_failed: Ihre OpenID-Connect-Konfiguration stellt weder die erforderliche Audience bereit, noch unterstützt sie die Token-Austausch-Funktion. Bitte lesen Sie unsere Dokumentation für weitere Informationen.
-        oidc_token_exchange_failed: Es scheint ein Problem mit dem Token Exchange Setup auf Ihrem OpenID Connect Provider zu geben. Bitte überprüfen Sie die Konfiguration und versuchen Sie es erneut.
-        oidc_token_refresh_failed: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
-        sp_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern in SharePoint. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
-        sp_client_id_missing: Die konfigurierte OAuth 2 Client-ID fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
-        sp_client_secret_missing: Das konfigurierte OAuth 2-Client-Geheimnis fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
-        sp_client_write_permission_missing: Der Client hat anscheinend keine Schreibberechtigungen in SharePoint. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
-        sp_existing_test_folder: Der für den Test benötigte Ordner %{folder_name} existiert bereits in SharePoint. Bitte löschen Sie ihn und versuchen Sie es erneut.
-        sp_oauth_request_error: Die benutzergebundene Anfrage an SharePoint ist fehlgeschlagen. Bitte prüfen Sie die Serverprotokolle für weitere Informationen.
-        sp_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Logs für weitere Informationen.
-        sp_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit SharePoint nicht testen, da der Benutzer sein SharePoint-Konto noch nicht verknüpft hat.
-        sp_tenant_id_missing: Die konfigurierte Verzeichnis-ID (Tenant) fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
-        sp_unexpected_content: Unerwarteter Inhalt in der SharePoint-Dokumentbibliothek gefunden.
-        unknown_error: Die Verbindung konnte nicht validiert werden. Es ist ein unbekannter Fehler aufgetreten. Bitte prüfen Sie die Serverprotokolle für weitere Informationen.
+        errors:
+          client_id_invalid: Die konfigurierte OAuth 2-Client-ID ist ungültig. Bitte überprüfen Sie die Konfiguration.
+          client_secret_invalid: Das konfigurierte OAuth 2-Client-Geheimnis ist ungültig. Bitte überprüfen Sie die Konfiguration.
+          nc_dependency_missing: 'Eine erforderliche Abhängigkeit fehlt auf dem Datei-Speicher. Bitte fügen Sie die folgende Abhängigkeit hinzu: %{dependency}.'
+          nc_dependency_version_mismatch: Die %{dependency} App-Version wird nicht unterstützt. Bitte aktualisieren Sie Ihren Nextcloud Server.
+          nc_host_not_found: Kein Nextcloud-Server unter der konfigurierten Host-URL gefunden. Bitte überprüfen Sie die Konfiguration.
+          nc_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
+          nc_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Logs für weitere Informationen.
+          nc_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit Nextcloud nicht testen, da der Benutzer sein Nextcloud Konto noch nicht verknüpft hat.
+          nc_project_folder_missing: Der zuvor erstellte Projektordner für das Projekt "%{project}" konnte nicht gefunden werden.
+          nc_team_folder_not_found: Der Teamordner konnte nicht gefunden werden.
+          nc_unexpected_files: 'Unerwartete Dateien im verwalteten Teamordner gefunden. Zum Beispiel: %{sample}'
+          nc_unlinked_project_folders: Es sind noch nicht alle Projektordner erstellt worden (%{actual} / %{expected}). Dies kann auf Fehler bei der AMPF-Hintergrundsynchronisation hinweisen.
+          nc_userless_access_denied: Das konfigurierte App-Passwort ist ungültig.
+          not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
+          od_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
+          od_client_write_permission_missing: Der Client hat anscheinend keine Schreibberechtigungen. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
+          od_drive_id_invalid: Die konfigurierte Laufwerks-ID scheint ungültig. Bitte überprüfen Sie die Konfiguration.
+          od_drive_id_not_found: Die konfigurierte Laufwerks-ID konnte nicht gefunden werden. Bitte überprüfen Sie die Konfiguration.
+          od_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
+          od_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Logs für weitere Informationen.
+          od_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit OneDrive nicht testen, da der Benutzer sein Microsoft-Konto noch nicht verknüpft hat.
+          od_tenant_id_wrong: Die konfigurierte Verzeichnis-(Mandanten-)ID ist ungültig. Bitte überprüfen Sie die Konfiguration.
+          od_test_folder_exists: Der für den Test benötigte Ordner %{folder_name} existiert bereits. Bitte löschen Sie ihn und versuchen Sie es erneut.
+          od_unexpected_content: Unerwarteter Inhalt auf dem Laufwerk gefunden.
+          offline_access_scope_missing: Es wird empfohlen, den OpenID Connect-Anbieter so zu konfigurieren, dass er den Scope offline_access anfordert. Die Integration kann trotzdem funktionieren, aber stellen Sie sicher, dass die Aktualisierungstoken nicht ablaufen.
+          oidc_cant_refresh_token: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
+          oidc_non_oidc_user: Der aktuelle Benutzer wurde zwar bereitgestellt, aber nicht von einem OpenID Connect (OIDC) Identity Provider. Bitte wiederholen Sie die Prüfung mit einem OIDC-bereitgestellten Benutzer.
+          oidc_non_provisioned_user: Der aktuelle Benutzer wird nicht von einem OpenID Connect Identity Provider bereitgestellt. Bitte führen Sie die Prüfung mit einem bereitgestellten Benutzer erneut durch.
+          oidc_provider_cant_exchange: Der OpenID Connect-Provider scheint den Token-Austausch nicht zu unterstützen, aber der Token-Austausch wurde für die Speicherung konfiguriert.
+          oidc_token_acquisition_failed: Ihre OpenID-Connect-Konfiguration stellt weder die erforderliche Audience bereit, noch unterstützt sie die Token-Austausch-Funktion. Bitte lesen Sie unsere Dokumentation für weitere Informationen.
+          oidc_token_exchange_failed: Es scheint ein Problem mit dem Token Exchange Setup auf Ihrem OpenID Connect Provider zu geben. Bitte überprüfen Sie die Konfiguration und versuchen Sie es erneut.
+          oidc_token_refresh_failed: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
+          sp_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern in SharePoint. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
+          sp_client_id_missing: Die konfigurierte OAuth 2 Client-ID fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
+          sp_client_secret_missing: Das konfigurierte OAuth 2-Client-Geheimnis fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
+          sp_client_write_permission_missing: Der Client hat anscheinend keine Schreibberechtigungen in SharePoint. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
+          sp_existing_test_folder: Der für den Test benötigte Ordner %{folder_name} existiert bereits in SharePoint. Bitte löschen Sie ihn und versuchen Sie es erneut.
+          sp_oauth_request_error: Die benutzergebundene Anfrage an SharePoint ist fehlgeschlagen. Bitte prüfen Sie die Serverprotokolle für weitere Informationen.
+          sp_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Logs für weitere Informationen.
+          sp_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit SharePoint nicht testen, da der Benutzer sein SharePoint-Konto noch nicht verknüpft hat.
+          sp_tenant_id_missing: Die konfigurierte Verzeichnis-ID (Tenant) fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
+          sp_unexpected_content: Unerwarteter Inhalt in der SharePoint-Dokumentbibliothek gefunden.
+          unknown_error: Die Verbindung konnte nicht validiert werden. Es ist ein unbekannter Fehler aufgetreten. Bitte prüfen Sie die Serverprotokolle für weitere Informationen.
       label_error: Fehler
-      label_failed: Fehlgeschlagen
       label_healthy: Fehlerfrei
-      label_passed: Bestanden
       label_pending: Ausstehend
-      label_skipped: Übersprungen
-      label_warning: Warnung
       no_report: Kein Bericht verfügbar
       no_report_description: Führen Sie jetzt die Prüfungen für einen vollständigen Gesundheitsbericht dieses Dateispeichers durch.
       open_report: Vollständigen Gesundheitsbericht öffnen
       project_folders:
         subtitle: Automatisch verwaltete Projektordner
       since: seit %{datetime}
-      summary:
-        failure: Einige Überprüfungen sind fehlgeschlagen und das System funktioniert nicht wie erwartet.
-        success: Alle Verbindungen und Systeme funktionieren wie erwartet.
-        warning: Einige Überprüfungen ergaben eine Warnung. Dies kann zu unerwartetem Verhalten führen.
       synced: 'Zuletzt aktualisiert: %{datetime}'
       title: Gesundheitsstatusbericht
     health_email_notifications:

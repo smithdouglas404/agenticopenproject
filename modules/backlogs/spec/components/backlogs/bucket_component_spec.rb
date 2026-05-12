@@ -89,7 +89,8 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
         expect(rendered_component).to have_css(
           ".Counter",
           text: "1",
-          aria: { label: I18n.t("open_project.common.work_package_card_box_component.header.label_work_package_count", count: 1) }
+          aria: { label: I18n.t("open_project.common.work_package_card_list_component.header.label_work_package_count",
+                                count: 1) }
         )
       end
 
@@ -119,7 +120,7 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
 
       it "wires the bucket drop-target data on the box" do
         expect(rendered_component).to have_css(".Box") do |box|
-          expect(box["data-generic-drag-and-drop-target"]).to eq("container mirrorContainer")
+          expect(box["data-generic-drag-and-drop-target"]).to eq("container")
           expect(box["data-target-id"]).to eq("backlog_bucket:#{backlog_bucket.id}")
           expect(box["data-target-allowed-drag-type"]).to eq("story")
         end

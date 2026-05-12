@@ -54,11 +54,11 @@ GIT
 
 GIT
   remote: https://github.com/opf/turbo_tests.git
-  revision: c1c4707f536a5642a168650d273d714dfb62d842
-  ref: with-patches
+  revision: 4208e7372a7987c972dda634eb4f29ad9f1448e1
+  ref: 2_2_5_with_patches
   specs:
-    turbo_tests (2.2.0)
-      parallel_tests (>= 3.3.0, < 5)
+    turbo_tests (2.2.5)
+      parallel_tests (>= 3.3.0, < 6)
       rspec (>= 3.10)
 
 GIT
@@ -197,6 +197,11 @@ PATH
   specs:
     openproject-reporting (1.0.0)
       costs
+
+PATH
+  remote: modules/resource_management
+  specs:
+    openproject-resource_management (1.0.0)
 
 PATH
   remote: modules/storages
@@ -906,7 +911,7 @@ GEM
       actionview
       openproject-octicons (= 19.34.0)
       railties
-    openproject-primer_view_components (0.84.5)
+    openproject-primer_view_components (0.85.0)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.34.0)
@@ -1104,7 +1109,7 @@ GEM
       activerecord (>= 7.1)
       request_store (~> 1.4)
     parallel (2.1.0)
-    parallel_tests (4.10.1)
+    parallel_tests (5.7.0)
       parallel
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -1194,7 +1199,7 @@ GEM
       eventmachine_httpserver
       http_parser.rb (~> 0.8.0)
       multi_json
-    puma (7.2.0)
+    puma (8.0.0)
       nio4r (~> 2.0)
     puma-plugin-statsd (2.8.0)
       puma (>= 5.0, < 9)
@@ -1490,7 +1495,7 @@ GEM
       public_suffix
     vcr (6.4.0)
     vernier (1.10.0)
-    view_component (4.8.0)
+    view_component (4.9.0)
       actionview (>= 7.1.0)
       activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
@@ -1684,9 +1689,10 @@ DEPENDENCIES
   openproject-octicons (~> 19.34.0)
   openproject-octicons_helper (~> 19.34.0)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.84.5)
+  openproject-primer_view_components (~> 0.85.0)
   openproject-recaptcha!
   openproject-reporting!
+  openproject-resource_management!
   openproject-storages!
   openproject-team_planner!
   openproject-token (~> 8.8.2)
@@ -1701,7 +1707,7 @@ DEPENDENCIES
   ox
   pagy
   paper_trail (~> 17.0.0)
-  parallel_tests (~> 4.0)
+  parallel_tests (~> 5.7)
   pdf-inspector (~> 1.2)
   pg (~> 1.6.2)
   plaintext (~> 0.3.7)
@@ -1711,7 +1717,7 @@ DEPENDENCIES
   pry-rails (~> 0.3.6)
   pry-rescue (~> 1.6.0)
   puffing-billy (~> 4.0.0)
-  puma (~> 7.1)
+  puma (~> 8.0)
   puma-plugin-statsd (~> 2.7)
   rack-attack (~> 6.8.0)
   rack-cors (~> 2.0.2)
@@ -1779,7 +1785,7 @@ DEPENDENCIES
   validate_url
   vcr
   vernier
-  view_component (~> 4.8.0)
+  view_component (~> 4.9.0)
   warden (~> 1.2)
   warden-basic_auth (~> 0.2.1)
   webmock (~> 3.26)
@@ -2065,9 +2071,10 @@ CHECKSUMS
   openproject-octicons (19.34.0) sha256=4efe8a58a2d8051b79c94b37e9a7f04fd242a4da12b50f027c3c7f441a042adc
   openproject-octicons_helper (19.34.0) sha256=12eb7af2214e21631369c76464ebaa30de788e1074c4b3bd0fcef7e74cb9edb4
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.84.5) sha256=307ad2135cfb283b2d1da354e545bd3e3f1dda43158f020c89ff4641e441fe86
+  openproject-primer_view_components (0.85.0) sha256=16bc8358ef600f0465488a2e3c86991a9c69ed84580bd450c2dbec6f268eeaca
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
+  openproject-resource_management (1.0.0)
   openproject-storages (1.0.0)
   openproject-team_planner (1.0.0)
   openproject-token (8.8.2) sha256=081cbff7269d92a82fa1d63e9e09c87b70d47d7aefadcbb80d1e7368bc2cf096
@@ -2140,7 +2147,7 @@ CHECKSUMS
   pagy (43.5.3) sha256=f9d73e690648d484706661dcb815647775cf8330fcc5c6e62ec87b9df431290b
   paper_trail (17.0.0) sha256=1c2842061d3874ca7015908e821e2aa14f9b982af2acb2a7974713bf79021c85
   parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
-  parallel_tests (4.10.1) sha256=df05458c691462b210f7a41fc2651d4e4e8a881e8190e6d1e122c92c07735d70
+  parallel_tests (5.7.0) sha256=3f1762c46ca2c223b8af8ef877217f9d76974e191bfa934f2580b58bcf1d005c
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
   pdf-core (0.9.0) sha256=4f368b2f12b57ec979872d4bf4bd1a67e8648e0c81ab89801431d2fc89f4e0bb
   pdf-inspector (1.3.0) sha256=fc107579d6f29b636e2da3d6743479b2624d9e390bf2d84beef8fd4ebe1a05bd
@@ -2172,7 +2179,7 @@ CHECKSUMS
   psych (5.3.1) sha256=eb7a57cef10c9d70173ff74e739d843ac3b2c019a003de48447b2963d81b1974
   public_suffix (7.0.5) sha256=1a8bb08f1bbea19228d3bed6e5ed908d1cb4f7c2726d18bd9cadf60bc676f623
   puffing-billy (4.0.4) sha256=87015b0c41e0722b2171a0c5aa8130fd3f58aa1c016a1dc6dc569b2028aa846f
-  puma (7.2.0) sha256=bf8ef4ab514a4e6d4554cb4326b2004eba5036ae05cf765cfe51aba9706a72a8
+  puma (8.0.0) sha256=1681050b8b60fab1d3033255ab58b6aec64cd063e43fc6f8204bcb8bf9364b88
   puma-plugin-statsd (2.8.0) sha256=e515445f93232b6b3571a23b832f93a776d4ce0fc8a5edee798013b82f3488f3
   raabro (1.4.0) sha256=d4fa9ff5172391edb92b242eed8be802d1934b1464061ae5e70d80962c5da882
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
@@ -2286,7 +2293,7 @@ CHECKSUMS
   ttfunk (1.7.0) sha256=2370ba484b1891c70bdcafd3448cfd82a32dd794802d81d720a64c15d3ef2a96
   turbo-rails (2.0.23) sha256=ee0d90733aafff056cf51ff11e803d65e43cae258cc55f6492020ec1f9f9315f
   turbo_power (0.7.0) sha256=ad95d147e0fa761d0023ad9ca00528c7b7ddf6bba8ca2e23755d5b21b290d967
-  turbo_tests (2.2.0)
+  turbo_tests (2.2.5)
   tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
   tzinfo-data (1.2026.2) sha256=7db0d3d3d53b8d7601fc183fccc8c6d056a3004e14eb59ea995bf6aec4ae10bc
   uber (0.1.0) sha256=5beeb407ff807b5db994f82fa9ee07cfceaa561dad8af20be880bc67eba935dc
@@ -2298,7 +2305,7 @@ CHECKSUMS
   validate_url (1.0.15) sha256=72fe164c0713d63a9970bd6700bea948babbfbdcec392f2342b6704042f57451
   vcr (6.4.0) sha256=077ac92cc16efc5904eb90492a18153b5e6ca5398046d8a249a7c96a9ea24ae6
   vernier (1.10.0) sha256=5b1dc57012e08ed23e14f4d2943540140d454aa8434c7c35e7eb97befd4969bf
-  view_component (4.8.0) sha256=0a1b716cce87f8f6799d7aefb57911ef6eee5ef8214466a7ca22c421853f7309
+  view_component (4.9.0) sha256=f599f0831ed0148bb19625f914c43cc982746a2252b6ebe8492bd4eea0d7dbaf
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   warden-basic_auth (0.2.1) sha256=bfc752e0109c0182c3e69e930284c5e1e81e7b4a354aeb2b5914ead1391f3c6e

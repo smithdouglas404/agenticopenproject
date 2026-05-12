@@ -94,12 +94,6 @@ RSpec.describe UserCardView do
       expect(view).not_to be_valid
       expect(view.errors[:query]).to be_present
     end
-
-    it "walks up the parent chain and accepts a UserQuery from the parent" do
-      parent = described_class.create!(name: "Parent", query: user_query)
-      child = described_class.new(name: "Child", parent:)
-      expect(child).to be_valid
-    end
   end
 
   describe "#results" do
@@ -141,16 +135,6 @@ RSpec.describe UserCardView do
 
       view.query = query
       expect(view.results.to_a).to eq([bob, locked, alice])
-    end
-
-    it "walks up the parent chain to find the query" do
-      query = UserQuery.new(name: "Active only")
-      query.where("status", "=", ["active"])
-      query.save!
-
-      parent = described_class.create!(name: "Parent", query:)
-      child = described_class.create!(name: "Child", parent:)
-      expect(child.results).to contain_exactly(alice, bob)
     end
   end
 end

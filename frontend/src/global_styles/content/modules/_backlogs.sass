@@ -26,8 +26,18 @@
  * See COPYRIGHT and LICENSE files for more details.  ++
  */
 
-.action-backlog
+.controller-backlogs\/backlog.action-show,
+.controller-backlogs\/backlog.action-details
   @include extended-content--bottom
+
+  #content-body
+    padding-right: 0
+
+  // Base layout restores padding-right: 1rem on #content-body when the
+  // split pane is open (specificity 0,3,0,0). Override it back to 0.
+  @include split-pane-active
+    #content-body
+      padding-right: 0
 
 .op-backlogs-page
   display: block

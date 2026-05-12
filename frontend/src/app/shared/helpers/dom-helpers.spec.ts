@@ -26,12 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  toggleElement,
-  toggleElementByClass,
-  toggleElementByVisibility,
-  attributeTokenList,
-} from './dom-helpers';
+import { toggleElement, toggleElementByClass, toggleElementByVisibility, attributeTokenList, } from './dom-helpers';
 
 describe('dom-helpers', () => {
   describe('toggleElement', () => {
@@ -197,13 +192,13 @@ describe('dom-helpers', () => {
     it('mimics DOMTokenList over an attribute', () => {
       const list = attributeTokenList(el, attr);
 
-      expect(list.contains('a')).toBeFalse();
+      expect(list.contains('a')).toBe(false);
       expect(el.getAttribute(attr)).toBeNull();
 
       list.add('a', 'b');
 
-      expect(list.contains('a')).toBeTrue();
-      expect(list.contains('b')).toBeTrue();
+      expect(list.contains('a')).toBe(true);
+      expect(list.contains('b')).toBe(true);
       expect(el.getAttribute(attr)).toBe('a b');
 
       // adding duplicates is idempotent
@@ -214,25 +209,25 @@ describe('dom-helpers', () => {
       // remove works
       list.remove('a');
 
-      expect(list.contains('a')).toBeFalse();
+      expect(list.contains('a')).toBe(false);
       expect(el.getAttribute(attr)).toBe('b');
 
       // toggle without force flips presence and returns the new state
-      expect(list.toggle('b')).toBeFalse(); // removed
+      expect(list.toggle('b')).toBe(false); // removed
       expect(el.getAttribute(attr)).toBe('');
-      expect(list.toggle('c')).toBeTrue(); // added
+      expect(list.toggle('c')).toBe(true); // added
       expect(el.getAttribute(attr)).toBe('c');
 
       // forced toggle honors force
-      expect(list.toggle('x', true)).toBeTrue();
-      expect(list.contains('x')).toBeTrue();
-      expect(list.toggle('x', false)).toBeFalse();
-      expect(list.contains('x')).toBeFalse();
+      expect(list.toggle('x', true)).toBe(true);
+      expect(list.contains('x')).toBe(true);
+      expect(list.toggle('x', false)).toBe(false);
+      expect(list.contains('x')).toBe(false);
 
       // replace swaps tokens and returns true when old exists
-      expect(list.replace('c', 'd')).toBeTrue();
-      expect(list.contains('c')).toBeFalse();
-      expect(list.contains('d')).toBeTrue();
+      expect(list.replace('c', 'd')).toBe(true);
+      expect(list.contains('c')).toBe(false);
+      expect(list.contains('d')).toBe(true);
 
       // iterator yields tokens
       expect([...list]).toEqual(['d']);
@@ -241,15 +236,15 @@ describe('dom-helpers', () => {
       list.value = 'e f';
 
       expect(el.getAttribute(attr)).toBe('e f');
-      expect(list.contains('e')).toBeTrue();
-      expect(list.contains('f')).toBeTrue();
+      expect(list.contains('e')).toBe(true);
+      expect(list.contains('f')).toBe(true);
     });
 
     it('replace on non-existent token returns false and does not change tokens', () => {
       const list = attributeTokenList(el, attr);
       list.add('a', 'b');
 
-      expect(list.replace('x', 'y')).toBeFalse();
+      expect(list.replace('x', 'y')).toBe(false);
       expect([...list]).toEqual(['a', 'b']);
       expect(el.getAttribute(attr)).toBe('a b');
     });
@@ -326,7 +321,8 @@ describe('dom-helpers', () => {
       const tokens:string[] = [];
       for (let i = 0; i < list.length; i++) {
         const token = list.item(i);
-        if (token) tokens.push(token);
+        if (token)
+          tokens.push(token);
       }
 
       expect(tokens).toEqual(['alpha', 'beta', 'gamma']);

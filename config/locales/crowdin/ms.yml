@@ -241,8 +241,8 @@ ms:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -2510,6 +2510,7 @@ ms:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: dicipta oleh %{user} pada %{datetime}
@@ -3367,6 +3368,24 @@ ms:
   general_text_false: palsu
   gui_validation_error: 1 ralat
   gui_validation_error_plural: "%{count} ralat"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Projek terbaru yang dapat dilihat dalam contoh ini.
@@ -3668,6 +3687,7 @@ ms:
   label_age: Umur
   label_ago: hari yang lalu
   label_all: semua
+  label_all_uppercase: All
   label_all_time: sepanjang masa
   label_all_words: Semua perkataan
   label_all_open_wps: Buka semua
@@ -4423,7 +4443,7 @@ ms:
       you_have: Anda mempunyai
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} menyebut anda dalam #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Ke pusat pemberitahuan
       see_in_center: Lihat komen dalam pusat pemberitahuan
@@ -4460,7 +4480,7 @@ ms:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Untuk mengakses pakej kerja ini, anda perlu mencipta dan mengaktifkan akaun di %{instance}.
         open_work_package: Buka pakej kerja
-        subject: 'Pakej kerja #%{id} telah dikongsikan dengan anda'
+        subject: Work package %{id} was shared with you
         enterprise_text: Kongsi pakej kerja dengan pengguna yang bukan ahli projek.
         summary:
           user: "%{user} telah berkongsi satu pakej kerja bersama anda dengan hak %{role_rights}"
@@ -4675,7 +4695,7 @@ ms:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:
@@ -4699,7 +4719,6 @@ ms:
   permission_add_work_package_watchers: Tambah pemerhati
   permission_assign_versions: Tetapkan versi
   permission_browse_repository: Akses baca-sahaja kepada repositori (melayari dan keluar)
-  permission_change_wiki_parent_page: 'Tukar induk halaman wiki '
   permission_change_work_package_status: Tukar status pakej kerja
   permission_change_work_package_status_explanation: Benarkan penukaran status tanpa kebenaran Edit pakej kerja
   permission_comment_news: Komen berita
@@ -4714,8 +4733,6 @@ ms:
   permission_delete_own_messages: Padam mesej sendiri
   permission_delete_reportings: Padam laporan
   permission_delete_timelines: Padam garis masa
-  permission_delete_wiki_pages: Padam halaman wiki
-  permission_delete_wiki_pages_attachments: Padam lampiran
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Edit pakej kerja
@@ -4735,12 +4752,10 @@ ms:
   permission_edit_wiki_pages: Edit halaman wiki
   permission_export_work_packages: Eksport pakej kerja
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Eksport halaman wiki
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: Senarai lampiran
   permission_log_own_time: Log masa sendiri
   permission_log_time: Log masa untuk pengguna lain
   permission_manage_forums: Uruskan forum
@@ -4755,7 +4770,6 @@ ms:
   permission_manage_subtasks: Urus hierarki pakej kerja
   permission_manage_versions: Urus versi
   permission_manage_wiki: Urus wiki
-  permission_manage_wiki_menu: Urus menu wiki
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4765,8 +4779,6 @@ ms:
 
     '
   permission_move_work_packages: Alih pakej kerja
-  permission_protect_wiki_pages: Lindungi halaman wiki
-  permission_rename_wiki_pages: Nama semula halaman wiki
   permission_save_queries: Simpan paparan
   permission_search_project: Cari projek
   permission_select_custom_fields: Pilih ruang tersuai
@@ -5012,7 +5024,7 @@ ms:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Perkongsian Sumber Silang Asal (CORS)
@@ -5562,6 +5574,7 @@ ms:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Tugaskan semula ke pakej kerja:'
   text_regexp_multiline: Regex digunakan dalam mod berbilang baris. cth., ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: "Pilih atau kemas kini pengguna OpenProject yang dipetakan ke setiap nama pengguna yang ditemui dalam log repositori.\nPengguna dengan OpenProject dan nama pengguna repositori atau e-mel yang sama dipetakan secara automatik. "
   text_status_changed_by_changeset: Dilaksanakan dalam set perubahan %{value}.
   text_table_difference_description: Dalam jadual ini, %{entries} yang tunggal dipaparkan. Anda boleh lihat perbezaan antara mana-mana dua entri dengan mula memilih kotak penyemakan dalam jadual. Apabila butang di bawah jadual ditekan, perbezaan akan ditunjukkan.
@@ -5994,8 +6007,6 @@ ms:
       scopes: Kebenaran
       successful_application_revocation: Pembatalan aplikasi %{application_name} berjaya.
       none_given: Tiada aplikasi OAuth yang telah diberi akses ke akaun anda.
-    x_active_tokens:
-      other: "%{count} token aktif"
     flows:
       authorization_code: Aliran kod kebenaran
       client_credentials: Aliran kelayakan pelanggan
@@ -6005,8 +6016,9 @@ ms:
     client_credentials_impersonation_html: 'Secara default, OpenProject menyediakan kebenaran OAuth 2.0 melalui %{authorization_code_flow_link}. Anda boleh memilih untuk mengaktifkan %{client_credentials_flow_link}, tetapi anda mesti menyediakan pengguna yang akan mewakili permintaan.
 
       '
+    confirm_revoke_my_application:
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Sebuah ralat kebenaran telah berlaku.
-    revoke_my_application_confirmation: Adakah anda benar-benar mahu memadam aplikasi ini? Ini akan menarik balik %{token_count} yang aktif darinya.
     my_registered_applications: Aplikasi OAuth berdaftar
   oauth_client:
     urn_connection_status:

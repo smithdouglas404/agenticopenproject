@@ -478,7 +478,7 @@ en:
         label: "Role: %{role}"
         no_role: "Select role"
         roles:
-          one: "%{count} role selected"
+          one: "One role selected"
           other: "%{count} roles selected"
       blankslate:
         title: "No status transitions configured"
@@ -2636,6 +2636,7 @@ en:
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
+      invalid_child_for_parent: "is not allowed as a parent for this view type."
 
   activity:
     item:
@@ -3545,6 +3546,27 @@ en:
 
   gui_validation_error: "1 error"
   gui_validation_error_plural: "%{count} errors"
+
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
 
   homescreen:
     additional:
@@ -4882,7 +4904,7 @@ en:
       work_package_card_component:
         menu:
           label_actions: "Work package actions"
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: "Open menu"
           label_work_package_count:
@@ -4907,7 +4929,6 @@ en:
   permission_add_work_package_watchers: "Add watchers"
   permission_assign_versions: "Assign versions"
   permission_browse_repository: "Read-only access to repository (browse and checkout)"
-  permission_change_wiki_parent_page: "Change parent wiki page"
   permission_change_work_package_status: "Change work package status"
   permission_change_work_package_status_explanation: "Allows changing status without Edit work packages permission"
   permission_comment_news: "Comment news"
@@ -4922,8 +4943,6 @@ en:
   permission_delete_own_messages: "Delete own messages"
   permission_delete_reportings: "Delete reportings"
   permission_delete_timelines: "Delete timelines"
-  permission_delete_wiki_pages: "Delete wiki pages"
-  permission_delete_wiki_pages_attachments: "Delete attachments"
   permission_edit_work_package_comments: "Moderate comments"
   permission_edit_work_package_comments_explanation: "Caution: Users with this permission are able to edit anyone's comment."
   permission_edit_work_packages: "Edit work packages"
@@ -4943,13 +4962,11 @@ en:
   permission_edit_wiki_pages: "Edit wiki pages"
   permission_export_work_packages: "Export work packages"
   permission_export_projects: "Export projects"
-  permission_export_wiki_pages: "Export wiki pages"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
     Allows users to invite new members by email.
     Invited users will receive an email with a link to set their password and activate their account.
     Depends on the permission to manage members
-  permission_list_attachments: "List attachments"
   permission_log_own_time: "Log own time"
   permission_log_time: "Log time for other users"
   permission_manage_forums: "Manage forums"
@@ -4964,7 +4981,6 @@ en:
   permission_manage_subtasks: "Manage work package hierarchies"
   permission_manage_versions: "Manage versions"
   permission_manage_wiki: "Manage wiki"
-  permission_manage_wiki_menu: "Manage wiki menu"
   permission_manage_own_working_times: "Manage own working times"
   permission_manage_own_working_times_explanation: >
     Allows users to manage their own working times, and personal non-working days.
@@ -4972,8 +4988,6 @@ en:
   permission_manage_working_times_explanation: >
     Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "Move work packages"
-  permission_protect_wiki_pages: "Protect wiki pages"
-  permission_rename_wiki_pages: "Rename wiki pages"
   permission_save_queries: "Save views"
   permission_search_project: "Search project"
   permission_select_custom_fields: "Select custom fields"
@@ -5229,10 +5243,10 @@ en:
     <br/>
     Example: <code>/my/page</code>
   setting_after_login_default_redirect_url: "After login redirect"
-  setting_after_login_default_redirect_url_text_html: >
+  setting_after_login_default_redirect_url_example_html: >
     Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set.
     <br/>
-    Example: <code>/my/page</code>
+    Example: %{example_code}
   setting_apiv3_cors_title: "Cross-Origin Resource Sharing (CORS)"
   setting_apiv3_cors_enabled: "Enable CORS"
   setting_apiv3_cors_origins: "API V3 Cross-Origin Resource Sharing (CORS) allowed origins"
@@ -5822,6 +5836,7 @@ en:
   text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Reassign to work package:"
   text_regexp_multiline: 'The regex is applied in a multi-line mode. e.g., ^---\s+'
+  text_rename_wiki_page: "Rename wiki page"
   text_repository_usernames_mapping: "Select or update the OpenProject user mapped to each username found in the repository log.\nUsers with the same OpenProject and repository username or email are automatically mapped."
   text_status_changed_by_changeset: "Applied in changeset %{value}."
   text_table_difference_description: "In this table the single %{entries} are shown. You can view the difference between any two entries by first selecting the according checkboxes in the table. When clicking on the button below the table the differences are shown."

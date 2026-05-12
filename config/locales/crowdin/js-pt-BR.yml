@@ -505,7 +505,7 @@ pt-BR:
       show_modal: Exibir texto de ajuda
     onboarding:
       buttons:
-        skip: Pular
+        skip: Ignorar
         next: Próxima
         got_it: Entendi
       steps:
@@ -520,7 +520,7 @@ pt-BR:
           lists_kanban: Aqui você pode criar várias listas (colunas) dentro do seu painel. Este recurso permite que você crie um <b>Quadro Kanban</b>, por exemplo.
           lists_basic: Aqui você pode criar várias listas (colunas) em seu quadro ágil.
           add: Clique no ícone mais (+) para <b>criar um novo cartão</b> ou <b>adicionar um cartão existente</b> à lista no quadro.
-          drag: Arraste e solte suas cartas dentro de uma determinada lista para reordená-las, ou para movê-las para outra lista. <br> Você pode clicar no ícone informativo (i) no canto superior direito ou clicar duas vezes em um cartão para abrir seus detalhes.
+          drag: Arraste e solte seus cartões dentro de uma lista para reordená-los ou movê-los para outra lista. <br> Você pode clicar no ícone de informações (i) no canto superior direito ou clicar duas vezes em um cartão para abrir seus detalhes.
         wp:
           toggler: Agora vamos dar uma olhada na seção <b>pacote de trabalho</b> , que permitirá que você tenha uma visão mais detalhada de seu trabalho.
           list: Esta visão geral do pacote <b>de trabalho</b> fornece uma lista de todo o trabalho em seu projeto, como tarefas, marcos, fases e muito mais. <br> Os pacotes de trabalho podem ser criados e editados diretamente nesta visualização. Para acessar os detalhes de um determinado pacote de trabalho, basta clicar duas vezes na sua linha.
@@ -541,8 +541,8 @@ pt-BR:
       reasons:
         mentioned: Mencionado
         watched: Observador
-        assigned: Cessionário
-        responsible: Responsável
+        assigned: Responsável
+        responsible: Encarregado
         created: Criado
         scheduled: Planejado
         commented: Comentado
@@ -588,7 +588,7 @@ pt-BR:
         title: Configurações de notificação
     pagination:
       no_other_page: Você está na página única.
-      pages_skipped: Páginas puladas.
+      pages_skipped: Páginas ignoradas.
       page_navigation: Navegação de página
       per_page_navigation: Itens por seleção de página
       pages:
@@ -854,9 +854,9 @@ pt-BR:
         shared_with_me: Compartilhados comigo
       jump_marks:
         pagination: Pular para a tabela de paginação
-        label_pagination: Clique aqui para pular a tabela de pacotes de trabalho e ir para a paginação
+        label_pagination: Clique aqui para ignorar a tabela de pacotes de trabalho e ir para a paginação
         content: Pular para o conteúdo
-        label_content: Clique aqui para pular o menu e ir para o conteúdo
+        label_content: Clique aqui para ignorar o menu e ir para o conteúdo
       placeholders:
         default: "-"
         date: Selecionar data

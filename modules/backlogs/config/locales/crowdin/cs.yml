@@ -125,6 +125,9 @@ cs:
       action_menu:
         edit_backlog_bucket: Edit backlog bucket
         delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     sprint_component:
       blankslate_title: "%{name} je prázdný"
       blankslate_description: Zatím nejsou naplánovány žádné položky. Přetažením položek sem je přidáte.

@@ -2,6 +2,8 @@
 id:
   activerecord:
     attributes:
+      wikis/page_link:
+        provider: Wiki Provider
       wikis/xwiki_provider:
         authentication_method: Authentication method
         authentication_methods:
@@ -21,7 +23,6 @@ id:
         other: Relation page links
       wikis/xwiki_provider: XWiki provider
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Wiki providers
   wikis:
     buttons:

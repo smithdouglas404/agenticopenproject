@@ -2,6 +2,8 @@
 cs:
   activerecord:
     attributes:
+      wikis/page_link:
+        provider: Wiki Provider
       wikis/xwiki_provider:
         authentication_method: Způsob ověření
         authentication_methods:
@@ -27,7 +29,6 @@ cs:
         other: Relation page links
       wikis/xwiki_provider: Poskytovatel XWiki
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Wiki providers
   wikis:
     buttons:

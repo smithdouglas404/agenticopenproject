@@ -59,8 +59,9 @@ module Wikis
     end
 
     def extract_origin_user_id(token)
-      auth_strategy = Wikis::Adapters::AuthenticationStrategies::BearerToken.new(token.access_token)
-      resolve("queries.user").call(auth_strategy:)
+      auth_strategy_for(token.user).bind do |auth_strategy|
+        resolve("queries.user").call(auth_strategy:)
+      end
     end
 
     def authenticate_via_two_way_oauth2?

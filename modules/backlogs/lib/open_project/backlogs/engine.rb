@@ -69,7 +69,7 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { "backlogs/backlog_buckets": %i[new_dialog create edit_dialog update destroy],
+                   { "backlogs/backlog_buckets": %i[new_dialog create edit_dialog update destroy_dialog destroy],
                      "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
                    require: :member,
@@ -136,6 +136,7 @@ module OpenProject::Backlogs
     patch_with_namespace :WorkPackages, :SetAttributesService
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
+    patch_with_namespace :Projects, :CopyService
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
     patch_with_namespace :API, :V3, :WorkPackages, :Schema, :SpecificWorkPackageSchema
 

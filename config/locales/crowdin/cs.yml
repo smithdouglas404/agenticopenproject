@@ -259,8 +259,8 @@ cs:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -481,7 +481,7 @@ cs:
         label: 'Role: %{role}'
         no_role: Vybrat roli
         roles:
-          one: "%{count} role selected"
+          one: One role selected
           few: "%{count} roles selected"
           many: "%{count} roles selected"
           other: "%{count} roles selected"
@@ -2627,6 +2627,7 @@ cs:
       unsupported_storage_type: není podporovaným typem úložiště.
       storage_error: Došlo k chybě při připojení k úložišti.
       invalid_input: Vstup je neplatný.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: vytvořil %{user} dne %{datetime}
@@ -3547,6 +3548,30 @@ cs:
   general_text_false: nepravda
   gui_validation_error: 1 chyba
   gui_validation_error_plural: "%{count} chyb"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          few: "%{count} checks failed"
+          many: "%{count} checks failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          few: "%{count} checks returned a warning"
+          many: "%{count} checks returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Nejnovější projekty v systému
@@ -3848,6 +3873,7 @@ cs:
   label_age: Věk
   label_ago: dnů před
   label_all: vše
+  label_all_uppercase: All
   label_all_time: celkový čas
   label_all_words: Všechna slova
   label_all_open_wps: Všechny otevřené
@@ -4608,7 +4634,7 @@ cs:
       you_have: Máte
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} vás zmínil v #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Centrum oznámení
       see_in_center: Zobrazit komentář v oznamovacím centru
@@ -4648,7 +4674,7 @@ cs:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Pro přístup k tomuto pracovnímu balíčku musíte vytvořit a aktivovat účet na %{instance}.
         open_work_package: Otevřít pracovní balíček
-        subject: 'Pracovní balíček #%{id} byl s vámi sdílen'
+        subject: Work package %{id} was shared with you
         enterprise_text: Sdílejte pracovní balíčky s uživateli, kteří nejsou členy projektu.
         summary:
           user: "%{user} s vámi sdílel pracovní balíček s právy %{role_rights}"
@@ -4866,7 +4892,7 @@ cs:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:
@@ -4890,7 +4916,6 @@ cs:
   permission_add_work_package_watchers: Přidat sledující
   permission_assign_versions: Přiřadit verze
   permission_browse_repository: Přístup pouze pro čtení do repozitáře (procházet a pokladna)
-  permission_change_wiki_parent_page: Změnit nadřazenou wiki stránku
   permission_change_work_package_status: Změnit stav pracovního balíčku
   permission_change_work_package_status_explanation: Umožňuje změnu stavu bez oprávnění upravovat pracovní balíčky
   permission_comment_news: Komentování novinek
@@ -4905,8 +4930,6 @@ cs:
   permission_delete_own_messages: Odstranit vlastní zprávy
   permission_delete_reportings: Odstranit přehledy
   permission_delete_timelines: Odstranit časové osy
-  permission_delete_wiki_pages: Odstranit wiki stránky
-  permission_delete_wiki_pages_attachments: Odstranit přílohy
   permission_edit_work_package_comments: Moderovat komentáře
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Upravit pracovní balíčky
@@ -4926,12 +4949,10 @@ cs:
   permission_edit_wiki_pages: Upravit stránky wiki
   permission_export_work_packages: Exportovat pracovní balíčky
   permission_export_projects: Exportovat projekty
-  permission_export_wiki_pages: Exportovat Wiki stránky
   permission_invite_members_by_email: Pozvat členy e-mailem
   permission_invite_members_by_email_explanation: 'Umožní uživatelům pozvat nové členy e-mailem. Pozvaní uživatelé obdrží e-mail s odkazem pro nastavení jejich hesla a aktivaci jejich účtu. Závisí na oprávnění ke správě členů
 
     '
-  permission_list_attachments: Seznam příloh
   permission_log_own_time: Zaznamenat vlastní čas
   permission_log_time: Čas záznamu pro ostatní uživatele
   permission_manage_forums: Správa fór
@@ -4946,7 +4967,6 @@ cs:
   permission_manage_subtasks: Spravovat hierarchie pracovních balíčků
   permission_manage_versions: Správovat verze
   permission_manage_wiki: Spravovat wiki
-  permission_manage_wiki_menu: Spravovat wiki menu
   permission_manage_own_working_times: Spravovat vlastní pracovní dobu
   permission_manage_own_working_times_explanation: 'Umožní uživatelům spravovat vlastní pracovní dobu a osobní nepracovní dny.
 
@@ -4956,8 +4976,6 @@ cs:
 
     '
   permission_move_work_packages: Přesun pracovních balíčků
-  permission_protect_wiki_pages: Ochrana stránky wiki
-  permission_rename_wiki_pages: Přejmenovat stránky wiki
   permission_save_queries: Uložit pohled
   permission_search_project: Hledat projekt
   permission_select_custom_fields: Vybrat vlastní pole
@@ -5205,7 +5223,7 @@ cs:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Sdílení zdrojů Cross-Origin (CORS)
@@ -5755,6 +5773,7 @@ cs:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Přiřadit k pracovnímu balíčku:'
   text_regexp_multiline: 'regex je použit v režimu více řádků. např.: ^---\s+'
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Vyberte nebo aktualizujte mapovaný uživatel OpenProject ke každému uživatelskému jménu nalezenému v protokolu repozitáře.
     Uživatelé se stejným OpenProject a repozitářovým jménem nebo e-mailem jsou automaticky mapováni.
@@ -6190,11 +6209,6 @@ cs:
       scopes: Práva
       successful_application_revocation: Zrušení aplikace %{application_name} bylo úspěšné.
       none_given: Žádné aplikaci OAuth nebyl udělen přístup k vašemu uživatelskému účtu.
-    x_active_tokens:
-      one: jeden aktivní token
-      few: "%{count} aktivní token"
-      many: "%{count} aktivní token"
-      other: "%{count} aktivních tokenů"
     flows:
       authorization_code: Tok kódu autorizace
       client_credentials: Průtok přihlašovacích údajů klienta
@@ -6204,8 +6218,12 @@ cs:
     client_credentials_impersonation_html: 'Ve výchozím nastavení OpenProject poskytuje OAuth 2.0 autorizaci přes %{authorization_code_flow_link}. Můžete volitelně povolit %{client_credentials_flow_link}, ale musíte poskytnout uživateli, na jehož jménem budou žádosti provedeny.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      few: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      many: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Došlo k chybě autorizace.
-    revoke_my_application_confirmation: Opravdu chcete odstranit tuto aplikaci? Tato akce zruší %{token_count} aktivních aplikací.
     my_registered_applications: Registrované OAuth aplikace
   oauth_client:
     urn_connection_status:

@@ -51,4 +51,4 @@ jobs:
 
       - name: Test (Angular)
         id: npm-test
-        run: npm test -- --code-coverage
+        run: npm test

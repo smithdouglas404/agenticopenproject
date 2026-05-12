@@ -241,8 +241,8 @@ vi:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -2510,6 +2510,7 @@ vi:
       unsupported_storage_type: không phải là loại lưu trữ được hỗ trợ.
       storage_error: Đã xảy ra lỗi với kết nối lưu trữ.
       invalid_input: Đầu vào không hợp lệ.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: được tạo bởi %{user} vào %{datetime}
@@ -3361,6 +3362,24 @@ vi:
   general_text_false: 'false'
   gui_validation_error: 1 lỗi
   gui_validation_error_plural: "%{count} lỗi"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Các dự án có thể nhìn thấy mới nhất trong trường hợp này.
@@ -3662,6 +3681,7 @@ vi:
   label_age: Tuổi
   label_ago: vài ngày trước
   label_all: tất cả
+  label_all_uppercase: All
   label_all_time: tất cả thời gian
   label_all_words: Tất cả các từ
   label_all_open_wps: Mở tất cả
@@ -4413,7 +4433,7 @@ vi:
       you_have: bạn có
     logo_alt_text: biểu tượng
     mention:
-      subject: "%{user_name} đã nhắc đến bạn trong #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Đến trung tâm thông báo
       see_in_center: Xem bình luận trong trung tâm thông báo
@@ -4450,7 +4470,7 @@ vi:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Để truy cập gói công việc này, bạn cần tạo và kích hoạt tài khoản trên %{instance}.
         open_work_package: Mở gói công việc
-        subject: 'Gói công việc #%{id} đã được chia sẻ với bạn'
+        subject: Work package %{id} was shared with you
         enterprise_text: Chia sẻ các gói công việc với người dùng không phải là thành viên của dự án.
         summary:
           user: "%{user} đã chia sẻ gói công việc với bạn với quyền %{role_rights}"
@@ -4673,7 +4693,7 @@ vi:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:
@@ -4697,7 +4717,6 @@ vi:
   permission_add_work_package_watchers: Thêm người theo dõi
   permission_assign_versions: Chỉ định phiên bản
   permission_browse_repository: Quyền truy cập chỉ đọc vào kho lưu trữ (duyệt và kiểm tra)
-  permission_change_wiki_parent_page: Thay đổi trang wiki cha
   permission_change_work_package_status: Thay đổi trạng thái gói công việc
   permission_change_work_package_status_explanation: Cho phép thay đổi trạng thái mà không có quyền Chỉnh sửa gói công việc
   permission_comment_news: Chú thích vào tin mới
@@ -4712,8 +4731,6 @@ vi:
   permission_delete_own_messages: Xóa tin nhắn của tôi
   permission_delete_reportings: Xóa các báo cáo
   permission_delete_timelines: Xóa dòng thời gian
-  permission_delete_wiki_pages: Xóa các trang wiki
-  permission_delete_wiki_pages_attachments: Xóa tệp đính kèm
   permission_edit_work_package_comments: Kiểm duyệt bình luận
   permission_edit_work_package_comments_explanation: 'Thận trọng: Người dùng có quyền này có thể chỉnh sửa nhận xét của bất kỳ ai.'
   permission_edit_work_packages: Chỉnh sửa gói công việc
@@ -4733,12 +4750,10 @@ vi:
   permission_edit_wiki_pages: Chỉnh sửa trang wiki
   permission_export_work_packages: Xuất gói công việc
   permission_export_projects: Dự án xuất khẩu
-  permission_export_wiki_pages: Xuất trang wiki
   permission_invite_members_by_email: Mời thành viên qua email
   permission_invite_members_by_email_explanation: 'Cho phép người dùng mời thành viên mới qua email. Người dùng được mời sẽ nhận được email có liên kết để đặt mật khẩu và kích hoạt tài khoản của họ. Phụ thuộc vào quyền quản lý thành viên
 
     '
-  permission_list_attachments: Liệt kê tệp đính kèm
   permission_log_own_time: Đăng nhập thời gian riêng
   permission_log_time: Đăng nhập thời gian cho người dùng khác
   permission_manage_forums: Quản lý diễn đàn
@@ -4753,7 +4768,6 @@ vi:
   permission_manage_subtasks: Quản lý phân cấp gói công việc
   permission_manage_versions: Quản lý phiên bản
   permission_manage_wiki: Quản lý wiki
-  permission_manage_wiki_menu: Quản lý menu wiki
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4763,8 +4777,6 @@ vi:
 
     '
   permission_move_work_packages: Di chuyển gói công việc
-  permission_protect_wiki_pages: Bảo vệ các trang wiki
-  permission_rename_wiki_pages: Đổi tên các trang wiki
   permission_save_queries: Lưu các chế độ xem
   permission_search_project: Tìm kiếm dự án
   permission_select_custom_fields: Chọn trường tùy chỉnh
@@ -5012,7 +5024,7 @@ vi:
 
     '
   setting_after_login_default_redirect_url: Sau khi đăng nhập chuyển hướng
-  setting_after_login_default_redirect_url_text_html: 'Đặt đường dẫn mặc định để chuyển hướng người dùng sau khi đăng nhập, nếu không có liên kết ngược nào được cung cấp. Chuyển hướng đến trang chủ nếu không được thiết lập. <br/> Ví dụ: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Chia sẻ tài nguyên chéo nguồn gốc (CORS)
@@ -5564,6 +5576,7 @@ vi:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Phân công lại cho gói công việc:'
   text_regexp_multiline: 'Biểu thức được áp dụng ở chế độ đa dòng. Ví dụ: ^---\s+'
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     Chọn hoặc cập nhật người dùng OpenProject được ánh xạ tới từng tên người dùng được tìm thấy trong nhật ký kho lưu trữ.
     Người dùng có cùng tên người dùng hoặc email của OpenProject và kho lưu trữ sẽ được tự động ánh xạ.
@@ -5996,8 +6009,6 @@ vi:
       scopes: quyền
       successful_application_revocation: Thu hồi ứng dụng %{application_name} thành công.
       none_given: Không có ứng dụng OAuth nào được cấp quyền truy cập vào tài khoản người dùng của bạn.
-    x_active_tokens:
-      other: "%{count} mã thông báo hoạt động"
     flows:
       authorization_code: Luồng mã ủy quyền
       client_credentials: Luồng thông tin xác thực của khách hàng
@@ -6007,8 +6018,9 @@ vi:
     client_credentials_impersonation_html: 'Theo mặc định, OpenProject cung cấp ủy quyền OAuth 2.0 thông qua %{authorization_code_flow_link}. Bạn có thể tùy ý bật %{client_credentials_flow_link}, nhưng bạn phải cung cấp người dùng mà yêu cầu của họ sẽ được thực hiện thay mặt họ.
 
       '
+    confirm_revoke_my_application:
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Đã xảy ra lỗi ủy quyền.
-    revoke_my_application_confirmation: Bạn có thực sự muốn xóa ứng dụng này? Điều này sẽ thu hồi %{token_count} hoạt động cho nó.
     my_registered_applications: Ứng dụng OAuth đã đăng ký
   oauth_client:
     urn_connection_status:

@@ -32,19 +32,12 @@ import { OpModalLocalsMap } from 'core-app/shared/components/modal/modal.types';
 import { SortFilesPipe } from 'core-app/shared/components/storages/pipes/sort-files.pipe';
 import { StorageFilesResourceService } from 'core-app/core/state/storage-files/storage-files.service';
 import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.model';
-import {
-  FilePickerBaseModalComponent,
-} from 'core-app/shared/components/storages/file-picker-base-modal/file-picker-base-modal.component';
+import { FilePickerBaseModalComponent, } from 'core-app/shared/components/storages/file-picker-base-modal/file-picker-base-modal.component';
 import { StorageFileListItem } from 'core-app/shared/components/storages/storage-file-list-item/storage-file-list-item';
+import type { Mock } from 'vitest';
 
 class TestFilePickerBaseModalComponent extends FilePickerBaseModalComponent {
-  constructor(
-    locals:OpModalLocalsMap,
-    elementRef:ElementRef,
-    cdRef:ChangeDetectorRef,
-    sortFilesPipe:SortFilesPipe,
-    storageFilesResourceService:StorageFilesResourceService,
-  ) {
+  constructor(locals:OpModalLocalsMap, elementRef:ElementRef, cdRef:ChangeDetectorRef, sortFilesPipe:SortFilesPipe, storageFilesResourceService:StorageFilesResourceService) {
     super(locals, elementRef, cdRef, sortFilesPipe, storageFilesResourceService);
   }
 
@@ -59,10 +52,10 @@ class TestFilePickerBaseModalComponent extends FilePickerBaseModalComponent {
 
 describe('FilePickerBaseModalComponent', () => {
   interface Spies {
-    detectChanges:jasmine.Spy;
-    close:jasmine.Spy;
-    files:jasmine.Spy;
-    reset:jasmine.Spy;
+    detectChanges:Mock;
+    close:Mock;
+    files:Mock;
+    reset:Mock;
   }
 
   function buildComponent(spies:Spies) {
@@ -84,13 +77,7 @@ describe('FilePickerBaseModalComponent', () => {
       files: spies.files,
       reset: spies.reset,
     } as unknown as StorageFilesResourceService;
-    const component = new TestFilePickerBaseModalComponent(
-      locals,
-      elementRef,
-      cdRef,
-      sortFilesPipe,
-      storageFilesResourceService,
-    );
+    const component = new TestFilePickerBaseModalComponent(locals, elementRef, cdRef, sortFilesPipe, storageFilesResourceService);
 
     component.ngOnInit();
 
@@ -98,15 +85,15 @@ describe('FilePickerBaseModalComponent', () => {
   }
 
   it('cancels pending directory loading on destroy', () => {
-    const teardown = jasmine.createSpy('teardown');
+    const teardown = vi.fn();
     const files$ = new Observable(() => teardown);
     const directory = { location: '/folder', mimeType: 'application/x-op-directory' } as IStorageFile;
-    const files = jasmine.createSpy('files').and.returnValue(files$);
+    const files = vi.fn().mockReturnValue(files$);
     const { component } = buildComponent({
-      detectChanges: jasmine.createSpy('detectChanges'),
-      close: jasmine.createSpy('close'),
+      detectChanges: vi.fn(),
+      close: vi.fn(),
       files,
-      reset: jasmine.createSpy('reset'),
+      reset: vi.fn(),
     });
 
     component.loadDirectory(directory);
@@ -121,15 +108,15 @@ describe('FilePickerBaseModalComponent', () => {
 
   it('does not report directory loading errors as unhandled async exceptions', async () => {
     const previousUnhandledError = config.onUnhandledError;
-    const onUnhandledError = jasmine.createSpy('onUnhandledError');
+    const onUnhandledError = vi.fn();
     const files$ = throwError(() => new Error('boom'));
-    const detectChanges = jasmine.createSpy('detectChanges');
+    const detectChanges = vi.fn();
     const directory = { location: '/folder', mimeType: 'application/x-op-directory' } as IStorageFile;
     const { component } = buildComponent({
       detectChanges,
-      close: jasmine.createSpy('close'),
-      files: jasmine.createSpy('files').and.returnValue(files$),
-      reset: jasmine.createSpy('reset'),
+      close: vi.fn(),
+      files: vi.fn().mockReturnValue(files$),
+      reset: vi.fn(),
     });
 
     config.onUnhandledError = onUnhandledError;

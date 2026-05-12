@@ -915,4 +915,32 @@ RSpec.describe WorkPackage do
       end
     end
   end
+
+  describe "#infoline" do
+    let(:infoline_type) { create(:type, name: "Task") }
+    let(:infoline_work_package) do
+      create(:work_package, subject: "Hello world", project: infoline_project, type: infoline_type)
+    end
+
+    context "when semantic mode is active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      let(:infoline_project) { create(:project, identifier: "MYPROJ") }
+
+      before { infoline_work_package }
+
+      it "renders the semantic identifier without a hash prefix" do
+        expect(infoline_work_package.reload.infoline).to eq("Task: Hello world (MYPROJ-1)")
+      end
+    end
+
+    context "when semantic mode is not active",
+            with_flag: { semantic_work_package_ids: false } do
+      let(:infoline_project) { create(:project) }
+
+      it "renders the hash-prefixed numeric id" do
+        expect(infoline_work_package.infoline).to eq("Task: Hello world (##{infoline_work_package.id})")
+      end
+    end
+  end
 end

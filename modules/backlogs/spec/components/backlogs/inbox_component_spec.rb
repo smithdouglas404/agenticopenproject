@@ -64,7 +64,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
 
     it "wires drop-target data attributes for the inbox" do
       expect(page).to have_css(".Box#inbox_project_#{project.id}") do |box|
-        expect(box["data-generic-drag-and-drop-target"]).to eq("container mirrorContainer")
+        expect(box["data-generic-drag-and-drop-target"]).to eq("container")
         expect(box["data-target-id"]).to eq("inbox")
         expect(box["data-target-allowed-drag-type"]).to eq("story")
       end

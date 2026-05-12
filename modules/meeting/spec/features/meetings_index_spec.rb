@@ -193,10 +193,11 @@ RSpec.describe "Meetings", "Index", :js do
           wait_for_network_idle
 
           sort = [["start_time", "desc"]].to_json
+          time_filters = [{ "time" => { "operator" => "=", "values" => ["past"] } }].to_json
           if context == :global
-            expect(page).to have_current_path(meetings_path(filters: "[]", sortBy: sort))
+            expect(page).to have_current_path(meetings_path(filters: time_filters, sortBy: sort))
           else
-            expect(page).to have_current_path(project_meetings_path(project, filters: "[]", sortBy: sort))
+            expect(page).to have_current_path(project_meetings_path(project, filters: time_filters, sortBy: sort))
           end
         end
       end

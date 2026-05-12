@@ -36,12 +36,12 @@ module Wikis
           class PageInfo < BaseQuery
             JSON_ACCEPT_HEADERS = { "Accept" => "application/json" }.freeze
 
-            def call(input_data, auth_strategy:)
+            def call(input_data:, auth_strategy:)
               ref = PageReference.parse(input_data.identifier)
               return failure(code: :not_found) unless ref
 
               url = "#{provider.url.chomp('/')}/rest#{ref.rest_path}"
-              auth_strategy.call(provider:) do |http|
+              Adapters::Authentication[auth_strategy].call do |http|
                 handle_response(
                   http.with(headers: JSON_ACCEPT_HEADERS).get(url),
                   identifier: input_data.identifier
@@ -71,6 +71,7 @@ module Wikis
               success(
                 Results::PageInfo.new(
                   identifier:,
+                  provider:,
                   title: data["title"],
                   href: data["xwikiAbsoluteUrl"]
                 )

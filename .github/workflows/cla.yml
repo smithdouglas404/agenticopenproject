@@ -89,7 +89,9 @@ jobs:
             ehassan01,
             JohannaStriebing,
             fereshtehnm,
-            thykel
+            thykel,
+            j-racsko,
+            FeliciaMundhenke2904
           # the followings are the optional inputs - If the optional inputs are not given, then default values will be taken
           remote-organization-name: opf
           remote-repository-name: legal

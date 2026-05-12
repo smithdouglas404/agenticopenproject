@@ -78,7 +78,7 @@ de:
             version_id:
               task_version_must_be_the_same_as_story_version: muss der Version der übergeordneten Story entsprechen.
             sprint:
-              not_assignable: is not assignable since it is either not shared with the project or already finished.
+              not_assignable: ist nicht zuweisbar, da es entweder nicht mit dem Projekt geteilt oder bereits beendet ist.
               not_eligible_for_moving: ist kein aktiver Sprint in dem Projekt, in dem der Sprint liegt, aus dem das Arbeitspaket verschoben wird.
     models:
       sprint: Sprint
@@ -119,6 +119,9 @@ de:
       action_menu:
         edit_backlog_bucket: Edit backlog bucket
         delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_destroy_modal_component:
+      title: Backlog Bucket löschen?
+      details: Der Backlog Bucket '%{name}' wird gelöscht und alle Arbeitspakete werden in den Eingangs Backlog verschoben. Kein Arbeitspaket wird gelöscht.
     sprint_component:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.

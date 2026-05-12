@@ -116,6 +116,9 @@ zh-TW:
       action_menu:
         edit_backlog_bucket: Edit backlog bucket
         delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     sprint_component:
       blankslate_title: "%{name} 為空"
       blankslate_description: 尚未規劃任何項目。將項目拖曳至此即可新增。

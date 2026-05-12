@@ -247,8 +247,8 @@ nl:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -465,7 +465,7 @@ nl:
         label: 'Role: %{role}'
         no_role: Select role
         roles:
-          one: "%{count} role selected"
+          one: One role selected
           other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
@@ -2543,6 +2543,7 @@ nl:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: aangemaakt door %{user} op %{datetime}
@@ -3417,6 +3418,26 @@ nl:
   general_text_false: onwaar
   gui_validation_error: 1 fout
   gui_validation_error_plural: "%{count} fouten"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Nieuwste zichtbare projecten in deze instantie.
@@ -3718,6 +3739,7 @@ nl:
   label_age: Leeftijd
   label_ago: dagen geleden
   label_all: alle
+  label_all_uppercase: All
   label_all_time: aller tijden
   label_all_words: Alle woorden
   label_all_open_wps: Alles open
@@ -4472,7 +4494,7 @@ nl:
       you_have: U heeft
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} heeft je genoemd in #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Naar meldingscentrum
       see_in_center: Bekijk commentaar in notificatie center
@@ -4510,7 +4532,7 @@ nl:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
-        subject: 'Work package #%{id} was shared with you'
+        subject: Work package %{id} was shared with you
         enterprise_text: Werkpakketten delen met gebruikers die geen lid zijn van het project.
         summary:
           user: "%{user} een werkpakket met u heeft gedeeld met %{role_rights} rechten"
@@ -4724,7 +4746,7 @@ nl:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:
@@ -4748,7 +4770,6 @@ nl:
   permission_add_work_package_watchers: Kijkers toevoegen
   permission_assign_versions: Versies toewijzen
   permission_browse_repository: Alleen-lezen toegang tot opslagplaats (bladeren en uitchecken)
-  permission_change_wiki_parent_page: Bovenliggende wiki-pagina wijzigen
   permission_change_work_package_status: Change work package status
   permission_change_work_package_status_explanation: Allows changing status without Edit work packages permission
   permission_comment_news: Opmerking nieuws
@@ -4763,8 +4784,6 @@ nl:
   permission_delete_own_messages: Eigen berichten verwijderen
   permission_delete_reportings: Rapporteringen verwijderen
   permission_delete_timelines: Tijdlijnen verwijderen
-  permission_delete_wiki_pages: Wiki pagina's verwijderen
-  permission_delete_wiki_pages_attachments: Bijlagen verwijderen
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Werkpakketten bewerken
@@ -4784,12 +4803,10 @@ nl:
   permission_edit_wiki_pages: Wiki pagina's bewerken
   permission_export_work_packages: Werkpakketten exporteren
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Wiki pagina's exporteren
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: Bijlagen weergeven
   permission_log_own_time: Eigen tijd registreren
   permission_log_time: Log tijd voor andere gebruikers
   permission_manage_forums: Forum beheren
@@ -4804,7 +4821,6 @@ nl:
   permission_manage_subtasks: Beheer werkpakket hiërarchieën
   permission_manage_versions: Versies beheren
   permission_manage_wiki: Wiki beheren
-  permission_manage_wiki_menu: Wiki menu beheren
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4814,8 +4830,6 @@ nl:
 
     '
   permission_move_work_packages: Werkpakketten verplaatsen
-  permission_protect_wiki_pages: Wiki-pagina's beveiligen
-  permission_rename_wiki_pages: Wiki-pagina's wijzigen
   permission_save_queries: Weergaves opslaan
   permission_search_project: Search project
   permission_select_custom_fields: Aangepaste velden selecteren
@@ -5055,7 +5069,7 @@ nl:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Cross-Origin Resource Sharing (CORS)
@@ -5605,6 +5619,7 @@ nl:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Opnieuw toewijzen aan werkpakket:'
   text_regexp_multiline: De regex wordt toegepast in een modus met meerdere regels. bijvoorbeeld, ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: Selecteer of update de gebruiker van de OpenProject gelinkt aan elke gebruikersnaam gevonden in het repository log. Gebruikers met de zelfde OpenProject en repository gebruikersnaam of e-mail worden automatisch gelinkt.
   text_status_changed_by_changeset: Toegepast in changeset %{value}.
   text_table_difference_description: In deze tabel worden de enkele %{entries} weergegeven. U kunt het verschil tussen twee vermeldingen bekijken door eerst de bijhorende selectievakjes te selecteren in de tabel. Bij het klikken op de knop onder de tabel worden de verschillen weergegeven.
@@ -6036,9 +6051,6 @@ nl:
       scopes: Machtigingen
       successful_application_revocation: Intrekking van toepassing %{application_name} succesvol.
       none_given: Geen OAuth-toepassingen zijn toegang verleend tot uw gebruikersaccount.
-    x_active_tokens:
-      one: één actieve token
-      other: "%{count} actieve token"
     flows:
       authorization_code: Autorisatiecode stroom
       client_credentials: Client referenties stroom
@@ -6048,8 +6060,10 @@ nl:
     client_credentials_impersonation_html: 'Standaard biedt OpenProject OAuth 2.0 autorisatie via %{authorization_code_flow_link}. U kunt optioneel %{client_credentials_flow_link} inschakelen, maar u moet een gebruiker geven wier verzoeken namens zullen worden uitgevoerd.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Er is een autorisatiefout opgetreden.
-    revoke_my_application_confirmation: Weet u zeker dat u deze applicatie wilt verwijderen? Dit zal %{token_count} actief voor deze verwijderen.
     my_registered_applications: Geregistreerde OAuth toepassingen
   oauth_client:
     urn_connection_status:

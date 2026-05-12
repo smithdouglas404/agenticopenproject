@@ -247,8 +247,8 @@ sv:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -465,7 +465,7 @@ sv:
         label: 'Role: %{role}'
         no_role: Select role
         roles:
-          one: "%{count} role selected"
+          one: One role selected
           other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
@@ -2547,6 +2547,7 @@ sv:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: created by %{user} on %{datetime}
@@ -3421,6 +3422,26 @@ sv:
   general_text_false: falsk
   gui_validation_error: ett fel
   gui_validation_error_plural: "%{count} fel"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: De senast synliga projekten just nu.
@@ -3722,6 +3743,7 @@ sv:
   label_age: Ålder
   label_ago: dagar sedan
   label_all: alla
+  label_all_uppercase: All
   label_all_time: all tid
   label_all_words: Alla ord
   label_all_open_wps: Alla öppna
@@ -4476,7 +4498,7 @@ sv:
       you_have: Du har
     logo_alt_text: Logotyp
     mention:
-      subject: "%{user_name} mentioned you in #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: To notification center
       see_in_center: See comment in notification center
@@ -4514,7 +4536,7 @@ sv:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
-        subject: 'Work package #%{id} was shared with you'
+        subject: Work package %{id} was shared with you
         enterprise_text: Share work packages with users who are not members of the project.
         summary:
           user: "%{user} shared a work package with you with %{role_rights} rights"
@@ -4728,7 +4750,7 @@ sv:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:
@@ -4752,7 +4774,6 @@ sv:
   permission_add_work_package_watchers: Lägg till bevakare
   permission_assign_versions: Tilldela versioner
   permission_browse_repository: Skrivskyddad åtkomst till databasen (bläddra och och checka ut)
-  permission_change_wiki_parent_page: Ändra överordnad wiki-sida
   permission_change_work_package_status: Change work package status
   permission_change_work_package_status_explanation: Allows changing status without Edit work packages permission
   permission_comment_news: Kommentera nyhet
@@ -4767,8 +4788,6 @@ sv:
   permission_delete_own_messages: Ta bort egna meddelanden
   permission_delete_reportings: Ta bort rapporter
   permission_delete_timelines: Ta bort tidslinjer
-  permission_delete_wiki_pages: Ta bort wikisidor
-  permission_delete_wiki_pages_attachments: Ta bort bifogade filer
   permission_edit_work_package_comments: Moderera kommentarer
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Redigera arbetspaket
@@ -4788,12 +4807,10 @@ sv:
   permission_edit_wiki_pages: Redigera wiki-sidor
   permission_export_work_packages: Exportera arbetspaket
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Exportera wiki-sidor
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: Lista bifogade filer
   permission_log_own_time: Logga egen tid
   permission_log_time: Loggtid för andra användare
   permission_manage_forums: Hantera forum
@@ -4808,7 +4825,6 @@ sv:
   permission_manage_subtasks: Manage work package hierarchies
   permission_manage_versions: Hantera versioner
   permission_manage_wiki: Hantera wiki
-  permission_manage_wiki_menu: Hantera wiki-menyn
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4818,8 +4834,6 @@ sv:
 
     '
   permission_move_work_packages: Flytta arbetspaket
-  permission_protect_wiki_pages: Skydda wiki-sidor
-  permission_rename_wiki_pages: Byt namn på wiki-sidor
   permission_save_queries: Spara vyer
   permission_search_project: Sök projekt
   permission_select_custom_fields: Välj anpassade fält
@@ -5057,7 +5071,7 @@ sv:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Cross-Origin Resource Sharing (CORS)
@@ -5603,6 +5617,7 @@ sv:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Tilldela till arbetspaket:'
   text_regexp_multiline: Regex appliceras i flerradsläge. t.ex. ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: Välj eller uppdatera OpenProject användaren koppling till varje användarnamn i versionsarkivloggen. Användare med samma användarnamn eller E-post i OpenProject och versionsarkivet kopplas automatiskt.
   text_status_changed_by_changeset: Tillämpad i uppdatering %{value}.
   text_table_difference_description: I den här tabellen visas %{entries}. Genom att markera två poster och sedan klicka på knappen nedanför tabellen kan du jämföra dessa och titta på eventuella skillnader.
@@ -6034,9 +6049,6 @@ sv:
       scopes: Behörigheter
       successful_application_revocation: Återkallande av applikation %{application_name} lyckades.
       none_given: Inga OAuth-program har beviljats åtkomst till ditt användarkonto.
-    x_active_tokens:
-      one: en aktiv token
-      other: "%{count} aktiv token"
     flows:
       authorization_code: Flöde för auktoriseringskod
       client_credentials: Flöde för klientuppgifter
@@ -6046,8 +6058,10 @@ sv:
     client_credentials_impersonation_html: 'Som standard ger OpenProject OAuth 2.0-auktorisering via %{authorization_code_flow_link}. Du kan valfritt aktivera %{client_credentials_flow_link}, men du måste tillhandahålla en användare för vars räkning förfrågningar kommer att utföras.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Ett auktoriseringsfel har inträffat.
-    revoke_my_application_confirmation: Vill du verkligen ta bort denna applikation? Detta kommer att återkalla %{token_count} aktiv för den.
     my_registered_applications: Registrerade OAuth applikationer
   oauth_client:
     urn_connection_status:

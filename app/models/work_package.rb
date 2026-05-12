@@ -281,7 +281,7 @@ class WorkPackage < ApplicationRecord
 
   def infoline(show_standard_type: true)
     type_name = show_standard_type || !type.is_standard ? type.name : ""
-    "#{type_name}: #{subject} (##{id})"
+    "#{type_name}: #{subject} (#{formatted_id})"
   end
 
   # Return true if the work_package is closed, otherwise false

@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -42,12 +42,14 @@ module Wikis
 
     def relation_page_link_infos_for(provider:, linkable:)
       Adapters::Input::RelationPageLinks.build(linkable:).bind do |input|
-        provider.resolve("queries.relation_page_links")
-                .call(input)
-                .either(
-                  ->(page_link_infos) { page_link_infos },
-                  -> { [] }
-                )
+        provider.auth_strategy_for(User.current).bind do |auth_strategy|
+          provider.resolve("queries.relation_page_links")
+                  .call(input_data: input, auth_strategy:)
+                  .either(
+                    ->(page_link_infos) { page_link_infos },
+                    -> { [] }
+                  )
+        end
       end
     end
 
@@ -62,10 +64,12 @@ module Wikis
 
       Adapters::Input::ReferencingPages.build(linkable:).bind do |input|
         Provider.enabled.each do |provider|
-          provider.resolve("queries.referencing_pages")
-                  .call(input)
-                  # Only return page infos for successful results
-                  .fmap { referenced_in.concat(it) }
+          provider.auth_strategy_for(User.current).bind do |auth_strategy|
+            provider.resolve("queries.referencing_pages")
+                    .call(input_data: input, auth_strategy:)
+                    # Only return page infos for successful results
+                    .fmap { referenced_in.concat(it) }
+          end
         end
       end
 
@@ -75,10 +79,10 @@ module Wikis
     private
 
     def page_info(provider:, identifier:)
-      token = provider.user_access_token(User.current)
-      auth_strategy = Adapters::AuthenticationStrategies::BearerToken.new(token)
       Adapters::Input::PageInfo.build(identifier:).bind do |input|
-        provider.resolve("queries.page_info").call(input, auth_strategy:)
+        provider.auth_strategy_for(User.current).bind do |auth_strategy|
+          provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
+        end
       end
     end
 
