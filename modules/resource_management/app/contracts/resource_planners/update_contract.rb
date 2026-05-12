@@ -23,30 +23,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-<<<<<<<< HEAD:modules/wikis/app/services/wikis/adapters/authentication_strategies/bearer_token.rb
-module Wikis
-  module Adapters
-    module AuthenticationStrategies
-      class BearerToken
-        include Dry::Monads[:result]
-
-        def initialize(token)
-          @token = token
-        end
-
-        def call(_provider: nil)
-          yield OpenProject.httpx.bearer_auth(@token)
-        end
-      end
-    end
-========
 module ResourcePlanners
-  class UpdateContract < BaseContract
->>>>>>>> dev:modules/resource_management/app/contracts/resource_planners/update_contract.rb
+  class UpdateService < ::BaseServices::Update
   end
 end
