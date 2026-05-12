@@ -348,7 +348,7 @@ zh-CN:
           od_oauth_request_unauthorized: 当前用户无权访问远程文件存储空间。如需了解详情，请查看服务器日志。
           od_oauth_token_missing: OpenProject 无法测试用户与 OneDrive 的用户级通信，因为用户尚未关联他们的 Microsoft 帐户。
           od_tenant_id_wrong: 配置的目录（租户）无效。请检查配置。
-          od_test_folder_exists: 测试所需的文件夹 %{folder_name} 已经存在。请将其删除并重试。
+          od_test_folder_exists: 测试所需的文件夹 %{folder_name} 已存在。请将其删除并重试。
           od_unexpected_content: 在驱动器中找到意外内容。
           offline_access_scope_missing: 建议配置 OpenID Connect 提供商以请求 offline_access 范围。集成仍然可以正常工作，但请确保刷新令牌不会过期。
           oidc_cant_refresh_token: 尝试检查您对存储空间的访问权限时出错。如需了解详情，请查看服务器日志。
@@ -356,9 +356,7 @@ zh-CN:
           oidc_non_provisioned_user: 当前用户并非由 OpenID Connect 身份提供商提供。请针对提供的用户重新运行检查。
           oidc_provider_cant_exchange: OpenID Connect 提供商似乎不支持令牌交换，但已为存储配置了令牌交换。
           oidc_token_acquisition_failed: 您的 OpenID Connect 设置没有提供必要的受众，也没有提供令牌交换功能。如需了解详情，请查看我们的文档。
-          oidc_token_exchange_failed: '您的 OpenID Connect 提供商上的令牌交换设置似乎存在问题。请检查其配置并重试。
-
-            '
+          oidc_token_exchange_failed: 您的 OpenID Connect 提供商上的令牌交换设置似乎存在问题。请检查其配置并重试。
           oidc_token_refresh_failed: 尝试检查您对存储空间的访问权限时出错。如需了解详情，请查看服务器日志。
           sp_client_cant_delete_folder: 客户在删除 SharePoint 中的文件夹时遇到问题。请查看您的存储空间的设置文档。
           sp_client_id_missing: SharePoint 缺少配置的 OAuth 2 客户端 ID。请检查配置。

@@ -3361,7 +3361,7 @@ zh-CN:
       checks:
         failures:
           other: "%{count} 个检查失败"
-        success: 所有检查已通过
+        success: 所有检查均通过
         warnings:
           other: "%{count} 个检查返回警告"
       summary:

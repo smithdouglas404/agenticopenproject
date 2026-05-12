@@ -36,7 +36,7 @@ es:
         subject: Asunto
         type: Tipo de costo
         labor_budget: Costos laborales planeados
-        labor_budget_items: Planned labor costs
+        labor_budget_items: Costos laborales previstos
         material_budget: Costos unitarios planeados
         base_amount: Importe base
       work_package:

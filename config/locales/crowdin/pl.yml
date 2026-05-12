@@ -5888,7 +5888,7 @@ pl:
   warning_protocol_mismatch_html: ''
   warning_bar:
     https_mismatch:
-      title: Konfiguracja trybu HTTPS niezgodna
+      title: Niezgodna konfiguracja trybu HTTPS
       text_html: 'Twoja aplikacja działa w trybie HTTPS ustawionym na <code>%{set_protocol}</code>, ale żądanie jest żądaniem <code>%{actual_protocol}</code>. Spowoduje to błędy! Musisz ustawić następującą wartość konfiguracji: <code>%{setting_value}</code>. Zapoznaj się z <a href="%{more_info_path}">dokumentacją instalacji</a>, aby dowiedzieć się, jak ustawić tę konfigurację.
 
         '

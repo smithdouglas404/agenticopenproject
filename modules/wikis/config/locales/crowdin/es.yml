@@ -3,7 +3,7 @@ es:
   activerecord:
     attributes:
       wikis/page_link:
-        provider: Wiki Provider
+        provider: Proveedor Wiki
       wikis/xwiki_provider:
         authentication_method: Método de autenticación
         authentication_methods:
@@ -36,7 +36,7 @@ es:
       inline_page_links: Enlaces a la página integrada
       referencing_pages: Se hace referencia en
     page_link_component:
-      remove: Remove page link
+      remove: Eliminar enlace de página
     relation_page_links_component:
       empty_heading: No hay páginas relacionadas
       empty_text: Añada manualmente enlaces a otras páginas wiki relacionadas.

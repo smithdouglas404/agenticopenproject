@@ -126,9 +126,9 @@ es:
         title: Configuración de Jira
         new: Nueva configuración
       banner:
-        title: Beta - Try it out!
-        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
-        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+        title: Beta - ¡Pruébelo!
+        description: Este Migrador de Jira se encuentra actualmente en fase beta. En este momento solo es compatible con las versiones 10.x y 11.x de Jira Server/Data Center. Por el momento, no es compatible con instancias en la nube.
+        contribution_callout: 'Le rogamos que nos ayude a mejorar el Migrador de Jira con sus comentarios y aportando datos privados. Puede [unirse a la comunidad de desarrollo](link) del Migrador de Jira.
 
           '
         supported_versions: ''
@@ -466,7 +466,7 @@ es:
         no_role: Seleccionar rol
         roles:
           one: Un rol seleccionado
-          other: "%{count} roles selected"
+          other: "%{count} roles seleccionados"
       blankslate:
         title: No hay transiciones de estado configuradas
         description: Añade estados para empezar a configurar los flujos de trabajo de este rol
@@ -1400,12 +1400,12 @@ es:
         create:
           notice:
             one: Se ha copiado correctamente el flujo de trabajo al rol «%{role_name}».
-            other: Se ha copiado correctamente el flujo de trabajo a los roles «%{count}».
+            other: Se ha copiado correctamente el flujo de trabajo a %{count} roles.
       from_types:
         create:
           notice:
             one: Se ha copiado correctamente el flujo de trabajo al tipo «%{type_name}.
-            other: Se ha copiado correctamente el flujo de trabajo a los tipos «%{count}».
+            other: Se ha copiado correctamente el flujo de trabajo a %{count} tipos.
       new:
         title: Copiar el flujo de trabajo de «%{source_type}»
     form:
@@ -2068,7 +2068,7 @@ es:
         inclusion: no está establecido a uno de los valores permitidos.
         inclusion_nested: no está establecido en uno de los valores permitidos en la ruta '%{path}'.
         invalid: no es válido.
-        invalid_uri: debe ser una URL válida.
+        invalid_uri: debe ser un URI válido.
         invalid_url: no es una URL válida.
         invalid_url_scheme: 'no es un protocolo admitido (permitidos: %{allowed_schemes}).'
         less_than_or_equal_to: debe ser menor o igual a %{count}.
@@ -3425,7 +3425,7 @@ es:
           other: "%{count} comprobaciones devolvieron una advertencia"
       summary:
         failure: Algunas comprobaciones han fallado y el sistema no funciona como se esperaba.
-        success: All connections and systems are working as expected.
+        success: Todas las conexiones y sistemas funcionan según lo previsto.
         warning: Algunas comprobaciones devolvieron una advertencia. Esto puede dar lugar a un comportamiento inesperado.
     result_component:
       status:
@@ -4489,7 +4489,7 @@ es:
       you_have: Tiene
     logo_alt_text: Logotipo
     mention:
-      subject: "%{user_name} mentioned you in %{id} - %{subject}"
+      subject: "%{user_name} le mencionó en %{id} - %{subject}"
     notification:
       center: Al centro de notificaciones
       see_in_center: Ver comentario en el centro de notificaciones
@@ -4745,11 +4745,11 @@ es:
           label_actions: Acciones del paquete de trabajo
       work_package_card_list_component:
         header:
-          label_actions: Open menu
+          label_actions: Abrir menú
           label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+            zero: No hay paquetes de trabajo
+            one: "%{count} paquete de trabajo"
+            other: "%{count} paquetes de trabajo"
   permission_add_work_package_comments: Añadir comentarios
   permission_add_work_packages: Añadir paquetes de trabajo
   permission_add_messages: Publicar mensajes
@@ -5068,7 +5068,7 @@ es:
 
     '
   setting_after_login_default_redirect_url: Después de la redirección de inicio de sesión
-  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
+  setting_after_login_default_redirect_url_example_html: 'Establezca una ruta por defecto para redirigir a los usuarios tras el inicio de sesión, si no se ha proporcionado un enlace de vuelta. Redirige a la página de inicio si no se establece. <br/> Ejemplo: %{example_code}
 
     '
   setting_apiv3_cors_title: Intercambio de recursos entre orígenes (CORS)
@@ -5616,7 +5616,7 @@ es:
   text_project_identifier_format: Debe empezar con una letra minúscula. Solo se permiten letras minúsculas (a-z), números, guiones y guiones bajos.
   text_reassign: 'Reasignar al paquete de trabajo:'
   text_regexp_multiline: La expresión regular se aplica en modo multilínea. Por ejemplo, ^---\s+
-  text_rename_wiki_page: Rename wiki page
+  text_rename_wiki_page: Renombrar página wiki
   text_repository_usernames_mapping: Seleccione o actualize el usuario de OpenProject asignado a cada nombre en el registro del repositorio. Los usuarios con el mismo nombre o email serán mapeados automáticamente.
   text_status_changed_by_changeset: Aplicado en el conjunto de cambios %{value}.
   text_table_difference_description: En esta tabla, se muestran %{entries} individuales. Puede ver la diferencia entre dos entradas cualesquiera seleccionando primero los cuadros de verificación adecuados en la tabla. Al hacer clic en el botón bajo la tabla, se muestran las diferencias.
@@ -6058,8 +6058,8 @@ es:
 
       '
     confirm_revoke_my_application:
-      one: Do you really want to remove this application? This will revoke one token active for it.
-      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      one: "¿Seguro que quieres eliminar esta aplicación? Eso suspenderá un token activo para realizarse."
+      other: "¿Seguro que quieres eliminar esta aplicación? Eso suspenderá %{count} tokens activos para realizarse."
     authorization_error: Se ha generado un error de autorización.
     my_registered_applications: Aplicaciones OAuth Registradas
   oauth_client:
