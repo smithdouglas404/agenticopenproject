@@ -2,6 +2,8 @@
 nl:
   activerecord:
     attributes:
+      wikis/page_link:
+        provider: Wiki Provider
       wikis/xwiki_provider:
         authentication_method: Authentication method
         authentication_methods:

@@ -60,6 +60,11 @@ module OpenProject::Wikis
       )
 
       OpenProject::TextFormatting::Filters::PatternMatcherFilter.append_matcher ::Wikis::TextFormatting::WikiLinkMatcher
+
+      # Registering queries and filters
+      ::Queries::Register.register(::Queries::Wikis::PageLinks::PageLinkQuery) do
+        filter ::Queries::Wikis::PageLinks::Filter::ProviderFilter
+      end
     end
 
     replace_principal_references "Wikis::PageLink" => %i[author_id]
@@ -99,5 +104,10 @@ module OpenProject::Wikis
 
     add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
     add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }
+    add_api_path(:work_package_page_links) { |work_package_id| "#{work_package(work_package_id)}/wiki_page_links" }
+
+    add_api_endpoint "API::V3::WorkPackages::WorkPackagesAPI", :id do
+      mount ::API::V3::PageLinks::WorkPackageWikiPageLinksAPI
+    end
   end
 end

@@ -676,6 +676,9 @@ RSpec.describe "Work package activity", :js, :with_cuprite, with_ee: %i[internal
       end
 
       it "resets an only_changes filter if a comment is added by the user" do
+        activity_tab.expect_journal_notes(text: "First comment by admin")
+        activity_tab.expect_journal_notes(text: "Second comment by admin")
+
         activity_tab.filter_journals(:only_changes)
 
         # expect only the changes

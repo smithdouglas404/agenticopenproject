@@ -79,7 +79,7 @@ describe('keepTab service', () => {
     let currentPathPrefix = 'work-packages.show.*';
 
     beforeEach(() => {
-      spyOn($state, 'includes').and.callFake((path:string) => path === currentPathPrefix);
+      vi.spyOn($state, 'includes').mockImplementation((path:string) => path === currentPathPrefix);
 
       $state.current.name = 'work-packages.show.tabs';
       uiRouterGlobals.params.tabIdentifier = 'relations';
@@ -95,7 +95,7 @@ describe('keepTab service', () => {
     });
 
     it('should propagate the previous change', () => {
-      const cb = jasmine.createSpy();
+      const cb = vi.fn();
 
       const expected = {
         active: 'relations',
@@ -121,7 +121,7 @@ describe('keepTab service', () => {
 
   describe('when opening show#activity', () => {
     beforeEach(() => {
-      spyOn($state, 'includes').and.callFake((path:string) => path === 'work-packages.show.*');
+      vi.spyOn($state, 'includes').mockImplementation((path:string) => path === 'work-packages.show.*');
 
       uiRouterGlobals.params.tabIdentifier = 'activity';
       $state.current.name = 'work-packages.show.tabs';
@@ -135,7 +135,7 @@ describe('keepTab service', () => {
 
   describe('when opening a details route', () => {
     beforeEach(() => {
-      spyOn($state, 'includes').and.callFake((path:string) => path === '**.details.*');
+      vi.spyOn($state, 'includes').mockImplementation((path:string) => path === '**.details.*');
 
       uiRouterGlobals.params.tabIdentifier = 'activity';
       $state.current.name = 'work-packages.partitioned.list.details.tabs';
@@ -151,7 +151,7 @@ describe('keepTab service', () => {
     });
 
     it('should propagate the previous and next change', () => {
-      const cb = jasmine.createSpy();
+      const cb = vi.fn();
 
       const expected = {
         active: 'activity',
@@ -165,7 +165,7 @@ describe('keepTab service', () => {
 
       keepTab.updateTabs();
 
-      expect(cb.calls.count()).toEqual(2);
+      expect(vi.mocked(cb).mock.calls.length).toEqual(2);
     });
   });
 });

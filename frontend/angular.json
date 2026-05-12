@@ -146,20 +146,12 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-builders/custom-esbuild:unit-test",
           "options": {
-            "preserveSymlinks": true,
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
             "tsConfig": "tsconfig.spec.json",
-            "scripts": [],
-            "styles": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/assets/sass/"
-              ]
-            },
-            "assets": []
+            "buildTarget": "OpenProject:build",
+            "providersFile": "src/test-providers.ts",
+            "setupFiles": ["src/test-setup.ts"]
           }
         },
         "lint": {

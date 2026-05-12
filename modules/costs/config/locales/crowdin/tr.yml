@@ -173,7 +173,6 @@ tr:
   label_previous_week: Geçen Hafta
   label_previous_month: Önceki ay
   label_specific_day: Gün %{day}
-  label_specific_week: Takvim haftası %{week}
   label_specific_month: Ay %{month}
   label_list: Liste
   label_month: Ay

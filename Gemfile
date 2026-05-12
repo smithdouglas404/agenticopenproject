@@ -193,7 +193,7 @@ gem "rails-i18n", "~> 8.1.0"
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
 gem "sprockets-rails", "~> 3.5.1"
 
-gem "puma", "~> 7.1"
+gem "puma", "~> 8.0"
 gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
@@ -240,7 +240,7 @@ gem "opentelemetry-exporter-otlp", "~> 0.33.0", require: false
 gem "opentelemetry-instrumentation-all", "~> 0.93.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.8.0"
+gem "view_component", "~> 4.9.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
@@ -264,10 +264,11 @@ group :test do
   gem "rack-test", "~> 2.2.0"
   gem "shoulda-context", "~> 2.0"
 
+  gem "parallel_tests", "~> 5.7"
   # Test prof provides factories from code
   # and other niceties
   gem "test-prof", "~> 1.6.0"
-  gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
+  gem "turbo_tests", github: "opf/turbo_tests", ref: "2_2_5_with_patches"
 
   gem "rack_session_access"
   gem "rspec", "~> 3.13.2"
@@ -316,8 +317,6 @@ group :test do
   gem "equivalent-xml", "~> 0.6"
   gem "json_spec", "~> 1.1.4"
   gem "shoulda-matchers", "~> 7.0", require: nil
-
-  gem "parallel_tests", "~> 4.0"
 end
 
 group :ldap do

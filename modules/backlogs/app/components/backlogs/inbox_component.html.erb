@@ -29,20 +29,20 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= component_wrapper(tag: :section) do %>
   <%= render(
-        OpenProject::Common::WorkPackageCardBoxComponent.new(
+        OpenProject::Common::WorkPackageCardListComponent.new(
           project:,
           container: dom_target(:inbox, project),
           drag_and_drop: {
             target_id: "inbox",
             allowed_drag_type: "story"
           },
-          item_component_klass: Backlogs::WorkPackageCardBoxItemComponent,
+          item_component_klass: Backlogs::WorkPackageCardListItemComponent,
           params: all_backlogs_params,
           current_user:,
           data: { test_selector: "backlog-inbox" }
         )
-      ) do |box| %>
-    <% box.with_empty_state(
+      ) do |list| %>
+    <% list.with_empty_state(
          title: t(".blankslate_title"),
          description: t(".blankslate_description"),
          icon: :"op-backlogs",
@@ -50,12 +50,12 @@ See COPYRIGHT and LICENSE files for more details.
        ) %>
 
     <% visible_work_packages.each.with_index do |work_package, index| %>
-      <% box.with_work_package_item(work_package:) %>
+      <% list.with_work_package_item(work_package:) %>
 
       <% if truncated? && index == TRUNCATE_MIDDLE - 1 %>
-        <% box.with_item(
+        <% list.with_item(
              scheme: :neutral,
-             classes: "op-work-package-card-box--show-more-row",
+             classes: "op-work-package-card-list--show-more-row",
              data: { draggable_id: last_omitted_id }
            ) do %>
           <%= render(

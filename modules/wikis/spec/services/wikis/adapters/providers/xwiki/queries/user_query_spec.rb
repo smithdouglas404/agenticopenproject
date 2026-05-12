@@ -32,11 +32,19 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock do
+  let(:user) { build_stubbed(:user) }
+  let(:oauth_client) { build_stubbed(:oauth_client) }
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.local/") }
   let(:rest_url) { "https://xwiki.local/rest/" }
-  let(:input_data) { Wikis::Adapters::Input::UserQuery.new(access_token: "some-token") }
+  let(:auth_strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user:, provider: wiki_provider).value! }
 
   subject(:query) { described_class.new(model: wiki_provider) }
+
+  before do
+    allow(wiki_provider).to receive(:oauth_client).and_return(oauth_client)
+    allow(OAuthClientToken).to receive(:for_user_and_client).with(user, oauth_client)
+      .and_return(instance_double(ActiveRecord::Relation, first: instance_double(OAuthClientToken, access_token: "some-token")))
+  end
 
   it "is registered" do
     expect(Wikis::Adapters::Registry.resolve("xwiki.queries.user")).to eq(described_class)
@@ -46,11 +54,12 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
     context "when the request succeeds with xwiki-user header" do
       before do
         stub_request(:get, rest_url)
+          .with(headers: { "Authorization" => "Bearer some-token" })
           .to_return(status: 200, body: "", headers: { "xwiki-user" => "XWiki.admin" })
       end
 
       it "returns Success with the xwiki-user header value" do
-        result = query.call(input_data)
+        result = query.call(auth_strategy:)
         expect(result).to be_success
         expect(result.value!).to eq("XWiki.admin")
       end
@@ -63,7 +72,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
       end
 
       it "returns Failure with :unauthorized code" do
-        result = query.call(Wikis::Adapters::Input::UserQuery.new(access_token: "invalid-token"))
+        result = query.call(auth_strategy:)
         expect(result).to be_failure
         expect(result.failure).to have_attributes(code: :unauthorized)
       end
@@ -75,7 +84,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
       end
 
       it "returns Failure with :request_failed code" do
-        result = query.call(input_data)
+        result = query.call(auth_strategy:)
         expect(result).to be_failure
         expect(result.failure).to have_attributes(code: :request_failed)
       end
@@ -85,7 +94,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
       before { stub_request(:get, rest_url).to_timeout }
 
       it "returns Failure with :connection_error code" do
-        result = query.call(input_data)
+        result = query.call(auth_strategy:)
         expect(result).to be_failure
         expect(result.failure).to have_attributes(code: :connection_error)
       end

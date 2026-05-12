@@ -177,7 +177,6 @@ ro:
   label_previous_week: Săptămâna trecută
   label_previous_month: Luna anterioară
   label_specific_day: Ziua %{day}
-  label_specific_week: Săptămâna calendaristică %{week}
   label_specific_month: Luna %{month}
   label_list: Listă
   label_month: Luna

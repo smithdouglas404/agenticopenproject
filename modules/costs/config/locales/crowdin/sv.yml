@@ -173,7 +173,6 @@ sv:
   label_previous_week: Föregående vecka
   label_previous_month: Föregående månad
   label_specific_day: Dag %{day}
-  label_specific_week: Kalendervecka %{week}
   label_specific_month: Månad %{month}
   label_list: Lista
   label_month: Månad

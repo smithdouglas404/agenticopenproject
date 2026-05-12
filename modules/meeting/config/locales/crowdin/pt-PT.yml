@@ -32,7 +32,7 @@ pt-PT:
         location: Localização
         duration: Duração
         notes: Notas
-        recurrence_start_time: Scheduled start time
+        recurrence_start_time: Hora de início agendada
         participants: Participantes
         participant:
           one: 1 Participante
@@ -43,9 +43,9 @@ pt-PT:
         start_date: Data
         start_time: Hora de início
         start_time_hour: Hora de início
-        end_time: End time
-        template: Template
-        notify: Send notifications
+        end_time: Hora de fim
+        template: Modelo
+        notify: Enviar notificações
         sharing: Partilhar
       meeting_agenda_item:
         title: Título
@@ -53,15 +53,15 @@ pt-PT:
         duration_in_minutes: Duração
         description: Notas
         presenter: Apresentador
-        item_type: Type
-        position: Position
-        lock_version: Lock version
-        notes: Notes
+        item_type: Tipo
+        position: Posição
+        lock_version: Bloquear versão
+        notes: Notas
       meeting_section:
         title: Título
-        position: Position
+        position: Posição
       recurring_meeting:
-        title: Title
+        title: Título
         frequency: Frequência
         interval: Intervalo
         start_date: Inicia em
@@ -70,10 +70,10 @@ pt-PT:
         end_after: Fim da série de reuniões
         end_date: Data de fim
         iterations: Ocorrências
-        time_zone: Time zone
-        location: Location
-        duration: Duration
-        notify: Send notifications
+        time_zone: Fuso horário
+        location: Localização
+        duration: Duração
+        notify: Enviar notificações
       recurring_meeting_interim_response:
         start_time: Hora de início
       meeting_participant:
@@ -210,7 +210,7 @@ pt-PT:
   label_time_zone: Fuso horário
   label_start_date: Data de início
   label_subscribe_icalendar: Subscrever o calendário
-  label_recurring_filter: Recurring filter
+  label_recurring_filter: Filtro recorrente
   caption_meeting_template_select: Selecione um modelo para copiar automaticamente os seus pontos da agenda
   caption_template_project_select: Selecione o projeto em que quer criar este modelo de reunião
   placeholder_meeting_template_select_project_first: Selecione um projeto primeiro
@@ -437,9 +437,9 @@ pt-PT:
       meeting_not_found: Reunião não encontrada com o UID fornecido.
     widgets:
       blankslate:
-        heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
-      view_details: View all meetings
+        heading: Não há reuniões futuras
+        description: As próximas reuniões em que é organizador ou participante aparecerão aqui.
+      view_details: Ver todas as reuniões
   meeting_section:
     untitled_title: Secção sem título
     delete_confirmation: A eliminação da secção também irá eliminar os seus pontos da ordem de trabalhos. Tem a certeza de que pretende fazê-lo?
@@ -678,9 +678,9 @@ pt-PT:
   text_exit_draft_mode_dialog_template_title: Abrir a primeira ocorrência desta série de reuniões?
   text_exit_draft_mode_dialog_template_subtitle: Depois disso, não pode voltar ao modo de rascunho.
   label_meeting_template_sharing: Partilhar
-  label_meeting_template_sharing_none: Only with this project
-  label_meeting_template_sharing_descendants: With subprojects
-  label_meeting_template_sharing_system: With all projects
+  label_meeting_template_sharing_none: Apenas com este projeto
+  label_meeting_template_sharing_descendants: Com subprojetos
+  label_meeting_template_sharing_system: Com todos os projetos
   text_meeting_template_sharing_description: Este modelo pode ser partilhado com sub-projetos ou outros projetos nesta instância. Só os elementos da agenda e os anexos serão copiados.
   text_meeting_not_editable_anymore: Esta reunião não é mais editável.
   text_meeting_not_present_anymore: Esta reunião foi excluída. Por favor, selecione outra reunião.
@@ -699,12 +699,12 @@ pt-PT:
   text_agenda_item_duplicate_in_next_meeting: Tem a certeza de que quer acrescentar uma cópia deste ponto da ordem de trabalhos à próxima reunião, em %{date} em %{time}? Os resultados não serão duplicados.
   text_agenda_item_duplicated_in_next_meeting: Ponto da ordem de trabalhos duplicado na próxima reunião, em %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Este pacote de trabalho ainda não está agendado em uma reunião futura.
-  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
-  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
-  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
-  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
-  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
-  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
+  text_agenda_item_no_available_occurrence: Não estão disponíveis ocorrências futuras.
+  text_agenda_item_dialog_skipping_note: 'Nota: A saltar %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: reunião cancelada em %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} reuniões canceladas"
+  text_agenda_item_dialog_skipping_closed_one: reunião fechada em %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} reuniões fechadas"
   text_work_package_add_to_meeting_hint: Use o botão "Adicionar à reunião" para adicionar este pacote de trabalho a uma reunião futura.
   text_work_package_has_no_past_meeting_agenda_items: Este pacote de trabalho não foi acrescentado como ponto da ordem de trabalhos numa reunião anterior.
   text_email_updates_muted: As atualizações do calendário por e-mail estão silenciadas. Os participantes não receberão convites atualizados por e-mail quando fizer alterações.

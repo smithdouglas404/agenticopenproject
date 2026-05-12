@@ -130,9 +130,9 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to have_received(:new).once
     end
 
-    it "renders the save button" do
+    it "renders the save button (hidden until a change is made)" do
       render_component(component)
-      expect(page).to have_button("Save")
+      expect(page).to have_button("Save", visible: :all)
     end
 
     it "does not render in-progress or success content" do

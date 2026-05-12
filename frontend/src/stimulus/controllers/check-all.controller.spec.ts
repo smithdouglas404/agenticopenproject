@@ -54,19 +54,19 @@ describe('CheckAllController', () => {
   });
 
   const checkAllTemplate = `
-    <div data-controller="check-all" data-check-all-checkable-outlet="#checkables">
-      <button id="check-all" data-action="check-all#checkAll">Check all</button>
-      <button id="uncheck-all" data-action="check-all#uncheckAll">Uncheck all</button>
-    </div>
-  `;
+  <div data-controller="check-all" data-check-all-checkable-outlet="#checkables">
+   <button id="check-all" data-action="check-all#checkAll">Check all</button>
+   <button id="uncheck-all" data-action="check-all#uncheckAll">Uncheck all</button>
+  </div>
+ `;
 
   const checkableTemplate = `
-    <div id="checkables" data-controller="checkable">
-      <input type="checkbox" data-checkable-target="checkbox">
-      <input type="checkbox" data-checkable-target="checkbox">
-      <input type="checkbox" data-checkable-target="checkbox">
-    </div>
-  `;
+  <div id="checkables" data-controller="checkable">
+   <input type="checkbox" data-checkable-target="checkbox">
+   <input type="checkbox" data-checkable-target="checkbox">
+   <input type="checkbox" data-checkable-target="checkbox">
+  </div>
+ `;
 
   function appendTemplate(html:string) {
     const template = document.createElement('template');
@@ -98,18 +98,18 @@ describe('CheckAllController', () => {
     it('toggles checkboxes', async () => {
       const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'));
 
-      expect(inputs).toHaveSize(3);
-      expect(inputs.every((i) => !i.checked)).toBeTrue();
+      expect(inputs).toHaveLength(3);
+      expect(inputs.every((i) => !i.checked)).toBe(true);
 
       document.getElementById('check-all')!.click();
       await nextFrame();
 
-      expect(inputs.every((i) => i.checked)).toBeTrue();
+      expect(inputs.every((i) => i.checked)).toBe(true);
 
       document.getElementById('uncheck-all')!.click();
       await nextFrame();
 
-      expect(inputs.every((i) => !i.checked)).toBeTrue();
+      expect(inputs.every((i) => !i.checked)).toBe(true);
     });
 
     it('applies aria-controls for connected outlet', () => {
