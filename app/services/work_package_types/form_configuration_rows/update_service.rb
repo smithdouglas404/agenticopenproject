@@ -30,7 +30,9 @@
 
 module WorkPackageTypes
   module FormConfigurationRows
-    class UpdateService < ::WorkPackageTypes::FormConfiguration::BaseService
+    class UpdateService < ::BaseServices::BaseCallable
+      include ::WorkPackageTypes::FormConfiguration::Concern
+
       INACTIVE_TARGET = "inactive"
 
       def initialize(user:, type:, row_key:)

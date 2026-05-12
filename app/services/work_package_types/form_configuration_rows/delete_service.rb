@@ -30,7 +30,9 @@
 
 module WorkPackageTypes
   module FormConfigurationRows
-    class DeleteService < ::WorkPackageTypes::FormConfiguration::BaseService
+    class DeleteService < ::BaseServices::BaseCallable
+      include ::WorkPackageTypes::FormConfiguration::Concern
+
       def initialize(user:, type:, row_key:)
         super(user:, type:)
         @row_key = row_key

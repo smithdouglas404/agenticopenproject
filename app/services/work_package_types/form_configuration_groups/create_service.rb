@@ -30,7 +30,9 @@
 
 module WorkPackageTypes
   module FormConfigurationGroups
-    class CreateService < ::WorkPackageTypes::FormConfiguration::BaseService
+    class CreateService < ::BaseServices::BaseCallable
+      include ::WorkPackageTypes::FormConfiguration::Concern
+
       def perform
         name = resolve_group_name
 

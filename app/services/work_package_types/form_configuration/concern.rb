@@ -30,8 +30,10 @@
 
 module WorkPackageTypes
   module FormConfiguration
-    class BaseService < ::BaseServices::BaseCallable
-      def initialize(user:, type:)
+    module Concern
+      extend ActiveSupport::Concern
+
+      def initialize(user:, type:, **)
         super()
         @user = user
         @type = type

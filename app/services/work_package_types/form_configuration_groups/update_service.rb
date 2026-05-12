@@ -30,7 +30,9 @@
 
 module WorkPackageTypes
   module FormConfigurationGroups
-    class UpdateService < ::WorkPackageTypes::FormConfiguration::BaseService
+    class UpdateService < ::BaseServices::BaseCallable
+      include ::WorkPackageTypes::FormConfiguration::Concern
+
       def initialize(user:, type:, group_key:)
         super(user:, type:)
         @group_key = group_key
