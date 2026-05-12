@@ -136,7 +136,7 @@ en:
         title: "Beta - Try it out!"
         description: "This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
         contribution_callout: >
-          Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator. 
+          Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
         supported_versions: ""
       form:
         fields:
@@ -1503,8 +1503,8 @@ en:
     bulk_delete_dialog:
       title: "Delete %{count} work packages"
       heading: "Permanently delete these %{count} work packages?"
-      description: "The following work packages and all associated data will permanently be deleted:"
-      description_with_children: "The following work packages, including children and all associated data, will permanently be deleted:"
+      description: "The following work packages and all associated data will be permanently deleted:"
+      description_with_children: "The following work packages, including children and all associated data, will be permanently deleted:"
       confirm_children_deletion: "I acknowledge that all selected work packages and their children will be permanently deleted."
       cross_project_warning: "These work packages span multiple projects: %{projects}"
       children_label: "The following children will also be deleted:"

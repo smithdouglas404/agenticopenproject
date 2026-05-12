@@ -81,7 +81,7 @@ RSpec.describe WorkPackages::BulkDeleteDialogComponent, type: :component do
     context "when work packages have no descendants" do
       it "returns the description without children mention" do
         expect(component.send(:description)).to eq(
-          "The following work packages and all associated data will permanently be deleted:"
+          "The following work packages and all associated data will be permanently deleted:"
         )
       end
     end
@@ -95,7 +95,7 @@ RSpec.describe WorkPackages::BulkDeleteDialogComponent, type: :component do
 
       it "returns the description mentioning children" do
         expect(component.send(:description)).to eq(
-          "The following work packages, including children and all associated data, will permanently be deleted:"
+          "The following work packages, including children and all associated data, will be permanently deleted:"
         )
       end
     end
