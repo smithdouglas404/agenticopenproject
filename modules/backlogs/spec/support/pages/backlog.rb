@@ -351,7 +351,7 @@ module Pages
         expect(page).to have_css(
           ".Counter",
           accessible_name: I18n.t(
-            "open_project.common.work_package_card_box_component.header.label_work_package_count",
+            "open_project.common.work_package_card_list_component.header.label_work_package_count",
             count:
           )
         )
@@ -471,7 +471,7 @@ module Pages
         expect(page).to have_css(
           ".Counter",
           accessible_name: I18n.t(
-            "open_project.common.work_package_card_box_component.header.label_work_package_count",
+            "open_project.common.work_package_card_list_component.header.label_work_package_count",
             count:
           )
         )

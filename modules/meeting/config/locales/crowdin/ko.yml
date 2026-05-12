@@ -689,11 +689,11 @@ ko:
   text_agenda_item_duplicated_in_next_meeting: 의제 항목이 %{date}의 다음 미팅에서 복제되었습니다
   text_work_package_has_no_upcoming_meeting_agenda_items: 이 작업 패키지는 향후 미팅 의제에서 아직 예약되지 않았습니다.
   text_agenda_item_no_available_occurrence: 향후 항목이 없습니다.
-  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
-  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
-  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
-  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
-  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
+  text_agenda_item_dialog_skipping_note: '참고: %{details}을(를) 건너뜁니다.'
+  text_agenda_item_dialog_skipping_cancelled_one: "%{date}에 취소된 미팅"
+  text_agenda_item_dialog_skipping_cancelled_many: 취소된 미팅 %{count}개
+  text_agenda_item_dialog_skipping_closed_one: "%{date}에 종료된 미팅"
+  text_agenda_item_dialog_skipping_closed_many: 종료된 미팅 %{count}개
   text_work_package_add_to_meeting_hint: 이 작업 패키지를 향후 미팅에 추가하려면 "미팅에 추가" 버튼을 사용하세요.
   text_work_package_has_no_past_meeting_agenda_items: 이 작업 패키지는 지난 미팅에서 의제 항목으로 추가되지 않았습니다.
   text_email_updates_muted: 이메일 캘린더 업데이트가 음소거되었습니다. 변경해도 이메일을 통해 업데이트된 초대장이 참가자에게 전송되지 않습니다.

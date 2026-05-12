@@ -63,12 +63,6 @@ describe('GenericDragAndDropController', () => {
     return ariaPressedTarget.call(controller, el);
   }
 
-  function callResolveMirrorContainer():Element {
-    const resolveMirrorContainer = Reflect.get(controller, 'resolveMirrorContainer') as (this:GenericDragAndDropController) => Element;
-
-    return resolveMirrorContainer.call(controller);
-  }
-
   describe('canStartDrag', () => {
     it('allows dragging a draggable row in handle-less mode', () => {
       const row = draggableRow();
@@ -144,23 +138,6 @@ describe('GenericDragAndDropController', () => {
       setValue('handleSelectorValue', '.DragHandle');
 
       expect(callAriaPressedTarget(row)).toBe(handle);
-    });
-  });
-
-  describe('resolveMirrorContainer', () => {
-    it('returns the configured mirror container target when present', () => {
-      const mirrorContainer = document.createElement('div');
-
-      Object.defineProperty(controller, 'hasMirrorContainerTarget', { value: true, configurable: true });
-      Object.defineProperty(controller, 'mirrorContainerTarget', { value: mirrorContainer, configurable: true });
-
-      expect(callResolveMirrorContainer()).toBe(mirrorContainer);
-    });
-
-    it('falls back to document.body when no mirror container target exists', () => {
-      Object.defineProperty(controller, 'hasMirrorContainerTarget', { value: false, configurable: true });
-
-      expect(callResolveMirrorContainer()).toBe(document.body);
     });
   });
 });

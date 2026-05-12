@@ -54,11 +54,11 @@ GIT
 
 GIT
   remote: https://github.com/opf/turbo_tests.git
-  revision: c1c4707f536a5642a168650d273d714dfb62d842
-  ref: with-patches
+  revision: 4208e7372a7987c972dda634eb4f29ad9f1448e1
+  ref: 2_2_5_with_patches
   specs:
-    turbo_tests (2.2.0)
-      parallel_tests (>= 3.3.0, < 5)
+    turbo_tests (2.2.5)
+      parallel_tests (>= 3.3.0, < 6)
       rspec (>= 3.10)
 
 GIT
@@ -441,7 +441,7 @@ GEM
     childprocess (5.1.0)
       logger (~> 1.5)
     climate_control (1.2.0)
-    closure_tree (9.6.1)
+    closure_tree (9.6.2)
       activerecord (>= 7.2.0)
       with_advisory_lock (>= 7.5.0)
       zeitwerk (~> 2.7)
@@ -1109,7 +1109,7 @@ GEM
       activerecord (>= 7.1)
       request_store (~> 1.4)
     parallel (2.1.0)
-    parallel_tests (4.10.1)
+    parallel_tests (5.7.0)
       parallel
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -1199,7 +1199,7 @@ GEM
       eventmachine_httpserver
       http_parser.rb (~> 0.8.0)
       multi_json
-    puma (7.2.0)
+    puma (8.0.1)
       nio4r (~> 2.0)
     puma-plugin-statsd (2.8.0)
       puma (>= 5.0, < 9)
@@ -1495,7 +1495,7 @@ GEM
       public_suffix
     vcr (6.4.0)
     vernier (1.10.0)
-    view_component (4.8.0)
+    view_component (4.9.0)
       actionview (>= 7.1.0)
       activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
@@ -1599,7 +1599,7 @@ DEPENDENCIES
   carrierwave (~> 2.2.6)
   carrierwave_direct (~> 3.0.0)
   climate_control
-  closure_tree (~> 9.6.1)
+  closure_tree (~> 9.6.2)
   colored2
   commonmarker (~> 2.8.0)
   compare-xml (~> 0.66)
@@ -1707,7 +1707,7 @@ DEPENDENCIES
   ox
   pagy
   paper_trail (~> 17.0.0)
-  parallel_tests (~> 4.0)
+  parallel_tests (~> 5.7)
   pdf-inspector (~> 1.2)
   pg (~> 1.6.2)
   plaintext (~> 0.3.7)
@@ -1717,7 +1717,7 @@ DEPENDENCIES
   pry-rails (~> 0.3.6)
   pry-rescue (~> 1.6.0)
   puffing-billy (~> 4.0.0)
-  puma (~> 7.1)
+  puma (~> 8.0)
   puma-plugin-statsd (~> 2.7)
   rack-attack (~> 6.8.0)
   rack-cors (~> 2.0.2)
@@ -1785,7 +1785,7 @@ DEPENDENCIES
   validate_url
   vcr
   vernier
-  view_component (~> 4.8.0)
+  view_component (~> 4.9.0)
   warden (~> 1.2)
   warden-basic_auth (~> 0.2.1)
   webmock (~> 3.26)
@@ -1860,7 +1860,7 @@ CHECKSUMS
   cgi (0.5.1) sha256=e93fcafc69b8a934fe1e6146121fa35430efa8b4a4047c4893764067036f18e9
   childprocess (5.1.0) sha256=9a8d484be2fd4096a0e90a0cd3e449a05bc3aa33f8ac9e4d6dcef6ac1455b6ec
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
-  closure_tree (9.6.1) sha256=f6af11243dea13d888788ffb0fd28014bd1077abe3a4233ea1e7044e52fc6377
+  closure_tree (9.6.2) sha256=ae7a3f0a8196313d8fcc33a05f2a0eaad671fa93ea1a1b1c55534c7538b307d2
   coderay (1.1.3) sha256=dc530018a4684512f8f38143cd2a096c9f02a1fc2459edcfe534787a7fc77d4b
   coercible (1.0.0) sha256=5081ad24352cc8435ce5472bc2faa30260c7ea7f2102cc6a9f167c4d9bffaadc
   color_conversion (0.1.2) sha256=99bea5fa412e1527a11389975aa6ad445ff8528ebae202c11d08c45ea2b94c96
@@ -2147,7 +2147,7 @@ CHECKSUMS
   pagy (43.5.3) sha256=f9d73e690648d484706661dcb815647775cf8330fcc5c6e62ec87b9df431290b
   paper_trail (17.0.0) sha256=1c2842061d3874ca7015908e821e2aa14f9b982af2acb2a7974713bf79021c85
   parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
-  parallel_tests (4.10.1) sha256=df05458c691462b210f7a41fc2651d4e4e8a881e8190e6d1e122c92c07735d70
+  parallel_tests (5.7.0) sha256=3f1762c46ca2c223b8af8ef877217f9d76974e191bfa934f2580b58bcf1d005c
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
   pdf-core (0.9.0) sha256=4f368b2f12b57ec979872d4bf4bd1a67e8648e0c81ab89801431d2fc89f4e0bb
   pdf-inspector (1.3.0) sha256=fc107579d6f29b636e2da3d6743479b2624d9e390bf2d84beef8fd4ebe1a05bd
@@ -2179,7 +2179,7 @@ CHECKSUMS
   psych (5.3.1) sha256=eb7a57cef10c9d70173ff74e739d843ac3b2c019a003de48447b2963d81b1974
   public_suffix (7.0.5) sha256=1a8bb08f1bbea19228d3bed6e5ed908d1cb4f7c2726d18bd9cadf60bc676f623
   puffing-billy (4.0.4) sha256=87015b0c41e0722b2171a0c5aa8130fd3f58aa1c016a1dc6dc569b2028aa846f
-  puma (7.2.0) sha256=bf8ef4ab514a4e6d4554cb4326b2004eba5036ae05cf765cfe51aba9706a72a8
+  puma (8.0.1) sha256=7b94e50c07655718c1fb8ae41a11fc06c7d61293208b3aa608ff71a46d3ad37c
   puma-plugin-statsd (2.8.0) sha256=e515445f93232b6b3571a23b832f93a776d4ce0fc8a5edee798013b82f3488f3
   raabro (1.4.0) sha256=d4fa9ff5172391edb92b242eed8be802d1934b1464061ae5e70d80962c5da882
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
@@ -2293,7 +2293,7 @@ CHECKSUMS
   ttfunk (1.7.0) sha256=2370ba484b1891c70bdcafd3448cfd82a32dd794802d81d720a64c15d3ef2a96
   turbo-rails (2.0.23) sha256=ee0d90733aafff056cf51ff11e803d65e43cae258cc55f6492020ec1f9f9315f
   turbo_power (0.7.0) sha256=ad95d147e0fa761d0023ad9ca00528c7b7ddf6bba8ca2e23755d5b21b290d967
-  turbo_tests (2.2.0)
+  turbo_tests (2.2.5)
   tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
   tzinfo-data (1.2026.2) sha256=7db0d3d3d53b8d7601fc183fccc8c6d056a3004e14eb59ea995bf6aec4ae10bc
   uber (0.1.0) sha256=5beeb407ff807b5db994f82fa9ee07cfceaa561dad8af20be880bc67eba935dc
@@ -2305,7 +2305,7 @@ CHECKSUMS
   validate_url (1.0.15) sha256=72fe164c0713d63a9970bd6700bea948babbfbdcec392f2342b6704042f57451
   vcr (6.4.0) sha256=077ac92cc16efc5904eb90492a18153b5e6ca5398046d8a249a7c96a9ea24ae6
   vernier (1.10.0) sha256=5b1dc57012e08ed23e14f4d2943540140d454aa8434c7c35e7eb97befd4969bf
-  view_component (4.8.0) sha256=0a1b716cce87f8f6799d7aefb57911ef6eee5ef8214466a7ca22c421853f7309
+  view_component (4.9.0) sha256=f599f0831ed0148bb19625f914c43cc982746a2252b6ebe8492bd4eea0d7dbaf
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   warden-basic_auth (0.2.1) sha256=bfc752e0109c0182c3e69e930284c5e1e81e7b4a354aeb2b5914ead1391f3c6e

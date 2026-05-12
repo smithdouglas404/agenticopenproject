@@ -330,82 +330,56 @@ RSpec.describe Backlogs::InboxController do
       end
     end
 
-    context "with backlog buckets enabled", with_flag: { backlog_buckets: true } do
-      let!(:bucket1) { create(:backlog_bucket, project:) }
-      let!(:bucket2) { create(:backlog_bucket, project:) }
+    let!(:bucket1) { create(:backlog_bucket, project:) }
+    let!(:bucket2) { create(:backlog_bucket, project:) }
 
-      let!(:bucket1_lone_work_package) { create(:work_package, project:, backlog_bucket: bucket1) }
-      let!(:bucket2_work_packages) { create_list(:work_package, 5, project:, backlog_bucket: bucket2) }
+    let!(:bucket1_lone_work_package) { create(:work_package, project:, backlog_bucket: bucket1) }
+    let!(:bucket2_work_packages) { create_list(:work_package, 5, project:, backlog_bucket: bucket2) }
 
-      it_behaves_like "checks permissions for private projects"
+    it_behaves_like "checks permissions for private projects"
 
-      it_behaves_like "it renders the menu"
+    it_behaves_like "it renders the menu"
 
-      context "for work package at the top of inbox" do
-        let(:work_package) { work_packages.first }
+    context "for work package at the top of inbox" do
+      let(:work_package) { work_packages.first }
 
-        it_behaves_like "renders only actions to move to bottom"
-      end
-
-      context "for work package at the bottom of inbox" do
-        let(:work_package) { work_packages.last }
-
-        it_behaves_like "renders only actions to move to top"
-      end
-
-      context "for work package in the middle of inbox" do
-        let(:work_package) { work_packages.third }
-
-        it_behaves_like "renders actions to move in both directions"
-      end
-
-      context "for a work package alone in the bucket" do
-        let(:work_package) { bucket1_lone_work_package }
-
-        it_behaves_like "renders no actions to move"
-      end
-
-      context "for work package at the top of bucket with multiple" do
-        let(:work_package) { bucket2_work_packages.first }
-
-        it_behaves_like "renders only actions to move to bottom"
-      end
-
-      context "for work package in the middle of bucket with multiple" do
-        let(:work_package) { bucket2_work_packages.third }
-
-        it_behaves_like "renders actions to move in both directions"
-      end
-
-      context "for work package at the bottom of bucket with multiple" do
-        let(:work_package) { bucket2_work_packages.last }
-
-        it_behaves_like "renders only actions to move to top"
-      end
+      it_behaves_like "renders only actions to move to bottom"
     end
 
-    context "with backlog buckets disabled", with_flag: { backlog_buckets: false } do
-      it_behaves_like "checks permissions for private projects"
+    context "for work package at the bottom of inbox" do
+      let(:work_package) { work_packages.last }
 
-      it_behaves_like "it renders the menu"
+      it_behaves_like "renders only actions to move to top"
+    end
 
-      context "for work package at the top" do
-        let(:work_package) { work_packages.first }
+    context "for work package in the middle of inbox" do
+      let(:work_package) { work_packages.third }
 
-        it_behaves_like "renders only actions to move to bottom"
-      end
+      it_behaves_like "renders actions to move in both directions"
+    end
 
-      context "for work package in the middle" do
-        let(:work_package) { work_packages.third }
+    context "for a work package alone in the bucket" do
+      let(:work_package) { bucket1_lone_work_package }
 
-        it_behaves_like "renders actions to move in both directions"
-      end
+      it_behaves_like "renders no actions to move"
+    end
 
-      context "for work package at the bottom" do
-        let(:work_package) { work_packages.last }
+    context "for work package at the top of bucket with multiple" do
+      let(:work_package) { bucket2_work_packages.first }
 
-        it_behaves_like "renders only actions to move to top"
-      end
+      it_behaves_like "renders only actions to move to bottom"
+    end
+
+    context "for work package in the middle of bucket with multiple" do
+      let(:work_package) { bucket2_work_packages.third }
+
+      it_behaves_like "renders actions to move in both directions"
+    end
+
+    context "for work package at the bottom of bucket with multiple" do
+      let(:work_package) { bucket2_work_packages.last }
+
+      it_behaves_like "renders only actions to move to top"
     end
   end
 

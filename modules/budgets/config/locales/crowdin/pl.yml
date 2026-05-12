@@ -36,7 +36,7 @@ pl:
         subject: Temat
         type: Jednostki
         labor_budget: Planowane koszty pracy
-        labor_budget_items: Planned labor costs
+        labor_budget_items: Planowane koszty pracy
         material_budget: Planowane koszty jednostkowe
         base_amount: Kwota podstawowa
       work_package:
@@ -49,7 +49,7 @@ pl:
               not_a_member_of_budget_project: nie jest członkiem projektu budżetu
     models:
       budget: Budżet
-      labor_budget_item: Planned labor cost
+      labor_budget_item: Planowany koszt pracy
       material_budget_item: Jednostka
   activity:
     filter:

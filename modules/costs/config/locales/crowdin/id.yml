@@ -169,7 +169,6 @@ id:
   label_previous_week: Minggu sebelumnya
   label_previous_month: Bulan sebelumnya
   label_specific_day: Hari %{day}
-  label_specific_week: Minggu kalender %{week}
   label_specific_month: Bulan %{month}
   label_list: List
   label_month: Bulan

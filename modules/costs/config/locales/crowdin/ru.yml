@@ -181,7 +181,6 @@ ru:
   label_previous_week: Предыдущая неделя
   label_previous_month: Предыдущий месяц
   label_specific_day: День %{day}
-  label_specific_week: Календарная неделя %{week}
   label_specific_month: Месяц %{month}
   label_list: Список
   label_month: Месяц

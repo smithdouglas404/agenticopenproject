@@ -4693,7 +4693,7 @@ vi:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_box_component:
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:
@@ -5024,7 +5024,7 @@ vi:
 
     '
   setting_after_login_default_redirect_url: Sau khi đăng nhập chuyển hướng
-  setting_after_login_default_redirect_url_text_html: 'Đặt đường dẫn mặc định để chuyển hướng người dùng sau khi đăng nhập, nếu không có liên kết ngược nào được cung cấp. Chuyển hướng đến trang chủ nếu không được thiết lập. <br/> Ví dụ: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Chia sẻ tài nguyên chéo nguồn gốc (CORS)

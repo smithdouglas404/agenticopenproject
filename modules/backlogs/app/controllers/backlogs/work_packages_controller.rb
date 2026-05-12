@@ -126,9 +126,7 @@ module Backlogs
         message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
       )
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
-      buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
-                  BacklogBucket.for_project(@project)
-                end
+      buckets = BacklogBucket.for_project(@project)
 
       replace_via_turbo_stream(
         component: Backlogs::BacklogComponent.new(inbox_work_packages:,

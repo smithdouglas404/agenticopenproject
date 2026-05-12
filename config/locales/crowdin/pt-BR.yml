@@ -118,7 +118,7 @@ pt-BR:
       description: Use esta ferramenta para importar dados da sua instância do Jira. Você pode configurar vários hosts do Jira e escolher o que importar em cada execução de importação.
       errors:
         cannot_delete_with_imports: Não é possível excluir o host do Jira enquanto houver importações existentes
-        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
+        custom_field_creation_failed: 'Falha ao criar o campo personalizado "%{name}": %{message}'
       blank:
         title: Nenhum host do Jira configurado até o momento
         description: Configure um host do Jira para começar a importar itens do Jira para esta instância do OpenProject.
@@ -126,9 +126,9 @@ pt-BR:
         title: Configuração do Jira
         new: Nova configuração
       banner:
-        title: Beta - Try it out!
-        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
-        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+        title: Beta - Experimente!
+        description: Este Migrador do Jira está atualmente em beta. No momento, oferecemos suporte apenas às versões 10.x e 11.x do Jira Server/Data Center. Instâncias Cloud ainda não são compatíveis.
+        contribution_callout: 'Ajude-nos a melhorar o Migrador do Jira com seu feedback e doações de dados privados. Você pode participar da [comunidade de desenvolvimento](link) do Migrador do Jira.
 
           '
         supported_versions: ''
@@ -159,7 +159,7 @@ pt-BR:
         connection_timeout: 'O tempo de conexão com o servidor Jira esgotou: %{message}'
         parse_error: 'Falha ao analisar a resposta da API do Jira: %{message}'
         api_error: A API do Jira retornou o status de erro %{status}
-        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        401_error: A API do Jira retornou um erro 401. Seu token de autenticação pode ter expirado ou não ter as permissões necessárias. Certifique-se de que o token pertence a um administrador do Jira.
       columns:
         projects: Projetos
         last_change: Última alteração
@@ -246,10 +246,10 @@ pt-BR:
               caption_done: Concluído
               label_info: Observe que esta ferramenta de importação está em versão beta e não consegue importar todos os tipos de dados. A seguir, um resumo do que a instância Jira host oferece para importação e do que esta ferramenta consegue importar no momento.
               description: Selecione os dados que deseja importar a partir das informações disponíveis obtidas da instância Jira host.
-              label_supported_data: Supported data
-              label_coming_soon: Coming soon (Q2 2026)
-              label_coming_later: Coming later
-              label_available_server_data: Available data on %{server_info}
+              label_supported_data: Dados compatíveis
+              label_coming_soon: Em breve (Q2 2026)
+              label_coming_later: Mais tarde
+              label_available_server_data: Dados disponíveis em %{server_info}
               button_select_projects: Selecione os projetos para importar
               button_continue: Continuar
               label_import: Selecione os projetos que você deseja importar.
@@ -258,23 +258,23 @@ pt-BR:
               label_progress: Buscando dados do Jira...
               elements:
                 relations: Relações entre tarefas
-                project_ids: Project identifiers
-                issue_ids: Issues identifiers
-                sprints: Sprint assignments
+                project_ids: Identificadores de projeto
+                issue_ids: Identificadores dos itens
+                sprints: Atribuições de sprint
                 workflows: Fluxos de trabalho no nível do projeto
                 schemes: Esquemas
-                permissions: Permissions
-                projects: Projects
-                issues: Issues
-                issue_details: Issue description, history, comments and attachments
-                custom_fields: A subset of custom fields
-                users: Involved users and groups
+                permissions: Permissões
+                projects: Projetos
+                issues: Itens
+                issue_details: Descrição, histórico, comentários e anexos dos itens
+                custom_fields: Um subconjunto de campos personalizados
+                users: Usuários e grupos envolvidos
             confirm_import:
               title: Importar dados
               caption: Revise suas configurações de importação e inicie a importação
               caption_done: Concluído
-              label_available_data: Data to be imported
-              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
+              label_available_data: Dados a serem importados
+              label_users_import_explanation: Usuários envolvidos nos projetos selecionados (incluindo membros de grupos)
               button_start: Iniciar importação
               description: Você está prestes a iniciar uma execução de importação com as seguintes configurações.
               label_progress: Importação em andamento...
@@ -282,33 +282,33 @@ pt-BR:
             import_result:
               title: Resultados da execução de importação
               caption: Revisar execução de importação ou reverter importação
-              info: Import run was successful.
+              info: A importação foi concluída com sucesso.
               label_results: Importado
               label_revert: Reverter importação
               button_revert: Reverter importação
-              button_done: Approve import
-              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Approve import
-              label_finalizing: Approving import...
-              label_finalizing_done: Import approved.
+              button_done: Aprovar a importação
+              preview_description: Os dados importados estão atualmente em modo de revisão. Clique em “Aprovar importação” para tornar a importação permanente ou em “Reverter importação” para desfazer todas as alterações feitas nesta execução de importação.
+              label_finalize_import: Aprovar importação
+              label_finalizing: Aprovando importação...
+              label_finalizing_done: Importação aprovada.
               label_revert_progress: Revertendo importação...
               label_reverted: Importação revertida.
           select_dialog:
             filter_projects: Filtrar por texto
           import_dialog:
-            title: Please make sure you have a backup!
+            title: Certifique-se de ter um backup!
             confirm_button: Iniciar importação
-            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
+            description: 'As importações alteram a configuração do seu OpenProject. Após a importação, você poderá revisar as alterações. Durante a revisão, será possível reverter ou aprovar a importação. Depois que a importação for aprovada, não será mais possível revertê-la. Portanto, certifique-se de ter [um backup da sua instância do OpenProject](link) antes de prosseguir.
 
               '
-            confirm: I understand and have a backup
+            confirm: Entendo e tenho um backup
           revert_dialog:
             title: Deseja reverter esta importação de forma permanente?
-            description: This will delete all imported objects (including whole projects).
+            description: Isso excluirá todos os objetos importados (incluindo projetos inteiros).
             confirm: Estou ciente de que esta reversão excluirá os dados de forma permanente
           finalize_dialog:
-            title: Approve this import?
-            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
+            title: Aprovar esta importação?
+            description: Depois de aprovada, esta importação não poderá mais ser revertida. Todos os dados importados se tornarão permanentes.
             confirm: Compreendo que esta ação é irreversível
             confirm_button: Compreendido
           select_projects:
@@ -415,12 +415,12 @@ pt-BR:
         autofix_preview:
           error_too_long: Deve conter no máximo 10 caracteres
           error_numerical: Não pode ser exclusivamente numérico
-          error_does_not_start_with_letter: Must start with an uppercase letter
+          error_does_not_start_with_letter: Deve começar com uma letra maiúscula
           error_special_characters: Caracteres especiais não são permitidos
           error_not_fully_uppercased: Deve estar em maiúsculas
           error_in_use: Já está em uso como identificador ativo de outro projeto
-          error_used_in_past: Reserved by another project's handle history
-          error_reserved_by_system: Reserved as a system keyword
+          error_used_in_past: Reservado pelo histórico de identificadores de outro projeto
+          error_reserved_by_system: Reservado como uma palavra-chave do sistema
           error_unknown: Requer revisão manual
           remaining_projects:
             one: "… mais 1 projeto"
@@ -436,8 +436,8 @@ pt-BR:
           checkbox_label: Estou ciente de que isso alterará permanentemente todos os IDs dos pacotes de trabalho
         success_banner: Formato de identificador de pacote de trabalho atualizado com sucesso.
         in_progress:
-          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          converting_banner_message: Os identificadores dos projetos estão sendo convertidos para o formato semântico. Isso pode levar algum tempo.
+          reverting_banner_message: Os identificadores dos projetos estão sendo revertidos para o formato clássico. Isso pode levar algum tempo.
     workflows:
       tabs:
         default_transitions: Transições padrão
@@ -461,11 +461,11 @@ pt-BR:
         ignore: Ignorar alterações
         save: Salvar alterações e continuar
       role_selector:
-        title: Select roles
+        title: Selecionar funções
         label: 'Função: %{role}'
         no_role: Selecionar função
         roles:
-          one: "%{count} role selected"
+          one: One role selected
           other: "%{count} roles selected"
       blankslate:
         title: Nenhuma transição de status configurada
@@ -704,36 +704,36 @@ pt-BR:
     confirmation_live_message_checked: O botão para prosseguir agora está ativo.
     confirmation_live_message_unchecked: O botão para prosseguir está desativado. É necessário marcar a caixa de seleção para continuar.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: Editar departamento
+    add_user: Adicionar usuário
+    add_department: Adicionar departamento
     blankslate:
-      heading: Your organization has no departments
-      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+      heading: Sua organização não possui departamentos
+      description: 'Comece adicionando departamentos ou usuários à organização. Cada departamento pode ser usado para criar uma hierarquia abaixo dele. Para navegar pela hierarquia e criar subdepartamentos, clique no item criado.
 
         '
-      add_button: Add
+      add_button: Adicionar
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      heading: Este departamento não possui nenhum nível hierárquico abaixo dele
+      description: Adicione departamentos ou usuários para criar subitens dentro de outro item.
+      add_button: Adicionar
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: Nome do departamento
+      name_placeholder: Digite o nome do departamento
     move_user_dialog:
-      title: User already in a department
-      heading: Move user to this department?
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      title: O usuário já está em um departamento
+      heading: Mover o usuário para este departamento?
+      description: "%{user} atualmente é membro de %{from_department}. Ao movê-lo, ele será removido desse departamento."
+      confirm: Mover usuário
     context_menu:
-      add_sub_department: Add sub-department
-      add_user: Add user
+      add_sub_department: Adicionar subdepartamento
+      add_user: Adicionar usuário
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: O usuário foi adicionado ao departamento com sucesso.
+      user_removed: O usuário foi removido do departamento com sucesso.
+      department_created: O departamento foi criado com sucesso.
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: Falha ao mover o usuário entre departamentos.
   pagination:
     label: Paginação
     prev: Anterior
@@ -1116,7 +1116,7 @@ pt-BR:
       no_results_content_text: Adicionar um item de notícias
   roles:
     edit:
-      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
+      default_for_new_projects_warning: 'Falha ao mover o usuário entre departamentos. Este perfil está configurado como o perfil padrão atribuído a usuários não administradores que criam um projeto. Não remova as permissões a seguir, caso contrário os criadores de projetos não conseguirão concluir a configuração dos novos projetos que criarem:'
     permissions:
       section_check_all_label: Atribuir todas as permissões de %{module}
       section_uncheck_all_label: Remover todas as permissões de %{module}
@@ -1128,8 +1128,8 @@ pt-BR:
       matrix_check_uncheck_all_in_row_label_html: Alternar a permissão <em>%{permission}</em> para todas as funções
       matrix_check_uncheck_all_in_col_label_html: Alternar todas as permissões de %{module} para a função <em>%{role}</em>
   users:
-    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
-    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
+    force_password_change_hint: O usuário deverá definir uma nova senha no próximo login. Ativado automaticamente ao enviar as credenciais por e-mail.
+    send_information_hint: Envia a senha por e-mail em texto simples. Quando marcada, a opção exigirá que o usuário altere a senha no primeiro login.
     autologins:
       prompt: Mantenha-se conectado por %{num_days}
     sessions:
@@ -1384,30 +1384,30 @@ pt-BR:
     copies:
       form:
         source_role_id:
-          label: Source role
+          label: Função de origem
         target_role_ids:
-          label: Target roles
+          label: Funções alvo
         target_type_ids:
-          label: Target types
+          label: Tipos alvo
         mode:
           from_role:
-            label: Copy to other roles
-            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+            label: Copiar para outras funções
+            caption: Copiar o fluxo de trabalho atual para uma ou mais funções dentro do mesmo tipo de pacote de trabalho. Se a função selecionada já tiver um fluxo de trabalho, o atual será substituído.
           from_type:
-            label: Copy to another type
-            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+            label: Copiar para outro tipo
+            caption: Copiar o fluxo de trabalho atual para outro tipo de pacote de trabalho. Se o tipo selecionado já tiver um fluxo de trabalho, o atual será substituído. Isso afeta todas as funções.
       from_roles:
         create:
           notice:
-            one: Successfully copied workflow to '%{role_name}' role.
-            other: Successfully copied workflow to %{count} roles.
+            one: Fluxo de trabalho copiado com sucesso para a função "%{role_name}".
+            other: Fluxo de trabalho copiado com sucesso para %{count} funções.
       from_types:
         create:
           notice:
-            one: Successfully copied workflow to '%{type_name}' type.
-            other: Successfully copied workflow to %{count} types.
+            one: Fluxo de trabalho copiado com sucesso para o tipo "%{type_name}".
+            other: Fluxo de trabalho copiado com sucesso para %{count} tipos.
       new:
-        title: Copy workflow of "%{source_type}"
+        title: Copiar fluxo de trabalho de “%{source_type}”
     form:
       matrix_caption: Matriz de fluxo de trabalho
       matrix_caption_assignee: Matriz de fluxo de trabalho para o responsável
@@ -1419,28 +1419,28 @@ pt-BR:
       matrix_check_uncheck_all_in_col_label_html: Alternar transições de todos os status antigos para <em>%{new_status}</em>
     index:
       type_filter:
-        label: Filter by type name…
+        label: Filtrar por nome do tipo…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: Configurar transições de status para cada tipo de pacote de trabalho.
   work_flows:
     index:
       no_results_title_text: Atualmente, não há fluxos de trabalho.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: Excluir pacote de trabalho
+      heading: Excluir este pacote de trabalho de forma permanente?
+      description: Tem certeza de que deseja excluir o pacote de trabalho "%{name}"?
+      confirm_descendants_deletion: Reconheço que TODOS os descendentes deste pacote de trabalho serão removidos recursivamente.
+      cross_project_warning: 'Pacotes de trabalho dos seguintes projetos serão excluídos: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      title: Excluir %{count} pacotes de trabalho
+      heading: Excluir estes %{count} pacotes de trabalho de forma permanente?
+      description: 'Os seguintes pacotes de trabalho, incluindo os itens filhos e todos os dados associados, serão excluídos permanentemente:'
+      description_with_children: 'Os seguintes pacotes de trabalho, incluindo pacotes de trabalho filhos, e todos os dados associados serão excluídos permanentemente:'
+      confirm_children_deletion: Reconheço que todos os pacotes de trabalho selecionados e seus itens filhos serão excluídos permanentemente.
+      cross_project_warning: 'Esses pacotes de trabalho abrangem vários projetos: %{projects}'
+      children_label: 'Os seguintes itens filhos também serão excluídos:'
     datepicker_modal:
       banner:
         description:
@@ -1903,7 +1903,7 @@ pt-BR:
         identity_url: URL de identidade
         parent: Grupo principal
         organizational_unit: Unidade organizacional
-        group_users: Group users
+        group_users: Agrupar usuários
       group_detail:
         parent: Grupo principal
         organizational_unit: Unidade organizacional
@@ -1978,7 +1978,7 @@ pt-BR:
         duration: Duração
         end_insertion: Final da inserção
         end_deletion: Final da exclusão
-        identifier: Identifier
+        identifier: Identificador
         ignore_non_working_days: Ignorar dias não-úteis
         include_non_working_days:
           title: Dias úteis
@@ -1994,7 +1994,7 @@ pt-BR:
         readonly: Somente leitura
         remaining_hours: Trabalho restante
         remaining_time: Trabalho restante
-        sequence_number: Sequence number
+        sequence_number: Número sequencial
         shared_with_users: Compartilhado com
         schedule_manually: Planjamento manual
         spent_hours: Tempo gasto
@@ -2005,28 +2005,28 @@ pt-BR:
         version: Versão
         watcher: Observador
       ordered_persisted_query_entity:
-        persisted_query: Persisted query
-        entity: Entity
-        position: Position
+        persisted_query: Consulta persistida
+        entity: Entidade
+        position: Posição
       persisted_query:
-        name: Name
-        views: Views
-        filters: Filters
-        orders: Orders
-        selects: Selects
+        name: Nome
+        views: Visualizações
+        filters: Filtros
+        orders: Pedidos
+        selects: Seleções
       persisted_view:
-        name: Name
-        query: Query
-        parent: Parent view
-        public: Public
+        name: Nome
+        query: Consulta
+        parent: Visualização pai
+        public: Público
       user_card_view:
-        secondary_info: Secondary info
-        show_status_badge: Show status badge
-        show_email: Show email
-        tag_source: Tag source
-        tag_limit: Tag limit
-        card_size: Card size
-        columns_per_row: Columns per row
+        secondary_info: Informações secundárias
+        show_status_badge: Mostrar selo de status
+        show_email: Exibir e-mail
+        tag_source: Fonte do marcador
+        tag_limit: Limite de marcadores
+        card_size: Tamanho do cartão
+        columns_per_row: Colunas por linha
     errors:
       messages:
         accepted: deve ser aceito.
@@ -2046,7 +2046,7 @@ pt-BR:
         confirmation: não coincide com %{attribute}.
         could_not_be_copied: "%{dependency} não pôde ser copiado (completamente)."
         does_not_exist: não existe.
-        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
+        user_already_in_department: Usuário %{user_id} já é membro do departamento %{department_id}.
         error_enterprise_only: "%{action} só está disponível na edição OpenProject Enterprise."
         error_unauthorized: não pode ser acessado.
         error_readonly: tentou escrever, mas não é gravável.
@@ -2070,7 +2070,7 @@ pt-BR:
         inclusion: Não está definido como um dos valores permitidos.
         inclusion_nested: 'não foi definido para um dos valores permitidos no caminho ''%{path}''. '
         invalid: é inválido.
-        invalid_uri: must be a valid URI.
+        invalid_uri: deve ser um URI válido.
         invalid_url: não é um URL válido.
         invalid_url_scheme: 'não é um protocolo suportado (permitidos: %{allowed_schemes}).'
         less_than_or_equal_to: deve ser menor ou igual a %{count}.
@@ -2084,7 +2084,7 @@ pt-BR:
         not_a_datetime: não é uma data/hora válida.
         not_a_number: não é um número.
         not_allowed: é inválido devido à falta de permissões.
-        host_not_allowed: is not an allowed host.
+        host_not_allowed: não é um host permitido.
         not_json: não pode ser analisado como JSON.
         not_json_object: não é um objeto JSON.
         not_an_integer: não é um número inteiro.
@@ -2115,7 +2115,7 @@ pt-BR:
           attributes:
             parent_id:
               circular_dependency: criaria uma hierarquia circular de grupos.
-              organizational_unit_mismatch: must have the same organizational unit setting as the group.
+              organizational_unit_mismatch: deve ter a mesma configuração de unidade organizacional do grupo.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2302,7 +2302,7 @@ pt-BR:
           not_whitelisted: não é permitido pela configuração.
           invalid_url: não é um caminho ou URL válido do repositório.
           must_not_be_ssh: não deve ser um url SSH.
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: não deve apontar para um diretório de repositório gerenciado pelo OpenProject.
           no_directory: não é um diretório.
         role:
           attributes:
@@ -2354,7 +2354,7 @@ pt-BR:
               cannot_add_child_because_of_lack_of_permission: Não é possível adicionar filho porque você não tem permissão para editar o pacote de trabalho selecionado.
               blank: O ID não pode estar em branco.
             identifier:
-              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
+              semantic_identifier_incomplete: e sequence_number devem ambos ser definidos ao mesmo tempo.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2367,8 +2367,8 @@ pt-BR:
               not_start_date: não é na data de início, embora isso seja necessário para os marcos.
               cannot_be_null: 'não pode ser definido como nulo já que a data de início e a duração são conhecidas. '
             duration:
-              larger_than_dates: é maior que o intervalo entre a data de início e de conclusão.
-              smaller_than_dates: é menor que o intervalo entre a data de início e de conclusão.
+              larger_than_dates: é maior que o intervalo entre as datas de início e término.
+              smaller_than_dates: é menor que o intervalo entre as datas de início e término.
               not_available_for_milestones: não está disponível para pacotes de trabalho do tipo marco
               cannot_be_null: não pode ser definida como nulo já que a data de início e conclusão são conhecidas.
               not_an_integer: não é uma duração válida.
@@ -2423,7 +2423,7 @@ pt-BR:
               confirmation: A confirmação da senha não corresponde à senha!
               format: "%{message}"
             password:
-              requirements_not_met: 'Must include characters of the following types: %{rules}'
+              requirements_not_met: 'Deve incluir caracteres dos seguintes tipos: %{rules}'
               lowercase: 'minúscula (ex.: ''a'')'
               uppercase: 'maiúscula (ex.: ''A'')'
               numeric: 'número (ex.: ''1'')'
@@ -2544,7 +2544,7 @@ pt-BR:
       unsupported_storage_type: não é um tipo de armazenamento compatível.
       storage_error: Ocorreu um erro na conexão com o armazenamento.
       invalid_input: A entrada é inválida.
-      invalid_child_for_parent: is not allowed as a parent for this view type.
+      invalid_child_for_parent: não é permitido como pai para este tipo de visualização.
   activity:
     item:
       created_by_on: criado por %{user} em %{datetime}
@@ -2658,7 +2658,7 @@ pt-BR:
     project_phase: Fase do projeto
     project_phase_definition: Fase do projeto
     reason: Motivo
-    responsible: Responsável
+    responsible: Encarregado
     required: Obrigatório
     recipient: Destinatário
     role: Função
@@ -3058,7 +3058,7 @@ pt-BR:
       title: Complemento empresarial
       plan_title: Complemento do %{plan} Enterprise
       plan_name: Plano enterprise %{plan}
-      trial_text: This feature is included in your active Enterprise trial.
+      trial_text: Este recurso está incluído no seu período de avaliação do Enterprise ativo.
       plan_text_html: Disponível a partir do %{plan_name}.
       unlimited: Ilimitado
       already_have_token: 'Já possui um token? Adicione-o usando o botão abaixo para fazer o "upgrade" para o plano Enterprise.
@@ -3100,7 +3100,7 @@ pt-BR:
       custom_field_hierarchies:
         description: Campos personalizados de hierarquia permitem organizar estruturas hierárquicas nos pacotes de trabalho e projetos por meio de listas de seleção de vários níveis.
       date_alerts:
-        description: 'Com os alertas de data, você receberá uma notificação das futuras datas de início e conclusão, assim você nunca perderá ou esquecerá prazos importante. '
+        description: Com os alertas de data, você será notificado sobre as próximas datas de início ou término para não perder nem esquecer nenhum prazo importante.
       weighted_item_lists:
         description: Listas de itens ponderados permitem criar uma lista com valores numéricos associados.
       work_package_sharing:
@@ -3423,22 +3423,22 @@ pt-BR:
     report_component:
       checks:
         failures:
-          one: "%{count} check failed"
-          other: "%{count} checks failed"
-        success: All checks passed
+          one: Falha em %{count} verificação
+          other: Falha em %{count} verificações
+        success: Todas as verificações foram aprovadas
         warnings:
-          one: "%{count} check returned a warning"
-          other: "%{count} checks returned a warning"
+          one: "%{count} verificação retornou um aviso"
+          other: "%{count} verificações retornaram um aviso"
       summary:
-        failure: Some checks failed and the system does not work as expected.
-        success: All connections and systems are working as expected.
-        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+        failure: Algumas verificações falharam e o sistema não está funcionando como esperado.
+        success: Todas as conexões e sistemas estão operando normalmente.
+        warning: Alguns testes retornaram um alerta. Isso pode causar comportamentos inesperados.
     result_component:
       status:
-        failed: Failed
-        passed: Passed
-        skipped: Skipped
-        warning: Warning
+        failed: Falhou
+        passed: Aprovado
+        skipped: Ignorando
+        warning: Aviso
   homescreen:
     additional:
       projects: Projetos mais recentes visíveis nesta instância.
@@ -3453,16 +3453,16 @@ pt-BR:
         learn_about: Saiba mais sobre todos os novos recursos
         missing: Ainda não há recursos destacados.
         '17_4':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'A versão traz diversos novos recursos e melhorias, como:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_0: Migrador do Jira com suporte básico a campos personalizados.
+            line_1: Grupos de backlog para estruturar e priorizar pacotes de trabalho durante o refinamento do backlog.
+            line_2: Arrastar e soltar mais fácil e opções de movimentação aprimoradas no módulo Backlogs.
+            line_3: Botões Iniciar sprint e Concluir sprint no cabeçalho da sprint.
+            line_4: Copiar configurações de fluxo de trabalho entre funções.
+            line_5: Widget “Minhas reuniões” nas páginas Início e Visão geral do projeto.
     links:
       upgrade_enterprise_edition: Atualizar para a edição Enterprise
       postgres_migration: Migrando sua instalação para PostgreSQL
@@ -3621,7 +3621,7 @@ pt-BR:
         personal_reminder: Notificar-me sobre lembretes pessoais
       daily_reminders:
         title: Enviar lembretes diários por e-mail para notificações não lidas
-        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: Você receberá esses lembretes apenas para notificações não lidas e somente nos horários que você especificar. Até que você configure um fuso horário para sua conta, os horários serão interpretados como UTC.
         enabled: Ativar lembretes diários por e-mail
         add_time: Adicionar horário
         remove_time: Remover horário
@@ -3635,7 +3635,7 @@ pt-BR:
         date_range: Período de pausa
       email_alerts:
         title: Alertas por e-mail para outros itens que não sejam pacotes de trabalho
-        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        description: Atualmente, as notificações estão limitadas a pacotes de trabalho. Você pode optar por continuar recebendo alertas por e-mail para esses eventos até que eles sejam incluídos nas notificações.
         news_added: Notícia adicionada
         news_commented: Comentar em uma notícia
         document_added: Documento adicionado
@@ -3648,16 +3648,16 @@ pt-BR:
     notifications:
       participating:
         title: Participando
-        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        description: Notificações para todas as atividades em pacotes de trabalho nos quais você está envolvido (responsável, encarregado ou observador).
         submit_button: Atualizar preferências
         mentioned: Mencionado
         watched: Assistindo
         assignee: Encarregado
-        responsible: Responsável
+        responsible: Encarregado
         shared: Compartilhados comigo
       date_alerts:
         title: Alertas de data
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        description: Notificações automáticas quando datas importantes estiverem se aproximando para pacotes de trabalho abertos nos quais você está envolvido (responsável, encarregado ou observador).
         submit_button: Atualizar alertas de data
         start_date: Data de início
         due_date: Data de conclusão
@@ -3672,7 +3672,7 @@ pt-BR:
           seven_days_after: 7 dias depois
       non_participating:
         title: Não participando
-        description: Additional notifications for activities in all projects.
+        description: Notificações adicionais sobre atividades em todos os projetos.
         submit_button: Atualizar preferências
         work_package_created: Novos pacotes de trabalho
         work_package_commented: Todos os novos comentários
@@ -3681,16 +3681,16 @@ pt-BR:
         work_package_scheduled: Todas as mudanças de data
       project_specific_settings:
         title: Configurações de notificação específicas de projetos
-        description: These project-specific settings override default settings above.
+        description: Essas configurações específicas do projeto substituem as configurações padrão acima.
         add_button: Adicionar notificações específicas do projeto
         dialog_title: Adicionar notificações específicas do projeto
         list_header: Projetos com notificações específicas
   notifications:
     reasons:
-      assigned: Cessionário
+      assigned: Responsável
       dateAlert: Alerta de data
       mentioned: Mencionado
-      responsible: Responsável
+      responsible: Encarregado
       shared: Compartilhado
       watched: Observador
       reminder: Reminder
@@ -3710,7 +3710,7 @@ pt-BR:
         assigned: Você foi atribuído a %{work_package}
         subscribed: Você assinou %{work_package}
         mentioned: Você foi mencionado em %{work_package}
-        responsible: Você se tornou responsável por %{work_package}
+        responsible: Você se tornou encarregado por %{work_package}
         watched: Você está assistindo %{work_package}
     query:
       invalid_filter: Filtro de notificação inválido
@@ -3740,7 +3740,7 @@ pt-BR:
   label_age: Idade
   label_ago: dias atrás
   label_all: todos
-  label_all_uppercase: All
+  label_all_uppercase: Todos
   label_all_time: todos os tempos
   label_all_words: Todas as palavras
   label_all_open_wps: Tudo aberto
@@ -3842,7 +3842,7 @@ pt-BR:
   label_commits_per_month: Commits por mês
   label_confirmation: Confirmação
   label_contains: contém
-  label_starts_with: starts with
+  label_starts_with: inicia com
   label_content: Conteúdo
   label_color_plural: Cores
   label_copied: copiado
@@ -3850,8 +3850,8 @@ pt-BR:
   label_copy_source: Fonte
   label_copy_target: Destino
   label_copy_workflow_from: Copiar o fluxo de trabalho de
-  label_copy_workflow_from_type: Copy to another type
-  label_copy_workflow_from_role: Copy to other roles
+  label_copy_workflow_from_type: Copiar para outro tipo
+  label_copy_workflow_from_role: Copiar para outras funções
   label_copy_project: Cópiar projeto
   label_core_version: Versão do núcleo
   label_core_build: Construção principal
@@ -4050,8 +4050,8 @@ pt-BR:
   label_custom_pdf_export_settings: Configurações de exportação de PDF personalizadas
   label_custom_favicon: Ícone personalizado
   label_custom_touch_icon: Ícone de toque personalizado
-  label_departments: Organization
-  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+  label_departments: Organização
+  label_departments_description_html: 'Defina a estrutura da sua empresa criando departamentos e subdepartamentos de forma hierárquica. Isso permite refletir as linhas de reporte e manter uma visão clara e estruturada da sua organização no OpenProject. Você também pode importar uma estrutura organizacional existente por meio da [sincronização de grupos LDAP](ldap_docs_article).
 
     '
   label_logout: Desconectar
@@ -4159,10 +4159,10 @@ pt-BR:
   label_password_rule_numeric: Caracteres Numéricos
   label_password_rule_special: Caracteres Especiais
   label_password_rule_uppercase: Letras maiúsculas
-  label_password_requirement_lowercase: Must contain at least one lowercase character.
-  label_password_requirement_numeric: Must contain at least one numeric character.
-  label_password_requirement_special: Must contain at least one special character.
-  label_password_requirement_uppercase: Must contain at least one uppercase character.
+  label_password_requirement_lowercase: Deve conter pelo menos um caractere minúsculo.
+  label_password_requirement_numeric: Deve conter pelo menos um caracter numérico.
+  label_password_requirement_special: Deve conter pelo menos um caractere especial.
+  label_password_requirement_uppercase: Deve conter pelo menos um caractere maiúsculo.
   label_path_encoding: Codificação
   label_per_page: 'Por página:'
   label_people: Pessoas
@@ -4268,7 +4268,7 @@ pt-BR:
   label_role_new: Nova função
   label_role_grantable: Função concedível
   label_role_plural: Papéis
-  label_role_missing_permissions: "%{role} (missing required permissions)"
+  label_role_missing_permissions: "%{role} (permissões obrigatórias ausentes)"
   label_role_search: Atribuir papéis aos novos membros
   label_scm: SCM
   label_scroll_left: Rolar para a esquerda
@@ -4495,7 +4495,7 @@ pt-BR:
       you_have: Você possui
     logo_alt_text: Logotipo
     mention:
-      subject: "%{user_name} mentioned you in %{id} - %{subject}"
+      subject: "%{user_name} mencionou você em %{id} - %{subject}"
     notification:
       center: Para o centro de notificação
       see_in_center: Ver comentário no centro de notificações
@@ -4514,7 +4514,7 @@ pt-BR:
       reason:
         watched: Assistido
         assigned: Atribuído
-        responsible: Responsável
+        responsible: Encarregado
         mentioned: Mencionado
         shared: Compartilhado
         subscribed: todos
@@ -4530,10 +4530,10 @@ pt-BR:
       note: 'Nota: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
+        allowed_actions_html: 'Você possui as seguintes permissões neste pacote de trabalho: %{allowed_actions}. Isso pode mudar dependendo da sua função e das permissões no projeto.'
         create_account: Para acessar este pacote de trabalho, você terá que criar e ativar uma conta em %{instance}.
         open_work_package: Abrir pacote de trabalho
-        subject: Work package %{id} was shared with you
+        subject: O pacote de trabalho %{id} foi compartilhado com você
         enterprise_text: Compartilhe pacotes de trabalho com usuários que não são membros do projeto.
         summary:
           user: "%{user} compartilhou um pacote de trabalho com você com privilégios de %{role_rights}"
@@ -4747,8 +4747,8 @@ pt-BR:
     common:
       work_package_card_component:
         menu:
-          label_actions: Work package actions
-      work_package_card_box_component:
+          label_actions: Ações do pacote de trabalho
+      work_package_card_list_component:
         header:
           label_actions: Open menu
           label_work_package_count:
@@ -5071,7 +5071,7 @@ pt-BR:
 
     '
   setting_after_login_default_redirect_url: Após redirecionamento de login
-  setting_after_login_default_redirect_url_text_html: 'Defina um caminho padrão para redirecionar os usuários após o login, caso nenhum link de retorno tenha sido fornecido. Se não for definido, o redirecionamento será para a página inicial. <br/> Exemplo: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Compartilhamento de recursos entre origens (CORS)
@@ -5126,7 +5126,7 @@ pt-BR:
     '
   setting_app_subtitle: Subtítulo do aplicativo
   setting_app_title: Título da aplicação
-  setting_organization_name: Organization name
+  setting_organization_name: Nome da organização
   setting_attachment_max_size: Tamanho máximo dos anexos
   setting_show_work_package_attachments: Exibir anexos na aba de arquivos por padrão
   setting_antivirus_scan_mode: Modo escanear
@@ -5202,12 +5202,12 @@ pt-BR:
   setting_mail_handler_body_delimiter_regex: Truncar e-mails correspondentes a esta expressão regular
   setting_mail_handler_ignore_filenames: Anexos de e-mail ignorados
   setting_new_project_user_role_id: Função atribuída a um usuário não administrador que cria um projeto
-  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+  setting_new_project_user_role_id_caption: 'Apenas funções que incluem permissões para editar atributos do projeto e gerenciar membros são listadas, para que o criador possa concluir a configuração do projeto.
 
     '
   setting_new_project_send_confirmation_email: Enviar notificação ao autor ao criar um novo projeto
   setting_new_project_notification_text: Texto de notificação
-  setting_password_active_rules: Password requirements
+  setting_password_active_rules: Requisitos de senha
   setting_password_count_former_banned: Número de senhas usadas mais recentemente banidas para reutilização
   setting_password_days_valid: Número de dias antes de exigir alteração de senha
   setting_password_min_length: Tamanho mínimo
@@ -5617,7 +5617,7 @@ pt-BR:
   text_project_identifier_format: Deve começar com uma letra minúscula. Apenas letras minúsculas (a-z), números, hífens e underscores são permitidos.
   text_reassign: 'Reatribua ao pacote de trabalho:'
   text_regexp_multiline: 'A expressão regular é aplicada no modo multilinha. Por exemplo: ^---\s+'
-  text_rename_wiki_page: Rename wiki page
+  text_rename_wiki_page: Renomear página wiki
   text_repository_usernames_mapping: Selecionar ou atualizar o usuário do OpenProject mapeado para cada nome de usuário encontrado no log do repositório. Os usuários com o mesmo nome de usuário OpenProject e repositório ou e-mail serão mapeados automaticamente.
   text_status_changed_by_changeset: Aplicado no conjunto de alterações %{value}.
   text_table_difference_description: Nesta tabela, os únicos %{entries} são mostrados. Você pode ver a diferença entre quaisquer duas entradas selecionando primeiro as caixas de seleção correspondentes na tabela. Ao clicar no botão abaixo da tabela são mostradas as diferenças.
@@ -5795,13 +5795,13 @@ pt-BR:
           same_as_work: Defina para o mesmo valor que o Trabalho.
     permissions:
       comment: Comentário
-      comment_verb: comment
+      comment_verb: comentar
       comment_description: Pode visualizar e comentar neste pacote de trabalho.
       edit: Editar
-      edit_verb: edit
+      edit_verb: editar
       edit_description: Pode visualizar, comentar e editar este pacote de trabalho.
       view: Ver
-      view_verb: view
+      view_verb: visualizar
       view_description: Pode visualizar este pacote de trabalho.
     reminders:
       label_remind_at: Data
@@ -5879,7 +5879,7 @@ pt-BR:
       upsell:
         message: Compartilhar listas de projetos com usuários individuais é um complemento Enterprise.
   working_days:
-    info: 'Os dias que não estiverem selecionados são ignorados ao programar os pacotes de trabalho e os ciclos de vida do projeto (e não são incluídos na contagem de dias). Esses valores podem ser sobrescritos no nível do pacote de trabalho.
+    info: 'Os dias não selecionados são ignorados ao agendar pacotes de trabalho e ciclos de vida do projeto (e não são incluídos na contagem de dias). Isso pode ser substituído no nível do pacote de trabalho.
 
       '
     instance_wide_info: 'As datas adicionadas à lista abaixo são consideradas não úteis e ignoradas ao agendar pacotes de trabalho.
@@ -6059,8 +6059,8 @@ pt-BR:
 
       '
     confirm_revoke_my_application:
-      one: Do you really want to remove this application? This will revoke one token active for it.
-      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      one: Você realmente deseja remover esta aplicação? Isso irá revogar um token ativo associado a ela.
+      other: Você realmente deseja remover esta aplicação? Isso irá revogar %{count} tokens ativos associados a ela.
     authorization_error: Ocorreu um erro de autorização.
     my_registered_applications: Aplicações OAuth registradas
   oauth_client:

@@ -34,7 +34,7 @@ ko:
   saml:
     menu_title: SAML 공급자
     delete_title: SAML 공급자 삭제
-    delete_heading: Delete this SAML provider?
+    delete_heading: 이 SAML 공급자를 삭제하시겠습니까?
     info:
       title: SAML 프로토콜 구성 매개 변수
       description: '이러한 매개 변수를 사용하여 OpenProject에 대한 ID 공급자 연결을 구성합니다.

@@ -32,7 +32,7 @@ pl:
         location: Lokalizacja
         duration: Czas trwania
         notes: Notatki
-        recurrence_start_time: Scheduled start time
+        recurrence_start_time: Zaplanowany czas uruchomienia
         participants: Uczestnicy
         participant:
           one: 1 uczestnik
@@ -45,9 +45,9 @@ pl:
         start_date: Data
         start_time: Data rozpoczęcia
         start_time_hour: Godzina rozpoczęcia
-        end_time: End time
-        template: Template
-        notify: Send notifications
+        end_time: Czas zakończenia
+        template: Szablon
+        notify: Wysyłaj powiadomienia
         sharing: Udostępnianie
       meeting_agenda_item:
         title: Tytuł
@@ -55,15 +55,15 @@ pl:
         duration_in_minutes: Czas trwania
         description: Notatki
         presenter: Prezenter
-        item_type: Type
-        position: Position
-        lock_version: Lock version
-        notes: Notes
+        item_type: Typ
+        position: Pozycja
+        lock_version: Zablokuj wersję
+        notes: Notatki
       meeting_section:
         title: Tytuł
-        position: Position
+        position: Pozycja
       recurring_meeting:
-        title: Title
+        title: Tytuł
         frequency: Częstotliwość
         interval: Interwał
         start_date: Rozpoczyna się
@@ -72,10 +72,10 @@ pl:
         end_after: Seria spotkań kończy się
         end_date: Data zakończenia
         iterations: Wystąpienia
-        time_zone: Time zone
-        location: Location
-        duration: Duration
-        notify: Send notifications
+        time_zone: Strefa czasowa
+        location: Lokalizacja
+        duration: Czas trwania
+        notify: Wysyłaj powiadomienia
       recurring_meeting_interim_response:
         start_time: Czas rozpoczęcia
       meeting_participant:
@@ -220,7 +220,7 @@ pl:
   label_time_zone: Strefa czasowa
   label_start_date: Data rozpoczęcia
   label_subscribe_icalendar: Subskrybuj kalendarz
-  label_recurring_filter: Recurring filter
+  label_recurring_filter: Filtr cykliczny
   caption_meeting_template_select: Wybierz szablon, aby automatycznie skopiować z niego punkty planu spotkania
   caption_template_project_select: Wybierz projekt, w którym ma zostać utworzony ten szablon spotkania
   placeholder_meeting_template_select_project_first: Najpierw wybierz projekt
@@ -236,7 +236,7 @@ pl:
         manage_participants: Zarządzaj uczestnikami
         no_participants: Brak uczestników
         show_all: Pokaż wszystkie
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
+        apply_to_upcoming_meetings: Zastosuj te zmiany do wszystkich nadchodzących spotkań w tej serii
       text:
         template: Uczestnicy ci będą automatycznie zapraszani na wszystkie przyszłe spotkania w miarę ich tworzenia.
         manage_participants: Wyszukaj członków projektu i dodaj ich jako uczestników tego spotkania.
@@ -447,9 +447,9 @@ pl:
       meeting_not_found: Nie znaleziono spotkania dla podanego identyfikatora UID.
     widgets:
       blankslate:
-        heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
-      view_details: View all meetings
+        heading: Brak nadchodzących spotkań
+        description: Tutaj pojawią się nadchodzące spotkania, w których jesteś organizatorem lub uczestnikiem.
+      view_details: Wyświetl wszystkie spotkanie
   meeting_section:
     untitled_title: Sekcja bez nazwy
     delete_confirmation: Usunięcie sekcji spowoduje również usunięcie wszystkich jej elementów punktów planu spotkania. Czy na pewno chcesz to zrobić?
@@ -692,9 +692,9 @@ pl:
   text_exit_draft_mode_dialog_template_title: Otworzyć pierwsze wystąpienie z tej serii spotkań?
   text_exit_draft_mode_dialog_template_subtitle: Po tym nie możesz powrócić do trybu wersji roboczej.
   label_meeting_template_sharing: Udostępnianie
-  label_meeting_template_sharing_none: Only with this project
-  label_meeting_template_sharing_descendants: With subprojects
-  label_meeting_template_sharing_system: With all projects
+  label_meeting_template_sharing_none: Tylko z tym projektem
+  label_meeting_template_sharing_descendants: Z podprojektami
+  label_meeting_template_sharing_system: Ze wszystkimi projektami
   text_meeting_template_sharing_description: Ten szablon można udostępniać podprojektom lub innym projektom w tym wystąpieniu. Skopiowane zostaną tylko pozycje planu spotkania i załączniki.
   text_meeting_not_editable_anymore: Tego spotkania nie można już edytować.
   text_meeting_not_present_anymore: To spotkanie zostało usunięte. Wybierz inne spotkanie.
@@ -713,12 +713,12 @@ pl:
   text_agenda_item_duplicate_in_next_meeting: Czy na pewno chcesz dodać kopię tego punktu planu spotkania do następnego spotkania w dniu %{date} o godzinie %{time}? Wyniki nie będą duplikowane.
   text_agenda_item_duplicated_in_next_meeting: Pozycję planu spotkania zduplikowano w następnym spotkaniu w dniu %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Ten pakiet roboczy nie został jeszcze zaplanowany w planie nadchodzącego spotkania.
-  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
-  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
-  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
-  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
-  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
-  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
+  text_agenda_item_no_available_occurrence: Nie są dostępne żadne nadchodzące wystąpienia.
+  text_agenda_item_dialog_skipping_note: 'Uwaga: pomijanie %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: anulowanego spotkania w dniu %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} anulowanych spotkań"
+  text_agenda_item_dialog_skipping_closed_one: spotkania zamkniętego w dniu %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} zamkniętych spotkań"
   text_work_package_add_to_meeting_hint: Użyj przycisku „Dodaj do spotkania”, aby dodać ten pakiet roboczy do nadchodzącego spotkania.
   text_work_package_has_no_past_meeting_agenda_items: Ten pakiet roboczy nie został dodany jako pozycja planu spotkania w poprzednim spotkaniu.
   text_email_updates_muted: Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest wyciszone. Po wprowadzeniu zmian uczestnicy nie będą otrzymywać zaktualizowanych zaproszeń pocztą elektroniczną.
