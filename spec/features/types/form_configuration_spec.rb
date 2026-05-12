@@ -77,10 +77,8 @@ RSpec.describe "form configuration", :js, :selenium do
 
         form.expect_group("Whatever", "Whatever")
 
-        # Click the dialog again after some time
-        # Otherwise this may cause issues due to the animation,
-        # which is why sleep is okay.
-        sleep 1
+        # Wait for dialog close animation to finish before opening it again
+        expect(page).to have_no_css("dialog[open]")
 
         # Reset and confirm
         form.reset_button.click
@@ -88,9 +86,6 @@ RSpec.describe "form configuration", :js, :selenium do
         within(dialog) do
           click_button I18n.t("button_reset")
         end
-
-        # Wait for page reload
-        sleep 1
 
         expect(page).to have_no_css("[data-group-key]", text: /\bWhatever\b/)
         form.expect_group("details", "Details")
@@ -181,7 +176,6 @@ RSpec.describe "form configuration", :js, :selenium do
 
         # Delete attribute from group
         form.remove_attribute("assignee")
-        sleep 1
 
         # Expect configuration to be correct now
         form.expect_no_attribute("assignee", "Cool Stuff")
