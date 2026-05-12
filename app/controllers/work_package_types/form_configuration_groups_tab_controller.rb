@@ -197,6 +197,7 @@ module WorkPackageTypes
     end
 
     def render_create_error(call)
+      @type.reload
       group = temporary_group(
         group_type: group_params[:group_type],
         query: group_params[:query],

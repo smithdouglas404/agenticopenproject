@@ -167,6 +167,22 @@ RSpec.describe WorkPackageTypes::FormConfigurationGroupsTabController do
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.body).to include('target="work-package-types-form-configuration-main-content-component"')
     end
+
+    it "does not render the existing group twice when a query group create fails" do
+      query = create(:query, user:)
+      query_props = API::V3::Queries::QueryParamsRepresenter.new(query).to_json
+
+      post :create,
+           params: {
+             type_id: type.id,
+             group: { group_type: "query", name: "Existing group", query: query_props }
+           },
+           format: :turbo_stream
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body.scan('data-group-key="Existing group"').count).to eq(1)
+      expect(response.body).to include('data-group-key="__new_form_configuration_group__"')
+    end
   end
 
   describe "POST #create (default group name)", with_ee: %i[edit_attribute_groups] do
