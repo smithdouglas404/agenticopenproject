@@ -41,7 +41,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
   let(:auth_strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user:, provider: wiki_provider).value! }
   let(:input_data) { Wikis::Adapters::Input::PageInfo.build(identifier:).value! }
 
-  subject(:query) { described_class.new(model: wiki_provider) }
+  let(:query) { described_class.new(model: wiki_provider) }
 
   before do
     allow(wiki_provider).to receive(:oauth_client).and_return(oauth_client)
@@ -54,9 +54,10 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
   end
 
   describe "#call" do
+    subject(:result) { query.call(input_data:, auth_strategy:) }
+
     let(:page_response) do
       {
-        "id" => identifier,
         "title" => "Home",
         "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/"
       }.to_json
@@ -70,7 +71,6 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
       end
 
       it "returns Success with title and href" do
-        result = query.call(input_data:, auth_strategy:)
         expect(result).to be_success
         expect(result.value!).to have_attributes(
           identifier:,
@@ -93,7 +93,6 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
       end
 
       it "resolves the nested space URL correctly" do
-        result = query.call(input_data:, auth_strategy:)
         expect(result).to be_success
         expect(result.value!).to have_attributes(title: "Nested Page")
       end
@@ -102,71 +101,43 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
     context "when the identifier is not a valid XWiki reference" do
       let(:identifier) { "Main.WebHome" }
 
-      it "returns Failure with :not_found code without making an HTTP request" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :not_found)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :not_found)) }
     end
 
     context "when no OAuth token exists for the user" do
       let(:oauth_client_token) { nil }
 
-      it "returns Failure with :missing_token code without making an HTTP request" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :missing_token)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :missing_token)) }
     end
 
     context "when the page is not found" do
       before { stub_request(:get, page_url).to_return(status: 404, body: "") }
 
-      it "returns Failure with :not_found code" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :not_found)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :not_found)) }
     end
 
     context "when access is unauthorized" do
       before { stub_request(:get, page_url).to_return(status: 401, body: "") }
 
-      it "returns Failure with :unauthorized code" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :unauthorized)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :unauthorized)) }
     end
 
     context "when access is forbidden" do
       before { stub_request(:get, page_url).to_return(status: 403, body: "") }
 
-      it "returns Failure with :unauthorized code" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :unauthorized)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :unauthorized)) }
     end
 
     context "when XWiki returns a non-2xx status" do
       before { stub_request(:get, page_url).to_return(status: 500, body: "Internal Server Error") }
 
-      it "returns Failure with :request_failed code" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :request_failed)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }
     end
 
     context "when a network error occurs" do
       before { stub_request(:get, page_url).to_timeout }
 
-      it "returns Failure with :connection_error code" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :connection_error)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :connection_error)) }
     end
 
     context "when the response body is not valid JSON" do
@@ -175,11 +146,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
           .to_return(status: 200, body: "not json", headers: { "Content-Type" => "text/plain" })
       end
 
-      it "returns Failure with :request_failed code" do
-        result = query.call(input_data:, auth_strategy:)
-        expect(result).to be_failure
-        expect(result.failure).to have_attributes(code: :request_failed)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }
     end
   end
 end
