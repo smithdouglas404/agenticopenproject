@@ -46,6 +46,8 @@ module WorkPackageTypes
 
         query.show_hierarchies = false
         query_call
+      rescue JSON::ParserError
+        invalid_query_result
       end
 
       def rebuild(query:, user:)

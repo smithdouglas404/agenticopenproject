@@ -1407,6 +1407,7 @@ en:
         row_actions: "Row actions"
         query_group_label: "Work packages table"
         empty_group_hint: "Drag attributes here"
+        invalid_attribute_groups: "The form configuration payload is invalid."
         invalid_query: "The embedded query configuration is invalid."
         not_found: "The requested form configuration item could not be found."
         untitled_group: "Untitled group"

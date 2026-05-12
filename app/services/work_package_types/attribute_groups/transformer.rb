@@ -37,15 +37,23 @@ module WorkPackageTypes
       end
 
       def call
-        return [] if groups.blank?
+        return ServiceResult.success(result: []) if groups.blank?
 
-        groups.map do |group|
-          if group[:type] == "query"
-            transform_query_group(group)
-          else
-            transform_attribute_group(group)
-          end
+        transformed_groups = []
+
+        groups.each do |group|
+          transformed_group = if group[:type] == "query"
+                                transform_query_group(group)
+                              else
+                                transform_attribute_group(group)
+                              end
+
+          return transformed_group if transformed_group.is_a?(ServiceResult)
+
+          transformed_groups << transformed_group
         end
+
+        ServiceResult.success(result: transformed_groups)
       end
 
       private
@@ -68,7 +76,9 @@ module WorkPackageTypes
           user:
         )
 
-        [name, [result.result]] if result.success?
+        return result if result.failure?
+
+        [name, [result.result]]
       end
 
       def build_default_attribute_group(group, attributes)
