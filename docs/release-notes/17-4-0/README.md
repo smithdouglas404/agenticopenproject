@@ -26,6 +26,8 @@ Take a look at our release video showing the most important features introduced 
 
 With the release of OpenProject 17.4, the Jira Migrator is now available without a feature flag and can be used directly. While the feature is not yet fully complete and still in Beta, it is ready to be tested – preferably first in a non productive environment. We encourage users to try the Jira Migrator and share their feedback. 
 
+![OpenProject Jira Migrator with note that it is a Beta version, listing supported data and what is coming soon or later](openproject-jira-migrator-beta.png)
+
 > [!NOTE]
 > If you would like to share anonymized data from your Jira Migrator usage to support our development team, please [reach out to us](https://www.openproject.org/contact/). We are happy to sign an NDA to ensure confidentiality.
 
@@ -33,7 +35,9 @@ It is now possible to migrate basic custom fields from Jira to OpenProject. This
 
 We will continue to expand support for additional custom field types in future releases to enable even more complete migrations.
 
-Screenshot
+![Work package in OpenProject with imported custom fields from Jira](openproject-17-4-jira-migrator-custom-fields-work-package.png)
+
+See our documentation to learn more about [the OpenProject Jira Migrator](../../installation-and-operations/jira-migration/).
 
 ### Backlog buckets in "Backlog and sprints" view
 
@@ -43,9 +47,13 @@ Work packages can be moved between buckets, sorted within each bucket, and adjus
 
 ![Overlay to create a new backlog bucket in OpenProject, user can enter backlog bucket name](openproject-17-4-backlog-bucket-create.png)
 
+[Learn more about Backlog and sprints with OpenProject](../../user-guide/backlogs-scrum/).
+
 ### Backlog card draggable + one-click for side panel
 
 Backlog cards are now fully draggable, making it easier to move work packages during backlog refinement and sprint planning. At the same time, you can still open a work package in the side panel with a single click to quickly view and edit details without losing context.
+
+![Gif showing Backlog and sprints in OpenProject, dragging a work package from Backlog bucket to Sprints and then opening it per click in the middle of the card](openproject-17-4-backlog-drag-drop.gif)
 
 ### Sprint Start and Complete buttons in the sprint header
 
@@ -62,6 +70,8 @@ You can now copy workflow settings from one role to other roles, using a dedicat
 
 ![Overlay in the OpenProject workflow settings: Copy workflow of "Task" to other roles, user can select multiple roles](openproject-17-4-workflow-copy-to-roles.png)
 
+[See our system admin guide to learn about work package workflows in OpenProject](../../system-admin-guide/manage-work-packages/work-package-workflows/).
+
 ### New widget for upcoming meetings on Project Overview and Home page
 
 A new "My meetings" widget shows your upcoming meetings directly on the Home and Project Overview pages. It displays the most relevant information at a glance, helping you stay on top of your schedule and quickly access upcoming meetings.
@@ -76,15 +86,17 @@ The default modules enabled in demo and trial projects have been updated. Budget
 
 ## Important technical updates
 
-### Expose project-based semantic work package identifier on the API
+### Developers of API V3 clients prepare for 17.5: use the new `displayId` field for rendering work package identifiers instead of `id`
 
-Project-based work package identifiers are now exposed via the API. With upcoming support for semantic identifiers such as `#ABC-123`, a new field `displayId` is available in the API. This field returns the correct identifier format, depending on how the instance is configured.
+As part of our efforts to simplify migrations from Jira to OpenProject, the next release (17.5) will introduce project-based work package identifiers such as `#ABC-123`. Developers of API V3 clients can and should already prepare for this change now. With the current release (17.4), the API V3 exposes a dedicated field, `displayId`, which contains the work package’s current identifier. API clients should use this field whenever rendering links or captions intended for human users.
 
-If you are building or maintaining an application using the OpenProject API V3, we recommend using `displayId` instead of `id` when displaying work package identifiers.
+Starting with 17.5, administrators will be able to switch from the current numeric identifiers, such as `#12345`, to project-based identifiers like `#ABC-123`. The `displayId` field will return the correct identifier format depending on how the instance is configured.
+
+If you are building or maintaining an application that uses the OpenProject API V3, we recommend using `displayId` instead of `id` when displaying work package identifiers.
 
 The `id` field will continue to return the internal database ID and should still be used for API requests such as filtering.
 
-For more information on project-based work package identifiers in OpenProject, see the [Epic currently being developed by our team](https://community.openproject.org/wp/41855)
+For more information about project-based work package identifiers in OpenProject, see the [Epic currently being developed by our team](https://community.openproject.org/wp/41855)
 
 ### Meetings and recurring meetings APIv3 endpoints
 
@@ -179,7 +191,10 @@ You can now configure webhook secrets for GitHub and GitLab integrations. This i
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
+
 A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Andreas H., Madhu Reddy, and Anna Mund.
+
+We also want to thank Community contributor [K. Uihlein](https://github.com/kuihlein) for contributing to our documentation of the OpenProject GitLab Integration. This is much appreciated.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
