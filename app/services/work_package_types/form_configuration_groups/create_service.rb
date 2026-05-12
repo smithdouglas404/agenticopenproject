@@ -32,15 +32,14 @@ module WorkPackageTypes
   module FormConfigurationGroups
     class CreateService < ::WorkPackageTypes::FormConfiguration::BaseService
       def perform
-        name = params[:name].to_s.strip
+        name = resolve_group_name
 
-        if name.blank?
-          seen_keys = active_groups.map { |g| g.key.to_s }
-          name = Type::FormGroup.next_untitled_key(seen_keys)
+        if query_group?
+          query_call = build_query(params[:query_props], name: "Embedded table: #{name}")
+          return query_call if query_call.failure?
         end
 
-        group = build_group(name)
-        return group if group.is_a?(ServiceResult)
+        group = build_group(name, query_result: query_call&.result)
 
         groups = active_groups
         groups.unshift(group)
@@ -52,12 +51,21 @@ module WorkPackageTypes
 
       private
 
-      def build_group(name)
-        if params[:group_type].to_s == "query"
-          query_call = build_query(params[:query_props], name: "Embedded table: #{name}")
-          return query_call if query_call.failure?
+      def resolve_group_name
+        name = params[:name].to_s.strip
+        return name if name.present?
 
-          ::Type::QueryGroup.new(type, name, query_call.result)
+        seen_keys = active_groups.map { |g| g.key.to_s }
+        Type::FormGroup.next_untitled_key(seen_keys)
+      end
+
+      def query_group?
+        params[:group_type].to_s == "query"
+      end
+
+      def build_group(name, query_result: nil)
+        if query_result
+          ::Type::QueryGroup.new(type, name, query_result)
         else
           ::Type::AttributeGroup.new(type, name, [])
         end
