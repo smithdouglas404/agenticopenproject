@@ -99,10 +99,9 @@ module WorkPackageTypes
     def normalized_old_keys
       seen_keys = model.attribute_groups_was.filter_map(&:first).compact_blank.map(&:to_s)
 
-      model.attribute_groups_was.filter_map do |group|
-        next group.first if group.first.present?
-
-        normalized_legacy_group_key(seen_keys)
+      model.attribute_groups_was.map do |group|
+        key = group.first.presence&.to_s
+        key || normalized_legacy_group_key(seen_keys).tap { |legacy_key| seen_keys << legacy_key }
       end
     end
 
@@ -116,7 +115,6 @@ module WorkPackageTypes
         suffix += 1
       end
 
-      seen_keys << candidate
       candidate
     end
 
