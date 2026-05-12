@@ -52,9 +52,10 @@ export default class TypeFormConfigurationController extends Controller {
 
   private turboRequests:TurboRequestsService;
   private externalRelationQueryConfiguration:ExternalRelationQueryConfigurationService;
+  private servicesInitialization?:Promise<void>;
 
   connect() {
-    void this.initializeServices();
+    this.servicesInitialization ??= this.initializeServices();
   }
 
   private async initializeServices() {
@@ -66,7 +67,7 @@ export default class TypeFormConfigurationController extends Controller {
   addQueryGroup(event:Event) {
     event.preventDefault();
 
-    this.openQueryEditor(this.noFilterQueryValue, (queryProps:unknown) => {
+    void this.openQueryEditor(this.noFilterQueryValue, (queryProps:unknown) => {
       void this.postNewGroup('query', queryProps);
     });
   }
@@ -85,7 +86,7 @@ export default class TypeFormConfigurationController extends Controller {
     const group = (event.currentTarget as HTMLElement).closest<HTMLElement>('[data-group-key]');
     if (!group) return;
 
-    this.openQueryEditor(group.dataset.groupQuery ?? this.noFilterQueryValue, (queryProps:unknown) => {
+    void this.openQueryEditor(group.dataset.groupQuery ?? this.noFilterQueryValue, (queryProps:unknown) => {
       const key = group.dataset.groupKey;
       if (!key) return;
 
@@ -98,6 +99,8 @@ export default class TypeFormConfigurationController extends Controller {
   }
 
   private async postNewGroup(groupType:'attribute'|'query', queryProps?:unknown):Promise<void> {
+    await this.servicesInitialization;
+
     const body = new URLSearchParams({
       group_type: groupType,
     });
@@ -116,6 +119,8 @@ export default class TypeFormConfigurationController extends Controller {
   }
 
   private async postQueryUpdate(groupKey:string, queryProps:unknown):Promise<boolean> {
+    await this.servicesInitialization;
+
     await this.turboRequests.request(`${this.groupsUrlValue}/${encodeURIComponent(groupKey)}/update_query`, {
       method: 'PATCH',
       headers: {
@@ -129,7 +134,9 @@ export default class TypeFormConfigurationController extends Controller {
     return true;
   }
 
-  private openQueryEditor(queryJson:string, callback:(queryProps:unknown) => void) {
+  private async openQueryEditor(queryJson:string, callback:(queryProps:unknown) => void) {
+    await this.servicesInitialization;
+
     const currentQuery = JSON.parse(queryJson) as unknown;
     const disabledTabs = {
       'display-settings': I18n.t('js.work_packages.table_configuration.embedded_tab_disabled'),
