@@ -182,35 +182,41 @@ RSpec.describe "Wysiwyg work package mentions",
     expect(page).to have_css("span", text: "👍")
   end
 
-  # Each consuming context defines `wp_id` — the value the user types after
-  # the marker, and the value the rendered widget exposes via `data-id` —
-  # and `wp_label`, the visible link label after the macro pipeline renders
-  # the comment.
+  # Each consuming context defines `wp_display_id` — the value the user
+  # types after the marker, which appears on the rendered widget as
+  # `data-display-id` — and `wp_label`, the visible link label after the
+  # macro pipeline renders the comment.
   shared_examples "work package mention with all triggers" do
     it "can autocomplete work packages with different triggers" do
       # Test # trigger
-      activity_tab.type_comment("##{wp_id}")
+      activity_tab.type_comment("##{wp_display_id}")
       page.find(".mention-list-item", text: mentioned_work_package.subject, wait: 10).click
-      expect(page).to have_css("a.mention", text: "##{wp_id}")
+      expect(page).to have_css("a.mention", text: "##{wp_display_id}")
       activity_tab.submit_comment
       activity_tab.expect_journal_notes text: wp_label
 
       # Test ## trigger
-      activity_tab.type_comment("###{wp_id}")
+      activity_tab.type_comment("###{wp_display_id}")
       page.find(".mention-list-item", text: mentioned_work_package.subject, wait: 10).click
       expect(page).to have_css(".op-macro-wp-quickinfo-widget")
       expect(page).to have_css(
-        "opce-macro-wp-quickinfo[data-id='#{wp_id}'][data-detailed='false']"
+        "opce-macro-wp-quickinfo" \
+        "[data-id='#{mentioned_work_package.id}']" \
+        "[data-display-id='#{wp_display_id}']" \
+        "[data-detailed='false']"
       )
       activity_tab.submit_comment
       activity_tab.expect_journal_notes text: "NONE #{wp_label}: #{mentioned_work_package.subject}"
 
       # Test ### trigger
-      activity_tab.type_comment("####{wp_id}")
+      activity_tab.type_comment("####{wp_display_id}")
       page.find(".mention-list-item", text: mentioned_work_package.subject, wait: 10).click
       expect(page).to have_css(".op-macro-wp-quickinfo-widget")
       expect(page).to have_css(
-        "opce-macro-wp-quickinfo[data-id='#{wp_id}'][data-detailed='true']"
+        "opce-macro-wp-quickinfo" \
+        "[data-id='#{mentioned_work_package.id}']" \
+        "[data-display-id='#{wp_display_id}']" \
+        "[data-detailed='true']"
       )
       activity_tab.submit_comment
 
@@ -221,7 +227,7 @@ RSpec.describe "Wysiwyg work package mentions",
   context "in classic mode",
           with_flag: { semantic_work_package_ids: false },
           with_settings: { work_packages_identifier: "classic" } do
-    let(:wp_id) { mentioned_work_package.id }
+    let(:wp_display_id) { mentioned_work_package.id }
     let(:wp_label) { "##{mentioned_work_package.id}" }
 
     include_examples "work package mention with all triggers"
@@ -239,7 +245,7 @@ RSpec.describe "Wysiwyg work package mentions",
         wp.reload
       end
     end
-    let(:wp_id) { mentioned_work_package.identifier }
+    let(:wp_display_id) { mentioned_work_package.identifier }
     let(:wp_label) { mentioned_work_package.identifier }
 
     include_examples "work package mention with all triggers"
