@@ -106,16 +106,7 @@ module WorkPackageTypes
     end
 
     def normalized_legacy_group_key(seen_keys)
-      base_name = I18n.t("types.edit.form_configuration.untitled_group")
-      candidate = base_name
-      suffix = 2
-
-      while seen_keys.include?(candidate)
-        candidate = "#{base_name} #{suffix}"
-        suffix += 1
-      end
-
-      candidate
+      Type::FormGroup.next_untitled_key(seen_keys)
     end
 
     def visible_group_name(group)

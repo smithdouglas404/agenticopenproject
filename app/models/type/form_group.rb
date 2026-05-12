@@ -34,6 +34,19 @@ class Type::FormGroup
                 :type,
                 :display_name
 
+  def self.next_untitled_key(seen_keys)
+    base_name = I18n.t("types.edit.form_configuration.untitled_group")
+    candidate = base_name
+    suffix = 2
+
+    while seen_keys.include?(candidate)
+      candidate = "#{base_name} #{suffix}"
+      suffix += 1
+    end
+
+    candidate
+  end
+
   def initialize(type, key, attributes, display_name: nil)
     self.key = key
     self.attributes = attributes

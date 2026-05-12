@@ -120,17 +120,7 @@ module WorkPackageTypes
       end
 
       def next_untitled_group_name(seen_keys)
-        base_name = I18n.t("types.edit.form_configuration.untitled_group")
-        candidate = base_name
-        suffix = 2
-
-        while seen_keys.include?(candidate)
-          candidate = "#{base_name} #{suffix}"
-          suffix += 1
-        end
-
-        seen_keys << candidate
-        candidate
+        Type::FormGroup.next_untitled_key(seen_keys).tap { |key| seen_keys << key }
       end
 
       def sync_active_custom_fields!
