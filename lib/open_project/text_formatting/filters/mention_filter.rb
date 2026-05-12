@@ -75,22 +75,26 @@ module OpenProject::TextFormatting
       end
 
       def work_package_mention(work_package, mention)
+        # Render the mention with the same label and URL convention used for
+        # `#N` text references elsewhere in the markdown pipeline.
+        href_id = work_package.display_id
+
         case mention.text.count("#")
         when 3
           ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
                                                     "",
-                                                    data: { id: work_package.id, detailed: true }
+                                                    data: { id: work_package.id, display_id: href_id, detailed: true }
         when 2
           ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
                                                     "",
-                                                    data: { id: work_package.id, detailed: false }
+                                                    data: { id: work_package.id, display_id: href_id, detailed: false }
         else
-          link_to("##{work_package.id}",
-                  work_package_path_or_url(id: work_package.id, only_path: context[:only_path]),
+          link_to(work_package.formatted_id,
+                  work_package_path_or_url(id: href_id, only_path: context[:only_path]),
                   class: "issue work_package",
                   data: {
                     hover_card_trigger_target: "trigger",
-                    hover_card_url: hover_card_work_package_path(work_package.id)
+                    hover_card_url: hover_card_work_package_path(href_id)
                   })
         end
       end
@@ -123,11 +127,10 @@ module OpenProject::TextFormatting
       def controller; end
 
       def mention_id(mention)
-        attribute_value = mention.attributes["data-id"]&.value
-
-        id_match = attribute_value&.match(/\d+/)
-
-        id_match ? id_match[0] : nil
+        value = mention.attributes["data-id"]&.value
+        # Reject semantic-shaped data-ids: `PROJ-42` must not silently
+        # resolve to WP id 42 via embedded-digit extraction.
+        value if value&.match?(/\A\d+\z/)
       end
     end
   end
