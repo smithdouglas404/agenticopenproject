@@ -437,7 +437,7 @@ de:
     widgets:
       blankslate:
         heading: Keine anstehenden Besprechungen
-        description: Upcoming meetings you are participating in will appear here.
+        description: Kommende Besprechungen, an denen Sie teilnehmen, werden hier erscheinen.
       view_details: Alle Besprechungen ansehen
   meeting_section:
     untitled_title: Unbenannter Abschnitt
