@@ -45,6 +45,15 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
       it "restores the classic identifier" do
         expect(project.reload.identifier).to eq("my-app")
       end
+
+      it "does not enqueue Notifications::WorkflowJob for the identifier change" do
+        project2 = create(:project).tap do |p|
+          p.update_columns(identifier: "OTHER", wp_sequence_counter: 0)
+          FriendlyId::Slug.create!(sluggable: p, slug: "other-name")
+        end
+        expect { described_class.new(project2).call }
+          .not_to have_enqueued_job(Notifications::WorkflowJob)
+      end
     end
 
     context "when the project has multiple slugs in FriendlyId history" do
