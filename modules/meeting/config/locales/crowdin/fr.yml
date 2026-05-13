@@ -210,7 +210,7 @@ fr:
   label_time_zone: Fuseau horaire
   label_start_date: Date de début
   label_subscribe_icalendar: S'abonner au calendrier
-  label_recurring_filter: Recurring filter
+  label_recurring_filter: Filtre récurrent
   caption_meeting_template_select: Sélectionnez un modèle pour copier automatiquement ses points de l'ordre du jour
   caption_template_project_select: Veuillez sélectionner le projet dans lequel vous souhaitez créer ce modèle de réunion
   placeholder_meeting_template_select_project_first: Sélectionnez d'abord un projet
@@ -438,7 +438,7 @@ fr:
     widgets:
       blankslate:
         heading: Aucune réunion à venir
-        description: Upcoming meetings you are participating in will appear here.
+        description: Les prochaines réunions auxquelles vous participerez apparaîtront ici.
       view_details: Voir toutes les réunions
   meeting_section:
     untitled_title: Section sans titre

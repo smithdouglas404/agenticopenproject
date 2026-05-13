@@ -202,16 +202,7 @@ ca:
           text: "[Placeholder] Calendari incrustat"
     admin:
       type_form:
-        custom_field: Camp personalitzat
-        inactive: Inactiu
-        drag_to_activate: Arrossega els camps aquí per activar-los
-        add_group: Afegir atribut de grup
-        add_table: Afegeix una taula de paquets de treball relacionats
         edit_query: Editar consulta
-        new_group: Nou grup
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Restableix als valors per defecte
       working_days:
         calendar:
           empty_state_header: Dies no laborables
@@ -614,18 +605,6 @@ ca:
     breadcrumb: Breadcrumb
     text_data_lost: Totes les dades entrades es perdran.
     text_user_wrote: "%{value} va escriure:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: El nom %{group} ja està en ús. Els noms de grup han de ser únics.
-        error_no_table_configured: Si us plau, configuri una taula per a %{group}.
-        reset_title: Reiniciar la configuració del formulari
-        confirm_reset: 'Alerta: Estàs segur que vols reiniciar la configuració del formulari? Això reiniciarà els atributs als seus grups per defecte i desactivarà TOTS els camps personalitzats.
-
-          '
-        upgrade_to_ee: Actualitza a l'edició Enterprise on-premises
-        upgrade_to_ee_text: Ostres! Si necessita aquesta funció ets un súper pro! T'importaria donar suport als nostres desenvolupadors de codi obert convertint-te en client de l'edició Enterprise?
-        more_information: Més informació
-        nevermind: Sense importància
     time_entry:
       work_package_required: Requereix seleccionar un paquet de treball primer.
       title: Registrar temps

@@ -202,16 +202,7 @@ zh-TW:
           text: "[Placeholder] 嵌入式日曆"
     admin:
       type_form:
-        custom_field: 客製欄位
-        inactive: 未啟用
-        drag_to_activate: 從這裡拖曳欄位來啟用它們
-        add_group: 增加群組屬性
-        add_table: 新增相關工作套件表格
         edit_query: 編輯查詢
-        new_group: 新增群組
-        delete_group: 刪除群組
-        remove_attribute: 從群組中移除
-        reset_to_defaults: 重設為預設值
       working_days:
         calendar:
           empty_state_header: 非工作日
@@ -613,18 +604,6 @@ zh-TW:
     breadcrumb: 導覽軌跡
     text_data_lost: 所有資料將遺失
     text_user_wrote: "%{value} 寫道："
-    types:
-      attribute_groups:
-        error_duplicate_group_name: 名稱 %{group} 已被使用，群組名稱不可重複。
-        error_no_table_configured: 請為 %{group} 配置表。
-        reset_title: 重設表單配置
-        confirm_reset: '警告: 確實要重置表單配置嗎？這將重置屬性到其預設組, 並禁用所有客製欄位。
-
-          '
-        upgrade_to_ee: 升級至地端企業版
-        upgrade_to_ee_text: 哇！如果您需要使用此功能，說明您非常專業！您是否願意成為企業版客戶來支持 OpenSource 開發人員？
-        more_information: 更多資訊
-        nevermind: 無視
     time_entry:
       work_package_required: 需要先選擇一個工作套件。
       title: 工時紀錄

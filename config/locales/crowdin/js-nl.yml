@@ -202,16 +202,7 @@ nl:
           text: "[Placeholder] ingesloten kalender"
     admin:
       type_form:
-        custom_field: Aangepast veld
-        inactive: Inactief
-        drag_to_activate: Sleep velden uit hier om ze te activeren
-        add_group: Toevoegen van nieuwe attribuutgroepen
-        add_table: Tabel van verwante werkpakketten toevoegen
         edit_query: Zoekopdracht bewerken
-        new_group: Nieuwe groep
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Standaardinstellingen herstellen
       working_days:
         calendar:
           empty_state_header: Vrije dagen
@@ -614,18 +605,6 @@ nl:
     breadcrumb: Breadcrumb
     text_data_lost: Alle ingevoerde gegevens zullen verloren gaan.
     text_user_wrote: "%{value} schreef:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: De groep naam %{group} word meer dan één keer gebruikt. Groep namen moeten uniek zijn.
-        error_no_table_configured: Gelieve een tabel voor %{group} instellen.
-        reset_title: Reset formulier configuratie
-        confirm_reset: 'Waarschuwing: Weet u zeker dat u de configuratie van het formulier wilt herstellen? Dit herstelt de kenmerken hun standaardgroep, deselecteerd de selectievakjes van de zichtbaarheid, en schakeld alle aangepaste velden uit.
-
-          '
-        upgrade_to_ee: Upgrade to Enterprise on-premises edition
-        upgrade_to_ee_text: Wow! If you need this add-on you are a super pro! Would you mind supporting us OpenSource developers by becoming an Enterprise edition client?
-        more_information: Meer informatie
-        nevermind: Geen aandacht
     time_entry:
       work_package_required: Vereist eerst een werkpakket te selecteren.
       title: Gelogde tijd
