@@ -45,6 +45,7 @@ on:
 
 jobs:
   build:
+    if: github.repository == 'opf/openproject'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
