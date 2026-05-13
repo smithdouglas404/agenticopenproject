@@ -38,16 +38,16 @@ describe('GitActionsMenuComponent', () => {
 
     await TestBed
       .configureTestingModule({
-      declarations: [
-        GitActionsMenuComponent,
-        OpIconComponent,
-      ],
-      providers: [
-        { provide: I18nService, useValue: I18nServiceStub },
-        { provide: OpContextMenuLocalsToken, useValue: localsStub },
-        { provide: GitActionsService, useValue: gitActionsServiceSpy },
-      ],
-    })
+        declarations: [
+          GitActionsMenuComponent,
+          OpIconComponent,
+        ],
+        providers: [
+          { provide: I18nService, useValue: I18nServiceStub },
+          { provide: OpContextMenuLocalsToken, useValue: localsStub },
+          { provide: GitActionsService, useValue: gitActionsServiceSpy },
+        ],
+      })
       .compileComponents();
   });
 
