@@ -1,6 +1,10 @@
 ---
 en:
   activerecord:
+    models:
+      resource_planner: "Resource Planner"
+      resource_allocation: "Resource Allocation"
+      resource_work_package_list: "Work packages list"
     attributes:
       resource_planner:
         name: "Name"
