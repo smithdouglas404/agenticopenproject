@@ -34,7 +34,8 @@ See COPYRIGHT and LICENSE files for more details.
   <%= render(
         Primer::Alpha::SelectPanel.new(
           select_variant: :multiple,
-          fetch_strategy: :local,
+          fetch_strategy: fetch_strategy,
+          src: panel_src,
           title: @name,
           dynamic_label: true,
           dynamic_label_prefix: current_values.any? ? @name : nil
@@ -44,12 +45,14 @@ See COPYRIGHT and LICENSE files for more details.
          button.with_trailing_visual_icon(icon: :"triangle-down")
          current_label
        end %>
-    <% items.each do |item| %>
-      <% panel.with_item(
-           label: item.label,
-           active: current_values.include?(item.value.to_s),
-           content_arguments: { data: { value: item.value.to_s } }
-         ) %>
+    <% unless @src.present? %>
+      <% items.each do |item| %>
+        <% panel.with_item(
+             label: item.label,
+             active: current_values.include?(item.value.to_s),
+             content_arguments: { data: { value: item.value.to_s } }
+           ) %>
+      <% end %>
     <% end %>
     <% panel.with_footer(show_divider: true) do %>
       <%= render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click->quick-filter--select-panel#apply" })) do %>

@@ -34,7 +34,7 @@ class MeetingsController < ApplicationController
   before_action :determine_date_range, only: %i[history]
   before_action :determine_author, only: %i[history]
   before_action :build_meeting, only: %i[new new_dialog fetch_timezone]
-  before_action :find_meeting, except: %i[index new create new_dialog fetch_timezone fetch_templates]
+  before_action :find_meeting, except: %i[index new create new_dialog fetch_timezone fetch_templates project_items]
   before_action :redirect_to_project, only: %i[show]
   before_action :set_activity, only: %i[history]
   before_action :find_copy_from_meeting, only: %i[create]
@@ -351,6 +351,19 @@ class MeetingsController < ApplicationController
     )
 
     respond_with_turbo_streams
+  end
+
+  def project_items
+    projects = Project.visible.order(:name)
+    selected_ids = params[:selected]&.split(",") || []
+
+    respond_to do |format|
+      format.html_fragment do
+        render "meetings/project_items",
+               locals: { projects:, selected_ids: },
+               layout: false
+      end
+    end
   end
 
   def generate_pdf_dialog

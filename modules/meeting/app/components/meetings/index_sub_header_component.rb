@@ -67,8 +67,11 @@ module Meetings
       params[:filters].present?
     end
 
-    def project_items
-      Project.visible.order(:name)
+    def selected_projects
+      selected_ids = @query.find_active_filter(:project_id)&.values&.map(&:to_s) || []
+      return [] if selected_ids.empty?
+
+      Project.visible.where(id: selected_ids)
     end
   end
 end

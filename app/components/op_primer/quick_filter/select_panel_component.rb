@@ -35,7 +35,7 @@ module OpPrimer
 
       renders_many :items, OpPrimer::QuickFilter::Item
 
-      def initialize(name:, query:, filter_key:, path_args:, operator: "=")
+      def initialize(name:, query:, filter_key:, path_args:, operator: "=", src: nil)
         super
 
         @name = name
@@ -43,10 +43,11 @@ module OpPrimer
         @filter_key = filter_key
         @path_args = path_args
         @operator = operator
+        @src = src
       end
 
       def render?
-        items.any?
+        @src.present? || items.any?
       end
 
       private
@@ -64,6 +65,21 @@ module OpPrimer
         return selected.first.label if selected.size == 1
 
         I18n.t(:label_x_items_selected, count: selected.size)
+      end
+
+      def panel_src
+        return nil if @src.blank?
+        return @src if current_values.empty?
+
+        uri = URI.parse(@src)
+        params = Rack::Utils.parse_nested_query(uri.query.to_s)
+        params["selected"] = current_values.join(",")
+        uri.query = params.to_query
+        uri.to_s
+      end
+
+      def fetch_strategy
+        @src.present? ? :eventually_local : :local
       end
 
       def base_url

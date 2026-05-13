@@ -30,10 +30,11 @@
             name: I18n.t(:label_project),
             query: @query,
             filter_key: :project_id,
-            path_args: [@project, :meetings]
+            path_args: [@project, :meetings],
+            src: project_items_meetings_path
           )
         ) do |component|
-          project_items.each do |project|
+          selected_projects.each do |project|
             component.with_item(label: project.name, value: project.id)
           end
         end
