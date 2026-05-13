@@ -28,36 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class BaseContract < ::ModelContract
-    def self.model
-      ResourcePlanner
+require "spec_helper"
+
+RSpec.describe Principals::DeleteJob, "ResourceAllocation", type: :model do
+  subject(:job) { described_class.perform_now(principal) }
+
+  shared_let(:deleted_user) { create(:deleted_user) }
+  let(:principal) { create(:user) }
+
+  context "with a resource allocation assigned to the principal" do
+    let!(:allocation) { create(:resource_allocation, principal:) }
+    let!(:other_allocation) { create(:resource_allocation, principal: create(:user)) }
+    let!(:unassigned_allocation) { create(:resource_allocation, principal: nil) }
+
+    it "rewrites the principal to the deleted user placeholder" do
+      job
+
+      expect(allocation.reload.principal).to eq deleted_user
     end
 
-    attribute :name
-
-    stored_attribute :start_date, store: :options
-    stored_attribute :end_date, store: :options
-
-    validate :user_allowed_to_manage
-
-    private
-
-    def user_allowed_to_manage
-      return if model.project.nil?
-      return if user_is_owner_with_view_permission? || user_can_manage_public?
-
-      errors.add :base, :error_unauthorized
+    it "does not affect allocations belonging to other users" do
+      expect { job }.not_to change { other_allocation.reload.principal }
     end
 
-    def user_is_owner_with_view_permission?
-      model.principal == user &&
-        user.allowed_in_project?(:view_resource_planners, model.project)
-    end
-
-    def user_can_manage_public?
-      model.public? &&
-        user.allowed_in_project?(:manage_public_resource_planners, model.project)
+    it "does not affect unassigned allocations" do
+      expect { job }.not_to change { unassigned_allocation.reload.principal_id }
     end
   end
 end

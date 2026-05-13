@@ -28,36 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class BaseContract < ::ModelContract
-    def self.model
-      ResourcePlanner
-    end
-
-    attribute :name
-
-    stored_attribute :start_date, store: :options
-    stored_attribute :end_date, store: :options
-
-    validate :user_allowed_to_manage
-
-    private
-
-    def user_allowed_to_manage
-      return if model.project.nil?
-      return if user_is_owner_with_view_permission? || user_can_manage_public?
-
-      errors.add :base, :error_unauthorized
-    end
-
-    def user_is_owner_with_view_permission?
-      model.principal == user &&
-        user.allowed_in_project?(:view_resource_planners, model.project)
-    end
-
-    def user_can_manage_public?
-      model.public? &&
-        user.allowed_in_project?(:manage_public_resource_planners, model.project)
-    end
+module ResourceAllocations
+  class UpdateContract < BaseContract
   end
 end

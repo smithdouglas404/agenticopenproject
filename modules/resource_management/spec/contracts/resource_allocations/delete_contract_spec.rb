@@ -28,36 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class BaseContract < ::ModelContract
-    def self.model
-      ResourcePlanner
+require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
+
+RSpec.describe ResourceAllocations::DeleteContract do
+  include_context "ModelContract shared context"
+
+  shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
+  shared_let(:owner) { create(:user) }
+  shared_let(:planner) { create(:resource_planner, project:, principal: owner) }
+
+  let(:resource_allocation) { build_stubbed(:resource_allocation, entity: planner, principal: owner) }
+  let(:contract) { described_class.new(resource_allocation, current_user) }
+
+  context "when user has allocate_user_resources" do
+    let(:current_user) do
+      create(:user, member_with_permissions: { project => %i[view_resource_planners allocate_user_resources] })
     end
 
-    attribute :name
+    it_behaves_like "contract is valid"
+  end
 
-    stored_attribute :start_date, store: :options
-    stored_attribute :end_date, store: :options
-
-    validate :user_allowed_to_manage
-
-    private
-
-    def user_allowed_to_manage
-      return if model.project.nil?
-      return if user_is_owner_with_view_permission? || user_can_manage_public?
-
-      errors.add :base, :error_unauthorized
+  context "when user only has view_resource_planners" do
+    let(:current_user) do
+      create(:user, member_with_permissions: { project => %i[view_resource_planners] })
     end
 
-    def user_is_owner_with_view_permission?
-      model.principal == user &&
-        user.allowed_in_project?(:view_resource_planners, model.project)
-    end
+    it_behaves_like "contract user is unauthorized"
+  end
 
-    def user_can_manage_public?
-      model.public? &&
-        user.allowed_in_project?(:manage_public_resource_planners, model.project)
-    end
+  context "when user has no permissions on the project" do
+    let(:current_user) { create(:user) }
+
+    it_behaves_like "contract user is unauthorized"
   end
 end

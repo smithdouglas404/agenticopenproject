@@ -28,36 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class BaseContract < ::ModelContract
-    def self.model
-      ResourcePlanner
-    end
+class ResourceAllocation < ApplicationRecord
+  belongs_to :entity, polymorphic: true, optional: false
+  belongs_to :principal, class_name: "User", optional: true, inverse_of: :resource_allocations
 
-    attribute :name
+  serialize :user_filter, coder: Queries::Serialization::Filters.new(UserQuery)
 
-    stored_attribute :start_date, store: :options
-    stored_attribute :end_date, store: :options
+  enum :state, {
+    requested: "requested",
+    allocated: "allocated",
+    rejected: "rejected",
+    canceled: "canceled"
+  }
 
-    validate :user_allowed_to_manage
+  validates :state, :start_date, :end_date, presence: true
+  validates :allocated_time,
+            presence: true,
+            numericality: { only_integer: true, greater_than: 0 }
 
-    private
+  validate :end_date_after_start_date
 
-    def user_allowed_to_manage
-      return if model.project.nil?
-      return if user_is_owner_with_view_permission? || user_can_manage_public?
+  # Resource allocations are scoped to whatever project their (polymorphic)
+  # entity belongs to. Authorization in the contracts hangs off this.
+  def project
+    entity&.project
+  end
 
-      errors.add :base, :error_unauthorized
-    end
+  private
 
-    def user_is_owner_with_view_permission?
-      model.principal == user &&
-        user.allowed_in_project?(:view_resource_planners, model.project)
-    end
+  def end_date_after_start_date
+    return if start_date.blank? || end_date.blank?
+    return if end_date > start_date
 
-    def user_can_manage_public?
-      model.public? &&
-        user.allowed_in_project?(:manage_public_resource_planners, model.project)
-    end
+    errors.add :end_date, :greater_than_start_date
   end
 end

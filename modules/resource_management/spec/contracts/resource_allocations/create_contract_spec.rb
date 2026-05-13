@@ -28,36 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class BaseContract < ::ModelContract
-    def self.model
-      ResourcePlanner
+require "spec_helper"
+require_relative "shared_contract_examples"
+
+RSpec.describe ResourceAllocations::CreateContract do
+  include_context "ModelContract shared context"
+
+  it_behaves_like "resource allocation contract" do
+    let(:contract) { described_class.new(resource_allocation, current_user) }
+  end
+
+  describe "writable attributes" do
+    let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
+    let(:current_user) do
+      create(:user, member_with_permissions: { project => %i[view_resource_planners allocate_user_resources] })
+    end
+    let(:planner) { create(:resource_planner, project:, principal: current_user) }
+    let(:resource_allocation) { build_stubbed(:resource_allocation, entity: planner, principal: current_user) }
+    let(:contract) { described_class.new(resource_allocation, current_user) }
+
+    it "allows entity to be set" do
+      expect(contract.writable?(:entity)).to be(true)
     end
 
-    attribute :name
-
-    stored_attribute :start_date, store: :options
-    stored_attribute :end_date, store: :options
-
-    validate :user_allowed_to_manage
-
-    private
-
-    def user_allowed_to_manage
-      return if model.project.nil?
-      return if user_is_owner_with_view_permission? || user_can_manage_public?
-
-      errors.add :base, :error_unauthorized
-    end
-
-    def user_is_owner_with_view_permission?
-      model.principal == user &&
-        user.allowed_in_project?(:view_resource_planners, model.project)
-    end
-
-    def user_can_manage_public?
-      model.public? &&
-        user.allowed_in_project?(:manage_public_resource_planners, model.project)
+    it "allows principal, state, dates, allocated_time, and user_filter" do
+      %i[principal state start_date end_date allocated_time user_filter].each do |attr|
+        expect(contract.writable?(attr)).to be(true), "expected #{attr} to be writable"
+      end
     end
   end
 end

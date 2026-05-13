@@ -28,36 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class BaseContract < ::ModelContract
-    def self.model
-      ResourcePlanner
-    end
+FactoryBot.define do
+  factory :resource_allocation, class: "ResourceAllocation" do
+    entity factory: :resource_planner
+    principal factory: :user
+    state { "requested" }
+    start_date { Date.new(2026, 1, 5) }
+    end_date { Date.new(2026, 1, 9) }
+    allocated_time { 5 * 8 * 60 } # 5 days of 8 hours in minutes
+    user_filter { [] }
 
-    attribute :name
+    traits_for_enum :state
 
-    stored_attribute :start_date, store: :options
-    stored_attribute :end_date, store: :options
-
-    validate :user_allowed_to_manage
-
-    private
-
-    def user_allowed_to_manage
-      return if model.project.nil?
-      return if user_is_owner_with_view_permission? || user_can_manage_public?
-
-      errors.add :base, :error_unauthorized
-    end
-
-    def user_is_owner_with_view_permission?
-      model.principal == user &&
-        user.allowed_in_project?(:view_resource_planners, model.project)
-    end
-
-    def user_can_manage_public?
-      model.public? &&
-        user.allowed_in_project?(:manage_public_resource_planners, model.project)
+    trait :with_user_filter do
+      principal { nil }
+      transient do
+        job_title_custom_field do
+          UserCustomField.find_by(name: "Job title") ||
+            create(:user_custom_field, :list,
+                   name: "Job title",
+                   possible_values: ["Developer", "Designer", "Project Manager", "Product Manager"])
+        end
+      end
+      user_filter do
+        cf = job_title_custom_field
+        developer_option = cf.custom_options.find_by(value: "Developer")
+        [
+          {
+            "attribute" => cf.column_name,
+            "operator" => "=",
+            "values" => [developer_option.id.to_s]
+          }
+        ]
+      end
     end
   end
 end
