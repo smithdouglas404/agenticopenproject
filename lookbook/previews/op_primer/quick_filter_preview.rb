@@ -47,6 +47,12 @@ module OpPrimer
       render_with_template(locals: { query: })
     end
 
+    def select_panel_with_active_filter
+      query = meeting_query
+      query.where("project_id", "=", [Project.visible.first&.id.to_s].compact)
+      render_with_template(locals: { query: })
+    end
+
     private
 
     def meeting_query
