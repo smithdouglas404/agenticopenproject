@@ -51,13 +51,20 @@ module Wikis::Concerns
 
     MAX_PRELOAD_IDENTIFIERS = 500
 
-    # Mirrors the prefix character class of the inline-text macro matcher
-    # (lib/open_project/text_formatting/matchers/resource_links_matcher.rb).
-    # The trailing `(?!\w)` boundary on the semantic branch prevents
-    # `#PROJ-1abc` from incorrectly matching `#PROJ-1`; the numeric branch
-    # intentionally has no trailing boundary to preserve historic behaviour
-    # for inputs like `#13-blubb`.
-    WP_REF_RE = /(?:[[:space:],~>#\(\[\-]|^)#(?:(\d+)|([A-Z][A-Z0-9_]*-\d+)(?!\w))/ # rubocop:disable Style/RedundantRegexpEscape
+    # Mirrors the prefix character class of the inline-text macro matcher.
+    # The trailing `(?!\w)` on the semantic branch keeps `#PROJ-1abc` from
+    # matching `#PROJ-1`; the numeric branch deliberately has no trailing
+    # boundary to preserve historic behaviour for inputs like `#13-blubb`.
+    # rubocop:disable Style/RedundantRegexpEscape
+    WP_REF_RE = /
+      (?:[[:space:],~>\#\(\[\-]|^)\#
+      (?:
+        (\d+)
+        |
+        (#{WorkPackage::SemanticIdentifier::SEMANTIC_ID_PATTERN.source})(?!\w)
+      )
+    /x
+    # rubocop:enable Style/RedundantRegexpEscape
 
     private
 
