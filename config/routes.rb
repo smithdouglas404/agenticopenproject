@@ -988,6 +988,9 @@ Rails.application.routes.draw do
   end
 
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
+    collection do
+      get :configure_view_modal
+    end
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
     resources :working_hours, controller: "users/working_hours", except: [:index]
     resources :non_working_times, controller: "users/non_working_times", except: [:index] do

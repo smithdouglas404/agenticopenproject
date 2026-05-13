@@ -28,37 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-class Users::IndexPageHeaderComponent < ApplicationComponent
-  include OpTurbo::Streamable
-  include OpPrimer::ComponentHelpers
-  include ApplicationHelper
+class UserQueries::Static
+  DEFAULT = "active"
 
-  options :query
+  class << self
+    def query(id)
+      case id
+      when DEFAULT, nil
+        static_query_active
+      end
+    end
 
-  delegate :user_limit, to: :"OpenProject::Enterprise"
+    private
 
-  def breadcrumb_items
-    [{ href: admin_index_path, text: t("label_administration") },
-     { href: admin_settings_users_path, text: t(:label_user_and_permission) },
-     t(:label_user_plural)]
-  end
-
-  def configure_view_modal_path
-    helpers.configure_view_modal_users_path(query_params)
-  end
-
-  private
-
-  def query_params
-    { filters: helpers.params[:filters],
-      sortBy: helpers.params[:sortBy],
-      columns: current_columns }.compact_blank
-  end
-
-  def current_columns
-    return if query.nil?
-
-    cols = query.selects.map { |s| s.attribute.to_s }.join(" ")
-    cols.presence
+    def static_query_active
+      UserQuery.new(name: I18n.t(:status_active)) do |query|
+        query.where("status", "=", "active")
+        query.select(*Queries::Users::Selects::Default::KEYS, add_not_existing: false)
+        query.clear_changes_information
+      end
+    end
   end
 end

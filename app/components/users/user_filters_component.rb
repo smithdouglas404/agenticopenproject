@@ -28,37 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-class Users::IndexPageHeaderComponent < ApplicationComponent
-  include OpTurbo::Streamable
-  include OpPrimer::ComponentHelpers
-  include ApplicationHelper
+module Users
+  class UserFiltersComponent < Filter::FilterComponent
+    def turbo_requests? = true
 
-  options :query
+    def allowed_filters
+      super
+        .grep_v(Queries::Users::Filters::AnyNameAttributeFilter)
+        .grep_v(Queries::Users::Filters::BlockedFilter)
+        .sort_by(&:human_name)
+    end
 
-  delegate :user_limit, to: :"OpenProject::Enterprise"
+    protected
 
-  def breadcrumb_items
-    [{ href: admin_index_path, text: t("label_administration") },
-     { href: admin_settings_users_path, text: t(:label_user_and_permission) },
-     t(:label_user_plural)]
-  end
-
-  def configure_view_modal_path
-    helpers.configure_view_modal_users_path(query_params)
-  end
-
-  private
-
-  def query_params
-    { filters: helpers.params[:filters],
-      sortBy: helpers.params[:sortBy],
-      columns: current_columns }.compact_blank
-  end
-
-  def current_columns
-    return if query.nil?
-
-    cols = query.selects.map { |s| s.attribute.to_s }.join(" ")
-    cols.presence
+    def additional_filter_attributes(filter)
+      case filter
+      when Queries::Users::Filters::GroupFilter
+        {
+          autocomplete_options: {
+            component: "opce-group-autocompleter",
+            resource: "groups"
+          }
+        }
+      else
+        super
+      end
+    end
   end
 end

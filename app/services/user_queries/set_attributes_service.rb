@@ -28,37 +28,47 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-class Users::IndexPageHeaderComponent < ApplicationComponent
-  include OpTurbo::Streamable
-  include OpPrimer::ComponentHelpers
-  include ApplicationHelper
-
-  options :query
-
-  delegate :user_limit, to: :"OpenProject::Enterprise"
-
-  def breadcrumb_items
-    [{ href: admin_index_path, text: t("label_administration") },
-     { href: admin_settings_users_path, text: t(:label_user_and_permission) },
-     t(:label_user_plural)]
-  end
-
-  def configure_view_modal_path
-    helpers.configure_view_modal_users_path(query_params)
-  end
-
+class UserQueries::SetAttributesService < BaseServices::SetAttributes
   private
 
-  def query_params
-    { filters: helpers.params[:filters],
-      sortBy: helpers.params[:sortBy],
-      columns: current_columns }.compact_blank
+  def set_attributes(params)
+    set_filters(params.delete(:filters))
+    set_order(params.delete(:orders))
+    set_select(params.delete(:selects))
+
+    super
   end
 
-  def current_columns
-    return if query.nil?
+  def set_default_attributes(_params)
+    set_default_selects
+  end
 
-    cols = query.selects.map { |s| s.attribute.to_s }.join(" ")
-    cols.presence
+  def set_default_selects
+    return if model.selects.any?
+
+    model.select(*Queries::Users::Selects::Default::KEYS, add_not_existing: false)
+  end
+
+  def set_filters(filters)
+    return unless filters
+
+    model.filters.clear
+    filters.each do |filter|
+      model.where(filter[:attribute], filter[:operator], filter[:values])
+    end
+  end
+
+  def set_select(selects)
+    return unless selects
+
+    model.selects.clear
+    model.select(*selects, add_not_existing: false)
+  end
+
+  def set_order(orders)
+    return unless orders
+
+    model.orders.clear
+    model.order(orders.to_h { |o| [o[:attribute], o[:direction]] })
   end
 end

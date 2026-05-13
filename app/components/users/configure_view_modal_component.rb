@@ -28,37 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-class Users::IndexPageHeaderComponent < ApplicationComponent
-  include OpTurbo::Streamable
-  include OpPrimer::ComponentHelpers
-  include ApplicationHelper
+module Users
+  class ConfigureViewModalComponent < ApplicationComponent
+    include OpTurbo::Streamable
 
-  options :query
+    MODAL_ID = "op-user-list-configure-dialog"
+    QUERY_FORM_ID = "op-user-list-configure-query-form"
+    COLUMN_HTML_NAME = "columns"
+    COLUMN_HTML_ID = "columns-select"
 
-  delegate :user_limit, to: :"OpenProject::Enterprise"
+    options :query
 
-  def breadcrumb_items
-    [{ href: admin_index_path, text: t("label_administration") },
-     { href: admin_settings_users_path, text: t(:label_user_and_permission) },
-     t(:label_user_plural)]
-  end
+    def selectable_columns
+      @selectable_columns ||= UserQuery.new
+                                       .available_selects
+                                       .reject { |c| text_format_custom_field?(c) }
+                                       .sort_by(&:caption)
+                                       .map { |c| { id: c.attribute, name: c.caption } }
+    end
 
-  def configure_view_modal_path
-    helpers.configure_view_modal_users_path(query_params)
-  end
+    def selected_columns
+      @selected_columns ||= query.selects
+                                 .reject { |c| text_format_custom_field?(c) }
+                                 .map { |c| { id: c.attribute, name: c.caption } }
+    end
 
-  private
+    private
 
-  def query_params
-    { filters: helpers.params[:filters],
-      sortBy: helpers.params[:sortBy],
-      columns: current_columns }.compact_blank
-  end
-
-  def current_columns
-    return if query.nil?
-
-    cols = query.selects.map { |s| s.attribute.to_s }.join(" ")
-    cols.presence
+    def text_format_custom_field?(select)
+      select.is_a?(Queries::Users::Selects::CustomField) &&
+        select.custom_field&.field_format == "text"
+    end
   end
 end
