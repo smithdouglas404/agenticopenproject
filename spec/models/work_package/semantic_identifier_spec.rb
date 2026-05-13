@@ -394,6 +394,11 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       expect(WorkPackage.where_display_id_in("MYPROJ-1")).to contain_exactly(work_package)
     end
 
+    it "accepts identifiers as varargs" do
+      expect(WorkPackage.where_display_id_in("MYPROJ-1", "MYPROJ-2"))
+        .to contain_exactly(work_package, work_package2)
+    end
+
     it "resolves a single numeric string" do
       expect(WorkPackage.where_display_id_in([work_package.id.to_s])).to contain_exactly(work_package)
     end

@@ -111,11 +111,12 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   # semantic strings may be freely mixed; unknown values produce no match
   # rather than poisoning the rest of the set.
   #
-  # @param values [Array<String, Integer>, String, Integer] one or many
-  #   display ids. A bare String/Integer is wrapped via Array() so callers
-  #   can pass `where_display_id_in("PROJ-1")` and get a one-element relation.
-  def where_display_id_in(values)
-    values = Array(values).map(&:to_s)
+  # @param values [String, Integer, Array<String, Integer>] one or more
+  #   display ids. Pass scalars (`where_display_id_in("PROJ-1")`), varargs
+  #   (`where_display_id_in("PROJ-1", "PROJ-2")`), or a pre-built array
+  #   (`where_display_id_in(ids)`) interchangeably.
+  def where_display_id_in(*values)
+    values = values.flatten(1).compact.map(&:to_s)
     return none if values.empty?
 
     semantic, numeric = values.partition { semantic_id?(it) }
