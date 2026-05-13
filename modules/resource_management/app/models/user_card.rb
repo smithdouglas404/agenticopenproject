@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserCardView < PersistedView
+class UserCard < PersistedView
   SECONDARY_INFO = %w[role email login none].freeze
   TAG_SOURCES    = %w[groups roles none].freeze
   CARD_SIZES     = %w[compact default expanded].freeze

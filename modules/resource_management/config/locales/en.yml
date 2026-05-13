@@ -5,6 +5,7 @@ en:
       resource_planner: "Resource Planner"
       resource_allocation: "Resource Allocation"
       resource_work_package_list: "Work packages list"
+      user_card: "User cards"
     attributes:
       resource_planner:
         name: "Name"
