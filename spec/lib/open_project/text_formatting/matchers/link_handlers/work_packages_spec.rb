@@ -297,32 +297,4 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
       expect(rendered).to include("version#PROJ-1")
     end
   end
-
-  describe "preload cap on user-controlled input",
-           with_flag: { semantic_work_package_ids: true },
-           with_settings: { work_packages_identifier: "semantic" } do
-    # The doc-level preload reads identifiers out of arbitrary user-pasted
-    # text and folds them into a single `WHERE id IN (...)` IN-list. Without
-    # a cap, a multi-megabyte comment could push thousands of values into
-    # one query. The cap keeps the worst-case bounded; references past the
-    # cap fall through to the literal-text / numeric-fallback render paths.
-    include_context "with author signed in"
-    let(:project) { create(:project, identifier: "CAPPROJ") }
-    let(:matcher) { OpenProject::TextFormatting::Matchers::ResourceLinksMatcher }
-
-    it "preloads at most MAX_PRELOAD_IDENTIFIERS distinct identifiers per render" do
-      stub_const("#{matcher.name}::MAX_PRELOAD_IDENTIFIERS", 2)
-      wps = create_list(:work_package, 4, project:, author:)
-      wps.each(&:allocate_and_register_semantic_id)
-      ids_text = wps.map { |wp| "##{wp.id}" }.join(" ")
-
-      recorder = ActiveRecord::QueryRecorder.new { format_text(ids_text) }
-      in_list_sizes = recorder.log
-                              .grep(/FROM "work_packages".*WHERE.*"work_packages"\."id" IN/i)
-                              .map { |sql| sql.scan(/\$\d+/).uniq.size }
-
-      expect(in_list_sizes).to all(be <= 2),
-                               "expected the WP IN-list to be capped at 2, got sizes: #{in_list_sizes}"
-    end
-  end
 end

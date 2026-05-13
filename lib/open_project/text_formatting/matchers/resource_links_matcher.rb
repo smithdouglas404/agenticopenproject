@@ -72,11 +72,6 @@ module OpenProject::TextFormatting
       WORK_PACKAGES_LOOKUP_KEY = :text_formatting_work_packages_lookup
       private_constant :WORK_PACKAGES_LOOKUP_KEY
 
-      # Cap the preload IN-list so a multi-megabyte user-pasted comment
-      # can't push thousands of values into one SQL query. References past
-      # the cap fall through to the link handler's cache-miss path.
-      MAX_PRELOAD_IDENTIFIERS = 500
-
       include ::OpenProject::TextFormatting::Truncation
       # used for the work package quick links
       include WorkPackagesHelper
@@ -168,9 +163,7 @@ module OpenProject::TextFormatting
 
           node.to_s.scan(regexp) do
             extract_work_package_identifier(Regexp.last_match)&.then { identifiers << it }
-            break if identifiers.size >= MAX_PRELOAD_IDENTIFIERS
           end
-          break if identifiers.size >= MAX_PRELOAD_IDENTIFIERS
         end
         identifiers
       end
