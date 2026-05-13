@@ -124,9 +124,9 @@ Guides to setting this for your installation method:
 
 *   Packaged installations: This secret is already being generated automatically. You are not affected
 
-*   Docker-compose: Add `SECRET_KEY_BASE=<your-secret-key-base>` to your .env file. See [https://www.openproject.org/docs/installation-and-operations/installation/docker-compose/](https://www.openproject.org/docs/installation-and-operations/installation/docker-compose/) for more information.
+*   Docker-compose: Add `SECRET_KEY_BASE=<your-secret-key-base>` to your .env file. See [docker-compose](https://www.openproject.org/docs/installation-and-operations/installation/docker-compose/) for more information.
 
-*   Docker All-in-One: Add `SECRET_KEY_BASE=<your-secret-key-base>` to your docker run call. See [https://www.openproject.org/docs/installation-and-operations/installation/docker/](https://www.openproject.org/docs/installation-and-operations/installation/docker/) for more information.
+*   Docker All-in-One: Add `SECRET_KEY_BASE=<your-secret-key-base>` to your docker run call. See [docker](../../installation-and-operations/installation/docker/) for more information.
 
 *   Helm-charts: [Version 13.5.4](https://github.com/opf/helm-charts/releases/) and higher of the helm chart will automatically create a kubernetes secret using a random string.
 
