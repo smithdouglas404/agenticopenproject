@@ -31,8 +31,8 @@ jobs:
           cache-dependency-path: extensions/op-blocknote-hocuspocus/package-lock.json
 
       - name: Install Dependencies
-        id: npm-i
-        run: npm i
+        id: npm-ci
+        run: npm ci
 
       - name: run tests
         id: npm-test
