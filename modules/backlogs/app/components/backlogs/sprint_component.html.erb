@@ -39,7 +39,7 @@ See COPYRIGHT and LICENSE files for more details.
           },
           params: all_backlogs_params,
           current_user:,
-          data: { test_selector: "sprint-#{sprint.id}" }
+          test_selector: "sprint-#{sprint.id}"
         )
       ) do |list| %>
     <% list.with_header(title: sprint.name) do |header| %>
