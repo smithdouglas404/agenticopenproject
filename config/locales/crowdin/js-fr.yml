@@ -202,16 +202,7 @@ fr:
           text: "[Placeholder] Calendrier embarqué"
     admin:
       type_form:
-        custom_field: Champ personnalisé
-        inactive: Inactif
-        drag_to_activate: Faire glisser les champs ici pour les activer
-        add_group: Ajouter un groupe d'attributs
-        add_table: Ajouter un tableau des lots de travaux associés
         edit_query: Modifier la requête
-        new_group: Nouveau groupe
-        delete_group: Supprimer le groupe
-        remove_attribute: Retirer du groupe
-        reset_to_defaults: Rétablir les valeurs par défaut
       working_days:
         calendar:
           empty_state_header: Jours non travaillés
@@ -614,18 +605,6 @@ fr:
     breadcrumb: Fil d'Ariane
     text_data_lost: Toutes les données saisies seront perdues.
     text_user_wrote: "%{value} écrit:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Le nom %{group} est utilisé plus d'une fois. Les noms de groupe doivent être uniques.
-        error_no_table_configured: Veuillez configurer un tableau pour %{group}.
-        reset_title: Réinitialiser la configuration du formulaire
-        confirm_reset: 'Avertissement : voulez-vous vraiment réinitialiser la configuration du formulaire ? Ceci va réinitialiser les attributs à leur groupe par défaut et désactiver TOUS les champs personnalisés.
-
-          '
-        upgrade_to_ee: Mettre à niveau vers la version Entreprise autohébergée
-        upgrade_to_ee_text: Waouh ! Si vous avez besoin de cette fonctionnalité, vous êtes un véritable pro ! Cela vous dérangerait-il de soutenir les développeurs Open Source en devenant un client de la version Entreprise ?
-        more_information: Plus d'informations
-        nevermind: Peu importe
     time_entry:
       work_package_required: Nécessite d'abord la sélection d'un lot de travaux.
       title: Consigner du temps

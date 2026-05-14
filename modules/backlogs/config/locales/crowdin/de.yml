@@ -113,26 +113,26 @@ de:
       title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
       text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
     bucket_component:
-      blankslate_title: Backlog bucket is empty
-      blankslate_description: Drag items here to add them.
-      label_actions: Backlog bucket actions
+      blankslate_title: Backlog Bucket ist leer
+      blankslate_description: Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
+      label_actions: Backlog Bucket Aktionen
       action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
+        edit_backlog_bucket: Backlog Bucket bearbeiten
+        delete_backlog_bucket: Backlog Bucket löschen
     backlog_bucket_destroy_modal_component:
       title: Backlog Bucket löschen?
       details: Der Backlog Bucket '%{name}' wird gelöscht und alle Arbeitspakete werden in den Eingangs Backlog verschoben. Kein Arbeitspaket wird gelöscht.
     sprint_component:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
-      label_actions: Sprint actions
+      label_actions: Sprint-Aktionen
       label_start_sprint: Start
-      label_complete_sprint: Complete
-      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
-      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      label_complete_sprint: Abgeschlossen
+      start_sprint_disabled_reason_active_sprint: Ein anderer Sprint ist bereits aktiv.
+      start_sprint_disabled_reason_missing_dates: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
       action_menu:
-        edit_sprint: Edit sprint
-        add_work_package: Add work package
+        edit_sprint: Sprint bearbeiten
+        add_work_package: Arbeitspaket hinzufügen
     inbox_component:
       blankslate_title: Eingangs-Backlog ist leer
       blankslate_description: Alle offenen Arbeitspakete in diesem Projekt werden automatisch hier angezeigt.
@@ -183,7 +183,7 @@ de:
     story_points_ideal: Story-Points (ideal)
   label_backlog: Backlog
   label_backlog_bucket_edit: Backlog Bucket bearbeiten
-  label_backlog_bucket_new: Neuer Backlog-Bucket
+  label_backlog_bucket_new: Neuer Backlog Bucket
   label_inbox: Posteingang
   label_backlogs: Backlogs
   label_burndown_chart: Burndown-Diagramm

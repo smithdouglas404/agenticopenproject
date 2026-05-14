@@ -62,7 +62,7 @@ ru:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
+                one: Есть один пакет работ, который не был завершен в этом спринте.
                 few: Есть %{count} пакета работ, которые не были завершены в этом спринте.
                 many: Есть %{count} пакетов работ, которые не были завершены в этом спринте.
                 other: Есть %{count} пакетов работ, которые не были завершены в этом спринте.

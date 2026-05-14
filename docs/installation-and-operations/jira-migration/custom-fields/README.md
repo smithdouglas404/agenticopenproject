@@ -34,8 +34,8 @@ The following Jira custom field types are imported:
 | Cascading select             | Hierarchy or List      | 
 | Labels                       | List                   | 
 
-Read more about [OpenProject custom field formats](../../../system-admin-guide/custom-fields/README.md#custom-field-formats) and 
-the [Hierarchy format](../../../system-admin-guide/custom-fields/README.md#hierarchy-custom-field-enterprise-add-on) in particular in the system administration guide.
+Read more about [OpenProject custom field formats](../../../system-admin-guide/custom-fields/#custom-field-formats) and 
+the [Hierarchy format](../../../system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on) in particular in the system administration guide.
 
 ## Currently unsupported field types
 

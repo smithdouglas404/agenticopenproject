@@ -97,9 +97,14 @@ RSpec.describe UserCardView do
   end
 
   describe "#results" do
-    let!(:alice)  { create(:user, firstname: "Alice", lastname: "Anderson") }
+    # UserQuery scopes to users visible to the current user. Granting alice
+    # :view_all_principals lets her see every user without introducing an
+    # extra admin record that would pollute `contain_exactly` expectations.
+    let!(:alice)  { create(:user, firstname: "Alice", lastname: "Anderson", global_permissions: %i[view_all_principals]) }
     let!(:bob)    { create(:user, firstname: "Bob",   lastname: "Brown") }
     let!(:locked) { create(:locked_user, firstname: "Carol", lastname: "Clark") }
+
+    before { login_as(alice) }
 
     it "returns nil when there is no query" do
       expect(view.results).to be_nil

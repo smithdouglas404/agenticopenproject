@@ -9,12 +9,24 @@ zh-CN:
         default_view_class_name: 默认视图
         public: 公开
         favorite: 收藏夹
+      resource_allocation:
+        entity: Entity
+        principal: Assignee
+        state: State
+        start_date: Start date
+        end_date: Finish date
+        allocated_time: Allocated time
+        user_filter: User filter
     errors:
       models:
         resource_planner:
           attributes:
             end_date:
               greater_than_start_date: 必须在开始日期之后。
+        resource_allocation:
+          attributes:
+            end_date:
+              greater_than_start_date: must be after the start date.
   plugin_openproject_resource_management:
     name: OpenProject 资源管理
     description: 提供资源管理和能力规划。
@@ -25,6 +37,10 @@ zh-CN:
     '
   permission_manage_public_resource_planners: 管理公开的资源规划工具
   permission_manage_public_resource_planners_explanation: '允许用户创建和管理公开的资源规划工具。用户可以查看、创建、管理和发布自己的资源规划工具，但不可以查看其他用户创建的未公开共享的资源规划工具。
+
+    '
+  permission_allocate_user_resources: Allocate user resources
+  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
 
     '
   label_resource_management: 资源规划

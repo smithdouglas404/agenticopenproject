@@ -202,16 +202,7 @@ sv:
           text: "[Placeholder] Inbäddad kalender"
     admin:
       type_form:
-        custom_field: Anpassat fält
-        inactive: Inaktiv
-        drag_to_activate: Dra fält härifrån för att aktivera dom
-        add_group: Lägg till attributgrupp
-        add_table: Lägg till tabell med relaterade arbetspaket
         edit_query: Redigera fråga
-        new_group: Ny grupp
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Återställ standardinställningar
       working_days:
         calendar:
           empty_state_header: Arbetsfria dagar
@@ -614,18 +605,6 @@ sv:
     breadcrumb: Breadcrumb
     text_data_lost: Alla inmatade data kommer att gå förlorade.
     text_user_wrote: "%{value} skrev:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Namnet %{group} används redan. Gruppnamn måste vara unika.
-        error_no_table_configured: Konfigurera en tabell för %{group}.
-        reset_title: Återställ formulärinställningarna
-        confirm_reset: 'Varning: Är du säker på att du vill återställa formulärinställningarna? Detta kommer att återställa attributen till deras standardgrupper, avmarkera kryssrutorna för synlighet samt inaktivera samtliga anpassade fält.
-
-          '
-        upgrade_to_ee: Uppgradera till Enterprise on-premise-utgåva
-        upgrade_to_ee_text: Wow! Om du behöver det här tillägget är du ett superproffs! Skulle du kunna stödja oss OpenSource utvecklare genom att bli en klient till Enterprise utgåvan?
-        more_information: Mer information
-        nevermind: Det var inget
     time_entry:
       work_package_required: Kräver att man först väljer ett arbetspaket.
       title: Logga tid

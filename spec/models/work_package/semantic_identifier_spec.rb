@@ -394,6 +394,11 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       expect(WorkPackage.where_display_id_in("MYPROJ-1")).to contain_exactly(work_package)
     end
 
+    it "accepts identifiers as varargs" do
+      expect(WorkPackage.where_display_id_in("MYPROJ-1", "MYPROJ-2"))
+        .to contain_exactly(work_package, work_package2)
+    end
+
     it "resolves a single numeric string" do
       expect(WorkPackage.where_display_id_in([work_package.id.to_s])).to contain_exactly(work_package)
     end
@@ -455,6 +460,62 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     context "with a numeric string" do
       it "falls through to standard AR find" do
         expect(WorkPackage.find_by_display_id!(work_package.id.to_s)).to eq(work_package)
+      end
+    end
+  end
+
+  describe "ID_ROUTE_CONSTRAINT" do
+    # Rails wraps route-constraint regexps with `\A…\z` when matching a path
+    # segment, so the spec uses an anchored regex to model the way the
+    # constant is actually used. This pins the composition with
+    # SEMANTIC_ID_PATTERN so a future change to the upstream prefix or
+    # sequence shape can't silently widen what the routes accept.
+    let(:anchored) { /\A(?:#{described_class::ID_ROUTE_CONSTRAINT.source})\z/ }
+
+    it "matches numeric work package ids" do
+      expect(anchored.match?("123")).to be true
+    end
+
+    it "matches semantic work package identifiers" do
+      expect(anchored.match?("PROJ-7")).to be true
+    end
+
+    it "rejects lowercased semantic shapes" do
+      expect(anchored.match?("proj-7")).to be false
+    end
+  end
+
+  describe ".numeric_id? and .semantic_id?" do
+    # `numeric_id?` answers a shape question (canonical numeric ID),
+    # `semantic_id?` answers a routing question (needs identifier/alias
+    # lookup). For Strings the two are mutually exclusive; Integers are
+    # numeric-only (no string-lookup routing applies).
+    [
+      ["123",     :numeric],
+      ["0",       :numeric],
+      [" 123 ",   :numeric],
+      [123,       :numeric],
+      [0,         :numeric],
+      ["0123",    :semantic],
+      ["00",      :semantic],
+      ["PROJ-1",  :semantic],
+      ["abc",     :semantic],
+      ["",        :semantic],
+      [nil,       :neither],
+      [{},        :neither]
+    ].each do |value, classification|
+      it "routes #{value.inspect} to #{classification}" do
+        case classification
+        when :numeric
+          expect(described_class.numeric_id?(value)).to be true
+          expect(described_class.semantic_id?(value)).to be false
+        when :semantic
+          expect(described_class.semantic_id?(value)).to be true
+          expect(described_class.numeric_id?(value)).to be false
+        when :neither
+          expect(described_class.numeric_id?(value)).to be false
+          expect(described_class.semantic_id?(value)).to be false
+        end
       end
     end
   end

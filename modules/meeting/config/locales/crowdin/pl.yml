@@ -448,7 +448,7 @@ pl:
     widgets:
       blankslate:
         heading: Brak nadchodzących spotkań
-        description: Tutaj pojawią się nadchodzące spotkania, w których jesteś organizatorem lub uczestnikiem.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: Wyświetl wszystkie spotkanie
   meeting_section:
     untitled_title: Sekcja bez nazwy

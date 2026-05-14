@@ -438,7 +438,7 @@ it:
     widgets:
       blankslate:
         heading: Nessuna riunione imminente
-        description: Le prossime riunioni di cui sei organizzatore o partecipante appariranno qui.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: Visualizza tutte le riunioni
   meeting_section:
     untitled_title: Sezione senza titolo

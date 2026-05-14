@@ -247,8 +247,8 @@ fr:
               label_info: Veuillez noter que cet outil d'importation est en version bêta et qu'il ne peut pas importer tous les types de données. Voici un résumé de ce que l'instance Jira hôte offre pour l'importation et de ce que cet outil est capable d'importer pour le moment.
               description: Sélectionnez les données que vous souhaitez importer parmi les données disponibles extraites de l'instance Jira hôte.
               label_supported_data: Données prises en charge
-              label_coming_soon: Coming soon (Q2 2026)
-              label_coming_later: Coming later
+              label_coming_soon: Prochainement (T2 2026)
+              label_coming_later: À venir
               label_available_server_data: Données disponibles sur %{server_info}
               button_select_projects: Sélectionnez les projets à importer
               button_continue: Continuer
@@ -465,8 +465,8 @@ fr:
         label: 'Rôle : %{role}'
         no_role: Sélectionner un rôle
         roles:
-          one: One role selected
-          other: "%{count} roles selected"
+          one: Un rôle sélectionné
+          other: "%{count} rôles sélectionnés"
       blankslate:
         title: Aucune transition de statut configurée
         description: Ajouter des statuts pour commencer à configurer des flux de travail pour ce rôle
@@ -1332,6 +1332,37 @@ fr:
     edit:
       form_configuration:
         tab: Configuration du formulaire
+        label_group: Group
+        reset_to_defaults: Reset to defaults
+        add_attribute_group: Add attribute group
+        add_query_group: Add table of related work packages
+        delete_group: Delete group
+        remove_attribute: Remove from group
+        drag_to_activate: Drag fields from here to activate them
+        drag_to_reorder: Drag to reorder
+        edit_query: Edit query
+        custom_field: Custom field
+        filter_inactive: Filter attributes
+        inactive_attributes_heading: Inactive attributes
+        no_inactive_attributes: No inactive attributes
+        blankslate_title: No groups yet
+        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        group_actions: Group actions
+        rename_group: Rename group
+        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
+        group_name_label: Group name
+        row_actions: Row actions
+        query_group_label: Work packages table
+        empty_group_hint: Drag attributes here
+        invalid_attribute_groups: The form configuration payload is invalid.
+        invalid_query: The embedded query configuration is invalid.
+        not_found: The requested form configuration item could not be found.
+        untitled_group: Untitled group
+        reset_title: Reset form configuration
+        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+
+          '
       projects:
         tab: Projets
         enable_all: Activer pour tous les projets
@@ -1432,8 +1463,8 @@ fr:
     bulk_delete_dialog:
       title: Supprimer %{count} lots de travaux
       heading: Supprimer définitivement ces %{count} lots de travaux ?
-      description: 'Les lots de travaux suivants, y compris les enfants et toutes les données associées, seront définitivement supprimés :'
-      description_with_children: 'Les lots de travaux suivants, y compris les lots de travaux enfants, et toutes les données associées seront définitivement supprimés :'
+      description: 'Les lots de travaux suivants et toutes les données qui y sont associées seront définitivement supprimés :'
+      description_with_children: 'Les lots de travaux suivants, y compris les enfants et toutes les données associées, seront définitivement supprimés :'
       confirm_children_deletion: Je reconnais que tous les lots de travaux sélectionnés et leurs enfants seront définitivement supprimés.
       cross_project_warning: 'Ces lots de travaux s''étendent sur plusieurs projets : %{projects}'
       children_label: 'Les enfants suivants seront également supprimés :'
@@ -2407,7 +2438,7 @@ fr:
               attribute_unknown_name: 'Attribut du lot de travaux invalide : %{attribute}'
               duplicate_group: Le nom de groupe "%{group}" est utilisé plus d'une fois. Les noms de groupe doivent être uniques.
               query_invalid: 'La requête intégrée "%{group}" est invalide : %{details}'
-              group_without_name: Les groupes sans nom ne sont pas autorisés.
+              group_without_name: Group name can't be blank.
             patterns:
               invalid_tokens: Un ou plusieurs attributs dans le champ ne sont pas valides. Veuillez corriger les attributs avant d'enregistrer.
         user:
@@ -2540,7 +2571,7 @@ fr:
       unsupported_storage_type: n'est pas un type de stockage pris en charge.
       storage_error: Une erreur s'est produite lors de la connexion à l'espace de stockage.
       invalid_input: L'entrée n'est pas valide.
-      invalid_child_for_parent: is not allowed as a parent for this view type.
+      invalid_child_for_parent: n'est pas autorisé en tant que parent pour ce type de vue.
   activity:
     item:
       created_by_on: créé par %{user} le %{datetime}
@@ -3419,22 +3450,22 @@ fr:
     report_component:
       checks:
         failures:
-          one: "%{count} check failed"
-          other: "%{count} checks failed"
-        success: All checks passed
+          one: "%{count} vérification a échoué"
+          other: "%{count} vérifications ont échoué"
+        success: Toutes les vérifications ont été validées
         warnings:
-          one: "%{count} check returned a warning"
-          other: "%{count} checks returned a warning"
+          one: "%{count} vérification a renvoyé un avertissement"
+          other: "%{count} vérifications ont renvoyé un avertissement"
       summary:
-        failure: Some checks failed and the system does not work as expected.
-        success: All connections and systems are working as expected.
-        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+        failure: Certaines vérifications ont échoué et le système ne fonctionne pas comme prévu.
+        success: Toutes les connexions et les systèmes fonctionnent comme prévu.
+        warning: Certaines vérifications ont renvoyé un avertissement. Cela peut entraîner un comportement inattendu.
     result_component:
       status:
-        failed: Failed
-        passed: Passed
-        skipped: Skipped
-        warning: Warning
+        failed: Échec
+        passed: Approuvé
+        skipped: Ignoré
+        warning: Avertissement
   homescreen:
     additional:
       projects: Les projets visibles les plus récents de cette instance.
@@ -3736,7 +3767,7 @@ fr:
   label_age: Âge
   label_ago: il y a
   label_all: tous
-  label_all_uppercase: All
+  label_all_uppercase: Tout
   label_all_time: tout le temps
   label_all_words: Tous les mots
   label_all_open_wps: Tous les ouverts
@@ -4491,7 +4522,7 @@ fr:
       you_have: Vous avez
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} mentioned you in %{id} - %{subject}"
+      subject: "%{user_name} vous a mentionné(e) dans %{id} - %{subject}"
     notification:
       center: Vers le centre de notifications
       see_in_center: Voir le commentaire dans le centre de notifications
@@ -4529,7 +4560,7 @@ fr:
         allowed_actions_html: 'Vous disposez des autorisations suivantes sur ce lot de travaux : %{allowed_actions}. Cela peut changer en fonction de votre rôle dans le projet et de vos autorisations.'
         create_account: Pour accéder à ce lot de travaux, vous aurez besoin de créer et activer un compte sur %{instance}.
         open_work_package: Ouvrir ce lot de travaux
-        subject: Work package %{id} was shared with you
+        subject: Le lot de travaux %{id} a été partagé avec vous
         enterprise_text: Partagez les lots de travaux avec des utilisateurs qui ne sont pas membres du projet.
         summary:
           user: "%{user} a partagé un lot de travaux avec vous avec les droits %{role_rights}"
@@ -4747,11 +4778,11 @@ fr:
           label_actions: Actions du lot de travaux
       work_package_card_list_component:
         header:
-          label_actions: Open menu
+          label_actions: Ouvrir le menu
           label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+            zero: Aucun lot de travaux
+            one: "%{count} lot de travaux"
+            other: "%{count} lots de travaux"
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages
@@ -5074,7 +5105,7 @@ fr:
 
     '
   setting_after_login_default_redirect_url: Après la redirection de connexion
-  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
+  setting_after_login_default_redirect_url_example_html: 'Définissez un chemin par défaut pour rediriger les utilisateurs après leur connexion, si aucun lien de retour n''est fourni. Les utilisateurs sont redirigés vers la page d''accueil si ce champ n''est pas défini. <br/> Exemple : %{example_code}
 
     '
   setting_apiv3_cors_title: Partage croisé des ressources (CORS)
@@ -5624,7 +5655,7 @@ fr:
   text_project_identifier_format: Doit commencer par une lettre minuscule. Seules les lettres minuscules (a-z), les chiffres, les tirets et les traits de soulignement sont autorisés.
   text_reassign: 'Réaffecter au lot de travaux :'
   text_regexp_multiline: L'expression régulière est appliquée en mode multi-ligne, e.g. ^---\\s+
-  text_rename_wiki_page: Rename wiki page
+  text_rename_wiki_page: Renommer la page wiki
   text_repository_usernames_mapping: |-
     Définir ou modifier les associations entre les utilisateurs d'OpenProject et les utilisateurs trouvés dans le dépôt.
     Les utilisateurs ayant des noms ou des adresses e-mail identiques sont automatiquement associés.
@@ -6068,8 +6099,8 @@ fr:
 
       '
     confirm_revoke_my_application:
-      one: Do you really want to remove this application? This will revoke one token active for it.
-      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      one: Voulez-vous vraiment supprimer cette demande ? Cela aura pour effet de révoquer un jeton actif associé.
+      other: Voulez-vous vraiment supprimer cette demande ? Cela aura pour effet de révoquer %{count} jetons actifs associés.
     authorization_error: Une erreur d'autorisation s'est produite.
     my_registered_applications: Applications OAuth enregistrées
   oauth_client:

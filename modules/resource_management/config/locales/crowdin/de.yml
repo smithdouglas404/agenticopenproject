@@ -9,12 +9,24 @@ de:
         default_view_class_name: Standardansicht
         public: Öffentlich
         favorite: Favorit
+      resource_allocation:
+        entity: Entity
+        principal: Assignee
+        state: State
+        start_date: Start date
+        end_date: Finish date
+        allocated_time: Allocated time
+        user_filter: User filter
     errors:
       models:
         resource_planner:
           attributes:
             end_date:
               greater_than_start_date: muss nach dem Anfangstermin liegen.
+        resource_allocation:
+          attributes:
+            end_date:
+              greater_than_start_date: must be after the start date.
   plugin_openproject_resource_management:
     name: OpenProject Ressourcenmanagement
     description: Bietet Ressourcenmanagement und Kapazitätsplanung.
@@ -25,6 +37,10 @@ de:
     '
   permission_manage_public_resource_planners: Öffentliche Ressourcenplaner verwalten
   permission_manage_public_resource_planners_explanation: 'Ermöglicht Benutzern das Erstellen und Verwalten von öffentlichen Ressourcenplanern. Sie können damit ihre eigenen Ressourcenplaner anzeigen, erstellen, verwalten und veröffentlichen. Es erlaubt Benutzern nicht, die von anderen Benutzern erstellten Ressourcenplaner, die nicht öffentlich freigegeben sind, einzusehen.
+
+    '
+  permission_allocate_user_resources: Allocate user resources
+  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
 
     '
   label_resource_management: Ressourcenplanung
@@ -40,7 +56,7 @@ de:
 
       '
     view_types:
-      UserCardView: Users cards
+      UserCardView: Benutzer-Karten
     action:
       favorite: Zu Favoriten hinzufügen
       unfavorite: Aus Favoriten entfernen

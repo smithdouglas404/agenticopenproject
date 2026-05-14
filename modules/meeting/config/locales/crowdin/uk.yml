@@ -448,7 +448,7 @@ uk:
     widgets:
       blankslate:
         heading: Немає запланованих нарад
-        description: Тут з’являтимуться заплановані наради, у яких ви організатор або учасник.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: Переглянути всі наради
   meeting_section:
     untitled_title: Розділ без назви

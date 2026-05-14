@@ -32,7 +32,7 @@ This import tool is currently in beta and can only import basic data:
 - Users (name, email, project membership)
 - Statuses
 - Types
-- Basic custom fields (see [Custom fields migration](./custom-fields/README.md))
+- Basic custom fields (see [Custom fields migration](./custom-fields/))
 
 ## Data not yet covered by the Migrator 
 

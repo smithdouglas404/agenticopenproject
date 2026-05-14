@@ -136,13 +136,12 @@ module ::TypesHelper
   def get_active_groups(type, available, inactive)
     type.attribute_groups.map do |group|
       {
+        key: group.key,
         type: group.group_type,
         name: group.translated_key,
         attributes: active_group_attributes_map(group, available, inactive),
         query: query_to_query_props(group)
-      }.tap do |group_obj|
-        group_obj[:key] = group.key if group.internal_key?
-      end
+      }
     end
   end
 

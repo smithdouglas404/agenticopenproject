@@ -37,6 +37,10 @@ module Projects::Identifier
   CLASSIC_IDENTIFIER_CHARS = /[a-z0-9\-_]+/
   CLASSIC_IDENTIFIER_FORMAT = /\A#{CLASSIC_IDENTIFIER_CHARS.source}\z/
 
+  # Unanchored shape of a semantic project identifier ("PROJ", "MY_PROJECT_1").
+  # Composed into `WorkPackage::SemanticIdentifier::SEMANTIC_ID_PATTERN`.
+  SEMANTIC_FORMAT = /[A-Z][A-Z0-9_]*/
+
   RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_update_dialog identifier_suggestion].freeze
 
   included do

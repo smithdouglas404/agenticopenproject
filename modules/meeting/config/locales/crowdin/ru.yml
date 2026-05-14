@@ -220,7 +220,7 @@ ru:
   label_time_zone: Часовой пояс
   label_start_date: Дата начала
   label_subscribe_icalendar: Подписаться на календарь
-  label_recurring_filter: Recurring filter
+  label_recurring_filter: Повторяющийся фильтр
   caption_meeting_template_select: Выберите шаблон для автоматического копирования его повестки дня
   caption_template_project_select: Пожалуйста, выберите проект, в котором будет создан этот шаблон совещания
   placeholder_meeting_template_select_project_first: Сначала выберите проект
@@ -448,7 +448,7 @@ ru:
     widgets:
       blankslate:
         heading: Нет предстоящих встреч
-        description: Здесь будут отображаться предстоящие встречи, в которых Вы являетесь организатором или участником.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: Просмотреть все встречи
   meeting_section:
     untitled_title: Раздел без названия

@@ -41,10 +41,11 @@ Rails.application.config.after_initialize do
     # A job is scheduled immediately that creates notifications (in-app if
     # supported) right away and schedules jobs to be run for mail and digest
     # mails.
-    Notifications::WorkflowJob
-      .perform_later(:create_notifications,
-                     journal,
-                     send_notifications)
+    if send_notifications
+      Notifications::WorkflowJob.perform_later(:create_notifications,
+                                               journal,
+                                               send_notifications)
+    end
 
     # A job is scheduled for the end of the journal aggregation time. If the
     # journal still exists with a matching updated_at value (it might be updated

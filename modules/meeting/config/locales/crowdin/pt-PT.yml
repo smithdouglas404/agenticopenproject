@@ -438,7 +438,7 @@ pt-PT:
     widgets:
       blankslate:
         heading: Não há reuniões futuras
-        description: As próximas reuniões em que é organizador ou participante aparecerão aqui.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: Ver todas as reuniões
   meeting_section:
     untitled_title: Secção sem título

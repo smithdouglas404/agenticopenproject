@@ -202,16 +202,7 @@ ja:
           text: "[Placeholder] 埋め込みカレンダー"
     admin:
       type_form:
-        custom_field: カスタムフィールド
-        inactive: 非アクティブ
-        drag_to_activate: ここからフィールドをドラッグして、有効にします
-        add_group: 属性グループを追加する
-        add_table: 関係するワークパッケージのテーブルを追加する
         edit_query: クエリの編集
-        new_group: 新規グループ
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: デフォルトに戻す
       working_days:
         calendar:
           empty_state_header: 休業日
@@ -613,18 +604,6 @@ ja:
     breadcrumb: パンくず
     text_data_lost: 入力されたデータはすべて失われる。
     text_user_wrote: "%{value} が書き込みました："
-    types:
-      attribute_groups:
-        error_duplicate_group_name: 名前 %{group} が複数回使用されています。グループ名は一意にする必要があります。
-        error_no_table_configured: "%{group} のテーブルを設定してください。"
-        reset_title: フォーム設定をリセット
-        confirm_reset: '警告：フォーム設定をリセットしてもよろしいですか？ これにより、属性がデフォルトのグループにリセットされ、すべてのカスタムフィールドが無効になります。   コンテキスト| リクエストコンテキスト
-
-          '
-        upgrade_to_ee: エンタープライズ・オンプレミス版へのアップグレード
-        upgrade_to_ee_text: すごい！このアドオンが必要なら、あなたはスーパープロです！エンタープライズ版のクライアントになって、私たちオープンソース開発者をサポートしていただけませんか？
-        more_information: 詳細情報
-        nevermind: 無視
     time_entry:
       work_package_required: 最初にワークパッケージを選択する必要があります。
       title: 時間を記録

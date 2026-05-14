@@ -438,7 +438,7 @@ es:
     widgets:
       blankslate:
         heading: No hay reuniones previstas
-        description: Aquí aparecerán las próximas reuniones en las que usted sea el organizador o uno de los participantes.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: Ver todas las reuniones
   meeting_section:
     untitled_title: Sección sin título

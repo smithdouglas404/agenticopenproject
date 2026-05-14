@@ -29,15 +29,15 @@ cs:
       project:
         sprint_sharing: Sdílení sprintu
       sprint:
-        duration: Duration
-        finish_date: Finish date
-        goal: Sprint goal
-        name: Sprint name
-        sharing: Sharing
+        duration: Doba trvání
+        finish_date: Datum ukončení
+        goal: Cíl sprintu
+        name: Název sprintu
+        sharing: Sdílení
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: V plánování
+          active: Aktivní
+          completed: Dokončen
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
