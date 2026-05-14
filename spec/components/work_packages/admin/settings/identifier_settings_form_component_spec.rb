@@ -77,7 +77,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
       it "renders the finalizing message" do
         render_component(component)
-        expect(page).to have_text("Finalizing work package sequence numbers")
+        expect(page).to have_text("Finalizing conversion to semantic format")
         expect(page).to have_no_text("projects remaining")
       end
     end

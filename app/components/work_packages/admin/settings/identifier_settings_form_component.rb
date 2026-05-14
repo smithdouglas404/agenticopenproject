@@ -66,11 +66,11 @@ module WorkPackages
         def in_progress_banner_message
           if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
             pending_count = Project.with_non_classic_identifier.count
-            I18n.t("admin.settings.work_packages_identifier.in_progress.reverting_banner_message",
+            I18n.t("admin.settings.work_packages_identifier.in_progress.classic_conversion_status_message",
                    count: pending_count)
           else
             pending_count = ProjectIdentifiers::PendingProjectsFinder.project_ids.size
-            scope = "admin.settings.work_packages_identifier.in_progress.converting_banner_message"
+            scope = "admin.settings.work_packages_identifier.in_progress.semantic_conversion_status_message"
             if pending_count.zero?
               I18n.t("#{scope}.zero")
             else
