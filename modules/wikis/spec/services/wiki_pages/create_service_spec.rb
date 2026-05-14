@@ -306,6 +306,23 @@ RSpec.describe WikiPages::CreateService do
         expect(links.pluck(:linkable_id)).to contain_exactly(numeric_work_package.id, work_package.id)
       end
     end
+
+    context "when several reference shapes resolve to the same work package" do
+      let(:text) do
+        "Triple: ##{work_package.id}, ##{work_package.identifier}, #OLD-#{work_package.sequence_number}."
+      end
+
+      before do
+        WorkPackageSemanticAlias.create!(work_package:, identifier: "OLD-#{work_package.sequence_number}")
+      end
+
+      it "creates a single reverse page link" do
+        subject
+
+        expect(reverse_link_finder.count).to eq(1)
+        expect(reverse_link_finder.first.linkable).to eq(work_package)
+      end
+    end
   end
 
   context "with a semantic-shape reference in classic mode",
