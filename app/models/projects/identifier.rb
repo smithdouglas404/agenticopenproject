@@ -35,6 +35,7 @@ module Projects::Identifier
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
   # Base character class for classic identifiers: lowercase letters, digits, hyphens, underscores.
   CLASSIC_IDENTIFIER_CHARS = /[a-z0-9\-_]+/
+  # The anchored version
   CLASSIC_IDENTIFIER_FORMAT = /\A#{CLASSIC_IDENTIFIER_CHARS.source}\z/
 
   # Unanchored shape of a semantic project identifier ("PROJ", "MY_PROJECT_1").

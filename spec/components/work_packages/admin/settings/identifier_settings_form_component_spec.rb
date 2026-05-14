@@ -72,6 +72,16 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       end
     end
 
+    context "with 0 projects remaining" do
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new) }
+
+      it "renders the finalizing message" do
+        render_component(component)
+        expect(page).to have_text("Finalizing work package sequence numbers")
+        expect(page).to have_no_text("projects remaining")
+      end
+    end
+
     context "when reversion is in progress" do
       before do
         allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(true)

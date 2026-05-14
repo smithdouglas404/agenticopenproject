@@ -36,6 +36,36 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
   current_user { user }
 
+  describe "GET #status" do
+    let(:component_target) { "work-packages-admin-settings-identifier-settings-form-component" }
+
+    context "when a migration job is in progress" do
+      before do
+        allow(ProjectIdentifiers::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
+      end
+
+      it "returns 200 with a turbo stream replacing the form component in change_in_progress state" do
+        get :status, format: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to have_turbo_stream(action: "replace", target: component_target)
+      end
+    end
+
+    context "when no migration job is in progress" do
+      before do
+        allow(ProjectIdentifiers::IdentifierAutofix).to receive(:job_in_progress?).and_return(false)
+      end
+
+      it "returns 200 with a turbo stream replacing the form component in completed state" do
+        get :status, format: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to have_turbo_stream(action: "replace", target: component_target)
+      end
+    end
+  end
+
   describe "PATCH #update" do
     context "when work_packages_identifier is 'semantic'" do
       it "enqueues ProjectIdentifiers::ConvertInstanceToSemanticIdsJob and redirects" do

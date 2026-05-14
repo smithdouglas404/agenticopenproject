@@ -70,8 +70,12 @@ module WorkPackages
                    count: pending_count)
           else
             pending_count = ProjectIdentifiers::PendingProjectsFinder.project_ids.size
-            I18n.t("admin.settings.work_packages_identifier.in_progress.converting_banner_message",
-                   count: pending_count)
+            scope = "admin.settings.work_packages_identifier.in_progress.converting_banner_message"
+            if pending_count.zero?
+              I18n.t("#{scope}.zero")
+            else
+              I18n.t(scope, count: pending_count)
+            end
           end
         end
 
