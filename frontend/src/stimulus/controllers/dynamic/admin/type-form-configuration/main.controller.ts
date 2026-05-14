@@ -56,6 +56,13 @@ export default class TypeFormConfigurationController extends Controller {
 
   connect() {
     this.servicesInitialization ??= this.initializeServices();
+    this.element.addEventListener('generic-drag-and-drop:before-drop', this.handleBeforeDrop);
+    this.element.addEventListener('generic-drag-and-drop:build-data', this.handleBuildData);
+  }
+
+  disconnect() {
+    this.element.removeEventListener('generic-drag-and-drop:before-drop', this.handleBeforeDrop);
+    this.element.removeEventListener('generic-drag-and-drop:build-data', this.handleBuildData);
   }
 
   private async initializeServices() {
@@ -133,6 +140,27 @@ export default class TypeFormConfigurationController extends Controller {
 
     return true;
   }
+
+  private handleBeforeDrop = (event:Event):void => {
+    if (this.element.querySelector('[data-edit-mode="true"]')) {
+      if (!window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
+        event.preventDefault();
+      }
+    }
+  };
+
+  private handleBuildData = (event:Event):void => {
+    const { data, target } = (event as CustomEvent).detail as { data:FormData; target:Element };
+    if (!data.get('target_id')) {
+      const targetId = target.closest<HTMLElement>('[data-group-key]')?.dataset.groupKey
+        ?? target.getAttribute('data-target-id')
+        ?? target.closest<HTMLElement>('[data-target-id]')?.getAttribute('data-target-id')
+        ?? null;
+      if (targetId) {
+        data.append('target_id', targetId);
+      }
+    }
+  };
 
   private async openQueryEditor(queryJson:string, callback:(queryProps:unknown) => void) {
     await this.servicesInitialization;

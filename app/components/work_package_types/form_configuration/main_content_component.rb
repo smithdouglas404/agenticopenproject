@@ -49,8 +49,8 @@ module WorkPackageTypes
 
       def main_inner_data
         {
-          controller: "admin--type-form-configuration--drag-and-drop",
-          "admin--type-form-configuration--drag-and-drop-handle-selector-value": ".group-handle"
+          controller: "generic-drag-and-drop",
+          "generic-drag-and-drop-handle-selector-value": ".group-handle"
         }
       end
 
@@ -58,7 +58,7 @@ module WorkPackageTypes
         {
           "test-selector": "type-form-configuration-groups-container",
           "admin--type-form-configuration--main-target": "groupsContainer",
-          "admin--type-form-configuration--drag-and-drop-target": "container",
+          "generic-drag-and-drop-target": "container",
           "target-allowed-drag-type": "group"
         }
       end

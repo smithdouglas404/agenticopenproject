@@ -51,6 +51,9 @@ export default class extends ApplicationController {
     window.addEventListener('beforeunload', this.boundBeforeUnloadHandler);
     this.beforeUnloadController = this.application.getControllerForElementAndIdentifier(document.body, 'beforeunload') as BeforeunloadController;
 
+    this.element.addEventListener('generic-drag-and-drop:before-drop', this.handleBeforeDrop);
+    this.element.addEventListener('generic-drag-and-drop:build-data', this.handleBuildData);
+
     void this.initializeTurboRequests();
   }
 
@@ -136,7 +139,22 @@ export default class extends ApplicationController {
     });
   }
 
+  private handleBeforeDrop = (event:Event):void => {
+    if (hasUnsavedChanges()) {
+      if (!window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
+        event.preventDefault();
+      }
+    }
+  };
+
+  private handleBuildData = (event:Event):void => {
+    const { data } = (event as CustomEvent).detail as { data:FormData };
+    appendCollapsedState(data);
+  };
+
   disconnect():void {
+    this.element.removeEventListener('generic-drag-and-drop:before-drop', this.handleBeforeDrop);
+    this.element.removeEventListener('generic-drag-and-drop:build-data', this.handleBuildData);
     window.removeEventListener('beforeunload', this.boundBeforeUnloadHandler);
     super.disconnect();
   }

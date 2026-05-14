@@ -137,6 +137,7 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
         expect(rendered_component).to have_css(".Box-row#work_package_#{work_package.id}") do |row|
           expect(row["data-controller"]).to eq("backlogs--story")
           expect(row["data-draggable-id"]).to eq(work_package.id.to_s)
+          expect(row["data-generic-drag-and-drop-target"]).to eq("item")
           expect(row["data-draggable-type"]).to eq("story")
           expect(row["data-drop-url"]).to end_with(move_project_backlogs_inbox_path(project, work_package))
           expect(row["data-backlogs--story-split-url-value"])

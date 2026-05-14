@@ -98,6 +98,7 @@ module MeetingAgendaItems
         classes: "op-meeting-agenda-item-wrapper",
         data: {
           id: @meeting_agenda_item.id,
+          generic_drag_and_drop_target: "item",
           "draggable-id": @meeting_agenda_item.id,
           "draggable-type": "agenda-item",
           "drop-url": drop_project_meeting_agenda_item_path(@meeting_agenda_item.meeting.project,

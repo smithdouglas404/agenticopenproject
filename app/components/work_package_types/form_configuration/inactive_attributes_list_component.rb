@@ -45,7 +45,7 @@ module WorkPackageTypes
         {
           "test-selector": "type-form-configuration-inactive-container",
           "admin--type-form-configuration--main-target": "inactiveContainer",
-          "admin--type-form-configuration--rows-drag-and-drop-target": "container",
+          "generic-drag-and-drop-target": "container",
           "target-container-accessor": "[data-test-selector='type-form-configuration-inactive-list']",
           "target-id": "inactive",
           "target-allowed-drag-type": "attribute"
@@ -57,6 +57,7 @@ module WorkPackageTypes
           attr_key: attribute[:key],
           attr_translation: attribute[:translation],
           attr_is_cf: attribute[:is_cf],
+          "generic-drag-and-drop-target": "item",
           "draggable-id": attribute[:key],
           "draggable-type": "attribute",
           "drop-url": drop_type_form_configuration_row_path(@type, attribute[:key])

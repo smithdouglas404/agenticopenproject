@@ -84,6 +84,7 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
     it "marks the row as draggable for users allowed to manage sprint items" do
       expect(item.row_args[:classes]).to include("Box-row--draggable")
       expect(item.row_args[:data]).to include(
+        generic_drag_and_drop_target: "item",
         draggable_id: work_package.id,
         draggable_type: "story"
       )

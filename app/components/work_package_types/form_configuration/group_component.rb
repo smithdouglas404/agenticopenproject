@@ -98,6 +98,7 @@ module WorkPackageTypes
         return {} if @group[:key].blank? || temporary_group?
 
         {
+          "generic-drag-and-drop-target": "item",
           "draggable-id": @group[:key],
           "draggable-type": "group",
           "drop-url": drop_type_form_configuration_group_path(@type, @group[:key])
@@ -108,7 +109,7 @@ module WorkPackageTypes
         return {} if query_group? || @group[:key].blank? || temporary_group?
 
         {
-          "admin--type-form-configuration--rows-drag-and-drop-target": "container",
+          "generic-drag-and-drop-target": "container",
           "target-container-accessor": ".Box > ul",
           "target-id": @group[:key],
           "target-allowed-drag-type": "attribute"

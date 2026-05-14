@@ -50,8 +50,8 @@ module MeetingAgendaItems
 
     def drop_target_config
       {
-        meetings__drag_and_drop_target: "container",
-        "target-allowed-drag-type": "section" # the type of dragged items which are allowed to be dropped in this target
+        generic_drag_and_drop_target: "container",
+        "target-allowed-drag-type": "section"
       }
     end
 

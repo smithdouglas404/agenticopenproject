@@ -66,6 +66,7 @@ module Settings
 
       def draggable_item_config(section)
         {
+          generic_drag_and_drop_target: "item",
           "draggable-id": section.id,
           "draggable-type": "section",
           "drop-url": drop_admin_settings_project_custom_field_section_path(section)

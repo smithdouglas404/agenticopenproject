@@ -107,6 +107,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
 
       it "wires draggable data on work package rows" do
         expect(rendered_component).to have_css(".Box-row#work_package_#{work_package1.id}") do |row|
+          expect(row["data-generic-drag-and-drop-target"]).to eq("item")
           expect(row["data-draggable-id"]).to eq(work_package1.id.to_s)
           expect(row["data-draggable-type"]).to eq("story")
           expect(row["data-backlogs--story-display-id-value"]).to eq(work_package1.display_id.to_s)

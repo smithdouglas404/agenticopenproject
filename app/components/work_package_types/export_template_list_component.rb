@@ -57,6 +57,7 @@ module WorkPackageTypes
 
     def draggable_item_config(template)
       {
+        generic_drag_and_drop_target: "item",
         "draggable-id": template.id,
         "draggable-type": "template",
         "drop-url": drop_type_pdf_export_template_path(type_id: @type.id, id: template.id),

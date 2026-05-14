@@ -45,7 +45,7 @@ module Meetings
     def show_page_data_attributes
       {
         turbo: true,
-        controller: "meetings--drag-and-drop meetings--submit"
+        controller: "generic-drag-and-drop meetings--submit"
       }
     end
   end
