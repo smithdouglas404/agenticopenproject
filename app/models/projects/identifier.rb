@@ -33,12 +33,14 @@ module Projects::Identifier
 
   CLASSIC_IDENTIFIER_MAX_LENGTH = 100
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
-  # Character set used in SQL detection only — no all-numeric guard.
-  # with_non_classic_identifier uses this to find projects with semantic (uppercase) identifiers.
-  CLASSIC_IDENTIFIER_CHARS = /[a-z0-9\-_]+/
-  # Validation format: classic character set plus rejects all-numeric strings (ambiguous with WP IDs).
-  CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/
 
+  # Classic format validation regexes:
+  # Simple character set meant only for SQL matching. No anchoring or anti-all-numeric guard.
+  CLASSIC_FORMAT_CHARS = /[a-z0-9\-_]+/
+  # Anchored form with an anti-all-numeric guard.
+  CLASSIC_FORMAT = /\A(?!\d+\z)#{CLASSIC_FORMAT_CHARS}\z/
+
+  # Semantic format validation regex:
   # Unanchored shape of a semantic project identifier ("PROJ", "MY_PROJECT_1").
   # Composed into `WorkPackage::SemanticIdentifier::SEMANTIC_ID_PATTERN`.
   SEMANTIC_FORMAT = /[A-Z][A-Z0-9_]*/
@@ -117,11 +119,11 @@ module Projects::Identifier
 
   class_methods do
     def classic_identifier_format?(str)
-      str.match?(CLASSIC_IDENTIFIER_FORMAT)
+      str.match?(CLASSIC_FORMAT)
     end
 
     def with_non_classic_identifier
-      where("identifier !~ ?", "^#{CLASSIC_IDENTIFIER_CHARS.source}$")
+      where("identifier !~ ?", "^#{CLASSIC_FORMAT_CHARS.source}$")
     end
 
     # FriendlyId's :history module records a row on every save, so this relation contains
