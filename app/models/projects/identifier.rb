@@ -33,10 +33,11 @@ module Projects::Identifier
 
   CLASSIC_IDENTIFIER_MAX_LENGTH = 100
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
-  # Base character class for classic identifiers: lowercase letters, digits, hyphens, underscores.
+  # Character set used in SQL detection only — no all-numeric guard.
+  # with_non_classic_identifier uses this to find projects with semantic (uppercase) identifiers.
   CLASSIC_IDENTIFIER_CHARS = /[a-z0-9\-_]+/
-  # The anchored version
-  CLASSIC_IDENTIFIER_FORMAT = /\A#{CLASSIC_IDENTIFIER_CHARS.source}\z/
+  # Validation format: classic character set plus rejects all-numeric strings (ambiguous with WP IDs).
+  CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/
 
   # Unanchored shape of a semantic project identifier ("PROJ", "MY_PROJECT_1").
   # Composed into `WorkPackage::SemanticIdentifier::SEMANTIC_ID_PATTERN`.

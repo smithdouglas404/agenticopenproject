@@ -450,7 +450,7 @@ en:
         success_banner: Successfully updated work package identifier format.
         in_progress:
           converting_banner_message:
-            zero: Project identifiers are converted. Finalizing work package sequence numbers...
+            zero: Finalizing conversion to semantic format...
             one: Project identifiers are being converted to semantic format. 1 project remaining.
             other: Project identifiers are being converted to semantic format. %{count} projects remaining.
           reverting_banner_message:
