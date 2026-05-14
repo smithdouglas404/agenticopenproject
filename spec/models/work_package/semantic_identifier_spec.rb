@@ -266,6 +266,18 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       end
     end
 
+    context "with id: keyword and blank string" do
+      it "does not treat an empty id as a semantic identifier" do
+        expect { WorkPackage.find_by(id: "") }.not_to raise_error
+        expect(WorkPackage.find_by(id: "")).to be_nil
+      end
+
+      it "does not treat whitespace-only id as semantic" do
+        expect { WorkPackage.find_by(id: "  \t  ") }.not_to raise_error
+        expect(WorkPackage.find_by(id: "  \t  ")).to be_nil
+      end
+    end
+
     context "with id: keyword and an array" do
       let(:work_package2) { create(:work_package, project:) }
 

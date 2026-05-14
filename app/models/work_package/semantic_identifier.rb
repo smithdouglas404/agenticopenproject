@@ -85,14 +85,19 @@ module WorkPackage::SemanticIdentifier
   end
 
   # Returns true when value looks like a semantic work package identifier
-  # ("PROJ-42"). Non-strings (Integer, Hash, nil, Array) and numeric strings
-  # ("123", " 456 ") return false — these fall through to standard PK lookup.
+  # ("PROJ-42"). Non-strings (Integer, Hash, nil, Array), empty and numeric strings
+  # ("123", " 456 ", "  ") return false — these fall through to standard PK lookup.
   #
   # The round-trip check (rather than a regex) is intentional for performance.
   # Every value that reaches a work-package finder either parses as an integer
   # or doesn't, and that's enough to dispatch correctly. Don't tighten it.
   def self.semantic_id?(value)
-    value.is_a?(String) && value.strip.to_i.to_s != value.strip
+    return false unless value.is_a?(String)
+
+    stripped = value.strip
+    return false if stripped.empty?
+
+    stripped.to_i.to_s != stripped
   end
 
   # Returns true when value is a canonical numeric ID —
