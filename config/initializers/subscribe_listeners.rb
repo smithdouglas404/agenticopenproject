@@ -56,6 +56,7 @@ Rails.application.config.after_initialize do
 
   OpenProject::Notifications.subscribe(OpenProject::Events::JOURNAL_UPDATED) do |payload|
     next unless payload[:trigger_callbacks]
+    next unless payload[:send_notification]
 
     # A job is scheduled immediately that creates notifications (in-app if
     # supported) right away and schedules jobs to be run for mail and digest
