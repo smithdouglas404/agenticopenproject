@@ -512,7 +512,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       ["00",      :semantic],
       ["PROJ-1",  :semantic],
       ["abc",     :semantic],
-      ["",        :semantic],
+      ["",        :neither],
       [nil,       :neither],
       [{},        :neither]
     ].each do |value, classification|

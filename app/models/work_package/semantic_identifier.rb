@@ -102,7 +102,7 @@ module WorkPackage::SemanticIdentifier
 
   # Returns true when value is a canonical numeric ID —
   # an Integer, or a String that round-trips through `to_i.to_s` ("0", "123").
-  # Rejects leading-zero strings ("0123"), non-numeric strings, and nil.
+  # Rejects leading-zero strings ("0123"), non-numeric strings, empty strings and nil.
   #
   # For Strings the predicate is the exact complement of `semantic_id?`,
   # so the routing question (lookup by primary key vs by identifier/alias)
@@ -112,7 +112,10 @@ module WorkPackage::SemanticIdentifier
   def self.numeric_id?(value)
     case value
     when Integer then true
-    when String  then !semantic_id?(value)
+    when String
+      return false if value.strip.blank?
+
+      !semantic_id?(value)
     else false
     end
   end
