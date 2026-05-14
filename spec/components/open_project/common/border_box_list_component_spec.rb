@@ -297,19 +297,50 @@ RSpec.describe OpenProject::Common::BorderBoxListComponent, type: :component do
       expect(rendered).to have_css(".Counter:not([hidden])", text: "0")
     end
 
-    it "merges count aria arguments with count defaults" do
+    it "sets default aria-label and aria-live on the counter" do
       rendered = render_inline(
-        described_class.new(container: "hdr-count-arguments")
+        described_class.new(container: "hdr-default-aria")
       ) do |list|
-        list.with_header(
-          title: "Counted",
-          count: 5,
-          count_arguments: { aria: { label: "5 items", live: "polite" } }
-        )
+        list.with_header(title: "Counted", count: 5)
         list.with_item { "row" }
       end
 
-      expect(rendered).to have_css(".Counter.Counter--primary[aria-label='5 items'][aria-live='polite']", text: "5")
+      expect(rendered).to have_css(
+        ".Counter",
+        text: "5",
+        aria: { label: I18n.t(:label_x_items, count: 5), live: "polite" }
+      )
+    end
+
+    it "uses the default aria-label when count is inferred" do
+      rendered = render_inline(
+        described_class.new(container: "hdr-inferred-aria")
+      ) do |list|
+        list.with_header(title: "Counted", count: true)
+        list.with_item { "one" }
+        list.with_item { "two" }
+      end
+
+      expect(rendered).to have_css(
+        ".Counter",
+        text: "2",
+        aria: { label: I18n.t(:label_x_items, count: 2), live: "polite" }
+      )
+    end
+
+    it "allows count_label to override the default aria-label" do
+      rendered = render_inline(
+        described_class.new(container: "hdr-custom-label")
+      ) do |list|
+        list.with_header(title: "Counted", count: 3, count_label: "3 work packages")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(
+        ".Counter",
+        text: "3",
+        aria: { label: "3 work packages", live: "polite" }
+      )
     end
 
     it "allows the title tag to be customized" do

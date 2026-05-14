@@ -4592,6 +4592,10 @@ en:
     one: "1 comment"
     other: "%{count} comments"
     zero: "no comments"
+  label_x_items:
+    one: "1 item"
+    other: "%{count} items"
+    zero: "no items"
   label_x_open_work_packages_abbr:
     one: "1 open"
     other: "%{count} open"

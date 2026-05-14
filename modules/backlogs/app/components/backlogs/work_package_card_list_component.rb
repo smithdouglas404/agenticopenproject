@@ -77,12 +77,7 @@ module Backlogs
       @list.with_header(
         title:,
         count:,
-        count_arguments: {
-          aria: {
-            label: t(".label_work_package_count", count:),
-            live: "polite"
-          }
-        },
+        count_label: t(".label_work_package_count", count:),
         collapsed: folded?,
         **system_arguments,
         &

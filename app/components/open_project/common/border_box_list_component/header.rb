@@ -41,6 +41,7 @@ module OpenProject
       # `Primer::OpenProject::BorderBox::CollapsibleHeader`.
       class Header < ApplicationComponent
         include OpPrimer::ComponentHelpers
+        include Primer::AttributesHelper
         include HasMenu
 
         DEFAULT_COUNT_ARGUMENTS = {
@@ -73,6 +74,7 @@ module OpenProject
 
         attr_reader :title,
                     :count,
+                    :count_label,
                     :count_arguments,
                     :title_tag,
                     :list_id,
@@ -84,6 +86,9 @@ module OpenProject
         # @param count [Integer, Boolean, nil] count badge behavior. Pass
         #   `nil` or `false` to hide it, `true` to infer the rendered item
         #   count, or an integer to render an explicit value.
+        # @param count_label [String, nil] accessible label for the counter
+        #   badge. Defaults to `I18n.t(:label_x_items, count:)` when a count
+        #   is rendered. Pass an explicit string to override.
         # @param count_arguments [Hash] forwarded to `Primer::Beta::Counter`.
         #   Values are merged over the default counter arguments.
         # @param title_tag [Symbol] tag used for the title heading.
@@ -93,6 +98,7 @@ module OpenProject
         def initialize(
           title:,
           count: nil,
+          count_label: nil,
           count_arguments: {},
           title_tag: :h4,
           list_id: nil,
@@ -103,6 +109,7 @@ module OpenProject
 
           @title = title
           @count = count
+          @count_label = count_label
           @count_arguments = count_arguments
           @title_tag = title_tag
           @list_id = list_id
@@ -117,6 +124,7 @@ module OpenProject
         # @return [void]
         def resolve_count!(item_count)
           @count = item_count if count == true
+          @count_label ||= I18n.t(:label_x_items, count: @count) if render_count?
         end
 
         # @return [Hash] arguments forwarded to `Primer::Beta::BorderBox#with_header`.
@@ -131,7 +139,12 @@ module OpenProject
 
         # @return [Hash] merged arguments forwarded to `Primer::Beta::Counter`.
         def counter_arguments
-          DEFAULT_COUNT_ARGUMENTS.merge(count_arguments).merge(count:)
+          merged = DEFAULT_COUNT_ARGUMENTS.merge(count_arguments).merge(count:)
+          merged[:aria] = merge_aria(
+            merged,
+            { aria: { label: count_label, live: "polite" } }
+          )
+          merged
         end
 
         # @return [String, nil] ids controlled by the collapsible header.
