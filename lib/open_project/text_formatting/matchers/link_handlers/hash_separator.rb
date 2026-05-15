@@ -35,10 +35,11 @@ module OpenProject::TextFormatting::Matchers
         %w(version message project user group document meeting view)
       end
 
-      # Prefixed resources (`version#3`, `message#12`) address rows by primary
-      # key — `numeric_id?` rejects semantic shapes that would `to_i` to 0.
+      # Digit-only ids parse via `to_i` into primary keys. Semantic-shaped
+      # inputs (`version#PROJ-1`) short-circuit here so they don't issue
+      # `find_by(id: 0)`.
       def applicable?
-        matcher.sep == "#" && valid_prefix? && WorkPackage::SemanticIdentifier.numeric_id?(matcher.identifier)
+        matcher.sep == "#" && valid_prefix? && matcher.identifier&.match?(/\A\d+\z/)
       end
 
       # Examples:

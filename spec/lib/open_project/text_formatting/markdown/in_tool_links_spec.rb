@@ -147,6 +147,12 @@ RSpec.describe OpenProject::TextFormatting,
         it { is_expected.to be_html_eql("<p class='op-uc-p'>#{version_link}</p>") }
       end
 
+      context "Link with version id carrying a leading zero" do
+        subject { format_text("version#0#{version.id}") }
+
+        it { is_expected.to be_html_eql("<p class='op-uc-p'>#{version_link}</p>") }
+      end
+
       context "Link with version" do
         subject { format_text("version:1.0") }
 
