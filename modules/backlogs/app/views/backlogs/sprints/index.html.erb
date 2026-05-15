@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% content_for :content_header do %>
   <%=
-    render Primer::OpenProject::PageHeader.new(mb: 0) do |header|
+    render Primer::OpenProject::PageHeader.new(mb: 4) do |header|
       header.with_title { t(:label_all_sprints) }
       header.with_breadcrumbs(
         [{ href: project_overview_path(@project), text: @project.name },
@@ -43,5 +43,5 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% content_for :content_body do %>
-  insert table here
+  <%= render Backlogs::Sprints::TableComponent.new(rows: @sprints, current_user:, project: @project) %>
 <% end %>
