@@ -35,7 +35,7 @@ module OpPrimer
 
       renders_many :items, OpPrimer::QuickFilter::Item
 
-      def initialize(name:, query:, filter_key:, path_args:, operator: "=", src: nil)
+      def initialize(name:, query:, filter_key:, path_args:, operator: "=", src: nil, label_method: :name)
         super
 
         @name = name
@@ -44,42 +44,73 @@ module OpPrimer
         @path_args = path_args
         @operator = operator
         @src = src
+        @label_method = label_method
+      end
+
+      def before_render
+        if async? && local?
+          raise ArgumentError, "Use `src` for async loading or inline items for local rendering, not both."
+        end
+
+        if async? &&
+           @query.filter_for(@filter_key).method(:value_objects).owner == Queries::Filters::Base
+          raise ArgumentError,
+                "#{@query.filter_for(@filter_key).class} does not implement #value_objects. " \
+                "This is required when using the async version."
+        end
       end
 
       def render?
-        @src.present? || items.any?
+        async? || local?
       end
 
       private
 
+      def async?
+        @src.present?
+      end
+
+      def local?
+        items.any?
+      end
+
+      def active_filter
+        @active_filter ||= @query.find_active_filter(@filter_key)
+      end
+
       def current_values
-        @query.find_active_filter(@filter_key)&.values&.map(&:to_s) || []
+        active_filter&.values&.map(&:to_s) || []
       end
 
       def current_label
         return @name if current_values.empty?
+        return I18n.t(:label_x_items_selected, count: current_values.size) if current_values.size > 1
 
-        selected = items.select { |item| current_values.include?(item.value.to_s) }
-        return @name if selected.empty?
+        single_label || @name
+      end
 
-        return selected.first.label if selected.size == 1
-
-        I18n.t(:label_x_items_selected, count: selected.size)
+      def single_label
+        if async?
+          active_filter.value_objects.first.send(@label_method)
+        elsif local?
+          items.find { |item| current_values.include?(item.value.to_s) }.label
+        end
       end
 
       def panel_src
-        return nil if @src.blank?
+        return unless async?
+        # Pass currently selected ids so the right items can be marked in the response
         return @src if current_values.empty?
 
         uri = URI.parse(@src)
-        params = Rack::Utils.parse_nested_query(uri.query.to_s)
-        params["selected"] = current_values.join(",")
-        uri.query = params.to_query
+        uri.query = Rack::Utils.parse_nested_query(uri.query.to_s)
+                               .merge("selected" => current_values.join(","))
+                               .to_query
         uri.to_s
       end
 
       def fetch_strategy
-        @src.present? ? :eventually_local : :local
+        async? ? :eventually_local : :local
       end
 
       def base_url

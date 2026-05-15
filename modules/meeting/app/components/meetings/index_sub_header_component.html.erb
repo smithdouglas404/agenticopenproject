@@ -33,11 +33,7 @@
             path_args: [@project, :meetings],
             src: project_items_meetings_path
           )
-        ) do |component|
-          selected_projects.each do |project|
-            component.with_item(label: project.name, value: project.id)
-          end
-        end
+        )
       end
     end
 
