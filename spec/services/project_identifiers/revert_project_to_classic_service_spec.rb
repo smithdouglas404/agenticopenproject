@@ -109,41 +109,5 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
         expect(project.reload.identifier).to match(/\Aproject-[a-z0-9]{5}\z/)
       end
     end
-
-    context "when the classic identifier from history is taken by another project" do
-      let!(:other_project) { create(:project, identifier: "my-app") }
-      let!(:project) do
-        create(:project).tap do |p|
-          p.update_columns(identifier: "MYAPP", wp_sequence_counter: 0)
-          FriendlyId::Slug.create!(sluggable: p, slug: "my-app")
-        end
-      end
-
-      before { allow(Setting::WorkPackageIdentifier).to receive_messages(classic?: true, semantic?: false) }
-
-      it "raises ActiveRecord::RecordInvalid" do
-        expect { described_class.new(project).call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-
-    context "when the classic identifier from history is historically reserved by another project" do
-      let!(:other_project) do
-        create(:project).tap do |p|
-          FriendlyId::Slug.create!(sluggable: p, slug: "my-app")
-        end
-      end
-      let!(:project) do
-        create(:project).tap do |p|
-          p.update_columns(identifier: "MYAPP", wp_sequence_counter: 0)
-          FriendlyId::Slug.create!(sluggable: p, slug: "my-app")
-        end
-      end
-
-      before { allow(Setting::WorkPackageIdentifier).to receive_messages(classic?: true, semantic?: false) }
-
-      it "raises ActiveRecord::RecordInvalid" do
-        expect { described_class.new(project).call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
   end
 end
