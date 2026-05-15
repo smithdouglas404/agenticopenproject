@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
      data-quick-filter--select-panel-operator-value="<%= @operator %>">
   <%= render(
         Primer::Alpha::SelectPanel.new(
-          select_variant: :multiple,
+          select_variant: @select_variant,
           fetch_strategy: fetch_strategy,
           src: panel_src,
           title: @name,
@@ -50,13 +50,16 @@ See COPYRIGHT and LICENSE files for more details.
         <% panel.with_item(
              label: item.label,
              active: current_values.include?(item.value.to_s),
+             href: @select_variant == :single ? item_href(item.value) : nil,
              content_arguments: { data: { value: item.value.to_s } }
            ) %>
       <% end %>
     <% end %>
-    <% panel.with_footer(show_divider: true) do %>
-      <%= render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click->quick-filter--select-panel#apply" })) do %>
-        <%= t(:button_apply) %>
+    <% if @select_variant == :multiple %>
+      <% panel.with_footer(show_divider: true) do %>
+        <%= render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click->quick-filter--select-panel#apply" })) do %>
+          <%= t(:button_apply) %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

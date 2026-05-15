@@ -35,7 +35,8 @@ module OpPrimer
 
       renders_many :items, OpPrimer::QuickFilter::Item
 
-      def initialize(name:, query:, filter_key:, path_args:, operator: "=", src: nil, label_method: :name)
+      def initialize(name:, query:, filter_key:, path_args:, operator: "=", src: nil, label_method: :name,
+                     select_variant: :multiple)
         super
 
         @name = name
@@ -45,11 +46,16 @@ module OpPrimer
         @operator = operator
         @src = src
         @label_method = label_method
+        @select_variant = select_variant
       end
 
       def before_render
         if async? && local?
           raise ArgumentError, "Use `src` for async loading or inline items for local rendering, not both."
+        end
+
+        if async? && @select_variant == :single
+          raise ArgumentError, "Async mode is not supported with select_variant: :single."
         end
 
         if async? &&
@@ -122,6 +128,13 @@ module OpPrimer
           params[:filters] = other_filters.to_json if other_filters.any?
           params[:sortBy] = sort.to_json if sort.any?
         end
+      end
+
+      def item_href(value)
+        filters = other_filters + [{ @filter_key.to_s => { "operator" => @operator, "values" => [value.to_s] } }]
+        params = { filters: filters.to_json }
+        params[:sortBy] = sort.to_json if sort.any?
+        polymorphic_path(@path_args, params)
       end
 
       def other_filters
