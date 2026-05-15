@@ -104,11 +104,10 @@ module WorkPackage::SemanticIdentifier
   # an Integer, or a String that round-trips through `to_i.to_s` ("0", "123").
   # Rejects leading-zero strings ("0123"), non-numeric strings, empty strings and nil.
   #
-  # For Strings the predicate is the exact complement of `semantic_id?`,
-  # so the routing question (lookup by primary key vs by identifier/alias)
-  # has a single source of truth. For non-String inputs the two diverge:
-  # Integers are numeric-only (no string-lookup routing applies); nil and
-  # other types are neither and both return false.
+  # A numeric ID is always a routable primary key; a semantic ID is always
+  # routed through the identifier/alias path. Anything else — nil, blank
+  # strings, Hashes, Arrays — is neither, and both predicates return false
+  # so the caller short-circuits before any lookup.
   def self.numeric_id?(value)
     case value
     when Integer then true
