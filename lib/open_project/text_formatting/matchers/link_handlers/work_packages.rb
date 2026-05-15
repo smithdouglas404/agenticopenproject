@@ -42,40 +42,41 @@ module OpenProject::TextFormatting::Matchers
       #
       # Examples:
       #
-      # #1234, ##1234, ###1234
+      # #1234, ##1234, ###1234, #PROJ-1, ##PROJ-1, ###PROJ-1
       def call
-        wp_id = matcher.identifier.to_i
+        identifier = matcher.identifier
 
-        # Ensure that the element was entered numeric,
-        # prohibits links to things like #0123
-        return if wp_id.to_s != matcher.identifier
+        # Reject canonical-shape violations on the numeric branch so `#0123`
+        # stays literal instead of resolving to WP 123. The semantic branch is
+        # already shape-validated by the matcher regex.
+        return if identifier.match?(/\A\d+\z/) && identifier.to_i.to_s != identifier
 
-        render_link(wp_id, matcher)
+        render_link(identifier, matcher)
       end
 
-      def render_link(wp_id, matcher)
+      def render_link(identifier, matcher)
         if ["##", "###"].include?(matcher.sep)
-          render_work_package_macro(wp_id, detailed: (matcher.sep === "###"))
+          render_work_package_macro(identifier, detailed: (matcher.sep === "###"))
         else
-          render_work_package_link(wp_id)
+          render_work_package_link(identifier)
         end
       end
 
       private
 
-      def render_work_package_macro(wp_id, detailed: false)
+      def render_work_package_macro(identifier, detailed: false)
         ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
                                                   "",
-                                                  data: { id: wp_id, detailed: }
+                                                  data: { id: identifier, detailed: }
       end
 
-      def render_work_package_link(wp_id)
-        link_to("##{wp_id}",
-                work_package_path_or_url(id: wp_id, only_path: context[:only_path]),
+      def render_work_package_link(identifier)
+        link_to("##{identifier}",
+                work_package_path_or_url(id: identifier, only_path: context[:only_path]),
                 class: "issue work_package",
                 data: {
                   hover_card_trigger_target: "trigger",
-                  hover_card_url: hover_card_work_package_path(wp_id)
+                  hover_card_url: hover_card_work_package_path(identifier)
                 })
       end
     end

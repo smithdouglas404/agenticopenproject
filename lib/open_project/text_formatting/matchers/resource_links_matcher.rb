@@ -33,8 +33,14 @@ module OpenProject::TextFormatting
     # OpenProject links matching
     #
     # Examples:
-    #   Issues:
-    #     #52 -> Link to issue #52
+    #   Work packages:
+    #     #52       -> Plain link to work package 52
+    #     ##52      -> Inline quickinfo card for work package 52
+    #     ###52     -> Detailed quickinfo card for work package 52
+    #   Work packages (semantic identifiers):
+    #     #PROJ-7   -> Plain link to the work package whose display id is PROJ-7
+    #     ##PROJ-7  -> Inline quickinfo card
+    #     ###PROJ-7 -> Detailed quickinfo card
     #   Changesets:
     #     r52 -> Link to revision 52
     #     commit:a85130f -> Link to scmid starting with a85130f
@@ -76,35 +82,28 @@ module OpenProject::TextFormatting
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::UrlHelper
 
+      # Hash and revision separators sit on independent alternation branches
+      # so semantic ids apply only to `#` references — `r` revisions stay
+      # numeric-only.
       def self.regexp
+        semantic_id = WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT.source
+        prefixes = allowed_prefixes.join("|")
         %r{
-          ([[[:space:]](,~\-\[>]|^) # Leading string
-          (!)? # Escaped marker
-          (([a-z0-9\-_]+):)? # Project identifier
-          (#{allowed_prefixes.join('|')})? # prefix
-          (
-            (\#+|r)(\d+) # separator and its identifier
+          (?<leading>[[[:space:]](,~\-\[>]|^)
+          (?<escaped>!)?
+          (?<project_prefix>(?<project_identifier>[a-z0-9\-_]+):)?
+          (?<prefix>#{prefixes})?
+          (?:
+            (?<hash_sep>\#+)(?<hash_id>#{semantic_id})
             |
-            (:) # or colon separator
-            (
-              [^"\s<>][^\s<>]*? # And a non-quoted value [10]
-              |
-              "([^"]+)" # Or a quoted value [11]
-            )
+            (?<rev_sep>r)(?<rev_id>\d+)
+            |
+            (?<colon_sep>:)(?<colon_value>[^"\s<>][^\s<>]*?|"(?<quoted>[^"]+)")
           )
           (?=
-            (?=
-              [[:punct:]]\W # Includes matches of, e.g., source:foo.ext
-            )
-            |\.\z # Allow matching when string ends with .
-            |, # or with ,
-            |~ # or with ~
-            |\) # or with )
-            |[[:space:]]
-            |\]
-            |<
-            |$
-           )
+            (?=[[:punct:]]\W) # Includes matches of, e.g., source:foo.ext
+            |\.\z|,|~|\)|[[:space:]]|\]|<|$
+          )
         }x
       end
 
@@ -128,21 +127,23 @@ module OpenProject::TextFormatting
         ]
       end
 
-      def self.process_match(m, matched_string, context)
-        # Leading string before match
-        instance = new(
-          matched_string:,
-          leading: m[1],
-          escaped: m[2],
-          project_prefix: m[3],
-          project_identifier: m[4],
-          prefix: m[5],
-          sep: m[7] || m[9],
-          raw_identifier: m[8] || m[10],
-          identifier: m[8] || m[11] || m[10],
-          context:
-        )
+      # Flattens the three alternation branches into a single `:sep` /
+      # `:identifier` shape so callers don't branch on which one matched.
+      def self.parse_match(match)
+        {
+          leading: match[:leading],
+          escaped: match[:escaped],
+          project_prefix: match[:project_prefix],
+          project_identifier: match[:project_identifier],
+          prefix: match[:prefix],
+          sep: match[:hash_sep] || match[:rev_sep] || match[:colon_sep],
+          raw_identifier: match[:hash_id] || match[:rev_id] || match[:colon_value],
+          identifier: match[:hash_id] || match[:rev_id] || match[:quoted] || match[:colon_value]
+        }
+      end
 
+      def self.process_match(matchdata, matched_string, context)
+        instance = new(matched_string:, context:, **parse_match(matchdata))
         instance.process
       end
 

@@ -200,6 +200,30 @@ RSpec.describe Exports::PDF::Common::Macro do
         expect(formatted).to eq("<table><tr><td><p><s>#{expected_tag}</s></p></td></tr></table>")
       end
     end
+
+    describe "with a semantic-shape reference" do
+      # PDF export walks a separate Markly pipeline that does not yet resolve
+      # semantic identifiers. Without the numeric-only guard, `#PROJ-1` would
+      # collapse to `<mention data-id="0">` (since "PROJ-1".to_i == 0).
+      # Falling through to literal text is the correct interim behaviour
+      # pending PDF support for semantic ids.
+      let(:markdown) { "#PROJ-1" }
+
+      it "falls through to literal text and never emits a `data-id=\"0\"` mention" do
+        expect(formatted).not_to include('data-id="0"')
+        expect(formatted).to include("PROJ-1")
+      end
+    end
+
+    describe "with mixed numeric and semantic references" do
+      let(:markdown) { "##{work_package.id} and #PROJ-1" }
+
+      it "resolves the numeric reference and leaves the semantic one literal" do
+        expect(formatted).to include(expected_tag)
+        expect(formatted).to include("#PROJ-1")
+        expect(formatted).not_to include('data-id="0"')
+      end
+    end
   end
 
   describe "workPackageValue macro" do

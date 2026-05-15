@@ -31,8 +31,15 @@
 module WorkPackage::Exports
   module Macros
     class WorkPackagesLinkHandler < OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
+      # PDF export walks a separate Markly pipeline that does not yet resolve
+      # semantic identifiers. Rejecting the semantic shape here keeps
+      # `#PROJ-1` as literal text in PDFs rather than emitting a broken
+      # `<mention data-id="0">`. See community WP #74366 / #74766 for the
+      # follow-up that adds semantic-id support to the PDF side.
       def applicable?
-        %w(# ## ###).include?(matcher.sep) && matcher.prefix.blank?
+        %w(# ## ###).include?(matcher.sep) &&
+          matcher.prefix.blank? &&
+          matcher.identifier&.match?(/\A\d+\z/)
       end
 
       def render_link(wp_id, matcher)
