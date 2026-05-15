@@ -1332,35 +1332,35 @@ fr:
     edit:
       form_configuration:
         tab: Configuration du formulaire
-        label_group: Group
-        reset_to_defaults: Reset to defaults
-        add_attribute_group: Add attribute group
-        add_query_group: Add table of related work packages
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        drag_to_activate: Drag fields from here to activate them
-        drag_to_reorder: Drag to reorder
-        edit_query: Edit query
-        custom_field: Custom field
+        label_group: Groupe
+        reset_to_defaults: Rétablir les valeurs par défaut
+        add_attribute_group: Ajouter un groupe d’attributs
+        add_query_group: Ajouter un tableau des lots de travaux associés
+        delete_group: Supprimer le groupe
+        remove_attribute: Retirer du groupe
+        drag_to_activate: Faites glisser les champs à partir d'ici pour les activer
+        drag_to_reorder: Glisser pour réorganiser
+        edit_query: Modifier la requête
+        custom_field: Champ personalisé
         filter_inactive: Filter attributes
-        inactive_attributes_heading: Inactive attributes
-        no_inactive_attributes: No inactive attributes
-        blankslate_title: No groups yet
-        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        inactive_attributes_heading: Attributs inactifs
+        no_inactive_attributes: Pas d'attributs inactifs
+        blankslate_title: Aucun groupe pour le moment
+        blankslate_description: Ajoutez des groupes à l'aide du bouton ci-dessus ou faites glisser des attributs depuis le panneau de gauche.
         group_actions: Group actions
-        rename_group: Rename group
-        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
-        group_name_label: Group name
+        rename_group: Renommer le groupe
+        confirm_delete_group: Êtes-vous sûr de vouloir supprimer ce groupe ? Cette action ne peut pas être annulée.
+        group_name_label: Nom du groupe
         row_actions: Row actions
         query_group_label: Work packages table
-        empty_group_hint: Drag attributes here
+        empty_group_hint: Glisser les attributs ici
         invalid_attribute_groups: The form configuration payload is invalid.
         invalid_query: The embedded query configuration is invalid.
         not_found: The requested form configuration item could not be found.
-        untitled_group: Untitled group
-        reset_title: Reset form configuration
-        confirm_reset: Are you sure you want to reset the form configuration?
-        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+        untitled_group: Groupe sans titre
+        reset_title: Réinitialiser la configuration du formulaire
+        confirm_reset: Êtes-vous sûr de vouloir réinitialiser la configuration du formulaire ?
+        reset_description: 'Cette opération rétablit les attributs dans leur groupe par défaut et désactive TOUS les champs personnalisés.
 
           '
       projects:
@@ -2438,7 +2438,7 @@ fr:
               attribute_unknown_name: 'Attribut du lot de travaux invalide : %{attribute}'
               duplicate_group: Le nom de groupe "%{group}" est utilisé plus d'une fois. Les noms de groupe doivent être uniques.
               query_invalid: 'La requête intégrée "%{group}" est invalide : %{details}'
-              group_without_name: Group name can't be blank.
+              group_without_name: Le nom du groupe ne peut pas être vide
             patterns:
               invalid_tokens: Un ou plusieurs attributs dans le champ ne sont pas valides. Veuillez corriger les attributs avant d'enregistrer.
         user:

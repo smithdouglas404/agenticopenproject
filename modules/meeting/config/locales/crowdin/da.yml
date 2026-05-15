@@ -43,9 +43,9 @@ da:
         start_date: Dato
         start_time: Starttidspunkt
         start_time_hour: Starttidspunkt
-        end_time: End time
+        end_time: Slut tid
         template: Template
-        notify: Send notifications
+        notify: Send notifikationer
         sharing: Sharing
       meeting_agenda_item:
         title: Titel
@@ -56,12 +56,12 @@ da:
         item_type: Type
         position: Position
         lock_version: Lock version
-        notes: Notes
+        notes: Noter
       meeting_section:
         title: Titel
         position: Position
       recurring_meeting:
-        title: Title
+        title: Titel
         frequency: Hyppighed
         interval: Interval
         start_date: Starter
@@ -70,10 +70,10 @@ da:
         end_after: Møderækken slutter
         end_date: Slutdato
         iterations: Forekomster
-        time_zone: Time zone
-        location: Location
+        time_zone: Tidszone
+        location: Lokation
         duration: Duration
-        notify: Send notifications
+        notify: Send notfikationer
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -111,16 +111,16 @@ da:
     item:
       meeting_agenda_item:
         duration:
-          added: set to %{value}
-          added_html: set to <i>%{value}</i>
-          removed: removed
-          updated: changed from %{old_value} to %{value}
-          updated_html: changed from <i>%{old_value}</i> to <i>%{value}</i>
+          added: sæt til %{value}
+          added_html: sæt til <i>%{value}</i>
+          removed: fjernet
+          updated: ændret fra %{old_value} til %{value}
+          updated_html: ændret fra <i>%{old_value}</i> til <i>%{value}</i>
         position:
           updated: reordered
         work_package:
-          updated: changed from %{old_value} to %{value}
-          updated_html: changed from <i>%{old_value}</i> to <i>%{value}</i>
+          updated: ændret fra %{old_value} til %{value}
+          updated_html: ændret fra <i>%{old_value}</i> til <i>%{value}</i>
   description_attended: tilsluttede
   events:
     meeting: Mødet er ændret
@@ -144,19 +144,19 @@ da:
   label_meeting_new_dynamic: New one-time meeting
   label_meeting_new_recurring: New recurring meeting
   label_meeting_create: Create meeting
-  label_meeting_duplicate: Duplicate meeting
+  label_meeting_duplicate: Dupliker møde
   label_meeting_edit: Rediger møde
   label_meeting_agenda: Dagsorden
   label_meeting_minutes: Referat
   label_meeting_close: Luk
   label_meeting_open: Åbn
   label_meeting_index_delete: Slet
-  label_meeting_open_this_meeting: Open this meeting
+  label_meeting_open_this_meeting: Åben dette møde
   label_meeting_agenda_close: Afslut dagsorden og påbegynd referat
   label_meeting_date_time: Dato/tidspunkt
-  label_meeting_date_and_time: Date and time
+  label_meeting_date_and_time: Dato og tid
   label_meeting_diff: Uenigheder
-  label_meeting_send_updates: Send email calendar invite and updates
+  label_meeting_send_updates: Send email kalender invitation og opdateringer
   label_meeting_send_updates_caption: Send out email invites to all participants of this meeting
   label_recurring_meeting: Recurring meeting
   label_recurring_meeting_part_of: Part of a meeting series
@@ -178,7 +178,7 @@ da:
   label_recurring_meeting_more_past:
     one: There is one more past meeting.
     other: There are %{count} more past meetings.
-  label_recurring_meeting_show_more: Show more
+  label_recurring_meeting_show_more: Vis mere
   label_recurring_meeting_series_create: Create meeting series
   label_recurring_meeting_series_edit: Edit meeting series
   label_recurring_meeting_series_delete: Delete meeting series
@@ -186,9 +186,9 @@ da:
   label_recurring_meeting_series_end_now: End series now
   label_meeting_more:
     one: There is one more meeting.
-    other: There are %{count} more meetings.
-  label_my_meetings: My meetings
-  label_all_meetings: All meetings
+    other: Der er %{count} møder.
+  label_my_meetings: Mine møder
+  label_all_meetings: Alle møder
   label_upcoming_meetings: Upcoming meetings
   label_past_meetings: Past meetings
   label_upcoming_meetings_short: Upcoming
@@ -222,9 +222,9 @@ da:
         attended: Attended
         mark_as_attended: Mark as attended
         mark_all_as_attended: Mark all as attended
-        remove_participant: Remove participant
+        remove_participant: Fjerne deltager
         manage_participants: Manage participants
-        no_participants: No participants
+        no_participants: Ingen deltagere
         show_all: Vis alt
         apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
@@ -232,8 +232,8 @@ da:
         manage_participants: Search for and add project members as participants to this meeting.
         search_for_members: Search for project members
       blankslate:
-        heading: No participants
-        description: There are no participants yet.
+        heading: Ingen deltagere
+        description: Der er ingen deltagere endnu.
     attachments:
       onetime_template: These attached files will be included in all future meetings using this template.
       series_template: These attached files will be included in all future meetings in the series.
@@ -253,7 +253,7 @@ da:
 
         '
       send_invitation_emails_structured: Send an email invitation immediately to all participants. You can also do this manually at any time later.
-      open_meeting_link: Open meeting
+      open_meeting_link: Åben møde
       open_my_meetings_link: Go to My meetings
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
