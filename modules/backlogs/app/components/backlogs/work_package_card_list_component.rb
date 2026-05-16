@@ -76,7 +76,6 @@ module Backlogs
       title:,
       count: work_packages.size,
       count_label: default_count_label(count),
-      collapsed: folded?,
       **system_arguments,
       &
     )
@@ -84,7 +83,6 @@ module Backlogs
         title:,
         count:,
         count_label:,
-        collapsed:,
         **system_arguments,
         &
       )
@@ -118,10 +116,6 @@ module Backlogs
         target_id: drag_and_drop.fetch(:target_id),
         target_allowed_drag_type: drag_and_drop.fetch(:allowed_drag_type)
       }
-    end
-
-    def folded?
-      current_user.pref[:backlogs_versions_default_fold_state] == "closed"
     end
 
     def default_count_label(count)

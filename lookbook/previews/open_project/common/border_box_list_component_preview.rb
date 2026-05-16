@@ -34,10 +34,12 @@ module OpenProject
     class BorderBoxListComponentPreview < ViewComponent::Preview
       # @label Default
       # @param interactive toggle
-      def default(interactive: false)
+      # @param collapsible toggle
+      def default(interactive: false, collapsible: false)
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-preview",
-          interactive: boolean_preview_param(interactive)
+          interactive: boolean_preview_param(interactive),
+          collapsible: boolean_preview_param(collapsible)
         ) do |list|
           list.with_header(title: "Things we're building", count: true) do |header|
             header.with_description { "There's lots to look forward to" }
@@ -61,35 +63,30 @@ module OpenProject
 
       # @label With work package items
       # @param interactive toggle
-      def with_work_package_items(interactive: false)
+      # @param collapsible toggle
+      def with_work_package_items(interactive: false, collapsible: false)
         work_packages = WorkPackage.includes(:project).limit(2).to_a
         return preview_message("No work packages in the database.") if work_packages.empty?
 
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-work-package-preview",
-          interactive: boolean_preview_param(interactive)
+          interactive: boolean_preview_param(interactive),
+          collapsible: boolean_preview_param(collapsible)
         ) do |list|
           list.with_header(title: "Work packages", count: true)
-
-          work_packages.each do |work_package|
-            list.with_work_package_item(work_package:) do |item|
-              item.with_menu(button_aria_label: "Work package actions") do |menu|
-                menu.with_item(label: "Open", href: "/work_packages/#{work_package.id}") do |menu_item|
-                  menu_item.with_leading_visual_icon(icon: :link)
-                end
-              end
-            end
-          end
+          render_work_package_items(list, work_packages)
         end
       end
 
       # @label Playground
+      # @param collapsible toggle
       # @param title_tag [Symbol] select [h2, h3, h4, h5]
       # @param count [Symbol] select [inferred, hidden, explicit, zero]
       # @param count_scheme [Symbol] select [primary, secondary]
       # @param hide_zero_count toggle
       # @param interactive toggle
       def playground(
+        collapsible: false,
         title_tag: :h4,
         count: :inferred,
         count_scheme: :primary,
@@ -98,7 +95,8 @@ module OpenProject
       )
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-playground-preview",
-          interactive: boolean_preview_param(interactive)
+          interactive: boolean_preview_param(interactive),
+          collapsible: boolean_preview_param(collapsible)
         ) do |list|
           list.with_header(
             title: "Playground list",
@@ -122,10 +120,12 @@ module OpenProject
       # @label Empty state
       # List with a header and an empty state (Blankslate), no items.
       # @param interactive toggle
-      def empty_state(interactive: false)
+      # @param collapsible toggle
+      def empty_state(interactive: false, collapsible: false)
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-empty-preview",
-          interactive: boolean_preview_param(interactive)
+          interactive: boolean_preview_param(interactive),
+          collapsible: boolean_preview_param(collapsible)
         ) do |list|
           list.with_header(title: "Empty list", count: 0)
           list.with_empty_state(
@@ -157,6 +157,18 @@ module OpenProject
       def preview_message(text)
         render(Primer::Beta::Blankslate.new) do |blankslate|
           blankslate.with_heading(tag: :h4).with_content(text)
+        end
+      end
+
+      def render_work_package_items(list, work_packages)
+        work_packages.each do |work_package|
+          list.with_work_package_item(work_package:) do |item|
+            item.with_menu(button_aria_label: "Work package actions") do |menu|
+              menu.with_item(label: "Open", href: "/work_packages/#{work_package.id}") do |menu_item|
+                menu_item.with_leading_visual_icon(icon: :link)
+              end
+            end
+          end
         end
       end
     end
