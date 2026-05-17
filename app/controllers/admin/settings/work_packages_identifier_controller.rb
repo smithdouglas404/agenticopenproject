@@ -55,14 +55,11 @@ module Admin::Settings
     end
 
     def status
-      if ProjectIdentifiers::IdentifierAutofix.job_in_progress?
-        head :no_content
-      else
-        replace_via_turbo_stream(
-          component: WorkPackages::Admin::Settings::IdentifierSettingsFormComponent.new(state: :completed)
-        )
-        respond_with_turbo_streams
-      end
+      state = ProjectIdentifiers::IdentifierAutofix.job_in_progress? ? :change_in_progress : :completed
+      replace_via_turbo_stream(
+        component: WorkPackages::Admin::Settings::IdentifierSettingsFormComponent.new(state:)
+      )
+      respond_with_turbo_streams
     end
 
     private

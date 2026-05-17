@@ -450,8 +450,14 @@ en:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
-          reverting_banner_message: Project identifiers are currently being converted to classic format. This may take some time.
+          semantic_conversion_status_message:
+            zero: Finalizing conversion to semantic format...
+            one: Project identifiers are being converted to semantic format. 1 project remaining.
+            other: Project identifiers are being converted to semantic format. %{count} projects remaining.
+          classic_conversion_status_message:
+            zero: Finalizing conversion to classic format...
+            one: Project identifiers are being converted to classic format. 1 project remaining.
+            other: Project identifiers are being converted to classic format. %{count} projects remaining.
     workflows:
       tabs:
         default_transitions: "Default transitions"
