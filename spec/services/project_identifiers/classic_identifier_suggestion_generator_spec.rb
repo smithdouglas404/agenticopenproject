@@ -63,14 +63,6 @@ RSpec.describe ProjectIdentifiers::ClassicIdentifierSuggestionGenerator do
       it "falls back to a randomised project-XXXXXX identifier" do
         expect(described_class.new.suggest_identifier("!!!")).to match(/\Aproject-[a-z0-9]{5}\z/)
       end
-
-      it "maps '.' to 'dot'" do
-        expect(described_class.new.suggest_identifier(".")).to eq("dot")
-      end
-
-      it "maps '!' to 'bang'" do
-        expect(described_class.new.suggest_identifier("!")).to eq("bang")
-      end
     end
 
     context "when the name is all-numeric" do

@@ -70,7 +70,6 @@ module ProjectIdentifiers
 
     def slugify(name)
       slug = name.to_url.first(Projects::Identifier::CLASSIC_IDENTIFIER_MAX_LENGTH).presence
-      slug ||= BLANK_SLUG_SUBSTITUTIONS[name]
       slug if slug && Projects::Identifier::CLASSIC_IDENTIFIER_FORMAT.match?(slug)
     end
 
