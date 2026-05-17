@@ -460,17 +460,23 @@ en:
           remaining_projects:
             one: "... 1 more project"
             other: "... %{count} more projects"
-        button_autofix: Convert identifiers
-        button_save: Convert identifiers
+        button_convert: Convert identifiers
         dialog:
           title: Change work package identifiers
-          heading: Enable project-based work package IDs?
-          description: >
-            This will change IDs for all work packages in all projects in this instance.
-            Previous identifiers and URLs will continue to redirect properly.
-            This change will take some time to complete.
           confirm_button: Change identifiers
           checkbox_label: I understand that this will permanently change all work package IDs
+          semantic:
+            heading: Enable project-based work package IDs?
+            description: >
+              This will change IDs for all work packages in all projects in this instance.
+              Previous identifiers and URLs will continue to redirect properly.
+              This change will take some time to complete.
+          classic:
+            heading: Switch to numeric work package IDs?
+            description: >
+              This will change IDs for all work packages in all projects in this instance back to numeric format.
+              Previous identifiers and URLs will continue to redirect properly.
+              This change will take some time to complete.
         success_banner: Successfully updated work package identifier format.
         in_progress:
           header_semantic: "Converting to project-based identifiers"

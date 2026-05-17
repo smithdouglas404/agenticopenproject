@@ -73,7 +73,7 @@
 
   <% unless change_in_progress? %>
     <%= tag.div(
-          hidden: !show_autofix_section?,
+          hidden: true,
           data: { admin__work_packages_identifier_target: "autofixSection" }
         ) do %>
       <%= render(
@@ -92,20 +92,20 @@
               hidden: true,
               data: { admin__work_packages_identifier_target: "saveButton" }
             )
-          ) { t("admin.settings.work_packages_identifier.button_save") } %>
+          ) { t("admin.settings.work_packages_identifier.button_convert") } %>
 
       <%= render(
             Primer::Beta::Button.new(
               tag: :a,
-              href: confirm_dialog_admin_settings_work_packages_identifier_path,
+              href: "#",
               scheme: :primary,
-              hidden: !show_autofix_section?,
+              hidden: true,
               data: {
                 turbo_stream: true,
-                admin__work_packages_identifier_target: "autofixButton"
+                admin__work_packages_identifier_target: "convertButton"
               }
             )
-          ) { t("admin.settings.work_packages_identifier.button_autofix") } %>
+          ) { t("admin.settings.work_packages_identifier.button_convert") } %>
     </div>
   <% end %>
 <% end %>
