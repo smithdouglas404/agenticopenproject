@@ -43,7 +43,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
       before do
         allow(ProjectIdentifiers::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
         allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(false)
-        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new(1..5))
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(5)
       end
 
       it "returns 200 with a turbo stream replacing the form component in change_in_progress state" do

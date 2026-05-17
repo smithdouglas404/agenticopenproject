@@ -55,7 +55,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     before do
       allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(false)
-      allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new(1..7))
+      allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(7)
     end
 
     it "renders the converting banner with the pending project count" do
@@ -64,7 +64,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     end
 
     context "with 1 project remaining" do
-      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[42]) }
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(1) }
 
       it "uses the singular form" do
         render_component(component)
@@ -73,7 +73,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     end
 
     context "with 0 projects remaining" do
-      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new) }
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(0) }
 
       it "renders the finalizing message" do
         render_component(component)
@@ -91,7 +91,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       it "renders the converting-to-classic banner with the pending project count" do
         render_component(component)
         expect(page).to have_text("3 projects remaining")
-        expect(ProjectIdentifiers::PendingProjectsFinder).not_to have_received(:project_ids)
+        expect(ProjectIdentifiers::PendingProjectsFinder).not_to have_received(:count)
       end
     end
 

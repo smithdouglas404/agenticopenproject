@@ -69,7 +69,7 @@ module WorkPackages
             I18n.t("admin.settings.work_packages_identifier.in_progress.classic_conversion_status_message",
                    count: pending_count)
           else
-            pending_count = ProjectIdentifiers::PendingProjectsFinder.project_ids.size
+            pending_count = ProjectIdentifiers::PendingProjectsFinder.count
             I18n.t("admin.settings.work_packages_identifier.in_progress.semantic_conversion_status_message",
                    count: pending_count)
           end
