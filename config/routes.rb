@@ -755,6 +755,12 @@ Rails.application.routes.draw do
       resource :date_format, controller: "/admin/settings/date_format_settings", only: %i[show update]
       resource :icalendar, controller: "/admin/settings/icalendar_settings", only: %i[show update]
 
+      resources :project_reserved_identifiers, only: %i[index destroy] do
+        member do
+          get :confirm_dialog, defaults: { format: :turbo_stream }
+        end
+      end
+
       # Redirect /settings to general settings
       get "/", to: redirect("/admin/settings/general")
 
