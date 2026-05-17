@@ -135,6 +135,25 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       end
     end
 
+    context "when enabling semantic mode fails" do
+      before do
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new)
+        allow(update_service).to receive(:call)
+          .and_return(instance_double(ServiceResult, success?: false, message: "update failed"))
+        allow(Rails.logger).to receive(:error)
+      end
+
+      it "reverts to classic" do
+        job.perform(batch)
+        expect(ProjectIdentifiers::RevertInstanceToClassicIdsJob).to have_received(:perform_later)
+      end
+
+      it "logs the failure reason" do
+        job.perform(batch)
+        expect(Rails.logger).to have_received(:error).with(/Failed to enable semantic mode/)
+      end
+    end
+
     context "when the batch had failures" do
       let(:batch) { instance_double(GoodJob::Batch, discarded?: true) }
 
