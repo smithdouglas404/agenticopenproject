@@ -56,41 +56,42 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     before do
       allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(false)
       allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(7)
+      allow(Project).to receive(:count).and_return(10)
     end
 
-    it "renders the converting banner with the pending project count" do
+    it "renders the semantic conversion header label" do
       render_component(component)
-      expect(page).to have_text("7 projects remaining")
+      expect(page).to have_text("Converting to project-based identifiers")
     end
 
-    context "with 1 project remaining" do
-      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(1) }
-
-      it "uses the singular form" do
-        render_component(component)
-        expect(page).to have_text("1 project remaining")
-      end
+    it "renders the processed / total counter" do
+      render_component(component)
+      expect(page).to have_text("3 / 10")
     end
 
-    context "with 0 projects remaining" do
-      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(0) }
+    it "renders a progress bar reflecting conversion progress" do
+      render_component(component)
+      expect(page).to have_css(".Progress")
+      expect(page).to have_css(".Progress-item[style*='width: 30%']")
+    end
 
-      it "renders the finalizing message" do
-        render_component(component)
-        expect(page).to have_text("Finalizing conversion to semantic format")
-        expect(page).to have_no_text("projects remaining")
-      end
+    it "renders the footer message" do
+      render_component(component)
+      expect(page).to have_text("Background conversion is in progress. You can safely leave this page.")
     end
 
     context "when reversion is in progress" do
       before do
         allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(true)
-        3.times { |i| create(:project).update_column(:identifier, "PROJ#{i}") }
+        allow(Project).to receive(:with_non_classic_identifier).and_return(
+          instance_double(ActiveRecord::Relation, count: 4)
+        )
       end
 
-      it "renders the converting-to-classic banner with the pending project count" do
+      it "shows the classic conversion header, correct counter, and does not call PendingProjectsFinder" do
         render_component(component)
-        expect(page).to have_text("3 projects remaining")
+        expect(page).to have_text("Converting to numeric identifiers")
+        expect(page).to have_text("6 / 10")
         expect(ProjectIdentifiers::PendingProjectsFinder).not_to have_received(:count)
       end
     end
@@ -126,9 +127,10 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       expect(page).to have_text("Successfully updated work package identifier format.")
     end
 
-    it "does not render the in-progress spinner message" do
+    it "does not render the in-progress content" do
       render_component(component)
-      expect(page).to have_no_text("projects remaining")
+      expect(page).to have_no_text("Converting to")
+      expect(page).to have_no_css(".Progress")
     end
 
     it "renders the radio buttons as enabled" do
@@ -174,7 +176,8 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render in-progress or success content" do
       render_component(component)
-      expect(page).to have_no_text("projects remaining")
+      expect(page).to have_no_text("Converting to")
+      expect(page).to have_no_css(".Progress")
       expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 
