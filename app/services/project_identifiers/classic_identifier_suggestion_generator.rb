@@ -68,8 +68,6 @@ module ProjectIdentifiers
 
     private
 
-    BLANK_SLUG_SUBSTITUTIONS = { "." => "dot", "!" => "bang" }.freeze
-
     def slugify(name)
       slug = name.to_url.first(Projects::Identifier::CLASSIC_IDENTIFIER_MAX_LENGTH).presence
       slug ||= BLANK_SLUG_SUBSTITUTIONS[name]
