@@ -67,7 +67,7 @@ See COPYRIGHT and LICENSE files for more details.
       <thead>
         <tr>
           <th class="reserved-identifiers--th reserved-identifiers--th-project"><%= t("admin.reserved_identifiers.col_project") %></th>
-          <th class="reserved-identifiers--th reserved-identifiers--th-identifier"><%= t("admin.reserved_identifiers.col_identifier") %></th>
+          <th class="reserved-identifiers--th"><%= t("admin.reserved_identifiers.col_identifier") %></th>
           <th class="reserved-identifiers--th reserved-identifiers--th-reserved"><%= t("admin.reserved_identifiers.col_reserved") %></th>
           <th class="reserved-identifiers--th reserved-identifiers--th-action"></th>
         </tr>
@@ -85,7 +85,7 @@ See COPYRIGHT and LICENSE files for more details.
                 <%# Hidden span ensures the filter matches project name on every row %>
                 <span class="filter-target-visible-text" aria-hidden="true" style="display:none;"><%= group[:project].name %> <%= slug.slug %></span>
               </td>
-              <td class="reserved-identifiers--td reserved-identifiers--td-identifier">
+              <td class="reserved-identifiers--td">
                 <span class="reserved-identifiers--identifier-text"><%= slug.slug %></span>
               </td>
               <td class="reserved-identifiers--td reserved-identifiers--td-reserved">
@@ -105,7 +105,7 @@ See COPYRIGHT and LICENSE files for more details.
             </tr>
           <% end %>
         <% end %>
-        <tr class="reserved-identifiers--no-results d-none"
+        <tr class="d-none"
             data-filter--filter-list-target="noResultsText">
           <td colspan="4" class="reserved-identifiers--td reserved-identifiers--td-no-results">
             <%= t("admin.reserved_identifiers.no_results") %>
