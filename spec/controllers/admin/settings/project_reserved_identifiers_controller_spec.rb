@@ -1,0 +1,143 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "spec_helper"
+
+RSpec.describe Admin::Settings::ProjectReservedIdentifiersController do
+  shared_let(:admin) { create(:admin) }
+
+  current_user { admin }
+
+  describe "GET #index" do
+    context "in semantic mode" do
+      before { allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(true) }
+
+      it "redirects to the identifier settings page" do
+        get :index
+        expect(response).to redirect_to(admin_settings_work_packages_identifier_path)
+      end
+    end
+
+    context "in classic mode" do
+      before { allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(false) }
+
+      it "responds 200" do
+        get :index
+        expect(response).to have_http_status(:ok)
+      end
+
+      context "with a classic reserved slug" do
+        let!(:project) { create(:project, identifier: "current-id") }
+
+        before { FriendlyId::Slug.create!(sluggable: project, slug: "old-classic") }
+
+        it "includes the slug in the groups" do
+          get :index
+          slugs = assigns(:groups).flat_map { |g| g[:slugs] }.map(&:slug)
+          expect(slugs).to include("old-classic")
+        end
+
+        it "sets @total_count to the number of reserved slugs" do
+          get :index
+          expect(assigns(:total_count)).to eq(1)
+        end
+      end
+
+      context "with a pure-numeric reserved slug" do
+        let!(:project) { create(:project, identifier: "current-id") }
+
+        before { FriendlyId::Slug.create!(sluggable: project, slug: "12345") }
+
+        it "excludes pure-numeric slugs" do
+          get :index
+          slugs = assigns(:groups).flat_map { |g| g[:slugs] }.map(&:slug)
+          expect(slugs).not_to include("12345")
+        end
+      end
+    end
+  end
+
+  describe "GET #confirm_dialog" do
+    let!(:project) { create(:project, identifier: "current-id") }
+
+    before { allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(false) }
+
+    context "with a historically reserved slug" do
+      let!(:slug) { FriendlyId::Slug.create!(sluggable: project, slug: "old-id") }
+
+      it "responds with a turbo stream" do
+        get :confirm_dialog, params: { id: slug.id }, format: :turbo_stream
+        expect(response).to have_http_status(:ok)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      end
+
+      context "with an unknown id" do
+        it "renders 404" do
+          get :confirm_dialog, params: { id: 0 }, format: :turbo_stream
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context "when the slug matches another project's active identifier" do
+      # Create the other project first (before inserting the conflicting slug directly,
+      # bypassing Project validations which would reject an already-reserved identifier).
+      let!(:other_project) { create(:project, identifier: "shared-name") }
+      let!(:slug) { FriendlyId::Slug.create!(sluggable: project, slug: "shared-name") }
+
+      it "renders 404 because the slug is not historically reserved" do
+        get :confirm_dialog, params: { id: slug.id }, format: :turbo_stream
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    let!(:project) { create(:project, identifier: "current-id") }
+    let!(:slug) { FriendlyId::Slug.create!(sluggable: project, slug: "old-id") }
+
+    before { allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(false) }
+
+    it "destroys the slug and redirects with a flash notice" do
+      expect { delete :destroy, params: { id: slug.id } }
+        .to change(FriendlyId::Slug, :count).by(-1)
+
+      expect(response).to redirect_to(admin_settings_project_reserved_identifiers_path)
+      expect(flash[:notice]).to include("old-id")
+    end
+
+    context "with an unknown id" do
+      it "renders 404" do
+        delete :destroy, params: { id: 0 }
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+end
