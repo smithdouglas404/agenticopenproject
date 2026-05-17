@@ -203,9 +203,9 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
         expect(page).to have_no_button("Save")
       end
 
-      it "renders the autofix button" do
+      it "renders the convert button" do
         render_component(component)
-        expect(page).to have_link("Autofix and save")
+        expect(page).to have_link("Convert identifiers", visible: :all)
       end
     end
   end

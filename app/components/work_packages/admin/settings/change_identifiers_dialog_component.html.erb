@@ -45,11 +45,11 @@
   ) do |dialog|
     dialog.with_confirmation_message do |message|
       message.with_heading(tag: :h2) do
-        I18n.t("admin.settings.work_packages_identifier.dialog.heading")
+        I18n.t("admin.settings.work_packages_identifier.dialog.#{target_identifier}.heading")
       end
 
       message.with_description_content(
-        I18n.t("admin.settings.work_packages_identifier.dialog.description")
+        I18n.t("admin.settings.work_packages_identifier.dialog.#{target_identifier}.description")
       )
     end
 
@@ -58,7 +58,7 @@
     )
 
     dialog.with_additional_details(display: :none) do
-      hidden_field_tag("settings[work_packages_identifier]", Setting::WorkPackageIdentifier::SEMANTIC)
+      hidden_field_tag("settings[work_packages_identifier]", target_identifier)
     end
   end
 %>
