@@ -51,7 +51,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
         expect(response).to have_http_status(:ok)
         expect(response).to have_turbo_stream(action: "replace", target: component_target)
-        expect(response.body).to include("projects remaining")
+        expect(response.body).to include("Background conversion is in progress")
       end
     end
 
