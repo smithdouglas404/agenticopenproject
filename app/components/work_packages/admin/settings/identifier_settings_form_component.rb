@@ -90,11 +90,12 @@ module WorkPackages
         end
 
         def remaining_projects_count
-          @remaining_projects_count ||= if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
-            Project.with_non_classic_identifier.count
-          else
-            ProjectIdentifiers::PendingProjectsFinder.count
-          end
+          @remaining_projects_count ||=
+            if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
+              Project.with_non_classic_identifier.count
+            else
+              ProjectIdentifiers::PendingProjectsFinder.count
+            end
         end
 
         def wrapper_data_attrs
