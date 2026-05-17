@@ -34,13 +34,6 @@ module WorkPackages
       class ChangeIdentifiersDialogComponent < ApplicationComponent
         include OpPrimer::ComponentHelpers
         include OpTurbo::Streamable
-
-        attr_reader :target_identifier
-
-        def initialize(target_identifier: Setting::WorkPackageIdentifier::SEMANTIC)
-          super()
-          @target_identifier = target_identifier
-        end
       end
     end
   end

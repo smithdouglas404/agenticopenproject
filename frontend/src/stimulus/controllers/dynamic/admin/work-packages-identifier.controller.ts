@@ -34,23 +34,20 @@ export default class WorkPackagesIdentifierController extends Controller {
   static values = {
     hasProblematicProjects: Boolean,
     currentValue: String,
-    confirmDialogUrl: String,
   };
 
-  static targets = ['autofixSection', 'saveButton', 'convertButton'];
+  static targets = ['autofixSection', 'saveButton', 'autofixButton'];
 
   declare readonly hasProblematicProjectsValue:boolean;
   declare readonly currentValueValue:string;
-  declare readonly confirmDialogUrlValue:string;
 
   declare readonly autofixSectionTarget:HTMLElement;
   declare readonly saveButtonTarget:HTMLButtonElement;
-  declare readonly convertButtonTarget:HTMLAnchorElement;
+  declare readonly autofixButtonTarget:HTMLButtonElement;
   declare readonly hasSaveButtonTarget:boolean;
 
   private readonly resetBeforeCache = ():void => {
     if (this.hasSaveButtonTarget) this.saveButtonTarget.hidden = true;
-    this.convertButtonTarget.hidden = true;
   };
 
   connect() {
@@ -67,23 +64,18 @@ export default class WorkPackagesIdentifierController extends Controller {
   }
 
   private updateVisibility() {
-    const selectedValue     = this.selectedValue();
-    const showAutofix       = selectedValue === 'semantic' && this.hasProblematicProjectsValue;
-    const isDirty           = selectedValue !== this.currentValueValue;
-    const showConvertButton = showAutofix || (selectedValue === 'classic' && isDirty);
+    const selectedValue = this.selectedValue();
+    const showAutofix   = selectedValue === 'semantic' && this.hasProblematicProjectsValue;
+    const isDirty       = selectedValue !== this.currentValueValue;
 
-    this.autofixSectionTarget.hidden    = !showAutofix;
-    this.saveButtonTarget.hidden        = !isDirty || showConvertButton;
-    this.convertButtonTarget.hidden     = !showConvertButton;
-
-    if (showConvertButton) {
-      this.convertButtonTarget.href = `${this.confirmDialogUrlValue}?target=${selectedValue}`;
-    }
+    this.autofixSectionTarget.hidden = !showAutofix;
+    this.saveButtonTarget.hidden     =  showAutofix || !isDirty;
+    this.autofixButtonTarget.hidden  = !showAutofix;
   }
 
-  private selectedValue():string {
+  private selectedValue():string | undefined {
     return this.element.querySelector<HTMLInputElement>(
       'input[name="settings[work_packages_identifier]"]:checked',
-    )?.value ?? this.currentValueValue;
+    )?.value;
   }
 }

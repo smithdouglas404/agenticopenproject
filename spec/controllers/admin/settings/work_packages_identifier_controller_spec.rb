@@ -36,42 +36,6 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
   current_user { user }
 
-  describe "GET #confirm_dialog" do
-    context "when target is 'semantic'" do
-      it "returns 200 with the semantic confirmation dialog" do
-        get :confirm_dialog, params: { target: "semantic" }, format: :turbo_stream
-
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Enable project-based work package IDs?")
-      end
-    end
-
-    context "when target is 'classic'" do
-      it "returns 200 with the classic confirmation dialog" do
-        get :confirm_dialog, params: { target: "classic" }, format: :turbo_stream
-
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Switch to numeric work package IDs?")
-      end
-    end
-
-    context "when target is missing" do
-      it "renders 400" do
-        get :confirm_dialog, format: :turbo_stream
-
-        expect(response).to have_http_status(:bad_request)
-      end
-    end
-
-    context "when target is an unknown value" do
-      it "renders 400" do
-        get :confirm_dialog, params: { target: "unknown" }, format: :turbo_stream
-
-        expect(response).to have_http_status(:bad_request)
-      end
-    end
-  end
-
   describe "GET #status" do
     let(:component_target) { "work-packages-admin-settings-identifier-settings-form-component" }
 

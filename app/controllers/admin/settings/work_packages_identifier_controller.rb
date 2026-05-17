@@ -51,10 +51,7 @@ module Admin::Settings
     end
 
     def confirm_dialog
-      target = params[:target].to_s
-      return render_400 unless Setting::WorkPackageIdentifier::ALLOWED_VALUES.include?(target)
-
-      respond_with_dialog WorkPackages::Admin::Settings::ChangeIdentifiersDialogComponent.new(target_identifier: target)
+      respond_with_dialog WorkPackages::Admin::Settings::ChangeIdentifiersDialogComponent.new
     end
 
     def status
