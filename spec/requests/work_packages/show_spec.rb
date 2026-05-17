@@ -65,6 +65,15 @@ RSpec.describe "GET work package show", type: :rails_request do
     include_examples "includes canonical link tag"
   end
 
+  context "when the work package does not exist" do
+    before { get "/projects/#{project.id}/work_packages/0/activity" }
+
+    it "renders a not-found response without raising" do
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).not_to include(%(<link rel="canonical"))
+    end
+  end
+
   context "in semantic instance mode", with_settings: { work_packages_identifier: "semantic" } do
     let(:project) { create(:project, identifier: "PROJ") }
     let(:work_package) { create(:work_package, project:) }

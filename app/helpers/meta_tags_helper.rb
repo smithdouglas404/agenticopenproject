@@ -58,7 +58,7 @@ module MetaTagsHelper
   # semantic identifiers and project slugs for search engines.
   def canonical_link_tag
     canonical_path =
-      if controller_name == "work_packages" && request.path_parameters[:id].present?
+      if @work_package && controller_name == "work_packages" && request.path_parameters[:id].present?
         work_package_canonical_path
       elsif @project && request.path.match?(%r{/projects/[^/]+})
         project_canonical_path
