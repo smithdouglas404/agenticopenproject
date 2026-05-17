@@ -111,9 +111,9 @@ RSpec.describe Projects::Identifier do
       end.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
-    # The acts_as_url plugin defines validation callbacks on :create and it is not automatically
-    # called when calling a custom context. However we need the acts_as_url callback to set the
-    # identifier when the validations are called with the :saving_custom_fields context.
+    # The identifier-generation callback fires on :create and is not automatically called when
+    # validating with a custom context. The validation_context override ensures it still runs
+    # when the validations are called with the :saving_custom_fields context.
     context "when validating with :saving_custom_fields context" do
       it "is set from name" do
         project = Project.new(name: "foo")
