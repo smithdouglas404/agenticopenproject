@@ -55,17 +55,11 @@ module WorkPackages
           end
         end
 
-        def has_problematic_projects?
-          total_count > 0
-        end
-
         private
 
         def form_id = "wp-identifier-settings-form"
 
-        def show_autofix_section?
-          state == :edit && Setting::WorkPackageIdentifier.semantic? && has_problematic_projects?
-        end
+        def has_problematic_projects? = total_count > 0
 
         def change_in_progress? = state == :change_in_progress
         def completed?          = state == :completed
@@ -121,7 +115,8 @@ module WorkPackages
             data: {
               controller: "admin--work-packages-identifier",
               admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?,
-              admin__work_packages_identifier_current_value_value: Setting[:work_packages_identifier]
+              admin__work_packages_identifier_current_value_value: Setting[:work_packages_identifier],
+              admin__work_packages_identifier_confirm_dialog_url_value: url_helpers.confirm_dialog_admin_settings_work_packages_identifier_path
             }
           }
         end
