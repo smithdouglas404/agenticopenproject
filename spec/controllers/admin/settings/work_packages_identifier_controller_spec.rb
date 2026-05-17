@@ -41,8 +41,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
     context "when a migration job is in progress" do
       before do
-        allow(ProjectIdentifiers::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
-        allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(false)
+        allow(ProjectIdentifiers::IdentifierAutofix).to receive_messages(job_in_progress?: true, reversion_in_progress?: false)
         allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:count).and_return(5)
       end
 
