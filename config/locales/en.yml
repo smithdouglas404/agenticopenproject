@@ -65,9 +65,9 @@ en:
       count_strip_html:
         one: "<strong>1</strong> identifier reserved"
         other: "<strong>%{count}</strong> identifiers reserved"
-      col_identifier: "IDENTIFIER"
-      col_project: "PROJECT"
-      col_reserved: "RESERVED"
+      col_identifier: "Identifier"
+      col_project: "Project"
+      col_reserved: "Reserved"
       not_available_in_semantic_mode: "Reserved identifiers are only available in classic identifier mode."
       filter_label: "Filter identifiers"
       no_results: "No identifiers match your filter."

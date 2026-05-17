@@ -64,12 +64,12 @@ module Admin::Settings
     end
 
     def build_groups
-      reserved_slugs = classic_reserved_slugs
-      projects_by_id = Project.where(id: reserved_slugs.pluck(:sluggable_id).uniq).index_by(&:id)
+      slugs = classic_reserved_slugs.to_a
+      projects_by_id = Project.where(id: slugs.map(&:sluggable_id).uniq).index_by(&:id)
 
-      reserved_slugs
+      slugs
         .group_by(&:sluggable_id)
-        .filter_map { |pid, slugs| { project: projects_by_id[pid], slugs: } if projects_by_id[pid] }
+        .filter_map { |pid, group_slugs| { project: projects_by_id[pid], slugs: group_slugs } if projects_by_id[pid] }
         .sort_by { |g| g[:project].name.downcase }
     end
 
