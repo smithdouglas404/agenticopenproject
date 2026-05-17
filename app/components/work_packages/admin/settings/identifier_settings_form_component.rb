@@ -70,12 +70,8 @@ module WorkPackages
                    count: pending_count)
           else
             pending_count = ProjectIdentifiers::PendingProjectsFinder.project_ids.size
-            scope = "admin.settings.work_packages_identifier.in_progress.semantic_conversion_status_message"
-            if pending_count.zero?
-              I18n.t("#{scope}.zero")
-            else
-              I18n.t(scope, count: pending_count)
-            end
+            I18n.t("admin.settings.work_packages_identifier.in_progress.semantic_conversion_status_message",
+                   count: pending_count)
           end
         end
 

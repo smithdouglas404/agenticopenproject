@@ -454,6 +454,7 @@ en:
             one: Project identifiers are being converted to semantic format. 1 project remaining.
             other: Project identifiers are being converted to semantic format. %{count} projects remaining.
           classic_conversion_status_message:
+            zero: Finalizing conversion to classic format...
             one: Project identifiers are being converted to classic format. 1 project remaining.
             other: Project identifiers are being converted to classic format. %{count} projects remaining.
     workflows:

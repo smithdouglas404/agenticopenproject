@@ -42,6 +42,8 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
     context "when a migration job is in progress" do
       before do
         allow(ProjectIdentifiers::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
+        allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(false)
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new(1..5))
       end
 
       it "returns 200 with a turbo stream replacing the form component in change_in_progress state" do
@@ -49,6 +51,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
         expect(response).to have_http_status(:ok)
         expect(response).to have_turbo_stream(action: "replace", target: component_target)
+        expect(response.body).to include("projects remaining")
       end
     end
 
@@ -62,6 +65,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
         expect(response).to have_http_status(:ok)
         expect(response).to have_turbo_stream(action: "replace", target: component_target)
+        expect(response.body).to include("Successfully updated work package identifier format.")
       end
     end
   end

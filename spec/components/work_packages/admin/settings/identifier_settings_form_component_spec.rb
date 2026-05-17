@@ -85,7 +85,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     context "when reversion is in progress" do
       before do
         allow(ProjectIdentifiers::IdentifierAutofix).to receive(:reversion_in_progress?).and_return(true)
-        allow(Project).to receive(:with_non_classic_identifier).and_return(double(count: 3))
+        3.times { |i| create(:project).update_column(:identifier, "PROJ#{i}") }
       end
 
       it "renders the converting-to-classic banner with the pending project count" do

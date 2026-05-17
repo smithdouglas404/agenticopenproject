@@ -35,7 +35,7 @@ module Projects::Identifier
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
 
   # Classic format validation regexes:
-  # Simple character set meant only for SQL matching. No anchoring or anti-all-numeric guard.
+  # Character class only — callers anchor.
   CLASSIC_FORMAT_CHARS = /[a-z0-9\-_]+/
   # Anchored form with an anti-all-numeric guard.
   CLASSIC_FORMAT = /\A(?!\d+\z)#{CLASSIC_FORMAT_CHARS}\z/
