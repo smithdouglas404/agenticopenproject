@@ -132,7 +132,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the save button (hidden until a change is made)" do
       render_component(component)
-      expect(page).to have_button("Save", visible: :all)
+      expect(page).to have_button("Convert identifiers", visible: :all)
     end
 
     it "does not render in-progress or success content" do
@@ -160,7 +160,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
       it "hides the plain save button" do
         render_component(component)
-        expect(page).to have_no_button("Save")
+        expect(page).to have_no_button("Convert identifiers")
       end
 
       it "renders the autofix button" do
