@@ -51,7 +51,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
       visit_settings
       choose "Project-based semantic identifiers"
 
-      click_button "Save"
+      click_button "Convert identifiers"
 
       expect(page).to have_current_path(settings_path)
       expect(page).to have_no_dialog
@@ -71,7 +71,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
           "[data-admin--work-packages-identifier-target=autofixSection][hidden]",
           visible: :all
         )
-        click_button "Save"
+        click_button "Convert identifiers"
 
         expect(page).to have_current_path(settings_path)
         expect(page).to have_no_dialog
@@ -91,14 +91,14 @@ RSpec.describe "Work packages identifier admin settings", :js do
         )
       end
 
-      it "opens the confirmation dialog when 'Convert instance' is clicked" do
-        click_on "Convert instance"
+      it "opens the confirmation dialog when 'Convert identifiers' is clicked" do
+        click_on "Convert identifiers"
 
         expect(page).to have_dialog "Change work package identifiers"
       end
 
       it "shows the dialog heading and checkbox" do
-        click_on "Convert instance"
+        click_on "Convert identifiers"
 
         within_dialog "Change work package identifiers" do
           expect(page).to have_text("Enable project-based work package IDs?")
@@ -110,7 +110,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
       end
 
       it "enables the confirm button only after checking the checkbox" do
-        click_on "Convert instance"
+        click_on "Convert identifiers"
 
         within "[role=alertdialog]" do
           expect(page).to have_button("Change identifiers", disabled: true)
@@ -122,8 +122,8 @@ RSpec.describe "Work packages identifier admin settings", :js do
       end
 
       it "hides the plain Save button when autofix section is visible" do
-        expect(page).to have_no_button("Save")
-        expect(page).to have_link("Convert instance")
+        expect(page).to have_no_button("Convert identifiers")
+        expect(page).to have_link("Convert identifiers")
       end
     end
   end

@@ -418,7 +418,7 @@ en:
           existing_identifiers_notice: >
             Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers.
             OpenProject can automatically update these so that they are valid as in the examples below.
-            Click on 'Convert instance' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
+            Click on 'Convert identifiers' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
@@ -437,7 +437,8 @@ en:
           remaining_projects:
             one: "... 1 more project"
             other: "... %{count} more projects"
-        button_autofix: Convert instance
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Change work package identifiers
           heading: Enable project-based work package IDs?

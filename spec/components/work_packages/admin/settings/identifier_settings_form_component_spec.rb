@@ -71,8 +71,8 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render the save or autofix buttons" do
       render_component(component)
-      expect(page).to have_no_button("Save")
-      expect(page).to have_no_link("Convert instance")
+      expect(page).to have_no_button("Convert identifiers")
+      expect(page).to have_no_link("Convert identifiers")
     end
 
     it "does not call PreviewQuery" do
@@ -165,7 +165,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
       it "renders the autofix button" do
         render_component(component)
-        expect(page).to have_link("Convert instance")
+        expect(page).to have_link("Convert identifiers")
       end
     end
   end
