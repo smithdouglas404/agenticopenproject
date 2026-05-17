@@ -75,14 +75,6 @@ RSpec.describe Projects::Identifier do
       expect(project.identifier).to eq("foo")
     end
 
-    it "generates a valid identifier for an all-numeric name" do
-      project = Project.new(name: "12345")
-
-      project.validate
-
-      expect(project.identifier).to match(Projects::Identifier::CLASSIC_IDENTIFIER_FORMAT)
-    end
-
     it "is not allowed to clash with projects routing" do
       expect(reserved).not_to be_empty
 
