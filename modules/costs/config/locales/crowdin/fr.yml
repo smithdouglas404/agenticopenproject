@@ -173,7 +173,6 @@ fr:
   label_previous_week: Semaine précédente
   label_previous_month: Mois précédent
   label_specific_day: Jour %{day}
-  label_specific_week: Numéro de semaine %{week}
   label_specific_month: Mois %{month}
   label_list: Liste
   label_month: Mois

@@ -54,6 +54,7 @@ import {
   WorkPackageTabsService,
 } from 'core-app/features/work-packages/components/wp-tabs/services/wp-tabs/wp-tabs.service';
 import { TabComponent } from 'core-app/features/work-packages/components/wp-tabs/components/wp-tab-wrapper/tab';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Component({
   templateUrl: './wp-split-view.html',
@@ -101,27 +102,40 @@ export class WorkPackageSplitViewComponent extends WorkPackageSingleViewBase imp
   ngOnInit():void {
     this.observeWorkPackage();
 
-    const wpId = (this.$state.params.workPackageId || this.workPackageId) as string;
-    this.wpTableFocus.updateFocus(wpId, false);
-
-    if (this.wpTableSelection.isEmpty) {
-      this.wpTableSelection.setRowState(wpId, true);
-    }
-
     this.wpTableFocus.whenChanged()
       .pipe(
         this.untilDestroyed(),
       )
       .subscribe((newId) => {
-        const idSame = wpId.toString() === newId.toString();
+        const currentId = this.workPackage?.id ?? this.workPackageId;
+        const idSame = currentId.toString() === newId.toString();
         if (!idSame && this.$state.includes(`${this.baseRoute}.details`)) {
-          this.$state.go(
+          void this.$state.go(
             (this.$state.current.name!),
-            { workPackageId: newId, focus: false },
+            { workPackageId: resolveRoutingId(this.states, newId.toString()), focus: false },
           );
         }
       });
-    this.recentItemsService.add(wpId);
+  }
+
+  /**
+   * Set focus, selection, and recent-items after the WP has loaded.
+   *
+   * Intentionally deferred from ngOnInit because the route param
+   * (this.workPackageId) may be a semantic identifier like "PROJ-7",
+   * but focus/selection services are keyed by numeric PK. By the time
+   * init() runs, this.workPackage.id is guaranteed to be the numeric PK.
+   */
+  protected override init():void {
+    super.init();
+    const numericId = this.workPackage.id!;
+    this.wpTableFocus.updateFocus(numericId, false);
+
+    if (this.wpTableSelection.isEmpty) {
+      this.wpTableSelection.setRowState(numericId, true);
+    }
+
+    this.recentItemsService.add(numericId);
   }
 
   get activeTabComponent():Type<TabComponent>|undefined {

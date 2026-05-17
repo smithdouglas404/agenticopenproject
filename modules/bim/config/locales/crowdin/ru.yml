@@ -6,6 +6,7 @@ ru:
     description: Этот плагин OpenProject представляет функциональность BIM и BCF.
   bim:
     label_bim: BIM
+    error_direct_upload_failed: Прямая загрузка не удалась.
   bcf:
     label_bcf: BCF
     label_imported_failed: Неудачный импорт тем BCF

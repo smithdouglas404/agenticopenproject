@@ -41,7 +41,7 @@ pt-BR:
           title: Tempo gasto (últimos 7 dias)
           no_results: Não há entradas de tempo nos últimos 7 dias.
         work_packages_accountable:
-          title: Pacotes de trabalho sob minha responsabilidade
+          title: Pacotes de trabalho pelos quais sou encarregado
         work_packages_assigned:
           title: Pacotes de trabalho atribuídos a mim
         work_packages_created:

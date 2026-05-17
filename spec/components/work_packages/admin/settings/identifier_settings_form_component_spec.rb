@@ -55,7 +55,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_text("Project identifiers are currently being updated to project-based semantic identifiers.")
+      expect(page).to have_text("Project identifiers are currently being converted to semantic format.")
     end
 
     it "does not render the success banner" do
@@ -91,7 +91,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based semantic identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
     end
 
     it "renders the radio buttons as enabled" do
@@ -104,6 +104,22 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       render_component(component)
       expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
     end
+
+    context "with semantic setting", with_settings: { work_packages_identifier: "semantic" } do
+      it "shows semantic as selected" do
+        render_component(component)
+        expect(page).to have_field("Project-based semantic identifiers", checked: true)
+        expect(page).to have_field("Instance-wide numerical sequence (default)", checked: false)
+      end
+    end
+
+    context "with classic setting", with_settings: { work_packages_identifier: "classic" } do
+      it "shows classic as selected" do
+        render_component(component)
+        expect(page).to have_field("Instance-wide numerical sequence (default)", checked: true)
+        expect(page).to have_field("Project-based semantic identifiers", checked: false)
+      end
+    end
   end
 
   context "when state is :edit" do
@@ -114,14 +130,14 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to have_received(:new).once
     end
 
-    it "renders the save button" do
+    it "renders the save button (hidden until a change is made)" do
       render_component(component)
-      expect(page).to have_button("Save")
+      expect(page).to have_button("Save", visible: :all)
     end
 
     it "does not render in-progress or success content" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based semantic identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
       expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 

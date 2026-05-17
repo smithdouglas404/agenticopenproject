@@ -64,11 +64,11 @@ ja:
         confirmation: 続行すると、同期済グループ %{name} と、それを通じて同期された %{users_count} ユーザーがすべて削除されます。
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        このモジュールは LDAP グループと Op​​enProject グループ間の同期を可能にします。
-        これは LDAPグループ が OpenProject で動作するように設定された<em> groupOfNames / memberOf </em>属性を使用する必要があるかどうかに依存します。
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        グループは、cronジョブを介して1時間ごとに同期されます。
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">このトピックに関するドキュメントを参照下さい</a>。
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: 同期されたグループが見つかりません。
       no_members: このグループはまだ同期済のメンバーがありません。
       plural: 同期済 LDAP グループ

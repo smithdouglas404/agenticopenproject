@@ -74,11 +74,11 @@ sl:
         confirmation: Če nadaljujete, bo sinhronizirana skupina %{name} in vsi %{users_count} uporabniki, ki so bili sinhronizirani prek nje, odstranjeni.
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        Ta modul vam omogoča, da nastavite sinhronizacijo med skupinama LDAP in OpenProject.
-        Odvisno od tega, ali morajo skupine LDAP uporabiti atribut<em>skupinaOdIme / članOd </em>, ki deluje za OpenProject.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        Skupine se sinhronizirajo na uro preko naloge cron.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/"> Oglejte si našo dokumentacijo o tej temi </a>.
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: Ni najdena nobena sinhronizirana skupina
       no_members: Skupina še nima sinhroniziranih članov
       plural: 'Sinhronizirane skupine LDAP

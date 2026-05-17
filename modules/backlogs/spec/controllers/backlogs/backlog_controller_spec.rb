@@ -36,7 +36,9 @@ RSpec.describe Backlogs::BacklogController do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:status) { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint) { create(:agile_sprint, project:) }
+  shared_let(:sprint) { create(:sprint, project:) }
+  shared_let(:backlog_bucket) { create(:backlog_bucket, project:) }
+  shared_let(:work_package) { create(:work_package, project:, status:) }
 
   current_user { user }
 
@@ -47,10 +49,24 @@ RSpec.describe Backlogs::BacklogController do
       expect(response).to be_successful
       expect(response).to render_template("backlogs/backlog/show")
       expect(assigns(:project)).to eq(project)
-      expect(assigns(:sprints)).to be_present
       expect(controller.controller_path).to eq("backlogs/backlog")
       expect(controller.action_name).to eq("show")
       expect(controller.current_menu_item).to eq(:backlog)
+    end
+
+    context "for turbo frame request with frame id backlogs_container" do
+      it "renders the backlog_list partial without layout", :aggregate_failures do
+        request.headers["Turbo-Frame"] = "backlogs_container"
+        get :show, params: { project_id: project.id }, format: :html
+
+        expect(response).to be_successful
+        expect(response).to render_template("backlogs/backlog/_backlog_list")
+        expect(response).to render_template(layout: false)
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:backlog_buckets)).to be_present
+        expect(assigns(:inbox_work_packages)).to match [work_package]
+        expect(assigns(:sprints)).to be_present
+      end
     end
   end
 end

@@ -50,24 +50,15 @@ RSpec.describe "Onetime templates CRUD", :js do
       before { visit templates_meetings_path }
 
       it "shows all onetime templates" do
-        expect(page).to have_text("Template 1")
-        expect(page).to have_text("Template 2")
-      end
+        page.within("#content") do
+          expect(page).to have_text("Template 1")
+          expect(page).to have_text("Template 2")
+          expect(page).to have_no_text(series_template.title)
+          expect(page).to have_no_text("Regular meeting")
+          expect(page).to have_text(project.name)
+          expect(page).to have_text(other_project.name)
+        end
 
-      it "excludes series templates" do
-        expect(page).to have_no_text(series_template.title)
-      end
-
-      it "excludes regular meetings" do
-        expect(page).to have_no_text("Regular meeting")
-      end
-
-      it "shows project names" do
-        expect(page).to have_text(project.name)
-        expect(page).to have_text(other_project.name)
-      end
-
-      it "shows action menu for each template" do
         within_row("Template 1") do
           expect(page).to have_css('[data-test-selector="more-button"]')
         end

@@ -26,23 +26,22 @@ es:
     description: Este módulo añade funciones que permiten a los equipos Agile trabajar con OpenProject en proyectos Scrum.
   activerecord:
     attributes:
-      agile/sprint:
+      project:
+        sprint_sharing: Compartir Sprint
+      sprint:
         duration: Duración
         finish_date: Fecha de finalización
         goal: Objetivo del sprint
         name: Nombre del sprint
-        sharing: Uso compartido
+        sharing: Compartiendo
         statuses:
           in_planning: En planificación
           active: Activo
           completed: Completado
-      project:
-        sprint_sharing: Compartir Sprint
-      sprint:
-        duration: Duración del sprint
       user_preference:
         backlogs_versions_default_fold_state: Mostrar sprints colapsados
       work_package:
+        backlog_bucket: Buckets de backlog
         backlogs_work_package_type: Tipo de Backlog
         position: Posición
         sprint: Sprint
@@ -59,27 +58,28 @@ es:
             sprint_sharing:
               share_all_projects_already_taken: no se puede configurar porque el proyecto «%{name}» ya se comparte con todos los proyectos.
               share_all_projects_already_taken_anonymous: no se puede configurar porque otro proyecto ya lo está compartiendo con todos los proyectos.
-        work_package:
+        sprint:
           attributes:
+            base:
+              unfinished_work_packages:
+                one: Hay un paquete de trabajo que no se completó en este sprint.
+                other: Hay %{count} paquetes de trabajo que no se completaron en este sprint.
+              format: "%{message}"
+            status:
+              not_active: no está activo, por lo que no puede cerrarse.
+        work_package:
+          backlog_bucket_xor_sprint: no se puede asignar tanto a un sprint como a un bucket de backlog.
+          attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: debe pertenecer al mismo proyecto que el paquete de trabajo.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: solo puede conter IDs de paquetes de trabajo en el sprint actual.
               must_block_at_least_one_work_package: debe contener el ID de por lo menos un ticket.
             version_id:
               task_version_must_be_the_same_as_story_version: debe coincidir con la versión de la historia principal.
             sprint:
-              not_shared_with_project: no se comparte con el proyecto al que pertenece el paquete de trabajo.
+              not_assignable: no se puede asignar, ya que o bien no se ha compartido con el proyecto o bien ya se ha completado.
               not_eligible_for_moving: no hay ningún sprint activo en el proyecto del que se ha sacado el paquete de trabajo.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: Hay %{count} paquete de trabajo que no se completó en este sprint.
-                other: Hay %{count} paquetes de trabajo que no se completaron en este sprint.
-              format: "%{message}"
-            status:
-              not_active: no está activo, por lo que no puede cerrarse.
-        sprint:
-          cannot_end_before_it_starts: El sprint no puede terminar antes del inicio.
     models:
       sprint: Sprint
   backlogs:
@@ -112,19 +112,33 @@ es:
     administration_blankslate:
       title: Las opciones de configuración de Backlog están cambiando
       text: Ahora mismo estamos rediseñando el módulo «Backlogs». La configuración de administración para los sprints y los backlogs estará disponible aquí en breve. La configuración a nivel de proyecto sigue estando disponible.
+    bucket_component:
+      blankslate_title: El bucket de backlog está vacío
+      blankslate_description: Arrastre los elementos aquí para añadirlos.
+      label_actions: Acciones de bucket de backlog
+      action_menu:
+        edit_backlog_bucket: Editar bucket de backlog
+        delete_backlog_bucket: Eliminar bucket de backlog
+    backlog_bucket_destroy_modal_component:
+      title: "¿Eliminar bucket de backlog?"
+      details: Se eliminará el bucket de backlog «%{name}» y todos los paquetes de trabajo se trasladarán a la bandeja de entrada de tareas pendientes. No se eliminará ningún paquete de trabajo.
     sprint_component:
       blankslate_title: "%{name} está vacío"
       blankslate_description: Aún no hay elementos previstos. Arrastre los elementos aquí para añadirlos.
+      label_actions: Acciones de sprint
+      label_start_sprint: Iniciar
+      label_complete_sprint: Completar
+      start_sprint_disabled_reason_active_sprint: Otro sprint ya está activo.
+      start_sprint_disabled_reason_missing_dates: Es necesario indicar las fechas de inicio y finalización para poder comenzar el sprint.
+      action_menu:
+        edit_sprint: Editar sprint
+        add_work_package: Añadir paquete de trabajo
     inbox_component:
       blankslate_title: La bandeja de entrada de backlog está vacía
       blankslate_description: Todos los paquetes de trabajo abiertos en este proyecto aparecerán automáticamente aquí.
-      label_drag_work_package: Mover %{name}
       show_more:
         one: Mostrar 1 artículo más
         other: Mostrar %{count} artículos más
-    inbox_item_component:
-      label_drag_work_package: Mover %{name}
-      label_actions: Acciones del paquete de trabajo
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copiar URL al portapapeles
@@ -134,25 +148,16 @@ es:
     move_to_sprint_dialog_component:
       title: Mover al sprint
       label_sprint: Sprint
-    backlog:
+    sprints_component:
       blankslate:
         title: Todavía no hay sprints
-        description_html: Para empezar a planificar tu sprint, crea uno aquí o ve a %{settings_link} para recibir sprints de otro proyecto.
-        create_sprint_description_text: Para empezar a planificar tu sprint, crea uno aquí.
-        share_sprint_description_html: Para empezar a planificar tu sprint, ve a %{settings_link} para recibir sprints de otro proyecto.
-        no_actions_description_text: Todavía no hay sprints disponibles para este proyecto.
-        receive_shared_description_html: Este proyecto recibe sprints de otro proyecto. Configúralo en %{settings_link}.
-        receive_shared_no_actions_description_text: Este proyecto recibe sprints compartidos de otro proyecto, pero ahora mismo no hay ninguno disponible.
         settings_link_text: configuraciones del proyecto
-    sprint_header_component:
-      label_start_sprint: Iniciar
-      label_complete_sprint: Completar
-      start_sprint_disabled_reason_active_sprint: Otro sprint ya está activo.
-      start_sprint_disabled_reason_missing_dates: Es necesario indicar las fechas de inicio y finalización para poder comenzar el sprint.
-      label_story_count:
-        zero: No hay historias en sprint
-        one: "%{count} historia en sprint"
-        other: "%{count} historias en sprint"
+        receive_and_manage_description_html: Este proyecto recibe sprints de otro proyecto. Configúralo en %{settings_link}.
+        receive_description_text: Este proyecto recibe sprints compartidos de otro proyecto, pero ahora mismo no hay ninguno disponible.
+        create_and_manage_description_html: Para empezar a planificar tu sprint, crea uno aquí o ve a %{settings_link} para recibir sprints de otro proyecto.
+        create_description_text: Para empezar a planificar tu sprint, crea uno aquí.
+        manage_description_html: Para empezar a planificar tu sprint, ve a %{settings_link} para recibir sprints de otro proyecto.
+        no_actions_description_text: Todavía no hay sprints disponibles para este proyecto.
     finish_sprint_dialog_component:
       title: Hay elementos en curso
       body: "%{message} ¿Qué te gustaría hacer con ellos?"
@@ -163,27 +168,22 @@ es:
         move_to_sprint: Muévelos a otro sprint
       select_sprint_label: Seleccionar sprint
       button_complete_sprint: Completar sprint
-    sprint_menu_component:
-      label_actions: Acciones de sprint
-      action_menu:
-        edit_sprint: Editar sprint
-        add_work_package: Añadir paquete de trabajo
-    story_component:
-      label_drag_story: Mover %{name}
-      label_actions: Acciones de historia
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copiar URL al portapapeles
         copy_work_package_id: Copia del ID del paquete de trabajo
         move_menu: Mover
+        move_to_sprint: Mover al sprint
     burndown_chart:
       show:
-        blankslate_title: No burndown data available
-        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
+        blankslate_title: No hay datos de trabajo pendiente disponibles
+        blankslate_description: Establezca la fecha de inicio y finalización del sprint para generar un gráfico de trabajo pendiente.
   burndown:
     story_points: Puntos de historia
     story_points_ideal: Puntos de historia (ideal)
   label_backlog: Backlog
+  label_backlog_bucket_edit: Editar bucket de backlog
+  label_backlog_bucket_new: Nuevo bucket de backlog
   label_inbox: Bandeja de entrada
   label_backlogs: Backlogs
   label_burndown_chart: Diagrama Burndown

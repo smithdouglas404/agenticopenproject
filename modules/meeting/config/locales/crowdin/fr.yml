@@ -32,6 +32,7 @@ fr:
         location: Lieu
         duration: Durée
         notes: Notes
+        recurrence_start_time: Heure de début planifiée
         participants: Participant(s)
         participant:
           one: 1 participant
@@ -94,7 +95,7 @@ fr:
             other: Il y a %{count} réunions ouvertes dans la série qui ne sont pas couvertes par le nouvel horaire. Modifiez l'horaire pour inclure toutes les réunions existantes.
             format: "%{message}"
       messages:
-        invalid_time_format: 'n’est pas une heure valide. Format requis : HH:MM'
+        invalid_time_format: 'n''est pas une heure valide. Format requis : HH:MM'
     models:
       recurring_meeting: Réunion récurrente
       meeting: Réunion ponctuelle
@@ -155,8 +156,8 @@ fr:
   label_meeting_date_time: Date/Heure
   label_meeting_date_and_time: Date et heure
   label_meeting_diff: Différence
-  label_meeting_send_updates: Envoi d'invitations et de mises à jour du calendrier par courrier électronique
-  label_meeting_send_updates_caption: Envoyez des invitations par courrier électronique à tous les participants à cette réunion.
+  label_meeting_send_updates: Envoi d'invitations et de mises à jour du calendrier par e-mail
+  label_meeting_send_updates_caption: Envoyez des invitations par e-mail à tous les participants à cette réunion.
   label_recurring_meeting: Réunion récurrente
   label_recurring_meeting_part_of: Partie d'une série de réunions
   label_recurring_meeting_new: Nouvelle réunion récurrente
@@ -209,6 +210,7 @@ fr:
   label_time_zone: Fuseau horaire
   label_start_date: Date de début
   label_subscribe_icalendar: S'abonner au calendrier
+  label_recurring_filter: Filtre récurrent
   caption_meeting_template_select: Sélectionnez un modèle pour copier automatiquement ses points de l'ordre du jour
   caption_template_project_select: Veuillez sélectionner le projet dans lequel vous souhaitez créer ce modèle de réunion
   placeholder_meeting_template_select_project_first: Sélectionnez d'abord un projet
@@ -436,7 +438,7 @@ fr:
     widgets:
       blankslate:
         heading: Aucune réunion à venir
-        description: Les prochaines réunions où vous êtes l'organisateur ou un participant apparaîtront ici.
+        description: Les prochaines réunions auxquelles vous participerez apparaîtront ici.
       view_details: Voir toutes les réunions
   meeting_section:
     untitled_title: Section sans titre
@@ -478,7 +480,7 @@ fr:
       banner_html: 'Vous êtes en train d''éditer le modèle d''une série de réunions : %{link}. Chaque nouvelle occurrence d''une réunion dans la série utilisera ce modèle. Les modifications n''affecteront pas les réunions antérieures ou déjà créées.
 
         '
-      draft_banner_html: 'Vous êtes en train d''éditer le modèle d''une série de réunions : %{link}. Chaque nouvelle occurrence d''une réunion dans la série utilisera ce modèle. Les modifications n''affecteront pas les réunions antérieures ou déjà créées. Aucune invitation par courrier électronique ne sera envoyée dans ce mode brouillon jusqu''à ce que vous ouvriez la première réunion.
+      draft_banner_html: 'Vous êtes en train d''éditer le modèle d''une série de réunions : %{link}. Chaque nouvelle occurrence d''une réunion dans la série utilisera ce modèle. Les modifications n''affecteront pas les réunions antérieures ou déjà créées. Aucune invitation par e-mail ne sera envoyée dans ce mode brouillon jusqu''à ce que vous ouvriez la première réunion.
 
         '
     frequency:
@@ -676,9 +678,9 @@ fr:
   text_exit_draft_mode_dialog_template_title: Ouvrez la première occurrence de cette série de réunions ?
   text_exit_draft_mode_dialog_template_subtitle: Vous ne pouvez plus revenir au mode brouillon après cette opération.
   label_meeting_template_sharing: Partage
-  label_meeting_template_sharing_none: Only with this project
-  label_meeting_template_sharing_descendants: With subprojects
-  label_meeting_template_sharing_system: With all projects
+  label_meeting_template_sharing_none: Seulement avec ce projet
+  label_meeting_template_sharing_descendants: Avec les sous-projets
+  label_meeting_template_sharing_system: Avec tous les projets
   text_meeting_template_sharing_description: Ce modèle peut être partagé avec des sous-projets ou d'autres projets dans cette instance. Seuls les points de l'ordre du jour et les pièces jointes seront copiés.
   text_meeting_not_editable_anymore: Cette réunion n'est plus modifiable.
   text_meeting_not_present_anymore: Cette réunion a été supprimée. Veuillez sélectionner une autre réunion.
@@ -694,14 +696,17 @@ fr:
   text_agenda_item_not_editable_anymore: Ce point d'ordre du jour n'est plus modifiable.
   text_agenda_item_move_next_meeting: Ce point sera reporté à la prochaine réunion le %{date} à %{time}.
   text_agenda_item_moved_to_next_meeting: L'ordre du jour a été déplacé vers la prochaine réunion, le %{date}
-  text_agenda_item_duplicate_in_next_meeting: Êtes-vous sûr de vouloir ajouter une copie de ce point de l'ordre du jour à la prochaine réunion, sur %{date} à %{time}? Les résultats ne seront pas dupliqués.
+  text_agenda_item_duplicate_in_next_meeting: Voulez-vous vraiment ajouter une copie de ce point de l'ordre du jour à la prochaine réunion, sur %{date} à %{time}? Les résultats ne seront pas dupliqués.
   text_agenda_item_duplicated_in_next_meeting: L'ordre du jour a été déplacé vers la prochaine réunion, le %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Ce lot de travaux n'est pas encore inclus dans l'ordre du jour d'une prochaine réunion.
-  text_agenda_item_no_available_occurrence: Toutes les occurrences à venir ont été annulées.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Note : abandon de l''occurrence annulée le %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Note : abandon de %{count} occurrences annulées.'
+  text_agenda_item_no_available_occurrence: Aucune occurrence à venir n'est disponible.
+  text_agenda_item_dialog_skipping_note: 'Note : passer %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: réunion annulée le %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} réunions annulées"
+  text_agenda_item_dialog_skipping_closed_one: réunion clôturée le %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} réunions clôturées"
   text_work_package_add_to_meeting_hint: Utilisez le bouton "Ajouter à la réunion" pour ajouter ce lot de travaux à une réunion à venir.
-  text_work_package_has_no_past_meeting_agenda_items: Ce work package n'a pas été ajouté comme point à l'ordre du jour lors d'une réunion précédente.
+  text_work_package_has_no_past_meeting_agenda_items: Ce lot de travaux n'a pas été ajouté comme point à l'ordre du jour lors d'une réunion précédente.
   text_email_updates_muted: Les mises à jour du calendrier par e-mail sont désactivées. Les participants ne recevront pas d'invitations actualisées par e-mail lorsque vous effectuerez des modifications.
   text_email_updates_enabled: Les mises à jour du calendrier par e-mail sont activées. Tous les participants recevront des invitations actualisées par e-mail lorsque vous apporterez des modifications.
   my_account:

@@ -81,7 +81,8 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
           (project) => {
             const searchText = this.searchableProjectListService.searchText;
             if (searchText.length) {
-              const matches = project.name.toLowerCase().includes(searchText.toLowerCase());
+              const terms = searchText.toLowerCase().split(/\s+/).filter((t) => t.length > 0);
+              const matches = terms.every((term) => project.name.toLowerCase().includes(term));
 
               if (!matches) {
                 return false;

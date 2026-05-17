@@ -82,19 +82,18 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
     let(:invalid_params) { { wikis_xwiki_provider: { name: "", url: "https://xwiki.example.com" } } }
 
     context "with valid params" do
-      it "creates a provider and redirects to edit" do
+      it "creates a provider and redirects to the wizard" do
         expect { post :create, params: valid_params }
           .to change(Wikis::XWikiProvider, :count).by(1)
-        expect(response).to redirect_to(edit_admin_settings_wiki_provider_path(Wikis::XWikiProvider.last))
-        expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
+        expect(response).to redirect_to(new_admin_settings_wiki_provider_path(continue_wizard: Wikis::XWikiProvider.last.id))
       end
     end
 
     context "with invalid params" do
-      it "re-renders the new template" do
-        post :create, params: invalid_params
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response).to render_template :new
+      it "responds with a turbo stream replacing the general info section" do
+        post :create, params: invalid_params, format: :turbo_stream
+        expect(response).to be_successful
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       end
     end
   end
@@ -102,13 +101,21 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
   describe "PATCH #update" do
     let(:wiki_provider) { create(:xwiki_provider) }
     let(:valid_params) { { id: wiki_provider.id, wikis_xwiki_provider: { name: "Updated XWiki" } } }
+    let(:invalid_params) { { id: wiki_provider.id, wikis_xwiki_provider: { name: "" } } }
 
     context "with valid params" do
       it "updates the provider and redirects to edit" do
         patch :update, params: valid_params
         expect(wiki_provider.reload.name).to eq("Updated XWiki")
         expect(response).to redirect_to(edit_admin_settings_wiki_provider_path(wiki_provider))
-        expect(flash[:notice]).to eq(I18n.t(:notice_successful_update))
+      end
+    end
+
+    context "with invalid params" do
+      it "responds with a turbo stream replacing the general info section" do
+        patch :update, params: invalid_params, format: :turbo_stream
+        expect(response).to be_successful
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       end
     end
   end
@@ -142,6 +149,30 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
       expect(response).to be_successful
       expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       expect(assigns(:wiki_provider)).to eq(wiki_provider)
+    end
+  end
+
+  describe "DELETE #replace_oauth_application" do
+    let(:wiki_provider) { create(:xwiki_provider) }
+
+    it "responds with a turbo stream showing the new credentials" do
+      delete :replace_oauth_application, params: { id: wiki_provider.id }, format: :turbo_stream
+      expect(response).to be_successful
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    end
+
+    it "creates an oauth application for the provider" do
+      expect { delete :replace_oauth_application, params: { id: wiki_provider.id }, format: :turbo_stream }
+        .to change { wiki_provider.reload.oauth_application }.from(nil)
+    end
+
+    context "when not admin" do
+      before { login_as non_admin }
+
+      it "responds with an error" do
+        delete :replace_oauth_application, params: { id: wiki_provider.id }, format: :turbo_stream
+        expect(response).not_to be_successful
+      end
     end
   end
 end

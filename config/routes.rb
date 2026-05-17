@@ -149,7 +149,27 @@ Rails.application.routes.draw do
   get "/roles/workflow/:id/:role_id/:type_id" => "roles#workflow"
 
   resources :types, module: "work_package_types", except: [:update] do
-    resource :form_configuration, only: %i[edit update], controller: "form_configuration_tab"
+    resource :form_configuration, only: %i[edit update], controller: "form_configuration_tab" do
+      get :reset_dialog
+      resources :groups, only: %i[create edit update destroy], controller: "form_configuration_groups_tab", param: :key do
+        collection do
+          post :add_group
+        end
+
+        member do
+          post :cancel_edit
+          put :drop
+          put :move
+          patch :update_query
+        end
+      end
+      resources :rows, only: %i[destroy], controller: "form_configuration_tab", param: :row_key do
+        member do
+          put :drop
+          put :move
+        end
+      end
+    end
     resource :projects, controller: "projects_tab", only: %i[update edit] do
       collection do
         post :enable_all, to: "projects_tab#enable_all_projects"
@@ -743,7 +763,7 @@ Rails.application.routes.draw do
       post "plugin/:id", action: :update_plugin
     end
 
-    namespace :import, constraints: lambda { |_request| OpenProject::FeatureDecisions.jira_import_active? } do
+    namespace :import do
       get "/", to: redirect("/admin/import/jira")
       resources :jira, controller: "/admin/import/jira/instances" do
         collection do
@@ -829,15 +849,24 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :workflows, only: %i[index edit update], param: :type_id do
-    collection do
-      # We should fix this crappy routing (split up and rename controller methods)
-      match "copy", action: "copy", via: %i[get post]
-      get "summarized"
-      get :status_dialog
-      post :confirm_statuses
-      post :confirmation_dialog
+  resources :workflows, only: %i[index edit], param: :type_id do
+    scope module: :workflows do
+      resources :tabs, only: %i[edit update], param: :tab do # params[:tab] used in TabsHelper
+        member do
+          get :status_dialog
+          post :confirm_statuses
+        end
+      end
+      resource :copy, only: %i[new] do
+        scope module: :copies do
+          resource :from_type, only: %i[create]
+          resource :from_role, only: %i[create]
+        end
+      end
     end
+  end
+  namespace :workflows do
+    resource :summary, only: %i[show]
   end
 
   namespace :work_packages do
@@ -959,6 +988,9 @@ Rails.application.routes.draw do
   end
 
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
+    collection do
+      get :configure_view_modal
+    end
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
     resources :working_hours, controller: "users/working_hours", except: [:index]
     resources :non_working_times, controller: "users/non_working_times", except: [:index] do
@@ -1122,9 +1154,16 @@ Rails.application.routes.draw do
         work_package_split_view: true
   end
 
+  concern :with_split_create do
+    get "details/new",
+        action: :split_create,
+        as: :split_create,
+        work_package_split_create: true
+  end
+
   resources :notifications, only: :index do
     collection do
-      concerns :with_split_view, base_route: :notifications_path
+      concerns :with_split_view
 
       post :mark_all_read
       resource :menu, module: :notifications, only: %i[show], as: :notifications_menu

@@ -29,6 +29,7 @@
  */
 
 import { BlockNoteEditorOptions, BlockNoteSchema } from '@blocknote/core';
+import { ExternalLinkCaptureExtension } from '../extensions/external-link-capture';
 import { User } from '@blocknote/core/comments';
 import { filterSuggestionItems } from '@blocknote/core/extensions';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -52,6 +53,7 @@ export interface OpBlockNoteEditorProps {
   openProjectUrl:string;
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
+  captureExternalLinks:boolean;
   hocuspocusProvider?:HocuspocusProvider;
   doc:Y.Doc;
 }
@@ -72,6 +74,7 @@ export function OpBlockNoteEditor({
   openProjectUrl,
   attachmentsUploadUrl,
   attachmentsCollectionKey,
+  captureExternalLinks,
   hocuspocusProvider,
   doc,
 }:OpBlockNoteEditorProps) {
@@ -101,8 +104,13 @@ export function OpBlockNoteEditor({
       },
       dictionary: localeDictionary,
       ...(attachmentsEnabled && { uploadFile }),
+      // When external link capture is enabled, intercept clicks on external
+      // links via a ProseMirror plugin and route through /external_redirect.
+      ...(captureExternalLinks && {
+        extensions: [ExternalLinkCaptureExtension],
+      }),
     };
-  }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile]);
+  }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks]);
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;

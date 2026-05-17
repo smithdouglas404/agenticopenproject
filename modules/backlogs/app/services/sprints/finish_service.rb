@@ -39,7 +39,7 @@ class Sprints::FinishService < BaseServices::BaseContracted
   def before_perform(service_call)
     case params[:unfinished_action]
     when "move_to_sprint"
-      @target_sprint = Agile::Sprint.find_by(id: params[:move_to_sprint_id])
+      @target_sprint = Sprint.find_by(id: params[:move_to_sprint_id])
       move_to_sprint(@target_sprint).each { |result| service_call.add_dependent!(result) }
     when "move_to_top_of_backlog"
       move_to_backlog(position: 1).each { |result| service_call.add_dependent!(result) }

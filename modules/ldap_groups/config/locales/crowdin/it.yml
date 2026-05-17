@@ -68,7 +68,7 @@ it:
         Dipende dall'impostazione dell'attributo <em>groupOfNames / memberOf</em> nei gruppi LDAP la possibilità di funzionare correttamente con OpenProject.
         <br/>
         I gruppi sono sincronizzati ogni ora con una schedulazione del cron.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Leggi la nostra documentazione su questo argomento</a>.
+        [Leggi la nostra documentazione su questo argomento](docs_url).
       no_results: Nessun gruppo sincronizzato trovato.
       no_members: Questo gruppo non ha ancora sincronizzato membri.
       plural: Gruppi LDAP sincronizzati

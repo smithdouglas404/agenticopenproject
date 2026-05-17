@@ -68,4 +68,26 @@ RSpec.describe Backlogs::CommonHelper do
       end
     end
   end
+
+  describe "#all_backlogs_params" do
+    before do
+      allow(helper).to receive(:params).and_return(params)
+    end
+
+    context "when show_all_backlog is true" do
+      let(:params) { { all: "1" } }
+
+      it "returns the all query hash" do
+        expect(helper.all_backlogs_params).to eq({ all: 1 })
+      end
+    end
+
+    context "when show_all_backlog is false" do
+      let(:params) { {} }
+
+      it "returns an empty hash" do
+        expect(helper.all_backlogs_params).to eq({})
+      end
+    end
+  end
 end

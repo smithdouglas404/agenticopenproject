@@ -268,9 +268,15 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
       set_version_to_nil
       reassign_category
       set_parent_to_nil
+      clear_semantic_identifier
 
       assign_default_type unless work_package.type
     end
+  end
+
+  def clear_semantic_identifier
+    work_package.sequence_number = nil
+    work_package.identifier = nil
   end
 
   def update_dates

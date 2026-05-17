@@ -36,7 +36,7 @@ RSpec.describe Sprints::FinishContract do
 
   let(:project) { build_stubbed(:project) }
   let(:user) { build_stubbed(:user) }
-  let(:sprint) { build_stubbed(:agile_sprint, project:, status: sprint_status) }
+  let(:sprint) { build_stubbed(:sprint, project:, status: sprint_status) }
   let(:sprint_status) { "active" }
   let(:unfinished_count) { 0 }
   let(:permissions) { [:start_complete_sprint] }

@@ -169,7 +169,6 @@ vi:
   label_previous_week: Tuần trước
   label_previous_month: Tháng trước
   label_specific_day: Ngày %{day}
-  label_specific_week: Tuần dương lịch %{week}
   label_specific_month: Tháng %{month}
   label_list: danh sách
   label_month: tháng

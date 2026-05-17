@@ -40,8 +40,12 @@ module Wikis
       super(model, **)
     end
 
-    def page_links
-      @page_links ||= page_link_service.relation_page_links_for(provider:, linkable: @work_package)
+    def page_link_infos
+      @page_link_infos ||= page_link_service.relation_page_link_infos_for(provider:, linkable: @work_package)
+    end
+
+    def user_connected?
+      provider.user_connected?(User.current)
     end
 
     private

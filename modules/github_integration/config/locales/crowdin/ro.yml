@@ -22,20 +22,20 @@
 ---
 ro:
   attributes:
-    additions_count: Number of additions
-    deletions_count: Number of deletions
-    comments_count: Comments count
+    additions_count: Numărul elementelor adăugate
+    deletions_count: Numărul elementelor șterse
+    comments_count: Numărul de comentarii
     github_html_url: Pull Request URL
     github_app_owner_avatar_url: Owner avatar URL
-    review_comments_count: Review comments count
-    github: GitHub identifer
+    review_comments_count: Numărul de recenzii
+    github: Identificator GitHub
     github_avatar_url: Avatar URL
-    github_updated_at: Updated at
-    github_login: GitHub login
+    github_updated_at: Ultima actualizare
+    github_login: Autentificare GitHub
     host: Server gazdă
-    labels: Labels
+    labels: Etichete
     repository: Repo
-    changed_files_count: Changed files
+    changed_files_count: Fișiere modificate
   button_add_deploy_target: Add deploy target
   label_deploy_target: Deploy target
   label_deploy_target_new: New deploy target
@@ -55,8 +55,8 @@ ro:
 
     '
   plugin_openproject_github_integration:
-    name: OpenProject GitHub Integration
-    description: Integrates OpenProject and GitHub for a better workflow
+    name: Integrare GitHub OpenProject
+    description: Integrează OpenProject și GitHub pentru un flux de lucru îmbunătățit
   project_module_github: GitHub
   permission_show_github_content: Afișați conținutul GitHub
   permission_introspection: Read running OpenProject core version and build SHA

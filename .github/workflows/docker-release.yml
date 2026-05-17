@@ -10,18 +10,23 @@ on:
         description: "The tag to release. Note that this happens by default on the tag push. Only run this action when something went wrong!"
         required: false
 
+permissions: {}
+
 jobs:
   compute-inputs:
     if: github.repository == 'opf/openproject'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       tag: ${{ steps.compute.outputs.tag }}
       branch: ${{ steps.compute.outputs.branch }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: ${{ github.ref }}
+          persist-credentials: false
       - name: Compute tags and branch
         id: compute
         env:
@@ -47,11 +52,17 @@ jobs:
 
   build:
     needs: [compute-inputs]
+    permissions:
+      contents: read
     uses: ./.github/workflows/docker.yml
     with:
       branch: ${{ needs.compute-inputs.outputs.branch }}
       tag: ${{ needs.compute-inputs.outputs.tag }}
-    secrets: inherit
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DEPLOY_APP_PRIVATE_KEY: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+      OPS_MAIL_SMTP_TOKEN: ${{ secrets.OPS_MAIL_SMTP_TOKEN }}
 
   trigger_helm_release:
     if: ${{ github.repository == 'opf/openproject' }}

@@ -31,30 +31,33 @@
 module Backlogs
   class WorkPackagesController < BaseController
     include OpTurbo::ComponentStream
+    include Backlogs::Move
 
     before_action :load_story
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
       max_position = @allowed_stories.maximum(:position) || 0
+      open_sprints_exist = Sprint.for_project(@project).visible.not_completed.where.not(id: @sprint.id).exists?
 
       render(Backlogs::StoryMenuListComponent.new(
                story: @story,
                sprint: @sprint,
                project: @project,
                max_position:,
+               open_sprints_exist:,
                current_user:
              ),
              layout: false)
     end
 
-    # Move a story from an Agile::Sprint to another Agile::Sprint, or the Inbox.
+    # Move a story from an Sprint to another Sprint, or the Inbox.
     def move
       # The update service reloads the story internally (via #move_after),
       # so we memoize the previous sprint_id before the call.
       sprint_id_was = @story.sprint_id
 
-      move_attributes = infer_attributes_from_target
+      move_attributes = move_attributes_from_target
       unless move_work_package(move_attributes).success?
         return respond_with_turbo_streams(status: :unprocessable_entity)
       end
@@ -66,6 +69,16 @@ module Backlogs
       end
 
       respond_with_turbo_streams
+    end
+
+    def move_to_sprint_dialog
+      respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
+        work_package: @story,
+        project: @project,
+        move_action: move_project_backlogs_work_package_path(
+          @project, @sprint, @story, helpers.all_backlogs_params
+        )
+      )
     end
 
     def reorder
@@ -112,9 +125,13 @@ module Backlogs
       render_success_flash_message_via_turbo_stream(
         message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
       )
-      work_packages = Backlog.inbox_for(project: @project)
+      inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
+      buckets = BacklogBucket.for_project(@project)
+
       replace_via_turbo_stream(
-        component: Backlogs::InboxComponent.new(work_packages:, project: @project),
+        component: Backlogs::BacklogComponent.new(inbox_work_packages:,
+                                                  buckets:,
+                                                  project: @project),
         method: :morph
       )
     end
@@ -132,19 +149,6 @@ module Backlogs
       replace_sprint_component_via_turbo_stream(sprint: new_sprint)
     end
 
-    def infer_attributes_from_target
-      target_type, target_id = move_params[:target_id].split(":")
-
-      case target_type
-      when "sprint"
-        { sprint_id: target_id }
-      when "inbox"
-        { sprint_id: nil }
-      else
-        raise ArgumentError, "target_type must include one of: sprint, inbox."
-      end
-    end
-
     def target_sprint?(move_attributes)
       move_attributes[:sprint_id].present?
     end
@@ -154,8 +158,10 @@ module Backlogs
     end
 
     def replace_sprint_component_via_turbo_stream(sprint:)
-      replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
-                               method: :morph)
+      replace_via_turbo_stream(
+        component: Backlogs::SprintComponent.new(sprint:, project: @project),
+        method: :morph
+      )
     end
 
     def load_story

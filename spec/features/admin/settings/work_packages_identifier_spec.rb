@@ -49,6 +49,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
   context "when no projects have problematic identifiers" do
     it "saves the setting without showing a dialog" do
       visit_settings
+      choose "Project-based semantic identifiers"
 
       click_button "Save"
 
@@ -60,9 +61,10 @@ RSpec.describe "Work packages identifier admin settings", :js do
   context "when a project has a problematic identifier" do
     shared_let(:project) { create(:project, identifier: "bad-id", name: "Bad Project") }
 
-    context "when saving with the current classic setting" do
+    context "when switching from semantic to classic", with_settings: { work_packages_identifier: "semantic" } do
       it "saves without showing the confirmation dialog" do
         visit_settings
+        choose "Instance-wide numerical sequence (default)"
 
         # The autofix section is hidden when classic is selected
         expect(page).to have_css(

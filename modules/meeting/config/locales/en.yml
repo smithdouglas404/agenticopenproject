@@ -227,6 +227,7 @@ en:
   label_time_zone: "Time zone"
   label_start_date: "Start date"
   label_subscribe_icalendar: "Subscribe to calendar"
+  label_recurring_filter: "Recurring filter"
 
   caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   caption_template_project_select: "Please select the project in which to create this meeting template"
@@ -450,7 +451,7 @@ en:
     widgets:
       blankslate:
         heading: "No upcoming meetings"
-        description: "Upcoming meetings where you are the organizer or a participant will appear here."
+        description: "Upcoming meetings you are participating in will appear here."
       view_details: "View all meetings"
 
   meeting_section:

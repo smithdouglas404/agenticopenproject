@@ -195,6 +195,8 @@ module OpenProject::Meeting
       ::Exports::Register.register do
         single(::Meeting, Meetings::Exporter)
       end
+
+      Journals::CreateService::Association.register(:AgendaItemable)
     end
 
     add_api_path :meetings do

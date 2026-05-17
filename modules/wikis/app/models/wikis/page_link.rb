@@ -39,10 +39,6 @@ module Wikis
 
     def inline? = false
 
-    def href
-      "#"
-    end
-
     def render_author? = false
   end
 end

@@ -445,20 +445,17 @@ class MeetingsController < ApplicationController
     ).call(params)
 
     apply_default_filter_if_none_given(query)
-    apply_time_filter_and_sort(query)
+    apply_default_time_filter_and_sort(query)
     query.where("project_id", "=", @project.id) if @project
 
     query
   end
 
-  def apply_time_filter_and_sort(query)
-    if params[:upcoming] == "false"
-      query.where("time", "=", Queries::Meetings::Filters::TimeFilter::PAST_VALUE)
-      query.order(start_time: :desc)
-    else
-      query.where("time", "=", Queries::Meetings::Filters::TimeFilter::FUTURE_VALUE)
-      query.order(start_time: :asc)
-    end
+  def apply_default_time_filter_and_sort(query)
+    return if query.filters.any? { |f| f.name == :time }
+
+    query.where("time", "=", Queries::Meetings::Filters::TimeFilter::FUTURE_VALUE)
+    query.order(start_time: :asc)
   end
 
   def apply_default_filter_if_none_given(query)
@@ -470,8 +467,9 @@ class MeetingsController < ApplicationController
   def load_meetings
     @query = load_query
 
+    time_filter = @query.find_active_filter(:time)
     # We group meetings into individual groups, but only for upcoming meetings
-    if params[:upcoming] == "false"
+    if time_filter&.past?
       @meetings = show_more_pagination(@query.results, limit: params[:limit])
     else
       service = ::GroupMeetingsService.new(@query.results, limit: params[:limit])

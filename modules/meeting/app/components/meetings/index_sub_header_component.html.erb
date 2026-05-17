@@ -8,27 +8,23 @@
       }
     )
   ) do |subheader|
-    subheader.with_filter_component do
-      render(Meetings::MeetingFilterButtonComponent.new(query: @query, project: @project))
+    subheader.with_quick_filter do
+      render(
+        OpPrimer::QuickFilter::SegmentedComponent.new(
+          name: I18n.t(:label_meeting_date_time),
+          query: @query,
+          filter_key: :time,
+          orders: { "future" => { start_time: :asc }, "past" => { start_time: :desc } },
+          path_args: [@project, :meetings]
+        )
+      ) do |component|
+        component.with_item(label: I18n.t(:label_upcoming_meetings_short), value: "future")
+        component.with_item(label: I18n.t(:label_past_meetings_short), value: "past")
+      end
     end
 
-    subheader.with_segmented_control("aria-label": I18n.t(:label_meeting_date_time)) do |control|
-      control.with_item(
-        tag: :a,
-        icon: :"arrow-right",
-        href: dynamic_path,
-        label: t(:label_upcoming_meetings_short),
-        title: t(:label_upcoming_meetings),
-        selected: upcoming_query?
-      )
-      control.with_item(
-        tag: :a,
-        icon: :history,
-        href: dynamic_path(upcoming: false),
-        label: t(:label_past_meetings_short),
-        title: t(:label_past_meetings),
-        selected: !upcoming_query?
-      )
+    subheader.with_filter_component do
+      render(Meetings::MeetingFilterButtonComponent.new(query: @query, project: @project))
     end
 
     if render_create_button?

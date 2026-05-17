@@ -34,7 +34,7 @@ RSpec.describe Sprints::StartContract do
   let(:project) { create(:project) }
   let(:user) { create(:user) }
   let(:sprint) do
-    create(:agile_sprint,
+    create(:sprint,
            project:,
            status: sprint_status)
   end
@@ -84,7 +84,7 @@ RSpec.describe Sprints::StartContract do
     end
 
     context "when the sprint has no start date" do
-      let(:sprint) { create(:agile_sprint, project:, status: sprint_status, start_date: nil) }
+      let(:sprint) { create(:sprint, project:, status: sprint_status, start_date: nil) }
 
       it "is invalid" do
         expect(contract.validate).to be(false)
@@ -93,7 +93,7 @@ RSpec.describe Sprints::StartContract do
     end
 
     context "when the sprint has no finish date" do
-      let(:sprint) { create(:agile_sprint, project:, status: sprint_status, finish_date: nil) }
+      let(:sprint) { create(:sprint, project:, status: sprint_status, finish_date: nil) }
 
       it "is invalid" do
         expect(contract.validate).to be(false)
@@ -103,7 +103,7 @@ RSpec.describe Sprints::StartContract do
 
     context "when another active sprint exists in the project" do
       before do
-        create(:agile_sprint,
+        create(:sprint,
                project:,
                status: "active")
       end
@@ -116,7 +116,7 @@ RSpec.describe Sprints::StartContract do
 
     context "when an active sprint exists in a different project" do
       before do
-        create(:agile_sprint,
+        create(:sprint,
                project: create(:project),
                status: "active")
       end

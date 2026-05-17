@@ -64,7 +64,19 @@ Rails.application.routes.draw do
           to: "backlog#details",
           as: :backlog_details,
           work_package_split_view: true,
+          constraints: { work_package_id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT },
           defaults: { tab: :overview }
+
+      resources :backlog_buckets, only: %i[create update destroy] do
+        collection do
+          get :new_dialog
+        end
+
+        member do
+          get :edit_dialog
+          get :destroy_dialog
+        end
+      end
 
       resources :sprints, param: :sprint_id, only: %i[create update] do
         collection do
@@ -85,6 +97,7 @@ Rails.application.routes.draw do
             get :menu
             put :move
             post :reorder
+            get :move_to_sprint_dialog
           end
         end
 

@@ -80,9 +80,9 @@ RSpec.describe Backlogs::InboxController do
     end
 
     context "when service call succeeds" do
-      it "replaces the inbox component and responds with turbo streams", :aggregate_failures do
+      it "replaces the backlog component and responds with turbo streams", :aggregate_failures do
         expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{project.id}"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:work_package)).to eq(work_package)
       end
@@ -97,6 +97,26 @@ RSpec.describe Backlogs::InboxController do
       end
     end
 
+    context "when all=1 with an inbox over the pagination threshold" do
+      before do
+        stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
+      end
+
+      let!(:work_packages) { create_list(:work_package, 5, project:) }
+      let(:work_package) { work_packages.first }
+
+      subject do
+        post :reorder,
+             params: { project_id: project.id, id: work_package.id, direction: "lower", all: "1" },
+             format: :turbo_stream
+      end
+
+      it "replaces the inbox without a show-more row in the stream" do
+        expect(response).to be_successful
+        expect(response.body).not_to include("inbox_project_#{project.id}_show_more")
+      end
+    end
+
     context "when service call fails" do
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
 
@@ -104,7 +124,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-inbox-component-#{project.id}"
+                                                  target: "backlogs-backlog-component-#{project.id}"
       end
     end
 
@@ -120,8 +140,8 @@ RSpec.describe Backlogs::InboxController do
   end
 
   describe "PUT #move" do
-    let(:agile_sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
-    let(:target_id) { "sprint:#{agile_sprint.id}" }
+    let(:sprint) { create(:sprint, name: "Sprint 1", project:) }
+    let(:target_id) { "sprint:#{sprint.id}" }
     let(:prev_id) { 1 }
 
     subject do
@@ -135,13 +155,13 @@ RSpec.describe Backlogs::InboxController do
           format: :turbo_stream
     end
 
-    context "when moving to an Agile::Sprint" do
+    context "when moving to an Sprint" do
       it "replaces both the inbox and target sprint components", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-inbox-component-#{project.id}"
+                                              target: "backlogs-backlog-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-sprint-component-#{agile_sprint.id}"
+                                              target: "backlogs-sprint-component-#{sprint.id}"
 
         # Flash message is omitted here on purpose (#73600)
         expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
@@ -155,7 +175,7 @@ RSpec.describe Backlogs::InboxController do
       it "replaces only the inbox component without a flash", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-inbox-component-#{project.id}"
+                                              target: "backlogs-backlog-component-#{project.id}"
         expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
       end
 
@@ -170,7 +190,7 @@ RSpec.describe Backlogs::InboxController do
     end
 
     context "when no prev_id is provided" do
-      let!(:work_packages) { create_list(:work_package, 5, project:, sprint: agile_sprint) }
+      let!(:work_packages) { create_list(:work_package, 5, project:, sprint:) }
       let(:prev_id) { nil }
 
       it "places the work package at the top of the sprint" do
@@ -183,6 +203,33 @@ RSpec.describe Backlogs::InboxController do
       end
     end
 
+    context "when all=1 with an inbox over the pagination threshold" do
+      before do
+        stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
+      end
+
+      let!(:work_packages) { create_list(:work_package, 5, project:) }
+      let(:target_id) { "inbox" }
+      let(:prev_id) { work_packages.first.id }
+
+      subject do
+        put :move,
+            params: {
+              project_id: project.id,
+              id: work_package.id,
+              target_id:,
+              prev_id:,
+              all: "1"
+            },
+            format: :turbo_stream
+      end
+
+      it "replaces the inbox without a show-more row in the stream" do
+        expect(response).to be_successful
+        expect(response.body).not_to include("inbox_project_#{project.id}_show_more")
+      end
+    end
+
     context "when service call fails" do
       let(:service_result) { ServiceResult.failure(message: "Move failed") }
 
@@ -190,7 +237,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-inbox-component-#{project.id}"
+                                                  target: "backlogs-backlog-component-#{project.id}"
       end
     end
 
@@ -210,35 +257,134 @@ RSpec.describe Backlogs::InboxController do
       get :menu, params: { project_id: project.id, id: work_package.id }, format: :html
     end
 
-    it "returns deferred action menu list HTML", :aggregate_failures do
-      subject
-      expect(response).to have_http_status :ok
-      expect(response.body).to include(I18n.t(:"js.button_open_details"))
-    end
-
-    context "when the work package belongs to another project" do
-      let(:other_project) { create(:project) }
-      let(:work_package) { create(:work_package, project: other_project) }
-
-      it "responds with 404" do
-        expect(response).to have_http_status :not_found
-      end
-    end
-
-    context "with a user lacking project permission" do
-      let(:user) { create(:user) }
-
-      it "responds with 404" do
+    shared_examples "it renders the menu" do
+      it "returns deferred action menu list HTML", :aggregate_failures do
         subject
-        expect(response).to have_http_status :not_found
+        expect(response).to have_http_status :ok
+        expect(response.body).to include(I18n.t(:"js.button_open_details"))
+      end
+
+      context "when all=1 is in params" do
+        subject do
+          get :menu, params: { project_id: project.id, id: work_package.id, all: "1" }, format: :html
+        end
+
+        it "embeds the all query in deferred action URLs" do
+          subject
+          expect(response.body).to match(/all=1/)
+        end
+      end
+
+      context "when the work package belongs to another project" do
+        let(:other_project) { create(:project) }
+        let(:work_package) { create(:work_package, project: other_project) }
+
+        it "responds with 404" do
+          expect(response).to have_http_status :not_found
+        end
+      end
+
+      context "with a user lacking project permission" do
+        let(:user) { create(:user) }
+
+        it "responds with 404" do
+          subject
+          expect(response).to have_http_status :not_found
+        end
       end
     end
+
+    shared_examples "renders actions to move in both directions" do
+      it "renders actions to move in both directions", :aggregate_failures do
+        expect(response.body).to include(I18n.t(:label_sort_highest))
+        expect(response.body).to include(I18n.t(:label_sort_higher))
+        expect(response.body).to include(I18n.t(:label_sort_lower))
+        expect(response.body).to include(I18n.t(:label_sort_lowest))
+      end
+    end
+
+    shared_examples "renders only actions to move to bottom" do
+      it "renders only actions to move to bottom", :aggregate_failures do
+        expect(response.body).not_to include(I18n.t(:label_sort_highest))
+        expect(response.body).not_to include(I18n.t(:label_sort_higher))
+        expect(response.body).to include(I18n.t(:label_sort_lower))
+        expect(response.body).to include(I18n.t(:label_sort_lowest))
+      end
+    end
+
+    shared_examples "renders only actions to move to top" do
+      it "renders only actions to move to top", :aggregate_failures do
+        expect(response.body).to include(I18n.t(:label_sort_highest))
+        expect(response.body).to include(I18n.t(:label_sort_higher))
+        expect(response.body).not_to include(I18n.t(:label_sort_lower))
+        expect(response.body).not_to include(I18n.t(:label_sort_lowest))
+      end
+    end
+
+    shared_examples "renders no actions to move" do
+      it "renders no actions to move", :aggregate_failures do
+        expect(response.body).not_to include(I18n.t(:label_sort_highest))
+        expect(response.body).not_to include(I18n.t(:label_sort_higher))
+        expect(response.body).not_to include(I18n.t(:label_sort_lower))
+        expect(response.body).not_to include(I18n.t(:label_sort_lowest))
+      end
+    end
+
+    let!(:bucket1) { create(:backlog_bucket, project:) }
+    let!(:bucket2) { create(:backlog_bucket, project:) }
+
+    let!(:bucket1_lone_work_package) { create(:work_package, project:, backlog_bucket: bucket1) }
+    let!(:bucket2_work_packages) { create_list(:work_package, 5, project:, backlog_bucket: bucket2) }
 
     it_behaves_like "checks permissions for private projects"
+
+    it_behaves_like "it renders the menu"
+
+    context "for work package at the top of inbox" do
+      let(:work_package) { work_packages.first }
+
+      it_behaves_like "renders only actions to move to bottom"
+    end
+
+    context "for work package at the bottom of inbox" do
+      let(:work_package) { work_packages.last }
+
+      it_behaves_like "renders only actions to move to top"
+    end
+
+    context "for work package in the middle of inbox" do
+      let(:work_package) { work_packages.third }
+
+      it_behaves_like "renders actions to move in both directions"
+    end
+
+    context "for a work package alone in the bucket" do
+      let(:work_package) { bucket1_lone_work_package }
+
+      it_behaves_like "renders no actions to move"
+    end
+
+    context "for work package at the top of bucket with multiple" do
+      let(:work_package) { bucket2_work_packages.first }
+
+      it_behaves_like "renders only actions to move to bottom"
+    end
+
+    context "for work package in the middle of bucket with multiple" do
+      let(:work_package) { bucket2_work_packages.third }
+
+      it_behaves_like "renders actions to move in both directions"
+    end
+
+    context "for work package at the bottom of bucket with multiple" do
+      let(:work_package) { bucket2_work_packages.last }
+
+      it_behaves_like "renders only actions to move to top"
+    end
   end
 
   describe "GET #move_to_sprint_dialog" do
-    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+    let!(:sprint) { create(:sprint, name: "Sprint 1", project:) }
 
     subject do
       get :move_to_sprint_dialog,
@@ -250,6 +396,19 @@ RSpec.describe Backlogs::InboxController do
       it "responds with a dialog turbo stream", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "dialog"
+      end
+    end
+
+    context "when all=1 is in params" do
+      subject do
+        get :move_to_sprint_dialog,
+            params: { project_id: project.id, id: work_package.id, all: "1" },
+            format: :turbo_stream
+      end
+
+      it "embeds the all query in the dialog form action URL" do
+        subject
+        expect(response.body).to match(/all=1/)
       end
     end
 

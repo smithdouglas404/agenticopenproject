@@ -1957,6 +1957,24 @@ RSpec.describe WorkPackages::SetAttributesService,
           end
         end
       end
+
+      context "for semantic identifier" do
+        let(:work_package) do
+          build_stubbed(:work_package, project:, sequence_number: 7, identifier: "OLD-7")
+        end
+
+        it "clears sequence_number" do
+          subject
+
+          expect(work_package.sequence_number).to be_nil
+        end
+
+        it "clears identifier" do
+          subject
+
+          expect(work_package.identifier).to be_nil
+        end
+      end
     end
 
     context "when updating project before calling the service" do

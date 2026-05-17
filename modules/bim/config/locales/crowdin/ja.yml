@@ -6,6 +6,7 @@ ja:
     description: このOpenProjectプラグインはBIMとBCF機能を提供します。
   bim:
     label_bim: BIM
+    error_direct_upload_failed: Direct upload failed.
   bcf:
     label_bcf: BCF
     label_imported_failed: BCFトピックのインポートに失敗しました

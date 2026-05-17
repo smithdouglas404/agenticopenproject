@@ -100,12 +100,12 @@ nl:
         upgrade: Nu upgraden
         contact: Neem contact met ons op voor een demo
       status:
-        expired: Expired
-        expiring_soon: Expiring soon
+        expired: Verlopen
+        expiring_soon: Verloopt binnenkort
         in_grace_period: In grace period
         invalid_domain: Invalid domain
-        not_active: Not active
-        trial: Trial
+        not_active: Niet actief
+        trial: Proefperiode
     jemalloc_allocator: Jemalloc geheugentoewijzer
     journal_aggregation:
       caption: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
@@ -118,6 +118,7 @@ nl:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -125,11 +126,15 @@ nl:
         title: Jira configuration
         new: New configuration
       banner:
-        title: Limited import capabilities
-        description: 'This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
-          name: Name
+          name: Naam
           url: Jira Server/Data Center URL
           personal_access_token: Personal Access Token
         button_add: Add configuration
@@ -183,7 +188,7 @@ nl:
           projects_meta_fetching: Fetching project data
           projects_meta_error: Error fetching project data
           projects_meta_done: Data gathered
-          importing: In progress
+          importing: In uitvoering
           import_error: Error during import
           imported: Review mode
           reverting: Reverting
@@ -211,7 +216,7 @@ nl:
               other: "%{count} types"
             statuses:
               one: 1 status
-              other: "%{count} statuses"
+              other: "%{count} statussen"
             users:
               one: 1 user
               other: "%{count} users"
@@ -241,8 +246,10 @@ nl:
               caption_done: Completed
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
-              label_available_data: Available data
-              label_not_available_data: Not available for import
+              label_supported_data: Supported data
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
               label_import: Select which projects you would like to import.
@@ -251,16 +258,23 @@ nl:
               label_progress: Fetching data from Jira...
               elements:
                 relations: Relations between issues
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Project-level workflows
-                users: Users
-                sprints: Sprints
                 schemes: Schemas
-                permissions: User, group and project permissions
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Import data
               caption: Review your import settings and start the import
               caption_done: Completed
-              label_available_data: Available data to import
+              label_available_data: Data to be imported
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -268,33 +282,33 @@ nl:
             import_result:
               title: Import run results
               caption: Review import run or revert import
-              info: Import run successful.
+              info: Import run was successful.
               label_results: Imported
               label_revert: Revert import
               button_revert: Revert import
-              button_done: Finalize import
-              preview_description: The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Finalize import
-              label_finalizing: Finalizing import...
-              label_finalizing_done: Import finalized.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Reverting import...
               label_reverted: Import reverted.
           select_dialog:
             filter_projects: Filter by text
           import_dialog:
-            title: Start this import?
+            title: Please make sure you have a backup!
             confirm_button: Start import
-            description: 'This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: I understand and made the necessary preparations
+            confirm: I understand and have a backup
           revert_dialog:
             title: Permanently revert this import?
-            description: This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject.
+            description: This will delete all imported objects (including whole projects).
             confirm: I understand that this reversion will delete data permanently
           finalize_dialog:
-            title: Finalize this import?
-            description: Once finalized, this import can no longer be reverted. All imported data will become permanently imported.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: I understand that this action cannot be undone
             confirm_button: Understood
           select_projects:
@@ -401,11 +415,12 @@ nl:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_used_in_past: Reserved by another project's handle history
+          error_reserved_by_system: Reserved as a system keyword
           error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
@@ -421,36 +436,37 @@ nl:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
-        title: Statuses
+        title: Statussen
         label: Statuses enabled for this type
         caption: Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it.
       statuses_removal_dialog:
-        title: Remove statuses
+        title: Statussen verwijderen
         heading:
-          one: Remove 1 status?
-          other: Remove %{count} statuses?
+          one: 1 status verwijderen?
+          other: "%{count} statussen verwijderen?"
         description: Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?
-        confirm: Remove
+        confirm: Verwijder
       leave_confirmation:
         title: Save changes before continuing?
         description: You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?
         ignore: Ignore changes
         save: Save changes and continue
       role_selector:
+        title: Select roles
         label: 'Role: %{role}'
         no_role: Select role
+        roles:
+          one: One role selected
+          other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
         description: Add statuses to start configuring workflows for this role
@@ -1097,6 +1113,8 @@ nl:
       no_results_title_text: Er is momenteel geen nieuws om te rapporteren.
       no_results_content_text: Voeg een nieuwsitem toe
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -1108,6 +1126,8 @@ nl:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Blijf aangemeld voor %{num_days}
     sessions:
@@ -1317,6 +1337,37 @@ nl:
     edit:
       form_configuration:
         tab: Formulierconfiguratie
+        label_group: Group
+        reset_to_defaults: Reset to defaults
+        add_attribute_group: Add attribute group
+        add_query_group: Add table of related work packages
+        delete_group: Delete group
+        remove_attribute: Remove from group
+        drag_to_activate: Drag fields from here to activate them
+        drag_to_reorder: Drag to reorder
+        edit_query: Edit query
+        custom_field: Custom field
+        filter_inactive: Filter attributes
+        inactive_attributes_heading: Inactive attributes
+        no_inactive_attributes: No inactive attributes
+        blankslate_title: No groups yet
+        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        group_actions: Group actions
+        rename_group: Rename group
+        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
+        group_name_label: Group name
+        row_actions: Row actions
+        query_group_label: Work packages table
+        empty_group_hint: Drag attributes here
+        invalid_attribute_groups: The form configuration payload is invalid.
+        invalid_query: The embedded query configuration is invalid.
+        not_found: The requested form configuration item could not be found.
+        untitled_group: Untitled group
+        reset_title: Reset form configuration
+        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+
+          '
       projects:
         tab: Projecten
         enable_all: Enable for all projects
@@ -1362,6 +1413,33 @@ nl:
     index:
       no_results_content_text: Voeg een nieuwe wiki-pagina toe
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1371,6 +1449,12 @@ nl:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Er zijn momenteel geen workflows.
@@ -1384,8 +1468,8 @@ nl:
     bulk_delete_dialog:
       title: Delete %{count} work packages
       heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      description: 'The following work packages and all associated data will be permanently deleted:'
+      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
       confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
       cross_project_warning: 'These work packages span multiple projects: %{projects}'
       children_label: 'The following children will also be deleted:'
@@ -1926,6 +2010,7 @@ nl:
         duration: Duur
         end_insertion: Einde van het invoegen
         end_deletion: Einde van de verwijdering
+        identifier: Identifier
         ignore_non_working_days: Negeer niet-werkdagen
         include_non_working_days:
           title: Werkdagen
@@ -1941,6 +2026,7 @@ nl:
         readonly: Alleen lezen
         remaining_hours: Resterend werk
         remaining_time: Resterend werk
+        sequence_number: Sequence number
         shared_with_users: Gedeeld met
         schedule_manually: Handmatige planning
         spent_hours: Bestede tijd
@@ -1950,6 +2036,29 @@ nl:
         type: Type
         version: Versie
         watcher: Kijker
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: moet geaccepteerd worden.
@@ -1993,6 +2102,7 @@ nl:
         inclusion: is niet ingesteld op één van de toegestane waarden.
         inclusion_nested: is niet ingesteld op een van de toegestane waarden op pad '%{path}'.
         invalid: is ongeldig.
+        invalid_uri: must be a valid URI.
         invalid_url: is geen geldige URL.
         invalid_url_scheme: 'is geen ondersteunde protocol (toegestaan: %{allowed_schemes}).'
         less_than_or_equal_to: moet kleiner zijn dan of gelijk aan %{count}.
@@ -2006,6 +2116,7 @@ nl:
         not_a_datetime: is geen geldige datum tijd.
         not_a_number: is geen getal.
         not_allowed: is ongeldig vanwege ontbrekende machtigingen.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: is niet een geheel getal.
@@ -2223,6 +2334,7 @@ nl:
           not_whitelisted: is niet toegestaan door de configuratie.
           invalid_url: dit is geen geldige url of pad.
           must_not_be_ssh: mag geen ssh url zijn.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: is geen map.
         role:
           attributes:
@@ -2273,6 +2385,8 @@ nl:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID can't be blank.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2329,7 +2443,7 @@ nl:
               attribute_unknown_name: 'Ongeldig werkpakket attribuut gebruikt: %{attribute}'
               duplicate_group: De groep naam ‘%{group}’ word meer dan één keer gebruikt. Groep namen moeten uniek zijn.
               query_invalid: 'De ingesloten zoekopdracht ''%{group}'' is ongeldig: %{details}'
-              group_without_name: Groepen zonder namen zijn niet toegestaan.
+              group_without_name: Group name can't be blank.
             patterns:
               invalid_tokens: One or more attributes inside the field are not valid. Please, fix the attributes before saving.
         user:
@@ -2341,7 +2455,7 @@ nl:
               confirmation: Wachtwoordbevestiging komt niet overeen met wachtwoord.
               format: "%{message}"
             password:
-              weak: Moet karakters bevatten van de volgende klasses (ten minste %{min_count} van %{all_count}):%{rules}
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: kleine letters (bijvoorbeeld 'a')
               uppercase: hoofdletters (bijvoorbeeld ' A')
               numeric: numerieke (bijvoorbeeld ' 1')
@@ -2460,6 +2574,7 @@ nl:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: aangemaakt door %{user} op %{datetime}
@@ -3334,6 +3449,26 @@ nl:
   general_text_false: onwaar
   gui_validation_error: 1 fout
   gui_validation_error_plural: "%{count} fouten"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Nieuwste zichtbare projecten in deze instantie.
@@ -3347,18 +3482,17 @@ nl:
         header: Lees over nieuwe functies en product-updates.
         learn_about: Learn more about all new features
         missing: There are no highlighted features yet.
-        '17_3':
+        '17_4':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: Upgrade naar Enterprise-editie
       postgres_migration: Uw installatie overzetten naar PostgreSQL
@@ -3517,7 +3651,7 @@ nl:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3531,6 +3665,7 @@ nl:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3543,6 +3678,7 @@ nl:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3551,6 +3687,7 @@ nl:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3565,6 +3702,7 @@ nl:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3573,6 +3711,7 @@ nl:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3631,6 +3770,7 @@ nl:
   label_age: Leeftijd
   label_ago: dagen geleden
   label_all: alle
+  label_all_uppercase: All
   label_all_time: aller tijden
   label_all_words: Alle woorden
   label_all_open_wps: Alles open
@@ -3732,6 +3872,7 @@ nl:
   label_commits_per_month: Bijdragen per maand
   label_confirmation: Bevestiging
   label_contains: bevat
+  label_starts_with: starts with
   label_content: Inhoud
   label_color_plural: Kleuren
   label_copied: gekopieerd
@@ -3739,6 +3880,8 @@ nl:
   label_copy_source: Bron
   label_copy_target: Doel
   label_copy_workflow_from: Kopieer workflow van
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Project kopiëren
   label_core_version: Core-versie
   label_core_build: Core build
@@ -4046,6 +4189,10 @@ nl:
   label_password_rule_numeric: Numerieke tekens
   label_password_rule_special: Speciale tekens
   label_password_rule_uppercase: Hoofdletters
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Pad codering
   label_per_page: 'Per pagina:'
   label_people: Mensen
@@ -4151,6 +4298,7 @@ nl:
   label_role_new: Nieuwe rol
   label_role_grantable: Grantable role
   label_role_plural: Rollen
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Rol toewijzen aan nieuwe leden
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -4377,7 +4525,7 @@ nl:
       you_have: U heeft
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} heeft je genoemd in #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: Naar meldingscentrum
       see_in_center: Bekijk commentaar in notificatie center
@@ -4412,10 +4560,10 @@ nl:
       note: 'Note: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
-        subject: 'Work package #%{id} was shared with you'
+        subject: Work package %{id} was shared with you
         enterprise_text: Werkpakketten delen met gebruikers die geen lid zijn van het project.
         summary:
           user: "%{user} een werkpakket met u heeft gedeeld met %{role_rights} rechten"
@@ -4624,6 +4772,18 @@ nl:
     text_getting_started_description: Krijg een snel overzicht van projectbeheer en teamsamenwerking met OpenProject. U kunt deze video opnieuw starten vanuit het helpmenu.
     welcome: Welkom bij %{app_title}
     select_language: Gelieve uw taal te kiezen
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
+      work_package_card_list_component:
+        header:
+          label_actions: Open menu
+          label_work_package_count:
+            zero: No work packages
+            one: "%{count} work package"
+            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Werkpakketten toevoegen
   permission_add_messages: Berichten posten
@@ -4641,7 +4801,6 @@ nl:
   permission_add_work_package_watchers: Kijkers toevoegen
   permission_assign_versions: Versies toewijzen
   permission_browse_repository: Alleen-lezen toegang tot opslagplaats (bladeren en uitchecken)
-  permission_change_wiki_parent_page: Bovenliggende wiki-pagina wijzigen
   permission_change_work_package_status: Change work package status
   permission_change_work_package_status_explanation: Allows changing status without Edit work packages permission
   permission_comment_news: Opmerking nieuws
@@ -4656,8 +4815,6 @@ nl:
   permission_delete_own_messages: Eigen berichten verwijderen
   permission_delete_reportings: Rapporteringen verwijderen
   permission_delete_timelines: Tijdlijnen verwijderen
-  permission_delete_wiki_pages: Wiki pagina's verwijderen
-  permission_delete_wiki_pages_attachments: Bijlagen verwijderen
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Werkpakketten bewerken
@@ -4677,12 +4834,10 @@ nl:
   permission_edit_wiki_pages: Wiki pagina's bewerken
   permission_export_work_packages: Werkpakketten exporteren
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Wiki pagina's exporteren
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: Bijlagen weergeven
   permission_log_own_time: Eigen tijd registreren
   permission_log_time: Log tijd voor andere gebruikers
   permission_manage_forums: Forum beheren
@@ -4697,7 +4852,6 @@ nl:
   permission_manage_subtasks: Beheer werkpakket hiërarchieën
   permission_manage_versions: Versies beheren
   permission_manage_wiki: Wiki beheren
-  permission_manage_wiki_menu: Wiki menu beheren
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4707,8 +4861,6 @@ nl:
 
     '
   permission_move_work_packages: Werkpakketten verplaatsen
-  permission_protect_wiki_pages: Wiki-pagina's beveiligen
-  permission_rename_wiki_pages: Wiki-pagina's wijzigen
   permission_save_queries: Weergaves opslaan
   permission_search_project: Search project
   permission_select_custom_fields: Aangepaste velden selecteren
@@ -4948,7 +5100,7 @@ nl:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Cross-Origin Resource Sharing (CORS)
@@ -5079,13 +5231,15 @@ nl:
   setting_mail_handler_body_delimiter_regex: E-mails die overeenkomen met deze regex afkappen
   setting_mail_handler_ignore_filenames: Genegeerde e-mailbijlagen
   setting_new_project_user_role_id: Rol gegeven aan een niet-admin-gebruiker die een project maakt
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Actieve tekenklassen
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Nummer van meest recent gebruikte wachtwoorden verboden voor hergebruik
   setting_password_days_valid: Aantal dagen waarna een wachtwoordwijziging afdwingen
   setting_password_min_length: Minimale lengte
-  setting_password_min_adhered_rules: Minimum aantal vereiste klassen
   setting_per_page_options: Objecten per Pagina-opties
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: No change
@@ -5496,6 +5650,7 @@ nl:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'Opnieuw toewijzen aan werkpakket:'
   text_regexp_multiline: De regex wordt toegepast in een modus met meerdere regels. bijvoorbeeld, ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: Selecteer of update de gebruiker van de OpenProject gelinkt aan elke gebruikersnaam gevonden in het repository log. Gebruikers met de zelfde OpenProject en repository gebruikersnaam of e-mail worden automatisch gelinkt.
   text_status_changed_by_changeset: Toegepast in changeset %{value}.
   text_table_difference_description: In deze tabel worden de enkele %{entries} weergegeven. U kunt het verschil tussen twee vermeldingen bekijken door eerst de bijhorende selectievakjes te selecteren in de tabel. Bij het klikken op de knop onder de tabel worden de verschillen weergegeven.
@@ -5673,10 +5828,13 @@ nl:
           same_as_work: Set to same value as Work.
     permissions:
       comment: Commentaar
+      comment_verb: comment
       comment_description: Can view and comment this work package.
       edit: Wijzig
+      edit_verb: edit
       edit_description: Kan dit werkpakket bekijken, becommentariëren en bewerken.
       view: Toon
+      view_verb: view
       view_description: Can view this work package.
     reminders:
       label_remind_at: Datum
@@ -5924,9 +6082,6 @@ nl:
       scopes: Machtigingen
       successful_application_revocation: Intrekking van toepassing %{application_name} succesvol.
       none_given: Geen OAuth-toepassingen zijn toegang verleend tot uw gebruikersaccount.
-    x_active_tokens:
-      one: één actieve token
-      other: "%{count} actieve token"
     flows:
       authorization_code: Autorisatiecode stroom
       client_credentials: Client referenties stroom
@@ -5936,8 +6091,10 @@ nl:
     client_credentials_impersonation_html: 'Standaard biedt OpenProject OAuth 2.0 autorisatie via %{authorization_code_flow_link}. U kunt optioneel %{client_credentials_flow_link} inschakelen, maar u moet een gebruiker geven wier verzoeken namens zullen worden uitgevoerd.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Er is een autorisatiefout opgetreden.
-    revoke_my_application_confirmation: Weet u zeker dat u deze applicatie wilt verwijderen? Dit zal %{token_count} actief voor deze verwijderen.
     my_registered_applications: Geregistreerde OAuth toepassingen
   oauth_client:
     urn_connection_status:

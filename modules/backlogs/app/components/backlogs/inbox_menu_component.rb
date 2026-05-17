@@ -33,6 +33,7 @@ module Backlogs
   # +menu_id+ must match the row ActionMenu in InboxItemComponent.
   class InboxMenuComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
     attr_reader :work_package, :project, :max_position, :current_user, :open_sprints_exist
 
@@ -85,7 +86,7 @@ module Backlogs
         id: dom_target(work_package, :menu, direction),
         label:,
         tag: :button,
-        href: reorder_project_backlogs_inbox_path(project, work_package),
+        href: reorder_project_backlogs_inbox_path(project, work_package, all_backlogs_params),
         form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)

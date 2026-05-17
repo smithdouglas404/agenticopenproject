@@ -511,7 +511,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
   }
 
   private get debounceTimeForCurrentEnvironment():number {
-    return (window.OpenProject.environment === 'test') ? 0 : this.debounceTimeMs;
+    return (window.OpenProject?.environment === 'test') ? 0 : this.debounceTimeMs;
   }
 
   writeValue(value:T|T[]|null):void {

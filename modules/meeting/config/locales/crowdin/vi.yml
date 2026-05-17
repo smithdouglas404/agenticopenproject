@@ -32,6 +32,7 @@ vi:
         location: Địa điểm
         duration: thời lượng
         notes: Ghi chú
+        recurrence_start_time: Scheduled start time
         participants: Người tham gia
         participant:
           other: "%{count} Người tham gia"
@@ -204,6 +205,7 @@ vi:
   label_time_zone: Múi giờ
   label_start_date: Ngày bắt đầu
   label_subscribe_icalendar: Đăng ký lịch
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -431,7 +433,7 @@ vi:
     widgets:
       blankslate:
         heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: View all meetings
   meeting_section:
     untitled_title: Phần không có tiêu đề
@@ -690,9 +692,12 @@ vi:
   text_agenda_item_duplicate_in_next_meeting: Bạn có chắc chắn muốn thêm bản sao của mục chương trình này vào cuộc họp tiếp theo, vào %{date} lúc %{time} không? Kết quả sẽ không bị trùng lặp.
   text_agenda_item_duplicated_in_next_meeting: Mục chương trình nghị sự được sao chép trong cuộc họp tiếp theo, vào ngày %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Gói công việc này chưa được lên lịch trong chương trình họp sắp tới.
-  text_agenda_item_no_available_occurrence: Tất cả các sự kiện sắp tới đã bị hủy bỏ.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Lưu ý: Bỏ qua sự kiện bị hủy trên %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Lưu ý: Bỏ qua các trường hợp bị hủy trong " %{count}".'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Sử dụng nút "Thêm vào cuộc họp" để thêm gói công việc này vào cuộc họp sắp tới.
   text_work_package_has_no_past_meeting_agenda_items: Gói công việc này chưa được thêm vào làm mục chương trình nghị sự trong cuộc họp trước đây.
   text_email_updates_muted: Cập nhật lịch email bị tắt tiếng. Người tham gia sẽ không nhận được lời mời cập nhật qua email khi bạn thực hiện thay đổi.

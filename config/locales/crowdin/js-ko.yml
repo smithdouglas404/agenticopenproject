@@ -202,16 +202,7 @@ ko:
           text: "[Placeholder] 포함 달력"
     admin:
       type_form:
-        custom_field: 사용자 정의 필드
-        inactive: 비활성화
-        drag_to_activate: 여기에서 필드를 끌어와서 활성화
-        add_group: 특성 그룹 추가
-        add_table: 관련 작업 패키지의 테이블 추가
         edit_query: 쿼리 편집
-        new_group: 새 그룹
-        delete_group: 그룹 삭제
-        remove_attribute: 그룹에서 제거
-        reset_to_defaults: 기본값으로 초기화
       working_days:
         calendar:
           empty_state_header: 휴무일
@@ -613,18 +604,6 @@ ko:
     breadcrumb: 이동 경로
     text_data_lost: 입력한 모든 데이터가 손실됩니다.
     text_user_wrote: "%{value}이(가) 작성함:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: "%{group} 이라는 그룹 이름은 한 번 이상 사용되었습니다. 그룹 이름은 중복될 수 없습니다."
-        error_no_table_configured: "%{group}에 대한 테이블을 구성하세요."
-        reset_title: 구성 양식 초기화
-        confirm_reset: '경고: 양식 구성을 재설정하시겠습니까? 그러면 특성이 기본 그룹으로 재설정되고, 모든 사용자 지정 필드가 비활성화됩니다.
-
-          '
-        upgrade_to_ee: Enterprise on-premises Edition으로 업그레이드
-        upgrade_to_ee_text: 와우! 만약 이 추가 기능이 필요하다면 여러분은 진짜 프로입니다! Enterprise Edition 고객이 되어서 OpenSource 개발자들을 지원할 생각이 있으신가요?
-        more_information: 더보기
-        nevermind: 신경쓰지 마세요
     time_entry:
       work_package_required: 먼저 작업 패키지를 선택해야 합니다.
       title: 작업시간 기록

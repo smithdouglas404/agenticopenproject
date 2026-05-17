@@ -151,9 +151,9 @@ RSpec.describe ProjectIdentifiers::IdentifierAutofix::PreviewQuery do
       expect(result.projects_data.first[:error_reason]).to eq(:numerical)
     end
 
-    it "assigns :starts_with_number when identifier begins with a digit" do
+    it "assigns :does_not_start_with_letter when identifier begins with a digit" do
       create_project_with_raw_identifier(name: "Test", identifier: "1abc")
-      expect(result.projects_data.first[:error_reason]).to eq(:starts_with_number)
+      expect(result.projects_data.first[:error_reason]).to eq(:does_not_start_with_letter)
     end
 
     it "assigns :not_fully_uppercased when identifier is lowercase but otherwise valid" do

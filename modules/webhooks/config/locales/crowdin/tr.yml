@@ -37,7 +37,7 @@ tr:
         updated: Güncellenmiş
         comment: Yorum
         internal_comment: İç yorum
-      explanation_html: 'Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
+      explanation_html: 'Bir iş paketinin oluşturulması veya bir projede güncelleme yapılması gibi bir olayın meydana gelmesi üzerine OpenProject yapılandırılmış web uç noktalarına bir POST isteği gönderecektir. Çoğu zaman, olay [yapılandırılmış toplama süresi](aggregation_path) geçtikten sonra gönderilir.
 
         '
       status:

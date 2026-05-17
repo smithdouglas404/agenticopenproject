@@ -43,25 +43,22 @@ module Admin::Import::Jira::ImportRuns
       ].map { |label| { label:, checked: true } }
     end
 
-    def import_stats_unavailable
-      [
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.relations"),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.workflows"),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.permissions"),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.sprints"),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.schemes")
-      ].map { |label| { label:, checked: false } }
-    end
-
     def server_info
       info = model.available["server_info"]
-      return "" unless info
+      return nil unless info
 
-      [
-        info["serverTitle"],
-        info["version"],
-        "(#{info['baseUrl']})"
-      ].join(" ")
+      render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
+        safe_join([
+                    info["serverTitle"],
+                    " ",
+                    info["version"],
+                    " ",
+                    render(Primer::Beta::Link.new(href: model.jira.url, target: "_blank")) do |link|
+                      link.with_trailing_visual_icon(icon: :"link-external")
+                      info["baseUrl"]
+                    end
+                  ])
+      end
     end
 
     def selected_projects_count

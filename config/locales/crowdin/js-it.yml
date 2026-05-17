@@ -202,16 +202,7 @@ it:
           text: "[Placeholder] Calendario incorporato"
     admin:
       type_form:
-        custom_field: Campo personalizzato
-        inactive: Inattivo
-        drag_to_activate: Trascina i campi da qui per attivarli
-        add_group: Aggiungi gruppo di attributi
-        add_table: Aggiungi la tabella dei pacchetti di lavoro correlati
         edit_query: Modifica query
-        new_group: Nuovo gruppo
-        delete_group: Elimina gruppo
-        remove_attribute: Rimuovi dal gruppo
-        reset_to_defaults: Ripristino predefinite
       working_days:
         calendar:
           empty_state_header: Giorni non lavorativi
@@ -614,18 +605,6 @@ it:
     breadcrumb: Percorso di navigazione
     text_data_lost: Tutti i dati inseriti andranno persi.
     text_user_wrote: "%{value} ha scritto:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Il nome %{group} è usato più di una volta. I nomi dei gruppi devono essere univoci.
-        error_no_table_configured: Si prega di configurare una tabella per %{group}.
-        reset_title: Reimposta la configurazione del modulo
-        confirm_reset: 'Attenzione: vuoi reimpostare la configurazione del modulo? Tutti gli attributi torneranno al loro gruppo predefinito e TUTTI i campi personalizzati verranno disattivati.
-
-          '
-        upgrade_to_ee: Passa all'edizione Enterprise in sede
-        upgrade_to_ee_text: Wow! Se hai bisogno di questa aggiunta sei un vero professionista! Ti andrebbe di aiutare noi sviluppatori OpenSource diventando un cliente dell'edizione Enterprise?
-        more_information: Altre informazioni
-        nevermind: Lascia stare
     time_entry:
       work_package_required: Richiede prima di selezionare una macro-attività.
       title: Registra l'orario effettuato

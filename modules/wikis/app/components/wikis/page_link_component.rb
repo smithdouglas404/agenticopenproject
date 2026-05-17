@@ -33,14 +33,28 @@ module Wikis
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
 
-    alias_method :link, :model
+    alias_method :page_info_result, :model
 
-    def page_title_service
-      @page_title_service ||= PageTitleService.new
+    attr_reader :actions
+
+    def initialize(model = nil, actions: [], **)
+      @actions = actions
+
+      super(model, **)
+    end
+
+    def page_title
+      # TODO: Define behaviour for errors
+      page_info_result.either(->(pi) { pi.title }, ->(_) { "Nothing to see here" })
+    end
+
+    def page_href
+      # TODO: Define behaviour for errors
+      page_info_result.either(->(pi) { pi.href }, ->(_) { "#" })
     end
 
     def show_action_menu?
-      link.relation?
+      actions.any?
     end
   end
 end

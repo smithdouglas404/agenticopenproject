@@ -61,7 +61,7 @@ In the work-based progress reporting mode %&nbsp;Complete can either be automati
 
 #### Manual values for % Complete
 
-If you you prefer to enter the values for % Complete manually, you can. You can do that in the table view and work package details view.  Values for *Work* and *Remaining work* are not required to enter  % Complete. 
+If you prefer to enter the values for % Complete manually, you can. You can do that in the table view and work package details view.  Values for *Work* and *Remaining work* are not required to enter  % Complete.
 
 > [!IMPORTANT]
 > If you do not enter \*Work\* or \*Remaining work\*, the \*% Complete\* field will remain an independent, manually editable field and behave like it did prior to OpenProject 14.0.

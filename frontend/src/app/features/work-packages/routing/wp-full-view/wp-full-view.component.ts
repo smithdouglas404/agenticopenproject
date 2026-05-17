@@ -28,6 +28,7 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   HostListener,
   Injector,
@@ -36,6 +37,7 @@ import {
 } from '@angular/core';
 import { StateService } from '@uirouter/core';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
+import { TabDefinition } from 'core-app/shared/components/tabs/tab.interface';
 import { RecentItemsService } from 'core-app/core/recent-items.service';
 import { ProjectResource } from 'core-app/features/hal/resources/project-resource';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
@@ -84,8 +86,16 @@ export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase imp
     public recentItemsService:RecentItemsService,
     readonly $state:StateService,
     readonly currentUserService:CurrentUserService,
+    readonly cdRef:ChangeDetectorRef,
   ) {
     super(injector);
+  }
+
+  public onTabSelected(tab:TabDefinition):void {
+    if (!this.routedFromAngular) {
+      this.activeTab = tab.id;
+      this.cdRef.markForCheck();
+    }
   }
 
   // enable other parts of the application to trigger an immediate update

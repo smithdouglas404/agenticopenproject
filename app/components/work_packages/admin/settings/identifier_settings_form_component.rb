@@ -63,6 +63,15 @@ module WorkPackages
 
         def form_id = "wp-identifier-settings-form"
 
+        def in_progress_banner_message
+          key = if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
+                  "admin.settings.work_packages_identifier.in_progress.reverting_banner_message"
+                else
+                  "admin.settings.work_packages_identifier.in_progress.converting_banner_message"
+                end
+          I18n.t(key)
+        end
+
         def show_autofix_section?
           state == :edit && Setting::WorkPackageIdentifier.semantic? && has_problematic_projects?
         end
@@ -92,16 +101,28 @@ module WorkPackages
           {
             data: {
               controller: "admin--work-packages-identifier",
-              admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?
+              admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?,
+              admin__work_packages_identifier_current_value_value: Setting[:work_packages_identifier]
             }
           }
         end
 
         def radio_button_options
           if change_in_progress?
-            { button_options: { disabled: true } }
+            {
+              values: identifier_values(checked: nil),
+              button_options: { disabled: true }
+            }
+          elsif completed?
+            { values: identifier_values(checked: Setting[:work_packages_identifier]) }
           else
             { button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } } }
+          end
+        end
+
+        def identifier_values(checked:)
+          Setting::WorkPackageIdentifier::ALLOWED_VALUES.map do |v|
+            { name: v, value: v, checked: v == checked }
           end
         end
       end

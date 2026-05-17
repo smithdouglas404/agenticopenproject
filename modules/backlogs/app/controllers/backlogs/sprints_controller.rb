@@ -48,22 +48,22 @@ module Backlogs
     def new_dialog
       call = ::Sprints::SetAttributesService.new(
         user: current_user,
-        model: Agile::Sprint.new,
+        model: Sprint.new,
         contract_class: ::EmptyContract
       ).call(attributes: converted_sprint_params)
 
-      respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: call.result)
+      respond_with_dialog Backlogs::SprintDialogComponent.new(sprint: call.result)
     end
 
     def edit_dialog
-      @sprint = Agile::Sprint.for_project(@project).visible.find(params[:sprint_id])
+      @sprint = Sprint.for_project(@project).visible.find(params[:sprint_id])
 
-      respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint, state: :edit)
+      respond_with_dialog Backlogs::SprintDialogComponent.new(sprint: @sprint, state: :edit)
     end
 
     def refresh_form
       id = edit_sprint_params.dig(:sprint, :id)
-      sprint = id.present? ? Agile::Sprint.for_project(@project).visible.find(id) : Agile::Sprint.new
+      sprint = id.present? ? Sprint.for_project(@project).visible.find(id) : Sprint.new
 
       call = ::Sprints::SetAttributesService.new(
         user: current_user,
@@ -71,7 +71,7 @@ module Backlogs
         contract_class: ::EmptyContract
       ).call(attributes: converted_sprint_params)
 
-      update_via_turbo_stream(component: Backlogs::NewSprintFormComponent.new(sprint: call.result))
+      update_via_turbo_stream(component: Backlogs::SprintFormComponent.new(sprint: call.result))
 
       respond_with_turbo_streams
     end
@@ -83,9 +83,9 @@ module Backlogs
 
       if call.success?
         flash[:notice] = I18n.t(:notice_successful_create)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project))
+        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
       else
-        update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
+        update_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
       end
     end
@@ -97,9 +97,9 @@ module Backlogs
 
       if call.success?
         render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
-        update_sprint_header_component_via_turbo_stream(sprint: call.result)
+        update_sprint_component_via_turbo_stream(sprint: call.result)
       else
-        update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
+        update_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
       end
 
       respond_with_turbo_streams
@@ -124,7 +124,7 @@ module Backlogs
 
       if result.success?
         flash[:notice] = I18n.t(:notice_successful_finish)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project))
+        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
       elsif result.includes_error?(:base, :unfinished_work_packages)
         show_finish_sprint_dialog
       else
@@ -134,16 +134,16 @@ module Backlogs
 
     private
 
-    def update_sprint_header_component_via_turbo_stream(sprint:)
+    def update_sprint_component_via_turbo_stream(sprint:)
       update_via_turbo_stream(
-        component: Backlogs::SprintHeaderComponent.new(sprint:, project: @project),
+        component: Backlogs::SprintComponent.new(sprint:, project: @project),
         method: :morph
       )
     end
 
-    def update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
+    def update_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
       update_via_turbo_stream(
-        component: Backlogs::NewSprintFormComponent.new(
+        component: Backlogs::SprintFormComponent.new(
           sprint:,
           base_errors:
         ),
@@ -156,7 +156,7 @@ module Backlogs
         Backlogs::FinishSprintDialogComponent.new(
           sprint: @sprint,
           project: @project,
-          available_sprints: Agile::Sprint.native_to_sprint_source(@project).in_planning.where.not(id: @sprint.id).order_by_date
+          available_sprints: Sprint.native_to_sprint_source(@project).in_planning.where.not(id: @sprint.id).order_by_date
         )
       )
     end
@@ -165,7 +165,7 @@ module Backlogs
       load_project
 
       sprint_id = params[:sprint_id]
-      @sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id) if sprint_id
+      @sprint = Sprint.for_project(@project).visible.find(sprint_id) if sprint_id
     end
 
     def sprint_params

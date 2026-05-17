@@ -125,11 +125,13 @@ module WorkPackages
       end
     end
 
-    def user_allowed_to_change_parent
+    def user_allowed_to_change_parent # rubocop:disable Metrics/AbcSize
       return if model.parent_id.nil? || model.parent.nil?
       return unless model.parent_id_changed?
+      return unless self.class.update_parent_allowed?(user:, work_package: model)
 
-      unless model.parent.visible?
+      unless model.parent.visible?(user) &&
+             user.allowed_in_project?(:manage_subtasks, model.parent.project)
         errors.add :parent_id, :error_unauthorized
       end
     end
