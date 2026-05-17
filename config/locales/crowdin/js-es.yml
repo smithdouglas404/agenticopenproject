@@ -200,16 +200,7 @@ es:
           text: "[Placeholder] Calendario insertado"
     admin:
       type_form:
-        custom_field: Campo personalizado
-        inactive: Inactivo
-        drag_to_activate: Arrastre campos desde aquí para activarlos
-        add_group: Agregar grupo de atributos
-        add_table: Agregar tabla de paquetes de trabajo relacionados
         edit_query: Editar consulta
-        new_group: Nuevo grupo
-        delete_group: Eliminar grupo
-        remove_attribute: Eliminar del grupo
-        reset_to_defaults: Restablecer valores predeterminados
       working_days:
         calendar:
           empty_state_header: Días no laborables
@@ -612,18 +603,6 @@ es:
     breadcrumb: Ruta de navegación
     text_data_lost: Todos los datos introducidos se perderán.
     text_user_wrote: "%{value} escribió:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: El nombre %{group} se ha usado más de una vez. Los nombres de grupos deben ser únicos.
-        error_no_table_configured: Configure una tabla para %{group}.
-        reset_title: Restablecer la configuración del formulario
-        confirm_reset: 'Advertencia: ¿Está seguro de que quiere restablecer la configuración del formulario? Se restablecerán los atributos al grupo predeterminado y se deshabilitarán TODOS los campos personalizados.
-
-          '
-        upgrade_to_ee: Actualizar a Enterprise On-Premises
-        upgrade_to_ee_text: "¡Vaya! Si necesita está extensión, entonces ¡es un usuario experto! ¿Le importaría apoyar a los desarrolladores de código abierto convirtiéndose en cliente de Enterprise?"
-        more_information: Más información
-        nevermind: No importa
     time_entry:
       work_package_required: Es necesario seleccionar primero un paquete de trabajo.
       title: Registro de tiempo

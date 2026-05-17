@@ -433,7 +433,7 @@ ko:
     widgets:
       blankslate:
         heading: 향후 미팅 없음
-        description: 본인이 주최자 또는 참가자인 향후 미팅이 여기에 표시됩니다.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: 모든 미팅 보기
   meeting_section:
     untitled_title: 제목 없는 섹션

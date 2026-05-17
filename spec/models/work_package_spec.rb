@@ -943,4 +943,31 @@ RSpec.describe WorkPackage do
       end
     end
   end
+
+  describe "#to_s" do
+    let(:task_type) { create(:type_task) }
+
+    context "in classic mode",
+            with_flag: { semantic_work_package_ids: false },
+            with_settings: { work_packages_identifier: "classic" } do
+      let(:work_package) { create(:work_package, project:, type: task_type, subject: "Hello world") }
+
+      it "renders the numeric id with a `#` prefix" do
+        expect(work_package.to_s).to eq("Task ##{work_package.id}: Hello world")
+      end
+    end
+
+    context "in semantic mode",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      let(:project) { create(:project, identifier: "MACROPROJ", types: [task_type]) }
+      let(:work_package) { create(:work_package, project:, type: task_type, subject: "Hello world") }
+
+      it "renders the semantic identifier without a `#` prefix" do
+        wp = work_package.reload
+        expect(wp.to_s).to eq("Task #{wp.display_id}: Hello world")
+        expect(wp.to_s).not_to include("##{wp.id}")
+      end
+    end
+  end
 end

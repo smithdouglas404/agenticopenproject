@@ -110,8 +110,13 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   # historical alias matches one of the supplied display ids. Numeric and
   # semantic strings may be freely mixed; unknown values produce no match
   # rather than poisoning the rest of the set.
-  def where_display_id_in(values)
-    values = Array(values).map(&:to_s)
+  #
+  # @param values [String, Integer, Array<String, Integer>] one or more
+  #   display ids. Pass scalars (`where_display_id_in("PROJ-1")`), varargs
+  #   (`where_display_id_in("PROJ-1", "PROJ-2")`), or a pre-built array
+  #   (`where_display_id_in(ids)`) interchangeably.
+  def where_display_id_in(*values)
+    values = values.flatten(1).compact_blank.map(&:to_s)
     return none if values.empty?
 
     semantic, numeric = values.partition { semantic_id?(it) }
@@ -152,14 +157,8 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     end
   end
 
-  # Returns true when value looks like a semantic work package identifier (e.g. "PROJ-42").
-  # Non-string values (Integer, Hash, nil, Array) and numeric strings ("123", " 456 ")
-  # return false — these fall through to standard ActiveRecord lookup.
   def semantic_id?(value)
-    return false unless value.is_a?(String)
-
-    stripped = value.strip
-    stripped.to_i.to_s != stripped
+    WorkPackage::SemanticIdentifier.semantic_id?(value)
   end
 
   def find_by_semantic_identifier(identifier)

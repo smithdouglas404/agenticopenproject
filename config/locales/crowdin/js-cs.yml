@@ -202,16 +202,7 @@ cs:
           text: "[Placeholder] Vložený kalendář"
     admin:
       type_form:
-        custom_field: Vlastní pole
-        inactive: Neaktivní
-        drag_to_activate: Přetáhněte pole zde, abyste je aktivovali
-        add_group: Přidat skupinu atributů
-        add_table: Přidat seznam se souvisejícími pracovními balíčky
         edit_query: Upravit dotaz
-        new_group: Nová skupina
-        delete_group: Odstranit skupinu
-        remove_attribute: Odebrat ze skupiny
-        reset_to_defaults: Obnovit výchozí nastavení
       working_days:
         calendar:
           empty_state_header: Nepracovní dny
@@ -620,18 +611,6 @@ cs:
     breadcrumb: Navigační lišta
     text_data_lost: Všechna zadaná data budou ztracena.
     text_user_wrote: "%{value} napsal:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Jméno %{group} je již použito. Jména skupin musí být jedinečná.
-        error_no_table_configured: Prosím nastavte tabulku pro %{group}.
-        reset_title: Vyčistit konfiguraci formuláře
-        confirm_reset: 'Upozornění: Opravdu chcete resetovat konfiguraci formuláře? Tato akce obnoví atributy na jejich výchozí skupinu a zakáže VŠECHNY vlastní pole.
-
-          '
-        upgrade_to_ee: Upgradovat na Enterprise Edition on premises
-        upgrade_to_ee_text: Páni! Pokud potřebujete tuto funkci, jste super pro! Nevadili byste nám podpořit OpenSource vývojáře tím, že se stanete klientem Enterprise Edition?
-        more_information: Více informací
-        nevermind: Nevadí
     time_entry:
       work_package_required: Vyžaduje nejprve výběr pracovního balíčku.
       title: Čas protokolu

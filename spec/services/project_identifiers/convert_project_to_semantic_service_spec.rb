@@ -113,6 +113,12 @@ RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticService,
       it "backfills WPs using the new identifier" do
         expect(wp.reload.identifier).to eq("#{project.reload.identifier}-1")
       end
+
+      it "does not enqueue Notifications::WorkflowJob for the identifier change" do
+        project2 = create(:project, name: "Another Project")
+        expect { described_class.new(project2).call }
+          .not_to have_enqueued_job(Notifications::WorkflowJob)
+      end
     end
 
     context "when the only natural suggestion is a system-reserved keyword" do

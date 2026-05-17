@@ -70,7 +70,7 @@ Rails.application.reloader.to_prepare do
 
       map.permission :create_user,
                      {
-                       users: %i[index show new create resend_invitation],
+                       users: %i[index show new create resend_invitation configure_view_modal],
                        "users/memberships": %i[create],
                        admin: %i[index]
                      },
@@ -85,7 +85,8 @@ Rails.application.reloader.to_prepare do
                                  update_reminders update_email_alerts update_workdays
                                  update_participating update_non_participating update_date_alerts
                                  new_project_settings create_project_settings
-                                 edit_project_settings update_project_settings destroy_project_settings],
+                                 edit_project_settings update_project_settings destroy_project_settings
+                                 configure_view_modal],
                        "users/memberships": %i[create update destroy],
                        admin: %i[index]
                      },
@@ -96,7 +97,7 @@ Rails.application.reloader.to_prepare do
 
       map.permission :view_all_principals,
                      {
-                       users: %i[index show]
+                       users: %i[index show configure_view_modal]
                      },
                      permissible_on: :global,
                      require: :loggedin,

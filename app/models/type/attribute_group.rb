@@ -47,7 +47,8 @@ class Type::AttributeGroup < Type::FormGroup
     other.is_a?(self.class) &&
       key == other.key &&
       type == other.type &&
-      attributes == other.attributes
+      attributes == other.attributes &&
+      display_name == other.display_name
   end
 
   def active_members(project)

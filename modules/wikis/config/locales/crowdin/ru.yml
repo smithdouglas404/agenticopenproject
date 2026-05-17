@@ -3,7 +3,7 @@ ru:
   activerecord:
     attributes:
       wikis/page_link:
-        provider: Wiki Provider
+        provider: Провайдер Wiki
       wikis/xwiki_provider:
         authentication_method: Метод аутентификации
         authentication_methods:

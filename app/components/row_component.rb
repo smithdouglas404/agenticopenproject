@@ -45,7 +45,20 @@ class RowComponent < ApplicationComponent
   end
 
   def column_value(column)
+    return custom_field_column(column) if custom_field_column?(column)
+
     send(column)
+  end
+
+  def custom_field_column?(column)
+    column.is_a?(Queries::Selects::Shared::CustomFieldSelect)
+  end
+
+  def custom_field_column(column)
+    cf = column.custom_field
+    return "" unless cf
+
+    format_custom_field_value(cf, custom_field_column_subject.formatted_custom_value_for(cf))
   end
 
   def column_css_class(column)
@@ -79,6 +92,20 @@ class RowComponent < ApplicationComponent
   def checkmark(condition)
     if condition
       helpers.op_icon "icon icon-checkmark"
+    end
+  end
+
+  private
+
+  def custom_field_column_subject
+    model
+  end
+
+  def format_custom_field_value(_cf, custom_value)
+    if custom_value.is_a?(Array)
+      safe_join(Array(custom_value).compact_blank, ", ")
+    else
+      custom_value.to_s
     end
   end
 end

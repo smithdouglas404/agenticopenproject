@@ -433,7 +433,7 @@ zh-CN:
     widgets:
       blankslate:
         heading: 无会议安排
-        description: 您组织或参与的即将举行的会议将显示在这里。
+        description: Upcoming meetings you are participating in will appear here.
       view_details: 查看所有会议
   meeting_section:
     untitled_title: 无标题章节

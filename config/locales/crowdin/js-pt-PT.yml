@@ -202,16 +202,7 @@ pt-PT:
           text: "[Placeholder] Calendário embutido"
     admin:
       type_form:
-        custom_field: Campo personalizado
-        inactive: Inativo
-        drag_to_activate: Arraste campos daqui para ativá-los
-        add_group: Adicionar grupo de atributos
-        add_table: Adicionar tabela de pacotes de trabalho relacionados
         edit_query: Editar consulta
-        new_group: Novo Grupo
-        delete_group: Eliminar grupo
-        remove_attribute: Remover do grupo
-        reset_to_defaults: Repor predefinições
       working_days:
         calendar:
           empty_state_header: Dias não úteis
@@ -614,18 +605,6 @@ pt-PT:
     breadcrumb: Estrutural
     text_data_lost: Todos os dados inseridos serão perdidos.
     text_user_wrote: "%{value} escreveu:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: O nome %{group} é utilizado mais de uma vez. Os nomes de grupos têm de ser exclusivos.
-        error_no_table_configured: Por favor configure uma tabela para %{group}.
-        reset_title: Redefinir configuração do formulário
-        confirm_reset: 'Aviso: Tem a certeza que deseja redefinir a configuração de formulário? Isto irá redefinir os atributos para o grupo padrão e desativar TODOS os campos personalizados.
-
-          '
-        upgrade_to_ee: Aprimore para a edição Enterprise on-premises
-        upgrade_to_ee_text: Uau! Se precisa deste complemento é porque faz parte dos utilizadores especializados! Gostaria de apoiar os desenvolvedores de OpenSource tornando-se cliente da edição Enterprise?
-        more_information: Mais informação
-        nevermind: Não, obrigado
     time_entry:
       work_package_required: Requer que selecione um pacote de trabalho primeiro.
       title: Tempo de registro

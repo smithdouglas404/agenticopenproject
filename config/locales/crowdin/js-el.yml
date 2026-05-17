@@ -202,16 +202,7 @@ el:
           text: "[Placeholder] Ενσωματωμένο ημερολόγιο"
     admin:
       type_form:
-        custom_field: Προσαρμοσμένο πεδίο
-        inactive: Ανενεργό
-        drag_to_activate: Σύρετε πεδία από εδώ για να τα ενεργοποιήσετε
-        add_group: Προσθήκη ομάδας χαρακτηριστικών
-        add_table: Προσθήκη πίνακα με σχετιζόμενες εργασίες
         edit_query: Επεξεργασία αναζήτησης
-        new_group: Νέα ομάδα
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Επαναφορά στα προεπιλεγμένα
       working_days:
         calendar:
           empty_state_header: Non-working days
@@ -614,18 +605,6 @@ el:
     breadcrumb: Breadcrumb
     text_data_lost: All entered data will be lost.
     text_user_wrote: "%{value} έγραψε:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Το όνομα %{group} χρησιμοποιείται περισσότερες από μία φορές. Τα ονόματα ομάδων πρέπει να είναι μοναδικά.
-        error_no_table_configured: Παρακαλώ διαμορφώστε έναν πίνακα για %{group}.
-        reset_title: Επαναφορά φόρμας διαμόρφωσης
-        confirm_reset: 'Προειδοποίηση: Είστε σίγουροι ότι θέλετε να επαναφέρετε τη φόρμα διαμόρφωσης; Αυτό θα επαναφέρει τα χαρακτηριστικά στις προεπιλεγμένες ομάδες τους και θα απενεργοποιήσει ΌΛΑ τα προσαρμοσμένα πεδία.
-
-          '
-        upgrade_to_ee: Upgrade to Enterprise on-premises edition
-        upgrade_to_ee_text: Wow! If you need this add-on you are a super pro! Would you mind supporting us OpenSource developers by becoming an Enterprise edition client?
-        more_information: Περισσότερες πληροφορίες
-        nevermind: Δεν πειράζει
     time_entry:
       work_package_required: Πρέπει πρώτα να επιλεγεί ένα πακέτο εργασίας.
       title: Καταγραφή χρόνου
