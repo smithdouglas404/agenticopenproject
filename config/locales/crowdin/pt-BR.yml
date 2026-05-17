@@ -465,8 +465,8 @@ pt-BR:
         label: 'Função: %{role}'
         no_role: Selecionar função
         roles:
-          one: One role selected
-          other: "%{count} roles selected"
+          one: Uma função selecionada
+          other: "%{count} funções selecionadas"
       blankslate:
         title: Nenhuma transição de status configurada
         description: Adicione status para começar a configurar fluxos de trabalho para esta função
@@ -1336,35 +1336,35 @@ pt-BR:
     edit:
       form_configuration:
         tab: Configuração do formulário
-        label_group: Group
-        reset_to_defaults: Reset to defaults
-        add_attribute_group: Add attribute group
-        add_query_group: Add table of related work packages
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        drag_to_activate: Drag fields from here to activate them
-        drag_to_reorder: Drag to reorder
-        edit_query: Edit query
-        custom_field: Custom field
-        filter_inactive: Filter attributes
-        inactive_attributes_heading: Inactive attributes
-        no_inactive_attributes: No inactive attributes
-        blankslate_title: No groups yet
-        blankslate_description: Add groups using the button above or drag attributes from the left panel.
-        group_actions: Group actions
-        rename_group: Rename group
-        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
-        group_name_label: Group name
-        row_actions: Row actions
-        query_group_label: Work packages table
-        empty_group_hint: Drag attributes here
-        invalid_attribute_groups: The form configuration payload is invalid.
-        invalid_query: The embedded query configuration is invalid.
-        not_found: The requested form configuration item could not be found.
-        untitled_group: Untitled group
-        reset_title: Reset form configuration
-        confirm_reset: Are you sure you want to reset the form configuration?
-        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+        label_group: Grupo
+        reset_to_defaults: Redefinir para os padrões
+        add_attribute_group: Adicionar grupo de atributo
+        add_query_group: Adicionar tabela de pacotes de trabalho relacionados
+        delete_group: Excluir grupo
+        remove_attribute: Remover do grupo
+        drag_to_activate: Arraste campos daqui para ativá-los
+        drag_to_reorder: Arraste para reordenar
+        edit_query: Editar consulta
+        custom_field: Campo personalizado
+        filter_inactive: Todos atributos
+        inactive_attributes_heading: Atributos inativos
+        no_inactive_attributes: Nenhum atributo inativo
+        blankslate_title: Nenhum grupo ainda
+        blankslate_description: Adicione grupos usando o botão acima ou arraste atributos do painel esquerdo.
+        group_actions: Ações de grupo
+        rename_group: Renomear grupo
+        confirm_delete_group: Tem certeza que deseja excluir este grupo? Esta ação não pode ser revertida automaticamente.
+        group_name_label: Nome do grupo
+        row_actions: Ações de linha
+        query_group_label: Tabela de pacotes de trabalho
+        empty_group_hint: Arraste atributos aqui
+        invalid_attribute_groups: O payload de configuração do formulário é inválido.
+        invalid_query: A configuração da consulta incorporada é inválida.
+        not_found: O item de configuração de formulário solicitado não foi encontrado.
+        untitled_group: Grupo sem título
+        reset_title: Redefinir a configuração do formulário
+        confirm_reset: Tem certeza de que deseja redefinir as configurações do formulário?
+        reset_description: 'Isto irá redefinir os atributos para seu grupo padrão e desativar TODOS os campos personalizados.
 
           '
       projects:
@@ -1467,8 +1467,8 @@ pt-BR:
     bulk_delete_dialog:
       title: Excluir %{count} pacotes de trabalho
       heading: Excluir estes %{count} pacotes de trabalho de forma permanente?
-      description: 'The following work packages and all associated data will be permanently deleted:'
-      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
+      description: 'Os seguintes pacotes de trabalho e todos os dados associados serão excluídos permanentemente:'
+      description_with_children: 'Os seguintes pacotes de trabalho, incluindo filhos e todos os dados associados, serão permanentemente excluídos:'
       confirm_children_deletion: Reconheço que todos os pacotes de trabalho selecionados e seus itens filhos serão excluídos permanentemente.
       cross_project_warning: 'Esses pacotes de trabalho abrangem vários projetos: %{projects}'
       children_label: 'Os seguintes itens filhos também serão excluídos:'
@@ -2442,7 +2442,7 @@ pt-BR:
               attribute_unknown_name: 'Atributo de pacote de trabalho inválido: %{attribute}'
               duplicate_group: O nome de grupo %{group} foi usado mais de uma vez. Nomes de grupos devem ser únicos.
               query_invalid: 'A consulta incorporada ''%{group}'' é inválida: %{details}'
-              group_without_name: Group name can't be blank.
+              group_without_name: O nome do grupo não pode estar em branco.
             patterns:
               invalid_tokens: Um ou mais atributos dentro do campo não são válidos. Corrija os atributos antes de salvar.
         user:
@@ -4781,11 +4781,11 @@ pt-BR:
           label_actions: Ações do pacote de trabalho
       work_package_card_list_component:
         header:
-          label_actions: Open menu
+          label_actions: Abrir menu
           label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+            zero: Nenhum pacote de trabalho
+            one: "%{count} pacote de trabalho"
+            other: "%{count} pacotes de trabalho"
   permission_add_work_package_comments: Adicionar comentários
   permission_add_work_packages: Adicionar pacotes de trabalho
   permission_add_messages: Postar mensagens
@@ -5102,7 +5102,7 @@ pt-BR:
 
     '
   setting_after_login_default_redirect_url: Após redirecionamento de login
-  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
+  setting_after_login_default_redirect_url_example_html: 'Defina um caminho padrão para redirecionar os usuários após o login, se nenhum link de retorno foi fornecido. Redireciona para a página inicial se não estiver definido. <br/> Exemplo: %{example_code}
 
     '
   setting_apiv3_cors_title: Compartilhamento de recursos entre origens (CORS)

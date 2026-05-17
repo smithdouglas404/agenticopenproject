@@ -109,7 +109,7 @@ You can now configure webhook secrets for GitHub and GitLab integrations. This i
 
 ## Security fixes
 
-### GHSA-r85r-gjq2-f83r - Docker Container starts with SECRET_KEY_BASE default value
+### CVE-2026-46386 - Docker Container starts with SECRET_KEY_BASE default value
 
 When an attacker knew the secret key base that the application used to derive internal keys from, they could construct encrypted cookies that on the server side were decoded using [Object Marshalling](https://docs.ruby-lang.org/en/4.0/Marshal.html) which allowed the attacker to execute almost arbitrary ruby code within the container, up to a complete remote code execution. This was especially present in Docker containers that shipped with a default value as the secret key base, when it was not manually overwritten, as mentioned in the documentation.
 

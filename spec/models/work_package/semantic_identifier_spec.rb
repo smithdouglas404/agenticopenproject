@@ -266,6 +266,18 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       end
     end
 
+    context "with id: keyword and blank string" do
+      it "does not treat an empty id as a semantic identifier" do
+        expect { WorkPackage.find_by(id: "") }.not_to raise_error
+        expect(WorkPackage.find_by(id: "")).to be_nil
+      end
+
+      it "does not treat whitespace-only id as semantic" do
+        expect { WorkPackage.find_by(id: "  \t  ") }.not_to raise_error
+        expect(WorkPackage.find_by(id: "  \t  ")).to be_nil
+      end
+    end
+
     context "with id: keyword and an array" do
       let(:work_package2) { create(:work_package, project:) }
 
@@ -390,6 +402,24 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       expect(WorkPackage.where_display_id_in([])).to be_empty
     end
 
+    it "treats a blank string as no input" do
+      relation = WorkPackage.where_display_id_in("")
+      expect(relation).to be_empty
+      # Without filtering, "".to_i would build WHERE id = 0 — semantically wrong
+      # even though no row matches in practice.
+      expect(relation.to_sql).not_to match(/"id"\s*=\s*0\b/)
+      expect(relation.to_sql).not_to match(/"id"\s+IN\s*\(0\)/)
+    end
+
+    it "treats whitespace-only strings as no input" do
+      expect(WorkPackage.where_display_id_in("   ")).to be_empty
+    end
+
+    it "drops blank entries from arrays without poisoning the rest of the set" do
+      expect(WorkPackage.where_display_id_in(["MYPROJ-1", "", "  ", nil]))
+        .to contain_exactly(work_package)
+    end
+
     it "wraps a single non-array value" do
       expect(WorkPackage.where_display_id_in("MYPROJ-1")).to contain_exactly(work_package)
     end
@@ -500,7 +530,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       ["00",      :semantic],
       ["PROJ-1",  :semantic],
       ["abc",     :semantic],
-      ["",        :semantic],
+      ["",        :neither],
       [nil,       :neither],
       [{},        :neither]
     ].each do |value, classification|

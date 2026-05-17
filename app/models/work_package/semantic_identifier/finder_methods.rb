@@ -116,7 +116,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   #   (`where_display_id_in("PROJ-1", "PROJ-2")`), or a pre-built array
   #   (`where_display_id_in(ids)`) interchangeably.
   def where_display_id_in(*values)
-    values = values.flatten(1).compact.map(&:to_s)
+    values = values.flatten(1).compact_blank.map(&:to_s)
     return none if values.empty?
 
     semantic, numeric = values.partition { semantic_id?(it) }
