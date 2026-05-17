@@ -1,0 +1,124 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+<% html_title t(:label_administration), t(:label_project_plural), t("admin.reserved_identifiers.title") %>
+
+<%=
+  render(Primer::OpenProject::PageHeader.new) do |header|
+    header.with_title { t("admin.reserved_identifiers.title") }
+    header.with_description { t("admin.reserved_identifiers.lede_html") }
+    header.with_breadcrumbs(
+      [{ href: admin_index_path, text: t(:label_administration) },
+       { href: admin_settings_project_custom_fields_path, text: t(:label_project_plural) },
+       t("admin.reserved_identifiers.title")]
+    )
+  end
+%>
+
+<div data-controller="filter--filter-list"
+     data-filter--filter-list-clear-button-id-value="reserved-identifiers-filter-clear">
+  <% if @groups.any? %>
+    <%= render(Primer::OpenProject::SubHeader.new) do |subheader|
+          subheader.with_filter_input(
+            name: "reserved-identifiers-filter",
+            label: t("admin.reserved_identifiers.filter_label"),
+            visually_hide_label: true,
+            placeholder: t("admin.reserved_identifiers.filter_label"),
+            leading_visual: { icon: :search, size: :small },
+            show_clear_button: true,
+            clear_button_id: "reserved-identifiers-filter-clear",
+            data: {
+              action: "input->filter--filter-list#filterLists",
+              "filter--filter-list-target": "filter"
+            }
+          )
+        end %>
+
+    <div class="reserved-identifiers--count-strip">
+      <%= t("admin.reserved_identifiers.count_strip_html", count: @total_count) %>
+    </div>
+
+    <table class="reserved-identifiers--table">
+      <thead>
+        <tr>
+          <th class="reserved-identifiers--th reserved-identifiers--th-project"><%= t("admin.reserved_identifiers.col_project") %></th>
+          <th class="reserved-identifiers--th reserved-identifiers--th-identifier"><%= t("admin.reserved_identifiers.col_identifier") %></th>
+          <th class="reserved-identifiers--th reserved-identifiers--th-reserved"><%= t("admin.reserved_identifiers.col_reserved") %></th>
+          <th class="reserved-identifiers--th reserved-identifiers--th-action"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @groups.each_with_index do |group, group_index| %>
+          <% group[:slugs].each_with_index do |slug, slug_index| %>
+            <% first_in_group = slug_index == 0 %>
+            <tr class="reserved-identifiers--id-row <%= 'reserved-identifiers--group-start' if first_in_group && group_index > 0 %>"
+                data-filter--filter-list-target="searchItem">
+              <td class="reserved-identifiers--td reserved-identifiers--td-project">
+                <% if first_in_group %>
+                  <%= link_to group[:project].name, project_overview_path(group[:project]) %>
+                <% end %>
+                <%# Hidden span ensures the filter matches project name on every row %>
+                <span class="filter-target-visible-text" aria-hidden="true" style="display:none;"><%= group[:project].name %> <%= slug.slug %></span>
+              </td>
+              <td class="reserved-identifiers--td reserved-identifiers--td-identifier">
+                <span class="reserved-identifiers--identifier-text"><%= slug.slug %></span>
+              </td>
+              <td class="reserved-identifiers--td reserved-identifiers--td-reserved">
+                <%= t("admin.reserved_identifiers.reserved_ago", time: time_ago_in_words(slug.created_at)) %>
+              </td>
+              <td class="reserved-identifiers--td reserved-identifiers--td-action">
+                <%= render Primer::Beta::Button.new(
+                      tag: :a,
+                      href: confirm_dialog_admin_settings_project_reserved_identifier_path(slug.id),
+                      scheme: :link,
+                      size: :small,
+                      data: { turbo_stream: true }
+                    ) do %>
+                  <%= t("admin.reserved_identifiers.btn_release") %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+        <tr class="reserved-identifiers--no-results d-none"
+            data-filter--filter-list-target="noResultsText">
+          <td colspan="4" class="reserved-identifiers--td reserved-identifiers--td-no-results">
+            <%= t("admin.reserved_identifiers.no_results") %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  <% else %>
+    <div class="reserved-identifiers--empty-state">
+      <%= render(Primer::Beta::Octicon.new(icon: :"check-circle", width: 48, height: 48, color: :success)) %>
+      <h2 class="reserved-identifiers--empty-heading"><%= t("admin.reserved_identifiers.empty_heading") %></h2>
+      <p class="reserved-identifiers--empty-body"><%= t("admin.reserved_identifiers.empty_body") %></p>
+    </div>
+  <% end %>
+</div>
