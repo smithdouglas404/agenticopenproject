@@ -42,6 +42,7 @@ import {
 } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { TOpAutocompleterResource } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
+import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 
 export interface IWorkPackageAutocompleteItem extends WorkPackageResource {
   id:string,
@@ -92,14 +93,7 @@ export class WorkPackageRelationsAutocompleteComponent extends OpAutocompleterCo
   }
 
   opened() {
-    // Force reposition as a workaround for BUG
-    // https://github.com/ng-select/ng-select/issues/1259
-    setTimeout(() => {
-      this.ngSelectInstance.dropdownPanel.adjustPosition();
-      document.querySelector(this.hiddenOverflowContainer)?.addEventListener('scroll', () => {
-        this.ngSelectInstance.close();
-      }, { once: true });
-    }, 25);
+    repositionDropdownBugfix(this.ngSelectInstance);
   }
 
   getAutocompleterData(query:string|null):Observable<HalResource[]> {

@@ -173,7 +173,6 @@ da:
   label_previous_week: Foregående uge
   label_previous_month: Forrige måned
   label_specific_day: Dag %{day}
-  label_specific_week: Kalenderuge %{week}
   label_specific_month: Måned %{month}
   label_list: Liste
   label_month: Måned
@@ -206,10 +205,10 @@ da:
   project_module_costs: Tid og omkostninger
   setting_allow_tracking_start_and_end_times: Tillad start- og sluttider
   setting_costs_currency: Valuta
-  setting_costs_currency_caption: This is the unit of currency. It can be a three-letter ISO code like EUR, USD or JPY or a symbol like €, $ or ¥.
-  setting_costs_currency_format: Currency format
-  setting_costs_currency_format_prefix: Before the number (e.g. EUR 100)
-  setting_costs_currency_format_suffix: After the number (e.g. 100 EUR)
+  setting_costs_currency_caption: Dette er valutaenheden. Det kan være en trebogstavs ISO-kode, såsom EUR, USD eller JPY, eller et symbol, såsom €, $ eller ¥.
+  setting_costs_currency_format: Valutaformat
+  setting_costs_currency_format_prefix: Før tallet (f.eks. EUR 100)
+  setting_costs_currency_format_suffix: Efter tallet (f.eks. 100 EUR)
   setting_enforce_tracking_start_and_end_times: Kræv start- og sluttider
   setting_enforce_without_allow: Det er ikke muligt at kræve start- og sluttider uden at tillade dem
   setting_allow_tracking_start_and_end_times_caption: Enables entering start and finish times when logging time.
@@ -233,12 +232,12 @@ da:
   costs:
     widgets:
       actual_costs:
-        title: Actual costs by month
+        title: Faktiske omkostninger efter måned
         blankslate:
-          heading: Start tracking your time and costs
-          description: Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget.
-          action: Log time
-        view_details: View actual costs details
+          heading: Begynd at spore tid og omkostninger
+          description: Få et overblik over omkostningernne og registreret tid for at monitorere prijektfremdriften. Sørg for, at arbejdspakkerne er knyttet til det korrekte budget.
+          action: Registrér tid
+        view_details: Vis faktiske omkostningsdetaljer
   ee:
     features:
       time_entry_time_restrictions: Kræver præcis tidsregistrering

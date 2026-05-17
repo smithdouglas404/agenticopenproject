@@ -46,7 +46,7 @@ pt-PT:
         zero: Não foram encontrados grupos pelo filtro
       destroy:
         title: Remover filtro sincronizado %{name}
-        heading: Remove synchronized filter %{name}?
+        heading: Remover filtro sincronizado %{name}?
         confirmation: Se continuar, o filtro sincronizado %{name} e todos os grupos %{groups_count} criados por meio dele serão removidos.
         removed_groups: 'Aviso: Isto removerá os seguintes grupos do OpenProject e removê-los de todos os projetos!'
         verification_html: Insira o nome do filtro %{name} para verificar a eliminação.
@@ -60,15 +60,15 @@ pt-PT:
       add_new: Adicionar grupo LDAP sincronizado
       destroy:
         title: Remover grupo sincronizado %{name}
-        heading: Remove synchronized group %{name}?
+        heading: Remover grupo sincronizado %{name}?
         confirmation: Se continuar, o grupo sincronizado %{name} e todos os utilizadores sincronizados com %{users_count} serão removidos.
-        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
+        info: O próprio grupo OpenProject e membros adicionados fora desta sincronização LDAP não serão removidos.
       help_text_html: |
-        Este módulo permite-lhe configurar uma sincronização entre os grupos LDAP e OpenProject.
-        Está dependente dos grupos LDAP que precisam de utilizar o atributo <em>groupOfNames / memberOf</em> para trabalhar com o OpenProject.
+        Este módulo permite configurar uma sincronização entre grupos LDAP e OpenProject.
+        Depende da necessidade dos grupos LDAP usarem o atributo <em>groupOfNames / memberOf</em> para trabalharem com o OpenProject.
         <br/>
-        Os grupos são sincronizados de hora em hora através de um cron job.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Por favor consulte a nossa documentação sobre este tópico</a>.
+        Os grupos são sincronizados de hora a hora através de um cron job.
+        [Consulte a nossa documentação sobre este tópico](docs_url).
       no_results: Nenhum grupo sincronizado encontrado.
       no_members: Este grupo ainda não tem membros sincronizados.
       plural: Grupos LDAP sincronizados

@@ -12,7 +12,7 @@ de:
         button_text: Unterelement
       members:
         title: Mitglieder
-        no_results: Kein sichtbaren Mitglieder.
+        no_results: Keine sichtbaren Mitglieder.
         view_all_members: Alle Mitglieder anzeigen
         show_members_count: Alle %{count} Mitglieder anzeigen
         x_more:

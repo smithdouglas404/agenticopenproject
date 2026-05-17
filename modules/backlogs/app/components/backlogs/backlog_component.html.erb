@@ -26,38 +26,61 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
+<%= component_wrapper(tag: "turbo-frame", refresh: :morph, style: "display:contents") do %>
+  <%=
+    render(Primer::Beta::Subhead.new(hide_border: true, pb: 0)) do |head|
+      head.with_heading(
+        tag: :h3,
+        size: :medium,
+        font_weight: :bold,
+        display: :inline_flex,
+        align_items: :center,
+        classes: "gap-2"
+      ) do
+        concat t(:label_backlog)
+        concat render(
+          Primer::Beta::Counter.new(
+            scheme: :default,
+            count: total,
+            round: true,
+            limit: 1_000,
+            hide_if_zero: true
+          )
+        )
+      end
 
-<%= component_wrapper(tag: :section) do %>
-  <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
-    <% border_box.with_header(id: dom_target(backlog, :header)) do %>
-      <%= render(Backlogs::BacklogHeaderComponent.new(backlog:, project: @project, folded: folded?)) %>
-    <% end %>
-    <% if backlog.stories.empty? %>
-      <% border_box.with_row(data: { empty_list_item: true }) do %>
-        <%=
-          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
-            blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title", name: sprint.name))
-            blankslate.with_description_content(t(".blankslate_description"))
+      if allow_backlog_bucket_creation?(project)
+        head.with_actions do
+          render Primer::Beta::Button.new(
+            tag: :a,
+            label: BacklogBucket.human_model_name,
+            href: new_dialog_project_backlogs_backlog_buckets_path(project, all_backlogs_params),
+            data: {
+              controller: "async-dialog",
+              test_selector: "op-backlog-buckets--new-backlog-bucket-button"
+            }
+          ) do |button|
+            button.with_leading_visual_icon(icon: :plus)
+            BacklogBucket.human_model_name
           end
-        %>
-      <% end %>
-    <% end %>
-    <% backlog.stories.each do |story| %>
-      <% border_box.with_row(
-           id: dom_id(story),
-           classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable",
-           data: draggable_item_config(story).merge(
-             story: true,
-             controller: "backlogs--story",
-             backlogs__story_id_value: story.id,
-             backlogs__story_split_url_value: details_backlogs_project_backlogs_path(project, story),
-             backlogs__story_full_url_value: work_package_path(story),
-             backlogs__story_selected_class: "Box-row--blue"
-           ),
-           tabindex: 0
-         ) do %>
-        <%= render(Backlogs::StoryComponent.new(story:, project:, sprint:)) %>
-      <% end %>
-    <% end %>
-  <% end %>
+        end
+      elsif allow_sprint_creation?(project)
+        # Ugly hack:
+        # This button will not be rendered, but still takes up space to push the left side down a bit.
+        # Remove as soon as the `+ Sprint` button moves from the Subhead into a SubHeader.
+        head.with_actions do
+          render(Primer::Beta::Button.new(tag: :a, visibility: :hidden)) { "spacer" }
+        end
+      end
+    end
+  %>
+
+  <%= render Backlogs::BucketComponent.with_collection(buckets, project:) %>
+
+  <%=
+    render Backlogs::InboxComponent.new(
+      work_packages: inbox_work_packages,
+      project: project
+    )
+  %>
 <% end %>

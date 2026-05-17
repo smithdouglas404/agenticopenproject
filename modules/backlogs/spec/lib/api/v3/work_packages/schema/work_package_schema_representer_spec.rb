@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with_flag: { scrum_projects: true } do
+RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
   include API::V3::Utilities::PathHelper
 
   let(:custom_field) { build(:custom_field) }
@@ -52,7 +52,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
     login_as(current_user)
 
     allow(schema.project).to receive(:backlogs_enabled?).and_return(true)
-    allow(work_package.type).to receive(:story?).and_return(true)
     allow(work_package).to receive(:leaf?).and_return(true)
   end
 
@@ -76,30 +75,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
         expect(subject).not_to have_json_path("storyPoints")
       end
     end
-
-    context "when not a story with the feature flag inactive", with_flag: { scrum_projects: false } do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it "does not show story points" do
-        expect(subject).not_to have_json_path("storyPoints")
-      end
-    end
-
-    context "when not a story with the feature flag active" do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it_behaves_like "has basic schema properties" do
-        let(:path) { "storyPoints" }
-        let(:type) { "Integer" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.story_points") }
-        let(:required) { false }
-        let(:writable) { true }
-      end
-    end
   end
 
   describe "position" do
@@ -120,30 +95,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
         expect(subject).not_to have_json_path("position")
       end
     end
-
-    context "when not a story with the feature flag inactive", with_flag: { scrum_projects: false } do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it "does not show position" do
-        expect(subject).not_to have_json_path("position")
-      end
-    end
-
-    context "when not a story with the feature flag active" do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it_behaves_like "has basic schema properties" do
-        let(:path) { "position" }
-        let(:type) { "Integer" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.position") }
-        let(:required) { false }
-        let(:writable) { false }
-      end
-    end
   end
 
   describe "sprint" do
@@ -158,7 +109,10 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
     end
 
     it_behaves_like "links to allowed values via collection link" do
-      let(:href) { api_v3_paths.project_sprints(project.id) }
+      let(:filters) do
+        CGI.escape(JSON.dump([{ status: { operator: "!", values: [Sprint.statuses["completed"]] } }]))
+      end
+      let(:href) { "#{api_v3_paths.project_sprints(project.id)}?filters=#{filters}&pageSize=-1" }
     end
 
     context "when lacking permission to set the sprint" do
@@ -178,36 +132,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
 
       it "has no reference to the sprint" do
         expect(subject).not_to have_json_path(path)
-      end
-    end
-
-    context "when the feature flag is disabled", with_flag: { scrum_projects: false } do
-      it "has no reference to the sprint" do
-        expect(subject).not_to have_json_path(path)
-      end
-    end
-
-    context "when not a story with the feature flag inactive", with_flag: { scrum_projects: false } do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it "does not show sprint" do
-        expect(subject).not_to have_json_path("sprint")
-      end
-    end
-
-    context "when not a story with the feature flag active" do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it_behaves_like "has basic schema properties" do
-        let(:type) { "Sprint" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.sprint") }
-        let(:required) { false }
-        let(:writable) { true }
-        let(:location) { "_links" }
       end
     end
   end

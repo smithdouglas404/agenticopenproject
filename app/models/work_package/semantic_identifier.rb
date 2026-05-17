@@ -31,10 +31,22 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
+  # Semantic-identifier shape ("PROJ-42"). Use this when the numeric and
+  # semantic branches need different boundary rules; use `ID_ROUTE_CONSTRAINT`
+  # when both branches share one regex.
+  SEMANTIC_ID_PATTERN = /#{Projects::Identifier::SEMANTIC_FORMAT.source}-\d+/
+
   # Matches either a numeric ID ("12345") or a semantic identifier ("PROJ-42").
   # Used in Rails route constraints so both forms are accepted in URLs.
   # The frontend equivalent lives in WP_ID_URL_PATTERN (work-package-id-pattern.ts).
-  ID_ROUTE_CONSTRAINT = /\d+|[A-Z][A-Z0-9_]*-\d+/
+  ID_ROUTE_CONSTRAINT = /\d+|#{SEMANTIC_ID_PATTERN.source}/
+
+  # Raised when a finder is invoked in a way that cannot resolve a semantic
+  # identifier — e.g. find_by(id: "PROJ-42") which reduces to a raw SQL
+  # WHERE clause that cannot consult the alias table. Subclasses ArgumentError
+  # so callers that rescue ArgumentError still catch it, but it can be rescued
+  # specifically when needed.
+  class UnsupportedLookup < ArgumentError; end
 
   included do
     has_many :semantic_aliases,
@@ -43,16 +55,67 @@ module WorkPackage::SemanticIdentifier
              inverse_of: :work_package,
              dependent: :delete_all
 
+    scope :semantically_sequenced, -> { where.not(sequence_number: nil) }
+    scope :unsequenced, -> { where(sequence_number: nil) }
+    scope :non_semantic_of, ->(project) {
+      semantically_sequenced.where("identifier IS DISTINCT FROM (? || '-' || sequence_number::text)", project.identifier)
+    }
+    scope :non_semantic, -> {
+      joins(:project).semantically_sequenced
+        .where("work_packages.identifier IS DISTINCT FROM projects.identifier || '-' || work_packages.sequence_number::text")
+    }
+
     after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
+
+    validate :semantic_identifier_fields_consistent
   end
 
   class_methods do
     include FinderMethods
 
     # Extend every relation built from this model with semantic finder methods,
-    # so that WorkPackage.visible(user).find("PROJ-42") works transparently.
+    # so that WorkPackage.visible(user).find("PROJ-42") and
+    # project.work_packages.find_by_display_id("PROJ-42") both work. Overriding
+    # `relation` is the seam that reaches every scope and association proxy;
+    # including FinderMethods into class_methods alone only covers class-level
+    # calls like WorkPackage.find.
     def relation
       super.extending(FinderMethods)
+    end
+  end
+
+  # Returns true when value looks like a semantic work package identifier
+  # ("PROJ-42"). Non-strings (Integer, Hash, nil, Array), empty and numeric strings
+  # ("123", " 456 ", "  ") return false — these fall through to standard PK lookup.
+  #
+  # The round-trip check (rather than a regex) is intentional for performance.
+  # Every value that reaches a work-package finder either parses as an integer
+  # or doesn't, and that's enough to dispatch correctly. Don't tighten it.
+  def self.semantic_id?(value)
+    return false unless value.is_a?(String)
+
+    stripped = value.strip
+    return false if stripped.empty?
+
+    stripped.to_i.to_s != stripped
+  end
+
+  # Returns true when value is a canonical numeric ID —
+  # an Integer, or a String that round-trips through `to_i.to_s` ("0", "123").
+  # Rejects leading-zero strings ("0123"), non-numeric strings, empty strings and nil.
+  #
+  # A numeric ID is always a routable primary key; a semantic ID is always
+  # routed through the identifier/alias path. Anything else — nil, blank
+  # strings, Hashes, Arrays — is neither, and both predicates return false
+  # so the caller short-circuits before any lookup.
+  def self.numeric_id?(value)
+    case value
+    when Integer then true
+    when String
+      return false if value.strip.blank?
+
+      !semantic_id?(value)
+    else false
     end
   end
 
@@ -60,7 +123,30 @@ module WorkPackage::SemanticIdentifier
   # In semantic mode: the project-based identifier (e.g. "PROJ-42")
   # In classic mode: the numeric database ID
   def display_id
-    Setting::WorkPackageIdentifier.semantic_mode_active? ? identifier : id
+    return id unless Setting::WorkPackageIdentifier.semantic_mode_active?
+
+    identifier.presence || id
+  end
+
+  # Returns the identifier formatted for inline UI display.
+  # Semantic mode: "PROJ-42" (no prefix — self-describing)
+  # Classic mode: "#42" (hash-prefixed)
+  def formatted_id
+    did = display_id
+    did.is_a?(String) && did.match?(/[A-Za-z]/) ? did : "##{did}"
+  end
+
+  # Override ActiveRecord's default `to_param` so Rails URL helpers
+  # (work_package_path, polymorphic_path, form_for, etc.) automatically
+  # produce semantic-id URLs in semantic mode. In classic mode display_id
+  # returns the integer primary key, so this is behaviourally identical
+  # to the inherited `id&.to_s`.
+  #
+  # API v3 deliberately bypasses this by passing `id:` kwargs explicitly
+  # (see lib/api/v3/work_packages/work_package_representer.rb) so HAL
+  # self-links remain numeric and stable for API consumers.
+  def to_param
+    display_id&.to_s
   end
 
   # Allocates the next semantic identifier in the current project and assigns it to the WP.
@@ -81,6 +167,14 @@ module WorkPackage::SemanticIdentifier
   end
 
   private
+
+  # Ensures identifier and sequence_number are always written together.
+  # One field set without the other indicates a partial write and is never valid.
+  def semantic_identifier_fields_consistent
+    return unless identifier.present? ^ sequence_number.present?
+
+    errors.add(:identifier, :semantic_identifier_incomplete)
+  end
 
   # Builds alias rows for every identifier this project has ever used at the given sequence (including the current one).
   # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work

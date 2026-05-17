@@ -264,7 +264,6 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
                                "Status",
                                "is (OR)",
                                ["On track"])
-      wait_for_reload
 
       expect(page).to have_text(green_project.name)
       expect(page).to have_no_text(no_status_project.name)
@@ -273,7 +272,6 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
                                "Status",
                                "is not empty",
                                [])
-      wait_for_reload
 
       expect(page).to have_text(green_project.name)
       expect(page).to have_no_text(no_status_project.name)
@@ -282,7 +280,6 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
                                "Status",
                                "is empty",
                                [])
-      wait_for_reload
 
       expect(page).to have_no_text(green_project.name)
       expect(page).to have_text(no_status_project.name)
@@ -291,7 +288,6 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
                                "Status",
                                "is not",
                                ["On track"])
-      wait_for_reload
 
       expect(page).to have_no_text(green_project.name)
       expect(page).to have_text(no_status_project.name)
@@ -796,7 +792,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project)
         projects_page.expect_projects_in_order(project, public_project)
 
-        projects_page.remove_filter("project_phase_any")
+        wait_for_turbo_stream { projects_page.remove_filter("project_phase_any") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -807,7 +803,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project)
         projects_page.expect_projects_in_order(project, public_project)
 
-        projects_page.remove_filter("project_phase_any")
+        wait_for_turbo_stream { projects_page.remove_filter("project_phase_any") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -819,7 +815,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project)
         projects_page.expect_projects_in_order(project, public_project)
 
-        projects_page.remove_filter("project_phase_any")
+        wait_for_turbo_stream { projects_page.remove_filter("project_phase_any") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -830,7 +826,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project)
         projects_page.expect_projects_in_order(project, public_project)
 
-        projects_page.remove_filter("project_phase_any")
+        wait_for_turbo_stream { projects_page.remove_filter("project_phase_any") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -868,7 +864,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -879,7 +875,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -891,7 +887,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -902,7 +898,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 

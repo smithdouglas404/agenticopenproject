@@ -219,9 +219,18 @@ RSpec.describe RecurringMeeting,
   describe "#upcoming_instantiated_meetings" do
     let!(:recurring_meeting) { create(:recurring_meeting) }
     let!(:ongoing_meeting) do
-      create(:scheduled_meeting, :persisted, start_time: 5.minutes.ago, recurring_meeting: recurring_meeting)
+      create(:recurring_meeting_occurrence,
+             recurring_meeting:,
+             start_time: 5.minutes.ago,
+             recurrence_start_time: 5.minutes.ago)
     end
-    let!(:cancelled_meeting) { create(:scheduled_meeting, recurring_meeting: recurring_meeting, cancelled: true) }
+    let!(:cancelled_meeting) do
+      create(:recurring_meeting_occurrence,
+             recurring_meeting:,
+             start_time: 1.day.from_now,
+             recurrence_start_time: 1.day.from_now,
+             state: :cancelled)
+    end
 
     it "returns only upcoming and not cancelled meetings" do
       expect(recurring_meeting.upcoming_instantiated_meetings).to eq [ongoing_meeting]
@@ -299,6 +308,22 @@ RSpec.describe RecurringMeeting,
         expect(rrule).to be_a(IceCube::WeeklyRule)
         expect(rrule.until_time).to eq(recurring_meeting.end_date + 1.day)
       end
+    end
+  end
+
+  describe "#current_schedule_end" do
+    let(:recurring_meeting) do
+      create(
+        :recurring_meeting,
+        start_time: DateTime.parse("2026-02-24T13:45:00+01:00"),
+        current_schedule_start: DateTime.parse("2026-05-05T13:45:00+02:00"),
+        duration: 0.25,
+        time_zone: "Europe/Berlin"
+      )
+    end
+
+    it "uses current_schedule_start plus duration" do
+      expect(recurring_meeting.current_schedule_end).to eq(DateTime.parse("2026-05-05T14:00:00+02:00"))
     end
   end
 

@@ -41,6 +41,7 @@ class Group < Principal
   end
 
   validate :no_circular_parent, if: -> { parent_id.present? }
+  validate :no_organizational_unit_mismatch, if: -> { parent_id.present? }
 
   # Register a partial to be rendered on the synchronized groups tab of the groups admin page
   #
@@ -168,6 +169,15 @@ class Group < Principal
   def no_circular_parent
     if parent_id == id || descendant_ids.include?(parent_id)
       errors.add(:parent_id, :circular_dependency)
+    end
+  end
+
+  def no_organizational_unit_mismatch
+    parent = self.class.find_by(id: parent_id)
+    return unless parent
+
+    if organizational_unit? != parent.organizational_unit?
+      errors.add(:parent_id, :organizational_unit_mismatch)
     end
   end
 end

@@ -7,10 +7,12 @@ keywords: configure backlogs, backlogs settings, story type, task type, burn cha
 ---
 # Backlogs configuration
 
-Backlogs settings let you tailor OpenProject’s Scrum features to match how your team plans and tracks work. By configuring story and task types, burn charts, and sprint wiki templates, you can ensure your backlogs and boards show the right work items and support consistent sprint planning and documentation.
+Backlogs settings let you tailor OpenProject’s Scrum features to match how your team plans and tracks work. Backlogs support teams in structuring, prioritizing, and refining work for upcoming sprints, helping ensure a clear and consistent approach to sprint planning and execution.
 
 ## Backlog administration settings are evolving
 
-We  are currently redesigning the Backlogs module. Administration settings for sprints and backlogs will be visible here in the near future.  Project-level settings remain available.
-
-
+> [!NOTE]
+>
+> We are currently redesigning the Backlogs module. Administration settings for sprints and backlogs will be visible here in the near future.  
+>
+> Project-level settings remain available.

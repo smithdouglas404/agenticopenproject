@@ -55,11 +55,16 @@ export class EditorMacrosService {
    * Used from within ckeditor-augmented-textarea.
    */
   public configureWorkPackageButton(typeName?:string, classes?:string):Promise<{ type:string, classes:string }> {
+    const target = document.querySelector('opce-custom-modal-overlay') ? PortalOutletTarget.Custom : PortalOutletTarget.Default;
+
     return new Promise<{ type:string, classes:string }>((resolve, _) => {
       this.opModalService.show(
         WpButtonMacroModalComponent,
         this.injector,
         { type: typeName, classes },
+        false,
+        false,
+        target,
       ).subscribe((modal) => modal.closingEvent.subscribe(() => {
         if (modal.changed) {
           resolve({ type: modal.type, classes: modal.classes });

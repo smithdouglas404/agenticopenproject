@@ -35,10 +35,6 @@ module Import
     belongs_to :jira, class_name: "Import::Jira"
     belongs_to :jira_import, class_name: "Import::JiraImport"
 
-    def self.groups
-      all.map { |x| x.payload["groups"]["items"] }.flatten.uniq { |x| x["name"] }
-    end
-
     def to_op_attributes
       firstname, lastname = split_display_name(payload["displayName"])
       {

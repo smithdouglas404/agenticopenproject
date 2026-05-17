@@ -37,8 +37,8 @@ import {
 import { RecentItemsService } from 'core-app/core/recent-items.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
-import { NgOption } from '@ng-select/ng-select/index';
 import { announce } from '@primer/live-region-element';
+import { NgOption } from '@ng-select/ng-select';
 
 interface SearchResultItem {
   id:string;
@@ -82,9 +82,11 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
   public expanded = false;
 
+  private _searchTermInitialized = false;
+
   // Computed placeholder that changes based on expanded state
   public get effectivePlaceholder():string {
-    return this.expanded 
+    return this.expanded
       ? this.I18n.t('js.global_search.search_placeholder_expanded')
       : this.placeholder;
   }
@@ -146,8 +148,6 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit():void {
-    // check searchterm on init, expand / collapse search bar and set correct classes
-    this.searchTerm = this.currentQuery || '';
     this.currentValue = '';
     this.toggleTopMenuClass();
   }
@@ -157,7 +157,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   }
 
   public set searchTerm(searchTerm:string) {
-    this.ngSelectComponent.ngSelectInstance.searchTerm = searchTerm;
+    this.ngSelectComponent.ngSelectInstance.filter(searchTerm);
   }
 
   public get searchTerm():string {
@@ -224,6 +224,11 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   }
 
   public onFocus():void {
+    if (!this._searchTermInitialized) {
+      this._searchTermInitialized = true;
+      this.searchTerm = this.currentQuery ?? '';
+      this.currentValue = this.searchTerm;
+    }
     this.expanded = true;
     this.toggleTopMenuClass();
     this.ngSelectComponent.openSelect();
@@ -232,7 +237,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   public onFocusOut():void {
     if (!this.deviceService.isMobile) {
       this.expanded = (this.searchTerm !== null && this.searchTerm.length > 0);
-      this.ngSelectComponent.ngSelectInstance.isOpen = false;
+      this.ngSelectComponent.ngSelectInstance.isOpen.set(false);
       this.selectedItem = undefined;
       this.toggleTopMenuClass();
     }
@@ -287,8 +292,10 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   }
 
   private autocompleteWorkPackages():Observable<(WorkPackageResource|SearchOptionItem)[]> {
-    const query = this.searchTerm;
-    if (query === null || /^\s+$/.test(query)) {
+    // ng-select v21 initializes _searchTerm as null (signal). Treat null as '' so that
+    // the initial typeahead emission triggers loadRecentItems() instead of returning empty.
+    const query = this.searchTerm ?? '';
+    if (/^\s+$/.test(query)) {
       return of([]);
     }
 

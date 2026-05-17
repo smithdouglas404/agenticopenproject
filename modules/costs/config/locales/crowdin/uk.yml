@@ -181,7 +181,6 @@ uk:
   label_previous_week: Попередній тиждень
   label_previous_month: Попередній місяць
   label_specific_day: День %{day}
-  label_specific_week: Календарний тиждень %{week}
   label_specific_month: Місяць %{month}
   label_list: Список
   label_month: Місяць

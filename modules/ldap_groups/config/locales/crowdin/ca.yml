@@ -66,11 +66,11 @@ ca:
         confirmation: Si continues, el grup de sincronització %{name} i tots els %{users_count} usuaris sincronitzats seran eliminats.
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        Aquest mòdul et permet configurar sincronitzacions entre grups de LDAP i OpenProject.
-        Depénent dels grups de LDAP s'ha d'utilitzar els atributs <em>groupOfNames / memberOf</em> configurats per poder treballar amb OpenProject.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        Els grups es sincronitzen cada hora a través d'un treball de "cron".
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Si us plau, llegeix la documentació relacionada amb aquest tema</a>.
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: No s'ha trobat cap sincronització de grups.
       no_members: Aquest grup no té membres de sincronització encara.
       plural: Grups LDAP sincronitzats

@@ -227,7 +227,8 @@ class MeetingAgendaItemsController < ApplicationController
     respond_with_dialog MeetingAgendaItems::MoveToNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
       datetime: params[:datetime],
-      skipped: params[:skipped],
+      skipped_cancelled: params[:skipped_cancelled],
+      skipped_closed: params[:skipped_closed],
       next_occurrence:
     )
   end
@@ -239,7 +240,8 @@ class MeetingAgendaItemsController < ApplicationController
     respond_with_dialog MeetingAgendaItems::DuplicateInNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
       datetime: params[:datetime],
-      skipped: params[:skipped],
+      skipped_cancelled: params[:skipped_cancelled],
+      skipped_closed: params[:skipped_closed],
       next_occurrence:
     )
   end
@@ -290,7 +292,12 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def move_to_section
-    meeting_section = MeetingSection.find_by(id: params[:meeting_agenda_item][:meeting_section_id])
+    section_scope = if @meeting.recurring_meeting_id.present?
+                      MeetingSection.joins(:meeting).where(meetings: { recurring_meeting_id: @meeting.recurring_meeting_id })
+                    else
+                      @meeting.sections
+                    end
+    meeting_section = section_scope.find_by(id: params[:meeting_agenda_item][:meeting_section_id])
     @meeting = meeting_section.meeting unless meeting_section.backlog?
 
     call = update_agenda_item(meeting_section:)
@@ -312,10 +319,11 @@ class MeetingAgendaItemsController < ApplicationController
 
     attributes[:meeting_id] = target_meeting.id
     attributes[:meeting_section_id] = MeetingSection.find_by(id: params.dig(:meeting_agenda_item, :meeting_section_id))&.id
+    attributes[:source_meeting_id] = @meeting_agenda_item.meeting_id
 
     ::MeetingAgendaItems::CreateService
       .new(user: current_user)
-      .call(attributes, source_meeting_id: @meeting_agenda_item.meeting_id)
+      .call(attributes)
   end
 
   def init_next_meeting_occurrence
@@ -386,20 +394,20 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def find_existing_occurrence
-    next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
+    next_occurrence = @series.meetings.not_templated.find_by(recurrence_start_time: @next_meeting_time)
 
-    if next_occurrence&.cancelled?
-      result = @series.first_non_cancelled_occurrence(from_time: @next_meeting_time)
+    if next_occurrence&.cancelled? || next_occurrence&.closed?
+      result = @series.first_available_occurrence(from_time: @next_meeting_time)
 
       if result.nil?
         return respond_with_flash_error(message: I18n.t(:text_agenda_item_no_available_occurrence))
       end
 
       @next_meeting_time = result[:occurrence]
-      next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
+      next_occurrence = @series.meetings.not_templated.find_by(recurrence_start_time: @next_meeting_time)
     end
 
-    @next_occurrence = next_occurrence&.meeting
+    @next_occurrence = next_occurrence&.cancelled? ? nil : next_occurrence
   end
 
   def render_next_meeting_flash(base_key, next_occurrence)

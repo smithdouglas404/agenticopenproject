@@ -177,7 +177,6 @@ hr:
   label_previous_week: Prethodni tjedan
   label_previous_month: Previous month
   label_specific_day: Day %{day}
-  label_specific_week: Calendar week %{week}
   label_specific_month: Month %{month}
   label_list: Popis
   label_month: Mjesec

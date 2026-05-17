@@ -32,6 +32,7 @@ zh-TW:
         location: 地點
         duration: 時長
         notes: 備註
+        recurrence_start_time: Scheduled start time
         participants: 參加人員
         participant:
           other: "%{count} 位參與者"
@@ -41,16 +42,25 @@ zh-TW:
         start_date: 日期
         start_time: 開始時間
         start_time_hour: 開始時間
-        sharing: Sharing
+        end_time: End time
+        template: Template
+        notify: Send notifications
+        sharing: 共享
       meeting_agenda_item:
         title: 標題
         author: 會議發起者
         duration_in_minutes: 時長
         description: 備註
         presenter: 簡報者
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: 標題
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: 頻率
         interval: 間隔
         start_date: 開始於
@@ -59,6 +69,10 @@ zh-TW:
         end_after: 系列會議結束
         end_date: 結束日期
         iterations: 出現次數
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -70,7 +84,7 @@ zh-TW:
         meeting_participant:
           user_invalid: 不是有效的參與者。
         meeting_agenda_item:
-          section_not_belong_to_meeting: Section does not belong to the same meeting.
+          section_not_belong_to_meeting: 區段不屬於同一會議。
           user_invalid: 不是有效的參與者。
         recurring_meeting_interim_response:
           not_an_occurrence: is not a valid occurrence time for this recurring meeting
@@ -117,10 +131,10 @@ zh-TW:
   error_notification_with_errors: '傳送通知失敗。以下的收件者將不會被通知到: %{recipients}'
   label_meeting: 會議
   label_meeting_plural: 會議
-  label_meeting_templates: Templates
-  label_meeting_template: Template
-  label_meeting_template_new: New template
-  label_meeting_template_create: Create template
+  label_meeting_templates: 範本
+  label_meeting_template: 範本
+  label_meeting_template_new: 新範本
+  label_meeting_template_create: 建立模板
   label_meeting_template_delete: Delete template
   label_meeting_template_edit: Edit template
   label_meeting_create_from_template: Create meeting from template
@@ -193,6 +207,7 @@ zh-TW:
   label_time_zone: 時區
   label_start_date: 開始日期
   label_subscribe_icalendar: 訂閱行事曆
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -417,6 +432,11 @@ zh-TW:
     ical_response:
       update_failed: 無法更新參與狀態。
       meeting_not_found: 未找到指定 UID 的會議。
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings you are participating in will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: 無標題章節
     delete_confirmation: 刪除該章節也會刪除其所有的議程項目。您確定要這麼做？
@@ -653,9 +673,9 @@ zh-TW:
   text_exit_draft_mode_dialog_template_title: 要開啟此會議系列的第一場會議嗎？
   text_exit_draft_mode_dialog_template_subtitle: 之後您就無法回到草稿模式。
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: 本次會議已不可編輯。
   text_meeting_not_present_anymore: 此次會議已被刪除。請選擇另一場會議。
@@ -674,9 +694,12 @@ zh-TW:
   text_agenda_item_duplicate_in_next_meeting: 您確定要在下次會議中加入此議程項目的副本， %{date} ，網址為 %{time}? 結果不會重複。
   text_agenda_item_duplicated_in_next_meeting: 與下次會議重複的議程項目， %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: 該工作套件尚未被安排到即將舉行的會議議程中。
-  text_agenda_item_no_available_occurrence: 所有即將舉行的活動均已取消。
-  text_agenda_item_dialog_skipping_cancelled_one: 備註：已跳過 %{date} 的取消項目。
-  text_agenda_item_dialog_skipping_cancelled_many: 備註：略過 %{count} 個已取消的發生項目。
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: 使用"增加到會議"按鈕將此工作套件新增到即將舉行的會議。
   text_work_package_has_no_past_meeting_agenda_items: 此工作套件未被新增為過去會議中的議程項目。
   text_email_updates_muted: 將停止電子郵件通知「行事曆更新」。當您變更時，參與者將不會透過電子郵件收到更新的邀請。

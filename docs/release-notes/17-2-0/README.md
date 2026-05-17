@@ -47,7 +47,7 @@ When creating a new one-time meeting, users can choose from the available templa
 
 For more details, please refer to the [Meetings documentation](../../user-guide/meetings/one-time-meetings/).
 
-###  Allow requiring to be logged in to open external links (Enterprise add-on)
+### Allow requiring to be logged in to open external links (Enterprise add-on)
 
 [feature: capture_external_links ]
 
@@ -128,7 +128,7 @@ Administrative interfaces for Custom Fields, Versions, and Groups have been furt
 
 In particular, custom field forms are now consistently styled across all field types. Previously, the appearance varied depending on the type of custom field. This has been unified to provide a clearer and more predictable configuration experience for administrators.
 
-###  Jira importer (feature flag)
+### Jira importer (feature flag)
 
 We are working on a new Jira import wizard (Jira Migrator) designed to help teams migrate core project data from Jira into OpenProject more easily. The importer focuses on bringing over essential user-generated content such as issues, comments, attachments, and project structures, reducing the need for manual recreation or fragile third-party workarounds. 
 

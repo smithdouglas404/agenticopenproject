@@ -39,6 +39,22 @@ module OpenProject
       def advanced_check_box_group
         render_with_template
       end
+
+      # `check_box_group` with `include_hidden: true`
+      #
+      # HTML forms do not submit unchecked checkboxes, so when every option in an
+      # array-valued `check_box_group` is unchecked, the field key is absent from
+      # the request params entirely. The server then has no way to distinguish
+      # "user cleared all selections" from "this field was not part of the form",
+      # and the previous value is silently preserved.
+      #
+      # Pass `include_hidden: true` to emit a hidden sentinel field before the
+      # checkboxes. This mirrors the behaviour of Rails' own `check_box` helper
+      # and ensures the key is always present in params — as an empty array when
+      # nothing is checked — so the server can save the empty selection correctly.
+      def check_box_group_with_include_hidden
+        render_with_template
+      end
     end
   end
 end

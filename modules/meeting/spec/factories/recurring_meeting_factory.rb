@@ -52,7 +52,11 @@ FactoryBot.define do
       # create template
       template = create(:meeting_template,
                         :author_participates,
+                        start_time: recurring_meeting.start_time,
+                        title: recurring_meeting.title,
+                        location: recurring_meeting.location,
                         author: recurring_meeting.author,
+                        duration: recurring_meeting.duration,
                         recurring_meeting:,
                         project:)
 

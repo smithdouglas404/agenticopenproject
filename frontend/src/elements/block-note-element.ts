@@ -61,7 +61,6 @@ class BlockNoteElement extends HTMLElement {
     }
 
     this.editorMount = document.createElement('div');
-
     this.editorRoot.appendChild(this.editorMount);
     shadowRoot.appendChild(this.editorRoot);
 
@@ -122,6 +121,7 @@ class BlockNoteElement extends HTMLElement {
           openProjectUrl: this.getAttribute('open-project-url') ?? '',
           attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
+          captureExternalLinks: document.body.dataset.externalLinksEnabledValue === 'true',
           hocuspocusProvider,
         }
       )

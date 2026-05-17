@@ -202,16 +202,7 @@ it:
           text: "[Placeholder] Calendario incorporato"
     admin:
       type_form:
-        custom_field: Campo personalizzato
-        inactive: Inattivo
-        drag_to_activate: Trascina i campi da qui per attivarli
-        add_group: Aggiungi gruppo di attributi
-        add_table: Aggiungi la tabella dei pacchetti di lavoro correlati
         edit_query: Modifica query
-        new_group: Nuovo gruppo
-        delete_group: Elimina gruppo
-        remove_attribute: Rimuovi dal gruppo
-        reset_to_defaults: Ripristino predefinite
       working_days:
         calendar:
           empty_state_header: Giorni non lavorativi
@@ -515,12 +506,6 @@ it:
         sidebar_arrow: Utilizza la freccia di ritorno nell'angolo in alto a sinistra per tornare al <b>menu principale</b> del progetto.
         welcome: Fai un tour introduttivo di tre minuti per apprendere le <b>funzioni importanti</b>. <br> Consigliamo di completare i passaggi fino alla fine. Puoi riavviare il tour in qualsiasi momento.
         wiki: Nella <b>wiki</b> puoi documentare e condividere la conoscenza con il tuo team.
-        backlogs:
-          overview: Gestisci il tuo lavoro nella vista <b>backlog</b>.
-          sprints: A destra hai il product backlog e il bug backlog, a sinistra i rispettivi sprint. Qui puoi creare <b>epics, storie utente e bug</b>, assegnare priorità tramite trascinamento e aggiungerli a uno sprint.
-          task_board_arrow: Per vedere il tuo <b>pannello delle attività</b>, apri il menu a cascata Sprint...
-          task_board_select: "...e seleziona la voce <b>pannello delle attività</b>."
-          task_board: Il pannello delle attività visualizza l'<b>avanzamento dello sprint</b>. Fai clic sull'icona più (+) accanto a una storia utente per aggiungere nuove attività o impedimenti. <br> Lo stato può essere aggiornato trascinandolo.
         boards:
           overview: Seleziona <b>board</b> per cambiare visualizzazione e gestire il tuo progetto utilizzando la visualizzazione agile delle schede.
           lists_kanban: Qui puoi creare più liste  (colonne) all'interno della tua board. Questa funzione ti consente di creare una <b>board Kanban</b>, ad esempio.
@@ -620,18 +605,6 @@ it:
     breadcrumb: Percorso di navigazione
     text_data_lost: Tutti i dati inseriti andranno persi.
     text_user_wrote: "%{value} ha scritto:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Il nome %{group} è usato più di una volta. I nomi dei gruppi devono essere univoci.
-        error_no_table_configured: Si prega di configurare una tabella per %{group}.
-        reset_title: Reimposta la configurazione del modulo
-        confirm_reset: 'Attenzione: vuoi reimpostare la configurazione del modulo? Tutti gli attributi torneranno al loro gruppo predefinito e TUTTI i campi personalizzati verranno disattivati.
-
-          '
-        upgrade_to_ee: Passa all'edizione Enterprise in sede
-        upgrade_to_ee_text: Wow! Se hai bisogno di questa aggiunta sei un vero professionista! Ti andrebbe di aiutare noi sviluppatori OpenSource diventando un cliente dell'edizione Enterprise?
-        more_information: Altre informazioni
-        nevermind: Lascia stare
     time_entry:
       work_package_required: Richiede prima di selezionare una macro-attività.
       title: Registra l'orario effettuato
@@ -987,13 +960,6 @@ it:
       form_submit:
         title: Conferma per continuare
         text: Eseguire questa azione?
-      destroy_work_package:
-        title: Conferma l'eliminazione di %{label}
-        single_text: Vuoi davvero eliminare questa macro-attività?
-        bulk_text: Eliminare il seguente %{label}?
-        has_children: 'Questa macro-attività ha %{childUnits}:'
-        confirm_deletion_children: Prendo atto che TUTTI i discendenti delle macro-attività elencate verranno eliminati in modo ricorsivo.
-        deletes_children: Tutte le macro-attività ed i relativi discendenti verranno eliminati ricorsivamente.
       destroy_time_entry:
         title: Conferma l'eliminazione della voce temporale
         text: Eliminare la seguente voce temporale?

@@ -202,16 +202,7 @@ pl:
           text: "[Placeholder] Wbudowany kalendarz"
     admin:
       type_form:
-        custom_field: Pola niestandardowe
-        inactive: Nieaktywny
-        drag_to_activate: Aby aktywować pola, przeciągaj je stąd
-        add_group: Dodaj grupę atrybutów
-        add_table: Dodaj tabelę powiązanych pakietów roboczych
         edit_query: Edytuj zapytanie
-        new_group: Nowa Grupa
-        delete_group: Usuń grupę
-        remove_attribute: Usuń z grupy
-        reset_to_defaults: Resetuj do ustawień domyślnych
       working_days:
         calendar:
           empty_state_header: Dni nierobocze
@@ -515,12 +506,6 @@ pl:
         sidebar_arrow: Użyj strzałki powrotu w lewym górnym rogu, aby wrócić do <b>menu głównego</b> projektu.
         welcome: "Poświęć trzy minuty na zapoznanie się z <b>najważniejszymi funkcjami</b>. \n <br> Zalecamy wykonanie tych kroków do końca. Zwiedzanie można w każdej chwili zacząć od nowa."
         wiki: W <b>wiki</b> możesz dokumentować wiedzę i dzielić się nią z zespołem.
-        backlogs:
-          overview: Zarządzaj swoją pracą w widoku <b>backlogs</b>.
-          sprints: Po prawej stronie znajduje się backlog produktu i backlog usterek, a po lewej stronie znajdują się odpowiednie sprinty. Tutaj można tworzyć <b>wydarzenia, wpisy użytkownika i usterki</b>, nadawać priorytety metodą przeciągania i upuszczania oraz dodawać je do sprintu.
-          task_board_arrow: Aby zobaczyć swój <b>panel zadań</b>, otwórz menu rozwijane sprint...
-          task_board_select: "...i wybierz wpis <b>panel zadań</b>."
-          task_board: Panel zadań przedstawia <b>postęp tego sprintu</b>. Dodaj nowe zadania lub przeszkody, klikając ikonę (+) obok wpisu użytkownika. <br>Stan można zaktualizować metodą przeciągania i upuszczania.
         boards:
           overview: Wybierz <b>tablice</b>, aby zmienić widok i zarządzać projektem za pomocą widoku tablic.
           lists_kanban: Tutaj możesz utworzyć wiele list (kolumn) w jednym widoku tablicy. Ta funkcja pozwala ci na przykład na utworzenie <b>tablicy Kanban</b>.
@@ -622,18 +607,6 @@ pl:
     breadcrumb: Ścieżka
     text_data_lost: Wszystkie wprowadzone dane zostaną utracone.
     text_user_wrote: "%{value} napisał(a):"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Nazwa  %{group} jest użyta więcej niż raz. Nazwy grup muszą być unikalne.
-        error_no_table_configured: Skonfiguruj tabelę grupy %{group}.
-        reset_title: Zresetuj konfigurację formularza
-        confirm_reset: 'Ostrzeżenie: czy na pewno chcesz zresetować konfigurację formularza? Przywróci to atrybuty do ich grupy domyślnej i wyłączy WSZYSTKIE pola niestandardowe.
-
-          '
-        upgrade_to_ee: Zaktualizuj do wersji Enterprise On-Premises
-        upgrade_to_ee_text: Znakomicie! Jeśli potrzebujesz tego dodatku, jesteś superprofesjonalistą! Może wesprzesz nas jako deweloperów OpenSource, zostając nabywcą wersji Enterprise?
-        more_information: Więcej informacji
-        nevermind: Nieważne
     time_entry:
       work_package_required: Wymaga wybrania najpierw pakietu roboczego.
       title: Rejestruj czas pracy
@@ -989,13 +962,6 @@ pl:
       form_submit:
         title: Potwierdź, aby kontynuować
         text: Czy na pewno chcesz wykonać tę akcję?
-      destroy_work_package:
-        title: Potwierdź usunięcie %{label}
-        single_text: Czy na pewno chcesz usunąć pakiet roboczy
-        bulk_text: Czy na pewno chcesz usunąć %{label}?
-        has_children: 'Pakiet roboczy zawiera %{childUnits}:'
-        confirm_deletion_children: Potwierdzam, że WSZYSTKIE elementy potomne pakietów roboczych z listy będą rekurencyjnie usuwane.
-        deletes_children: Wszystkie pakiety podrzędne i ich elementy potomne również będą rekursywnie usuwane.
       destroy_time_entry:
         title: Potwierdź usunięcie wpisu
         text: Na pewno chcesz skasować?

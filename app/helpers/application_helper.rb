@@ -182,8 +182,11 @@ module ApplicationHelper
               title: format_time(time))
     else
       datetime = time.acts_like?(:time) ? time.xmlschema : time.iso8601
-      content_tag(:time, text, datetime:,
-                               title: format_time(time), class: "timestamp")
+      content_tag(:time,
+                  text,
+                  datetime:,
+                  title: format_time(time),
+                  class: "timestamp")
     end
   end
 
@@ -243,8 +246,8 @@ module ApplicationHelper
   # Same as Rails' simple_format helper without using paragraphs
   def simple_format_without_paragraph(text)
     text.to_s.html_safe_gsub(/\r\n?/, "\n")
-      .then { it.html_safe_gsub(/\n\n+/, "<br /><br />") }
-      .then { it.html_safe_gsub(/([^\n]\n)(?=[^\n])/, '\1<br />') }
+        .then { it.html_safe_gsub(/\n\n+/, "<br /><br />") }
+        .then { it.html_safe_gsub(/([^\n]\n)(?=[^\n])/, '\1<br />') }
   end
 
   def lang_options_for_select(blank = true)
@@ -285,7 +288,8 @@ module ApplicationHelper
 
   def body_data_attributes(local_assigns)
     {
-      controller: "application auto-theme-switcher hover-card-trigger beforeunload external-links highlight-target-element",
+      controller: ["application auto-theme-switcher hover-card-trigger beforeunload external-links highlight-target-element",
+                   stimulus_body_controller].compact.join(" "),
       relative_url_root: root_path,
       overflowing_identifier: ".__overflowing_body",
       external_links_enabled_value: Setting.capture_external_links?,
@@ -336,14 +340,7 @@ module ApplicationHelper
   end
 
   def back_url_to_current_page
-    back_url = params[:back_url] if params.present?
-    if back_url.present?
-      back_url = back_url.to_s
-    elsif request.get? && params.present?
-      back_url = request.url
-    end
-
-    back_url
+    params[:back_url].presence&.to_s
   end
 
   def check_all_links(form_id = nil, &)
@@ -455,10 +452,38 @@ module ApplicationHelper
   end
 
   def password_complexity_requirements
-    rules = OpenProject::Passwords::Evaluator.rules_description
+    render_password_requirements
+  end
 
-    s = raw "<em>" + OpenProject::Passwords::Evaluator.min_length_description + "</em>"
-    s += raw "<br /><em>" + rules + "</em>" unless rules.empty?
-    s
+  def render_password_requirements
+    evaluator = OpenProject::Passwords::Evaluator
+    content_tag(:ul, class: "op-password-requirements") do
+      concat password_requirement_item(evaluator.min_length_description,
+                                       data: { "requirement-type": "length",
+                                               "min-length": evaluator.min_length })
+      evaluator.active_rules.each do |rule|
+        concat password_requirement_item(I18n.t("label_password_requirement_#{rule}"),
+                                         data: { "requirement-type": "rule", rule: })
+      end
+    end
+  end
+
+  private
+
+  def password_requirement_item(label, data: {})
+    content = safe_join(
+      [
+        content_tag(:span, render(Primer::Beta::Octicon.new(icon: :check)),
+                    class: "op-password-requirements--item-check"),
+        content_tag(:span, render(Primer::Beta::Octicon.new(icon: :x)),
+                    class: "op-password-requirements--item-cross"),
+        label
+      ]
+    )
+
+    content_tag(:li,
+                content,
+                class: "op-password-requirements--item",
+                data: data.merge("password-requirements-target": "requirement"))
   end
 end

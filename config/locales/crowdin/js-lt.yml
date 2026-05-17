@@ -202,16 +202,7 @@ lt:
           text: "[Placeholder] Įterptinis kalendorius"
     admin:
       type_form:
-        custom_field: Savas laukas
-        inactive: Neaktyvus
-        drag_to_activate: Vilkite laukelius iš čia, kad juos aktyvuotumėte
-        add_group: Pridėti atributų grupę
-        add_table: Pridėti susijusių darbų paketų lentelę
         edit_query: Keisti užklausą
-        new_group: Nauja grupė
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Atstatyti į numatytuosius
       working_days:
         calendar:
           empty_state_header: Nedarbo dienos
@@ -515,12 +506,6 @@ lt:
         sidebar_arrow: Pasinaudokite grįžimo rodykle viršutiniame kairiajame kampe grįžimui į projekto <b>pagrindinį meniu</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: "<b>Wiki</b>'yje galite dokumentuoti ir dalintis žiniomis su savo komandos nariais."
-        backlogs:
-          overview: Valdykite savo darbus <b>Darbų sąrašo</b> vaizde.
-          sprints: Kairėje jūs matote produkto darbų sąrašą ir klaidų darbų sąrašą, dešinėje -- atitinkamus sprintus. Čia jūs galite kurti <b>epics, user stories ir bugs</b>, prioritetizuoti vilkdami į reikiamą vietą ir priskirti sprintui.
-          task_board_arrow: Norėdami matyti jūsų <b>užduočių lentą</b>, atverkite sprinto iškrentantį meniu...
-          task_board_select: "... ir pasirinkite <b>task board</b> elementą."
-          task_board: Užduočių lenta vaizduoja <b>sprinto progresą</b>. Nuspauskite pliuso (+) ženklą prie user story norėdami pridėti naujas užduotis arba trukdžius. <br> Būsena gali būti pakeista nuvelkant į reikiamą vietą.
         boards:
           overview: Pasirinkite <b>lentas</b> siekdami pakeisti vaizdą ir valdyti projektą naudodami agile lentų vaizdą.
           lists_kanban: Lentoje galite sukurti keletą sąrašų (stulpelių) . Ši funkcija leidžia sukurti <b>Kanban lentą</b>.
@@ -622,18 +607,6 @@ lt:
     breadcrumb: Susijusi informacija
     text_data_lost: Visa įvesta informacija bus prarasta.
     text_user_wrote: "%{value} parašė:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: "%{group} grupės pavadinimas naudotas daugiau nei kartą. Grupių pavadinimai privalo būti unikalūs."
-        error_no_table_configured: Prašome sukonfigūruoti lentelę, skirtą grupei %{group}.
-        reset_title: Atstatyti formos konfigūraciją
-        confirm_reset: 'Įspėjimas: Ar tikrai norite atstatyti pradinę formos konfigūraciją? Atributai bus perkelti į jų numatytąsias grupes ir VISUS savi laukeliai bus išjungti.
-
-          '
-        upgrade_to_ee: Patobulinkite į Enteprise vietinę versiją
-        upgrade_to_ee_text: Oho! Jei Jums reikia šio priedo, esate super pro! Ar nenorėtumėte paremti mus, OpenSource (atviro kodo) kūrėjus, tapdami Enterprise versijos klientu?
-        more_information: Daugiau informacijos
-        nevermind: Nesvarbu
     time_entry:
       work_package_required: Reikia pirma pasirinkti darbo paketą.
       title: Registruoti laiką
@@ -989,13 +962,6 @@ lt:
       form_submit:
         title: Norėdami tęsti, patvirtinkite
         text: Ar tikrai norite atlikti šį veiksmą?
-      destroy_work_package:
-        title: Patvirtinkite, jog %{label} ištrinamas
-        single_text: Ar tikrai norite ištrinti darbo paketą
-        bulk_text: Ar tikrai norite ištrinti %{label}?
-        has_children: 'Darbų paketas turi %{childUnits}:'
-        confirm_deletion_children: Aš sutinku, kad VISI šio darbų paketo palikuoniai bus rekursiškai ištrinti.
-        deletes_children: Visi darbų paketo vaikai ir jų palikuoniai taip pat bus rekursiškai ištrinti.
       destroy_time_entry:
         title: Patvirtinkite laiko įrašo trynimą.
         text: Ar Jūs tikrai norite ištrinti šį laiko įrašą?

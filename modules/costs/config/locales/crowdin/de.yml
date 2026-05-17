@@ -34,7 +34,7 @@ de:
         logged_by: Gebucht von
         entity: Eintrag für
         entity_id: Eintrag für
-        entity_gid: Eintrag für
+        entity_gid: Gebucht für
       cost_type:
         unit: Einheit
         unit_plural: Einheit plural
@@ -62,9 +62,9 @@ de:
         start_time: Startzeit
         end_time: Endzeit
         time: Zeit
-        entity: Eintrag für
-        entity_id: Eintrag für
-        entity_gid: Eintrag für
+        entity: Geloggt für
+        entity_id: Geloggt für
+        entity_gid: Geloggt für
     models:
       time_entry:
         one: Zeitbuchung
@@ -84,7 +84,7 @@ de:
         time_entry:
           invalid_time: muss zwischen 00:00 und 23:59 liegen.
           cannot_log_for_this_work_package: Für dieses Arbeitspaket kann keine Zeit gebucht werden.
-          duplicate_ongoing: Eine laufende Zeitbuchung existiert bereits für diesen Nutzer.
+          duplicate_ongoing: Für diese Person besteht bereits eine laufende Zeitbuchung.
         work_package:
           is_not_a_valid_target_for_cost_entries: 'Arbeitspaket #%{id} ist kein gültiges Ziel für die Zuordnug der Stückkosteneinträge.'
           nullify_is_not_valid_for_cost_entries: Stückkosten können keinem Projekt zugeordnet werden.
@@ -173,7 +173,6 @@ de:
   label_previous_week: Woche zurück
   label_previous_month: Vorheriger Monat
   label_specific_day: Tag %{day}
-  label_specific_week: Kalenderwoche %{week}
   label_specific_month: Monat %{month}
   label_list: Liste
   label_month: Monat
@@ -187,7 +186,7 @@ de:
   notice_successful_restore: Erfolgreich wiederhergestellt.
   notice_successful_lock: Erfolgreich gesperrt.
   notice_cost_logged_successfully: Stückkosten erfolgreich gebucht.
-  notice_different_time_zones: Dieser Benutzer hat eine andere Zeitzone (%{tz}). Die Zeit wird unter Verwendung seiner Zeitzone protokolliert.
+  notice_different_time_zones: Diese Person hat eine andere Zeitzone (%{tz}). Die Zeit wird unter Verwendung seiner Zeitzone protokolliert.
   notice_time_entry_update_failed: 'Fehler beim Aktualisieren der Zeitbuchung. Fehler: %{errors}'
   notice_time_entry_delete_failed: 'Fehler beim Löschen des Zeiteintrags. Fehler: %{errors}'
   permission_edit_cost_entries: Bearbeiten gebuchter Stückkosten
@@ -211,7 +210,7 @@ de:
   setting_costs_currency_format_prefix: Vor der Zahl (z.B. EUR 100)
   setting_costs_currency_format_suffix: Nach der Zahl (z.B. 100 EUR)
   setting_enforce_tracking_start_and_end_times: Start- und Endzeiten erforderlich
-  setting_enforce_without_allow: Start- und Endzeiten können nicht verpflichtend erfasst werden, ohne die Erfassung zu erlauben
+  setting_enforce_without_allow: Start und Endzeiten können nur erforderlich sein, wenn ihre Angabe erlaubt ist
   setting_allow_tracking_start_and_end_times_caption: Erlaubt es bei der Zeitbuchung die genaue Start- und Endzeiten der Buchung zu erfassen.
   setting_enforce_tracking_start_and_end_times_caption: Erfordert, dass bei Zeitbuchungen genaue Start- und Endzeiten erfasst werden.
   text_assign_time_and_cost_entries_to_project: Gebuchte Aufwände dem Projekt zuweisen

@@ -41,15 +41,15 @@ cs:
         empty: Zatím nejsou propojeny žádné požadavky na natažení. Propojit existující PR pomocí kódu <code>OP#%{wp_id}</code> v PR popisu nebo vytvořit nové PR.
       github_actions: Akce
       pull_requests:
-        message: 'Požadavek na natažení #%{pr_number} %{pr_link} pro %{repository_link} autora %{github_user_link} byl %{pr_state}.'
-        merged_message: 'Požadavek na natažení #%{pr_number} %{pr_link} pro %{repository_link} byl %{pr_state} od %{github_user_link}.'
-        referenced_message: 'Požadavek na natažení #%{pr_number} %{pr_link} pro %{repository_link} autora %{github_user_link} odkázal na tento pracovní balíček.'
+        message: 'Pull request #%{pr_number} %{pr_link} pro %{repository_link} od autora %{github_user_link} byl %{pr_state}.'
+        merged_message: 'Pull request #%{pr_number} %{pr_link} pro %{repository_link} byl %{pr_state} od %{github_user_link}.'
+        referenced_message: 'Pull request #%{pr_number} %{pr_link} pro %{repository_link} od autora %{github_user_link} odkázal na tento pracovní balíček.'
         states:
           opened: otevřeno
           closed: zavřeno
           draft: navrženo
           merged: sloučeno
-          ready_for_review: označeno jako připraveno k revizi
+          ready_for_review: označen jako připraven ke kontrole
     work_packages:
       tabs:
         github: GitHub

@@ -202,16 +202,7 @@ ko:
           text: "[Placeholder] 포함 달력"
     admin:
       type_form:
-        custom_field: 사용자 정의 필드
-        inactive: 비활성화
-        drag_to_activate: 여기에서 필드를 끌어와서 활성화
-        add_group: 특성 그룹 추가
-        add_table: 관련 작업 패키지의 테이블 추가
         edit_query: 쿼리 편집
-        new_group: 새 그룹
-        delete_group: 그룹 삭제
-        remove_attribute: 그룹에서 제거
-        reset_to_defaults: 기본값으로 초기화
       working_days:
         calendar:
           empty_state_header: 휴무일
@@ -515,12 +506,6 @@ ko:
         sidebar_arrow: 프로젝트의 <b>기본 메뉴</b>로 돌아가려면 왼쪽 상단의 뒤로 화살표를 사용하세요.
         welcome: 3분 소개 투어를 보고 가장 <b>중요한 기능</b>에 대해 알아보세요. <br> 끝까지 단계를 완료하는 것이 좋습니다. 언제든지 투어를 다시 시작할 수 있습니다.
         wiki: "<b>Wiki</b>에서 문서화하고 팀과 함께 지식을 공유할 수 있습니다."
-        backlogs:
-          overview: "<b>백로그</b> 보기에서 작업을 관리하세요."
-          sprints: 오른쪽에 제품 백로그 및 버그 백로그가 있고, 왼쪽에 해당 스프린트가 있습니다. 여기에서 <b>에픽, 사용자 이야기 및 버그</b>를 작성하고 드래그 앤 드롭으로 우선 순위를 정하고 스프린트에 추가할 수 있습니다.
-          task_board_arrow: "<b>작업 보드</b>를 보려면 스프린트 드롭다운을 여세요..."
-          task_board_select: "...그리고 <b>작업보드</b> 항목을 선택하세요."
-          task_board: 작업 보드는 <b>이 스프린트의 진행률</b>을 시각화합니다. 사용자 이야기 옆에 있는 더하기(+) 아이콘을 클릭하여 새 작업이나 제한을 추가하세요. <br> 드래그 앤 드롭으로 상태를 업데이트할 수 있습니다.
         boards:
           overview: "<b>보드</b>를 선택하여 보기를 전환하고 애자일 보드 보기를 사용하여 프로젝트를 관리하세요."
           lists_kanban: 여기에서 보드 내 여러 목록(열)을 만들 수 있습니다. 예를 들어, 이 기능을 사용하면 <b>Kanban 보드</b>를 만들 수 있습니다.
@@ -619,18 +604,6 @@ ko:
     breadcrumb: 이동 경로
     text_data_lost: 입력한 모든 데이터가 손실됩니다.
     text_user_wrote: "%{value}이(가) 작성함:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: "%{group} 이라는 그룹 이름은 한 번 이상 사용되었습니다. 그룹 이름은 중복될 수 없습니다."
-        error_no_table_configured: "%{group}에 대한 테이블을 구성하세요."
-        reset_title: 구성 양식 초기화
-        confirm_reset: '경고: 양식 구성을 재설정하시겠습니까? 그러면 특성이 기본 그룹으로 재설정되고, 모든 사용자 지정 필드가 비활성화됩니다.
-
-          '
-        upgrade_to_ee: Enterprise on-premises Edition으로 업그레이드
-        upgrade_to_ee_text: 와우! 만약 이 추가 기능이 필요하다면 여러분은 진짜 프로입니다! Enterprise Edition 고객이 되어서 OpenSource 개발자들을 지원할 생각이 있으신가요?
-        more_information: 더보기
-        nevermind: 신경쓰지 마세요
     time_entry:
       work_package_required: 먼저 작업 패키지를 선택해야 합니다.
       title: 작업시간 기록
@@ -986,13 +959,6 @@ ko:
       form_submit:
         title: 계속하려면 확인하세요
         text: 정말로 이 작업을 수행하기를 원하시나요?
-      destroy_work_package:
-        title: "%{label} 삭제 확인"
-        single_text: 작업 패키지를 삭제하시겠습니까?
-        bulk_text: 다음 %{label}을(를) 삭제하시겠습니까?
-        has_children: 작업 패키지에 %{childUnits}이(가) 있습니다.
-        confirm_deletion_children: 나는 작업 패키지의 모든 하위 목록이 재귀적으로 제거되는 것을 인정합니다.
-        deletes_children: 모든 하위 작업 패키지 및 그 하위 항목도 재귀적으로 삭제됩니다.
       destroy_time_entry:
         title: Confirm deletion of time entry
         text: Are you sure you want to delete the following time entry?

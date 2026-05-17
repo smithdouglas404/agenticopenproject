@@ -394,7 +394,7 @@ This wizard step allows you to auto-install an Apache2 web server to function as
 
 The available options are:
 
-### **Install Apache2 web server** (default)
+### Install Apache2 web server (default)
 
 We recommend that you let OpenProject install and configure the outer web server, in which case we will install an Apache2 web server with a VirtualHost listening to the domain name you specify, optionally providing SSL/TLS termination.
 

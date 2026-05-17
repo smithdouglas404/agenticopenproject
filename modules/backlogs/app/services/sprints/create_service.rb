@@ -30,6 +30,6 @@
 
 class Sprints::CreateService < BaseServices::Create
   def instance_class
-    Agile::Sprint
+    Sprint
   end
 end

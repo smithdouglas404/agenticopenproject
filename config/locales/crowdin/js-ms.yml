@@ -202,16 +202,7 @@ ms:
           text: "[Placeholder] Kalendar yang tersemat"
     admin:
       type_form:
-        custom_field: Ruang tersuai
-        inactive: Tidak aktif
-        drag_to_activate: Tarik ruangan dari sini untuk mengaktifkan mereka
-        add_group: Tambah kumpulan atribut
-        add_table: Tambah jadual pakej kerja yang berkaitan
         edit_query: Edit pertanyaan
-        new_group: Kumpulan baharu
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Set semula ke default
       working_days:
         calendar:
           empty_state_header: Hari tidak bekerja
@@ -515,12 +506,6 @@ ms:
         sidebar_arrow: Guna anak panah kembali di sudut kiri atas untuk kembali ke <b>menu utama</b> projek.
         welcome: Ikuti lawatan pengenalan selama tiga minit untuk mempelajari <b>ciri penting</b> yang paling. <br> Kami mengesyorkan anda melengkapkan langkah sehingga tamat. Anda boleh memulakan semula lawatan pada bila-bila masa.
         wiki: Dalam <b>wiki</b> anda boleh mendokumentasikan dan kongsi pengetahuan bersama pasukan anda.
-        backlogs:
-          overview: Kendalikan kerja anda dalam paparan <b>tunggakan</b>.
-          sprints: Di kanan anda mempunyai tunggakan produk dan tunggakan bug, di kiri anda mempunyai pecutan yang berkenaan. Di sini anda boleh mencipta <b>epik, cerita pengguna, dan bug</b>, utamakan dengan menarik & melepaskan dan tambah mereka ke pecutan.
-          task_board_arrow: Untuk lihat <b>papan tugasan</b> anda, buka pecutan drop-down...
-          task_board_select: "...dan pilih entri <b>papan tugasan</b>."
-          task_board: Papan tugasan menggambarkan secara visual <b>perkembangan untuk pecutan ini</b>. Klik ikon tambah (+) di sebelah cerita pengguna untuk tambah tugasan baru atau halangan. <br> Status tersebut boleh dikemas kini dengan tarik dan lepas.
         boards:
           overview: Pilih <b>board</b> untuk tukar paparan dan uruskan projek anda menggunakan paparan board agile.
           lists_kanban: Disini anda boleh mencipta pelbagai senarai (kolum) dalam board anda. Fitur ini membenarkan anda untuk mencipta, sebagai contoh, <b>board Kanban</b>.
@@ -619,18 +604,6 @@ ms:
     breadcrumb: Breadcrumb
     text_data_lost: Semua data yang dimasukkan akan hilang.
     text_user_wrote: "%{value} menulis:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Nama %{group} digunakan lebih dari sekali. Nama kumpulan mestilah unik.
-        error_no_table_configured: Sila konfigurasi jadual untuk %{group}.
-        reset_title: Set semula konfigurasi borang
-        confirm_reset: 'Amaran: Adakah anda pasti anda ingin set semula konfigurasi borang? Ini akan set semula atribut kumpulan asal mereka dan menyahdayakan SEMUA ruang tersuai.
-
-          '
-        upgrade_to_ee: Naik taraf edisi Enterprise di premis
-        upgrade_to_ee_text: Wah! Jika anda perlukan tambahan ini anda sungguh pro! Bolehkah anda menyokong kami, pembangun OpenProject, dengan menjadi pelanggan edisi Enterprise?
-        more_information: Maklumat lanjut
-        nevermind: Tidak mengapa
     time_entry:
       work_package_required: Memerlukan pemilihan pakej kerja dahulu.
       title: Masa log
@@ -986,13 +959,6 @@ ms:
       form_submit:
         title: Sahkan untuk teruskan
         text: Adakah anda pasti anda ingin melaksanakan tindakan ini?
-      destroy_work_package:
-        title: Sahkan pemadaman %{label}
-        single_text: Adakah anda pasti anda ingin memadam pakej kerja
-        bulk_text: Adakah anda pasti anda ingin memadam %{label} yang berikut?
-        has_children: 'Pakej kerja mempunyai %{childUnits}:'
-        confirm_deletion_children: Saya mengesahkan semua keturunan pakej kerja yang tersenarai akan dikeluarkan secara berulang-ulang.
-        deletes_children: Semua pakej kerja anak dan keturunan mereka akan dipadamkan secara berulang-ulang.
       destroy_time_entry:
         title: Sahkan pemadaman entri masa
         text: Adakah anda pasti anda ingin memadam entri masa yang berikut?

@@ -31,7 +31,8 @@ import { OpWorkPackagesCalendarService } from 'core-app/features/calendar/op-wor
 import { OpCalendarService } from 'core-app/features/calendar/op-calendar.service';
 
 @Component({
-  templateUrl: '../../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.html',
+  selector: 'op-team-planner-page',
+  templateUrl: '../../../work-packages/routing/partitioned-query-space-page/primerized-partitioned-query-space-page.component.html',
   styleUrls: [
     '../../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.sass',
   ],
@@ -97,6 +98,17 @@ export class TeamPlannerPageComponent extends PartitionedQuerySpacePageComponent
 
   public ngOnInit():void {
     super.ngOnInit();
+
+    // Fix showToolbarSaveButton from actual URL params (not uiRouter state)
+    this.showToolbarSaveButton = !!new URLSearchParams(window.location.search).get('query_props');
+
+    // Update save button reactively when query_props changes via pushState
+    this.wpListChecksumService.visibleChecksum$
+      .pipe(this.untilDestroyed())
+      .subscribe((checksum) => {
+        this.showToolbarSaveButton = !!checksum;
+        this.cdRef.detectChanges();
+      });
 
     registerEffectCallbacks(this, this.untilDestroyed());
 

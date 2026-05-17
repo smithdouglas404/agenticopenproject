@@ -72,6 +72,8 @@ module WorkPackages
 
     validate :user_allowed_to_edit
 
+    validate :user_allowed_to_move_from_source_project
+
     validate :can_move_to_milestone
 
     validate :user_allowed_to_change_parent
@@ -87,6 +89,21 @@ module WorkPackages
         next if allowed_journal_addition?
 
         errors.add :base, :error_unauthorized
+      end
+    end
+
+    # When moving a work package to a different project, require
+    # :move_work_packages in the source project (the project the work
+    # package currently belongs to). The per-attribute permission check
+    # (reduce_by_writable_permissions) evaluates :move_work_packages
+    # against the target project; this validation covers the source side.
+    def user_allowed_to_move_from_source_project
+      return unless model.project_id_changed?
+
+      with_unchanged_project_id do
+        unless user.allowed_in_project?(:move_work_packages, model.project)
+          errors.add :project_id, :error_readonly
+        end
       end
     end
 
@@ -108,11 +125,13 @@ module WorkPackages
       end
     end
 
-    def user_allowed_to_change_parent
+    def user_allowed_to_change_parent # rubocop:disable Metrics/AbcSize
       return if model.parent_id.nil? || model.parent.nil?
       return unless model.parent_id_changed?
+      return unless self.class.update_parent_allowed?(user:, work_package: model)
 
-      unless model.parent.visible?
+      unless model.parent.visible?(user) &&
+             user.allowed_in_project?(:manage_subtasks, model.parent.project)
         errors.add :parent_id, :error_unauthorized
       end
     end

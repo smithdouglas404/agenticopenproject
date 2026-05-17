@@ -38,8 +38,12 @@ RSpec.describe "Portfolios",
            global_permissions: :add_portfolios)
   end
   # Role granted to creator on portfolio creation to be able to access the portfolio.
-  shared_let(:default_project_role) { create(:project_role) }
+  shared_let(:default_project_role) { create(:project_creator_role) }
   shared_let(:add_subproject_role) { create(:project_role, permissions: %i[add_subprojects]) }
+
+  before do
+    allow(Setting).to receive(:new_project_user_role_id).and_return(default_project_role.id.to_s)
+  end
 
   let!(:root_portfolio) do
     create(:portfolio, name: "Root portfolio", members: { user_with_permissions => add_subproject_role })

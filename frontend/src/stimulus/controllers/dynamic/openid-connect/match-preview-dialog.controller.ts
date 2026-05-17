@@ -56,7 +56,7 @@ export default class MatchPreviewDialogController extends Controller {
 
   declare dialog:HTMLDialogElement;
   declare updateUrlValue:string;
-  declare updateMatchTimeout:number;
+  private updateMatchTimeout:number|null = null;
 
   private pluginContextData:OpenProjectPluginContext|null = null;
 
@@ -83,9 +83,11 @@ export default class MatchPreviewDialogController extends Controller {
   }
 
   private updateMatchPreview() {
-    if(this.updateMatchTimeout) clearTimeout(this.updateMatchTimeout);
+    if (this.updateMatchTimeout !== null) {
+      window.clearTimeout(this.updateMatchTimeout);
+    }
 
-    this.updateMatchTimeout = setTimeout(() => { this.doUpdateMatchPreview(); }, 500);
+    this.updateMatchTimeout = window.setTimeout(() => { this.doUpdateMatchPreview(); }, 500);
   }
 
   private doUpdateMatchPreview() {

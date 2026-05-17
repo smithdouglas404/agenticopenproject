@@ -108,6 +108,7 @@ Rails.application.routes.draw do
             get :cancel_new
             get :create_work_package_dialog
             post :create_work_package
+            post :refresh_work_package_dialog
           end
 
           member do

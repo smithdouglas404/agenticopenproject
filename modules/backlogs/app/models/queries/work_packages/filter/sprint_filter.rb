@@ -35,7 +35,7 @@ module Queries::WorkPackages::Filter
     end
 
     def available?
-      scrum_projects_active? && allowed?
+      allowed?
     end
 
     def type
@@ -71,13 +71,9 @@ module Queries::WorkPackages::Filter
       end
     end
 
-    def scrum_projects_active?
-      OpenProject::FeatureDecisions.scrum_projects_active?
-    end
-
     def sprints
       @sprints ||= begin
-        scope = Agile::Sprint.visible
+        scope = Sprint.visible
         project ? scope.for_project(project) : scope
       end
     end

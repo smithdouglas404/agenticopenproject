@@ -32,6 +32,7 @@ da:
         location: Placering
         duration: Varighed
         notes: Kommentarer
+        recurrence_start_time: Scheduled start time
         participants: Deltagere
         participant:
           one: 1 deltager
@@ -42,6 +43,9 @@ da:
         start_date: Dato
         start_time: Starttidspunkt
         start_time_hour: Starttidspunkt
+        end_time: Slut tid
+        template: Template
+        notify: Send notifikationer
         sharing: Sharing
       meeting_agenda_item:
         title: Titel
@@ -49,9 +53,15 @@ da:
         duration_in_minutes: Varighed
         description: Kommentarer
         presenter: Presenter
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Noter
       meeting_section:
         title: Titel
+        position: Position
       recurring_meeting:
+        title: Titel
         frequency: Hyppighed
         interval: Interval
         start_date: Starter
@@ -60,6 +70,10 @@ da:
         end_after: Møderækken slutter
         end_date: Slutdato
         iterations: Forekomster
+        time_zone: Tidszone
+        location: Lokation
+        duration: Duration
+        notify: Send notfikationer
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -97,16 +111,16 @@ da:
     item:
       meeting_agenda_item:
         duration:
-          added: set to %{value}
-          added_html: set to <i>%{value}</i>
-          removed: removed
-          updated: changed from %{old_value} to %{value}
-          updated_html: changed from <i>%{old_value}</i> to <i>%{value}</i>
+          added: sæt til %{value}
+          added_html: sæt til <i>%{value}</i>
+          removed: fjernet
+          updated: ændret fra %{old_value} til %{value}
+          updated_html: ændret fra <i>%{old_value}</i> til <i>%{value}</i>
         position:
           updated: reordered
         work_package:
-          updated: changed from %{old_value} to %{value}
-          updated_html: changed from <i>%{old_value}</i> to <i>%{value}</i>
+          updated: ændret fra %{old_value} til %{value}
+          updated_html: ændret fra <i>%{old_value}</i> til <i>%{value}</i>
   description_attended: tilsluttede
   events:
     meeting: Mødet er ændret
@@ -130,19 +144,19 @@ da:
   label_meeting_new_dynamic: New one-time meeting
   label_meeting_new_recurring: New recurring meeting
   label_meeting_create: Create meeting
-  label_meeting_duplicate: Duplicate meeting
+  label_meeting_duplicate: Dupliker møde
   label_meeting_edit: Rediger møde
   label_meeting_agenda: Dagsorden
   label_meeting_minutes: Referat
   label_meeting_close: Luk
   label_meeting_open: Åbn
   label_meeting_index_delete: Slet
-  label_meeting_open_this_meeting: Open this meeting
+  label_meeting_open_this_meeting: Åben dette møde
   label_meeting_agenda_close: Afslut dagsorden og påbegynd referat
   label_meeting_date_time: Dato/tidspunkt
-  label_meeting_date_and_time: Date and time
+  label_meeting_date_and_time: Dato og tid
   label_meeting_diff: Uenigheder
-  label_meeting_send_updates: Send email calendar invite and updates
+  label_meeting_send_updates: Send email kalender invitation og opdateringer
   label_meeting_send_updates_caption: Send out email invites to all participants of this meeting
   label_recurring_meeting: Recurring meeting
   label_recurring_meeting_part_of: Part of a meeting series
@@ -164,7 +178,7 @@ da:
   label_recurring_meeting_more_past:
     one: There is one more past meeting.
     other: There are %{count} more past meetings.
-  label_recurring_meeting_show_more: Show more
+  label_recurring_meeting_show_more: Vis mere
   label_recurring_meeting_series_create: Create meeting series
   label_recurring_meeting_series_edit: Edit meeting series
   label_recurring_meeting_series_delete: Delete meeting series
@@ -172,9 +186,9 @@ da:
   label_recurring_meeting_series_end_now: End series now
   label_meeting_more:
     one: There is one more meeting.
-    other: There are %{count} more meetings.
-  label_my_meetings: My meetings
-  label_all_meetings: All meetings
+    other: Der er %{count} møder.
+  label_my_meetings: Mine møder
+  label_all_meetings: Alle møder
   label_upcoming_meetings: Upcoming meetings
   label_past_meetings: Past meetings
   label_upcoming_meetings_short: Upcoming
@@ -196,6 +210,7 @@ da:
   label_time_zone: Tidszone
   label_start_date: Start dato
   label_subscribe_icalendar: Subscribe to calendar
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -207,9 +222,9 @@ da:
         attended: Attended
         mark_as_attended: Mark as attended
         mark_all_as_attended: Mark all as attended
-        remove_participant: Remove participant
+        remove_participant: Fjerne deltager
         manage_participants: Manage participants
-        no_participants: No participants
+        no_participants: Ingen deltagere
         show_all: Vis alt
         apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
@@ -217,8 +232,8 @@ da:
         manage_participants: Search for and add project members as participants to this meeting.
         search_for_members: Search for project members
       blankslate:
-        heading: No participants
-        description: There are no participants yet.
+        heading: Ingen deltagere
+        description: Der er ingen deltagere endnu.
     attachments:
       onetime_template: These attached files will be included in all future meetings using this template.
       series_template: These attached files will be included in all future meetings in the series.
@@ -238,7 +253,7 @@ da:
 
         '
       send_invitation_emails_structured: Send an email invitation immediately to all participants. You can also do this manually at any time later.
-      open_meeting_link: Open meeting
+      open_meeting_link: Åben møde
       open_my_meetings_link: Go to My meetings
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
@@ -420,6 +435,11 @@ da:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings you are participating in will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Untitled section
     delete_confirmation: Deleting the section will also delete all of its agenda items. Are you sure you want to do this?
@@ -658,9 +678,9 @@ da:
   text_exit_draft_mode_dialog_template_title: Open the first occurrence of this meeting series?
   text_exit_draft_mode_dialog_template_subtitle: You cannot return to draft mode after this.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: This meeting is not editable anymore.
   text_meeting_not_present_anymore: This meeting was deleted. Please select another meeting.
@@ -679,9 +699,12 @@ da:
   text_agenda_item_duplicate_in_next_meeting: Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated.
   text_agenda_item_duplicated_in_next_meeting: Agenda item duplicated in the next meeting, on %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: This work package is not scheduled in an upcoming meeting agenda yet.
-  text_agenda_item_no_available_occurrence: All upcoming occurrences have been cancelled.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Note: Skipping cancelled occurrence on %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Note: Skipping %{count} cancelled occurrences.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Use the "Add to meeting" button to add this work package to an upcoming meeting.
   text_work_package_has_no_past_meeting_agenda_items: This work package was not added as an agenda item in a past meeting.
   text_email_updates_muted: Email calendar updates are muted. Participants will not receive updated invites via email when you make changes.

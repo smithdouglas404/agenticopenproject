@@ -356,6 +356,7 @@ RSpec.describe VersionsController do
     end
 
     it "redirects to projects versions and the version is deleted" do
+      expect(flash[:notice]).to eq(I18n.t(:notice_successful_delete))
       expect(response).to redirect_to(project_settings_versions_path(project))
       expect { Version.find(@deleted) }.to raise_error ActiveRecord::RecordNotFound
     end

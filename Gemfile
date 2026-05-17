@@ -69,7 +69,7 @@ gem "scimitar", "~> 2.13"
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.9.0"
-gem "closure_tree", "~> 9.6.1"
+gem "closure_tree", "~> 9.6.2"
 gem "rubytree", "~> 2.2.0"
 
 gem "addressable", "~> 2.9.0"
@@ -87,7 +87,7 @@ gem "htmldiff"
 gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem "commonmarker", "~> 2.8.0"
+gem "commonmarker", "~> 2.8.2"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
@@ -124,10 +124,10 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 gem "bcrypt", "~> 3.1.22"
 
 gem "multi_json", "~> 1.20.0"
-gem "oj", "~> 3.16.16"
+gem "oj", "~> 3.17.0"
 
 gem "daemons"
-gem "good_job", "~> 4.13.3" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.18.2" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -161,7 +161,7 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.9.2"
+gem "mcp", "~> 0.14.0"
 
 gem "meta-tags", "~> 2.23.0"
 
@@ -193,7 +193,7 @@ gem "rails-i18n", "~> 8.1.0"
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
 gem "sprockets-rails", "~> 3.5.1"
 
-gem "puma", "~> 7.1"
+gem "puma", "~> 8.0"
 gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
@@ -201,8 +201,8 @@ gem "nokogiri", "~> 1.19.2"
 
 gem "carrierwave", "~> 2.2.6"
 gem "carrierwave_direct", "~> 3.0.0"
-gem "ssrf_filter", "~> 1.3"
 gem "fog-aws"
+gem "ssrf_filter", "~> 1.3"
 
 gem "aws-sdk-core", "~> 3.244"
 # File upload via fog + screenshots on travis
@@ -219,7 +219,7 @@ gem "mini_magick", "~> 5.3.0", require: false
 gem "validate_url"
 
 # Storages support code
-gem "dry-container"
+gem "dry-core"
 gem "dry-monads"
 gem "dry-validation"
 
@@ -237,10 +237,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.33.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.91.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.93.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.6.0"
+gem "view_component", "~> 4.9.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
@@ -264,10 +264,11 @@ group :test do
   gem "rack-test", "~> 2.2.0"
   gem "shoulda-context", "~> 2.0"
 
+  gem "parallel_tests", "~> 5.7"
   # Test prof provides factories from code
   # and other niceties
   gem "test-prof", "~> 1.6.0"
-  gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
+  gem "turbo_tests", github: "opf/turbo_tests", ref: "2_2_5_with_patches"
 
   gem "rack_session_access"
   gem "rspec", "~> 3.13.2"
@@ -316,8 +317,6 @@ group :test do
   gem "equivalent-xml", "~> 0.6"
   gem "json_spec", "~> 1.1.4"
   gem "shoulda-matchers", "~> 7.0", require: nil
-
-  gem "parallel_tests", "~> 4.0"
 end
 
 group :ldap do
@@ -334,9 +333,6 @@ group :development do
   gem "spring-commands-rubocop"
 
   gem "colored2"
-
-  # git hooks manager
-  gem "lefthook", require: false
 end
 
 group :development, :test do
@@ -387,8 +383,6 @@ group :development, :test do
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.23.0", require: false
-
 # API gems
 gem "grape", "~> 3.2.0"
 gem "grape_logging", "~> 3.0.0"
@@ -408,7 +402,7 @@ gem "disposable", "~> 0.6.2"
 gem "dentaku", "~> 3.5"
 
 # Used for more powerful counter caches
-gem "counter_culture", "~> 3.11"
+gem "counter_culture", "~> 3.13"
 
 group :postgres do
   gem "pg", "~> 1.6.2"
@@ -433,6 +427,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.32.0"
-gem "openproject-octicons_helper", "~>19.32.0"
-gem "openproject-primer_view_components", "~>0.84.1"
+gem "openproject-octicons", "~>19.34.0"
+gem "openproject-octicons_helper", "~>19.34.0"
+gem "openproject-primer_view_components", "~>0.85.0"

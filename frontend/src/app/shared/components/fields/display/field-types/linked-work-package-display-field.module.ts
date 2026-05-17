@@ -56,10 +56,12 @@ export class LinkedWorkPackageDisplayField extends WorkPackageDisplayField {
       return;
     }
 
+    const routingId = this.wpRoutingId;
     const link = this.uiStateBuilder.linkToShow(
       this.wpId,
       this.text.linkTitle,
       this.valueString,
+      routingId,
     );
 
     const title = document.createElement('span');
@@ -75,6 +77,6 @@ export class LinkedWorkPackageDisplayField extends WorkPackageDisplayField {
   }
 
   public get valueString() {
-    return `#${this.wpId}`;
+    return this.wpFormattedId;
   }
 }

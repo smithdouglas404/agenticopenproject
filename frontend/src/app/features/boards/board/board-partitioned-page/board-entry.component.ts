@@ -26,7 +26,14 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component, ElementRef, Injector, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import {
   WorkPackageIsolatedQuerySpaceDirective,
@@ -43,7 +50,7 @@ import { QueryUpdatedService } from 'core-app/features/boards/board/query-update
 @Component({
   selector: 'board-entry',
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
-  template: `<board-partitioned-page [boardId]="boardId" />`,
+  template: '<board-partitioned-page [boardId]="boardId"><board-list-container [boardId]="boardId" /></board-partitioned-page>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     BoardConfigurationService,
@@ -56,7 +63,7 @@ import { QueryUpdatedService } from 'core-app/features/boards/board/query-update
   ],
   standalone: false,
 })
-export class BoardEntryComponent {
+export class BoardEntryComponent implements OnDestroy {
   @Input() boardId:string;
 
   constructor(
@@ -73,5 +80,9 @@ export class BoardEntryComponent {
     registry.add('version', injector.get(BoardVersionActionService));
     registry.add('subproject', injector.get(BoardSubprojectActionService));
     registry.add('subtasks', injector.get(BoardSubtasksActionService));
+  }
+
+  ngOnDestroy() {
+    document.body.classList.remove('router--boards-full-view');
   }
 }

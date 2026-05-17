@@ -202,16 +202,7 @@ sl:
           text: "[Placeholder] Vdelan koledar"
     admin:
       type_form:
-        custom_field: Polje po meri
-        inactive: Neaktiven
-        drag_to_activate: Povlecite polja od tod, da jih aktivirate
-        add_group: Dodajte skupino atributov
-        add_table: Dodajte tabelo povezanih delovnih paketov
         edit_query: Uredi poizvedbo
-        new_group: Nova skupina
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Ponastavi na privzete vrednosti
       working_days:
         calendar:
           empty_state_header: Non-working days
@@ -517,12 +508,6 @@ sl:
         sidebar_arrow: Use the return arrow in the top left corner to return to the project’s <b>main menu</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: Within the <b>wiki</b> you can document and share knowledge together with your team.
-        backlogs:
-          overview: Manage your work in the <b>backlogs</b> view.
-          sprints: On the right you have the product backlog and the bug backlog, on the left you have the respective sprints. Here you can create <b>epics, user stories, and bugs</b>, prioritize via drag & drop and add them to a sprint.
-          task_board_arrow: To see your <b>task board</b>, open the sprint drop-down...
-          task_board_select: "...and select the <b>task board</b> entry."
-          task_board: The task board visualizes the <b>progress for this sprint</b>. Click on the plus (+) icon next to a user story to add new tasks or impediments. <br> The status can be updated by drag and drop.
         boards:
           overview: Select <b>boards</b> to shift the view and manage your project using the agile boards view.
           lists_kanban: Here you can create multiple lists (columns) within your board. This feature allows you to create a <b>Kanban board</b>, for example.
@@ -624,18 +609,6 @@ sl:
     breadcrumb: Breadcrumb
     text_data_lost: All entered data will be lost.
     text_user_wrote: "%{value} je napisal(a):"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Ime skupine %{group} je že uporabljeno. Imena skupin morajo biti unikatna.
-        error_no_table_configured: Prosimo konfigurirajte tabelo za %{group}.
-        reset_title: Po nastavi iz konfiguracije
-        confirm_reset: 'Opozorilo: Ali ste prepričani, da želite po nastaviti formo konfiguracije? To bo ponastavilo atribute v njihovo privzeto skupino in onemogočilo vsa polja po meri.
-
-          '
-        upgrade_to_ee: Upgrade to Enterprise on-premises edition
-        upgrade_to_ee_text: Wow! If you need this add-on you are a super pro! Would you mind supporting us OpenSource developers by becoming an Enterprise edition client?
-        more_information: Več informacij
-        nevermind: Pozabi
     time_entry:
       work_package_required: Najprej izberite opravilo
       title: Beleži čas
@@ -1007,13 +980,6 @@ sl:
       form_submit:
         title: Potrdite za nadaljevanje
         text: Ali ste prepričani, da želite to izvesti?
-      destroy_work_package:
-        title: Potrdite izbris %{label}
-        single_text: Are you sure you want to delete the work package
-        bulk_text: Are you sure you want to delete the following %{label}?
-        has_children: 'Ta delavni paket ima %{childUnits}:'
-        confirm_deletion_children: Zavedam se, da bodo VSI potomci naštetih delovnih paketov rekurzivno odstranjeni.
-        deletes_children: Vsi delovni paketi in njihovi potomci bodo tudi rekurzivno izbrisani.
       destroy_time_entry:
         title: Potrdite brisanje časovnega vnosa
         text: Ali ste prepričani, da želite izbrisati naslednji časovni vnos?

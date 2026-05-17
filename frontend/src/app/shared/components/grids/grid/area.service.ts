@@ -144,6 +144,16 @@ export class GridAreaService {
 
     Object.assign(payloadWidget, changeset.changes);
 
+    /* Special case for the initial creation of the MyPage with two widgets:
+     * Synchronously update the in-memory widget resource so that concurrent
+     * saveWidgetChangeset calls see the updated state before the async save completes.
+     * Without this, the second call reads stale widget options and overwrites the
+     * first widget's queryId/queryProps with the old values, permanently breaking it. */
+    const inMemoryWidget = this.resource.widgets.find((w) => w.id === changeset.pristineResource.id);
+    if (inMemoryWidget) {
+      Object.assign(inMemoryWidget, changeset.changes);
+    }
+
     // Adding the id so that the url can be deduced
     payload.id = gridId;
 

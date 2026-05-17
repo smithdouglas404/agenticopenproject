@@ -169,7 +169,6 @@ ko:
   label_previous_week: 이전 주
   label_previous_month: 이전 달
   label_specific_day: "%{day}일"
-  label_specific_week: "%{week}주"
   label_specific_month: "%{month}월"
   label_list: 목록
   label_month: 월

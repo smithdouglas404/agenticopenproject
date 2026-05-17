@@ -202,16 +202,7 @@ zh-TW:
           text: "[Placeholder] 嵌入式日曆"
     admin:
       type_form:
-        custom_field: 客製欄位
-        inactive: 未啟用
-        drag_to_activate: 從這裡拖曳欄位來啟用它們
-        add_group: 增加群組屬性
-        add_table: 新增相關工作套件表格
         edit_query: 編輯查詢
-        new_group: 新增群組
-        delete_group: 刪除群組
-        remove_attribute: 從群組中移除
-        reset_to_defaults: 重設為預設值
       working_days:
         calendar:
           empty_state_header: 非工作日
@@ -515,12 +506,6 @@ zh-TW:
         sidebar_arrow: 用左上方的返回鍵，返回至專案的 <b>主選單</b>.
         welcome: 觀看三分鐘的介紹導覽, 以瞭解最多 <b>重要功能</b>。 <br> 我們建議完成所有步驟直到結束。您可以隨時重新開始導覽。
         wiki: 在 <b>wiki</b> 中, 您可以與您的團隊一起記錄和分享知識。
-        backlogs:
-          overview: " 在<b>backlogs</b> 檢視中，管理您的工作。"
-          sprints: 在待辦工作版面中管理您的工作。 在右邊, 你有專案待辦或錯誤紀錄, 在左邊, 你將有各自的衝刺。在這裡, 您可以創建 <b>史詩、使用者故事和錯誤</b>, 通過拖曳進行優先排序, 並將它們添加到衝刺中。
-          task_board_arrow: 要查看您的<b>任務面板</b>，請打開衝刺（sprint）下拉選單…
-          task_board_select: "…並選擇<b>任務面板</b>條目。"
-          task_board: 任務面板可以將<b>此衝刺 （sprint） 的進度</b>可視化。點擊用戶故事旁邊的加號 (+) 圖標可添加新任務或障礙。<br>狀態可以通過拖放更新。
         boards:
           overview: 選擇<b>面板</b>以切換視圖並使用敏捷面板視圖管理您的項目。
           lists_kanban: 在此，您可以在面板中創建多個列表(列)。例如，此功使讓您可以創建<b>看板面板</b>。
@@ -619,18 +604,6 @@ zh-TW:
     breadcrumb: 導覽軌跡
     text_data_lost: 所有資料將遺失
     text_user_wrote: "%{value} 寫道："
-    types:
-      attribute_groups:
-        error_duplicate_group_name: 名稱 %{group} 已被使用，群組名稱不可重複。
-        error_no_table_configured: 請為 %{group} 配置表。
-        reset_title: 重設表單配置
-        confirm_reset: '警告: 確實要重置表單配置嗎？這將重置屬性到其預設組, 並禁用所有客製欄位。
-
-          '
-        upgrade_to_ee: 升級至地端企業版
-        upgrade_to_ee_text: 哇！如果您需要使用此功能，說明您非常專業！您是否願意成為企業版客戶來支持 OpenSource 開發人員？
-        more_information: 更多資訊
-        nevermind: 無視
     time_entry:
       work_package_required: 需要先選擇一個工作套件。
       title: 工時紀錄
@@ -986,13 +959,6 @@ zh-TW:
       form_submit:
         title: 確認以繼續
         text: 確定要執行此操作嗎？
-      destroy_work_package:
-        title: 確認刪除 %{label}
-        single_text: 確定要刪除此工作套件嗎
-        bulk_text: 確定要刪除以下%{label} 嗎？
-        has_children: 此工作套件包含 %{childUnits}：
-        confirm_deletion_children: 我確認列出的工作套件的所有細項全部都將被刪除。
-        deletes_children: 所有子工作套件及相關套件也全部將被刪除。
       destroy_time_entry:
         title: 確認刪除時間條目
         text: 確定要刪除以下時間條目？

@@ -313,6 +313,10 @@ Using environment variables, you could also set this in the following way
 OPENPROJECT_OMNIAUTH__DIRECT__LOGIN__PROVIDER="saml" # This value should be the 'name' property of your configuration
 ```
 
+With the direct login feature activated, accessing the page without authentication will immediately redirect the user to your Single Sign-On (SSO) portal.
+
+A dedicated route `/login/internal` is available for internal authentication, which does not redirect to the SSO portal.
+**We strongly advise** you to maintain an internal administrative login, as you won’t be able to access the application otherwise.
 
 
 ## Instructions for common SAML providers

@@ -200,16 +200,7 @@ es:
           text: "[Placeholder] Calendario insertado"
     admin:
       type_form:
-        custom_field: Campo personalizado
-        inactive: Inactivo
-        drag_to_activate: Arrastre campos desde aquí para activarlos
-        add_group: Agregar grupo de atributos
-        add_table: Agregar tabla de paquetes de trabajo relacionados
         edit_query: Editar consulta
-        new_group: Nuevo grupo
-        delete_group: Eliminar grupo
-        remove_attribute: Eliminar del grupo
-        reset_to_defaults: Restablecer valores predeterminados
       working_days:
         calendar:
           empty_state_header: Días no laborables
@@ -513,12 +504,6 @@ es:
         sidebar_arrow: Usa la flecha de retorno en la esquina superior izquierda para regresar al <b>menú principal</b> del proyecto.
         welcome: Realice un recorrido de introducción de tres minutos para conocer las <b>funciones más importantes</b>. <br> Le recomendamos que complete todos los pasos. Puede volver a iniciar el paseo en cualquier momento.
         wiki: En la <b>wiki</b>, puede elaborar documentos y compartir conocimientos con su equipo.
-        backlogs:
-          overview: Administre su trabajo en la vista de <b>trabajos pendientes</b>.
-          sprints: A la derecha verá los trabajos pendientes de productos y errores de código, y a la izquierda se muestran los sprints correspondientes. Aquí puede crear <b>épicas, historias de usuario y errores de código</b>, asignar prioridades mediante funciones de arrastrar y colocar, y añadir elementos a un sprint.
-          task_board_arrow: Para ver el <b>tablero de tareas</b>, abra el menú desplegable sprint…
-          task_board_select: "… y seleccione la entrada del <b>tablero de tareas</b>."
-          task_board: En el tablero de tareas, se muestra el <b>progreso de este sprint</b>. Haga clic en el icono del signo más (+) junto a una historia de usuario para añadir nuevas tareas o impedimentos. <br> Puede actualizar el estado mediante las funciones de arrastrar y colocar.
         boards:
           overview: Seleccione los <b>tableros</b> para cambiar la vista y gestione su proyecto con la vista de tableros Agile.
           lists_kanban: Aquí puede crear varias listas (columnas) en el tablero. Por ejemplo, esta función le permite crear un <b>tablero Kanban</b>.
@@ -618,18 +603,6 @@ es:
     breadcrumb: Ruta de navegación
     text_data_lost: Todos los datos introducidos se perderán.
     text_user_wrote: "%{value} escribió:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: El nombre %{group} se ha usado más de una vez. Los nombres de grupos deben ser únicos.
-        error_no_table_configured: Configure una tabla para %{group}.
-        reset_title: Restablecer la configuración del formulario
-        confirm_reset: 'Advertencia: ¿Está seguro de que quiere restablecer la configuración del formulario? Se restablecerán los atributos al grupo predeterminado y se deshabilitarán TODOS los campos personalizados.
-
-          '
-        upgrade_to_ee: Actualizar a Enterprise On-Premises
-        upgrade_to_ee_text: "¡Vaya! Si necesita está extensión, entonces ¡es un usuario experto! ¿Le importaría apoyar a los desarrolladores de código abierto convirtiéndose en cliente de Enterprise?"
-        more_information: Más información
-        nevermind: No importa
     time_entry:
       work_package_required: Es necesario seleccionar primero un paquete de trabajo.
       title: Registro de tiempo
@@ -985,13 +958,6 @@ es:
       form_submit:
         title: Confirme para continuar
         text: "¿Seguro que desea realizar esta acción?"
-      destroy_work_package:
-        title: Confirmar la eliminación de %{label}
-        single_text: Está seguro que desea eliminar este paquete de trabajo
-        bulk_text: "¿Estás seguro de que quiere eliminar el siguiente %{label}?"
-        has_children: 'El paquete de trabajo tiene %{childUnits}:'
-        confirm_deletion_children: Reconozco que TODOS los descendientes de los paquetes de trabajo enumerados se eliminarán recursivamente.
-        deletes_children: También se eliminarán de forma recursiva todos los sub-paquetes de trabajo y sus descendientes.
       destroy_time_entry:
         title: Confirmar la eliminación de la entrada de tiempo
         text: "¿Realmente quiere eliminar la siguiente entrada de tiempo?"

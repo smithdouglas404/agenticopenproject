@@ -202,16 +202,7 @@ de:
           text: "[Platzhalter] Eingebetteter Kalender"
     admin:
       type_form:
-        custom_field: Benutzerdefiniertes Feld
-        inactive: Inaktiv
-        drag_to_activate: Felder aus diesem Bereich herausziehen, um sie zu aktivieren
-        add_group: Attributgruppe hinzufügen
-        add_table: Tabelle mit zugehörigen Arbeitspaketen hinzufügen
         edit_query: Abfrage bearbeiten
-        new_group: Neue Gruppe
-        delete_group: Gruppe löschen
-        remove_attribute: Aus Gruppe entfernen
-        reset_to_defaults: Auf Standardwerte zurücksetzen
       working_days:
         calendar:
           empty_state_header: Arbeitsfreie Tage
@@ -515,12 +506,6 @@ de:
         sidebar_arrow: Benutzen Sie den Pfeil in der oberen linken Ecke um zum <b>Hauptmenü</b> des Projekts zurückzukehren.
         welcome: Lernen Sie in drei Minuten die <b>wichtigen Funktionen</b> kennen. <br> Wir empfehlen Ihnen, die Tour vollständig abzuschließen. Sie können diese jederzeit wieder neu starten.
         wiki: Im <b>Wiki</b> können Sie gemeinsam mit dem Team Informationen dokumentieren und eine Wissensdatenbank aufbauen.
-        backlogs:
-          overview: Verwalten Sie Ihre Arbeit in der <b>-Backlogs</b> Ansicht.
-          sprints: Rechts befinden sich das Product Backlog und das Bug Backlog, links die jeweiligen Sprints. Hier können Sie <b>Epics, User Stories und Bugs (Fehler)</b> anlegen, mit Drag and Drop priorisieren und einem Sprint zuweisen.
-          task_board_arrow: Um das <b>Taskboard</b> zu sehen, öffnen Sie das Sprint Drop-down Menü...
-          task_board_select: "… und wählen Sie den Menüpunkt <b>Taskboard</b>."
-          task_board: Das Aufgabenfeld visualisiert den <b>Fortschritt für diesen Sprint</b>. Klicken Sie auf das Plus (+) Symbol neben einer User Story, um neue Aufgaben oder Hindernisse hinzuzufügen. <br> Der Status kann per Drag & Drop aktualisiert werden.
         boards:
           overview: Wählen Sie <b>Boards</b> aus, um eine andere Sicht auf Ihr Projekt zu erhalten und es in der agilen Board-Ansicht zu verwalten.
           lists_kanban: Hier können Sie mehrere Listen (Spalten) innerhalb Ihres Boards erstellen. Mit dieser Funktion können Sie zum Beispiel ein <b>Kanban Board</b> erstellen.
@@ -622,18 +607,6 @@ de:
     breadcrumb: Navigationspfad
     text_data_lost: Alle eingegebenen Daten gehen verloren.
     text_user_wrote: "%{value} schrieb:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Der Name %{group} wird mehr als einmal verwendet. Gruppen-Namen müssen eindeutig sein.
-        error_no_table_configured: Bitte konfigurieren Sie eine Tabelle für %{group}.
-        reset_title: Formularkonfiguration zurücksetzen
-        confirm_reset: 'Achtung: Wollen Sie die Formkonfiguration wirklich zurücksetzen? Alle Attribute und Gruppen werden auf ihre Standardwerte zurück gesetzt und ALLE benutzerdefinierten Felder entfernt.
-
-          '
-        upgrade_to_ee: Enterprise on-premises bestellen
-        upgrade_to_ee_text: Wow! Wenn du dieses Add-on benötigst, bist du ein super Pro! Würdest du uns OpenProject-Entwickler unterstützen, indem du ein Enterprise Edition-Kunde wirst?
-        more_information: Weitere Informationen
-        nevermind: Nein danke
     time_entry:
       work_package_required: Benötigt zuerst die Auswahl eines Arbeitspakets.
       title: Zeit buchen
@@ -989,13 +962,6 @@ de:
       form_submit:
         title: Bestätigen, um fortzufahren
         text: Sind Sie sicher, dass Sie diese Aktion durchführen möchten?
-      destroy_work_package:
-        title: Löschen von %{label} bestätigen
-        single_text: Sind Sie sicher, dass Sie das Arbeitspaket löschen möchten?
-        bulk_text: Sind Sie sicher, dass Sie die folgenden %{label} löschen möchten?
-        has_children: 'Dieses Arbeitspaket hat %{childUnits}:'
-        confirm_deletion_children: Ich bestätige, dass alle untergordneten Elemente der hier aufgeführten Arbeitspakete rekursiv entfernt werden.
-        deletes_children: Alle Unteraufgaben und deren Nachkommen werden auch rekursiv gelöscht.
       destroy_time_entry:
         title: Löschen der Zeitbuchung bestätigen
         text: Sind Sie sicher, dass Sie die folgende Zeitbuchung löschen möchten?

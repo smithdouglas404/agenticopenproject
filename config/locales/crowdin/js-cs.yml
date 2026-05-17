@@ -202,16 +202,7 @@ cs:
           text: "[Placeholder] Vložený kalendář"
     admin:
       type_form:
-        custom_field: Vlastní pole
-        inactive: Neaktivní
-        drag_to_activate: Přetáhněte pole zde, abyste je aktivovali
-        add_group: Přidat skupinu atributů
-        add_table: Přidat seznam se souvisejícími pracovními balíčky
         edit_query: Upravit dotaz
-        new_group: Nová skupina
-        delete_group: Odstranit skupinu
-        remove_attribute: Odebrat ze skupiny
-        reset_to_defaults: Obnovit výchozí nastavení
       working_days:
         calendar:
           empty_state_header: Nepracovní dny
@@ -515,12 +506,6 @@ cs:
         sidebar_arrow: Pomocí šipky zpět v levém horním rohu se vrátíte do <b>hlavního menu projektu</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: V rámci <b>Wiki</b> můžete dokumentovat a sdílet znalosti společně se svým týmem.
-        backlogs:
-          overview: Spravujte svou práci v <b>backlogs</b> zobrazení.
-          sprints: Napravo máte nevyřízené produkty a nevyřízené chyby, vlevo máte příslušné sprinty. Zde můžete vytvořit <b>epiky, uživatelské příběhy a chyby</b>, upřednostnit přetažením a přidat je do sprintu.
-          task_board_arrow: Chcete-li vidět Váš <b>seznam úkolů</b>, otevřete Sprint drop-down menu...
-          task_board_select: "...a vyberte <b>vstup do tabule</b>."
-          task_board: Pracovní panel vizualizuje postup <b>pro tento sprint</b>. Kliknutím na ikonu plus (+) vedle uživatelského příběhu přidáte nové úkoly nebo překážky. <br> Stav lze aktualizovat přetažením.
         boards:
           overview: Vyberte <b>tabule</b> pro posun zobrazení a správu vašeho projektu pomocí agilního zobrazení desek.
           lists_kanban: Zde si můžete vytvořit více seznamů (sloupce) ve vaší tabuli. Tato funkce vám umožní například vytvořit <b>Kanban desku</b>.
@@ -626,18 +611,6 @@ cs:
     breadcrumb: Navigační lišta
     text_data_lost: Všechna zadaná data budou ztracena.
     text_user_wrote: "%{value} napsal:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Jméno %{group} je již použito. Jména skupin musí být jedinečná.
-        error_no_table_configured: Prosím nastavte tabulku pro %{group}.
-        reset_title: Vyčistit konfiguraci formuláře
-        confirm_reset: 'Upozornění: Opravdu chcete resetovat konfiguraci formuláře? Tato akce obnoví atributy na jejich výchozí skupinu a zakáže VŠECHNY vlastní pole.
-
-          '
-        upgrade_to_ee: Upgradovat na Enterprise Edition on premises
-        upgrade_to_ee_text: Páni! Pokud potřebujete tuto funkci, jste super pro! Nevadili byste nám podpořit OpenSource vývojáře tím, že se stanete klientem Enterprise Edition?
-        more_information: Více informací
-        nevermind: Nevadí
     time_entry:
       work_package_required: Vyžaduje nejprve výběr pracovního balíčku.
       title: Čas protokolu
@@ -993,13 +966,6 @@ cs:
       form_submit:
         title: Potvrdit a pokračovat
         text: Opravdu chcete provést tuto akci?
-      destroy_work_package:
-        title: Potvrdit smazání %{label}
-        single_text: Opravdu chcete odstranit tento balíček?
-        bulk_text: Opravdu chcete odstranit %{label}?
-        has_children: 'Pracovní balíček má %{childUnits}:'
-        confirm_deletion_children: Jsem si vědom, že všechny potomky uvedených pracovních balíčků budou rekurzivně odstraněny.
-        deletes_children: Všechny podřízené pracovní balíčky a jejich potomci budou také rekurzivně odstraněny.
       destroy_time_entry:
         title: Potvrdit odstranění záznamu času
         text: Opravdu chcete odstranit následující časovou položku?

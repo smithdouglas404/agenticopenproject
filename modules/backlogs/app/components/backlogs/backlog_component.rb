@@ -32,54 +32,30 @@ module Backlogs
   class BacklogComponent < ApplicationComponent
     include Primer::AttributesHelper
     include OpTurbo::Streamable
-    include RbCommonHelper
+    include CommonHelper
 
-    attr_reader :backlog, :project, :current_user
+    attr_reader :inbox_work_packages, :buckets, :project, :current_user
 
-    delegate :sprint, :stories, to: :backlog
-
-    def initialize(backlog:, project:, current_user: User.current, **system_arguments)
+    def initialize(inbox_work_packages:,
+                   buckets:,
+                   project:,
+                   current_user: User.current)
       super()
 
-      @backlog = backlog
+      @inbox_work_packages = inbox_work_packages
+      @buckets = buckets
       @project = project
       @current_user = current_user
-
-      @system_arguments = system_arguments
-      @system_arguments[:id] = dom_id(backlog)
-      @system_arguments[:list_id] = "#{@system_arguments[:id]}-list"
-      @system_arguments[:padding] = :condensed
-      @system_arguments[:data] = merge_data(
-        @system_arguments,
-        { data: drop_target_config }
-      )
     end
 
     def wrapper_uniq_by
-      backlog.sprint_id
+      project
     end
 
     private
 
-    def folded?
-      current_user.backlogs_preference(:versions_default_fold_state) == "closed"
-    end
-
-    def drop_target_config
-      {
-        generic_drag_and_drop_target: "container",
-        target_container_accessor: ":scope > ul",
-        target_id: "version:#{backlog.sprint_id}",
-        target_allowed_drag_type: "story"
-      }
-    end
-
-    def draggable_item_config(story)
-      {
-        draggable_id: story.id,
-        draggable_type: "story",
-        drop_url: move_legacy_backlogs_project_sprint_story_path(project, sprint, story)
-      }
+    def total
+      @total ||= inbox_work_packages.count + (buckets&.sum { it.work_packages.size } || 0)
     end
   end
 end

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
+RSpec.describe Sprints::FinishService do
   create_shared_association_defaults_for_work_package_factory
 
   shared_let(:project) { create(:project, enabled_module_names: %w[backlogs work_package_tracking]) }
@@ -42,7 +42,7 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
              project => %i[view_work_packages view_sprints manage_sprint_items start_complete_sprint]
            })
   end
-  let(:sprint) { create(:agile_sprint, project:, status: sprint_status) }
+  let(:sprint) { create(:sprint, project:, status: sprint_status) }
   let(:sprint_status) { "active" }
   let(:instance) { described_class.new(user:, model: sprint) }
   let(:call_params) { {} }
@@ -83,7 +83,7 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
     end
 
     context "when specifying a target sprint to move the work packages to" do
-      let(:target_sprint) { create(:agile_sprint, project:, status: "in_planning") }
+      let(:target_sprint) { create(:sprint, project:, status: "in_planning") }
 
       let(:call_params) { { unfinished_action: "move_to_sprint", move_to_sprint_id: target_sprint.id } }
 
@@ -96,7 +96,7 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
 
     context "when specifying a target sprint not shared with the project" do
       let(:other_project) { create(:project, enabled_module_names: %w[backlogs work_package_tracking]) }
-      let(:target_sprint) { create(:agile_sprint, project: other_project, status: "in_planning") }
+      let(:target_sprint) { create(:sprint, project: other_project, status: "in_planning") }
 
       let(:call_params) { { unfinished_action: "move_to_sprint", move_to_sprint_id: target_sprint.id } }
 
@@ -139,7 +139,7 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
   end
 
   context "when the sprint has multiple unfinished work packages also in other projects and a target sprint is given" do
-    let(:target_sprint) { create(:agile_sprint, project:, status: "in_planning") }
+    let(:target_sprint) { create(:sprint, project:, status: "in_planning") }
     # Permissions are not necessary for this. The change is carried out regardless.
     let(:other_project) { create(:project) }
     let!(:open_wp1) do

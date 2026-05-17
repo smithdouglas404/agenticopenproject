@@ -235,7 +235,7 @@ class PermittedParams
     whitelisted = type_params.permit(*permitted)
 
     if type_params[:attribute_groups]
-      whitelisted[:attribute_groups] = JSON.parse(type_params[:attribute_groups])
+      whitelisted[:attribute_groups] = type_params[:attribute_groups]
     end
 
     whitelisted
@@ -359,9 +359,6 @@ class PermittedParams
   end
 
   def version
-    # `version_settings_attributes` is from a plugin. Unfortunately as it stands
-    # now it is less work to do it this way than have the plugin override this
-    # method. We hopefully will change this in the future.
     permitted_params = params.fetch(:version, {}).permit(:name,
                                                          :description,
                                                          :effective_date,
@@ -369,8 +366,7 @@ class PermittedParams
                                                          :start_date,
                                                          :wiki_page_title,
                                                          :status,
-                                                         :sharing,
-                                                         version_settings_attributes: %i(id display project_id))
+                                                         :sharing)
 
     permitted_params.merge(custom_field_values(:version, required: false))
   end

@@ -28,12 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 module Filter
-  # rubocop:disable OpenProject/AddPreviewForViewComponent
   class FilterComponent < ApplicationComponent
     OPERATORS_WITHOUT_VALUES = %w[* !* t w].freeze
     TURBO_FRAME_ID = "filter_component"
 
-    # rubocop:enable OpenProject/AddPreviewForViewComponent
     options :query
     # The path used for fetching the filter section lazily from the backend upon opening it.
     # If none is provided, the filters are rendered right away.
@@ -113,15 +111,15 @@ module Filter
     end
 
     def custom_field_list_autocomplete_options(filter)
-      options = if filter.custom_field.version?
-                  {
-                    items: filter.allowed_values.map { |name, id, project_name| { name:, id:, project_name: } },
-                    groupBy: "project_name"
-                  }
-                else
-                  { items: filter.allowed_values.map { |name, id| { name:, id: } } }
-                end
-      autocomplete_options.merge(options).merge(model: filter.values)
+      all_items = if filter.custom_field.version?
+                    filter.allowed_values.map { |name, id, project_name| { name:, id:, project_name: } }
+                  else
+                    filter.allowed_values.map { |name, id| { name:, id: } }
+                  end
+      selected = filter.values
+      options = { items: all_items }
+      options[:groupBy] = "project_name" if filter.custom_field.version?
+      autocomplete_options.merge(options).merge(model: all_items.select { |item| selected.include?(item[:id]) })
     end
 
     def custom_field_hierarchy_autocomplete_options(filter)
@@ -129,14 +127,17 @@ module Filter
         path = name.split(" / ")
         { name: path.last, id:, depth: path.length - 1 }
       end
+      selected = filter.values
 
-      autocomplete_options.merge({ items: }).merge(model: filter.values)
+      autocomplete_options.merge({ items: }).merge(model: items.select { |item| selected.include?(item[:id]) })
     end
 
     def list_autocomplete_options(filter)
+      all_items = filter.allowed_values.map { |name, id| { name:, id: } }
+      selected = filter.values
       autocomplete_options.merge(
-        items: filter.allowed_values.map { |name, id| { name:, id: } },
-        model: filter.values
+        items: all_items,
+        model: all_items.select { |item| selected.include?(item[:id]) }
       )
     end
 

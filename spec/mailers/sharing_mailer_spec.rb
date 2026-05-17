@@ -59,10 +59,29 @@ RSpec.describe SharingMailer do
         .to contain_exactly(shared_with_user.mail)
     end
 
-    it "sets the appropriate subject" do
-      expect(mail.subject)
-        .to eq(I18n.t("mail.sharing.work_packages.subject",
-                      id: work_package.id))
+    context "with classic mode", with_settings: { work_packages_identifier: "classic" } do
+      it "sets the subject with # prefixed numeric id" do
+        expect(mail.subject)
+          .to eq(I18n.t("mail.sharing.work_packages.subject", id: "##{work_package.id}"))
+      end
+    end
+
+    context "with semantic mode",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      let(:work_package) do
+        build_stubbed(:work_package,
+                      type: build_stubbed(:type_standard),
+                      author: build_stubbed(:user),
+                      project:,
+                      identifier: "PROJ-42",
+                      sequence_number: 42)
+      end
+
+      it "sets the subject with the semantic identifier without # prefix" do
+        expect(mail.subject)
+          .to eq(I18n.t("mail.sharing.work_packages.subject", id: "PROJ-42"))
+      end
     end
 
     it "has a project header" do

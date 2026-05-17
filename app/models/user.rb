@@ -112,6 +112,18 @@ class User < Principal
   has_many :reminders, foreign_key: "creator_id", dependent: :destroy, inverse_of: :creator
   has_many :remote_identities, dependent: :destroy
 
+  # Resource allocations assigned to this user. Normal user-deletion goes
+  # through Principals::DeleteJob, which rewrites principal_id to a
+  # DeletedUser placeholder before destroy fires (registered in the
+  # resource_management engine). The `dependent: :nullify` here is a
+  # defensive fallback if a user is destroyed outside that flow — the column
+  # is already nullable for the unassigned/filter-only state.
+  has_many :resource_allocations,
+           class_name: "ResourceAllocation",
+           foreign_key: :principal_id,
+           dependent: :nullify,
+           inverse_of: :principal
+
   # Users blocked via brute force prevention
   # use lambda here, so time is evaluated on each query
   scope :blocked, -> { create_blocked_scope(self, true) }
@@ -140,7 +152,7 @@ class User < Principal
 
   acts_as_customizable admin_only_allowed: true
 
-  attr_accessor :password, :password_confirmation, :last_before_login_on
+  attr_accessor :password, :password_confirmation, :last_before_login_on, :current_password_input
 
   validates :login,
             :firstname,

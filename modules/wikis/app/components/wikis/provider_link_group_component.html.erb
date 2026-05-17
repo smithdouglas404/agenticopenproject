@@ -1,9 +1,0 @@
-<%=
-  render(Primer::Beta::BorderBox.new) do |box|
-    box.with_header do
-      render(Primer::Beta::Text.new(font_weight: :bold)) { provider.name }
-    end
-
-    box.with_row { render(Wikis::InlinePageLinksComponent.new(provider, work_package: @work_package)) }
-  end
-%>

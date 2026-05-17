@@ -52,7 +52,6 @@ RSpec.describe RecurringMeetings::InitOccurrenceService, type: :model do
 
   let(:service_result) { instance.call(**params) }
   let(:created_meeting) { service_result.result }
-  let(:scheduled_meeting) { created_meeting.scheduled_meeting }
 
   describe "handling the interim responses" do
     let(:start_time) { series.start_time + 10.days }

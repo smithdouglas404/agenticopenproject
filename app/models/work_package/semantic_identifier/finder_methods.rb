@@ -28,56 +28,54 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Extends ActiveRecord finder methods (find, find_by, find_by!, exists?) to
-# transparently resolve semantic work package identifiers (e.g. "PROJ-42")
-# in addition to numeric IDs.
+# Extends ActiveRecord finder methods to support semantic work package
+# identifiers (e.g. "PROJ-42") in addition to numeric IDs.
+#
+# - find("PROJ-42") resolves transparently
+# - find_by(id:)/find_by!(id:) raise UnsupportedLookup for semantic strings
+# - find_by_display_id("PROJ-42") is the explicit nil-on-miss resolver
+# - exists?("PROJ-42") resolves transparently
+#
+# The asymmetry between find (transparent) and find_by (guarded) is deliberate:
+# controllers and URL-driven callers already pass user input into find, and
+# losing semantic resolution there would break the feature. find_by on the other
+# hand reduces to a raw SQL WHERE id = ? that cannot consult the alias table,
+# so silently matching nothing would be a worse bug than raising.
+#
+# Convention: use find_by_display_id only when the input could legitimately be
+# either numeric or semantic (controllers, view components fed from URL params,
+# macro resolvers). Low-level code (queries, filters, services) should stick to
+# find_by(id:) with primary keys.
 #
 # Included into WorkPackage class methods and extended into every
 # ActiveRecord::Relation via WorkPackage::SemanticIdentifier.
-#
-# Examples:
-#   WorkPackage.find("PROJ-42")
-#   WorkPackage.visible(user).find_by(id: "PROJ-42")
-#   WorkPackage.exists?("PROJ-42")
 module WorkPackage::SemanticIdentifier::FinderMethods
   def find(*args)
-    ids = args.length == 1 && args.first.is_a?(Array) ? args.first : args
-
-    if ids.length == 1 && semantic_id?(ids.first)
-      return find_by_id_or_identifier!(ids.first)
+    if args.length == 1 && !args.first.is_a?(Array)
+      return semantic_id?(args.first) ? find_by_display_id!(args.first) : super
     end
 
-    if ids.any? { |id| semantic_id?(id) }
-      raise ArgumentError,
-            "Semantic identifiers in multi-argument find is not yet supported. " \
-            "Resolve each identifier individually via find_by(id:) instead."
+    ids = args.first.is_a?(Array) ? args.first : args
+    if ids.any? { semantic_id?(it) }
+      raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
+            "Semantic identifiers in multi-argument find are not supported. " \
+            "Use primary keys for multi-argument lookup, or resolve each identifier " \
+            "individually via find_by_display_id! (raises) or find_by_display_id (nil on miss)."
     end
 
     super
   end
 
-  # Override find_by to transparently resolve semantic identifiers when called
-  # with `id:` as the sole keyword (e.g. `find_by(id: "PROJ-42")`).
-  # All other find_by calls pass through to ActiveRecord unchanged.
-  #
-  # AR's find_by signature is find_by(arg, *args) — it doesn't use keyword splat,
-  # so hash kwargs arrive as the positional `arg`. We match on that.
+  # Guard find_by against semantic identifiers passed via `id:` or `identifier:`.
+  # Developers should use find("PROJ-42") or find_by_display_id("PROJ-42") instead.
   def find_by(*args)
-    if semantic_id_hash_lookup?(args)
-      find_by_id_or_identifier(args.first[:id])
-    else
-      super
-    end
+    reject_semantic_id_in_find_by!(args)
+    super
   end
 
-  # Mirror of find_by — Rails implements find_by! independently (not via find_by),
-  # so we must override both to keep the pair consistent.
   def find_by!(*args)
-    if semantic_id_hash_lookup?(args)
-      find_by_id_or_identifier!(args.first[:id])
-    else
-      super
-    end
+    reject_semantic_id_in_find_by!(args)
+    super
   end
 
   def exists?(conditions = :none)
@@ -86,50 +84,93 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     exists_by_semantic_identifier?(conditions)
   end
 
-  private
-
-  # Returns true when args represent a single `id:` keyword lookup
-  # with a semantic identifier value (e.g. `find_by(id: "PROJ-42")`).
-  def semantic_id_hash_lookup?(args)
-    args.length == 1 &&
-      args.first.is_a?(Hash) &&
-      args.first.keys == [:id] &&
-      semantic_id?(args.first[:id])
-  end
-
-  # Resolves any identifier form to a WorkPackage.
+  # Resolves any display-facing identifier to a WorkPackage.
   #   - Numeric string ("12345")    → find by primary key
-  #   - Semantic string ("PROJ-42") → lookup via work_packages table and alias table
+  #   - Semantic string ("PROJ-42") → lookup via identifier column and alias table
   #
   # Returns nil on miss.
-  def find_by_id_or_identifier(identifier)
-    return find_by(id: identifier) unless semantic_id?(identifier)
-
-    find_by_semantic_identifier(identifier)
+  def find_by_display_id(identifier)
+    if semantic_id?(identifier)
+      find_by_semantic_identifier(identifier)
+    else
+      where(id: identifier).take # rubocop:disable Rails/FindBy -- avoid find_by, it would rerun semantic_id?
+    end
   end
 
-  # Same as find_by_id_or_identifier but raises ActiveRecord::RecordNotFound on miss.
-  def find_by_id_or_identifier!(identifier)
-    find_by_id_or_identifier(identifier) ||
+  # Same as find_by_display_id but raises ActiveRecord::RecordNotFound on miss.
+  def find_by_display_id!(identifier)
+    find_by_display_id(identifier) ||
       raise(ActiveRecord::RecordNotFound.new(
               "Couldn't find WorkPackage with identifier=#{identifier}", "WorkPackage", "identifier", identifier
             ))
   end
 
-  # Returns true when value looks like a semantic work package identifier (e.g. "PROJ-42").
-  # Non-string values (Integer, Hash, nil, Array) and numeric strings ("123", " 456 ")
-  # return false — these fall through to standard ActiveRecord lookup.
-  def semantic_id?(value)
-    return false unless value.is_a?(String)
+  # Plural counterpart to find_by_display_id: returns a chainable relation that
+  # matches any work package whose primary key, current identifier, or
+  # historical alias matches one of the supplied display ids. Numeric and
+  # semantic strings may be freely mixed; unknown values produce no match
+  # rather than poisoning the rest of the set.
+  #
+  # @param values [String, Integer, Array<String, Integer>] one or more
+  #   display ids. Pass scalars (`where_display_id_in("PROJ-1")`), varargs
+  #   (`where_display_id_in("PROJ-1", "PROJ-2")`), or a pre-built array
+  #   (`where_display_id_in(ids)`) interchangeably.
+  def where_display_id_in(*values)
+    values = values.flatten(1).compact_blank.map(&:to_s)
+    return none if values.empty?
 
-    stripped = value.strip
-    stripped.to_i.to_s != stripped
+    semantic, numeric = values.partition { semantic_id?(it) }
+
+    scope = where(id: numeric.map(&:to_i))
+    scope = scope.or(scope_for_semantic_identifier(semantic)) if semantic.any?
+    scope
   end
 
-  # Resolves a semantic identifier (e.g. "PROJ-42") to a WorkPackage in
-  # a single query. Matches against the current identifier column OR a
-  # correlated EXISTS on the alias table for historical identifiers.
-  # Returns nil on miss.
+  private
+
+  def reject_semantic_id_in_find_by!(args)
+    return unless args.length == 1 && args.first.is_a?(Hash)
+
+    pair = id_or_identifier_pair(args.first)
+    return unless pair
+
+    key, value = pair
+    offending = first_semantic_value(value)
+    return unless offending
+
+    raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
+          "find_by(#{key}: #{value.inspect}) does not support semantic identifiers " \
+          "because it cannot resolve aliases or match across identifier history. " \
+          "Use find(#{offending.inspect}) or find_by_display_id(#{offending.inspect}) instead."
+  end
+
+  def id_or_identifier_pair(hash)
+    (hash.assoc(:id) || hash.assoc("id")) ||
+      (hash.assoc(:identifier) || hash.assoc("identifier"))
+  end
+
+  def first_semantic_value(value)
+    if value.is_a?(Array)
+      value.detect { semantic_id?(it) }
+    elsif semantic_id?(value)
+      value
+    end
+  end
+
+  def semantic_id?(value)
+    WorkPackage::SemanticIdentifier.semantic_id?(value)
+  end
+
+  def find_by_semantic_identifier(identifier)
+    scope_for_semantic_identifier(identifier).first
+  end
+
+  def exists_by_semantic_identifier?(identifier)
+    scope_for_semantic_identifier(identifier).exists?
+  end
+
+  # Builds a scope that matches work packages by semantic identifier, considering
+  # both the current identifier column and the alias table for historical identifiers.
   #
   # Generates:
   #
@@ -140,13 +181,8 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   #        WHERE "work_package_semantic_aliases"."work_package_id" = "work_packages"."id"
   #          AND "work_package_semantic_aliases"."identifier" = 'PROJ-42'
   #      ))
-  #   ORDER BY "work_packages"."id" ASC LIMIT 1
-  def find_by_semantic_identifier(identifier)
-    where(identifier:).or(where(semantic_alias_exists(identifier))).first
-  end
-
-  def exists_by_semantic_identifier?(identifier)
-    where(identifier:).or(where(semantic_alias_exists(identifier))).exists?
+  def scope_for_semantic_identifier(identifier)
+    where(identifier:).or(where(semantic_alias_exists(identifier)))
   end
 
   # Correlated EXISTS subquery that matches work packages having a

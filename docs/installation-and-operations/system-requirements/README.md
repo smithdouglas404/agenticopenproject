@@ -65,7 +65,7 @@ multiple requests to be made simultaneously. Having just one will work, but page
 These numbers are a guideline only and your mileage may vary.
 It's best to monitor your server and its resource usage. You can always allocate more resources if needed.
 
-### **Scaling horizontally**
+### Scaling horizontally
 
 At some point simply increasing the resources of one single server may not be enough anymore.
 
@@ -99,7 +99,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 
 ## Example configurations
 
-### **Small instance (≤ 200 users, low concurrent activity)**
+### Small instance (≤ 200 users, low concurrent activity)
 
 - **Database**: 2 CPU / 4 GiB RAM
 
@@ -113,7 +113,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 
 - **Disk Space**: 20 GB + additional disk space in case of internal attachment storage
 
-### **Medium instance (~500 users, moderate concurrent activity)**
+### Medium instance (~500 users, moderate concurrent activity)
 
 - **Database**: 2-4 CPU / 8 GiB RAM
 - **CPU**: 4 CPU
@@ -122,7 +122,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 - **Background Workers**: 2 multithreaded workers with 4-6 GiB RAM
 - **Disk Space**: 50 GB + additional disk space in case of internal attachment storage
 
-### **Large instance (~1500 users, medium to high concurrent activity)**
+### Large instance (~1500 users, medium to high concurrent activity)
 
 - **Database**: 4-8 CPU / 16 GiB RAM
 - **CPU**: 8 CPU
@@ -131,7 +131,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 - **Background Workers**: 4-8 multithreaded workers with 4-6GiB RAM, depending on workload
 - **Disk Space**: 100 GB + additional disk space in case of internal attachment storage
 
-### **Enterprise-scale multitenancy instance (~80K - 100K users, high concurrent activity)**
+### Enterprise-scale multitenancy instance (~80K - 100K users, high concurrent activity)
 
 - **Database**: Cluster of two 8 vCPU / 32 GiB RAM (e.g., AWS db.m7g.xlarge, Gravitron 3)
 - **Worker instances**: 2-4 instances of the following

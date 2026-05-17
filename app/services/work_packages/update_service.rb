@@ -110,7 +110,19 @@ class WorkPackages::UpdateService < BaseServices::Update
   end
 
   def update_semantic_ids(work_packages)
-    work_packages.each(&:allocate_and_register_semantic_id)
+    return if work_packages.empty?
+
+    # reserve_semantic_id_block! writes via raw SQL UPDATE, so the in-memory
+    # records still carry the nil identifier left by SetAttributesService.
+    # Apply the returned assignments in-memory so callers (HAL representers,
+    # redirect helpers) see the freshly allocated semantic id without N reloads.
+    assignments = work_packages.first.project.reserve_semantic_id_block!(work_packages.map(&:id))
+    work_packages.each do |wp|
+      next unless (identifier = assignments[wp.id])
+
+      wp.assign_attributes(identifier:, sequence_number: identifier.split("-").last.to_i)
+      wp.clear_attribute_changes(%i[identifier sequence_number])
+    end
   end
 
   def delete_relations(work_packages)

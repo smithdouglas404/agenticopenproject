@@ -32,6 +32,7 @@ cs:
         location: Místo
         duration: Doba trvání
         notes: Poznámky
+        recurrence_start_time: Scheduled start time
         participants: Účastníci
         participant:
           one: 1 Účastník
@@ -44,6 +45,9 @@ cs:
         start_date: Datum
         start_time: Čas zahájení
         start_time_hour: Čas zahájení
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sdílení
       meeting_agenda_item:
         title: Název
@@ -51,9 +55,15 @@ cs:
         duration_in_minutes: Doba trvání
         description: Poznámky
         presenter: Přednášející
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Název
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frekvence
         interval: Interval
         start_date: Začíná v
@@ -62,6 +72,10 @@ cs:
         end_after: Řada schůzek končí
         end_date: Datum ukončení
         iterations: Výskyty
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Čas zahájení
       meeting_participant:
@@ -208,6 +222,7 @@ cs:
   label_time_zone: Časové pásmo
   label_start_date: Datum zahájení
   label_subscribe_icalendar: Přihlásit kalendář k odběru
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Vyberte šablonu pro automatické zkopírování bodů programu schůzky
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Nejprve vyberte projekt
@@ -432,6 +447,11 @@ cs:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Schůzka pro daný UID nebyla nalezena.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings you are participating in will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Sekce bez názvu
     delete_confirmation: Smazáním sekce také smažete všechny body agendy. Opravdu to chcete udělat?
@@ -678,9 +698,9 @@ cs:
   text_exit_draft_mode_dialog_template_title: Otevřít první výskyt této série schůzek?
   text_exit_draft_mode_dialog_template_subtitle: Poté se již nelze vrátit do režimu návrhu.
   label_meeting_template_sharing: Sdílení
-  label_meeting_template_sharing_none: Pouze tento projekt
-  label_meeting_template_sharing_descendants: Podprojekty
-  label_meeting_template_sharing_system: Všechny projekty
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Tuto šablonu lze sdílet s podprojekty nebo jinými projekty v této instanci. Budou zkopírovány pouze body a přílohy pořadu jednání.
   text_meeting_not_editable_anymore: Tato schůzka již není upravitelná.
   text_meeting_not_present_anymore: Tato schůzka byla odstraněna. Vyberte prosím jinou schůzku.
@@ -699,9 +719,12 @@ cs:
   text_agenda_item_duplicate_in_next_meeting: Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated.
   text_agenda_item_duplicated_in_next_meeting: Agenda item duplicated in the next meeting, on %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Tento pracovní balíček ještě není naplánován na nadcházející program schůzky.
-  text_agenda_item_no_available_occurrence: All upcoming occurrences have been cancelled.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Note: Skipping cancelled occurrence on %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Note: Skipping %{count} cancelled occurrences.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Použijte tlačítko "Přidat do schůzky" pro přidání tohoto pracovního balíčku na nadcházející schůzku.
   text_work_package_has_no_past_meeting_agenda_items: Tento pracovní balíček nebyl na minulém zasedání zařazen jako bod programu.
   text_email_updates_muted: Email calendar updates are muted. Participants will not receive updated invites via email when you make changes.
