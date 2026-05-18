@@ -23,7 +23,7 @@ export class WidgetMembersComponent extends AbstractTurboWidgetComponent {
     missing_permission: this.i18n.t('js.grid.widgets.missing_permission'),
   };
 
-  hasCapability$ = this.currentUser.hasCapabilities$('members/read', this.currentProject.id);
+  hasCapability$ = this.currentUser.hasCapabilities$('memberships/read', this.currentProject.id);
 
   public get projectIdentifier() {
     return this.currentProject.identifier;
