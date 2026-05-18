@@ -30,27 +30,24 @@
 
 require "rails_helper"
 
-RSpec.describe Homescreen::Blocks::Projects, type: :component do
+RSpec.describe Grids::Widgets::ProjectFavorites, type: :component do
   include Rails.application.routes.url_helpers
 
   shared_let(:admin) { create(:admin) }
 
   current_user { admin }
 
-  subject(:rendered_component) { render_inline(described_class.new) }
+  subject(:rendered_component) { render_inline(described_class.new(current_user: admin)) }
 
   context "with no favorite projects" do
     let!(:visible_project) { create(:project, name: "Visible project") }
 
-    it "renders the favorites blank slate without project creation or newest projects" do
+    it "renders the empty state with the project icon" do
       expect(rendered_component).to have_css("h3", text: "Favorite projects")
       expect(rendered_component).to have_test_selector("projects-widget-empty")
       expect(rendered_component).to have_octicon(:project)
-      expect(rendered_component).to have_no_octicon(:star)
-      expect(rendered_component).to have_no_octicon(:"star-fill")
       expect(rendered_component).to have_text("You have no favorite projects")
       expect(rendered_component).to have_no_link(visible_project.name)
-      expect(rendered_component).to have_no_link(href: new_project_path)
       expect(rendered_component).to have_no_link("View all projects")
     end
   end
@@ -71,8 +68,6 @@ RSpec.describe Homescreen::Blocks::Projects, type: :component do
       end
 
       expect(rendered_component).to have_no_link(visible_project.name)
-      expect(rendered_component).to have_no_link(href: new_project_path)
-      expect(rendered_component).to have_no_text("Newest visible projects in this instance.")
     end
   end
 end
