@@ -40,11 +40,10 @@ module Wikis
             wiki, page_path = identifier.split(":", 2)
             return nil if page_path.blank?
 
-            parts = page_path.split(".")
-            page = parts.pop
-            return nil if parts.empty?
+            *spaces, page = page_path.split(".")
+            return nil if spaces.empty?
 
-            new(wiki:, spaces: parts, page:)
+            new(wiki:, spaces:, page:)
           end
 
           def rest_path

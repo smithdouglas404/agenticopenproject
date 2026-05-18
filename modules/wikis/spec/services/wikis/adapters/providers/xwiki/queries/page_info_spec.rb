@@ -32,29 +32,28 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
-  let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.example.com/") }
-  let(:user) { build_stubbed(:user) }
-  let(:oauth_client) { build_stubbed(:oauth_client) }
-  let(:oauth_client_token) { instance_double(OAuthClientToken, access_token: "user-bearer-token") }
-  let(:identifier) { "xwiki:Main.WebHome" }
-  let(:page_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/Main/pages/WebHome" }
-  let(:auth_strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user:, provider: wiki_provider).value! }
-  let(:input_data) { Wikis::Adapters::Input::PageInfo.build(identifier:).value! }
-
-  let(:query) { described_class.new(model: wiki_provider) }
-
-  before do
-    allow(wiki_provider).to receive(:oauth_client).and_return(oauth_client)
-    allow(OAuthClientToken).to receive(:for_user_and_client).with(user, oauth_client)
-      .and_return(instance_double(ActiveRecord::Relation, first: oauth_client_token))
-  end
-
   it "is registered" do
     expect(Wikis::Adapters::Registry.resolve("xwiki.queries.page_info")).to eq(described_class)
   end
 
   describe "#call" do
+    let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.example.com/") }
+    let(:user) { build_stubbed(:user) }
+    let(:oauth_client_token) { instance_double(OAuthClientToken, access_token: "user-bearer-token") }
+    let(:identifier) { "xwiki:Main.WebHome" }
+    let(:page_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/Main/pages/WebHome" }
+    let(:auth_strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user:, provider: wiki_provider).value! }
+    let(:input_data) { Wikis::Adapters::Input::PageInfo.build(identifier:).value! }
+    let(:query) { described_class.new(model: wiki_provider) }
+
     subject(:result) { query.call(input_data:, auth_strategy:) }
+
+    before do
+      oauth_client = build_stubbed(:oauth_client)
+      allow(wiki_provider).to receive(:oauth_client).and_return(oauth_client)
+      allow(OAuthClientToken).to receive(:for_user_and_client).with(user, oauth_client)
+        .and_return(instance_double(ActiveRecord::Relation, first: oauth_client_token))
+    end
 
     let(:page_response) do
       {
