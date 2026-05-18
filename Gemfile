@@ -62,14 +62,14 @@ gem "warden-basic_auth", "~> 0.2.1"
 gem "pagy"
 gem "will_paginate", "~> 4.0.0"
 
-gem "friendly_id", "~> 5.6.0"
+gem "friendly_id", "~> 5.7.0"
 
 gem "scimitar", "~> 2.13"
 
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.9.0"
-gem "closure_tree", "~> 9.6.2"
+gem "closure_tree", "~> 9.7.0"
 gem "rubytree", "~> 2.2.0"
 
 gem "addressable", "~> 2.9.0"
@@ -236,18 +236,18 @@ gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
 # opentelemetry
-gem "opentelemetry-exporter-otlp", "~> 0.33.0", require: false
+gem "opentelemetry-exporter-otlp", "~> 0.34.0", require: false
 gem "opentelemetry-instrumentation-all", "~> 0.93.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.9.0"
+gem "view_component", "~> 4.10.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
 gem "inline_svg", "~> 1.10.0"
 
 # Require factory_bot for usage with openproject plugins testing
-gem "factory_bot", "~> 6.5.6", require: false
+gem "factory_bot", "~> 6.6.0", require: false
 # require factory_bot_rails for convenience in core development
 gem "factory_bot_rails", "~> 6.5.0", require: false
 
@@ -365,7 +365,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", "~> 2.34.2"
+  gem "rubocop-rails", "~> 2.35.1"
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 

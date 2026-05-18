@@ -66,9 +66,11 @@
 
 //------------------ Sprint planning divider (side-by-side only) ----
 @container backlogsListsContainer (min-width: 655px)
-  .op-sprint-planning-lists:not(:last-child)
-    border-right: 1px solid var(--borderColor-default)
+  .op-sprint-planning-lists
     padding-right: var(--stack-gap-normal)
+
+    &:not(:last-child)
+      border-right: 1px solid var(--borderColor-default)
 
 //------------------ Mobile responsive styling -----------------------
 @container backlogsListsContainer (max-width: 654px)
