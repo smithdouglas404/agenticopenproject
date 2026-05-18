@@ -92,10 +92,11 @@ module Components
 
       def cancel
         find("#{selector} .button", text: "Cancel").click
+        expect_closed
       end
 
       def expect_open
-        raise "Expected modal to be open" unless open?
+        expect(page).to have_css(".wp-table--configuration-modal", wait: 10)
       end
 
       def open?
@@ -120,9 +121,20 @@ module Components
         # so wait a bit initially
         SeleniumHubWaiter.wait unless using_cuprite?
 
-        retry_block do
-          find("#{selector} .op-tab-row--link", text: target.upcase, wait: 2).click
+        attempts = 0
+
+        begin
+          expect_open
+
+          find("#{selector} .op-tab-row--link", text: target.upcase, wait: 10).click
           selected_tab(target)
+        rescue Capybara::Cuprite::ObsoleteNode,
+               Selenium::WebDriver::Error::StaleElementReferenceError,
+               Capybara::ElementNotFound
+          attempts += 1
+          retry if attempts < 3
+
+          raise
         end
       end
 
