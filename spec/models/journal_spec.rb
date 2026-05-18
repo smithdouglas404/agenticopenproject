@@ -146,6 +146,87 @@ RSpec.describe Journal do
     end
   end
 
+  describe "#details custom field visibility" do
+    context "for a project journal" do
+      shared_let(:project) { create(:project) }
+      shared_let(:project_cf) { create(:string_project_custom_field) }
+
+      before_all do
+        project.update!(custom_field_values: { "#{project_cf.id}": "initial" })
+        project.update!(custom_field_values: { "#{project_cf.id}": "changed" })
+      end
+
+      let(:journal) { project.journals.last }
+      let(:cf_key) { "custom_fields_#{project_cf.id}" }
+
+      context "when the user lacks view_project_attributes" do
+        let(:user) { create(:user, member_with_permissions: { project => [] }) }
+
+        before { login_as(user) }
+
+        it "omits the CF change from details" do
+          expect(journal.details.keys).not_to include(cf_key)
+        end
+      end
+
+      context "when the user has view_project_attributes" do
+        let(:user) { create(:user, member_with_permissions: { project => [:view_project_attributes] }) }
+
+        before { login_as(user) }
+
+        it "includes the CF change in details" do
+          expect(journal.details.keys).to include(cf_key)
+        end
+      end
+
+      context "when the user is an admin" do
+        let(:user) { create(:admin) }
+
+        before { login_as(user) }
+
+        it "includes the CF change in details" do
+          expect(journal.details.keys).to include(cf_key)
+        end
+      end
+    end
+
+    context "for a work package journal" do
+      shared_let(:type) { create(:type) }
+      shared_let(:project) { create(:project, types: [type]) }
+      shared_let(:wp_cf) { create(:string_wp_custom_field, types: [type], projects: [project]) }
+      shared_let(:work_package) do
+        create(:work_package, project:, type:, custom_field_values: { "#{wp_cf.id}": "initial" })
+      end
+
+      before_all do
+        work_package.update!(custom_field_values: { "#{wp_cf.id}": "changed" })
+      end
+
+      let(:journal) { work_package.journals.last }
+      let(:cf_key) { "custom_fields_#{wp_cf.id}" }
+
+      context "when the user is a project member (CF visible via type/project)" do
+        let(:user) { create(:user, member_with_permissions: { project => [:view_work_packages] }) }
+
+        before { login_as(user) }
+
+        it "includes the CF change in details" do
+          expect(journal.details.keys).to include(cf_key)
+        end
+      end
+
+      context "when the user is not a member of the project (CF not visible)" do
+        let(:user) { create(:user) }
+
+        before { login_as(user) }
+
+        it "omits the CF change from details" do
+          expect(journal.details.keys).not_to include(cf_key)
+        end
+      end
+    end
+  end
+
   describe "#create" do
     context "without a data foreign key" do
       subject { create(:work_package_journal, data: nil) }

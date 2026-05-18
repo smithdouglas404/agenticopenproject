@@ -75,7 +75,7 @@ module JournalChanges
   def get_custom_comments_changes
     return unless journable.respond_to?(:custom_comments)
 
-    association = ->(journal) { filter_admin_only_custom_fields(journal.custom_comment_journals) }
+    association = ->(journal) { filter_invisible_custom_fields(journal.custom_comment_journals) }
 
     ::Acts::Journalized::Differ::Association.new(
       predecessor,
@@ -97,7 +97,7 @@ module JournalChanges
         relation = relation.with(cf_mappings: journable.project_custom_field_project_mappings)
                            .joins("INNER JOIN cf_mappings USING (custom_field_id)")
       end
-      filter_admin_only_custom_fields(relation)
+      filter_invisible_custom_fields(relation)
     }
 
     ::Acts::Journalized::Differ::Association.new(
@@ -152,10 +152,11 @@ module JournalChanges
 
   private
 
-  def filter_admin_only_custom_fields(relation)
-    return relation if User.current.admin?
-    return relation unless journable.admin_only_custom_fields_allowed?
+  def filter_invisible_custom_fields(relation)
+    cf_class = journable.class.custom_field_class
+    return relation if cf_class.nil?
 
-    relation.joins(:custom_field).where(custom_fields: { admin_only: false })
+    project = journable.is_a?(::Project) ? journable : journable.try(:project)
+    relation.where(custom_field_id: cf_class.visible(User.current, project:).select(:id))
   end
 end
