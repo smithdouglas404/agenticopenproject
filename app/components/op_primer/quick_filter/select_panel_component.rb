@@ -105,13 +105,15 @@ module OpPrimer
 
       def panel_src
         return unless async?
-        # Pass currently selected ids so the right items can be marked in the response
-        return @src if current_values.empty?
 
         uri = URI.parse(@src)
-        uri.query = Rack::Utils.parse_nested_query(uri.query.to_s)
-                               .merge("selected" => current_values.join(","))
-                               .to_query
+        params = Rack::Utils.parse_nested_query(uri.query.to_s)
+        # Pass other active filters (e.g. time=past) so the fragment endpoint builds
+        # the same query scope as the current page, not its own default
+        params["filters"] = other_filters.to_json if other_filters.any?
+        # Pass currently selected ids so the right items can be marked in the response
+        params["selected"] = current_values.join(",") if current_values.any?
+        uri.query = params.to_query
         uri.to_s
       end
 

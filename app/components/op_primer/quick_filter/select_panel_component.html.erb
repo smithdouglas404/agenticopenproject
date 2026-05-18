@@ -55,10 +55,17 @@ See COPYRIGHT and LICENSE files for more details.
            ) %>
       <% end %>
     <% end %>
-    <% if @select_variant == :multiple %>
+    <% if @select_variant == :multiple || current_values.any? %>
       <% panel.with_footer(show_divider: true) do %>
-        <%= render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click->quick-filter--select-panel#apply" })) do %>
-          <%= t(:button_apply) %>
+        <% if current_values.any? %>
+          <%= render(Primer::Beta::Button.new(scheme: :secondary, data: { action: "click->quick-filter--select-panel#clear" })) do %>
+            <%= t(:button_clear) %>
+          <% end %>
+        <% end %>
+        <% if @select_variant == :multiple %>
+          <%= render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click->quick-filter--select-panel#apply" })) do %>
+            <%= t(:button_apply) %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

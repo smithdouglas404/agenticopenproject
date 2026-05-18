@@ -29,6 +29,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
+import { visit } from '@hotwired/turbo';
 import type { SelectPanelElement } from '@primer/view-components/app/components/primer/alpha/select_panel_element';
 
 export default class SelectPanelQuickFilterController extends Controller {
@@ -42,7 +43,14 @@ export default class SelectPanelQuickFilterController extends Controller {
   declare filterKeyValue:string;
   declare operatorValue:string;
 
-  apply() {
+  clear() {
+    visit(this.baseUrlValue);
+  }
+
+  apply(event:Event) {
+    // Prevent updating dynamic label before the page reloads anyway to stop flickering
+    event.stopPropagation();
+
     const panel = this.element.querySelector<SelectPanelElement>('select-panel');
     if (!panel) return;
 
@@ -58,6 +66,6 @@ export default class SelectPanelQuickFilterController extends Controller {
       url.searchParams.set('filters', JSON.stringify(filters));
     }
 
-    window.location.href = url.toString();
+    visit(url.toString());
   }
 }
