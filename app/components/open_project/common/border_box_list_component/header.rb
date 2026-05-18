@@ -101,8 +101,8 @@ module OpenProject
         #   announced politely to assistive technology.
         # @param collapsed [Boolean] whether the collapsible header starts closed.
         # @param collapsible [Boolean] whether the header renders a collapsible
-        #   toggle. Defaults to `true`. Pass `false` to render a plain title
-        #   without a toggle button.
+        #   toggle. Defaults to `false`. Pass `true` to render a header
+        #   with a toggle button.
         # @param system_arguments [Hash] forwarded to `Primer::Beta::BorderBox#with_header`.
         def initialize(
           title:,
@@ -113,7 +113,7 @@ module OpenProject
           list_id: nil,
           interactive: false,
           collapsed: false,
-          collapsible: true,
+          collapsible: false,
           **system_arguments
         )
           super()
