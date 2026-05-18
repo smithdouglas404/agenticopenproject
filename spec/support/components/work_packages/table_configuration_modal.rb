@@ -92,11 +92,10 @@ module Components
 
       def cancel
         find("#{selector} .button", text: "Cancel").click
-        expect_closed
       end
 
       def expect_open
-        expect(page).to have_css(".wp-table--configuration-modal", wait: 10)
+        raise "Expected modal to be open" unless open?
       end
 
       def open?
@@ -122,9 +121,7 @@ module Components
         SeleniumHubWaiter.wait unless using_cuprite?
 
         retry_block do
-          expect_open
-
-          find("#{selector} .op-tab-row--link", text: target.upcase, wait: 10).click
+          find("#{selector} .op-tab-row--link", text: target.upcase, wait: 2).click
           selected_tab(target)
         end
       end

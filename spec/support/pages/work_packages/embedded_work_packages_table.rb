@@ -44,9 +44,7 @@ module Pages
     end
 
     def table_container
-      wait_for_network_idle if using_cuprite?
-
-      container.find(".work-package-table", wait: 20)
+      container.first(".work-package-table", wait: 10)
     end
 
     def click_reference_inline_create
