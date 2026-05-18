@@ -127,7 +127,7 @@ RSpec.describe Backlogs::WorkPackageCardListComponent, type: :component do
       )
       expect(rendered_component).to have_element(
         "include-fragment",
-        src: menu_project_backlogs_work_package_path(project, sprint, work_package)
+        src: menu_project_backlogs_work_package_path(project, work_package)
       )
     end
   end
