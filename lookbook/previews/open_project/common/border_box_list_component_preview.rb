@@ -31,6 +31,7 @@
 module OpenProject
   module Common
     # @logical_path OpenProject/Common
+    # @display min_height 400px
     class BorderBoxListComponentPreview < ViewComponent::Preview
       DEFAULT_DESCRIPTION = "Coordinate launch work and keep stakeholders aligned."
       TRANSPARENT_DESCRIPTION = "Sprint goals, scope, and timing for the next iteration."
