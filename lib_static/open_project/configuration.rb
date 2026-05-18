@@ -37,6 +37,23 @@ module OpenProject
 
     TRUE_VALUES = ["true", true, "1"].freeze
 
+    # Reject cache payloads that do not use MessagePack's own framing.
+    # This prevents SerializerWithFallback from invoking Marshal on attacker-controlled bytes.
+    module StrictMessagePackCoder
+      extend self
+
+      BASE = ActiveSupport::Cache::SerializerWithFallback::MessagePackWithFallback
+
+      def dump(entry) = BASE.dump(entry)
+      def dump_compressed(entry, threshold) = BASE.dump_compressed(entry, threshold)
+
+      def load(dumped)
+        return nil unless dumped.is_a?(String) && BASE.dumped?(dumped)
+
+        BASE._load(dumped)
+      end
+    end
+
     class << self
       # Returns a configuration setting
       def [](name)
@@ -67,7 +84,16 @@ module OpenProject
           end
 
         parameters = cache_store_parameters
-        cache_config << parameters unless parameters.empty?
+        if %i[memcache dalli_store redis].include?(cache_store)
+          parameters[:serializer] ||= StrictMessagePackCoder
+        end
+        unless parameters.empty?
+          if cache_config.last.is_a?(Hash)
+            cache_config[-1] = cache_config.last.merge(parameters)
+          else
+            cache_config << parameters
+          end
+        end
 
         cache_config
       end
