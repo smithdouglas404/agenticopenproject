@@ -210,6 +210,7 @@ es:
   label_time_zone: Zona horaria
   label_start_date: Fecha de inicio
   label_subscribe_icalendar: Suscribirse al calendario
+  label_recurring_filter: Filtro recurrente
   caption_meeting_template_select: Seleccione una plantilla para copiar automáticamente sus puntos del orden del día
   caption_template_project_select: Seleccione el proyecto en el que desea crear esta plantilla de reunión
   placeholder_meeting_template_select_project_first: Primero selecciona un proyecto

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::BacklogBucketsController, with_flag: { backlog_buckets: true } do
+RSpec.describe Backlogs::BacklogBucketsController do
   let(:permissions) { %i[view_sprints view_work_packages create_sprints] }
   let(:user) { create(:user, member_with_permissions: { project => permissions }) }
   let(:project) { create(:project) }

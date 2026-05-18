@@ -55,12 +55,35 @@ RSpec.describe WorkPackageMailer do
   describe "#mentioned" do
     subject(:mail) { described_class.mentioned(recipient, journal) }
 
-    it "has a subject" do
-      expect(mail.subject)
-        .to eql I18n.t(:"mail.mention.subject",
-                       user_name: author.name,
-                       id: work_package.id,
-                       subject: work_package.subject)
+    context "with classic mode", with_settings: { work_packages_identifier: "classic" } do
+      it "has a subject with # prefixed numeric id" do
+        expect(mail.subject)
+          .to eql I18n.t(:"mail.mention.subject",
+                         user_name: author.name,
+                         id: "##{work_package.id}",
+                         subject: work_package.subject)
+      end
+    end
+
+    context "with semantic mode",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      let(:work_package) do
+        build_stubbed(:work_package,
+                      type: build_stubbed(:type_standard),
+                      project:,
+                      assigned_to: assignee,
+                      identifier: "PROJ-42",
+                      sequence_number: 42)
+      end
+
+      it "has a subject with semantic identifier and no # prefix" do
+        expect(mail.subject)
+          .to eql I18n.t(:"mail.mention.subject",
+                         user_name: author.name,
+                         id: "PROJ-42",
+                         subject: work_package.subject)
+      end
     end
 
     it "is sent to the recipient" do
@@ -122,6 +145,30 @@ RSpec.describe WorkPackageMailer do
           .to include(work_package.subject)
       end
 
+      context "with classic mode", with_settings: { work_packages_identifier: "classic" } do
+        it "includes the # prefixed numeric id in the subject" do
+          expect(mail.subject).to include("##{work_package.id}")
+        end
+      end
+
+      context "with semantic mode",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) do
+          build_stubbed(:work_package,
+                        type: build_stubbed(:type_standard),
+                        project:,
+                        assigned_to: assignee,
+                        identifier: "PROJ-42",
+                        sequence_number: 42)
+        end
+
+        it "includes the semantic identifier without # prefix in the subject" do
+          expect(mail.subject).to include("PROJ-42")
+          expect(mail.subject).not_to match(/#PROJ-42/)
+        end
+      end
+
       it "has a references header" do
         expect(mail.references)
           .to eql "op.work_package-#{work_package.id}@example.net"
@@ -134,6 +181,30 @@ RSpec.describe WorkPackageMailer do
       it "contains the WP subject in the mail subject" do
         expect(mail.subject)
           .to include(work_package.subject)
+      end
+
+      context "with classic mode", with_settings: { work_packages_identifier: "classic" } do
+        it "includes the # prefixed numeric id in the subject" do
+          expect(mail.subject).to include("##{work_package.id}")
+        end
+      end
+
+      context "with semantic mode",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) do
+          build_stubbed(:work_package,
+                        type: build_stubbed(:type_standard),
+                        project:,
+                        assigned_to: assignee,
+                        identifier: "PROJ-42",
+                        sequence_number: 42)
+        end
+
+        it "includes the semantic identifier without # prefix in the subject" do
+          expect(mail.subject).to include("PROJ-42")
+          expect(mail.subject).not_to match(/#PROJ-42/)
+        end
       end
 
       it "has a references header" do

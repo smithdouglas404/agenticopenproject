@@ -16,7 +16,7 @@ zh-TW:
         ldap_auth_source: LDAP 連線
         sync_users: 同步使用者
       ldap_groups/synchronized_filter:
-        filter_string: LDAP篩選條件
+        filter_string: 簡約登入目錄制約(LDAP)篩選
         auth_source: 驗證來源
         ldap_auth_source: LDAP 連線
         group_name_attribute: 群組名字屬性
@@ -64,11 +64,11 @@ zh-TW:
         confirmation: 如繼續，將移除同步的群組 %{name} 和所有透過該群組同步的全部 %{users_count} 個用戶。
         info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
-        此模組允許您在 LDAP 與 OpenProject 群組之間設置同步。
-        它要求 LDAP 群組使用 <em>groupOfNames / memberOf</em> 屬性集才能與 OpenProject 一起使用。
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.
         <br/>
-        群組通過 Cron 作業每小時同步。
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">請參閱我們關於此主題的文檔</a>。
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: 找不到同步的群組。
       no_members: 這個群組還沒有同步的成員。
       plural: LDAP 同步群組

@@ -41,8 +41,10 @@ See COPYRIGHT and LICENSE files for more details.
       render(Primer::Alpha::ActionMenu.new) do |menu|
         menu.with_show_button(icon: :"kebab-horizontal", "aria-label": t(:label_more), scheme: :invisible)
 
-        menu.with_item(label: t(".remove"), scheme: :danger) do |item|
-          item.with_leading_visual_icon(icon: :trash)
+        if actions.include?(:remove)
+          menu.with_item(label: t(".remove"), scheme: :danger) do |item|
+            item.with_leading_visual_icon(icon: :trash)
+          end
         end
       end
     end

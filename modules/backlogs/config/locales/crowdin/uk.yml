@@ -26,9 +26,11 @@ uk:
     description: Цей модуль додає функції, завдяки яким agile-команди можуть працювати над проєктами Scrum в OpenProject.
   activerecord:
     attributes:
-      agile/sprint:
+      project:
+        sprint_sharing: Спільний доступ до спринту
+      sprint:
         duration: Тривалість
-        finish_date: Дата закінчення
+        finish_date: Дата завершення
         goal: Ціль спринту
         name: Ім’я спринту
         sharing: Надання доступу
@@ -36,10 +38,6 @@ uk:
           in_planning: На етапі планування
           active: Активний
           completed: Завершений
-      project:
-        sprint_sharing: Спільний доступ до спринту
-      sprint:
-        duration: Тривалість спринту
       user_preference:
         backlogs_versions_default_fold_state: Показувати спринти згорнутими
       work_package:
@@ -60,6 +58,17 @@ uk:
             sprint_sharing:
               share_all_projects_already_taken: не можна налаштувати, оскільки проєкт «%{name}» уже надає спільний доступ усім проєктам.
               share_all_projects_already_taken_anonymous: не можна налаштувати, оскільки інший проєкт вже надає спільний доступ усім проєктам.
+        sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: У цьому спринті не завершено один пакет робіт.
+                few: У цьому спринті не завершено %{count} пакети робіт.
+                many: У цьому спринті не завершено %{count} пакетів робіт.
+                other: У цьому спринті не завершено %{count} пакета робіт.
+              format: "%{message}"
+            status:
+              not_active: не є активним, тому його не можна закрити.
         work_package:
           backlog_bucket_xor_sprint: не можна призначити як спринту, так і сегменту беклогу.
           attributes:
@@ -73,19 +82,6 @@ uk:
             sprint:
               not_assignable: не можна призначити, оскільки його вже завершено або доступ до нього не надано цьому проєкту.
               not_eligible_for_moving: не є активним спринтом у проєкті, який включає спринт, з якого переміщується пакет робіт.
-        agile/sprint:
-          attributes:
-            base:
-              unfinished_work_packages:
-                one: У цьому спринті не завершено %{count} пакет робіт.
-                few: У цьому спринті не завершено %{count} пакети робіт.
-                many: У цьому спринті не завершено %{count} пакетів робіт.
-                other: У цьому спринті не завершено %{count} пакета робіт.
-              format: "%{message}"
-            status:
-              not_active: не є активним, тому його не можна закрити.
-        sprint:
-          cannot_end_before_it_starts: Спринт не може закінчитися, перш ніж він почне працювати.
     models:
       sprint: Спринт
   backlogs:
@@ -122,17 +118,27 @@ uk:
     administration_blankslate:
       title: Ми змінюємо налаштування адміністратора в модулі беклогів
       text: Зараз ми переробляємо модуль невиконаних завдань (беклогів). Налаштування адміністратора для спринтів і беклогів з’являться тут найближчим часом. Налаштування на рівні проєктів залишаються доступними.
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Сегмент беклогу порожній
       blankslate_description: Щоб додати елементи, перетягніть їх сюди.
+      label_actions: Дії із сегментом беклогу
+      action_menu:
+        edit_backlog_bucket: Змінити сегмент беклогу
+        delete_backlog_bucket: Видалити сегмент беклогу
     backlog_bucket_destroy_modal_component:
       title: Видалити сегмент беклогу?
       details: Сегмент беклогу «%{name}» буде видалено, а всі пакети робіт — переміщено у вхідні завдання беклогу. Пакети робіт не видаляться.
-    backlog_bucket_item_component:
-      label_actions: Дії з пакетом робіт
     sprint_component:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
+      label_actions: Дії зі спринтом
+      label_start_sprint: Почати
+      label_complete_sprint: Завершити
+      start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.
+      start_sprint_disabled_reason_missing_dates: Щоб запустити спринт, необхідно вказати дату початку й завершення.
+      action_menu:
+        edit_sprint: Змінити спринт
+        add_work_package: Додати пакет робіт
     inbox_component:
       blankslate_title: Немає вхідних завдань беклогу
       blankslate_description: Тут автоматично з’являтимуться всі відкриті пакети робіт цього проєкту.
@@ -141,8 +147,6 @@ uk:
         few: Показати ще %{count} елементи
         many: Показати ще %{count} елементів
         other: Показати ще %{count} елемента
-    inbox_item_component:
-      label_actions: Дії з пакетом робіт
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну
@@ -152,35 +156,16 @@ uk:
     move_to_sprint_dialog_component:
       title: Перемістити в спринт
       label_sprint: Спринт
-    backlog:
+    sprints_component:
       blankslate:
         title: Спринтів ще немає
-        description_html: Щоб почати планувати спринт, створіть його тут або перейдіть на сторінку %{settings_link}, щоб отримати спринти з інших проєктів.
-        create_sprint_description_text: Щоб почати планувати спринт, створіть його тут.
-        share_sprint_description_html: Щоб почати планувати спринт, перейдіть на сторінку %{settings_link}, щоб отримати спринти з інших проєктів.
-        no_actions_description_text: Ще немає спринтів, доступних для цього проєкту.
-        receive_shared_description_html: Цей проєкт може використовувати спринти з іншого проєкту. Щоб змінити параметри, перейдіть на сторінку %{settings_link}.
-        receive_shared_no_actions_description_text: Цей проєкт може використовувати спринти з іншого проєкту, до яких надано доступ. Однак зараз доступних спринтів немає.
         settings_link_text: налаштування проєкту
-    backlog_bucket_menu_component:
-      label_actions: Дії із сегментом беклогу
-      action_menu:
-        edit_backlog_bucket: Змінити сегмент беклогу
-        delete_backlog_bucket: Видалити сегмент беклогу
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: У сегменті беклогу немає історій
-        one: У сегменті беклогу %{count} історія
-        other: 'У сегменті беклогу стільки історій: %{count}'
-    sprint_header_component:
-      label_start_sprint: Початок
-      label_complete_sprint: Завершити
-      start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.
-      start_sprint_disabled_reason_missing_dates: Щоб запустити спринт, необхідно вказати дату початку й завершення.
-      label_story_count:
-        zero: У спринті немає історій
-        one: У спринті %{count} історія
-        other: 'У спринті стільки історій: %{count}'
+        receive_and_manage_description_html: Цей проєкт може використовувати спринти з іншого проєкту. Щоб змінити параметри, перейдіть у %{settings_link}.
+        receive_description_text: Цей проєкт може використовувати спринти з іншого проєкту, до яких надано доступ. Однак зараз доступних спринтів немає.
+        create_and_manage_description_html: Щоб почати планувати спринт, створіть його тут або перейдіть у %{settings_link}, щоб отримати спринти з інших проєктів.
+        create_description_text: Щоб почати планувати спринт, створіть його тут.
+        manage_description_html: Щоб почати планувати спринт, перейдіть у %{settings_link}, щоб отримати спринти з інших проєктів.
+        no_actions_description_text: Ще немає спринтів, доступних для цього проєкту.
     finish_sprint_dialog_component:
       title: Є елементи, роботу над якими ще не завершено
       body: "%{message} Що б ви хотіли з ними зробити?"
@@ -191,13 +176,6 @@ uk:
         move_to_sprint: Перемістити їх в інший спринт
       select_sprint_label: Вибрати спринт
       button_complete_sprint: Завершити спринт
-    sprint_menu_component:
-      label_actions: Дії зі спринтом
-      action_menu:
-        edit_sprint: Редагувати спринт
-        add_work_package: Додати пакет робіт
-    story_component:
-      label_actions: Дії з історією
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну

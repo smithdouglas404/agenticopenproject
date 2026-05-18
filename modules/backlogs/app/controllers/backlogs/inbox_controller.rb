@@ -37,14 +37,14 @@ module Backlogs
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
-      backlog_items_scope = if OpenProject::FeatureDecisions.backlog_buckets_active? && @work_package.backlog_bucket_id
+      backlog_items_scope = if @work_package.backlog_bucket_id
                               @work_package.backlog_bucket.work_packages
                             else
-                              Backlog.inbox_for(project: @project)
+                              WorkPackage.backlogs_inbox_for(project: @project)
                             end
 
       max_position = backlog_items_scope.maximum(:position) || 0
-      open_sprints_exist = Agile::Sprint.for_project(@project).visible.not_completed.exists?
+      open_sprints_exist = Sprint.for_project(@project).visible.not_completed.exists?
 
       render(Backlogs::InboxMenuComponent.new(
                work_package: @work_package,
@@ -99,15 +99,13 @@ module Backlogs
     end
 
     def replace_inbox_component_via_turbo_stream
-      inbox_work_packages = Backlog.inbox_for(project: @project)
-      backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
-                          Agile::BacklogBucket.for_project(@project)
-                        end
+      inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
+      buckets = BacklogBucket.for_project(@project)
 
       replace_via_turbo_stream(
-        component: Backlogs::BacklogsComponent.new(
+        component: Backlogs::BacklogComponent.new(
           inbox_work_packages:,
-          backlog_buckets:,
+          buckets:,
           project: @project
         ),
         method: :morph
@@ -115,7 +113,7 @@ module Backlogs
     end
 
     def replace_sprint_component_via_turbo_stream(sprint_id)
-      sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id)
+      sprint = Sprint.for_project(@project).visible.find(sprint_id)
       replace_via_turbo_stream(
         component: Backlogs::SprintComponent.new(sprint:, project: @project),
         method: :morph

@@ -207,6 +207,7 @@ zh-TW:
   label_time_zone: 時區
   label_start_date: 開始日期
   label_subscribe_icalendar: 訂閱行事曆
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first

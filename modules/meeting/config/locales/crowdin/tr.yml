@@ -210,6 +210,7 @@ tr:
   label_time_zone: Saat dilim
   label_start_date: Başlama tarihi
   label_subscribe_icalendar: Takvime abone ol
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first

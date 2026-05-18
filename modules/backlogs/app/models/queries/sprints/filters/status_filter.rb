@@ -30,8 +30,8 @@
 
 class Queries::Sprints::Filters::StatusFilter < Queries::Sprints::Filters::SprintFilter
   def allowed_values
-    Agile::Sprint.statuses.map do |key, value|
-      [I18n.t(:"activerecord.attributes.agile/sprint.statuses.#{key}"), value]
+    Sprint.statuses.map do |key, value|
+      [I18n.t(:"activerecord.attributes.sprint.statuses.#{key}"), value]
     end
   end
 

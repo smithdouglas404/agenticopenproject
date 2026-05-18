@@ -60,22 +60,21 @@ module OpenProject::Wikis
       )
 
       OpenProject::TextFormatting::Filters::PatternMatcherFilter.append_matcher ::Wikis::TextFormatting::WikiLinkMatcher
+
+      # Registering queries and filters
+      ::Queries::Register.register(::Queries::Wikis::PageLinks::PageLinkQuery) do
+        filter ::Queries::Wikis::PageLinks::Filter::ProviderFilter
+      end
     end
 
     replace_principal_references "Wikis::PageLink" => %i[author_id]
 
     register "openproject-wikis", author_url: "https://openproject.org" do
       project_module :work_package_tracking do
-        permission :view_wiki_page_links,
-                   {},
-                   permissible_on: :project,
-                   dependencies: %i[view_work_packages],
-                   contract_actions: { wiki_page_links: %i[view] }
-
         permission :manage_wiki_page_links,
                    {},
                    permissible_on: :project,
-                   dependencies: %i[view_work_packages],
+                   dependencies: %i[edit_work_packages],
                    contract_actions: { wiki_page_links: %i[manage] }
       end
 
@@ -98,7 +97,17 @@ module OpenProject::Wikis
            icon: "browser"
     end
 
+    patch_with_namespace :WikiPages, :CreateService
+    patch_with_namespace :WikiPages, :UpdateService
+    patch_with_namespace :WorkPackages, :CreateService
+    patch_with_namespace :WorkPackages, :UpdateService
+
     add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
     add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }
+    add_api_path(:work_package_page_links) { |work_package_id| "#{work_package(work_package_id)}/wiki_page_links" }
+
+    add_api_endpoint "API::V3::WorkPackages::WorkPackagesAPI", :id do
+      mount ::API::V3::PageLinks::WorkPackageWikiPageLinksAPI
+    end
   end
 end

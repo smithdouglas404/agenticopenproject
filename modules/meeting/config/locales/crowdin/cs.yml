@@ -222,6 +222,7 @@ cs:
   label_time_zone: Časové pásmo
   label_start_date: Datum zahájení
   label_subscribe_icalendar: Přihlásit kalendář k odběru
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Vyberte šablonu pro automatické zkopírování bodů programu schůzky
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Nejprve vyberte projekt
@@ -569,7 +570,7 @@ cs:
 
     '
   permission_edit_meetings: Upravit schůzku
-  permission_delete_meetings: Odstranit schůzky
+  permission_delete_meetings: Smazat schůzku
   permission_view_meetings: Zobrazit schůzky
   permission_manage_agendas: Správa zápisů
   permission_manage_agendas_explanation: Allows creating, editing and removing agenda items

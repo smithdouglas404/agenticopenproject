@@ -173,7 +173,6 @@ da:
   label_previous_week: Foregående uge
   label_previous_month: Forrige måned
   label_specific_day: Dag %{day}
-  label_specific_week: Kalenderuge %{week}
   label_specific_month: Måned %{month}
   label_list: Liste
   label_month: Måned

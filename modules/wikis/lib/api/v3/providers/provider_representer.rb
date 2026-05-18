@@ -35,13 +35,13 @@ module API
         include Decorators::LinkedResource
         include Decorators::DateProperty
 
-        property :id
+        property :universal_identifier
         property :name
 
         date_time_property :created_at
         date_time_property :updated_at
 
-        self_link(path: :wiki_provider)
+        self_link(path: :wiki_provider, id_attribute: :universal_identifier)
       end
     end
   end

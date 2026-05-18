@@ -34,9 +34,9 @@ RSpec.describe "Sprint displayed and selectable on work package view", :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
 
   shared_let(:project) { create(:project) }
-  shared_let(:sprint) { create(:agile_sprint, project:, name: "Current sprint") }
-  shared_let(:next_sprint) { create(:agile_sprint, project:, name: "Next sprint") }
-  shared_let(:completed_sprint) { create(:agile_sprint, project:, status: "completed", name: "Completed sprint") }
+  shared_let(:sprint) { create(:sprint, project:, name: "Current sprint") }
+  shared_let(:next_sprint) { create(:sprint, project:, name: "Next sprint") }
+  shared_let(:completed_sprint) { create(:sprint, project:, status: "completed", name: "Completed sprint") }
   shared_let(:work_package) { create(:work_package, project:, sprint:) }
 
   let(:permissions) { %i(view_work_packages view_sprints manage_sprint_items) }

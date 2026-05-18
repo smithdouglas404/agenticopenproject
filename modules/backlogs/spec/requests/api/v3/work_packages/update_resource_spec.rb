@@ -40,9 +40,9 @@ RSpec.describe "API v3 Work package resource",
   shared_let(:type) { project.types.first }
   shared_let(:status) { create(:status, is_default: true) }
   shared_let(:priority) { create(:priority, is_default: true) }
-  shared_let(:sprint) { create(:agile_sprint, project:) }
-  shared_let(:completed_sprint) { create(:agile_sprint, project:, status: :completed) }
-  shared_let(:outside_sprint) { create(:agile_sprint, project: other_project) }
+  shared_let(:sprint) { create(:sprint, project:) }
+  shared_let(:completed_sprint) { create(:sprint, project:, status: :completed) }
+  shared_let(:outside_sprint) { create(:sprint, project: other_project) }
   shared_let(:work_package) { create(:work_package, project:, type:, status:, priority:) }
 
   let(:role) { create(:project_role, permissions:) }

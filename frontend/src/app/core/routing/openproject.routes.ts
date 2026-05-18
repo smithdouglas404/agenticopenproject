@@ -39,8 +39,6 @@ import {
   mobileGuardActivated,
   redirectToMobileAlternative,
 } from 'core-app/shared/helpers/routing/mobile-guard.helper';
-import { TEAM_PLANNER_LAZY_ROUTES } from 'core-app/features/team-planner/team-planner/team-planner.lazy-routes';
-import { CALENDAR_LAZY_ROUTES } from 'core-app/features/calendar/calendar.lazy-routes';
 
 export const OPENPROJECT_ROUTES:Ng2StateDeclaration[] = [
   {
@@ -74,8 +72,6 @@ export const OPENPROJECT_ROUTES:Ng2StateDeclaration[] = [
     url: '/bcf',
     loadChildren: () => import('../../features/bim/ifc_models/openproject-ifc-models.module').then((m) => m.OpenprojectIFCModelsModule),
   },
-  ...TEAM_PLANNER_LAZY_ROUTES,
-  ...CALENDAR_LAZY_ROUTES,
 ];
 
 /**

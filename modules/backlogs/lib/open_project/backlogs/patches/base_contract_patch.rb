@@ -46,9 +46,9 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
 
     def assignable_sprints
       if model.project
-        Agile::Sprint.assignable(project: model.project, user:)
+        Sprint.assignable(project: model.project, user:)
       else
-        Agile::Sprint.none
+        Sprint.none
       end
     end
 

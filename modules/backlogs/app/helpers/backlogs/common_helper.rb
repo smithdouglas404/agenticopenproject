@@ -39,6 +39,10 @@ module Backlogs
         !project.receive_shared_sprints?
     end
 
+    def allow_sprint_management?(project)
+      current_user.allowed_in_project?(:share_sprint, project)
+    end
+
     def show_all_backlog
       ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
     end

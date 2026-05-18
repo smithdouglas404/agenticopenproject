@@ -90,8 +90,8 @@ RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
   end
 
   context "when in_planning and active sprints exist" do
-    let!(:planning_sprint) { create(:agile_sprint, project:, name: "Planning Sprint", status: "in_planning") }
-    let!(:active_sprint) { create(:agile_sprint, project:, name: "Active Sprint", status: "active") }
+    let!(:planning_sprint) { create(:sprint, project:, name: "Planning Sprint", status: "in_planning") }
+    let!(:active_sprint) { create(:sprint, project:, name: "Active Sprint", status: "active") }
 
     it "lists them as select options with sprint: prefix values" do
       render_component
@@ -102,7 +102,7 @@ RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
   end
 
   context "when a completed sprint exists" do
-    let!(:completed_sprint) { create(:agile_sprint, project:, name: "Old Sprint", status: "completed") }
+    let!(:completed_sprint) { create(:sprint, project:, name: "Old Sprint", status: "completed") }
 
     it "does not list the completed sprint" do
       render_component
@@ -112,7 +112,7 @@ RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
   end
 
   context "when a sprint belongs to a different project" do
-    let!(:other_sprint) { create(:agile_sprint, project: create(:project), name: "Other Sprint") }
+    let!(:other_sprint) { create(:sprint, project: create(:project), name: "Other Sprint") }
 
     it "does not list sprints from other projects" do
       render_component
@@ -122,8 +122,8 @@ RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
   end
 
   context "when the work package is already in a sprint" do
-    let!(:current_sprint) { create(:agile_sprint, project:, name: "Current Sprint") }
-    let!(:target_sprint) { create(:agile_sprint, project:, name: "Target Sprint") }
+    let!(:current_sprint) { create(:sprint, project:, name: "Current Sprint") }
+    let!(:target_sprint) { create(:sprint, project:, name: "Target Sprint") }
     let(:work_package) { create(:work_package, project:, sprint: current_sprint) }
 
     it "excludes that sprint from the options" do
@@ -136,7 +136,7 @@ RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
 
   context "when the current user cannot view sprints in the project" do
     let(:other_user) { create(:user) }
-    let!(:hidden_sprint) { create(:agile_sprint, project:, name: "Hidden Sprint") }
+    let!(:hidden_sprint) { create(:sprint, project:, name: "Hidden Sprint") }
 
     current_user { other_user }
 

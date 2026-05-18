@@ -202,16 +202,7 @@ bg:
           text: "[Placeholder] Embedded calendar"
     admin:
       type_form:
-        custom_field: Потребителски полета
-        inactive: Неактивен
-        drag_to_activate: Drag fields from here to activate them
-        add_group: Add attribute group
-        add_table: Add table of related work packages
         edit_query: Редактирай заявка
-        new_group: Нова група
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Възстановяване по подразбиране
       working_days:
         calendar:
           empty_state_header: Non-working days
@@ -614,18 +605,6 @@ bg:
     breadcrumb: Breadcrumb
     text_data_lost: All entered data will be lost.
     text_user_wrote: "%{value} написа:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: The name %{group} is used more than once. Group names must be unique.
-        error_no_table_configured: Please configure a table for %{group}.
-        reset_title: Reset form configuration
-        confirm_reset: 'Warning: Are you sure you want to reset the form configuration? This will reset the attributes to their default group and disable ALL custom fields.
-
-          '
-        upgrade_to_ee: Upgrade to Enterprise on-premises edition
-        upgrade_to_ee_text: Wow! If you need this add-on you are a super pro! Would you mind supporting us OpenSource developers by becoming an Enterprise edition client?
-        more_information: Повече информация
-        nevermind: Nevermind
     time_entry:
       work_package_required: Requires selecting a work package first.
       title: Отчетено време

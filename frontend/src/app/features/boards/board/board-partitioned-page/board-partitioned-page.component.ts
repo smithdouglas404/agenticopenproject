@@ -47,7 +47,7 @@ export function boardCardViewHandlerFactory(injector:Injector) {
 
 @Component({
   selector: 'board-partitioned-page',
-  templateUrl: './board-partitioned-page.component.html',
+  templateUrl: '../../../work-packages/routing/partitioned-query-space-page/primerized-partitioned-query-space-page.component.html',
   styleUrls: [
     '../../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.sass',
     './board-partitioned-page.component.sass',

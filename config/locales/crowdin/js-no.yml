@@ -109,7 +109,7 @@
     button_save: Lagre
     button_settings: Innstillinger
     button_uncheck_all: Avmerk alle
-    button_update: Oppdater
+    button_update: Oppdatèr
     button_export-atom: Last ned Atom
     button_generate_pdf: Generate PDF
     button_create: Opprett
@@ -202,16 +202,7 @@
           text: "[Placeholder] Innbygget kalender"
     admin:
       type_form:
-        custom_field: Egendefinert felt
-        inactive: Inaktiv
-        drag_to_activate: Dra feltene herfra for å aktivere dem
-        add_group: Legg til egenskapsgruppe
-        add_table: Legg til tabell over tilknyttede arbeidspakker
         edit_query: Rediger spørring
-        new_group: Ny gruppe
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Tilbakestill til standard
       working_days:
         calendar:
           empty_state_header: Arbeidsfrie dager
@@ -614,18 +605,6 @@
     breadcrumb: Brødsmule
     text_data_lost: Alle angitte data vil gå tapt.
     text_user_wrote: "%{value} skrev:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Navnet %{group} brukes flere ganger. Gruppenavn må være unike.
-        error_no_table_configured: Vennligst konfigurer en tabell for %{group}.
-        reset_title: Tilbakestill konfigurasjon for skjema
-        confirm_reset: 'Advarsel: Er du sikker på at du vil tilbakestille skjemakonfigurasjonen? Dette vil tilbakestille egenskaper til deres standard gruppe og deaktivere ALLE egendefinerte felt.
-
-          '
-        upgrade_to_ee: Oppgradere til Enterprise on-premises-utgave
-        upgrade_to_ee_text: Wow! Hvis du trenger dette tillegget er en superpro! Vil du støtte oss OpenSource-utviklere ved å bli en Enterpris-utgave-kunde?
-        more_information: Mer informasjon
-        nevermind: Glem det
     time_entry:
       work_package_required: Valg av arbeidspakke er påkrevd
       title: Logg tid

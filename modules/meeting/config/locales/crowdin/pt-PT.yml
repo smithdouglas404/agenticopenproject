@@ -210,6 +210,7 @@ pt-PT:
   label_time_zone: Fuso horário
   label_start_date: Data de início
   label_subscribe_icalendar: Subscrever o calendário
+  label_recurring_filter: Filtro recorrente
   caption_meeting_template_select: Selecione um modelo para copiar automaticamente os seus pontos da agenda
   caption_template_project_select: Selecione o projeto em que quer criar este modelo de reunião
   placeholder_meeting_template_select_project_first: Selecione um projeto primeiro

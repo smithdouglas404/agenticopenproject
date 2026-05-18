@@ -46,7 +46,7 @@ See COPYRIGHT and LICENSE files for more details.
     # The reason this is done here is because the submit is not a DELETE, and GET form submissions
     # strip url params
     dialog.with_additional_details do
-      concat(hidden_field_tag(:role_id, @role.id))
+      @roles.each { |role| concat(hidden_field_tag("role_ids[]", role.id)) }
       @status_ids.each { |id| concat(hidden_field_tag("status_ids[]", id)) }
     end
   end

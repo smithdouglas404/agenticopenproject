@@ -37,7 +37,7 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
   let(:work_package_priority) { build_stubbed(:priority) }
   let(:work_package_author) { build_stubbed(:user) }
   let(:work_package_story_points) { 5 }
-  let(:work_package_sprint) { build_stubbed(:agile_sprint) }
+  let(:work_package_sprint) { build_stubbed(:sprint) }
   let(:work_package_position) { 5 }
   let(:assignable_sprints) { [work_package_sprint] }
   let(:backlogs_enabled) { true }
@@ -61,7 +61,7 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
   before do
     assignable_sprints_scope = instance_double(ActiveRecord::Relation)
 
-    allow(Agile::Sprint)
+    allow(Sprint)
       .to receive(:assignable)
             .with(project: work_package.project, user:)
             .and_return(assignable_sprints_scope)

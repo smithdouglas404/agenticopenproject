@@ -39,8 +39,8 @@ module API
 
           get &::API::V3::Utilities::Endpoints::Index
                  .new(
-                   model: Agile::Sprint,
-                   scope: -> { Agile::Sprint.for_project(@project).visible }
+                   model: Sprint,
+                   scope: -> { Sprint.for_project(@project).visible }
                  )
                  .mount
         end

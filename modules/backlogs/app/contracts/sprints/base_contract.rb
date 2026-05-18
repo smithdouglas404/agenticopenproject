@@ -33,7 +33,7 @@ module Sprints
     validate :user_authorized
 
     def self.model
-      Agile::Sprint
+      Sprint
     end
 
     attribute :name

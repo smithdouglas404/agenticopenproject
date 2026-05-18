@@ -6,6 +6,7 @@ sv:
     description: Denna OpenProject plugin introducerar BIM och BCF funktionalitet.
   bim:
     label_bim: BIM
+    error_direct_upload_failed: Direct upload failed.
   bcf:
     label_bcf: BCF
     label_imported_failed: Misslyckad import av BCF-ämnen

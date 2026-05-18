@@ -37,7 +37,7 @@ describe('GenericDragAndDropController', () => {
     controller = Object.create(GenericDragAndDropController.prototype) as GenericDragAndDropController;
   });
 
-  function setValue(name:'handleValue'|'handleSelectorValue', value:boolean|string) {
+  function setValue(name:'handleValue' | 'handleSelectorValue', value:boolean | string) {
     Object.defineProperty(controller, name, { value, configurable: true });
   }
 
@@ -51,21 +51,14 @@ describe('GenericDragAndDropController', () => {
     return row;
   }
 
-  function callCanStartDrag(el:Element|null|undefined, handle:Element|null|undefined):boolean {
-    const canStartDrag = Reflect.get(controller, 'canStartDrag') as (
-      this:GenericDragAndDropController,
-      el:Element|null|undefined,
-      handle:Element|null|undefined
-    ) => boolean;
+  function callCanStartDrag(el:Element | null | undefined, handle:Element | null | undefined):boolean {
+    const canStartDrag = Reflect.get(controller, 'canStartDrag') as (this:GenericDragAndDropController, el:Element | null | undefined, handle:Element | null | undefined) => boolean;
 
     return canStartDrag.call(controller, el, handle);
   }
 
-  function callAriaPressedTarget(el:Element):Element|null {
-    const ariaPressedTarget = Reflect.get(controller, 'ariaPressedTarget') as (
-      this:GenericDragAndDropController,
-      el:Element
-    ) => Element|null;
+  function callAriaPressedTarget(el:Element):Element | null {
+    const ariaPressedTarget = Reflect.get(controller, 'ariaPressedTarget') as (this:GenericDragAndDropController, el:Element) => Element | null;
 
     return ariaPressedTarget.call(controller, el);
   }
@@ -77,7 +70,7 @@ describe('GenericDragAndDropController', () => {
       setValue('handleValue', false);
       setValue('handleSelectorValue', '.DragHandle');
 
-      expect(callCanStartDrag(row, row)).toBeTrue();
+      expect(callCanStartDrag(row, row)).toBe(true);
     });
 
     it('rejects rows that are not draggable in handle-less mode', () => {
@@ -88,7 +81,7 @@ describe('GenericDragAndDropController', () => {
       setValue('handleValue', false);
       setValue('handleSelectorValue', '.DragHandle');
 
-      expect(callCanStartDrag(row, row)).toBeFalse();
+      expect(callCanStartDrag(row, row)).toBe(false);
     });
 
     it('rejects empty placeholder rows in handle-less mode', () => {
@@ -98,7 +91,7 @@ describe('GenericDragAndDropController', () => {
       setValue('handleValue', false);
       setValue('handleSelectorValue', '.DragHandle');
 
-      expect(callCanStartDrag(row, row)).toBeFalse();
+      expect(callCanStartDrag(row, row)).toBe(false);
     });
 
     it('rejects interactive descendants in handle-less mode', () => {
@@ -109,7 +102,7 @@ describe('GenericDragAndDropController', () => {
       setValue('handleValue', false);
       setValue('handleSelectorValue', '.DragHandle');
 
-      expect(callCanStartDrag(row, button)).toBeFalse();
+      expect(callCanStartDrag(row, button)).toBe(false);
     });
 
     it('allows drag handles in handle mode', () => {
@@ -121,7 +114,7 @@ describe('GenericDragAndDropController', () => {
       setValue('handleValue', true);
       setValue('handleSelectorValue', '.DragHandle');
 
-      expect(callCanStartDrag(row, handle)).toBeTrue();
+      expect(callCanStartDrag(row, handle)).toBe(true);
     });
   });
 

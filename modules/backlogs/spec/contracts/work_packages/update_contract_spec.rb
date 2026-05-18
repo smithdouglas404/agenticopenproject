@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -93,7 +95,7 @@ RSpec.describe WorkPackages::UpdateContract do
       end
 
       context "when sprint is not assignable but the assignment did not change" do
-        let(:completed_sprint) { build_stubbed(:agile_sprint, status: :completed) }
+        let(:completed_sprint) { build_stubbed(:sprint, status: :completed) }
         let(:work_package_sprint) { completed_sprint }
         let(:assignable_sprints) { [] }
 

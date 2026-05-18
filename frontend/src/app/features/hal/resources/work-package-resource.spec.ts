@@ -70,8 +70,8 @@ describe('WorkPackage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [OpenprojectHalModule],
-    providers: [
+      imports: [OpenprojectHalModule],
+      providers: [
         HalResourceService,
         States,
         TimezoneService,
@@ -89,20 +89,27 @@ describe('WorkPackage', () => {
         { provide: SchemaCacheService, useValue: {} },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      ]
+    }).compileComponents();
     halResourceService = TestBed.inject(HalResourceService);
     injector = TestBed.inject(Injector);
     halResourceNotification = injector.get(HalResourceNotificationService);
 
-    halResourceService.registerResource('WorkPackage', { cls: WorkPackageResource });
+    halResourceService.registerResource('WorkPackage', {
+      cls: WorkPackageResource,
+      attrTypes: {
+        parent: 'WorkPackage',
+        ancestors: 'WorkPackage',
+        children: 'WorkPackage',
+      },
+    });
   });
 
   describe('when creating an empty work package', () => {
     beforeEach(createWorkPackage);
 
     it('should have an attachments property of type `AttachmentCollectionResource`', () => {
-      expect(workPackage.attachments).toEqual(jasmine.any(AttachmentCollectionResource));
+      expect(workPackage.attachments).toEqual(expect.any(AttachmentCollectionResource));
     });
 
     it('should return true for `isNewResource`', () => {
@@ -141,7 +148,54 @@ describe('WorkPackage', () => {
       });
     });
 
-});
+    describe('when displayId is absent but present on the self link (linked ancestor/child)', () => {
+      beforeEach(() => {
+        source = {
+          _links: {
+            self: {
+              href: '/api/v3/work_packages/11099',
+              title: 'subj child',
+              displayId: 'ACSMT-15',
+            },
+          },
+        };
+        createWorkPackage();
+      });
+
+      it('should fall back to the semantic identifier on the self link', () => {
+        expect(workPackage.displayId).toEqual('ACSMT-15');
+      });
+    });
+
+    describe('when built from a parent work package _links.ancestors array', () => {
+      // Mirrors the real HAL pipeline: the parent exposes an ancestors link
+      // array; each entry carries displayId alongside href/title; the builder
+      // creates an ancestor WorkPackageResource through HalLink, which must
+      // preserve displayId end-to-end.
+      beforeEach(() => {
+        source = {
+          _links: {
+            self: { href: '/api/v3/work_packages/42' },
+            ancestors: [
+              {
+                href: '/api/v3/work_packages/11099',
+                title: 'subj child',
+                displayId: 'ACSMT-15',
+              },
+            ],
+          },
+        };
+        createWorkPackage();
+      });
+
+      it('surfaces the semantic displayId on each ancestor resource', () => {
+        const ancestor = (workPackage as any).ancestors[0] as WorkPackageResource;
+
+        expect(ancestor.displayId).toEqual('ACSMT-15');
+      });
+    });
+
+  });
 
   describe('formattedId', () => {
     afterEach(() => {
@@ -162,7 +216,7 @@ describe('WorkPackage', () => {
       expect(workPackage.formattedId).toEqual('#42');
     });
 
-});
+  });
 
   describe('subjectWithId', () => {
     afterEach(() => {

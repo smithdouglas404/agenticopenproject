@@ -52,7 +52,7 @@ class Sprints::StartService < BaseServices::BaseContracted
   end
 
   def ensure_task_boards(service_call)
-    projects = Agile::Sprint.receiving_projects(model)
+    projects = Sprint.receiving_projects(model)
 
     projects.each do |project|
       next if model.task_board_for(project).present?

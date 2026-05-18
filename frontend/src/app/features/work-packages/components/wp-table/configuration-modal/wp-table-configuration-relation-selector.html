@@ -3,6 +3,7 @@
     <span [textContent]="text.filter_work_packages_by_relation_type"></span>
     &ngsp;
     <select class="form--select form--inline-select"
+      data-test-selector="wp-table-configuration-relation-filter"
       [(ngModel)]="selectedRelationFilter"
       (ngModelChange)="onRelationFilterSelected()"
       [compareWith]="compareRelationFilters">

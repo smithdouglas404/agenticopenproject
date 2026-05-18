@@ -91,7 +91,7 @@ RSpec.describe(
                            edit_project_attributes
                            select_project_custom_fields])
   end
-  shared_let(:new_project_role) { create(:project_role, permissions: %i[]) }
+  shared_let(:new_project_role) { create(:project_creator_role) }
 
   before do
     allow(Setting)
@@ -378,6 +378,20 @@ RSpec.describe(
             expect(project_copy.work_package_custom_fields).to match_array(source.work_package_custom_fields)
           end
         end
+      end
+    end
+
+    context "when source project has a non-zero wp_sequence_counter",
+            with_settings: { work_packages_identifier: "semantic" } do
+      let(:target_project_params) { { name: "Target Project Name", identifier: "COPY1" } }
+
+      before do
+        source.update_column(:wp_sequence_counter, 5)
+      end
+
+      it "succeeds and resets wp_sequence_counter to 0 on the copy" do
+        expect(subject).to be_success
+        expect(project_copy.wp_sequence_counter).to eq(0)
       end
     end
 

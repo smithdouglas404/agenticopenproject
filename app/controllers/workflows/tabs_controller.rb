@@ -38,27 +38,37 @@ class Workflows::TabsController < ApplicationController
   before_action :set_type
   before_action :set_tab
   before_action :set_eligible_roles
-  before_action :set_role
+  before_action :set_roles
 
   def edit
     unless turbo_frame_request?
-      redirect_to edit_workflow_path(@type, role_id: params[:role_id], tab: @tab)
+      redirect_to edit_workflow_path(@type, role_ids: params[:role_ids], tab: @tab)
       return
     end
 
     statuses_for_form
 
-    if @type && @role && @statuses.any?
+    if @type && @roles.any? && @statuses.any?
       workflows_for_form
     end
   end
 
-  def update
-    call = Workflows::BulkUpdateService
-           .new(role: @role, type: @type, tab: @tab)
-           .call(permitted_status_params)
+  def update # rubocop:disable Metrics/AbcSize
+    success = false
+    Workflow.transaction do
+      success = true
+      base_params = permitted_status_params
+      indeterminate = permitted_indeterminate_params
+      @roles.each do |role|
+        role_params = indeterminate.empty? ? base_params : role_specific_params(base_params, indeterminate, role)
+        result = Workflows::BulkUpdateService.new(role:, type: @type, tab: @tab)
+                                             .call(role_params)
+        success = false unless result.success?
+      end
+      raise ActiveRecord::Rollback unless success
+    end
 
-    if call.success?
+    if success
       render_flash_message_via_turbo_stream(
         message: I18n.t(:notice_successful_update),
         scheme: :success
@@ -69,7 +79,7 @@ class Workflows::TabsController < ApplicationController
         update_via_turbo_stream(
           component: Workflows::StatusMatrixFormComponent.new(
             tab: @tab,
-            role: @role,
+            roles: @roles,
             type: @type,
             available_roles: @eligible_roles,
             statuses:,
@@ -92,8 +102,8 @@ class Workflows::TabsController < ApplicationController
     all_statuses = Status.order(:position)
     current_statuses = if params[:status_ids].present?
                          Status.where(id: params[:status_ids].map(&:to_i)).order(:position)
-                       elsif @type && @role
-                         statuses_for_role_and_type
+                       elsif @type && @roles.any?
+                         statuses_for_roles_and_type
                        else
                          Status.none
                        end
@@ -101,7 +111,7 @@ class Workflows::TabsController < ApplicationController
     respond_with_dialog Workflows::StatusDialogComponent.new(
       all_statuses:,
       current_statuses:,
-      role: @role,
+      roles: @roles,
       type: @type,
       tab: @tab
     )
@@ -114,7 +124,7 @@ class Workflows::TabsController < ApplicationController
 
     if removed_count > 0
       respond_with_dialog Workflows::StatusRemovalDangerDialogComponent.new(
-        role: @role,
+        roles: @roles,
         type: @type,
         tab: @tab,
         status_ids: current_status_ids,
@@ -125,7 +135,7 @@ class Workflows::TabsController < ApplicationController
       update_via_turbo_stream(
         component: Workflows::StatusMatrixFormComponent.new(
           tab: @tab,
-          role: @role,
+          roles: @roles,
           type: @type,
           available_roles: @eligible_roles,
           statuses:,
@@ -150,8 +160,9 @@ class Workflows::TabsController < ApplicationController
     @eligible_roles = Workflow.eligible_roles.order(:builtin, :position)
   end
 
-  def set_role
-    @role = @eligible_roles.find(params[:role_id])
+  def set_roles
+    @roles = @eligible_roles.where(id: params[:role_ids])
+    @roles = [@eligible_roles.first] if @roles.empty?
   end
 
   def statuses_for_form
@@ -159,8 +170,8 @@ class Workflows::TabsController < ApplicationController
     @has_status_changes = false
     @statuses = if @type && params[:status_ids].present?
                   statuses_from_params
-                elsif @type && @role
-                  statuses_for_role_and_type
+                elsif @type && @roles.any?
+                  statuses_for_roles_and_type
                 elsif @type
                   @type.statuses
                 else
@@ -170,18 +181,19 @@ class Workflows::TabsController < ApplicationController
 
   def statuses_from_params
     status_ids = params[:status_ids].map(&:to_i)
-    saved_ids = statuses_for_role_and_type.pluck(:id)
+    saved_ids = statuses_for_roles_and_type.pluck(:id)
     @added_status_ids = status_ids - saved_ids
     @has_status_changes = @added_status_ids.any? || (saved_ids - status_ids).any?
     Status.where(id: status_ids).order(:position)
   end
 
-  def statuses_for_role_and_type
-    @type.statuses(role: @role, tab: @tab)
+  def statuses_for_roles_and_type
+    status_ids = @roles.map { |role| @type.statuses(role:, tab: @tab).pluck(:id) }.flatten.uniq
+    Status.where(id: status_ids)
   end
 
   def workflows_for_form
-    workflows = Workflow.where(role_id: @role.id, type_id: @type.id)
+    workflows = Workflow.where(role_id: @roles.map(&:id), type_id: @type.id)
     @workflows = {}
     @workflows["always"] = workflows.select { |w| !w.author && !w.assignee }
     @workflows["author"] = workflows.select(&:author)
@@ -189,10 +201,40 @@ class Workflows::TabsController < ApplicationController
   end
 
   def permitted_status_params
-    return {} if params["status"].blank?
+    status_params("status")
+  end
 
-    params["status"]
+  def permitted_indeterminate_params
+    status_params("indeterminate_status")
+  end
+
+  def status_params(key)
+    return {} if params[key].blank?
+
+    params[key]
       .to_unsafe_h
-      .select { |key, value| /\A\d+\z/.match?(key) && value.keys.all? { /\A\d+\z/.match?(it) } }
+      .select { |k, value| /\A\d+\z/.match?(k) && value.keys.all? { /\A\d+\z/.match?(it) } }
+  end
+
+  def role_specific_params(base_params, indeterminate, role)
+    params = base_params.deep_dup
+    indeterminate.each do |old_id, new_ids|
+      new_ids.each_key do |new_id|
+        # Restore from DB so that it isn't overwritten by indeterminate state (unchecked)
+        had_transition = Workflow.exists?(
+          role_id: role.id,
+          type_id: @type.id,
+          old_status_id: old_id.to_i,
+          new_status_id: new_id.to_i,
+          author: @tab == "author",
+          assignee: @tab == "assignee"
+        )
+        if had_transition
+          params[old_id] ||= {}
+          params[old_id][new_id] = "1"
+        end
+      end
+    end
+    params
   end
 end

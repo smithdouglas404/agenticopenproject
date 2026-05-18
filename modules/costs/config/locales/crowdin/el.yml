@@ -173,7 +173,6 @@ el:
   label_previous_week: Προηγούμενη εβδομάδα
   label_previous_month: Προηγούμενος μήνας
   label_specific_day: Day %{day}
-  label_specific_week: Calendar week %{week}
   label_specific_month: Month %{month}
   label_list: Προβολή λίστας
   label_month: Μήνας

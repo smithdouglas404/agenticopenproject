@@ -101,7 +101,8 @@ module WorkPackages
           {
             data: {
               controller: "admin--work-packages-identifier",
-              admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?
+              admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?,
+              admin__work_packages_identifier_current_value_value: Setting[:work_packages_identifier]
             }
           }
         end

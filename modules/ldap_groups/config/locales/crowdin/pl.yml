@@ -68,7 +68,7 @@ pl:
         Zależy to od tego, czy grupy LDAP muszą do pracy z OpenProject używać ustawionego atrybutu <em>groupOfNames / memberOf</em>.
         <br/>
         Grupy są synchronizowane co godzinę przy użyciu zadania cron.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Zapoznaj się z naszą dokumentacją na ten temat</a>.
+        Zapoznaj się z naszą dokumentacją na ten temat(docs_url).
       no_results: Nie znaleziono żadnych synchronizowanych grup.
       no_members: Ta grupa nie ma jeszcze synchronizowanych członków.
       plural: Synchronizowane grupy LDAP

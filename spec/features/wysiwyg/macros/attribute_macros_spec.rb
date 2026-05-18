@@ -154,7 +154,7 @@ RSpec.describe "Wysiwyg attribute macros", :js do
       click_on "Edit"
 
       editor.in_editor do |container,|
-        expect(container).to have_css("tbody td", count: 15)
+        expect(container).to have_css("tbody td", count: 16)
       end
     end
 
