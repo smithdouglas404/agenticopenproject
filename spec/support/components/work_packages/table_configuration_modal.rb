@@ -121,20 +121,11 @@ module Components
         # so wait a bit initially
         SeleniumHubWaiter.wait unless using_cuprite?
 
-        attempts = 0
-
-        begin
+        retry_block do
           expect_open
 
           find("#{selector} .op-tab-row--link", text: target.upcase, wait: 10).click
           selected_tab(target)
-        rescue Capybara::Cuprite::ObsoleteNode,
-               Selenium::WebDriver::Error::StaleElementReferenceError,
-               Capybara::ElementNotFound
-          attempts += 1
-          retry if attempts < 3
-
-          raise
         end
       end
 
