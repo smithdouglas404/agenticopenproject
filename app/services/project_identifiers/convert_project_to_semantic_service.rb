@@ -80,8 +80,11 @@ module ProjectIdentifiers
       raise "Generated identifier is blank for project #{project.id}" if new_identifier.blank?
 
       project.identifier = new_identifier
-      # Save with the validation context that allows to save semantic ID while system is in classic mode
-      project.save!(context: :semantic_conversion)
+      # Save with the validation context that allows to save semantic ID while system is in classic mode.
+      # Suppress notifications: this is a background system operation, not a user edit.
+      Journal::NotificationConfiguration.with(false) do
+        project.save!(context: :semantic_conversion)
+      end
     end
 
     def reset_stale_identifiers

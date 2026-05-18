@@ -202,16 +202,7 @@ uk:
           text: "[Placeholder] вбудований календар"
     admin:
       type_form:
-        custom_field: Користувацьке поле
-        inactive: Неактивні
-        drag_to_activate: Перетягніть поля звідти, щоб активувати їх
-        add_group: Додати групу атрибутів
-        add_table: Додати таблицю пов'язаних пакетів робіт
         edit_query: Редагувати запит
-        new_group: Нова група
-        delete_group: Видалити групу
-        remove_attribute: Вилучити з групи
-        reset_to_defaults: Скинути на типові значення
       working_days:
         calendar:
           empty_state_header: Неробочі дні
@@ -616,18 +607,6 @@ uk:
     breadcrumb: Ланцюжок навігації
     text_data_lost: Усі введені дані буде втрачено.
     text_user_wrote: "%{value} написав(-ла):"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: The name %{group} використовується більше одного разу. Назви груп повинні бути унікальними.
-        error_no_table_configured: Please configure a table for %{group}
-        reset_title: Скидання конфігурації форми
-        confirm_reset: 'Попередження: Справді скинути конфігурацію форми? Це призведе до скидання атрибутів до групи за замовчуванням і вимкнення всіх користувацьких полів.
-
-          '
-        upgrade_to_ee: Перейти на локальну версію Enterprise
-        upgrade_to_ee_text: Оце так! Якщо вам потрібне це доповнення, ви справжній профі! Підтримайте розробників OpenSource, перейшовши на версію Enterprise!
-        more_information: Додаткові відомості
-        nevermind: Nevermind
     time_entry:
       work_package_required: Спочатку потрібно вибрати пакет робіт.
       title: Записування часу

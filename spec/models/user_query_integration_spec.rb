@@ -50,7 +50,10 @@ RSpec.describe UserQuery, "integration" do
   shared_let(:designer_option) { job_title_cf.custom_options.find_by(value: "Designer") }
   shared_let(:pm_option) { job_title_cf.custom_options.find_by(value: "Project Manager") }
 
-  shared_let(:alice) { create(:user, firstname: "Alice", lastname: "Anders") }
+  # Alice is the logged-in user across most examples; she needs view_all_principals
+  # so the existing filter/order expectations enumerate every seeded user.
+  # Visibility behaviour is exercised separately in the `describe "visibility"` block.
+  shared_let(:alice) { create(:user, firstname: "Alice", lastname: "Anders", global_permissions: %i[view_all_principals]) }
   shared_let(:bob) { create(:user, firstname: "Bob", lastname: "Bauer") }
   shared_let(:carol) { create(:user, firstname: "Carol", lastname: "Cohen") }
   shared_let(:dave) { create(:user, firstname: "Dave", lastname: "Doe") }
@@ -231,6 +234,57 @@ RSpec.describe UserQuery, "integration" do
       expect(select).to be_available
       expect(select.custom_field).to eq(job_title_cf)
       expect(select.caption).to eq(job_title_cf.name)
+    end
+  end
+
+  describe "visibility" do
+    # Override the outer admin login so each context can pin down its own viewer.
+    let(:viewer) { create(:user, firstname: "Viewer", lastname: "Visible") }
+
+    before { login_as(viewer) }
+
+    context "when the current user is an admin" do
+      let(:viewer) { create(:admin, firstname: "Viewer", lastname: "Admin") }
+
+      it "returns every active user" do
+        expect(query.results).to include(alice, bob, carol, dave, locked_eve, viewer)
+      end
+    end
+
+    context "when the current user has the :view_all_principals global permission" do
+      let(:viewer) do
+        create(:user, firstname: "Viewer", lastname: "Global",
+                      global_permissions: %i[view_all_principals])
+      end
+
+      it "returns every active user" do
+        expect(query.results).to include(alice, bob, carol, dave, locked_eve, viewer)
+      end
+    end
+
+    context "when the current user has no view permission and no shared membership" do
+      it "only sees themselves" do
+        expect(query.results).to contain_exactly(viewer)
+      end
+
+      it "sees other users that share a project membership" do
+        role = create(:project_role)
+        project = create(:project)
+        create(:member, principal: viewer, project: project, roles: [role])
+        create(:member, principal: alice, project: project, roles: [role])
+
+        expect(query.results).to contain_exactly(viewer, alice)
+      end
+
+      it "sees other users that share a group membership" do
+        create(:group, members: [viewer, alice])
+
+        expect(query.results).to contain_exactly(viewer, alice)
+      end
+
+      it "does not see users that share neither a project nor a group" do
+        expect(query.results).not_to include(bob, carol, dave, locked_eve)
+      end
     end
   end
 

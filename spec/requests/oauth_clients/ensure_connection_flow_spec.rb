@@ -44,7 +44,7 @@ RSpec.describe "/oauth_clients/:oauth_client_id/ensure_connection endpoint", :we
     context "when user is not logged in" do
       it "requires login" do
         get oauth_clients_ensure_connection_url(oauth_client_id: oauth_client.client_id)
-        expect(last_response).to have_http_status(:unauthorized)
+        expect(last_response).to have_http_status(:found)
       end
     end
 

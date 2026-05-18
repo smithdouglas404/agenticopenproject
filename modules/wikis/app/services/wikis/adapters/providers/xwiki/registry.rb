@@ -32,7 +32,7 @@ module Wikis
   module Adapters
     module Providers
       module XWiki
-        Registry = Dry::Container::Namespace.new("xwiki") do
+        Registry = Dry::Core::Container::Namespace.new("xwiki") do
           namespace("authentication") do
             register(:user_bound, Authentication::UserBound)
           end

@@ -27,43 +27,43 @@ tr:
   activerecord:
     attributes:
       project:
-        sprint_sharing: Sprint sharing
+        sprint_sharing: Koşu paylaşımı
       sprint:
-        duration: Duration
-        finish_date: Finish date
-        goal: Sprint goal
-        name: Sprint name
-        sharing: Sharing
+        duration: Süre
+        finish_date: Bitiş tarihi
+        goal: Hızlı görev hedefi
+        name: Koşu Adı
+        sharing: Paylaşım
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: Planlanıyor
+          active: Aktif
+          completed: Tamamlandı
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
-        backlog_bucket: Backlog Bucket
+        backlog_bucket: Birikmiş İş Havuzu
         backlogs_work_package_type: Bekleme listesi türü
         position: Konum
-        sprint: Sprint
+        sprint: Koşu
         story_points: Hikaye Puanları
     errors:
       messages:
-        must_be_in_planning: must be in planning to start.
+        must_be_in_planning: başlamak için planlama aşamasında olmalıdır.
         only_one_active_sprint_allowed: proje başına yalnızca bir aktif sprint'e izin verilir.
-        dates_required: Start and finish dates are required in order to start the sprint.
+        dates_required: Koşu başlatmak için başlangıç ve bitiş tarihleri zorunludur.
       models:
         project:
-          receiving_sprints: is receiving shared sprints. Own sprints cannot be created.
+          receiving_sprints: paylaşılan sprintleri alıyor. Kendi sprintleriniz oluşturulamaz.
           attributes:
             sprint_sharing:
-              share_all_projects_already_taken: cannot be set because project "%{name}" is already sharing with all projects.
-              share_all_projects_already_taken_anonymous: cannot be set because another project is already sharing with all projects.
+              share_all_projects_already_taken: '"%{name}" projesi zaten tüm projelerle paylaşıldığı için ayarlanamaz.'
+              share_all_projects_already_taken_anonymous: halihazırda başka bir proje tüm projelerle paylaşıldığından bu ayar yapılamaz.
         sprint:
           attributes:
             base:
               unfinished_work_packages:
                 one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
+                other: Bu sprint bünyesinde tamamlanmamış %{count} adet iş paketi bulunmaktadır.
               format: "%{message}"
             status:
               not_active: is not active so it cannot be closed.

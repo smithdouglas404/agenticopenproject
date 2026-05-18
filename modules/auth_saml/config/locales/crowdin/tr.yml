@@ -34,7 +34,7 @@ tr:
   saml:
     menu_title: SAML sağlayıcıları
     delete_title: SAML sağlayıcısını sil
-    delete_heading: Delete this SAML provider?
+    delete_heading: Bu SAML sağlayıcıyı silmek istiyor musunuz?
     info:
       title: SAML Protokolü Yapılandırma Parametreleri
       description: 'OpenProject ile kimlik sağlayıcı bağlantınızı yapılandırmak için bu parametreleri kullanın.

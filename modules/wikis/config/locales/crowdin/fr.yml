@@ -3,7 +3,7 @@ fr:
   activerecord:
     attributes:
       wikis/page_link:
-        provider: Wiki Provider
+        provider: Fournisseur de wiki
       wikis/xwiki_provider:
         authentication_method: Méthode d'authentification
         authentication_methods:

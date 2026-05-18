@@ -81,6 +81,13 @@ module Components
 
       def save
         find('[data-test-selector="spot-modal-wp-table-configuration-save-button"]').click
+        expect_closed
+
+        if using_cuprite?
+          wait_for_reload
+        else
+          SeleniumHubWaiter.wait
+        end
       end
 
       def cancel

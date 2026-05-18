@@ -9,9 +9,21 @@ be:
         default_view_class_name: Default view
         public: Public
         favorite: Favorite
+      resource_allocation:
+        entity: Entity
+        principal: Assignee
+        state: State
+        start_date: Start date
+        end_date: Finish date
+        allocated_time: Allocated time
+        user_filter: User filter
     errors:
       models:
         resource_planner:
+          attributes:
+            end_date:
+              greater_than_start_date: must be after the start date.
+        resource_allocation:
           attributes:
             end_date:
               greater_than_start_date: must be after the start date.
@@ -25,6 +37,10 @@ be:
     '
   permission_manage_public_resource_planners: Manage public resource planners
   permission_manage_public_resource_planners_explanation: 'Allows users to create and manage public resource planners. It allows them to view, create, manage and publish their own resource planners. It does not allow users to view resource planners created by other users that are not shared publicly.
+
+    '
+  permission_allocate_user_resources: Allocate user resources
+  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
 
     '
   label_resource_management: Resource planning
