@@ -59,13 +59,7 @@
           end
 
           modal_body.with_row(mt: 1) do
-            render(
-              Primer::Beta::Text.new(
-                id: "recurring-meeting-frequency-schedule",
-                font_size: :small,
-                color: :subtle
-              )
-            ) { @meeting.human_frequency_schedule }
+            render(RecurringMeetings::HumanScheduleComponent.new(recurring_meeting: @meeting))
           end
 
           modal_body.with_row(mt: 3) do

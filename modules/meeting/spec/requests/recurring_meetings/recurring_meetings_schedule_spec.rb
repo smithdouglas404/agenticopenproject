@@ -105,6 +105,25 @@ RSpec.describe "Recurring meetings schedule text",
           expect(subject.body).to include("Every day at 10:00 AM")
         end
       end
+
+      context "when requesting working days with turbo and start date on next saturday",
+              with_settings: { working_days: [1, 2, 3, 4, 5] } do
+        let(:format) { :turbo_stream }
+        let(:frequency) { "working_days" }
+        let(:start_date) { Date.current.next_occurring(:saturday).to_s }
+        let(:expected_first_occurrence) do
+          meeting = RecurringMeeting.new(start_date:, start_time_hour:, frequency:, interval:, time_zone: user.time_zone)
+          format_time(meeting.first_occurrence, time_zone: meeting.time_zone)
+        end
+
+        it "returns frequency text including the start mismatch information" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("target=\"recurring-meetings-human-schedule-component\"")
+          expect(subject.body).to include("id=\"recurring-meeting-frequency-schedule\"")
+          expect(subject.body).to include("Chosen start time does not align with the actual first occurrence")
+          expect(subject.body).to include(expected_first_occurrence)
+        end
+      end
     end
   end
 

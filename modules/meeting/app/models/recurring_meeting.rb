@@ -220,6 +220,10 @@ class RecurringMeeting < ApplicationRecord
     end
   end
 
+  def human_schedule
+    [human_frequency_schedule, human_start_time_schedule, human_end_time_schedule].join(" ")
+  end
+
   def human_frequency_schedule
     formatted_time = format_time(start_time, time_zone:, include_date: false)
     time = time_zone_differs? ? "#{formatted_time} (#{friendly_timezone_name(time_zone)})" : formatted_time
@@ -330,6 +334,13 @@ class RecurringMeeting < ApplicationRecord
     meetings
       .not_templated
       .not_cancelled
+  end
+
+  def actual_start_differs?
+    return false if start_time.blank?
+    return false if first_occurrence.blank?
+
+    first_occurrence != start_time
   end
 
   private

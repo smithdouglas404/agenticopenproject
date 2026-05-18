@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 module RecurringMeetings
   class ScheduleController < ApplicationController
+    include OpTurbo::ComponentStream
+
     around_action :with_user_time_zone
     before_action :require_login, :build_meeting
     no_authorization_required! :humanize_schedule
 
     def humanize_schedule
-      text = @recurring_meeting.human_frequency_schedule
+      component = RecurringMeetings::HumanScheduleComponent.new(recurring_meeting: @recurring_meeting)
+      update_via_turbo_stream(component:)
 
-      respond_to do |format|
-        format.html { render plain: text }
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.update("recurring-meeting-frequency-schedule",
-                                                   plain: text)
-        end
+      respond_with_turbo_streams do |format|
+        format.html { render plain: @recurring_meeting.human_frequency_schedule }
       end
     end
 

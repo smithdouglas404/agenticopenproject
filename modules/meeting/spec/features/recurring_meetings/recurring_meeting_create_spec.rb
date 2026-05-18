@@ -37,6 +37,7 @@ require_relative "../../support/pages/meetings/index"
 RSpec.describe "Recurring meetings creation",
                :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
+  include Redmine::I18n
 
   shared_let(:project) { create(:project, enabled_module_names: %w[meetings]) }
   shared_let(:user) do
@@ -196,6 +197,47 @@ RSpec.describe "Recurring meetings creation",
       meetings_page.visit!
       expect(page).to have_current_path(meetings_page.path)
       expect(page).not_to have_test_selector("add-meeting-button")
+    end
+  end
+
+  context "when the start date does not match a working-day schedule",
+          with_settings: { working_days: [1, 2, 3, 4, 5] } do
+    it "shows the start mismatch information in the dialog and can be cancelled" do
+      login_as current_user
+      meetings_page.visit!
+      meetings_page.click_on "add-meeting-button"
+
+      page.within("action-list") do
+        meetings_page.click_on "Recurring"
+      end
+
+      saturday = Date.current.next_occurring(:saturday)
+      expected_first_occurrence = RecurringMeeting.new(
+        start_date: saturday.to_s,
+        start_time_hour: "10:00",
+        frequency: "working_days",
+        interval: 1,
+        time_zone: user.time_zone
+      ).first_occurrence
+      expected_occurrence_text = format_time(
+        expected_first_occurrence,
+        time_zone: user.time_zone
+      )
+
+      within "#new-meeting-dialog" do
+        meetings_page.set_title "Start mismatch test"
+        page.select(I18n.t("recurring_meeting.frequency.working_days"), from: "Frequency")
+        meetings_page.set_starts_on saturday.to_s
+        meetings_page.set_start_time "10:00"
+
+        expect(page).to have_text("Every working day at 10:00 AM")
+        expect(page).to have_text("Chosen start time does not align with the actual first occurrence")
+        expect(page).to have_text(expected_occurrence_text)
+
+        page.find(".close-button").click
+      end
+
+      expect(page).to have_no_selector("#new-meeting-dialog", wait: 10)
     end
   end
 end

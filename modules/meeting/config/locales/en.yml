@@ -511,6 +511,8 @@ en:
         other: "Every %{count} weeks"
       every_weekday: "Every %{day_of_the_week}"
       working_days: "Every working day"
+    actual_first_occurence_mismatch_html: >
+      Chosen start time does not align with the actual first occurrence %{first_occurrence}.
     end_after:
       never: "never"
       specific_date: "after a specific date"
