@@ -46,15 +46,14 @@ module Projects
             }
           }
         ) do |list|
-          available_statuses.each do |label, value|
-            mandatory = value.in?(mandatory_status_ids)
-            active = mandatory || value.in?(model.done_status_ids)
+          available_statuses.each do |label, value, is_closed|
+            active = is_closed || value.in?(model.done_status_ids)
 
             list.option(
               label:,
               value:,
               selected: active,
-              disabled: mandatory
+              disabled: is_closed
             )
           end
         end
@@ -90,11 +89,7 @@ module Projects
       private
 
       def available_statuses
-        Status.pluck(:name, :id)
-      end
-
-      def mandatory_status_ids
-        @mandatory_status_ids ||= Status.where(is_closed: true).pluck(:id)
+        Status.pluck(:name, :id, :is_closed)
       end
 
       def available_types
