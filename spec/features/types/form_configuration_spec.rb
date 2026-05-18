@@ -250,7 +250,7 @@ RSpec.describe "form configuration", :js, :selenium do
         loading_indicator_saveguard
       end
 
-      it "shows field type labels beside attributes" do
+      it "shows field format labels beside attributes" do
         # Built-in attributes show "Builtin field"
         builtin_label = I18n.t("types.edit.form_configuration.builtin_field")
         assignee_row = page.find('li[data-attr-key="assignee"]')

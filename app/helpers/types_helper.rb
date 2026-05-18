@@ -29,6 +29,8 @@
 #++
 
 module ::TypesHelper
+  include CustomFieldsHelper
+
   # rubocop:disable Rails/HelperInstanceVariable
   def types_tabs
     [
@@ -151,19 +153,13 @@ module ::TypesHelper
       is_cf: CustomField.custom_field_attribute?(key),
       is_required: represented[:required] && !represented[:has_default],
       translation: Type.translated_attribute_name(key, represented),
-      field_type: field_type_label(key, represented)
+      field_format_label: field_format_label(represented)
     }
   end
 
-  # Resolves the format label directly via OpenProject::CustomFieldFormat rather than
-  # using CustomFieldsHelper#label_for_custom_field_format, because the helper is not
-  # available in the controller context during Turbo Stream re-renders.
-  def field_type_label(_key, represented)
+  def field_format_label(represented)
     if represented[:is_cf]
-      format = OpenProject::CustomFieldFormat.find_by(name: represented[:field_format])
-      return "" if format.nil?
-
-      format.label.is_a?(Proc) ? format.label.call : I18n.t(format.label)
+      label_for_custom_field_format(represented[:field_format])
     else
       I18n.t("types.edit.form_configuration.builtin_field")
     end

@@ -89,7 +89,7 @@ RSpec.describe TypesHelper do
       end
     end
 
-    describe ":field_type" do
+    describe ":field_format_label" do
       before do
         allow(type)
           .to receive(:attribute_groups)
@@ -100,14 +100,14 @@ RSpec.describe TypesHelper do
         groups = helper.form_configuration_groups(type)
         attribute = groups[:actives].first[:attributes].first
 
-        expect(attribute[:field_type]).to eq I18n.t("types.edit.form_configuration.builtin_field")
+        expect(attribute[:field_format_label]).to eq I18n.t("types.edit.form_configuration.builtin_field")
       end
 
       it "returns 'Builtin field' for inactive built-in attributes" do
         groups = helper.form_configuration_groups(type)
         inactive_builtin = groups[:inactives].find { |a| a[:key] == "date" }
 
-        expect(inactive_builtin[:field_type]).to eq I18n.t("types.edit.form_configuration.builtin_field")
+        expect(inactive_builtin[:field_format_label]).to eq I18n.t("types.edit.form_configuration.builtin_field")
       end
 
       context "with a custom field" do
@@ -117,7 +117,7 @@ RSpec.describe TypesHelper do
           groups = helper.form_configuration_groups(type)
           cf_attr = groups[:inactives].find { |a| a[:key] == custom_field.attribute_name }
 
-          expect(cf_attr[:field_type]).to eq I18n.t(:label_string)
+          expect(cf_attr[:field_format_label]).to eq I18n.t(:label_string)
         end
       end
     end
