@@ -160,6 +160,14 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         expect(page).to have_text("Show #{middle_count} more items")
       end
 
+      it "renders the full work-package count in the header" do
+        expect(page).to have_css(
+          ".Counter",
+          text: total.to_s,
+          aria: { label: I18n.t(:label_x_items, count: total) }
+        )
+      end
+
       it "renders show-more targeting the full backlog turbo frame with all=1" do
         show_link = page.find("##{show_more_id}")
         expect(show_link[:href]).to include("all=1")
