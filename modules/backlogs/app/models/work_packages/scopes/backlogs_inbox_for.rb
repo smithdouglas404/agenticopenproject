@@ -38,6 +38,7 @@ module WorkPackages::Scopes::BacklogsInboxFor
         .where(project:, sprint_id: nil, backlog_bucket_id: nil)
         .without_excluded_type
         .without_status_considered_closed
+        .includes(:assigned_to, :priority, :parent)
         .order_by_position
         .order(WorkPackage.arel_table[:id].asc)
     end

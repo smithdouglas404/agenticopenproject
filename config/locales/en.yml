@@ -4937,8 +4937,11 @@ en:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: "Drag to reorder"
         menu:
           label_actions: "Work package actions"
+        parent: "Parent"
 
   permission_add_work_package_comments: "Add comments"
   permission_add_work_packages: "Add work packages"
