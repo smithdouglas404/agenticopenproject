@@ -32,11 +32,17 @@ module OpenProject
   module Common
     # @logical_path OpenProject/Common
     class BorderBoxListComponentPreview < ViewComponent::Preview
+      DEFAULT_DESCRIPTION = "Coordinate launch work and keep stakeholders aligned."
+      TRANSPARENT_DESCRIPTION = "Sprint goals, scope, and timing for the next iteration."
+      PLAYGROUND_DESCRIPTION =
+        "Preview a longer header description to check wrapping, spacing, and alignment with actions in this list."
+
       # @label Default
       # @param padding [Symbol] select [default, condensed, spacious]
+      # @param description text
       # @param interactive toggle
       # @param collapsible toggle
-      def default(padding: :default, interactive: false, collapsible: false)
+      def default(padding: :default, description: DEFAULT_DESCRIPTION, interactive: false, collapsible: false)
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-preview",
           padding:,
@@ -44,7 +50,7 @@ module OpenProject
           collapsible: boolean_preview_param(collapsible)
         ) do |list|
           list.with_header(title: "Things we're building", count: true) do |header|
-            header.with_description { "There's lots to look forward to" }
+            header.with_description_content(description)
             header.with_action_button do |button|
               button.with_leading_visual_icon(icon: :pencil)
               "Edit"
@@ -65,9 +71,10 @@ module OpenProject
 
       # @label Transparent scheme
       # @param padding [Symbol] select [default, condensed, spacious]
+      # @param description text
       # @param interactive toggle
       # @param collapsible [Boolean] toggle
-      def transparent(padding: :default, interactive: false, collapsible: false)
+      def transparent(padding: :default, description: TRANSPARENT_DESCRIPTION, interactive: false, collapsible: false)
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-transparent-preview",
           scheme: :transparent,
@@ -76,7 +83,7 @@ module OpenProject
           collapsible: boolean_preview_param(collapsible)
         ) do |list|
           list.with_header(title: "Sprint backlog", count: true) do |header|
-            header.with_description { "3 points remaining" }
+            header.with_description_content(description)
             header.with_action_button do |button|
               button.with_leading_visual_icon(icon: :rocket)
               "Start sprint"
@@ -119,6 +126,7 @@ module OpenProject
       # @param count_scheme [Symbol] select [primary, secondary]
       # @param hide_zero_count toggle
       # @param padding [Symbol] select [default, condensed, spacious]
+      # @param description text
       # @param interactive toggle
       # @param collapsible toggle
       def playground(
@@ -127,6 +135,7 @@ module OpenProject
         count_scheme: :primary,
         hide_zero_count: true,
         padding: :default,
+        description: PLAYGROUND_DESCRIPTION,
         interactive: false,
         collapsible: false
       )
@@ -146,7 +155,7 @@ module OpenProject
               aria: { label: "Visible list item count" }
             }
           ) do |header|
-            header.with_description { "Advanced header options" }
+            header.with_description_content(description)
           end
 
           list.with_item { "First item" }
