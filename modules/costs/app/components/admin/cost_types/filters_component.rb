@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,38 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-
-RSpec.describe "deleting a cost type", :js do
-  let!(:user) { create(:admin) }
-  let!(:cost_type) do
-    type = create(:cost_type, name: "Translations")
-    create(:cost_rate, cost_type: type, rate: 1.00)
-    type
-  end
-
-  before do
-    login_as user
-  end
-
-  it "can delete the cost type" do
-    visit admin_cost_types_path
-
-    accept_confirm do
-      scroll_to_and_click(find("[data-test-selector='op-admin-cost-type-#{cost_type.id}-lock']"))
+# TODO - Remove with https://community.openproject.org/wp/75158
+module Admin
+  module CostTypes
+    class FiltersComponent < Filter::FilterComponent
     end
-
-    # Active list becomes empty
-    expect_angular_frontend_initialized
-    expect(page).to have_css ".generic-table--empty-row", wait: 10
-
-    # Switch to the locked tab via the segmented control
-    click_on I18n.t("members.menu.locked")
-
-    wait_for_network_idle
-
-    # The locked cost type appears with a restore action
-    expect(page).to have_css("[data-test-selector='op-admin-cost-type-#{cost_type.id}-restore']")
-    expect(page).to have_css("td", text: "Translations")
   end
 end

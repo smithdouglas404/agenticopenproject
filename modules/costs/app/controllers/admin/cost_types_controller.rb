@@ -49,9 +49,9 @@ module Admin
                        "unit_plural" => "#{CostType.table_name}.unit_plural" }
       sort_update sort_columns
 
-      @status = params[:status] == "locked" ? "locked" : "active"
-      @cost_types = (@status == "locked" ? CostType.where.not(deleted_at: nil) : CostType.active)
-                      .order(sort_clause)
+      @query = load_query
+      @status = @query.find_active_filter(:status).values.first
+      @cost_types = @query.results.reorder(sort_clause)
 
       render action: "index", layout: !request.xhr?
     end
@@ -143,6 +143,12 @@ module Admin
     end
 
     private
+
+    def load_query
+      query = ParamsToQueryService.new(CostType, current_user).call(params)
+      query.where("status", "=", ["active"]) unless query.find_active_filter(:status)
+      query
+    end
 
     def find_cost_type
       @cost_type = CostType.find(params[:id])
