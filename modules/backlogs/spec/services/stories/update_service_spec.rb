@@ -158,22 +158,22 @@ RSpec.describe Stories::UpdateService, type: :model do
     end
 
     context "with prev_id" do
-      it "calls move_after with the integer prev_id on success" do
+      it "calls move_after with the prev_id on success" do
         allow(story).to receive(:move_after)
 
         instance.call(target_id: "inbox", prev_id: "5")
 
-        expect(story).to have_received(:move_after).with(prev_id: 5)
+        expect(story).to have_received(:move_after).with(prev_id: "5")
       end
     end
 
     context "with position" do
-      it "calls move_after with the integer position on success" do
+      it "calls move_after with the position on success" do
         allow(story).to receive(:move_after)
 
         instance.call(target_id: "inbox", position: "3")
 
-        expect(story).to have_received(:move_after).with(position: 3)
+        expect(story).to have_received(:move_after).with(position: "3")
       end
     end
 
@@ -183,8 +183,8 @@ RSpec.describe Stories::UpdateService, type: :model do
 
         instance.call(target_id: "inbox", prev_id: "5", position: "3")
 
-        expect(story).to have_received(:move_after).with(prev_id: 5)
-        expect(story).not_to have_received(:move_after).with(position: 3)
+        expect(story).to have_received(:move_after).with(prev_id: "5")
+        expect(story).not_to have_received(:move_after).with(position: "3")
       end
     end
   end

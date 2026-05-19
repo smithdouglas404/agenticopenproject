@@ -46,9 +46,9 @@ class Stories::UpdateService
 
     create_call.on_success do
       if prev_id
-        create_call.result.move_after(prev_id: prev_id.to_i)
+        create_call.result.move_after(prev_id:)
       elsif position
-        create_call.result.move_after(position: position.to_i)
+        create_call.result.move_after(position:)
       end
     end
   end
