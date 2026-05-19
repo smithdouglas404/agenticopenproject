@@ -1471,8 +1471,8 @@ ru:
     bulk_delete_dialog:
       title: Удалить %{count} пакетов работ
       heading: Окончательно удалить эти %{count} пакеты работ?
-      description: 'The following work packages and all associated data will be permanently deleted:'
-      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
+      description: 'Следующие пакеты работ и все связанные с ними данные будут окончательно удалены:'
+      description_with_children: 'Следующие пакеты работ и все связанные с ними данные будут окончательно удалены:'
       confirm_children_deletion: Я подтверждаю, что все выбранные пакеты работ, включая дочерние, будут удалены навсегда.
       cross_project_warning: 'Эти пакеты работ охватывают несколько проектов: %{projects}'
       children_label: 'Следующие дочерние пакеты работ также будут удалены:'
@@ -3535,7 +3535,7 @@ ru:
             '
           new_features_list:
             line_0: Мигратор Jira с поддержкой базовых пользовательских полей.
-            line_1: Сегменты бэклога для структурирования и приоритизации пакетов работ во время уточнения бэклога.
+            line_1: Разделы бэклога для структурирования и приоритизации пакетов работ во время уточнения бэклога.
             line_2: Более удобное перетаскивание и улучшенные опции перемещения в Бэклогах.
             line_3: Кнопки начала и завершения спринта в заголовке спринта.
             line_4: Копирование настроек рабочего процесса между ролями.

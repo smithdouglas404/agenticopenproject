@@ -43,7 +43,7 @@ ru:
       user_preference:
         backlogs_versions_default_fold_state: Покажите спринты в свернутом виде
       work_package:
-        backlog_bucket: Сегмент бэклога
+        backlog_bucket: Раздел бэклога
         backlogs_work_package_type: Тип невыполненной работы
         position: Позиция
         sprint: Спринт
@@ -61,7 +61,7 @@ ru:
               share_all_projects_already_taken: не может быть установлен, потому что проект "%{name}" уже совместно используется со всеми проектами.
               share_all_projects_already_taken_anonymous: не может быть установлен, потому что другой проект уже совместно используется со всеми проектами.
         work_package:
-          backlog_bucket_xor_sprint: не может быть назначен для спринта и для бэклога одновременно.
+          backlog_bucket_xor_sprint: не может быть назначен для спринта и для раздела бэклога одновременно.
           attributes:
             backlog_bucket:
               backlog_bucket_from_another_project: должен принадлежать тому же проекту, что и пакет работ.
@@ -123,11 +123,11 @@ ru:
       title: Настройки администрирования бэклога будут в будущем
       text: В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными.
     backlog_bucket_component:
-      blankslate_title: Сегмент бэклога пуст
+      blankslate_title: Раздел бэклога пуст
       blankslate_description: Перетащите элементы сюда, чтобы их добавить.
     backlog_bucket_destroy_modal_component:
-      title: Удалить сегмент бэклога?
-      details: Сегмент бэклога '%{name}' будет удалён, а все пакеты работ будут перемещены в папку "Входящие" бэклога. Ни один пакет работ не будет удален.
+      title: Удалить раздел бэклога?
+      details: Раздел бэклога '%{name}' будет удалён, а все пакеты работ будут перемещены в папку "Входящие" бэклога. Ни один пакет работ не будет удален.
     backlog_bucket_item_component:
       label_actions: Действия с пакетом работ
     sprint_component:
@@ -163,15 +163,15 @@ ru:
         receive_shared_no_actions_description_text: Этот проект получает общие спринты из другого проекта, но пока ни один из них не доступен.
         settings_link_text: настройки проекта
     backlog_bucket_menu_component:
-      label_actions: Действия с сегментом бэклога
+      label_actions: Действия с разделом бэклога
       action_menu:
-        edit_backlog_bucket: Редактировать сегмент бэклога
-        delete_backlog_bucket: Удалить сегмент бэклога
+        edit_backlog_bucket: Редактировать раздел бэклога
+        delete_backlog_bucket: Удалить раздел бэклога
     backlog_bucket_header_component:
       label_work_package_count:
-        zero: Нет историй в сегменте бэклога
-        one: "%{count} история в сегменте бэклога"
-        other: "%{count} историй в сегменте бэклога"
+        zero: Нет историй в разделе бэклога
+        one: "%{count} история в разделе бэклога"
+        other: "%{count} историй в разделе бэклога"
     sprint_header_component:
       label_start_sprint: Начало
       label_complete_sprint: Завершено
@@ -212,8 +212,8 @@ ru:
     story_points: Точки истории
     story_points_ideal: Точки истории (идеально)
   label_backlog: Бэклог
-  label_backlog_bucket_edit: Редактировать сегмент бэклога
-  label_backlog_bucket_new: Новый сегмент бэклога
+  label_backlog_bucket_edit: Редактировать раздел бэклога
+  label_backlog_bucket_new: Новый раздел бэклога
   label_inbox: Входящие
   label_backlogs: Бэклоги
   label_burndown_chart: Сводная таблица
