@@ -263,6 +263,10 @@ $scrollbar-size: 10px
     .work-packages--filters-optional-container
       margin-right: 15px
 
+@mixin split-pane-active
+  #content:has(#content-bodyRight > *)
+    @content
+
 @mixin modifying--placeholder
   border: 1px dashed var(--accent-color)
   pointer-events: none

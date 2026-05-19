@@ -33,7 +33,7 @@ module Wikis
     module Input
       class ReferencingPagesContract < DryApplicationContract
         params do
-          required(:linkable).filled(type?: WorkPackage)
+          required(:linkable).filled(Types::Linkable)
         end
       end
     end

@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -41,11 +41,16 @@ module Wikis
     end
 
     def relation_page_link_infos_for(provider:, linkable:)
-      provider.page_links
-              .merge(RelationPageLink.all)
-              .where(linkable:)
-              .order(created_at: :desc)
-              .map { page_info(provider:, identifier: it.identifier) }
+      Adapters::Input::RelationPageLinks.build(linkable:).bind do |input|
+        provider.auth_strategy_for(User.current).bind do |auth_strategy|
+          provider.resolve("queries.relation_page_links")
+                  .call(input_data: input, auth_strategy:)
+                  .either(
+                    ->(page_link_infos) { page_link_infos },
+                    -> { [] }
+                  )
+        end
+      end
     end
 
     def inline_page_link_infos_for(linkable:)
@@ -59,10 +64,12 @@ module Wikis
 
       Adapters::Input::ReferencingPages.build(linkable:).bind do |input|
         Provider.enabled.each do |provider|
-          provider.resolve("queries.referencing_pages")
-                  .call(input)
-                  # Only return page infos for successful results
-                  .fmap { |page_infos| referenced_in.concat(page_infos.map { Success(it) }) }
+          provider.auth_strategy_for(User.current).bind do |auth_strategy|
+            provider.resolve("queries.referencing_pages")
+                    .call(input_data: input, auth_strategy:)
+                    # Only return page infos for successful results
+                    .fmap { referenced_in.concat(it) }
+          end
         end
       end
 
@@ -72,7 +79,11 @@ module Wikis
     private
 
     def page_info(provider:, identifier:)
-      Adapters::Input::PageInfo.build(identifier:).bind { provider.resolve("queries.page_info").call(it) }
+      Adapters::Input::PageInfo.build(identifier:).bind do |input|
+        provider.auth_strategy_for(User.current).bind do |auth_strategy|
+          provider.resolve("queries.page_info").call(input_data: input, auth_strategy:)
+        end
+      end
     end
 
     def page_title_service

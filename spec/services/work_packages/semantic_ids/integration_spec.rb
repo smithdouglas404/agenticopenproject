@@ -129,6 +129,13 @@ RSpec.describe "SemanticIds registry integration",
       WorkPackages::UpdateService.new(user:, model: work_package).call(project: target_project)
       expect(WorkPackage.find_by_display_id(work_package.reload.identifier)).to eq(work_package)
     end
+
+    it "refreshes the in-memory identifier so to_param produces the semantic URL" do
+      WorkPackages::UpdateService.new(user:, model: work_package).call(project: target_project)
+
+      expect(work_package.identifier).to start_with("DEST-")
+      expect(work_package.to_param).to start_with("DEST-")
+    end
   end
 
   describe "WP move in classic mode when sequence numbers linger from semantic mode" do

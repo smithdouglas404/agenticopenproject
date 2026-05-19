@@ -50,11 +50,11 @@ See COPYRIGHT and LICENSE files for more details.
       size: :medium,
       href: oauth_clients_ensure_connection_url(
         oauth_client_id: @wiki_provider.oauth_client.client_id,
-        storage_id: @wiki_provider.id,
+        integration_id: @wiki_provider.id,
         destination_url: edit_admin_settings_wiki_provider_url(@wiki_provider)
       )
     ) do |button|
-      button.with_leading_visual_icon(icon: :plug)
+      button.with_trailing_visual_icon(icon: :"link-external")
       t("wikis.buttons.connect_account", provider: @wiki_provider.name)
     end %>
   <% end %>

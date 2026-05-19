@@ -44,6 +44,10 @@ module Wikis
       @page_link_infos ||= page_link_service.relation_page_link_infos_for(provider:, linkable: @work_package)
     end
 
+    def user_connected?
+      provider.user_connected?(User.current)
+    end
+
     private
 
     def page_link_service

@@ -169,7 +169,6 @@ zh-CN:
   label_previous_week: 前一周
   label_previous_month: 上个月
   label_specific_day: 第 %{day} 天
-  label_specific_week: 日历周 %{week}
   label_specific_month: "%{month} 月"
   label_list: 列表
   label_month: 月

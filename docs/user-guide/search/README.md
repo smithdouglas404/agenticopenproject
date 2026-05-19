@@ -45,6 +45,26 @@ You can now view search results from different categories or sections of OpenPro
 >
 > It is not possible to find content from archived projects. You will have to un-archive them first on the [global projects overview page](../projects/project-lists/).
 
+## Partial-text search
+
+The OpenProject search bar is also configured to support partial-text search. Simply type part of a word, and the system will display matching items.
+
+For example: Entering **"roto"** will return results such as **prototyping**, **prototype**
+
+This feature is especially helpful if you do not remember the exact name of a work package or are unsure of the exact spelling.
+
+![Partial text search for work package search in OpenProject](openproject_userguide_search_partial_text.png)
+
+## Multi-term text search
+
+You can also search using multiple space-separated terms to narrow down results.
+
+For example: Entering **"de roto"** will match **Design prototyping**.
+
+When you type more than one text, the search will only show results where **all entered terms** appear somewhere in the project or workspace name. This helps you find items faster, even if you only remember parts of the name.
+
+![Multi term text search for work package search in OpenProject](openproject_userguide_search_multispace_text.png)
+
 ## Full-text search
 
 The OpenProject search bar is configured for full-text search. This means you can search not only headings but also content such as wiki pages or work package descriptions and attachments.

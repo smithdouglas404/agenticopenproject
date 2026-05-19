@@ -78,7 +78,7 @@ de:
             version_id:
               task_version_must_be_the_same_as_story_version: muss der Version der übergeordneten Story entsprechen.
             sprint:
-              not_shared_with_project: wird nicht mit dem Projekt geteilt, in dem sich das Arbeitspaket befindet.
+              not_assignable: ist nicht zuweisbar, da es entweder nicht mit dem Projekt geteilt oder bereits beendet ist.
               not_eligible_for_moving: ist kein aktiver Sprint in dem Projekt, in dem der Sprint liegt, aus dem das Arbeitspaket verschoben wird.
     models:
       sprint: Sprint
@@ -112,22 +112,33 @@ de:
     administration_blankslate:
       title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
       text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
-    backlog_bucket_component:
-      blankslate_title: Eingangs Backlog ist leer
+    bucket_component:
+      blankslate_title: Backlog Bucket ist leer
       blankslate_description: Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
-    backlog_bucket_item_component:
-      label_actions: Arbeitspaket-Aktionen
+      label_actions: Backlog Bucket Aktionen
+      action_menu:
+        edit_backlog_bucket: Backlog Bucket bearbeiten
+        delete_backlog_bucket: Backlog Bucket löschen
+    backlog_bucket_destroy_modal_component:
+      title: Backlog Bucket löschen?
+      details: Der Backlog Bucket '%{name}' wird gelöscht und alle Arbeitspakete werden in den Eingangs Backlog verschoben. Kein Arbeitspaket wird gelöscht.
     sprint_component:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
+      label_actions: Sprint-Aktionen
+      label_start_sprint: Start
+      label_complete_sprint: Abgeschlossen
+      start_sprint_disabled_reason_active_sprint: Ein anderer Sprint ist bereits aktiv.
+      start_sprint_disabled_reason_missing_dates: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
+      action_menu:
+        edit_sprint: Sprint bearbeiten
+        add_work_package: Arbeitspaket hinzufügen
     inbox_component:
       blankslate_title: Eingangs-Backlog ist leer
       blankslate_description: Alle offenen Arbeitspakete in diesem Projekt werden automatisch hier angezeigt.
       show_more:
         one: Zeige ein weiteres Element
         other: Zeige %{count} weitere Elemente
-    inbox_item_component:
-      label_actions: Arbeitspaket-Aktionen
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
@@ -147,25 +158,6 @@ de:
         create_description_text: Um mit der Planung Ihres Sprints zu beginnen, erstellen Sie hier einen Sprint.
         manage_description_html: Um mit der Planung Ihres Sprints zu beginnen, gehen Sie auf %{settings_link}, um Sprints aus einem anderen Projekt zu empfangen.
         no_actions_description_text: Für dieses Projekt sind noch keine Sprints vorhanden.
-    backlog_bucket_menu_component:
-      label_actions: Backlog Bucket Aktionen
-      action_menu:
-        edit_backlog_bucket: Backlog Bucket bearbeiten
-        delete_backlog_bucket: Backlog Bucket löschen
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: Keine Arbeitspakete im Backlog Bucket
-        one: "%{count} Arbeitspakete im Backlog Bucket"
-        other: "%{count} Arbeitspakete im Backlog Bucket"
-    sprint_header_component:
-      label_start_sprint: Beginn
-      label_complete_sprint: Fertigstellen
-      start_sprint_disabled_reason_active_sprint: Ein weiterer Sprint ist bereits aktiv.
-      start_sprint_disabled_reason_missing_dates: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
-      label_story_count:
-        zero: Keine Stories im Sprint
-        one: "%{count} Stories im Sprint"
-        other: "%{count} Stories im Sprint"
     finish_sprint_dialog_component:
       title: Der Sprint enthält nicht abgeschlossene Arbeitspakete
       body: "%{message} Was würden Sie gerne damit machen?"
@@ -176,13 +168,6 @@ de:
         move_to_sprint: In einen anderen Sprint schieben
       select_sprint_label: Sprint auswählen
       button_complete_sprint: Sprint abschließen
-    sprint_menu_component:
-      label_actions: Sprint-Aktionen
-      action_menu:
-        edit_sprint: Sprint bearbeiten
-        add_work_package: Arbeitspaket hinzufügen
-    story_component:
-      label_actions: Aktionen
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
@@ -198,7 +183,7 @@ de:
     story_points_ideal: Story-Points (ideal)
   label_backlog: Backlog
   label_backlog_bucket_edit: Backlog Bucket bearbeiten
-  label_backlog_bucket_new: Neuer Backlog-Bucket
+  label_backlog_bucket_new: Neuer Backlog Bucket
   label_inbox: Posteingang
   label_backlogs: Backlogs
   label_burndown_chart: Burndown-Diagramm

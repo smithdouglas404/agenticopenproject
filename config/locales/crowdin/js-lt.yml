@@ -202,16 +202,7 @@ lt:
           text: "[Placeholder] Įterptinis kalendorius"
     admin:
       type_form:
-        custom_field: Savas laukas
-        inactive: Neaktyvus
-        drag_to_activate: Vilkite laukelius iš čia, kad juos aktyvuotumėte
-        add_group: Pridėti atributų grupę
-        add_table: Pridėti susijusių darbų paketų lentelę
         edit_query: Keisti užklausą
-        new_group: Nauja grupė
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Atstatyti į numatytuosius
       working_days:
         calendar:
           empty_state_header: Nedarbo dienos
@@ -616,18 +607,6 @@ lt:
     breadcrumb: Susijusi informacija
     text_data_lost: Visa įvesta informacija bus prarasta.
     text_user_wrote: "%{value} parašė:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: "%{group} grupės pavadinimas naudotas daugiau nei kartą. Grupių pavadinimai privalo būti unikalūs."
-        error_no_table_configured: Prašome sukonfigūruoti lentelę, skirtą grupei %{group}.
-        reset_title: Atstatyti formos konfigūraciją
-        confirm_reset: 'Įspėjimas: Ar tikrai norite atstatyti pradinę formos konfigūraciją? Atributai bus perkelti į jų numatytąsias grupes ir VISUS savi laukeliai bus išjungti.
-
-          '
-        upgrade_to_ee: Patobulinkite į Enteprise vietinę versiją
-        upgrade_to_ee_text: Oho! Jei Jums reikia šio priedo, esate super pro! Ar nenorėtumėte paremti mus, OpenSource (atviro kodo) kūrėjus, tapdami Enterprise versijos klientu?
-        more_information: Daugiau informacijos
-        nevermind: Nesvarbu
     time_entry:
       work_package_required: Reikia pirma pasirinkti darbo paketą.
       title: Registruoti laiką

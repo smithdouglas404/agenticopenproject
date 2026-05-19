@@ -77,7 +77,7 @@ zh-TW:
             version_id:
               task_version_must_be_the_same_as_story_version: 必須與上層「使用者需求」(User Story)的版本相同。
             sprint:
-              not_shared_with_project: 不與工作任務所在的專案共用。
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: 工作任務被移出的項目中沒有活耀的衝刺。
     models:
       sprint: 衝刺
@@ -109,21 +109,32 @@ zh-TW:
     administration_blankslate:
       title: Backlog 管理設定不斷演進
       text: 我們目前正在重新設計 Backlogs 模組。在不久的將來，Sprint 和 Backlogs 的管理設定將在此處顯示。專案層級的設定仍然可用。
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Drag items here to add them.
-    backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     sprint_component:
       blankslate_title: "%{name} 為空"
       blankslate_description: 尚未規劃任何項目。將項目拖曳至此即可新增。
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: 積壓收件匣為空
       blankslate_description: 此專案中所有開啟的工作任務都會自動出現在這裡。
       show_more:
         other: 再顯示 %{count} 項
-    inbox_item_component:
-      label_actions: 工作項目追蹤
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: 複製連結到剪貼簿
@@ -143,25 +154,6 @@ zh-TW:
         create_description_text: To start planning your sprint, create one here.
         manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
         no_actions_description_text: No sprints are available for this project yet.
-    backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
-      action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
-    sprint_header_component:
-      label_start_sprint: 開始
-      label_complete_sprint: 完成
-      start_sprint_disabled_reason_active_sprint: 另一個衝刺已經展開。
-      start_sprint_disabled_reason_missing_dates: 要開始衝刺，必須要有開始和結束日期。
-      label_story_count:
-        zero: 衝刺階段沒有[故事]
-        one: "%{count} 衝刺中的故事"
-        other: "%{count} 衝刺中的故事"
     finish_sprint_dialog_component:
       title: 有進行中的工作項目
       body: "%{message} 您想用這些做什麼？"
@@ -172,13 +164,6 @@ zh-TW:
         move_to_sprint: 將它們移到另一個衝刺階段
       select_sprint_label: 選擇衝刺
       button_complete_sprint: 完成衝刺
-    sprint_menu_component:
-      label_actions: 衝刺行動
-      action_menu:
-        edit_sprint: 編輯衝刺
-        add_work_package: 新增工作項目
-    story_component:
-      label_actions: 故事相關操作
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 複製網址到剪貼簿

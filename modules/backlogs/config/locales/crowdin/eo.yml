@@ -78,7 +78,7 @@ eo:
             version_id:
               task_version_must_be_the_same_as_story_version: must be the same as the parent story's version.
             sprint:
-              not_shared_with_project: is not shared with the project the work package is in.
+              not_assignable: is not assignable since it is either not shared with the project or already finished.
               not_eligible_for_moving: is not an active sprint in the project which holds the sprint the work package is moved out of.
     models:
       sprint: Sprint
@@ -112,22 +112,33 @@ eo:
     administration_blankslate:
       title: Backlog admin settings are evolving
       text: We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available.
-    backlog_bucket_component:
+    bucket_component:
       blankslate_title: Backlog bucket is empty
       blankslate_description: Drag items here to add them.
-    backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     sprint_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: No items planned yet. Drag items here to add them.
+      label_actions: Sprint actions
+      label_start_sprint: Start
+      label_complete_sprint: Complete
+      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
+      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
+      action_menu:
+        edit_sprint: Edit sprint
+        add_work_package: Add work package
     inbox_component:
       blankslate_title: Backlog inbox is empty
       blankslate_description: All open work packages in this project will automatically appear here.
       show_more:
         one: Show 1 more item
         other: Show %{count} more items
-    inbox_item_component:
-      label_actions: Work package actions
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
@@ -147,25 +158,6 @@ eo:
         create_description_text: To start planning your sprint, create one here.
         manage_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
         no_actions_description_text: No sprints are available for this project yet.
-    backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
-      action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
-    sprint_header_component:
-      label_start_sprint: Start
-      label_complete_sprint: Complete
-      start_sprint_disabled_reason_active_sprint: Another sprint is already active.
-      start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
-      label_story_count:
-        zero: No stories in sprint
-        one: "%{count} story in sprint"
-        other: "%{count} stories in sprint"
     finish_sprint_dialog_component:
       title: There are work in progress items
       body: "%{message} What would you like to do with these?"
@@ -176,13 +168,6 @@ eo:
         move_to_sprint: Move them to another sprint
       select_sprint_label: Select sprint
       button_complete_sprint: Complete sprint
-    sprint_menu_component:
-      label_actions: Sprint actions
-      action_menu:
-        edit_sprint: Edit sprint
-        add_work_package: Add work package
-    story_component:
-      label_actions: Story actions
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard

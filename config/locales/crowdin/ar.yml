@@ -271,8 +271,8 @@ ar:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -498,7 +498,7 @@ ar:
         no_role: Select role
         roles:
           zero: "%{count} roles selected"
-          one: "%{count} role selected"
+          one: One role selected
           two: "%{count} roles selected"
           few: "%{count} roles selected"
           many: "%{count} roles selected"
@@ -1179,6 +1179,8 @@ ar:
       no_results_title_text: لا يوجد حالياً أخبار لتقدم.
       no_results_content_text: أضف عنصر أخبار
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -1190,6 +1192,8 @@ ar:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Stay logged in for %{num_days}
     sessions:
@@ -1407,6 +1411,37 @@ ar:
     edit:
       form_configuration:
         tab: تشكيل النموذج
+        label_group: Group
+        reset_to_defaults: Reset to defaults
+        add_attribute_group: Add attribute group
+        add_query_group: Add table of related work packages
+        delete_group: Delete group
+        remove_attribute: Remove from group
+        drag_to_activate: Drag fields from here to activate them
+        drag_to_reorder: Drag to reorder
+        edit_query: Edit query
+        custom_field: Custom field
+        filter_inactive: Filter attributes
+        inactive_attributes_heading: Inactive attributes
+        no_inactive_attributes: No inactive attributes
+        blankslate_title: No groups yet
+        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        group_actions: Group actions
+        rename_group: Rename group
+        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
+        group_name_label: Group name
+        row_actions: Row actions
+        query_group_label: Work packages table
+        empty_group_hint: Drag attributes here
+        invalid_attribute_groups: The form configuration payload is invalid.
+        invalid_query: The embedded query configuration is invalid.
+        not_found: The requested form configuration item could not be found.
+        untitled_group: Untitled group
+        reset_title: Reset form configuration
+        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+
+          '
       projects:
         tab: المشاريع
         enable_all: Enable for all projects
@@ -1515,8 +1550,8 @@ ar:
     bulk_delete_dialog:
       title: Delete %{count} work packages
       heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      description: 'The following work packages and all associated data will be permanently deleted:'
+      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
       confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
       cross_project_warning: 'These work packages span multiple projects: %{projects}'
       children_label: 'The following children will also be deleted:'
@@ -2498,7 +2533,7 @@ ar:
               attribute_unknown_name: 'Invalid work package attribute used: %{attribute}'
               duplicate_group: The group name '%{group}' is used more than once. Group names must be unique.
               query_invalid: 'The embedded query ''%{group}'' is invalid: %{details}'
-              group_without_name: Unnamed groups are not allowed.
+              group_without_name: Group name can't be blank.
             patterns:
               invalid_tokens: One or more attributes inside the field are not valid. Please, fix the attributes before saving.
         user:
@@ -2697,6 +2732,7 @@ ar:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: created by %{user} on %{datetime}
@@ -3663,6 +3699,34 @@ ar:
   general_text_false: خاطئ
   gui_validation_error: خطأ 1
   gui_validation_error_plural: أخطاء %{count}
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          zero: "%{count} checks failed"
+          one: "%{count} check failed"
+          two: "%{count} checks failed"
+          few: "%{count} checks failed"
+          many: "%{count} checks failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          zero: "%{count} checks returned a warning"
+          one: "%{count} check returned a warning"
+          two: "%{count} checks returned a warning"
+          few: "%{count} checks returned a warning"
+          many: "%{count} checks returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: أحدث المشاريع المرئية في هذه الجلسة.
@@ -3964,6 +4028,7 @@ ar:
   label_age: العمر
   label_ago: أيام مضت
   label_all: الكل
+  label_all_uppercase: All
   label_all_time: كل الوقت
   label_all_words: كافة الكلمات
   label_all_open_wps: كل المفتوح
@@ -4491,6 +4556,7 @@ ar:
   label_role_new: دور جديد
   label_role_grantable: Grantable role
   label_role_plural: دور
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: تعيين دور للأعضاء الجدد
   label_scm: اختصاراً لِ:"Supply Chain Management" إدارة سلسة الإمداد
   label_scroll_left: Scroll left
@@ -4639,6 +4705,10 @@ ar:
     one: 1 comment
     other: "%{count} تعليقات"
     zero: no comments
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 open
     other: "%{count} مفتوح"
@@ -4729,7 +4799,7 @@ ar:
       you_have: You have
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} mentioned you in #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: To notification center
       see_in_center: See comment in notification center
@@ -4771,7 +4841,7 @@ ar:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
-        subject: 'Work package #%{id} was shared with you'
+        subject: Work package %{id} was shared with you
         enterprise_text: Share work packages with users who are not members of the project.
         summary:
           user: "%{user} shared a work package with you with %{role_rights} rights"
@@ -4988,6 +5058,11 @@ ar:
     text_getting_started_description: Get a quick overview of project management and team collaboration with OpenProject. You can restart this video from the help menu.
     welcome: Welcome to %{app_title}
     select_language: Please select your language
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: إضافة مجموعات عمل
   permission_add_messages: نشر الرسائل
@@ -5005,7 +5080,6 @@ ar:
   permission_add_work_package_watchers: إضافة مراقب
   permission_assign_versions: Assign versions
   permission_browse_repository: وصول للقراءة فقط إلى مستودع (استعراض والخروج)
-  permission_change_wiki_parent_page: تغيير صفحة wikiالاصلية
   permission_change_work_package_status: Change work package status
   permission_change_work_package_status_explanation: Allows changing status without Edit work packages permission
   permission_comment_news: أخبار التعليق
@@ -5020,8 +5094,6 @@ ar:
   permission_delete_own_messages: حذف الرسائل الخاصة
   permission_delete_reportings: حذف التقرير
   permission_delete_timelines: حذف الجداول الزمنية
-  permission_delete_wiki_pages: حذف صفحات wiki
-  permission_delete_wiki_pages_attachments: حذف المرفقات
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: تحرير مجموعات العمل
@@ -5041,12 +5113,10 @@ ar:
   permission_edit_wiki_pages: تحرير صفحات wiki
   permission_export_work_packages: تصدير مجموعات العمل
   permission_export_projects: Export projects
-  permission_export_wiki_pages: تصدير صفحات wiki
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: قائمة المرفقات
   permission_log_own_time: تسجيل الوقت الخاص بك
   permission_log_time: تسجيل الوقت للمستخدمين الآخرين
   permission_manage_forums: إدارة منتديات
@@ -5061,7 +5131,6 @@ ar:
   permission_manage_subtasks: Manage work package hierarchies
   permission_manage_versions: إدارة الإصدارات
   permission_manage_wiki: إدارة wiki
-  permission_manage_wiki_menu: إدارة قائمة wiki
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -5071,8 +5140,6 @@ ar:
 
     '
   permission_move_work_packages: نقل مجموعات العمل
-  permission_protect_wiki_pages: حماية صفحات wiki
-  permission_rename_wiki_pages: قم بإعادة تسمية صفحات wiki
   permission_save_queries: Save views
   permission_search_project: Search project
   permission_select_custom_fields: Select custom fields
@@ -5310,7 +5377,7 @@ ar:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Cross-Origin Resource Sharing (CORS)
@@ -5441,6 +5508,9 @@ ar:
   setting_mail_handler_body_delimiter_regex: حذف رسائل البريد الإلكتروني المطابقة لهذا التعبير الاعتيادي
   setting_mail_handler_ignore_filenames: Ignored mail attachments
   setting_new_project_user_role_id: الدور الممنوح لمستخدم غير مسؤول الذي يقوم بإنشاء مشروع
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements
@@ -5853,6 +5923,7 @@ ar:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'تعيين أن تعمل الحزمة:'
   text_regexp_multiline: 'يتم تطبيق التعبير الاعتيادي في وضع متعدد الأسطر. على سبيل المثال: ^---\s+'
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     قم باختيار أو تحديث مستخدم "OpenProject: المشروع المفتوح" الذي تم تعيينه لكل اسم مستخدم وُجِد في سجل المستودع.
     المستخدمون الذين لديهم نفس اسم المستخدم أو عنوان البريد الإلكتروني في المشروع المفتوح OpenProject والمستودع يتم تعيينهم تلقائيًّا.
@@ -6302,13 +6373,6 @@ ar:
       scopes: السماحيات
       successful_application_revocation: Revocation of application %{application_name} successful.
       none_given: No OAuth applications have been granted access to your user account.
-    x_active_tokens:
-      zero: "%{count} active token"
-      one: one active token
-      two: "%{count} active token"
-      few: "%{count} active token"
-      many: "%{count} active token"
-      other: "%{count} active token"
     flows:
       authorization_code: Authorization code flow
       client_credentials: Client credentials flow
@@ -6318,8 +6382,14 @@ ar:
     client_credentials_impersonation_html: 'By default, OpenProject provides OAuth 2.0 authorization via %{authorization_code_flow_link}. You can optionally enable %{client_credentials_flow_link}, but you must provide a user on whose behalf requests will be performed.
 
       '
+    confirm_revoke_my_application:
+      zero: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      two: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      few: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      many: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: An authorization error has occurred.
-    revoke_my_application_confirmation: Do you really want to remove this application? This will revoke %{token_count} active for it.
     my_registered_applications: Registered OAuth applications
   oauth_client:
     urn_connection_status:

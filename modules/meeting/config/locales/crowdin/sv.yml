@@ -39,6 +39,8 @@ sv:
           other: "%{count} deltagare"
         participants_attended: Deltagare
         participants_invited: Inbjudna
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Projekt
         start_date: Datum
         start_time: Starttid
@@ -210,6 +212,7 @@ sv:
   label_time_zone: Tidszon
   label_start_date: Startdatum
   label_subscribe_icalendar: Prenumerera på kalender
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -272,16 +275,6 @@ sv:
         summary_series: Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant
         summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: Schemalagd datum/tid
-      participant_added:
-        header: Meeting '%{title}' - Participant added
-        header_series: Meeting series '%{title}' - Participant added
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
-      participant_removed:
-        header: Meeting '%{title}' - Participant removed
-        header_series: Meeting series '%{title}' - Participant removed
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
       ended:
         header_series: 'Ended: Meeting series ''%{title}'''
         summary_series: Meeting series '%{title}' has been ended by %{actor}
@@ -295,6 +288,8 @@ sv:
         new_date_time: Nytt datum/tid
         old_location: Gammal plats
         new_location: Ny plats
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Skicka inbjudan via e-post till deltagarna
     types:
       one_time: En gång
@@ -437,7 +432,7 @@ sv:
     widgets:
       blankslate:
         heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: View all meetings
   meeting_section:
     untitled_title: Namnlös sektion

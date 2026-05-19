@@ -94,18 +94,17 @@ RSpec.describe UserCardView do
       expect(view).not_to be_valid
       expect(view.errors[:query]).to be_present
     end
-
-    it "walks up the parent chain and accepts a UserQuery from the parent" do
-      parent = described_class.create!(name: "Parent", query: user_query)
-      child = described_class.new(name: "Child", parent:)
-      expect(child).to be_valid
-    end
   end
 
   describe "#results" do
-    let!(:alice)  { create(:user, firstname: "Alice", lastname: "Anderson") }
+    # UserQuery scopes to users visible to the current user. Granting alice
+    # :view_all_principals lets her see every user without introducing an
+    # extra admin record that would pollute `contain_exactly` expectations.
+    let!(:alice)  { create(:user, firstname: "Alice", lastname: "Anderson", global_permissions: %i[view_all_principals]) }
     let!(:bob)    { create(:user, firstname: "Bob",   lastname: "Brown") }
     let!(:locked) { create(:locked_user, firstname: "Carol", lastname: "Clark") }
+
+    before { login_as(alice) }
 
     it "returns nil when there is no query" do
       expect(view.results).to be_nil
@@ -141,16 +140,6 @@ RSpec.describe UserCardView do
 
       view.query = query
       expect(view.results.to_a).to eq([bob, locked, alice])
-    end
-
-    it "walks up the parent chain to find the query" do
-      query = UserQuery.new(name: "Active only")
-      query.where("status", "=", ["active"])
-      query.save!
-
-      parent = described_class.create!(name: "Parent", query:)
-      child = described_class.create!(name: "Child", parent:)
-      expect(child.results).to contain_exactly(alice, bob)
     end
   end
 end

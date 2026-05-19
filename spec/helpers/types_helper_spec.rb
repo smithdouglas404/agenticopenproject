@@ -71,12 +71,21 @@ RSpec.describe TypesHelper do
 
       it "has a proper structure" do
         # The group's name/key
+        expect(subject.first[:key]).to eq "group one"
         expect(subject.first[:name]).to eq "group one"
 
         # The groups attributes
         expect(subject.first[:attributes]).to be_an Array
         expect(subject.first[:attributes].first[:key]).to eq "date"
         expect(subject.first[:attributes].first[:translation]).to eq "Date"
+      end
+
+      it "includes the key for built-in groups" do
+        allow(type)
+          .to receive(:attribute_groups)
+          .and_return [Type::AttributeGroup.new(type, :details, ["date"])]
+
+        expect(subject.first[:key]).to eq :details
       end
     end
   end

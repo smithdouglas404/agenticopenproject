@@ -241,8 +241,8 @@ ja:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -1099,6 +1099,8 @@ ja:
       no_results_title_text: 現在、報告するニュースはありません。
       no_results_content_text: ニュース項目を追加
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -1110,6 +1112,8 @@ ja:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: "%{num_days} のログインを維持"
     sessions:
@@ -1318,6 +1322,37 @@ ja:
     edit:
       form_configuration:
         tab: フォームの設定
+        label_group: Group
+        reset_to_defaults: Reset to defaults
+        add_attribute_group: Add attribute group
+        add_query_group: Add table of related work packages
+        delete_group: Delete group
+        remove_attribute: Remove from group
+        drag_to_activate: Drag fields from here to activate them
+        drag_to_reorder: Drag to reorder
+        edit_query: Edit query
+        custom_field: Custom field
+        filter_inactive: Filter attributes
+        inactive_attributes_heading: Inactive attributes
+        no_inactive_attributes: No inactive attributes
+        blankslate_title: No groups yet
+        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        group_actions: Group actions
+        rename_group: Rename group
+        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
+        group_name_label: Group name
+        row_actions: Row actions
+        query_group_label: Work packages table
+        empty_group_hint: Drag attributes here
+        invalid_attribute_groups: The form configuration payload is invalid.
+        invalid_query: The embedded query configuration is invalid.
+        not_found: The requested form configuration item could not be found.
+        untitled_group: Untitled group
+        reset_title: Reset form configuration
+        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+
+          '
       projects:
         tab: プロジェクト
         enable_all: すべてのプロジェクトで有効
@@ -1416,8 +1451,8 @@ ja:
     bulk_delete_dialog:
       title: Delete %{count} work packages
       heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      description: 'The following work packages and all associated data will be permanently deleted:'
+      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
       confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
       cross_project_warning: 'These work packages span multiple projects: %{projects}'
       children_label: 'The following children will also be deleted:'
@@ -2391,7 +2426,7 @@ ja:
               attribute_unknown_name: '無効なワークパッケージの属性が使用されています: %{attribute}'
               duplicate_group: グループ名 '%{group}' は複数回使用されています。グループ名は一意でなければなりません。
               query_invalid: 埋め込みクエリ '%{group}' は無効です： %{details}
-              group_without_name: 名前のないグループは指定できません。
+              group_without_name: Group name can't be blank.
             patterns:
               invalid_tokens: フィールド内の1つ以上の属性が無効です。保存する前に属性を修正してください。
         user:
@@ -2507,6 +2542,7 @@ ja:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: "%{user} によって %{datetime} に作成されました"
@@ -3358,6 +3394,24 @@ ja:
   general_text_false: 偽
   gui_validation_error: 1つエラー
   gui_validation_error_plural: "%{count}つエラー"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: このサイトの最新の可視化プロジェクト。
@@ -3659,6 +3713,7 @@ ja:
   label_age: 経過
   label_ago: "○日前"
   label_all: 全て
+  label_all_uppercase: All
   label_all_time: 全期間
   label_all_words: 全ての単語
   label_all_open_wps: 全ての未完了
@@ -4186,6 +4241,7 @@ ja:
   label_role_new: 新しいロール
   label_role_grantable: 権限のある役割
   label_role_plural: ロール
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: 新しいメンバーに役割を割り当てる
   label_scm: バージョン管理システム
   label_scroll_left: 左にスクロール
@@ -4334,6 +4390,10 @@ ja:
     one: 1件のコメント
     other: "%{count}件のコメント"
     zero: コメントがありません
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1件未完了
     other: "%{count}件未完了"
@@ -4409,7 +4469,7 @@ ja:
       you_have: あなたへの
     logo_alt_text: ロゴ
     mention:
-      subject: "%{user_name} さんが #%{id} - %{subject} であなたをメンションしました"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: 通知センターへ
       see_in_center: 通知センターにコメントを表示
@@ -4446,7 +4506,7 @@ ja:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: このワークパッケージにアクセスするには、 %{instance} のアカウントを作成して有効化する必要があります。
         open_work_package: ワークパッケージを開く
-        subject: ワークパッケージ%{id} があなたと共有されました
+        subject: Work package %{id} was shared with you
         enterprise_text: プロジェクトのメンバーではないユーザーとワークパッケージを共有します。
         summary:
           user: "%{user} がワークパッケージを %{role_rights} 権限で共有しました"
@@ -4654,6 +4714,11 @@ ja:
     text_getting_started_description: OpenProject とのプロジェクト管理とチームのコラボレーションの概要を簡単に取得します。ヘルプメニューからこのビデオを再起動できます。
     welcome: "%{app_title} へようこそ"
     select_language: 言語を選択してください
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
   permission_add_work_package_comments: コメントの追加
   permission_add_work_packages: ワークパッケージの追加
   permission_add_messages: メッセージの投稿
@@ -4671,7 +4736,6 @@ ja:
   permission_add_work_package_watchers: ウォッチャーの追加
   permission_assign_versions: バージョンの割り当て
   permission_browse_repository: リポジトリに読み取り専用のアクセス (参照およびチェックアウト)
-  permission_change_wiki_parent_page: 親Wikiページの変更
   permission_change_work_package_status: ワークパッケージのステータス変更
   permission_change_work_package_status_explanation: ワークパッケージの編集権限なしで状態を変更できます
   permission_comment_news: ニュースへのコメント
@@ -4686,8 +4750,6 @@ ja:
   permission_delete_own_messages: 自身が投稿したメッセージの削除
   permission_delete_reportings: レポートの削除
   permission_delete_timelines: タイムラインの削除
-  permission_delete_wiki_pages: Wikiページの削除
-  permission_delete_wiki_pages_attachments: 添付ファイルの削除
   permission_edit_work_package_comments: コメントの承認
   permission_edit_work_package_comments_explanation: '注意: この権限を持つユーザは誰のコメントも編集できます。'
   permission_edit_work_packages: ワークパッケージの編集
@@ -4707,12 +4769,10 @@ ja:
   permission_edit_wiki_pages: Wikiページの編集
   permission_export_work_packages: ワークパッケージのエクスポート
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Wikiページのエクスポート
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: 添付ファイルの一覧表
   permission_log_own_time: 作業時間の記録
   permission_log_time: 他のユーザーの作業時間
   permission_manage_forums: フォーラムの管理
@@ -4727,7 +4787,6 @@ ja:
   permission_manage_subtasks: ワークパッケージ階層の管理
   permission_manage_versions: バージョンの管理
   permission_manage_wiki: Wiki の管理
-  permission_manage_wiki_menu: Wikiメニューの管理
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4737,8 +4796,6 @@ ja:
 
     '
   permission_move_work_packages: ワークパッケージの移動
-  permission_protect_wiki_pages: Wikiページの凍結
-  permission_rename_wiki_pages: Wikiページ名の変更
   permission_save_queries: ビューを保存
   permission_search_project: プロジェクトを検索
   permission_select_custom_fields: カスタムフィールドの選択
@@ -4984,7 +5041,7 @@ ja:
 
     '
   setting_after_login_default_redirect_url: ログインリダイレクト後
-  setting_after_login_default_redirect_url_text_html: 'バックリンクが指定されていない場合、ログイン後にユーザーをリダイレクトするデフォルトのパスを設定します。 設定されていない場合はホームページにリダイレクトします。 <br/> 例: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: クロスオリジン資源共有 (CORS)
@@ -5113,6 +5170,9 @@ ja:
   setting_mail_handler_body_delimiter_regex: この正規表現に一致するメールを切り捨てる
   setting_mail_handler_ignore_filenames: 無視するメールの添付ファイル
   setting_new_project_user_role_id: システム管理者以外のプロジェクト作成者に設定するロール
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements
@@ -5529,6 +5589,7 @@ ja:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'ワークパッケージへの再割り当て:'
   text_regexp_multiline: 正規表現は、複数行モードで適用されます。例えば、^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: |-
     リポジトリのログから検出されたユーザ名をどのOpenProjectユーザに関連づけるかを選択してください。
     ログ上のユーザ名またはメールアドレスがOpenProjectのユーザと一致する場合は自動的に関連づけます。
@@ -5961,8 +6022,6 @@ ja:
       scopes: 権限
       successful_application_revocation: アプリケーション %{application_name} の取り消しに成功しました。
       none_given: ユーザーアカウントへのアクセスがOAuthアプリケーションに許可されていません。
-    x_active_tokens:
-      other: "%{count}つの有効なトークン"
     flows:
       authorization_code: 認証コードの流れ
       client_credentials: クライアントの資格情報のフロー
@@ -5972,8 +6031,9 @@ ja:
     client_credentials_impersonation_html: 'デフォルトでは、OpenProjectは %{authorization_code_flow_link} を介してOAuth 2.0認証を提供します。 オプションで %{client_credentials_flow_link} を有効にすることもできますが、その代わりにユーザーに代わってリクエストが実行されるようにする必要があります。
 
       '
+    confirm_revoke_my_application:
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: 認証エラーが発生しました。
-    revoke_my_application_confirmation: 本当にこのアプリケーションを削除しますか？ これにより %{token_count} が無効になります。
     my_registered_applications: 登録済みのOAuthアプリケーション
   oauth_client:
     urn_connection_status:

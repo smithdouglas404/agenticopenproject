@@ -2,6 +2,8 @@
 nl:
   activerecord:
     attributes:
+      wikis/page_link:
+        provider: Wiki Provider
       wikis/xwiki_provider:
         authentication_method: Authentication method
         authentication_methods:
@@ -23,7 +25,6 @@ nl:
         other: Relation page links
       wikis/xwiki_provider: XWiki provider
   permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Wiki providers
   wikis:
     buttons:
@@ -40,10 +41,13 @@ nl:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
     oauth_login_component:
+      heading: Not connected to %{provider}
+      description: Log in to %{provider} to view and manage related wiki pages from this OpenProject instance.
       connect_button: Connect %{provider} account
     admin:
       destroy_confirmation_dialog_component:
         title: Delete wiki provider
+        heading: Delete wiki provider?
         warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
       forms:
         general_info_form_component:
@@ -59,12 +63,12 @@ nl:
         replace_oauth_application: Replace OpenProject OAuth application
       oauth_client_info_component:
         confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
-        label_pending: Pending
+        label_pending: In afwachting
         replace_oauth_client: Replace XWiki OAuth application
       wiki_provider_list_component:
-        label_creation_time: Created
-        label_name: Name
-        label_provider: Provider
+        label_creation_time: Aangemaakt
+        label_name: Naam
+        label_provider: Aanbieder
         no_results_description: Add a wiki provider to see them here.
         no_results_title: You don't have any wiki providers set up yet.
       wiki_providers:
@@ -72,14 +76,14 @@ nl:
         label_add_new: Add new wiki provider
         label_edit: Edit XWiki provider
         label_new_xwiki_instance: New XWiki provider
-        label_wiki_platform: Wiki provider
+        label_wiki_platform: Wiki aanbieder
         name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
         name_placeholder: XWiki knowledge base
         new_provider_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
         oauth:
           openproject_oauth: OpenProject OAuth
         sections:
-          general_information: Basic details
+          general_information: Basisdetails
           oauth_configuration: OAuth configuration
         url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
         xwiki_instance: XWiki Instance
@@ -91,8 +95,5 @@ nl:
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
-        delete:
-          title: Delete wiki provider
-          warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
     macro:
       page_not_found: Linked wiki page no longer available

@@ -69,7 +69,7 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { "backlogs/backlog_buckets": %i[new_dialog create edit_dialog update destroy],
+                   { "backlogs/backlog_buckets": %i[new_dialog create edit_dialog update destroy_dialog destroy],
                      "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
                    require: :member,
@@ -86,7 +86,7 @@ module OpenProject::Backlogs
                      "backlogs/inbox": %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,
-                   dependencies: :view_sprints
+                   dependencies: %i[view_sprints edit_work_packages]
 
         permission :share_sprint,
                    { "projects/settings/backlog_sharings": %i[show update] },
@@ -136,6 +136,7 @@ module OpenProject::Backlogs
     patch_with_namespace :WorkPackages, :SetAttributesService
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
+    patch_with_namespace :Projects, :CopyService
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
     patch_with_namespace :API, :V3, :WorkPackages, :Schema, :SpecificWorkPackageSchema
 

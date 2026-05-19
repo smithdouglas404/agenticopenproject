@@ -247,8 +247,8 @@ hu:
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
-              label_comming_soon: Comming soon (Q2 2026)
-              label_comming_later: Comming later
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
               label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
@@ -465,7 +465,7 @@ hu:
         label: 'Role: %{role}'
         no_role: Select role
         roles:
-          one: "%{count} role selected"
+          one: One role selected
           other: "%{count} roles selected"
       blankslate:
         title: No status transitions configured
@@ -1121,6 +1121,8 @@ hu:
       no_results_title_text: Nincs megjeleníthető hír.
       no_results_content_text: Hír hozzáadása
   roles:
+    edit:
+      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
     permissions:
       section_check_all_label: Assign all %{module} permissions
       section_uncheck_all_label: Unassign all %{module} permissions
@@ -1132,6 +1134,8 @@ hu:
       matrix_check_uncheck_all_in_row_label_html: Toggle <em>%{permission}</em> permission for all roles
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: Maradjon bejelentkezve %{num_days} napig.
     sessions:
@@ -1353,6 +1357,37 @@ hu:
     edit:
       form_configuration:
         tab: Űrlap konfiguráció
+        label_group: Group
+        reset_to_defaults: Reset to defaults
+        add_attribute_group: Add attribute group
+        add_query_group: Add table of related work packages
+        delete_group: Delete group
+        remove_attribute: Remove from group
+        drag_to_activate: Drag fields from here to activate them
+        drag_to_reorder: Drag to reorder
+        edit_query: Edit query
+        custom_field: Custom field
+        filter_inactive: Filter attributes
+        inactive_attributes_heading: Inactive attributes
+        no_inactive_attributes: No inactive attributes
+        blankslate_title: No groups yet
+        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        group_actions: Group actions
+        rename_group: Rename group
+        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
+        group_name_label: Group name
+        row_actions: Row actions
+        query_group_label: Work packages table
+        empty_group_hint: Drag attributes here
+        invalid_attribute_groups: The form configuration payload is invalid.
+        invalid_query: The embedded query configuration is invalid.
+        not_found: The requested form configuration item could not be found.
+        untitled_group: Untitled group
+        reset_title: Reset form configuration
+        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+
+          '
       projects:
         tab: Projektek
         enable_all: Enable for all projects
@@ -1455,8 +1490,8 @@ hu:
     bulk_delete_dialog:
       title: Delete %{count} work packages
       heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      description: 'The following work packages and all associated data will be permanently deleted:'
+      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
       confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
       cross_project_warning: 'These work packages span multiple projects: %{projects}'
       children_label: 'The following children will also be deleted:'
@@ -2462,7 +2497,7 @@ hu:
               attribute_unknown_name: Érvénytelen munkacsomag értek %{attribute}
               duplicate_group: A %{group} név már használatban van. A csoport névnek egyedinek kell lennie.
               query_invalid: 'A beágyazott lekérdezés ''%{group}'' érvénytelen: %{details}'
-              group_without_name: Névtelen csoport nem engedélyezett.
+              group_without_name: Group name can't be blank.
             patterns:
               invalid_tokens: One or more attributes inside the field are not valid. Please, fix the attributes before saving.
         user:
@@ -2595,6 +2630,7 @@ hu:
       unsupported_storage_type: is not a supported storage type.
       storage_error: There was an error with the storage connection.
       invalid_input: The input is invalid.
+      invalid_child_for_parent: is not allowed as a parent for this view type.
   activity:
     item:
       created_by_on: created by %{user} on %{datetime}
@@ -2785,7 +2821,7 @@ hu:
   button_annotate: Jegyzetekkel ellát
   button_apply: Alkalmaz
   button_apply_changes: Változások alkalmazása
-  button_archive: Eltárolt
+  button_archive: Archivál
   button_back: Vissza
   button_cancel: Mégsem
   button_change: Változtat
@@ -3479,6 +3515,26 @@ hu:
   general_text_false: hamis
   gui_validation_error: 1 hiba
   gui_validation_error_plural: "%{count} hiba"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
+        warnings:
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
+      summary:
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+    result_component:
+      status:
+        failed: Failed
+        passed: Passed
+        skipped: Skipped
+        warning: Warning
   homescreen:
     additional:
       projects: Legújabb projektek ebben az esetben.
@@ -3782,6 +3838,7 @@ hu:
   label_age: Életkor
   label_ago: nappal ezelőtt
   label_all: mind
+  label_all_uppercase: All
   label_all_time: minden alkalommal
   label_all_words: Minden szó
   label_all_open_wps: Nyitottak
@@ -4309,6 +4366,7 @@ hu:
   label_role_new: Új szerepkör
   label_role_grantable: Grantable role
   label_role_plural: Szerepkörök
+  label_role_missing_permissions: "%{role} (missing required permissions)"
   label_role_search: Szerep hozzárendelése az új tagokhoz
   label_scm: SCM
   label_scroll_left: Scroll left
@@ -4457,6 +4515,10 @@ hu:
     one: 1 komment
     other: "%{count} hozzászólás"
     zero: nincsenek hozzászólások
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 nyitott
     other: "%{count} nyitott"
@@ -4537,7 +4599,7 @@ hu:
       you_have: Neked van
     logo_alt_text: Logó
     mention:
-      subject: "%{user_name} megemlített téged itt: #%{id} - %{subject}"
+      subject: "%{user_name} mentioned you in %{id} - %{subject}"
     notification:
       center: 'Az értesítési központba
 
@@ -4587,7 +4649,7 @@ hu:
         allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: To access this work package, you will need to create and activate an account on %{instance}.
         open_work_package: Open work package
-        subject: 'Work package #%{id} was shared with you'
+        subject: Work package %{id} was shared with you
         enterprise_text: Share work packages with users who are not members of the project.
         summary:
           user: "%{user} shared a work package with you with %{role_rights} rights"
@@ -4808,6 +4870,11 @@ hu:
     text_getting_started_description: Get a quick overview of project management and team collaboration with OpenProject. You can restart this video from the help menu.
     welcome: Üdvözli a %{app_title}
     select_language: Kéjük válasszon nyelvet
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Work package actions
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: feladatcsoport hozzáadása
   permission_add_messages: Elküldött üzenetek
@@ -4825,7 +4892,6 @@ hu:
   permission_add_work_package_watchers: Megfigyelő hozzáadása
   permission_assign_versions: Hozzárendelt verziók.
   permission_browse_repository: Csak olvasható hozzáférés a tárolóhoz (böngészés és kijelentkezés)
-  permission_change_wiki_parent_page: A szülő wiki oldal megváltoztatása
   permission_change_work_package_status: Change work package status
   permission_change_work_package_status_explanation: Allows changing status without Edit work packages permission
   permission_comment_news: Megjegyzések írása a hírekehez
@@ -4840,8 +4906,6 @@ hu:
   permission_delete_own_messages: Saját üzenetek törlése
   permission_delete_reportings: Jelentések törlése
   permission_delete_timelines: Idővonalak törlése
-  permission_delete_wiki_pages: Wiki oldalak törlése
-  permission_delete_wiki_pages_attachments: Mellékletek törlése
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: feladatcsoportok szerkesztése
@@ -4861,12 +4925,10 @@ hu:
   permission_edit_wiki_pages: Wiki lapok szerkesztése
   permission_export_work_packages: feladatcsoportok exportálása
   permission_export_projects: Export projects
-  permission_export_wiki_pages: Wiki oldalak exportálása
   permission_invite_members_by_email: Invite members by email
   permission_invite_members_by_email_explanation: 'Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
 
     '
-  permission_list_attachments: Mellékletek listája
   permission_log_own_time: Saját idő naplózása
   permission_log_time: Mások idejének naplózása
   permission_manage_forums: Fórum kezelése
@@ -4881,7 +4943,6 @@ hu:
   permission_manage_subtasks: feladatcsoport hierarchiák kezelése
   permission_manage_versions: Verziók kezelése
   permission_manage_wiki: Wiki kezelése
-  permission_manage_wiki_menu: Wiki menü kezelése
   permission_manage_own_working_times: Manage own working times
   permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
 
@@ -4891,8 +4952,6 @@ hu:
 
     '
   permission_move_work_packages: Feladatcsoportok áthelyezése
-  permission_protect_wiki_pages: Védett wiki oldalak
-  permission_rename_wiki_pages: Wiki oldalak átnevezése
   permission_save_queries: Nézet mentése
   permission_search_project: Search project
   permission_select_custom_fields: Egyedi mezők kiválasztása
@@ -5136,7 +5195,7 @@ hu:
 
     '
   setting_after_login_default_redirect_url: After login redirect
-  setting_after_login_default_redirect_url_text_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Cross-Origin Resource Sharing (CORS)
@@ -5271,6 +5330,9 @@ hu:
   setting_mail_handler_body_delimiter_regex: E-mailek csonkítása a megegyező kifejezéssel
   setting_mail_handler_ignore_filenames: Összes melléklet figyelmen kívül hagyva
   setting_new_project_user_role_id: Szerepkör a  nem admin felhasználónak, aki létrehoz egy projektet,
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+
+    '
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
   setting_password_active_rules: Password requirements
@@ -5689,6 +5751,7 @@ hu:
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
   text_reassign: 'A munkacsomag ismételt hozzárendelése:'
   text_regexp_multiline: A reguláris kifejezés többsoros módban legyen alkalmazva. pld. ^---\s+
+  text_rename_wiki_page: Rename wiki page
   text_repository_usernames_mapping: Jelölje be, vagy frissítse az alkalmazás felhasználóit, minden felhasználónév eltárolva, megtalálhatóak a csomagtároló naplóban. A felhasználók ugyanazzal az alkalmazási és csomagtárolói felhasználó névvel vagy email címmel automatikusan tárolódnak.
   text_status_changed_by_changeset: A %{value} commit-ban hozzáadva.
   text_table_difference_description: Ebben a táblázatban látható az egyszeri %{entries}. Megtekintheti a két bejegyzés közötti különbséget azáltal, hogy először kiválasztja a megfelelő jelölőnégyzeteket a táblázatban. A táblázat alatti gombra kattintva a különbségek jelennek meg.
@@ -6142,9 +6205,6 @@ hu:
       none_given: 'Egyetlen OAuth -alkalmazás sem kapott hozzáférést a felhasználói fiókjához.
 
         '
-    x_active_tokens:
-      one: egy aktív token
-      other: "%{count} aktív token"
     flows:
       authorization_code: 'Hitelesítő kód:'
       client_credentials: 'Ügyfél hitelesítő adatok forgalma
@@ -6162,10 +6222,10 @@ hu:
     client_credentials_impersonation_html: 'Alapértelmezés szerint az OpenProject az OAuth 2.0 engedélyezést a %{authorization_code_flow_link} segítségével biztosítja. Opcionálisan engedélyezheti a %{client_credentials_flow_link} opciót, de meg kell adnia egy felhasználót, akinek a nevében a kérések végrehajtásra kerülnek.
 
       '
+    confirm_revoke_my_application:
+      one: Do you really want to remove this application? This will revoke one token active for it.
+      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
     authorization_error: Engedélyezési hiba történt.
-    revoke_my_application_confirmation: 'Tényleg el akarja távolítani ezt az alkalmazást? Ez visszavonja az aktív %{token_count} értéket.
-
-      '
     my_registered_applications: Regisztrált OAuth alkalmazások
   oauth_client:
     urn_connection_status:

@@ -49,7 +49,7 @@ class SharingMailer < ApplicationMailer
     send_localized_mail(@shared_with_user) do
       @role_rights = derive_role_rights(role)
       @allowed_work_package_actions = derive_allowed_work_package_actions(role)
-      I18n.t("mail.sharing.work_packages.subject", id: @work_package.id)
+      I18n.t("mail.sharing.work_packages.subject", id: @work_package.formatted_id)
     end
   end
 

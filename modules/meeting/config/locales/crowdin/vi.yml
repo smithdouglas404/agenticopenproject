@@ -38,6 +38,8 @@ vi:
           other: "%{count} Người tham gia"
         participants_attended: Người dự khán
         participants_invited: Khách mời
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: dự án
         start_date: ngày
         start_time: Thời gian bắt đầu
@@ -205,6 +207,7 @@ vi:
   label_time_zone: Múi giờ
   label_start_date: Ngày bắt đầu
   label_subscribe_icalendar: Đăng ký lịch
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -267,16 +270,6 @@ vi:
         summary_series: Chuỗi cuộc họp '%{title}' đã bị hủy bởi %{actor}, hoặc bạn đã bị loại khỏi danh sách tham gia
         summary: "'%{title}' đã bị hủy bởi ' %{actor}' hoặc bạn đã bị loại khỏi danh sách người tham gia"
         date_time: Ngày/giờ dự kiến
-      participant_added:
-        header: Họp '%{title}' - Thành viên tham gia đã được thêm vào
-        header_series: Chuỗi hội thảo '%{title}' - Thêm người tham gia
-        summary: "%{actor} Thêm %{participant} vào cuộc họp '%{title}'"
-        summary_series: '%{actor} Thêm " %{participant} " vào chuỗi sự kiện "%{title}"'
-      participant_removed:
-        header: Cuộc họp '%{title}' - Người tham gia đã bị loại bỏ
-        header_series: Chuỗi hội thảo '%{title}' - Người tham gia đã bị loại bỏ
-        summary: "%{actor} Đã loại bỏ ' %{participant} ' khỏi cuộc họp '%{title}'"
-        summary_series: '%{actor} Đã loại bỏ " %{participant} " khỏi chuỗi cuộc họp "%{title}"'
       ended:
         header_series: 'Đã kết thúc: Chuỗi cuộc họp ''%{title}'''
         summary_series: Chuỗi hội thảo '%{title}' đã kết thúc bởi %{actor}
@@ -290,6 +283,8 @@ vi:
         new_date_time: Ngày/giờ mới
         old_location: Vị trí cũ
         new_location: Vị trí mới
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Gửi email mời đến người tham gia
     types:
       one_time: Một lần
@@ -432,7 +427,7 @@ vi:
     widgets:
       blankslate:
         heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: View all meetings
   meeting_section:
     untitled_title: Phần không có tiêu đề

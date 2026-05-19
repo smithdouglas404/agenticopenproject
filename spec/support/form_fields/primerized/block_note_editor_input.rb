@@ -28,6 +28,19 @@ module FormFields
         input.attach_file(path, make_visible: true)
       end
 
+      def search_work_package(text)
+        page.execute_script(fill_in_work_package_search_input(text))
+      end
+
+      def search_and_select_work_package(search_term, subject)
+        # These two actions have to be done together in one execution,
+        # because otherwise the onBlur of the search input triggers and
+        # removes the whole search input from the DOM
+        page.evaluate_async_script(<<~JS)
+          #{fill_in_work_package_search_input(search_term)}
+          #{select_from_work_package_dropdown(subject)}
+        JS
+      end
       def content
         # capybara does not yet support getting content directly
         # on shadow roots
@@ -84,6 +97,76 @@ module FormFields
       # as cuprite does not support shadow dom (yet).
       def send_keys_to_editor(keys)
         element.send_keys(keys)
+      end
+
+      def shadow_root_observe_js
+        <<~JS
+          function shadowRootWaitFor(shadowRoot, tryFunction, done) {
+            if (tryFunction()) {
+              if (done) done();
+              return;
+            }
+            var observer = new MutationObserver(function() {
+              if (tryFunction()) {
+                observer.disconnect();
+                if (done) done();
+              }
+            });
+            observer.observe(shadowRoot, { childList: true, subtree: true });
+          }
+        JS
+      end
+
+      # Unfortunately, the search input is removed on every blur event (starting with op-blocknote-extensions 0.0.24).
+      # Capybara triggers those and therefore leads to always red tests.
+      # The input needs to be operated completely by javascript to avoid any blurring.
+      def fill_in_work_package_search_input(text)
+        <<~JS
+          (function() {
+            var value = #{text.to_json};
+            var shadowRoot = #{shadow_root_query};
+            #{shadow_root_observe_js}
+
+            // One does not simply call `.value=` on a react input element
+            shadowRootWaitFor(shadowRoot, function() {
+              var input = shadowRoot.querySelector("input[placeholder='Search by work package ID or subject']");
+              if (!input) return false;
+              var valueSetter = Object.getOwnPropertyDescriptor(input, 'value').set;
+              var prototype = Object.getPrototypeOf(input);
+              var prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+              prototypeValueSetter.call(input, value);
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+              return true;
+            });
+          })();
+        JS
+      end
+
+      # Unfortunately, the search input is removed on every blur event (starting with op-blocknote-extensions 0.0.24).
+      # Capybara triggers those and therefore leads to always red tests.
+      # The input needs to be operated completely by javascript to avoid any blurring.
+      def select_from_work_package_dropdown(text)
+        <<~JS
+          (function(done) {
+            var shadowRoot = #{shadow_root_query};
+            var textToClick = #{text.to_json}.trim();
+            #{shadow_root_observe_js}
+
+            shadowRootWaitFor(shadowRoot, function() {
+              var element = Array.prototype.slice.call(shadowRoot.querySelectorAll("div"))
+                .find(function(div) { return div.textContent.trim() === textToClick; });
+              if (element) {
+                element.dispatchEvent(new Event("mousedown", { bubbles: true }));
+                return true;
+              }
+              return false;
+            }, done);
+          })(arguments[arguments.length - 1]);
+        JS
+      end
+
+      def shadow_root_query
+        "document.querySelector('op-block-note').shadowRoot;"
       end
     end
   end

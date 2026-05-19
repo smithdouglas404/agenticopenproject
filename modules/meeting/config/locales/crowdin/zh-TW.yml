@@ -38,6 +38,8 @@ zh-TW:
           other: "%{count} 位參與者"
         participants_attended: 出席人員
         participants_invited: 受邀人員
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: 專案
         start_date: 日期
         start_time: 開始時間
@@ -207,6 +209,7 @@ zh-TW:
   label_time_zone: 時區
   label_start_date: 開始日期
   label_subscribe_icalendar: 訂閱行事曆
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -269,16 +272,6 @@ zh-TW:
         summary_series: 會議系列 '%{title}' 已被 %{actor}取消, 或您已被移除為參與者
         summary: "%{title}' 已被 %{actor}取消，或者您已被刪除為參賽者"
         date_time: 排定日期/時間
-      participant_added:
-        header: 會議 '%{title}' - 與會者
-        header_series: 系列會議 '%{title}' - 與會者
-        summary: "%{actor} 加入 %{participant} 至會議 '%{title}'"
-        summary_series: "%{actor} 加入 %{participant} 至會議系列 '%{title}'"
-      participant_removed:
-        header: 會議 '%{title}' - 參與者已移除
-        header_series: 會議系列 '%{title}' - 已移除參與者
-        summary: "%{actor} 從會議中移除 %{participant} '%{title}'"
-        summary_series: "%{actor} 從會議系列中移除 %{participant} '%{title}'"
       ended:
         header_series: 結束：會議系列 '%{title}'
         summary_series: 會議系列 '%{title}' 已由 %{actor}結束
@@ -292,6 +285,8 @@ zh-TW:
         new_date_time: 新日期/時間
         old_location: 舊位置
         new_location: 新位置
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: 發送電子郵件邀請參加者
     types:
       one_time: 一次性
@@ -434,7 +429,7 @@ zh-TW:
     widgets:
       blankslate:
         heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: View all meetings
   meeting_section:
     untitled_title: 無標題章節

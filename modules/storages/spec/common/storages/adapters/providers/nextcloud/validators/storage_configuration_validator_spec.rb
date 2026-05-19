@@ -41,10 +41,10 @@ module Storages
 
             subject(:validator) { described_class.new(storage) }
 
-            it "returns a GroupValidationResult", vcr: "nextcloud/capabilities_success" do
+            it "returns a ResultGroup", vcr: "nextcloud/capabilities_success" do
               results = validator.call
 
-              expect(results).to be_a(ConnectionValidators::ValidationGroupResult)
+              expect(results).to be_a(HealthReport::ResultGroup)
               expect(results).to be_success
             end
 

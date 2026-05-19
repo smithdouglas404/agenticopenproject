@@ -181,7 +181,6 @@ pl:
   label_previous_week: Poprzedni tygodzień
   label_previous_month: Poprzedni miesiąc
   label_specific_day: Dzień %{day}
-  label_specific_week: Tydzień kalendarzowy %{week}
   label_specific_month: Miesiąc %{month}
   label_list: Lista
   label_month: Miesiąc

@@ -38,6 +38,8 @@ ms:
           other: "%{count} Peserta"
         participants_attended: Penghadir
         participants_invited: Tetamu-tetamu
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Projek
         start_date: Tarikh
         start_time: Masa mula
@@ -207,6 +209,7 @@ ms:
   label_time_zone: Zon waktu
   label_start_date: Tarikh mula
   label_subscribe_icalendar: Langgan kalendar
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -269,16 +272,6 @@ ms:
         summary_series: Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant
         summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: Scheduled date/time
-      participant_added:
-        header: Meeting '%{title}' - Participant added
-        header_series: Meeting series '%{title}' - Participant added
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
-      participant_removed:
-        header: Meeting '%{title}' - Participant removed
-        header_series: Meeting series '%{title}' - Participant removed
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
       ended:
         header_series: 'Ended: Meeting series ''%{title}'''
         summary_series: Meeting series '%{title}' has been ended by %{actor}
@@ -292,6 +285,8 @@ ms:
         new_date_time: Tarikh/masa baharu
         old_location: Old location
         new_location: New location
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Send email invite to participants
     types:
       one_time: Sekali
@@ -434,7 +429,7 @@ ms:
     widgets:
       blankslate:
         heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: View all meetings
   meeting_section:
     untitled_title: Bahagian tanpa tajuk

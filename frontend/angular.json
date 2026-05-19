@@ -49,10 +49,6 @@
                 "bundleName": "spot"
               },
               {
-                "input": "src/backlogs.scss",
-                "bundleName": "backlogs"
-              },
-              {
                 "input": "node_modules/@blocknote/mantine/src/style.css",
                 "bundleName": "blocknote"
               },
@@ -150,20 +146,14 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-builders/custom-esbuild:unit-test",
           "options": {
-            "preserveSymlinks": true,
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
             "tsConfig": "tsconfig.spec.json",
-            "scripts": [],
-            "styles": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/assets/sass/"
-              ]
-            },
-            "assets": []
+            "buildTarget": "OpenProject:build",
+            "providersFile": "src/test-providers.ts",
+            "setupFiles": ["src/test-setup.ts"],
+            "browsers": ["chromium", "firefox", "webkit"],
+            "reporters": ["dot"]
           }
         },
         "lint": {

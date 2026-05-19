@@ -39,6 +39,8 @@ el:
           other: "%{count} συμμετέχοντες"
         participants_attended: Παρευρισκόμενοι
         participants_invited: Προσκεκλημένοι
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Έργο
         start_date: Ημερομηνία
         start_time: Ώρα έναρξης
@@ -210,6 +212,7 @@ el:
   label_time_zone: Ζώνη Ώρας
   label_start_date: Ημερομηνία έναρξης
   label_subscribe_icalendar: Subscribe to calendar
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Επιλέξτε πρώτα ένα έργο
@@ -272,16 +275,6 @@ el:
         summary_series: Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant
         summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: Scheduled date/time
-      participant_added:
-        header: Meeting '%{title}' - Participant added
-        header_series: Meeting series '%{title}' - Participant added
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
-      participant_removed:
-        header: Meeting '%{title}' - Participant removed
-        header_series: Meeting series '%{title}' - Participant removed
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
       ended:
         header_series: 'Ended: Meeting series ''%{title}'''
         summary_series: Meeting series '%{title}' has been ended by %{actor}
@@ -295,6 +288,8 @@ el:
         new_date_time: Νέα ημερομηνία/ώρα
         old_location: Παλιά τοποθεσία
         new_location: Καινούγια Τοποθεσία
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Αποστολή πρόσκλησης ηλεκτρονικού ταχυδρομείου στους συμμετέχοντες
     types:
       one_time: Μία φορά
@@ -437,7 +432,7 @@ el:
     widgets:
       blankslate:
         heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: View all meetings
   meeting_section:
     untitled_title: Untitled section

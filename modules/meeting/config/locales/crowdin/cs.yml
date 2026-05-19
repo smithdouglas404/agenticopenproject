@@ -41,6 +41,8 @@ cs:
           other: "%{count} Účastníků"
         participants_attended: Účastníci
         participants_invited: Pozvaní
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Projekt
         start_date: Datum
         start_time: Čas zahájení
@@ -222,6 +224,7 @@ cs:
   label_time_zone: Časové pásmo
   label_start_date: Datum zahájení
   label_subscribe_icalendar: Přihlásit kalendář k odběru
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Vyberte šablonu pro automatické zkopírování bodů programu schůzky
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Nejprve vyberte projekt
@@ -284,16 +287,6 @@ cs:
         summary_series: Série schůzek '%{title}' byla zrušena prostřednictvím %{actor}, nebo jste byli odstraněni jako účastník
         summary: "'%{title}' byla zrušena prostřednictvím %{actor}, nebo jste byli odstraněni jako účastník"
         date_time: Plánované datum/čas
-      participant_added:
-        header: Schůzka '%{title}' - Üčastník přidán
-        header_series: Série schůzek '%{title}' - Üčastník přidán
-        summary: "%{actor} přidal(a) %{participant} do schůzky '%{title}'"
-        summary_series: "%{actor} přidal(a) %{participant} do série schůzek '%{title}'"
-      participant_removed:
-        header: Schůzka '%{title}' - Účastník byl odebrán
-        header_series: Řada schůzek '%{title}' - Uživatel byl odebrán
-        summary: "%{actor} odebral uživatele %{participant} ze schůzky '%{title}'"
-        summary_series: "%{actor} odebral(a) uživatele %{participant} z řady schůzek '%{title}'"
       ended:
         header_series: 'Ukončeno: Série schůzek ''%{title}'''
         summary_series: Série schůzek '%{title}' byla upravena uživatelem %{actor}
@@ -307,6 +300,8 @@ cs:
         new_date_time: Nové datum/čas
         old_location: Stará lokace
         new_location: Nová lokace
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Poslat e-mailovou pozvánku všem účastníkům
     types:
       one_time: Jednorázový
@@ -449,7 +444,7 @@ cs:
     widgets:
       blankslate:
         heading: No upcoming meetings
-        description: Upcoming meetings where you are the organizer or a participant will appear here.
+        description: Upcoming meetings you are participating in will appear here.
       view_details: View all meetings
   meeting_section:
     untitled_title: Sekce bez názvu

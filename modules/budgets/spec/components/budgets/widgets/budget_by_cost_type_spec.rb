@@ -37,7 +37,8 @@ RSpec.describe Budgets::Widgets::BudgetByCostType, type: :component do
 
   let(:project) { create(:project_with_types) }
   let(:current_user) do
-    create(:user, member_with_permissions: { project => %i[view_budgets view_cost_rates view_hourly_rates] })
+    create(:user, member_with_permissions: { project => %i[view_budgets view_cost_rates
+                                                           view_hourly_rates work_package_assigned] })
   end
 
   subject(:rendered_component) { render_component(project, current_user:) }

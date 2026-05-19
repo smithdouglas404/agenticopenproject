@@ -173,7 +173,6 @@ hu:
   label_previous_week: Előző héten
   label_previous_month: Előző hónap
   label_specific_day: Nap %{day}
-  label_specific_week: Naptári hét %{week}
   label_specific_month: Hónap %{month}
   label_list: Lista
   label_month: Havi

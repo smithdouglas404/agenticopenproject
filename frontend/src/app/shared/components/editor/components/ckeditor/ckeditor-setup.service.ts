@@ -1,5 +1,5 @@
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   ICKEditorContext,
   ICKEditorStatic,
@@ -21,17 +21,14 @@ declare global {
 
 @Injectable()
 export class CKEditorSetupService {
+  readonly PathHelper = inject(PathHelperService);
+  readonly configurationService = inject(ConfigurationService);
+
   /** The language CKEditor was able to load, falls back to 'en' */
   private loadedLocale = 'en';
 
   /** Prefetch ckeditor when browser is idle */
   private prefetch:Promise<unknown>;
-
-  constructor(
-    readonly PathHelper:PathHelperService,
-    readonly configurationService:ConfigurationService,
-    ) {
-  }
 
   public initialize() {
     this.prefetch = this.load();
@@ -69,6 +66,14 @@ export class CKEditorSetupService {
       .createWatchdog(editorClass, contentWrapper, config)
       .then((watchdog:ICKEditorWatchdog) => {
         const { editor } = watchdog;
+        const updateLastUpdated = () => {
+          const editable = wrapper.querySelector<HTMLElement>('.ck-editor__editable_inline');
+          if (!editable) {
+            return;
+          }
+
+          editable.dataset.lastUpdated = String(new Date().getTime());
+        };
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         toolbarWrapper.appendChild(editor.ui.view.toolbar.element);
 
@@ -78,9 +83,11 @@ export class CKEditorSetupService {
         });
         wrapper.addEventListener('op:ckeditor:setData', (event:CustomEvent<string>) => {
           editor.setData(event.detail);
+          updateLastUpdated();
         });
         wrapper.addEventListener('op:ckeditor:clear', () => {
           editor.setData(' ');
+          updateLastUpdated();
         });
         wrapper.addEventListener('op:ckeditor:getData', (event:CustomEvent<(data:string) => void>) => {
           event.detail(editor.getData({ trim: false }));
@@ -179,6 +186,7 @@ export class CKEditorSetupService {
         'OPMacroToc',
         'OPMacroEmbeddedTable',
         'OPMacroWpButton',
+        'OPMacroWpQuickinfo',
       ];
     }
 

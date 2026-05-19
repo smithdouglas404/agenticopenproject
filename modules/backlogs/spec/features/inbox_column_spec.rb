@@ -299,7 +299,10 @@ RSpec.describe "Inbox column in sprint planning view", :js do
             click_button "Move"
           end
 
-          planning_page.expect_and_dismiss_error("Update failed: Sprint is not set to one of the allowed values.")
+          planning_page
+            .expect_and_dismiss_error(
+              "Update failed: Sprint is not assignable since it is either not shared with the project or already finished."
+            )
 
           # Item was *not* moved:
           planning_page.expect_inbox_item(inbox_wp1)
@@ -424,9 +427,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
     let!(:sprint_wp2) { create(:work_package, project:, sprint:, type:) }
 
     before do
-      stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
-      stub_const("Backlogs::InboxComponent::FIRST_PAGE_SIZE", 2)
-      stub_const("Backlogs::InboxComponent::LAST_PAGE_SIZE", 1)
+      stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
       planning_page.visit!
     end
 

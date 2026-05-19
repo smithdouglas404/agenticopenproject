@@ -35,13 +35,13 @@ fr:
         name: Nom du sprint
         sharing: Partage
         statuses:
-          in_planning: En planification
+          in_planning: En cours de planification
           active: Actif
           completed: Terminé
       user_preference:
         backlogs_versions_default_fold_state: Afficher les sprints repliés
       work_package:
-        backlog_bucket: Seau de backlog
+        backlog_bucket: Bucket de backlog
         backlogs_work_package_type: Type de backlog
         position: Position
         sprint: Sprint
@@ -62,30 +62,30 @@ fr:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
+                one: Il y a un lot de travaux qui n'a pas été achevé dans ce sprint.
+                other: Il y a %{count} lots de travaux qui n'ont pas été achevés dans ce sprint.
               format: "%{message}"
             status:
               not_active: n'est pas actif et ne peut donc pas être fermé.
         work_package:
-          backlog_bucket_xor_sprint: ne peut pas être affecté à la fois à un sprint et à un compartiment de backlog.
+          backlog_bucket_xor_sprint: ne peut pas être affecté à la fois à un sprint et à un bucket de backlog.
           attributes:
             backlog_bucket:
-              backlog_bucket_from_another_project: doit appartenir au même projet que le work package.
+              backlog_bucket_from_another_project: doit appartenir au même projet que le lot de travaux.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: ne peut contenir que des ID de lots de travaux du sprint actuel.
               must_block_at_least_one_work_package: doit contenir l'ID d'au moins un ticket.
             version_id:
               task_version_must_be_the_same_as_story_version: doit être identique à la version de l'histoire parente.
             sprint:
-              not_shared_with_project: n'est pas partagé avec le projet dans lequel se trouve le lot de travaux.
-              not_eligible_for_moving: n'est pas un sprint actif dans le projet qui contient le sprint duquel le lot de travail est déplacé.
+              not_assignable: n'est pas assignable, car il est déjà terminée ou il n'est pas partagé avec le projet.
+              not_eligible_for_moving: n'est pas un sprint actif dans le projet qui contient le sprint duquel le lot de travaux est déplacé.
     models:
       sprint: Sprint
   backlogs:
     caption_sprints_default_fold_state: Les sprints ne sont pas développés par défaut lorsque vous consultez la page « Backlog et sprints ». Chacun d'entre eux doit être développé manuellement.
     definition_of_done: Définition de Fait
-    definition_of_done_caption: Les work packages ayant ces statuts sont traités comme terminés dans les vues du carnet de commandes et dans les rapports.
+    definition_of_done_caption: Les lots de travaux ayant ces statuts sont traités comme terminés dans les vues du backlog et dans les rapports.
     done_status: État terminé
     sharing_description: Ce projet peut soit partager ses propres sprints, soit recevoir des sprints partagés, soit gérer les sprints de manière indépendante (sans partage).
     sharing: Partage
@@ -112,26 +112,37 @@ fr:
     administration_blankslate:
       title: Les paramètres d'administration du backlog évoluent
       text: Nous sommes en train de redessiner le module Backlogs. Les paramètres d'administration pour les sprints et les backlogs seront visibles ici dans un futur proche. Les paramètres au niveau du projet restent disponibles.
-    backlog_bucket_component:
-      blankslate_title: Le panier de commandes est vide
+    bucket_component:
+      blankslate_title: Le backlog est vide
       blankslate_description: Faites glisser les éléments ici pour les ajouter.
-    backlog_bucket_item_component:
-      label_actions: Actions du paquet de travail
+      label_actions: Actions de la corbeille du backlog
+      action_menu:
+        edit_backlog_bucket: Modifier le backlog en attente
+        delete_backlog_bucket: Supprimer un bucket de backlog
+    backlog_bucket_destroy_modal_component:
+      title: Supprimer le bucket de backlog ?
+      details: Le bucket de backlog « %{name} » sera supprimé et tous les lots de travaux seront déplacés vers la boîte de réception des backlogs. Aucun lot de travaux ne sera supprimé.
     sprint_component:
       blankslate_title: "%{name} est vide"
       blankslate_description: Aucun élément n'a encore été planifié. Faites glisser les éléments ici pour les ajouter.
+      label_actions: Actions du sprint
+      label_start_sprint: Commencer
+      label_complete_sprint: Finaliser
+      start_sprint_disabled_reason_active_sprint: Un autre sprint est déjà en cours.
+      start_sprint_disabled_reason_missing_dates: Les dates de début et de fin sont nécessaires pour lancer le sprint.
+      action_menu:
+        edit_sprint: Modifier le sprint
+        add_work_package: Ajouter un lot de travaux
     inbox_component:
       blankslate_title: La boîte de réception de backlog est vide
-      blankslate_description: Tous les lots de travail ouverts dans ce projet apparaîtront automatiquement ici.
+      blankslate_description: Tous les lots de travaux ouverts dans ce projet apparaîtront automatiquement ici.
       show_more:
         one: Afficher un article supplémentaire
         other: Afficher %{count} articles supplémentaires
-    inbox_item_component:
-      label_actions: Actions du lot de travaux
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copier l'URL dans le presse-papier
-        copy_work_package_id: Copier l'ID du lot de travail
+        copy_work_package_id: Copier l'ID du lot de travaux
         move_menu: Déplacer
       label_move_to_sprint: Déplacer vers le sprint
     move_to_sprint_dialog_component:
@@ -141,64 +152,38 @@ fr:
       blankslate:
         title: Il n'y a pas encore de sprints
         settings_link_text: paramètres du projet
-        receive_and_manage_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
-        receive_description_text: This project receives shared sprints from a different project, but none are available right now.
-        create_and_manage_description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
+        receive_and_manage_description_html: Ce projet reçoit des sprints d'un autre projet. Gérez cela dans les %{settings_link}.
+        receive_description_text: Ce projet reçoit des sprints partagés d'un autre projet, mais aucun n'est disponible pour le moment.
+        create_and_manage_description_html: Pour commencer à planifier votre sprint, créez-en un ici ou rendez-vous sur %{settings_link} pour recevoir les sprints d'un autre projet.
         create_description_text: Pour commencer à planifier votre sprint, créez-en un ici.
-        manage_description_html: Pour commencer à planifier votre sprint, allez sur %{settings_link} pour trouver les sprints d'un autre projet.
+        manage_description_html: Pour commencer à planifier votre sprint, accédez aux %{settings_link} pour trouver les sprints d'un autre projet.
         no_actions_description_text: Il n'y a pas encore de sprints disponibles pour ce projet.
-    backlog_bucket_menu_component:
-      label_actions: Actions de la corbeille du carnet de commandes
-      action_menu:
-        edit_backlog_bucket: Modifier le panier de commandes en attente
-        delete_backlog_bucket: Supprimer un seau d'arriérés
-    backlog_bucket_header_component:
-      label_work_package_count:
-        zero: Pas d'histoires dans le seau du carnet de commandes
-        one: "%{count} histoire dans le seau du carnet de commandes"
-        other: "%{count} histoires dans le seau du carnet de commandes"
-    sprint_header_component:
-      label_start_sprint: Début
-      label_complete_sprint: Terminé
-      start_sprint_disabled_reason_active_sprint: Un autre sprint est déjà actif.
-      start_sprint_disabled_reason_missing_dates: Les dates de début et de fin sont nécessaires pour lancer le sprint.
-      label_story_count:
-        zero: Aucune story dans le sprint
-        one: "%{count} story dans le sprint"
-        other: "%{count} stories dans le sprint"
     finish_sprint_dialog_component:
       title: Il y a des travaux en cours
       body: "%{message} Qu'aimeriez-vous faire avec cela ?"
       legend: Action pour les lots de travaux inachevés
       actions:
         move_to_top_of_backlog: Déplacez-les en haut du backlog
-        move_to_bottom_of_backlog: Déplacez-les vers le bas de l'arriéré
+        move_to_bottom_of_backlog: Déplacez-les en bas du backlog
         move_to_sprint: Déplacez-les vers un autre sprint
       select_sprint_label: Sélectionnez le sprint
       button_complete_sprint: Terminer le sprint
-    sprint_menu_component:
-      label_actions: Actions du sprint
-      action_menu:
-        edit_sprint: Modifier le sprint
-        add_work_package: Ajouter un lot de travaux
-    story_component:
-      label_actions: Actions du récit
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copier l'URL dans le presse-papier
-        copy_work_package_id: Copier l'ID du lot de travail
+        copy_work_package_id: Copier l'ID du lot de travaux
         move_menu: Déplacer
         move_to_sprint: Déplacer dans le sprint
     burndown_chart:
       show:
-        blankslate_title: Aucune donnée de gravure disponible
+        blankslate_title: Aucune donnée de burndown disponible
         blankslate_description: Définissez les dates de début et de fin du sprint afin de générer un graphique burndown.
   burndown:
     story_points: Story points
     story_points_ideal: Story points (idéal)
   label_backlog: Backlog
-  label_backlog_bucket_edit: Modifier le panier de commandes en attente
-  label_backlog_bucket_new: Nouveau seau d'arriérés
+  label_backlog_bucket_edit: Modifier le bucket de backlog
+  label_backlog_bucket_new: Nouveau bucket de backlog
   label_inbox: Boîte de réception
   label_backlogs: Backlogs
   label_burndown_chart: Graphique burndown

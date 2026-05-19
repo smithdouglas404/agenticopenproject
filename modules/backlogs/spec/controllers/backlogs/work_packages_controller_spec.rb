@@ -150,9 +150,9 @@ RSpec.describe Backlogs::WorkPackagesController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlogs-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{project.id}"
         assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{sprint.id}"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-backlogs-component-#{project.id}"][method="morph"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{project.id}"][method="morph"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(sprint)
@@ -163,7 +163,7 @@ RSpec.describe Backlogs::WorkPackagesController do
 
       context "when all=1 with an inbox over the pagination threshold" do
         before do
-          stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+          stub_const("Backlogs::InboxComponent::TRUNCATE_MIDDLE", 2)
           create_list(:work_package, 4, project:, status:)
         end
 
@@ -179,7 +179,7 @@ RSpec.describe Backlogs::WorkPackagesController do
                      format: :turbo_stream
 
           expect(response).to be_successful
-          expect(response.body).not_to include("inbox-more-row-#{project.id}")
+          expect(response.body).not_to include("inbox_project_#{project.id}_show_more")
         end
       end
     end

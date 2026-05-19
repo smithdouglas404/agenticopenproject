@@ -67,8 +67,7 @@ de:
         Mit diesem Modul können Sie eine Synchronisation zwischen LDAP und OpenProject Gruppen einrichten.
         Es ist abhängig von LDAP-Gruppen müssen das <em>groupOfNames / member Of</em> Attribut verwenden, das für die Arbeit mit OpenProject eingestellt ist.
         <br/>
-        Gruppen werden stündlich durch einen Cronjob synchronisiert.
-        <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Bitte lesen Sie unsere Dokumentation zu diesem Thema</a>.
+        Gruppen werden stündlich durch einen Cronjob synchronisiert. [Bitte lesen Sie unsere Dokumentation zu diesem Thema](docs_url).
       no_results: Keine synchronisierten Gruppen gefunden.
       no_members: Diese Gruppe hat noch keine synchronisierten Mitglieder.
       plural: Synchronisierte LDAP-Gruppen

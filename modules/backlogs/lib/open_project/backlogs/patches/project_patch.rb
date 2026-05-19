@@ -41,10 +41,6 @@ module OpenProject::Backlogs::Patches::ProjectPatch
   def backlogs_enabled?
     module_enabled? "backlogs"
   end
-
-  def assignable_sprints
-    @assignable_sprints ||= Sprint.for_project(self).visible.not_completed
-  end
 end
 
 Project.include OpenProject::Backlogs::Patches::ProjectPatch

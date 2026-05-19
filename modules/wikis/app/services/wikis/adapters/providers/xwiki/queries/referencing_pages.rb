@@ -34,7 +34,7 @@ module Wikis
       module XWiki
         module Queries
           class ReferencingPages < BaseQuery
-            def call(_input_data)
+            def call(input_data:, **)
               # TODO: use real API endpoints once available
 
               title = [
@@ -43,22 +43,14 @@ module Wikis
                 "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
               ]
 
-              success(
-                [
-                  Results::PageInfo.new(
-                    identifier: "1337",
-                    provider:,
-                    title: title.sample,
-                    href: "#"
-                  ),
-                  Results::PageInfo.new(
-                    identifier: "1338",
-                    provider:,
-                    title: title.sample,
-                    href: "#"
-                  )
-                ]
-              )
+              results = []
+
+              if input_data.linkable.id % 2 == 0
+                results << Success(Results::PageInfo.new(identifier: "1337", provider:, title: title.sample, href: "#"))
+                results << Success(Results::PageInfo.new(identifier: "1338", provider:, title: title.sample, href: "#"))
+              end
+
+              success(results)
             end
           end
         end
