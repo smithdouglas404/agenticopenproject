@@ -80,6 +80,9 @@ Click **Test configuration** to verify the connection.
 ![Define new Jira import in OpenProject administration](openproject_admin_import_jira_import_new_config.png)
 If the connection is successful, a confirmation banner will appear.
 
+> [!IMPORTANT]
+> If your Jira instance is hosted on a private or internal network (e.g. a corporate intranet), the connection test may fail because OpenProject blocks outbound requests to non-public IP addresses by default. This is a security measure to prevent SSRF attacks. To allow connections to internal IP addresses, configure the `OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST` environment variable. See [SSRF protection](../../configuration/ssrf-protection/) for details.
+
 ![Successful connection message for Jira import](openproject_admin_import_jira_import_new_config_test.png)
 
 Click **Add configuration** to proceed to the import runs overview. Initially, no import runs will be listed.
