@@ -503,6 +503,12 @@ export default class FiltersFormController extends Controller {
       return this.parseDateFilterValue(valueContainer, filterName);
     }
 
+    const hiddenField = valueContainer.querySelector<HTMLInputElement>('input[type="hidden"]');
+
+    if (hiddenField) {
+      return hiddenField.value ? [hiddenField.value] : null;
+    }
+
     const value = this.findTargetByName(filterName, this.simpleValueTargets)?.value;
 
     if (value && value.length > 0) {

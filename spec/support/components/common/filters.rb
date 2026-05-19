@@ -134,16 +134,14 @@ module Components
 
       def set_toggle_filter(values)
         should_active = values.first == "yes"
-        checkbox = page.find('input[type="checkbox"]')
-        is_active = checkbox.checked?
+        label = should_active ? I18n.t("general_text_Yes") : I18n.t("general_text_No")
+        hidden = page.find('input[type="hidden"]', visible: :all)
+        is_active = hidden.value == "t"
 
-        checkbox.click if should_active != is_active
+        click_button(label, exact: true) unless should_active == is_active
 
-        if should_active
-          expect(page).to have_field(type: :checkbox, checked: true)
-        else
-          expect(page).to have_field(type: :checkbox, checked: false)
-        end
+        expected_value = should_active ? "t" : "f"
+        expect(page).to have_field(hidden["name"], with: expected_value, type: :hidden)
       end
 
       def set_name_and_identifier_filter(values, send_keys: false)

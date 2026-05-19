@@ -30,27 +30,19 @@
 
 class Filters::Inputs::BooleanForm < Filters::Inputs::BaseFilterForm
   def add_operand(group)
-    group.check_box(
+    group.segmented_control(
+      name: "#{@filter.name}_value",
       label: @filter.human_name,
       visually_hide_label: true,
-      name: "v-#{@filter.class.key}",
-      value: "t",
-      unchecked_value: "f",
-      checked: @filter.values.first == "t"
+      value: @filter.values.first,
+      items: [
+        { value: "f", label: I18n.t("general_text_No") },
+        { value: "t", label: I18n.t("general_text_Yes") }
+      ],
+      wrapper_data_attributes: {
+        "filter--filters-form-target": "filterValueContainer",
+        "filter-name": @filter.name
+      }
     )
-  end
-
-  protected
-
-  def operand_input_id
-    "v-#{@filter.class.key}"
-  end
-
-  private
-
-  def filter_row_arguments
-    super.tap do |args|
-      args[:data][:"filter--filters-form-target"] = "filter filterValueContainer"
-    end
   end
 end
