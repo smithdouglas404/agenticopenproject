@@ -46,6 +46,12 @@ See COPYRIGHT and LICENSE files for more details.
   %>
     <% list.with_header(title: sprint.name, title_arguments:) do |header| %>
       <% header.with_description(display: :flex, direction: :column, classes: "row-gap-2") do %>
+        <% if goal_text.present? %>
+          <%= render(Primer::Beta::Text.new(id: sprint_goal_id, color: :muted, mr: 2)) do %>
+            <%= goal_text %>
+          <% end %>
+        <% end %>
+
         <%= render(Primer::Alpha::Stack.new(direction: :horizontal, align: :center)) do %>
           <%= render(Backlogs::SprintStatusBadgeComponent.new(sprint:)) %>
 
