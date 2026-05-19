@@ -29,38 +29,35 @@
 #++
 
 module Backlogs
-  class SprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-    include Primer::FetchOrFallbackHelper
+  module Sprints
+    class GoalFormModel
+      include ActiveModel::Model
+      include ActiveModel::Attributes
 
-    DIALOG_ID = "sprint-dialog"
-    FORM_ID = "sprint-dialog-form"
-    FOOTER_ID = "sprint-dialog-footer"
+      attribute :id,          :integer
+      attribute :project_id,  :integer
+      attribute :text,        :string
 
-    STATE_DEFAULT = :create
-    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
+      def self.for(sprint:, project:)
+        goal = sprint.goal_for(project)
 
-    attr_reader :sprint, :project, :state
+        new(
+          id: goal&.id,
+          project_id: project.id,
+          text: goal&.text
+        )
+      end
 
-    delegate :create?, :edit?, to: :state
+      def self.model_name
+        ActiveModel::Name.new(self, nil, "Goal")
+      end
 
-    def initialize(sprint:, project:, state: STATE_DEFAULT)
-      super
-
-      @sprint = sprint
-      @project = project
-      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
-    end
-
-    private
-
-    def title
-      create? ? t(:label_sprint_new) : t(:label_sprint_edit)
-    end
-
-    def button_caption
-      create? ? t(:button_create) : t(:button_save)
+      def to_nested_attributes
+        attributes = { project_id:, text: }
+        attributes[:id] = id if id.present?
+        attributes[:_destroy] = "1" if id.present? && text.blank?
+        attributes
+      end
     end
   end
 end

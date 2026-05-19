@@ -91,6 +91,22 @@ module Backlogs
       }
     end
 
+    def goal_text
+      return @goal_text if defined?(@goal_text)
+
+      @goal_text = sprint.goal_text_for(project)
+    end
+
+    def sprint_goal_id
+      dom_target(sprint, :goal)
+    end
+
+    def title_arguments
+      return {} if goal_text.blank?
+
+      { aria: { describedby: sprint_goal_id } }
+    end
+
     def story_points_total
       work_packages.filter_map(&:story_points).sum
     end
@@ -121,7 +137,15 @@ module Backlogs
       sprint.active?
     end
 
-    def user_allowed?(permission)
+    def can_open_edit_dialog?
+      if sprint.owned_by?(project)
+        user_allowed?(:create_sprints)
+      else
+        user_allowed?(:create_sprints) || user_allowed?(:create_sprints, project: sprint.project)
+      end
+    end
+
+    def user_allowed?(permission, project: self.project)
       current_user.allowed_in_project?(permission, project)
     end
   end
