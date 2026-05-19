@@ -38,6 +38,8 @@ ko:
           other: 참가자 %{count}명
         participants_attended: 참석자
         participants_invited: 초대된 사람
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: 프로젝트
         start_date: 날짜
         start_time: 시작 시간
@@ -268,16 +270,6 @@ ko:
         summary_series: "'%{title}' 미팅 시리즈가 %{actor} 님에 의해 취소되었거나, 참가자에서 회원님이 제거되었습니다"
         summary: "'%{title}'이(가) %{actor} 님에 의해 취소되었거나, 참가자에서 회원님이 제거되었습니다"
         date_time: 스케줄링된 날짜/시간
-      participant_added:
-        header: 미팅 '%{title}' - 참가자 추가됨
-        header_series: 미팅 시리즈 '%{title}' - 참가자 추가됨
-        summary: "%{actor} 님이 미팅 '%{title}'에 %{participant} 님을 추가했습니다"
-        summary_series: "%{actor} 님이 미팅 시리즈 '%{title}'에 %{participant} 님을 추가했습니다"
-      participant_removed:
-        header: 미팅 '%{title}' - 참가자 제거됨
-        header_series: 미팅 시리즈 '%{title}' - 참가자 제거됨
-        summary: "%{actor} 님이 미팅 '%{title}'에서 %{participant} 님을 제거했습니다"
-        summary_series: "%{actor} 님이 미팅 시리즈 '%{title}'에서 %{participant} 님을 제거했습니다"
       ended:
         header_series: '종료됨: 미팅 시리즈 ''%{title}'''
         summary_series: "'%{title}' 미팅 시리즈를 %{actor} 님이 종료했습니다"
@@ -291,6 +283,8 @@ ko:
         new_date_time: 새로운 날짜/시간
         old_location: 이전 위치
         new_location: 새로운 위치
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: 참가자에게 이메일 초대장 보내기
     types:
       one_time: 일회성

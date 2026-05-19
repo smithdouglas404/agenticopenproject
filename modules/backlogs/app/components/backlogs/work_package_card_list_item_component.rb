@@ -29,12 +29,12 @@
 #++
 
 module Backlogs
-  class WorkPackageCardListItemComponent < OpenProject::Common::WorkPackageCardListComponent::Item
-    def card
-      @card ||= WorkPackageCardComponent.new(work_package:, menu_src:)
-    end
-
+  class WorkPackageCardListItemComponent < OpenProject::Common::BorderBoxListComponent::WorkPackageItem
     private
+
+    def build_card
+      WorkPackageCardComponent.new(work_package:, menu_src:)
+    end
 
     def draggable?
       current_user.allowed_in_project?(:manage_sprint_items, project)

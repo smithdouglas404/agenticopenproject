@@ -4578,6 +4578,10 @@ uk:
     one: 1 коментар
     other: 'Коментарів: %{count}'
     zero: немає коментарів
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 відкрито
     other: 'Відкрито: %{count}'
@@ -4919,13 +4923,6 @@ uk:
       work_package_card_component:
         menu:
           label_actions: Дії з пакетом робіт
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: Додавання коментарів
   permission_add_work_packages: Додати робочі пакети
   permission_add_messages: Відправка повідомлень

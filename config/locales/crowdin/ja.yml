@@ -4390,6 +4390,10 @@ ja:
     one: 1件のコメント
     other: "%{count}件のコメント"
     zero: コメントがありません
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1件未完了
     other: "%{count}件未完了"
@@ -4715,13 +4719,6 @@ ja:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: コメントの追加
   permission_add_work_packages: ワークパッケージの追加
   permission_add_messages: メッセージの投稿

@@ -43,6 +43,6 @@ class BacklogBucket < ApplicationRecord
   validates :name, :project, presence: true
 
   def self.for_project(project)
-    where(project:).order_alphabetically.includes(:displayed_work_packages)
+    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
   end
 end

@@ -8,7 +8,6 @@ volumes:
   tmp:
   opdata:
   bundle:
-  npm:
   pgdata-test:
   tmp-test:
   fedata-test:

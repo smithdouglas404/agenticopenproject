@@ -33,6 +33,7 @@ module Wikis
     self.table_name = "wiki_providers"
 
     has_many :page_links, dependent: :destroy
+    has_many :health_reports, as: :subject, dependent: :delete_all
 
     scope :enabled, -> { where(enabled: true) }
     scope :visible, ->(_user = User.current) { all }
@@ -40,6 +41,14 @@ module Wikis
     validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
 
     before_create :generate_universal_identifier
+
+    def configured? = raise SubclassResponsibilityError
+
+    def non_confidential_configuration
+      {
+        enabled:
+      }
+    end
 
     def to_s = self.class.registry_prefix
     def user_connected?(_user) = raise SubclassResponsibilityError

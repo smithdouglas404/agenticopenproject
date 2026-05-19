@@ -38,11 +38,11 @@ See COPYRIGHT and LICENSE files for more details.
       report_container.with_row(mt: 2) do
         render(Primer::Beta::Text.new) do
           if report.healthy?
-            t(".summary.success")
+            I18n.t("health_reports.common.summary.success")
           elsif report.unhealthy?
-            t(".summary.failure")
+            I18n.t("health_reports.common.summary.failure")
           else
-            t(".summary.warning")
+            I18n.t("health_reports.common.summary.warning")
           end
         end
       end

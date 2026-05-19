@@ -89,8 +89,7 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
         expect(rendered_component).to have_css(
           ".Counter",
           text: "1",
-          aria: { label: I18n.t("open_project.common.work_package_card_list_component.header.label_work_package_count",
-                                count: 1) }
+          aria: { label: I18n.t(:label_x_work_packages, count: 1), live: "polite" }
         )
       end
 

@@ -50,17 +50,25 @@ FactoryBot.define do
     end
 
     trait :with_connected_user do
+      with_oauth_client
+
       transient do
         connected_user { association :user }
         connected_user_token { "user-bearer-token" }
       end
 
       after(:create) do |provider, evaluator|
-        create(:oauth_client, integration: provider)
         create(:oauth_client_token,
                oauth_client: provider.oauth_client,
                user: evaluator.connected_user,
                access_token: evaluator.connected_user_token)
+      end
+    end
+
+    trait :with_oauth_configured do
+      after(:create) do |provider, _evaluator|
+        create(:oauth_client, integration: provider)
+        create(:oauth_application, integration: provider)
       end
     end
   end

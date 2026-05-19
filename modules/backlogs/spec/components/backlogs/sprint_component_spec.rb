@@ -79,6 +79,14 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(rendered_component).to have_text("8 points", normalize_ws: true)
       end
 
+      it "renders the inferred work-package count in the header" do
+        expect(rendered_component).to have_css(
+          ".Counter",
+          text: "2",
+          aria: { label: I18n.t(:label_x_work_packages, count: 2), live: "polite" }
+        )
+      end
+
       it "renders story points on each work package card" do
         expect(rendered_component).to have_css("span", text: "5", aria: { hidden: true })
         expect(rendered_component).to have_css(".sr-only", text: "5 story points")

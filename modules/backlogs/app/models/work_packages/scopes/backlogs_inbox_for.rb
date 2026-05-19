@@ -37,7 +37,7 @@ module WorkPackages::Scopes::BacklogsInboxFor
         .visible
         .with_status_open
         .where(project:, sprint_id: nil, backlog_bucket_id: nil)
-        .includes(:type)
+        .includes(:type, :assigned_to, :priority, :parent)
         .order_by_position
         .order(WorkPackage.arel_table[:id].asc)
     end

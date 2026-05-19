@@ -372,17 +372,17 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Create manifest list and push
         working-directory: /tmp/digests
-        run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${NEEDS_SETUP_OUTPUTS_REGISTRY_IMAGE}@sha256:%s ' *)
         env:
           NEEDS_SETUP_OUTPUTS_REGISTRY_IMAGE: ${{ needs.setup.outputs.registry_image }}
-      - name: Inspect image
         run: |
-          docker buildx imagetools inspect ${NEEDS_SETUP_OUTPUTS_REGISTRY_IMAGE}:${STEPS_META_OUTPUTS_VERSION}
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf "${NEEDS_SETUP_OUTPUTS_REGISTRY_IMAGE}@sha256:%s " *)
+      - name: Inspect image
         env:
           NEEDS_SETUP_OUTPUTS_REGISTRY_IMAGE: ${{ needs.setup.outputs.registry_image }}
           STEPS_META_OUTPUTS_VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          docker buildx imagetools inspect "${NEEDS_SETUP_OUTPUTS_REGISTRY_IMAGE}:${STEPS_META_OUTPUTS_VERSION}"
   notify-failure:
     needs: [setup, build, merge]
     if: ${{ always() && contains(needs.*.result, 'failure') }}

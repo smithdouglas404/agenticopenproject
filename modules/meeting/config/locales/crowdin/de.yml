@@ -39,6 +39,8 @@ de:
           other: "%{count} Teilnehmer"
         participants_attended: Anwesend
         participants_invited: Eingeladen
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Projekt
         start_date: Datum
         start_time: Startzeit
@@ -273,16 +275,6 @@ de:
         summary_series: Terminserie '%{title}' wurde von %{actor} gelöscht, oder Sie wurden als Teilnehmer entfernt
         summary: "'%{title}' wurde von %{actor} abgesagt, oder Sie wurden als Teilnehmer entfernt"
         date_time: Geplanter Zeitpunkt
-      participant_added:
-        header: Besprechung '%{title}' - Teilnehmer hinzugefügt
-        header_series: Terminserie '%{title}' - Teilnehmer hinzugefügt
-        summary: "%{actor} hat %{participant} zur Besprechung '%{title}' hinzugefügt"
-        summary_series: "%{actor} hat %{participant} zur Terminserie '%{title}' hinzugefügt"
-      participant_removed:
-        header: Besprechung '%{title}' - Teilnehmer entfernt
-        header_series: Terminserie '%{title}' - Teilnehmer hinzugefügt
-        summary: "%{actor} hat %{participant} aus Besprechung '%{title}' entfernt"
-        summary_series: "%{actor} hat %{participant} aus Terminserie '%{title}' entfernt"
       ended:
         header_series: 'Beendet: Terminserie ''%{title}'''
         summary_series: Die Terminserie '%{title}' wurde von %{actor} beendet
@@ -296,6 +288,8 @@ de:
         new_date_time: Neue(s) Datum/Zeit
         old_location: Alter Ort
         new_location: Neuer Ort
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: E-Mail Einladung an alle Teilnehmenden versenden
     types:
       one_time: Einmalig

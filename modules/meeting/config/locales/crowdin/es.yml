@@ -39,6 +39,8 @@ es:
           other: "%{count} Participantes"
         participants_attended: Asistentes
         participants_invited: Invitados
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Proyecto
         start_date: Fecha
         start_time: Hora de inicio
@@ -273,16 +275,6 @@ es:
         summary_series: "%{actor} ha cancelado la serie de reuniones «%{title}» o se le ha eliminado como participante"
         summary: "%{actor} ha cancelado «%{title}» o se le ha eliminado como participante"
         date_time: Fecha/hora programada
-      participant_added:
-        header: 'Reunión «%{title}»: se añadió un participante'
-        header_series: 'Serie de reuniones «%{title}»: se añadió un participante'
-        summary: "%{actor} ha añadido a %{participant} a la reunión «%{title}»"
-        summary_series: "%{actor} ha añadido a %{participant} a la serie de reuniones «%{title}»"
-      participant_removed:
-        header: 'Reunión «%{title}»: se eliminó un participante'
-        header_series: 'Serie de reuniones «%{title}»: se eliminó un participante'
-        summary: "%{actor} ha eliminado a %{participant} de la reunión «%{title}»"
-        summary_series: "%{actor} ha eliminado a %{participant} de la serie de reuniones «%{title}»"
       ended:
         header_series: 'Terminada: serie de reuniones «%{title}»'
         summary_series: "%{actor} ha terminado la serie de reuniones «%{title}»"
@@ -296,6 +288,8 @@ es:
         new_date_time: Fecha y hora nuevas
         old_location: Ubicación antigua
         new_location: Nueva ubicación
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Enviar invitación por correo electrónico a los participantes
     types:
       one_time: Única

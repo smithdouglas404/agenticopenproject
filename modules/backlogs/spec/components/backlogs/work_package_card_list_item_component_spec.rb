@@ -76,9 +76,9 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
         backlogs__story_id_value: work_package.id,
         backlogs__story_display_id_value: work_package.display_id,
         backlogs__story_full_url_value: work_package_path(work_package),
-        backlogs__story_selected_class: "Box-row--blue",
-        test_selector: "work-package-#{work_package.id}"
+        backlogs__story_selected_class: "Box-row--blue"
       )
+      expect(item.row_args[:test_selector]).to eq("work-package-#{work_package.id}")
     end
 
     it "marks the row as draggable for users allowed to manage sprint items" do

@@ -133,7 +133,7 @@ class Meeting < ApplicationRecord
 
   before_save :add_new_participants_as_watcher
 
-  after_update :send_updated_mail, if: -> {
+  after_commit :send_updated_mail, on: :update, if: -> {
     !template? &&
       (saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? || saved_change_to_title?)
   }
@@ -151,6 +151,12 @@ class Meeting < ApplicationRecord
     descendants: "descendants",
     system: "system"
   }, prefix: :sharing, validate: { allow_nil: true }
+
+  # Debounce meeting emails by one minute
+  # this is currently hard coded
+  def self.journal_aggregation_time_minutes
+    1
+  end
 
   def self.templates_visible_in_project(project, user = User.current)
     accessible_ids = Project.allowed_to(user, :view_meetings).select(:id)
@@ -341,22 +347,18 @@ class Meeting < ApplicationRecord
   def send_updated_mail
     return unless send_emails?
 
-    MeetingNotificationService
-      .new(self)
-      .call :updated,
-            changes: updated_mail_changes
+    Meetings::NotificationDebounceJob.debounce(
+      self,
+      since_journal_id: last_journal&.predecessor&.id,
+      since_invited_ids: participants.invited.pluck(:user_id),
+      since_attributes: updated_mail_since_attributes
+    )
   end
 
-  def updated_mail_changes # rubocop:disable Metrics/AbcSize
-    {
-      old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
-      new_start: start_time,
-      old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
-      new_duration: duration,
-      old_location: saved_change_to_location? ? saved_change_to_location.first : location,
-      new_location: location,
-      old_title: saved_change_to_title? ? saved_change_to_title.first : title,
-      new_title: title
-    }
+  def updated_mail_since_attributes
+    %w[title location start_time duration].index_with do |attribute|
+      value = saved_change_to_attribute(attribute)&.first || public_send(attribute)
+      value.respond_to?(:iso8601) ? value.iso8601 : value
+    end
   end
 end

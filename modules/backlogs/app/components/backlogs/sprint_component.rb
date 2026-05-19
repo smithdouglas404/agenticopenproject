@@ -46,7 +46,8 @@ module Backlogs
       @project = project
       @current_user = current_user
       @active_sprint_ids = active_sprint_ids
-      @work_packages = work_packages || sprint.work_packages_for(project).includes(:status, :type)
+      @work_packages = work_packages || sprint.work_packages_for(project).includes(:status, :type, :assigned_to, :priority,
+                                                                                   :parent)
     end
 
     def wrapper_uniq_by
@@ -68,7 +69,7 @@ module Backlogs
     end
 
     def start_sprint_button_arguments
-      base_arguments = { id: dom_target(sprint, :start_button), scheme: :invisible }
+      base_arguments = { id: dom_target(sprint, :start_button) }
 
       if disable_start_sprint_action?
         base_arguments.merge(tag: :button, inactive: true, aria: { disabled: true })
@@ -84,7 +85,6 @@ module Backlogs
     def finish_sprint_button_arguments
       {
         id: dom_target(sprint, :finish_button),
-        scheme: :invisible,
         tag: :a,
         href: finish_project_backlogs_sprint_path(project, sprint, all_backlogs_params),
         data: { turbo_method: :post }

@@ -4448,6 +4448,10 @@ ca:
     one: Un comentari
     other: "%{count} comentaris"
     zero: sense comentaris
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: Un obert
     other: "%{count} oberts"
@@ -4782,13 +4786,6 @@ ca:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Afegir paquets de treball
   permission_add_messages: Publicar missatges
