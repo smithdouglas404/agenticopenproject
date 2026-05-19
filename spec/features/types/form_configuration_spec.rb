@@ -253,6 +253,10 @@ RSpec.describe "form configuration", :js, :selenium do
       context "with field format labels" do
         let!(:custom_field) { create(:issue_custom_field, :integer, name: "MyNumber") }
 
+        before do
+          visit edit_type_form_configuration_path(type)
+        end
+
         it "shows field format labels beside attributes" do
           builtin_label = I18n.t("types.edit.form_configuration.builtin_field")
 
