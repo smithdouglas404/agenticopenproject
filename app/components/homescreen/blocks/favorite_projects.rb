@@ -30,7 +30,7 @@
 
 module Homescreen
   module Blocks
-    class Projects < Grids::WidgetComponent
+    class FavoriteProjects < Grids::WidgetComponent
       include ProjectsHelper
 
       def initialize(*)

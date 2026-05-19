@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Homescreen::Blocks::Projects, type: :component do
+RSpec.describe Homescreen::Blocks::FavoriteProjects, type: :component do
   include Rails.application.routes.url_helpers
 
   shared_let(:admin) { create(:admin) }
