@@ -45,13 +45,13 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
     let(:input_data) { Wikis::Adapters::Input::PageInfo.build(identifier:).value! }
     let(:query) { described_class.new(model: wiki_provider) }
 
-    let(:page_response) do
-      { "title" => "Home", "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/" }.to_json
-    end
-
     subject(:result) { query.call(input_data:, auth_strategy:) }
 
     context "when the page exists" do
+      let(:page_response) do
+        { "title" => "Home", "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/" }.to_json
+      end
+
       before do
         stub_request(:get, page_url)
           .with(headers: { "Authorization" => "Bearer user-bearer-token" })
