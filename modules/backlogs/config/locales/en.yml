@@ -49,6 +49,8 @@ en:
           active: "Active"
           completed: "Completed"
         work_packages: "Work packages"
+      sprint_goal:
+        text: "Sprint goal"
       work_package:
         backlog_bucket: "Backlog Bucket"
         backlogs_work_package_type: "Backlog type"
@@ -68,6 +70,8 @@ en:
             sprint_sharing:
               share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
               share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
+        sprint_goal:
+          project_already_has_goal: "already has a goal for this sprint."
         sprint:
           attributes:
             base:
