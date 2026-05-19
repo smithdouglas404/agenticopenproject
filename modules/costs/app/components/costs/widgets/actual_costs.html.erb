@@ -30,7 +30,11 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   widget_wrapper do |container|
     if has_spending_data?
-      body = flex_layout do |flex|
+      container.with_footer do
+        render(Primer::Beta::Link.new(href: cost_reports_path(project))) { t(".view_details") }
+      end
+
+      flex_layout do |flex|
         flex.with_row(mt: 3, align: :center) do
           helpers.angular_component_tag(
             "opce-actual-costs",
@@ -42,12 +46,6 @@ See COPYRIGHT and LICENSE files for more details.
           )
         end
       end
-
-      container.with_footer do
-        render(Primer::Beta::Link.new(href: cost_reports_path(project))) { t(".view_details") }
-      end
-
-      body
     else
       render(Primer::Beta::Blankslate.new) do |blankslate|
         blankslate.with_visual_icon(icon: :"op-cost-reports")
