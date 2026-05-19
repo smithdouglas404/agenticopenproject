@@ -43,16 +43,17 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render(Primer::OpenProject::SubHeader.new) do |subheader| %>
   <% subheader.with_filter_component do %>
-    <%= render(Primer::Alpha::SegmentedControl.new("aria-label": t(:label_filter_plural), full_width: false)) do |control| %>
-      <% control.with_item(tag: :a,
-                            href: admin_cost_types_path(status: "active"),
-                            label: t(:label_active),
-                            selected: @status == "active") %>
-      <% control.with_item(tag: :a,
-                            href: admin_cost_types_path(status: "locked"),
-                            label: t("members.menu.locked"),
-                            selected: @status == "locked") %>
-    <% end %>
+    <%= render(
+          OpPrimer::QuickFilter::SegmentedComponent.new(
+            name: t(:label_filter_plural),
+            query: @query,
+            filter_key: :status,
+            path_args: %i[admin cost_types]
+          )
+        ) do |component|
+          component.with_item(label: t(:label_active), value: "active")
+          component.with_item(label: t("members.menu.locked"), value: "locked")
+        end %>
   <% end %>
 
   <% subheader.with_action_button(
