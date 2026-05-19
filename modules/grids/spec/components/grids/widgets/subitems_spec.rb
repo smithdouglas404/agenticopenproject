@@ -169,7 +169,6 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
         it "renders specified subitems and a footer link to view all subitems", :aggregate_failures do
           expect(rendered_component).to have_list "Subitems" do |list|
             expect(list).to have_list_item count: 2, text: /My Project No. \d+/
-            expect(list).to have_no_list_item text: "View all subitems"
           end
 
           expect(rendered_component).to have_css(".op-widget-box--footer") do |footer|

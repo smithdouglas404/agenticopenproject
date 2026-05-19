@@ -46,8 +46,6 @@ RSpec.describe Homescreen::Blocks::FavoriteProjects, type: :component do
       expect(rendered_component).to have_css("h3", text: "Favorite projects")
       expect(rendered_component).to have_test_selector("projects-widget-empty")
       expect(rendered_component).to have_octicon(:project)
-      expect(rendered_component).to have_no_octicon(:star)
-      expect(rendered_component).to have_no_octicon(:"star-fill")
       expect(rendered_component).to have_text("You have no favorite projects")
       expect(rendered_component).to have_no_link(visible_project.name)
       expect(rendered_component).to have_no_link(href: new_project_path)

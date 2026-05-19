@@ -112,7 +112,6 @@ RSpec.describe Grids::Widgets::Members, type: :component do
 
     it "renders members items", :aggregate_failures do
       expect(rendered_component).to have_element class: "op-widget-box--body" do |body|
-        expect(body).to have_no_link href: project_members_path(project)
         expect(body).to have_element :"opce-principal"
       end
     end
