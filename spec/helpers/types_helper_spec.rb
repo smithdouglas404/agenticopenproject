@@ -89,37 +89,26 @@ RSpec.describe TypesHelper do
       end
     end
 
-    describe ":field_format_label" do
-      before do
-        allow(type)
-          .to receive(:attribute_groups)
-          .and_return [Type::AttributeGroup.new(type, "group one", ["assignee"])]
-      end
+  describe "field_format_label" do
+    subject(:groups) { helper.form_configuration_groups(type) }
 
-      it "returns 'Builtin field' for built-in attributes" do
-        groups = helper.form_configuration_groups(type)
-        attribute = groups[:actives].first[:attributes].first
+    before do
+      allow(type).to receive(:attribute_groups).and_return []
+    end
 
-        expect(attribute[:field_format_label]).to eq I18n.t("types.edit.form_configuration.builtin_field")
-      end
+    it "returns 'Builtin field' for built-in attributes" do
+      builtin = groups[:inactives].find { |a| a[:key] == "date" }
+      expect(builtin[:field_format_label]).to eq I18n.t("types.edit.form_configuration.builtin_field")
+    end
 
-      it "returns 'Builtin field' for inactive built-in attributes" do
-        groups = helper.form_configuration_groups(type)
-        inactive_builtin = groups[:inactives].find { |a| a[:key] == "date" }
+    context "with a custom field" do
+      let!(:custom_field) { create(:wp_custom_field, :string, name: "My CF") }
 
-        expect(inactive_builtin[:field_format_label]).to eq I18n.t("types.edit.form_configuration.builtin_field")
-      end
-
-      context "with a custom field" do
-        let!(:custom_field) { create(:wp_custom_field, :string, name: "My CF") }
-
-        it "returns the custom field format label" do
-          groups = helper.form_configuration_groups(type)
-          cf_attr = groups[:inactives].find { |a| a[:key] == custom_field.attribute_name }
-
-          expect(cf_attr[:field_format_label]).to eq I18n.t(:label_string)
-        end
+      it "returns the custom field format label" do
+        cf_attr = groups[:inactives].find { |a| a[:key] == custom_field.attribute_name }
+        expect(cf_attr[:field_format_label]).to eq I18n.t(:label_string)
       end
     end
+  end
   end
 end
