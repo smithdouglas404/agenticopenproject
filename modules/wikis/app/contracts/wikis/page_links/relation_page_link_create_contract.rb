@@ -30,7 +30,7 @@
 
 module Wikis
   module PageLinks
-    class CreateContract < ::ModelContract
+    class RelationPageLinkCreateContract < ::ModelContract
       attribute :author
       attribute :identifier
       attribute :linkable

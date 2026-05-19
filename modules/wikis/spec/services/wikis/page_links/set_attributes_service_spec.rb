@@ -34,13 +34,13 @@ require_module_spec_helper
 module Wikis
   module PageLinks
     RSpec.describe SetAttributesService do
-      let(:model_instance) { Wikis::RelationPageLink.new }
+      let(:model_instance) { RelationPageLink.new }
       let(:contract_instance) do
-        instance_double(Wikis::PageLinks::CreateContract, validate: contract_valid, errors: contract_errors)
+        instance_double(RelationPageLinkCreateContract, validate: contract_valid, errors: contract_errors)
       end
 
       let(:contract_class) do
-        class_double(Wikis::PageLinks::CreateContract, new: contract_instance)
+        class_double(RelationPageLinkCreateContract, new: contract_instance)
       end
 
       let(:contract_errors) { instance_double(ActiveModel::Errors) }
