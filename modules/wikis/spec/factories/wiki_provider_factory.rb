@@ -42,5 +42,26 @@ FactoryBot.define do
 
   factory :xwiki_provider, class: "Wikis::XWikiProvider", parent: :wiki_provider do
     url { "https://xwiki.example.com/" }
+
+    trait :with_oauth_client do
+      after(:create) do |provider, _|
+        create(:oauth_client, integration: provider)
+      end
+    end
+
+    trait :with_connected_user do
+      transient do
+        connected_user { association :user }
+        connected_user_token { "user-bearer-token" }
+      end
+
+      after(:create) do |provider, evaluator|
+        create(:oauth_client, integration: provider)
+        create(:oauth_client_token,
+               oauth_client: provider.oauth_client,
+               user: evaluator.connected_user,
+               access_token: evaluator.connected_user_token)
+      end
+    end
   end
 end

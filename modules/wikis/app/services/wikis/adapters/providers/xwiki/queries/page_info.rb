@@ -67,7 +67,7 @@ module Wikis
             end
 
             def handle_success_response(response, identifier:)
-              data = JSON.parse(response.body.to_s)
+              data = response.json
               success(
                 Results::PageInfo.new(
                   identifier:,
@@ -76,7 +76,7 @@ module Wikis
                   provider:
                 )
               )
-            rescue JSON::ParserError
+            rescue MultiJson::ParseError
               failure(code: :request_failed)
             end
           end

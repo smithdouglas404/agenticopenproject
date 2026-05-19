@@ -37,30 +37,19 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
   end
 
   describe "#call" do
-    let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.example.com/") }
-    let(:user) { build_stubbed(:user) }
-    let(:oauth_client_token) { instance_double(OAuthClientToken, access_token: "user-bearer-token") }
+    let(:user) { create(:user) }
+    let(:wiki_provider) { create(:xwiki_provider, :with_connected_user, url: "https://xwiki.example.com/", connected_user: user) }
     let(:identifier) { "xwiki:Main.WebHome" }
     let(:page_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/Main/pages/WebHome" }
     let(:auth_strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user:, provider: wiki_provider).value! }
     let(:input_data) { Wikis::Adapters::Input::PageInfo.build(identifier:).value! }
     let(:query) { described_class.new(model: wiki_provider) }
 
-    subject(:result) { query.call(input_data:, auth_strategy:) }
-
-    before do
-      oauth_client = build_stubbed(:oauth_client)
-      allow(wiki_provider).to receive(:oauth_client).and_return(oauth_client)
-      allow(OAuthClientToken).to receive(:for_user_and_client).with(user, oauth_client)
-        .and_return(instance_double(ActiveRecord::Relation, first: oauth_client_token))
-    end
-
     let(:page_response) do
-      {
-        "title" => "Home",
-        "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/"
-      }.to_json
+      { "title" => "Home", "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/" }.to_json
     end
+
+    subject(:result) { query.call(input_data:, auth_strategy:) }
 
     context "when the page exists" do
       before do
@@ -104,7 +93,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
     end
 
     context "when no OAuth token exists for the user" do
-      let(:oauth_client_token) { nil }
+      let(:wiki_provider) { create(:xwiki_provider, :with_oauth_client, url: "https://xwiki.example.com/") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :missing_token)) }
     end
@@ -142,7 +131,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
     context "when the response body is not valid JSON" do
       before do
         stub_request(:get, page_url)
-          .to_return(status: 200, body: "not json", headers: { "Content-Type" => "text/plain" })
+          .to_return(status: 200, body: "not json", headers: { "Content-Type" => "application/json" })
       end
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }
