@@ -41,6 +41,11 @@ class Filters::Inputs::DateForm < Filters::Inputs::BaseFilterForm
     from_value = fmt == "between-dates" ? filter_values.fetch(0, "") : nil
     to_value = fmt == "between-dates" ? filter_values.fetch(1, "") : nil
 
+    # The multi name intentionally uses @filter.name (not operand_name) because
+    # parseDateFilterValue in filters-form.controller.ts locates the datepicker
+    # inputs via findTargetById(filterName, …), which matches the id derived from
+    # the multi name. Switching to operand_name would require migrating that
+    # lookup to findTargetByName and adding data-filter-name to the picker inputs.
     group.multi(name: filter_name, label: filter_name, visually_hide_label: true,
                 class: ["advanced-filters--filter-value"],
                 data: {
