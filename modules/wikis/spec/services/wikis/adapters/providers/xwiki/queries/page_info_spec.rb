@@ -134,7 +134,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
           .to_return(status: 200, body: "not json", headers: { "Content-Type" => "application/json" })
       end
 
-      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :invalid_response)) }
     end
   end
 end

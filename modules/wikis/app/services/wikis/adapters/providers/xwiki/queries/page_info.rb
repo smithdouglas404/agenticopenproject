@@ -77,7 +77,7 @@ module Wikis
                 )
               )
             rescue MultiJson::ParseError
-              failure(code: :request_failed)
+              failure(code: :invalid_response)
             end
           end
         end
