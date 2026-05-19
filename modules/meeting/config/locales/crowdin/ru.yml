@@ -41,8 +41,8 @@ ru:
           other: "%{count} Участников"
         participants_attended: Участники
         participants_invited: Приглашенные
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 'Участников добавлено:'
+        participants_removed: 'Участники удалены:'
         project: Проект
         start_date: Дата
         start_time: Время начала
@@ -298,8 +298,8 @@ ru:
         new_date_time: Новые дата/время
         old_location: Старое расположение
         new_location: Новое расположение
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Участники добавлены
+        removed_participants: Участники удалены
     label_mail_all_participants: Отправить письмо всем участникам
     types:
       one_time: Однократная

@@ -4583,9 +4583,9 @@ ru:
     other: "%{count} комментариев"
     zero: нет комментариев
   label_x_items:
-    one: 1 item
-    other: "%{count} items"
-    zero: no items
+    one: 1 элемент
+    other: "%{count} элементов"
+    zero: нет элементов
   label_x_open_work_packages_abbr:
     one: 1 открыт
     other: "%{count} открыто"
