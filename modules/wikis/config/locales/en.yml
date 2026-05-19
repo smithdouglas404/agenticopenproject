@@ -47,8 +47,10 @@ en:
     admin:
       destroy_confirmation_dialog_component:
         title: Delete wiki provider
-        heading: Delete wiki provider?
-        warning_html: "You are about to delete %{wiki_provider}. This action is irreversible."
+        heading: Permanently delete this wiki provider?
+        description_html: >-
+          The wiki provider %{wiki_provider} and all the related wiki page links will be deleted. In addition, every
+          inline wiki page link will no longer be accessible. This action is irreversible.
       forms:
         general_info_form_component:
           xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
