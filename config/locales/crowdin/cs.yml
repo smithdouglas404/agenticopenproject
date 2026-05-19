@@ -4581,6 +4581,10 @@ cs:
     one: 1 komentář
     other: "%{count} komentáře"
     zero: žádné komentáře
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 otevřený
     other: "%{count} otevřených"
@@ -4923,13 +4927,6 @@ cs:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: Přidat komentáře
   permission_add_work_packages: Přidat pracovní balíčky
   permission_add_messages: Odesílat zprávy

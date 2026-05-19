@@ -39,7 +39,7 @@ fr:
   permission_manage_public_resource_planners_explanation: 'Permet aux utilisateurs de créer et de gérer des planificateurs de ressources publics. Cela leur permet de visualiser, de créer, de gérer et de publier leurs propres planificateurs de ressources. Cela ne leur permet pas de visualiser les planificateurs de ressources qui ont été créés par d''autres utilisateurs et qui ne sont pas partagés publiquement.
 
     '
-  permission_allocate_user_resources: Allocate user resources
+  permission_allocate_user_resources: Attribuer des ressources aux utilisateurs
   permission_allocate_user_resources_explanation: 'Permet aux utilisateurs de créer, mettre à jour et supprimer les allocations de ressources dans un planificateur de ressources. Cela inclut l''assignation d''utilisateurs (ou des filtres d''utilisateurs) à un planificateur et l''ajustement de la plage de temps et de dates allouées.
 
     '

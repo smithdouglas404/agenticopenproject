@@ -1374,35 +1374,35 @@ ru:
     edit:
       form_configuration:
         tab: Настройка форм
-        label_group: Group
-        reset_to_defaults: Reset to defaults
-        add_attribute_group: Add attribute group
-        add_query_group: Add table of related work packages
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        drag_to_activate: Drag fields from here to activate them
-        drag_to_reorder: Drag to reorder
-        edit_query: Edit query
-        custom_field: Custom field
-        filter_inactive: Filter attributes
-        inactive_attributes_heading: Inactive attributes
-        no_inactive_attributes: No inactive attributes
-        blankslate_title: No groups yet
-        blankslate_description: Add groups using the button above or drag attributes from the left panel.
-        group_actions: Group actions
-        rename_group: Rename group
-        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
-        group_name_label: Group name
-        row_actions: Row actions
-        query_group_label: Work packages table
-        empty_group_hint: Drag attributes here
-        invalid_attribute_groups: The form configuration payload is invalid.
-        invalid_query: The embedded query configuration is invalid.
-        not_found: The requested form configuration item could not be found.
-        untitled_group: Untitled group
-        reset_title: Reset form configuration
-        confirm_reset: Are you sure you want to reset the form configuration?
-        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+        label_group: Группа
+        reset_to_defaults: Восстановить значения по умолчанию
+        add_attribute_group: Добавить группу атрибутов
+        add_query_group: Добавить таблицу связанных пакетов работ
+        delete_group: Удалить группу
+        remove_attribute: Удалить из группы
+        drag_to_activate: Чтобы включить поля, перетащите их отсюда
+        drag_to_reorder: Перетащите, чтобы изменить порядок
+        edit_query: Редактировать представление
+        custom_field: Настраиваемое поле
+        filter_inactive: Фильтровать атрибуты
+        inactive_attributes_heading: Неактивные атрибуты
+        no_inactive_attributes: Нет неактивных атрибутов
+        blankslate_title: Нет групп
+        blankslate_description: Добавьте группы с помощью кнопки выше или перетащите атрибуты с левой панели.
+        group_actions: Действия с группами
+        rename_group: Переименовать группу
+        confirm_delete_group: Вы уверены, что хотите удалить эту группу? Это действие не может быть автоматически отменено.
+        group_name_label: Имя группы
+        row_actions: Действия со строками
+        query_group_label: Таблица пакетов работ
+        empty_group_hint: Перетащите атрибуты сюда
+        invalid_attribute_groups: Конфигурация формы является недопустимой.
+        invalid_query: Недопустимая конфигурация встраиваемого представления.
+        not_found: Запрашиваемый элемент конфигурации формы не найден.
+        untitled_group: Безымянная группа
+        reset_title: Сбросить настройки формы
+        confirm_reset: Вы уверены, что хотите сбросить конфигурацию формы?
+        reset_description: 'Это сбросит атрибуты к группе по умолчанию и отключит ВСЕ настраиваемые поля.
 
           '
       projects:
@@ -1511,8 +1511,8 @@ ru:
     bulk_delete_dialog:
       title: Удалить %{count} пакетов работ
       heading: Окончательно удалить эти %{count} пакеты работ?
-      description: 'The following work packages and all associated data will be permanently deleted:'
-      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
+      description: 'Следующие пакеты работ и все связанные с ними данные будут окончательно удалены:'
+      description_with_children: 'Следующие пакеты работ и все связанные с ними данные будут окончательно удалены:'
       confirm_children_deletion: Я подтверждаю, что все выбранные пакеты работ, включая дочерние, будут удалены навсегда.
       cross_project_warning: 'Эти пакеты работ охватывают несколько проектов: %{projects}'
       children_label: 'Следующие дочерние пакеты работ также будут удалены:'
@@ -2492,7 +2492,7 @@ ru:
               attribute_unknown_name: 'Используется неверный атрибут пакета работ: %{attribute}'
               duplicate_group: Имя группы '%{group}' используется более одного раза. Имена групп должны быть уникальными.
               query_invalid: 'Встроенный запрос ''%{group}'' является недопустимым: %{details}'
-              group_without_name: Group name can't be blank.
+              group_without_name: Имя группы не может быть пустым.
             patterns:
               invalid_tokens: Один или несколько атрибутов внутри поля недействительны. Пожалуйста, исправьте атрибуты перед сохранением.
         user:
@@ -3623,7 +3623,7 @@ ru:
             '
           new_features_list:
             line_0: Мигратор Jira с поддержкой базовых пользовательских полей.
-            line_1: Сегменты бэклога для структурирования и приоритизации пакетов работ во время уточнения бэклога.
+            line_1: Разделы бэклога для структурирования и приоритизации пакетов работ во время уточнения бэклога.
             line_2: Более удобное перетаскивание и улучшенные опции перемещения в Бэклогах.
             line_3: Кнопки начала и завершения спринта в заголовке спринта.
             line_4: Копирование настроек рабочего процесса между ролями.
@@ -4582,6 +4582,10 @@ ru:
     one: 1 комментарий
     other: "%{count} комментариев"
     zero: нет комментариев
+  label_x_items:
+    one: 1 элемент
+    other: "%{count} элементов"
+    zero: нет элементов
   label_x_open_work_packages_abbr:
     one: 1 открыт
     other: "%{count} открыто"
@@ -4922,13 +4926,6 @@ ru:
       work_package_card_component:
         menu:
           label_actions: Действия с пакетом работ
-      work_package_card_list_component:
-        header:
-          label_actions: Открыть меню
-          label_work_package_count:
-            zero: Пакетов работ нет
-            one: "%{count} пакет работ"
-            other: "%{count} пакетов работ"
   permission_add_work_package_comments: Добавить комментарии
   permission_add_work_packages: Добавление пакетов работ
   permission_add_messages: Написать сообщения

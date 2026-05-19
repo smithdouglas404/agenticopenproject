@@ -94,7 +94,7 @@ module OpenProject::Wikis
            { controller: "/wikis/admin/wiki_providers", action: :index },
            if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
            caption: :project_module_wiki_platforms,
-           icon: "browser"
+           icon: "book"
     end
 
     patch_with_namespace :WikiPages, :CreateService

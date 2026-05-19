@@ -4403,6 +4403,10 @@ ko:
     one: 1개 코멘트
     other: "%{count}개 코멘트"
     zero: 코멘트 없음
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1개 열림
     other: "%{count}개 열림"
@@ -4734,13 +4738,6 @@ ko:
       work_package_card_component:
         menu:
           label_actions: 작업 패키지 액션
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: 코멘트 추가
   permission_add_work_packages: 작업 패키지 추가
   permission_add_messages: 메시지 게시

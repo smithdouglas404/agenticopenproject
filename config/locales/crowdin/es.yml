@@ -4442,6 +4442,10 @@ es:
     one: 1 comentario
     other: "%{count} comentarios"
     zero: sin comentarios
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 abierto
     other: "%{count} abiertos"
@@ -4774,13 +4778,6 @@ es:
       work_package_card_component:
         menu:
           label_actions: Acciones del paquete de trabajo
-      work_package_card_list_component:
-        header:
-          label_actions: Abrir menú
-          label_work_package_count:
-            zero: No hay paquetes de trabajo
-            one: "%{count} paquete de trabajo"
-            other: "%{count} paquetes de trabajo"
   permission_add_work_package_comments: Añadir comentarios
   permission_add_work_packages: Añadir paquetes de trabajo
   permission_add_messages: Publicar mensajes

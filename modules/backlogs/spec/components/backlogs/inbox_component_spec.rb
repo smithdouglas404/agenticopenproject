@@ -69,6 +69,10 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         expect(box["data-target-allowed-drag-type"]).to eq("story")
       end
     end
+
+    it "announces dynamic empty-state updates" do
+      expect(page).to have_role(:status, aria: { live: "polite" })
+    end
   end
 
   describe "empty state" do

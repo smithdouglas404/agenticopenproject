@@ -4451,6 +4451,10 @@ it:
     one: 1 commento
     other: "%{count} commenti"
     zero: nessun commento
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 aperto
     other: "%{count} aperti"
@@ -4783,13 +4787,6 @@ it:
       work_package_card_component:
         menu:
           label_actions: Azioni sulla macro-attività
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: Aggiungi commenti
   permission_add_work_packages: Aggiungere macro-attività (work package)
   permission_add_messages: Postare messaggi

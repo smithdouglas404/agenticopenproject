@@ -350,10 +350,7 @@ module Pages
       within_backlog_bucket(bucket) do
         expect(page).to have_css(
           ".Counter",
-          accessible_name: I18n.t(
-            "open_project.common.work_package_card_list_component.header.label_work_package_count",
-            count:
-          )
+          accessible_name: I18n.t(:label_x_work_packages, count:)
         )
       end
     end
@@ -470,16 +467,13 @@ module Pages
       within(sprint_selector(sprint)) do
         expect(page).to have_css(
           ".Counter",
-          accessible_name: I18n.t(
-            "open_project.common.work_package_card_list_component.header.label_work_package_count",
-            count:
-          )
+          accessible_name: I18n.t(:label_x_work_packages, count:)
         )
       end
     end
 
     def expect_and_dismiss_error(message)
-      expect(page).to have_content message
+      expect(page).to have_text message
 
       click_on "Cancel"
     end

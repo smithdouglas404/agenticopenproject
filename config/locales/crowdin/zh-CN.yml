@@ -4383,6 +4383,10 @@ zh-CN:
     one: 1 条评论
     other: "%{count} 条评论"
     zero: 没有注释
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 个打开
     other: "%{count} 个打开"
@@ -4713,13 +4717,6 @@ zh-CN:
       work_package_card_component:
         menu:
           label_actions: 工作包操作
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: 添加评论
   permission_add_work_packages: 添加工作包
   permission_add_messages: 发布消息

@@ -108,7 +108,7 @@ de:
         trial: Probezeitraum
     jemalloc_allocator: Jemalloc Speicher allocator
     journal_aggregation:
-      caption: 'Benutzeraktionen an einem Arbeitspaket (Ändern der Beschreibung, des Status, der Werte oder Schreiben von Kommentaren) werden gruppiert, wenn sie innerhalb dieses Zeitraums durchgeführt werden. Sie steuert auch die Verzögerungen bei Benachrichtigungen und [webhook] (webhook_link).
+      caption: 'Benutzeraktionen an einem Arbeitspaket (Ändern der Beschreibung, des Status, der Werte oder Schreiben von Kommentaren) werden gruppiert, wenn sie innerhalb dieses Zeitraums durchgeführt werden. Sie steuert auch die Verzögerungen bei Benachrichtigungen und [webhook](webhook_link).
 
         '
     import:
@@ -1263,7 +1263,7 @@ de:
           one: 1 Arbeitstag
           other: "%{count} Arbeitstage"
   user_preferences:
-    disable_keyboard_shortcuts_caption: 'Sie können die standardmäßigen[Tastenkombinationen](docs_url) deaktivieren, wenn Sie einen Screenreader verwenden oder unbeabsichtigtes Auslösen einer Aktion durch eine Tastenkombination vermeiden möchten.
+    disable_keyboard_shortcuts_caption: 'Sie können die standardmäßigen [Tastenkombinationen](docs_url) deaktivieren, wenn Sie einen Screenreader verwenden oder unbeabsichtigtes Auslösen einer Aktion durch eine Tastenkombination vermeiden möchten.
 
       '
   page:
@@ -4445,6 +4445,10 @@ de:
     one: Ein Kommentar
     other: "%{count} Kommentare"
     zero: Keine Kommentare
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 offen
     other: "%{count} offen"
@@ -4781,13 +4785,6 @@ de:
       work_package_card_component:
         menu:
           label_actions: Arbeitspaket-Aktionen
-      work_package_card_list_component:
-        header:
-          label_actions: Menü öffnen
-          label_work_package_count:
-            zero: Keine Arbeitspakete
-            one: "%{count} Arbeitspaket"
-            other: "%{count} Arbeitspakete"
   permission_add_work_package_comments: Kommentare hinzufügen
   permission_add_work_packages: Arbeitspakete hinzufügen
   permission_add_messages: Forenbeiträge hinzufügen

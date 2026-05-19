@@ -1342,21 +1342,21 @@ fr:
         drag_to_reorder: Glisser pour réorganiser
         edit_query: Modifier la requête
         custom_field: Champ personalisé
-        filter_inactive: Filter attributes
+        filter_inactive: Filtrer les attributs
         inactive_attributes_heading: Attributs inactifs
         no_inactive_attributes: Pas d'attributs inactifs
         blankslate_title: Aucun groupe pour le moment
         blankslate_description: Ajoutez des groupes à l'aide du bouton ci-dessus ou faites glisser des attributs depuis le panneau de gauche.
-        group_actions: Group actions
+        group_actions: Actions de groupe
         rename_group: Renommer le groupe
         confirm_delete_group: Êtes-vous sûr de vouloir supprimer ce groupe ? Cette action ne peut pas être annulée.
         group_name_label: Nom du groupe
-        row_actions: Row actions
-        query_group_label: Work packages table
+        row_actions: Actions de ligne
+        query_group_label: Tableau des lots de travaux
         empty_group_hint: Glisser les attributs ici
-        invalid_attribute_groups: The form configuration payload is invalid.
-        invalid_query: The embedded query configuration is invalid.
-        not_found: The requested form configuration item could not be found.
+        invalid_attribute_groups: La charge utile de la configuration du formulaire n'est pas valide.
+        invalid_query: La configuration de la requête intégrée n'est pas valide.
+        not_found: L'élément de configuration du formulaire demandé n'a pas été trouvé.
         untitled_group: Groupe sans titre
         reset_title: Réinitialiser la configuration du formulaire
         confirm_reset: Êtes-vous sûr de vouloir réinitialiser la configuration du formulaire ?
@@ -4444,6 +4444,10 @@ fr:
     one: 1 commentaire
     other: "%{count} commentaires"
     zero: aucun commentaire
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 ouvert
     other: "%{count} ouverts"
@@ -4776,13 +4780,6 @@ fr:
       work_package_card_component:
         menu:
           label_actions: Actions du lot de travaux
-      work_package_card_list_component:
-        header:
-          label_actions: Ouvrir le menu
-          label_work_package_count:
-            zero: Aucun lot de travaux
-            one: "%{count} lot de travaux"
-            other: "%{count} lots de travaux"
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages

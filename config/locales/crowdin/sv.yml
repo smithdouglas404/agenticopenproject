@@ -4451,6 +4451,10 @@ sv:
     one: En kommentar
     other: "%{count} kommentarer"
     zero: inga kommentarer
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: en öppen
     other: "%{count} öppnade"
@@ -4781,13 +4785,6 @@ sv:
       work_package_card_component:
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
   permission_add_work_package_comments: Lägg till kommentarer
   permission_add_work_packages: Lägg till arbetspaket
   permission_add_messages: Publicera meddelanden
