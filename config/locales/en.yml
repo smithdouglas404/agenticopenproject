@@ -3579,7 +3579,7 @@ en:
   gui_validation_error_plural: "%{count} errors"
 
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"

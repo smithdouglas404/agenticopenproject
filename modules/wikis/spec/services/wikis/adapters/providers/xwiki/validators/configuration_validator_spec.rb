@@ -23,43 +23,32 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  namespace :admin do
-    namespace :settings do
-      resources :wiki_providers, controller: "/wikis/admin/wiki_providers", except: [:show] do
-        member do
-          get :confirm_destroy
-          get :edit_general_info
-          delete :replace_oauth_application
-        end
+require "spec_helper"
 
-        resource :health_status_report, controller: "/wikis/admin/health_status", only: %i[show create] do
-          post :create_health_status_report
-        end
+RSpec.describe Wikis::Adapters::Providers::XWiki::Validators::ConfigurationValidator do
+  subject(:validation_result) { described_class.new(provider).call }
 
-        resource :oauth_client, controller: "/wikis/admin/oauth_clients", only: %i[new create] do
-          patch :update, on: :member
-        end
-      end
+  let(:provider) { create(:xwiki_provider, :with_oauth_configured) }
+
+  it "returns a ResultGroup" do
+    expect(validation_result).to be_a(HealthReport::ResultGroup)
+    expect(validation_result).to be_success
+  end
+
+  context "when the provider is not configured completely" do
+    before do
+      allow(provider).to receive(:configured?).and_return(false)
     end
-  end
 
-  resource :wiki_page_link_macro, controller: "wikis/page_link" do
-    get :load
-  end
+    it { is_expected.to be_failure }
 
-  resources :projects, only: %i[] do
-    resources :work_packages, only: %i[] do
-      resources :wikis, only: %i[] do
-        collection do
-          resources :tab, only: %i[index], controller: "work_package_wikis_tab", as: "wikis_tab"
-        end
-      end
+    it "indicates that the provider is not configured" do
+      expect(validation_result[:provider_configured].code).to eq(:not_configured)
     end
   end
 end

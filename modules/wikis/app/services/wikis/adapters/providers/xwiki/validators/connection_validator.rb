@@ -23,41 +23,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  namespace :admin do
-    namespace :settings do
-      resources :wiki_providers, controller: "/wikis/admin/wiki_providers", except: [:show] do
-        member do
-          get :confirm_destroy
-          get :edit_general_info
-          delete :replace_oauth_application
-        end
+module Wikis
+  module Adapters
+    module Providers
+      module XWiki
+        module Validators
+          class ConnectionValidator < HealthReports::Validator
+            register_group ConfigurationValidator
+            register_group AuthenticationValidator, precondition: ->(_, result) { result.group(:base_configuration).non_failure? }
 
-        resource :health_status_report, controller: "/wikis/admin/health_status", only: %i[show create] do
-          post :create_health_status_report
-        end
-
-        resource :oauth_client, controller: "/wikis/admin/oauth_clients", only: %i[new create] do
-          patch :update, on: :member
-        end
-      end
-    end
-  end
-
-  resource :wiki_page_link_macro, controller: "wikis/page_link" do
-    get :load
-  end
-
-  resources :projects, only: %i[] do
-    resources :work_packages, only: %i[] do
-      resources :wikis, only: %i[] do
-        collection do
-          resources :tab, only: %i[index], controller: "work_package_wikis_tab", as: "wikis_tab"
+            def initialize(model:)
+              # adapting interface expected by wiki module's resolve interface to
+              # the interface of the HealthReports::Validator base class
+              super(model)
+            end
+          end
         end
       end
     end

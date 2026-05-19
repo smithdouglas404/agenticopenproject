@@ -23,27 +23,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
+module Wikis
   module Admin
     module SidePanel
-      class ValidationResultComponent < ApplicationComponent
-        include OpPrimer::ComponentHelpers
+      class HealthStatusComponent < ApplicationComponent
+        include ApplicationHelper
         include OpTurbo::Streamable
-
-        def initialize(storage:, result:)
-          super(storage)
-          @result = result
-        end
+        include OpPrimer::ComponentHelpers
 
         private
 
+        def report
+          model.health_reports.order(created_at: :asc).last
+        end
+
         def summary_header
-          tally = @result.tally
+          tally = report.tally
           case tally
           in { failure: 1.. }
             {
@@ -63,15 +63,15 @@ module Storages
         end
 
         def summary_description
-          text = if @result.healthy?
+          text = if report.healthy?
                    I18n.t("health_reports.common.summary.success")
-                 elsif @result.unhealthy?
+                 elsif report.unhealthy?
                    I18n.t("health_reports.common.summary.failure")
                  else
                    I18n.t("health_reports.common.summary.warning")
                  end
 
-          "#{text} #{I18n.t('storages.health.checked', datetime: helpers.format_time(@result.created_at))}"
+          "#{text} #{t('.last_check', datetime: helpers.format_time(report.created_at))}"
         end
       end
     end
