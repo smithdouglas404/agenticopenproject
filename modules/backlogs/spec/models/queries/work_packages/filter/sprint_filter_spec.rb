@@ -38,7 +38,7 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter do
       def pluck(*_args); end
     end
   end
-  let(:sprint) { build_stubbed(:agile_sprint) }
+  let(:sprint) { build_stubbed(:sprint) }
 
   it_behaves_like "basic query filter" do
     let(:type) { :list_optional }
@@ -53,7 +53,7 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter do
     current_user { build_stubbed(:user) }
 
     before do
-      allow(Agile::Sprint)
+      allow(Sprint)
         .to receive(:visible)
         .and_return(visible_scope)
 
@@ -126,8 +126,8 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter do
     end
 
     describe "#value_objects" do
-      let(:sprint1) { build_stubbed(:agile_sprint) }
-      let(:sprint2) { build_stubbed(:agile_sprint) }
+      let(:sprint1) { build_stubbed(:sprint) }
+      let(:sprint2) { build_stubbed(:sprint) }
 
       before do
         allow(visible_scope)

@@ -70,7 +70,8 @@ info:
     This means you have to login to OpenProject via the Web-Interface to be authenticated in the API.
     This method is well-suited for clients acting within the browser, like the Angular-Client built into OpenProject.
 
-    In this case, you always need to pass the HTTP header `X-Requested-With "XMLHttpRequest"` for authentication.
+    Keep in mind that session-based authentication is only possible when accessing the API from the same origin. This
+    is assured by checking the `Sec-Fetch-Site` HTTP header.
 
     ### API token as bearer token
 

@@ -76,8 +76,9 @@ RSpec.describe "MeetingParticipants requests",
 
       it "sends notification email" do
         expect do
-          post project_meeting_participants_path(project, meeting), params: params, as: :turbo_stream
-          perform_enqueued_jobs
+          perform_enqueued_jobs do
+            post project_meeting_participants_path(project, meeting), params: params, as: :turbo_stream
+          end
         end.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
     end
@@ -327,8 +328,9 @@ RSpec.describe "MeetingParticipants requests",
         end
 
         it "only sends series invitation emails" do
-          post project_meeting_participants_path(project, template), params: add_params, as: :turbo_stream
-          perform_enqueued_jobs
+          perform_enqueued_jobs do
+            post project_meeting_participants_path(project, template), params: add_params, as: :turbo_stream
+          end
 
           # 1 series invite to new participant + 1 participant added email to existing participant
           expect(ActionMailer::Base.deliveries.size).to eq(2)
@@ -369,14 +371,19 @@ RSpec.describe "MeetingParticipants requests",
           expect(recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: future_occurrence_time)).to be_nil
         end
 
-        it "sends emails for series and open occurrences, but not closed" do
-          post project_meeting_participants_path(project, template), params:, as: :turbo_stream
-          perform_enqueued_jobs
+        it "sends emails only for the template change, not for propagated occurrences" do
+          perform_enqueued_jobs do
+            post project_meeting_participants_path(project, template), params:, as: :turbo_stream
+          end
 
-          # 1 series invite to new participant + 1 participant added email to existing participant + 1 occurrence invite
-          expect(ActionMailer::Base.deliveries.size).to eq(3)
+          # Applying to upcoming propagates participant records to occurrence meetings,
+          # but those CreateService calls run with notify: false.
+          # So only the template action sends:
+          # - 1 invite to the added participant
+          # - 1 update to the existing template participant
+          expect(ActionMailer::Base.deliveries.size).to eq(2)
           expect(ActionMailer::Base.deliveries.map(&:to).flatten)
-            .to include(user_with_meeting_permissions.mail, user.mail)
+            .to contain_exactly(user_with_meeting_permissions.mail, user.mail)
         end
       end
     end
@@ -402,8 +409,9 @@ RSpec.describe "MeetingParticipants requests",
         end
 
         it "only sends template cancellation emails" do
-          delete project_meeting_participant_path(project, template, template_participant), as: :turbo_stream
-          perform_enqueued_jobs
+          perform_enqueued_jobs do
+            delete project_meeting_participant_path(project, template, template_participant), as: :turbo_stream
+          end
 
           # 1 cancelled series to removed participant + 1 participant removed to remaining template participant
           expect(ActionMailer::Base.deliveries.size).to eq(2)
@@ -448,15 +456,20 @@ RSpec.describe "MeetingParticipants requests",
           expect(recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: future_occurrence_time)).to be_nil
         end
 
-        it "sends cancellation emails for template and open occurrences, but not closed" do
-          delete project_meeting_participant_path(project, template, template_participant),
-                 params: delete_params, as: :turbo_stream
-          perform_enqueued_jobs
+        it "sends cancellation emails only for the template change, not for propagated occurrences" do
+          perform_enqueued_jobs do
+            delete project_meeting_participant_path(project, template, template_participant),
+                   params: delete_params, as: :turbo_stream
+          end
 
-          # 1 cancelled series to removed participant + 1 participant removed to remaining participant +
-          # 1 occurrence cancelled
-          expect(ActionMailer::Base.deliveries.size).to eq(3)
-          expect(ActionMailer::Base.deliveries.map(&:to).flatten).to include(user_with_meeting_permissions.mail)
+          # Applying to upcoming propagates removals to occurrence meetings,
+          # but those DeleteService calls run with notify: false.
+          # So only the template action sends:
+          # - 1 cancellation to removed participant
+          # - 1 update to the remaining template participant
+          expect(ActionMailer::Base.deliveries.size).to eq(2)
+          expect(ActionMailer::Base.deliveries.map(&:to).flatten)
+            .to contain_exactly(user_with_meeting_permissions.mail, user.mail)
         end
       end
     end

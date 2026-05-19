@@ -39,6 +39,8 @@ tr:
           other: "%{count} Katılımcı"
         participants_attended: Katılımcılar
         participants_invited: Davetliler
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Proje
         start_date: Tarih
         start_time: Başlama tarihi
@@ -210,6 +212,7 @@ tr:
   label_time_zone: Saat dilim
   label_start_date: Başlama tarihi
   label_subscribe_icalendar: Takvime abone ol
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -272,16 +275,6 @@ tr:
         summary_series: Toplantı serisi '%{title}' %{actor}tarafından iptal edildi veya katılımcı olarak çıkarıldınız
         summary: "'%{title}' %{actor}tarafından iptal edildi veya katılımcı olarak çıkarıldınız"
         date_time: Planlanan tarih/saat
-      participant_added:
-        header: Toplantı '%{title}' - Katılımcı eklendi
-        header_series: Toplantı serisi '%{title}' - Katılımcı eklendi
-        summary: "%{actor} toplantıya %{participant} eklendi '%{title}'"
-        summary_series: "%{actor} '%{title}' toplantı serisine %{participant} eklendi"
-      participant_removed:
-        header: Toplantı '%{title}' - Katılımcı kaldırıldı
-        header_series: Toplantı serisi '%{title}' - Katılımcı kaldırıldı
-        summary: "%{actor} %{participant} adresini toplantıdan kaldırdı '%{title}'"
-        summary_series: "%{actor} %{participant} adresini '%{title}' toplantı serisinden kaldırdı"
       ended:
         header_series: 'Sona erdi: Toplantı serisi ''%{title}'''
         summary_series: "'%{title}' toplantısı serisi %{actor} tarafından sonlandırıldı."
@@ -295,6 +288,8 @@ tr:
         new_date_time: Yeni tarih/saat
         old_location: Eski konum
         new_location: Yeni konum
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Katılımcılara e-posta daveti gönder
     types:
       one_time: Tek seferlik

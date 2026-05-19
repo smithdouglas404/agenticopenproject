@@ -1,7 +1,8 @@
+import type { Mock } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { States } from 'core-app/core/states/states.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { of, map } from 'rxjs';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -10,18 +11,31 @@ import { TOpAutocompleterResource } from './typings';
 import { By } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
+@Component({
+  selector: 'op-test-autocompleter',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class TestAutocompleterComponent extends OpAutocompleterComponent {
+}
+
 describe('autocompleter', () => {
   let fixture:ComponentFixture<OpAutocompleterComponent>;
-  let getOptionsFnSpy:jasmine.Spy;
+  let getOptionsFnSpy:Mock;
   const workPackagesStub = [
     {
       id: 1,
       subject: 'Workpackage 1',
       name: 'Workpackage 1',
+      formattedId: '#1',
       author: {
         href: '/api/v3/users/1',
         name: 'Author1',
       },
+      type: { id: 1, name: 'Task' },
+      status: { id: 1, name: 'Open' },
+      project: { name: 'My Project' },
       description: {
         format: 'markdown',
         raw: 'Description of WP1',
@@ -36,10 +50,14 @@ describe('autocompleter', () => {
       id: 2,
       subject: 'Workpackage 2',
       name: 'Workpackage 2',
+      formattedId: 'PROJ-2',
       author: {
         href: '/api/v3/users/2',
         name: 'Author2',
       },
+      type: { id: 2, name: 'Bug' },
+      status: { id: 2, name: 'Closed' },
+      project: { name: 'My Project' },
       description: {
         format: 'markdown',
         raw: 'Description of WP2',
@@ -52,6 +70,20 @@ describe('autocompleter', () => {
     },
   ];
 
+  type WindowWithOpenProject = Omit<Window, 'OpenProject'> & {
+    OpenProject?:{
+      environment:string;
+    };
+  };
+
+  beforeEach(() => {
+    (window as WindowWithOpenProject).OpenProject = { environment: 'test' };
+  });
+
+  afterEach(() => {
+    delete (window as WindowWithOpenProject).OpenProject;
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [OpAutocompleterComponent],
@@ -61,11 +93,9 @@ describe('autocompleter', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(OpAutocompleterComponent);
-    getOptionsFnSpy = jasmine.createSpy('getOptionsFn').and.callFake((searchTerm:string) => {
-      return of(workPackagesStub).pipe(
-        map((wps) => wps.filter((wp) => searchTerm !== '' && wp.subject.includes(searchTerm)))
-      );
-    });
+    getOptionsFnSpy = vi.fn().mockImplementation((searchTerm:string) => {
+      return of(workPackagesStub).pipe(map((wps) => wps.filter((wp) => searchTerm !== '' && wp.subject.includes(searchTerm))));
+    }) as unknown as Mock;
 
     fixture.componentInstance.resource = 'work_packages' as TOpAutocompleterResource;
     fixture.componentInstance.filters = [];
@@ -80,35 +110,36 @@ describe('autocompleter', () => {
   });
 
   it('should load the ng-select correctly', () => {
-    jasmine.clock().install();
+    vi.useFakeTimers();
     try {
       fixture.detectChanges();
-      jasmine.clock().tick(0);
+      vi.advanceTimersByTime(0);
 
       const autocompleter = document.querySelector('.ng-select-container');
 
       expect(document.contains(autocompleter)).toBeTruthy();
-    } finally {
-      jasmine.clock().uninstall();
+    }
+    finally {
+      vi.useRealTimers();
     }
   });
 
   describe('without debounce', () => {
     it('should load items', () => {
-      jasmine.clock().install();
+      vi.useFakeTimers();
       try {
-        jasmine.clock().tick(0);
+        vi.advanceTimersByTime(0);
         fixture.detectChanges();
         fixture.componentInstance.ngAfterViewInit();
-        jasmine.clock().tick(1000);
+        vi.advanceTimersByTime(1000);
         fixture.detectChanges();
         const select = fixture.componentInstance.ngSelectInstance;
 
-        expect(select.isOpen()).toBeFalse();
+        expect(select.isOpen()).toBe(false);
         select.open();
         select.focus();
 
-        expect(select.isOpen()).toBeTrue();
+        expect(select.isOpen()).toBe(true);
 
         expect(select.itemsList.items.length).toEqual(0);
 
@@ -116,14 +147,14 @@ describe('autocompleter', () => {
         const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
 
         fixture.detectChanges();
-        jasmine.clock().tick(0);
+        vi.advanceTimersByTime(0);
 
         expect(getOptionsFnSpy).toHaveBeenCalledWith('');
 
         inputElement.value = 'Wor';
         inputElement.dispatchEvent(new Event('input'));
         fixture.detectChanges();
-        jasmine.clock().tick(0);
+        vi.advanceTimersByTime(0);
 
         expect(getOptionsFnSpy).toHaveBeenCalledWith('Wor');
 
@@ -134,15 +165,130 @@ describe('autocompleter', () => {
         inputElement.value = 'package 2';
         inputElement.dispatchEvent(new Event('input'));
         fixture.detectChanges();
-        jasmine.clock().tick(0);
+        vi.advanceTimersByTime(0);
 
         expect(getOptionsFnSpy).toHaveBeenCalledWith('package 2');
 
         fixture.detectChanges();
 
         expect(select.itemsList.items.length).toEqual(1);
-      } finally {
-        jasmine.clock().uninstall();
+      }
+      finally {
+        vi.useRealTimers();
+      }
+    });
+  });
+
+  describe('work package option rendering', () => {
+    it('should display formattedId in dropdown options', () => {
+      vi.useFakeTimers();
+      try {
+        vi.advanceTimersByTime(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        vi.advanceTimersByTime(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'Wor';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        vi.advanceTimersByTime(0);
+        fixture.detectChanges();
+
+        const wpIdElements = document.querySelectorAll('.op-autocompleter--wp-id');
+
+        expect(wpIdElements.length).toBeGreaterThanOrEqual(1);
+        // Verify at least one rendered option displays formattedId
+        const renderedIds = Array.from(wpIdElements).map(el => el.textContent?.trim());
+
+        expect(renderedIds).toContain('#1');
+      }
+      finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it('should display classic formattedId in selected value label', () => {
+      vi.useFakeTimers();
+      try {
+        vi.advanceTimersByTime(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        vi.advanceTimersByTime(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'Wor';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        vi.advanceTimersByTime(0);
+        fixture.detectChanges();
+
+        // Select the first item (classic mode: #1)
+        const firstOption = document.querySelector<HTMLElement>('.ng-option')!;
+        firstOption.click();
+        fixture.detectChanges();
+
+        const labelElement = document.querySelector('.ng-value-label');
+
+        expect(labelElement).toBeTruthy();
+        expect(labelElement!.textContent).toContain('#1');
+        expect(labelElement!.textContent).toContain('Workpackage 1');
+      }
+      finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it('should display semantic formattedId in selected value label', () => {
+      vi.useFakeTimers();
+      try {
+        vi.advanceTimersByTime(0);
+        fixture.detectChanges();
+        fixture.componentInstance.ngAfterViewInit();
+        vi.advanceTimersByTime(1000);
+        fixture.detectChanges();
+        const select = fixture.componentInstance.ngSelectInstance;
+
+        select.open();
+        select.focus();
+
+        const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+        const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+        inputElement.value = 'package 2';
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        vi.advanceTimersByTime(0);
+        fixture.detectChanges();
+
+        // Select the semantic mode item (PROJ-2)
+        const option = document.querySelector<HTMLElement>('.ng-option')!;
+        option.click();
+        fixture.detectChanges();
+
+        const labelElement = document.querySelector('.ng-value-label');
+
+        expect(labelElement).toBeTruthy();
+        expect(labelElement!.textContent).toContain('PROJ-2');
+        expect(labelElement!.textContent).not.toContain('#PROJ-2');
+        expect(labelElement!.textContent).toContain('Workpackage 2');
+      }
+      finally {
+        vi.useRealTimers();
       }
     });
   });
@@ -161,11 +307,11 @@ describe('autocompleter', () => {
       fixture.detectChanges();
       const select = fixture.componentInstance.ngSelectInstance;
 
-      expect(select.isOpen()).toBeFalse();
+      expect(select.isOpen()).toBe(false);
       select.open();
       select.focus();
 
-      expect(select.isOpen()).toBeTrue();
+      expect(select.isOpen()).toBe(true);
 
       expect(select.itemsList.items.length).toEqual(0);
 
@@ -178,7 +324,7 @@ describe('autocompleter', () => {
       await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(getOptionsFnSpy).toHaveBeenCalledWith('');
-      getOptionsFnSpy.calls.reset();
+      getOptionsFnSpy.mockClear();
 
       inputElement.value = 'Wor';
       inputElement.dispatchEvent(new Event('input'));
@@ -191,5 +337,20 @@ describe('autocompleter', () => {
 
       expect(getOptionsFnSpy).toHaveBeenCalledWith('Wor');
     });
+  });
+});
+
+describe('derived autocompleter', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [TestAutocompleterComponent],
+      providers: [States, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
+  });
+
+  it('provides shared autocompleter dependencies to subclasses', () => {
+    const fixture = TestBed.createComponent(TestAutocompleterComponent);
+
+    expect(fixture.componentInstance.opAutocompleterService).toBeDefined();
   });
 });

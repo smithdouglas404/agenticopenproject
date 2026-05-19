@@ -38,6 +38,8 @@ id:
           other: "%{count} Peserta"
         participants_attended: Peserta
         participants_invited: Undangan
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Project
         start_date: Tanggal
         start_time: Waktu mulai
@@ -205,6 +207,7 @@ id:
   label_time_zone: Zona waktu
   label_start_date: Tanggal mulai
   label_subscribe_icalendar: Langganan ke kalender
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Select a template to automatically copy its agenda items
   caption_template_project_select: Please select the project in which to create this meeting template
   placeholder_meeting_template_select_project_first: Select a project first
@@ -267,16 +270,6 @@ id:
         summary_series: Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant
         summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: Tanggal/waktu yang dijadwalkan
-      participant_added:
-        header: Rapat '%{title}' - Peserta telah ditambahkan
-        header_series: Seri rapat '%{title}' - Peserta telah ditambahkan
-        summary: "%{actor} menambahkan %{participant} ke rapat '%{title}'"
-        summary_series: "%{actor} menambahkan %{participant} ke seri rapat '%{title}'"
-      participant_removed:
-        header: Rapat '%{title}' - Peserta telah dihapus
-        header_series: Seri rapat '%{title}' - Peserta telah dihapus
-        summary: "%{actor} menghapus %{participant} ke rapat '%{title}'"
-        summary_series: "%{actor} menghapus %{participant} ke seri rapat '%{title}'"
       ended:
         header_series: 'Selesai: Seri rapat ''%{title}'''
         summary_series: Meeting series '%{title}' has been ended by %{actor}
@@ -290,6 +283,8 @@ id:
         new_date_time: Tanggal/waktu baru
         old_location: Lokasi sebelumnya
         new_location: Lokasi baru
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Kirim undangan melalui email kepada peserta
     types:
       one_time: Satu kali

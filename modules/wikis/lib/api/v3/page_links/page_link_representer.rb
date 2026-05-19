@@ -31,6 +31,14 @@
 module API
   module V3
     module PageLinks
+      URN_INLINE_PAGE_LINK = "#{URN_PREFIX}wikiPageLinks:Inline".freeze
+      URN_RELATION_PAGE_LINK = "#{URN_PREFIX}wikiPageLinks:Relation".freeze
+
+      URN_PAGE_LINK_TYPE = {
+        "Wikis::RelationPageLink" => URN_RELATION_PAGE_LINK,
+        "Wikis::InlinePageLink" => URN_INLINE_PAGE_LINK
+      }.freeze
+
       class PageLinkRepresenter < Decorators::Single
         include Decorators::LinkedResource
         include Decorators::DateProperty
@@ -38,6 +46,7 @@ module API
 
         property :id
         property :identifier
+        property :wiki_page_link_type, exec_context: :decorator
 
         date_time_property :created_at
         date_time_property :updated_at
@@ -61,7 +70,9 @@ module API
           }
         end
 
-        associated_resource :provider, v3_path: :wiki_provider
+        associated_resource :provider, v3_path: :wiki_provider, link: ->(*) {
+          { href: api_v3_paths.wiki_provider(represented.provider.universal_identifier), title: represented.provider.name }
+        }
 
         # TODO: Make this truly polymorphic - @mereghost 2026-04-13
         associated_resource :linkable,
@@ -69,7 +80,9 @@ module API
                             representer: ::API::V3::WorkPackages::WorkPackageRepresenter,
                             skip_render: ->(*) { represented.linkable_id.nil? || represented.linkable_type != "WorkPackage" }
 
-        def _type = represented.class.name.demodulize
+        def _type = "WikiPageLink"
+
+        def wiki_page_link_type = URN_PAGE_LINK_TYPE[represented.class.name]
 
         private
 

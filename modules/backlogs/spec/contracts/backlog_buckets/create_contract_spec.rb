@@ -35,6 +35,6 @@ RSpec.describe BacklogBuckets::CreateContract do
   include_context "as backlog bucket contract"
 
   let(:backlog_bucket) do
-    Agile::BacklogBucket.new(name:, project:)
+    BacklogBucket.new(name:, project:)
   end
 end

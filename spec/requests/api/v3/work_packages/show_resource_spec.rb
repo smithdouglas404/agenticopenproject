@@ -221,6 +221,13 @@ RSpec.describe "API v3 Work package resource",
     context "with a semantic identifier",
             with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
+      let(:project) { create(:project, :semantic) }
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i[view_work_packages] })
+      end
+      let(:work_package) do
+        create(:work_package, project:, description: "lorem ipsum")
+      end
       let(:get_path) { api_v3_paths.work_package work_package.display_id }
 
       before do

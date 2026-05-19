@@ -64,7 +64,7 @@ module Storages
                   last_modified_by_name: "Eric Schubert",
                   last_modified_by_id: "5b5a7dc4-4539-41ba-9fa9-100f0a26acb7",
                   permissions: nil,
-                  location: "/Shared%20Documents/Folder/Nested%20Folder/release_meme.jpg"
+                  location: "/Shared Documents/Folder/Nested Folder/release_meme.jpg"
                 )
               end
 
@@ -88,7 +88,7 @@ module Storages
                   last_modified_by_name: "Eric Schubert",
                   last_modified_by_id: "5b5a7dc4-4539-41ba-9fa9-100f0a26acb7",
                   permissions: nil,
-                  location: "/Shared%20Documents/%C3%9Cml%C3%A6%C3%BBts"
+                  location: "/Shared Documents/Ümlæûts"
                 )
               end
 
@@ -113,7 +113,7 @@ module Storages
                   last_modified_by_name: "Eric Schubert",
                   last_modified_by_id: "5b5a7dc4-4539-41ba-9fa9-100f0a26acb7",
                   permissions: nil,
-                  location: "/Shared%20Documents/%C3%9Cml%C3%A6%C3%BBts/data/written_in_stone.webp"
+                  location: "/Shared Documents/Ümlæûts/data/written_in_stone.webp"
                 )
               end
 

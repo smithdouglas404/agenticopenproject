@@ -46,7 +46,7 @@ export class WorkPackageIdDisplayField extends IdDisplayField {
   private uiStateBuilder:UiStateLinkBuilder = new UiStateLinkBuilder(this.$state, this.keepTab, this.currentProject, this.pathHelper);
 
   public get valueString():string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
     return this.resource.displayId ?? this.value?.toString() ?? '';
   }
 
@@ -59,6 +59,7 @@ export class WorkPackageIdDisplayField extends IdDisplayField {
       this.value,
       displayText,
       displayText,
+      this.valueString,
     );
 
     element.appendChild(link);

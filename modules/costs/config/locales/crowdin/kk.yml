@@ -173,7 +173,6 @@ kk:
   label_previous_week: Previous week
   label_previous_month: Previous month
   label_specific_day: Day %{day}
-  label_specific_week: Calendar week %{week}
   label_specific_month: Month %{month}
   label_list: List
   label_month: Month

@@ -1,5 +1,5 @@
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   ICKEditorContext,
   ICKEditorStatic,
@@ -21,17 +21,14 @@ declare global {
 
 @Injectable()
 export class CKEditorSetupService {
+  readonly PathHelper = inject(PathHelperService);
+  readonly configurationService = inject(ConfigurationService);
+
   /** The language CKEditor was able to load, falls back to 'en' */
   private loadedLocale = 'en';
 
   /** Prefetch ckeditor when browser is idle */
   private prefetch:Promise<unknown>;
-
-  constructor(
-    readonly PathHelper:PathHelperService,
-    readonly configurationService:ConfigurationService,
-    ) {
-  }
 
   public initialize() {
     this.prefetch = this.load();
@@ -156,14 +153,18 @@ export class CKEditorSetupService {
    * Load the ckeditor asset
    */
   private async load():Promise<void> {
-    // untyped module cannot be dynamically imported
+    // untyped modules cannot be dynamically imported
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    await import(/* webpackChunkName: "ckeditor" */ 'core-vendor/ckeditor/ckeditor');
+    const loadEditorScript = import(/* webpackChunkName: "ckeditor" */ 'core-vendor/ckeditor/ckeditor');
+
+    const promises = [loadEditorScript];
 
     if (I18n.locale !== 'en') {
-      await this.loadLocale();
+      promises.push(this.loadLocale());
     }
+
+    await Promise.all(promises);
   }
 
   private async loadLocale():Promise<void> {
@@ -185,6 +186,7 @@ export class CKEditorSetupService {
         'OPMacroToc',
         'OPMacroEmbeddedTable',
         'OPMacroWpButton',
+        'OPMacroWpQuickinfo',
       ];
     }
 

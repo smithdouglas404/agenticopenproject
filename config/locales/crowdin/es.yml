@@ -419,7 +419,8 @@ es:
           error_special_characters: No se permiten caracteres especiales
           error_not_fully_uppercased: Debe estar en mayúsculas
           error_in_use: Ya está en uso como identificador activo de otro proyecto
-          error_reserved: Reservado por el historial de identificadores de otro proyecto
+          error_used_in_past: Reservado por el historial de identificadores de otro proyecto
+          error_reserved_by_system: Reservado como palabra clave del sistema
           error_unknown: Necesita revisión manual
           remaining_projects:
             one: "... 1 proyecto más"
@@ -460,8 +461,12 @@ es:
         ignore: Descartar cambios
         save: Guardar cambios y continuar
       role_selector:
+        title: Seleccionar roles
         label: 'Rol: %{role}'
         no_role: Seleccionar rol
+        roles:
+          one: Un rol seleccionado
+          other: "%{count} roles seleccionados"
       blankslate:
         title: No hay transiciones de estado configuradas
         description: Añade estados para empezar a configurar los flujos de trabajo de este rol
@@ -1107,6 +1112,8 @@ es:
       no_results_title_text: No hay noticias sobre las que informar por el momento.
       no_results_content_text: Añadir un elemento de noticias
   roles:
+    edit:
+      default_for_new_projects_warning: 'Este rol está configurado como el rol predeterminado que se asigna a los usuarios que no son administradores y que crean un proyecto. No elimine los siguientes permisos, ya que, de lo contrario, los creadores de proyectos no podrán completar la configuración de los proyectos que acaben de crear:'
     permissions:
       section_check_all_label: Asignar todos los permisos de %{module}
       section_uncheck_all_label: Quitar todos los permisos de %{module}
@@ -1329,6 +1336,37 @@ es:
     edit:
       form_configuration:
         tab: Configuración del formulario
+        label_group: Group
+        reset_to_defaults: Reset to defaults
+        add_attribute_group: Add attribute group
+        add_query_group: Add table of related work packages
+        delete_group: Delete group
+        remove_attribute: Remove from group
+        drag_to_activate: Drag fields from here to activate them
+        drag_to_reorder: Drag to reorder
+        edit_query: Edit query
+        custom_field: Custom field
+        filter_inactive: Filter attributes
+        inactive_attributes_heading: Inactive attributes
+        no_inactive_attributes: No inactive attributes
+        blankslate_title: No groups yet
+        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        group_actions: Group actions
+        rename_group: Rename group
+        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
+        group_name_label: Group name
+        row_actions: Row actions
+        query_group_label: Work packages table
+        empty_group_hint: Drag attributes here
+        invalid_attribute_groups: The form configuration payload is invalid.
+        invalid_query: The embedded query configuration is invalid.
+        not_found: The requested form configuration item could not be found.
+        untitled_group: Untitled group
+        reset_title: Reset form configuration
+        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+
+          '
       projects:
         tab: Proyectos
         enable_all: Habilitar en todos los proyectos
@@ -1448,7 +1486,7 @@ es:
           automatic_with_children: Fechas determinadas por paquetes de trabajo secundarios.
           automatic_with_predecessor: La fecha de inicio la fija un predecesor.
           manual_mobile: Programado manualmente.
-          manually_scheduled: Programado manualmente. No afectadas por relaciones.
+          manually_scheduled: Programado manualmente. Fechas no afectadas por relaciones.
       blankslate:
         title: Sin predecesores
         description: Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano.
@@ -1995,6 +2033,29 @@ es:
         type: Tipo
         version: Versión
         watcher: Observador
+      ordered_persisted_query_entity:
+        persisted_query: Consulta persistente
+        entity: Entidad
+        position: Posición
+      persisted_query:
+        name: Nombre
+        views: Visualizaciones
+        filters: Filtros
+        orders: Pedidos
+        selects: Selecciona
+      persisted_view:
+        name: Nombre
+        query: Consulta
+        parent: Vista principal
+        public: Público
+      user_card_view:
+        secondary_info: Información secundaria
+        show_status_badge: Mostrar insignia de estado
+        show_email: Mostrar correo
+        tag_source: Fuente de etiqueta
+        tag_limit: Límite de etiquetas
+        card_size: Tamaño de tarjeta
+        columns_per_row: Columnas por fila
     errors:
       messages:
         accepted: debe ser aceptado.
@@ -2379,7 +2440,7 @@ es:
               attribute_unknown_name: 'Se ha utilizado un atributo de paquete de trabajo no válido: %{attribute}'
               duplicate_group: El nombre de grupo “%{group}” se usó más de una vez. Los nombres de grupo tienen que ser únicos.
               query_invalid: 'La consulta insertada “%{group}” no es válida: %{details}'
-              group_without_name: No se permiten grupos sin nombre.
+              group_without_name: Group name can't be blank.
             patterns:
               invalid_tokens: Uno o más atributos dentro del campo no son válidos. Corrija los atributos antes de guardar.
         user:
@@ -2510,6 +2571,7 @@ es:
       unsupported_storage_type: no es un tipo de almacenamiento compatible.
       storage_error: Se ha producido un error en la conexión de almacenamiento.
       invalid_input: La entrada no es válida.
+      invalid_child_for_parent: no está permitido como elemento principal para este tipo de vista.
   activity:
     item:
       created_by_on: creado por %{user} el %{datetime}
@@ -3382,6 +3444,26 @@ es:
   general_text_false: falso
   gui_validation_error: 1 error
   gui_validation_error_plural: errores %{count}
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} comprobación fallida"
+          other: "%{count} comprobaciones fallidas"
+        success: Todas las comprobaciones superadas
+        warnings:
+          one: "%{count} comprobación devolvió una advertencia"
+          other: "%{count} comprobaciones devolvieron una advertencia"
+      summary:
+        failure: Algunas comprobaciones han fallado y el sistema no funciona como se esperaba.
+        success: Todas las conexiones y sistemas funcionan según lo previsto.
+        warning: Algunas comprobaciones devolvieron una advertencia. Esto puede dar lugar a un comportamiento inesperado.
+    result_component:
+      status:
+        failed: Error
+        passed: Aprobado
+        skipped: Omitido
+        warning: Alerta
   homescreen:
     additional:
       projects: Projectos visibles mas recientes en esta instancia.
@@ -3683,6 +3765,7 @@ es:
   label_age: Edad
   label_ago: días antes
   label_all: todos
+  label_all_uppercase: Todos
   label_all_time: todo el tiempo
   label_all_words: Todas las palabras
   label_all_open_wps: Todo abierto
@@ -4210,6 +4293,7 @@ es:
   label_role_new: Nuevo rol
   label_role_grantable: Rol otorgable
   label_role_plural: Perfiles
+  label_role_missing_permissions: "%{role} (faltan permisos necesarios)"
   label_role_search: Asignar rol a nuevos miembros
   label_scm: SCM
   label_scroll_left: Desplazar hacia la izquierda
@@ -4358,6 +4442,10 @@ es:
     one: 1 comentario
     other: "%{count} comentarios"
     zero: sin comentarios
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 abierto
     other: "%{count} abiertos"
@@ -4436,7 +4524,7 @@ es:
       you_have: Tiene
     logo_alt_text: Logotipo
     mention:
-      subject: "%{user_name} le mencionó en %{id}: %{subject}"
+      subject: "%{user_name} le mencionó en %{id} - %{subject}"
     notification:
       center: Al centro de notificaciones
       see_in_center: Ver comentario en el centro de notificaciones
@@ -4474,7 +4562,7 @@ es:
         allowed_actions_html: 'Tiene los siguientes permisos sobre este paquete de trabajo: %{allowed_actions}. Esto puede cambiar dependiendo de su rol en el proyecto y de sus permisos.'
         create_account: 'Para acceder a este paquete de trabajo necesitará crear y activar una cuenta en %{instance}. '
         open_work_package: Abrir paquete de trabajo
-        subject: 'Paquete de trabajo #%{id} fue compartido contigo'
+        subject: El paquete de trabajo %{id} fue compartido con usted
         enterprise_text: Compartir paquetes de trabajo con usuarios que no son miembros del proyecto.
         summary:
           user: "%{user} ha compartido un paquete de trabajo contigo con permisos de %{role_rights}"
@@ -4685,6 +4773,11 @@ es:
     text_getting_started_description: Obtenga un resumen rápido sobre la gestión de proyectos y la colaboración en equipo con OpenProject. Puedes volver a ver este video des del menú de ayuda.
     welcome: Bienvenido a %{app_title}
     select_language: Seleccione su idioma
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Acciones del paquete de trabajo
   permission_add_work_package_comments: Añadir comentarios
   permission_add_work_packages: Añadir paquetes de trabajo
   permission_add_messages: Publicar mensajes
@@ -4702,7 +4795,6 @@ es:
   permission_add_work_package_watchers: Agregar observadores
   permission_assign_versions: Asignar versiones
   permission_browse_repository: Permiso de solo lectura sobre el repositorio (Navegación y checkout)
-  permission_change_wiki_parent_page: Cambiar wiki pagina madre
   permission_change_work_package_status: Cambiar el estado del paquete de trabajo
   permission_change_work_package_status_explanation: Permite cambiar el estado sin el permiso Editar paquetes de trabajo
   permission_comment_news: Comentar noticias
@@ -4717,8 +4809,6 @@ es:
   permission_delete_own_messages: Borrar los mensajes propios
   permission_delete_reportings: Eliminar reportes
   permission_delete_timelines: Eliminar cronogramas
-  permission_delete_wiki_pages: Eliminar wiki página
-  permission_delete_wiki_pages_attachments: Eliminar adjuntos
   permission_edit_work_package_comments: Moderar comentarios
   permission_edit_work_package_comments_explanation: 'Precaución: Los usuarios con este permiso pueden editar los comentarios de cualquier persona.'
   permission_edit_work_packages: Editar paquetes de trabajo
@@ -4738,12 +4828,10 @@ es:
   permission_edit_wiki_pages: Editar wiki página
   permission_export_work_packages: Exportar Paquetes de Trabajo
   permission_export_projects: Exportar proyectos
-  permission_export_wiki_pages: Exportar wiki página
   permission_invite_members_by_email: Invitar a miembros por correo electrónico
   permission_invite_members_by_email_explanation: 'Permite a los usuarios invitar a nuevos miembros por correo electrónico. Los usuarios invitados recibirán un correo electrónico con un enlace para establecer su contraseña y activar su cuenta. Depende del permiso para gestionar miembros
 
     '
-  permission_list_attachments: Lista archivos adjuntos
   permission_log_own_time: Registrar tiempo para uno mismo
   permission_log_time: Registrar tiempo para otros usuarios
   permission_manage_forums: Administrar foros
@@ -4758,7 +4846,6 @@ es:
   permission_manage_subtasks: Administrar jerarquías de paquetes de trabajo
   permission_manage_versions: Administrar versiones
   permission_manage_wiki: Administrar wiki
-  permission_manage_wiki_menu: Administrar menú wiki
   permission_manage_own_working_times: Gestiona tu propio horario de trabajo
   permission_manage_own_working_times_explanation: 'Permite a los usuarios gestionar sus propios horarios de trabajo y sus días libres.
 
@@ -4768,8 +4855,6 @@ es:
 
     '
   permission_move_work_packages: Mover paquetes de trabajo
-  permission_protect_wiki_pages: Proteger páginas wiki
-  permission_rename_wiki_pages: Renombrar páginas wiki
   permission_save_queries: Guardar vistas
   permission_search_project: Buscar proyecto
   permission_select_custom_fields: Seleccionar campos personalizados
@@ -5142,6 +5227,9 @@ es:
   setting_mail_handler_body_delimiter_regex: Truncar correos que coincidan con esta expresión regular
   setting_mail_handler_ignore_filenames: Archivos adjuntos de email ignorados
   setting_new_project_user_role_id: Papel ortorgado a usuario no administrador que crea un proyecto
+  setting_new_project_user_role_id_caption: 'Solo se muestran los roles que incluyen los permisos para editar los atributos del proyecto y gestionar a los miembros, de modo que el creador pueda completar la configuración del proyecto.
+
+    '
   setting_new_project_send_confirmation_email: Enviar notificación al autor al crear un nuevo proyecto
   setting_new_project_notification_text: Texto de la notificación
   setting_password_active_rules: Requisitos de la contraseña
@@ -5556,6 +5644,7 @@ es:
   text_project_identifier_format: Debe empezar con una letra minúscula. Solo se permiten letras minúsculas (a-z), números, guiones y guiones bajos.
   text_reassign: 'Reasignar al paquete de trabajo:'
   text_regexp_multiline: La expresión regular se aplica en modo multilínea. Por ejemplo, ^---\s+
+  text_rename_wiki_page: Renombrar página wiki
   text_repository_usernames_mapping: Seleccione o actualize el usuario de OpenProject asignado a cada nombre en el registro del repositorio. Los usuarios con el mismo nombre o email serán mapeados automáticamente.
   text_status_changed_by_changeset: Aplicado en el conjunto de cambios %{value}.
   text_table_difference_description: En esta tabla, se muestran %{entries} individuales. Puede ver la diferencia entre dos entradas cualesquiera seleccionando primero los cuadros de verificación adecuados en la tabla. Al hacer clic en el botón bajo la tabla, se muestran las diferencias.
@@ -5987,9 +6076,6 @@ es:
       scopes: Permisos
       successful_application_revocation: Revocación con éxito de la aplicación %{application_name}.
       none_given: No se ha concedido el acceso a tu cuenta de usuario a las aplicaciones OAuth.
-    x_active_tokens:
-      one: un token activo
-      other: "%{count} token/s activo/s"
     flows:
       authorization_code: Flujo de código de autorización
       client_credentials: Flujo de credenciales del Cliente
@@ -5999,8 +6085,10 @@ es:
     client_credentials_impersonation_html: 'Por defecto, OpenProject proporciona autorización a OAuth 2.0 a través de %{authorization_code_flow_link}. Puedes activar %{client_credentials_flow_link} de manera óptima, aunque necesitas aportar un usuario en cuya representación se harán las peticiones.
 
       '
+    confirm_revoke_my_application:
+      one: "¿Seguro que quieres eliminar esta aplicación? Eso suspenderá un token activo para realizarse."
+      other: "¿Seguro que quieres eliminar esta aplicación? Eso suspenderá %{count} tokens activos para realizarse."
     authorization_error: Se ha generado un error de autorización.
-    revoke_my_application_confirmation: "¿Seguro que quieres eliminar esta aplicación? Eso suspenderá %{token_count} activos para realizarse."
     my_registered_applications: Aplicaciones OAuth Registradas
   oauth_client:
     urn_connection_status:

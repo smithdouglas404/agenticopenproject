@@ -30,6 +30,8 @@
 
 module Saml
   class UpdateMetadataService
+    class MetadataHostNotAllowedError < StandardError; end
+
     attr_reader :user, :provider
 
     def initialize(user:, provider:)
@@ -71,7 +73,16 @@ module Saml
     end
 
     def parse_url
+      validate_metadata_url_host!
       parser_instance.parse_remote_to_hash(provider.metadata_url)
+    end
+
+    def validate_metadata_url_host!
+      host = URI.parse(provider.metadata_url).host
+      raise URI::InvalidURIError, provider.metadata_url if host.blank?
+      return if OpenProject::SsrfProtection.safe_ip?(host)
+
+      raise MetadataHostNotAllowedError, host
     end
 
     def parser_instance

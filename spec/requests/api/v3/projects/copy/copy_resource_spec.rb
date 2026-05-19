@@ -53,6 +53,8 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
   shared_let(:work_package) { create(:work_package, project: source_project) }
   shared_let(:wiki_page) { create(:wiki_page, wiki: source_project.wiki) }
 
+  shared_let(:project_creator_role) { create(:project_creator_role) }
+
   shared_let(:current_user) do
     create(:user,
            member_with_permissions: { source_project => %i[copy_projects
@@ -67,6 +69,7 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
   end
 
   before do
+    allow(Setting).to receive(:new_project_user_role_id).and_return(project_creator_role.id.to_s)
     login_as(current_user)
 
     post path, params.to_json

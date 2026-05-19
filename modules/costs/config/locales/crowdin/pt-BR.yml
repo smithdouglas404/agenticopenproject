@@ -173,7 +173,6 @@ pt-BR:
   label_previous_week: Semana anterior
   label_previous_month: Mês anterior
   label_specific_day: Dia %{day}
-  label_specific_week: Semana calendário %{week}
   label_specific_month: Mês %{month}
   label_list: Lista
   label_month: Mês

@@ -143,7 +143,7 @@ de:
     description_available_columns: Verfügbare Spalten
     description_current_position: 'Sie sind hier: '
     description_select_work_package: 'Arbeitspaket #%{id} auswählen'
-    description_subwork_package: 'Unteraufgabe von Arbeitspaket #%{id}'
+    description_subwork_package: 'Kind von Arbeitspaket #%{id}'
     editor:
       revisions: Lokale Änderungen anzeigen
       no_revisions: Keine lokalen Änderungen gefunden
@@ -202,16 +202,7 @@ de:
           text: "[Platzhalter] Eingebetteter Kalender"
     admin:
       type_form:
-        custom_field: Benutzerdefiniertes Feld
-        inactive: Inaktiv
-        drag_to_activate: Felder aus diesem Bereich herausziehen, um sie zu aktivieren
-        add_group: Attributgruppe hinzufügen
-        add_table: Tabelle mit zugehörigen Arbeitspaketen hinzufügen
         edit_query: Abfrage bearbeiten
-        new_group: Neue Gruppe
-        delete_group: Gruppe löschen
-        remove_attribute: Aus Gruppe entfernen
-        reset_to_defaults: Auf Standardwerte zurücksetzen
       working_days:
         calendar:
           empty_state_header: Arbeitsfreie Tage
@@ -460,7 +451,7 @@ de:
     label_total_progress: "%{percent}% Gesamtfortschritt"
     label_total_amount: 'Gesamt: %{amount}'
     label_updated_on: aktualisiert am
-    label_value_derived_from_children: "(aggregierter Wert von Unteraufgaben)"
+    label_value_derived_from_children: "(aggregierter Wert von Kindelementen)"
     label_children_derived_duration: Aggregierte Dauer der Unteraufgaben
     label_warning: Warnung
     label_work_package: Arbeitspaket
@@ -616,18 +607,6 @@ de:
     breadcrumb: Navigationspfad
     text_data_lost: Alle eingegebenen Daten gehen verloren.
     text_user_wrote: "%{value} schrieb:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Der Name %{group} wird mehr als einmal verwendet. Gruppen-Namen müssen eindeutig sein.
-        error_no_table_configured: Bitte konfigurieren Sie eine Tabelle für %{group}.
-        reset_title: Formularkonfiguration zurücksetzen
-        confirm_reset: 'Achtung: Wollen Sie die Formkonfiguration wirklich zurücksetzen? Alle Attribute und Gruppen werden auf ihre Standardwerte zurück gesetzt und ALLE benutzerdefinierten Felder entfernt.
-
-          '
-        upgrade_to_ee: Enterprise on-premises bestellen
-        upgrade_to_ee_text: Wow! Wenn du dieses Add-on benötigst, bist du ein super Pro! Würdest du uns OpenProject-Entwickler unterstützen, indem du ein Enterprise Edition-Kunde wirst?
-        more_information: Weitere Informationen
-        nevermind: Nein danke
     time_entry:
       work_package_required: Benötigt zuerst die Auswahl eines Arbeitspakets.
       title: Zeit buchen
@@ -790,7 +769,7 @@ de:
         title: Neues Arbeitspaket
         header: 'Neu: %{type}'
         header_no_type: Neues Arbeitspaket (Typ noch nicht gesetzt)
-        header_with_parent: 'Neu: %{type} (Unteraufgabe von %{parent_type} #%{id})'
+        header_with_parent: 'Neu: %{type} (Kind von %{parent_type} #%{id})'
         button: Erstellen
       duplicate:
         title: Arbeitspaket duplizieren

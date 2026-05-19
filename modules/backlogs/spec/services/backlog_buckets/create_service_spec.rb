@@ -33,7 +33,7 @@ require "services/base_services/behaves_like_create_service"
 
 RSpec.describe BacklogBuckets::CreateService, type: :model do
   it_behaves_like "BaseServices create service" do
-    let(:model_class) { Agile::BacklogBucket }
+    let(:model_class) { BacklogBucket }
     let(:factory) { :backlog_bucket }
   end
 end

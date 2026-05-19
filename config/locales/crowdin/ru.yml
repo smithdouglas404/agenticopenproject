@@ -431,7 +431,8 @@ ru:
           error_special_characters: Специальные символы не допускаются
           error_not_fully_uppercased: Должно быть заглавными
           error_in_use: Уже используется в другом проекте
-          error_reserved: Зарезервировано другим проектом
+          error_used_in_past: Зарезервировано другим проектом
+          error_reserved_by_system: Зарезервировано как системное ключевое слово
           error_unknown: Требуется ручная проверка
           remaining_projects:
             one: "... еще 1 проект"
@@ -476,8 +477,14 @@ ru:
         ignore: Игнорировать изменения
         save: Сохранить изменения и продолжить
       role_selector:
+        title: Выберите роли
         label: 'Роль: %{role}'
         no_role: Выберите роль
+        roles:
+          one: Выбрана одна роль
+          few: "%{count} роли выбрано"
+          many: "%{count} ролей выбрано"
+          other: "%{count} ролей выбрано"
       blankslate:
         title: Переходы статуса не настроены
         description: Добавьте статусы, чтобы начать настройку рабочих процессов для этой роли
@@ -1139,6 +1146,8 @@ ru:
       no_results_title_text: На данный момент новостей для отчета нет.
       no_results_content_text: Добавить новость
   roles:
+    edit:
+      default_for_new_projects_warning: 'Эта роль настроена как роль по умолчанию, предоставляемая пользователям, не являющимся администраторами, которые создают проект. Не удаляйте следующие разрешения, иначе создатели проектов не смогут завершить настройку своих новых проектов:'
     permissions:
       section_check_all_label: Назначьте все разрешения %{module}
       section_uncheck_all_label: Отменить все разрешения %{module}
@@ -1365,6 +1374,37 @@ ru:
     edit:
       form_configuration:
         tab: Настройка форм
+        label_group: Группа
+        reset_to_defaults: Восстановить значения по умолчанию
+        add_attribute_group: Добавить группу атрибутов
+        add_query_group: Добавить таблицу связанных пакетов работ
+        delete_group: Удалить группу
+        remove_attribute: Удалить из группы
+        drag_to_activate: Чтобы включить поля, перетащите их отсюда
+        drag_to_reorder: Перетащите, чтобы изменить порядок
+        edit_query: Редактировать представление
+        custom_field: Настраиваемое поле
+        filter_inactive: Фильтровать атрибуты
+        inactive_attributes_heading: Неактивные атрибуты
+        no_inactive_attributes: Нет неактивных атрибутов
+        blankslate_title: Нет групп
+        blankslate_description: Добавьте группы с помощью кнопки выше или перетащите атрибуты с левой панели.
+        group_actions: Действия с группами
+        rename_group: Переименовать группу
+        confirm_delete_group: Вы уверены, что хотите удалить эту группу? Это действие не может быть автоматически отменено.
+        group_name_label: Имя группы
+        row_actions: Действия со строками
+        query_group_label: Таблица пакетов работ
+        empty_group_hint: Перетащите атрибуты сюда
+        invalid_attribute_groups: Конфигурация формы является недопустимой.
+        invalid_query: Недопустимая конфигурация встраиваемого представления.
+        not_found: Запрашиваемый элемент конфигурации формы не найден.
+        untitled_group: Безымянная группа
+        reset_title: Сбросить настройки формы
+        confirm_reset: Вы уверены, что хотите сбросить конфигурацию формы?
+        reset_description: 'Это сбросит атрибуты к группе по умолчанию и отключит ВСЕ настраиваемые поля.
+
+          '
       projects:
         tab: Проекты
         enable_all: Использовать во всех проектах
@@ -2043,6 +2083,29 @@ ru:
         type: Тип
         version: Этапы
         watcher: Наблюдатель
+      ordered_persisted_query_entity:
+        persisted_query: Постоянный запрос
+        entity: Сущность
+        position: Позиция
+      persisted_query:
+        name: Имя
+        views: Представления
+        filters: Фильтры
+        orders: Порядок
+        selects: Выбирает
+      persisted_view:
+        name: Имя
+        query: Запрос
+        parent: Родительское представление
+        public: Общий
+      user_card_view:
+        secondary_info: Дополнительная информация
+        show_status_badge: Показать значок статуса
+        show_email: Показать адрес эл. почты
+        tag_source: Источник тегов
+        tag_limit: Лимит тегов
+        card_size: Размер карты
+        columns_per_row: Столбцов в строке
     errors:
       messages:
         accepted: нужно подтвердить.
@@ -2429,7 +2492,7 @@ ru:
               attribute_unknown_name: 'Используется неверный атрибут пакета работ: %{attribute}'
               duplicate_group: Имя группы '%{group}' используется более одного раза. Имена групп должны быть уникальными.
               query_invalid: 'Встроенный запрос ''%{group}'' является недопустимым: %{details}'
-              group_without_name: Не именованные группы не допускаются.
+              group_without_name: Имя группы не может быть пустым.
             patterns:
               invalid_tokens: Один или несколько атрибутов внутри поля недействительны. Пожалуйста, исправьте атрибуты перед сохранением.
         user:
@@ -2594,6 +2657,7 @@ ru:
       unsupported_storage_type: не является поддерживаемым типом хранения.
       storage_error: Произошла ошибка при подключении к хранилищу.
       invalid_input: Введены неверные данные.
+      invalid_child_for_parent: не может быть родителем для этого типа представления.
   activity:
     item:
       created_by_on: создано %{user} %{datetime}
@@ -3516,6 +3580,30 @@ ru:
   general_text_false: Ложно
   gui_validation_error: 1 ошибка
   gui_validation_error_plural: "%{count} ошибок"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} проверка не удалась"
+          few: "%{count} проверки не удалось"
+          many: "%{count} проверок не удалось"
+          other: "%{count} проверок не удалось"
+        success: Все проверки пройдены
+        warnings:
+          one: "%{count} проверка с предупреждением"
+          few: "%{count} проверки с предупреждением"
+          many: "%{count} проверок с предупреждением"
+          other: "%{count} проверок с предупреждением"
+      summary:
+        failure: Некоторые проверки не удались, и система не работает, как ожидалось.
+        success: Все соединения и системы работают, как и ожидалось.
+        warning: Некоторые проверки вернули предупреждение. Это может привести к неожиданному поведению.
+    result_component:
+      status:
+        failed: Ошибка
+        passed: Пройден
+        skipped: Пропущен
+        warning: Предупреждение
   homescreen:
     additional:
       projects: Новые видимые проекты в данном экземпляре.
@@ -3817,6 +3905,7 @@ ru:
   label_age: Возраст
   label_ago: дней назад
   label_all: все
+  label_all_uppercase: Всё
   label_all_time: все время
   label_all_words: Все слова
   label_all_open_wps: Все открытые
@@ -4344,6 +4433,7 @@ ru:
   label_role_new: Новая роль
   label_role_grantable: Назначаемая роль
   label_role_plural: Роли
+  label_role_missing_permissions: "%{role} (отсутствуют необходимые разрешения)"
   label_role_search: Назначить роль для новых участников
   label_scm: SCM
   label_scroll_left: Прокрутить влево
@@ -4492,6 +4582,10 @@ ru:
     one: 1 комментарий
     other: "%{count} комментариев"
     zero: нет комментариев
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 открыт
     other: "%{count} открыто"
@@ -4616,7 +4710,7 @@ ru:
         allowed_actions_html: 'У вас есть следующие права на этот пакет работ: %{allowed_actions}. Это может измениться в зависимости от роли и прав вашего проекта.'
         create_account: Для доступа к этому пакету работ необходимо создать и активировать учетную запись на %{instance}.
         open_work_package: Открыть пакет работ
-        subject: 'Пакет работ #%{id} был разделен с вами'
+        subject: Вам был предоставлен общий доступ к пакету работ %{id}
         enterprise_text: Поделиться пакетом работ с пользователями, которые не являются участниками проекта.
         summary:
           user: "%{user} поделился с вами пакетом работ с правами %{role_rights}"
@@ -4827,6 +4921,11 @@ ru:
     text_getting_started_description: Получите быстрый обзор управления проектом и сотрудничества команды с OpenProject. Вы можете перезапустить это видео в меню справки.
     welcome: Добро пожаловать в %{app_title}
     select_language: Пожалуйста, выберите язык
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Действия с пакетом работ
   permission_add_work_package_comments: Добавить комментарии
   permission_add_work_packages: Добавление пакетов работ
   permission_add_messages: Написать сообщения
@@ -4844,7 +4943,6 @@ ru:
   permission_add_work_package_watchers: Добавить наблюдателей
   permission_assign_versions: Назначить версии
   permission_browse_repository: Возможность только чтения из репозитория (просмотр и проверка)
-  permission_change_wiki_parent_page: Смена родительской wiki-страницы
   permission_change_work_package_status: Изменить статус пакета работ
   permission_change_work_package_status_explanation: Позволяет изменять статус без редактирования разрешения пакетов работ
   permission_comment_news: Комментировать новость
@@ -4859,8 +4957,6 @@ ru:
   permission_delete_own_messages: Удалить свои сообщения
   permission_delete_reportings: Удалить отчеты
   permission_delete_timelines: Удалить графики
-  permission_delete_wiki_pages: Удалить wiki-страницы
-  permission_delete_wiki_pages_attachments: Удалить вложения
   permission_edit_work_package_comments: Модерировать комментарии
   permission_edit_work_package_comments_explanation: 'Внимание: Пользователи с таким правом могут редактировать любые комментарии.'
   permission_edit_work_packages: Редактировать пакеты работ
@@ -4880,12 +4976,10 @@ ru:
   permission_edit_wiki_pages: Редактировать wiki-страницы
   permission_export_work_packages: Экспорт пакетов работ
   permission_export_projects: Экспорт проектов
-  permission_export_wiki_pages: Экспорт wiki-страниц
   permission_invite_members_by_email: Пригласить участников по электронной почте
   permission_invite_members_by_email_explanation: 'Позволяет пользователям приглашать новых пользователей по электронной почте. Приглашенные пользователи получат письмо со ссылкой для установки пароля и активации учетной записи. Зависит от разрешения на управление участниками
 
     '
-  permission_list_attachments: Отобразить список прикреплённых файлов
   permission_log_own_time: Добавить свои трудозатраты
   permission_log_time: Журналировать трудозатраты других пользователей
   permission_manage_forums: Управление форумами
@@ -4900,7 +4994,6 @@ ru:
   permission_manage_subtasks: Управление иерархиями пакетов работ
   permission_manage_versions: Управление этапами
   permission_manage_wiki: Управление wiki
-  permission_manage_wiki_menu: Управление меню wiki
   permission_manage_own_working_times: Управлять своим рабочим временем
   permission_manage_own_working_times_explanation: 'Позволяет пользователям управлять своим рабочим временем и личными нерабочими днями.
 
@@ -4910,8 +5003,6 @@ ru:
 
     '
   permission_move_work_packages: Переместить пакет работ
-  permission_protect_wiki_pages: Защитить wiki-страницы
-  permission_rename_wiki_pages: Переименование wiki-страниц
   permission_save_queries: Сохранить представления
   permission_search_project: Поиск проекта
   permission_select_custom_fields: Выберите настраиваемые поля
@@ -5278,6 +5369,9 @@ ru:
   setting_mail_handler_body_delimiter_regex: Сообщение усекается по этому регулярному выражению
   setting_mail_handler_ignore_filenames: Игнорируемые вложения почты
   setting_new_project_user_role_id: Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором
+  setting_new_project_user_role_id_caption: 'В список попадают только роли, имеющие права на редактирование атрибутов проекта и управление участниками, чтобы создатель мог завершить настройку проекта.
+
+    '
   setting_new_project_send_confirmation_email: Отправить уведомление автору при создании нового проекта
   setting_new_project_notification_text: Текст уведомления
   setting_password_active_rules: Требования к паролю
@@ -5690,6 +5784,7 @@ ru:
   text_project_identifier_format: Должен начинаться со строчной буквы. Допускаются только строчные буквы (a-z), цифры, тире и подчеркивания.
   text_reassign: 'Переназначить для пакета работ:'
   text_regexp_multiline: 'Регулярное выражение применяется в многострочном режиме. Например: ^---\s+'
+  text_rename_wiki_page: Переименовать wiki-страницу
   text_repository_usernames_mapping: Выберете или обновите пользователя OpenProject сопоставленного с именами пользователей найдеными в журнале репозитория. Пользователи с одинаковыми именами в OpenProject и в репозитории или почте будут сопоставлены автоматически.
   text_status_changed_by_changeset: Применены в наборе изменений %{value}.
   text_table_difference_description: В этой таблице показаны одинарные %{entries}. Посмотреть разницу между любыми двумя записями можно, выбрав флажки и нажав на кнопку. Под таблицей будут показаны различия.
@@ -6123,11 +6218,6 @@ ru:
       scopes: Разрешения
       successful_application_revocation: Отмена приложения %{application_name} проведена успешно.
       none_given: Никаким приложениям OAuth не было предоставлено доступа к учетной записи пользователя.
-    x_active_tokens:
-      one: один активный маркер
-      few: "%{count} активных маркеров"
-      many: "%{count} активных маркеров"
-      other: "%{count} активных маркеров"
     flows:
       authorization_code: Поток кода авторизации
       client_credentials: Поток учетных данных клиента
@@ -6137,8 +6227,12 @@ ru:
     client_credentials_impersonation_html: 'По умолчанию OpenProject предоставляет авторизацию OAuth 2.0 через %{authorization_code_flow_link}. Можете опционально включить %{client_credentials_flow_link}, но вы должны предоставить пользователя, от имени которого будут выполняться запросы.
 
       '
+    confirm_revoke_my_application:
+      one: Вы действительно хотите удалить это приложение? Это приведет к отзыву одного активного токена.
+      few: Вы действительно хотите удалить это приложение? Это приведет к отзыву %{count} активных токенов.
+      many: Вы действительно хотите удалить это приложение? Это приведет к отзыву %{count} активных токенов.
+      other: Вы действительно хотите удалить это приложение? Это приведет к отзыву %{count} активных токенов.
     authorization_error: Произошла ошибка авторизации.
-    revoke_my_application_confirmation: Вы действительно хотите удалить это приложение? Это действие будет отменено %{token_count}.
     my_registered_applications: Зарегистрированные OAuth приложения
   oauth_client:
     urn_connection_status:

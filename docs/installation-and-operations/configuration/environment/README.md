@@ -180,6 +180,7 @@ OPENPROJECT_COST__REPORTING__CACHE__FILTER__CLASSES (default=true)
 OPENPROJECT_COSTS__CURRENCY (default="EUR") Currency
 OPENPROJECT_COSTS__CURRENCY__FORMAT (default="%n %u") Format of currency
 OPENPROJECT_CROSS__PROJECT__WORK__PACKAGE__RELATIONS (default=true) Allow cross-project work package relations
+OPENPROJECT_CSP__IMG__SRC (default=["*", "data:", "blob:"]) Allowed sources for the CSP img-src directive.
 OPENPROJECT_DATABASE__CIPHER__KEY (default=nil) Encryption key for repository credentials
 OPENPROJECT_DATE__FORMAT (default=nil) Date
 OPENPROJECT_DAYS__PER__MONTH (default=20) This will define what is considered a “month” when displaying duration in a more natural way (for example, if a month is 20 days, 60 days would be 3 months.

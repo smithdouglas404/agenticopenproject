@@ -39,6 +39,8 @@ fr:
           other: "%{count} participants"
         participants_attended: Présent(s)
         participants_invited: Invités
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Projet
         start_date: Date
         start_time: Heure de début
@@ -210,6 +212,7 @@ fr:
   label_time_zone: Fuseau horaire
   label_start_date: Date de début
   label_subscribe_icalendar: S'abonner au calendrier
+  label_recurring_filter: Filtre récurrent
   caption_meeting_template_select: Sélectionnez un modèle pour copier automatiquement ses points de l'ordre du jour
   caption_template_project_select: Veuillez sélectionner le projet dans lequel vous souhaitez créer ce modèle de réunion
   placeholder_meeting_template_select_project_first: Sélectionnez d'abord un projet
@@ -272,16 +275,6 @@ fr:
         summary_series: La série de réunions « %{title} » a été annulée par %{actor}, ou vous avez été supprimé(e) en tant que participant(e)
         summary: "« %{title} » a été annulé par %{actor}, ou vous avez été supprimé(e) en tant que participant(e)"
         date_time: Date/heure prévue
-      participant_added:
-        header: Réunion « %{title} » - Participant ajouté
-        header_series: Série de réunions « %{title} » - Participant ajouté
-        summary: "%{actor} a ajouté %{participant} à la réunion « %{title} »"
-        summary_series: "%{actor} a ajouté %{participant} à la série de réunions « %{title} »"
-      participant_removed:
-        header: Réunion « %{title} » - Participant supprimé
-        header_series: Série de réunions « %{title} » - Participant supprimé
-        summary: "%{actor} a supprimé %{participant} de la réunion « %{title} »"
-        summary_series: "%{actor} a supprimé %{participant} de la série de réunions « %{title} »"
       ended:
         header_series: 'Terminé : Série de rencontres ''%{title}'''
         summary_series: La série de réunions « %{title} » a été clôturée par %{actor}
@@ -295,6 +288,8 @@ fr:
         new_date_time: Nouvelle date/heure
         old_location: Ancien emplacement
         new_location: Nouvel emplacement
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Envoyer une invitation par e-mail aux participants
     types:
       one_time: Ponctuelle

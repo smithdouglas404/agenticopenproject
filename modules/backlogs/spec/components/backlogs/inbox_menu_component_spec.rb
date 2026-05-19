@@ -132,6 +132,38 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
         text: I18n.t("backlogs.inbox_menu_component.action_menu.copy_work_package_id")
       )
     end
+
+    context "in semantic mode",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      let(:project) { create(:project, identifier: "INBOX") }
+
+      it "uses the semantic displayId in the open details, fullscreen, and clipboard URLs" do
+        render_component
+
+        semantic_id = work_package.reload.identifier
+        expect(semantic_id).to start_with("INBOX-")
+
+        details = page.find_by_id("work_package_#{work_package.id}_menu_open_details")
+        expect(details[:href]).to include("/details/#{semantic_id}")
+        expect(details[:href]).not_to include("/details/#{work_package.id}")
+
+        fullscreen = page.find_by_id("work_package_#{work_package.id}_menu_open_fullscreen")
+        expect(fullscreen[:href]).to end_with("/work_packages/#{semantic_id}")
+        expect(fullscreen[:href]).not_to include("/work_packages/#{work_package.id}")
+
+        clipboard = page.find("clipboard-copy##{"work_package_#{work_package.id}_menu_copy_url_to_clipboard"}")
+        expect(clipboard[:value]).to end_with("/work_packages/#{semantic_id}")
+        expect(clipboard[:value]).not_to include("/work_packages/#{work_package.id}")
+      end
+
+      it "still copies the numeric primary key for the 'Copy work package ID' action" do
+        render_component
+
+        clipboard_id = page.find("clipboard-copy##{"work_package_#{work_package.id}_menu_copy_work_package_id"}")
+        expect(clipboard_id[:value]).to eq(work_package.id.to_s)
+      end
+    end
   end
 
   describe "move menu" do

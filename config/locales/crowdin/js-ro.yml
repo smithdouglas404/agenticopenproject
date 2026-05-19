@@ -109,7 +109,7 @@ ro:
     button_save: Salvează
     button_settings: Setări
     button_uncheck_all: Deselectează tot
-    button_update: Actualizează
+    button_update: Actualizare
     button_export-atom: Descarcă Atom
     button_generate_pdf: Generează PDF
     button_create: Creează
@@ -202,16 +202,7 @@ ro:
           text: "[Placeholder] Tabelul pachetului de lucru inserat"
     admin:
       type_form:
-        custom_field: Câmp personalizat
-        inactive: Inactiv
-        drag_to_activate: Mutați câmpuri de aici pentru a le activa
-        add_group: Adaugă grup atribut
-        add_table: Adaugă pachet de lucru asociat
         edit_query: Editează interogare
-        new_group: Grupare nouă
-        delete_group: Șterge grup
-        remove_attribute: Elimină din grup
-        reset_to_defaults: Resetare AVATAR implicit
       working_days:
         calendar:
           empty_state_header: Zile nelucrătoare
@@ -615,18 +606,6 @@ ro:
     breadcrumb: Breadcrumb
     text_data_lost: Toate datele introduse vor fi pierdute.
     text_user_wrote: "%{value} a scris:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Numele %{group} este utilizat de mai multe ori. Fiecare grup trebuie să aibă un nume unic.
-        error_no_table_configured: Vă rugăm să configurați un tabel pentru %{group}.
-        reset_title: Resetare configurare formular
-        confirm_reset: 'Atenție: Ești sigur că vrei să resetați conjurația formularului? Această acțiune va reseta toate atributele înapoi la grupul implicit și va dezactiva TOATE câmpurile personalizate.
-
-          '
-        upgrade_to_ee: Actualizare la ediția Enterprise on-premise
-        upgrade_to_ee_text: Wow! Dacă ai nevoie de acest add-on ești un super profesionist! Vrei să ne sprijini pe noi, dezvoltatorii OpenSource, devenind client al ediției Enterprise?
-        more_information: Mai multe informatii
-        nevermind: Asta e...
     time_entry:
       work_package_required: Necesită să se selecteze mai întâi un pachet de lucru.
       title: Registru timp

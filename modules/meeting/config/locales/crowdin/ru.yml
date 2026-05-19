@@ -41,6 +41,8 @@ ru:
           other: "%{count} Участников"
         participants_attended: Участники
         participants_invited: Приглашенные
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Проект
         start_date: Дата
         start_time: Время начала
@@ -220,6 +222,7 @@ ru:
   label_time_zone: Часовой пояс
   label_start_date: Дата начала
   label_subscribe_icalendar: Подписаться на календарь
+  label_recurring_filter: Повторяющийся фильтр
   caption_meeting_template_select: Выберите шаблон для автоматического копирования его повестки дня
   caption_template_project_select: Пожалуйста, выберите проект, в котором будет создан этот шаблон совещания
   placeholder_meeting_template_select_project_first: Сначала выберите проект
@@ -282,16 +285,6 @@ ru:
         summary_series: Серия совещаний '%{title}' была отменена %{actor}, или вы были удалены из списка участников
         summary: "'%{title}' было отменено %{actor}, или вы были удалены из списка участников"
         date_time: Запланированная дата/время
-      participant_added:
-        header: Совещание '%{title}' - участник добавлен
-        header_series: Серия совещаний '%{title}' - участник добавлен
-        summary: "%{actor} добавил %{participant} в совещание '%{title}'"
-        summary_series: "%{actor} добавил %{participant} в серию совещаний '%{title}'"
-      participant_removed:
-        header: Совещание '%{title}' - участник удален
-        header_series: Серия совещаний '%{title}' - участник удален
-        summary: "%{actor} удалил %{participant} из совещания '%{title}'"
-        summary_series: "%{actor} удалил %{participant} из серии совещаний '%{title}'"
       ended:
         header_series: 'Завершено: Серия совещаний ''%{title}'''
         summary_series: Серия совещаний '%{title}' была завершена %{actor}
@@ -305,6 +298,8 @@ ru:
         new_date_time: Новые дата/время
         old_location: Старое расположение
         new_location: Новое расположение
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Отправить письмо всем участникам
     types:
       one_time: Однократная

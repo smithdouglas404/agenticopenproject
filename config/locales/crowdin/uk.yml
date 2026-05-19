@@ -431,7 +431,8 @@ uk:
           error_special_characters: Не дозволяється використовувати спеціальні символи
           error_not_fully_uppercased: Літери мають бути великими
           error_in_use: Уже використовується як активний дескриптор іншого проєкту
-          error_reserved: Зарезервовано в історії дескрипторів іншого проєкту
+          error_used_in_past: Зарезервовано в історії дескрипторів іншого проєкту
+          error_reserved_by_system: Зарезервовано як системне ключове слово
           error_unknown: Потребує ручної перевірки
           remaining_projects:
             one: "… ще 1 проєкт"
@@ -476,8 +477,14 @@ uk:
         ignore: Ігнорувати зміни
         save: Зберегти зміни й продовжити
       role_selector:
+        title: Виберіть ролі
         label: 'Роль: %{role}'
         no_role: Виберіть роль
+        roles:
+          one: One role selected
+          few: "%{count} roles selected"
+          many: "%{count} roles selected"
+          other: "%{count} roles selected"
       blankslate:
         title: Переходи статусів не налаштовано
         description: Додайте статуси, щоб почати налаштовувати робочі процеси для цієї ролі
@@ -1140,6 +1147,8 @@ uk:
       no_results_title_text: Наразі немає жодної новини.
       no_results_content_text: Додати новину
   roles:
+    edit:
+      default_for_new_projects_warning: 'Відповідно до налаштувань, ця роль за умовчанням надається користувачам, які створюють проєкт, але не є адміністраторами. Не вилучайте вказані далі права, інакше автори не зможуть завершити налаштування новостворених проєктів:'
     permissions:
       section_check_all_label: Призначити всі дозволи модуля «%{module}»
       section_uncheck_all_label: Скасувати призначення всіх дозволів модуля «%{module}»
@@ -1363,6 +1372,37 @@ uk:
     edit:
       form_configuration:
         tab: Конфігурація форми
+        label_group: Group
+        reset_to_defaults: Reset to defaults
+        add_attribute_group: Add attribute group
+        add_query_group: Add table of related work packages
+        delete_group: Delete group
+        remove_attribute: Remove from group
+        drag_to_activate: Drag fields from here to activate them
+        drag_to_reorder: Drag to reorder
+        edit_query: Edit query
+        custom_field: Custom field
+        filter_inactive: Filter attributes
+        inactive_attributes_heading: Inactive attributes
+        no_inactive_attributes: No inactive attributes
+        blankslate_title: No groups yet
+        blankslate_description: Add groups using the button above or drag attributes from the left panel.
+        group_actions: Group actions
+        rename_group: Rename group
+        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
+        group_name_label: Group name
+        row_actions: Row actions
+        query_group_label: Work packages table
+        empty_group_hint: Drag attributes here
+        invalid_attribute_groups: The form configuration payload is invalid.
+        invalid_query: The embedded query configuration is invalid.
+        not_found: The requested form configuration item could not be found.
+        untitled_group: Untitled group
+        reset_title: Reset form configuration
+        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
+
+          '
       projects:
         tab: Проєкти
         enable_all: Використовувати у всіх проєктах
@@ -2035,6 +2075,29 @@ uk:
         type: Тип
         version: Версія
         watcher: Спостерігач
+      ordered_persisted_query_entity:
+        persisted_query: Постійний запит
+        entity: Сутність
+        position: Позиція
+      persisted_query:
+        name: Назва
+        views: Подання
+        filters: Фільтри
+        orders: Порядок
+        selects: Вибране
+      persisted_view:
+        name: Назва
+        query: Запит
+        parent: Батьківське подання
+        public: Загальнодоступне
+      user_card_view:
+        secondary_info: Додаткова інформація
+        show_status_badge: Показати значок статусу
+        show_email: Показати електронну адресу
+        tag_source: Джерело тегів
+        tag_limit: Ліміт тегів
+        card_size: Розмір картки
+        columns_per_row: Стовпців у рядку
     errors:
       messages:
         accepted: повинні бути прийняті.
@@ -2425,7 +2488,7 @@ uk:
               attribute_unknown_name: Недійсний атрибут робочого пакета:%{attribute}
               duplicate_group: Назва групи %{group} використовується більше одного разу. Назви груп повинні бути унікальними.
               query_invalid: 'Вбудований запит %{group} недійсний: %{details}'
-              group_without_name: Неназвані групи не дозволені.
+              group_without_name: Group name can't be blank.
             patterns:
               invalid_tokens: Один або кілька атрибутів усередині поля недійсні. Виправте їх, перш ніж зберігати.
         user:
@@ -2592,6 +2655,7 @@ uk:
       unsupported_storage_type: не є типом сховища, що підтримується.
       storage_error: Помилка з’єднання зі сховищем.
       invalid_input: Введено недійсні дані.
+      invalid_child_for_parent: не допускається як батьківський елемент для цього типу подання.
   activity:
     item:
       created_by_on: створено %{datetime} користувачем %{user}
@@ -3512,6 +3576,30 @@ uk:
   general_text_false: хибне значення
   gui_validation_error: 1 помилка
   gui_validation_error_plural: "%{count} помилок"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} перевірку не пройдено"
+          few: "%{count} перевірки не пройдено"
+          many: "%{count} перевірок не пройдено"
+          other: "%{count} перевірки не пройдено"
+        success: Усі перевірки пройдено
+        warnings:
+          one: "%{count} перевірка завершилася з попередженням"
+          few: "%{count} перевірок завершилося з попередженням"
+          many: "%{count} перевірок завершилося з попередженням"
+          other: "%{count} перевірки завершилося з попередженням"
+      summary:
+        failure: Деякі перевірки не пройдено, і система працює неналежним чином.
+        success: Усі підключення й системи працюють належним чином.
+        warning: Деякі перевірки завершилися з попередженням. Це може призвести до неочікуваної поведінки.
+    result_component:
+      status:
+        failed: Не пройдено
+        passed: Пройдено
+        skipped: Пропущено
+        warning: Попередження
   homescreen:
     additional:
       projects: Нові видимі проекти в цьому екземплярі.
@@ -3813,6 +3901,7 @@ uk:
   label_age: Вік
   label_ago: днів тому
   label_all: всі
+  label_all_uppercase: Усі
   label_all_time: весь час
   label_all_words: Всі слова
   label_all_open_wps: Всі відкрити
@@ -4062,7 +4151,7 @@ uk:
   label_index_by_title: Індекс за назвою
   label_information: Інформація
   label_information_plural: Інформація
-  label_installation_guides: Інструкції із встановлення
+  label_installation_guides: Інструкції зі встановлення
   label_integer: Ціле число
   label_interface: Інтерфейс
   label_internal: Власне
@@ -4340,6 +4429,7 @@ uk:
   label_role_new: Нова роль
   label_role_grantable: Роль, що надається
   label_role_plural: Роль
+  label_role_missing_permissions: "%{role} (відсутні необхідні дозволи)"
   label_role_search: Призначити роль для нових членів
   label_scm: Тип сховища
   label_scroll_left: Гортати вліво
@@ -4488,6 +4578,10 @@ uk:
     one: 1 коментар
     other: 'Коментарів: %{count}'
     zero: немає коментарів
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 відкрито
     other: 'Відкрито: %{count}'
@@ -4572,7 +4666,7 @@ uk:
       you_have: У вас
     logo_alt_text: Логотип
     mention:
-      subject: 'Користувач %{user_name} згадав вас у #%{id} – %{subject}'
+      subject: Користувач %{user_name} згадав вас у %{id} (%{subject})
     notification:
       center: Центр сповіщень
       see_in_center: Переглянути коментарі у центрі сповіщень
@@ -4612,7 +4706,7 @@ uk:
         allowed_actions_html: 'Ви маєте такі дозволи в цьому пакеті робіт: %{allowed_actions}. Однак вони можуть змінюватися залежно від ролі й дозволів, які у вас є в проєкті.'
         create_account: 'Щоб отримати доступ до цього пакета робіт, вам знадобиться створити й активувати обліковий запис в %{instance}. '
         open_work_package: Відкрити пакет робіт
-        subject: 'Вам надано доступ до пакета робіт #%{id}'
+        subject: Вам надано доступ до пакета робіт %{id}
         enterprise_text: Діліться пакетами робіт із користувачами, які не належать до учасників проєкту.
         summary:
           user: "%{user} надав(-ла) вам доступ до пакета робіт із такими правами: %{role_rights}"
@@ -4824,6 +4918,11 @@ uk:
     text_getting_started_description: Отримайте стислий огляд управління проєктами та командної роботи в OpenProject. Це відео можна переглянути знову в меню довідки.
     welcome: Вітаємо в додатку %{app_title}
     select_language: Будь ласка, виберіть мову
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Дії з пакетом робіт
   permission_add_work_package_comments: Додавання коментарів
   permission_add_work_packages: Додати робочі пакети
   permission_add_messages: Відправка повідомлень
@@ -4841,7 +4940,6 @@ uk:
   permission_add_work_package_watchers: Додати спостерігачів
   permission_assign_versions: Призначити версії
   permission_browse_repository: Доступ лише на читання з репозиторію (перегляд і перевірка)
-  permission_change_wiki_parent_page: Змінити батьківську wiki сторінку
   permission_change_work_package_status: Змінити статус пакета робіт
   permission_change_work_package_status_explanation: Дає змогу змінювати статус без дозволу «Редагування пакетів робіт»
   permission_comment_news: Коментування новин
@@ -4856,8 +4954,6 @@ uk:
   permission_delete_own_messages: Видалення власних повідомлень
   permission_delete_reportings: Видалити звіти
   permission_delete_timelines: Видалити графіки
-  permission_delete_wiki_pages: Видалення wiki-сторінок
-  permission_delete_wiki_pages_attachments: Видалення прикріплених файлів
   permission_edit_work_package_comments: Модерування коментарів
   permission_edit_work_package_comments_explanation: Увага! Користувачі із цим дозволом можуть редагувати будь-чиї коментарі.
   permission_edit_work_packages: Редагувати робочі пакети
@@ -4877,12 +4973,10 @@ uk:
   permission_edit_wiki_pages: Редагування wiki-сторінок
   permission_export_work_packages: Експорт робочих пакетів
   permission_export_projects: Експорт проєктів
-  permission_export_wiki_pages: Експорт wiki-сторінок
   permission_invite_members_by_email: Запрошення учасників електронною поштою
   permission_invite_members_by_email_explanation: 'Дозвольте запрошувати нових користувачів електронною поштою. Запрошені користувачі отримають лист із посиланням для встановлення пароля й активації облікового запису. На це налаштування впливає дозвіл на керування користувачами.
 
     '
-  permission_list_attachments: Список вкладень
   permission_log_own_time: Реєструвати власний час
   permission_log_time: Реєструвати час для інших користувачів
   permission_manage_forums: Управління форумами
@@ -4897,7 +4991,6 @@ uk:
   permission_manage_subtasks: Керування ієрархіями пакетів робіт
   permission_manage_versions: Управління версіями
   permission_manage_wiki: Управління wiki
-  permission_manage_wiki_menu: Керування wiki-меню
   permission_manage_own_working_times: Керувати власним робочим часом
   permission_manage_own_working_times_explanation: 'Дозволяє користувачам керувати власним робочим часом і особистими неробочими днями.
 
@@ -4907,8 +5000,6 @@ uk:
 
     '
   permission_move_work_packages: Переміщення робочих пакетів
-  permission_protect_wiki_pages: Захист wiki-сторінок
-  permission_rename_wiki_pages: Перейменування wiki-сторінок
   permission_save_queries: Зберегти перегляди
   permission_search_project: Пошук проєктів
   permission_select_custom_fields: Вибирати власні поля
@@ -5287,6 +5378,9 @@ uk:
   setting_mail_handler_body_delimiter_regex: Обрізати електронні листи, які відповідають цьому регулярному виразу
   setting_mail_handler_ignore_filenames: Проігноровані вкладення пошти
   setting_new_project_user_role_id: Роль, що призначається користувачу, створившому проект
+  setting_new_project_user_role_id_caption: 'Наведено лише ті ролі, які включають дозволи на редагування атрибутів проєкту й керування учасниками, щоб автор міг завершити налаштування проєкту.
+
+    '
   setting_new_project_send_confirmation_email: Надсилати сповіщення автору при створенні нового проєкту
   setting_new_project_notification_text: Текст сповіщення
   setting_password_active_rules: Вимоги до пароля
@@ -5703,6 +5797,7 @@ uk:
   text_project_identifier_format: Має починатися з малої літери й містити лише малі літери (a–z), цифри, тире й символи підкреслення.
   text_reassign: 'Перепризначити робочому пакету:'
   text_regexp_multiline: Реестр застосовується в багаторядковому режимі. наприклад, --- ---
+  text_rename_wiki_page: Перейменувати сторінку Wiki
   text_repository_usernames_mapping: |-
     Виберіть або оновіть користувача OpenProject, зіставленого з кожним ім'ям користувача в журналі репозиторію.
     Користувачі з таким самим ім'ям користувача або електронною поштою OpenProject автоматично відображаються.
@@ -6138,11 +6233,6 @@ uk:
       scopes: Дозволи
       successful_application_revocation: Відкликання заявки  %{application_name}  успішне.
       none_given: Жодних програм OAuth не було надано доступ до вашого облікового запису користувача.
-    x_active_tokens:
-      one: один активний маркер
-      few: "%{count} активний маркер"
-      many: "%{count} активний маркер"
-      other: "%{count} активний маркер"
     flows:
       authorization_code: Потік авторизації коду
       client_credentials: Потік облікових даних клієнта
@@ -6152,8 +6242,12 @@ uk:
     client_credentials_impersonation_html: 'За замовчуванням OpenProject надає авторизацію OAuth 2.0 через %{authorization_code_flow_link}. За бажанням можна включити %{client_credentials_flow_link} але ви повинні надати користувачеві, від імені будуть  кого виконуватися запити.
 
       '
+    confirm_revoke_my_application:
+      one: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування одного активного маркера.
+      few: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування %{count} активних маркерів.
+      many: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування %{count} активних маркерів.
+      other: Ви дійсно бажаєте видалити цей застосунок? Це призведе до скасування %{count} активного маркера.
     authorization_error: Сталася помилка авторизації.
-    revoke_my_application_confirmation: Ви дійсно бажаєте видалити цю програму? Це скасує %{token_count} активація для цього.
     my_registered_applications: Зареєстровані програми OAuth
   oauth_client:
     urn_connection_status:

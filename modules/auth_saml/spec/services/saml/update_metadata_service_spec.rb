@@ -226,4 +226,43 @@ RSpec.describe Saml::UpdateMetadataService do
       end
     end
   end
+
+  describe "metadata URL fetching" do
+    let(:metadata_url) { "https://example.com/metadata" }
+    let(:provider) { Saml::Provider.new(metadata_url:) }
+    let(:parser_instance) { instance_double(OneLogin::RubySaml::IdpMetadataParser) }
+
+    before do
+      allow(OneLogin::RubySaml::IdpMetadataParser).to receive(:new).and_return(parser_instance)
+      allow(parser_instance).to receive(:parse_remote_to_hash).and_return({})
+    end
+
+    context "when the URL host resolves to a safe IP" do
+      before do
+        allow(OpenProject::SsrfProtection).to receive(:safe_ip?).with("example.com").and_return(IPAddr.new("93.184.216.34"))
+      end
+
+      it "checks the host and fetches metadata remotely" do
+        parse_metadata
+
+        expect(OpenProject::SsrfProtection).to have_received(:safe_ip?).with("example.com")
+        expect(parser_instance).to have_received(:parse_remote_to_hash).with(metadata_url)
+      end
+    end
+
+    context "when the URL host resolves to an unsafe IP" do
+      before do
+        allow(OpenProject::SsrfProtection).to receive(:safe_ip?).with("example.com").and_return(nil)
+      end
+
+      it "fails before attempting a remote metadata fetch" do
+        result = parse_metadata
+
+        expect(result).not_to be_success
+        expect(result.message).to include("MetadataHostNotAllowedError")
+        expect(OpenProject::SsrfProtection).to have_received(:safe_ip?).with("example.com")
+        expect(parser_instance).not_to have_received(:parse_remote_to_hash)
+      end
+    end
+  end
 end

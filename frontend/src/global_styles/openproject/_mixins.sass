@@ -280,9 +280,9 @@ $scrollbar-size: 10px
   @media screen
     display: inline
     background: var(--bgColor-muted)
-    border: 1px solid transparent
-    border-radius: var(--borderRadius-medium)
-    padding: 2px
+    border-radius: var(--borderRadius-default)
+    // 2px vertical ensures that line-height is not overflowed excessively
+    padding: 2px var(--control-xsmall-paddingInline-condensed)
 
     &:has(.-multiline)
       display: inline-flex

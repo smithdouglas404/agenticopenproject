@@ -419,7 +419,8 @@ fr:
           error_special_characters: Caractères spéciaux non autorisés
           error_not_fully_uppercased: Doit être en majuscules
           error_in_use: Déjà utilisé comme alias actif d'un autre projet
-          error_reserved: Réservé par l'historique des alias d'un autre projet
+          error_used_in_past: Réservé par l'historique des alias d'un autre projet
+          error_reserved_by_system: Réservé comme mot-clé du système
           error_unknown: Nécessite une vérification manuelle
           remaining_projects:
             one: "... 1 projet supplémentaire"
@@ -460,8 +461,12 @@ fr:
         ignore: Ignorer les changements
         save: Enregistrer les modifications et continuer
       role_selector:
+        title: Sélectionner les rôles
         label: 'Rôle : %{role}'
         no_role: Sélectionner un rôle
+        roles:
+          one: Un rôle sélectionné
+          other: "%{count} rôles sélectionnés"
       blankslate:
         title: Aucune transition de statut configurée
         description: Ajouter des statuts pour commencer à configurer des flux de travail pour ce rôle
@@ -1110,6 +1115,8 @@ fr:
       no_results_title_text: Il n'y a actuellement aucune actualité à publier.
       no_results_content_text: Ajouter une actualité
   roles:
+    edit:
+      default_for_new_projects_warning: 'Ce rôle est configuré comme le rôle par défaut attribué aux utilisateurs non administrateurs qui créent un projet. Ne supprimez pas les autorisations suivantes, sinon les créateurs de projets ne pourront pas terminer la configuration de leurs projets nouvellement créés :'
     permissions:
       section_check_all_label: Attribuer toutes les autorisations %{module}
       section_uncheck_all_label: Désattribuer toutes les autorisations %{module}
@@ -1325,6 +1332,37 @@ fr:
     edit:
       form_configuration:
         tab: Configuration du formulaire
+        label_group: Groupe
+        reset_to_defaults: Rétablir les valeurs par défaut
+        add_attribute_group: Ajouter un groupe d’attributs
+        add_query_group: Ajouter un tableau des lots de travaux associés
+        delete_group: Supprimer le groupe
+        remove_attribute: Retirer du groupe
+        drag_to_activate: Faites glisser les champs à partir d'ici pour les activer
+        drag_to_reorder: Glisser pour réorganiser
+        edit_query: Modifier la requête
+        custom_field: Champ personalisé
+        filter_inactive: Filtrer les attributs
+        inactive_attributes_heading: Attributs inactifs
+        no_inactive_attributes: Pas d'attributs inactifs
+        blankslate_title: Aucun groupe pour le moment
+        blankslate_description: Ajoutez des groupes à l'aide du bouton ci-dessus ou faites glisser des attributs depuis le panneau de gauche.
+        group_actions: Actions de groupe
+        rename_group: Renommer le groupe
+        confirm_delete_group: Êtes-vous sûr de vouloir supprimer ce groupe ? Cette action ne peut pas être annulée.
+        group_name_label: Nom du groupe
+        row_actions: Actions de ligne
+        query_group_label: Tableau des lots de travaux
+        empty_group_hint: Glisser les attributs ici
+        invalid_attribute_groups: La charge utile de la configuration du formulaire n'est pas valide.
+        invalid_query: La configuration de la requête intégrée n'est pas valide.
+        not_found: L'élément de configuration du formulaire demandé n'a pas été trouvé.
+        untitled_group: Groupe sans titre
+        reset_title: Réinitialiser la configuration du formulaire
+        confirm_reset: Êtes-vous sûr de vouloir réinitialiser la configuration du formulaire ?
+        reset_description: 'Cette opération rétablit les attributs dans leur groupe par défaut et désactive TOUS les champs personnalisés.
+
+          '
       projects:
         tab: Projets
         enable_all: Activer pour tous les projets
@@ -1993,6 +2031,29 @@ fr:
         type: Type
         version: Version
         watcher: Observateur
+      ordered_persisted_query_entity:
+        persisted_query: Requête persistante
+        entity: Entité
+        position: Position
+      persisted_query:
+        name: Nom
+        views: Vues
+        filters: Filtres
+        orders: Tris
+        selects: Sélections
+      persisted_view:
+        name: Nom
+        query: Requête
+        parent: Vue parente
+        public: Public
+      user_card_view:
+        secondary_info: Informations secondaires
+        show_status_badge: Afficher le badge de statut
+        show_email: Afficher l'adresse e-mail
+        tag_source: Source des étiquettes
+        tag_limit: Limite des étiquettes
+        card_size: Taille des cartes
+        columns_per_row: Colonne par ligne
     errors:
       messages:
         accepted: doi(ven)t être accepté(e)(s).
@@ -2377,7 +2438,7 @@ fr:
               attribute_unknown_name: 'Attribut du lot de travaux invalide : %{attribute}'
               duplicate_group: Le nom de groupe "%{group}" est utilisé plus d'une fois. Les noms de groupe doivent être uniques.
               query_invalid: 'La requête intégrée "%{group}" est invalide : %{details}'
-              group_without_name: Les groupes sans nom ne sont pas autorisés.
+              group_without_name: Le nom du groupe ne peut pas être vide
             patterns:
               invalid_tokens: Un ou plusieurs attributs dans le champ ne sont pas valides. Veuillez corriger les attributs avant d'enregistrer.
         user:
@@ -2510,6 +2571,7 @@ fr:
       unsupported_storage_type: n'est pas un type de stockage pris en charge.
       storage_error: Une erreur s'est produite lors de la connexion à l'espace de stockage.
       invalid_input: L'entrée n'est pas valide.
+      invalid_child_for_parent: n'est pas autorisé en tant que parent pour ce type de vue.
   activity:
     item:
       created_by_on: créé par %{user} le %{datetime}
@@ -3384,6 +3446,26 @@ fr:
   general_text_false: faux
   gui_validation_error: une erreur
   gui_validation_error_plural: "%{count} erreurs"
+  health_reports:
+    report_component:
+      checks:
+        failures:
+          one: "%{count} vérification a échoué"
+          other: "%{count} vérifications ont échoué"
+        success: Toutes les vérifications ont été validées
+        warnings:
+          one: "%{count} vérification a renvoyé un avertissement"
+          other: "%{count} vérifications ont renvoyé un avertissement"
+      summary:
+        failure: Certaines vérifications ont échoué et le système ne fonctionne pas comme prévu.
+        success: Toutes les connexions et les systèmes fonctionnent comme prévu.
+        warning: Certaines vérifications ont renvoyé un avertissement. Cela peut entraîner un comportement inattendu.
+    result_component:
+      status:
+        failed: Échec
+        passed: Approuvé
+        skipped: Ignoré
+        warning: Avertissement
   homescreen:
     additional:
       projects: Les projets visibles les plus récents de cette instance.
@@ -3685,6 +3767,7 @@ fr:
   label_age: Âge
   label_ago: il y a
   label_all: tous
+  label_all_uppercase: Tout
   label_all_time: tout le temps
   label_all_words: Tous les mots
   label_all_open_wps: Tous les ouverts
@@ -4212,6 +4295,7 @@ fr:
   label_role_new: Nouveau rôle
   label_role_grantable: Rôle admissible
   label_role_plural: Rôles
+  label_role_missing_permissions: "%{role} (permissions manquantes)"
   label_role_search: Assigner un rôle aux nouveaux membres
   label_scm: SCM
   label_scroll_left: Défilement vers la gauche
@@ -4360,6 +4444,10 @@ fr:
     one: 1 commentaire
     other: "%{count} commentaires"
     zero: aucun commentaire
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 ouvert
     other: "%{count} ouverts"
@@ -4438,7 +4526,7 @@ fr:
       you_have: Vous avez
     logo_alt_text: Logo
     mention:
-      subject: "%{user_name} vous a mentionné dans #%{id} - %{subject}"
+      subject: "%{user_name} vous a mentionné(e) dans %{id} - %{subject}"
     notification:
       center: Vers le centre de notifications
       see_in_center: Voir le commentaire dans le centre de notifications
@@ -4476,7 +4564,7 @@ fr:
         allowed_actions_html: 'Vous disposez des autorisations suivantes sur ce lot de travaux : %{allowed_actions}. Cela peut changer en fonction de votre rôle dans le projet et de vos autorisations.'
         create_account: Pour accéder à ce lot de travaux, vous aurez besoin de créer et activer un compte sur %{instance}.
         open_work_package: Ouvrir ce lot de travaux
-        subject: 'Le lot de travaux #%{id} a été partagé avec vous'
+        subject: Le lot de travaux %{id} a été partagé avec vous
         enterprise_text: Partagez les lots de travaux avec des utilisateurs qui ne sont pas membres du projet.
         summary:
           user: "%{user} a partagé un lot de travaux avec vous avec les droits %{role_rights}"
@@ -4687,6 +4775,11 @@ fr:
     text_getting_started_description: Obtenez un aperçu rapide de la gestion de projet et de la collaboration en équipe avec OpenProject. Vous pouvez redémarrer cette vidéo à partir du menu d'aide.
     welcome: Bienvenue sur %{app_title}
     select_language: Veuillez sélectionner votre langue
+  open_project:
+    common:
+      work_package_card_component:
+        menu:
+          label_actions: Actions du lot de travaux
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages
@@ -4704,7 +4797,6 @@ fr:
   permission_add_work_package_watchers: Ajouter des observateurs
   permission_assign_versions: Assigner les versions
   permission_browse_repository: Accès au dépôt en lecture seule (navigation et « checkout »)
-  permission_change_wiki_parent_page: Changer la page wiki parent
   permission_change_work_package_status: Modifier le statut du lot de travaux
   permission_change_work_package_status_explanation: Permet de modifier le statut sans avoir le droit de modifier les lots de travaux
   permission_comment_news: Commenter les actualités
@@ -4719,8 +4811,6 @@ fr:
   permission_delete_own_messages: Supprimer ses propres messages
   permission_delete_reportings: Supprimer rapports
   permission_delete_timelines: Supprimer lignes du temps
-  permission_delete_wiki_pages: Supprimer des pages wiki
-  permission_delete_wiki_pages_attachments: Supprimer des pièces jointes
   permission_edit_work_package_comments: Modérer les commentaires
   permission_edit_work_package_comments_explanation: 'Attention : les utilisateurs disposant de cette autorisation peuvent modifier les commentaires de n''importe qui.'
   permission_edit_work_packages: Éditer des lots de travaux
@@ -4740,12 +4830,10 @@ fr:
   permission_edit_wiki_pages: Éditer les pages wiki
   permission_export_work_packages: Exporter les lots de travaux
   permission_export_projects: Exporter des projets
-  permission_export_wiki_pages: Exporter les pages wiki
   permission_invite_members_by_email: Inviter des membres par e-mail
   permission_invite_members_by_email_explanation: 'Permet aux utilisateurs d''inviter de nouveaux membres par e-mail. Les utilisateurs invités recevront un e-mail contenant un lien leur permettant de définir leur mot de passe et d''activer leur compte. Cela dépend de l''autorisation de gérer les membres
 
     '
-  permission_list_attachments: Lister les pièces jointes
   permission_log_own_time: Enregistrer son propre temps
   permission_log_time: Saisir le temps pour d'autres utilisateurs
   permission_manage_forums: Gérer les forums
@@ -4760,7 +4848,6 @@ fr:
   permission_manage_subtasks: Gérer les hiérarchies de lots de travaux
   permission_manage_versions: Gérer les versions
   permission_manage_wiki: Gérer le wiki
-  permission_manage_wiki_menu: Gérer le menu Wiki
   permission_manage_own_working_times: Gérer son propre temps de travail
   permission_manage_own_working_times_explanation: 'Permet aux utilisateurs de gérer leur propre temps de travail et leurs jours de congé personnels.
 
@@ -4770,8 +4857,6 @@ fr:
 
     '
   permission_move_work_packages: Déplacer les Lots de travaux
-  permission_protect_wiki_pages: Protéger les pages wiki
-  permission_rename_wiki_pages: Renommer les pages wiki
   permission_save_queries: Enregistrer les vues
   permission_search_project: Rechercher un projet
   permission_select_custom_fields: Sélectionner les champs personnalisés
@@ -5148,6 +5233,9 @@ fr:
   setting_mail_handler_body_delimiter_regex: Tronquer les e-mails correspondant à cette expression régulière
   setting_mail_handler_ignore_filenames: Pièces jointes du courrier ignorées
   setting_new_project_user_role_id: Rôle donné à un utilisateur non administrateur qui crée un projet
+  setting_new_project_user_role_id_caption: 'Seuls les rôles permettant de modifier les attributs du projet et de gérer les membres sont répertoriés, afin que le créateur puisse terminer la configuration du projet.
+
+    '
   setting_new_project_send_confirmation_email: Envoyer une notification à l'auteur lors de la création d'un nouveau projet
   setting_new_project_notification_text: Texte de la notification
   setting_password_active_rules: Exigences relatives au mot de passe
@@ -5564,6 +5652,7 @@ fr:
   text_project_identifier_format: Doit commencer par une lettre minuscule. Seules les lettres minuscules (a-z), les chiffres, les tirets et les traits de soulignement sont autorisés.
   text_reassign: 'Réaffecter au lot de travaux :'
   text_regexp_multiline: L'expression régulière est appliquée en mode multi-ligne, e.g. ^---\\s+
+  text_rename_wiki_page: Renommer la page wiki
   text_repository_usernames_mapping: |-
     Définir ou modifier les associations entre les utilisateurs d'OpenProject et les utilisateurs trouvés dans le dépôt.
     Les utilisateurs ayant des noms ou des adresses e-mail identiques sont automatiquement associés.
@@ -5997,9 +6086,6 @@ fr:
       scopes: Autorisations
       successful_application_revocation: Révocation de l'application %{application_name} réussie.
       none_given: Aucune application OAuth n'a été autorisée à accéder à votre compte utilisateur.
-    x_active_tokens:
-      one: un jeton actif
-      other: "%{count} jetons actifs"
     flows:
       authorization_code: Flux de code d'autorisation
       client_credentials: Flux des informations d'identification client
@@ -6009,8 +6095,10 @@ fr:
     client_credentials_impersonation_html: 'Par défaut, OpenProject fournit l''autorisation OAuth 2.0 via %{authorization_code_flow_link}. Vous pouvez activer optionnellement %{client_credentials_flow_link}, mais vous devez fournir un utilisateur avec lequel les requêtes de nom seront effectuées.
 
       '
+    confirm_revoke_my_application:
+      one: Voulez-vous vraiment supprimer cette demande ? Cela aura pour effet de révoquer un jeton actif associé.
+      other: Voulez-vous vraiment supprimer cette demande ? Cela aura pour effet de révoquer %{count} jetons actifs associés.
     authorization_error: Une erreur d'autorisation s'est produite.
-    revoke_my_application_confirmation: Voulez-vous vraiment supprimer cette application ? Ceci va révoquer %{token_count} actif pour elle.
     my_registered_applications: Applications OAuth enregistrées
   oauth_client:
     urn_connection_status:

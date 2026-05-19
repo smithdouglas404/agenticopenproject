@@ -55,8 +55,8 @@ RSpec.describe "Dragging work packages in and between sprints",
 
   let(:type) { create(:type) }
 
-  let!(:sprint1) { create(:agile_sprint, project:) }
-  let!(:sprint2) { create(:agile_sprint, project:) }
+  let!(:sprint1) { create(:sprint, project:) }
+  let!(:sprint2) { create(:sprint, project:) }
 
   let!(:sprint1_wp1) { create(:work_package, sprint: sprint1, type:, project:) }
   let!(:sprint1_wp2) { create(:work_package, sprint: sprint1, type:, project:) }

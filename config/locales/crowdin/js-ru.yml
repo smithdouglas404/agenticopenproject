@@ -109,7 +109,7 @@ ru:
     button_save: Сохранить
     button_settings: Настройки
     button_uncheck_all: Снять все отметки
-    button_update: Обновить
+    button_update: Обновление
     button_export-atom: Скачать Atom
     button_generate_pdf: Создать PDF
     button_create: Создать
@@ -202,16 +202,7 @@ ru:
           text: "[Placeholder] Встроенный календарь"
     admin:
       type_form:
-        custom_field: Настраиваемое поле
-        inactive: Неактивен
-        drag_to_activate: Чтобы включить поля, перетащите их отсюда
-        add_group: Добавить группу атрибутов
-        add_table: Добавить таблицу связанных пакетов работ
         edit_query: Редактировать запрос
-        new_group: Новая группа
-        delete_group: Удалить группу
-        remove_attribute: Удалить из группы
-        reset_to_defaults: Восстановить значения по умолчанию
       working_days:
         calendar:
           empty_state_header: Нерабочие дни
@@ -618,18 +609,6 @@ ru:
     breadcrumb: Навигационная цепочка
     text_data_lost: Все введенные данные будут потеряны.
     text_user_wrote: "%{value} написал:"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Имя %{group} используется более одного раза. Имена групп должны быть уникальными.
-        error_no_table_configured: Пожалуйста, настройте таблицу для %{group}.
-        reset_title: Сбросить настройки формы
-        confirm_reset: 'Предупреждение: хотите сбросить форму? Это сбросит атрибуты к первоначальным значениям группы и запретит правку настраиваемых полей.
-
-          '
-        upgrade_to_ee: Обновление до корпоративной версии
-        upgrade_to_ee_text: Уууууууууу! Если вам нужен этот дополнение, то вы бы хотели поддержать нас разработчиков OpenSource, став клиентом корпоративной версии?
-        more_information: Больше информации
-        nevermind: Неважно
     time_entry:
       work_package_required: Сначала необходимо выбрать пакет работ.
       title: Журналировать время

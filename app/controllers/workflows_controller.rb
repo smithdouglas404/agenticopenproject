@@ -38,7 +38,7 @@ class WorkflowsController < ApplicationController
   before_action :find_types, only: %i[index]
 
   before_action :find_type, only: %i[edit]
-  before_action :find_optional_role, only: %i[edit]
+  before_action :find_optional_roles, only: %i[edit]
 
   def index; end
 
@@ -56,16 +56,14 @@ class WorkflowsController < ApplicationController
     @types = ::Type.order(:position)
   end
 
-  def find_role
-    @role = eligible_roles.find(params[:role_id])
-  end
-
   def find_type
     @type = ::Type.find(params[:type_id])
   end
 
-  def find_optional_role
-    @role = eligible_roles.find_by(id: params[:role_id]) || eligible_roles.order(:builtin, :position).first
+  def find_optional_roles
+    ordered = eligible_roles.order(:builtin, :position)
+    @roles = ordered.where(id: params[:role_ids])
+    @roles = [ordered.first] if @roles.empty?
   end
 
   def eligible_roles

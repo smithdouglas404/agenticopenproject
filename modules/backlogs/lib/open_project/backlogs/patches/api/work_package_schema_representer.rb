@@ -61,7 +61,7 @@ module OpenProject::Backlogs
                                      href_callback: ->(*) {
                                        filters = CGI.escape(JSON.dump(
                                                               [{ status: { operator: "!",
-                                                                           values: [Agile::Sprint.statuses["completed"]] } }]
+                                                                           values: [Sprint.statuses["completed"]] } }]
                                                             ))
 
                                        "#{api_v3_paths.project_sprints(represented.project_id)}?filters=#{filters}&pageSize=-1"

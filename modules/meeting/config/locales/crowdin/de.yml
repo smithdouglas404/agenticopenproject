@@ -23,8 +23,8 @@
 ---
 de:
   plugin_openproject_meeting:
-    name: OpenProject Besprechung
-    description: Besprechungen für OpenProject
+    name: OpenProject Besprechungen
+    description: Dieses Modul fügt Funktionen zur Unterstützung von Besprechungen zu OpenProject hinzu. Sie können Besprechungen planen und dabei Teilnehmende aus demselben Projekt auswählen, die an der Besprechung teilnehmen sollen. Es kann eine Tagesordnung erstellt und an die Eingeladenen gesendet werden. Nach der Besprechung können die Teilnehmenden ausgewählt und Protokolle auf der Grundlage der Tagesordnung erstellt werden. Schließlich kann das Protokoll an alle Teilnehmenden und Eingeladenen gesendet werden.
   activerecord:
     attributes:
       meeting:
@@ -39,6 +39,8 @@ de:
           other: "%{count} Teilnehmer"
         participants_attended: Anwesend
         participants_invited: Eingeladen
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Projekt
         start_date: Datum
         start_time: Startzeit
@@ -88,7 +90,7 @@ de:
           section_not_belong_to_meeting: Die Sektion gehört nicht zur gleichen Besprechung.
           user_invalid: ist kein gültiger Teilnehmer.
         recurring_meeting_interim_response:
-          not_an_occurrence: ist keine gültige Uhrzeit für diese wiederkehrende Besprechung
+          not_an_occurrence: ist keine gültige Uhrzeit für dieses wiederkehrende Treffen
         recurring_meeting:
           must_cover_existing_meetings:
             one: Es gibt eine offene Besprechung in der Terminserie, die nicht durch den neuen Zeitplan abgedeckt ist. Passen Sie den Zeitplan an, um alle bestehenden Meetings einzuschließen.
@@ -210,6 +212,7 @@ de:
   label_time_zone: Zeitzone
   label_start_date: Beginn
   label_subscribe_icalendar: Im Kalender abonnieren
+  label_recurring_filter: Recurring filter
   caption_meeting_template_select: Wählen Sie eine Vorlage, um deren Tagesordnungspunkte automatisch zu kopieren
   caption_template_project_select: Bitte wählen Sie das Projekt aus, in dem Sie diese Besprechungsvorlage erstellen möchten
   placeholder_meeting_template_select_project_first: Wählen Sie zuerst ein Projekt aus
@@ -272,16 +275,6 @@ de:
         summary_series: Terminserie '%{title}' wurde von %{actor} gelöscht, oder Sie wurden als Teilnehmer entfernt
         summary: "'%{title}' wurde von %{actor} abgesagt, oder Sie wurden als Teilnehmer entfernt"
         date_time: Geplanter Zeitpunkt
-      participant_added:
-        header: Besprechung '%{title}' - Teilnehmer hinzugefügt
-        header_series: Terminserie '%{title}' - Teilnehmer hinzugefügt
-        summary: "%{actor} hat %{participant} zur Besprechung '%{title}' hinzugefügt"
-        summary_series: "%{actor} hat %{participant} zur Terminserie '%{title}' hinzugefügt"
-      participant_removed:
-        header: Besprechung '%{title}' - Teilnehmer entfernt
-        header_series: Terminserie '%{title}' - Teilnehmer hinzugefügt
-        summary: "%{actor} hat %{participant} aus Besprechung '%{title}' entfernt"
-        summary_series: "%{actor} hat %{participant} aus Terminserie '%{title}' entfernt"
       ended:
         header_series: 'Beendet: Terminserie ''%{title}'''
         summary_series: Die Terminserie '%{title}' wurde von %{actor} beendet
@@ -295,6 +288,8 @@ de:
         new_date_time: Neue(s) Datum/Zeit
         old_location: Alter Ort
         new_location: Neuer Ort
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: E-Mail Einladung an alle Teilnehmenden versenden
     types:
       one_time: Einmalig

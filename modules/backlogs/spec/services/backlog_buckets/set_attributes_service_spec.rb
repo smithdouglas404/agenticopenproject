@@ -57,7 +57,7 @@ RSpec.describe BacklogBuckets::SetAttributesService, type: :model do
                         contract_options: {})
   end
   let(:project) { create(:project) }
-  let(:backlog_bucket) { Agile::BacklogBucket.new }
+  let(:backlog_bucket) { BacklogBucket.new }
   let(:params) { { project: } }
 
   subject(:service_call) { instance.call(params) }

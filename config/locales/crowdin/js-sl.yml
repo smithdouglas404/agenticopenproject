@@ -202,16 +202,7 @@ sl:
           text: "[Placeholder] Vdelan koledar"
     admin:
       type_form:
-        custom_field: Polje po meri
-        inactive: Neaktiven
-        drag_to_activate: Povlecite polja od tod, da jih aktivirate
-        add_group: Dodajte skupino atributov
-        add_table: Dodajte tabelo povezanih delovnih paketov
         edit_query: Uredi poizvedbo
-        new_group: Nova skupina
-        delete_group: Delete group
-        remove_attribute: Remove from group
-        reset_to_defaults: Ponastavi na privzete vrednosti
       working_days:
         calendar:
           empty_state_header: Non-working days
@@ -618,18 +609,6 @@ sl:
     breadcrumb: Breadcrumb
     text_data_lost: All entered data will be lost.
     text_user_wrote: "%{value} je napisal(a):"
-    types:
-      attribute_groups:
-        error_duplicate_group_name: Ime skupine %{group} je že uporabljeno. Imena skupin morajo biti unikatna.
-        error_no_table_configured: Prosimo konfigurirajte tabelo za %{group}.
-        reset_title: Po nastavi iz konfiguracije
-        confirm_reset: 'Opozorilo: Ali ste prepričani, da želite po nastaviti formo konfiguracije? To bo ponastavilo atribute v njihovo privzeto skupino in onemogočilo vsa polja po meri.
-
-          '
-        upgrade_to_ee: Upgrade to Enterprise on-premises edition
-        upgrade_to_ee_text: Wow! If you need this add-on you are a super pro! Would you mind supporting us OpenSource developers by becoming an Enterprise edition client?
-        more_information: Več informacij
-        nevermind: Pozabi
     time_entry:
       work_package_required: Najprej izberite opravilo
       title: Beleži čas

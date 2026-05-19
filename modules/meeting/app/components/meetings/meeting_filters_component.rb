@@ -64,7 +64,8 @@ module Meetings
         Queries::Meetings::Filters::AttendedUserFilter,
         Queries::Meetings::Filters::AuthorFilter,
         Queries::Meetings::Filters::InvitedUserFilter,
-        Queries::Meetings::Filters::RecurringFilter
+        Queries::Meetings::Filters::RecurringFilter,
+        Queries::Meetings::Filters::TimeFilter
       ]
 
       if project.nil?

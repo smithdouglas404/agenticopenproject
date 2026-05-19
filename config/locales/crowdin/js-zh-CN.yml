@@ -202,16 +202,7 @@ zh-CN:
           text: "[Placeholder]嵌入式日历"
     admin:
       type_form:
-        custom_field: 自定义字段
-        inactive: 非活动
-        drag_to_activate: 从此处拖动字段将其激活
-        add_group: 增加属性组
-        add_table: 添加相关工作包表
         edit_query: 编辑查询
-        new_group: 新建组
-        delete_group: 删除群组
-        remove_attribute: 从群组中移除
-        reset_to_defaults: 重置为默认值
       working_days:
         calendar:
           empty_state_header: 非工作日
@@ -613,18 +604,6 @@ zh-CN:
     breadcrumb: 面包屑导航
     text_data_lost: 输入的所有数据将全部丢失。
     text_user_wrote: "%{value} 写道："
-    types:
-      attribute_groups:
-        error_duplicate_group_name: 名称 %{group} 已多次使用。组名不能重复。
-        error_no_table_configured: 请为 %{group} 配置一个表。
-        reset_title: 重置表单配置
-        confirm_reset: '警告：确定想要重置表单配置吗？这会将属性重置为它们的默认组，并禁用所有自定义字段。
-
-          '
-        upgrade_to_ee: 升级到本地部署的 Enterprise edition
-        upgrade_to_ee_text: 哇！如果您需要此插件，那么您是位超级行家！您是否考虑成为我们的企业版客户，以支持我们这些开源开发者？
-        more_information: 更多信息
-        nevermind: 我愿意
     time_entry:
       work_package_required: 需要先选择一个工作包。
       title: 记录时间
