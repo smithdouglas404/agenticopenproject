@@ -89,9 +89,9 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
       end
 
       it "does not persist the sprint" do
-        expect(sprint).not_to have_received(:save)
-
         service_call
+
+        expect(sprint).not_to have_received(:save)
       end
     end
 

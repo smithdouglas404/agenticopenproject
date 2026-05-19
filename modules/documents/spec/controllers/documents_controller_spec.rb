@@ -183,8 +183,9 @@ RSpec.describe DocumentsController do
   end
 
   describe "setup_collaboration_context",
-           with_config: {
-             collaborative_editing_hocuspocus_url: "wss://hocuspocus.local",
+           with_settings: {
+             real_time_text_collaboration_enabled: true,
+             collaborative_editing_hocuspocus_url: "wss://hocuspocus.example.com",
              collaborative_editing_hocuspocus_secret: "secret1234"
            } do
     let(:user_with_manage) { create(:user, member_with_permissions: { project => %i[view_documents manage_documents] }) }

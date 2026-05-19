@@ -370,7 +370,7 @@ pt-BR:
       label_healthy: Saudável
       label_passed: Passou
       label_pending: Pendente
-      label_skipped: Pulada
+      label_skipped: Ignorando
       label_warning: Aviso
       no_report: Nenhum relatório disponível
       no_report_description: Execute os testes agora para obter um relatório completo sobre o status de integridade deste armazenamento de arquivos.

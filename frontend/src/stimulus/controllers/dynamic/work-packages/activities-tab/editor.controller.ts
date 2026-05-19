@@ -65,6 +65,8 @@ export default class EditorController extends BaseController {
   private rescuedEditorDataKey:string;
   private abortController = new AbortController();
   private ckEditorAbortController = new AbortController();
+  private editorDataObserver?:MutationObserver;
+  private editorDataTimer?:number;
 
   connect() {
     super.connect();
@@ -75,6 +77,7 @@ export default class EditorController extends BaseController {
   }
 
   disconnect() {
+    this.clearPendingEditorDataSetup();
     this.rescueEditorContent();
     this.removeCkEditorEventListeners();
     this.removeEventListeners();
@@ -109,9 +112,7 @@ export default class EditorController extends BaseController {
 
   openEditorWithInitialData(quotedText:string) {
     this.showForm();
-    if (this.isEditorEmpty()) {
-      this.ckEditorInstance!.setData(quotedText);
-    }
+    this.setEditorDataWhenReady(quotedText);
   }
 
   clearEditor() {
@@ -208,6 +209,59 @@ export default class EditorController extends BaseController {
     this.ckEditorAbortController.abort();
     // Create a new AbortController for future CKEditor events
     this.ckEditorAbortController = new AbortController();
+  }
+
+  /**
+   * Sets the editor data once CKEditor is initialized. If CKEditor is already
+   * available and empty, sets the data immediately. Otherwise, watches for CKEditor
+   * readiness via MutationObserver. This handles the case where the Stimulus
+   * controller connects before CKEditor has finished its async initialization
+   * (e.g., after a Turbo navigation).
+   *
+   * A setTimeout deferral is used to ensure Angular's CKEditor initialization
+   * Promise chain has fully completed before we interact with the editor.
+   */
+  private setEditorDataWhenReady(data:string) {
+    this.clearPendingEditorDataSetup();
+
+    if (this.ckEditorInstance) {
+      if (this.isEditorEmpty()) {
+        this.ckEditorInstance.setData(data);
+      }
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      if (this.ckEditorInstance) {
+        observer.disconnect();
+        if (this.editorDataObserver === observer) {
+          this.editorDataObserver = undefined;
+        }
+        // Defer to the next macrotask so that Angular's CKEditor initialization
+        // Promise chain completes and the component's `initialized` flag is set.
+        // This prevents "Tried to access CKEditor instance before initialization"
+        // errors when the form is subsequently submitted.
+        this.editorDataTimer = window.setTimeout(() => {
+          this.editorDataTimer = undefined;
+          if (this.isEditorEmpty()) {
+            this.ckEditorInstance?.setData(data);
+          }
+        });
+      }
+    });
+
+    this.editorDataObserver = observer;
+    observer.observe(this.element, { childList: true, subtree: true });
+  }
+
+  private clearPendingEditorDataSetup() {
+    this.editorDataObserver?.disconnect();
+    this.editorDataObserver = undefined;
+
+    if (this.editorDataTimer !== undefined) {
+      window.clearTimeout(this.editorDataTimer);
+      this.editorDataTimer = undefined;
+    }
   }
 
   private rescueEditorContent() {

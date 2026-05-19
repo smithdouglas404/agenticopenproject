@@ -270,8 +270,22 @@ paths:
     "$ref": "./paths/meetings.yml"
   "/api/v3/meetings/{id}":
     "$ref": "./paths/meeting.yml"
+  "/api/v3/meetings/{id}/agenda_items":
+    "$ref": "./paths/meeting_agenda_items.yml"
+  "/api/v3/meetings/{meeting_id}/agenda_items/{id}":
+    "$ref": "./paths/meeting_agenda_item.yml"
   "/api/v3/meetings/{id}/attachments":
     "$ref": "./paths/meeting_attachments.yml"
+  "/api/v3/meetings/{id}/form":
+    "$ref": "./paths/meeting_form.yml"
+  "/api/v3/meetings/{id}/sections":
+    "$ref": "./paths/meeting_sections.yml"
+  "/api/v3/meetings/{meeting_id}/sections/{id}":
+    "$ref": "./paths/meeting_section.yml"
+  "/api/v3/meetings/form":
+    "$ref": "./paths/meetings_form.yml"
+  "/api/v3/meetings/schema":
+    "$ref": "./paths/meeting_schema.yml"
   "/api/v3/memberships":
     "$ref": "./paths/memberships.yml"
   "/api/v3/memberships/available_projects":
@@ -420,6 +434,22 @@ paths:
     "$ref": "./paths/query_star.yml"
   "/api/v3/queries/{id}/unstar":
     "$ref": "./paths/query_unstar.yml"
+  "/api/v3/recurring_meetings":
+    "$ref": "./paths/recurring_meetings.yml"
+  "/api/v3/recurring_meetings/{id}":
+    "$ref": "./paths/recurring_meeting.yml"
+  "/api/v3/recurring_meetings/{id}/occurrences/upcoming":
+    "$ref": "./paths/recurring_meeting_occurrences_upcoming.yml"
+  "/api/v3/recurring_meetings/{id}/occurrences/past":
+    "$ref": "./paths/recurring_meeting_occurrences_past.yml"
+  "/api/v3/recurring_meetings/{id}/occurrences/cancelled":
+    "$ref": "./paths/recurring_meeting_occurrences_cancelled.yml"
+  "/api/v3/recurring_meetings/{id}/occurrences/open":
+    "$ref": "./paths/recurring_meeting_occurrences_open.yml"
+  "/api/v3/recurring_meetings/{id}/occurrences/{start_time}":
+    "$ref": "./paths/recurring_meeting_occurrence.yml"
+  "/api/v3/recurring_meetings/{id}/occurrences/{start_time}/init":
+    "$ref": "./paths/recurring_meeting_occurrence_init.yml"
   "/api/v3/relations":
     "$ref": "./paths/relations.yml"
   "/api/v3/relations/{id}":
@@ -609,6 +639,10 @@ components:
       $ref: "./components/examples/meeting_collection_simple_response.yml"
     MeetingSimpleResponse:
       $ref: "./components/examples/meeting_simple_response.yml"
+    MeetingCreateRequest:
+      $ref: "./components/examples/meeting_create_request.yml"
+    MeetingUpdateRequest:
+      $ref: "./components/examples/meeting_update_request.yml"
     MembershipCreateRequestCustomMessage:
       $ref: "./components/examples/membership-create-request-custom-message.yml"
     MembershipCreateRequestGlobalRole:
@@ -851,10 +885,24 @@ components:
       "$ref": "./components/schemas/list_of_news_model.yml"
     List_workspaces_by_versionModel:
       "$ref": "./components/schemas/list_workspaces_by_version_model.yml"
+    MeetingAgendaItemModel:
+      "$ref": "./components/schemas/meeting_agenda_item_model.yml"
+    MeetingAgendaItemWriteModel:
+      "$ref": "./components/schemas/meeting_agenda_item_write_model.yml"
+    MeetingAgendaItemCollectionModel:
+      "$ref": "./components/schemas/meeting_agenda_item_collection_model.yml"
     MeetingCollectionModel:
       "$ref": "./components/schemas/meeting_collection_model.yml"
     MeetingModel:
       "$ref": "./components/schemas/meeting_model.yml"
+    MeetingSectionModel:
+      "$ref": "./components/schemas/meeting_section_model.yml"
+    MeetingSectionWriteModel:
+      "$ref": "./components/schemas/meeting_section_write_model.yml"
+    MeetingSectionCollectionModel:
+      "$ref": "./components/schemas/meeting_section_collection_model.yml"
+    MeetingWriteModel:
+      "$ref": "./components/schemas/meeting_write_model.yml"
     MarkdownModel:
       "$ref": "./components/schemas/markdown_model.yml"
     MembershipCollectionModel:
@@ -955,6 +1003,16 @@ components:
       "$ref": "./components/schemas/query_sort_by_model.yml"
     Query_Update_Form:
       "$ref": "./components/schemas/query_update_form.yml"
+    RecurringMeetingCollectionModel:
+      "$ref": "./components/schemas/recurring_meeting_collection_model.yml"
+    RecurringMeetingModel:
+      "$ref": "./components/schemas/recurring_meeting_model.yml"
+    RecurringMeetingWriteModel:
+      "$ref": "./components/schemas/recurring_meeting_write_model.yml"
+    RecurringMeetingOccurrenceCollectionModel:
+      "$ref": "./components/schemas/recurring_meeting_occurrence_collection_model.yml"
+    RecurringMeetingOccurrenceModel:
+      "$ref": "./components/schemas/recurring_meeting_occurrence_model.yml"
     RelationCollectionModel:
       "$ref": "./components/schemas/relation_collection_model.yml"
     RelationReadModel:

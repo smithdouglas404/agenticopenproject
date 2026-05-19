@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../../support/pages/backlog"
 
-RSpec.describe "Sprint list", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Sprint list", :js do
   shared_let(:project) { create(:project) }
   shared_let(:other_project) { create(:project) }
   shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] }) }

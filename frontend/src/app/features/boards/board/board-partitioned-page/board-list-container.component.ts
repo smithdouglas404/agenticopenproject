@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  Input,
   Injector,
   OnInit,
   QueryList,
@@ -36,11 +37,11 @@ import {
   BoardActionsRegistryService,
 } from 'core-app/features/boards/board/board-actions/board-actions-registry.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import {
-  WorkPackageStatesInitializationService,
-} from 'core-app/features/work-packages/components/wp-list/wp-states-initialization.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 @Component({
+  selector: 'board-list-container',
   templateUrl: './board-list-container.component.html',
   styleUrls: ['./board-list-container.component.sass'],
   providers: [
@@ -50,6 +51,7 @@ import {
   standalone: false,
 })
 export class BoardListContainerComponent extends UntilDestroyedMixin implements OnInit {
+  @Input() boardId:string;
   text = {
     delete: this.I18n.t('js.button_delete'),
     areYouSure: this.I18n.t('js.text_are_you_sure'),
@@ -90,7 +92,7 @@ export class BoardListContainerComponent extends UntilDestroyedMixin implements 
   private currentQueryUpdatedMonitoring:Subscription;
 
   constructor(
-readonly I18n:I18nService,
+    readonly I18n:I18nService,
     readonly state:StateService,
     readonly toastService:ToastService,
     readonly halNotification:HalResourceNotificationService,
@@ -102,16 +104,17 @@ readonly I18n:I18nService,
     readonly apiV3Service:ApiV3Service,
     readonly Boards:BoardService,
     readonly boardListCrossSelectionService:BoardListCrossSelectionService,
-    readonly wpStatesInitialization:WorkPackageStatesInitializationService,
     readonly Drag:DragAndDropService,
     readonly apiv3Service:ApiV3Service,
     readonly QueryUpdated:QueryUpdatedService,
+    readonly pathHelper:PathHelperService,
+    readonly currentProject:CurrentProjectService,
 ) {
     super();
   }
 
   ngOnInit():void {
-    const id:string = this.state.params.board_id.toString();
+    const id:string = this.boardId || this.state.params.board_id?.toString();
     this.board$ = this
       .apiV3Service
       .boards
@@ -128,10 +131,12 @@ readonly I18n:I18nService,
       .pipe(
         this.untilDestroyed(),
         filter((state) => state.focusedWorkPackage !== null),
-        filter(() => this.state.includes(`${this.state.current.data.baseRoute}.details`)),
+        filter(() => window.location.pathname.includes('/details/')),
       ).subscribe((selection) => {
-      // Update split screen
-        this.state.go(`${this.state.current.data.baseRoute}.details`, { workPackageId: selection.focusedWorkPackage });
+        // Update split screen
+        const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, id, selection.focusedWorkPackage!);
+        const search = window.location.search;
+        Turbo.visit(search ? `${base}${search}` : base, { frame: 'content-bodyRight', action: 'advance' });
       });
   }
 

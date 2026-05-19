@@ -12,6 +12,7 @@ import OpShowWhenCheckedController from './controllers/show-when-checked.control
 import OpShowWhenValueSelectedController from './controllers/show-when-value-selected.controller';
 import FlashController from './controllers/flash.controller';
 import RequirePasswordConfirmationController from './controllers/require-password-confirmation.controller';
+import PasswordRequirementsController from './controllers/password-requirements.controller';
 import PreviewController from './controllers/dynamic/work-packages/date-picker/preview.controller';
 import KeepScrollPositionController from './controllers/keep-scroll-position.controller';
 import PatternInputController from './controllers/pattern-input.controller';
@@ -26,8 +27,10 @@ import EditorController from './controllers/dynamic/work-packages/activities-tab
 import LazyPageController from './controllers/dynamic/work-packages/activities-tab/lazy-page.controller';
 import EditablePageHeaderTitleController from './controllers/dynamic/editable-page-header-title.controller';
 import WorkingHoursFormController from './controllers/dynamic/users/working-hours-form.controller';
+import DailyRemindersController from './controllers/dynamic/my/daily-reminders.controller';
 import NonWorkingTimesController from './controllers/dynamic/users/non-working-times.controller';
 import NonWorkingTimesFormController from './controllers/dynamic/users/non-working-times-form.controller';
+import OpPasswordForceChangeController from './controllers/password-force-change.controller';
 
 import AutoSubmit from '@stimulus-components/auto-submit';
 import RevealController from '@stimulus-components/reveal';
@@ -57,6 +60,7 @@ OpenProjectStimulusApplication.preregister('disable-when-clicked', DisableWhenCl
 OpenProjectStimulusApplication.preregister('flash', FlashController);
 OpenProjectStimulusApplication.preregister('menus--main', MainMenuController);
 OpenProjectStimulusApplication.preregister('require-password-confirmation', RequirePasswordConfirmationController);
+OpenProjectStimulusApplication.preregister('password-requirements', PasswordRequirementsController);
 OpenProjectStimulusApplication.preregister('poll-for-changes', PollForChangesController);
 OpenProjectStimulusApplication.preregister('print', PrintController);
 OpenProjectStimulusApplication.preregister('refresh-on-form-changes', RefreshOnFormChangesController);
@@ -86,8 +90,10 @@ OpenProjectStimulusApplication.preregister('highlight-target-element', Highlight
 OpenProjectStimulusApplication.preregister('select-autosize', SelectAutosizeController);
 OpenProjectStimulusApplication.preregister('editable-page-header-title', EditablePageHeaderTitleController);
 OpenProjectStimulusApplication.preregister('users--working-hours-form', WorkingHoursFormController);
+OpenProjectStimulusApplication.preregister('my--daily-reminders', DailyRemindersController);
 OpenProjectStimulusApplication.preregister('users--non-working-times', NonWorkingTimesController);
 OpenProjectStimulusApplication.preregister('users--non-working-times-form', NonWorkingTimesFormController);
+OpenProjectStimulusApplication.preregister('password-force-change', OpPasswordForceChangeController);
 OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
 OpenProjectStimulusApplication.preregister('checkable', CheckableController);
 OpenProjectStimulusApplication.preregister('truncation', TruncationController);

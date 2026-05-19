@@ -17,6 +17,15 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+      DEPLOY_APP_PRIVATE_KEY:
+        required: true
+      OPS_MAIL_SMTP_TOKEN:
+        required: true
   workflow_dispatch:
     inputs:
       branch:

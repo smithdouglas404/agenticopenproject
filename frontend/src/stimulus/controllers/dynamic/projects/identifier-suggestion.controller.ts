@@ -32,7 +32,7 @@ import {ApplicationController, useDebounce} from 'stimulus-use';
 
 const ALLOWED_CHARS:Record<string, RegExp> = {
   semantic: /[^A-Z0-9_]/g,
-  legacy: /[^a-z0-9\-_]/g,
+  classic: /[^a-z0-9\-_]/g,
 };
 
 export default class extends ApplicationController {
@@ -42,7 +42,7 @@ export default class extends ApplicationController {
   static values = {
     url: String,
     debounce: {type: Number, default: 300},
-    mode: {type: String, default: 'legacy'},
+    mode: {type: String, default: 'classic'},
     setNameFirst: {type: String, default: ''},
   };
 
@@ -88,7 +88,7 @@ export default class extends ApplicationController {
   private filterInput():void {
     if (!this.hasIdentifierTarget) return;
 
-    const pattern = ALLOWED_CHARS[this.modeValue] ?? ALLOWED_CHARS.legacy;
+    const pattern = ALLOWED_CHARS[this.modeValue] ?? ALLOWED_CHARS.classic;
     const current = this.identifierTarget.value;
     const filtered = current.replace(pattern, '');
 

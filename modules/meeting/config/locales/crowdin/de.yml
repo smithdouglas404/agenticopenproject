@@ -32,6 +32,7 @@ de:
         location: Ort/Raum
         duration: Dauer
         notes: Anmerkungen
+        recurrence_start_time: Geplante Startzeit
         participants: Teilnehmer
         participant:
           one: 1 Teilnehmer
@@ -42,6 +43,9 @@ de:
         start_date: Datum
         start_time: Startzeit
         start_time_hour: Startzeit
+        end_time: Endzeit
+        template: Vorlage
+        notify: Benachrichtigungen senden
         sharing: Teilen
       meeting_agenda_item:
         title: Titel
@@ -49,9 +53,15 @@ de:
         duration_in_minutes: Dauer
         description: Anmerkungen
         presenter: Referent
+        item_type: Typ
+        position: Position
+        lock_version: Objektversion
+        notes: Notizen
       meeting_section:
         title: Titel
+        position: Position
       recurring_meeting:
+        title: Titel
         frequency: Häufigkeit
         interval: Intervall
         start_date: Startet am
@@ -60,6 +70,10 @@ de:
         end_after: Ende der Terminserie
         end_date: Enddatum
         iterations: Ereignisse
+        time_zone: Zeitzone
+        location: Ort/Raum
+        duration: Dauer
+        notify: Benachrichtigungen senden
       recurring_meeting_interim_response:
         start_time: Startzeit
       meeting_participant:
@@ -189,6 +203,7 @@ de:
   label_notify: Zur Einsicht verschicken
   label_icalendar: iCalendar senden
   label_icalendar_download: iCalendar-Termin herunterladen
+  label_view_meeting: Besprechung anzeigen
   label_view_meeting_series: Terminserie ansehen
   label_meeting_series: Terminserien
   label_version: Version
@@ -419,6 +434,11 @@ de:
     ical_response:
       update_failed: Teilnahmestatus konnte nicht aktualisiert werden.
       meeting_not_found: Besprechung für die angegebene UID nicht gefunden.
+    widgets:
+      blankslate:
+        heading: Keine anstehenden Besprechungen
+        description: Kommende Besprechungen, an denen Sie teilnehmen, werden hier erscheinen.
+      view_details: Alle Besprechungen ansehen
   meeting_section:
     untitled_title: Unbenannter Abschnitt
     delete_confirmation: Wenn Sie den Abschnitt löschen, werden auch alle zugehörigen Tagesordnungspunkte gelöscht. Möchten Sie fortfahren?
@@ -658,8 +678,8 @@ de:
   text_exit_draft_mode_dialog_template_subtitle: Sie können danach nicht mehr in den Entwurfsmodus zurückkehren.
   label_meeting_template_sharing: Teilen
   label_meeting_template_sharing_none: Nur dieses Projekt
-  label_meeting_template_sharing_descendants: Unterprojekte
-  label_meeting_template_sharing_system: Alle Projekte
+  label_meeting_template_sharing_descendants: Mit Unterprojekten
+  label_meeting_template_sharing_system: Mit allen Projekten
   text_meeting_template_sharing_description: Diese Vorlage kann mit Unterprojekten oder anderen Projekten geteilt werden. Es werden nur die Tagesordnungspunkte und Anhänge kopiert.
   text_meeting_not_editable_anymore: Diese Besprechung ist nicht mehr bearbeitbar.
   text_meeting_not_present_anymore: Dieses Meeting wurde gelöscht. Bitte wählen Sie eine andere Besprechung.
@@ -678,9 +698,12 @@ de:
   text_agenda_item_duplicate_in_next_meeting: Sind Sie sicher, dass Sie eine Kopie dieses Tagesordnungspunktes in die nächste Besprechung am %{date} um %{time} aufnehmen wollen? Ergebnisse dieses Eintrags werden nicht kopiert.
   text_agenda_item_duplicated_in_next_meeting: Tagesordnungspunkt zum nächsten Besprechung am %{date} kopiert
   text_work_package_has_no_upcoming_meeting_agenda_items: Dieses Arbeitspaket ist bisher in keiner anstehenden Besprechung enthalten.
-  text_agenda_item_no_available_occurrence: Alle kommenden Besprechungen wurden abgesagt.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Hinweis: Abgesagte Besprechung am %{date} wird übersprungen.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Hinweis: Überspringe %{count} abgesagte Besprechungen.'
+  text_agenda_item_no_available_occurrence: Es gibt keine verfügbaren bevorstehende Ereignisse.
+  text_agenda_item_dialog_skipping_note: 'Hinweis: %{details} wird übersprungen.'
+  text_agenda_item_dialog_skipping_cancelled_one: abgesagte Besprechung am %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} stornierte Besprechungen"
+  text_agenda_item_dialog_skipping_closed_one: geschlossene Besprechung am %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} geschlossene Besprechungen"
   text_work_package_add_to_meeting_hint: Über den Button "Zur Besprechung hinzufügen" können Sie dieses Arbeitspaket zu einer zukünftigen Besprechung hinzuzufügen.
   text_work_package_has_no_past_meeting_agenda_items: Dieses Arbeitspaket wurde in einer früheren Besprechung nicht als Tagesordnungspunkt hinzugefügt.
   text_email_updates_muted: E-Mail-Kalenderaktualisierungen sind deaktiviert. Teilnehmende erhalten keine aktualisierten Einladungen per E-Mail, wenn Sie Änderungen vornehmen.

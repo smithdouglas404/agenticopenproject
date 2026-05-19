@@ -49,6 +49,18 @@ pl:
           attributes:
             labels:
               invalid_schema: 'musi być tablicą skrótów z kluczami: color, title'
+  label_gitlab_integration: Integracja GitLab
+  label_gitlab_actor: Użytkownik GitLab
+  label_gitlab_webhook_secret: Klucz tajny obiektu webhook
+  text_gitlab_actor_info: 'Użytkownik OpenProject, którego klucz interfejsu API musi być używany do uwierzytelniania przychodzących żądań obiektu webhoo. Po jego ustawieniu żądania uwierzytelnione przy użyciu poświadczeń dowolnego innego użytkownika są odrzucane. Ten użytkownik publikuje również automatyczne komentarze dotyczące pakietów roboczych. Domyślnie ustawiany jest użytkownik systemowy.
+
+    '
+  text_gitlab_webhook_secret_info: 'Tajny token udostępniany serwisowi GitLab podczas konfigurowania obiektu webhook. Po jego ustawieniu OpenProject weryfikuje nagłówek X-GitLab w każdym przychodzącym żądaniu i odrzuca niezgodną zawartość. Pozostaw puste, aby pomijać weryfikację (niezalecane).
+
+    '
+  text_gitlab_webhook_secret_missing_warning: 'Nie skonfigurowano klucza tajnego obiektu webhook. Każde żądanie do punktu końcowego obiektu webhook GitLab zostanie zaakceptowane bez weryfikacji, co może pozwolić nieautoryzowanym użytkownikom na fałszowanie zdarzeń. Zdecydowanie zalecane jest ustawienie klucza tajnego.
+
+    '
   project_module_gitlab: GitLab
   permission_show_gitlab_content: Pokaż treść GitLab
   gitlab_integration:

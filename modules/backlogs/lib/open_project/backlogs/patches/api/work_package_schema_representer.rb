@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -54,11 +56,15 @@ module OpenProject::Backlogs
                                      required: false,
                                      show_if: ->(*) {
                                        current_user.allowed_in_project?(:view_sprints, represented.project) &&
-                                         backlogs_constraint_passed?(:sprint) &&
-                                         OpenProject::FeatureDecisions.scrum_projects_active?
+                                         backlogs_constraint_passed?(:sprint)
                                      },
                                      href_callback: ->(*) {
-                                       api_v3_paths.project_sprints(represented.project_id)
+                                       filters = CGI.escape(JSON.dump(
+                                                              [{ status: { operator: "!",
+                                                                           values: [Agile::Sprint.statuses["completed"]] } }]
+                                                            ))
+
+                                       "#{api_v3_paths.project_sprints(represented.project_id)}?filters=#{filters}&pageSize=-1"
                                      }
 
             define_method :backlogs_constraint_passed? do |attribute|

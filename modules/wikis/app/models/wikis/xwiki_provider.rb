@@ -35,9 +35,26 @@ module Wikis
       AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
     ].freeze
 
+    OIDC_CALLBACK_PATH = "oidc/authenticator/callback"
+
+    has_one :oauth_client, as: :integration, dependent: :destroy
+    has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
+
     store_attribute :options, :url, :string
     store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
     store_attribute :options, :wiki_audience, :string
     store_attribute :options, :token_exchange_scope, :string
+
+    class << self
+      def registry_prefix = "xwiki"
+    end
+
+    def authenticate_via_two_way_oauth2?
+      authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
+    end
+
+    def oidc_redirect_uri
+      URI.join("#{url.chomp('/')}/", OIDC_CALLBACK_PATH).to_s
+    end
   end
 end

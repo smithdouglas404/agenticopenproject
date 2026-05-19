@@ -1,5 +1,7 @@
 module LdapGroups
   class SynchronizedFiltersController < ::ApplicationController
+    include OpTurbo::ComponentStream
+
     before_action :require_admin
 
     guard_enterprise_feature(:ldap_groups, except: %i[show destroy]) do
@@ -19,7 +21,9 @@ module LdapGroups
 
     def end; end
 
-    def destroy_info; end
+    def destroy_info
+      respond_with_dialog LdapGroups::SynchronizedFilters::DestroyDialogComponent.new(filter: @filter)
+    end
 
     def create
       @filter = SynchronizedFilter.new permitted_params
@@ -52,7 +56,7 @@ module LdapGroups
         flash[:error] = I18n.t(:error_can_not_delete_entry)
       end
 
-      redirect_to ldap_groups_synchronized_groups_path
+      redirect_to ldap_groups_synchronized_groups_path, status: :see_other
     end
 
     def synchronize

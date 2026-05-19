@@ -227,7 +227,7 @@ module Admin
         end
 
         def find_custom_field
-          raise NotImplementedError, "SubclassResponsibility"
+          raise SubclassResponsibilityError
         end
 
         def find_active_item

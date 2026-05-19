@@ -32,8 +32,16 @@ module OpenProject::WorkPackages
   # @logical_path OpenProject/WorkPackages
   class InfoLineComponentPreview < ViewComponent::Preview
     # See the [component documentation](/lookbook/pages/components/work_package_info_line) for more details.
-    def playground
-      render(WorkPackages::InfoLineComponent.new(work_package: WorkPackage.visible.first))
+    # @param show_project [Boolean]
+    # @param show_subject [Boolean]
+    # @param show_status [Boolean]
+    # @param font_size [Symbol] select [small, normal]
+    def playground(show_project: false, show_subject: false, show_status: true, font_size: :small)
+      render(WorkPackages::InfoLineComponent.new(work_package: WorkPackage.visible.first,
+                                                 show_project:,
+                                                 show_subject:,
+                                                 show_status:,
+                                                 font_size:))
     end
   end
 end

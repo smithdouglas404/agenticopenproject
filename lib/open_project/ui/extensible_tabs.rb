@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -105,13 +107,13 @@ module OpenProject
               name: "notifications",
               partial: "users/notifications",
               path: ->(params) { edit_user_path(params[:user], tab: :notifications) },
-              label: :"js.notifications.settings.title"
+              label: :"my_account.notifications_and_email.tabs.notifications"
             },
             {
               name: "reminders",
               partial: "users/reminders",
               path: ->(params) { edit_user_path(params[:user], tab: :reminders) },
-              label: :"js.reminders.settings.title"
+              label: :"my_account.notifications_and_email.tabs.email_reminders"
             }
           ]
         end

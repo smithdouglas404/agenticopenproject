@@ -1,6 +1,7 @@
 @for (project of filteredProjects; track project; let i = $index; let isFirst = $first; let isLast = $last) {
   <li
     class="spot-list--item"
+    role="none"
     data-test-selector="op-header-project-select--item"
     [attr.data-list-selector]="projectListItemIdentifier"
     >
@@ -8,6 +9,9 @@
       <a
         tabindex="-1"
         class="spot-list--item-action"
+        [id]="optionId(project)"
+        role="option"
+        [attr.aria-selected]="((searchableProjectListService.selectedItemID$ | async) === project.id).toString()"
         [ngClass]="{
           'spot-list--item-action_disabled': project.disabled,
           'spot-list--item-action_active': (searchableProjectListService.selectedItemID$ | async) === project.id
@@ -54,7 +58,7 @@
             class="spot-list--item-remove"
             data-test-selector="op-header-project-select--item-remove-icon"
           >
-            <svg x-circle-icon size="small" />
+            <svg x-circle-icon size="small" aria-hidden="true"/>
           </a>
         }
       </a>
@@ -62,6 +66,10 @@
     @if (project.disabled) {
       <span
         class="spot-list--item-action spot-list--item-action_disabled"
+        [id]="optionId(project)"
+        role="option"
+        aria-disabled="true"
+        [attr.aria-selected]="((searchableProjectListService.selectedItemID$ | async) === project.id).toString()"
         [ngClass]="{
           'spot-list--item-action_active': (searchableProjectListService.selectedItemID$ | async) === project.id
         }"

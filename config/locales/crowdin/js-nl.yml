@@ -515,12 +515,6 @@ nl:
         sidebar_arrow: Gebruik de terug pijl in de linkerbovenhoek om terug te keren naar het project <b>hoofdmenu</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: Binnen de <b>wiki</b> kunt u kennis delen en documenteren met uw team.
-        backlogs:
-          overview: Beheer uw werk in de <b>backlogs</b> weergave.
-          sprints: Aan de rechterkant hebt u de product backlog en de bug backlog, aan de linkerkant de respectievelijke sprints. Hier kunt u <b>epics, user stories en bugs</b> maken, prioriteren door ze te slepen en ze toevoegen aan een sprint.
-          task_board_arrow: Om uw <b>taakbord</b>te zien, opent u de sprint drop-down...
-          task_board_select: "...en selecteer het <b>taakbord</b> item."
-          task_board: Het taakbord geeft de <b>vooruitgang voor deze sprint</b> weer. Klik op het plus (+) pictogram naast een verhaal om nieuwe taken of belemmeringen toe te voegen. <br> De status kan worden bijgewerkt door slepen en neerzetten.
         boards:
           overview: Selecteer <b>borden</b> om het overzicht te verschuiven en uw project te beheren met behulp van de agile borden weergave.
           lists_kanban: Hier kunt u meerdere lijsten (kolommen) binnen uw bord maken. Met deze functie kunt u bijvoorbeeld een <b>Kanban board</b>maken.
@@ -592,49 +586,6 @@ nl:
       settings:
         change_notification_settings: You can modify your <a target="_blank" href="%{url}">notification settings</a> to ensure you never miss an important update.
         title: Instellingen voor meldingen
-        notify_me: Waarschuw mij
-        reminders:
-          no_notification: Geen melding
-          timeframes:
-            normal:
-              PT0S: dezelfde dag
-              P1D: 1 dag ervoor
-              P3D: 3 dagen ervoor
-              P7D: een week ervoor
-            overdue:
-              P1D: elke dag
-              P3D: elke 3 dagen
-              P7D: elke week
-        reasons:
-          mentioned:
-            title: Genoemd
-            description: Ontvang een melding elke keer dat iemand mij ergens noemt
-          assignee: Toegewezene
-          responsible: Verantwoording afleggen
-          shared: Gedeeld
-          watched: Kijker
-          work_package_commented: Alle nieuwe reacties
-          work_package_created: Nieuwe werkpakketten
-          work_package_processed: Alle statuswijzigingen
-          work_package_prioritized: Alle prioriteitswijzigingen
-          work_package_scheduled: 'Alle datum wijzigingen '
-        global:
-          immediately:
-            title: Deelnemend
-            description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
-          delayed:
-            title: Niet-deelnemend
-            description: Extra meldingen voor activiteiten in alle projecten.
-          date_alerts:
-            title: Date alerts
-            description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
-          overdue: Wanneer achterstallig
-        project_specific:
-          title: Project-specifieke meldingsinstellingen
-          description: These project-specific settings override default settings above.
-          add: Instelling voor project toevoegen
-          already_selected: Dit project is al geselecteerd
-          remove: Projectinstellingen verwijderen
     pagination:
       no_other_page: U bent op de enige pagina.
       pages_skipped: Pages skipped.
@@ -658,39 +609,6 @@ nl:
       required_outside_context: 'Kies een project om het werkpakket in te creëren om alle attributen te zien. U kunt alleen projecten selecteren waarvan het type hierboven is geactiveerd.
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: Tijd toevoegen
-          enable: Dagelijkse e-mailherinneringen inschakelen
-          explanation: You will receive these reminders only for unread notifications and only at hours you specify. %{no_time_zone}
-          no_time_zone: Until you configure a time zone for your account, the times will be interpreted to be in UTC.
-          time_label: 'Tijd %{counter}:'
-          title: Stuur me dagelijkse herinneringen voor ongelezen meldingen
-        workdays:
-          title: Ontvang herinneringen per e-mail op deze dagen
-        immediate:
-          title: Stuur me een e-mail herinnering
-          mentioned: Onmiddellijk wanneer iemand @vermeldt
-          personal_reminder: Immediately when I receive a personal reminder
-        alerts:
-          title: E-mail meldingen voor andere items (die geen werkpakketten zijn)
-          explanation: 'Meldingen vandaag zijn beperkt tot werkpakketten. U kunt ervoor kiezen om e-mailmeldingen voor deze gebeurtenissen te blijven ontvangen totdat ze zijn opgenomen in meldingen:
-
-            '
-          news_added: Nieuws toegevoegd
-          news_commented: Reageer op een nieuwsitem
-          document_added: Documenten toegevoegd
-          forum_messages: Nieuwe forumberichten
-          wiki_page_added: Wiki-pagina toegevoegd
-          wiki_page_updated: Wiki-pagina bijgewerkt
-          membership_added: Lidmaatschap toegevoegd
-          membership_updated: Lidmaatschap bijgewerkt
-        title: E-mail herinneringen
-        pause:
-          label: Temporarily pause daily email reminders
-          first_day: Eerste dag
-          last_day: Laatste dag
     text_are_you_sure: Weet u het zeker?
     text_are_you_sure_to_cancel: You have unsaved changes on this page. Are you sure you want to discard them?
     breadcrumb: Breadcrumb
@@ -1063,13 +981,6 @@ nl:
       form_submit:
         title: Bevestigen om verder te gaan
         text: Weet u zeker dat u deze actie wilt uitvoeren?
-      destroy_work_package:
-        title: Bevestig verwijdering van %{label}
-        single_text: Weet u zeker dat u het werkpakket wilt verwijderen
-        bulk_text: Weet u zeker dat u de volgende %{label} wilt verwijderen?
-        has_children: 'Het werkpakket heeft %{childUnits}:'
-        confirm_deletion_children: Ik erken dat alle onderliggende werkpakketten van de weergegeven werkpakketten verwijderd worden.
-        deletes_children: Alle onderliggende werkpakketten en hun nakomelingen ook worden verwijderd.
       destroy_time_entry:
         title: Confirm deletion of time entry
         text: Are you sure you want to delete the following time entry?

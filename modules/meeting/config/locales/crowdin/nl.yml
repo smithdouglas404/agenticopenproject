@@ -32,6 +32,7 @@ nl:
         location: Locatie
         duration: Duur
         notes: Notities
+        recurrence_start_time: Scheduled start time
         participants: Deelnemers
         participant:
           one: 1 Deelnemer
@@ -42,6 +43,9 @@ nl:
         start_date: Datum
         start_time: Starttijd
         start_time_hour: Starttijd
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Titel
@@ -49,9 +53,15 @@ nl:
         duration_in_minutes: Duur
         description: Notities
         presenter: Presentator
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Titel
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frequentie
         interval: Interval
         start_date: Begint op
@@ -60,6 +70,10 @@ nl:
         end_after: Vergaderreeks eindigt
         end_date: Einddatum
         iterations: Gebeurtenissen
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -189,6 +203,7 @@ nl:
   label_notify: Verzenden voor revisie
   label_icalendar: Verstuur iCalendar
   label_icalendar_download: Download iCalendar event
+  label_view_meeting: View meeting
   label_view_meeting_series: Bekijk vergaderreeksen
   label_meeting_series: Vergaderreeksen
   label_version: Versie
@@ -419,6 +434,11 @@ nl:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings you are participating in will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Naamloze sectie
     delete_confirmation: Deleting the section will also delete all of its agenda items. Are you sure you want to do this?
@@ -426,11 +446,11 @@ nl:
     empty_text: Sleep items hierheen of maak een nieuwe
   meeting_participant:
     participation_status:
-      needs_action: No response
-      accepted: Accepted
-      declined: Declined
-      tentative: Maybe
-      unknown: Unknown
+      needs_action: Geen reactie
+      accepted: Geaccepteerd
+      declined: Afgewezen
+      tentative: Misschien
+      unknown: Onbekend
   recurring_meeting:
     time_zone_difference_banner:
       title: Time zone difference
@@ -657,9 +677,9 @@ nl:
   text_exit_draft_mode_dialog_template_title: Open the first occurrence of this meeting series?
   text_exit_draft_mode_dialog_template_subtitle: You cannot return to draft mode after this.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Deze vergadering kan niet meer bewerkt worden.
   text_meeting_not_present_anymore: Deze vergadering is verwijderd. Selecteer een andere vergadering.
@@ -678,9 +698,12 @@ nl:
   text_agenda_item_duplicate_in_next_meeting: Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated.
   text_agenda_item_duplicated_in_next_meeting: Agenda item duplicated in the next meeting, on %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Dit werkpakket staat nog niet op de agenda van een komende vergadering.
-  text_agenda_item_no_available_occurrence: All upcoming occurrences have been cancelled.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Note: Skipping cancelled occurrence on %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Note: Skipping %{count} cancelled occurrences.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Gebruik de knop "Aan vergadering toevoegen" om dit werkpakket aan een komende vergadering toe te voegen.
   text_work_package_has_no_past_meeting_agenda_items: This work package was not added as an agenda item in a past meeting.
   text_email_updates_muted: Email calendar updates are muted. Participants will not receive updated invites via email when you make changes.

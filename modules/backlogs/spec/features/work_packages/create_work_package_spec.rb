@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../../support/pages/backlog"
 
-RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Create work package in sprint", :js do
   let!(:project) do
     create(:project,
            types: [type, type2],
@@ -75,13 +75,6 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
   end
 
   before do
-    # Faulty and mostly irrelevant for the test. Only needed to make the sprints appear on the page.
-    # To be removed once the setting is removed.
-    Setting.plugin_openproject_backlogs = {
-      "story_types" => [type.id.to_s],
-      "task_type" => type.id.to_s
-    }
-
     backlogs_page.visit!
   end
 

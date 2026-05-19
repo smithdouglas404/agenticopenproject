@@ -72,11 +72,7 @@ class MeetingsController < ApplicationController
       format.pdf { export_pdf }
       format.html do
         html_title "#{t(:label_meeting)}: #{@meeting.title}"
-        if @meeting.state == "cancelled"
-          render_404
-        else
-          render(Meetings::ShowComponent.new(meeting: @meeting, state: show_edit_state), layout: true)
-        end
+        render(Meetings::ShowComponent.new(meeting: @meeting, state: show_edit_state), layout: true)
       end
     end
   end

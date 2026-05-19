@@ -111,10 +111,9 @@ RSpec.describe Meetings::EmailUpdatesBannerComponent, type: :component do
       template
     end
     let(:meeting) do
-      create(:meeting,
+      create(:recurring_meeting_occurrence,
              project:,
-             recurring_meeting_id: recurring_meeting.id,
-             template: false)
+             recurring_meeting_id: recurring_meeting.id)
     end
     let(:override) { nil }
 

@@ -105,7 +105,6 @@ RSpec.describe CostReportsController do
       end
     end
   end
-
   describe "POST rename" do
     let(:user) { create(:user) }
     let(:owner) { create(:user) }

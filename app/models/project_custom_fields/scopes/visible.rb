@@ -34,7 +34,7 @@ module ProjectCustomFields::Scopes
 
     class_methods do
       def visible(user = User.current, project: nil)
-        if user.admin?
+        if user.active_admin?
           all
         elsif user.allowed_in_any_project?(:select_project_custom_fields) || user.allowed_globally?(:add_project)
           where(admin_only: false)

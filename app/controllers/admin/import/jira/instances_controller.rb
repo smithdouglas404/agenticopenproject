@@ -40,7 +40,7 @@ module Admin::Import::Jira
     before_action :set_jira, only: %i[show edit update destroy delete_token]
 
     def index
-      @jira_instances = Import::Jira.all
+      @jira_instances = Import::Jira.order(created_at: :desc)
     end
 
     def show
@@ -70,7 +70,7 @@ module Admin::Import::Jira
         @jira.destroy!
         flash[:notice] = t(:notice_successful_delete)
       end
-      redirect_to action: :index
+      redirect_to action: :index, status: :see_other
     end
 
     def delete_token

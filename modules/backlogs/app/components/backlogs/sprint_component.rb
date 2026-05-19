@@ -32,7 +32,7 @@ module Backlogs
   class SprintComponent < ApplicationComponent
     include Primer::AttributesHelper
     include OpTurbo::Streamable
-    include RbCommonHelper
+    include CommonHelper
 
     attr_reader :sprint, :project, :stories, :current_user, :active_sprint_ids
 
@@ -64,7 +64,7 @@ module Backlogs
     private
 
     def folded?
-      current_user.backlogs_preference(:versions_default_fold_state) == "closed"
+      current_user.pref[:backlogs_versions_default_fold_state] == "closed"
     end
 
     def drop_target_config
@@ -77,13 +77,12 @@ module Backlogs
     end
 
     def story_classes_attribute
-      classes = "Box-row--hover-blue Box-row--focus-gray Box-row--clickable"
-
-      if work_package_draggable?
-        classes += " Box-row--draggable"
-      end
-
-      classes
+      class_names(
+        "Box-row--hover-blue",
+        "Box-row--focus-gray",
+        "Box-row--clickable",
+        "Box-row--draggable": work_package_draggable?
+      )
     end
 
     def story_data_attribute(story)
@@ -91,8 +90,8 @@ module Backlogs
         story: true,
         controller: "backlogs--story",
         backlogs__story_id_value: story.id,
-        backlogs__story_split_url_value: details_backlogs_project_backlogs_path(project, story),
-        backlogs__story_full_url_value: work_package_path(story),
+        backlogs__story_split_url_value: split_url(story),
+        backlogs__story_full_url_value: full_url(story),
         backlogs__story_selected_class: "Box-row--blue",
         test_selector: card_test_selector(story)
       )
@@ -104,8 +103,20 @@ module Backlogs
       {
         draggable_id: story.id,
         draggable_type: "story",
-        drop_url: move_project_sprint_story_path(project, sprint, story)
+        drop_url: drop_url(story)
       }
+    end
+
+    def drop_url(story)
+      move_project_backlogs_work_package_path(project, sprint, story, all_backlogs_params)
+    end
+
+    def split_url(story)
+      project_backlogs_backlog_details_path(project, story, all_backlogs_params)
+    end
+
+    def full_url(story)
+      work_package_path(story)
     end
 
     def card_test_selector(story)

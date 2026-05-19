@@ -84,12 +84,12 @@ export class SearchableProjectListService {
         return of([[] as IProject[], searchText, loadingEnabled as boolean, favoriteIds]);
       }
 
-      const nameFilter:ApiV3ListFilter[] = [];
+      const searchFilter:ApiV3ListFilter[] = [];
       if (searchText.length > 0) {
-        nameFilter.push(['name', '~', [searchText]]);
+        searchFilter.push(['typeahead', '**', [searchText]]);
       }
 
-      return this.fetchProjects(nameFilter)
+      return this.fetchProjects(searchFilter)
                  .pipe(map((collection) => [collection._embedded.elements, searchText, loadingEnabled as boolean, favoriteIds]));
     }),
     switchMap(([projects, searchText, loadingEnabled, favoriteIds]:[IProject[],string,boolean,string[]]) => {

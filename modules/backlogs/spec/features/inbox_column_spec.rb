@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../support/pages/backlog"
 
-RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Inbox column in sprint planning view", :js do
   let(:sprint_sharing) { nil }
   let!(:project) do
     create(:project,
@@ -223,6 +223,7 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
 
     it "allows reordering items via the kebab menu", :aggregate_failures do
       # First item has no upward actions
+
       planning_page.within_inbox_menu(inbox_wp1) do |menu|
         planning_page.within_move_submenu(menu) do |submenu|
           expect(submenu).to have_no_selector(:menuitem, text: "Move to top")
@@ -231,6 +232,8 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
           expect(submenu).to have_selector(:menuitem, text: "Move to bottom")
         end
       end
+
+      wait_for_network_idle
 
       # Last item has no downward actions
       planning_page.within_inbox_menu(inbox_wp3) do |menu|
@@ -241,6 +244,8 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
           expect(submenu).to have_no_selector(:menuitem, text: "Move to bottom")
         end
       end
+
+      wait_for_network_idle
 
       planning_page.click_in_inbox_move_menu(inbox_wp1, "Move down")
       planning_page.expect_inbox_items_in_order(inbox_wp2, inbox_wp1, inbox_wp3)
@@ -278,6 +283,31 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
         planning_page.expect_no_inbox_item(inbox_wp1)
         planning_page.expect_story_in_sprint(inbox_wp1, sprint)
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [sprint_wp, inbox_wp1])
+      end
+
+      context "when the target sprint is completed (race condition #73750)" do
+        it "shows an error and does not move the item" do
+          planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint")
+
+          within("#move-to-sprint-dialog") do
+            expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
+            select sprint.name, from: "target_id"
+
+            # Before saving the selection, simulate that another user completed the sprint
+            sprint.completed!
+
+            click_button "Move"
+          end
+
+          planning_page
+            .expect_and_dismiss_error(
+              "Update failed: Sprint is not assignable since it is either not shared with the project or already finished."
+            )
+
+          # Item was *not* moved:
+          planning_page.expect_inbox_item(inbox_wp1)
+          planning_page.expect_story_not_in_sprint(inbox_wp1, sprint)
+        end
       end
     end
 
@@ -387,6 +417,63 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
         planning_page.expect_inbox_item(sprint_wp1)
         planning_page.expect_inbox_item(sprint_wp2)
       end
+    end
+  end
+
+  describe "retaining the 'show all' state" do
+    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+    let!(:inbox_items) { create_list(:work_package, 5, project:, type:) }
+    let!(:sprint_wp1) { create(:work_package, project:, sprint:, type:) }
+    let!(:sprint_wp2) { create(:work_package, project:, sprint:, type:) }
+
+    before do
+      stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+      stub_const("Backlogs::InboxComponent::FIRST_PAGE_SIZE", 2)
+      stub_const("Backlogs::InboxComponent::LAST_PAGE_SIZE", 1)
+      planning_page.visit!
+    end
+
+    it "retains the expanded inbox across all update actions", :aggregate_failures do
+      # Initial load shows pagination
+      planning_page.expect_inbox_show_more
+
+      # Expand inbox — URL advances to ?all=1
+      planning_page.click_inbox_show_more
+      expect(page.current_url).to include("all=1")
+      planning_page.expect_no_inbox_show_more
+
+      # Drag an inbox item to the sprint
+      planning_page.drag_inbox_item_to_sprint(inbox_items.first, sprint)
+      planning_page.expect_no_inbox_show_more
+
+      # Reorder within the inbox via menu
+      planning_page.click_in_inbox_move_menu(inbox_items.last, "Move up")
+      planning_page.expect_no_inbox_show_more
+
+      # Reorder within the sprint via menu
+      planning_page.click_in_sprint_story_move_menu(sprint_wp1, "Move down")
+      planning_page.expect_no_inbox_show_more
+
+      # Move an inbox item to the sprint via the dialog
+      planning_page.click_in_inbox_move_menu(inbox_items.last, "Move to sprint")
+      within("#move-to-sprint-dialog") do
+        select sprint.name, from: "target_id"
+        click_button "Move"
+      end
+      planning_page.expect_no_inbox_show_more
+
+      # Open a sprint story details view, edit the subject, and close
+      details_view = planning_page.open_sprint_story_details(sprint_wp1)
+      details_view.edit_field("subject").update("Updated subject")
+      details_view.expect_and_dismiss_toaster message: "Successful update."
+      details_view.close
+
+      planning_page.expect_no_inbox_show_more
+    end
+
+    it "does not show the 'show more' button when navigating directly with ?all=1" do
+      visit project_backlogs_backlog_path(project, all: 1)
+      planning_page.expect_no_inbox_show_more
     end
   end
 end

@@ -63,10 +63,10 @@ You can run tests inside the `backend-test` container. You can run specific test
 
 ```shell
 # Run all tests (not recommended)
-docker compose run --rm backend-test bundle exec rspec
+bin/compose rspec
 
 # Run the specified test
-docker compose run --rm backend-test bundle exec rspec spec/features/work_package_show_spec.rb
+bin/compose rspec spec/features/work_package_show_spec.rb
 ```
 
 ***

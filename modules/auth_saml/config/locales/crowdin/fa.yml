@@ -34,6 +34,7 @@ fa:
   saml:
     menu_title: ارائه دهندگان سخت افزاری
     delete_title: Delete SAML provider
+    delete_heading: Delete this SAML provider?
     info:
       title: پارامترهای پیکربندی پروتکل احراز هویت سخت افزاری
       description: 'جهت پیکربندی ابزار احراز هویت سخت افزاری از این پارامترها استفاده نمایید.

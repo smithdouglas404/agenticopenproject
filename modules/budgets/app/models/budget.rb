@@ -61,9 +61,13 @@ class Budget < ApplicationRecord
 
   class << self
     def visible(user = User.current)
-      includes(:project)
-        .references(:projects)
-        .merge(Project.allowed_to(user, :view_budgets))
+      if user.active_admin?
+        all
+      else
+        includes(:project)
+          .references(:projects)
+          .merge(Project.allowed_to(user, :view_budgets))
+      end
     end
 
     # TODO: Extract into copy service
@@ -254,8 +258,7 @@ class Budget < ApplicationRecord
   def valid_labor_budget_attributes?(attributes)
     attributes &&
       attributes[:hours].to_f.positive? &&
-      attributes[:user_id].to_i.positive? &&
-      Principal.possible_assignee(project).where(id: attributes[:user_id].to_i).exists?
+      attributes[:user_id].to_i.positive?
   end
 
   def valid_material_budget_attributes?(attributes)

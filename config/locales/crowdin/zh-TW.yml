@@ -114,10 +114,11 @@ zh-TW:
     import:
       title: Import
     jira:
-      title: Jira Import
+      title: Jira Migrator
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -125,8 +126,12 @@ zh-TW:
         title: Jira configuration
         new: New configuration
       banner:
-        title: Limited import
-        description: 'This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
+        title: Beta - Try it out!
+        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Name
@@ -154,6 +159,7 @@ zh-TW:
         connection_timeout: 'Connection to Jira server timed out: %{message}'
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projects
         last_change: Last change
@@ -162,7 +168,7 @@ zh-TW:
       run:
         title: Import run
         history: History
-        remove_error: A Jira import cannot be removed while it is running
+        remove_error: A Jira import run cannot be removed while it is running
         import_blocked_error: Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import.
         project_identifier_taken: 'You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry.'
         blank:
@@ -234,8 +240,10 @@ zh-TW:
               caption_done: Completed
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
-              label_available_data: Available data
-              label_not_available_data: Not available for import
+              label_supported_data: Supported data
+              label_coming_soon: Coming soon (Q2 2026)
+              label_coming_later: Coming later
+              label_available_server_data: Available data on %{server_info}
               button_select_projects: Select projects to import
               button_continue: Continue
               label_import: Select which projects you would like to import.
@@ -244,16 +252,23 @@ zh-TW:
               label_progress: Fetching data from Jira...
               elements:
                 relations: Relations between issues
+                project_ids: Project identifiers
+                issue_ids: Issues identifiers
+                sprints: Sprint assignments
                 workflows: Project-level workflows
-                users: Users
-                sprints: Sprints
                 schemes: Schemas
-                permissions: User, group and project permissions
+                permissions: Permissions
+                projects: Projects
+                issues: Issues
+                issue_details: Issue description, history, comments and attachments
+                custom_fields: A subset of custom fields
+                users: Involved users and groups
             confirm_import:
               title: Import data
               caption: Review your import settings and start the import
               caption_done: Completed
-              label_available_data: Available data to import
+              label_available_data: Data to be imported
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -261,33 +276,33 @@ zh-TW:
             import_result:
               title: Import run results
               caption: Review import run or revert import
-              info: Import run successful.
+              info: Import run was successful.
               label_results: Imported
               label_revert: Revert import
               button_revert: Revert import
-              button_done: Finalize import
-              preview_description: The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.
-              label_finalize_import: Finalize import
-              label_finalizing: Finalizing import...
-              label_finalizing_done: Import finalized.
+              button_done: Approve import
+              preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              label_finalize_import: Approve import
+              label_finalizing: Approving import...
+              label_finalizing_done: Import approved.
               label_revert_progress: Reverting import...
               label_reverted: Import reverted.
           select_dialog:
             filter_projects: Filter by text
           import_dialog:
-            title: Start this import?
+            title: Please make sure you have a backup!
             confirm_button: Start import
-            description: 'This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
-            confirm: I understand and made the necessary preparations
+            confirm: I understand and have a backup
           revert_dialog:
             title: Permanently revert this import?
-            description: This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject.
+            description: This will delete all imported objects (including whole projects).
             confirm: I understand that this reversion will delete data permanently
           finalize_dialog:
-            title: Finalize this import?
-            description: Once finalized, this import can no longer be reverted. All imported data will become permanently imported.
+            title: Approve this import?
+            description: Once approved, this import can no longer be reverted. All imported data will become permanent.
             confirm: I understand that this action cannot be undone
             confirm_button: Understood
           select_projects:
@@ -381,9 +396,9 @@ zh-TW:
         notification_text_default: "<p>您好，</p> <p>已建立新專案： projectValue:name</p> <p>謝謝</p>\n"
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -392,10 +407,14 @@ zh-TW:
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             other: "... %{count} more projects"
         button_autofix: Autofix and save
@@ -409,16 +428,13 @@ zh-TW:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: 預設轉換
         user_author: 使用者為作者
         user_assignee: 使用者為執行者
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -674,6 +690,37 @@ zh-TW:
   danger_dialog:
     confirmation_live_message_checked: 繼續的按鈕現已啟用。
     confirmation_live_message_unchecked: 繼續的按鈕現在沒有作用。您需要勾選核取方塊才能繼續。
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Pagination
     prev: Previous
@@ -1059,6 +1106,8 @@ zh-TW:
       matrix_check_uncheck_all_in_row_label_html: 切換 <em>%{permission}</em>所有角色的權限
       matrix_check_uncheck_all_in_col_label_html: 切換所有 %{module} 的權限 <em>%{role}</em>角色
   users:
+    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
+    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
     autologins:
       prompt: 保持登入%{num_days}
     sessions:
@@ -1309,6 +1358,31 @@ zh-TW:
     index:
       no_results_content_text: 新增一個 wiki 頁面
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: 工作流程矩陣
       matrix_caption_assignee: 指派對象的工作流程矩陣
@@ -1318,10 +1392,30 @@ zh-TW:
       matrix_uncheck_all_label: 禁止所有轉換
       matrix_check_uncheck_all_in_row_label_html: 切換從 <em>%{old_status}</em>到所有新狀態
       matrix_check_uncheck_all_in_col_label_html: 從所有舊狀態切換轉換到 <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: 目前沒有工作流程
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages and all associated data will be permanently deleted:'
+      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1514,6 +1608,9 @@ zh-TW:
         dependencies: 依賴套件
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identifier
+        work_package: Work package
       jira_import:
         projects: Projects
       import/jira:
@@ -1522,7 +1619,7 @@ zh-TW:
         personal_access_token: Personal access token
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Jira import
+        jira_import: Jira Migrator
       announcements:
         show_until: 只顯示到
       attachment:
@@ -1778,6 +1875,7 @@ zh-TW:
         identity_url: 身份識別 URL
         parent: Parent group
         organizational_unit: Organizational unit
+        group_users: Group users
       group_detail:
         parent: Parent group
         organizational_unit: Organizational unit
@@ -1852,6 +1950,7 @@ zh-TW:
         duration: 時長
         end_insertion: 結束插入
         end_deletion: 結束刪除
+        identifier: Identifier
         ignore_non_working_days: 忽略非工作日
         include_non_working_days:
           title: 工作日
@@ -1867,6 +1966,7 @@ zh-TW:
         readonly: 唯讀
         remaining_hours: 剩餘工作
         remaining_time: 剩餘工作
+        sequence_number: Sequence number
         shared_with_users: 參與
         schedule_manually: 手動排程
         spent_hours: 耗時
@@ -1895,6 +1995,7 @@ zh-TW:
         confirmation: 不吻合 %{attribute}。
         could_not_be_copied: "%{dependency} 無法完整複製."
         does_not_exist: 不存在
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} 只適用於 OpenProject 企業版。"
         error_unauthorized: 無法被存取。
         error_readonly: 被嘗試寫入但是無法寫入。
@@ -1918,6 +2019,7 @@ zh-TW:
         inclusion: 沒有被設置為一個允許的值。
         inclusion_nested: 未設置為路徑“%{path}”中允許的值之一
         invalid: 不正確。
+        invalid_uri: must be a valid URI.
         invalid_url: 不是有效的 URL。
         invalid_url_scheme: '不是受支援的協定 (允許的協定: %{allowed_schemes})。'
         less_than_or_equal_to: 必須少於或者等於 %{count}。
@@ -1931,6 +2033,7 @@ zh-TW:
         not_a_datetime: 不是有效的日期時間。
         not_a_number: 不是數字
         not_allowed: 是無效的因為缺少權限
+        host_not_allowed: is not an allowed host.
         not_json: 無法解析為 JSON。
         not_json_object: 不是 JSON 物件。
         not_an_integer: 不是整數
@@ -1961,6 +2064,7 @@ zh-TW:
           attributes:
             parent_id:
               circular_dependency: would create a circular group hierarchy.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2197,6 +2301,8 @@ zh-TW:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: 無法新增子項，因為您沒有所選工作套件的編輯權限。
               blank: ID 不能空白。
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2265,7 +2371,7 @@ zh-TW:
               confirmation: 密碼不符
               format: "%{message}"
             password:
-              weak: '必須包含以下的字元 (至少 %{all_count} 個中的 %{min_count} 個): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: 小寫（例如：「a」）
               uppercase: 大寫（例如：「Ａ」）
               numeric: 數字（例如：「1」）
@@ -2424,7 +2530,6 @@ zh-TW:
     avatar: 大頭貼
     base: '一般錯誤:'
     body: 本體
-    blocks_ids: 已被限制的工作套件 IDs
     category: 類別
     comment: 留言
     comments: 留言
@@ -2861,6 +2966,7 @@ zh-TW:
       title: 企業版附加元件
       plan_title: 企業版 %{plan} 外掛
       plan_name: "%{plan} 企業版計畫"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: 需 %{plan_name} 方案以上才可使用。
       unlimited: 不限
       already_have_token: '已經有令牌了嗎？請使用下方按鈕新增，以升級至預約的 Enterprise 方案。
@@ -3231,18 +3337,17 @@ zh-TW:
         header: 閱讀關於新功能和產品更新的資訊。
         learn_about: 進一步瞭解所有新功能
         missing: 目前還沒有突出顯示的功能。
-        '17_3':
+        '17_4':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_0: Jira Migrator with support for basic custom fields.
+            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_2: Easier drag and drop and improved move options in the Backlogs module.
+            line_3: Sprint Start and Complete buttons in the sprint header.
+            line_4: Copy workflow settings between roles.
+            line_5: "'My Meetings' widget on the Home and Project Overview pages."
     links:
       upgrade_enterprise_edition: 升級到企業版
       postgres_migration: 將您的安裝遷移到 PostgreSQL
@@ -3327,6 +3432,11 @@ zh-TW:
     quick_add:
       label: 新增…
   my_account:
+    notifications_and_email:
+      title: Notification and email
+      tabs:
+        notifications: Notification settings
+        email_reminders: Email reminders
     access_tokens:
       description: 提供者令牌由 OpenProject 發行，允許其他應用程式存取。用戶端識別碼由其他應用程式發行，允許 OpenProject 存取它們。
       no_results:
@@ -3389,6 +3499,77 @@ zh-TW:
         disabled_text: RSS 令牌並非由管理員啟用。請聯絡您的管理員以使用此功能。
       storages:
         unknown_storage: 不明的儲存區
+    email_reminders:
+      immediate_reminders:
+        title: Send me an email reminder
+        mentioned: Notify me when I am mentioned
+        personal_reminder: Notify me for personal reminders
+      daily_reminders:
+        title: Send me daily email reminders for unread notifications
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        enabled: Enable daily email reminders
+        add_time: Add time
+        remove_time: Remove time
+        time_slot_label: Reminder time (UTC)
+      workdays:
+        title: Receive email reminders on these days
+        submit_button: Update reminder days
+      pause_reminders:
+        title: Pause email notifications
+        enabled: Temporarily pause daily email reminders
+        date_range: Pause period
+      email_alerts:
+        title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        news_added: News added
+        news_commented: Comment on a news item
+        document_added: Document added
+        forum_messages: Forum message posted
+        wiki_page_added: Wiki page added
+        wiki_page_updated: Wiki page updated
+        membership_added: Membership added
+        membership_updated: Membership updated
+        submit_button: Update alerts
+    notifications:
+      participating:
+        title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        submit_button: Update preferences
+        mentioned: Mentioned
+        watched: Watching
+        assignee: Assignee
+        responsible: Accountable
+        shared: Shared with me
+      date_alerts:
+        title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        submit_button: Update date alerts
+        start_date: Start date
+        due_date: Finish date
+        overdue: Overdue
+        times:
+          same_day: On the same day
+          one_day_before: 1 day before
+          three_days_before: 3 days before
+          seven_days_before: 7 days before
+          one_day_after: 1 day after
+          three_days_after: 3 days after
+          seven_days_after: 7 days after
+      non_participating:
+        title: Non-participating
+        description: Additional notifications for activities in all projects.
+        submit_button: Update preferences
+        work_package_created: New work packages
+        work_package_commented: All new comments
+        work_package_processed: All status changes
+        work_package_prioritized: All priority changes
+        work_package_scheduled: All date changes
+      project_specific_settings:
+        title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
+        add_button: Add project-specific notifications
+        dialog_title: Add project-specific notifications
+        list_header: Projects with specific notifications
   notifications:
     reasons:
       assigned: 執行者
@@ -3420,6 +3601,7 @@ zh-TW:
       invalid_filter: 無效的通知過濾器
   label_accessibility: 輔助功能
   label_account: 帳號
+  label_actions: 操作
   label_active: 啟用
   label_activate_user: 啟動使用者
   label_active_in_new_projects: 在新專案中啟用
@@ -3460,6 +3642,7 @@ zh-TW:
   label_ical_access_key_generation_hint: 訂閱日曆時自動生成的。
   label_ical_access_key_latest: 最新
   label_ical_access_key_revoke: 撤銷
+  label_integrations: Integrations
   label_add_column: 新增欄位
   label_applied_status: 套用的狀態
   label_archive_project: 封存專案
@@ -3543,6 +3726,7 @@ zh-TW:
   label_commits_per_month: 每個月的Commits
   label_confirmation: 確認
   label_contains: 包含
+  label_starts_with: starts with
   label_content: 內容
   label_color_plural: 顏色
   label_copied: 已複製
@@ -3550,6 +3734,8 @@ zh-TW:
   label_copy_source: 來源
   label_copy_target: 目標
   label_copy_workflow_from: 工作流程來自於
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: 複製專案
   label_core_version: 核心版本
   label_core_build: 核心編譯
@@ -3710,7 +3896,7 @@ zh-TW:
   label_external_links: 外部連結
   label_locale: 語言和地區
   label_jump_to_a_project: 前往一個專案...
-  label_jira_import: Jira Import
+  label_jira_import: Jira Migrator
   label_keyword_plural: 關鍵字
   label_language_based: 根據使用者的語言
   label_last_activity: 最後的活動
@@ -3748,6 +3934,10 @@ zh-TW:
   label_custom_pdf_export_settings: 匯出PDF設定
   label_custom_favicon: 自訂圖示
   label_custom_touch_icon: 自訂觸控圖示
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: 登出
   label_mapping_for: 對應為： %{attribute}
   label_main_menu: 側邊選單
@@ -3853,6 +4043,10 @@ zh-TW:
   label_password_rule_numeric: 數字字元
   label_password_rule_special: 特殊字元
   label_password_rule_uppercase: 大寫
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: 路徑編碼
   label_per_page: 每頁：
   label_people: 人員
@@ -4218,7 +4412,7 @@ zh-TW:
       note: 備註： "%{note}"
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: 要存取此工作套件，您需要建立一個 %{instance} 帳戶。
         open_work_package: 開啟工作套件
         subject: '有個工作套件 #%{id} 與您共同參與'
@@ -4761,7 +4955,7 @@ zh-TW:
 
     '
   setting_after_login_default_redirect_url: 登入重新導向
-  setting_after_login_default_redirect_url_text_html: '如果沒有提供後向連結，設定使用者登入後重新導向的預設路徑。如果未設定，則會重導向到首頁。 <br/> 範例：<code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: 跨原始來源資源共用 (CORS, Cross-Origin Resource Sharing)
@@ -4816,6 +5010,7 @@ zh-TW:
     '
   setting_app_subtitle: 應用程式副標題
   setting_app_title: 應用程式標題
+  setting_organization_name: Organization name
   setting_attachment_max_size: 附件最大容量
   setting_show_work_package_attachments: 默認在文件選項卡中顯示附件
   setting_antivirus_scan_mode: 掃描模式
@@ -4893,11 +5088,10 @@ zh-TW:
   setting_new_project_user_role_id: 非管理員用户新建專案時將被赋予的（在該專案中的）角色
   setting_new_project_send_confirmation_email: 建立新專案時傳送通知給作者
   setting_new_project_notification_text: 通知文字
-  setting_password_active_rules: 啟用字元類別
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: 禁止重複使用最近被使用的密碼次數
   setting_password_days_valid: 在經過多少天後強制執行密碼變更
   setting_password_min_length: 最小長度
-  setting_password_min_adhered_rules: 必要類別的最小數目
   setting_per_page_options: 設置每頁顯示個數
   setting_percent_complete_on_status_closed: 狀態結束時之完成百分比
   setting_percent_complete_on_status_closed_no_change: 未變更
@@ -4962,12 +5156,12 @@ zh-TW:
   setting_welcome_text: 歡迎區塊文字
   setting_welcome_title: 歡迎區塊標題
   setting_welcome_on_homescreen: 在主頁面上顯示歡迎區塊
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
 
     '
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
 
     '
   setting_work_package_list_default_highlighting_mode: 預設顯示模式
@@ -5490,10 +5684,13 @@ zh-TW:
           same_as_work: 設定與工時相同值。
     permissions:
       comment: 留言
+      comment_verb: comment
       comment_description: 可查看此工作套件與留言。
       edit: 編輯
+      edit_verb: edit
       edit_description: 可以查看，留言與編輯此工作套件。
       view: 檢視
+      view_verb: view
       view_description: 查看此工作套件。
     reminders:
       label_remind_at: 日期

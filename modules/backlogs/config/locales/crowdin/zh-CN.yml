@@ -41,9 +41,9 @@ zh-CN:
       sprint:
         duration: 冲刺持续时间
       user_preference:
-        backlogs_task_color: 任务颜色
         backlogs_versions_default_fold_state: 以折叠形式显示冲刺
       work_package:
+        backlog_bucket: 积压工作存储桶
         backlogs_work_package_type: 待办清单类型
         position: 位置
         sprint: 冲刺
@@ -61,14 +61,17 @@ zh-CN:
               share_all_projects_already_taken: 无法设置，因为项目“%{name}”已经与所有项目共享。
               share_all_projects_already_taken_anonymous: 无法设置，因为另一个项目已经与所有项目共享。
         work_package:
+          backlog_bucket_xor_sprint: 无法同时指定至冲刺和积压工作存储桶。
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: 必须与工作包属于同一个项目。
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: 只可以包含当前冲刺 (sprint) 中的工作包 ID。
               must_block_at_least_one_work_package: 必须包含至少一个票证的 ID。
             version_id:
               task_version_must_be_the_same_as_story_version: 必须与父级故事的版本相同。
             sprint:
-              not_shared_with_project: 未与工作包所在的项目共享。
+              not_assignable: 是不可分配的，因为它要么没有与项目共享，要么已经完成。
               not_eligible_for_moving: 在该工作包被移出的冲刺所属的项目中，没有处于有效状态的冲刺。
         agile/sprint:
           attributes:
@@ -82,19 +85,13 @@ zh-CN:
           cannot_end_before_it_starts: 比赛不可以在开始前结束。
     models:
       sprint: 冲刺
-  attributes:
-    task_type: 任务类型
   backlogs:
-    any: 任一
     caption_sprints_default_fold_state: 查看“积压工作和冲刺”页面时，默认情况下不会展开冲刺。每个冲刺都必须手动展开。
-    column_width: 列宽
     definition_of_done: 完成的定义
     definition_of_done_caption: 具有这些状态的工作包在积压工作视图和报告中会被视为已完成。
     done_status: 已完成状态
     sharing_description: 此项目可以共享自己的冲刺、接收共享的冲刺或独立处理冲刺（不共享）。
     sharing: 共享
-    impediment: 障碍
-    label_versions_default_fold_state: 显示已折叠的版本
     label_burndown_chart: 燃尽图
     label_sprint_board: 冲刺面板
     work_package_is_closed: 工作包已完成，当
@@ -107,38 +104,32 @@ zh-CN:
     rebuild_positions: 重建顺序
     remaining_hours: 剩余工时
     show_burndown_chart: 燃尽图
-    story: 故事
     story_points:
       other: "%{count} 个故事点"
-    task: 任务
-    task_color: 任务颜色
     unassigned: 未指定
-    administration_blankslate:
-      title: 积压工作管理设置不断演进
-      text: 我们目前正在重新设计积压工作模块。冲刺和积压工作的管理设置不久后将显示在此处。项目级设置仍然可用。
     user_preference:
       header_backlogs: 积压工作模块
       button_update_backlogs: 更新积压工作模块
-    backlog_component:
-      blankslate_title: "%{name} 为空"
-      blankslate_description: 尚未计划条目。请将条目拖到此处以添加。
+    administration_blankslate:
+      title: 积压工作管理设置不断演进
+      text: 我们目前正在重新设计积压工作模块。冲刺和积压工作的管理设置不久后将显示在此处。项目级设置仍然可用。
+    backlog_bucket_component:
+      blankslate_title: 积压工作存储桶为空
+      blankslate_description: 将条目拖到此处进行添加。
+    backlog_bucket_destroy_modal_component:
+      title: 是否删除积压工作存储桶？
+      details: 积压工作存储桶“%{name}”将被删除，所有工作包将移至积压工作收件箱。不会删除任何工作包。
+    backlog_bucket_item_component:
+      label_actions: 工作包操作
     sprint_component:
       blankslate_title: "%{name} 为空"
       blankslate_description: 尚未计划条目。请将条目拖到此处以添加。
-    backlog_header_component:
-      label_toggle_backlog: 折叠/展开 %{name}
-      label_story_count:
-        zero: 积压工作中没有故事
-        one: 积压工作中有 %{count} 个故事
-        other: 积压工作中有 %{count} 个故事
     inbox_component:
       blankslate_title: 积压工作收件箱为空
       blankslate_description: 此项目中所有未完成的工作包都会自动出现在此处。
-      label_drag_work_package: 移动 %{name}
       show_more:
         other: 显示其他 %{count} 个条目
     inbox_item_component:
-      label_drag_work_package: 移动 %{name}
       label_actions: 工作包操作
     inbox_menu_component:
       action_menu:
@@ -159,21 +150,25 @@ zh-CN:
         receive_shared_description_html: 此项目从其他项目接收冲刺。请在%{settings_link}中管理此设置。
         receive_shared_no_actions_description_text: 此项目从其他项目接收共享冲刺，但目前没有可用冲刺。
         settings_link_text: 项目设置
+    backlog_bucket_menu_component:
+      label_actions: 积压工作存储桶操作
+      action_menu:
+        edit_backlog_bucket: 编辑积压工作存储桶
+        delete_backlog_bucket: 删除积压工作存储桶
+    backlog_bucket_header_component:
+      label_work_package_count:
+        zero: 积压工作存储桶中没有故事
+        one: 积压工作存储桶中有 %{count} 个故事
+        other: 积压工作存储桶中有 %{count} 个故事
     sprint_header_component:
-      label_toggle_backlog: 折叠/展开 %{name}
+      label_start_sprint: 开始
+      label_complete_sprint: 完成
+      start_sprint_disabled_reason_active_sprint: 另一个冲刺已处于有效状态。
+      start_sprint_disabled_reason_missing_dates: 必须设置开始和结束日期才能开始冲刺。
       label_story_count:
         zero: 冲刺中没有故事
         one: 冲刺中有 %{count} 个故事
         other: 冲刺中有 %{count} 个故事
-    backlog_menu_component:
-      label_actions: 积压工作操作
-      action_menu:
-        edit_sprint: 编辑冲刺
-        new_story: 新故事
-        stories_tasks: 故事/任务
-        task_board: 任务板
-        wiki: 维基
-        properties: 属性
     finish_sprint_dialog_component:
       title: 有工作正在进行中的条目
       body: "%{message} 您想对它们做什么？"
@@ -187,52 +182,33 @@ zh-CN:
     sprint_menu_component:
       label_actions: 冲刺操作
       action_menu:
-        start_sprint: 开始冲刺
-        complete_sprint: 完成冲刺
-        start_sprint_disabled_description: 另一个冲刺已处于有效状态。
-        start_sprint_missing_dates_description: 必须设置开始和结束日期才能开始冲刺。
         edit_sprint: 编辑冲刺
         add_work_package: 添加工作包
     story_component:
-      label_drag_story: 移动 %{name}
       label_actions: 故事操作
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 将 URL 复制到剪贴板
         copy_work_package_id: 复制工作包 ID
         move_menu: 移动
-  backlogs_points_burn_direction: 点数燃尽曲线
-  backlogs_product_backlog: 产品待办清单
-  backlogs_story: 故事
-  backlogs_story_type: 故事类型
-  backlogs_task: 任务
-  backlogs_task_type: 任务类型
-  backlogs_wiki_template: 冲刺 (Sprint) 的维基页面模板
-  backlogs_empty_title: 尚未定义版本
-  backlogs_empty_action_text: 要开始使用积压工作，请先创建一个版本
-  backlogs_not_configured_title: 未配置积压工作
-  backlogs_not_configured_description: 使用此模块前，需要设置故事和任务类型。
-  backlogs_not_configured_action_text: 配置积压工作
+        move_to_sprint: 移动到冲刺
+    burndown_chart:
+      show:
+        blankslate_title: 没有可用的燃尽数据
+        blankslate_description: 设置冲刺的开始和结束日期，以生成燃尽图。
   burndown:
     story_points: 故事点
     story_points_ideal: 故事点（理想）
-  errors:
-    attributes:
-      task_type:
-        cannot_be_story_type: 不能同时为故事类型
   label_backlog: 积压工作
+  label_backlog_bucket_edit: 编辑积压工作存储桶
+  label_backlog_bucket_new: 新建积压工作存储桶
   label_inbox: 收件箱
   label_backlogs: 待办清单
-  label_backlogs_unconfigured: 您尚未配置待办清单。请转到“%{administration} > %{plugins}”，然后单击此插件的 %{configure} 链接。设置字段后，返回到此页面开始使用工具。
-  label_blocks_ids: 被阻止的工作包 ID
   label_burndown_chart: 燃尽图
-  label_column_in_backlog: 待办清单中的列
-  label_used_as_backlog: 用作积压工作
   label_sprint_board: 冲刺面板
   label_points_burn_down: 减少
   label_points_burn_up: 增加
   label_sprint_edit: 编辑冲刺
-  label_sprint_impediments: 冲刺 (sprint) 障碍
   label_sprint_new: 新冲刺
   label_backlog_and_sprints: 积压工作和冲刺
   label_task_board: 任务板
@@ -270,18 +246,4 @@ zh-CN:
             caption: 在此项目中创建的冲刺将对当前项目的所有子项目可用。
             info: 共享冲刺将在所有项目中共享名称、状态，以及开始和结束日期。无法在接收和使用这些冲刺的项目中修改这些内容。
         sprint_sharing: 共享冲刺
-  rb_burndown_charts:
-    show:
-      blankslate_title: 没有可用的燃尽数据
-      blankslate_description: 设置冲刺的开始和结束日期，以生成燃尽图。
   remaining_hours: 剩余工时
-  version_settings_display_label: 待办清单中的列
-  version_settings_display_option_left: 左
-  version_settings_display_option_none: 无
-  version_settings_display_option_right: 右
-  setting_plugin_openproject_backlogs_story_types_caption: '被视为积压工作故事的类型（例如，功能、用户故事）。必须与任务类型不同。
-
-    '
-  setting_plugin_openproject_backlogs_task_type_caption: '用于故事任务的类型。必须与故事类型不同。
-
-    '

@@ -31,17 +31,15 @@
 module Backlogs
   class SprintMenuComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
-    include RbCommonHelper
 
-    attr_reader :sprint, :project, :current_user, :active_sprint_ids
+    attr_reader :sprint, :project, :current_user
 
-    def initialize(sprint:, project:, current_user: User.current, active_sprint_ids: nil, **system_arguments)
+    def initialize(sprint:, project:, current_user: User.current, **system_arguments)
       super()
 
       @sprint = sprint
       @project = project
       @current_user = current_user
-      @active_sprint_ids = active_sprint_ids
 
       @system_arguments = system_arguments
       @system_arguments[:menu_id] = dom_target(sprint, :menu)
@@ -52,56 +50,18 @@ module Backlogs
       )
     end
 
-    def stories
-      @sprint.work_packages
-    end
-
     private
 
     def show_task_board_link?
       sprint.task_board_for(project).present?
     end
 
-    def show_start_sprint_action?
-      sprint.in_planning? && ::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
-    end
-
-    def show_complete_sprint_action?
-      sprint.active? && ::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint:)
-    end
-
-    def disable_start_sprint_action?
-      sprint.in_planning? && (!sprint.date_range_set? || project_has_another_active_sprint?)
-    end
-
     def show_burndown_link?
       sprint.active?
     end
 
-    def start_sprint_action_description
-      return unless disable_start_sprint_action?
-
-      if sprint.date_range_set?
-        t(".action_menu.start_sprint_disabled_description")
-      else
-        t(".action_menu.start_sprint_missing_dates_description")
-      end
-    end
-
     def user_allowed?(permission)
       current_user.allowed_in_project?(permission, project)
-    end
-
-    def available_story_types
-      @available_story_types ||= story_types & project.types
-    end
-
-    def project_has_another_active_sprint?
-      (resolved_active_sprint_ids - [sprint.id]).any?
-    end
-
-    def resolved_active_sprint_ids
-      active_sprint_ids || Agile::Sprint.for_project(sprint.project).active.pluck(:id)
     end
   end
 end

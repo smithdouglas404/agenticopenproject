@@ -40,6 +40,18 @@ module OpenProject
         Rails.cache.fetch(CacheKey.key(*), **, &)
       end
 
+      # Like .fetch, but caches the result in RequestStore for the
+      # lifetime of the current request.
+      # Useful when accessing many times during a request to avoid
+      # multiple cache round-trips.
+      def fetch_request_cached(*, **, &)
+        key = CacheKey.key(*)
+
+        RequestStore.fetch(key) do
+          Rails.cache.fetch(key, **, &)
+        end
+      end
+
       def read(name, **)
         Rails.cache.read(CacheKey.key(name), **)
       end

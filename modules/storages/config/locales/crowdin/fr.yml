@@ -28,7 +28,7 @@ fr:
         name: Nom
         site: Identifiant du site
       storages/storage:
-        authentication_method: Méthode d’authentification
+        authentication_method: Méthode d'authentification
         creator: Créateur
         drive: ID du lecteur
         host: Hôte
@@ -38,7 +38,7 @@ fr:
         tenant: ID du répertoire (locataire)
     errors:
       messages:
-        invalid_host_url: n’est pas une URL valide.
+        invalid_host_url: n'est pas une URL valide.
         invalid_sharepoint_url: n'est pas une URL valide de site, de bibliothèque ou de document SharePoint.
         not_linked_to_project: n'est pas lié au projet.
       models:
@@ -224,16 +224,16 @@ fr:
       redirect_uri_incomplete:
         one_drive: Complétez la configuration avec la redirection de l'URI correcte.
         sharepoint: Complétez la configuration avec la redirection de l'URI correcte.
-    confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier sur OpenProject. Êtes-vous sûr de vouloir continuer ?
-    confirm_replace_oauth_client: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier auprès de %{provider_type} . Êtes-vous sûr de vouloir continuer ?
+    confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier sur OpenProject. Voulez-vous vraiment continuer ?
+    confirm_replace_oauth_client: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier auprès de %{provider_type} . Voulez-vous vraiment continuer ?
     delete_warning:
       project_storage_delete_result_1: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
       project_storage_delete_result_2: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés
-      project_storage_html: Êtes-vous sûr de vouloir retirer %{file_storage} de ce projet ?
+      project_storage_html: Voulez-vous vraiment retirer %{file_storage} de ce projet ?
       storage_delete_result_1: Le stockage sera retiré de tous les projets qui l'utilisent actuellement.
       storage_delete_result_2: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
       storage_delete_result_3: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés.
-      storage_html: Êtes-vous sûr de vouloir supprimer %{file_storage} en tant que stockage de fichiers externes ?
+      storage_html: Voulez-vous vraiment supprimer %{file_storage} en tant que stockage de fichiers externes ?
     dependencies:
       nextcloud:
         group_folders_app: Dossiers d'équipe
@@ -560,8 +560,8 @@ fr:
     upsell:
       one_drive:
         description: |-
-          Intégrez votre disque OneDrive en tant que stockage de fichiers avec OpenProject. Téléchargez des fichiers et liez-les directement à
-          work packages dans un projet.
+          Intégrez votre disque OneDrive en tant qu'espace de stockage de fichiers avec OpenProject. Importez des fichiers et liez-les directement à
+          des lots de travaux dans un projet.
         title: Intégration de OneDrive
       sharepoint:
         description: Intégrez votre OneDrive/SharePoint en tant qu'espace de stockage de fichiers avec OpenProject. Téléversez des fichiers et liez-les directement aux lots de travaux d'un projet.

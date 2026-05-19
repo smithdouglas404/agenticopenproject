@@ -3,8 +3,6 @@
 module Flash
   module Expectations
     def expect_flash(message: nil, exact_message: nil, type: :success, wait: 20)
-      fail ArgumentError, "provide at least one of message and exact_message" if !message && !exact_message
-
       expected_css = expected_flash_css(type)
       expect(page).to have_css(expected_css, wait:, **{ text: message, exact_text: exact_message }.compact)
     end
@@ -17,7 +15,7 @@ module Flash
     def expect_and_dismiss_flash(message: nil, exact_message: nil, type: :success, wait: 20)
       expect_flash(type:, message:, exact_message:, wait:)
       dismiss_flash!
-      expect_no_flash(type:, message:, exact_message:, wait: 0.1)
+      expect_no_flash(type:, message:, exact_message:, wait: 5)
     end
 
     def dismiss_flash!

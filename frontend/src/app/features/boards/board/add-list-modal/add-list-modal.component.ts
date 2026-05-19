@@ -27,14 +27,13 @@
 //++
 
 import {
-  ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild,
 } from '@angular/core';
 import { OpModalLocalsMap } from 'core-app/shared/components/modal/modal.types';
 import { OpModalComponent } from 'core-app/shared/components/modal/modal.component';
 import { OpModalLocalsToken } from 'core-app/shared/components/modal/modal.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { Board } from 'core-app/features/boards/board/board';
-import { StateService } from '@uirouter/core';
 import { BoardService } from 'core-app/features/boards/board/board.service';
 import { BoardActionsRegistryService } from 'core-app/features/boards/board/board-actions/board-actions-registry.service';
 import { BoardActionService } from 'core-app/features/boards/board/board-actions/board-action.service';
@@ -42,6 +41,7 @@ import { HalResourceNotificationService } from 'core-app/features/hal/services/h
 import { tap } from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import {
   firstValueFrom,
   Observable,
@@ -52,6 +52,10 @@ import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 @Component({
   templateUrl: './add-list-modal.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddListModalComponent extends OpModalComponent implements OnInit {
   @ViewChild(OpAutocompleterComponent, { static: true }) public ngSelectComponent:OpAutocompleterComponent;
@@ -113,11 +117,11 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
     readonly cdRef:ChangeDetectorRef,
     readonly boardActions:BoardActionsRegistryService,
     readonly halNotification:HalResourceNotificationService,
-    readonly state:StateService,
     readonly boardService:BoardService,
     readonly I18n:I18nService,
     readonly apiV3Service:ApiV3Service,
-    readonly currentProject:CurrentProjectService) {
+    readonly currentProject:CurrentProjectService,
+    readonly pathHelper:PathHelperService) {
     super(locals, cdRef, elementRef);
   }
 
@@ -141,9 +145,12 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
       .then((board) => {
         this.inFlight = false;
         this.closeMe();
-        void this.state.go('boards.partitioned.show', { board_id: board.id, isNew: true });
+        void Turbo.visit(`${this.pathHelper.boardsPath(this.currentProject.identifier)}/${board.id}`);
       })
-      .catch(() => (this.inFlight = false));
+      .catch(() => {
+        this.inFlight = false;
+        this.cdRef.detectChanges();
+      });
   }
 
   onNewActionCreated() {
@@ -190,6 +197,7 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
       .warningTextWhenNoOptionsAvailable(hasMember)
       .then((text) => {
         this.warningText = text;
+        this.cdRef.detectChanges();
       })
       .catch(() => {});
     this.showWarning = this.ngSelectComponent.ngSelectInstance.searchTerm !== undefined && (values.length === 0);

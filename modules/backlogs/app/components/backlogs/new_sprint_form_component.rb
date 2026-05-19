@@ -33,6 +33,7 @@ module Backlogs
     include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
     FORM_ID = NewSprintDialogComponent::FORM_ID
 
@@ -51,9 +52,9 @@ module Backlogs
 
     def form_url
       if @sprint.new_record?
-        project_sprints_path(@sprint.project_id)
+        project_backlogs_sprints_path(@sprint.project_id, all_backlogs_params)
       else
-        update_agile_sprint_project_sprint_path(@sprint.project_id, @sprint.id)
+        project_backlogs_sprint_path(@sprint.project_id, @sprint.id, all_backlogs_params)
       end
     end
 
@@ -61,7 +62,8 @@ module Backlogs
       {
         controller: "refresh-on-form-changes",
         "refresh-on-form-changes-target": "form",
-        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_sprints_path(@sprint.project_id)
+        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_backlogs_sprints_path(@sprint.project_id,
+                                                                                                     all_backlogs_params)
       }
     end
   end

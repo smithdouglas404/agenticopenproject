@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
       id: dom_target(story, :menu, :open_details),
       tag: :a,
       label: t(:"js.button_open_details"),
-      href: details_backlogs_project_backlogs_path(project, story),
+      href: project_backlogs_backlog_details_path(project, story, all_backlogs_params),
       content_arguments: { data: { turbo_frame: "content-bodyRight", turbo_action: "advance" } }
     ) do |item|
       item.with_leading_visual_icon(icon: :"op-view-split")
@@ -67,7 +67,7 @@ See COPYRIGHT and LICENSE files for more details.
       item.with_leading_visual_icon(icon: :hash)
     end
 
-    if show_move_items?
+    if show_move_submenu?
       list.with_divider
       list.with_item(
         component_klass: Primer::Alpha::ActionMenu::SubMenuItem,
@@ -79,6 +79,19 @@ See COPYRIGHT and LICENSE files for more details.
 
         with_item_group(move_menu) do
           build_move_menu(move_menu)
+        end
+
+        with_item_group(move_menu) do
+          if show_move_to_sprint?
+            move_menu.with_item(
+              id: dom_target(story, :menu, :move_to_sprint),
+              label: t(".action_menu.move_to_sprint"),
+              href: move_to_sprint_dialog_project_backlogs_work_package_path(project, sprint, story, all_backlogs_params),
+              content_arguments: { data: { controller: "async-dialog" } }
+            ) do |item|
+              item.with_leading_visual_icon(icon: :zap)
+            end
+          end
         end
       end
     end

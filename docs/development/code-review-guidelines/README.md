@@ -16,7 +16,10 @@ The same is true for eslint. Your editor will likely have support for eslint che
 
 **Lefthook**
 
-For automatically linting your files on committing them, please have a look at [Lefthook](https://github.com/evilmartians/lefthook). You can install these rules by using `bundle exec lefthook install`.
+For automatically linting your files on committing them, please have a look
+at [Lefthook](https://github.com/evilmartians/lefthook). You can install these rules by using `lefthook install`. There
+are several options on how to install `lefthook` on your system, including using `brew`, `apt`, `bundle`, or `npm`. For
+example, one can add a `Gemfile.local` and thus the `lefthook` to the bundle.
 
 ### Structure of commit messages
 

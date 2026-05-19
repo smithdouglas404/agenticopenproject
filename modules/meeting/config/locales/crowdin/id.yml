@@ -32,6 +32,7 @@ id:
         location: Lokasi
         duration: Durasi
         notes: Note
+        recurrence_start_time: Scheduled start time
         participants: Partisipan
         participant:
           other: "%{count} Peserta"
@@ -41,6 +42,9 @@ id:
         start_date: Tanggal
         start_time: Waktu mulai
         start_time_hour: Waktu mulai
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Judul
@@ -48,9 +52,15 @@ id:
         duration_in_minutes: Durasi
         description: Note
         presenter: Pembawa acara
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Judul
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Kekerapan
         interval: Sela Waktu
         start_date: Mulai pada
@@ -59,6 +69,10 @@ id:
         end_after: Seri pertemuan berakhir
         end_date: Tanggal finish
         iterations: Kejadian
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -184,6 +198,7 @@ id:
   label_notify: Kirim untuk ulasan
   label_icalendar: Kirim iCalendar
   label_icalendar_download: Unduh acara iCalendar
+  label_view_meeting: View meeting
   label_view_meeting_series: Lihat jajaran rapat
   label_meeting_series: Seri rapat
   label_version: Versi
@@ -414,6 +429,11 @@ id:
     ical_response:
       update_failed: Tidak dapat memperbarui status partisipasi.
       meeting_not_found: Rapat tidak ditemukan untuk UID yang diberikan.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings you are participating in will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Untitled section
     delete_confirmation: Deleting the section will also delete all of its agenda items. Are you sure you want to do this?
@@ -650,9 +670,9 @@ id:
   text_exit_draft_mode_dialog_template_title: Buka acara yang pertama dalam seri rapat ini?
   text_exit_draft_mode_dialog_template_subtitle: Anda tidak dapat kembali ke mode draf setelah ini.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Rapat ini tidak dapat disunting kembali.
   text_meeting_not_present_anymore: Rapat ini telah dihapus. Silakan pilih rapat yang lain.
@@ -671,9 +691,12 @@ id:
   text_agenda_item_duplicate_in_next_meeting: Apakah Anda yakin ingin menambahkan salinan item agenda ini ke rapat berikutnya pada %{date} pukul %{time}? Hasil rapat tidak akan diduplikasi.
   text_agenda_item_duplicated_in_next_meeting: Agenda item yang sama terulang dalam rapat berikutnya, yaitu pada %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Paket kerja ini belum dijadwalkan dalam agenda rapat mendatang.
-  text_agenda_item_no_available_occurrence: All upcoming occurrences have been cancelled.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Note: Skipping cancelled occurrence on %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Note: Skipping %{count} cancelled occurrences.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Gunakan tombol “Tambahkan ke rapat” untuk menambahkan paket kerja ini ke rapat yang akan datang.
   text_work_package_has_no_past_meeting_agenda_items: Paket kerja ini tidak ditambahkan sebagai agenda dalam rapat sebelumnya.
   text_email_updates_muted: Pembaruan kalender melalui email telah dinonaktifkan. Peserta tidak akan menerima undangan yang diperbarui melalui email saat Anda melakukan perubahan.

@@ -29,20 +29,22 @@
 #++
 
 module Backlogs
-  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (RbStoriesController#menu).
+  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (Backlogs::WorkPackagesController#menu).
   # +menu_id+ must match the row ActionMenu in StoryComponent.
   class StoryMenuListComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include CommonHelper
 
-    attr_reader :story, :sprint, :project, :max_position, :current_user
+    attr_reader :story, :sprint, :project, :max_position, :current_user, :open_sprints_exist
 
-    def initialize(story:, sprint:, project:, max_position:, current_user: User.current)
+    def initialize(story:, sprint:, project:, max_position:, open_sprints_exist:, current_user: User.current)
       super()
 
       @story = story
       @sprint = sprint
       @project = project
       @max_position = max_position
+      @open_sprints_exist = open_sprints_exist
       @current_user = current_user
     end
 
@@ -55,6 +57,14 @@ module Backlogs
     def show_move_items?
       allowed_to_manage_sprint_items? &&
         !(first_item? && last_item?)
+    end
+
+    def show_move_to_sprint?
+      allowed_to_manage_sprint_items? && open_sprints_exist
+    end
+
+    def show_move_submenu?
+      show_move_items? || show_move_to_sprint?
     end
 
     def allowed_to_manage_sprint_items?
@@ -77,7 +87,7 @@ module Backlogs
         id: dom_target(story, :menu, direction),
         label:,
         tag: :button,
-        href: reorder_backlogs_project_sprint_story_path(project, sprint, story),
+        href: move_href,
         form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)
@@ -90,6 +100,10 @@ module Backlogs
 
     def last_item?
       story.position == max_position
+    end
+
+    def move_href
+      reorder_project_backlogs_work_package_path(project, sprint, story, all_backlogs_params)
     end
   end
 end

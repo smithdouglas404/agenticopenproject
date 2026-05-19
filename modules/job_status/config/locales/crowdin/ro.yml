@@ -6,7 +6,7 @@ ro:
     description: Listare și stare lucrări de fundal.
   job_status_dialog:
     download_starts: Descărcarea ar trebui să înceapă automat.
-    click_to_download: Or, [click here](download_url) to download.
+    click_to_download: Or [click here](download_url) to download.
     title: Starea lucrului în fundal
     redirect: Sunteți redirecționat.
     redirect_link: Clic aici pentru a continua.

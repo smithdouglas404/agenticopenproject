@@ -46,6 +46,7 @@ id:
         zero: Tidak ada grup yang ditemukan oleh filter
       destroy:
         title: Hapus filter tersinkronisasi %{name}
+        heading: Remove synchronized filter %{name}?
         confirmation: Jika Anda melanjutkan, filter tersinkronisasi %{name} dan semua grup %{groups_count} yang dibuat melaluinya akan dihapus.
         removed_groups: 'Peringatan: Ini akan menghapus grup berikut dari OpenProject dan menghapusnya dari semua proyek!'
         verification_html: Enter the filter name %{name} to verify the deletion.
@@ -59,9 +60,9 @@ id:
       add_new: Tambahkan grup LDAP tersinkronisasi
       destroy:
         title: Hapus grup tersinkronisasi %{name}
+        heading: Remove synchronized group %{name}?
         confirmation: Jika Anda melanjutkan, grup yang disinkronkan %{name} dan semua %{users_count} pengguna yang disinkronkan melaluinya akan dihapus.
-        info: 'Catatan: Grup OpenProject itu sendiri dan anggota yang ditambahkan di luar sinkronisasi LDAP ini tidak akan dihapus.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: 'Modul ini memungkinkan Anda mengatur sinkronisasi antara grup LDAP dan OpenProject.  Itu tergantung pada grup LDAP yang perlu menggunakan atribut <em>groupOfNames / memberOf</em> yang disetel untuk bekerja dengan OpenProject.  <br/> Grup disinkronkan setiap jam melalui tugas cron.  <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Lihat dokumentasi kami tentang topik ini</a>.
 
         '

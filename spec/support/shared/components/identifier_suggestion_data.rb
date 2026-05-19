@@ -18,15 +18,15 @@ RSpec.shared_examples "renders identifier_suggestion_data" do
     )
   end
 
-  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
     it "sets mode to semantic" do
       expect(rendered_component).to have_css("[data-projects--identifier-suggestion-mode-value='semantic']")
     end
   end
 
-  context "with numeric identifiers", with_settings: { work_packages_identifier: "numeric" } do
-    it "sets mode to legacy" do
-      expect(rendered_component).to have_css("[data-projects--identifier-suggestion-mode-value='legacy']")
+  context "with classic identifiers", with_settings: { work_packages_identifier: "classic" } do
+    it "sets mode to classic" do
+      expect(rendered_component).to have_css("[data-projects--identifier-suggestion-mode-value='classic']")
     end
   end
 end

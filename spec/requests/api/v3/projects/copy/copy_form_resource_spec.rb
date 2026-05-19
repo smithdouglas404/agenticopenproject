@@ -244,7 +244,7 @@ RSpec.describe API::V3::Projects::Copy::CreateFormAPI, content_type: :json do
     end
   end
 
-  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
     context "when name is provided but identifier is not" do
       let(:params) do
         { name: "My copied project" }

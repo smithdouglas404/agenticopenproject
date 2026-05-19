@@ -33,5 +33,34 @@ module Wikis
     self.table_name = "wiki_providers"
 
     has_many :page_links, dependent: :destroy
+
+    scope :enabled, -> { where(enabled: true) }
+    scope :visible, lambda { |user = User.current|
+      if user.admin? || user.allowed_in_any_project?(:view_wiki_page_links)
+        all
+      else
+        none
+      end
+    }
+
+    validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
+
+    before_create :generate_universal_identifier
+
+    def to_s = self.class.registry_prefix
+
+    class << self
+      def registry_prefix = raise SubclassResponsibilityError
+    end
+
+    def resolve(registry_path, **init_options)
+      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(model: self, **init_options)
+    end
+
+    private
+
+    def generate_universal_identifier
+      self.universal_identifier ||= SecureRandom.uuid
+    end
   end
 end

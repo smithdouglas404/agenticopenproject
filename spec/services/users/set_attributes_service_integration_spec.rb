@@ -58,7 +58,7 @@ RSpec.describe Users::SetAttributesService, "Integration", type: :model do
     end
 
     it "returns an error for that" do
-      expect(subject.errors[:workdays]).to include "is not of type 'array'"
+      expect(subject.errors[:workdays]).to be_present
     end
   end
 

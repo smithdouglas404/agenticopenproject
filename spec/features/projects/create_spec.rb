@@ -479,9 +479,7 @@ RSpec.describe "Projects", "creation",
 
             fill_in "Text for Admins only", with: "foo"
 
-            wait_for_turbo do
-              click_on "Complete"
-            end
+            click_on "Complete"
 
             expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -562,7 +560,7 @@ RSpec.describe "Projects", "creation",
     end
   end
 
-  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
     it "auto-suggests an identifier when the name field is blurred" do
       projects_page.create_new_workspace
       click_on "Continue"
@@ -594,6 +592,7 @@ RSpec.describe "Projects", "creation",
 
       fill_in "Name", with: "Flight Planning Algorithm"
       find("body").click
+      expect(page).to have_field "Identifier", with: "FPA"
 
       expect(page).to have_field "Identifier", with: "FPA"
       fill_in "Identifier", with: "3INVALID"

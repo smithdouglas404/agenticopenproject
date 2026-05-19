@@ -141,10 +141,6 @@ RSpec.describe WorkPackages::BaseContract, type: :model do
       .to receive(:relatable)
             .and_return(relatable_scope)
 
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ "points_burn_direction" => "down",
-                                                                         "wiki_template" => "",
-                                                                         "story_types" => [type_feature.id],
-                                                                         "task_type" => type_task.id.to_s })
   end
 
   describe "story_points" do

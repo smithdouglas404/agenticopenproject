@@ -37,18 +37,14 @@
     error_invalid_backup_code: Ugyldig 2FA backup-kode
     channel_unavailable: Leveringskanalen %{channel} er utilgjengelig.
     no_valid_phone_number: Det finnes ikke et gyldig telefonnummer.
-    label_pwd_confirmation: Passord
-    notice_pwd_confirmation: Du må bekrefte passordet ditt når du endrer disse innstillingene.
     label_device_type: Enhetstype
     label_default_device: Standard 2FA-enhet
     label_device: 2FA-enhet
     label_devices: 2FA-enheter
-    label_one_time_password: Engangspassord
     label_2fa_enabled: Tofaktorautentisering er aktiv
     label_2fa_disabled: Tofaktorautentisering ikke aktiv
     text_otp_delivery_message_sms: Ditt engangspassord for %{app_title} er %{token}
     text_otp_delivery_message_voice: 'Ditt %{app_title}  engangspassord er %{pause}%{token}. %{pause} Jeg repeterer: %{pause}%{token}'
-    text_enter_2fa: Vennligst skriv inn engangspassordet fra enheten.
     text_2fa_enabled: Ved hvert innlogging vil du bli bedt om å legge inn et OTP-token fra standard 2FA-enheten.
     text_2fa_disabled: For å aktivere tofaktorautentisering, bruk knappen ovenfor for å registrere en ny 2FA-enhet. Hvis du allerede har en enhet, må du gjøre det til en standard.
     login:
@@ -69,7 +65,6 @@
       text_remember: |
         Angi dette til større enn null for å tillate brukerne å huske 2FA autentisering i et gitt antall dager. (Automatic Translation)
         De vil ikke bli bedt om å re-angi den i løpet av den perioden. Kan bare angis når den ikke håndheves av konfigurasjonen.
-      error_invalid_settings: 2FA strategiene du har valgt er ugyldige
       failed_to_save_settings: 'Kunne ikke oppdatere 2FA-innstillinger: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@
       text_2fa_enabled: Ved hver pålogging vil denne brukeren bli bedt om å legge inn en OTP-nøkkel fra standard 2FA-enheten.
       text_2fa_disabled: Brukeren har ikke satt opp en 2FA-enhet via sin «Min konto side»
       only_sms_allowed: Bare SMS-levering kan angis for andre brukere.
-    upsell:
-      title: Tofaktorautentisering
-      description: Styrk sikkerheten til OpenProject ved å tilby (eller håndheve) godkjenning av tofaktor for alle prosjektmedlemmer.
     backup_codes:
-      none_found: Det finnes ingen sikkerhetskoder for denne kontoen.
       singular: Sikkerhetskopieringskode
       plural: Sikkerhetskopieringskoder
-      your_codes: for din %{app_name} konto %{login}
       overview_description: |
         Hvis du ikke klarer å få tilgang til de to faktorene, kan du bruke en sikkerhetskode for å få tilgang til kontoen din.
         Bruk følgende knapp for å generere et nytt sett med sikkerhetskoder.
@@ -173,19 +163,15 @@
       clear_cookie: Klikk her for å fjerne alle huskede 2FA-økter.
       cookie_removed: Alle huskede 2FA-økter har blitt fjernet.
       dont_ask_again: Opprette informasjonskapsel for å huske 2FA-autentisering på denne klienten i %{days} dager.
-  field_phone: Mobiltelefon
   field_otp: Engangspassord
   notice_account_otp_invalid: Ugyldig engangspassord.
   notice_account_otp_expired: Engangs-passordet du skrev inn, utløp.
   notice_developer_strategy_otp: 'Utvikler strategi generert av følgende engangspassord: %{token} (kanal: %{channel})'
   notice_account_otp_send_failed: Ditt engangspassord kunne ikke sendes.
   notice_account_has_no_phone: Ingen mobilnummer er knyttet til kontoen din.
-  label_expiration_hint: "%{date} eller på logg ut"
-  label_actions: Handlinger
   label_confirmed: Bekreftet
   button_continue: Fortsette
   button_make_default: Merk som standard
-  label_unverified_phone: Mobiltelefonen er ikke bekreftet ennå
   notice_phone_number_format: 'Vennligst skriv inn nummeret i følgende format: + XX XXXXXXXX.'
   text_otp_not_receive: Andre verifikasjonsmetoder
   text_send_otp_again: 'Send engangspassord på nytt ved å:'

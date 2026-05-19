@@ -25,7 +25,7 @@ da:
     name: OpenProject Documents
     description: An OpenProject plugin to allow creation of documents in projects.
   attributes:
-    collaborative_editing_hocuspocus_url: Hocuspocus server URL
+    collaborative_editing_hocuspocus_url: URL til Hocuspocus-server
   activerecord:
     errors:
       models:
@@ -71,13 +71,11 @@ da:
         Kontakt din administrator for at aktivere tekstsamarbejde i realtid, hvis du vil have adgang til dette dokument.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Dokumentet kan ikke åbnes, fordi serveren til tekstsamarbejde i realtid ikke kan nås.
-          Kontakt venligst administratoren, hvis problemet fortsætter.
+        description_server_unavailable: |-
+          Dokumentet kan ikke åbnes, da realtidstekst-samarbejdsserveren ikke kan nås.
+          Kontakt administratoren, hvis problemet fortsætter.
         action: Forsøg igen
-      connection_recovery_notice:
-        description: Forbindelsen til realtids-tekstsamarbejdsserveren er blevet genoprettet.
-      tabs: Document tabs
+      tabs: Dokumentfaner
     index_page:
       name: Navn
       type: Type
@@ -88,6 +86,9 @@ da:
       types: Typer
       collaboration_settings: Samarbejde i realtid
     last_updated_at: Last saved %{time}.
+    info_line:
+      currently_offline: Ingen internetforbindelse p.t.
+      connection_restored: Internetforbindelse reetableret.
     active_editors: Aktive redaktører
     active_editors_count:
       one: 1 active editor
@@ -123,8 +124,8 @@ da:
           some_unwritable: Nogle værdier konfigureres via miljøvariabler og kan ikke redigeres her.
         hocuspocus_server_url:
           label: URL til Hocuspocus-server
-          caption: The WebSocket address of a working Hocuspocus server.
-          invalid_scheme: Must use a WebSocket protocol (ws:// or wss://).
+          caption: WebSocket-adressen på en fungerende Hocuspocus-server.
+          invalid_scheme: Skal anvende en WebSocket-protokol (ws:// eller wss://).
         hocuspocus_server_secret:
           label: Klienthemmelighed
           caption: Indsæt den hemmelighed, der er leveret af Hocuspocus-serveren.

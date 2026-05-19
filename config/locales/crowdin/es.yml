@@ -114,10 +114,11 @@ es:
     import:
       title: Importar
     jira:
-      title: Importación desde Jira
+      title: Migrador Jira
       description: Utilice esta herramienta para importar datos desde su instancia de Jira. Puede configurar varios hosts de Jira y elegir qué importar en cada ejecución de importación.
       errors:
         cannot_delete_with_imports: No se puede eliminar el host de Jira con importaciones existentes
+        custom_field_creation_failed: 'No se ha podido crear el campo personalizado «%{name}»: %{message}'
       blank:
         title: Aún no se han configurado los hosts de Jira
         description: Configure un host de Jira para comenzar a importar elementos desde Jira a esta instancia de OpenProject.
@@ -125,8 +126,12 @@ es:
         title: Configuración de Jira
         new: Nueva configuración
       banner:
-        title: Importación limitada
-        description: 'Esta herramienta de importación se encuentra actualmente en fase beta y solo puede importar datos básicos: proyectos, incidencias (nombre, título, descripción, archivos adjuntos), usuarios (nombre, correo electrónico, pertenencia a proyectos), estados y tipos. No puede importar flujos de trabajo, campos personalizados, relaciones entre incidencias ni permisos. Actualmente solo es compatible con las versiones 10.x y 11.x de Jira Server/Data Center. Por el momento, no es compatible con instancias en la nube.'
+        title: Beta - ¡Pruébelo!
+        description: Este Migrador de Jira se encuentra actualmente en fase beta. En este momento solo es compatible con las versiones 10.x y 11.x de Jira Server/Data Center. Por el momento, no es compatible con instancias en la nube.
+        contribution_callout: 'Le rogamos que nos ayude a mejorar el Migrador de Jira con sus comentarios y aportando datos privados. Puede [unirse a la comunidad de desarrollo](link) del Migrador de Jira.
+
+          '
+        supported_versions: ''
       form:
         fields:
           name: Nombre
@@ -154,6 +159,7 @@ es:
         connection_timeout: 'La conexión con el servidor de Jira ha expirado: %{message}'
         parse_error: 'Error al analizar la respuesta de la API de Jira: %{message}'
         api_error: La API de Jira ha devuelto el estado de error %{status}
+        401_error: La API de Jira ha devuelto un error 401. Es posible que su token de autenticación haya caducado o que no disponga de los permisos necesarios. Asegúrese de que el token pertenece a un administrador de Jira.
       columns:
         projects: Proyectos
         last_change: Última modificación
@@ -240,8 +246,10 @@ es:
               caption_done: Completado
               label_info: Tenga en cuenta que esta herramienta de importación se encuentra en fase beta y no puede importar todos los tipos de datos. A continuación se ofrece un resumen de lo que la instancia de host de Jira ofrece para importar y lo que esta herramienta puede importar en este momento.
               description: Seleccione los datos que desea importar de entre los datos disponibles obtenidos de la instancia de host de Jira.
-              label_available_data: Datos disponibles
-              label_not_available_data: No disponible para la importación
+              label_supported_data: Datos admitidos
+              label_coming_soon: Próximamente (2T 2026)
+              label_coming_later: Más tarde
+              label_available_server_data: Datos disponibles en %{server_info}
               button_select_projects: Seleccionar proyectos para importar
               button_continue: Continuar
               label_import: Seleccione los proyectos que desea importar.
@@ -250,16 +258,23 @@ es:
               label_progress: Obteniendo datos de Jira...
               elements:
                 relations: Relaciones entre incidencias
+                project_ids: Identificadores de proyecto
+                issue_ids: Identificadores de incidencias
+                sprints: Asignaciones de sprint
                 workflows: Flujos de trabajo a nivel de proyecto
-                users: Usuarios
-                sprints: Sprints
                 schemes: Esquemas
-                permissions: Permisos de usuario, grupo y proyecto
+                permissions: Permisos
+                projects: Proyectos
+                issues: Incidencias
+                issue_details: Descripción de la incidencia, historial, comentarios y archivos adjuntos
+                custom_fields: Un subconjunto de campos personalizados
+                users: Usuarios y grupos implicados
             confirm_import:
               title: Importar datos
               caption: Revise la configuración de importación y comience la importación
               caption_done: Completado
-              label_available_data: Datos disponibles para importar
+              label_available_data: Datos a importar
+              label_users_import_explanation: Usuarios que participan en los proyectos seleccionados (miembros de grupos incluidos)
               button_start: Iniciar importación
               description: Está a punto de iniciar una importación con la siguiente configuración.
               label_progress: Importando...
@@ -271,29 +286,29 @@ es:
               label_results: Importado
               label_revert: Revertir importación
               button_revert: Revertir importación
-              button_done: Finalizar importación
-              preview_description: Los datos importados se encuentran actualmente en modo de revisión. Haga clic en «Finalizar importación» para que la importación sea permanente o en «Revertir importación» para deshacer todos los cambios realizados en esta importación.
-              label_finalize_import: Finalizar importación
-              label_finalizing: Finalizando importación...
-              label_finalizing_done: Importación finalizada.
+              button_done: Aprobar la importación
+              preview_description: Los datos importados se encuentran actualmente en modo de revisión. Haga clic en «Aprobar la importación» para que la importación sea permanente o en «Revertir importación» para deshacer todos los cambios realizados en esta importación.
+              label_finalize_import: Aprobar la importación
+              label_finalizing: Aprobando la importación...
+              label_finalizing_done: Importación aprobada.
               label_revert_progress: Revirtiendo importación...
               label_reverted: Importación revertida.
           select_dialog:
             filter_projects: Filtrar por texto
           import_dialog:
-            title: "¿Iniciar esta importación?"
+            title: "¡Asegúrese de tener una copia de seguridad!"
             confirm_button: Iniciar importación
-            description: 'Este importador es una función alfa. Todavía no es capaz de importar todos los datos de Jira y puede dejar datos incompletos en esta instancia de OpenProject. <b>No utilice un entorno de producción y cree una copia de seguridad de sus datos de OpenProject antes de comenzar.</b>
+            description: 'Las importaciones modifican la configuración de OpenProject. Una vez finalizada la importación, tendrá la oportunidad de revisar los cambios. Durante la revisión, podrá elegir entre revertir o aprobar la importación. Una vez aprobada la importación, ya no será posible revertirla. Por lo tanto, le rogamos que se asegure de disponer de [una copia de seguridad de su instancia de OpenProject](link) antes de continuar.
 
               '
-            confirm: Comprendo y he hecho los preparativos necesarios
+            confirm: Entiendo y tengo una copia de seguridad
           revert_dialog:
             title: "¿Revertir esta importación de forma permanente?"
-            description: Esto eliminará todos los objetos importados (incluidos proyectos completos) incluso si hubo actividad de usuario en esos proyectos después de la importación en OpenProject.
+            description: Esto eliminará todos los objetos importados (incluidos proyectos completos).
             confirm: Entiendo que esta reversión eliminará los datos de forma permanente
           finalize_dialog:
-            title: "¿Finalizar esta importación?"
-            description: Una vez finalizada, esta importación ya no se podrá revertir. Todos los datos importados se importarán de forma permanente.
+            title: "¿Aprobar esta importación?"
+            description: Una vez aprobada, esta importación ya no podrá revertirse. Todos los datos importados pasarán a ser permanentes.
             confirm: Entiendo que esta acción no se puede deshacer
             confirm_button: Entendido
           select_projects:
@@ -387,9 +402,9 @@ es:
         notification_text_default: "<p>Hola,</p> <p>Se ha creado un nuevo proyecto: projectValue:name</p> <p>Muchas gracias</p>\n"
       work_packages_identifier:
         page_header:
-          description: Elige entre identificadores numéricos básicos para los paquetes de trabajo o identificadores específicos del proyecto, en los que el identificador del proyecto se antepone al identificador del paquete de trabajo.
+          description: Elige entre los ID numéricos clásicos de los paquetes de trabajo o los ID semánticos específicos del proyecto, que añaden el identificador del proyecto al principio del ID del paquete de trabajo.
         banner:
-          existing_identifiers_notice: 'Los identificadores actuales de %{project_count} proyectos no cumplen los requisitos para ser identificadores alfanuméricos basados en proyectos. OpenProject puede actualizarlos automáticamente para que sean válidos, tal y como se muestra en los ejemplos siguientes. Haz clic en «Corregir automáticamente y guardar» para actualizar los identificadores de todos los proyectos de esta manera y habilitar los identificadores alfanuméricos basados en proyectos.
+          existing_identifiers_notice: 'Los identificadores actuales de %{project_count} proyectos no cumplen los requisitos para ser identificadores semánticos basados en proyectos. OpenProject puede actualizarlos automáticamente para que sean válidos, tal y como se muestra en los ejemplos siguientes. Haz clic en «Corregir automáticamente y guardar» para actualizar los identificadores de todos los proyectos de esta manera y habilitar los identificadores semánticos basados en proyectos.
 
             '
         box_header:
@@ -398,10 +413,14 @@ es:
           label_autofixed_suggestion: Identificador futuro
           label_example_work_package_id: Ejemplo de ID del paquete de trabajo
         autofix_preview:
-          error_too_long: Debe tener menos de 5 caracteres
+          error_too_long: Debe tener 10 caracteres o menos
+          error_numerical: No puede ser puramente numérico
+          error_does_not_start_with_letter: Debe comenzar con una letra mayúscula
           error_special_characters: No se permiten caracteres especiales
+          error_not_fully_uppercased: Debe estar en mayúsculas
           error_in_use: Ya está en uso como identificador activo de otro proyecto
           error_reserved: Reservado por el historial de identificadores de otro proyecto
+          error_unknown: Necesita revisión manual
           remaining_projects:
             one: "... 1 proyecto más"
             other: "... %{count} proyectos más"
@@ -416,16 +435,13 @@ es:
           checkbox_label: Entiendo que esto cambiará de forma permanente todos los ID de los paquetes de trabajo
         success_banner: Se ha actualizado correctamente el formato del identificador del paquete de trabajo.
         in_progress:
-          banner_message: Actualmente se están actualizando los identificadores de proyectos para convertirlos en identificadores alfanuméricos basados en proyectos. Esto puede llevar algún tiempo.
+          converting_banner_message: Actualmente se están convirtiendo los identificadores de proyectos a formato semántico. Esto puede llevar algún tiempo.
+          reverting_banner_message: Actualmente se están volviendo a establecer los identificadores de proyectos en su formato clásico. Esto puede llevar algún tiempo.
     workflows:
       tabs:
         default_transitions: Transiciones predeterminadas
         user_author: Usuario es autor
         user_assignee: Usuario es asignado
-      index:
-        description: Configura las transiciones de estado para cada tipo de paquete de trabajo.
-        type_filter:
-          label: Filtrar por nombre de tipo…
       status_button: Estado
       statuses_dialog:
         title: Estados
@@ -679,6 +695,37 @@ es:
   danger_dialog:
     confirmation_live_message_checked: El botón para continuar ya está activo.
     confirmation_live_message_unchecked: El botón para continuar ya está inactivo. Debe marcar la casilla para continuar.
+  departments:
+    edit: Editar departamento
+    add_user: Agregar usuario
+    add_department: Agregar departamento
+    blankslate:
+      heading: Su organización no tiene departamentos
+      description: 'Empiece añadiendo departamentos o usuarios a la organización. Cada departamento puede utilizarse para crear una jerarquía por debajo de él; para navegar y crear subdepartamentos dentro de una jerarquía, haga clic en el elemento creado.
+
+        '
+      add_button: Añadir
+    detail_blankslate:
+      heading: Este departamento no tiene ningún nivel jerárquico por debajo
+      description: Añada departamentos o usuarios para crear subelementos dentro de otro.
+      add_button: Añadir
+    add_department_form:
+      name_label: Nombre del departamento
+      name_placeholder: Introduzca el nombre del departamento
+    move_user_dialog:
+      title: El usuario ya está en un departamento
+      heading: "¿Mover al usuario a este departamento?"
+      description: "%{user} es actualmente miembro de %{from_department}. Si se le traslada, dejará de formar parte de ese departamento."
+      confirm: Mover usuario
+    context_menu:
+      add_sub_department: Añadir subdepartamento
+      add_user: Agregar usuario
+    flash:
+      user_added: El usuario se ha añadido correctamente al departamento.
+      user_removed: El usuario se ha eliminado correctamente al departamento.
+      department_created: El departamento se ha creado correctamente.
+    errors:
+      move_user_failed: No se ha podido trasladar al usuario de un departamento a otro.
   pagination:
     label: Paginación
     prev: Anterior
@@ -1071,6 +1118,8 @@ es:
       matrix_check_uncheck_all_in_row_label_html: Conmutar el permiso de <em>%{permission}</em> para todos los roles
       matrix_check_uncheck_all_in_col_label_html: Conmutar todos los permisos de %{module} para <em>%{role}</em> rol
   users:
+    force_password_change_hint: El usuario deberá establecer una nueva contraseña la próxima vez que inicie sesión. Esta opción se activa automáticamente al enviar las credenciales por correo electrónico.
+    send_information_hint: Envía la contraseña por correo electrónico en texto sin cifrar. Si se marca esta opción, se pedirá al usuario que cambie su contraseña la primera vez que inicie sesión.
     autologins:
       prompt: Permanecer conectado para %{num_days}
     sessions:
@@ -1325,6 +1374,33 @@ es:
     index:
       no_results_content_text: Añadir una nueva página wiki
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Rol fuente
+        target_role_ids:
+          label: Roles de destino
+        target_type_ids:
+          label: Tipos de destino
+        mode:
+          from_role:
+            label: Copiar a otros roles
+            caption: Copie el flujo de trabajo actual a uno o varios roles dentro del mismo tipo de paquete de trabajo. Si el rol seleccionado ya tiene un flujo de trabajo, el actual se sobrescribirá.
+          from_type:
+            label: Copiar a otro tipo
+            caption: Copie el flujo de trabajo actual a otro tipo de paquetes de trabajo. Si el tipo seleccionado ya tiene un flujo de trabajo, se sobrescribirá el actual. Esto afecta a todos los roles.
+      from_roles:
+        create:
+          notice:
+            one: Se ha copiado correctamente el flujo de trabajo al rol «%{role_name}».
+            other: Se ha copiado correctamente el flujo de trabajo a %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Se ha copiado correctamente el flujo de trabajo al tipo «%{type_name}.
+            other: Se ha copiado correctamente el flujo de trabajo a %{count} tipos.
+      new:
+        title: Copiar el flujo de trabajo de «%{source_type}»
     form:
       matrix_caption: Matriz de flujo de trabajo
       matrix_caption_assignee: Matriz de flujo de trabajo para el asignado
@@ -1334,10 +1410,30 @@ es:
       matrix_uncheck_all_label: No permitir todas las transiciones
       matrix_check_uncheck_all_in_row_label_html: Conmutar transiciones de <em>%{old_status}</em> a todos los nuevos estados
       matrix_check_uncheck_all_in_col_label_html: Conmutar transiciones de todos los estados antiguos a <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filtrar por nombre de tipo…
+    page_headers:
+      index_component:
+        description: Configura las transiciones de estado para cada tipo de paquete de trabajo.
   work_flows:
     index:
       no_results_title_text: Actualmente no existen flujos de trabajo.
   work_packages:
+    delete_dialog:
+      title: Eliminar el paquete de trabajo
+      heading: "¿Eliminar este paquete de trabajo de forma permanente?"
+      description: "¿Seguro que desea eliminar el paquete de trabajo «%{name}»?"
+      confirm_descendants_deletion: Entiendo que TODOS los elementos derivados de este paquete de trabajo se eliminarán de forma recursiva.
+      cross_project_warning: 'Se eliminarán los paquetes de trabajo de los siguientes proyectos: %{projects}'
+    bulk_delete_dialog:
+      title: Eliminar %{count} paquetes de trabajo
+      heading: "¿Desea eliminar estos %{count} paquetes de trabajo de forma definitiva?"
+      description: 'The following work packages and all associated data will be permanently deleted:'
+      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
+      confirm_children_deletion: Entiendo que todos los paquetes de trabajo seleccionados y sus elementos secundarios se eliminarán de forma permanente.
+      cross_project_warning: 'Estos paquetes de trabajo abarcan varios proyectos: %{projects}'
+      children_label: 'También se eliminarán los siguientes elementos secundarios:'
     datepicker_modal:
       banner:
         description:
@@ -1531,6 +1627,9 @@ es:
         dependencies: Dependencias
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identificador
+        work_package: Paquete de trabajo
       jira_import:
         projects: Proyectos
       import/jira:
@@ -1539,7 +1638,7 @@ es:
         personal_access_token: Token de acceso personal
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Importación desde Jira
+        jira_import: Migrador Jira
       announcements:
         show_until: Mostrar hasta
       attachment:
@@ -1795,6 +1894,7 @@ es:
         identity_url: URL de identidad
         parent: Grupo principal
         organizational_unit: Unidad organizativa
+        group_users: Usuarios de grupo
       group_detail:
         parent: Grupo principal
         organizational_unit: Unidad organizativa
@@ -1869,6 +1969,7 @@ es:
         duration: Duración
         end_insertion: Final de la inserción
         end_deletion: Final de la eliminación
+        identifier: Identificador
         ignore_non_working_days: Ignorar días festivos
         include_non_working_days:
           title: Días laborables
@@ -1884,6 +1985,7 @@ es:
         readonly: Solo lectura
         remaining_hours: Trabajo restante
         remaining_time: Trabajo restante
+        sequence_number: Número de secuencia
         shared_with_users: Compartido con
         schedule_manually: Programación manual
         spent_hours: Tiempo invertido
@@ -1912,6 +2014,7 @@ es:
         confirmation: no coincide con %{attribute}.
         could_not_be_copied: "%{dependency} no se pudo copiar (en su totalidad)."
         does_not_exist: no existe.
+        user_already_in_department: El usuario %{user_id} ya es miembro del departamento %{department_id}.
         error_enterprise_only: "%{action} solo está disponible en OpenProject Enterprise."
         error_unauthorized: no se puede acceder.
         error_readonly: se intentó escribir pero no se puede escribir.
@@ -1935,6 +2038,7 @@ es:
         inclusion: no está establecido a uno de los valores permitidos.
         inclusion_nested: no está establecido en uno de los valores permitidos en la ruta '%{path}'.
         invalid: no es válido.
+        invalid_uri: debe ser un URI válido.
         invalid_url: no es una URL válida.
         invalid_url_scheme: 'no es un protocolo admitido (permitidos: %{allowed_schemes}).'
         less_than_or_equal_to: debe ser menor o igual a %{count}.
@@ -1948,6 +2052,7 @@ es:
         not_a_datetime: no es una fecha/hora válida.
         not_a_number: No es un número.
         not_allowed: no es válido porque faltan permisos.
+        host_not_allowed: no es un host permitido.
         not_json: no se puede analizar como JSON.
         not_json_object: no es un objeto JSON.
         not_an_integer: No es un entero.
@@ -1978,6 +2083,7 @@ es:
           attributes:
             parent_id:
               circular_dependency: crearía una jerarquía de grupos circular.
+              organizational_unit_mismatch: debe tener la misma configuración de unidad organizativa que el grupo.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2164,7 +2270,7 @@ es:
           not_whitelisted: no está permitido por la configuración.
           invalid_url: no es una dirección URL o ruta válida para un repositorio.
           must_not_be_ssh: no debe usarse una URL de SSH.
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: no debe apuntar a un directorio de repositorios gestionado por OpenProject.
           no_directory: no es un directorio.
         role:
           attributes:
@@ -2215,6 +2321,8 @@ es:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: No se puede añadir un secundario porque no tiene permisos para editar el paquete de trabajo seleccionado.
               blank: El ID no puede estar en blanco.
+            identifier:
+              semantic_identifier_incomplete: y «sequence_number» deben configurarse al mismo tiempo.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2283,7 +2391,7 @@ es:
               confirmation: La confirmación de contraseña no coincide con la contraseña.
               format: "%{message}"
             password:
-              weak: 'Debe contener caracteres de las siguientes clases (al menos %{min_count} a %{all_count}): %{rules}'
+              requirements_not_met: 'Debe incluir caracteres de los siguientes tipos: %{rules}'
               lowercase: en minúsculas (por ejemplo 'a')
               uppercase: en mayúsculas (por ejemplo ' A')
               numeric: numérico (por ejemplo, ' 1')
@@ -2459,7 +2567,6 @@ es:
     avatar: Avatar
     base: 'Error general:'
     body: Cuerpo
-    blocks_ids: Identificadores de paquetes bloqueados
     category: Categoría
     comment: Comentario
     comments: Comentario
@@ -2916,6 +3023,7 @@ es:
       title: Extensión Enterprise
       plan_title: Extensión Enterprise de %{plan}
       plan_name: Plan Enterprise %{plan}
+      trial_text: Esta función está incluida en su versión de prueba activa de Enterprise.
       plan_text_html: Disponible a partir del %{plan_name}.
       unlimited: Ilimitado
       already_have_token: "¿Ya tiene un token? Añádalo utilizando el botón de abajo para actualizar al plan Enterprise reservado.\n"
@@ -3287,18 +3395,17 @@ es:
         header: Obtenga información sobre nuevas funciones y actualizaciones de productos.
         learn_about: Más información sobre todas las nuevas funciones
         missing: Aún no hay funciones destacadas.
-        '17_3':
+        '17_4':
           new_features_title: 'El lanzamiento incluye varias funciones nuevas y mejoras, tales como:
 
             '
           new_features_list:
-            line_0: 'Gran actualización de Agile: objetos de sprint específicos, todos los paquetes de trabajo visibles en los backlogs y creación automática del tablero de sprints.'
-            line_1: Edición directa de los atributos del proyecto en la página «Resumen del proyecto».
-            line_2: Compartir plantillas de reuniones (plan Basic y superiores).
-            line_3: Mejora la búsqueda en «Tiempo y costes», «Tableros» y mucho más.
-            line_4: Opción para cambiar de forma segura los identificadores de proyecto.
-            line_5: Configuración mejorada del flujo de trabajo para los administradores.
-            line_6: Se han publicado los tableros de acciones en la comunidad.
+            line_0: Migrador de Jira compatible con campos personalizados básicos.
+            line_1: Buckets de backlog para estructurar y priorizar los paquetes de trabajo durante el proceso de refinamiento de backlogs.
+            line_2: Mayor facilidad para arrastrar y soltar y mejora de las opciones de desplazamiento en el módulo Backlogs.
+            line_3: Botones de inicio y finalización del sprint en el encabezado del sprint.
+            line_4: Función de copiar la configuración del flujo de trabajo entre roles.
+            line_5: El widget «Mis reuniones» en las páginas de inicio y de resumen del proyecto.
     links:
       upgrade_enterprise_edition: Actualizar a Enterprise
       postgres_migration: Migrando su instalación a PostgreSQL
@@ -3383,6 +3490,11 @@ es:
     quick_add:
       label: Añadir…
   my_account:
+    notifications_and_email:
+      title: Notificación y correo electrónico
+      tabs:
+        notifications: Ajustes de notificación
+        email_reminders: Recordatorios por correo electrónico
     access_tokens:
       description: Los tokens de proveedor son emitidos por OpenProject y permiten a otras aplicaciones acceder a él. Los tokens de cliente son emitidos por otras aplicaciones y permiten a OpenProject acceder a ellos.
       no_results:
@@ -3445,6 +3557,77 @@ es:
         disabled_text: Los tokens RSS no están habilitados por el administrador. Póngase en contacto con su administrador para utilizar esta función.
       storages:
         unknown_storage: Almacenamiento desconocido
+    email_reminders:
+      immediate_reminders:
+        title: Enviarme un recordatorio por correo electrónico
+        mentioned: Notificarme cuando me mencionen
+        personal_reminder: Notificarme para recibir recordatorios personales
+      daily_reminders:
+        title: Enviarme recordatorios por correo electrónico diarios con las notificaciones sin leer
+        description: Recibirás estos recordatorios solo para las notificaciones no leídas y únicamente a las horas que indiques. Hasta que configures una zona horaria para tu cuenta, se considerará que las horas están en UTC.
+        enabled: Habilitar recordatorios por correo electrónico diarios
+        add_time: Añadir tiempo
+        remove_time: Eliminar el tiempo
+        time_slot_label: Hora del recordatorio (UTC)
+      workdays:
+        title: Recibir recordatorios por correo electrónico en estos días
+        submit_button: Días de recordatorio de actualización
+      pause_reminders:
+        title: Pausar notificaciones por correo electrónico
+        enabled: Pausar temporalmente los recordatorios por correo electrónico diarios
+        date_range: Período de pausa
+      email_alerts:
+        title: Alertas por correo electrónico de otros elementos que no sean paquetes de trabajo
+        description: Las notificaciones por ahora están limitadas a los paquetes de trabajo. Puede elegir seguir recibiendo alertas por correo electrónico de estos eventos hasta que se incluyan en las notificaciones.
+        news_added: Noticias añadidas
+        news_commented: Comentarios en un elemento de noticias
+        document_added: Documento agregado
+        forum_messages: Mensaje publicado en el foro
+        wiki_page_added: Página wiki añadida
+        wiki_page_updated: Página wiki actualizada
+        membership_added: Subscripción añadida
+        membership_updated: Subscripción actualizada
+        submit_button: Actualizar alertas
+    notifications:
+      participating:
+        title: Participando
+        description: Notificaciones para todas las actividades en paquetes de trabajo en los que estás involucrado (asignado, responsable u observador).
+        submit_button: Actualizar preferencias
+        mentioned: Mencionado
+        watched: Observando
+        assignee: Asignado
+        responsible: Responsable
+        shared: Compartido conmigo
+      date_alerts:
+        title: Alertas de fecha
+        description: Notificaciones automáticas cuando se acercan fechas importantes para paquetes de trabajo abiertos en los que está involucrado (asignado, responsable u observador).
+        submit_button: Alertas de fecha de actualización
+        start_date: Fecha de inicio
+        due_date: Fecha de finalización
+        overdue: Vencido
+        times:
+          same_day: El mismo día
+          one_day_before: 1 día antes
+          three_days_before: 3 días antes
+          seven_days_before: 7 días antes
+          one_day_after: 1 día después
+          three_days_after: 3 días después
+          seven_days_after: 7 días después
+      non_participating:
+        title: No participando
+        description: Notificaciones adicionales para actividades en todos los proyectos.
+        submit_button: Actualizar preferencias
+        work_package_created: Nuevos paquetes de trabajo
+        work_package_commented: Todos los nuevos comentarios
+        work_package_processed: Todos los cambios de estado
+        work_package_prioritized: Todos los cambios de prioridad
+        work_package_scheduled: Todos los cambios de fecha
+      project_specific_settings:
+        title: Configuración de notificaciones específicas de proyectos
+        description: Esta configuración específica de proyectos reemplaza los ajustes predeterminados anteriores.
+        add_button: Añadir notificaciones específicas del proyecto
+        dialog_title: Añadir notificaciones específicas del proyecto
+        list_header: Proyectos con notificaciones específicas
   notifications:
     reasons:
       assigned: Asignado a
@@ -3476,6 +3659,7 @@ es:
       invalid_filter: Filtro de notificación no válido
   label_accessibility: Accesibilidad
   label_account: Cuenta
+  label_actions: Comportamiento
   label_active: Activo
   label_activate_user: Activar usuario
   label_active_in_new_projects: Activo en nuevos proyectos
@@ -3516,6 +3700,7 @@ es:
   label_ical_access_key_generation_hint: Se genera automáticamente al suscribirse a un calendario.
   label_ical_access_key_latest: último
   label_ical_access_key_revoke: Revocar
+  label_integrations: Integraciones
   label_add_column: Añadir columna
   label_applied_status: Estado aplicado
   label_archive_project: Archivar proyecto
@@ -3599,6 +3784,7 @@ es:
   label_commits_per_month: Compromisos por mes
   label_confirmation: Confirmación
   label_contains: contiene
+  label_starts_with: empieza por
   label_content: Contenido
   label_color_plural: Colores
   label_copied: copiado
@@ -3606,6 +3792,8 @@ es:
   label_copy_source: Fuente
   label_copy_target: Objetivo
   label_copy_workflow_from: Copiar flujo de trabajo desde
+  label_copy_workflow_from_type: Copiar a otro tipo
+  label_copy_workflow_from_role: Copiar a otros roles
   label_copy_project: Copiar proyecto
   label_core_version: Versión base
   label_core_build: Núcleo base
@@ -3766,7 +3954,7 @@ es:
   label_external_links: Enlaces externos
   label_locale: Idioma y región
   label_jump_to_a_project: Saltar a un proyecto...
-  label_jira_import: Importación desde Jira
+  label_jira_import: Migrador Jira
   label_keyword_plural: Palabras clave
   label_language_based: Basado en el idioma del usuario
   label_last_activity: Última actividad
@@ -3804,6 +3992,10 @@ es:
   label_custom_pdf_export_settings: Ajustes personalizados de exportación PDF
   label_custom_favicon: Icono de página personalizado
   label_custom_touch_icon: Icono táctil personalizado
+  label_departments: Organización
+  label_departments_description_html: 'Defina la estructura de su empresa creando departamentos y subdepartamentos de forma jerárquica. Esto le permite reflejar las líneas jerárquicas y mantener una visión general clara y estructurada de su organización dentro de OpenProject. También puede importar una estructura organizativa ya existente mediante la [sincronización de grupos LDAP](ldap_docs_article).
+
+    '
   label_logout: Cerrar sesión
   label_mapping_for: 'Asignación para: %{attribute}'
   label_main_menu: Menú lateral
@@ -3909,6 +4101,10 @@ es:
   label_password_rule_numeric: Caracteres numéricos
   label_password_rule_special: Caracteres especiales
   label_password_rule_uppercase: Mayúscula
+  label_password_requirement_lowercase: Debe contener al menos un carácter en minúscula.
+  label_password_requirement_numeric: Debe contener al menos un carácter numérico.
+  label_password_requirement_special: Debe contener al menos un carácter especial.
+  label_password_requirement_uppercase: Debe contener al menos un carácter en mayúscula.
   label_path_encoding: Ruta de codificación
   label_per_page: 'Por página:'
   label_people: Personas
@@ -4275,7 +4471,7 @@ es:
       note: 'Nota: «%{note}»'
     sharing:
       work_packages:
-        allowed_actions_html: Puedes %{allowed_actions} en este paquete de trabajo. Esto puede variar en función de tu rol en el proyecto y tus permisos.
+        allowed_actions_html: 'Tiene los siguientes permisos sobre este paquete de trabajo: %{allowed_actions}. Esto puede cambiar dependiendo de su rol en el proyecto y de sus permisos.'
         create_account: 'Para acceder a este paquete de trabajo necesitará crear y activar una cuenta en %{instance}. '
         open_work_package: Abrir paquete de trabajo
         subject: 'Paquete de trabajo #%{id} fue compartido contigo'
@@ -4815,7 +5011,7 @@ es:
 
     '
   setting_after_login_default_redirect_url: Después de la redirección de inicio de sesión
-  setting_after_login_default_redirect_url_text_html: 'Establezca una ruta por defecto para redirigir a los usuarios tras el inicio de sesión, si no se ha proporcionado un enlace de vuelta. Redirige a la página de inicio si no se establece. <br/> Ejemplo: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Establezca una ruta por defecto para redirigir a los usuarios tras el inicio de sesión, si no se ha proporcionado un enlace de vuelta. Redirige a la página de inicio si no se establece. <br/> Ejemplo: %{example_code}
 
     '
   setting_apiv3_cors_title: Intercambio de recursos entre orígenes (CORS)
@@ -4870,6 +5066,7 @@ es:
     '
   setting_app_subtitle: Subtítulo de aplicación
   setting_app_title: Título de aplicación
+  setting_organization_name: Nombre de la organización
   setting_attachment_max_size: Tamaño máximo de adjunto
   setting_show_work_package_attachments: Mostrar archivos adjuntos en la pestaña de archivos por defecto
   setting_antivirus_scan_mode: Modo de escaneo
@@ -4947,11 +5144,10 @@ es:
   setting_new_project_user_role_id: Papel ortorgado a usuario no administrador que crea un proyecto
   setting_new_project_send_confirmation_email: Enviar notificación al autor al crear un nuevo proyecto
   setting_new_project_notification_text: Texto de la notificación
-  setting_password_active_rules: Activar clases de personajes
+  setting_password_active_rules: Requisitos de la contraseña
   setting_password_count_former_banned: Numero de contraseñas usadas mas recientemente bloqueadas para re-uso
   setting_password_days_valid: Número de días, después de que sea necesario imponer un cambio de contraseña
   setting_password_min_length: Longitud mínima
-  setting_password_min_adhered_rules: Numero mínimo de clases requeridas
   setting_per_page_options: Objetos por página de opciones
   setting_percent_complete_on_status_closed: "% completado cuando el estado es cerrado"
   setting_percent_complete_on_status_closed_no_change: Sin cambios
@@ -5016,12 +5212,12 @@ es:
   setting_welcome_text: Bloque de texto de bienvenida
   setting_welcome_title: Título del bloque de bienvenida
   setting_welcome_on_homescreen: Mostrar bloque de bienvenida en la pagina de inicio
-  setting_work_packages_identifier_numeric: Secuencia numérica para toda la instancia (predeterminada)
-  setting_work_packages_identifier_numeric_caption: 'Cada paquete de trabajo recibe un número secuencial que empieza por 1 y se incrementa con cada nuevo paquete. Los números son únicos dentro de esta instancia, por lo que siguen siendo los mismos aunque los paquetes de trabajo se trasladen de un proyecto a otro.
+  setting_work_packages_identifier_classic: Secuencia numérica para toda la instancia (predeterminada)
+  setting_work_packages_identifier_classic_caption: 'Cada paquete de trabajo recibe un número secuencial que empieza por 1 y se incrementa con cada nuevo paquete. Los números son únicos dentro de esta instancia, por lo que siguen siendo los mismos aunque los paquetes de trabajo se trasladen de un proyecto a otro.
 
     '
-  setting_work_packages_identifier_alphanumeric: Identificadores alfanuméricos basados en proyectos
-  setting_work_packages_identifier_alphanumeric_caption: 'Cada proyecto tiene un identificador único que se añade al principio del ID del paquete de trabajo. Si un paquete de trabajo se traslada a otro proyecto, se genera un nuevo identificador, pero el antiguo sigue funcionando.
+  setting_work_packages_identifier_semantic: Identificadores semánticos basados en proyectos
+  setting_work_packages_identifier_semantic_caption: 'Cada proyecto tiene un identificador único que se añade al principio del ID del paquete de trabajo. Si un paquete de trabajo se traslada a otro proyecto, se genera un nuevo identificador, pero el antiguo sigue funcionando.
 
     '
   setting_work_package_list_default_highlighting_mode: Modo de resaltado predeterminado
@@ -5537,10 +5733,13 @@ es:
           same_as_work: Ajustar al mismo valor que Trabajo.
     permissions:
       comment: Comentario
+      comment_verb: comentar
       comment_description: Puede ver y comentar este paquete de trabajo.
       edit: Editar
+      edit_verb: editar
       edit_description: Puede ver, comentar y editar este paquete de trabajo.
       view: Ver
+      view_verb: ver
       view_description: Puede ver este paquete de trabajo.
     reminders:
       label_remind_at: Fecha

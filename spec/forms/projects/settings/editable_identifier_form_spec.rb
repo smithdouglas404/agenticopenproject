@@ -47,10 +47,10 @@ RSpec.describe Projects::Settings::EditableIdentifierForm, type: :forms do
     end
   end
 
-  context "when the feature flag is on and the alphanumeric setting is active" do
+  context "when the feature flag is on and the semantic setting is active" do
     before do
       with_flags(semantic_work_package_ids: true)
-      allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true)
+      allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(true)
       vc_render_form
     end
 
@@ -61,10 +61,10 @@ RSpec.describe Projects::Settings::EditableIdentifierForm, type: :forms do
     end
   end
 
-  context "when the feature flag is on but the setting is numeric" do
+  context "when the feature flag is on but the setting is classic" do
     before do
       with_flags(semantic_work_package_ids: true)
-      allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(false)
+      allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(false)
       vc_render_form
     end
 
