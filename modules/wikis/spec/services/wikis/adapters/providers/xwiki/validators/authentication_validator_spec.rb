@@ -35,14 +35,14 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Validators::AuthenticationVali
   subject(:validation_result) { described_class.new(provider).call }
 
   let(:provider) { create(:xwiki_provider, :with_oauth_configured) }
-  let(:query_double) { instance_double(Wikis::Adapters::Providers::XWiki::Queries::UserQuery, call: Success()) }
+  let(:query_double) { instance_double(Wikis::Adapters::Providers::XWiki::Queries::User, call: Success()) }
 
   let(:client_token) { create(:oauth_client_token, user: current_user, oauth_client: provider.oauth_client) }
 
   current_user { create(:user) }
 
   before do
-    query_class_double = class_double(Wikis::Adapters::Providers::XWiki::Queries::UserQuery, new: query_double)
+    query_class_double = class_double(Wikis::Adapters::Providers::XWiki::Queries::User, new: query_double)
     Wikis::Adapters::Registry.stub("xwiki.queries.user", query_class_double)
 
     client_token
@@ -66,7 +66,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Validators::AuthenticationVali
   context "when the user-bound request fails" do
     let(:query_double) do
       instance_double(
-        Wikis::Adapters::Providers::XWiki::Queries::UserQuery,
+        Wikis::Adapters::Providers::XWiki::Queries::User,
         call: Failure(Wikis::Adapters::Results::Error.new(source: self, code: error_code))
       )
     end
