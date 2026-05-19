@@ -49,7 +49,9 @@ module OpenProject
 
       def load(dumped)
         return nil unless dumped.is_a?(String) && BASE.dumped?(dumped)
-
+        
+        # Avoid using BASE#load as that goes through all the fallbacks again
+        # https://github.com/rails/rails/blob/v8.1.3/activesupport/lib/active_support/cache/serializer_with_fallback.rb#L17
         BASE._load(dumped)
       end
     end
