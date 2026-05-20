@@ -34,6 +34,8 @@ module Pages
   module Admin
     module Users
       class Index < ::Pages::Page
+        include ::Components::Autocompleter::NgSelectAutocompleteHelpers
+
         def path
           "/users"
         end
@@ -58,6 +60,12 @@ module Pages
 
           expect(page)
             .to have_css("tr.generic-table--empty-row", text: "There is currently nothing to display.")
+        end
+
+        def expect_not_listed(*users)
+          users.each do |user|
+            expect(page).to have_no_css("td.username a", text: user.login)
+          end
         end
 
         def expect_user_locked(user)
@@ -85,6 +93,29 @@ module Pages
           wait_for_network_idle
         end
 
+        def filter_by_group(value)
+          open_filter_panel
+          unless page.has_css?("li.advanced-filters--filter[data-filter-name='group']:not(.hidden)")
+            select "Group", from: "add_filter_select"
+          end
+
+          within_filter("group") do
+            select_autocomplete find('[data-filter-autocomplete="true"]'),
+                                query: value,
+                                results_selector: "body"
+          end
+
+          wait_for_network_idle
+        end
+
+        def expect_group_filter(value)
+          open_filter_panel
+
+          within_filter("group") do
+            expect_current_autocompleter_value find('[data-filter-autocomplete="true"]'), value
+          end
+        end
+
         def clear_filters
           find_by_id("user-filters-form-clear-button").click
 
@@ -105,7 +136,7 @@ module Pages
         end
 
         def within_filter(name, &)
-          within("[data-filter-name='#{name}']", &)
+          within("li.advanced-filters--filter[data-filter-name='#{name}']:not(.hidden)", &)
         end
 
         def order_by(key)

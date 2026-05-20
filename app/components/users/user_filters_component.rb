@@ -46,8 +46,15 @@ module Users
       when Queries::Users::Filters::GroupFilter
         {
           autocomplete_options: {
-            component: "opce-group-autocompleter",
-            resource: "groups"
+            component: "opce-user-autocompleter",
+            resource: "principals",
+            url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
+            filters: [
+              { name: "type", operator: "=", values: %w[Group] }
+            ],
+            searchKey: "any_name_attribute",
+            inputValue: filter.values,
+            bindValue: "id"
           }
         }
       else
