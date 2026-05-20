@@ -6161,6 +6161,17 @@ en:
     warning: >
       Changing which days of the week are considered working days or non-working days
       can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+    dialog:
+      title: "Change working days"
+      description: >
+        Changing which days of the week are considered working days or non-working days
+        can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+      removed_title: "You will remove the following days from the non-working days list:"
+      warning: >
+        The changes might take some time to take effect. You will be notified when all relevant work
+        packages and project life cycles have been updated.
+      question: "Are you sure you want to continue?"
+      confirm_button: "Save and reschedule"
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:

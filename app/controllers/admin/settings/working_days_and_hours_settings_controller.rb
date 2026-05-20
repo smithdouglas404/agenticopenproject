@@ -30,7 +30,22 @@
 
 module Admin::Settings
   class WorkingDaysAndHoursSettingsController < ::Admin::SettingsController
+    include OpTurbo::ComponentStream
+
     menu_item :working_days_and_hours
+
+    def confirm_changes
+      removed_days = non_working_days_params
+        .select { |nwd| nwd["_destroy"].present? }
+        .filter_map { |nwd| removed_non_working_day_date(nwd) }
+
+      component = Admin::Settings::WorkingDays::ConfirmDialogComponent.new(
+        form_values: params.expect(settings: {}).to_h,
+        removed_non_working_days: removed_days
+      )
+
+      respond_with_dialog(component)
+    end
 
     def failure_callback(call)
       @modified_non_working_days = modified_non_working_days_for(call.result)
@@ -58,8 +73,16 @@ module Admin::Settings
     end
 
     def non_working_days_params
-      non_working_days = params[:settings].to_unsafe_hash[:non_working_days_attributes] || {}
+      non_working_days = params.expect(settings: {})[:non_working_days_attributes] || {}
       non_working_days.to_h.values
+    end
+
+    def removed_non_working_day_date(non_working_day_params)
+      date = NonWorkingDay.find_by(id: non_working_day_params["id"])&.date || non_working_day_params["date"]
+
+      I18n.l(date.to_date, format: :long)
+    rescue Date::Error, NoMethodError
+      nil
     end
 
     def modified_non_working_days_for(result)

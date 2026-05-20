@@ -751,6 +751,9 @@ Rails.application.routes.draw do
         end
       end
       resource :working_days_and_hours, controller: "/admin/settings/working_days_and_hours_settings", only: %i[show update]
+      post "working_days_and_hours/confirm_changes",
+           to: "/admin/settings/working_days_and_hours_settings#confirm_changes",
+           as: :confirm_changes_admin_settings_working_days_and_hours
       resource :users, controller: "/admin/settings/users_settings", only: %i[show update]
       resource :date_format, controller: "/admin/settings/date_format_settings", only: %i[show update]
       resource :icalendar, controller: "/admin/settings/icalendar_settings", only: %i[show update]
