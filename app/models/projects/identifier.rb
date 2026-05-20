@@ -33,9 +33,14 @@ module Projects::Identifier
 
   CLASSIC_IDENTIFIER_MAX_LENGTH = 100
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
-  # Classic identifier format: lowercase letters, digits, hyphens, underscores — but not all-numeric.
-  CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/
 
+  # Classic format validation regexes:
+  # Character class only — callers anchor.
+  CLASSIC_FORMAT_CHARS = /[a-z0-9\-_]+/
+  # Anchored form with an anti-all-numeric guard.
+  CLASSIC_FORMAT = /\A(?!\d+\z)#{CLASSIC_FORMAT_CHARS}\z/
+
+  # Semantic format validation regex:
   # Unanchored shape of a semantic project identifier ("PROJ", "MY_PROJECT_1").
   # Composed into `WorkPackage::SemanticIdentifier::SEMANTIC_ID_PATTERN`.
   SEMANTIC_FORMAT = /[A-Z][A-Z0-9_]*/
@@ -101,7 +106,11 @@ module Projects::Identifier
 
   class_methods do
     def classic_identifier_format?(str)
-      str.match?(CLASSIC_IDENTIFIER_FORMAT)
+      str.match?(CLASSIC_FORMAT)
+    end
+
+    def with_non_classic_identifier
+      where("identifier !~ ?", "^#{CLASSIC_FORMAT_CHARS.source}$")
     end
 
     # FriendlyId's :history module records a row on every save, so this relation contains

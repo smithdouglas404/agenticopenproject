@@ -64,12 +64,15 @@ module WorkPackages
         def form_id = "wp-identifier-settings-form"
 
         def in_progress_banner_message
-          key = if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
-                  "admin.settings.work_packages_identifier.in_progress.reverting_banner_message"
-                else
-                  "admin.settings.work_packages_identifier.in_progress.converting_banner_message"
-                end
-          I18n.t(key)
+          if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
+            pending_count = Project.with_non_classic_identifier.count
+            I18n.t("admin.settings.work_packages_identifier.in_progress.classic_conversion_status_message",
+                   count: pending_count)
+          else
+            pending_count = ProjectIdentifiers::PendingProjectsFinder.count
+            I18n.t("admin.settings.work_packages_identifier.in_progress.semantic_conversion_status_message",
+                   count: pending_count)
+          end
         end
 
         def show_autofix_section?

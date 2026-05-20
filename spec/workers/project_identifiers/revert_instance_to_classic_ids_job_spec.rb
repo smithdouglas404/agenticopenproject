@@ -109,7 +109,7 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
 
         it "generates a valid classic identifier when no classic history exists" do
           expect(project_without_classic_history.reload.identifier)
-            .to match(Projects::Identifier::CLASSIC_IDENTIFIER_FORMAT)
+            .to match(Projects::Identifier::CLASSIC_FORMAT)
         end
       end
     end
