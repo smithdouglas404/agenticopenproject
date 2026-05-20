@@ -173,19 +173,23 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
       expect(rendered).to include(%(data-hover-card-url="/work_packages/#{wp.display_id}/hover_card"))
     end
 
-    it "renders `##PROJ-N` as a quickinfo macro element with display_id in data-id" do
+    it "renders `##PROJ-N` as a quickinfo macro element with id and displayId" do
       wp = work_package.reload
       # Prepend "see " so Markly doesn't parse `##...` as an H2 ATX heading.
       rendered = format_text("see ###{wp.display_id} here")
 
-      expect(rendered).to include(%(<opce-macro-wp-quickinfo data-id="#{wp.display_id}" data-detailed="false">))
+      expect(rendered).to include(
+        %(<opce-macro-wp-quickinfo data-id="#{wp.id}" data-display-id="#{wp.display_id}" data-detailed="false">)
+      )
     end
 
     it "renders `###PROJ-N` as a detailed quickinfo macro element" do
       wp = work_package.reload
       rendered = format_text("see ####{wp.display_id} here")
 
-      expect(rendered).to include(%(<opce-macro-wp-quickinfo data-id="#{wp.display_id}" data-detailed="true">))
+      expect(rendered).to include(
+        %(<opce-macro-wp-quickinfo data-id="#{wp.id}" data-display-id="#{wp.display_id}" data-detailed="true">)
+      )
     end
 
     context "when the referenced work package does not exist" do

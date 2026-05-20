@@ -310,7 +310,7 @@ RSpec.describe OpenProject::TextFormatting,
         let(:work_package_link) do
           content_tag "opce-macro-wp-quickinfo",
                       "",
-                      data: { id: "1234", detailed: "false" }
+                      data: { id: "1234", display_id: "1234", detailed: "false" }
         end
 
         subject { format_text("foo (bar ##1234)") }
@@ -322,7 +322,7 @@ RSpec.describe OpenProject::TextFormatting,
         let(:work_package_link) do
           content_tag "opce-macro-wp-quickinfo",
                       "",
-                      data: { id: "1234", detailed: "true" }
+                      data: { id: "1234", display_id: "1234", detailed: "true" }
         end
 
         subject { format_text("foo (bar ###1234)") }

@@ -82,7 +82,9 @@ export class WorkPackageQuickinfoMacroComponent implements OnInit {
 
   ngOnInit() {
     const element = this.elementRef.nativeElement as HTMLElement;
-    const id:string = element.dataset.id!;
+    // Prefer `data-display-id`; fall back to `data-id` for legacy
+    // stored markdown emitted before the attribute split.
+    const id:string = element.dataset.displayId ?? element.dataset.id!;
     this.detailed = element.dataset.detailed === 'true';
     this.workPackageHoverCardUrl = this.pathHelper.workPackageHoverCardPath(id);
 

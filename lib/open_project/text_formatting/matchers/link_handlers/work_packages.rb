@@ -53,7 +53,7 @@ module OpenProject::TextFormatting::Matchers
 
           render_for_semantic(identifier)
         else
-          # Reject leading-zero shapes like `#0123` that aren't canonical PK strings.
+          # Reject leading-zero shapes like `#0123` that aren't canonical id strings.
           return nil unless WorkPackage::SemanticIdentifier.numeric_id?(identifier)
 
           render_for_numeric(identifier.to_i)
@@ -75,14 +75,15 @@ module OpenProject::TextFormatting::Matchers
       end
 
       def render_for_semantic(display_id)
-        if quickinfo?
-          render_work_package_macro(display_id, detailed: detailed?)
-        else
-          # Plain link needs the WP record for the `formatted_id` label and
-          # hover-card URL. Cache miss → literal text rather than a broken URL.
-          wp = OpenProject::TextFormatting::Matchers::ResourceLinksMatcher.work_package_for(display_id)
-          return nil unless wp
+        # Both quickinfo and plain link need the WP record so the rendered
+        # HTML can carry the record id in `data-id`. Unresolved WP →
+        # literal text rather than a broken reference.
+        wp = OpenProject::TextFormatting::Matchers::ResourceLinksMatcher.work_package_for(display_id)
+        return nil unless wp
 
+        if quickinfo?
+          render_work_package_macro(id: wp.id, display_id: wp.display_id, detailed: detailed?)
+        else
           render_work_package_link(wp, fallback_id: display_id)
         end
       end
@@ -91,19 +92,20 @@ module OpenProject::TextFormatting::Matchers
         wp = OpenProject::TextFormatting::Matchers::ResourceLinksMatcher.work_package_for(wp_id)
 
         if quickinfo?
-          # Prefer the resolved WP's display_id so `##1234` typed in semantic
-          # mode renders the user-facing identifier in the editor model.
-          data_id = wp&.display_id || wp_id
-          render_work_package_macro(data_id, detailed: detailed?)
+          # Prefer the resolved WP's identifiers; fall back to the matched
+          # id when no preload is available (classic mode).
+          record_id = wp&.id || wp_id
+          display_id = wp&.display_id || wp_id
+          render_work_package_macro(id: record_id, display_id:, detailed: detailed?)
         else
           render_work_package_link(wp, fallback_id: wp_id)
         end
       end
 
-      def render_work_package_macro(data_id, detailed: false)
+      def render_work_package_macro(id:, display_id:, detailed: false)
         ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
                                                   "",
-                                                  data: { id: data_id, detailed: }
+                                                  data: { id:, display_id:, detailed: }
       end
 
       def render_work_package_link(work_package, fallback_id:)
