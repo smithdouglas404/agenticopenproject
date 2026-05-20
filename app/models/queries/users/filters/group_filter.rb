@@ -30,4 +30,8 @@
 
 class Queries::Users::Filters::GroupFilter < Queries::Users::Filters::UserFilter
   include Queries::Filters::Shared::GroupFilter
+
+  def human_name
+    I18n.t(:label_group)
+  end
 end
