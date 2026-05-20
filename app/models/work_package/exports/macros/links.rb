@@ -61,12 +61,10 @@ module WorkPackage::Exports
       end
 
       def render_link(data_id, matcher)
-        # Defence-in-depth: the matcher regex constrains data_id today, but
-        # escaping survives a future widening or a caller that bypasses the
-        # matcher.
-        escaped_id = ERB::Util.html_escape(data_id)
-        link = "#{matcher.sep}#{escaped_id}"
-        %(<mention class="mention" data-id="#{escaped_id}" data-type="work_package" data-text="#{link}">#{link}</mention>)
+        link = "#{matcher.sep}#{data_id}"
+        content_tag(:mention, link,
+                    class: "mention",
+                    data: { id: data_id, type: "work_package", text: link })
       end
     end
 
