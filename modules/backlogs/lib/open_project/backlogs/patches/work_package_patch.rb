@@ -66,5 +66,3 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     end
   end
 end
-
-WorkPackage.include OpenProject::Backlogs::Patches::WorkPackagePatch
