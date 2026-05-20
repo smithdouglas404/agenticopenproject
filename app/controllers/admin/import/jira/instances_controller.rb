@@ -134,7 +134,7 @@ module Admin::Import::Jira
                 when Import::JiraClient::ApiError then t(:"admin.jira.test.api_error", status: error.status)
                 else
                   Rails.logger.error("Unexpected error testing Jira configuration: #{error.class} - #{error.message}")
-                  t(:"admin.jira.test.error")
+                  "#{t(:"admin.jira.test.error")}: #{error.message}"
                 end
       render_error_flash_message_via_turbo_stream(message:)
     end
