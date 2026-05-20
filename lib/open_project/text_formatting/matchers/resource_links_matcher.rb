@@ -69,6 +69,9 @@ module OpenProject::TextFormatting
     #     identifier:version:1.0.0
     #     identifier:source:some/file
     class ResourceLinksMatcher < RegexMatcher
+      WORK_PACKAGES_LOOKUP_KEY = :text_formatting_work_packages_lookup
+      private_constant :WORK_PACKAGES_LOOKUP_KEY
+
       include ::OpenProject::TextFormatting::Truncation
       # used for the work package quick links
       include WorkPackagesHelper
@@ -126,6 +129,90 @@ module OpenProject::TextFormatting
           LinkHandlers::Revisions
         ]
       end
+
+      # Returns the preloaded WorkPackage for the given identifier (numeric
+      # or semantic), or nil if no preload is active (classic mode, no `#N`
+      # references) or the WP couldn't be resolved.
+      def self.work_package_for(identifier)
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]&.[](identifier.to_s)
+      end
+
+      # Doc-level preload called by `PatternMatcherFilter`. Save/restores
+      # the lookup so a nested `format_text` (e.g. custom-field formatter
+      # re-entering the pipeline) doesn't clobber the outer render. Classic
+      # mode skips the load — `display_id` collapses to numeric, so the
+      # link handler can render from the matched id alone.
+      def self.with_preloaded_resources(doc, _context)
+        previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
+
+        return yield unless Setting::WorkPackageIdentifier.semantic_mode_active?
+
+        identifiers = collect_work_package_identifiers(doc)
+        return yield if identifiers.empty?
+
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = build_lookup(identifiers)
+        yield
+      ensure
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = previous
+      end
+
+      def self.collect_work_package_identifiers(doc)
+        identifiers = Set.new
+        doc.search(".//text()").each do |node|
+          next if OpenProject::TextFormatting::PreformattedBlocks.ancestor?(node)
+
+          node.to_s.scan(regexp) do
+            extract_work_package_identifier(Regexp.last_match)&.then { identifiers << it }
+          end
+        end
+        identifiers
+      end
+
+      # Returns the WP identifier for any `#N` / `##N` / `###N` (or
+      # semantic-shape) reference. Returns nil for prefixed resource links
+      # (`version#3`, `message#12`) and `:`-separator resources. Leading-zero
+      # numerics ("0123") pass through here — the link handler rejects them
+      # at render time, so a non-resolving cache entry is harmless.
+      def self.extract_work_package_identifier(match)
+        parts = parse_match(match)
+        identifier = parts[:identifier]
+        return nil unless parts[:prefix].nil? && parts[:sep]&.start_with?("#") && identifier.present?
+
+        identifier
+      end
+
+      # 1 SELECT in the common case. A second targeted SELECT fires for
+      # historical aliases — the loaded WP row carries only its current
+      # identifier, so unmapped inputs must be filled in from
+      # `WorkPackageSemanticAlias`. The visible-id set passes through
+      # to the alias fold-in explicitly so each query enforces
+      # visibility at its own boundary, leaving no implicit trust for
+      # the cache to leak through.
+      def self.build_lookup(identifiers)
+        work_packages = WorkPackage.visible.where_display_id_in(*identifiers).select(:id, :identifier).to_a
+        lookup = index_by_id_and_identifier(work_packages)
+        fold_in_alias_keys(lookup, identifiers, visible_wp_ids: work_packages.map(&:id))
+        lookup
+      end
+
+      def self.index_by_id_and_identifier(work_packages)
+        work_packages.each_with_object({}) do |wp, lookup|
+          lookup[wp.id.to_s] = wp
+          lookup[wp.identifier] = wp if wp.identifier.present?
+        end
+      end
+      private_class_method :index_by_id_and_identifier
+
+      def self.fold_in_alias_keys(lookup, identifiers, visible_wp_ids:)
+        unmapped = identifiers.map(&:to_s) - lookup.keys
+        return if unmapped.empty? || visible_wp_ids.empty?
+
+        WorkPackageSemanticAlias
+          .where(work_package_id: visible_wp_ids, identifier: unmapped)
+          .pluck(:identifier, :work_package_id)
+          .each { |ident, wp_id| lookup[ident] = lookup[wp_id.to_s] }
+      end
+      private_class_method :fold_in_alias_keys
 
       # Flattens the three alternation branches into a single `:sep` /
       # `:identifier` shape so callers don't branch on which one matched.

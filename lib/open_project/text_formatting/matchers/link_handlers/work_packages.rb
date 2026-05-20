@@ -79,8 +79,8 @@ module OpenProject::TextFormatting::Matchers
           render_work_package_macro(display_id, detailed: detailed?)
         else
           # Plain link needs the WP record for the `formatted_id` label and
-          # hover-card URL. Unresolved → literal text rather than a broken URL.
-          wp = WorkPackage.find_by_display_id(display_id)
+          # hover-card URL. Cache miss → literal text rather than a broken URL.
+          wp = OpenProject::TextFormatting::Matchers::ResourceLinksMatcher.work_package_for(display_id)
           return nil unless wp
 
           render_work_package_link(wp, fallback_id: display_id)
@@ -88,7 +88,7 @@ module OpenProject::TextFormatting::Matchers
       end
 
       def render_for_numeric(wp_id)
-        wp = WorkPackage.find_by_display_id(wp_id)
+        wp = OpenProject::TextFormatting::Matchers::ResourceLinksMatcher.work_package_for(wp_id)
 
         if quickinfo?
           # Prefer the resolved WP's display_id so `##1234` typed in semantic
