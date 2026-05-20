@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,45 +26,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module OpenProject::Backlogs::Patches::WorkPackagePatch
+module WorkPackages::Scopes::WithBacklogsNeighbours
   extend ActiveSupport::Concern
 
-  included do
-    prepend InstanceMethods
-    extend ClassMethods
-
-    register_journal_formatted_fields "story_points", "position", formatter_key: :decimal
-
-    validates_numericality_of :story_points, only_integer: true,
-                                             allow_nil: true,
-                                             greater_than_or_equal_to: 0,
-                                             less_than: 10_000,
-                                             if: -> { backlogs_enabled? }
-
-    belongs_to :sprint, optional: true
-    belongs_to :backlog_bucket, optional: true
-
-    include OpenProject::Backlogs::List
-
-    scopes :backlogs_inbox_for
-    scopes :with_backlogs_neighbours
-    scopes :without_status_considered_closed
-    scopes :without_excluded_type
-  end
-
-  module ClassMethods
-    def order_by_position
-      order(arel_table[:position].asc.nulls_last)
-    end
-  end
-
-  module InstanceMethods
-    def backlogs_enabled?
-      project&.backlogs_enabled?
+  class_methods do
+    def with_backlogs_neighbours
+      # The subquery is required because window functions run before WHERE clauses.
+      # Chaining .find(id) directly would filter rows first, leaving the window function
+      # with a single row and returning nil for all neighbours. Wrapping in a subquery
+      # lets the window function see the full scope, then the outer query filters to the
+      # requested record.
+      subquery = order_by_position.select(
+        "*, LAG(id)    OVER (ORDER BY position) AS prev_id,
+            LAG(id, 2) OVER (ORDER BY position) AS prev_prev_id,
+            LEAD(id)   OVER (ORDER BY position) AS next_id"
+      )
+      WorkPackage.from(subquery, :work_packages)
     end
   end
 end
-
-WorkPackage.include OpenProject::Backlogs::Patches::WorkPackagePatch
