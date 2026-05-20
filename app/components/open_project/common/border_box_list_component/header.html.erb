@@ -27,56 +27,61 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= grid_layout("op-border-box-list-header", tag: :div) do |grid| %>
-    <% grid.with_area(:collapsible) do %>
-      <% if collapsible? %>
-        <%=
-          render(
-            Primer::OpenProject::BorderBox::CollapsibleHeader.new(
-              collapsible_id:,
-              collapsed:,
-              multi_line: true
-            )
-          ) do |collapsible|
-        %>
-          <% collapsible.with_title(tag: title_tag) { title } %>
-          <% if render_count? %>
-            <% collapsible.with_count(**counter_arguments) %>
-          <% end %>
-          <% if description? %>
-            <% collapsible.with_description do %>
-              <%= description %>
-            <% end %>
-          <% end %>
+<%= grid_layout(
+      "op-border-box-list-header",
+      tag: :div,
+      classes: { "op-border-box-list-header_collapsible" => collapsible? }
+    ) do |grid| %>
+  <% if collapsible? %>
+    <% grid.with_area(:heading) do %>
+      <%=
+        render(
+          Primer::OpenProject::BorderBox::CollapsibleHeader.new(
+            collapsible_id:,
+            collapsed:,
+            multi_line: true
+          )
+        ) do |collapsible|
+      %>
+        <% collapsible.with_title(tag: title_tag) { title } %>
+        <% if render_count? %>
+          <% collapsible.with_count(**counter_arguments) %>
         <% end %>
-      <% else %>
-        <%= render(Primer::BaseComponent.new(tag: :div, classes: "CollapsibleHeader CollapsibleHeader--multi-line")) do %>
-          <%= render(Primer::BaseComponent.new(tag: :div, classes: "CollapsibleHeader-title-line")) do %>
-            <%= render(Primer::Beta::Truncate.new(tag: title_tag, classes: "CollapsibleHeader-title Box-title")) { title } %>
-            <% if render_count? %>
-              <%= render(Primer::Beta::Counter.new(**counter_arguments, classes: class_names(counter_arguments[:classes], "CollapsibleHeader-count"))) %>
-            <% end %>
-          <% end %>
-          <% if description? %>
-            <%= render(Primer::Beta::Text.new(color: :subtle, trim: true, classes: "CollapsibleHeader-description")) do %>
-              <%= description %>
-            <% end %>
+        <% if description? %>
+          <% collapsible.with_description do %>
+            <%= description %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
+  <% else %>
+    <% grid.with_area(:heading) do %>
+      <%= render(Primer::BaseComponent.new(tag: :div, classes: "op-border-box-list-header--heading-line")) do %>
+        <%= render(Primer::Beta::Truncate.new(tag: title_tag, classes: "Box-title")) { title } %>
+        <% if render_count? %>
+          <%= render(Primer::Beta::Counter.new(**counter_arguments)) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
 
-    <% if actions? %>
-      <% grid.with_area(:actions) do %>
-        <% actions.each do |action| %>
-          <%= action %>
-        <% end %>
-      <% end %>
+  <% if description? && !collapsible? %>
+    <% grid.with_area(:description) do %>
+      <%= description %>
     <% end %>
+  <% end %>
 
-    <% if menu? %>
-      <% grid.with_area(:menu) do %>
-        <%= menu %>
+  <% if actions? %>
+    <% grid.with_area(:actions) do %>
+      <% actions.each do |action| %>
+        <%= action %>
       <% end %>
     <% end %>
+  <% end %>
+
+  <% if menu? %>
+    <% grid.with_area(:menu) do %>
+      <%= menu %>
+    <% end %>
+  <% end %>
 <% end %>

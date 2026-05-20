@@ -32,17 +32,33 @@ module OpenProject
   module Common
     # @logical_path OpenProject/Common
     class BorderBoxListComponentPreview < ViewComponent::Preview
+      DEFAULT_DESCRIPTION = "Coordinate launch work and keep stakeholders aligned."
+      TRANSPARENT_DESCRIPTION = "Sprint goals, scope, and timing for the next iteration."
+      PLAYGROUND_DESCRIPTION =
+        "Preview a longer header description to check wrapping, spacing, and alignment with actions in this list."
+
       # @label Default
+      # @param padding [Symbol] select [default, condensed, spacious]
+      # @param header_padding [Symbol] select [inherit, condensed, default, spacious]
+      # @param description text
       # @param interactive toggle
       # @param collapsible toggle
-      def default(interactive: false, collapsible: false)
+      def default(
+        padding: :default,
+        header_padding: :inherit,
+        description: DEFAULT_DESCRIPTION,
+        interactive: false,
+        collapsible: false
+      )
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-preview",
+          padding:,
+          header_padding:,
           interactive: boolean_preview_param(interactive),
           collapsible: boolean_preview_param(collapsible)
         ) do |list|
           list.with_header(title: "Things we're building", count: true) do |header|
-            header.with_description { "There's lots to look forward to" }
+            header.with_description_content(description)
             header.with_action_button do |button|
               button.with_leading_visual_icon(icon: :pencil)
               "Edit"
@@ -61,15 +77,64 @@ module OpenProject
         end
       end
 
+      # @label Transparent scheme
+      # @param padding [Symbol] select [default, condensed, spacious]
+      # @param header_padding [Symbol] select [inherit, condensed, default, spacious]
+      # @param description text
+      # @param interactive toggle
+      # @param collapsible [Boolean] toggle
+      def transparent(
+        padding: :default,
+        header_padding: :inherit,
+        description: TRANSPARENT_DESCRIPTION,
+        interactive: false,
+        collapsible: false
+      )
+        render OpenProject::Common::BorderBoxListComponent.new(
+          container: "border-box-list-transparent-preview",
+          scheme: :transparent,
+          padding:,
+          header_padding:,
+          interactive: boolean_preview_param(interactive),
+          collapsible: boolean_preview_param(collapsible)
+        ) do |list|
+          list.with_header(title: "Sprint backlog", count: true) do |header|
+            header.with_description_content(description)
+            header.with_action_button do |button|
+              button.with_leading_visual_icon(icon: :rocket)
+              "Start sprint"
+            end
+            header.with_menu(button_aria_label: "Sprint actions") do |menu|
+              menu.with_item(label: "Edit sprint") do |menu_item|
+                menu_item.with_leading_visual_icon(icon: :pencil)
+              end
+            end
+          end
+
+          list.with_item { "User authentication stories" }
+          list.with_item { "Dashboard improvements" }
+          list.with_item { "API documentation" }
+        end
+      end
+
       # @label With work package items
+      # @param padding [Symbol] select [default, condensed, spacious]
+      # @param header_padding [Symbol] select [inherit, condensed, default, spacious]
       # @param interactive toggle
       # @param collapsible toggle
-      def with_work_package_items(interactive: false, collapsible: false)
+      def with_work_package_items(
+        padding: :default,
+        header_padding: :inherit,
+        interactive: false,
+        collapsible: false
+      )
         work_packages = WorkPackage.includes(:project).limit(2).to_a
         return preview_message("No work packages in the database.") if work_packages.empty?
 
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-work-package-preview",
+          padding:,
+          header_padding:,
           interactive: boolean_preview_param(interactive),
           collapsible: boolean_preview_param(collapsible)
         ) do |list|
@@ -79,22 +144,30 @@ module OpenProject
       end
 
       # @label Playground
-      # @param collapsible toggle
       # @param title_tag [Symbol] select [h2, h3, h4, h5]
       # @param count [Symbol] select [inferred, hidden, explicit, zero]
       # @param count_scheme [Symbol] select [primary, secondary]
       # @param hide_zero_count toggle
+      # @param padding [Symbol] select [default, condensed, spacious]
+      # @param header_padding [Symbol] select [inherit, condensed, default, spacious]
+      # @param description text
       # @param interactive toggle
+      # @param collapsible toggle
       def playground(
-        collapsible: false,
         title_tag: :h4,
         count: :inferred,
         count_scheme: :primary,
         hide_zero_count: true,
-        interactive: false
+        padding: :default,
+        header_padding: :inherit,
+        description: PLAYGROUND_DESCRIPTION,
+        interactive: false,
+        collapsible: false
       )
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-playground-preview",
+          padding:,
+          header_padding:,
           interactive: boolean_preview_param(interactive),
           collapsible: boolean_preview_param(collapsible)
         ) do |list|
@@ -108,7 +181,7 @@ module OpenProject
               aria: { label: "Visible list item count" }
             }
           ) do |header|
-            header.with_description { "Advanced header options" }
+            header.with_description_content(description)
           end
 
           list.with_item { "First item" }
@@ -119,11 +192,15 @@ module OpenProject
 
       # @label Empty state
       # List with a header and an empty state (Blankslate), no items.
+      # @param padding [Symbol] select [default, condensed, spacious]
+      # @param header_padding [Symbol] select [inherit, condensed, default, spacious]
       # @param interactive toggle
       # @param collapsible toggle
-      def empty_state(interactive: false, collapsible: false)
+      def empty_state(padding: :default, header_padding: :inherit, interactive: false, collapsible: false)
         render OpenProject::Common::BorderBoxListComponent.new(
           container: "border-box-list-empty-preview",
+          padding:,
+          header_padding:,
           interactive: boolean_preview_param(interactive),
           collapsible: boolean_preview_param(collapsible)
         ) do |list|

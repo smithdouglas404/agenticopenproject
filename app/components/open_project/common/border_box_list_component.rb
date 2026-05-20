@@ -37,8 +37,14 @@ module OpenProject
     # header actions, collapsible behavior, and row rendering.
     class BorderBoxListComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
+      include Primer::FetchOrFallbackHelper
 
-      attr_reader :container, :collapsible, :current_user, :header_id, :footer_id
+      SCHEME_DEFAULT = :default
+      SCHEME_OPTIONS = [SCHEME_DEFAULT, :transparent].freeze
+      HEADER_PADDING_DEFAULT = :inherit
+      HEADER_PADDING_OPTIONS = [HEADER_PADDING_DEFAULT, :condensed, :default, :spacious].freeze
+
+      attr_reader :container, :scheme, :header_padding, :collapsible, :current_user, :header_id, :footer_id
 
       alias_method :collapsible?, :collapsible
 
@@ -163,6 +169,13 @@ module OpenProject
 
       # @param container [String, Symbol, Class, Object] value passed to
       #   `dom_target` to derive DOM ids for the list and related controls.
+      # @param scheme [Symbol] visual scheme. `:default` renders the standard
+      #   BorderBox header. `:transparent` renders a transparent header with no
+      #   separator line.
+      # @param header_padding [Symbol] optional vertical padding override for
+      #   the header. `:inherit` keeps Primer's padding from the underlying
+      #   BorderBox. `:condensed`, `:default`, and `:spacious` override only
+      #   the header's block padding.
       # @param interactive [Boolean] whether dynamic list updates should be
       #   announced politely to assistive technology. This affects the counter
       #   and an explicitly configured empty state; it does not create default
@@ -172,8 +185,10 @@ module OpenProject
       # @param current_user [User] user context passed to work-package items.
       # @param system_arguments [Hash] forwarded to `Primer::Beta::BorderBox`.
       #   Pass `id:` to set the box id; related ids are derived from it.
-      def initialize(
+      def initialize( # rubocop:disable Metrics/AbcSize
         container:,
+        scheme: SCHEME_DEFAULT,
+        header_padding: HEADER_PADDING_DEFAULT,
         interactive: false,
         collapsible: false,
         current_user: User.current,
@@ -182,6 +197,12 @@ module OpenProject
         super()
 
         @container = container
+        @scheme = ActiveSupport::StringInquirer.new(
+          fetch_or_fallback(SCHEME_OPTIONS, scheme, SCHEME_DEFAULT).to_s
+        )
+        @header_padding = ActiveSupport::StringInquirer.new(
+          fetch_or_fallback(HEADER_PADDING_OPTIONS, header_padding, HEADER_PADDING_DEFAULT).to_s
+        )
         @interactive = interactive
         @collapsible = collapsible
         @current_user = current_user
@@ -189,6 +210,15 @@ module OpenProject
 
         @system_arguments[:id] ||= dom_target(container)
         @system_arguments[:list_id] = dom_target(@system_arguments[:id], :list)
+        @system_arguments[:classes] = class_names(
+          @system_arguments[:classes],
+          "op-border-box-list",
+          "op-border-box-list_transparent" => @scheme.transparent?,
+          "op-border-box-list_header-padding-condensed" => @header_padding.condensed?,
+          "op-border-box-list_header-padding-default" => @header_padding.default?,
+          "op-border-box-list_header-padding-spacious" => @header_padding.spacious?
+        )
+
         @header_id = dom_target(@system_arguments[:id], :header)
         @footer_id = dom_target(@system_arguments[:id], :footer)
       end

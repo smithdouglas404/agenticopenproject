@@ -34,7 +34,9 @@ See COPYRIGHT and LICENSE files for more details.
           container: inbox_container,
           current_user:,
           interactive: true,
+          scheme: :transparent,
           padding: :condensed,
+          header_padding: :spacious,
           test_selector: "backlog-inbox",
           data: {
             generic_drag_and_drop_target: "container",
@@ -44,6 +46,8 @@ See COPYRIGHT and LICENSE files for more details.
           }
         )
       ) do |list| %>
+    <% list.with_header(title: t(".title"), count: work_packages.size) %>
+
     <% list.with_empty_state(
          title: t(".blankslate_title"),
          description: t(".blankslate_description"),

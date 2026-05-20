@@ -195,7 +195,7 @@ RSpec.describe OpenProject::Common::BorderBoxListComponent, type: :component do
       end
 
       expect(rendered).to have_heading("My title", level: 4)
-      expect(rendered).to have_text("Some description")
+      expect(rendered).to have_css(".op-border-box-list-header--description", text: "Some description")
     end
 
     it "renders multiple action buttons" do
@@ -765,6 +765,90 @@ RSpec.describe OpenProject::Common::BorderBoxListComponent, type: :component do
       end
 
       expect(rendered).to have_css("collapsible-header")
+    end
+
+    it "adds a collapsible modifier without rendering a grid description container" do
+      rendered = render_inline(
+        described_class.new(container: "explicit-collapse", collapsible: true)
+      ) do |list|
+        list.with_header(title: "Collapsible header") do |header|
+          header.with_description { "Collapsible description" }
+        end
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(
+        ".op-border-box-list-header.op-border-box-list-header_collapsible"
+      )
+      expect(rendered).to have_no_css(".op-border-box-list-header--description")
+      expect(rendered).to have_text("Collapsible description")
+    end
+  end
+
+  describe "scheme" do
+    it "defaults to :default" do
+      rendered = render_inline(
+        described_class.new(container: "scheme-default")
+      ) do |list|
+        list.with_header(title: "Default")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_no_css(".op-border-box-list_transparent")
+    end
+
+    it "applies the transparent CSS class when scheme is :transparent" do
+      rendered = render_inline(
+        described_class.new(container: "scheme-transparent", scheme: :transparent)
+      ) do |list|
+        list.with_header(title: "Transparent")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(".Box.op-border-box-list_transparent")
+    end
+
+    it "keeps collapsible independent of the transparent scheme" do
+      rendered = render_inline(
+        described_class.new(container: "transparent-collapse", scheme: :transparent, collapsible: true)
+      ) do |list|
+        list.with_header(title: "Transparent collapsible")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(".Box.op-border-box-list_transparent")
+      expect(rendered).to have_css("collapsible-header")
+    end
+  end
+
+  describe "header padding" do
+    it "inherits the underlying BorderBox header padding by default" do
+      rendered = render_inline(
+        described_class.new(container: "header-padding-inherit")
+      ) do |list|
+        list.with_header(title: "Inherited padding")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(".Box.op-border-box-list")
+      expect(rendered).to have_no_css("[class*='op-border-box-list_header-padding-']")
+    end
+
+    it "adds a header padding modifier when configured" do
+      rendered = render_inline(
+        described_class.new(container: "header-padding-default", padding: :condensed, header_padding: :default)
+      ) do |list|
+        list.with_header(title: "Default header padding")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(".Box.Box--condensed.op-border-box-list_header-padding-default")
+    end
+
+    it "raises for unsupported values in test" do
+      expect do
+        described_class.new(container: "header-padding-unsupported", header_padding: :unsupported)
+      end.to raise_error Primer::FetchOrFallbackHelper::InvalidValueError
     end
   end
 end

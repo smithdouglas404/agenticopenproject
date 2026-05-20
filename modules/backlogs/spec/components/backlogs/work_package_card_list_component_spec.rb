@@ -139,6 +139,12 @@ RSpec.describe Backlogs::WorkPackageCardListComponent, type: :component do
       expect(rendered_component).to have_css(".Box-header")
     end
 
+    it "keeps condensed row padding with spacious header padding" do
+      expect(rendered_component).to have_css(
+        ".Box.Box--condensed.op-border-box-list_header-padding-spacious"
+      )
+    end
+
     it "renders the provided title" do
       expect(rendered_component).to have_heading "Sprint 1", level: 4
     end

@@ -75,6 +75,27 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     end
   end
 
+  describe "header" do
+    let(:work_packages) do
+      [
+        create(:work_package, subject: "First item", project:, story_points: 2, position: 1),
+        create(:work_package, subject: "Second item", project:, story_points: 4, position: 2)
+      ]
+    end
+
+    it "renders the inbox title" do
+      expect(page).to have_heading "Inbox", level: 4
+    end
+
+    it "renders the work-package count" do
+      expect(page).to have_css(
+        ".Counter",
+        text: "2",
+        aria: { label: I18n.t(:label_x_items, count: 2) }
+      )
+    end
+  end
+
   describe "empty state" do
     let(:work_packages) { [] }
 
@@ -137,6 +158,14 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         expect(page).to have_css(".Box-row", count: truncate_middle + tail_size + 1) # +1 for "show more" row
         expect(page).to have_css("##{show_more_id}")
         expect(page).to have_text("Show #{middle_count} more items")
+      end
+
+      it "renders the full work-package count in the header" do
+        expect(page).to have_css(
+          ".Counter",
+          text: total.to_s,
+          aria: { label: I18n.t(:label_x_items, count: total) }
+        )
       end
 
       it "renders show-more targeting the full backlog turbo frame with all=1" do
