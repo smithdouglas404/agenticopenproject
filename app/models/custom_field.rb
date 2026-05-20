@@ -91,6 +91,10 @@ class CustomField < ApplicationRecord
 
   after_destroy :destroy_help_text
 
+  def visible?(usr = User.current, **)
+    self.class.visible(usr).exists?(id: id)
+  end
+
   # make sure int, float, date, and bool are not searchable
   def check_searchability
     self.searchable = false if %w(int float date bool user version).include?(field_format)
