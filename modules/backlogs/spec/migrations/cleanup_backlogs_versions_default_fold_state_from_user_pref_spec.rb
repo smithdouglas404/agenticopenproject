@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,21 +26,34 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class My::BacklogsForm < ApplicationForm
-  form do |f|
-    f.fieldset_group(title: helpers.t("backlogs.user_preference.header_backlogs"), mt: 4) do |fg|
-      fg.check_box name: :backlogs_versions_default_fold_state,
-                   value: DEFAULT_FOLD_STATE,
-                   unchecked_value: DEFAULT_EXPAND_STATE,
-                   label: I18n.t("activerecord.attributes.user_preference.backlogs_versions_default_fold_state"),
-                   caption: I18n.t("backlogs.caption_sprints_default_fold_state")
+require "spec_helper"
+require Rails.root.join("modules/backlogs/db/migrate/20260518000000_cleanup_backlogs_versions_default_fold_state_from_user_pref")
 
-      fg.submit(name: :submit, label: helpers.t("backlogs.user_preference.button_update_backlogs"), scheme: :default)
+RSpec.describe CleanupBacklogsVersionsDefaultFoldStateFromUserPref, type: :model do
+  subject(:migrate) { ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) } }
+
+  shared_let(:user) do
+    create(:user, preferences: {}) do |u|
+      u.create_preference(
+        settings: {
+          "theme" => "light",
+          "time_zone" => "Etc/UTC",
+          "backlogs_versions_default_fold_state" => "closed"
+        }
+      )
     end
   end
 
-  DEFAULT_FOLD_STATE = "closed"
-  DEFAULT_EXPAND_STATE = "open"
+  it "removes backlogs_versions_default_fold_state and leaves other settings intact" do
+    migrate
+
+    expect(user.pref.settings).to eql(
+      {
+        "theme" => "light",
+        "time_zone" => "Etc/UTC"
+      }
+    )
+  end
 end
