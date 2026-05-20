@@ -2524,6 +2524,7 @@ ca:
         other: Priorities
       meeting_participant: Meeting participant
       member: Membre
+      message: Message
       news: Notícies
       notification:
         one: Notificació
@@ -3451,7 +3452,7 @@ ca:
   gui_validation_error: 1 error
   gui_validation_error_plural: "%{count} errors"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4736,7 +4737,6 @@ ca:
   notice_successful_delete: Esborrat correctament.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: S'ha modificat correctament.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4784,8 +4784,11 @@ ca:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Afegir paquets de treball
   permission_add_messages: Publicar missatges

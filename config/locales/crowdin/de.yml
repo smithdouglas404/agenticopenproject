@@ -2521,6 +2521,7 @@ de:
         other: Prioritäten
       meeting_participant: Besprechungsteilnehmer
       member: Mitglied
+      message: Message
       news: Neuigkeiten
       notification:
         one: Benachrichtigung
@@ -3448,19 +3449,19 @@ de:
   gui_validation_error: 1 Fehler
   gui_validation_error_plural: "%{count} Fehler"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} Überprüfung fehlgeschlagen"
-          other: "%{count} Überprüfungen fehlgeschlagen"
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
         success: All checks passed
         warnings:
           one: "%{count} check returned a warning"
           other: "%{count} checks returned a warning"
       summary:
         failure: Some checks failed and the system does not work as expected.
-        success: Alle Verbindungen und Systeme funktionieren wie erwartet.
-        warning: Einige Überprüfungen ergaben eine Warnung. Dies kann zu unerwartetem Verhalten führen.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Fehlgeschlagen
@@ -4735,7 +4736,6 @@ de:
   notice_successful_delete: Erfolgreich gelöscht.
   notice_successful_cancel: Erfolgreiche Absage.
   notice_successful_update: Erfolgreich aktualisiert.
-  notice_successful_move: Erfolgreich von %{from} nach %{to} verschoben.
   notice_unsuccessful_create: Erstellung fehlgeschlagen.
   notice_unsuccessful_create_with_reason: 'Erstellung fehlgeschlagen: %{reason}'
   notice_unsuccessful_update: Aktualisierung fehlgeschlagen.
@@ -4783,8 +4783,11 @@ de:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Arbeitspaket-Aktionen
+        parent: Parent
   permission_add_work_package_comments: Kommentare hinzufügen
   permission_add_work_packages: Arbeitspakete hinzufügen
   permission_add_messages: Forenbeiträge hinzufügen

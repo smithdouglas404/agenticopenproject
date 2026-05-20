@@ -209,19 +209,6 @@ fr:
         health_notifications_component:
           sync_now: Synchroniser maintenant
           sync_queued: Synchronisation en attente.
-        validation_result_component:
-          checks:
-            failures:
-              one: "%{count} vérification a échoué"
-              other: "%{count} vérifications ont échoué"
-            success: Toutes les vérifications ont été validées
-            warnings:
-              one: "%{count} vérification a renvoyé un avertissement"
-              other: "%{count} vérifications ont renvoyé un avertissement"
-          summary:
-            failure: Certaines vérifications ont échoué et le système ne fonctionne pas comme prévu.
-            success: Toutes les connexions et les systèmes fonctionnent comme prévu.
-            warning: Certaines vérifications ont renvoyé un avertissement. Cela peut entraîner un comportement inattendu.
     buttons:
       done_continue: Terminé, continuer
       open_storage: Ouvrir le stockage de fichiers

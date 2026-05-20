@@ -2493,6 +2493,7 @@ zh-TW:
         other: 優先權
       meeting_participant: 與會者
       member: 成員
+      message: Message
       news: 最新消息
       notification:
         other: 通知
@@ -3386,7 +3387,7 @@ zh-TW:
   gui_validation_error: 1 錯誤
   gui_validation_error_plural: "%{count} 個錯誤"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           other: "%{count} checks failed"
@@ -4668,7 +4669,6 @@ zh-TW:
   notice_successful_delete: 刪除成功
   notice_successful_cancel: 取消成功
   notice_successful_update: 更新成功
-  notice_successful_move: 成功從 %{from} 移至 %{to}.
   notice_unsuccessful_create: 建立失敗。
   notice_unsuccessful_create_with_reason: 建立失敗：%{reason}
   notice_unsuccessful_update: 更新失敗。
@@ -4715,8 +4715,11 @@ zh-TW:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: 增加留言
   permission_add_work_packages: 新增工作套件
   permission_add_messages: 張貼訊息

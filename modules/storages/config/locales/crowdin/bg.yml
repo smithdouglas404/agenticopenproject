@@ -209,19 +209,6 @@ bg:
         health_notifications_component:
           sync_now: Sync now
           sync_queued: Synchronization queued.
-        validation_result_component:
-          checks:
-            failures:
-              one: "%{count} check failed"
-              other: "%{count} checks failed"
-            success: All checks passed
-            warnings:
-              one: "%{count} check returned a warning"
-              other: "%{count} checks returned a warning"
-          summary:
-            failure: Some checks failed and the system does not work as expected.
-            success: All connections and systems are working as expected.
-            warning: Some checks returned a warning. This can lead to unexpected behaviour.
     buttons:
       done_continue: Done, continue
       open_storage: Open file storage

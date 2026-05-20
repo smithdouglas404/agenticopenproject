@@ -2525,6 +2525,7 @@ si:
         other: Priorities
       meeting_participant: Meeting participant
       member: සාමාජික
+      message: Message
       news: පුවත්
       notification:
         one: Notification
@@ -3454,7 +3455,7 @@ si:
   gui_validation_error: 1 දෝෂය
   gui_validation_error_plural: "%{count} දෝෂ"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4737,7 +4738,6 @@ si:
   notice_successful_delete: සාර්ථක මකාදැමීම.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: සාර්ථක යාවත්කාලීන කිරීම.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4785,8 +4785,11 @@ si:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: වැඩ පැකේජ එකතු කරන්න
   permission_add_messages: තැපැල් පණිවිඩ

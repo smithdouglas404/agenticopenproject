@@ -209,17 +209,6 @@ zh-CN:
         health_notifications_component:
           sync_now: 立即同步
           sync_queued: 同步已排队。
-        validation_result_component:
-          checks:
-            failures:
-              other: "%{count} 个检查失败"
-            success: 所有检查均通过
-            warnings:
-              other: "%{count} 个检查返回警告"
-          summary:
-            failure: 某些检查失败，系统无法按预期运行。
-            success: 所有连接和系统均按预期运行。
-            warning: 某些检查返回警告。这可能导致出现异常行为。
     buttons:
       done_continue: 完成, 继续
       open_storage: 打开文件存储

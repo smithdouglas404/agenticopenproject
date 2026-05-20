@@ -2583,6 +2583,7 @@ cs:
         other: Priorities
       meeting_participant: Účastník schůzky
       member: Člen
+      message: Message
       news: Novinky
       notification:
         one: Oznámení
@@ -3580,7 +3581,7 @@ cs:
   gui_validation_error: 1 chyba
   gui_validation_error_plural: "%{count} chyb"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4875,7 +4876,6 @@ cs:
   notice_successful_delete: Úspěšné odstranění.
   notice_successful_cancel: Úspěšné zrušení.
   notice_successful_update: Úspěšná aktualizace.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Vytvoření se nezdařilo.
   notice_unsuccessful_create_with_reason: 'Vytvoření se nezdařilo: %{reason}'
   notice_unsuccessful_update: Aktualizace selhala.
@@ -4925,8 +4925,11 @@ cs:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: Přidat komentáře
   permission_add_work_packages: Přidat pracovní balíčky
   permission_add_messages: Odesílat zprávy

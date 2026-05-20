@@ -2518,6 +2518,7 @@ fr:
         other: Priorités
       meeting_participant: Participant à la réunion
       member: Membre
+      message: Message
       news: Actualités
       notification:
         one: Notification
@@ -3447,19 +3448,19 @@ fr:
   gui_validation_error: une erreur
   gui_validation_error_plural: "%{count} erreurs"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} vérification a échoué"
-          other: "%{count} vérifications ont échoué"
-        success: Toutes les vérifications ont été validées
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} vérification a renvoyé un avertissement"
-          other: "%{count} vérifications ont renvoyé un avertissement"
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Certaines vérifications ont échoué et le système ne fonctionne pas comme prévu.
-        success: Toutes les connexions et les systèmes fonctionnent comme prévu.
-        warning: Certaines vérifications ont renvoyé un avertissement. Cela peut entraîner un comportement inattendu.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Échec
@@ -4730,7 +4731,6 @@ fr:
   notice_successful_delete: Suppression réussie.
   notice_successful_cancel: Annulation réussie.
   notice_successful_update: Mise à jour réussie.
-  notice_successful_move: Passage réussi de %{from} à %{to}.
   notice_unsuccessful_create: Échec de la création.
   notice_unsuccessful_create_with_reason: 'Échec de la création : %{reason}'
   notice_unsuccessful_update: Mise à jour échouée.
@@ -4778,8 +4778,11 @@ fr:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Actions du lot de travaux
+        parent: Parent
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages

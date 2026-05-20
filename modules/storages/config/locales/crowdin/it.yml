@@ -209,19 +209,6 @@ it:
         health_notifications_component:
           sync_now: Sincronizza ora
           sync_queued: Sincronizzazione in coda.
-        validation_result_component:
-          checks:
-            failures:
-              one: "%{count} controllo non superato"
-              other: "%{count} controlli non superati"
-            success: Tutti i controlli superati
-            warnings:
-              one: "%{count} controllo ha restituito un avviso"
-              other: "%{count} controlli hanno restituito un avviso"
-          summary:
-            failure: Alcuni controlli non sono riusciti e il sistema non funziona come previsto.
-            success: Tutte le connessioni e i sistemi funzionano come previsto.
-            warning: Alcuni controlli hanno restituito un avviso. Questo può causare comportamenti imprevisti.
     buttons:
       done_continue: Fatto, continua
       open_storage: Apri archivio file

@@ -164,6 +164,12 @@ zh-CN:
         move_to_sprint: 将它们移动到另一个冲刺
       select_sprint_label: 选择冲刺
       button_complete_sprint: 完成冲刺
+    stories:
+      update_service:
+        missing_target: target_id or direction must be present.
+        ambiguous_target: target_id and direction cannot both be present.
+        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
+        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 将 URL 复制到剪贴板

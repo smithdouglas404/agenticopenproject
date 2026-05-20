@@ -2500,6 +2500,7 @@ ja:
         other: 優先度
       meeting_participant: Meeting participant
       member: メンバー
+      message: Message
       news: ニュース
       notification:
         other: 通知
@@ -3395,7 +3396,7 @@ ja:
   gui_validation_error: 1つエラー
   gui_validation_error_plural: "%{count}つエラー"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           other: "%{count} checks failed"
@@ -4672,7 +4673,6 @@ ja:
   notice_successful_delete: 正常に削除しました。
   notice_successful_cancel: キャンセルしました。
   notice_successful_update: 正常に更新しました。
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: 作成に失敗しました
   notice_unsuccessful_create_with_reason: 作成失敗： %{reason}
   notice_unsuccessful_update: 更新に失敗しました。
@@ -4717,8 +4717,11 @@ ja:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: コメントの追加
   permission_add_work_packages: ワークパッケージの追加
   permission_add_messages: メッセージの投稿

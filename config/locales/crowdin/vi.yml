@@ -2499,6 +2499,7 @@ vi:
         other: ưu tiên
       meeting_participant: Người tham gia cuộc họp
       member: Thành viên
+      message: Message
       news: Tin tức
       notification:
         other: thông báo
@@ -3394,7 +3395,7 @@ vi:
   gui_validation_error: 1 lỗi
   gui_validation_error_plural: "%{count} lỗi"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           other: "%{count} checks failed"
@@ -4679,7 +4680,6 @@ vi:
   notice_successful_delete: Xóa thành công.
   notice_successful_cancel: Hủy thành công.
   notice_successful_update: Cập nhật thành công.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Tạo không thành công.
   notice_unsuccessful_create_with_reason: 'Tạo không thành công: %{reason}'
   notice_unsuccessful_update: Cập nhật không thành công.
@@ -4726,8 +4726,11 @@ vi:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: Thêm nhận xét
   permission_add_work_packages: Thêm mới Gói công việc
   permission_add_messages: Đăng tin nhắn

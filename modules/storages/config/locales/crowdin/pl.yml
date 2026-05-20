@@ -209,23 +209,6 @@ pl:
         health_notifications_component:
           sync_now: Zsynchronizuj teraz
           sync_queued: Synchronizacja w kolejce.
-        validation_result_component:
-          checks:
-            failures:
-              one: "%{count} kontrola nie powiodła się"
-              few: "%{count} kontrole nie powiodły się"
-              many: "%{count} kontroli nie powiodło się"
-              other: "%{count} kontroli nie powiodło się"
-            success: Wszystkie kontrole powiodły się
-            warnings:
-              one: "%{count} kontrola zwróciła ostrzeżenie"
-              few: "%{count} kontrole zwróciły ostrzeżenie"
-              many: "%{count} kontroli zwróciło ostrzeżenie"
-              other: "%{count} kontroli zwróciło ostrzeżenie"
-          summary:
-            failure: Niektóre kontrole nie powiodły się i system nie działa zgodnie z oczekiwaniami.
-            success: Wszystkie połączenia i systemy działają zgodnie z oczekiwaniami.
-            warning: Niektóre kontrole zwróciły ostrzeżenie. Może to prowadzić do nieoczekiwanego sposobu działania.
     buttons:
       done_continue: Gotowe, kontynuuj
       open_storage: Otwórz magazyn plików

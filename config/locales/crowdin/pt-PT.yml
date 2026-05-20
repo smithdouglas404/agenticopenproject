@@ -2523,6 +2523,7 @@ pt-PT:
         other: Prioridades
       meeting_participant: Participante na reunião
       member: Membro
+      message: Message
       news: Noticias
       notification:
         one: Notificação
@@ -3452,19 +3453,19 @@ pt-PT:
   gui_validation_error: 1 erro
   gui_validation_error_plural: "%{count} erros"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} verificação falhou"
-          other: "%{count} verificações falharam"
-        success: Todas as verificações passaram
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} verificação devolvida com um aviso"
-          other: "%{count} verificações devolvidas com um aviso"
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Algumas verificações não foram aprovadas e o sistema não funciona como esperado.
-        success: Todas as ligações e sistemas estão a funcionar como esperado.
-        warning: Algumas verificações foram devolvidas com um aviso. Pode levar a comportamento inesperado.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Falhou
@@ -4734,7 +4735,6 @@ pt-PT:
   notice_successful_delete: Eliminado com sucesso.
   notice_successful_cancel: Cancelamento bem-sucedido.
   notice_successful_update: Actualizado com sucesso.
-  notice_successful_move: Movimento bem-sucedido de %{from} para %{to}.
   notice_unsuccessful_create: A criação falhou.
   notice_unsuccessful_create_with_reason: 'A criação falhou: %{reason}'
   notice_unsuccessful_update: Falha na atualização.
@@ -4780,8 +4780,11 @@ pt-PT:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Ações do pacote de trabalho
+        parent: Parent
   permission_add_work_package_comments: Adicionar comentários
   permission_add_work_packages: Adicionar pacotes de trabalho
   permission_add_messages: Publicar mensagens

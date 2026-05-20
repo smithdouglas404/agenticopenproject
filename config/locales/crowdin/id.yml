@@ -2501,6 +2501,7 @@ id:
         other: Priorities
       meeting_participant: Meeting participant
       member: Member
+      message: Message
       news: News
       notification:
         other: Notifications
@@ -3403,7 +3404,7 @@ id:
   gui_validation_error: 1 error
   gui_validation_error_plural: "%{count} error"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           other: "%{count} checks failed"
@@ -4682,7 +4683,6 @@ id:
   notice_successful_delete: Berhasil dihapus.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: Berhasil diperbarui.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4727,8 +4727,11 @@ id:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Tambah Paket-Penugasan
   permission_add_messages: Kirim pesan

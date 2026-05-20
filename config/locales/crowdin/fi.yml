@@ -2525,6 +2525,7 @@ fi:
         other: Priorities
       meeting_participant: Meeting participant
       member: Jäsen
+      message: Message
       news: Uutiset
       notification:
         one: Notification
@@ -3452,7 +3453,7 @@ fi:
   gui_validation_error: 1 virhe
   gui_validation_error_plural: "%{count} virhettä"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4735,7 +4736,6 @@ fi:
   notice_successful_delete: Poisto onnistui.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: Päivitys onnistui.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4783,8 +4783,11 @@ fi:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Lisää tehtävä
   permission_add_messages: Jätä viesti

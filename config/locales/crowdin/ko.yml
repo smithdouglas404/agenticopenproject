@@ -2495,6 +2495,7 @@ ko:
         other: 우선 순위
       meeting_participant: 미팅 참가자
       member: 멤버
+      message: Message
       news: 뉴스
       notification:
         other: 알림
@@ -3408,17 +3409,17 @@ ko:
   gui_validation_error: 1개 오류
   gui_validation_error_plural: "%{count}개 오류"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          other: "%{count}개 검사 실패함"
-        success: 모든 검사 통과함
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          other: "%{count}개 검사에서 경고가 반환되었습니다"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: 일부 검사가 실패했으며 시스템이 예상대로 작동되지 않습니다.
-        success: 모든 연결과 시스템이 예상대로 작동 중입니다.
-        warning: 일부 검사에서 경고가 반환되었습니다. 이로 인해 예상치 못한 동작이 발생할 수 있습니다.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: 실패함
@@ -4689,7 +4690,6 @@ ko:
   notice_successful_delete: 삭제에 성공했습니다.
   notice_successful_cancel: 취소에 성공했습니다.
   notice_successful_update: 업데이트에 성공했습니다.
-  notice_successful_move: "%{from}에서 %{to}(으)로 이동했습니다."
   notice_unsuccessful_create: 생성이 실패했습니다.
   notice_unsuccessful_create_with_reason: '생성 실패: %{reason}'
   notice_unsuccessful_update: 업데이트에 실패했습니다.
@@ -4736,8 +4736,11 @@ ko:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: 작업 패키지 액션
+        parent: Parent
   permission_add_work_package_comments: 코멘트 추가
   permission_add_work_packages: 작업 패키지 추가
   permission_add_messages: 메시지 게시

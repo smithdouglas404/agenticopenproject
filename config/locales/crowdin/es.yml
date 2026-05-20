@@ -2520,6 +2520,7 @@ es:
         other: Prioridades
       meeting_participant: Participante de la reunión
       member: Miembro
+      message: Message
       news: Noticias
       notification:
         one: Notificación
@@ -3445,19 +3446,19 @@ es:
   gui_validation_error: 1 error
   gui_validation_error_plural: errores %{count}
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} comprobación fallida"
-          other: "%{count} comprobaciones fallidas"
-        success: Todas las comprobaciones superadas
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} comprobación devolvió una advertencia"
-          other: "%{count} comprobaciones devolvieron una advertencia"
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Algunas comprobaciones han fallado y el sistema no funciona como se esperaba.
-        success: Todas las conexiones y sistemas funcionan según lo previsto.
-        warning: Algunas comprobaciones devolvieron una advertencia. Esto puede dar lugar a un comportamiento inesperado.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Error
@@ -4728,7 +4729,6 @@ es:
   notice_successful_delete: Eliminado con éxito.
   notice_successful_cancel: Cancelación exitosa.
   notice_successful_update: Actualización correcta.
-  notice_successful_move: Traslado con éxito de %{from} a %{to}.
   notice_unsuccessful_create: Error en la creación.
   notice_unsuccessful_create_with_reason: 'Error en la creación: %{reason}'
   notice_unsuccessful_update: Error al actualizar.
@@ -4776,8 +4776,11 @@ es:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Acciones del paquete de trabajo
+        parent: Parent
   permission_add_work_package_comments: Añadir comentarios
   permission_add_work_packages: Añadir paquetes de trabajo
   permission_add_messages: Publicar mensajes

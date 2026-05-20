@@ -2493,6 +2493,7 @@ zh-CN:
         other: 优先事项
       meeting_participant: 会议参与者
       member: 成员
+      message: Message
       news: 新闻
       notification:
         other: 通知
@@ -3388,17 +3389,17 @@ zh-CN:
   gui_validation_error: 1 错误
   gui_validation_error_plural: "%{count} 错误"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          other: "%{count} 个检查失败"
-        success: 所有检查均通过
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          other: "%{count} 个检查返回警告"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: 某些检查失败，系统无法按预期运行。
-        success: 所有连接和系统均按预期运行。
-        warning: 某些检查返回警告。这可能导致出现异常行为。
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: 失败
@@ -4668,7 +4669,6 @@ zh-CN:
   notice_successful_delete: 成功删除。
   notice_successful_cancel: 取消成功
   notice_successful_update: 成功更新。
-  notice_successful_move: 成功从 %{from} 移动到 %{to}。
   notice_unsuccessful_create: 创建失败。
   notice_unsuccessful_create_with_reason: 创建失败：%{reason}
   notice_unsuccessful_update: 更新失败。
@@ -4715,8 +4715,11 @@ zh-CN:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: 工作包操作
+        parent: Parent
   permission_add_work_package_comments: 添加评论
   permission_add_work_packages: 添加工作包
   permission_add_messages: 发布消息
