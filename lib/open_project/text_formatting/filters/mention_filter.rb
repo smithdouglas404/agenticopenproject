@@ -36,9 +36,16 @@ module OpenProject::TextFormatting
       include OpenProject::ObjectLinking
       include OpenProject::StaticRouting::UrlHelpers
 
+      MENTION_TYPES = {
+        "user" => User,
+        "group" => Group,
+        "work_package" => WorkPackage
+      }.freeze
+
       def call
+        cache = preload_mentioned_records
         doc.search("mention").each do |mention|
-          anchor = mention_anchor(mention)
+          anchor = mention_anchor(mention, cache)
           mention.replace(anchor) if anchor
         end
 
@@ -47,18 +54,33 @@ module OpenProject::TextFormatting
 
       private
 
-      def mention_anchor(mention)
-        mention_instance = class_from_mention(mention)
+      # Resolves all mentioned records in one SELECT per class. Ids stay as
+      # strings so the lookup matches raw `data-id` values without coercion.
+      def preload_mentioned_records
+        mention_ids_by_class.to_h do |klass, ids|
+          [klass, klass.visible.where(id: ids).index_by { |record| record.id.to_s }]
+        end
+      end
 
-        case mention_instance
+      def mention_ids_by_class
+        doc.search("mention").each_with_object(Hash.new { |h, k| h[k] = Set.new }) do |mention, acc|
+          id = mention_id(mention) or next
+          acc[mention_class(mention)] << id
+        end
+      end
+
+      def mention_anchor(mention, cache)
+        record = resolve_mention(mention, cache)
+
+        case record
         when Group
-          group_mention(mention_instance)
+          group_mention(record)
         when User
-          user_mention(mention_instance)
+          user_mention(record)
         when WorkPackage
-          work_package_mention(mention_instance, mention)
+          work_package_mention(record, mention)
         else
-          mention_instance
+          record
         end
       end
 
@@ -99,21 +121,14 @@ module OpenProject::TextFormatting
         end
       end
 
-      def class_from_mention(mention)
-        mention_class = case mention.attributes["data-type"].value
-                        when "user"
-                          User
-                        when "group"
-                          Group
-                        when "work_package"
-                          WorkPackage
-                        else
-                          raise ArgumentError
-                        end
+      def resolve_mention(mention, cache)
+        klass = mention_class(mention)
+        id = mention_id(mention)
+        cache.dig(klass, id) || fallback_text(mention)
+      end
 
-        mention_class
-          .visible
-          .find_by(id: mention_id(mention)) || fallback_text(mention)
+      def mention_class(mention)
+        MENTION_TYPES.fetch(mention["data-type"]) { raise ArgumentError }
       end
 
       ##
@@ -127,7 +142,7 @@ module OpenProject::TextFormatting
       def controller; end
 
       def mention_id(mention)
-        value = mention.attributes["data-id"]&.value
+        value = mention["data-id"]
         # Reject semantic-shaped data-ids: `PROJ-42` must not silently
         # resolve to WP id 42 via embedded-digit extraction.
         value if value&.match?(/\A\d+\z/)
