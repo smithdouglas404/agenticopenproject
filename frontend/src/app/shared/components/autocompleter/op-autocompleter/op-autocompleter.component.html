@@ -1,6 +1,5 @@
 <div class="inline-label">
   @if (inputName && !(multiple && multipleAsSeparateInputs)) {
-    <input type="hidden" [attr.name]="inputName" [value]="">
     <input
       #syncedInput
       type="hidden"
@@ -9,7 +8,6 @@
       [attr.data-action]="hiddenFieldAction">
   }
   @if (multiple && multipleAsSeparateInputs) {
-    <input type="hidden" [attr.name]="inputName+'[]'" [value]="">
     @for (value of mappedInputValue; track value) {
       <input
         type="hidden"

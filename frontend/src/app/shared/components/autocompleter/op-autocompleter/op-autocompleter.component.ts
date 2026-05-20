@@ -353,13 +353,12 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
   public get mappedInputValue():string|string[] {
     if (!this.model) {
       return '';
+    } else if (Array.isArray(this.model)) {
+      const mappedValues = this.model.map((el) => (_.isObject(el) ? el[this.inputBindValue as 'id'] : el) as string);
+      return mappedValues.length > 0 ? mappedValues : [''];
+    } else {
+      return this.model[this.inputBindValue as 'id'] as string || '';
     }
-
-    if (Array.isArray(this.model)) {
-      return this.model.map((el) => (_.isObject(el) ? el[this.inputBindValue as 'id'] : el) as string);
-    }
-
-    return this.model[this.inputBindValue as 'id'] as string;
   }
 
   public repositionDropdown() {
