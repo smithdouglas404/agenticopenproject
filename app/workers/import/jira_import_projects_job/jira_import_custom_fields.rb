@@ -33,18 +33,54 @@ module Import
     module JiraImportCustomFields
       JIRA_IMPORT_GROUP_KEY = "Jira import"
 
-      def collect_custom_field_attributes(custom_field_registry, jira_issue)
-        custom_field_registry.each_with_object({}) do |entry, attrs|
-          field_key = entry[:jira_field].jira_field_id
-          raw_value = jira_issue.payload["fields"][field_key]
-          next if raw_value.blank?
-
-          context = find_context_for_issue(entry, jira_issue)
-          next unless context
-
+      def collect_custom_field_attributes(custom_field_index, jira_issue)
+        attrs = {}
+        each_custom_field_value(custom_field_index, jira_issue) do |context, raw_value|
           custom_field = context[:custom_field]
           attrs[custom_field.attribute_getter] = context[:builder].convert_value(raw_value, custom_field)
         end
+        attrs
+      end
+
+      # Indexes the registry by Jira field key so per-issue work is O(fields_on_issue)
+      # instead of O(registry_size). Multiple registry entries can share a Jira field
+      # (multicheckbox booleans split by option_value), so the value is an array.
+      def build_custom_field_index(custom_field_registry)
+        custom_field_registry.each_with_object({}) do |entry, index|
+          field_key = entry[:jira_field].jira_field_id
+          (index[field_key] ||= []) << { contexts: entry[:contexts], cache: {} }
+        end
+      end
+
+      # Yields (context, raw_value) for every custom field value present on the issue.
+      def each_custom_field_value(custom_field_index, jira_issue)
+        fields = jira_issue.payload["fields"]
+        project_key = fields.dig("project", "key")
+        issuetype_id = fields.dig("issuetype", "id")
+
+        fields.each do |field_key, raw_value|
+          next if raw_value.blank?
+
+          indexed_entries = custom_field_index[field_key]
+          next unless indexed_entries
+
+          indexed_entries.each do |indexed|
+            context = resolve_indexed_context(indexed, project_key, issuetype_id)
+            yield(context, raw_value) if context
+          end
+        end
+      end
+
+      def resolve_indexed_context(indexed, project_key, issuetype_id)
+        cache = indexed[:cache]
+        cache_key = [project_key, issuetype_id]
+        return cache[cache_key] if cache.key?(cache_key)
+
+        contexts = indexed[:contexts]
+        resolved = contexts.find do |ctx|
+          context_applies_to_project?(ctx, project_key) && context_applies_to_issuetype?(ctx, issuetype_id)
+        end
+        cache[cache_key] = resolved || contexts.first
       end
 
       # Builds one OP custom field per (Jira field, context group) combination, before any
@@ -54,22 +90,21 @@ module Import
         jira_field_ids = collect_used_jira_field_ids
         return [] if jira_field_ids.empty?
 
-        Import::JiraField
-          .where(jira_id: @jira_id, jira_field_id: jira_field_ids)
-          .flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
+        @cf_name_index = WorkPackageCustomField.all.index_by { |cf| cf.name.downcase }
+        jira_fields = Import::JiraField.where(jira_id: @jira_id, jira_field_id: jira_field_ids).to_a
+        preload_array_field_values(jira_fields)
+        jira_fields.flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
       end
 
       def collect_used_jira_field_ids
-        used_ids = Set.new
-        jira_project_ids = Import::JiraProject
-                             .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
-                             .pluck(:id)
-        Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: jira_project_ids).find_each do |issue|
-          issue.payload["fields"].each do |key, value|
-            used_ids << key if key.start_with?("customfield_") && value.present?
-          end
-        end
-        used_ids.to_a
+        Import::JiraIssue
+          .where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids)
+          .joins("CROSS JOIN LATERAL jsonb_each(payload->'fields') AS f(key, value)")
+          .where("f.key LIKE 'customfield%'")
+          .where("f.value <> 'null'::jsonb AND f.value <> 'false'::jsonb")
+          .where("f.value <> '\"\"'::jsonb AND f.value <> '[]'::jsonb AND f.value <> '{}'::jsonb")
+          .distinct
+          .pluck(Arel.sql("f.key"))
       end
 
       def build_registry_entries_for_field(jira_field)
@@ -121,15 +156,7 @@ module Import
       end
 
       def collect_string_values_from_issues(jira_field)
-        field_key = jira_field.jira_field_id
-        values = Set.new
-        Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids).find_each do |issue|
-          raw = issue.payload["fields"][field_key]
-          next unless raw.is_a?(Array)
-
-          raw.each { |v| values << v.to_s if v.present? }
-        end
-        values.to_a.sort
+        @string_array_values_by_field.fetch(jira_field.jira_field_id, [])
       end
 
       def build_multicheckbox_registry_entries(jira_field)
@@ -192,20 +219,69 @@ module Import
       end
 
       def all_jira_import_project_ids
-        Import::JiraProject
-          .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
-          .pluck(:id)
+        @all_jira_import_project_ids ||= Import::JiraProject
+                                           .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
+                                           .pluck(:id)
       end
 
       def collect_option_values_from_issues(jira_field)
-        values = Set.new
-        Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids).find_each do |issue|
-          raw = issue.payload["fields"][jira_field.jira_field_id]
-          next unless raw.is_a?(Array)
+        @multicheckbox_option_values_by_field.fetch(jira_field.jira_field_id, [])
+      end
 
-          raw.each { |v| values << v["value"] if v["value"].present? }
+      # Runs at most two queries to collect distinct values across all array-typed Jira
+      # customfields the registry build needs, instead of one query per field.
+      def preload_array_field_values(jira_fields)
+        string_array_keys = []
+        multicheckbox_keys = []
+        jira_fields.each do |jf|
+          next unless supported_field?(jf)
+
+          if string_array_field?(jf)
+            string_array_keys << jf.jira_field_id
+          elsif multicheckbox_field?(jf) && jf.payload["contextGroups"].blank?
+            multicheckbox_keys << jf.jira_field_id
+          end
         end
-        values.to_a.sort
+
+        @string_array_values_by_field = batch_string_array_values(string_array_keys)
+        @multicheckbox_option_values_by_field = batch_option_array_values(multicheckbox_keys)
+      end
+
+      def batch_string_array_values(field_keys)
+        return {} if field_keys.empty?
+
+        pairs = array_field_scope(field_keys)
+                  .joins("CROSS JOIN LATERAL jsonb_array_elements_text(f.value) AS v(value)")
+                  .where("v.value IS NOT NULL AND v.value <> ''")
+                  .distinct
+                  .order(Arel.sql("f.key, v.value"))
+                  .pluck(Arel.sql("f.key"), Arel.sql("v.value"))
+
+        group_pairs_by_field_key(pairs)
+      end
+
+      def batch_option_array_values(field_keys)
+        return {} if field_keys.empty?
+
+        pairs = array_field_scope(field_keys)
+                  .joins("CROSS JOIN LATERAL jsonb_array_elements(f.value) AS elem")
+                  .where("(elem->>'value') IS NOT NULL AND (elem->>'value') <> ''")
+                  .distinct
+                  .pluck(Arel.sql("f.key"), Arel.sql("elem->>'value'"))
+
+        group_pairs_by_field_key(pairs)
+      end
+
+      def array_field_scope(field_keys)
+        Import::JiraIssue
+          .where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids)
+          .joins("CROSS JOIN LATERAL jsonb_each(payload->'fields') AS f(key, value)")
+          .where(f: { key: field_keys })
+          .where("jsonb_typeof(f.value) = 'array'")
+      end
+
+      def group_pairs_by_field_key(pairs)
+        pairs.group_by(&:first).transform_values { |entries| entries.map(&:last) }
       end
 
       def build_contexts_for_field(jira_field)
@@ -224,7 +300,9 @@ module Import
           context_group:,
           option_value:,
           needs_disambiguation:,
-          jira_import: @jira_import
+          jira_import: @jira_import,
+          cf_name_index: @cf_name_index,
+          jira_user_index: @jira_user_index
         )
         custom_field = find_or_create_custom_field(jira_field, builder)
         {
@@ -268,9 +346,14 @@ module Import
         end
 
         custom_field = service_call.result
+        register_custom_field_name(custom_field)
         create_reference!(op_leg: custom_field, jira_leg: jira_field, jira_import: @jira_import, uses_existing: false)
         builder.custom_field_post_processing(custom_field)
         custom_field
+      end
+
+      def register_custom_field_name(custom_field)
+        @cf_name_index[custom_field.name.downcase] = custom_field
       end
 
       # Picks the context entry whose (projects, issuetypes) match the issue's project key and
@@ -278,14 +361,6 @@ module Import
       # editmeta did not see the field for this (project, issuetype) pair but the issue still
       # carries a value for it (e.g. the field was removed from the screen after the value was
       # set). Falling back keeps the value rather than dropping it silently.
-      def find_context_for_issue(entry, jira_issue)
-        project_key = jira_issue.payload.dig("fields", "project", "key")
-        issuetype_id = jira_issue.payload.dig("fields", "issuetype", "id")
-        entry[:contexts].find do |ctx|
-          context_applies_to_project?(ctx, project_key) && context_applies_to_issuetype?(ctx, issuetype_id)
-        end || entry[:contexts].first
-      end
-
       def context_applies_to_project?(context, project_key)
         context[:projects].empty? || context[:projects].include?(project_key)
       end

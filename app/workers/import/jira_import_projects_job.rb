@@ -40,16 +40,18 @@ module Import
       @jira_id = jira.id
       @user = User.system
       @jira_client = Import::JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
+      @jira_user_index = build_jira_user_index
 
       ActiveRecord::Base.transaction do
         @project_role = setup_project_role
         custom_field_registry = build_custom_field_registry
+        custom_field_index = build_custom_field_index(custom_field_registry)
 
         Import::JiraProject.where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids).find_each do |jira_project|
           project = import_project(jira_project)
           update_custom_fields_in_project(project, jira_project, custom_field_registry)
           Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: jira_project.id).find_each do |jira_issue|
-            import_issue(jira_issue, project, custom_field_registry)
+            import_issue(jira_issue, project, custom_field_index)
           end
         end
       end
@@ -104,27 +106,24 @@ module Import
       raise service_call.message
     end
 
-    def import_issue(jira_issue, project, custom_field_registry)
+    def import_issue(jira_issue, project, custom_field_index)
       type = import_type(jira_issue, project)
       status = import_status(jira_issue)
       update_workflows(type)
-      new_custom_fields = new_custom_fields_in_type(jira_issue, type, custom_field_registry)
+      new_custom_fields = new_custom_fields_in_type(jira_issue, type, custom_field_index)
       update_custom_fields_in_type(type, new_custom_fields) if new_custom_fields.any?
       priority = import_priority(jira_issue)
-      import_work_package(jira_issue, project, type, status, priority, custom_field_registry)
+      import_work_package(jira_issue, project, type, status, priority, custom_field_index)
     end
 
-    def new_custom_fields_in_type(jira_issue, type, custom_field_registry)
+    def new_custom_fields_in_type(jira_issue, type, custom_field_index)
       existing_cf_ids = type.custom_field_ids
-      cfs = custom_field_registry.filter_map do |entry|
-        field_key = entry[:jira_field].jira_field_id
-        raw_value = jira_issue.payload["fields"][field_key]
-        next if raw_value.blank?
-
-        context = find_context_for_issue(entry, jira_issue)
-        context&.dig(:custom_field)
+      cfs = []
+      each_custom_field_value(custom_field_index, jira_issue) do |context, _raw_value|
+        cf = context[:custom_field]
+        cfs << cf unless existing_cf_ids.include?(cf.id)
       end
-      cfs.uniq.reject { |cf| existing_cf_ids.include?(cf.id) }
+      cfs.uniq
     end
 
     def update_custom_fields_in_type(type, new_custom_fields)
@@ -224,7 +223,7 @@ module Import
       raise call.message if call.failure?
     end
 
-    def import_work_package(jira_issue, project, type, status, priority, custom_field_registry)
+    def import_work_package(jira_issue, project, type, status, priority, custom_field_index)
       # required because otherwise project.types does not include type and then wp creation fails.
       project.reload
       author_key = jira_issue.payload.dig("fields", "creator", "key")
@@ -234,7 +233,7 @@ module Import
 
       [author, assigned_to].uniq.compact.each { |member| import_member(project, member) }
       description = Import::JiraWikiMarkupConverter.new(jira_issue.payload["fields"]["description"] || "").convert
-      custom_field_attrs = collect_custom_field_attributes(custom_field_registry, jira_issue)
+      custom_field_attrs = collect_custom_field_attributes(custom_field_index, jira_issue)
 
       due_date = jira_issue.payload.dig("fields", "duedate")
       original_estimate_seconds = jira_issue.payload.dig("fields", "timetracking", "originalEstimateSeconds")
@@ -328,14 +327,31 @@ module Import
     def find_user(jira_user_key)
       return if jira_user_key.blank?
 
-      jira_user = Import::JiraUser.find_by(jira_user_key:, jira_import: @jira_import)
-      if jira_user
-        JiraOpenProjectReference.find_by!(
-          jira_entity_class: "Import::JiraUser",
-          jira_entity_id: jira_user.id
-        ).op_leg
-      else
-        raise "Import::JiraUser with jira_user_key #{jira_user_key} not found!"
+      user = @jira_user_index[jira_user_key]
+      raise "Import::JiraUser with jira_user_key #{jira_user_key} not found!" unless user
+
+      user
+    end
+
+    # Builds { jira_user_key => User } for every Jira user already mapped to an OP user by import_users.
+    def build_jira_user_index
+      jira_user_keys_by_id = Import::JiraUser.where(jira_import_id: @jira_import.id)
+                                              .pluck(:id, :jira_user_key)
+                                              .to_h
+      return {} if jira_user_keys_by_id.empty?
+
+      reference_pairs = JiraOpenProjectReference.where(
+        jira_import_id: @jira_import.id,
+        jira_entity_class: "Import::JiraUser",
+        op_entity_class: "User"
+      ).pluck(:jira_entity_id, :op_entity_id)
+
+      users_by_id = User.where(id: reference_pairs.map(&:last)).index_by { |u| u.id.to_s }
+
+      reference_pairs.each_with_object({}) do |(jira_entity_id, op_entity_id), index|
+        jira_user_key = jira_user_keys_by_id[jira_entity_id.to_i]
+        user = users_by_id[op_entity_id]
+        index[jira_user_key] = user if jira_user_key && user
       end
     end
 

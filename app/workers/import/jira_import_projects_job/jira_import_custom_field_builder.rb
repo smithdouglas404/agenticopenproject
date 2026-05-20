@@ -144,12 +144,15 @@ module Import
 
       attr_reader :jira_field, :context_group
 
-      def initialize(jira_field, context_group: nil, option_value: nil, needs_disambiguation: false, jira_import: nil)
+      def initialize(jira_field, context_group: nil, option_value: nil, needs_disambiguation: false, jira_import: nil,
+                     cf_name_index: nil, jira_user_index: nil)
         @jira_field = jira_field
         @context_group = context_group
         @option_value = option_value
         @needs_disambiguation = needs_disambiguation
         @jira_import = jira_import
+        @cf_name_index = cf_name_index
+        @jira_user_index = jira_user_index
         @import_name = default_cf_name
       end
 
@@ -273,6 +276,8 @@ module Import
       end
 
       def custom_field_by_name(name)
+        return @cf_name_index[name.downcase] if @cf_name_index
+
         WorkPackageCustomField.where("LOWER(name) = LOWER(?)", name).first
       end
 
@@ -412,14 +417,15 @@ module Import
 
       def find_field_user(jira_user_key)
         return if jira_user_key.blank?
+        return @jira_user_index[jira_user_key] if @jira_user_index
 
         jira_user = Import::JiraUser.find_by(jira_user_key:, jira_import: @jira_import)
-        if jira_user
-          JiraOpenProjectReference.find_by!(
-            jira_entity_class: "Import::JiraUser",
-            jira_entity_id: jira_user.id
-          ).op_leg
-        end
+        return unless jira_user
+
+        JiraOpenProjectReference.find_by!(
+          jira_entity_class: "Import::JiraUser",
+          jira_entity_id: jira_user.id
+        ).op_leg
       end
     end
   end
