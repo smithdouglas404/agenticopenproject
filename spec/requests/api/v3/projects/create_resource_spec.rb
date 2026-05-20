@@ -91,7 +91,7 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
     end
 
     it "creates the project with a valid non-all-numeric identifier" do
-      expect(Project.last.identifier).to match(Projects::Identifier::CLASSIC_IDENTIFIER_FORMAT)
+      expect(Project.last.identifier).to match(Projects::Identifier::CLASSIC_FORMAT)
     end
   end
 
