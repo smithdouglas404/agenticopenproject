@@ -44,6 +44,7 @@ module RecurringMeetings
       safe_join(
         [
           @recurring_meeting.human_frequency_schedule,
+          day_of_month_skipping_info,
           start_mismatch_info
         ].compact,
         ". "
@@ -56,6 +57,14 @@ module RecurringMeetings
       first_occurrence = helpers.content_tag(:strong,
                                              formatted_occurrence_with_zone(@recurring_meeting.first_occurrence))
       helpers.t("recurring_meeting.actual_first_occurrence_mismatch_html", first_occurrence:)
+    end
+
+    def day_of_month_skipping_info
+      return unless @recurring_meeting.frequency_monthly_day_of_month?
+      return unless @recurring_meeting.monthly_day > 28
+
+      helpers.t("recurring_meeting.day_of_month_skipping_info",
+                monthly_day: @recurring_meeting.monthly_day)
     end
 
     private
