@@ -154,11 +154,11 @@ module Projects::SemanticIdentifier
       now = Time.current
       WorkPackageSemanticAlias.connection.execute(
         WorkPackageSemanticAlias.sanitize_sql([<<~SQL.squish, { prefix:, new_prefix:, now: }])
-            INSERT INTO work_package_semantic_aliases (identifier, work_package_id, created_at, updated_at)
-            SELECT REPLACE(identifier, :prefix, :new_prefix), work_package_id, :now, :now
-            FROM (#{relation.to_sql}) AS batch
-            ON CONFLICT (identifier) DO NOTHING
-          SQL
+          INSERT INTO work_package_semantic_aliases (identifier, work_package_id, created_at, updated_at)
+          SELECT REPLACE(identifier, :prefix, :new_prefix), work_package_id, :now, :now
+          FROM (#{relation.to_sql}) AS batch
+          ON CONFLICT (identifier) DO NOTHING
+        SQL
       )
     end
   end
