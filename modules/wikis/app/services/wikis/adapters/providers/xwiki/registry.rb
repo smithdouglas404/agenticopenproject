@@ -60,10 +60,14 @@ module Wikis
           end
 
           namespace("queries") do
-            register(:user, Queries::UserQuery)
+            register(:user, Queries::User)
             register(:page_info, Queries::PageInfo)
             register(:referencing_pages, Queries::ReferencingPages)
             register(:relation_page_links, Queries::RelationPageLinks)
+          end
+
+          namespace("validators") do
+            register("connection", Validators::ConnectionValidator)
           end
         end
       end

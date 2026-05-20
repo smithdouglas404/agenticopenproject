@@ -2553,6 +2553,7 @@ ro:
         other: Priorități
       meeting_participant: Meeting participant
       member: Membru
+      message: Message
       news: Noutăţi
       notification:
         one: Notificari
@@ -3516,7 +3517,7 @@ ro:
   gui_validation_error: o eroare
   gui_validation_error_plural: "%{count} erori"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4515,6 +4516,10 @@ ro:
     one: un comentariu
     other: "%{count} comentarii"
     zero: fara comentarii
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: unul deschis
     other: "%{count} deschise"
@@ -4805,7 +4810,6 @@ ro:
   notice_successful_delete: Ştergere reuşită.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: Actualizare reușită.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4852,15 +4856,11 @@ ro:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Adaugă pachete de lucru
   permission_add_messages: Publicare mesaje

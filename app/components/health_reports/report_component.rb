@@ -60,11 +60,11 @@ module HealthReports
     def humanize_summary(check_tally)
       case check_tally
       in { failure: 1.. }
-        t(".checks.failures", count: check_tally[:failure])
+        I18n.t("health_reports.common.checks.failures", count: check_tally[:failure])
       in { warning: 1.. }
-        t(".checks.warnings", count: check_tally[:warning])
+        I18n.t("health_reports.common.checks.warnings", count: check_tally[:warning])
       else
-        t(".checks.success")
+        I18n.t("health_reports.common.checks.success")
       end
     end
   end

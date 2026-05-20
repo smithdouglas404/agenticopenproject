@@ -2527,6 +2527,7 @@ it:
         other: Priorità
       meeting_participant: Partecipante alla riunione
       member: Membro
+      message: Message
       news: Notizie
       notification:
         one: Notifica
@@ -3454,19 +3455,19 @@ it:
   gui_validation_error: 1 errore
   gui_validation_error_plural: "%{count} errori"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} controllo non superato"
-          other: "%{count} controlli non superati"
-        success: Tutti i controlli superati
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} controllo ha restituito un avviso"
-          other: "%{count} controlli hanno restituito un avviso"
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Alcuni controlli non sono riusciti e il sistema non funziona come previsto.
-        success: Tutte le connessioni e i sistemi funzionano come previsto.
-        warning: Alcuni controlli hanno restituito un avviso. Questo può causare comportamenti imprevisti.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Non riuscito
@@ -4451,6 +4452,10 @@ it:
     one: 1 commento
     other: "%{count} commenti"
     zero: nessun commento
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 aperto
     other: "%{count} aperti"
@@ -4733,7 +4738,6 @@ it:
   notice_successful_delete: Cancellato con successo.
   notice_successful_cancel: Cancellato con successo.
   notice_successful_update: Aggiornato con successo.
-  notice_successful_move: Spostamento riuscito da %{from} a %{to}.
   notice_unsuccessful_create: Creazione fallita.
   notice_unsuccessful_create_with_reason: 'Creazione non riuscita: %{reason}'
   notice_unsuccessful_update: Aggiornamento non riuscito.
@@ -4781,15 +4785,11 @@ it:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Azioni sulla macro-attività
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Aggiungi commenti
   permission_add_work_packages: Aggiungere macro-attività (work package)
   permission_add_messages: Postare messaggi

@@ -42,6 +42,7 @@ RSpec.describe "index users", :js do
   describe "filtering", :js do
     let!(:alice) { create(:user, login: "alice", firstname: "Alice", lastname: "Smith") }
     let!(:bob)   { create(:user, login: "bob",   firstname: "Bob",   lastname: "Jones") }
+    let!(:my_group) { create(:group, lastname: "My group", members: [alice]) }
 
     it "filters by name via the search input and updates without a page reload" do
       index_page.visit!
@@ -61,6 +62,22 @@ RSpec.describe "index users", :js do
 
       index_page.filter_by_status(I18n.t(:status_registered))
       index_page.expect_listed(registered)
+    end
+
+    it "filters by group and keeps that filter after reload" do
+      index_page.visit!
+      expect(page).to have_css("td.username a", text: alice.login)
+      expect(page).to have_css("td.username a", text: bob.login)
+
+      index_page.filter_by_group("My group")
+      index_page.expect_listed(alice)
+      index_page.expect_not_listed(bob)
+
+      page.refresh
+
+      index_page.expect_group_filter("My group")
+      index_page.expect_listed(alice)
+      index_page.expect_not_listed(bob)
     end
   end
 

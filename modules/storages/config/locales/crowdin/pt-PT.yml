@@ -215,19 +215,6 @@ pt-PT:
         health_notifications_component:
           sync_now: Sincronizar agora
           sync_queued: Sincronização em fila de espera.
-        validation_result_component:
-          checks:
-            failures:
-              one: "%{count} verificação falhou"
-              other: "%{count} verificações falharam"
-            success: Todas as verificações passaram
-            warnings:
-              one: "%{count} verificação devolvida com um aviso"
-              other: "%{count} verificações devolvidas com um aviso"
-          summary:
-            failure: Algumas verificações não foram aprovadas e o sistema não funciona como esperado.
-            success: Todas as ligações e sistemas estão a funcionar como esperado.
-            warning: Algumas verificações foram devolvidas com um aviso. Pode levar a comportamento inesperado.
     buttons:
       done_continue: Concluído, continuar
       open_storage: Abrir armazenamentos de ficheiros

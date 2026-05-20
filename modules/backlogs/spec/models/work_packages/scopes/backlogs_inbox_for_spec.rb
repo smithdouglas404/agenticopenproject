@@ -31,12 +31,18 @@
 require "spec_helper"
 
 RSpec.describe WorkPackages::Scopes::BacklogsInboxFor do
-  let(:project) { create(:project) }
   let(:open_status) { create(:status, is_closed: false) }
   let(:closed_status) { create(:status, is_closed: true) }
+  let(:project) do
+    create(:project,
+           enabled_module_names: %w(work_package_tracking backlogs),
+           backlog_considered_closed_statuses: [closed_status])
+  end
   let(:sprint) { create(:sprint, project:) }
 
-  before { login_as create(:admin) }
+  before do
+    login_as create(:admin)
+  end
 
   subject(:inbox) { WorkPackage.backlogs_inbox_for(project:) }
 
@@ -47,6 +53,29 @@ RSpec.describe WorkPackages::Scopes::BacklogsInboxFor do
       create(:work_package, project:, status: open_status, sprint:)
 
       expect(inbox).to contain_exactly(inbox_wp)
+    end
+
+    it "excludes work packages with an excluded type from the inbox" do
+      excluded_type = create(:type_task)
+      included_type = create(:type_feature)
+      project.types << excluded_type
+      project.types << included_type
+      project.backlog_excluded_types << excluded_type
+
+      visible_wp = create(:work_package, project:, status: open_status, type: included_type)
+      create(:work_package, project:, status: open_status, type: excluded_type)
+
+      expect(inbox).to contain_exactly(visible_wp)
+    end
+
+    it "excludes work packages with a done status (non-is_closed) from the inbox" do
+      done_like_status = create(:status, is_closed: false)
+      project.done_statuses << done_like_status
+
+      visible_wp = create(:work_package, project:, status: open_status)
+      create(:work_package, project:, status: done_like_status)
+
+      expect(inbox).to contain_exactly(visible_wp)
     end
 
     it "excludes work packages from other projects" do

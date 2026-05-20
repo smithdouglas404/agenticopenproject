@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= component_wrapper(tag: :section) do %>
   <%= render(
-        OpenProject::Common::WorkPackageCardListComponent.new(
+        Backlogs::WorkPackageCardListComponent.new(
           work_packages:,
           project:,
           container: sprint,
@@ -37,25 +37,21 @@ See COPYRIGHT and LICENSE files for more details.
             target_id: "sprint:#{sprint.id}",
             allowed_drag_type: "story"
           },
-          item_component_klass: Backlogs::WorkPackageCardListItemComponent,
           params: all_backlogs_params,
           current_user:,
-          data: { test_selector: "sprint-#{sprint.id}" }
+          test_selector: "sprint-#{sprint.id}"
         )
       ) do |list| %>
-    <% list.with_header(title: sprint.name, count: work_packages.size) do |header| %>
+    <% list.with_header(title: sprint.name) do |header| %>
       <% header.with_description do %>
-        <%= render(
-              Primer::Beta::Text.new(
-                color: :subtle, mr: 3, classes: "velocity",
-                aria: { live: "polite" }
-              )
-            ) do %>
+        <%= render(Backlogs::SprintStatusBadgeComponent.new(sprint:)) %>
+
+        <%= render(Primer::Beta::Text.new(classes: "velocity", aria: { live: "polite" })) do %>
           <%= story_points_total %>&nbsp;<%= t(:"backlogs.points_label", count: story_points_total) %>
         <% end %>
 
         <% if sprint.date_range_set? %>
-          <%= render(Primer::Beta::Text.new(color: :subtle, role: :group)) do %>
+          <%= render(Primer::Beta::Text.new(role: :group, ml: :auto, mr: 2)) do %>
             <%= render(Primer::Beta::Octicon.new(:calendar, size: :small, mr: 1)) %>
             <%= format_date_range([sprint.start_date, sprint.finish_date]) %>
           <% end %>
@@ -64,7 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
 
       <% if show_start_sprint_action? %>
         <% header.with_action_button(**start_sprint_button_arguments) do |button| %>
-          <% button.with_leading_visual_icon(icon: :play) %>
+          <% button.with_leading_visual_icon(icon: :rocket) %>
           <% if start_sprint_disabled_reason.present? %>
             <% button.with_tooltip(
                  text: start_sprint_disabled_reason,
@@ -76,7 +72,7 @@ See COPYRIGHT and LICENSE files for more details.
         <% end %>
       <% elsif show_finish_sprint_action? %>
         <% header.with_action_button(**finish_sprint_button_arguments) do |button| %>
-          <% button.with_leading_visual_icon(icon: :check) %>
+          <% button.with_leading_visual_icon(icon: :"op-flag") %>
           <%= t(".label_complete_sprint") %>
         <% end %>
       <% end %>

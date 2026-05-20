@@ -41,7 +41,7 @@ ru:
       user_preference:
         backlogs_versions_default_fold_state: Покажите спринты в свернутом виде
       work_package:
-        backlog_bucket: Сегмент бэклога
+        backlog_bucket: Раздел бэклога
         backlogs_work_package_type: Тип невыполненной работы
         position: Позиция
         sprint: Спринт
@@ -70,7 +70,7 @@ ru:
             status:
               not_active: не активен, поэтому не может быть закрыт.
         work_package:
-          backlog_bucket_xor_sprint: не может быть назначен для спринта и для бэклога одновременно.
+          backlog_bucket_xor_sprint: не может быть назначен для спринта и для раздела бэклога одновременно.
           attributes:
             backlog_bucket:
               backlog_bucket_from_another_project: должен принадлежать тому же проекту, что и пакет работ.
@@ -119,15 +119,15 @@ ru:
       title: Настройки администрирования бэклога будут в будущем
       text: В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными.
     bucket_component:
-      blankslate_title: Сегмент бэклога пуст
+      blankslate_title: Раздел бэклога пуст
       blankslate_description: Перетащите элементы сюда, чтобы добавить их.
-      label_actions: Действия с сегментом бэклога
+      label_actions: Действия с разделом бэклога
       action_menu:
-        edit_backlog_bucket: Редактировать сегмент бэклога
-        delete_backlog_bucket: Удалить сегмент бэклога
+        edit_backlog_bucket: Редактировать раздел бэклога
+        delete_backlog_bucket: Удалить раздел бэклога
     backlog_bucket_destroy_modal_component:
-      title: Удалить сегмент бэклога?
-      details: Сегмент бэклога '%{name}' будет удалён, а все пакеты работ будут перемещены в папку "Входящие" бэклога. Ни один пакет работ не будет удален.
+      title: Удалить раздел бэклога?
+      details: Раздел бэклога '%{name}' будет удалён, а все пакеты работ будут перемещены в папку "Входящие" бэклога. Ни один пакет работ не будет удален.
     sprint_component:
       blankslate_title: "%{name} пустой"
       blankslate_description: Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их.
@@ -176,6 +176,12 @@ ru:
         move_to_sprint: Переместите их в другой спринт
       select_sprint_label: Выберите спринт
       button_complete_sprint: Завершить спринт
+    stories:
+      update_service:
+        missing_target: target_id or direction must be present.
+        ambiguous_target: target_id and direction cannot both be present.
+        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
+        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Скопировать URL в буфер обмена
@@ -190,8 +196,8 @@ ru:
     story_points: Точки истории
     story_points_ideal: Точки истории (идеально)
   label_backlog: Бэклог
-  label_backlog_bucket_edit: Редактировать сегмент бэклога
-  label_backlog_bucket_new: Новый сегмент бэклога
+  label_backlog_bucket_edit: Редактировать раздел бэклога
+  label_backlog_bucket_new: Новый раздел бэклога
   label_inbox: Входящие
   label_backlogs: Бэклоги
   label_burndown_chart: Сводная таблица

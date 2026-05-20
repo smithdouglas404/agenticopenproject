@@ -77,7 +77,9 @@ module Pages
     end
 
     def sprint_names_in_order
-      page.find_all("#sprint_backlogs_container > section .CollapsibleHeader-title").map(&:text)
+      within_sprint_backlogs do
+        headed_section_titles(id_prefix: "backlogs-sprint-component-")
+      end
     end
 
     def expect_work_packages_in_sprint_in_order(sprint,
@@ -301,7 +303,7 @@ module Pages
 
     def drag_inbox_item_to_sprint(work_package, sprint)
       moved_element = find(draggable_work_package_selector(work_package))
-      target_element = find(sprint_selector(sprint))
+      target_element = find(list_body_selector(sprint_selector(sprint)))
       wait_for_turbo_stream do
         moved_element.native.drag_to(target_element.native, delay: 0.1)
       end
@@ -311,7 +313,7 @@ module Pages
 
     def drag_sprint_item_to_inbox(work_package)
       moved_element = find(draggable_work_package_selector(work_package))
-      target_element = find("#inbox_project_#{project.id}")
+      target_element = find(list_body_selector("#inbox_project_#{project.id}"))
       moved_element.native.drag_to(target_element.native, delay: 0.1)
     rescue Capybara::Cuprite::ObsoleteNode
       retry
@@ -335,7 +337,9 @@ module Pages
     end
 
     def bucket_names_in_order
-      page.find_all("#owner_backlogs_container section .CollapsibleHeader-title").map(&:text)
+      within_owner_backlogs do
+        headed_section_titles(id_prefix: "backlogs-bucket-component-")
+      end
     end
 
     def expect_bucket_names_in_order(*bucket_names)
@@ -350,10 +354,7 @@ module Pages
       within_backlog_bucket(bucket) do
         expect(page).to have_css(
           ".Counter",
-          accessible_name: I18n.t(
-            "open_project.common.work_package_card_list_component.header.label_work_package_count",
-            count:
-          )
+          accessible_name: I18n.t(:label_x_work_packages, count:)
         )
       end
     end
@@ -426,7 +427,7 @@ module Pages
 
     def drag_work_package_to_backlog_bucket(work_package, bucket)
       moved_element = find(draggable_work_package_selector(work_package))
-      target_element = find(bucket_selector(bucket))
+      target_element = find(list_body_selector(bucket_selector(bucket)))
 
       wait_for_turbo_stream do
         moved_element.native.drag_to(target_element.native, delay: 0.1)
@@ -437,7 +438,7 @@ module Pages
 
     def drag_work_package_to_backlog_inbox(work_package)
       moved_element = find(draggable_work_package_selector(work_package))
-      target_element = find(backlog_inbox_selector)
+      target_element = find(list_body_selector(backlog_inbox_selector))
 
       wait_for_turbo_stream do
         moved_element.native.drag_to(target_element.native, delay: 0.1)
@@ -470,16 +471,13 @@ module Pages
       within(sprint_selector(sprint)) do
         expect(page).to have_css(
           ".Counter",
-          accessible_name: I18n.t(
-            "open_project.common.work_package_card_list_component.header.label_work_package_count",
-            count:
-          )
+          accessible_name: I18n.t(:label_x_work_packages, count:)
         )
       end
     end
 
     def expect_and_dismiss_error(message)
-      expect(page).to have_content message
+      expect(page).to have_text message
 
       click_on "Cancel"
     end
@@ -654,6 +652,17 @@ module Pages
       test_selector("backlog-inbox")
     end
 
+    def list_body_selector(container_selector)
+      "#{container_selector} > ul"
+    end
+
+    def headed_section_titles(id_prefix:)
+      page
+        .all(:section, section_element: :section, heading_level: 4)
+        .select { |section| section[:id].to_s.start_with?(id_prefix) }
+        .map { |section| section.first(:heading, level: 4).text }
+    end
+
     def story_selector(story)
       "#story_#{story.id}"
     end
@@ -671,7 +680,7 @@ module Pages
     end
 
     def backlog_bucket_destroy_modal_selector
-      test_selector(Backlogs::BacklogBucketDestroyModalComponent::TEST_SELECTOR)
+      test_selector(Backlogs::BucketDestroyModalComponent::TEST_SELECTOR)
     end
 
     def open_controlled_menu(button)

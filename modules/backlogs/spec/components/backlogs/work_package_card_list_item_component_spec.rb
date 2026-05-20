@@ -76,9 +76,9 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
         backlogs__story_id_value: work_package.id,
         backlogs__story_display_id_value: work_package.display_id,
         backlogs__story_full_url_value: work_package_path(work_package),
-        backlogs__story_selected_class: "Box-row--blue",
-        test_selector: "work-package-#{work_package.id}"
+        backlogs__story_selected_class: "Box-row--blue"
       )
+      expect(item.row_args[:test_selector]).to eq("work-package-#{work_package.id}")
     end
 
     it "marks the row as draggable for users allowed to manage sprint items" do
@@ -106,29 +106,29 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
 
   describe "URL derivation by container" do
     context "with a sprint container" do
-      it "uses sprint routes" do
+      it "sets drop_url and split_url" do
         expect(item.row_args.dig(:data, :backlogs__story_split_url_value))
           .to end_with(project_backlogs_backlog_details_path(project, work_package))
         expect(item.row_args.dig(:data, :drop_url))
-          .to end_with(move_project_backlogs_work_package_path(project, sprint, work_package))
+          .to end_with(move_project_backlogs_work_package_path(project, work_package))
       end
     end
 
     context "with a backlog bucket container" do
       let(:container) { backlog_bucket }
 
-      it "uses inbox routes" do
+      it "sets drop_url" do
         expect(item.row_args.dig(:data, :drop_url))
-          .to end_with(move_project_backlogs_inbox_path(project, work_package))
+          .to end_with(move_project_backlogs_work_package_path(project, work_package))
       end
     end
 
     context "with an inbox container id" do
       let(:container) { "inbox_project_#{project.id}" }
 
-      it "uses inbox routes" do
+      it "sets drop_url" do
         expect(item.row_args.dig(:data, :drop_url))
-          .to end_with(move_project_backlogs_inbox_path(project, work_package))
+          .to end_with(move_project_backlogs_work_package_path(project, work_package))
       end
     end
 
@@ -158,10 +158,10 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
     end
 
     context "with a sprint container" do
-      it "uses the sprint menu source" do
+      it "uses the work package menu source" do
         expect(rendered_card).to have_element(
           "include-fragment",
-          src: menu_project_backlogs_work_package_path(project, sprint, work_package)
+          src: menu_project_backlogs_work_package_path(project, work_package)
         )
       end
     end
@@ -169,10 +169,10 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
     context "with an inbox container id" do
       let(:container) { "inbox_project_#{project.id}" }
 
-      it "uses the inbox menu source" do
+      it "uses the work package menu source" do
         expect(rendered_card).to have_element(
           "include-fragment",
-          src: menu_project_backlogs_inbox_path(project, work_package)
+          src: menu_project_backlogs_work_package_path(project, work_package)
         )
       end
     end
@@ -180,10 +180,10 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
     context "with a backlog bucket container" do
       let(:container) { backlog_bucket }
 
-      it "uses the inbox menu source" do
+      it "uses the work package menu source" do
         expect(rendered_card).to have_element(
           "include-fragment",
-          src: menu_project_backlogs_inbox_path(project, work_package)
+          src: menu_project_backlogs_work_package_path(project, work_package)
         )
       end
     end
@@ -194,7 +194,7 @@ RSpec.describe Backlogs::WorkPackageCardListItemComponent, type: :component do
       it "passes params into the menu source" do
         expect(rendered_card).to have_element(
           "include-fragment",
-          src: menu_project_backlogs_work_package_path(project, sprint, work_package, all: 1)
+          src: menu_project_backlogs_work_package_path(project, work_package, all: 1)
         )
       end
     end

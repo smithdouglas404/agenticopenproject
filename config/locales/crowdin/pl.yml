@@ -2577,6 +2577,7 @@ pl:
         other: Priorytety
       meeting_participant: Uczestnik spotkania
       member: Członek
+      message: Message
       news: Aktualności
       notification:
         one: Powiadomienie
@@ -3570,23 +3571,23 @@ pl:
   gui_validation_error: 1 błąd
   gui_validation_error_plural: "%{count} błędy/ów"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} kontrola nie powiodła się"
-          few: "%{count} kontrole nie powiodły się"
-          many: "%{count} kontroli nie powiodło się"
-          other: "%{count} kontroli nie powiodło się"
-        success: Wszystkie kontrole powiodły się
+          one: "%{count} check failed"
+          few: "%{count} checks failed"
+          many: "%{count} checks failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} kontrola zwróciła ostrzeżenie"
-          few: "%{count} kontrole zwróciły ostrzeżenie"
-          many: "%{count} kontroli zwróciło ostrzeżenie"
-          other: "%{count} kontroli zwróciło ostrzeżenie"
+          one: "%{count} check returned a warning"
+          few: "%{count} checks returned a warning"
+          many: "%{count} checks returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Niektóre kontrole nie powiodły się i system nie działa zgodnie z oczekiwaniami.
-        success: Wszystkie połączenia i systemy działają zgodnie z oczekiwaniami.
-        warning: Niektóre kontrole zwróciły ostrzeżenie. Może to prowadzić do nieoczekiwanego sposobu działania.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Niepowodzenie
@@ -4571,6 +4572,10 @@ pl:
     one: 1 komentarz
     other: 'Liczba komentarzy: %{count}'
     zero: brak komentarzy
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 otwarty
     other: 'Liczba otwartych: %{count}'
@@ -4865,7 +4870,6 @@ pl:
   notice_successful_delete: Usuwanie zakończone sukcesem.
   notice_successful_cancel: Anulowanie powiodło się.
   notice_successful_update: Aktualizacja zakończona sukcesem.
-  notice_successful_move: Udane przeniesienie z %{from} do %{to}.
   notice_unsuccessful_create: Utworzenie nie powiodło się.
   notice_unsuccessful_create_with_reason: 'Utworzenie nie powiodło się: %{reason}'
   notice_unsuccessful_update: Aktualizacja nie powiodła się.
@@ -4915,15 +4919,11 @@ pl:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Działania pakietu roboczego
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Dodaj komentarze
   permission_add_work_packages: Dodawanie pakietów roboczych
   permission_add_messages: Wysyłanie wiadomości

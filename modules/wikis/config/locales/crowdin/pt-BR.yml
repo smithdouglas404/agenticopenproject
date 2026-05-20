@@ -20,10 +20,15 @@ pt-BR:
         one: Link de página em linha
         other: Links de página em linha
       wikis/internal_provider: Wiki interna
+      wikis/provider:
+        one: Wiki provider
+        other: Wiki providers
       wikis/relation_page_link:
         one: Link de página de relação
         other: Links de página de relação
-      wikis/xwiki_provider: Provedor XWiki
+      wikis/xwiki_provider:
+        one: XWiki provider
+        other: XWiki providers
   permission_manage_wiki_page_links: Gerenciar links da página Wiki
   project_module_wiki_platforms: Provedores de wiki
   wikis:
@@ -32,6 +37,20 @@ pt-BR:
       done_continue: Pronto, continuar
       save_and_continue: Salvar e continuar
       wiki_page: Página wiki
+    health_checks:
+      authentication:
+        existing_token: User token
+        header: Authentication
+        user_bound_request: User-based request authentication
+      base_configuration:
+        header: Configuration
+        provider_configured: Configuration complete
+      errors:
+        not_configured: The connection could not be validated. Please finish configuration first.
+        xwiki_oauth_connection_error: OpenProject could not connect to the configured XWiki instance.
+        xwiki_oauth_request_error: An unexpected error occured when trying to communicate with the XWiki instance.
+        xwiki_oauth_token_missing: OpenProject cannot test the user-level communication with XWiki as the user did not yet connect their XWiki account.
+        xwiki_oauth_unauthorized: The user token was not recognized by XWiki.
     work_package_wikis_tab_component:
       inline_page_links: Links de página embutidos
       referencing_pages: Referenciado em
@@ -47,8 +66,8 @@ pt-BR:
     admin:
       destroy_confirmation_dialog_component:
         title: Excluir provedor wiki
-        heading: Excluir provedor wiki?
-        warning_html: Você está prestes a excluir %{wiki_provider}. Esta ação é irreversível.
+        heading: Permanently delete this wiki provider?
+        description_html: The wiki provider %{wiki_provider} and all the related wiki page links will be deleted. In addition, every inline wiki page link will no longer be accessible. This action is irreversible.
       forms:
         general_info_form_component:
           xwiki_instance_description: Certifique-se de que você tem privilégios de administração na sua instância XWiki antes de realizar a configuração.
@@ -57,6 +76,16 @@ pt-BR:
           application_secret: Segredo da aplicação
         oauth_client_form_component:
           client_id: ID do cliente
+      health_status:
+        show:
+          actions:
+            download_report: Download
+            rerun_checks: Re-run all checks
+            run_checks: Run checks now
+          last_check: 'Last check: %{datetime}'
+          no_health_report: No report available
+          no_health_report_description: Run the checks now for a full health status report for this wiki provider.
+          title: Health Report
       oauth_application_info_component:
         confirm_replace_oauth_application: Esta ação irá redefinir as credenciais OAuth atuais. Após confirmar, será necessário inserir novamente as credenciais na sua instância do XWiki e todos os usuários terão de reautorizar. Tem certeza de que deseja continuar?
         label_pending: Pendente
@@ -65,6 +94,12 @@ pt-BR:
         confirm_replace_oauth_client: Esta ação irá redefinir as credenciais OAuth atuais do XWiki. Todos os usuários precisarão reautorizar o acesso ao XWiki. Tem certeza de que deseja continuar?
         label_pending: Pendente
         replace_oauth_client: Substituir aplicação OAuth do XWiki
+      side_panel:
+        health_status_component:
+          last_check: 'Last check: %{datetime}'
+          open_report: Open full health report
+          run_checks: Run checks now
+          title: Health status report
       wiki_provider_list_component:
         label_creation_time: Criado
         label_name: Nome

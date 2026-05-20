@@ -10,13 +10,13 @@ ru:
         public: Публичный
         favorite: Избранное
       resource_allocation:
-        entity: Entity
-        principal: Assignee
-        state: State
-        start_date: Start date
-        end_date: Finish date
-        allocated_time: Allocated time
-        user_filter: User filter
+        entity: Сущность
+        principal: Исполнитель
+        state: Состояние
+        start_date: Дата начала
+        end_date: Дата окончания
+        allocated_time: Распределенное время
+        user_filter: Фильтры пользователей
     errors:
       models:
         resource_planner:
@@ -26,7 +26,7 @@ ru:
         resource_allocation:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: должно быть после даты начала.
   plugin_openproject_resource_management:
     name: Управление ресурсами OpenProject
     description: Обеспечивает управление ресурсами и планирование возможностей.
@@ -39,8 +39,8 @@ ru:
   permission_manage_public_resource_planners_explanation: 'Позволяет пользователям создавать и управлять общедоступными планировщиками ресурсов. Это позволяет просматривать, создавать, управлять и публиковать свои собственные планировщики ресурсов. Он не позволяет пользователям просматривать планировщики ресурсов, созданные другими пользователями, которые не являются общедоступными.
 
     '
-  permission_allocate_user_resources: Allocate user resources
-  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
+  permission_allocate_user_resources: Распределение пользовательских ресурсов
+  permission_allocate_user_resources_explanation: 'Позволяет пользователям создавать, обновлять и удалять распределение ресурсов в планировщике ресурсов. Сюда входит назначение пользователей (или фильтров) на планировщик и корректировка выделенного времени и диапазона дат.
 
     '
   label_resource_management: Планирование ресурсов

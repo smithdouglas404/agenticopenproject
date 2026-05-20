@@ -2579,6 +2579,7 @@ hu:
         other: Priorities
       meeting_participant: Meeting participant
       member: Tag
+      message: Message
       news: Hírek
       notification:
         one: Értesítés
@@ -3516,7 +3517,7 @@ hu:
   gui_validation_error: 1 hiba
   gui_validation_error_plural: "%{count} hiba"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4515,6 +4516,10 @@ hu:
     one: 1 komment
     other: "%{count} hozzászólás"
     zero: nincsenek hozzászólások
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 nyitott
     other: "%{count} nyitott"
@@ -4823,7 +4828,6 @@ hu:
   notice_successful_delete: Sikeres törlés.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: Sikeres frissítés.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4869,15 +4873,11 @@ hu:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: feladatcsoport hozzáadása
   permission_add_messages: Elküldött üzenetek

@@ -2525,6 +2525,7 @@ et:
         other: Prioriteedid
       meeting_participant: Meeting participant
       member: Liige
+      message: Message
       news: Uudised
       notification:
         one: Märguanne
@@ -3454,7 +3455,7 @@ et:
   gui_validation_error: 1 viga
   gui_validation_error_plural: "%{count} viga"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4451,6 +4452,10 @@ et:
     one: 1 kommentaar
     other: "%{count} kommentaari"
     zero: kommentaare pole
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 avatud
     other: "%{count} avatud"
@@ -4733,7 +4738,6 @@ et:
   notice_successful_delete: Kustutamine õnnestus.
   notice_successful_cancel: Tühistatud.
   notice_successful_update: Uuendamine õnnestus.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Uuendamine ebaõnnestus.
@@ -4779,15 +4783,11 @@ et:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Lisa kommentaare
   permission_add_work_packages: Teemasid lisada
   permission_add_messages: Postitusi lisada

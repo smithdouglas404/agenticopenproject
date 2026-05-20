@@ -38,6 +38,8 @@ zh-CN:
           other: "%{count}位参与者"
         participants_attended: 与会者
         participants_invited: 受邀者
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: 项目
         start_date: 日期
         start_time: 开始时间
@@ -268,16 +270,6 @@ zh-CN:
         summary_series: 会议系列 '%{title}' 已被 %{actor} 取消，或者您的参与者身份已被移除
         summary: "'%{title}' 已被 %{actor} 取消，或者您的参与者身份已被移除"
         date_time: 预定日期/时间
-      participant_added:
-        header: 会议 '%{title}' - 已添加参加者
-        header_series: 会议系列 '%{title}' - 已添加参加者
-        summary: "%{actor} 将 %{participant} 添加到会议 '%{title}'"
-        summary_series: "%{actor} 将 %{participant} 添加到会议系列 '%{title}'"
-      participant_removed:
-        header: 会议 '%{title}' - 已移除参加者
-        header_series: 会议系列 '%{title}' - 已移除参加者
-        summary: "%{actor} 将 %{participant} 从会议 '%{title}' 中移除"
-        summary_series: "%{actor} 将 %{participant} 从会议系列 '%{title}' 中移除"
       ended:
         header_series: 结束：会议系列 '%{title}'
         summary_series: 会议系列 '%{title}' 已由 %{actor} 结束
@@ -291,6 +283,8 @@ zh-CN:
         new_date_time: 新日期/时间
         old_location: 原位置
         new_location: 新位置
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: 向参与者发送电子邮件邀请
     types:
       one_time: 动态

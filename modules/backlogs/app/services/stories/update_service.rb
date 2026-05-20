@@ -36,20 +36,50 @@ class Stories::UpdateService
     self.story = story
   end
 
-  def call(attributes: {}, position: nil, prev_id: nil)
-    create_call = WorkPackages::UpdateService
-                  .new(user:,
-                       model: story)
-                  .call(**attributes.to_h.symbolize_keys)
-
-    if create_call.success?
-      if prev_id
-        create_call.result.move_after(prev_id: prev_id.to_i)
-      elsif position
-        create_call.result.move_after(position:)
+  def call(direction: nil, target_id: nil, position: nil, prev_id: nil)
+    resolve_required_attributes(direction:, target_id:)
+      .bind { |attrs| WorkPackages::UpdateService.new(user:, model: story).call(**attrs) }
+      .on_success do |call|
+        if prev_id
+          call.result.move_after(prev_id:)
+        elsif position
+          call.result.move_after(position:)
+        end
       end
-    end
+  end
 
-    create_call
+  private
+
+  def resolve_required_attributes(direction:, target_id:)
+    if target_id && direction
+      ServiceResult.failure(message: I18n.t("backlogs.stories.update_service.ambiguous_target"))
+    elsif target_id
+      attributes_result_from_target(target_id)
+    elsif direction
+      attributes_result_from_direction(direction)
+    else
+      ServiceResult.failure(message: I18n.t("backlogs.stories.update_service.missing_target"))
+    end
+  end
+
+  def attributes_result_from_target(target_id)
+    case target_id.to_s.split(":", 2)
+    in ["sprint", /\A\d+\z/ => sprint_id]
+      ServiceResult.success(result: { backlog_bucket_id: nil, sprint_id: })
+    in ["backlog_bucket", /\A\d+\z/ => backlog_bucket_id]
+      ServiceResult.success(result: { backlog_bucket_id:, sprint_id: nil })
+    in ["inbox"]
+      ServiceResult.success(result: { backlog_bucket_id: nil, sprint_id: nil })
+    else
+      ServiceResult.failure(message: I18n.t("backlogs.stories.update_service.invalid_target_type"))
+    end
+  end
+
+  def attributes_result_from_direction(direction)
+    if direction.in? %w(higher highest lower lowest)
+      ServiceResult.success(result: { move_to: direction })
+    else
+      ServiceResult.failure(message: I18n.t("backlogs.stories.update_service.invalid_direction"))
+    end
   end
 end

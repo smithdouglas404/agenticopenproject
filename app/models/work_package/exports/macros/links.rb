@@ -31,8 +31,21 @@
 module WorkPackage::Exports
   module Macros
     class WorkPackagesLinkHandler < OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
+      # PDF export only handles canonical numeric `#N` references. Semantic and
+      # leading-zero shapes fall through to literal text to avoid emitting a
+      # `<mention data-id="0">` (since `"PROJ-1".to_i == 0`). Semantic-id
+      # support in PDF export is tracked in https://community.openproject.org/wp/74766.
       def applicable?
-        %w(# ## ###).include?(matcher.sep) && matcher.prefix.blank?
+        hash_trigger? &&
+          matcher.prefix.blank? &&
+          WorkPackage::SemanticIdentifier.numeric_id?(matcher.identifier)
+      end
+
+      # PDF rendering walks Markly nodes directly and bypasses the
+      # `PatternMatcherFilter` preload pipeline, so the parent's cache-driven
+      # `call` would miss every reference.
+      def call
+        render_link(matcher.identifier.to_i, matcher)
       end
 
       def render_link(wp_id, matcher)

@@ -38,7 +38,7 @@ module Wikis::Adapters
       @provider = model
     end
 
-    def call(_input_data)
+    def call(auth_strategy:, **) # rubocop:disable Lint/UnusedMethodArgument
       raise SubclassResponsibilityError
     end
 

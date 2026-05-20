@@ -209,19 +209,6 @@ es:
         health_notifications_component:
           sync_now: Sincronizar ahora
           sync_queued: Sincronización en cola.
-        validation_result_component:
-          checks:
-            failures:
-              one: "%{count} comprobación fallida"
-              other: "%{count} comprobaciones fallidas"
-            success: Todas las comprobaciones superadas
-            warnings:
-              one: "%{count} comprobación devolvió una advertencia"
-              other: "%{count} comprobaciones devolvieron una advertencia"
-          summary:
-            failure: Algunas comprobaciones han fallado y el sistema no funciona como se esperaba.
-            success: Todas las conexiones y sistemas funcionan según lo previsto.
-            warning: Algunas comprobaciones devolvieron una advertencia. Esto puede dar lugar a un comportamiento inesperado.
     buttons:
       done_continue: Hecho, continuar
       open_storage: Abrir almacenamiento de archivos

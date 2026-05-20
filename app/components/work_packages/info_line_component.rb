@@ -35,6 +35,7 @@ class WorkPackages::InfoLineComponent < ApplicationComponent
                  show_project: false,
                  show_subject: false,
                  show_status: true,
+                 status_scheme: :default,
                  font_size: :small,
                  **system_arguments)
     super
@@ -44,6 +45,7 @@ class WorkPackages::InfoLineComponent < ApplicationComponent
     @show_project = show_project
     @show_subject = show_subject
     @show_status = show_status
+    @status_scheme = status_scheme
 
     @system_arguments = system_arguments
   end

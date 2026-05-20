@@ -37,6 +37,9 @@ FactoryBot.define do
     end_date { 1.year.from_now }
     duration { 1.0 }
     frequency { "weekly" }
+    monthly_day { nil }
+    monthly_ordinal { nil }
+    monthly_weekday { nil }
     interval { 1 }
     iterations { 10 }
     end_after { "specific_date" }

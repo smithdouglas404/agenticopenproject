@@ -49,6 +49,7 @@ module OpenProject
           system_arguments[:anchor_align] ||= :end
           system_arguments[:classes] = class_names(
             system_arguments[:classes],
+            "op-work-package-card--menu",
             "hide-when-print"
           )
           @menu = Primer::Alpha::ActionMenu.new(**system_arguments)

@@ -36,11 +36,13 @@ module OpenProject::WorkPackages
     # @param show_subject [Boolean]
     # @param show_status [Boolean]
     # @param font_size [Symbol] select [small, normal]
-    def playground(show_project: false, show_subject: false, show_status: true, font_size: :small)
+    # @param status_scheme select [default, secondary]
+    def playground(show_project: false, show_subject: false, show_status: true, font_size: :small, status_scheme: :default)
       render(WorkPackages::InfoLineComponent.new(work_package: WorkPackage.visible.first,
                                                  show_project:,
                                                  show_subject:,
                                                  show_status:,
+                                                 status_scheme:,
                                                  font_size:))
     end
   end

@@ -41,6 +41,8 @@ pl:
           other: "%{count} uczestnika"
         participants_attended: Uczestnicy
         participants_invited: Zaproszone osoby
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Projekt
         start_date: Data
         start_time: Data rozpoczęcia
@@ -283,16 +285,6 @@ pl:
         summary_series: Seria spotkań „%{title}” została anulowana przez użytkownika %{actor} lub usunięto Cię jako uczestnika
         summary: "„%{title}” anulował użytkownik %{actor} lub usunięto Cię jako uczestnika"
         date_time: Zaplanowana data/godzina
-      participant_added:
-        header: Spotkanie „%{title}” — dodano uczestnika
-        header_series: Seria spotkań „%{title}” — dodano uczestnika
-        summary: Użytkownik %{actor} dodał uczestnika %{participant} do spotkania „%{title}”
-        summary_series: Użytkownik %{actor} dodał uczestnika %{participant} do serii spotkań „%{title}”
-      participant_removed:
-        header: Spotkanie „%{title}” — usunięto uczestnika
-        header_series: Seria spotkań „%{title}” — usunięto uczestnika
-        summary: Użytkownik %{actor} usunął uczestnika %{participant} ze spotkania „%{title}”
-        summary_series: Użytkownik %{actor} usunął uczestnika %{participant} z serii spotkań „%{title}”
       ended:
         header_series: 'Zakończono: serię spotkań „%{title}”'
         summary_series: Seria spotkań „%{title}” została zakończona przez użytkownika %{actor}
@@ -306,6 +298,8 @@ pl:
         new_date_time: Nowa data/godzina
         old_location: Stara lokalizacja
         new_location: Nowa lokalizacja
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Wyślij zaproszenie w wiadomości e-mail do uczestników
     types:
       one_time: Jednorazowe

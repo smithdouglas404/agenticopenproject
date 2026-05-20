@@ -42,8 +42,8 @@ module Wikis
                 success(
                   Results::PageInfo.new(
                     identifier: input_data.identifier,
-                    provider:,
                     title: wiki_page.title,
+                    provider:,
                     href: url_for(only_path: true,
                                   controller: "/wiki",
                                   action: "show",

@@ -2497,6 +2497,7 @@ ms:
         other: Priorities
       meeting_participant: Meeting participant
       member: Ahli
+      message: Message
       news: Berita
       notification:
         other: Pemberitahuan
@@ -3400,7 +3401,7 @@ ms:
   gui_validation_error: 1 ralat
   gui_validation_error_plural: "%{count} ralat"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           other: "%{count} checks failed"
@@ -4399,6 +4400,10 @@ ms:
     one: 1 komen
     other: "%{count} komen"
     zero: Tiada komen
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 dibuka
     other: "%{count} dibuka"
@@ -4677,7 +4682,6 @@ ms:
   notice_successful_delete: Pemadaman yang berjaya.
   notice_successful_cancel: Pembatalan yang berjaya.
   notice_successful_update: Kemas kini berjaya.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4724,15 +4728,11 @@ ms:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Tambah pakej kerja
   permission_add_messages: Pos mesej

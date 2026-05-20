@@ -2530,6 +2530,7 @@ tr:
         other: Öncelik
       meeting_participant: Toplantı katılımcısı
       member: Üye
+      message: Message
       news: Haberler
       notification:
         one: Bildirim
@@ -3459,7 +3460,7 @@ tr:
   gui_validation_error: 1 hata
   gui_validation_error_plural: "%{count} hata"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4456,6 +4457,10 @@ tr:
     one: 1 yorum
     other: "%{count} yorumlar"
     zero: yorum yok
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 açık
     other: "%{count} açık"
@@ -4739,7 +4744,6 @@ tr:
   notice_successful_delete: Silme başarılı.
   notice_successful_cancel: İptal işlemi başarılı.
   notice_successful_update: Güncelleme başarılı.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Oluşturulamadı.
   notice_unsuccessful_create_with_reason: 'Oluşturma başarısız oldu: %{reason}'
   notice_unsuccessful_update: Güncellenemedi.
@@ -4785,15 +4789,11 @@ tr:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Yorum ekle
   permission_add_work_packages: İş paketi eklemek
   permission_add_messages: İleti göndermek

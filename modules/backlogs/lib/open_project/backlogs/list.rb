@@ -46,7 +46,8 @@ module OpenProject::Backlogs::List
       # Remove so the potential 'prev' has a correct position
       remove_from_list
       reload
-      id_or_position = position ? { position: position - 1 } : { id: prev_id }
+      cast_position = ActiveRecord::Type::Integer.new.cast(position)
+      id_or_position = cast_position ? { position: cast_position - 1 } : { id: prev_id }
 
       prev = acts_as_list_list.find_by(**id_or_position)
 

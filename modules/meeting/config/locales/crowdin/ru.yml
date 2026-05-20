@@ -41,6 +41,8 @@ ru:
           other: "%{count} Участников"
         participants_attended: Участники
         participants_invited: Приглашенные
+        participants_added: 'Участников добавлено:'
+        participants_removed: 'Участники удалены:'
         project: Проект
         start_date: Дата
         start_time: Время начала
@@ -283,16 +285,6 @@ ru:
         summary_series: Серия совещаний '%{title}' была отменена %{actor}, или вы были удалены из списка участников
         summary: "'%{title}' было отменено %{actor}, или вы были удалены из списка участников"
         date_time: Запланированная дата/время
-      participant_added:
-        header: Совещание '%{title}' - участник добавлен
-        header_series: Серия совещаний '%{title}' - участник добавлен
-        summary: "%{actor} добавил %{participant} в совещание '%{title}'"
-        summary_series: "%{actor} добавил %{participant} в серию совещаний '%{title}'"
-      participant_removed:
-        header: Совещание '%{title}' - участник удален
-        header_series: Серия совещаний '%{title}' - участник удален
-        summary: "%{actor} удалил %{participant} из совещания '%{title}'"
-        summary_series: "%{actor} удалил %{participant} из серии совещаний '%{title}'"
       ended:
         header_series: 'Завершено: Серия совещаний ''%{title}'''
         summary_series: Серия совещаний '%{title}' была завершена %{actor}
@@ -306,6 +298,8 @@ ru:
         new_date_time: Новые дата/время
         old_location: Старое расположение
         new_location: Новое расположение
+        added_participants: Участники добавлены
+        removed_participants: Участники удалены
     label_mail_all_participants: Отправить письмо всем участникам
     types:
       one_time: Однократная
@@ -448,7 +442,7 @@ ru:
     widgets:
       blankslate:
         heading: Нет предстоящих встреч
-        description: Upcoming meetings you are participating in will appear here.
+        description: Здесь будут отображаться предстоящие встречи, в которых Вы принимаете участие.
       view_details: Просмотреть все встречи
   meeting_section:
     untitled_title: Раздел без названия

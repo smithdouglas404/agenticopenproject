@@ -2523,6 +2523,7 @@ nl:
         other: Priorities
       meeting_participant: Meeting participant
       member: Deelnemer
+      message: Message
       news: Nieuws
       notification:
         one: Melding
@@ -3450,7 +3451,7 @@ nl:
   gui_validation_error: 1 fout
   gui_validation_error_plural: "%{count} fouten"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4447,6 +4448,10 @@ nl:
     one: 1 reactie
     other: "%{count} reacties"
     zero: geen reacties
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 open
     other: "%{count} open"
@@ -4729,7 +4734,6 @@ nl:
   notice_successful_delete: Verwijdering geslaagd.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: Succesvolle wijziging.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4775,15 +4779,11 @@ nl:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Werkpakketten toevoegen
   permission_add_messages: Berichten posten

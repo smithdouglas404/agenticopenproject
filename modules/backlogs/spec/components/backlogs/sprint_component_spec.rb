@@ -79,6 +79,14 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(rendered_component).to have_text("8 points", normalize_ws: true)
       end
 
+      it "renders the inferred work-package count in the header" do
+        expect(rendered_component).to have_css(
+          ".Counter",
+          text: "2",
+          aria: { label: I18n.t(:label_x_work_packages, count: 2), live: "polite" }
+        )
+      end
+
       it "renders story points on each work package card" do
         expect(rendered_component).to have_css("span", text: "5", aria: { hidden: true })
         expect(rendered_component).to have_css(".sr-only", text: "5 story points")
@@ -111,7 +119,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
           expect(row["data-draggable-type"]).to eq("story")
           expect(row["data-backlogs--story-display-id-value"]).to eq(work_package1.display_id.to_s)
           expect(row["data-drop-url"])
-            .to end_with(move_project_backlogs_work_package_path(project, sprint, work_package1))
+            .to end_with(move_project_backlogs_work_package_path(project, work_package1))
         end
       end
 
@@ -123,7 +131,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         it "propagates ?all=1 to the work package drop URL" do
           expect(rendered_component).to have_css(".Box-row#work_package_#{work_package1.id}") do |row|
             expect(row["data-drop-url"])
-              .to eq(move_project_backlogs_work_package_path(project, sprint, work_package1, all: "1"))
+              .to eq(move_project_backlogs_work_package_path(project, work_package1, all: "1"))
           end
         end
       end
@@ -158,6 +166,44 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       end
     end
 
+    describe "sprint status badge in header description" do
+      context "when the sprint is in planning" do
+        let(:sprint) do
+          create(:sprint, project:, name: "Sprint 1",
+                          start_date: Date.tomorrow, finish_date: Date.tomorrow + 7,
+                          status: "in_planning")
+        end
+
+        it "renders the status badge" do
+          expect(rendered_component).to have_css(".Label", text: "In planning")
+        end
+      end
+
+      context "when the sprint is active" do
+        let(:sprint) do
+          create(:sprint, project:, name: "Sprint 1",
+                          start_date: Date.yesterday, finish_date: Date.tomorrow,
+                          status: "active")
+        end
+
+        it "renders the status badge" do
+          expect(rendered_component).to have_css(".Label", text: "Active")
+        end
+      end
+
+      context "when the sprint is completed" do
+        let(:sprint) do
+          create(:sprint, project:, name: "Sprint 1",
+                          start_date: 2.weeks.ago, finish_date: 1.week.ago,
+                          status: "completed")
+        end
+
+        it "renders the status badge" do
+          expect(rendered_component).to have_css(".Label", text: "Completed")
+        end
+      end
+    end
+
     describe "sprint actions in header" do
       context "when the sprint is in planning with date range set" do
         let(:sprint) do
@@ -167,7 +213,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         end
 
         it "renders the start-sprint link enabled" do
-          expect(rendered_component).to have_link("Start")
+          expect(rendered_component).to have_link("Start sprint")
         end
       end
 
@@ -179,7 +225,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         end
 
         it "renders the start-sprint button as disabled" do
-          expect(rendered_component).to have_selector(:link_or_button, "Start", aria: { disabled: true })
+          expect(rendered_component).to have_selector(:link_or_button, "Start sprint", aria: { disabled: true })
         end
       end
 
@@ -192,7 +238,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
         it "renders the complete-sprint link" do
-          expect(rendered_component).to have_link("Complete")
+          expect(rendered_component).to have_link("Complete sprint")
         end
 
         context "when params[:all] is true" do
@@ -202,7 +248,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
 
           it "preserves ?all=1 on the complete-sprint link" do
             expect(rendered_component).to have_link(
-              "Complete",
+              "Complete sprint",
               href: finish_project_backlogs_sprint_path(project, sprint, all: 1)
             )
           end

@@ -31,18 +31,21 @@
 module Backlogs
   class WorkPackagesController < BaseController
     include OpTurbo::ComponentStream
-    include Backlogs::Move
 
-    before_action :load_story
+    before_action :load_work_package
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
-      max_position = @allowed_stories.maximum(:position) || 0
-      open_sprints_exist = Sprint.for_project(@project).visible.not_completed.where.not(id: @sprint.id).exists?
+      max_position = displayed_work_packages.maximum(:position) || 0
 
-      render(Backlogs::StoryMenuListComponent.new(
-               story: @story,
-               sprint: @sprint,
+      open_sprints_exist = Sprint.for_project(@project)
+                                 .visible
+                                 .not_completed
+                                 .where.not(id: @work_package.sprint_id)
+                                 .exists?
+
+      render(Backlogs::WorkPackageCardMenuComponent.new(
+               work_package: @work_package,
                project: @project,
                max_position:,
                open_sprints_exist:,
@@ -51,141 +54,80 @@ module Backlogs
              layout: false)
     end
 
-    # Move a story from an Sprint to another Sprint, or the Inbox.
-    def move
-      # The update service reloads the story internally (via #move_after),
-      # so we memoize the previous sprint_id before the call.
-      sprint_id_was = @story.sprint_id
-
-      move_attributes = move_attributes_from_target
-      unless move_work_package(move_attributes).success?
-        return respond_with_turbo_streams(status: :unprocessable_entity)
-      end
-
-      if target_inbox?(move_attributes)
-        moved_to_inbox
-      elsif target_sprint?(move_attributes) && @story.sprint_id != sprint_id_was
-        moved_to_sprint
-      end
-
-      respond_with_turbo_streams
-    end
-
     def move_to_sprint_dialog
       respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
-        work_package: @story,
+        work_package: @work_package,
         project: @project,
-        move_action: move_project_backlogs_work_package_path(
-          @project, @sprint, @story, helpers.all_backlogs_params
-        )
+        move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
       )
     end
 
-    def reorder
-      call = Stories::UpdateService
-        .new(user: current_user, story: @story)
-        .call(attributes: { move_to: reorder_param })
+    def move
+      # Capture the source before the call; the service reloads @work_package internally via #move_after.
+      source = @work_package.sprint
 
-      unless call.success?
+      call = Stories::UpdateService.new(user: current_user, story: @work_package)
+                                   .call(**move_params.to_h.symbolize_keys)
+
+      if call.success?
+        move_work_package_to_target_component_via_turbo_stream(source:, target: call.result.sprint)
+      else
         render_error_flash_message_via_turbo_stream(
           message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
         )
-        return respond_with_turbo_streams(status: :unprocessable_entity)
       end
 
-      replace_sprint_component_via_turbo_stream(sprint: @sprint)
-
-      respond_with_turbo_streams
+      respond_with_turbo_streams(status: call)
     end
 
     private
 
-    def move_work_package(move_attributes)
-      call = update_story_with_target_and_position(attributes: move_attributes)
-
-      if call.success?
-        # Update source component so that the moved story disappears
-        replace_sprint_component_via_turbo_stream(sprint: @sprint)
-      else
-        render_error_flash_message_via_turbo_stream(
-          message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-        )
+    def move_work_package_to_target_component_via_turbo_stream(source:, target:)
+      if source != target
+        replace_component_via_turbo_stream(source)
       end
 
-      call
+      replace_component_via_turbo_stream(target)
     end
 
-    def update_story_with_target_and_position(attributes:)
-      Stories::UpdateService
-        .new(user: current_user, story: @story)
-        .call(attributes:, **position_attributes)
+    def replace_component_via_turbo_stream(container)
+      component = if container
+                    sprint_component(sprint: container)
+                  else
+                    backlog_component
+                  end
+
+      replace_via_turbo_stream(component:, method: :morph)
     end
 
-    def moved_to_inbox
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
-      )
+    def sprint_component(sprint:)
+      Backlogs::SprintComponent.new(sprint:, project: @project)
+    end
+
+    def backlog_component
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
       buckets = BacklogBucket.for_project(@project)
 
-      replace_via_turbo_stream(
-        component: Backlogs::BacklogComponent.new(inbox_work_packages:,
-                                                  buckets:,
-                                                  project: @project),
-        method: :morph
-      )
+      Backlogs::BacklogComponent.new(inbox_work_packages:, buckets:, project: @project)
     end
 
-    def moved_to_sprint
-      moved_to(new_sprint: @story.sprint)
-    end
-
-    def moved_to(new_sprint:)
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
-      )
-
-      # Update the target component so that the moved story shows up
-      replace_sprint_component_via_turbo_stream(sprint: new_sprint)
-    end
-
-    def target_sprint?(move_attributes)
-      move_attributes[:sprint_id].present?
-    end
-
-    def target_inbox?(move_attributes)
-      move_attributes.key?(:sprint_id) && move_attributes[:sprint_id].nil?
-    end
-
-    def replace_sprint_component_via_turbo_stream(sprint:)
-      replace_via_turbo_stream(
-        component: Backlogs::SprintComponent.new(sprint:, project: @project),
-        method: :morph
-      )
-    end
-
-    def load_story
-      @allowed_stories = WorkPackage.visible.where(sprint: @sprint, project: @project)
-      @story = @allowed_stories.find(params[:id])
+    def load_work_package
+      @work_packages = WorkPackage.visible.where(project: @project)
+      @work_package = @work_packages.find(params.expect(:id))
     end
 
     def move_params
-      params.require(%i[target_id])
-      params.permit(:position, :prev_id, :target_id)
+      params.permit(:position, :prev_id, :target_id, :direction)
     end
 
-    def position_attributes
-      if move_params.has_key?(:prev_id)
-        { prev_id: move_params[:prev_id].to_i }
-      elsif move_params.has_key?(:position)
-        { position: move_params[:position].to_i }
+    def displayed_work_packages
+      if @work_package.sprint_id?
+        @work_packages.where(sprint_id: @work_package.sprint_id)
+      elsif @work_package.backlog_bucket_id?
+        @work_packages.merge(@work_package.backlog_bucket.displayed_work_packages)
       else
-        {}
+        @work_packages.merge(WorkPackage.backlogs_inbox_for(project: @project))
       end
-    end
-
-    def reorder_param
-      params.expect(:direction)
     end
   end
 end

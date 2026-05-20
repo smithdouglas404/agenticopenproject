@@ -2525,6 +2525,7 @@ bg:
         other: Priorities
       meeting_participant: Meeting participant
       member: Член
+      message: Message
       news: Новини
       notification:
         one: Notification
@@ -3452,7 +3453,7 @@ bg:
   gui_validation_error: 1 грешка
   gui_validation_error_plural: "%{count} грешки"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4449,6 +4450,10 @@ bg:
     one: 1 коментар
     other: "%{count} коментара"
     zero: няма коментари
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 отворен
     other: "%{count} отворени"
@@ -4731,7 +4736,6 @@ bg:
   notice_successful_delete: Успешно изтриване.
   notice_successful_cancel: Successful cancellation.
   notice_successful_update: Успешно обновяване.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Creation failed.
   notice_unsuccessful_create_with_reason: 'Creation failed: %{reason}'
   notice_unsuccessful_update: Update failed.
@@ -4777,15 +4781,11 @@ bg:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
-      work_package_card_list_component:
-        header:
-          label_actions: Open menu
-          label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: Parent
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Add work packages
   permission_add_messages: Post messages

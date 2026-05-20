@@ -39,6 +39,8 @@ it:
           other: "%{count} partecipanti"
         participants_attended: Invitati
         participants_invited: Invitati
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Progetto
         start_date: Data
         start_time: Ora di inizio
@@ -273,16 +275,6 @@ it:
         summary_series: La serie di riunioni '%{title}' è stata annullata da %{actor} oppure ti hanno rimosso come partecipante
         summary: "'%{title}' è stata annullata da %{actor} oppure ti hanno rimosso come partecipante"
         date_time: Data/ora programmata
-      participant_added:
-        header: Riunione '%{title}' - Partecipante aggiunto
-        header_series: Serie di riunioni '%{title}' - Partecipante aggiunto
-        summary: "%{actor} ha aggiunto %{participant} alla riunione '%{title}'"
-        summary_series: "%{actor} ha aggiunto %{participant} alla serie di riunioni '%{title}'"
-      participant_removed:
-        header: Riunione '%{title}' - Partecipante rimosso
-        header_series: Serie di riunioni '%{title}' - Partecipante rimosso
-        summary: "%{actor} ha rimosso %{participant} dalla riunione '%{title}'"
-        summary_series: "%{actor} ha rimosso %{participant} dalla serie di riunioni '%{title}'"
       ended:
         header_series: 'Terminata: serie di riunioni "%{title}"'
         summary_series: La serie di riunioni '%{title}' è stata conclusa da %{actor}
@@ -296,6 +288,8 @@ it:
         new_date_time: Nuova data/ora
         old_location: Posizione precedente
         new_location: Nuova posizione
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Invia invito tramite e-mail a tutti i partecipanti
     types:
       one_time: Una tantum

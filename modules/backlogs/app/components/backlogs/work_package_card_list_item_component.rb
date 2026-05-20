@@ -29,12 +29,12 @@
 #++
 
 module Backlogs
-  class WorkPackageCardListItemComponent < OpenProject::Common::WorkPackageCardListComponent::Item
-    def card
-      @card ||= WorkPackageCardComponent.new(work_package:, menu_src:)
-    end
-
+  class WorkPackageCardListItemComponent < OpenProject::Common::BorderBoxListComponent::WorkPackageItem
     private
+
+    def build_card
+      WorkPackageCardComponent.new(work_package:, menu_src:)
+    end
 
     def draggable?
       current_user.allowed_in_project?(:manage_sprint_items, project)
@@ -48,36 +48,12 @@ module Backlogs
       url_helpers.work_package_path(work_package)
     end
 
-    # Sprint is the only positive match; bucket and inbox both fall through to
-    # inbox routes.
-    def uses_inbox_routes?
-      !container.is_a?(Sprint)
-    end
-
     def drop_url
-      if uses_inbox_routes?
-        url_helpers.move_project_backlogs_inbox_path(project, work_package, params)
-      else
-        url_helpers.move_project_backlogs_work_package_path(
-          project,
-          container,
-          work_package,
-          params
-        )
-      end
+      url_helpers.move_project_backlogs_work_package_path(project, work_package, params)
     end
 
     def menu_src
-      if uses_inbox_routes?
-        url_helpers.menu_project_backlogs_inbox_path(project, work_package, params)
-      else
-        url_helpers.menu_project_backlogs_work_package_path(
-          project,
-          container,
-          work_package,
-          params
-        )
-      end
+      url_helpers.menu_project_backlogs_work_package_path(project, work_package, params)
     end
 
     # `story` data attrs match the live Stimulus controller and Dragula

@@ -176,6 +176,12 @@ cs:
         move_to_sprint: Přesunout je do jiného sprintu
       select_sprint_label: Vyberte sprint
       button_complete_sprint: Complete sprint
+    stories:
+      update_service:
+        missing_target: target_id or direction must be present.
+        ambiguous_target: target_id and direction cannot both be present.
+        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
+        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard

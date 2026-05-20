@@ -689,5 +689,68 @@ RSpec.describe WorkPackage, "positions" do # rubocop:disable RSpec/SpecFilePathF
                  bucket1_wp5.id => 5)
       end
     end
+
+    context "when passing string values" do
+      context "when moving inside a sprint with a string position" do
+        it "moves the work_package to the beginning of the sprint" do
+          sprint1_wp4.move_after(position: "1")
+
+          expect(wp_of_sprint_by_id_and_position(sprint1))
+            .to eq(sprint1_wp4.id => 1,
+                   sprint1_wp1.id => 2,
+                   sprint1_wp2.id => 3,
+                   sprint1_wp3.id => 4,
+                   sprint1_wp5.id => 5)
+        end
+
+        it "moves the work_package to the middle of the sprint" do
+          sprint1_wp1.move_after(position: "3")
+
+          expect(wp_of_sprint_by_id_and_position(sprint1))
+            .to eq(sprint1_wp2.id => 1,
+                   sprint1_wp3.id => 2,
+                   sprint1_wp1.id => 3,
+                   sprint1_wp4.id => 4,
+                   sprint1_wp5.id => 5)
+        end
+      end
+
+      context "when moving inside a sprint with a string prev_id" do
+        it "moves the work_package after the previous" do
+          sprint1_wp4.move_after(prev_id: sprint1_wp1.id.to_s)
+
+          expect(wp_of_sprint_by_id_and_position(sprint1))
+            .to eq(sprint1_wp1.id => 1,
+                   sprint1_wp4.id => 2,
+                   sprint1_wp2.id => 3,
+                   sprint1_wp3.id => 4,
+                   sprint1_wp5.id => 5)
+        end
+      end
+
+      context "when moving in the inbox with a string position" do
+        it "moves the work_package to the beginning of the inbox" do
+          inbox_wp3.move_after(position: "1")
+
+          expect(wp_of_inbox_by_id_and_position)
+            .to eq(inbox_wp3.id => 1,
+                   inbox_wp1.id => 2,
+                   inbox_wp2.id => 3)
+        end
+      end
+
+      context "when moving inside a bucket with a string position" do
+        it "moves the work_package to the beginning of the bucket" do
+          bucket1_wp4.move_after(position: "1")
+
+          expect(wp_of_bucket_by_id_and_position(bucket1))
+            .to eq(bucket1_wp4.id => 1,
+                   bucket1_wp1.id => 2,
+                   bucket1_wp2.id => 3,
+                   bucket1_wp3.id => 4,
+                   bucket1_wp5.id => 5)
+        end
+      end
+    end
   end
 end

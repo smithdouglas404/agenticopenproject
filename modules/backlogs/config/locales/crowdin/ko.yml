@@ -164,6 +164,12 @@ ko:
         move_to_sprint: 다른 스프린트로 이동
       select_sprint_label: 스프린트 선택
       button_complete_sprint: 스프린트 완료
+    stories:
+      update_service:
+        missing_target: target_id or direction must be present.
+        ambiguous_target: target_id and direction cannot both be present.
+        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
+        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 클립보드에 URL 복사

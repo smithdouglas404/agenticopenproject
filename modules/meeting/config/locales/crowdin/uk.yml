@@ -41,6 +41,8 @@ uk:
           other: "%{count} учасника"
         participants_attended: Учасники
         participants_invited: Запрошені
+        participants_added: 'Participants added:'
+        participants_removed: 'Participants removed:'
         project: Проєкт
         start_date: Дата
         start_time: Час початку
@@ -283,16 +285,6 @@ uk:
         summary_series: Серію нарад «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників
         summary: Нараду «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників
         date_time: Заплановані дата/час
-      participant_added:
-        header: Нарада «%{title}» — додано учасника
-        header_series: Серія нарад «%{title}» — додано учасника
-        summary: Виконавець %{actor} додав учасника %{participant} до наради «%{title}»
-        summary_series: Виконавець %{actor} додав учасника %{participant} до серії нарад «%{title}»
-      participant_removed:
-        header: Нарада «%{title}» — вилучено учасника
-        header_series: Серія нарад «%{title}» — вилучено учасника
-        summary: Виконавець %{actor} вилучив учасника %{participant} із наради «%{title}»
-        summary_series: Виконавець %{actor} вилучив учасника %{participant} із серії нарад «%{title}»
       ended:
         header_series: 'Завершено: серія нарад «%{title}»'
         summary_series: Серію нарад «%{title}» завершив(-ла) %{actor}
@@ -306,6 +298,8 @@ uk:
         new_date_time: Нова дата/час
         old_location: Старе розташування
         new_location: Нове розташування
+        added_participants: Added
+        removed_participants: Removed
     label_mail_all_participants: Надіслати лист із запрошенням усім учасникам
     types:
       one_time: Одноразова

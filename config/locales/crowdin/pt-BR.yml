@@ -2522,6 +2522,7 @@ pt-BR:
         other: Prioridades
       meeting_participant: Participante da reunião
       member: Membro
+      message: Message
       news: Notícias
       notification:
         one: Notificação
@@ -3451,19 +3452,19 @@ pt-BR:
   gui_validation_error: 1 erro
   gui_validation_error_plural: "%{count} erros"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: Falha em %{count} verificação
-          other: Falha em %{count} verificações
-        success: Todas as verificações foram aprovadas
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} verificação retornou um aviso"
-          other: "%{count} verificações retornaram um aviso"
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Algumas verificações falharam e o sistema não está funcionando como esperado.
-        success: Todas as conexões e sistemas estão operando normalmente.
-        warning: Alguns testes retornaram um alerta. Isso pode causar comportamentos inesperados.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Falhou
@@ -4448,6 +4449,10 @@ pt-BR:
     one: 1 comentário
     other: "%{count} comentários"
     zero: sem comentários
+  label_x_items:
+    one: 1 item
+    other: "%{count} items"
+    zero: no items
   label_x_open_work_packages_abbr:
     one: 1 aberto
     other: "%{count} abertos"
@@ -4731,7 +4736,6 @@ pt-BR:
   notice_successful_delete: Exclusão bem sucedida.
   notice_successful_cancel: Cancelamento bem-sucedido.
   notice_successful_update: Atualizado com sucesso.
-  notice_successful_move: Movido com sucesso de %{from} para %{to}.
   notice_unsuccessful_create: Falha na criação.
   notice_unsuccessful_create_with_reason: 'Falha na criação: %{reason}'
   notice_unsuccessful_update: Falha na atualização.
@@ -4777,15 +4781,11 @@ pt-BR:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Ações do pacote de trabalho
-      work_package_card_list_component:
-        header:
-          label_actions: Abrir menu
-          label_work_package_count:
-            zero: Nenhum pacote de trabalho
-            one: "%{count} pacote de trabalho"
-            other: "%{count} pacotes de trabalho"
+        parent: Parent
   permission_add_work_package_comments: Adicionar comentários
   permission_add_work_packages: Adicionar pacotes de trabalho
   permission_add_messages: Postar mensagens

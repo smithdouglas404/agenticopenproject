@@ -163,6 +163,12 @@ en:
       client:
         connection_error: "Failed to connect to Jira server: %{message}"
         connection_timeout: "Connection to Jira server timed out: %{message}"
+        ssrf_blocked: >-
+          Connection blocked: the Jira host resolves to a private IP address. If your Jira instance
+          runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST
+          environment variable.
+        ssrf_block_doc_link: "Please see our [documentation](docs_url)."
+        ssl_error: "SSL error connecting to Jira server: %{message}"
         parse_error: "Failed to parse Jira API response: %{message}"
         api_error: "Jira API returned error status %{status}"
         401_error: "Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator."
@@ -2614,6 +2620,7 @@ en:
         other: "Priorities"
       meeting_participant: "Meeting participant"
       member: "Member"
+      message: "Message"
       news: "News"
       notification:
         one: "Notification"
@@ -3578,7 +3585,7 @@ en:
   gui_validation_error_plural: "%{count} errors"
 
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4592,6 +4599,10 @@ en:
     one: "1 comment"
     other: "%{count} comments"
     zero: "no comments"
+  label_x_items:
+    one: "1 item"
+    other: "%{count} items"
+    zero: "no items"
   label_x_open_work_packages_abbr:
     one: "1 open"
     other: "%{count} open"
@@ -4882,7 +4893,6 @@ en:
   notice_successful_delete: "Successful deletion."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "Successful update."
-  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4932,15 +4942,11 @@ en:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: "Drag to reorder"
         menu:
           label_actions: "Work package actions"
-      work_package_card_list_component:
-        header:
-          label_actions: "Open menu"
-          label_work_package_count:
-            zero: "No work packages"
-            one: "%{count} work package"
-            other: "%{count} work packages"
+        parent: "Parent"
 
   permission_add_work_package_comments: "Add comments"
   permission_add_work_packages: "Add work packages"

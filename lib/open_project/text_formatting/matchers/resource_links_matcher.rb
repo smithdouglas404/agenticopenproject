@@ -33,8 +33,14 @@ module OpenProject::TextFormatting
     # OpenProject links matching
     #
     # Examples:
-    #   Issues:
-    #     #52 -> Link to issue #52
+    #   Work packages:
+    #     #52       -> Plain link to work package 52
+    #     ##52      -> Inline quickinfo card for work package 52
+    #     ###52     -> Detailed quickinfo card for work package 52
+    #   Work packages (semantic identifiers, when the instance is in semantic mode):
+    #     #PROJ-7   -> Plain link to the work package whose display id is PROJ-7
+    #     ##PROJ-7  -> Inline quickinfo card
+    #     ###PROJ-7 -> Detailed quickinfo card
     #   Changesets:
     #     r52 -> Link to revision 52
     #     commit:a85130f -> Link to scmid starting with a85130f
@@ -63,6 +69,9 @@ module OpenProject::TextFormatting
     #     identifier:version:1.0.0
     #     identifier:source:some/file
     class ResourceLinksMatcher < RegexMatcher
+      WORK_PACKAGES_LOOKUP_KEY = :text_formatting_work_packages_lookup
+      private_constant :WORK_PACKAGES_LOOKUP_KEY
+
       include ::OpenProject::TextFormatting::Truncation
       # used for the work package quick links
       include WorkPackagesHelper
@@ -76,35 +85,28 @@ module OpenProject::TextFormatting
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::UrlHelper
 
+      # Hash and revision separators sit on independent alternation branches
+      # so semantic ids apply only to `#` references — `r` revisions stay
+      # numeric-only.
       def self.regexp
+        semantic_id = WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT.source
+        prefixes = allowed_prefixes.join("|")
         %r{
-          ([[[:space:]](,~\-\[>]|^) # Leading string
-          (!)? # Escaped marker
-          (([a-z0-9\-_]+):)? # Project identifier
-          (#{allowed_prefixes.join('|')})? # prefix
-          (
-            (\#+|r)(\d+) # separator and its identifier
+          (?<leading>[[[:space:]](,~\-\[>]|^)
+          (?<escaped>!)?
+          (?<project_prefix>(?<project_identifier>[a-z0-9\-_]+):)?
+          (?<prefix>#{prefixes})?
+          (?:
+            (?<hash_sep>\#+)(?<hash_id>#{semantic_id})
             |
-            (:) # or colon separator
-            (
-              [^"\s<>][^\s<>]*? # And a non-quoted value [10]
-              |
-              "([^"]+)" # Or a quoted value [11]
-            )
+            (?<rev_sep>r)(?<rev_id>\d+)
+            |
+            (?<colon_sep>:)(?<colon_value>[^"\s<>][^\s<>]*?|"(?<quoted>[^"]+)")
           )
           (?=
-            (?=
-              [[:punct:]]\W # Includes matches of, e.g., source:foo.ext
-            )
-            |\.\z # Allow matching when string ends with .
-            |, # or with ,
-            |~ # or with ~
-            |\) # or with )
-            |[[:space:]]
-            |\]
-            |<
-            |$
-           )
+            (?=[[:punct:]]\W) # Includes matches of, e.g., source:foo.ext
+            |\.\z|,|~|\)|[[:space:]]|\]|<|$
+          )
         }x
       end
 
@@ -128,21 +130,107 @@ module OpenProject::TextFormatting
         ]
       end
 
-      def self.process_match(m, matched_string, context)
-        # Leading string before match
-        instance = new(
-          matched_string:,
-          leading: m[1],
-          escaped: m[2],
-          project_prefix: m[3],
-          project_identifier: m[4],
-          prefix: m[5],
-          sep: m[7] || m[9],
-          raw_identifier: m[8] || m[10],
-          identifier: m[8] || m[11] || m[10],
-          context:
-        )
+      # Returns the preloaded WorkPackage for the given identifier (numeric
+      # or semantic), or nil if no preload is active (classic mode, no `#N`
+      # references) or the WP couldn't be resolved.
+      def self.work_package_for(identifier)
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]&.[](identifier.to_s)
+      end
 
+      # Doc-level preload called by `PatternMatcherFilter`. Save/restores
+      # the lookup so a nested `format_text` (e.g. custom-field formatter
+      # re-entering the pipeline) doesn't clobber the outer render. Classic
+      # mode skips the load — `display_id` collapses to numeric, so the
+      # link handler can render from the matched id alone.
+      def self.with_preloaded_resources(doc, _context)
+        previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
+
+        return yield unless Setting::WorkPackageIdentifier.semantic_mode_active?
+
+        identifiers = collect_work_package_identifiers(doc)
+        return yield if identifiers.empty?
+
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = build_lookup(identifiers)
+        yield
+      ensure
+        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = previous
+      end
+
+      def self.collect_work_package_identifiers(doc)
+        identifiers = Set.new
+        doc.search(".//text()").each do |node|
+          next if OpenProject::TextFormatting::PreformattedBlocks.ancestor?(node)
+
+          node.to_s.scan(regexp) do
+            extract_work_package_identifier(Regexp.last_match)&.then { identifiers << it }
+          end
+        end
+        identifiers
+      end
+
+      # Returns the WP identifier for any `#N` / `##N` / `###N` (or
+      # semantic-shape) reference. Returns nil for prefixed resource links
+      # (`version#3`, `message#12`) and `:`-separator resources. Leading-zero
+      # numerics ("0123") pass through here — the link handler rejects them
+      # at render time, so a non-resolving cache entry is harmless.
+      def self.extract_work_package_identifier(match)
+        parts = parse_match(match)
+        identifier = parts[:identifier]
+        return nil unless parts[:prefix].nil? && parts[:sep]&.start_with?("#") && identifier.present?
+
+        identifier
+      end
+
+      # 1 SELECT in the common case. A second targeted SELECT fires for
+      # historical aliases — the loaded WP row carries only its current
+      # identifier, so unmapped inputs must be filled in from
+      # `WorkPackageSemanticAlias`. The visible-id set passes through
+      # to the alias fold-in explicitly so each query enforces
+      # visibility at its own boundary, leaving no implicit trust for
+      # the cache to leak through.
+      def self.build_lookup(identifiers)
+        work_packages = WorkPackage.visible.where_display_id_in(*identifiers).select(:id, :identifier).to_a
+        lookup = index_by_id_and_identifier(work_packages)
+        fold_in_alias_keys(lookup, identifiers, visible_wp_ids: work_packages.map(&:id))
+        lookup
+      end
+
+      def self.index_by_id_and_identifier(work_packages)
+        work_packages.each_with_object({}) do |wp, lookup|
+          lookup[wp.id.to_s] = wp
+          lookup[wp.identifier] = wp if wp.identifier.present?
+        end
+      end
+      private_class_method :index_by_id_and_identifier
+
+      def self.fold_in_alias_keys(lookup, identifiers, visible_wp_ids:)
+        unmapped = identifiers.map(&:to_s) - lookup.keys
+        return if unmapped.empty? || visible_wp_ids.empty?
+
+        WorkPackageSemanticAlias
+          .where(work_package_id: visible_wp_ids, identifier: unmapped)
+          .pluck(:identifier, :work_package_id)
+          .each { |ident, wp_id| lookup[ident] = lookup[wp_id.to_s] }
+      end
+      private_class_method :fold_in_alias_keys
+
+      # Flattens the three alternation branches into a single `:sep` /
+      # `:identifier` shape so callers don't branch on which one matched.
+      def self.parse_match(match)
+        {
+          leading: match[:leading],
+          escaped: match[:escaped],
+          project_prefix: match[:project_prefix],
+          project_identifier: match[:project_identifier],
+          prefix: match[:prefix],
+          sep: match[:hash_sep] || match[:rev_sep] || match[:colon_sep],
+          raw_identifier: match[:hash_id] || match[:rev_id] || match[:colon_value],
+          identifier: match[:hash_id] || match[:rev_id] || match[:quoted] || match[:colon_value]
+        }
+      end
+
+      def self.process_match(matchdata, matched_string, context)
+        instance = new(matched_string:, context:, **parse_match(matchdata))
         instance.process
       end
 

@@ -236,6 +236,11 @@ module Import
       description = Import::JiraWikiMarkupConverter.new(jira_issue.payload["fields"]["description"] || "").convert
       custom_field_attrs = collect_custom_field_attributes(custom_field_registry, jira_issue)
 
+      due_date = jira_issue.payload.dig("fields", "duedate")
+      original_estimate_seconds = jira_issue.payload.dig("fields", "timetracking", "originalEstimateSeconds")
+      remaining_estimate_seconds = jira_issue.payload.dig("fields", "timetracking", "remainingEstimateSeconds")
+      estimated_hours =  original_estimate_seconds / 60 if original_estimate_seconds
+      remaining_hours =  remaining_estimate_seconds / 60 if remaining_estimate_seconds
       service_call = WorkPackages::CreateService
                        .new(user: author || User.system, contract_class: EmptyContract)
                        .call(
@@ -246,6 +251,9 @@ module Import
                          priority:,
                          status:,
                          assigned_to:,
+                         due_date:,
+                         estimated_hours:,
+                         remaining_hours:,
                          **custom_field_attrs
                        )
       raise service_call.message unless service_call.success?
