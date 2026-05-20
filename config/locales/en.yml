@@ -59,6 +59,25 @@ en:
           confirm_button_text: "Make public"
 
   admin:
+    reserved_identifiers:
+      title: "Reserved project identifiers"
+      lede_html: "When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects."
+      col_identifier: "Identifier"
+      col_project: "Project"
+      col_reserved: "Reserved"
+      not_available_in_semantic_mode: "Reserved identifiers are only available in classic identifier mode."
+      filter_label: "Filter identifiers"
+      btn_release: "Release"
+      released_notice: "Identifier \"%{identifier}\" has been released."
+      dialog:
+        title: "Release identifier"
+        heading: "Release \"%{identifier}\"?"
+        description: "Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim."
+        checkbox_label: "I understand that this cannot be undone."
+        confirm_button: "Release identifier"
+      empty_heading: "No reserved identifiers"
+      reserved_ago: "%{time} ago"
+      empty_body: "When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so."
     plugins:
       no_results_title_text: There are currently no plugins installed.
       no_results_content_text: See our integrations and plugins page for more information.
@@ -4397,6 +4416,7 @@ en:
   label_project_new: "New project"
   label_project_plural: "Projects"
   label_project_list_plural: "Project lists"
+  label_reserved_identifiers: "Reserved identifiers"
   label_project_life_cycle: "Project life cycle"
   label_project_attributes_plural: "Project attributes"
   label_project_custom_field_plural: "Project attributes"
