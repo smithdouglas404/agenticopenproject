@@ -76,7 +76,7 @@ module Admin::Settings
                                     .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
       call.on_success do
         unless ProjectIdentifiers::IdentifierAutofix.job_in_progress?
-          ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
+          ProjectIdentifiers::ConvertInstanceToClassicIdsJob.perform_later
         end
         redirect_to action: "show"
       end
