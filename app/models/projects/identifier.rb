@@ -153,5 +153,4 @@ module Projects::Identifier
       super
     end
   end
-
 end

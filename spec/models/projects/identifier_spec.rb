@@ -80,7 +80,7 @@ RSpec.describe Projects::Identifier do
 
       project.validate
 
-      expect(project.identifier).to match(Projects::Identifier::CLASSIC_IDENTIFIER_FORMAT)
+      expect(project.identifier).to match(Projects::Identifier::CLASSIC_FORMAT)
     end
 
     it "is not allowed to clash with projects routing" do
