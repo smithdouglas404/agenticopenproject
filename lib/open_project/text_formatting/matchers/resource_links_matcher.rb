@@ -132,9 +132,10 @@ module OpenProject::TextFormatting
 
       # Returns the preloaded WorkPackage for the given identifier (numeric
       # or semantic), or nil if no preload is active (classic mode, no `#N`
-      # references) or the WP couldn't be resolved.
+      # references) or the WP couldn't be resolved. Lookup keys are always
+      # strings — see `index_by_id_and_identifier`.
       def self.work_package_for(identifier)
-        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]&.[](identifier.to_s)
+        RequestStore.store.dig(WORK_PACKAGES_LOOKUP_KEY, identifier.to_s)
       end
 
       # Doc-level preload called by `PatternMatcherFilter`. Save/restores
@@ -195,10 +196,13 @@ module OpenProject::TextFormatting
         lookup
       end
 
+      # Keys are stringified at write time so callers can read with a single
+      # `identifier.to_s` regardless of whether the input is a numeric id or
+      # a semantic identifier.
       def self.index_by_id_and_identifier(work_packages)
         work_packages.each_with_object({}) do |wp, lookup|
           lookup[wp.id.to_s] = wp
-          lookup[wp.identifier] = wp if wp.identifier.present?
+          lookup[wp.identifier.to_s] = wp if wp.identifier.present?
         end
       end
       private_class_method :index_by_id_and_identifier
