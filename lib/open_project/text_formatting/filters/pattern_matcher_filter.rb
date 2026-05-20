@@ -42,7 +42,7 @@ module OpenProject::TextFormatting
       end
 
       def call
-        with_matcher_preloads(self.class.matchers.dup) { process_text_nodes }
+        run_with_matcher_preloads { process_text_nodes }
         doc
       end
 
@@ -50,17 +50,18 @@ module OpenProject::TextFormatting
 
       # Wraps the per-node loop in each matcher's `with_preloaded_resources`
       # hook so matchers can warm per-render caches and save/restore them
-      # around nested `format_text` calls. Opt-in: matchers without the hook
-      # are skipped.
-      def with_matcher_preloads(matchers, &)
-        matcher = matchers.shift
-        return yield if matcher.nil?
+      # around nested `format_text` calls. Wrapping happens in reverse so the
+      # first matcher's hook is the outermost frame; matchers without the
+      # hook pass through untouched.
+      def run_with_matcher_preloads(&block)
+        wrapped = block
+        self.class.matchers.reverse_each do |matcher|
+          next unless matcher.respond_to?(:with_preloaded_resources)
 
-        if matcher.respond_to?(:with_preloaded_resources)
-          matcher.with_preloaded_resources(doc, context) { with_matcher_preloads(matchers, &) }
-        else
-          with_matcher_preloads(matchers, &)
+          inner = wrapped
+          wrapped = -> { matcher.with_preloaded_resources(doc, context, &inner) }
         end
+        wrapped.call
       end
 
       def process_text_nodes
