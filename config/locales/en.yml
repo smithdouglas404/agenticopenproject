@@ -3585,9 +3585,8 @@ en:
     all_projects: "All projects"
     favorites: "Favorites"
     leave_project: "Leave project"
-    new_project: "New project"
+    project_list: "Project lists"
     title: "Projects"
-    trigger_no_project: "Select a project"
 
   filterable_tree_view:
     filter_mode:

@@ -163,19 +163,16 @@ RSpec.describe "Top menu items", :js do
   describe "Projects" do
     let(:top_menu) { find_by_id("projects-menu") }
 
-    let(:all_projects) { I18n.t("label_project_list") }
-    let(:add_project) { I18n.t("label_project") }
-
     context "as an admin" do
       let(:user) { create(:admin) }
 
       it "displays all items" do
-        expect(page).to have_css("a.button", exact_text: all_projects)
-        expect(page).to have_css("a.button", exact_text: add_project)
+        expect(page).to have_test_selector("list-project-btn")
+        expect(page).to have_test_selector("create-project-btn")
       end
 
       it "visits the projects page" do
-        page.find_link(all_projects).click
+        page.find_test_selector("list-project-btn").click
 
         expect(page).to have_current_path(projects_path)
       end
@@ -187,8 +184,8 @@ RSpec.describe "Top menu items", :js do
       end
 
       it "does not display new_project" do
-        expect(page).to have_css("a.button", exact_text: all_projects)
-        expect(page).to have_no_css("a.button", exact_text: add_project)
+        expect(page).to have_test_selector("list-project-btn")
+        expect(page).to have_no_test_selector("create-project-btn")
       end
     end
 

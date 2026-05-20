@@ -29,33 +29,35 @@
 #++
 
 module Header
-  class ProjectSelectComponent < ApplicationComponent
-    include OpenProject::StaticRouting::UrlHelpers
+  module ProjectsHelper
+    def project_node_label(project, favorited: false)
+      parts = [project.name]
+      parts << favorite_icon if favorited
+      parts << workspace_type_badge(project) if show_workspace_type_badge?(project)
 
-    def initialize(current_project: nil, current_user: User.current, current_menu_item: nil)
-      super()
-      @current_project = current_project
-      @current_user = current_user
-      @current_menu_item = current_menu_item
+      text = parts.length == 1 ? parts.first : safe_join(parts)
+      render(Primer::BaseComponent.new(tag: :span, display: :inline_flex, align_items: :center)) { text }
     end
 
-    def trigger_label
-      @current_project&.name || I18n.t("header_project_select.all_projects")
+    private
+
+    def favorite_icon
+      render(Primer::Beta::Octicon.new(icon: :"star-fill", size: :small, classes: "op-primer--star-icon", ml: 2))
     end
 
-    def tree_src
-      header_projects_path(
-        current_project_id: @current_project&.id,
-        jump: @current_menu_item.presence
-      )
+    def workspace_type_badge(project)
+      render(Primer::BaseComponent.new(tag: :span, display: :inline_flex, align_items: :center,
+                                       color: :subtle, font_size: :small, ml: 2, classes: "description")) do
+        safe_join([
+                    render(Primer::Beta::Octicon.new(icon: workspace_icon(project.workspace_type), size: :xsmall, mr: 1)),
+                    content_tag(:span, I18n.t(:"label_#{project.workspace_type}"))
+                  ])
+      end
     end
 
-    def can_create_projects?
-      @current_user.allowed_globally?(:add_project)
-    end
-
-    def logged_in?
-      @current_user.logged?
+    def show_workspace_type_badge?(project)
+      OpenProject::FeatureDecisions.portfolio_models_active? &&
+        project.workspace_type.in?(%w[portfolio program])
     end
   end
 end

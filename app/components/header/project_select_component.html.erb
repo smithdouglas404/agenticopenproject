@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
         visually_hide_title: true,
         anchor_side: :outside_bottom,
         anchor_align: :start,
-        size: :auto,
+        size: :medium_portrait,
         padding: :none
       )
     ) do |overlay| %>
@@ -47,12 +47,18 @@ See COPYRIGHT and LICENSE files for more details.
     <% button.with_trailing_visual_icon(icon: :"triangle-down") %>
   <% end %>
 
-  <% overlay.with_body(classes: "op-project-select--body", data: { controller: "header-project-select" }) do %>
+  <% overlay.with_body(
+       classes: "op-project-select--body", data: { controller: "header-project-select",
+                                                   test_selector: "op-header-project-select" }
+     ) do %>
     <%= render(
           Primer::OpenProject::FilterableTreeView.new(
             src: tree_src,
             include_sub_items_check_box_arguments: { hidden: true },
-            filter_mode_control_arguments: logged_in? ? {} : { hidden: true }
+            filter_mode_control_arguments: logged_in? ? {} : { hidden: true },
+            filter_input_arguments: { name: "filter", label: t(:label_filter), visually_hide_label: true,
+                                      data: { test_selector: "op-header-project-select--search" } },
+            no_results_node_arguments: { data: { test_selector: "op-header-project-select--no-results" }, label: I18n.t("filterable_tree_view.no_results_text") }
           )
         ) do |tree_view| %>
       <% if logged_in? %>
@@ -64,14 +70,16 @@ See COPYRIGHT and LICENSE files for more details.
     <% unless OpenProject::FeatureDecisions.portfolio_models_active? %>
       <%= helpers.flex_layout(justify_content: :flex_end, p: 2) do |bar| %>
         <% bar.with_column(mr: 2) do %>
-          <%= render(Primer::Beta::Button.new(tag: :a, href: projects_path)) do %>
-            <%= t("header_project_select.all_projects") %>
+          <%= render(Primer::Beta::Button.new(tag: :a, href: projects_path, test_selector: "list-project-btn")) do |button| %>
+            <% button.with_leading_visual_icon(icon: :"list-unordered") %>
+            <%= t("header_project_select.project_list") %>
           <% end %>
         <% end %>
         <% if can_create_projects? %>
           <% bar.with_column do %>
-            <%= render(Primer::Beta::Button.new(tag: :a, href: new_project_path, scheme: :primary)) do %>
-              <%= t("header_project_select.new_project") %>
+            <%= render(Primer::Beta::Button.new(tag: :a, href: new_project_path, scheme: :primary, test_selector: "create-project-btn")) do |button| %>
+              <% button.with_leading_visual_icon(icon: :plus) %>
+              <%= t(:label_project) %>
             <% end %>
           <% end %>
         <% end %>
