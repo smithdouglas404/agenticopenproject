@@ -28,28 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Filters
-  STRATEGIES = {
-    list: Queries::Filters::Strategies::List,
-    list_all: Queries::Filters::Strategies::ListAll,
-    list_optional: Queries::Filters::Strategies::ListOptional,
-    shared_with_user_list_optional: Queries::Filters::Strategies::WorkPackages::SharedWithUser::ListOptional,
-    integer: Queries::Filters::Strategies::Integer,
-    date: Queries::Filters::Strategies::Date,
-    datetime: Queries::Filters::Strategies::Datetime,
-    datetime_past: Queries::Filters::Strategies::DateTimePast,
-    string: Queries::Filters::Strategies::String,
-    text: Queries::Filters::Strategies::Text,
-    search: Queries::Filters::Strategies::Search,
-    float: Queries::Filters::Strategies::Float,
-    inexistent: Queries::Filters::Strategies::Inexistent,
-    empty_value: Queries::Filters::Strategies::EmptyValue,
-    hierarchy: Queries::Filters::Strategies::Hierarchy
-  }.freeze
+module CustomActions::Actions::Strategies::Datetime
+  def values=(values)
+    super(Array(values).map { |v| to_datetime_or_nil(v) }.uniq)
+  end
 
-  ##
-  # Wrapper class for invalid filters being created
-  class InvalidError < StandardError; end
+  def type
+    :datetime_property
+  end
 
-  class MissingError < StandardError; end
+  def apply(work_package)
+    accessor = :"#{self.class.key}="
+    if work_package.respond_to? accessor
+      work_package.send(accessor, datetime_to_apply)
+    end
+  end
+
+  private
+
+  def datetime_to_apply
+    if values.first == "%CURRENT_DATETIME%"
+      Time.current
+    else
+      values.first
+    end
+  end
+
+  def to_datetime_or_nil(value)
+    case value
+    when nil, "%CURRENT_DATETIME%"
+      value
+    else
+      value.to_time
+    end
+  rescue TypeError, ArgumentError
+    nil
+  end
 end

@@ -28,28 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Filters
-  STRATEGIES = {
-    list: Queries::Filters::Strategies::List,
-    list_all: Queries::Filters::Strategies::ListAll,
-    list_optional: Queries::Filters::Strategies::ListOptional,
-    shared_with_user_list_optional: Queries::Filters::Strategies::WorkPackages::SharedWithUser::ListOptional,
-    integer: Queries::Filters::Strategies::Integer,
-    date: Queries::Filters::Strategies::Date,
-    datetime: Queries::Filters::Strategies::Datetime,
-    datetime_past: Queries::Filters::Strategies::DateTimePast,
-    string: Queries::Filters::Strategies::String,
-    text: Queries::Filters::Strategies::Text,
-    search: Queries::Filters::Strategies::Search,
-    float: Queries::Filters::Strategies::Float,
-    inexistent: Queries::Filters::Strategies::Inexistent,
-    empty_value: Queries::Filters::Strategies::EmptyValue,
-    hierarchy: Queries::Filters::Strategies::Hierarchy
-  }.freeze
+require "spec_helper"
 
-  ##
-  # Wrapper class for invalid filters being created
-  class InvalidError < StandardError; end
+RSpec.describe Queries::Filters::Strategies::Datetime do
+  let(:filter) { double("filter", values: [], errors: ActiveModel::Errors.new(double)) }
+  let(:strategy) { described_class.new(filter) }
 
-  class MissingError < StandardError; end
+  describe ".supported_operators" do
+    it "includes all date-like relative operators" do
+      expect(described_class.supported_operators)
+        .to include("<t+", ">t+", "t+", "t", "w", ">t-", "<t-", "t-")
+    end
+
+    it "includes exact and between datetime operators" do
+      expect(described_class.supported_operators).to include("=d", "<>d")
+    end
+
+    it "includes not-set operator" do
+      expect(described_class.supported_operators).to include("!*")
+    end
+  end
+
+  describe "operator_map" do
+    subject { strategy.send(:operator_map) }
+
+    it "maps =d to OnDateTime (not OnDate)" do
+      expect(subject["=d"]).to eq(Queries::Operators::OnDateTime)
+    end
+
+    it "maps <>d to BetweenDateTime (not BetweenDate)" do
+      expect(subject["<>d"]).to eq(Queries::Operators::BetweenDateTime)
+    end
+  end
 end

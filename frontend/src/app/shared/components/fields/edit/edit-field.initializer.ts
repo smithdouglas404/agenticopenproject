@@ -50,6 +50,9 @@ import {
   DateEditFieldComponent,
 } from 'core-app/shared/components/fields/edit/field-types/date-edit-field/date-edit-field.component';
 import {
+  DatetimeEditFieldComponent,
+} from 'core-app/shared/components/fields/edit/field-types/datetime-edit-field/datetime-edit-field.component';
+import {
   FormattableEditFieldComponent,
 } from 'core-app/shared/components/fields/edit/field-types/formattable-edit-field/formattable-edit-field.component';
 import {
@@ -114,6 +117,7 @@ export function initializeCoreEditFields(editFieldService:EditFieldService, sele
       .addFieldType(WorkPackageEditFieldComponent, 'workPackage', ['WorkPackage'])
       .addFieldType(BooleanEditFieldComponent, 'boolean', ['Boolean'])
       .addFieldType(DateEditFieldComponent, 'date', ['Date'])
+      .addFieldType(DatetimeEditFieldComponent, 'datetime', ['DateTime'])
       .addFieldType(FormattableEditFieldComponent, 'wiki-textarea', ['Formattable']);
 
     editFieldService

@@ -40,6 +40,7 @@ module API
           "int" => "Integer",
           "float" => "Float",
           "date" => "Date",
+          "datetime" => "DateTime",
           "bool" => "Boolean",
           "user" => "User",
           "version" => "Version",

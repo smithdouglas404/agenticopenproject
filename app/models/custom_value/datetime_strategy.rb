@@ -28,28 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Filters
-  STRATEGIES = {
-    list: Queries::Filters::Strategies::List,
-    list_all: Queries::Filters::Strategies::ListAll,
-    list_optional: Queries::Filters::Strategies::ListOptional,
-    shared_with_user_list_optional: Queries::Filters::Strategies::WorkPackages::SharedWithUser::ListOptional,
-    integer: Queries::Filters::Strategies::Integer,
-    date: Queries::Filters::Strategies::Date,
-    datetime: Queries::Filters::Strategies::Datetime,
-    datetime_past: Queries::Filters::Strategies::DateTimePast,
-    string: Queries::Filters::Strategies::String,
-    text: Queries::Filters::Strategies::Text,
-    search: Queries::Filters::Strategies::Search,
-    float: Queries::Filters::Strategies::Float,
-    inexistent: Queries::Filters::Strategies::Inexistent,
-    empty_value: Queries::Filters::Strategies::EmptyValue,
-    hierarchy: Queries::Filters::Strategies::Hierarchy
-  }.freeze
+class CustomValue::DatetimeStrategy < CustomValue::FormatStrategy
+  include Redmine::I18n
 
-  ##
-  # Wrapper class for invalid filters being created
-  class InvalidError < StandardError; end
+  def typed_value
+    return if value.blank?
 
-  class MissingError < StandardError; end
+    DateTime.iso8601(value)
+  rescue Date::Error, ArgumentError
+    nil
+  end
+
+  def formatted_value
+    return nil unless value.present?
+
+    format_time(DateTime.iso8601(value).to_time)
+  rescue StandardError
+    value.to_s
+  end
+
+  def validate_type_of_value
+    return nil if value.is_a?(Time) || value.is_a?(DateTime)
+
+    begin
+      DateTime.iso8601(value)
+      nil
+    rescue StandardError
+      :not_a_datetime
+    end
+  end
 end
