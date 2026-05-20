@@ -36,6 +36,8 @@ describe('GitActionsService', function () {
   const createWorkPackage = (overrides = {}) => {
     const defaults = {
       id: '42',
+      displayId: '42',
+      formattedId: '#42',
       subject: "Find the question, or don't",
       description: {
         raw: "I recently found the answer is 42. We'd need to compute the correct question."
@@ -69,5 +71,14 @@ ${origin}/wp/42`);
     const origin = window.location.origin;
 
     expect(service.gitCommand(wp)).toEqual(`git checkout -b 'user-story/42-and-and-rm-rf' && git commit --allow-empty -m '[#42] '\\'' && rm -rf / #' -m '${origin}/wp/42'`);
+  });
+
+  it('uses semantic identifiers when in semantic mode', () => {
+    const wp = createWorkPackage({ displayId: 'PROJ-42', formattedId: 'PROJ-42' });
+    const origin = window.location.origin;
+
+    expect(service.branchName(wp)).toEqual('user-story/proj-42-find-the-question-or-don-t');
+    expect(service.commitMessage(wp)).toEqual(`[PROJ-42] Find the question, or don't\n\n${origin}/wp/PROJ-42`);
+    expect(service.gitCommand(wp)).toEqual(`git checkout -b 'user-story/proj-42-find-the-question-or-don-t' && git commit --allow-empty -m '[PROJ-42] Find the question, or don'\\''t' -m '${origin}/wp/PROJ-42'`);
   });
 });

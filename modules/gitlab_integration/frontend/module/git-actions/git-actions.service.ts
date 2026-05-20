@@ -48,14 +48,12 @@ export class GitActionsService {
 
   private formattingInput(workPackage: WorkPackageResource) {
     const type = workPackage.type.name || '';
-    const id = workPackage.id || '';
+    const id = workPackage.displayId;
     const title = workPackage.subject;
     const url = window.location.origin + workPackage.pathHelper.workPackagePath(id);
     const description = '';
 
-    return({
-      id, type, title, url, description
-    });
+    return { id, type, title, url, description };
   }
 
   private sanitizeShellInput(str:string):string {
