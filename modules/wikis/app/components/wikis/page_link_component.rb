@@ -37,8 +37,9 @@ module Wikis
 
     attr_reader :actions
 
-    def initialize(model = nil, actions: [], **)
+    def initialize(model = nil, actions: [], page_link: nil, **)
       @actions = actions
+      @page_link = page_link
 
       super(model, **)
     end
@@ -65,16 +66,14 @@ module Wikis
 
     private
 
-    def page_link
-      page_info_result.value!.page_link
-    end
-
     def project
-      page_link.linkable.project
+      @page_link&.linkable&.project
     end
 
     def deletion_action_item(menu)
-      href = url_helpers.confirm_delete_dialog_relation_wiki_page_link_path(page_link)
+      return if @page_link.nil?
+
+      href = url_helpers.confirm_delete_dialog_relation_wiki_page_link_path(@page_link)
 
       menu.with_item(label: t(".remove"),
                      scheme: :danger,

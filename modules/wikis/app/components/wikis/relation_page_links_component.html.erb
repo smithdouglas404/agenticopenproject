@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
       flex_layout(align_items: :center, justify_content: :space_between) do |header|
         header.with_column do
           concat(render(Primer::Beta::Text.new(font_weight: :bold, mr: 2)) { provider.name })
-          concat(render(Primer::Beta::Counter.new(count: page_link_infos.count, round: true, scheme: :primary)))
+          concat(render(Primer::Beta::Counter.new(count: page_links.count, round: true, scheme: :primary)))
         end
         header.with_column do
           render(Primer::Alpha::ActionMenu.new) do |menu|
@@ -52,12 +52,9 @@ See COPYRIGHT and LICENSE files for more details.
 
     if !user_connected?
       box.with_row do
-        render(Wikis::OAuthLoginComponent.new(
-          provider,
-          return_url: work_package_url(@work_package, tab: :wikis)
-        ))
+        render(Wikis::OAuthLoginComponent.new(provider, return_url: work_package_url(@work_package, tab: :wikis)))
       end
-    elsif page_link_infos.empty?
+    elsif page_links.empty?
       box.with_row do
         if user_connected?
           render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
@@ -65,16 +62,20 @@ See COPYRIGHT and LICENSE files for more details.
             blankslate.with_description { t(".empty_text") }
           end
         else
-          render(Wikis::OAuthLoginComponent.new(
-            provider,
-            return_url: work_package_url(@work_package, tab: :wikis)
-            )
-          )
+          render(Wikis::OAuthLoginComponent.new(provider, return_url: work_package_url(@work_package, tab: :wikis)))
         end
       end
     else
-      page_link_infos.each do |info|
-        box.with_row { render(Wikis::PageLinkComponent.new(info, actions: [:remove])) }
+      page_links.each do |page_link_aggregate|
+        box.with_row do
+          render(
+            Wikis::PageLinkComponent.new(
+              page_link_aggregate.page_info_result,
+              actions: [:remove],
+              page_link: page_link_aggregate.page_link
+            )
+          )
+        end
       end
     end
   end

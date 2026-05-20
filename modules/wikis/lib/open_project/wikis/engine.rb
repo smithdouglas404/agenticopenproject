@@ -72,7 +72,7 @@ module OpenProject::Wikis
     register "openproject-wikis", author_url: "https://openproject.org" do
       project_module :work_package_tracking do
         permission :manage_wiki_page_links,
-                   { "wikis/relation_page_link": %i[destroy] },
+                   { "wikis/relation_page_links": %i[destroy] },
                    permissible_on: :project,
                    dependencies: %i[edit_work_packages],
                    contract_actions: { wiki_page_links: %i[manage] }
@@ -94,7 +94,7 @@ module OpenProject::Wikis
            { controller: "/wikis/admin/wiki_providers", action: :index },
            if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
            caption: :project_module_wiki_platforms,
-           icon: "book"
+           icon: :book
     end
 
     patch_with_namespace :WikiPages, :CreateService

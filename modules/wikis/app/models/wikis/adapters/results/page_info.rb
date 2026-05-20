@@ -29,9 +29,5 @@
 #++
 
 module Wikis::Adapters::Results
-  PageInfo = Data.define(:identifier, :provider, :title, :href, :page_link) do
-    def initialize(identifier:, provider:, title:, href:, page_link: nil)
-      super
-    end
-  end
+  PageInfo = Data.define(:identifier, :provider, :title, :href)
 end

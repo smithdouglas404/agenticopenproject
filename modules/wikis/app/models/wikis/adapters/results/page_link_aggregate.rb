@@ -28,30 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class RelationPageLinksComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
-
-    alias_method :provider, :model
-
-    def initialize(model = nil, work_package: nil, **)
-      @work_package = work_package
-      super(model, **)
-    end
-
-    def page_links
-      @page_links ||= page_link_service.relation_page_links_for(provider:, linkable: @work_package)
-    end
-
-    def user_connected?
-      provider.user_connected?(User.current)
-    end
-
-    private
-
-    def page_link_service
-      @page_link_service ||= PageLinkService.new
-    end
-  end
+module Wikis::Adapters::Results
+  PageLinkAggregate = Data.define(:page_info_result, :page_link)
 end
