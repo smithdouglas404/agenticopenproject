@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,48 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module Backlogs
-  class WorkPackageCardComponent < ApplicationComponent
-    attr_reader :work_package, :menu_src, :turbo_frame_only
+class WorkPackages::CardsController < ApplicationController
+  before_action :find_work_package
+  before_action :authorize
 
-    delegate :with_menu, :with_metric, to: :card
+  include OpTurbo::ComponentStream
 
-    def initialize(work_package:, menu_src: nil, turbo_frame_only: false)
-      super()
+  def show
+    expires_in 1.hour, public: true
 
-      @work_package = work_package
-      @menu_src = menu_src
-      @turbo_frame_only = turbo_frame_only
-    end
+    render OpenProject::Common::WorkPackageCardComponent.new(work_package: @work_package,
+                                                             menu_src: menu_project_backlogs_work_package_path(@work_package.project,
+                                                                                                               @work_package),
+                                                             turbo_frame_only: false), layout: false
+  end
 
-    def call
-      render(card) do |common_card|
-        unless common_card.metric?
-          common_card.with_metric do
-            render(Backlogs::StoryPointsComponent.new(work_package:))
-          end
-        end
-      end
-    end
+  private
 
-    private
-
-    def card
-      @card ||= OpenProject::Common::WorkPackageCardComponent.new(
-        work_package:,
-        menu_src:,
-        show_assignee: true,
-        show_priority: true,
-        show_parent: true,
-        status_scheme: :secondary,
-        turbo_frame_only:
-      )
-    end
-
-    def before_render
-      content
-    end
+  def find_work_package
+    @work_package = WorkPackage.visible.find(params[:id])
   end
 end

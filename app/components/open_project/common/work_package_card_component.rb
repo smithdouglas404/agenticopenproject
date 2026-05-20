@@ -46,7 +46,7 @@ module OpenProject
       renders_one :additional_details, Primer::Content
 
       attr_reader :work_package, :menu_src, :show_drag_handle, :show_assignee, :show_priority,
-                  :show_parent, :link_subject, :status_scheme
+                  :show_parent, :link_subject, :status_scheme, :turbo_frame_only
 
       alias_method :show_drag_handle?, :show_drag_handle
 
@@ -62,7 +62,7 @@ module OpenProject
       # @param status_scheme [Symbol] status label scheme for the info line. One of :default or :secondary.
       def initialize(work_package:, menu_src: nil, show_drag_handle: false,
                      show_assignee: false, show_priority: false, show_parent: false, link_subject: true,
-                     status_scheme: :default)
+                     status_scheme: :default, turbo_frame_only: false)
         super()
 
         @work_package = work_package
@@ -73,6 +73,7 @@ module OpenProject
         @show_parent = show_parent
         @link_subject = link_subject
         @status_scheme = status_scheme
+        @turbo_frame_only = turbo_frame_only
       end
 
       private

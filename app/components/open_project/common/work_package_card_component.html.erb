@@ -27,6 +27,11 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
+<% if turbo_frame_only %>
+  <turbo-frame id="<%= "#{dom_id(work_package)}_card" %>" src="<%= work_packages_card_path(work_package, version: work_package.updated_at) %>">
+  </turbo-frame>
+<% else %>
+<turbo-frame id="<%= "#{dom_id(work_package)}_card" %>">
 <%= grid_layout(
       "op-work-package-card",
       tag: :article,
@@ -117,3 +122,5 @@ See COPYRIGHT and LICENSE files for more details.
     <% end %>
   <% end %>
 <% end %>
+    <% end %>
+</turbo-frame>
