@@ -139,11 +139,18 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
   }
 
   private refreshPageWhenConfirmDialogIsCancelled():void {
-    document
-      .querySelectorAll('#working-days-change-dialog [data-close-dialog-id]')
-      .forEach((closeButton) => {
-        closeButton.addEventListener('click', () => window.location.reload(), { once: true });
-      });
+    const refreshOnCancel = (event:Event) => {
+      const target = event.target as HTMLElement;
+
+      if (!target.closest('#working-days-change-dialog [data-close-dialog-id]')) {
+        return;
+      }
+
+      document.removeEventListener('click', refreshOnCancel, { capture: true });
+      window.location.reload();
+    };
+
+    document.addEventListener('click', refreshOnCancel, { capture: true });
   }
 
   private markNonWorkingDayForRemoval(date:string):void {
