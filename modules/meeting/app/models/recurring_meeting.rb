@@ -460,7 +460,7 @@ class RecurringMeeting < ApplicationRecord
     end
   end
 
-  def set_defaults # rubocop:disable Metrics/PerceivedComplexity
+  def set_defaults # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity
     self.end_date ||= 1.year.from_now if end_after_specific_date?
     self.monthly_day ||= start_time&.day || 1 if frequency_monthly_day_of_month?
 

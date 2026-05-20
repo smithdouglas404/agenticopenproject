@@ -535,9 +535,9 @@ en:
     actual_first_occurrence_mismatch_html: "The first occurrence of this series will be %{first_occurrence}"
     day_of_month_skipping_info: "Months with fewer than %{monthly_day} days will be skipped"
     end_after:
-      never: "never"
-      specific_date: "after a specific date"
-      iterations: "after a number of occurrences"
+      never: "Never"
+      specific_date: "After a specific date"
+      iterations: "After a number of occurrences"
     starts: "Starts"
     in_words:
       daily_interval: "Every %{interval} days"
