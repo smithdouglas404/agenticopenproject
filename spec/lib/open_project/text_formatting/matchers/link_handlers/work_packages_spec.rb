@@ -234,13 +234,18 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
         rendered = nil
         recorder = ActiveRecord::QueryRecorder.new { rendered = format_text("see #OLDPROJ-1") }
 
-        # Two database round-trips: (1) `where_display_id_in` runs a
+        # Two targeted round-trips: (1) `where_display_id_in` runs a
         # single WP SELECT whose WHERE clause includes an EXISTS
         # subquery against the alias table; (2) a sidecar alias pluck
         # maps the historical input string back to its WP for the
-        # cache. A third statement would indicate an N+1 regression.
-        expect(recorder.log.size).to eq(2)
-        expect(recorder.log.last).to match(/FROM "work_package_semantic_aliases"/)
+        # cache. Scoped greps ignore incidental Setting/permission
+        # queries — a second match on either grep would indicate an
+        # N+1 regression.
+        wp_selects    = recorder.log.grep(/FROM "work_packages"/)
+        alias_selects = recorder.log.grep(/FROM "work_package_semantic_aliases"/)
+                                .grep_v(/FROM "work_packages"/)
+        expect(wp_selects.size).to eq(1)
+        expect(alias_selects.size).to eq(1)
 
         # Renders against the WP's CURRENT display_id, not the historical
         # alias the user typed — old content stays alive but points at the
