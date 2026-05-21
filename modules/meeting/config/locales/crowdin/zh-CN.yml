@@ -217,8 +217,8 @@ zh-CN:
         mark_as_attended: 标记为已参加
         mark_all_as_attended: 将所有标记为已参加
         remove_participant: 移除参与者
-        manage_participants: 管理与会者
-        no_participants: 无参加者
+        manage_participants: 管理参会者
+        no_participants: 无参会者
         show_all: 全部显示
         apply_to_upcoming_meetings: 将这些更改应用于此系列中所有即将召开的会议
       text:
@@ -226,8 +226,8 @@ zh-CN:
         manage_participants: 搜索并添加项目成员作为本次会议的参与者。
         search_for_members: 搜索项目成员
       blankslate:
-        heading: 沒有与会者
-        description: 还没有参加者。
+        heading: 无参会者
+        description: 尚无参会者。
     attachments:
       onetime_template: 今后所有使用此模板的会议都将包含这些随附文件。
       series_template: 今后此系列中的所有会议都将包含这些随附文件。
@@ -432,7 +432,7 @@ zh-CN:
     widgets:
       blankslate:
         heading: 无会议安排
-        description: Upcoming meetings you are participating in will appear here.
+        description: 即将召开的项目会议将在此处显示。
       view_details: 查看所有会议
   meeting_section:
     untitled_title: 无标题章节

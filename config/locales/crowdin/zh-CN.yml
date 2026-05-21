@@ -1409,7 +1409,7 @@ zh-CN:
     bulk_delete_dialog:
       title: 删除 %{count} 个工作包
       heading: 永久删除这些 %{count} 工作包？
-      description: 'The following work packages and all associated data will be permanently deleted:'
+      description: 以下工作包和所有相关数据将被永久删除：
       description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
       confirm_children_deletion: 我确认所有选定的工作包及其子工作包将被永久删除。
       cross_project_warning: 这些工作包跨越多个项目： %{projects}

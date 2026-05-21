@@ -135,7 +135,7 @@ fr:
       form:
         fields:
           name: Nom
-          url: URL du serveur/centre de données Jira
+          url: URL du Jira Server / Data Center
           personal_access_token: Jeton d'accès personnel
         button_add: Ajouter la configuration
         button_save: Enregistrer la configuration
@@ -168,7 +168,7 @@ fr:
       run:
         title: Cycle d'importation
         history: Historique
-        remove_error: Une exécution d'importation Jira ne peut pas être supprimée lorsqu'elle est en cours d'exécution
+        remove_error: Un cycle d'importation Jira ne peut pas être supprimé pendant son exécution
         import_blocked_error: Un autre cycle d'importation Jira est actuellement en cours ou en attente de révision. Veuillez le terminer ou l'annuler avant de commencer une nouvelle importation.
         project_identifier_taken: 'Vous essayez d''importer un projet avec un identifiant déjà utilisé : %{taken_identifier}. Veuillez mettre à jour l''identifiant du projet dans Jira, puis cliquez sur Réessayer.'
         blank:
@@ -206,8 +206,8 @@ fr:
               one: 1 projet
               other: "%{count} projets"
             issues:
-              one: 1 problème
-              other: "%{count} problèmes"
+              one: 1 ticket
+              other: "%{count} tickets"
             work_packages:
               one: 1 lot de travaux
               other: "%{count} lots de travaux"
@@ -257,16 +257,16 @@ fr:
               label_selected_data: Données sélectionnées pour l'importation
               label_progress: Récupération des données de Jira...
               elements:
-                relations: Relations entre les problèmes
+                relations: Relations entre les tickets
                 project_ids: Identifiants de projet
-                issue_ids: Identifiants de problèmes
+                issue_ids: Identifiants de tickets
                 sprints: Affectation des sprints
                 workflows: Flux de travail au niveau du projet
                 schemes: Schémas
                 permissions: Permissions
                 projects: Projets
-                issues: Problèmes
-                issue_details: Description de la question, historique, commentaires et pièces jointes
+                issues: Tickets
+                issue_details: Description, historique, commentaires et pièces jointes du ticket
                 custom_fields: Un sous-ensemble de champs personnalisés
                 users: Utilisateurs et groupes concernés
             confirm_import:
@@ -548,7 +548,7 @@ fr:
       plain_description: Ouvre une connexion non chiffrée au serveur LDAP. Déconseillé en production.
       simple_tls_description: Utiliser LDAPS. Nécessite un port séparé sur le serveur LDAP. Ce mode est souvent obsolète, nous vous recommandons d'utiliser STARTTLS dès que possible.
       start_tls_description: Envoie une commande STARTTLS après la connexion au port LDAP standard. Recommandé pour les connexions chiffrées.
-      section_more_info_link_html: 'Cette section concerne la sécurité de connexion de cette source d''authentification LDAP. Pour plus d''informations, visitez <a href="%{link}">the Net::LDAP documentation</a>.
+      section_more_info_link_html: 'Cette section concerne la sécurité de connexion de cette source d''authentification LDAP. Pour plus d''informations, consultez <a href="%{link}">la documentation de Net::LDAP</a>.
 
         '
     tls_options:
