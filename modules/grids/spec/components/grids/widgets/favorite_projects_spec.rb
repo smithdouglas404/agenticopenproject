@@ -64,7 +64,7 @@ RSpec.describe Grids::Widgets::FavoriteProjects, type: :component do
       expect(rendered_component).to have_css("turbo-frame#grids-widgets-favorite-projects")
       expect(rendered_component).to have_css("h3", text: "Favorite projects")
       expect(rendered_component).to have_link(favorite_project.name, href: project_path(favorite_project))
-      expect(rendered_component).to have_test_selector("favorite-projects-widget--favorite-project", text: favorite_project.name)
+      expect(rendered_component).to have_test_selector("favorite-projects-widget--project-name", text: favorite_project.name)
       expect(rendered_component).to have_test_selector("favorite-projects-widget-footer") do |footer|
         expect(footer).to have_link("View all projects", href: projects_path)
       end
