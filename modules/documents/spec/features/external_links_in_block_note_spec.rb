@@ -30,11 +30,64 @@
 
 require "rails_helper"
 
+# Low-level browser actions for driving the BlockNote editor's contenteditable
+# inside its shadow root. Capybara cannot enter the shadow root for selection,
+# nor does its `send_keys` propagate Delete/Backspace into ProseMirror's
+# editable in this setup, so each helper drops to the Selenium driver: either
+# running JS via `execute_script` or issuing raw keystrokes via the W3C
+# actions API.
+module BlockNoteEditorBrowserActions
+  # Selects a text range inside the first external link in the editor.
+  # `start_offset` and `end_offset` follow String-slicing conventions: a
+  # non-negative integer is an absolute offset from the start of the link's
+  # text node; a negative integer counts back from the end; `nil` maps to the
+  # text length. Default arguments select the entire link text.
+  def select_text_in_external_link(start_offset: 0, end_offset: nil)
+    page.execute_script(<<~JS, start_offset, end_offset)
+      const root = document.querySelector('op-block-note').shadowRoot;
+      const a = root.querySelector('a[target="_blank"]');
+      const textNode = [...a.childNodes].find((n) => n.nodeType === 3);
+      const len = textNode.textContent.length;
+      const resolve = (v) => (v == null ? len : (v < 0 ? len + v : v));
+      const range = document.createRange();
+      range.setStart(textNode, resolve(arguments[0]));
+      range.setEnd(textNode, resolve(arguments[1]));
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    JS
+  end
+
+  # Forward Delete via the W3C actions API; pair with a selection helper.
+  def send_forward_delete
+    page.driver.browser.action.send_keys(:delete).perform
+  end
+
+  # Fires a paste ClipboardEvent on the editor with both HTML and plain-text
+  # payloads. Exercises ProseMirror's `transformPasted` path, which behaves
+  # differently from typed input.
+  def paste_clipboard_into(editor_element, html:, plain:)
+    editor_element.click
+    page.execute_script(<<~JS, editor_element.native, html, plain)
+      const target = arguments[0];
+      const dt = new DataTransfer();
+      dt.setData('text/html', arguments[1]);
+      dt.setData('text/plain', arguments[2]);
+      target.dispatchEvent(new ClipboardEvent('paste', {
+        clipboardData: dt,
+        bubbles: true,
+        cancelable: true,
+      }));
+    JS
+  end
+end
+
 RSpec.describe "External links in BlockNote editor",
                :js,
                :selenium,
                with_settings: { real_time_text_collaboration_enabled: true } do
   include_context "with hocuspocus"
+  include BlockNoteEditorBrowserActions
 
   let(:admin) { create(:admin) }
   let(:document) { create(:document, :collaborative) }
@@ -100,15 +153,11 @@ RSpec.describe "External links in BlockNote editor",
     # text nodes ("hello " with only the link mark, "world" with link+bold).
     # This exercises the sameLinkContinues coalescing path — without it we'd
     # get a spurious hint after "hello " mid-link.
-    el = editor.element
-    el.click
-    page.execute_script(<<~JS, el.native)
-      const el = arguments[0];
-      const dt = new DataTransfer();
-      dt.setData('text/html', '<a href="https://example.com/split">hello <strong>world</strong></a>');
-      dt.setData('text/plain', 'hello world');
-      el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
-    JS
+    paste_clipboard_into(
+      editor.element,
+      html: '<a href="https://example.com/split">hello <strong>world</strong></a>',
+      plain: "hello world"
+    )
 
     link = editor.shadow_root.find("a[target='_blank']", text: /hello\s*world/, wait: 5)
     hints = link.all("span.sr-only", visible: :all)
@@ -123,36 +172,13 @@ RSpec.describe "External links in BlockNote editor",
     link = editor.shadow_root.find("a[target='_blank']", text: "Doomed Link", wait: 5)
     expect(link).to have_css("span.sr-only", visible: :all)
 
-    # Regression: a single-transaction delete of a linked range must
-    # leave no orphan widget. The widget is registered with `side: -1`,
-    # so PM's `WidgetType.map` resolves its position with `assoc = -1`
-    # when the link is replaced with an empty slice, finds the anchor
-    # inside the deleted content, and reports `deleted: true`. PM drops
-    # the decoration automatically — no rebuild in this plugin is
-    # needed.
-    #
-    # If `side`, the apply gate, or buildDecorations ever stops
-    # preserving this, a phantom empty <a> with the sr-only hint would
-    # survive at the deletion seam and screen readers would announce a
-    # link to nowhere. This test fails before that ships.
-    #
-    # Selection uses a DOM Range over the link's text node (the widget
-    # span is contenteditable=false and excluded). Delete goes through
-    # the W3C actions API because Selenium's send_keys doesn't
-    # propagate Backspace/Delete to PM's editable in this shadow-DOM
-    # setup.
-    page.execute_script(<<~JS)
-      const root = document.querySelector('op-block-note').shadowRoot;
-      const a = root.querySelector('a[target="_blank"]');
-      const textNode = [...a.childNodes].find((n) => n.nodeType === 3);
-      const range = document.createRange();
-      range.setStart(textNode, 0);
-      range.setEnd(textNode, textNode.textContent.length);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    JS
-    page.driver.browser.action.send_keys(:delete).perform
+    # Deleting an entire link must leave no orphan widget at the deletion
+    # seam. The apply gate reseats the widget set on any range deletion, so
+    # buildDecorations runs on the post-delete doc, finds no link, and emits
+    # no widget. A regression here would render a phantom empty <a> hosting
+    # the sr-only hint, and screen readers would announce a link to nowhere.
+    select_text_in_external_link
+    send_forward_delete
 
     expect(editor.element).to have_no_css("a[target='_blank']", visible: :all)
     expect(editor.element).to have_no_css("span.sr-only", visible: :all)
@@ -163,26 +189,13 @@ RSpec.describe "External links in BlockNote editor",
     link = editor.shadow_root.find("a[target='_blank']", text: "Trim Me Tail", wait: 5)
     expect(link).to have_css("span.sr-only", visible: :all)
 
-    # Edits inside an existing link produce a ReplaceStep whose slice carries
-    # no link mark (the mark is inherited from stored marks, not the slice),
-    # so the apply gate routes through decoration mapping rather than a
-    # rebuild. The widget sits at the end of the link run with `side: -1`;
-    # the mapping must shrink the run from the right and keep the widget
-    # attached to the new tail. If that ever regresses, the hint either
-    # disappears or ends up orphaned at a stale position.
-    page.execute_script(<<~JS)
-      const root = document.querySelector('op-block-note').shadowRoot;
-      const a = root.querySelector('a[target="_blank"]');
-      const textNode = [...a.childNodes].find((n) => n.nodeType === 3);
-      const len = textNode.textContent.length;
-      const range = document.createRange();
-      range.setStart(textNode, len - 4);
-      range.setEnd(textNode, len);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    JS
-    page.driver.browser.action.send_keys(:delete).perform
+    # Tail-deletion inside a link must leave exactly one hint at the new
+    # link end. Mapping the existing widget through the deletion is unsafe:
+    # PM treats the widget's position as deleted when it coincides with the
+    # deletion's right edge. The apply gate's deletion rule reseats the
+    # widget on the post-delete doc instead.
+    select_text_in_external_link(start_offset: -4)
+    send_forward_delete
 
     surviving = editor.shadow_root.find("a[target='_blank']", text: "Trim Me", wait: 5)
     hints = surviving.all("span.sr-only", visible: :all)
