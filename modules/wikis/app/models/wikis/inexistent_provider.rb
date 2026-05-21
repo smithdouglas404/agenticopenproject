@@ -34,6 +34,8 @@ module Wikis
 
     def self.visible? = false
 
-    def self.short_provider_name = :inexistent
+    def self.registry_prefix = :inexistent
+
+    def user_connected?(_user) = false
   end
 end
