@@ -28,26 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  module Grids
-    # @logical_path OpenProject/Grids
-    # @display min_height 300px
-    class WidgetBoxComponentPreview < Lookbook::Preview
-      # Use the default body for generic widget content.
-      def default
-        render_with_template
-      end
+require "rails_helper"
 
-      # Use rows for the primary repeated widget content.
-      def with_rows
-        render_with_template
-      end
+RSpec.describe Grids::Widgets::FavoriteProjectsController do
+  shared_let(:user) { create(:user) }
+  current_user { user }
 
-      # Use the footer for secondary navigation or actions that should stay at the bottom,
-      # such as "View all ..." links.
-      def with_footer
-        render_with_template
-      end
+  describe "GET #show" do
+    let(:widget_instance) { instance_double(Grids::Widgets::FavoriteProjects, render_in: "content") }
+
+    before do
+      allow(Grids::Widgets::FavoriteProjects)
+        .to receive(:new)
+        .and_return(widget_instance)
+
+      get :show
+    end
+
+    it "renders widget", :aggregate_failures do
+      expect(response).to be_successful
+      expect(response.body).to eq "content"
     end
   end
 end

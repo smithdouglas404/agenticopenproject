@@ -64,7 +64,7 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end
 
-          container.with_footer do
+          container.with_footer(test_selector: "members-widget-footer") do
             render Primer::Beta::Link.new(href: project_members_path(@project)) do
               t(".view_all_members")
             end

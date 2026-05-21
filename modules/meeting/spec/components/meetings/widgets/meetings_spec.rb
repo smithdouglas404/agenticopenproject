@@ -95,9 +95,11 @@ RSpec.describe Meetings::Widgets::Meetings, type: :component do
       it "renders meetings items from all projects", :aggregate_failures do
         expect(rendered_component).to have_list_item(count: 2)
         expect(rendered_component).to have_link href: project_meeting_path(project_red, meeting_red)
-        expect(rendered_component).to have_link href: project_meeting_path(project_blue, meeting_blue)
-        expect(rendered_component).to have_text("2 hrs") # Duration is formatted
-        expect(rendered_component).to have_text("Project: #{project_blue.name}")
+        expect(rendered_component).to have_list_item(position: 2) do |item|
+          expect(item).to have_link href: project_meeting_path(project_blue, meeting_blue)
+          expect(item).to have_text("2 hrs")
+          expect(item).to have_text("Project: #{project_blue.name}")
+        end
 
         expect(rendered_component).to have_css(".op-widget-box--footer") do |footer|
           expect(footer).to have_link "View all meetings", href: meetings_path

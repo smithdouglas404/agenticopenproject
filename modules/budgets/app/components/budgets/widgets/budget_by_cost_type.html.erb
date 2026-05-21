@@ -30,11 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   widget_wrapper do |container|
     if has_budgets_data?
-      container.with_footer do
-        render(Primer::Beta::Link.new(href: projects_budgets_path(project))) { t(".view_details") }
-      end
-
-      flex_layout do |flex|
+      widget_content = flex_layout do |flex|
         flex.with_row do
           render(Primer::Beta::Text.new(color: :subtle, font_size: :small)) do
             if project.children.any?
@@ -61,6 +57,12 @@ See COPYRIGHT and LICENSE files for more details.
           )
         end
       end
+
+      container.with_footer(test_selector: "budget-by-cost-type-widget-footer") do
+        render(Primer::Beta::Link.new(href: projects_budgets_path(project))) { t(".view_details") }
+      end
+
+      widget_content
     elsif has_budgets?
       render(Primer::Beta::Blankslate.new) do |blankslate|
         blankslate.with_visual_icon(icon: :"op-budget")

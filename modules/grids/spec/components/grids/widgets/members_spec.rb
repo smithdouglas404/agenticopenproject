@@ -117,7 +117,7 @@ RSpec.describe Grids::Widgets::Members, type: :component do
     end
 
     it "renders link to view all members" do
-      expect(rendered_component).to have_css(".op-widget-box--footer") do |footer|
+      expect(rendered_component).to have_test_selector("members-widget-footer") do |footer|
         expect(footer).to have_link href: project_members_path(project)
       end
     end

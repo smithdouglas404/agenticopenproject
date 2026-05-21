@@ -143,7 +143,7 @@ RSpec.describe Grids::WidgetController do
     describe "GET #show" do
       it do
         expect(get("/widgets/project_favorites"))
-          .to route_to(controller: "grids/widgets/project_favorites", action: "show")
+          .to route_to(controller: "grids/widgets/favorite_projects", action: "show")
       end
     end
   end
@@ -152,7 +152,7 @@ RSpec.describe Grids::WidgetController do
     describe "GET #show" do
       it do
         expect(get(widgets_project_favorites_path))
-          .to route_to(controller: "grids/widgets/project_favorites", action: "show")
+          .to route_to(controller: "grids/widgets/favorite_projects", action: "show")
       end
     end
   end

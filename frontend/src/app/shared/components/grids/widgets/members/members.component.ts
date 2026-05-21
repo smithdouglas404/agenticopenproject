@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  ViewEncapsulation,
 } from '@angular/core';
 import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-turbo-widget.component';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
@@ -10,9 +9,6 @@ import { CurrentUserService } from 'core-app/core/current-user/current-user.serv
 @Component({
   selector: 'op-members-widget',
   templateUrl: './members.component.html',
-  styleUrls: ['./members.component.sass'],
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'op-widget-members' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })

@@ -30,25 +30,24 @@
 
 require "rails_helper"
 
-RSpec.describe Homescreen::Blocks::FavoriteProjects, type: :component do
+RSpec.describe Grids::Widgets::FavoriteProjects, type: :component do
   include Rails.application.routes.url_helpers
 
   shared_let(:admin) { create(:admin) }
 
   current_user { admin }
 
-  subject(:rendered_component) { render_inline(described_class.new) }
+  subject(:rendered_component) { render_inline(described_class.new(current_user: admin)) }
 
   context "with no favorite projects" do
     let!(:visible_project) { create(:project, name: "Visible project") }
 
-    it "renders the favorites blank slate without project creation or newest projects" do
+    it "renders the empty state with the project icon" do
       expect(rendered_component).to have_css("h3", text: "Favorite projects")
-      expect(rendered_component).to have_test_selector("projects-widget-empty")
+      expect(rendered_component).to have_test_selector("favorite-projects-widget-empty")
       expect(rendered_component).to have_octicon(:project)
       expect(rendered_component).to have_text("You have no favorite projects")
       expect(rendered_component).to have_no_link(visible_project.name)
-      expect(rendered_component).to have_no_link(href: new_project_path)
       expect(rendered_component).to have_no_link("View all projects")
     end
   end
@@ -62,15 +61,35 @@ RSpec.describe Homescreen::Blocks::FavoriteProjects, type: :component do
     end
 
     it "renders only favorite projects and a link to all projects" do
+      expect(rendered_component).to have_css("turbo-frame#grids-widgets-favorite-projects")
       expect(rendered_component).to have_css("h3", text: "Favorite projects")
       expect(rendered_component).to have_link(favorite_project.name, href: project_path(favorite_project))
-      expect(rendered_component).to have_css(".op-widget-box--footer") do |footer|
+      expect(rendered_component).to have_test_selector("favorite-projects-widget--favorite-project", text: favorite_project.name)
+      expect(rendered_component).to have_test_selector("favorite-projects-widget-footer") do |footer|
         expect(footer).to have_link("View all projects", href: projects_path)
       end
 
       expect(rendered_component).to have_no_link(visible_project.name)
-      expect(rendered_component).to have_no_link(href: new_project_path)
-      expect(rendered_component).to have_no_text("Newest visible projects in this instance.")
+    end
+
+    context "when a favorited project is not visible to the user" do
+      let(:user) { create(:user) }
+      let!(:favorite_project) { create(:public_project, name: "Visible favorite project") }
+      let!(:invisible_favorite_project) { create(:private_project, name: "Invisible favorite project") }
+
+      current_user { user }
+
+      subject(:rendered_component) { render_inline(described_class.new(current_user: user)) }
+
+      before do
+        create(:favorite, user:, favorited: favorite_project)
+        create(:favorite, user:, favorited: invisible_favorite_project)
+      end
+
+      it "only renders visible favorite projects" do
+        expect(rendered_component).to have_link(favorite_project.name, href: project_path(favorite_project))
+        expect(rendered_component).to have_no_link(invisible_favorite_project.name)
+      end
     end
   end
 end

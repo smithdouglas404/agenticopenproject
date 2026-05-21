@@ -73,7 +73,7 @@ RSpec.describe Costs::Widgets::ActualCosts, type: :component do
     end
 
     it "renders view details link in the widget footer" do
-      expect(rendered_component).to have_css(".op-widget-box--footer") do |footer|
+      expect(rendered_component).to have_test_selector("actual-costs-widget-footer") do |footer|
         expect(footer).to have_link(href: cost_reports_path(project))
       end
     end

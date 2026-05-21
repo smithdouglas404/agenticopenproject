@@ -28,12 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Grids::Widgets::ProjectFavoritesController < Grids::WidgetController
+class Grids::Widgets::FavoriteProjectsController < Grids::WidgetController
   skip_before_action :load_and_authorize_in_optional_project
 
   no_authorization_required! :show
 
   def show
-    render_widget Grids::Widgets::ProjectFavorites.new(current_user:)
+    render_widget Grids::Widgets::FavoriteProjects.new(current_user:)
   end
 end

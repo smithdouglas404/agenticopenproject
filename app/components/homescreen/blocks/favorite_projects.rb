@@ -31,16 +31,8 @@
 module Homescreen
   module Blocks
     class FavoriteProjects < Grids::WidgetComponent
-      include ProjectsHelper
-
-      def initialize(*)
-        super
-
-        @favorite_projects = Project.visible.active.favorited_by(current_user).to_a
-      end
-
-      def title
-        I18n.t("projects.lists.favorited")
+      def call
+        render(Grids::Widgets::FavoriteProjects.new(current_user:))
       end
     end
   end

@@ -28,26 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+module Grids
+  module Widgets
+    class FavoriteProjects < Grids::WidgetComponent
+      include ProjectsHelper
 
-RSpec.describe Grids::Widgets::ProjectFavoritesController do
-  shared_let(:user) { create(:user) }
-  current_user { user }
+      def title
+        I18n.t("projects.lists.favorited")
+      end
 
-  describe "GET #show" do
-    let(:widget_instance) { instance_double(Grids::Widgets::ProjectFavorites, render_in: "content") }
-
-    before do
-      allow(Grids::Widgets::ProjectFavorites)
-        .to receive(:new)
-        .and_return(widget_instance)
-
-      get :show
-    end
-
-    it "renders widget", :aggregate_failures do
-      expect(response).to be_successful
-      expect(response.body).to eq "content"
+      def favorite_projects
+        @favorite_projects ||= Project.visible.active.favorited_by(current_user).order(name: :asc).to_a
+      end
     end
   end
 end

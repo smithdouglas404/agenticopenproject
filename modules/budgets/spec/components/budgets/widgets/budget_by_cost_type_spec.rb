@@ -68,7 +68,7 @@ RSpec.describe Budgets::Widgets::BudgetByCostType, type: :component do
     end
 
     it "renders view details link in the widget footer" do
-      expect(rendered_component).to have_css(".op-widget-box--footer") do |footer|
+      expect(rendered_component).to have_test_selector("budget-by-cost-type-widget-footer") do |footer|
         expect(footer).to have_link(href: projects_budgets_path(project))
       end
     end
