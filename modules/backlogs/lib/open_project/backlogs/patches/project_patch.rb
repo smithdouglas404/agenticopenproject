@@ -45,3 +45,5 @@ module OpenProject::Backlogs::Patches::ProjectPatch
     module_enabled? "backlogs"
   end
 end
+
+Project.include OpenProject::Backlogs::Patches::ProjectPatch

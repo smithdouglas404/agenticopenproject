@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -44,3 +42,4 @@ module OpenProject::Backlogs::Patches::PermittedParamsPatch
     end
   end
 end
+PermittedParams.include OpenProject::Backlogs::Patches::PermittedParamsPatch

@@ -35,13 +35,14 @@ module Backlogs
     include OpPrimer::ComponentHelpers
     include CommonHelper
 
-    attr_reader :work_package, :project, :open_sprints_exist, :current_user
+    attr_reader :work_package, :project, :max_position, :current_user, :open_sprints_exist
 
-    def initialize(work_package:, project:, open_sprints_exist:, current_user: User.current)
+    def initialize(work_package:, project:, max_position:, open_sprints_exist:, current_user: User.current)
       super()
 
       @work_package = work_package
       @project = project
+      @max_position = max_position
       @open_sprints_exist = open_sprints_exist
       @current_user = current_user
     end
@@ -71,49 +72,33 @@ module Backlogs
 
     def build_move_menu(menu)
       unless first_item?
-        build_move_item(menu, label: :label_sort_highest, direction: "highest", icon: :"move-to-top")
-        build_move_item(menu, label: :label_sort_higher, prev_id: work_package.prev_prev_id, icon: :"chevron-up")
+        build_move_item(menu, label: I18n.t(:label_sort_highest), direction: "highest", icon: :"move-to-top")
+        build_move_item(menu, label: I18n.t(:label_sort_higher), direction: "higher", icon: :"chevron-up")
       end
       unless last_item?
-        build_move_item(menu, label: :label_sort_lower, prev_id: work_package.next_id, icon: :"chevron-down")
-        build_move_item(menu, label: :label_sort_lowest, direction: "lowest", icon: :"move-to-bottom")
+        build_move_item(menu, label: I18n.t(:label_sort_lower), direction: "lower", icon: :"chevron-down")
+        build_move_item(menu, label: I18n.t(:label_sort_lowest), direction: "lowest", icon: :"move-to-bottom")
       end
     end
 
-    def build_move_item(menu, label:, icon:, direction: nil, prev_id: nil)
-      inputs = if direction
-                 [{ name: "direction", value: direction }]
-               else
-                 [{ name: "target_id", value: move_target_id }, { name: "prev_id", value: prev_id }]
-               end
-
+    def build_move_item(menu, label:, direction:, icon:)
       menu.with_item(
-        id: dom_target(work_package, :menu, label),
-        label: I18n.t(label),
+        id: dom_target(work_package, :menu, direction),
+        label:,
         tag: :button,
         href: move_project_backlogs_work_package_path(project, work_package, all_backlogs_params),
-        form_arguments: { method: :put, inputs: }
+        form_arguments: { method: :put, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)
       end
     end
 
     def first_item?
-      work_package.prev_id.nil?
+      work_package.position == 1
     end
 
     def last_item?
-      work_package.next_id.nil?
-    end
-
-    def move_target_id
-      @move_target_id ||= if work_package.backlog_bucket_id?
-                            "backlog_bucket:#{work_package.backlog_bucket_id}"
-                          elsif work_package.sprint_id?
-                            "sprint:#{work_package.sprint_id}"
-                          else
-                            "inbox"
-                          end
+      work_package.position == max_position
     end
   end
 end

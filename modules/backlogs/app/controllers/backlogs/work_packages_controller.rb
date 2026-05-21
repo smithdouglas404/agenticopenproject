@@ -36,7 +36,7 @@ module Backlogs
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
-      work_package = displayed_work_packages.with_backlogs_neighbours.find(@work_package.id)
+      max_position = displayed_work_packages.maximum(:position) || 0
 
       open_sprints_exist = Sprint.for_project(@project)
                                  .visible
@@ -45,8 +45,9 @@ module Backlogs
                                  .exists?
 
       render(Backlogs::WorkPackageCardMenuComponent.new(
+               work_package: @work_package,
                project: @project,
-               work_package:,
+               max_position:,
                open_sprints_exist:,
                current_user:
              ),
@@ -111,7 +112,7 @@ module Backlogs
     end
 
     def load_work_package
-      @work_packages = WorkPackage.visible.where(project: @project).order_by_position
+      @work_packages = WorkPackage.visible.where(project: @project)
       @work_package = @work_packages.find(params.expect(:id))
     end
 
