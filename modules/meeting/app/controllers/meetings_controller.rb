@@ -53,6 +53,7 @@ class MeetingsController < ApplicationController
   include OpTurbo::FlashStreamHelper
   include Meetings::AgendaComponentStreams
   include MetaTagsHelper
+  include FlashMessagesOutputSafetyHelper
 
   menu_item :new_meeting, only: %i[new create]
 
@@ -284,12 +285,14 @@ class MeetingsController < ApplicationController
       @meeting.in_progress!
     end
 
-    if @meeting.errors.any?
-      update_sidebar_state_component_via_turbo_stream
-    else
-      update_all_via_turbo_stream
-      update_backlog_via_turbo_stream(collapsed: nil)
-    end
+    update_all_via_turbo_stream
+    update_backlog_via_turbo_stream(collapsed: nil)
+
+    respond_with_turbo_streams
+  rescue ActiveRecord::StaleObjectError
+    @meeting.errors.add(:base, :error_conflict)
+    update_sidebar_state_component_via_turbo_stream
+    render_error_flash_message_via_turbo_stream(message: join_flash_messages(@meeting.errors))
 
     respond_with_turbo_streams
   end
