@@ -89,7 +89,7 @@ RSpec.describe "Global role: Global Create project", :js do
 
     it 'allows creating projects via the "+ Project" button' do
       projects_page.visit!
-      projects_page.create_new_workspace
+      projects_page.create_new_workspace :project
 
       # Step 1: Select workspace type (blank project)
       click_on "Continue"

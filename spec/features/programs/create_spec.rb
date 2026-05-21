@@ -60,7 +60,7 @@ RSpec.describe "Programs",
   context "with enterprise feature enabled", with_ee: :portfolio_management do
     it "can create a program" do
       projects_page.visit!
-      projects_page.create_new_workspace
+      projects_page.create_new_workspace :program
 
       expect(page).to have_heading "New program"
 
@@ -101,7 +101,7 @@ RSpec.describe "Programs",
   context "without enterprise feature enabled", with_ee: [] do
     it "shows enterprise banner instead of the form" do
       projects_page.visit!
-      projects_page.create_new_workspace
+      projects_page.create_new_workspace :program
 
       expect(page).to have_heading "New program"
 

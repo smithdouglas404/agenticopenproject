@@ -60,7 +60,7 @@ RSpec.describe "Portfolios",
   context "with enterprise feature enabled", with_ee: :portfolio_management do
     it "can create a portfolio" do
       projects_page.visit!
-      projects_page.create_new_workspace
+      projects_page.create_new_workspace :portfolio
 
       expect(page).to have_heading "New portfolio"
 
@@ -110,7 +110,7 @@ RSpec.describe "Portfolios",
   context "without enterprise feature enabled", with_ee: [] do
     it "shows enterprise banner instead of the form" do
       projects_page.visit!
-      projects_page.create_new_workspace
+      projects_page.create_new_workspace :portfolio
 
       expect(page).to have_heading "New portfolio"
 
