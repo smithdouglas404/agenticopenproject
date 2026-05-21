@@ -202,6 +202,50 @@ RSpec.describe "Meetings", "Index", :js do
         end
       end
 
+      context 'when applying the "Past" time filter without sortBy (Bug #75159)' do
+        let(:one_hour_ago_meeting) do
+          create(:meeting,
+                 project:,
+                 title: "One hour ago meeting",
+                 start_time: business_day_at_noon - 1.hour)
+        end
+        let(:three_hours_ago_meeting) do
+          create(:meeting,
+                 project:,
+                 title: "Three hours ago meeting",
+                 start_time: business_day_at_noon - 3.hours)
+        end
+
+        before do
+          three_hours_ago_meeting
+          one_hour_ago_meeting
+        end
+
+        it "shows past meetings sorted by descending start time" do
+          # On mobile the segmented quick filter is hidden, so users apply the past
+          # filter via the all filters form. That form does not add sortBy to the URL.
+          # The backend must apply start_time: :desc as a default in this case
+          time_filters = [{ "time" => { "operator" => "=", "values" => ["past"] } }].to_json
+
+          if context == :global
+            visit meetings_path(filters: time_filters)
+          else
+            visit project_meetings_path(project, filters: time_filters)
+          end
+
+          wait_for_network_idle
+
+          meetings_page.expect_meetings_listed_in_order(
+            meeting,
+            ongoing_meeting,
+            one_hour_ago_meeting,
+            three_hours_ago_meeting,
+            yesterdays_meeting
+          )
+          meetings_page.expect_meetings_not_listed(tomorrows_meeting)
+        end
+      end
+
       context 'with the "Attendee" filter' do
         before do
           meetings_page.set_sidebar_filter "Attended"

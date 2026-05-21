@@ -73,6 +73,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
 
       it "renders the sprint title in the header" do
         expect(rendered_component).to have_heading "Sprint 1", level: 4
+        expect(rendered_component).to have_css("h4.f4", text: "Sprint 1")
       end
 
       it "renders the story points total in the header description" do

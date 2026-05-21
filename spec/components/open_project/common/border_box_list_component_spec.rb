@@ -198,6 +198,23 @@ RSpec.describe OpenProject::Common::BorderBoxListComponent, type: :component do
       expect(rendered).to have_css(".op-border-box-list-header--description", text: "Some description")
     end
 
+    it "forwards system arguments to the description text" do
+      rendered = render_inline(
+        described_class.new(container: "hdr-description-args")
+      ) do |list|
+        list.with_header(title: "My title") do |header|
+          header.with_description(display: :flex, direction: :column, classes: "row-gap-2") do
+            "Some description"
+          end
+        end
+        list.with_item { "row" }
+      end
+
+      expect(rendered)
+        .to have_css(".op-border-box-list-header--description .d-flex.flex-column.row-gap-2.color-fg-muted",
+                     text: "Some description")
+    end
+
     it "renders multiple action buttons" do
       rendered = render_inline(
         described_class.new(container: "hdr-actions")
@@ -391,6 +408,31 @@ RSpec.describe OpenProject::Common::BorderBoxListComponent, type: :component do
 
       expect(rendered).to have_heading("Custom title", level: 3)
     end
+
+    it "forwards title arguments" do
+      rendered = render_inline(
+        described_class.new(container: "hdr-title-args")
+      ) do |list|
+        list.with_header(
+          title: "Described title",
+          title_tag: :h4,
+          title_arguments: {
+            tag: :h2,
+            id: "custom-title",
+            classes: "custom-title-class",
+            data: { title: "custom" },
+            aria: { describedby: "goal-text" }
+          }
+        )
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(
+        "h4#custom-title.Box-title.custom-title-class[data-title='custom']",
+        text: "Described title",
+        aria: { describedby: "goal-text" }
+      )
+    end
   end
 
   describe "header collapsible behavior" do
@@ -422,6 +464,25 @@ RSpec.describe OpenProject::Common::BorderBoxListComponent, type: :component do
       expect(rendered).to have_css(
         "[aria-controls='collapse-no-footer_list']"
       )
+    end
+
+    it "forwards title arguments to the collapsible title" do
+      rendered = render_inline(
+        described_class.new(container: "collapse-title-args", collapsible: true)
+      ) do |list|
+        list.with_header(
+          title: "Collapsible",
+          title_arguments: { aria: { describedby: "collapsible-help" } }
+        )
+        list.with_item(id: "collapsible-help") { "Helpful row" }
+      end
+
+      expect(rendered).to have_heading(
+        "Collapsible",
+        level: 4,
+        accessible_description: "Helpful row"
+      )
+      expect(rendered).to have_css("h4", text: "Collapsible", aria: { describedby: "collapsible-help" })
     end
   end
 

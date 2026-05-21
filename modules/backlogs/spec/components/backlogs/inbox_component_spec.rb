@@ -85,6 +85,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
 
     it "renders the inbox title" do
       expect(page).to have_heading "Inbox", level: 4
+      expect(page).to have_css("h4.f4", text: "Inbox")
     end
 
     it "renders the work-package count" do

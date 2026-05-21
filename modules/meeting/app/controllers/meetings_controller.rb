@@ -452,10 +452,14 @@ class MeetingsController < ApplicationController
   end
 
   def apply_default_time_filter_and_sort(query)
-    return if query.filters.any? { |f| f.name == :time }
+    time_filter = query.filters.find { |f| f.name == :time }
 
-    query.where("time", "=", Queries::Meetings::Filters::TimeFilter::FUTURE_VALUE)
-    query.order(start_time: :asc)
+    if time_filter.nil?
+      query.where("time", "=", Queries::Meetings::Filters::TimeFilter::FUTURE_VALUE)
+      query.order(start_time: :asc)
+    elsif time_filter.past? && query.orders.none?
+      query.order(start_time: :desc)
+    end
   end
 
   def apply_default_filter_if_none_given(query)

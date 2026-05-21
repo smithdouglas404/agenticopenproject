@@ -83,6 +83,7 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
 
       it "renders the bucket title in the header" do
         expect(rendered_component).to have_heading "Ready for development", level: 4
+        expect(rendered_component).to have_css("h4.f4", text: "Ready for development")
       end
 
       it "renders the generic work-package count in the header" do
