@@ -34,6 +34,7 @@ import { filter, Subscription } from 'rxjs';
 export default class BacklogsController extends Controller<HTMLElement> {
   private service:HalEventsService|null = null;
   private subscription:Subscription|null = null;
+  private abortController:AbortController|null = null;
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   async connect() {
@@ -43,12 +44,28 @@ export default class BacklogsController extends Controller<HTMLElement> {
     this.subscription = this.service.aggregated$('WorkPackage')
       .pipe(filter((events) => events.some((event) => event.eventType === 'updated')))
       .subscribe(() => { this.refreshList(); });
+
+    this.abortController = new AbortController();
+    const { signal } = this.abortController;
+
+    document.addEventListener('turbo:before-morph-element', (event:Event) => {
+      const morphEvent = event as CustomEvent<{ newElement:Element }>;
+      const el = morphEvent.target as Element;
+      if (el.tagName !== 'TURBO-FRAME') return;
+
+      const newSrc = morphEvent.detail.newElement?.getAttribute('src');
+      if (el.hasAttribute('complete') && el.getAttribute('src')?.endsWith(newSrc!)) {
+        morphEvent.preventDefault();
+      }
+    }, { signal });
   }
 
   disconnect() {
     this.subscription?.unsubscribe();
     this.subscription = null;
     this.service = null;
+    this.abortController?.abort();
+    this.abortController = null;
   }
 
   private refreshList() {
