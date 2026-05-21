@@ -73,7 +73,6 @@ module Backlogs
 
       @work_packages_by_sprint_id = WorkPackage
                                       .where(sprint: @sprints, project: @project)
-                                      .includes(:type, :status, :assigned_to, :priority, :parent)
                                       .order_by_position
                                       .group_by(&:sprint_id)
       @active_sprint_ids = @sprints.select(&:active?).map(&:id)
