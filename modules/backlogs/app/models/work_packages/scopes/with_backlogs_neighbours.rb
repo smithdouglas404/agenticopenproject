@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,22 +26,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module OpenProject::Backlogs::Patches::ProjectPatch
+module WorkPackages::Scopes::WithBacklogsNeighbours
   extend ActiveSupport::Concern
-  include Projects::SprintSharing
 
-  included do
-    has_and_belongs_to_many :done_statuses, join_table: "done_statuses_for_project", class_name: "::Status"
-    has_and_belongs_to_many :backlog_excluded_types,
-                            join_table: "backlog_excluded_types",
-                            class_name: "::Type"
-    has_many :sprints, dependent: :destroy
-    has_many :backlog_buckets, dependent: :destroy
-  end
-
-  def backlogs_enabled?
-    module_enabled? "backlogs"
+  class_methods do
+    def with_backlogs_neighbours
+      # The subquery is required because window functions run before WHERE clauses.
+      # Chaining .find(id) directly would filter rows first, leaving the window function
+      # with a single row and returning nil for all neighbours. Wrapping in a subquery
+      # lets the window function see the full scope, then the outer query filters to the
+      # requested record.
+      subquery = order_by_position.select(
+        "*, LAG(id)    OVER (ORDER BY position) AS prev_id,
+            LAG(id, 2) OVER (ORDER BY position) AS prev_prev_id,
+            LEAD(id)   OVER (ORDER BY position) AS next_id"
+      )
+      WorkPackage.from(subquery, :work_packages)
+    end
   end
 end
