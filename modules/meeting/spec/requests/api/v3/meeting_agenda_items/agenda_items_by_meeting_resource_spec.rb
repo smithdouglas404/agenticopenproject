@@ -138,6 +138,30 @@ RSpec.describe "API v3 Meeting Agenda Items sub-resource", content_type: :json d
         expect(last_response).to have_http_status(:not_found)
       end
     end
+
+    context "when the agenda item is linked to a work package in an inaccessible project" do
+      let(:private_project) { create(:project, public: false) }
+      let(:private_work_package) { create(:work_package, project: private_project) }
+      let!(:wp_agenda_item) do
+        create(:wp_meeting_agenda_item, meeting:, meeting_section: section, work_package: private_work_package,
+                                        author: current_user)
+      end
+      let(:path) { api_v3_paths.meeting_agenda_item(meeting.id, wp_agenda_item.id) }
+
+      it "returns 200" do
+        expect(last_response).to have_http_status(:ok)
+      end
+
+      it "does not embed the inaccessible work package" do
+        expect(last_response.body).not_to have_json_path("_embedded/workPackage")
+      end
+
+      it "renders the work package link as undisclosed" do
+        expect(last_response.body)
+          .to be_json_eql(::API::V3::URN_UNDISCLOSED.to_json)
+          .at_path("_links/workPackage/href")
+      end
+    end
   end
 
   describe "PATCH /api/v3/meetings/:meeting_id/agenda_items/:id" do
