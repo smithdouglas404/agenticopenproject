@@ -81,6 +81,9 @@ en:
           application_secret: Application secret
         oauth_client_form_component:
           client_id: Client ID
+          client_secret: Client secret
+          redirect_uri: Redirect URI
+          redirect_uri_caption: Copy this value into the Redirect URI field of your XWiki OIDC client registration.
       health_status:
         show:
           actions:
@@ -97,6 +100,7 @@ en:
         replace_oauth_application: Replace OpenProject OAuth application
       oauth_client_info_component:
         confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
+        label_oauth_client_id: OAuth Client ID
         label_pending: Pending
         replace_oauth_client: Replace XWiki OAuth application
       side_panel:
@@ -131,7 +135,7 @@ en:
           oauth:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
             provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID and client secret have been pre-generated for you — copy them along with the redirect URI into your XWiki OIDC client registration. You can change the client ID and secret if needed.
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.

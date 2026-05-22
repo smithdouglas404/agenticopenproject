@@ -32,7 +32,7 @@ require "spec_helper"
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::OAuthConfiguration do
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.example.com/xwiki") }
-  let(:oauth_client) { build_stubbed(:oauth_client, client_id: "xwiki-uuid", integration: wiki_provider) }
+  let(:oauth_client) { build_stubbed(:oauth_client, client_id: "xwiki-uuid", client_secret: "xwiki-secret", integration: wiki_provider) }
 
   before do
     allow(wiki_provider).to receive(:oauth_client).and_return(oauth_client)
@@ -90,7 +90,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::OAuthConfiguration do
     it "configures the rack client with correct attributes" do
       expect(rack_client).to have_attributes(
         identifier: "xwiki-uuid",
-        secret: nil,
+        secret: "xwiki-secret",
         token_endpoint: "/xwiki/oidc/token",
         authorization_endpoint: "/xwiki/oidc/authorization"
       )
