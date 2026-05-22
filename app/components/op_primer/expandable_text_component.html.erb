@@ -1,15 +1,21 @@
 <%= render(Primer::BaseComponent.new(**@system_arguments)) do %>
-  <%= render Primer::Beta::Truncate.new(
-        data: { truncation_target: "truncate" },
-        flex: 1
-      ) do %>
-    <%= content %>
+  <% if truncation.vertical? %>
+    <%= render Primer::BaseComponent.new(
+          tag: :div,
+          flex: 1,
+          classes: "line-clamp-#{lines} min-width-0",
+          data: { truncation_target: "truncate" }
+        ) do %>
+      <%= content %>
+    <% end %>
+  <% else %>
+    <%= render Primer::Beta::Truncate.new(
+          flex: 1,
+          data: { truncation_target: "truncate" }
+        ) do %>
+      <%= content %>
+    <% end %>
   <% end %>
 
-  <%= render Primer::Alpha::HiddenTextExpander.new(
-        hidden: true,
-        mt: 1,
-        aria: { label: t(:"js.label_expand_text") },
-        data: { truncation_target: "expander" }
-      ) %>
+  <%= render Primer::Alpha::HiddenTextExpander.new(**expander_arguments) %>
 <% end %>

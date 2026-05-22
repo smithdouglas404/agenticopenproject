@@ -33,15 +33,26 @@ import { useResize } from 'stimulus-use';
 
 export default class TruncationController extends Controller<HTMLElement> {
   static targets = ['truncate', 'expander'];
-  static values = { expanded: Boolean };
+  static values = {
+    expanded: Boolean,
+    mode: { type: String, default: 'horizontal' },
+    inline: { type: Boolean, default: true },
+  };
 
   declare readonly truncateTarget:HTMLElement;
   declare readonly expanderTarget:HTMLElement;
+  declare readonly hasExpanderTarget:boolean;
   declare expandedValue:boolean;
-  declare readonly expandLabelValue:string;
-  declare readonly collapseLabelValue:string;
+  declare readonly modeValue:string;
+  declare readonly inlineValue:boolean;
 
   private abortController:AbortController|null = null;
+
+  // Server-rendered visibility of the expander, captured before the first update.
+  // In dialog mode (inline: false) a server-visible expander is kept visible (it may
+  // reflect omitted content that physical truncation cannot detect), while a
+  // server-hidden expander is toggled based on the current truncation state.
+  private serverExpanderVisible?:boolean;
 
   connect() {
     useResize(this, { element: this.truncateTarget });
@@ -53,9 +64,11 @@ export default class TruncationController extends Controller<HTMLElement> {
   }
 
   expanderTargetConnected(_target:HTMLElement) {
-    this.abortController = new AbortController();
-    const { signal } = this.abortController;
-    this.expanderButton.addEventListener('click', () => this.expanderClicked(), { signal });
+    if (this.inlineValue) {
+      this.abortController = new AbortController();
+      const { signal } = this.abortController;
+      this.expanderButton.addEventListener('click', () => this.expanderClicked(), { signal });
+    }
   }
 
   expanderTargetDisconnected(_target:HTMLElement) {
@@ -63,14 +76,17 @@ export default class TruncationController extends Controller<HTMLElement> {
   }
 
   expandedValueChanged(value:boolean) {
-    this.expanderButton.setAttribute('aria-label', value ? I18n.t('js.label_collapse_text') : I18n.t('js.label_expand_text'));
-    this.expanderButton.setAttribute('aria-expanded', String(value));
-    this.truncateTarget.classList.toggle('Truncate--expanded', value);
-    this.update(); // Redundant call to ensure state consistency; the resize observer will likely trigger this anyway.
-  }
+    if (this.inlineValue && this.hasExpanderTarget) {
+      this.expanderButton.setAttribute('aria-label', value ? I18n.t('js.label_collapse_text') : I18n.t('js.label_expand_text'));
+      this.expanderButton.setAttribute('aria-expanded', String(value));
 
-  get truncateText():HTMLElement {
-    return this.truncateTarget.querySelector<HTMLElement>('.Truncate-text')!;
+      if (this.modeValue === 'vertical') {
+        this.truncateTarget.classList.toggle('expandable-text--expanded', value);
+      } else {
+        this.truncateTarget.classList.toggle('Truncate--expanded', value);
+      }
+    }
+    this.update();
   }
 
   get expanderButton():HTMLButtonElement {
@@ -78,8 +94,25 @@ export default class TruncationController extends Controller<HTMLElement> {
   }
 
   private update() {
-    const truncated = this.truncateText.scrollWidth > this.truncateText.clientWidth;
-    this.expanderTarget.hidden = !truncated && !this.expandedValue;
+    if (!this.hasExpanderTarget) return;
+
+    this.serverExpanderVisible ??= !this.expanderTarget.hidden;
+
+    let truncated:boolean;
+    if (this.modeValue === 'vertical') {
+      truncated = this.truncateTarget.scrollHeight > this.truncateTarget.clientHeight;
+    } else {
+      const truncateText = this.truncateTarget.querySelector<HTMLElement>('.Truncate-text')!;
+      truncated = truncateText.scrollWidth > truncateText.clientWidth;
+    }
+
+    if (this.inlineValue) {
+      this.expanderTarget.hidden = !truncated && !this.expandedValue;
+    } else if (this.serverExpanderVisible) {
+      this.expanderTarget.hidden = false;
+    } else {
+      this.expanderTarget.hidden = !truncated;
+    }
   }
 
   private expanderClicked() {

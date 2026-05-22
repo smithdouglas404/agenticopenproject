@@ -1,3 +1,9 @@
 @for $i from 1 through 6
   .line-clamp-#{$i}
     @include line-clamp($i)
+
+.expandable-text--expanded
+  // display: block makes -webkit-box-orient inert, so no need to reset it here
+  -webkit-line-clamp: unset !important
+  display: block !important
+  overflow: visible !important
