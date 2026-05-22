@@ -51,8 +51,6 @@ module Backlogs
       if turbo_frame_request?
         render "work_packages/split_view", layout: false
       else
-        load_backlogs
-
         render "backlogs/backlog/show"
       end
     end
