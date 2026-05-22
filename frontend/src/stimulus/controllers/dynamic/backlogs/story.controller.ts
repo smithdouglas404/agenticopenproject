@@ -63,17 +63,6 @@ export default class StoryController extends Controller<HTMLElement> implements 
       this.syncSelectionFromUrl(event.detail.url);
     }, { signal });
 
-    document.addEventListener('turbo:before-morph-element', (event:Event) => {
-      const morphEvent = event as CustomEvent<{ newElement:Element }>;
-      const el = morphEvent.target as Element;
-      if (el.tagName !== 'TURBO-FRAME') return;
-
-      const newSrc = morphEvent.detail.newElement?.getAttribute('src');
-      if (el.hasAttribute('complete') && el.getAttribute('src')?.endsWith(newSrc!)) {
-        morphEvent.preventDefault();
-      }
-    }, { signal });
-
     this.syncSelectionFromUrl(window.location.href);
   }
 

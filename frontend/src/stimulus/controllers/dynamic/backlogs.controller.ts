@@ -51,11 +51,13 @@ export default class BacklogsController extends Controller<HTMLElement> {
     document.addEventListener('turbo:before-morph-element', (event:Event) => {
       const morphEvent = event as CustomEvent<{ newElement:Element }>;
       const el = morphEvent.target as Element;
-      if (el.tagName !== 'TURBO-FRAME') return;
+      if (el.tagName !== 'TURBO-FRAME' || !el.hasAttribute('complete')) return;
+
+      morphEvent.preventDefault();
 
       const newSrc = morphEvent.detail.newElement?.getAttribute('src');
-      if (el.hasAttribute('complete') && el.getAttribute('src')?.endsWith(newSrc!)) {
-        morphEvent.preventDefault();
+      if (newSrc && !el.getAttribute('src')?.endsWith(newSrc)) {
+        el.setAttribute('src', newSrc);
       }
     }, { signal });
   }
