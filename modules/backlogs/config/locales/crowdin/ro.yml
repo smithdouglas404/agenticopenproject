@@ -42,7 +42,7 @@ ro:
           completed: Completed
       work_package:
         backlog_bucket: Backlog Bucket
-        backlogs_work_package_type: Tip restanță
+        backlogs_work_package_type: Tipul de restante
         position: Poziție
         sprint: Sprint
         story_points: Puncte
