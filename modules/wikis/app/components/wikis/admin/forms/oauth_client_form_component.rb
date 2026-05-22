@@ -56,5 +56,9 @@ module Wikis::Admin::Forms
           client_secret: Wikis::XWikiProvider.generate_client_secret
         )
     end
+
+    def validation_message_for(attribute)
+      resolved_oauth_client.errors.messages_for(attribute).to_sentence.presence
+    end
   end
 end

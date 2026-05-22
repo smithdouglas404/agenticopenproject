@@ -15,37 +15,27 @@
         end
 
         oauth_client_row.with_row(mb: 3) do
-          render(Primer::OpenProject::InputGroup.new(input_width: :large)) do |input_group|
-            input_group.with_text_input(
-              name: "oauth_client[client_id]",
-              label: t(".client_id"),
-              visually_hide_label: false,
-              readonly: false,
-              value: resolved_oauth_client.client_id,
-              required: true
-            )
-            input_group.with_trailing_action_clipboard_copy_button(
-              value: resolved_oauth_client.client_id.to_s,
-              aria: { label: t("button_copy_to_clipboard") }
-            )
-          end
+          render(Primer::Alpha::TextField.new(
+            name: "oauth_client[client_id]",
+            label: t(".client_id"),
+            visually_hide_label: false,
+            value: resolved_oauth_client.client_id,
+            input_width: :large,
+            required: true,
+            validation_message: validation_message_for(:client_id)
+          ))
         end
 
         oauth_client_row.with_row(mb: 3) do
-          render(Primer::OpenProject::InputGroup.new(input_width: :large)) do |input_group|
-            input_group.with_text_input(
-              name: "oauth_client[client_secret]",
-              label: t(".client_secret"),
-              visually_hide_label: false,
-              readonly: false,
-              value: resolved_oauth_client.client_secret,
-              required: true
-            )
-            input_group.with_trailing_action_clipboard_copy_button(
-              value: resolved_oauth_client.client_secret.to_s,
-              aria: { label: t("button_copy_to_clipboard") }
-            )
-          end
+          render(Primer::Alpha::TextField.new(
+            name: "oauth_client[client_secret]",
+            label: t(".client_secret"),
+            visually_hide_label: false,
+            value: resolved_oauth_client.client_secret,
+            input_width: :large,
+            required: true,
+            validation_message: validation_message_for(:client_secret)
+          ))
         end
 
         oauth_client_row.with_row(mb: 3) do
