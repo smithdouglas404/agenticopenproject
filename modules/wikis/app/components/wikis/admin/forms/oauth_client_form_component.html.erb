@@ -25,7 +25,7 @@
               required: true
             )
             input_group.with_trailing_action_clipboard_copy_button(
-              value: resolved_oauth_client.client_id,
+              value: resolved_oauth_client.client_id.to_s,
               aria: { label: t("button_copy_to_clipboard") }
             )
           end
@@ -42,7 +42,7 @@
               required: true
             )
             input_group.with_trailing_action_clipboard_copy_button(
-              value: resolved_oauth_client.client_secret,
+              value: resolved_oauth_client.client_secret.to_s,
               aria: { label: t("button_copy_to_clipboard") }
             )
           end
