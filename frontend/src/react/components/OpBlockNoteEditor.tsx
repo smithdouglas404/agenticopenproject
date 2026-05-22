@@ -96,22 +96,24 @@ export function OpBlockNoteEditor({
   }, [openProjectUrl, localeString]);
 
   const editorParams = useMemo<Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>>(() => {
-    const baseCollaboration = {
-      fragment: doc.getXmlFragment('document-store'),
-      user: {
-        name: activeUser.username,
-        color: hocuspocusProvider ? generateRandomColor() : '#333333',
-        ...(hocuspocusProvider && { id: activeUser.id }),
-      } as unknown as CollaborativeUser,
-    };
-
     return {
       schema,
-      collaboration: {
-        ...baseCollaboration,
-        provider: hocuspocusProvider ?? null,
-        ...(hocuspocusProvider && { showCursorLabels: 'activity' as const }),
-      },
+      // BlockNote 0.51 tightened `collaboration.provider` to a non-null shape
+      // and `awareness: Awareness | undefined` (vs Hocuspocus's
+      // `Awareness | null`). Omit the whole `collaboration` block when no
+      // provider is wired up; cast the provider at the boundary otherwise.
+      ...(hocuspocusProvider && {
+        collaboration: {
+          fragment: doc.getXmlFragment('document-store'),
+          user: {
+            name: activeUser.username,
+            color: generateRandomColor(),
+            id: activeUser.id,
+          } as unknown as CollaborativeUser,
+          provider: hocuspocusProvider as unknown as { awareness?:NonNullable<HocuspocusProvider['awareness']> },
+          showCursorLabels: 'activity' as const,
+        },
+      }),
       dictionary: localeDictionary,
       ...(attachmentsEnabled && { uploadFile }),
       // When external link capture is enabled, intercept clicks on external
