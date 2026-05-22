@@ -65,7 +65,9 @@ RSpec.describe Wikis::Admin::OAuthClientInfoComponent, type: :component do
 
     it "renders the oauth client id" do
       render_inline(described_class.new(wiki_provider))
-      expect(page).to have_text("#{I18n.t('wikis.admin.oauth_client_info_component.label_oauth_client_id')}: #{oauth_client.client_id}")
+      expect(page).to have_text(
+        "#{I18n.t('wikis.admin.oauth_client_info_component.label_oauth_client_id')}: #{oauth_client.client_id}"
+      )
     end
 
     it "renders a sync icon button with a confirm dialog" do
