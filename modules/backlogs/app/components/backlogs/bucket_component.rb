@@ -38,13 +38,13 @@ module Backlogs
 
     attr_reader :backlog_bucket, :work_packages, :project, :current_user
 
-    def initialize(backlog_bucket:, project:, current_user: User.current)
+    def initialize(backlog_bucket:, project:, work_packages: nil, current_user: User.current)
       super()
 
       @backlog_bucket = backlog_bucket
       @project = project
       @current_user = current_user
-      @work_packages = backlog_bucket.displayed_work_packages
+      @work_packages = work_packages || backlog_bucket.displayed_work_packages
     end
 
     def wrapper_uniq_by
