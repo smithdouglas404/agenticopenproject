@@ -106,14 +106,20 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
   private listenToFormSubmit() {
     const form = this.elementRef.nativeElement.closest('form')!;
     form.addEventListener('submit', (evt:Event) => {
-      if (!this.formSubmitted
-        && (this.nonWorkingDaysModified() || this.workingDaysModified())) {
-        this.formSubmitted = true;
-        const target = evt.target as HTMLFormElement;
-        evt.preventDefault();
-
-        this.openConfirmChangesDialog(target);
+      if (!this.nonWorkingDaysModified() && !this.workingDaysModified()) {
+        return;
       }
+
+      evt.preventDefault();
+
+      if (this.formSubmitted) {
+        return;
+      }
+
+      this.formSubmitted = true;
+      const target = evt.target as HTMLFormElement;
+
+      this.openConfirmChangesDialog(target);
     });
   }
 
@@ -131,26 +137,9 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
       },
       false,
       confirmUrl,
-    ).then(() => {
-      this.refreshPageWhenConfirmDialogIsCancelled();
-    }).finally(() => {
+    ).finally(() => {
       this.formSubmitted = false;
     });
-  }
-
-  private refreshPageWhenConfirmDialogIsCancelled():void {
-    const refreshOnCancel = (event:Event) => {
-      const target = event.target as HTMLElement;
-
-      if (!target.closest('#working-days-change-dialog [data-close-dialog-id]')) {
-        return;
-      }
-
-      document.removeEventListener('click', refreshOnCancel, { capture: true });
-      window.location.reload();
-    };
-
-    document.addEventListener('click', refreshOnCancel, { capture: true });
   }
 
   private markNonWorkingDayForRemoval(date:string):void {

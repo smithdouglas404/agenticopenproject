@@ -20,18 +20,18 @@ RSpec.describe Admin::Settings::WorkingDays::ConfirmDialogComponent, type: :comp
     }
   end
 
-  it "renders the danger dialog without icons and keeps the confirmation texts" do
+  it "renders the danger dialog with no button icon and keeps the confirmation texts" do
     render_inline(described_class.new(removed_non_working_days: ["June 10, 2026"]))
 
     expect(page).to have_css(".DangerDialog")
-    expect(page).to have_no_css(".Blankslate-visual")
     expect(page).to have_css(".Button--danger", text: "Save and reschedule")
     expect(page).to have_no_css(".Button--danger svg")
 
     expect(page).to have_text("Change working days")
+    expect(page).to have_css("h2", text: "Are you sure you want to continue?")
     expect(page).to have_text("You will remove the following days from the non-working days list:")
     expect(page).to have_text("June 10, 2026")
-    expect(page).to have_text("Are you sure you want to continue?")
+    expect(page).to have_css("ul", text: "June 10, 2026")
   end
 
   it "submits the captured working days settings through the dialog form" do

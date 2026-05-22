@@ -34,6 +34,8 @@ module Admin
       class ConfirmDialogComponent < ApplicationComponent
         include OpTurbo::Streamable
 
+        DIALOG_ID = "working-days-change-dialog"
+
         attr_reader :form_values, :removed_non_working_days
 
         def initialize(form_values: {}, removed_non_working_days: [])
@@ -43,8 +45,6 @@ module Admin
         end
 
         private
-
-        def id = "working-days-change-dialog"
 
         def form_arguments
           {
