@@ -73,7 +73,7 @@ class MeetingsController < ApplicationController
           component: Meetings::MeetingFilterButtonComponent.new(query: @query, project: @project, disable_buttons: false)
         )
 
-        current_url = url_for(params.permit(:controller, :action, :filters, :project_id, :sortBy))
+        current_url = url_for(params.permit(:controller, :action, :filters, :project_id, :sortBy, :upcoming))
         turbo_streams << turbo_stream.replace(
           "meetings-index-results",
           Meetings::IndexResultsComponent.new(
