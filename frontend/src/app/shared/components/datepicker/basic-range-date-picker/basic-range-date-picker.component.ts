@@ -113,8 +113,8 @@ export class OpBasicRangeDatePickerComponent implements OnInit, ControlValueAcce
 
   @Input() dataAction = '';
 
-  @Input() set inputAttrs(attrs:Record<string, string>) {
-    this._inputAttrs = attrs;
+  @Input() set inputAttrs(attrs:Record<string, string> | null) {
+    this._inputAttrs = attrs ?? {};
     this.applyInputAttrs();
   }
 
