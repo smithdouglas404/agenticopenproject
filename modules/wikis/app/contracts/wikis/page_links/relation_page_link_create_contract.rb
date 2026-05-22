@@ -37,16 +37,17 @@ module Wikis
       attribute :provider
 
       validates :identifier, presence: true
-      validate :validate_provider_presence
+      validates :linkable, presence: true
+      validates :provider, presence: true
+
+      validate :provider_exists?
+      validate :author_must_be_user
       validate :validate_user_allowed_to_manage
-      validate :creator_must_be_user
 
       private
 
-      def creator_must_be_user
-        unless author == user
-          errors.add(:author, :invalid)
-        end
+      def author_must_be_user
+        errors.add(:author, :invalid) unless author == user
       end
 
       def validate_user_allowed_to_manage
@@ -57,15 +58,8 @@ module Wikis
         end
       end
 
-      def validate_provider_presence
-        case model.provider
-        when Wikis::InexistentProvider
-          errors.add(:provider, :does_not_exist)
-        when nil
-          errors.add(:provider, :blank)
-        else
-          true
-        end
+      def provider_exists?
+        errors.add(:provider, :does_not_exist) if model.provider.is_a?(InexistentProvider)
       end
     end
   end
