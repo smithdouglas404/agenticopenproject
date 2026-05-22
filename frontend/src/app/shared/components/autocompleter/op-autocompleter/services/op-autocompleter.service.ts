@@ -59,8 +59,10 @@ export class OpAutocompleterService extends UntilDestroyedMixin {
   protected createParams(resource:TOpAutocompleterResource):Record<string, string> {
     if (resource === 'work_packages') {
       return {
-        // see op-autocompleter/op-autocompleter.component.html for required attributes
-        select: 'elements/id,elements/displayId,elements/subject,elements/author,elements/type,elements/project,elements/status',
+        // Fields are listed in op-autocompleter/op-autocompleter.component.html. `_type` is the
+        // HAL class discriminator: omitting it causes the factory to fall back to a generic
+        // HalResource, and getters like `formattedId` on WorkPackageResource never resolve.
+        select: 'elements/id,elements/_type,elements/displayId,elements/subject,elements/author,elements/type,elements/project,elements/status',
         sortBy: '[["updatedAt","desc"]]',
       };
     }
