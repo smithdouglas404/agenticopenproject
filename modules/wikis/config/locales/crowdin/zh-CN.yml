@@ -33,6 +33,9 @@ zh-CN:
       done_continue: 完成, 继续
       save_and_continue: 保存并继续
       wiki_page: Wiki 页面
+    delete_relation_page_link_confirmation_dialog:
+      title: Delete related wiki page link
+      heading: Delete related wiki page link?
     health_checks:
       authentication:
         existing_token: User token

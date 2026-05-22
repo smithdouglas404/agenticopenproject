@@ -41,6 +41,9 @@ sr:
       done_continue: Done, continue
       save_and_continue: Save and continue
       wiki_page: Wiki page
+    delete_relation_page_link_confirmation_dialog:
+      title: Delete related wiki page link
+      heading: Delete related wiki page link?
     health_checks:
       authentication:
         existing_token: User token

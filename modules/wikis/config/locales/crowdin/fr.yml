@@ -37,6 +37,9 @@ fr:
       done_continue: Terminé, continuer
       save_and_continue: Enregistrer et continuer
       wiki_page: Page wiki
+    delete_relation_page_link_confirmation_dialog:
+      title: Delete related wiki page link
+      heading: Delete related wiki page link?
     health_checks:
       authentication:
         existing_token: Jeton d'utilisateur
