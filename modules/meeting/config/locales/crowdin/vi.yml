@@ -316,6 +316,13 @@ vi:
 
           '
         confirm_button: Hủy lần xuất hiện
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Không có cuộc họp nào để hiển thị
       desc: Bạn có thể tạo cuộc họp mới hoặc thay đổi tiêu chí lọc

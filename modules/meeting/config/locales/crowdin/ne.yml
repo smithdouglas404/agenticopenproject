@@ -321,6 +321,13 @@ ne:
 
           '
         confirm_button: Cancel occurrence
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: There are no meetings to display
       desc: You can create a new meeting or change filter criteria

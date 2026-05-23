@@ -316,6 +316,13 @@ ja:
 
           '
         confirm_button: 発生をキャンセル
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: 表示する会議がありません
       desc: 新しい会議を作成したりフィルタ条件を変更することができます
