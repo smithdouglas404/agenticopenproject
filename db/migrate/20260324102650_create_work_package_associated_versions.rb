@@ -23,27 +23,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Versions
-  class DeleteContract < ::DeleteContract
-    delete_permission :manage_versions
-
-    validate :validate_no_work_packages_attached
-
-    protected
-
-    def validate_no_work_packages_attached
-      return unless work_packages_attached?
-
-      errors.add(:base, :undeletable_work_packages_attached)
+class CreateWorkPackageAssociatedVersions < ActiveRecord::Migration[8.1]
+  def change
+    create_table :work_package_associated_versions, id: false do |t|
+      t.references :work_package, null: false, foreign_key: { on_delete: :cascade }, index: false
+      t.references :version,      null: false, foreign_key: { on_delete: :cascade }, index: false
+      t.string :kind, null: false
+      t.timestamps
     end
 
-    def work_packages_attached?
-      model.work_package_associated_versions.exists?
-    end
+    add_index :work_package_associated_versions, %i[work_package_id version_id kind],
+              unique: true,
+              name: "idx_wp_assoc_versions_on_wp_version_kind"
+    add_index :work_package_associated_versions, :version_id,
+              name: "idx_wp_assoc_versions_on_version"
   end
 end

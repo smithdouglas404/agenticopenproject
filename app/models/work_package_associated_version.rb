@@ -28,22 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Versions
-  class DeleteContract < ::DeleteContract
-    delete_permission :manage_versions
+class WorkPackageAssociatedVersion < ApplicationRecord
+  VERSION_KINDS = %w[target observed_in].freeze
 
-    validate :validate_no_work_packages_attached
+  belongs_to :work_package, touch: true
+  belongs_to :version
 
-    protected
-
-    def validate_no_work_packages_attached
-      return unless work_packages_attached?
-
-      errors.add(:base, :undeletable_work_packages_attached)
-    end
-
-    def work_packages_attached?
-      model.work_package_associated_versions.exists?
-    end
-  end
+  validates :kind, presence: true, inclusion: { in: VERSION_KINDS }
 end

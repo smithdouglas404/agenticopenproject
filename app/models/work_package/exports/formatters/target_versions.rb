@@ -28,22 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Versions
-  class DeleteContract < ::DeleteContract
-    delete_permission :manage_versions
+module WorkPackage::Exports
+  module Formatters
+    class TargetVersions < ::Exports::Formatters::Default
+      def self.apply?(name, _export_format)
+        name.to_sym == :target_versions
+      end
 
-    validate :validate_no_work_packages_attached
-
-    protected
-
-    def validate_no_work_packages_attached
-      return unless work_packages_attached?
-
-      errors.add(:base, :undeletable_work_packages_attached)
-    end
-
-    def work_packages_attached?
-      model.work_package_associated_versions.exists?
+      def format(work_package, **)
+        work_package.target_versions.map(&:name).join(", ")
+      end
     end
   end
 end

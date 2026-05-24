@@ -28,22 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Versions
-  class DeleteContract < ::DeleteContract
-    delete_permission :manage_versions
+module API
+  module V3
+    module Queries
+      module Schemas
+        class TargetVersionsFilterDependencyRepresenter <
+          FilterDependencyRepresenter
+          def json_cache_key
+            super + (filter.project.present? ? [filter.project.id] : [])
+          end
 
-    validate :validate_no_work_packages_attached
+          def href_callback
+            query_params = "sortBy=#{to_query [%i(name asc)]}&pageSize=-1"
 
-    protected
+            if filter.project.nil?
+              "#{api_v3_paths.versions}?#{query_params}"
+            else
+              "#{api_v3_paths.versions_by_workspace(filter.project.id)}?#{query_params}"
+            end
+          end
 
-    def validate_no_work_packages_attached
-      return unless work_packages_attached?
+          def type
+            "[]Version"
+          end
 
-      errors.add(:base, :undeletable_work_packages_attached)
-    end
+          private
 
-    def work_packages_attached?
-      model.work_package_associated_versions.exists?
+          def to_query(param)
+            CGI.escape(::JSON.dump(param))
+          end
+        end
+      end
     end
   end
 end
