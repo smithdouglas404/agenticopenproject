@@ -91,6 +91,9 @@ import {
 import {
   WorkPackageActivityTabComponent,
 } from 'core-app/features/work-packages/components/wp-single-view-tabs/activity-panel/activity-tab.component';
+import {
+  WpActivitySkeletonComponent,
+} from 'core-app/features/work-packages/components/wp-single-view-tabs/activity-panel/wp-activity-skeleton.component';
 import { OpenprojectAttachmentsModule } from 'core-app/shared/components/attachments/openproject-attachments.module';
 import {
   WpCustomActionComponent,
@@ -571,6 +574,7 @@ import {
 
     // Activity Tab
     WorkPackageActivityTabComponent,
+    WpActivitySkeletonComponent,
 
     // Watchers wp-tab-wrapper
     WorkPackageWatchersTabComponent,
