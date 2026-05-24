@@ -56,6 +56,8 @@ x-op-backend: &backend
     - /home/dev/openproject/tmpfs/pids:uid=$DEV_UID,gid=$DEV_GID
   networks:
     - network
+  tty: true
+  stdin_open: true
 
 services:
   backend:
@@ -150,6 +152,8 @@ services:
     build:
       <<: *build
       target: test
+    tty: true
+    stdin_open: true
     command: setup-tests
     hostname: backend-test
     networks:
