@@ -2876,6 +2876,15 @@ en:
         When you create a new token you will only be allowed to request a backup after
         24 hours. This is a safety measure. After that you can request a backup any time using that token.
     text_token_deleted: Backup token deleted. Backups are now disabled.
+    s3_export:
+      heading: Incremental attachment export
+      description: >
+        You can use your backup token with the S3-compatible attachment export endpoint
+        to incrementally sync all attachments to your machine. Only new or changed files
+        are downloaded on each run, making it efficient even for large installations.
+      command: "AWS_ACCESS_KEY_ID=YOUR_BACKUP_TOKEN AWS_SECRET_ACCESS_KEY=unused \\\n  aws s3 sync s3://openproject/ ./attachments/ \\\n  --endpoint-url %{endpoint_url}"
+      docs_link_text: S3-compatible attachment export documentation
+      docs_url: https://www.openproject.org/docs/user-guide/file-management/s3-compatible-export/
     error:
       invalid_token: Invalid or missing backup token
       token_cooldown: The backup token will be valid in %{hours} hours.

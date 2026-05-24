@@ -14,6 +14,7 @@ keywords: files, attachment, Nextcloud, OneDrive, SharePoint
 | [Nextcloud integration](#nextcloud-integration)              | How to manage files using Nextcloud integration in OpenProject. |
 | [OneDrive integration](#onedrive-integration-enterprise-add-on) | How to manage files using OneDrive integration in OpenProject. |
 | [SharePoint integration](#sharepoint-integration-enterprise-add-on) | How to manage files using SharePoint integration in OpenProject. |
+| [Attachment export (S3-compatible)](./s3-compatible-export)  | Incrementally back up all attachments using `aws s3 sync` or rclone. |
 | [File management FAQs](./file-management-faq)                | Frequently asked questions on file management in OpenProject. |
 
 There are several ways of adding or linking files to work packages in OpenProject. You can manually attach files directly to work packages or use one of the integrations with file management systems.
