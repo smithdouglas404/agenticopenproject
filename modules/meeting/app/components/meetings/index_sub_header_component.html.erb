@@ -10,7 +10,7 @@
   ) do |subheader|
     subheader.with_quick_filter do
       render(
-        OpPrimer::QuickFilter::SegmentedComponent.new(
+        OpPrimer::QuickFilter::SegmentedControlComponent.new(
           name: I18n.t(:label_meeting_date_time),
           query: @query,
           filter_key: :time,
@@ -20,6 +20,20 @@
       ) do |component|
         component.with_item(label: I18n.t(:label_upcoming_meetings_short), value: "future")
         component.with_item(label: I18n.t(:label_past_meetings_short), value: "past")
+      end
+    end
+
+    if @project.nil?
+      subheader.with_quick_filter do
+        render(
+          OpPrimer::QuickFilter::SelectPanelComponent.new(
+            name: I18n.t(:label_project),
+            query: @query,
+            filter_key: :project_id,
+            path_args: [@project, :meetings],
+            src: project_items_meetings_path
+          )
+        )
       end
     end
 

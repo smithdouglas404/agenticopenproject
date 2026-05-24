@@ -30,10 +30,10 @@
 
 module OpPrimer
   module QuickFilter
-    class SegmentedComponent < ApplicationComponent
+    class SegmentedControlComponent < ApplicationComponent
       include ApplicationHelper
 
-      renders_many :items, Item
+      renders_many :items, OpPrimer::QuickFilter::Item
 
       def initialize(name:, query:, filter_key:, path_args:, orders: nil)
         super
