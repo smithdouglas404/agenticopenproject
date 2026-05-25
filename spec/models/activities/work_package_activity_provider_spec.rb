@@ -99,6 +99,40 @@ RSpec.describe Activities::WorkPackageActivityProvider do
       end
     end
 
+    context "when semantic IDs are enabled" do
+      # Override outer let!(:work_packages) so it doesn't force WP creation before the stub is active
+      let!(:work_packages) { [] }
+
+      let(:project) { create(:project, :semantic) }
+      let(:work_package) do
+        User.execute_as(user) do
+          create(:work_package, project:)
+        end
+      end
+
+      before do
+        allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
+        work_package
+      end
+
+      let(:events) do
+        Activities::WorkPackageActivityProvider
+          .find_events(event_scope, user, Time.zone.yesterday.to_datetime, Time.zone.tomorrow.to_datetime, {})
+      end
+
+      it "uses the semantic identifier in the event title" do
+        semantic_id = work_package.reload.identifier
+        expect(events[0].event_title).to include(semantic_id)
+        expect(events[0].event_title).not_to include("##{work_package.id}")
+      end
+
+      it "uses the semantic identifier in the event path" do
+        semantic_id = work_package.reload.identifier
+        expect(events[0].event_path).to include(semantic_id)
+        expect(events[0].event_path).not_to include(work_package.id.to_s)
+      end
+    end
+
     context "for a non admin user" do
       let(:project) { create(:project) }
       let(:child_project1) { create(:project, parent: project) }

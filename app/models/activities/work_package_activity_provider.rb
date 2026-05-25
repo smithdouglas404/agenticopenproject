@@ -35,6 +35,7 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
   def extend_event_query(query)
     query.join(types_table).on(activity_journals_table[:type_id].eq(types_table[:id]))
     query.join(statuses_table).on(activity_journals_table[:status_id].eq(statuses_table[:id]))
+    query.join(activitied_table).on(journals_table[:journable_id].eq(activitied_table[:id]))
   end
 
   def event_query_projection
@@ -42,12 +43,14 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
       activity_journal_projection_statement(:subject, "subject"),
       activity_journal_projection_statement(:project_id, "project_id"),
       projection_statement(statuses_table, :is_closed, "status_closed"),
-      projection_statement(types_table, :name, "type_name")
+      projection_statement(types_table, :name, "type_name"),
+      projection_statement(activitied_table, :identifier, "identifier")
     ]
   end
 
-  def self.work_package_title(id, subject, type_name)
-    "#{type_name} ##{id}: #{subject}"
+  def self.work_package_title(id, subject, type_name, identifier = nil)
+    formatted = identifier.presence || "##{id}"
+    "#{type_name} #{formatted}: #{subject}"
   end
 
   protected
@@ -55,7 +58,8 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
   def event_title(event)
     self.class.work_package_title(event["journable_id"],
                                   event["subject"],
-                                  event["type_name"])
+                                  event["type_name"],
+                                  event["identifier"])
   end
 
   def event_type(event)
@@ -63,11 +67,11 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
   end
 
   def event_path(event)
-    url_helpers.work_package_path(event["journable_id"])
+    url_helpers.work_package_path(event["identifier"].presence || event["journable_id"])
   end
 
   def event_url(event)
-    url_helpers.work_package_url(event["journable_id"],
+    url_helpers.work_package_url(event["identifier"].presence || event["journable_id"],
                                  anchor: notes_anchor(event))
   end
 
