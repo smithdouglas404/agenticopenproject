@@ -25,7 +25,7 @@ export class BeforeunloadController extends ApplicationController {
     switch (evt.type) {
       case 'beforeunload':
       case 'turbo:before-visit':
-        this.beforeunloadHandler(evt as BeforeUnloadEvent|TurboBeforeVisitEvent);
+        this.beforeunloadHandler(evt);
         break;
       case 'turbo:submit-end':
       case 'turbo:load':
@@ -41,7 +41,14 @@ export class BeforeunloadController extends ApplicationController {
   }
 
   private beforeunloadHandler(evt:BeforeUnloadEvent|TurboBeforeVisitEvent) {
-    if (window.OpenProject.pageState !== 'edited') {
+    // Angular edit forms register their own native beforeunload listener.
+    // Include them here only for Turbo visits, where that native listener
+    // does not run.
+    const hasUnsavedChanges = evt.type === 'turbo:before-visit'
+      ? window.OpenProject.pageHasUnsavedChanges
+      : window.OpenProject.pageWasEdited;
+
+    if (!hasUnsavedChanges) {
       return;
     }
 
@@ -54,7 +61,7 @@ export class BeforeunloadController extends ApplicationController {
 
     // Chrome requires returnValue to be set
     if (evt.type === 'beforeunload') {
-      (evt as BeforeUnloadEvent).returnValue = '';
+      evt.returnValue = '';
     }
   }
 }

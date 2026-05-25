@@ -11,16 +11,20 @@ export class GlobalEditFormChangesTrackerService {
   private activeForms = new Map<EditFormComponent, boolean>();
 
   get thereAreFormsWithUnsavedChanges() {
-    return Array.from(this.activeForms.keys()).some((form) => !form.change.isEmpty());
+    return Array.from(this.activeForms.keys()).some((form) => !form.change.inFlight && !form.change.isEmpty());
   }
 
   constructor() {
+    window.OpenProject.editFormsContainUnsavedChanges = () => this.thereAreFormsWithUnsavedChanges;
+
     // Global beforeunload hook to show a data loss warn
     // when the user clicks on a link out of the Angular app
     window.addEventListener('beforeunload', (event) => {
-      if (this.thereAreFormsWithUnsavedChanges) {
+      if (!window.OpenProject.pageWasSubmitted && this.thereAreFormsWithUnsavedChanges) {
+        const message = this.i18nService.t<string>('js.work_packages.confirm_edit_cancel');
+
         event.preventDefault();
-        event.returnValue = this.i18nService.t('js.work_packages.confirm_edit_cancel');
+        event.returnValue = message;
       }
     });
   }
