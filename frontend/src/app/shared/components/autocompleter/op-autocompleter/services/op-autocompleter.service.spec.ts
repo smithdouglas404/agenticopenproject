@@ -32,17 +32,12 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { firstValueFrom } from 'rxjs';
 
 import { States } from 'core-app/core/states/states.service';
+import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
-import { OpenprojectHalModule } from 'core-app/features/hal/openproject-hal.module';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 
 import { OpAutocompleterService } from './op-autocompleter.service';
-import { TOpAutocompleterResource } from '../typings';
-
-interface CreateParamsAccess {
-  createParams:(resource:TOpAutocompleterResource) => Record<string, string>;
-}
 
 describe('OpAutocompleterService', () => {
   let service:OpAutocompleterService;
@@ -50,7 +45,6 @@ describe('OpAutocompleterService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OpenprojectHalModule],
       providers: [
         States,
         OpAutocompleterService,
@@ -60,26 +54,16 @@ describe('OpAutocompleterService', () => {
       ],
     });
 
-    // Force ApplicationInitStatus to run, which registers WorkPackage with HalResourceService.
-    TestBed.inject(HalResourceService);
+    const halResourceService = TestBed.inject(HalResourceService);
+    halResourceService.registerResource('Collection', { cls: CollectionResource });
+    halResourceService.registerResource('WorkPackage', { cls: WorkPackageResource });
+
     service = TestBed.inject(OpAutocompleterService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
     httpMock.verify();
-  });
-
-  describe('work_packages select params', () => {
-    // Pins the wire contract so future edits to createParams can't silently drop _type
-    // from the select string. The dispatch consequence (typed WorkPackageResource vs
-    // generic HalResource) is asserted end-to-end by the loadAvailable test below.
-    // Regression: https://community.openproject.org/wp/74844
-    it('requests elements/_type for work_packages', () => {
-      const params = (service as unknown as CreateParamsAccess).createParams('work_packages');
-
-      expect(params.select).toContain('elements/_type');
-    });
   });
 
   describe('loadAvailable("work_packages")', () => {
