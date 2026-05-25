@@ -31,6 +31,7 @@
 require "spec_helper"
 require_relative "support/board_index_page"
 require_relative "support/board_page"
+require_relative "support/board_new_page"
 
 RSpec.describe "Boards enterprise spec", :js do
   shared_let(:admin) { create(:admin) }
@@ -40,6 +41,7 @@ RSpec.describe "Boards enterprise spec", :js do
   shared_let(:status) { create(:default_status) }
 
   let(:board_index) { Pages::BoardIndex.new(project) }
+  let(:new_board_page) { Pages::NewBoard.new }
 
   shared_let(:manual_board) { create(:board_grid_with_query, name: "My board", project:) }
   shared_let(:action_board) do
@@ -56,7 +58,7 @@ RSpec.describe "Boards enterprise spec", :js do
     end
 
     it "enables all options" do
-      page.find('[data-test-selector="add-board-button"]', text: "Board").click
+      new_board_page.navigate_by_create_button(path: project_work_package_boards_path(project))
 
       expect(page).to have_css("#{test_selector('op-tile-block')}:not(.-disabled)", count: 6)
     end
@@ -85,7 +87,7 @@ RSpec.describe "Boards enterprise spec", :js do
     end
 
     it "enables all options" do
-      page.find('[data-test-selector="add-board-button"]', text: "Board").click
+      new_board_page.navigate_by_create_button(path: project_work_package_boards_path(project))
 
       expect(page).to have_css("#{test_selector('op-tile-block')}:not(.-disabled)", count: 6)
     end

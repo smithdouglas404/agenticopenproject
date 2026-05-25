@@ -28,6 +28,11 @@ en:
       new_board: 'New board'
       add_list: 'Add list to board'
       add_card: 'Add card'
+      quick_filters:
+        assignee_all: 'All assignees'
+        assignee_unassigned: 'Unassigned'
+        version_all: 'All versions'
+        version_none: 'No version'
       error_attribute_not_writable: "Cannot move the work package, %{attribute} is not writable."
       error_loading_the_list: "Error loading the list: %{error_message}"
       error_permission_missing: "The permission to create public queries is missing"

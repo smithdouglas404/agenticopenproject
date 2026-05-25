@@ -137,6 +137,32 @@ RSpec.describe AccountController, :skip_2fa_stage do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to render_template "login"
         expect(flash[:error]).to include "Invalid user or password"
+        expect(flash[:warning]).to eq(I18n.t(:notice_account_login_use_email))
+      end
+    end
+
+    describe "username login hint" do
+      it "still allows non-email usernames to log in" do
+        post :login, params: { username: admin.login, password: "adminADMIN!" }
+
+        expect(response).to redirect_to home_path
+      end
+
+      it "does not warn for email logins" do
+        user = create(:user, login: "person@example.org", mail: "person@example.org", password: "adminADMIN!")
+
+        post :login, params: { username: user.login, password: "adminADMIN!" }
+
+        expect(response).to redirect_to home_path
+        expect(flash[:warning]).to be_nil
+      end
+
+      it "ignores trailing whitespace in the submitted password" do
+        user = create(:user, login: "spacey@example.org", mail: "spacey@example.org", password: "adminADMIN!")
+
+        post :login, params: { username: user.login, password: "adminADMIN! \t\n" }
+
+        expect(response).to redirect_to home_path
       end
     end
 

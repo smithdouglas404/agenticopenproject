@@ -2,6 +2,7 @@
 
 require "spec_helper"
 require_relative "support/board_new_page"
+require_relative "support/board_page"
 
 RSpec.describe "Boards",
                "Creating a view from a Global Context",
@@ -65,10 +66,12 @@ RSpec.describe "Boards",
 
         wait_for_reload
 
+        board_page = Pages::Board.new(Boards::Grid.last)
+
         expect(page).to have_text(I18n.t(:notice_successful_create))
         expect(page).to have_current_path("/projects/#{project.identifier}/boards/#{Boards::Grid.last.id}")
-        expect(page).to have_text "Gotham Renewal Board"
-        expect(page).to have_css("[data-query-name='#{status.name}']")
+        expect(page).to have_text "Gotham Renewal Board", wait: 20
+        board_page.expect_list status.name, wait: 20
       end
     end
 
@@ -90,9 +93,11 @@ RSpec.describe "Boards",
           end
 
           it "creates the board and redirects me to it" do
+            board_page = Pages::Board.new(Boards::Grid.last)
+
             expect(page).to have_text(I18n.t(:notice_successful_create))
             expect(page).to have_current_path("/projects/#{project.identifier}/boards/#{Boards::Grid.last.id}")
-            expect(page).to have_text "Gotham Renewal Board"
+            expect(page).to have_text "Gotham Renewal Board", wait: 20
           end
         end
 
@@ -105,10 +110,12 @@ RSpec.describe "Boards",
           end
 
           it "creates the board and redirects me to it" do
+            board_page = Pages::Board.new(Boards::Grid.last)
+
             expect(page).to have_text(I18n.t(:notice_successful_create))
             expect(page).to have_current_path("/projects/#{project.identifier}/boards/#{Boards::Grid.last.id}")
-            expect(page).to have_text "Gotham Renewal Board"
-            expect(page).to have_css("[data-query-name='#{status.name}']")
+            expect(page).to have_text "Gotham Renewal Board", wait: 20
+            board_page.expect_list status.name, wait: 20
           end
         end
 
@@ -121,9 +128,11 @@ RSpec.describe "Boards",
           end
 
           it "creates the board and redirects me to it" do
+            board_page = Pages::Board.new(Boards::Grid.last)
+
             expect(page).to have_text(I18n.t(:notice_successful_create))
             expect(page).to have_current_path("/projects/#{project.identifier}/boards/#{Boards::Grid.last.id}")
-            expect(page).to have_text "Gotham Renewal Board"
+            expect(page).to have_text "Gotham Renewal Board", wait: 20
           end
         end
 
@@ -136,14 +145,16 @@ RSpec.describe "Boards",
           end
 
           it "creates the board and redirects me to it", :aggregate_failures do
+            board_page = Pages::Board.new(Boards::Grid.last)
+
             expect(page).to have_text(I18n.t(:notice_successful_create))
             expect(page).to have_current_path("/projects/#{project.identifier}/boards/#{Boards::Grid.last.id}")
-            expect(page).to have_text "Gotham Renewal Board"
+            expect(page).to have_text "Gotham Renewal Board", wait: 20
             versions.each do |version|
-              expect(page).to have_css("[data-query-name='#{version.name}'")
+              board_page.expect_list version.name, wait: 20
             end
             excluded_versions.each do |version|
-              expect(page).to have_no_css("[data-query-name='#{version.name}'")
+              board_page.expect_no_list version.name
             end
           end
         end
@@ -157,9 +168,11 @@ RSpec.describe "Boards",
           end
 
           it "creates the board and redirects me to it" do
+            board_page = Pages::Board.new(Boards::Grid.last)
+
             expect(page).to have_text(I18n.t(:notice_successful_create))
             expect(page).to have_current_path("/projects/#{project.identifier}/boards/#{Boards::Grid.last.id}")
-            expect(page).to have_text "Gotham Renewal Board"
+            expect(page).to have_text "Gotham Renewal Board", wait: 20
           end
         end
 
@@ -172,9 +185,11 @@ RSpec.describe "Boards",
           end
 
           it "creates the board and redirects me to it" do
+            board_page = Pages::Board.new(Boards::Grid.last)
+
             expect(page).to have_text(I18n.t(:notice_successful_create))
             expect(page).to have_current_path("/projects/#{project.identifier}/boards/#{Boards::Grid.last.id}")
-            expect(page).to have_text "Gotham Renewal Board"
+            expect(page).to have_text "Gotham Renewal Board", wait: 20
           end
         end
       end

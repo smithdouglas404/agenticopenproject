@@ -49,7 +49,8 @@ RSpec.describe "Status action board",
 
   let(:permissions) do
     %i[show_board_views manage_board_views add_work_packages save_queries
-       edit_work_packages move_work_packages view_work_packages manage_public_queries]
+       edit_work_packages move_work_packages view_work_packages manage_public_queries
+       work_package_assigned]
   end
 
   let!(:priority) { create(:default_priority) }
@@ -153,6 +154,83 @@ RSpec.describe "Status action board",
       expect(wp_task.project).to eq(project), "Moving the card should not change the project"
     end
 
+    it "supports temporary quick filters for assignee and version on kanban boards" do
+      assignee = create(:user, member_with_roles: { project => role })
+      other_assignee = create(:user, member_with_roles: { project => role })
+      reader_role = create(:project_role, permissions: %i[view_work_packages])
+      reader_assignee = create(:user, member_with_roles: { project => reader_role })
+      group_assignee = create(:group, name: "Grouped assignee").tap do |group|
+        create(:member,
+               principal: group,
+               project:,
+               roles: [role])
+      end
+      version = create(:version, project:, name: "Release A")
+      other_version = create(:version, project:, name: "Release B")
+
+      create(:work_package,
+             project:,
+             type:,
+             status: open_status,
+             subject: "Assigned with version",
+             assigned_to: assignee,
+             version:)
+      create(:work_package,
+             project:,
+             type:,
+             status: open_status,
+             subject: "Unassigned without version",
+             assigned_to: nil,
+             version: nil)
+      create(:work_package,
+             project:,
+             type:,
+             status: open_status,
+             subject: "Other assignment",
+             assigned_to: other_assignee,
+             version: other_version)
+
+      board_index.visit!
+      board_page = board_index.create_board action: "Kanban"
+
+      board_page.expect_list "Open", wait: 20
+      board_page.expect_quick_filters
+      board_page.expect_assignee_quick_filter "All assignees", wait: 20
+      board_page.expect_version_quick_filter "All versions", wait: 20
+      expect(page).to have_select("board-quick-filter-assignee", with_options: [assignee.name], wait: 20)
+      expect(page).to have_select("board-quick-filter-assignee", with_options: [other_assignee.name], wait: 20)
+      expect(page).to have_no_select("board-quick-filter-assignee", with_options: [reader_assignee.name], wait: 20)
+      expect(page).to have_no_select("board-quick-filter-assignee", with_options: [group_assignee.name], wait: 20)
+      expect(page).to have_select("board-quick-filter-version", with_options: [version.name], wait: 20)
+
+      board_page.expect_card("Open", "Assigned with version", present: true)
+      board_page.expect_card("Open", "Unassigned without version", present: true)
+      board_page.expect_card("Open", "Other assignment", present: true)
+
+      board_page.set_assignee_quick_filter "Unassigned"
+      board_page.expect_card("Open", "Assigned with version", present: false)
+      board_page.expect_card("Open", "Unassigned without version", present: true)
+      board_page.expect_card("Open", "Other assignment", present: false)
+      board_page.expect_not_changed
+      expect(URI.parse(page.current_url).query.to_s).not_to include("query_props=")
+
+      board_page.set_assignee_quick_filter "All assignees"
+      board_page.set_version_quick_filter "No version"
+      board_page.expect_card("Open", "Assigned with version", present: false)
+      board_page.expect_card("Open", "Unassigned without version", present: true)
+      board_page.expect_card("Open", "Other assignment", present: false)
+      board_page.expect_not_changed
+      expect(URI.parse(page.current_url).query.to_s).not_to include("query_props=")
+
+      board_page.visit!
+      board_page.expect_list "Open", wait: 20
+      board_page.expect_assignee_quick_filter "All assignees", wait: 20
+      board_page.expect_version_quick_filter "All versions", wait: 20
+      board_page.expect_card("Open", "Assigned with version", present: true)
+      board_page.expect_card("Open", "Unassigned without version", present: true)
+      board_page.expect_card("Open", "Other assignment", present: true)
+    end
+
     it "allows management of boards", with_settings: { login_required: false } do
       board_index.visit!
 
@@ -190,6 +268,7 @@ RSpec.describe "Status action board",
 
       # Add item
       board_page.add_card "Open", "Task 1"
+      WorkPackage.find_by!(subject: "Task 1").update!(type:)
       sleep 2
 
       # Expect added to query

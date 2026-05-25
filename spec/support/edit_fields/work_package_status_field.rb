@@ -13,7 +13,7 @@ class WorkPackageStatusField < EditField
   end
 
   def input_element
-    page.find input_selector.to_s
+    page.find input_selector.to_s, wait: 10
   end
 
   def display_element
@@ -32,6 +32,7 @@ class WorkPackageStatusField < EditField
   def update(value, save: true, expect_failure: false)
     retry_block do
       activate_edition
+      expect_active!
       set_value value
 
       expect_state! open: expect_failure
