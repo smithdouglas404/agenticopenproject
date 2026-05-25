@@ -103,6 +103,7 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
       // that's not within the edit mode.
       if (!this.editFormRouting || this.editFormRouting.blockedTransition(transition)) {
         if (requiresConfirmation && !window.confirm(confirmText)) {
+          this.undoCanceledBrowserBackTransition(transition);
           return false;
         }
 
@@ -110,6 +111,20 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
       }
 
       return true;
+    });
+  }
+
+  private undoCanceledBrowserBackTransition(transition:Transition) {
+    if (transition.options().source !== 'url') {
+      return;
+    }
+
+    // Keep UI-Router from replacing the attempted browser history entry while
+    // it rolls back the aborted Back navigation.
+    transition.router.urlRouter.update(true);
+
+    window.setTimeout(() => {
+      window.history.forward();
     });
   }
 
