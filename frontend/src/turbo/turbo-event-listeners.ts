@@ -10,8 +10,8 @@ export function addTurboEventListeners() {
   // it will leave an overflow:hidden attribute on the body, which prevents scrolling on the page.
   //
   // Also, we will dispatch a custom `dialog:close` event when the dialog is closed.
-  document.addEventListener('turbo:submit-end', (event:CustomEvent) => {
-    const { detail: { success }, target } = event as { detail:{ success:boolean }; target:EventTarget };
+  document.addEventListener('turbo:submit-end', (event) => {
+    const { detail: { success }, target } = event;
 
     if (success && target instanceof HTMLFormElement) {
       const dialog = target.closest('dialog')!;

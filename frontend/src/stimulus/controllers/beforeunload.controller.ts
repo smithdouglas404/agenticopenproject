@@ -21,7 +21,7 @@ export class BeforeunloadController extends ApplicationController {
     this.abortController.abort();
   }
 
-  handleEvent(evt:BeforeUnloadEvent|TurboBeforeVisitEvent|CustomEvent) {
+  handleEvent(evt:Event) {
     switch (evt.type) {
       case 'beforeunload':
       case 'turbo:before-visit':
@@ -54,7 +54,7 @@ export class BeforeunloadController extends ApplicationController {
 
     // Chrome requires returnValue to be set
     if (evt.type === 'beforeunload') {
-      evt.returnValue = '';
+      (evt as BeforeUnloadEvent).returnValue = '';
     }
   }
 }

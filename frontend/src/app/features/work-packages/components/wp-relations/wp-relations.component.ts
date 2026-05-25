@@ -34,7 +34,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { WorkPackageRelationsService } from './wp-relations.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
-import { renderStreamMessage } from '@hotwired/turbo';
+import { renderStreamMessage, type TurboSubmitEndEvent } from '@hotwired/turbo';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 
 @Component({
@@ -96,12 +96,9 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
     document.addEventListener('turbo:submit-end', this.turboFrameListener);
   }
 
-  private async updateFrontendData(event:CustomEvent) {
+  private async updateFrontendData(event:TurboSubmitEndEvent) {
     if (event) {
-      // A turbo:submit-end event *has* a `formSubmission` property, but I do not
-      // know how to avoid the eslint type warning. Please if you know, fix it.
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      const form = event.detail.formSubmission.formElement as HTMLFormElement;
+      const form = event.detail.formSubmission.formElement;
       const updateWorkPackage = !!form.dataset?.updateWorkPackage;
 
       if (updateWorkPackage) {
