@@ -38,6 +38,11 @@ import { HalResourceService } from 'core-app/features/hal/services/hal-resource.
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 
 import { OpAutocompleterService } from './op-autocompleter.service';
+import { TOpAutocompleterResource } from '../typings';
+
+interface CreateParamsAccess {
+  createParams:(resource:TOpAutocompleterResource) => Record<string, string>;
+}
 
 describe('OpAutocompleterService', () => {
   let service:OpAutocompleterService;
@@ -66,11 +71,15 @@ describe('OpAutocompleterService', () => {
     httpMock.verify();
   });
 
+  describe('work_packages select params', () => {
+    it('requests elements/_type for work_packages', () => {
+      const params = (service as unknown as CreateParamsAccess).createParams('work_packages');
+
+      expect(params.select).toContain('elements/_type');
+    });
+  });
+
   describe('loadAvailable("work_packages")', () => {
-    // Pins the dispatch outcome: a Collection payload whose elements carry
-    // _type: 'WorkPackage' must materialise as WorkPackageResource instances so
-    // typed getters resolve. Catches both backend regressions that drop _type and
-    // any future client-side change that breaks the HAL factory wiring.
     it('emits WorkPackageResource instances for elements typed as WorkPackage', async () => {
       const pending = firstValueFrom(service.loadAvailable('demo', 'work_packages'));
 
