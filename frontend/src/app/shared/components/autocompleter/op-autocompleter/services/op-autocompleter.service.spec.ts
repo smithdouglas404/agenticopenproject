@@ -28,8 +28,14 @@
 
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { firstValueFrom } from 'rxjs';
+
 import { States } from 'core-app/core/states/states.service';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
+import { OpenprojectHalModule } from 'core-app/features/hal/openproject-hal.module';
+import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 
 import { OpAutocompleterService } from './op-autocompleter.service';
 import { TOpAutocompleterResource } from '../typings';
@@ -40,28 +46,76 @@ interface CreateParamsAccess {
 
 describe('OpAutocompleterService', () => {
   let service:OpAutocompleterService;
+  let httpMock:HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [OpenprojectHalModule],
       providers: [
         States,
         OpAutocompleterService,
+        { provide: SchemaCacheService, useValue: { ensureLoaded: () => Promise.resolve() } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });
 
+    // Force ApplicationInitStatus to run, which registers WorkPackage with HalResourceService.
+    TestBed.inject(HalResourceService);
     service = TestBed.inject(OpAutocompleterService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   describe('work_packages select params', () => {
-    // _type drives HAL factory dispatch to WorkPackageResource; without it dropdown items
-    // are parsed as generic HalResource and the formattedId getter never resolves.
+    // Pins the wire contract so future edits to createParams can't silently drop _type
+    // from the select string. The dispatch consequence (typed WorkPackageResource vs
+    // generic HalResource) is asserted end-to-end by the loadAvailable test below.
     // Regression: https://community.openproject.org/wp/74844
-    it('requests elements/_type so each element is parsed as WorkPackageResource', () => {
+    it('requests elements/_type for work_packages', () => {
       const params = (service as unknown as CreateParamsAccess).createParams('work_packages');
 
       expect(params.select).toContain('elements/_type');
+    });
+  });
+
+  describe('loadAvailable("work_packages")', () => {
+    // Pins the dispatch outcome: a Collection payload whose elements carry
+    // _type: 'WorkPackage' must materialise as WorkPackageResource instances so
+    // typed getters resolve. Catches both backend regressions that drop _type and
+    // any future client-side change that breaks the HAL factory wiring.
+    it('emits WorkPackageResource instances for elements typed as WorkPackage', async () => {
+      const pending = firstValueFrom(service.loadAvailable('demo', 'work_packages'));
+
+      const request = httpMock.expectOne((req) => req.url.startsWith('/api/v3/work_packages'));
+      request.flush({
+        _type: 'Collection',
+        _links: { self: { href: request.request.url } },
+        _embedded: {
+          elements: [
+            {
+              _type: 'WorkPackage',
+              id: 42,
+              displayId: 'DEMO-7',
+              subject: 'Pick me',
+              _links: { self: { href: '/api/v3/work_packages/42' } },
+            },
+          ],
+        },
+        count: 1,
+        total: 1,
+        pageSize: 30,
+        offset: 1,
+      });
+
+      const elements = await pending;
+
+      expect(elements).toHaveLength(1);
+      expect(elements[0]).toBeInstanceOf(WorkPackageResource);
+      expect((elements[0] as WorkPackageResource).displayId).toBe('DEMO-7');
     });
   });
 });
