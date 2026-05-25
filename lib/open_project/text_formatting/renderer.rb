@@ -49,14 +49,14 @@ module OpenProject::TextFormatting
         .to_html(text)
     end
 
-    # @param [:plain, :plain_text, :rich] format the text format.
+    # @param [:plain, :markdown_as_text, :rich] format the text format.
     # @return [Formats::BaseFormatter] a formatter implementation.
     def formatter_for(format)
       case format.to_sym
       when :plain
         Formats.plain_formatter
-      when :plain_text
-        Formats::Plain::TextFormatter
+      when :markdown_as_text
+        Formats::Markdown::TextFormatter
       else
         Formats.rich_formatter
       end

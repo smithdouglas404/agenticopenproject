@@ -10,7 +10,7 @@
 <%= I18n.t(:label_comment_added) %>:
 <%= format_text(
       @journal.notes,
-      format: :plain_text,
+      format: :markdown_as_text,
       only_path: false,
       object: @work_package,
       project: @work_package.project

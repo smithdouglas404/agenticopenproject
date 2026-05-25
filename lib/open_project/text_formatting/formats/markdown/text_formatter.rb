@@ -29,12 +29,12 @@
 #++
 
 module OpenProject::TextFormatting::Formats
-  module Plain
-    # Plain-text output sibling of `Plain::Formatter`. Shares the matcher
-    # and mention pipeline with the rich (markdown) renderer so identifier
-    # resolution stays consistent across channels, but collapses the final
-    # DOM to text. Intended for plain/text mailers and similar contexts
-    # where HTML would be a foreign body.
+  module Markdown
+    # Text-output sibling of `Markdown::Formatter`. Shares the matcher and
+    # mention pipeline with the rich renderer so identifier resolution
+    # stays consistent across channels, then collapses the final DOM to
+    # text via `PlainTextOutputFilter`. Intended for plain/text mailers
+    # and other channels where HTML would be a foreign body.
     class TextFormatter < OpenProject::TextFormatting::Formats::BaseFormatter
       def initialize(context)
         super(context.merge(plain_text: true))
@@ -55,7 +55,9 @@ module OpenProject::TextFormatting::Formats
         ]
       end
 
-      def self.format = :plain_text
+      def self.format
+        :markdown_as_text
+      end
     end
   end
 end

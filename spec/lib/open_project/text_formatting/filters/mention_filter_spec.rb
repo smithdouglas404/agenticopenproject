@@ -203,6 +203,28 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
       end
     end
 
+    context "in plain-text rendering mode",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      # The `:markdown_as_text` channel must collapse mention envelopes
+      # to their current `formatted_id` so the plain-text mailer doesn't
+      # leak `<mention>` HTML or stale envelope text.
+      let(:project) { create(:project, identifier: "MACROPROJ") }
+      let(:work_package) { create(:work_package, project:, author:) }
+
+      before { work_package.allocate_and_register_semantic_id }
+
+      it "renders the formatted_id without an anchor or quickinfo" do
+        wp = work_package.reload
+        rendered = format_text(mention_tag(wp), format: :markdown_as_text)
+
+        expect(rendered).to include(wp.formatted_id)
+        expect(rendered).not_to include("<a")
+        expect(rendered).not_to include("opce-macro-wp-quickinfo")
+        expect(rendered).not_to include("<mention")
+      end
+    end
+
     # Semantic-shaped data-ids must not silently resolve to a WP whose id
     # matches the embedded digits.
     context "with a semantic-shaped data-id whose embedded digits collide with a real WP id",

@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe OpenProject::TextFormatting::Formats::Plain::TextFormatter do
+RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
   subject(:formatted) { described_class.new(context).to_html(input).strip }
 
   let(:context) { {} }
