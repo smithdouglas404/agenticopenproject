@@ -121,8 +121,11 @@ export default class PageController extends Controller {
 
   removeFilter(evt:MouseEvent) {
     evt.preventDefault();
-    const target = evt.target as HTMLElement;
-    const filterName = target.closest('li')?.getAttribute('data-filter-name');
+    const removeBox = evt.currentTarget as HTMLElement;
+    const filterNameInput = removeBox.querySelector<HTMLInputElement>('input[name="fields[]"]')?.value.trim();
+    const filterName = filterNameInput && filterNameInput.length > 0
+      ? filterNameInput
+      : removeBox.closest('li')?.getAttribute('data-filter-name');
 
     if (filterName) {
       this.filters.remove_filter(filterName);
