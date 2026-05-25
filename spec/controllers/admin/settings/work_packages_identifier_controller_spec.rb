@@ -30,8 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
-               with_flag: { semantic_work_package_ids: true } do
+RSpec.describe Admin::Settings::WorkPackagesIdentifierController do
   shared_let(:user) { create(:admin) }
 
   current_user { user }

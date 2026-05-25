@@ -47,7 +47,7 @@ RSpec.describe Exports::PDF::Common::Markdown::MD2PDFExport do
     end
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false } do
+            with_settings: { work_packages_identifier: "classic" } do
       it "generates a link URL with the numeric id" do
         result = exporter.wp_mention_macro("##{wp.id}", wp.id.to_s, {})
         expect(result.first[:link]).to include(wp.id.to_s)
@@ -55,7 +55,6 @@ RSpec.describe Exports::PDF::Common::Markdown::MD2PDFExport do
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "generates a link URL with the semantic identifier" do
         result = exporter.wp_mention_macro("##{wp.id}", wp.id.to_s, {})
@@ -84,7 +83,6 @@ RSpec.describe Exports::PDF::Common::Markdown::MD2PDFExport do
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { work_package.identifier = "PROJ-42" }
 

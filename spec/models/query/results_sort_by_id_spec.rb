@@ -60,7 +60,6 @@ RSpec.describe Query::Results, "sort by id" do
   current_user { user }
 
   context "in semantic mode",
-          with_flag: { semantic_work_package_ids: true },
           with_settings: { work_packages_identifier: "semantic" } do
     let(:project) { create(:project, identifier: "LARGE") }
     let!(:wps) { build_three_with_inverted_sequence(project) }
@@ -140,7 +139,6 @@ RSpec.describe Query::Results, "sort by id" do
   end
 
   context "in classic mode",
-          with_flag: { semantic_work_package_ids: false },
           with_settings: { work_packages_identifier: "classic" } do
     let(:project) { create(:project, identifier: "large") }
     let!(:wps) { build_three_with_inverted_sequence(project) }

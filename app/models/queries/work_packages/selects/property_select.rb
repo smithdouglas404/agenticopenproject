@@ -44,7 +44,7 @@ class Queries::WorkPackages::Selects::PropertySelect < Queries::WorkPackages::Se
       # (project_id, sequence_number) keeps each project's rows monotone in their
       # visible numbering and is backed by an existing partial unique index.
       sortable: -> {
-        if Setting::WorkPackageIdentifier.semantic_mode_active?
+        if Setting::WorkPackageIdentifier.semantic?
           ["#{WorkPackage.table_name}.project_id", "#{WorkPackage.table_name}.sequence_number"]
         else
           "#{WorkPackage.table_name}.id"

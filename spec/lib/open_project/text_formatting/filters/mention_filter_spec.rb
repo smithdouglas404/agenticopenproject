@@ -54,7 +54,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "as plain link in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:project) { create(:project, identifier: "macroproj") }
       let(:work_package) { create(:work_package, project:, author:) }
@@ -69,7 +68,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "as plain link in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { create(:project, identifier: "MACROPROJ") }
       let(:work_package) { create(:work_package, project:, author:) }
@@ -89,7 +87,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "as compact quickinfo (`##`) in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { create(:project, identifier: "MACROPROJ") }
       let(:work_package) { create(:work_package, project:, author:) }
@@ -108,7 +105,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "as detailed quickinfo (`###`) in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { create(:project, identifier: "MACROPROJ") }
       let(:work_package) { create(:work_package, project:, author:) }
@@ -127,7 +123,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "as compact quickinfo (`##`) in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:project) { create(:project, identifier: "macroproj") }
       let(:work_package) { create(:work_package, project:, author:) }
@@ -146,7 +141,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     # a semantic identifier. Labels and URLs key off the mode, not the
     # record state.
     context "in classic mode when the WP carries a semantic identifier",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:project) { create(:project, identifier: "macroproj") }
       let(:work_package) { create(:work_package, project:, author:) }
@@ -165,7 +159,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "with an unresolvable data-id",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:project) { create(:project, identifier: "macroproj") }
       let(:work_package) { create(:work_package, project:, author:) }
@@ -181,7 +174,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     # Semantic-shaped data-ids must not silently resolve to a WP whose id
     # matches the embedded digits.
     context "with a semantic-shaped data-id whose embedded digits collide with a real WP id",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:project) { create(:project, identifier: "macroproj") }
       let(:work_package) { create(:work_package, project:, author:) }
