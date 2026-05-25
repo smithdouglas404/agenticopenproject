@@ -672,6 +672,7 @@ en:
   label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Add notes"
   label_agenda_item_add_outcome: "Add outcome"
+  label_agenda_item_convert_to_work_package: "Convert to work package"
 
   label_agenda_item_work_package_add: "Add work package"
   label_agenda_item_work_package: "Agenda item work package"
