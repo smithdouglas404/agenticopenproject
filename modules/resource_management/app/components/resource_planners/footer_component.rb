@@ -29,25 +29,31 @@
 #++
 
 module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
+  class FooterComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
-
-    def initialize(resource_planner:, project:)
-      super
-
-      @resource_planner = resource_planner
-      @project = project
+    def wrapper_key
+      NewDialogComponent::FOOTER_ID
     end
 
-    private
+    def call
+      component_wrapper do
+        component_collection do |buttons|
+          buttons.with_component(
+            Primer::Beta::Button.new(data: { close_dialog_id: NewDialogComponent::DIALOG_ID })
+          ) { I18n.t(:button_cancel) }
 
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+          buttons.with_component(
+            Primer::Beta::Button.new(
+              scheme: :primary,
+              form: NewDialogComponent::FORM_ID,
+              data: { turbo: true },
+              type: :submit
+            )
+          ) { I18n.t(:button_next) }
+        end
+      end
     end
   end
 end
