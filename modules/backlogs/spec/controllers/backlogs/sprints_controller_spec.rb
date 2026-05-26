@@ -44,6 +44,16 @@ RSpec.describe Backlogs::SprintsController do
 
     current_user { user }
 
+    describe "GET #index" do
+      it "responds with success", :aggregate_failures do
+        get :index, params: { project_id: project.id }
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(assigns(:project)).to eq(project)
+      end
+    end
+
     describe "GET #new_dialog" do
       it "responds with success", :aggregate_failures do
         get :new_dialog, params: { project_id: project.id }, format: :turbo_stream
