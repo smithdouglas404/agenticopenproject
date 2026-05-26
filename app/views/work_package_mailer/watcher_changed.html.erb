@@ -32,7 +32,8 @@ See COPYRIGHT and LICENSE files for more details.
 <p>
   <%= format_text(
         t(:text_latest_note, note: last_work_package_note(@work_package)),
-        format: :markdown_as_static_html,
+        format: :rich,
+        static_html: true,
         only_path: false,
         object: @work_package,
         project: @work_package.project

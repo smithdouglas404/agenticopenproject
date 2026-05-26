@@ -104,7 +104,7 @@ module OpenProject::TextFormatting::Matchers
         label = WorkPackage::SemanticIdentifier.with_hash_prefix(display_id)
 
         return label if text_only?(work_package)
-        return render_static_work_package_macro(work_package, label, detailed:) if context[:as_static_html]
+        return render_static_work_package_macro(work_package, label, detailed:) if context[:static_html]
 
         ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
                                                   "",

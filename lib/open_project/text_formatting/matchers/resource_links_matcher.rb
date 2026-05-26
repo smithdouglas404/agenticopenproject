@@ -176,7 +176,7 @@ module OpenProject::TextFormatting
       # Semantic mode needs the row to map `PROJ-7` to an id; static-HTML
       # output needs `type`/`subject` to compose the quickinfo anchor.
       def self.preload_required?(context)
-        Setting::WorkPackageIdentifier.semantic? || context[:as_static_html]
+        Setting::WorkPackageIdentifier.semantic? || context[:static_html]
       end
       private_class_method :preload_required?
 
@@ -211,7 +211,7 @@ module OpenProject::TextFormatting
       # the anchor for `##`/`###` macros.
       def self.build_cache(identifiers, context = {})
         scope = WorkPackage.where_display_id_in(*identifiers)
-        scope = if context[:as_static_html]
+        scope = if context[:static_html]
                   scope.includes(:type, :status)
                 else
                   scope.select(:id, :identifier)

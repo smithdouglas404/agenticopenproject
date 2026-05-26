@@ -30,8 +30,16 @@
 
 require "spec_helper"
 
-RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatter do
-  subject(:formatted) { described_class.new(context).to_html(input) }
+RSpec.describe "Markdown static-HTML rendering" do # rubocop:disable RSpec/DescribeClass
+  subject(:formatted) { render(input) }
+
+  def render(text)
+    OpenProject::TextFormatting::Renderer.format_text(
+      text,
+      format: :rich,
+      **context.merge(static_html: true)
+    )
+  end
 
   let(:context) { { only_path: false } }
 
@@ -127,14 +135,14 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
       before { hidden_wp.update_columns(identifier: "SECRET-1", sequence_number: 1) }
 
       it "renders the bare identifier label without an anchor for ##N" do
-        rendered = described_class.new(context).to_html("see #{'##'}#{hidden_wp.id}")
+        rendered = render("see #{'##'}#{hidden_wp.id}")
         expect(rendered).to include("SECRET-1")
         expect(rendered).not_to match(%r{<a[^>]*>[^<]*SECRET-1})
         expect(rendered).not_to include("Hidden")
       end
 
       it "renders the bare identifier label without an anchor for ###N" do
-        rendered = described_class.new(context).to_html("see #{'###'}#{hidden_wp.id}")
+        rendered = render("see #{'###'}#{hidden_wp.id}")
         expect(rendered).to include("SECRET-1")
         expect(rendered).not_to match(%r{<a[^>]*>[^<]*SECRET-1})
       end
@@ -143,14 +151,14 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     context "in classic mode",
             with_settings: { work_packages_identifier: "classic" } do
       it "renders the bare #N label without an anchor for ##N" do
-        rendered = described_class.new(context).to_html("see #{'##'}#{hidden_wp.id}")
+        rendered = render("see #{'##'}#{hidden_wp.id}")
         expect(rendered).to include("##{hidden_wp.id}")
         expect(rendered).not_to match(%r{<a[^>]*>[^<]*##{hidden_wp.id}})
         expect(rendered).not_to include("Hidden")
       end
 
       it "renders the bare #N label without an anchor for ###N" do
-        rendered = described_class.new(context).to_html("see #{'###'}#{hidden_wp.id}")
+        rendered = render("see #{'###'}#{hidden_wp.id}")
         expect(rendered).to include("##{hidden_wp.id}")
         expect(rendered).not_to match(%r{<a[^>]*>[^<]*##{hidden_wp.id}})
       end
@@ -194,10 +202,10 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
       before { private_wp.update_columns(identifier: "PRIVATE-1", sequence_number: 1) }
 
       it "does not raise and renders the identifier text" do
-        expect { described_class.new(context).to_html("see #{'##'}#{private_wp.id}") }
+        expect { render("see #{'##'}#{private_wp.id}") }
           .not_to raise_error
 
-        rendered = described_class.new(context).to_html("see #{'##'}#{private_wp.id}")
+        rendered = render("see #{'##'}#{private_wp.id}")
         expect(rendered).to include("PRIVATE-1")
       end
     end
@@ -205,25 +213,12 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     context "in classic mode",
             with_settings: { work_packages_identifier: "classic" } do
       it "does not raise and renders the #N text" do
-        expect { described_class.new(context).to_html("see #{'##'}#{private_wp.id}") }
+        expect { render("see #{'##'}#{private_wp.id}") }
           .not_to raise_error
 
-        rendered = described_class.new(context).to_html("see #{'##'}#{private_wp.id}")
+        rendered = render("see #{'##'}#{private_wp.id}")
         expect(rendered).to include("##{private_wp.id}")
       end
-    end
-  end
-
-  describe "format identifier" do
-    it "exposes :markdown_as_static_html" do
-      expect(described_class.format).to eq(:markdown_as_static_html)
-    end
-  end
-
-  describe "renderer routing" do
-    it "Renderer.formatter_for(:markdown_as_static_html) resolves to this class" do
-      expect(OpenProject::TextFormatting::Renderer.formatter_for(:markdown_as_static_html))
-        .to eq(described_class)
     end
   end
 end

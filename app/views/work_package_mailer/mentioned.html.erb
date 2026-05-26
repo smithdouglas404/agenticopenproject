@@ -26,7 +26,7 @@
         <table <%= placeholder_table_styles(width: "100%", style: "width:100%;") %>>
           <tr>
             <td style="<%= placeholder_text_styles %>">
-              <%= format_text @journal.notes, format: :markdown_as_static_html, only_path: false %>
+              <%= format_text @journal.notes, format: :rich, static_html: true, only_path: false %>
             </td>
           </tr>
         </table>

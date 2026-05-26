@@ -68,7 +68,7 @@ module OpenProject::TextFormatting
         end
 
         scope = WorkPackage.where(id: ids)
-        scope = scope.includes(:type, :status) if context[:as_static_html]
+        scope = scope.includes(:type, :status) if context[:static_html]
         @mentioned_work_packages = scope.index_by(&:id)
         @visible_mentioned_ids = WorkPackage.visible.where(id: ids).pluck(:id).to_set
       end
@@ -128,7 +128,7 @@ module OpenProject::TextFormatting
       end
 
       def work_package_quickinfo(work_package, detailed:)
-        return work_package_static_macro(work_package, detailed:) if context[:as_static_html]
+        return work_package_static_macro(work_package, detailed:) if context[:static_html]
 
         ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
                                                   "",
