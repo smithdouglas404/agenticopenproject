@@ -146,7 +146,6 @@ RSpec.describe WorkPackageMailer do
       let(:mail) { described_class.mentioned(persisted_recipient, persisted_journal) }
 
       context "with classic mode",
-              with_flag: { semantic_work_package_ids: false },
               with_settings: { work_packages_identifier: "classic" } do
         it "renders the hash-prefixed numeric id in the text body" do
           expect(mail.text_part.body.to_s).to include("##{referenced_wp.id}")
@@ -154,7 +153,6 @@ RSpec.describe WorkPackageMailer do
       end
 
       context "with semantic mode",
-              with_flag: { semantic_work_package_ids: true },
               with_settings: { work_packages_identifier: "semantic" } do
         before do
           referenced_wp.update_columns(identifier: "DEMO-1", sequence_number: 1)
@@ -264,7 +262,6 @@ RSpec.describe WorkPackageMailer do
       end
 
       context "with classic mode",
-              with_flag: { semantic_work_package_ids: false },
               with_settings: { work_packages_identifier: "classic" } do
         it "renders the hash-prefixed numeric id in the text body" do
           expect(mail.text_part.body.to_s).to include("##{referenced_wp.id}")
@@ -272,7 +269,6 @@ RSpec.describe WorkPackageMailer do
       end
 
       context "with semantic mode",
-              with_flag: { semantic_work_package_ids: true },
               with_settings: { work_packages_identifier: "semantic" } do
         before do
           referenced_wp.update_columns(identifier: "DEMO-1", sequence_number: 1)
@@ -292,7 +288,6 @@ RSpec.describe WorkPackageMailer do
     end
 
     describe "rendering a cross-project WP reference to a recipient without visibility",
-             with_flag: { semantic_work_package_ids: true },
              with_settings: { work_packages_identifier: "semantic" } do
       shared_let(:parent_project) { create(:project, identifier: "parent-proj") }
       shared_let(:child_project) { create(:project, identifier: "child-proj") }
@@ -349,7 +344,6 @@ RSpec.describe WorkPackageMailer do
       end
 
       context "with semantic mode",
-              with_flag: { semantic_work_package_ids: true },
               with_settings: { work_packages_identifier: "semantic" } do
         before { referenced_wp.update_columns(identifier: "DEMO-1", sequence_number: 1) }
 
@@ -369,7 +363,6 @@ RSpec.describe WorkPackageMailer do
       end
 
       context "with classic mode",
-              with_flag: { semantic_work_package_ids: false },
               with_settings: { work_packages_identifier: "classic" } do
         it "renders ## quickinfo as a static anchor with type + #N + subject" do
           body = mail.html_part.body.to_s

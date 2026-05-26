@@ -172,7 +172,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "with a mention to an inaccessible WP",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       # Label resolution is unscoped so the envelope renders the WP's
       # current `formatted_id` (e.g. `HIDDEN-1`) rather than the literal
@@ -204,7 +203,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "in plain-text rendering mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       # The `:markdown_as_text` channel must collapse mention envelopes
       # to their current `formatted_id` so the plain-text mailer doesn't
@@ -226,7 +224,6 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
     end
 
     context "in plain-text rendering mode (classic)",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:project) { create(:project, identifier: "macroproj") }
       let(:work_package) { create(:work_package, project:, author:) }

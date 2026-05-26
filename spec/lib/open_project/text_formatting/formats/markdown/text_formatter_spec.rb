@@ -53,7 +53,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
     before { login_as(admin) }
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "renders the hash-prefixed numeric id" do
         expect(formatted).to eq("see ##{work_package.id} please")
@@ -61,7 +60,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before do
         work_package.update_columns(identifier: "DEMO-1", sequence_number: 1)
@@ -81,7 +79,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
     before { login_as(admin) }
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before do
         work_package.update_columns(identifier: "DEMO-1", sequence_number: 1)
@@ -99,7 +96,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
     end
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "renders ##N as the hash-prefixed numeric id" do
         input = "see #{'##'}#{work_package.id} please"
@@ -126,7 +122,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
     before { login_as(admin) }
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before do
         work_package.update_columns(identifier: "DEMO-1", sequence_number: 1)
@@ -138,7 +133,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
     end
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "unwraps to the hash-prefixed numeric id" do
         expect(formatted).to eq("check ##{work_package.id}")
@@ -146,7 +140,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
     end
 
     context "with a ##-shaped mention text in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:input) { %(check <mention #{mention_attrs}>##DEMO-1</mention>) }
 

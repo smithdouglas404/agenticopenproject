@@ -57,7 +57,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     let(:input) { "see ##{work_package.id} please" }
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { work_package.update_columns(identifier: "DEMO-1", sequence_number: 1) }
 
@@ -72,7 +71,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     let(:input) { "see #{'##'}#{work_package.id}" }
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { work_package.update_columns(identifier: "DEMO-1", sequence_number: 1) }
 
@@ -87,7 +85,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     end
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "renders type + #N + subject as a single anchor" do
         expect(formatted).to match(%r{<a\b[^>]*>Task ##{work_package.id}: Cats V Dogs</a>})
@@ -99,7 +96,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     let(:input) { "see #{'###'}#{work_package.id}" }
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { work_package.update_columns(identifier: "DEMO-1", sequence_number: 1) }
 
@@ -109,7 +105,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     end
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "renders status + type + #N + subject as a single anchor" do
         expect(formatted).to match(%r{<a\b[^>]*>New Task ##{work_package.id}: Cats V Dogs</a>})
@@ -128,7 +123,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     before { login_as(reader) }
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { hidden_wp.update_columns(identifier: "SECRET-1", sequence_number: 1) }
 
@@ -147,7 +141,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     end
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "renders the bare #N label without an anchor for ##N" do
         rendered = described_class.new(context).to_html("see #{'##'}#{hidden_wp.id}")
@@ -171,7 +164,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     let(:input) { %(check <mention #{mention_attrs}>##DEMO-1</mention>) }
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { work_package.update_columns(identifier: "DEMO-1", sequence_number: 1) }
 
@@ -198,7 +190,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { private_wp.update_columns(identifier: "PRIVATE-1", sequence_number: 1) }
 
@@ -212,7 +203,6 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
     end
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "does not raise and renders the #N text" do
         expect { described_class.new(context).to_html("see #{'##'}#{private_wp.id}") }

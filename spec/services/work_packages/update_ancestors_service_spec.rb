@@ -1397,9 +1397,8 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
     # The journal note always stores the primary-key reference (`#42`).
     # Render-time resolution in the formatter pipeline turns it into
     # `#PROJ-7` in semantic mode and `#42` in classic mode, so the stored
-    # text survives identifier renames and feature-flag rollback.
+    # text survives project-identifier renames.
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_package_done_ratio: "status", work_packages_identifier: "classic" } do
       it "writes the child's hash-prefixed primary key into the parent's journal note" do
         set_attributes_on(child, status: closed_status)
@@ -1411,7 +1410,6 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_package_done_ratio: "status", work_packages_identifier: "semantic" } do
       before do
         child.allocate_and_register_semantic_id
