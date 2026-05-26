@@ -606,17 +606,17 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe ".format" do
+  describe ".format_display_id" do
     it "returns the semantic identifier unchanged when it carries letters" do
-      expect(described_class.format("MYPROJ-1")).to eq("MYPROJ-1")
+      expect(described_class.format_display_id("MYPROJ-1")).to eq("MYPROJ-1")
     end
 
     it "hash-prefixes a numeric integer" do
-      expect(described_class.format(42)).to eq("#42")
+      expect(described_class.format_display_id(42)).to eq("#42")
     end
 
     it "hash-prefixes a numeric string" do
-      expect(described_class.format("42")).to eq("#42")
+      expect(described_class.format_display_id("42")).to eq("#42")
     end
   end
 

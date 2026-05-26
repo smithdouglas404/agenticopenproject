@@ -101,7 +101,7 @@ module OpenProject::TextFormatting::Matchers
       def render_work_package_macro(work_package:, fallback_id:, detailed: false)
         id = work_package&.id || fallback_id
         display_id = work_package&.display_id || fallback_id
-        label = WorkPackage::SemanticIdentifier.with_hash_prefix(display_id)
+        label = WorkPackage::SemanticIdentifier.format_display_id(display_id)
 
         return label if text_only?(work_package)
         return render_static_work_package_macro(work_package, label, detailed:) if context[:static_html]
