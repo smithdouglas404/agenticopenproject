@@ -77,8 +77,7 @@ module API
                             representer: ::API::V3::Users::UserRepresenter,
                             skip_render: ->(*) { represented.presenter_id.nil? }
 
-        associated_resource :work_package,
-                            skip_render: ->(*) { represented.work_package_id.nil? }
+        associated_visible_resource :work_package
 
         associated_resource :meeting_section,
                             as: :section,
