@@ -236,7 +236,7 @@ We support the latest two [openDesk minor releases](https://gitlab.opencode.de/b
 
 If you want to use the feature of [automatically managed project folders](../../system-admin-guide/integrations/nextcloud/#4-automatically-managed-project-folders) you need to install the [Team folders](https://apps.nextcloud.com/apps/groupfolders) app in Nextcloud (formerly Group folders).
 
-* [Team folders 19.1.14](https://github.com/nextcloud/groupfolders/releases/tag/v19.1.14)
+Please choose the latest available version depending on your version of Nextcloud.
 
 ### Keycloak token exchange
 
