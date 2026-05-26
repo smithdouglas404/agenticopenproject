@@ -49,12 +49,13 @@ $board-list-max-width: 300px
     visibility: hidden
 
   &--totals
+    margin: 0
     padding: 0 15px 6px
     display: flex
     flex-wrap: wrap
-    gap: 8px
+    gap: 4px 12px
     font-size: 12px
-    color: var(--color-fg-muted)
+    color: var(--fgColor-muted)
 
   &--total
     display: inline-flex
@@ -64,12 +65,12 @@ $board-list-max-width: 300px
     white-space: nowrap
 
   &--total-label
-    text-transform: uppercase
-    letter-spacing: 0.04em
+    margin: 0
     font-weight: 600
 
   &--total-value
-    color: var(--color-fg-default)
+    margin: 0
+    color: var(--fgColor-default)
     font-variant-numeric: tabular-nums
 
   &--query-container
