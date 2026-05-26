@@ -46,6 +46,10 @@ class Members::CreateService < BaseServices::Create
 
   protected
 
+  def instance(params)
+    existing_inherited_member(params) || super
+  end
+
   def add_group_memberships(member)
     return unless member.principal.is_a?(Group)
 
@@ -58,5 +62,15 @@ class Members::CreateService < BaseServices::Create
 
   def event_type
     OpenProject::Events::MEMBER_CREATED
+  end
+
+  def existing_inherited_member(params)
+    project_id = params[:project_id] || params[:project]&.id
+    return if project_id.blank? || params[:entity].present?
+
+    member = Member.find_by(user_id: params[:user_id], project_id:, entity: nil)
+    return if member.nil? || member.member_roles.any? { it.inherited_from.nil? }
+
+    member
   end
 end

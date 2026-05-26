@@ -97,6 +97,10 @@ class Principal < ApplicationRecord
     where.not(id: Member.of_project(project).select(:user_id))
   }
 
+  scope :not_direct_member_of_project, ->(project) {
+    where.not(id: Member.of_project(project).without_inherited_roles.select(:user_id))
+  }
+
   scope :in_anything_in_project, ->(project) {
     where(id: Member.of_anything_in_project(project).select(:user_id))
   }

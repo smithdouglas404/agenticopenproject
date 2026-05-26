@@ -57,6 +57,10 @@ RSpec.describe Principals::Scopes::PossibleMember do
   let!(:member_group) do
     create(:group, member_with_roles: { project => role })
   end
+  let!(:inherited_member_user) { create(:user) }
+  let!(:inherited_member_group) do
+    create(:group, members: [inherited_member_user], member_with_roles: { project => role })
+  end
   let(:view_work_package_role) { create(:view_work_package_role) }
   let(:work_package) { create(:work_package, project:, author: active_user) }
   let!(:shared_work_package_with_user) do
@@ -95,6 +99,7 @@ RSpec.describe Principals::Scopes::PossibleMember do
       it "returns non locked users, groups and placeholder users not part of the project yet" do
         expect(subject).to contain_exactly(admin_user, global_manager, active_user, registered_user, invited_user,
                                            placeholder_user, group, member_in_public_project,
+                                           inherited_member_user,
                                            shared_work_package_with_user,
                                            shared_work_package_with_group)
       end
@@ -106,6 +111,7 @@ RSpec.describe Principals::Scopes::PossibleMember do
       it "returns non locked users, groups and placeholder users not part of the project yet" do
         expect(subject).to contain_exactly(admin_user, global_manager, active_user, registered_user, invited_user,
                                            placeholder_user, group, member_in_public_project,
+                                           inherited_member_user,
                                            shared_work_package_with_user,
                                            shared_work_package_with_group)
       end
