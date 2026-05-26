@@ -39,14 +39,14 @@ module Backlogs
 
       def name
         if href_for_sprint
-          render(Primer::Beta::Link.new(href: href_for_sprint)) { sprint.name }
+          render(Primer::Beta::Link.new(href: href_for_sprint, font_weight: :bold)) { sprint.name }
         else
           sprint.name
         end
       end
 
       def status
-        I18n.t("activerecord.attributes.sprint.statuses.#{sprint.status}")
+        render(SprintStatusBadgeComponent.new(sprint:))
       end
 
       def start_date
