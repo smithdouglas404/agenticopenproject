@@ -134,7 +134,19 @@ class User < Principal
 
   acts_as_customizable admin_only_allowed: true
 
-  attr_accessor :password, :password_confirmation, :last_before_login_on
+  attr_accessor :last_before_login_on
+  attr_reader :password, :password_confirmation
+
+  # Strip trailing whitespace so accidental trailing characters (paste, autocomplete)
+  # don't produce a password hash the user can't reproduce. Applied symmetrically
+  # at login in AccountController#authenticate_user.
+  def password=(value)
+    @password = value.is_a?(String) ? value.sub(/[[:space:]]+\z/, "") : value
+  end
+
+  def password_confirmation=(value)
+    @password_confirmation = value.is_a?(String) ? value.sub(/[[:space:]]+\z/, "") : value
+  end
 
   validates :login,
             :firstname,
