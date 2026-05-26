@@ -59,7 +59,7 @@ module Import
     private
 
     def sanitize_name(name)
-      name.chars.grep(User::VALID_NAME_REGEX).join.strip
+      name.gsub(User::INVALID_NAME_REGEX, "").strip
     end
 
     def split_display_name(display_name)
