@@ -52,7 +52,7 @@ module Members::Concerns::RoleAssignment
   end
 
   def existing_ids
-    model.member_roles.map(&:role_id)
+    model.member_roles.reject(&:inherited?).map(&:role_id)
   end
 
   def mark_roles_for_destruction(role_ids)

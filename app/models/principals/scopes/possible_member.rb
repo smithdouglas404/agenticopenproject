@@ -38,19 +38,20 @@ module Principals::Scopes
       # * PlaceholderUser
       # * Group
       # User instances need to be non locked (status)
-      # Principals which already are project members are are returned.
+      # Principals which already have direct project roles are not returned.
+      # Users with only inherited roles from a group can still be selected to add direct roles.
       # @param [Project] project The project for which eligible candidates are to be searched
       # @param [String|nil] type The type of principals to be returned. One of 'User', 'Group', 'PlaceholderUser'.
       # @return [ActiveRecord::Relation] A scope of eligible candidates
       def possible_member(project, type: nil)
-        query = Queries::Principals::PrincipalQuery
-          .new(user: ::User.current)
-          .where(:member, "!", [project.id])
-          .where(:status, "!", [statuses[:locked]])
+        query = visible(::User.current)
+          .not_builtin
+          .not_direct_member_of_project(project)
+          .where.not(status: statuses[:locked])
 
-        query.where(:type, "=", [type]) if type.present?
+        query = query.where(type:) if type.present?
 
-        query.results
+        query
       end
     end
   end

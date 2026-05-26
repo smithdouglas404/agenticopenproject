@@ -60,4 +60,32 @@ RSpec.describe Members::CreateService, "integration", type: :model do
       end
     end
   end
+
+  describe "with an inherited project membership" do
+    let(:project) { create(:project) }
+    let(:role) { create(:project_role) }
+    let!(:group) { create(:group, members: [user2], member_with_roles: { project => role }) }
+    let(:inherited_member) { Member.find_by!(project:, principal: user2) }
+    let(:params) do
+      {
+        user_id: user2.id,
+        project_id: project.id,
+        role_ids: [role.id]
+      }
+    end
+
+    before do
+      inherited_member
+    end
+
+    it "adds direct roles to the inherited member instead of creating a duplicate member" do
+      expect { subject }
+        .to change(Member, :count).by(0)
+        .and change { inherited_member.member_roles.only_non_inherited.count }.by(1)
+
+      expect(subject).to be_success
+      expect(subject.result).to eq(inherited_member)
+      expect(inherited_member.member_roles.only_non_inherited.pluck(:role_id)).to contain_exactly(role.id)
+    end
+  end
 end
