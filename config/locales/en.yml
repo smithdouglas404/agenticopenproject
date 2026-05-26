@@ -6170,7 +6170,7 @@ en:
       warning: >
         The changes might take some time to take effect. You will be notified when all relevant work
         packages and project life cycles have been updated.
-      question: "Are you sure you want to continue?"
+      heading: "Change the working days?"
       confirm_button: "Save and reschedule"
     journal_note:
       changed: _**Working days** changed (%{changes})._

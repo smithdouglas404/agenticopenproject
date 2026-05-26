@@ -28,7 +28,7 @@ RSpec.describe Admin::Settings::WorkingDays::ConfirmDialogComponent, type: :comp
     expect(page).to have_no_css(".Button--danger svg")
 
     expect(page).to have_text("Change working days")
-    expect(page).to have_css("h2", text: "Are you sure you want to continue?")
+    expect(page).to have_css("h2", text: "Change the working days?")
     expect(page).to have_text("You will remove the following days from the non-working days list:")
     expect(page).to have_text("June 10, 2026")
     expect(page).to have_css("ul", text: "June 10, 2026")

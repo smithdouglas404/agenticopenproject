@@ -9,7 +9,7 @@
     )
   ) do |dialog|
     dialog.with_confirmation_message do |message|
-      message.with_heading(tag: :h2) { t("working_days.dialog.question") }
+      message.with_heading(tag: :h2) { t("working_days.dialog.heading") }
       message.with_description_content(t("working_days.dialog.description"))
     end
 
