@@ -33,6 +33,7 @@ module Admin
     module CostTypeProjects
       class NewCostTypeProjectsModalComponent < ApplicationComponent
         include OpTurbo::Streamable
+        include OpPrimer::ComponentHelpers
 
         def initialize(cost_type_project_mapping:, cost_type:, **)
           @cost_type_project_mapping = cost_type_project_mapping

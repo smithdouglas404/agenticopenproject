@@ -98,6 +98,10 @@ en:
         work_package:
           is_not_a_valid_target_for_cost_entries: "Work package #%{id} is not a valid target for reassigning the cost entries."
           nullify_is_not_valid_for_cost_entries: "Cost entries can not be assigned to a project."
+        cost_types_project:
+          attributes:
+            project_ids:
+              blank: "Please select a project."
   attributes:
     comment: "Comment"
     cost_type: "Cost type"
