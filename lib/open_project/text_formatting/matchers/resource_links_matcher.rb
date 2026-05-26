@@ -90,6 +90,8 @@ module OpenProject::TextFormatting
           visible_ids.include?(work_package_id)
         end
 
+        # Per-process frozen singleton returned when no preload is in
+        # scope — not a factory; callers must not mutate it.
         EMPTY = new(lookup: {}.freeze, visible_ids: Set.new.freeze).freeze
       end
 
@@ -164,10 +166,11 @@ module OpenProject::TextFormatting
       # Doc-level preload called by `PatternMatcherFilter`. Save/restores
       # the cache so a nested `format_text` (e.g. custom-field formatter
       # re-entering the pipeline) doesn't clobber the outer render.
-      # Classic mode normally skips the load (the link handler renders
-      # `#N` from the matched id alone), but static-HTML channels need
-      # the WP record in both modes to compose the type/subject/status
-      # anchor.
+      # Fires when semantic identifiers need resolving or when a
+      # static-HTML channel needs the WP record to compose the
+      # type/subject/status anchor; other channels render `#N` from the
+      # matched id alone and the as-text path short-circuits on
+      # `text_only?` before consulting the cache.
       def self.with_preloaded_resources(doc, context)
         previous = RequestStore.store[CACHE_KEY]
         return yield unless Setting::WorkPackageIdentifier.semantic? || context[:as_static_html]

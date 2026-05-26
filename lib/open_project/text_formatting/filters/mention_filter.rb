@@ -37,7 +37,7 @@ module OpenProject::TextFormatting
       include OpenProject::StaticRouting::UrlHelpers
 
       def call
-        preload_work_package_mentions
+        preload_mentions
 
         doc.search("mention").each do |mention|
           anchor = mention_anchor(mention)
@@ -49,14 +49,20 @@ module OpenProject::TextFormatting
 
       private
 
-      # Bounded two-SELECT preload for WP mentions: an unscoped fetch (label
-      # resolution regardless of viewer) plus a visibility-scoped id pluck
-      # (gate anchor vs plain-text render). Mirrors the pattern
-      # `ResourceLinksMatcher` uses for `#N` text references so mentions
-      # and references resolve to the same shape for the same recipient,
-      # and avoids the per-mention query the old `.visible.find_by` did.
+      # Doc-level preload so a note with N user/group/WP mentions costs
+      # a bounded number of SELECTs rather than one per mention. WP
+      # mentions need the unscoped record (label) plus a separate
+      # visibility id pluck (anchor-vs-text gating); principals fold the
+      # two concerns into a single visibility-scoped fetch since
+      # invisible principals have no plain-text render path — they fall
+      # back to the literal envelope text instead.
+      def preload_mentions
+        preload_work_package_mentions
+        preload_principal_mentions
+      end
+
       def preload_work_package_mentions
-        ids = mention_work_package_ids
+        ids = mention_ids_for("work_package")
         if ids.empty?
           @mentioned_work_packages = {}
           @visible_mentioned_ids = Set.new
@@ -71,8 +77,15 @@ module OpenProject::TextFormatting
         @visible_mentioned_ids = WorkPackage.visible.where(id: ids).pluck(:id).to_set
       end
 
-      def mention_work_package_ids
-        doc.css('mention[data-type="work_package"]').filter_map { mention_id(it)&.to_i }.uniq
+      def preload_principal_mentions
+        user_ids = mention_ids_for("user")
+        group_ids = mention_ids_for("group")
+        @mentioned_users = user_ids.empty? ? {} : User.visible.where(id: user_ids).index_by(&:id)
+        @mentioned_groups = group_ids.empty? ? {} : Group.visible.where(id: group_ids).index_by(&:id)
+      end
+
+      def mention_ids_for(type)
+        doc.css(%(mention[data-type="#{type}"])).filter_map { mention_id(it)&.to_i }.uniq
       end
 
       def mention_anchor(mention)
@@ -117,7 +130,9 @@ module OpenProject::TextFormatting
       # Plain-text channels and inaccessible WPs both render the
       # `formatted_id` without an anchor or quickinfo widget — the
       # latter would resolve to a hover-card endpoint the recipient
-      # can't reach.
+      # can't reach. Mirrors `LinkHandlers::WorkPackages#text_only?`,
+      # which gates the matching decision for `#N` text references; keep
+      # the two in sync.
       def text_only?(work_package)
         context[:as_text] || @visible_mentioned_ids.exclude?(work_package.id)
       end
@@ -138,8 +153,8 @@ module OpenProject::TextFormatting
       # uses the WP's current `formatted_id`, normalising any historical
       # alias the envelope may have been authored with.
       def work_package_static_macro(work_package, detailed:)
-        label = OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
-                  .compose_static_macro_label(work_package, label: work_package.formatted_id, detailed:)
+        label = OpenProject::TextFormatting::Helpers::StaticMacroLabel
+                  .call(work_package, label: work_package.formatted_id, detailed:)
 
         link_to(label,
                 work_package_path_or_url(id: work_package.display_id, only_path: context[:only_path]),
@@ -160,14 +175,15 @@ module OpenProject::TextFormatting
       # WP label resolution is unscoped (preloaded above); visibility is
       # gated separately in `text_only?` so an inaccessible WP renders
       # its current formatted_id rather than the envelope text the
-      # author originally typed. User/group mentions stay visibility-gated
-      # at the find — there's no equivalent text-only render path for
-      # principals.
+      # author originally typed. Principals stay visibility-gated at the
+      # preload — there's no equivalent text-only render path for users
+      # or groups, so invisible principals fall back to the literal text.
       def class_from_mention(mention)
+        id = mention_id(mention)&.to_i
         case mention.attributes["data-type"].value
-        when "user"         then User.visible.find_by(id: mention_id(mention))
-        when "group"        then Group.visible.find_by(id: mention_id(mention))
-        when "work_package" then @mentioned_work_packages[mention_id(mention)&.to_i]
+        when "user"         then @mentioned_users[id]
+        when "group"        then @mentioned_groups[id]
+        when "work_package" then @mentioned_work_packages[id]
         else raise ArgumentError
         end || fallback_text(mention)
       end

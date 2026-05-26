@@ -124,7 +124,7 @@ module WorkPackage::SemanticIdentifier
   # Returns formatted value for inline UI display.
   #   * Semantic mode: "PROJ-42" (no prefix — self-describing)
   #   * Classic mode: "#42" (hash-prefixed)
-  def self.format(value)
+  def self.with_hash_prefix(value)
     value.is_a?(String) && value.match?(/[A-Za-z]/) ? value : "##{value}"
   end
 
@@ -141,7 +141,7 @@ module WorkPackage::SemanticIdentifier
   # Semantic mode: "PROJ-42" (no prefix — self-describing)
   # Classic mode: "#42" (hash-prefixed)
   def formatted_id
-    WorkPackage::SemanticIdentifier.format(display_id)
+    WorkPackage::SemanticIdentifier.with_hash_prefix(display_id)
   end
 
   # Override ActiveRecord's default `to_param` so Rails URL helpers

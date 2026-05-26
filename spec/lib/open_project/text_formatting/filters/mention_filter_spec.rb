@@ -225,6 +225,29 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
       end
     end
 
+    context "in plain-text rendering mode (classic)",
+            with_flag: { semantic_work_package_ids: false },
+            with_settings: { work_packages_identifier: "classic" } do
+      let(:project) { create(:project, identifier: "macroproj") }
+      let(:work_package) { create(:work_package, project:, author:) }
+
+      it "renders the hash-prefixed numeric id without an anchor or quickinfo" do
+        rendered = format_text(mention_tag(work_package), format: :markdown_as_text)
+
+        expect(rendered).to include("##{work_package.id}")
+        expect(rendered).not_to include("<a")
+        expect(rendered).not_to include("opce-macro-wp-quickinfo")
+        expect(rendered).not_to include("<mention")
+      end
+    end
+
+    # No classic-mode counterpart of "inaccessible WP renders as plain text":
+    # the mention filter does collapse the envelope to a bare `#N`, but the
+    # downstream `PatternMatcherFilter` re-renders `#N` as an anchor — its
+    # visibility gating only runs when the WP cache is preloaded (semantic
+    # mode or static-HTML channels), not for classic-mode rich-HTML.
+    # Channel-specific coverage lives in the static-HTML formatter spec.
+
     # Semantic-shaped data-ids must not silently resolve to a WP whose id
     # matches the embedded digits.
     context "with a semantic-shaped data-id whose embedded digits collide with a real WP id",
@@ -240,6 +263,28 @@ RSpec.describe OpenProject::TextFormatting::Filters::MentionFilter do
         rendered = format_text(tag)
         expect(rendered).to include("#PROJ-#{work_package.id}")
         expect(rendered).not_to include(%(/work_packages/#{work_package.id}))
+      end
+    end
+
+    describe "principal mention preload" do
+      let(:project) { create(:project, identifier: "macroproj") }
+
+      def user_mention_tag(user)
+        %(<mention class="mention" data-id="#{user.id}" data-type="user" data-text="@#{user.name}">@#{user.name}</mention>)
+      end
+
+      it "loads many mentioned users with a single users SELECT keyed by id" do
+        users = create_list(:user, 5, member_with_roles: { project => role })
+        tags = users.map { |u| user_mention_tag(u) }.join
+
+        recorder = ActiveRecord::QueryRecorder.new { format_text(tags) }
+        # Match SELECTs whose primary FROM is users (the column projection
+        # starts with `"users"."..."`), so permission subqueries with a
+        # nested `FROM "users"` don't get counted.
+        batched = recorder.log.grep(/\ASELECT "users"\.[^,]+,.*FROM "users"/i)
+
+        expect(batched.size).to eq(1),
+                                "expected exactly one batched users SELECT, got #{batched.size}:\n#{batched.join("\n")}"
       end
     end
   end

@@ -38,14 +38,6 @@ module OpenProject::TextFormatting::Matchers
       # Shared with the PDF-export subclass in `app/models/work_package/exports/macros/links.rb`.
       HASH_TRIGGERS = %w[# ## ###].freeze
 
-      def self.compose_static_macro_label(work_package, label:, detailed:)
-        parts = []
-        parts << work_package.status&.name if detailed
-        parts << work_package.type&.name
-        parts << label
-        "#{parts.compact.join(' ')}: #{work_package.subject}"
-      end
-
       def applicable?
         hash_trigger? && matcher.prefix.nil?
       end
@@ -109,7 +101,7 @@ module OpenProject::TextFormatting::Matchers
       def render_work_package_macro(work_package:, fallback_id:, detailed: false)
         id = work_package&.id || fallback_id
         display_id = work_package&.display_id || fallback_id
-        label = WorkPackage::SemanticIdentifier.format(display_id)
+        label = WorkPackage::SemanticIdentifier.with_hash_prefix(display_id)
 
         return label if text_only?(work_package)
         return render_static_work_package_macro(work_package, label, detailed:) if context[:as_static_html]
@@ -129,7 +121,7 @@ module OpenProject::TextFormatting::Matchers
       def render_static_work_package_macro(work_package, label, detailed:)
         return label unless work_package
 
-        link_to(self.class.compose_static_macro_label(work_package, label:, detailed:),
+        link_to(OpenProject::TextFormatting::Helpers::StaticMacroLabel.call(work_package, label:, detailed:),
                 work_package_path_or_url(id: work_package.display_id, only_path: context[:only_path]),
                 class: "issue work_package")
       end
@@ -155,7 +147,9 @@ module OpenProject::TextFormatting::Matchers
       # Plain-text channels and inaccessible WPs both render the label
       # without an anchor or quickinfo. Visibility is checked only when a
       # WP was preloaded — a nil work_package means a classic-mode render
-      # or an unresolved reference, neither of which needs gating.
+      # or an unresolved reference, neither of which needs gating. Mirrors
+      # `MentionFilter#text_only?`, which gates the same decision for
+      # `<mention>` envelopes; keep the two in sync.
       def text_only?(work_package)
         context[:as_text] || (work_package && !preload_cache.visible?(work_package.id))
       end

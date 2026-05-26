@@ -97,6 +97,20 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::TextFormatter do
         expect(described_class.new({}).to_html(input).strip).to eq("see DEMO-1 please")
       end
     end
+
+    context "in classic mode",
+            with_flag: { semantic_work_package_ids: false },
+            with_settings: { work_packages_identifier: "classic" } do
+      it "renders ##N as the hash-prefixed numeric id" do
+        input = "see #{'##'}#{work_package.id} please"
+        expect(described_class.new({}).to_html(input).strip).to eq("see ##{work_package.id} please")
+      end
+
+      it "renders ###N as the hash-prefixed numeric id" do
+        input = "see #{'###'}#{work_package.id} please"
+        expect(described_class.new({}).to_html(input).strip).to eq("see ##{work_package.id} please")
+      end
+    end
   end
 
   describe "with a work-package mention envelope" do

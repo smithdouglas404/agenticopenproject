@@ -145,6 +145,23 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
         expect(rendered).not_to match(%r{<a[^>]*>[^<]*SECRET-1})
       end
     end
+
+    context "in classic mode",
+            with_flag: { semantic_work_package_ids: false },
+            with_settings: { work_packages_identifier: "classic" } do
+      it "renders the bare #N label without an anchor for ##N" do
+        rendered = described_class.new(context).to_html("see #{'##'}#{hidden_wp.id}")
+        expect(rendered).to include("##{hidden_wp.id}")
+        expect(rendered).not_to match(%r{<a[^>]*>[^<]*##{hidden_wp.id}})
+        expect(rendered).not_to include("Hidden")
+      end
+
+      it "renders the bare #N label without an anchor for ###N" do
+        rendered = described_class.new(context).to_html("see #{'###'}#{hidden_wp.id}")
+        expect(rendered).to include("##{hidden_wp.id}")
+        expect(rendered).not_to match(%r{<a[^>]*>[^<]*##{hidden_wp.id}})
+      end
+    end
   end
 
   describe "work-package mention envelope" do
@@ -161,6 +178,48 @@ RSpec.describe OpenProject::TextFormatting::Formats::Markdown::StaticHtmlFormatt
       it "renders ## quickinfo envelopes as a static anchor with type + id + subject" do
         expect(formatted).to match(%r{<a\b[^>]*>Task DEMO-1: Cats V Dogs</a>})
         expect(formatted).not_to include("opce-macro-wp-quickinfo")
+      end
+    end
+  end
+
+  # Public document exports and other non-authenticated rendering paths
+  # invoke the static-HTML pipeline with `User.current == User.anonymous`.
+  # In that context every non-public WP is invisible, so any mention must
+  # collapse to its current `formatted_id` as plain text — no anchor, no
+  # subject leak.
+  describe "anonymous current_user" do
+    shared_let(:private_project) { create(:project, identifier: "private", public: false) }
+    shared_let(:private_wp) do
+      create(:work_package, project: private_project, type:, status:, subject: "Top Secret")
+    end
+
+    around do |example|
+      User.execute_as(User.anonymous) { example.run }
+    end
+
+    context "in semantic mode",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      before { private_wp.update_columns(identifier: "PRIVATE-1", sequence_number: 1) }
+
+      it "does not raise and renders the identifier text" do
+        expect { described_class.new(context).to_html("see #{'##'}#{private_wp.id}") }
+          .not_to raise_error
+
+        rendered = described_class.new(context).to_html("see #{'##'}#{private_wp.id}")
+        expect(rendered).to include("PRIVATE-1")
+      end
+    end
+
+    context "in classic mode",
+            with_flag: { semantic_work_package_ids: false },
+            with_settings: { work_packages_identifier: "classic" } do
+      it "does not raise and renders the #N text" do
+        expect { described_class.new(context).to_html("see #{'##'}#{private_wp.id}") }
+          .not_to raise_error
+
+        rendered = described_class.new(context).to_html("see #{'##'}#{private_wp.id}")
+        expect(rendered).to include("##{private_wp.id}")
       end
     end
   end
