@@ -153,8 +153,9 @@ module FormFields
             #{shadow_root_observe_js}
 
             shadowRootWaitFor(shadowRoot, function() {
-              var element = Array.prototype.slice.call(shadowRoot.querySelectorAll("div"))
-                .find(function(div) { return div.textContent.trim() === textToClick; });
+              var titles = Array.prototype.slice.call(shadowRoot.querySelectorAll(".op-bn-work-package--title"));
+              var span = titles.find(function(s) { return s.textContent.trim() === textToClick; });
+              var element = span && span.closest("[role='option']");
               if (element) {
                 element.dispatchEvent(new Event("mousedown", { bubbles: true }));
                 return true;

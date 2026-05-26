@@ -102,8 +102,6 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
     end
 
     it "is possible to add link work package blocks" do
-      pending "will be fixed with https://community.openproject.org/wp/75231"
-
       status = create(:status, name: "Open")
       type = create(:type, name: "Life Goals")
       work_package = create(:work_package,
