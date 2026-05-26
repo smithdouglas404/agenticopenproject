@@ -124,7 +124,7 @@ class WorkPackages::UpdateAncestorsService < BaseServices::BaseCallable
   def set_journal_note(work_packages)
     work_packages.each do |wp|
       wp.journal_notes = I18n.t("work_package.updated_automatically_by_child_changes",
-                                child: "##{initiator_work_package.display_id}")
+                                child: "##{initiator_work_package.id}")
     end
   end
 

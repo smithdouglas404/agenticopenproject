@@ -1394,10 +1394,14 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
         child   | Open   |   5h |        |             5h |                  |         0% |
     TABLE
 
+    # The journal note always stores the primary-key reference (`#42`).
+    # Render-time resolution in the formatter pipeline turns it into
+    # `#PROJ-7` in semantic mode and `#42` in classic mode, so the stored
+    # text survives identifier renames and feature-flag rollback.
     context "in classic mode",
             with_flag: { semantic_work_package_ids: false },
             with_settings: { work_package_done_ratio: "status", work_packages_identifier: "classic" } do
-      it "writes the child's hash-prefixed numeric id into the parent's journal note" do
+      it "writes the child's hash-prefixed primary key into the parent's journal note" do
         set_attributes_on(child, status: closed_status)
         call_update_ancestors_service(child)
 
@@ -1413,14 +1417,14 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
         child.allocate_and_register_semantic_id
       end
 
-      it "writes the child's hash-prefixed semantic identifier into the parent's journal note" do
+      it "writes the child's hash-prefixed primary key, not its semantic identifier" do
         set_attributes_on(child, status: closed_status)
         call_update_ancestors_service(child)
 
         wp = child.reload
         note = parent.reload.journals.last.notes
-        expect(note).to include("##{wp.display_id}")
-        expect(note).not_to match(/##{wp.id}\b/)
+        expect(note).to include("##{wp.id}")
+        expect(note).not_to include(wp.identifier)
       end
     end
   end
