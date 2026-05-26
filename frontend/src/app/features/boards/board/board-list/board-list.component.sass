@@ -48,6 +48,30 @@ $board-list-max-width: 300px
   &--menu
     visibility: hidden
 
+  &--totals
+    padding: 0 15px 6px
+    display: flex
+    flex-wrap: wrap
+    gap: 8px
+    font-size: 12px
+    color: var(--color-fg-muted)
+
+  &--total
+    display: inline-flex
+    align-items: baseline
+    gap: 4px
+    line-height: 1.2
+    white-space: nowrap
+
+  &--total-label
+    text-transform: uppercase
+    letter-spacing: 0.04em
+    font-weight: 600
+
+  &--total-value
+    color: var(--color-fg-default)
+    font-variant-numeric: tabular-nums
+
   &--query-container
     // 100% - board header height
     max-width: inherit

@@ -190,6 +190,68 @@ RSpec.describe "Assignee action board",
     end
   end
 
+  context "with story points and estimated hours" do
+    let!(:bob_wp_with_sums_a) do
+      create(:work_package,
+             project:,
+             assigned_to: bobself_user,
+             subject: "Bob WP A",
+             story_points: 3,
+             estimated_hours: 4)
+    end
+
+    let!(:bob_wp_with_sums_b) do
+      create(:work_package,
+             project:,
+             assigned_to: bobself_user,
+             subject: "Bob WP B",
+             story_points: 5,
+             estimated_hours: 2.5)
+    end
+
+    let!(:foo_wp_with_sums) do
+      create(:work_package,
+             project:,
+             assigned_to: foobar_user,
+             subject: "Foo WP",
+             story_points: 8,
+             estimated_hours: 1)
+    end
+
+    before do
+      login_as(bobself_user)
+    end
+
+    it "shows accumulated story points and estimated time per assignee column" do
+      board_index.visit!
+
+      board_page = board_index.create_board title: "Totals Assignee Board",
+                                            action: "Assignee",
+                                            expect_empty: true
+
+      board_page.add_list option: "Bob Self"
+      board_page.expect_list "Bob Self"
+      board_page.add_list option: "Foo Bar"
+      board_page.expect_list "Foo Bar"
+
+      board_page.expect_card "Bob Self", "Bob WP A"
+      board_page.expect_card "Bob Self", "Bob WP B"
+      board_page.expect_card "Foo Bar", "Foo WP"
+
+      # Bob's column accumulates 3 + 5 = 8 story points and 4 + 2.5 = 6.5 hours.
+      # The pre-existing "Some Task" work package has no story points / hours and is ignored.
+      within(board_page.list_selector("Bob Self")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points"]', text: "8")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time"]', text: "6.5")
+      end
+
+      within(board_page.list_selector("Foo Bar")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points"]', text: "8")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time"]', text: "1")
+      end
+    end
+  end
+
   context "in a project without members" do
     before do
       login_as(admin)

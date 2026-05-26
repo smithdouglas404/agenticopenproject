@@ -66,6 +66,7 @@ import { firstValueFrom } from 'rxjs';
 import { WorkPackageIsolatedQuerySpaceDirective } from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 export interface DisabledButtonPlaceholder {
   text:string;
@@ -124,12 +125,24 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   public columnsQueryProps:any;
 
+  /** Accumulated story points across the column's work packages, or null when not summable */
+  public storyPointsSum:number|null = null;
+
+  /** Accumulated estimated time across the column's work packages, formatted for display, or null when not summable */
+  public estimatedTimeSum:string|null = null;
+
   public text = {
     addCard: this.I18n.t('js.boards.add_card'),
     updateSuccessful: this.I18n.t('js.notice_successful_update'),
     areYouSure: this.I18n.t('js.text_are_you_sure'),
     unnamed_list: this.I18n.t('js.boards.label_unnamed_list'),
     click_to_remove: this.I18n.t('js.boards.click_to_remove_list'),
+    totals: {
+      story_points: this.I18n.t('js.boards.totals.story_points'),
+      story_points_aria: this.I18n.t('js.boards.totals.story_points_aria'),
+      estimated_time: this.I18n.t('js.boards.totals.estimated_time'),
+      estimated_time_aria: this.I18n.t('js.boards.totals.estimated_time_aria'),
+    },
   };
 
   /** Are we allowed to remove and drag & drop elements ? */
@@ -175,6 +188,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     readonly keepTab:KeepTabService,
     readonly currentProject:CurrentProjectService,
     readonly pathHelper:PathHelperService,
+    readonly timezoneService:TimezoneService,
   ) {
     super(I18n, injector);
   }
@@ -423,6 +437,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
       .subscribe(
         (query) => {
           this.wpStatesInitialization.updateQuerySpace(query, query.results);
+          this.updateTotals(query.results.totalSums);
         },
         (error) => {
           const userIsNotAllowedToSeeSubprojectError = 'urn:openproject-org:api:v3:errors:InvalidQuery';
@@ -447,11 +462,30 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     const newColumnsQueryProps:any = {
       'columns[]': ['id', 'subject'],
       showHierarchies: false,
+      showSums: true,
       pageSize: 500,
       filters: JSON.stringify(newFilters),
     };
 
     this.columnsQueryProps = newColumnsQueryProps;
+  }
+
+  private updateTotals(totalSums:Record<string, unknown>|undefined):void {
+    if (!totalSums) {
+      this.storyPointsSum = null;
+      this.estimatedTimeSum = null;
+      return;
+    }
+
+    const storyPoints = totalSums.story_points as number|null|undefined;
+    this.storyPointsSum = typeof storyPoints === 'number' && storyPoints > 0 ? storyPoints : null;
+
+    const estimatedTime = totalSums.estimated_time as string|null|undefined;
+    if (estimatedTime && this.timezoneService.toHours(estimatedTime) > 0) {
+      this.estimatedTimeSum = this.timezoneService.formattedDuration(estimatedTime, 'hour');
+    } else {
+      this.estimatedTimeSum = null;
+    }
   }
 
   private listenToActionAttributeChanges() {

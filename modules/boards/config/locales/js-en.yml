@@ -28,6 +28,11 @@ en:
       new_board: 'New board'
       add_list: 'Add list to board'
       add_card: 'Add card'
+      totals:
+        story_points: 'SP'
+        story_points_aria: 'Accumulated story points'
+        estimated_time: 'Est'
+        estimated_time_aria: 'Accumulated estimated time'
       error_attribute_not_writable: "Cannot move the work package, %{attribute} is not writable."
       error_loading_the_list: "Error loading the list: %{error_message}"
       error_permission_missing: "The permission to create public queries is missing"
