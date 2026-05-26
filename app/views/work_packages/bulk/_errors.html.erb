@@ -31,10 +31,12 @@
 
 <ul>
   <% erroneous_results.each do |call| %>
-    <% wp_id = call.state.copied_from_work_package_id || call.result.id %>
+    <% source_id = call.state.copied_from_work_package_id %>
+    <% wp = source_id ? WorkPackage.find_by(id: source_id) : call.result %>
+    <% wp_id = wp&.id || call.result.id %>
 
     <li>
-      <%= link_to "##{wp_id}", work_package_path(wp_id) %><%= selected_work_packages.map(&:id).include?(wp_id) ? "" : " (#{I18n.t('work_packages.bulk.descendant')})" %>:
+      <%= link_to wp&.formatted_id || "##{wp_id}", work_package_path(wp_id) %><%= selected_work_packages.map(&:id).include?(wp_id) ? "" : " (#{I18n.t('work_packages.bulk.descendant')})" %>:
       <%= safe_join call.errors.full_messages, " " %>
     </li>
   <% end %>
