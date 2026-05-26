@@ -43,5 +43,5 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% content_for :content_body do %>
-  <%= render Backlogs::Sprints::TableComponent.new(rows: @sprints, current_user:, project: @project) %>
+  <%= render Backlogs::Sprints::TableComponent.new(rows: @sprints, current_user:, work_package_counts: @work_package_counts, project: @project) %>
 <% end %>

@@ -57,6 +57,11 @@ module Backlogs
                        .order(:name)
                        .page(helpers.page_param(params))
                        .per_page(helpers.per_page_param)
+
+      @work_package_counts = WorkPackage
+                               .where(sprint_id: @sprints.map(&:id), project: @project)
+                               .group(:sprint_id)
+                               .count
     end
 
     def new_dialog

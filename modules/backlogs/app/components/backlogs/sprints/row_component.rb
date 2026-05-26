@@ -57,6 +57,10 @@ module Backlogs
         helpers.format_date(sprint.finish_date) if sprint.finish_date
       end
 
+      def work_package_count
+        table.work_package_counts.fetch(sprint.id, 0)
+      end
+
       def row_css_id
         "sprint-#{sprint.id}"
       end

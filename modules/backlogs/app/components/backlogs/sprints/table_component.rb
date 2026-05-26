@@ -31,9 +31,9 @@
 module Backlogs
   module Sprints
     class TableComponent < ::OpPrimer::BorderBoxTableComponent
-      options :current_user, :project
+      options :current_user, :project, :work_package_counts
 
-      columns :name, :status, :start_date, :finish_date
+      columns :name, :status, :start_date, :finish_date, :work_package_count
 
       mobile_columns :name, :status
       main_column :name
@@ -44,10 +44,11 @@ module Backlogs
 
       def headers
         [
-          [:name,        { caption: Sprint.human_attribute_name(:name) }],
-          [:status,      { caption: Sprint.human_attribute_name(:status) }],
-          [:start_date,  { caption: Sprint.human_attribute_name(:start_date) }],
-          [:finish_date, { caption: Sprint.human_attribute_name(:finish_date) }]
+          [:name,               { caption: Sprint.human_attribute_name(:name) }],
+          [:status,             { caption: Sprint.human_attribute_name(:status) }],
+          [:start_date,         { caption: Sprint.human_attribute_name(:start_date) }],
+          [:finish_date,        { caption: Sprint.human_attribute_name(:finish_date) }],
+          [:work_package_count, { caption: Sprint.human_attribute_name(:work_packages) }]
         ]
       end
     end
