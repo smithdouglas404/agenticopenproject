@@ -141,7 +141,7 @@ namespace :ldap_groups do
 
       puts "Send CTRL+D to stop the server"
       require "irb"
-      binding.irb
+      binding.irb # rubocop:disable Lint/Debugger
 
       ldap_server.stop
     end
@@ -207,7 +207,7 @@ namespace :ldap_groups do
 
       puts "Send CTRL+D to stop the server"
       require "irb"
-      binding.irb
+      binding.irb # rubocop:disable Lint/Debugger
 
       ldap_server.stop
     end
