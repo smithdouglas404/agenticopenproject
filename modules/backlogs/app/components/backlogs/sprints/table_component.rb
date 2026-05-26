@@ -40,8 +40,6 @@ module Backlogs
 
       def sortable? = false
 
-      def paginated? = false
-
       def has_actions? = false
 
       def mobile_title
