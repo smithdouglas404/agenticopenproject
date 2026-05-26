@@ -477,10 +477,10 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
       return;
     }
 
-    const storyPoints = totalSums.story_points as number|null|undefined;
+    const storyPoints = totalSums.storyPoints as number|null|undefined;
     this.storyPointsSum = typeof storyPoints === 'number' && storyPoints > 0 ? storyPoints : null;
 
-    const estimatedTime = totalSums.estimated_time as string|null|undefined;
+    const estimatedTime = totalSums.estimatedTime as string|null|undefined;
     if (estimatedTime && this.timezoneService.toHours(estimatedTime) > 0) {
       this.estimatedTimeSum = this.timezoneService.formattedDuration(estimatedTime, 'hour');
     } else {
