@@ -28,18 +28,18 @@ With the [end of life for Jira Data Center](https://www.openproject.org/blog/jir
 This import tool is currently in beta and can only import basic data: 
 
 - Projects
-- Issues (name, title, description, attachments)
+- Issues (name, title, description, attachments, due date, estimated hours, remaining hours)
 - Users (name, email, project membership)
 - Statuses
 - Types
 - Basic custom fields (see [Custom fields migration](./custom-fields/))
+- Issues identifiers (Beta, see [Work package identifiers](../../system-admin-guide/manage-work-packages/work-package-identifiers))
 
 ## Data not yet covered by the Migrator 
 
 ### Coming soon
 
-- Project identifiers
-- Issues identifiers
+- Project identifiers conscious 
 - Relations between issues
 - Sprint assignments
 
@@ -66,6 +66,13 @@ Therefore, please make sure that you have [a backup of your OpenProject instance
 
 Navigate to *Administration → Import*. To create a new import configuration, click the **+ Jira configuration** button.
 
+
+![Jira importer settings under OpenProject administration](openproject_admin_import_jira_import_initial.png)
+> [!IMPORTANT]
+>
+> To activate the configuration you need to activate project-based semantic identifiers on the OpenProject side first. If not yet active, you will see a warning banner. Once activated, the button will become selectable. 
+
+
 ![Jira importer settings under OpenProject administration](openproject_admin_import_jira_import.png)
 
 Provide the following details:
@@ -91,7 +98,9 @@ Click **Add configuration** to proceed to the import runs overview. Initially, n
 
 You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode, but not after approving.
 
-![Empty import runs overview after creating a Jira import configuration](openproject_admin_import_jira_import_new_config_import_run_button.png)
+![Empty import runs overview after creating a Jira import configuration](openproject_admin_import_jira_import_new_config_import_run
+
+_button.png)
 
 Click **Import run** to start a new import.
 
