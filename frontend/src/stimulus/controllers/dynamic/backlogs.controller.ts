@@ -55,6 +55,10 @@ export default class BacklogsController extends Controller<HTMLElement> {
 
       morphEvent.preventDefault();
 
+      // On turbo-frames
+      // * that are completed
+      // * have their src updated
+      // Only replace the src.
       const newSrc = morphEvent.detail.newElement?.getAttribute('src');
       if (newSrc && !el.getAttribute('src')?.endsWith(newSrc)) {
         el.setAttribute('src', newSrc);
@@ -71,7 +75,12 @@ export default class BacklogsController extends Controller<HTMLElement> {
   }
 
   private refreshList() {
-    void this.listElement.reload();
+    // The turbo frame is disabled upon loading the page. That way,
+    // the content is loaded on the initial request which is more efficient.
+    // But when updating, the disabled now needs to be removed.
+    const frame = this.listElement;
+    void frame.reload();
+    if (frame.disabled) frame.disabled = false;
   }
 
   private get listElement() {

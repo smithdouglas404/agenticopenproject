@@ -35,7 +35,7 @@ class WorkPackages::CardsController < ApplicationController
   include OpTurbo::ComponentStream
 
   def show
-    expires_in 1.hour, public: true
+    expires_in 1.hour, public: false
 
     render OpenProject::Common::WorkPackageCardComponent.new(work_package: @work_package,
                                                              menu_src: menu_project_backlogs_work_package_path(@work_package.project,

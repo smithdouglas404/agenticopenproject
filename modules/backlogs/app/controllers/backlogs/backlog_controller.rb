@@ -37,10 +37,10 @@ module Backlogs
     end
 
     def show
+      load_backlogs
+
       case turbo_frame_request_id
       when "backlogs_container"
-        load_backlogs
-
         render partial: "backlogs/backlog/backlog_list", layout: false
       else
         render "backlogs/backlog/show"
@@ -51,6 +51,8 @@ module Backlogs
       if turbo_frame_request?
         render "work_packages/split_view", layout: false
       else
+        load_backlogs
+
         render "backlogs/backlog/show"
       end
     end
