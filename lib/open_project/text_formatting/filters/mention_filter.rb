@@ -134,15 +134,14 @@ module OpenProject::TextFormatting
 
       # Static fallback shared with the PatternMatcherFilter's `##`/`###`
       # path so envelope-driven and text-driven references render the same
-      # shape in channels that cannot hydrate the custom element.
+      # shape in channels that cannot hydrate the custom element. Always
+      # uses the WP's current `formatted_id`, normalising any historical
+      # alias the envelope may have been authored with.
       def work_package_static_macro(work_package, detailed:)
-        parts = []
-        parts << work_package.status&.name if detailed
-        parts << work_package.type&.name
-        parts << work_package.formatted_id
-        link_text = "#{parts.compact.join(' ')}: #{work_package.subject}"
+        label = OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
+                  .compose_static_macro_label(work_package, label: work_package.formatted_id, detailed:)
 
-        link_to(link_text,
+        link_to(label,
                 work_package_path_or_url(id: work_package.display_id, only_path: context[:only_path]),
                 class: "issue work_package")
       end

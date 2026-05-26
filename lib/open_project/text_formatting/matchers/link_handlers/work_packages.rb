@@ -38,6 +38,17 @@ module OpenProject::TextFormatting::Matchers
       # Shared with the PDF-export subclass in `app/models/work_package/exports/macros/links.rb`.
       HASH_TRIGGERS = %w[# ## ###].freeze
 
+      # Builds the user-facing label for the static-anchor variant of `##`/
+      # `###` macros. Centralised so the PatternMatcherFilter path here and
+      # the `<mention>`-envelope path in `MentionFilter` stay in lockstep.
+      def self.compose_static_macro_label(work_package, label:, detailed:)
+        parts = []
+        parts << work_package.status&.name if detailed
+        parts << work_package.type&.name
+        parts << label
+        "#{parts.compact.join(' ')}: #{work_package.subject}"
+      end
+
       def applicable?
         hash_trigger? && matcher.prefix.nil?
       end
@@ -112,20 +123,16 @@ module OpenProject::TextFormatting::Matchers
       end
 
       # Static fallback for channels that cannot hydrate the quickinfo
-      # custom element (HTML mailers, exports). Mirrors the in-app widget's
-      # text composition — type, optional status, formatted_id, subject —
-      # so the anchor reads the same as the rich rendering once flattened.
-      # Unresolved references collapse to the bare label.
+      # custom element. Composes type, optional status, label, and subject
+      # into the anchor; unresolved references collapse to the bare label.
+      # The label is the matched identifier (potentially a historical alias)
+      # to preserve what the author wrote — the `<mention>` envelope path
+      # in `MentionFilter` instead normalises to the WP's current
+      # `formatted_id`.
       def render_static_work_package_macro(work_package, label, detailed:)
         return label unless work_package
 
-        parts = []
-        parts << work_package.status&.name if detailed
-        parts << work_package.type&.name
-        parts << label
-        link_text = "#{parts.compact.join(' ')}: #{work_package.subject}"
-
-        link_to(link_text,
+        link_to(self.class.compose_static_macro_label(work_package, label:, detailed:),
                 work_package_path_or_url(id: work_package.display_id, only_path: context[:only_path]),
                 class: "issue work_package")
       end
