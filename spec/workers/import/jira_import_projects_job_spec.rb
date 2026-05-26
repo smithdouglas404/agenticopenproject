@@ -228,6 +228,40 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           expect { described_class.new.perform(jira_import.id) }
             .to change(Import::JiraOpenProjectReference, :count).by_at_least(4)
         end
+
+        context "when there is issue from a different import run with the same jira_project_id" do
+          let(:other_jira_import) do
+            create(:jira_import,
+                   jira:,
+                   author:,
+                   projects: [{ "id" => jira_project_id, "key" => jira_project_key, "name" => jira_project_name }])
+          end
+
+          let(:other_issue_payload) do
+            jira_issue_payload.deep_dup.tap do |payload|
+              payload["id"] = "99999"
+              payload["key"] = "#{jira_project_key}-1123"
+              payload["fields"]["summary"] = "ISSUE 1123"
+            end
+          end
+
+          let!(:other_jira_issue) do
+            create(:jira_issue,
+                   jira:,
+                   jira_import: other_jira_import,
+                   jira_issue_id: "99999",
+                   jira_project_id: jira_project.id,
+                   payload: other_issue_payload)
+          end
+
+          it "only imports issues fetched in the current import run" do
+            described_class.new.perform(jira_import.id)
+
+            expect(WorkPackage.find("DPPP-6")).to be_present
+            expect { WorkPackage.find("DPPP-1123") }.to raise_error(ActiveRecord::RecordNotFound)
+            expect(WorkPackage.count).to eq(1)
+          end
+        end
       end
 
       context "when project creation fails with a general error" do
