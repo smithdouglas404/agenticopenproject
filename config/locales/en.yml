@@ -348,6 +348,8 @@ en:
             confirm_button: "Understood"
           select_projects:
             title: "Select projects"
+      user:
+        unknown_name: "Unknown"
 
     mcp_configurations:
       index:
