@@ -41,7 +41,7 @@ import {
   openProjectWorkPackageBlockSpec,
   openProjectWorkPackageInlineSpec,
   workPackageSlashMenu,
-  useInlineWpEvents,
+  useOpBlockNoteExtensions,
   useHashWpMenu,
 } from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -123,7 +123,7 @@ export function OpBlockNoteEditor({
   }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks]);
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
-  useInlineWpEvents(editor);
+  useOpBlockNoteExtensions(editor);
   type EditorType = typeof editor;
   const theme = useOpTheme();
 
