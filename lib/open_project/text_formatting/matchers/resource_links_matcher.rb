@@ -166,14 +166,9 @@ module OpenProject::TextFormatting
       # Doc-level preload called by `PatternMatcherFilter`. Save/restores
       # the cache so a nested `format_text` (e.g. custom-field formatter
       # re-entering the pipeline) doesn't clobber the outer render.
-      # Fires when semantic identifiers need resolving or when a
-      # static-HTML channel needs the WP record to compose the
-      # type/subject/status anchor; other channels render `#N` from the
-      # matched id alone and the as-text path short-circuits on
-      # `text_only?` before consulting the cache.
       def self.with_preloaded_resources(doc, context)
         previous = RequestStore.store[CACHE_KEY]
-        return yield unless Setting::WorkPackageIdentifier.semantic? || context[:as_static_html]
+        return yield unless preload_required?(context)
 
         identifiers = collect_work_package_identifiers(doc)
         return yield if identifiers.empty?
@@ -183,6 +178,17 @@ module OpenProject::TextFormatting
       ensure
         RequestStore.store[CACHE_KEY] = previous
       end
+
+      # Two channels need the WP record at render time: semantic mode (to
+      # resolve `PROJ-7` to a row) and static-HTML output (to compose the
+      # type/subject anchor of a quickinfo macro). Classic-mode rich HTML
+      # and the as-text channel both render from the matched id alone —
+      # the latter short-circuits on `text_only?` before consulting the
+      # cache.
+      def self.preload_required?(context)
+        Setting::WorkPackageIdentifier.semantic? || context[:as_static_html]
+      end
+      private_class_method :preload_required?
 
       def self.collect_work_package_identifiers(doc)
         identifiers = Set.new
