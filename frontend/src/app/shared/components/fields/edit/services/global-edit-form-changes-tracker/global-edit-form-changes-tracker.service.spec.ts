@@ -30,6 +30,8 @@ describe('GlobalEditFormChangesTrackerService', () => {
   });
 
   afterEach(() => {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    service['abortController'].abort();
     window.OpenProject = originalOpenProject;
   });
 
@@ -178,5 +180,65 @@ describe('GlobalEditFormChangesTrackerService', () => {
     service.addToActiveForms(form);
 
     expect(window.OpenProject.editFormsContainUnsavedChanges()).toBe(true);
+  });
+
+  it('should prevent turbo:before-render for restoration visits when a tracked form has changes', () => {
+    const form = createForm(true);
+    const event = new Event('turbo:before-render', { cancelable: true });
+
+    service.addToActiveForms(form);
+    document.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('should not prevent turbo:before-render when no forms have changes', () => {
+    const event = new Event('turbo:before-render', { cancelable: true });
+
+    document.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('should not prevent turbo:before-render after a non-restore turbo:visit', () => {
+    const form = createForm(true);
+
+    service.addToActiveForms(form);
+    document.dispatchEvent(new CustomEvent('turbo:visit', { detail: { url: 'http://example.com', action: 'advance' } }));
+
+    const event = new Event('turbo:before-render', { cancelable: true });
+    document.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('should prevent turbo:before-render after a restore turbo:visit', () => {
+    const form = createForm(true);
+
+    service.addToActiveForms(form);
+    document.dispatchEvent(new CustomEvent('turbo:visit', { detail: { url: 'http://example.com', action: 'restore' } }));
+
+    const event = new Event('turbo:before-render', { cancelable: true });
+    document.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('should still block renders when a prior turbo:before-visit was canceled', () => {
+    const form = createForm(true);
+
+    service.addToActiveForms(form);
+
+    const canceledVisit = new CustomEvent('turbo:before-visit', {
+      detail: { url: 'http://example.com' },
+      cancelable: true,
+    });
+    canceledVisit.preventDefault();
+    document.dispatchEvent(canceledVisit);
+
+    const event = new Event('turbo:before-render', { cancelable: true });
+    document.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
   });
 });

@@ -41,9 +41,6 @@ export class BeforeunloadController extends ApplicationController {
   }
 
   private beforeunloadHandler(evt:BeforeUnloadEvent|TurboBeforeVisitEvent) {
-    // Angular edit forms register their own native beforeunload listener.
-    // Include them here only for Turbo visits, where that native listener
-    // does not run.
     const hasUnsavedChanges = evt.type === 'turbo:before-visit'
       ? window.OpenProject.pageHasUnsavedChanges
       : window.OpenProject.pageWasEdited;
