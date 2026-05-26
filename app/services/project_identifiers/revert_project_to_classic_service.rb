@@ -51,12 +51,24 @@ module ProjectIdentifiers
     attr_reader :project
 
     def restore_classic_identifier
-      generator = ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new
-      classic = generator.restore_identifier(project) || generator.suggest_identifier(project.name)
+      classic = identifier_generator.restore_identifier(project) ||
+                identifier_generator.suggest_identifier(project.name)
       # Suppress notifications: this is a background system operation, not a user edit.
       Journal::NotificationConfiguration.with(false) do
         project.update!(identifier: classic)
+      rescue ActiveRecord::RecordInvalid => e
+        handle_identifier_conflict(classic, e)
       end
+    end
+
+    def handle_identifier_conflict(classic, error)
+      Rails.logger.warn "#{self.class}: identifier '#{classic}' taken for project #{project.id}, " \
+                        "falling back. (#{error.message})"
+      project.update!(identifier: identifier_generator.suggest_identifier(project.name))
+    end
+
+    def identifier_generator
+      ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new
     end
   end
 end
