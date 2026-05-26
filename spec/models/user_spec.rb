@@ -122,6 +122,52 @@ RSpec.describe User do
     end
   end
 
+  describe "#password=" do
+    it "strips trailing whitespace" do
+      user.password = "secret123 "
+      expect(user.password).to eq("secret123")
+    end
+
+    it "strips trailing tabs and newlines" do
+      user.password = "secret123\t\n"
+      expect(user.password).to eq("secret123")
+    end
+
+    it "preserves internal and leading whitespace" do
+      user.password = "  pass phrase"
+      expect(user.password).to eq("  pass phrase")
+    end
+
+    it "leaves nil values untouched" do
+      user.password = nil
+      expect(user.password).to be_nil
+    end
+
+    it "applies symmetrically to password_confirmation" do
+      user.password_confirmation = "secret123 \n"
+      expect(user.password_confirmation).to eq("secret123")
+    end
+
+    it "lets matching trimmed values pass confirmation validation" do
+      user.login = "trim_user"
+      user.firstname = "T"
+      user.lastname = "U"
+      user.mail = "trim@example.com"
+      user.password = "AdminAdmin1! "
+      user.password_confirmation = "AdminAdmin1!"
+      expect(user).to be_valid
+    end
+
+    it "persists the trimmed password so login works without the trailing space" do
+      created = create(:user,
+                       login: "trim_login_test",
+                       mail: "trim_login_test@example.com",
+                       password: "AdminAdmin1! ",
+                       password_confirmation: "AdminAdmin1! ")
+      expect(created.check_password?("AdminAdmin1!")).to be true
+    end
+  end
+
   describe "#login" do
     before do
       user.login = login
