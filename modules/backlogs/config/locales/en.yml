@@ -223,6 +223,7 @@ en:
       sprint_sharing:
         description: "Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe)."
 
+  label_all_sprints: "All sprints"
   label_backlog: "Backlog"
   label_backlog_bucket_edit: "Edit backlog bucket"
   label_backlog_bucket_new: "New backlog bucket"
