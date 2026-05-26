@@ -95,7 +95,12 @@ module Import
         user = jira_client.user_by_username(username:)
         user_keys << user["key"] if user.present?
       rescue Import::JiraClient::ApiError => e
-        Rails.logger.error "Could not resolve mentioned user '#{username}': #{e.message} - skipping"
+        message = "Could not resolve mentioned user '#{username}': #{e.message}"
+        if e.status == 404
+          Rails.logger.info("#{message} - skipping")
+        else
+          raise message
+        end
       end
     end
 
