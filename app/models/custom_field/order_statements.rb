@@ -113,6 +113,11 @@ module CustomField::OrderStatements
   #   ) cf_order_NNN ON cf_order_NNN.customized_id = …
   #
   def join_for_order_sql(value:, add_select: nil, join: nil, multi_value: false)
+    customized_type_condition = ActiveRecord::Base.send(
+      :sanitize_sql_array,
+      ["cv.customized_type = ?", self.class.customized_class.base_class.name]
+    )
+
     <<~SQL.squish
       LEFT OUTER JOIN (
         SELECT
@@ -122,7 +127,7 @@ module CustomField::OrderStatements
             #{", #{add_select}" if add_select}
           FROM #{CustomValue.quoted_table_name} cv
           #{join}
-          WHERE cv.customized_type = #{CustomValue.connection.quote(self.class.customized_class.base_class.name)}
+          WHERE #{customized_type_condition}
             AND cv.custom_field_id = #{id}
             AND cv.value IS NOT NULL
             AND cv.value != ''

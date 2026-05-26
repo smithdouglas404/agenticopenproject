@@ -34,7 +34,7 @@ module Queries::Operators
     set_symbol "="
 
     def self.sql_for_field(values, db_table, db_field)
-      "#{db_table}.#{db_field} IN (#{values.map { |val| "'#{connection.quote_string(val)}'" }.join(',')})"
+      ActiveRecord::Base.send(:sanitize_sql_array, ["#{db_table}.#{db_field} IN (?)", values])
     end
   end
 end

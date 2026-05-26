@@ -38,10 +38,18 @@ module Queries::Operators
 
         if values.present?
           sql = values.map do |val|
-            "NOT EXISTS (SELECT 1 FROM #{cv_table} WHERE customized_type = '#{connection.quote_string(customized_type)}' " \
-              "AND custom_field_id = #{custom_field_id} " \
-              "AND customized_id = #{customized_id_join_field} " \
-              "AND value ='#{connection.quote_string(val)}')"
+            ActiveRecord::Base.send(
+              :sanitize_sql_array,
+              [
+                "NOT EXISTS (SELECT 1 FROM #{cv_table} WHERE customized_type = ? " \
+                "AND custom_field_id = ? " \
+                "AND customized_id = #{customized_id_join_field} " \
+                "AND value = ?)",
+                customized_type,
+                custom_field_id,
+                val
+              ]
+            )
           end
 
           sql.join(" AND ")
