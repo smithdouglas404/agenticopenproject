@@ -38,10 +38,6 @@ module Backlogs
       mobile_columns :name, :status
       main_column :name
 
-      def sortable? = false
-
-      def has_actions? = false
-
       def mobile_title
         I18n.t(:label_all_sprints)
       end

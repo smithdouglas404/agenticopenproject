@@ -53,8 +53,8 @@ module Backlogs
     def index
       @sprints = Sprint.for_project(@project)
                        .order_by_date
-                       # TODO order by date first, then by name? Or do this in table?
                        .includes(:project) # TODO: remove?
+                       .order(:name)
                        .page(helpers.page_param(params))
                        .per_page(helpers.per_page_param)
     end
