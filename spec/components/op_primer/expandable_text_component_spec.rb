@@ -28,14 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  module Adapters
-    module Results
-      class StorageFileAncestor < StorageFile
-        def initialize(name:, location:)
-          super(name:, location:, id: Digest::SHA256.hexdigest(name), permissions: %i[readable writeable])
-        end
-      end
-    end
+require "rails_helper"
+
+RSpec.describe OpPrimer::ExpandableTextComponent, type: :component do
+  def render_component(**, &)
+    render_inline(described_class.new(**), &)
+  end
+
+  it "renders expandable truncated text" do
+    render_component { "Long permission label" }
+
+    expect(page).to have_css("div.d-flex.flex-items-baseline.gap-1.min-width-0[data-controller='truncation']")
+    expect(page).to have_css(".Truncate.flex-1[data-truncation-target='truncate']", text: "Long permission label")
+    expect(page).to have_css(".hidden-text-expander[data-truncation-target='expander'][hidden]", visible: :hidden)
+    expect(page).to have_css("button.ellipsis-expander[aria-label='Show full text']", visible: :hidden)
+  end
+
+  it "merges classes and data attributes" do
+    render_component(classes: "custom-class", data: { test_selector: "expandable-text" }) { "Long permission label" }
+
+    expect(page).to have_css(
+      "div.custom-class.gap-1.min-width-0[data-controller='truncation'][data-test-selector='expandable-text']"
+    )
+  end
+
+  it "supports flex system arguments" do
+    render_component(flex: 1) { "Long permission label" }
+
+    expect(page).to have_css("div.flex-1")
   end
 end

@@ -27,15 +27,24 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+#
+module OpPrimer
+  class ExpandableTextComponent < Primer::Component # rubocop:disable OpenProject/AddPreviewForViewComponent
+    def initialize(**system_arguments)
+      super()
 
-module Storages
-  module Adapters
-    module Results
-      class StorageFileAncestor < StorageFile
-        def initialize(name:, location:)
-          super(name:, location:, id: Digest::SHA256.hexdigest(name), permissions: %i[readable writeable])
-        end
-      end
+      @system_arguments = deny_tag_argument(**system_arguments)
+      @system_arguments[:tag] = :div
+      @system_arguments[:display] = :flex
+      @system_arguments[:align_items] = :baseline
+      @system_arguments[:data] = merge_data(
+        @system_arguments,
+        data: { controller: "truncation" }
+      )
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "gap-1 min-width-0"
+      )
     end
   end
 end
