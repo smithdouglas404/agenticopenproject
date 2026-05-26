@@ -35,6 +35,8 @@ module Admin::Settings
     menu_item :working_days_and_hours
 
     def confirm_changes
+      return update unless working_days_changed? || non_working_days_changed?
+
       removed_days = non_working_days_params
         .select { |nwd| nwd["_destroy"].present? }
         .filter_map { |nwd| removed_non_working_day_date(nwd) }
@@ -67,6 +69,14 @@ module Admin::Settings
     end
 
     private
+
+    def working_days_changed?
+      working_days_params(params.expect(settings: {})) != Setting.working_days.map(&:to_i)
+    end
+
+    def non_working_days_changed?
+      non_working_days_params.any?
+    end
 
     def working_days_params(settings)
       settings[:working_days] ? settings[:working_days].compact_blank.map(&:to_i).uniq : []

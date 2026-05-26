@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { FullCalendarComponent } from '@fullcalendar/angular';
@@ -9,7 +9,6 @@ import { IDay } from 'core-app/core/state/days/day.model';
 import { CalendarViewEvent } from 'core-app/features/calendar/op-work-packages-calendar.service';
 import { opIconElement } from 'core-app/shared/helpers/op-icon-builder';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import allLocales from '@fullcalendar/core/locales-all';
 
 
@@ -28,13 +27,12 @@ export interface INonWorkingDay {
   templateUrl: './op-non-working-days-list.component.html',
   standalone: false,
 })
-export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
+export class OpNonWorkingDaysListComponent implements OnInit {
   readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   protected I18n = inject(I18nService);
   readonly dayService = inject(DayResourceService);
   readonly toast = inject(ToastService);
   readonly cdRef = inject(ChangeDetectorRef);
-  readonly turboRequests = inject(TurboRequestsService);
 
   @ViewChild(FullCalendarComponent) ucCalendar:FullCalendarComponent;
 
@@ -52,12 +50,8 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
     add: this.I18n.t('js.button_add'),
   };
 
-  formSubmitted = false;
-
   originalNonWorkingDays:INonWorkingDay[] = [];
   nonWorkingDays:INonWorkingDay[] = [];
-
-  originalWorkingDays:string[] = [];
 
   datepickerOpened = false;
 
@@ -100,46 +94,6 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
 
   constructor() {
     populateInputsFromDataset(this);
-    this.listenToFormSubmit();
-  }
-
-  private listenToFormSubmit() {
-    const form = this.elementRef.nativeElement.closest('form')!;
-    form.addEventListener('submit', (evt:Event) => {
-      if (!this.nonWorkingDaysModified() && !this.workingDaysModified()) {
-        return;
-      }
-
-      evt.preventDefault();
-
-      if (this.formSubmitted) {
-        return;
-      }
-
-      this.formSubmitted = true;
-      const target = evt.target as HTMLFormElement;
-
-      this.openConfirmChangesDialog(target);
-    });
-  }
-
-  private openConfirmChangesDialog(form:HTMLFormElement):void {
-    const confirmUrl = `${form.action}/confirm_changes`;
-    const formData = new FormData(form);
-    formData.delete('_method');
-
-    void this.turboRequests.request(
-      confirmUrl,
-      {
-        method: 'POST',
-        headers: { Accept: 'text/vnd.turbo-stream.html' },
-        body: formData,
-      },
-      false,
-      confirmUrl,
-    ).finally(() => {
-      this.formSubmitted = false;
-    });
   }
 
   private markNonWorkingDayForRemoval(date:string):void {
@@ -159,16 +113,6 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
         this.nonWorkingDays.push({ ...el });
       });
     this.cdRef.detectChanges();
-  }
-
-  ngAfterViewInit():void {
-    const form = this.elementRef.nativeElement.closest('form')!;
-    const workingDayCheckboxes = Array.from(form.querySelectorAll('input[name="settings[working_days][]"]'));
-    workingDayCheckboxes.forEach((checkbox:HTMLInputElement) => {
-      if (checkbox.checked) {
-        this.originalWorkingDays.push(checkbox.value);
-      }
-    });
   }
 
   // Initializes nonWorkingDays from the API
@@ -229,28 +173,4 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
     api.addEvent({ ...day, id: date });
   }
 
-  private get workingDays():string[] {
-    const workingDays:string[] = [];
-
-    const form = this.elementRef.nativeElement.closest('form')!;
-    const workingDayCheckboxes = Array.from(form.querySelectorAll('input[name="settings[working_days][]"]'));
-    workingDayCheckboxes.forEach((checkbox:HTMLInputElement) => {
-      if (checkbox.checked) {
-        workingDays.push(checkbox.value);
-      }
-    });
-
-    return workingDays;
-  }
-
-  private nonWorkingDaysModified():boolean {
-    return this.nonWorkingDays.some((el) => el._destroy)
-      || this.modifiedNonWorkingDays.length > 0
-      || this.nonWorkingDays.length > this.originalNonWorkingDays.length;
-  }
-
-  private workingDaysModified():boolean {
-    return _.difference(this.workingDays, this.originalWorkingDays).length > 0
-      || _.difference(this.originalWorkingDays, this.workingDays).length > 0;
-  }
 }
