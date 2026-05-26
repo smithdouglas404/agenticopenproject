@@ -34,25 +34,25 @@
         (onRemove)="deleteList()" />
     </div>
     @if (storyPointsSum !== null || estimatedTimeSum !== null) {
-      <div class="op-board-list--totals"
+      <dl class="op-board-list--totals"
         data-test-selector="op-board-list--totals">
         @if (storyPointsSum !== null) {
-          <span class="op-board-list--total"
-            data-test-selector="op-board-list--total-story-points"
-            [attr.aria-label]="text.totals.story_points_aria">
-            <span class="op-board-list--total-label">{{ text.totals.story_points }}</span>
-            <span class="op-board-list--total-value">{{ storyPointsSum }}</span>
-          </span>
+          <div class="op-board-list--total"
+            data-test-selector="op-board-list--total-story-points">
+            <dt class="op-board-list--total-label">{{ text.totals.story_points }}</dt>
+            <dd class="op-board-list--total-value"
+              data-test-selector="op-board-list--total-story-points-value">{{ storyPointsSum }}</dd>
+          </div>
         }
         @if (estimatedTimeSum !== null) {
-          <span class="op-board-list--total"
-            data-test-selector="op-board-list--total-estimated-time"
-            [attr.aria-label]="text.totals.estimated_time_aria">
-            <span class="op-board-list--total-label">{{ text.totals.estimated_time }}</span>
-            <span class="op-board-list--total-value">{{ estimatedTimeSum }}</span>
-          </span>
+          <div class="op-board-list--total"
+            data-test-selector="op-board-list--total-estimated-time">
+            <dt class="op-board-list--total-label">{{ text.totals.estimated_time }}</dt>
+            <dd class="op-board-list--total-value"
+              data-test-selector="op-board-list--total-estimated-time-value">{{ estimatedTimeSum }}</dd>
+          </div>
         }
-      </div>
+      </dl>
     }
     <div class="op-board-list--query-container drop-zone"
       [ngClass]="{ '-with-create-button': board.isAction || showAddButton }">

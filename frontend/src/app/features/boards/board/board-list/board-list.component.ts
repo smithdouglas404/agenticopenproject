@@ -139,9 +139,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     click_to_remove: this.I18n.t('js.boards.click_to_remove_list'),
     totals: {
       story_points: this.I18n.t('js.boards.totals.story_points'),
-      story_points_aria: this.I18n.t('js.boards.totals.story_points_aria'),
       estimated_time: this.I18n.t('js.boards.totals.estimated_time'),
-      estimated_time_aria: this.I18n.t('js.boards.totals.estimated_time_aria'),
     },
   };
 
