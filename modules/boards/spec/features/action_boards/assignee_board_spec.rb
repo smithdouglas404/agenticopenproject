@@ -214,7 +214,7 @@ RSpec.describe "Assignee action board",
              project:,
              assigned_to: foobar_user,
              subject: "Foo WP",
-             story_points: 8,
+             story_points: 13,
              estimated_hours: 1)
     end
 
@@ -222,7 +222,8 @@ RSpec.describe "Assignee action board",
       login_as(bobself_user)
     end
 
-    it "shows accumulated story points and estimated time per assignee column" do
+    it "shows accumulated story points and work totals per assignee column, " \
+       "and recomputes them after a card is moved" do
       board_index.visit!
 
       board_page = board_index.create_board title: "Totals Assignee Board",
@@ -241,13 +242,35 @@ RSpec.describe "Assignee action board",
       # Bob's column accumulates 3 + 5 = 8 story points and 4 + 2.5 = 6.5 hours.
       # The pre-existing "Some Task" work package has no story points / hours and is ignored.
       within(board_page.list_selector("Bob Self")) do
-        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points"]', text: "8")
-        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time"]', text: "6.5")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "8")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b6\.5\b/)
       end
 
       within(board_page.list_selector("Foo Bar")) do
-        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points"]', text: "8")
-        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time"]', text: "1")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "13")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b1\b/)
+      end
+
+      # Move "Bob WP B" (5 SP, 2.5 h) from Bob to Foo and expect the totals to refresh.
+      board_page.move_card_by_name("Bob WP B", from: "Bob Self", to: "Foo Bar")
+      board_page.expect_card "Foo Bar", "Bob WP B"
+
+      within(board_page.list_selector("Bob Self")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "3")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b4\b/)
+      end
+
+      within(board_page.list_selector("Foo Bar")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "18")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b3\.5\b/)
       end
     end
   end
