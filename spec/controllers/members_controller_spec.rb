@@ -274,6 +274,31 @@ RSpec.describe MembersController do
       end
     end
 
+    context "for a user with only inherited group roles" do
+      let!(:group) { create(:group, members: [user2], member_with_roles: { project => role }) }
+      let(:inherited_member) { project.members.find_by!(principal: user2) }
+      let(:action) do
+        post :create,
+             params: {
+               project_id: project.id,
+               member: { role_ids: [role.id], user_id: user2.id }
+             }
+      end
+
+      before do
+        inherited_member
+      end
+
+      it "adds a direct role to the inherited membership" do
+        expect { action }
+          .to change(Member, :count).by(0)
+          .and change { inherited_member.member_roles.only_non_inherited.count }.by(1)
+
+        expect(response).to redirect_to "/projects/pet_project/members?status=all"
+        expect(inherited_member.member_roles.only_non_inherited.pluck(:role_id)).to contain_exactly(role.id)
+      end
+    end
+
     context "for multiple members" do
       let(:action) do
         post :create,

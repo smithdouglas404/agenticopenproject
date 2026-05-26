@@ -32,7 +32,8 @@ require_relative "board_list_page"
 module Pages
   class BoardOverview < BoardListPage
     def visit!
-      navigate_to_modules_menu_item("Boards")
+      visit work_package_boards_path
+      wait_for_reload if using_cuprite?
     end
 
     def expect_global_menu_item_selected

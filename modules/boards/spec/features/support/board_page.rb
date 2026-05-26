@@ -72,8 +72,8 @@ module Pages
       page.all('[data-test-selector="op-board-list"]').count
     end
 
-    def within_list(name, &)
-      page.within(list_selector(name), &)
+    def within_list(name, wait: 10, &)
+      page.within(page.find(list_selector(name), wait:), &)
     end
 
     def list_selector(name)
@@ -86,9 +86,9 @@ module Pages
       end
 
       # Add item in dropdown
-      page.find(".menu-item", text: "Add new card").click
+      page.find(".menu-item", text: "Add new card", wait: 10).click
 
-      subject = page.find_by_id("wp-new-inline-edit--field-subject")
+      subject = page.find_by_id("wp-new-inline-edit--field-subject", wait: 10)
       subject.set card_title
       subject.send_keys :enter
 
@@ -100,8 +100,10 @@ module Pages
 
     def remove_card(list_name, card_title, index)
       source = page.all("#{list_selector(list_name)} [data-test-selector='op-wp-single-card']")[index]
+      scroll_to_element(source)
       source.hover
-      source.find('[data-test-selector="op-wp-single-card--inline-cancel-button"]').click
+      source.find('[data-test-selector="op-wp-single-card--inline-cancel-button"]', wait: 10).click(x: -5, y: 0)
+      wait_for_lists_reload
 
       expect_card(list_name, card_title, present: false)
     end
@@ -144,8 +146,7 @@ module Pages
         expect(page).to have_conditional_selector(present,
                                                   '[data-test-selector="op-wp-single-card--content-subject"]',
                                                   text: card_title,
-                                                  # Don't wait on non-presence expectation
-                                                  wait: present ? 10 : 0)
+                                                  wait: 10)
       end
     end
 
@@ -200,9 +201,10 @@ module Pages
       # wait for reload of lists to start and finish
       # Not sure if that's the most reliable way to do it, but there is nothing visible
       # about the PATCH request being sent and executed successfully after moving a card.
-      # Use has_css? to not fail if no loading indicator is present at all
+      # Use has_css? to not fail if no loading indicator is present at all.
       has_css?(".op-loading-indicator", wait: 2)
-      expect(page).to have_no_css(".op-loading-indicator", wait: 5)
+      expect(page).to have_no_css(".op-loading-indicator", wait: 20)
+      expect(page).to have_no_css(".loading-indicator--background", wait: 20)
     end
 
     def add_list(option: nil, query: option)
@@ -214,7 +216,7 @@ module Pages
 
       if option.nil?
         page.find(".boards-list--add-item").click
-        expect(page).to have_css('[data-test-selector="op-board-list"]', count: count + 1)
+        expect(page).to have_css('[data-test-selector="op-board-list"]', count: count + 1, wait: 20)
       else
         open_and_fill_add_list_modal query
         page.find(".ng-option", text: option, wait: 10).click
@@ -242,12 +244,34 @@ module Pages
       expect(page).to have_no_css(".editable-toolbar-title--save")
     end
 
-    def expect_list(name)
-      expect(page).to have_css('[data-test-selector="op-board-list--header"]', text: name, wait: 10)
+    def expect_quick_filters
+      expect(page).to have_css('[data-test-selector="board-quick-filters"]')
+    end
+
+    def expect_assignee_quick_filter(value, wait: Capybara.default_max_wait_time)
+      expect(page).to have_select("board-quick-filter-assignee", selected: value, wait:)
+    end
+
+    def expect_version_quick_filter(value, wait: Capybara.default_max_wait_time)
+      expect(page).to have_select("board-quick-filter-version", selected: value, wait:)
+    end
+
+    def set_assignee_quick_filter(value)
+      select(value, from: "board-quick-filter-assignee")
+      wait_for_lists_reload
+    end
+
+    def set_version_quick_filter(value)
+      select(value, from: "board-quick-filter-version")
+      wait_for_lists_reload
+    end
+
+    def expect_list(name, wait: 10)
+      expect(page).to have_css(list_selector(name), wait:)
     end
 
     def expect_no_list(name)
-      expect(page).to have_no_css('[data-test-selector="op-board-list--header"]', text: name)
+      expect(page).to have_no_css(list_selector(name))
     end
 
     def expect_empty
@@ -297,6 +321,9 @@ module Pages
       else
         visit work_package_board_path(board)
       end
+
+      wait_for_reload if using_cuprite?
+      wait_for_lists_to_finish_loading
     end
 
     def delete_board
@@ -307,9 +334,9 @@ module Pages
     end
 
     def back_to_index
-      within "#main-menu" do
-        click_link "Boards"
-      end
+      target_path = @board.project.present? ? project_work_package_boards_path(@board.project) : work_package_boards_path
+      visit target_path unless page.current_path == target_path
+      wait_for_reload if using_cuprite?
     end
 
     def expect_editable_board(editable)
@@ -355,19 +382,44 @@ module Pages
       page.find(".menu-item", text: name).click
     end
 
+    def wait_for_lists_to_finish_loading(wait: 20, minimum_lists: 1)
+      if minimum_lists.positive?
+        expect(page).to have_css('[data-test-selector="op-board-list"]', minimum: minimum_lists, wait:)
+      end
+
+      # Board queries load asynchronously after navigation. Let the list loading
+      # indicators appear if they are going to, then wait for them to clear.
+      has_css?(".loading-indicator--background", wait: 2)
+      expect(page).to have_no_css(".loading-indicator--background", wait:)
+    end
+
     def rename_list(from, to)
-      input = page.find_field("editable-toolbar-title", with: from).click
-      input.set to
-      input.send_keys :enter
+      within list_selector(from) do
+        input = page.find_field("editable-toolbar-title", with: from).click
+        input.set to
+        input.send_keys :enter
+      end
 
       expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
     end
 
-    def expect_query(name, editable: true)
-      if editable
-        expect(page).to have_field("editable-toolbar-title", with: name, wait: 10)
+    def expect_query(name, editable: true, wait: 10)
+      if board(reload: true).contained_queries.where(name:).exists?
+        within_list(name, wait:) do
+          if editable
+            expect(page).to have_field("editable-toolbar-title", with: name, wait:)
+          else
+            expect(page).to have_css(".editable-toolbar-title--fixed", text: name, wait:)
+          end
+        end
+      elsif editable
+        page.within(".toolbar-container") do
+          expect(page).to have_field("editable-toolbar-title", with: name, wait:)
+        end
       else
-        expect(page).to have_css(".editable-toolbar-title--fixed", text: name, wait: 10)
+        page.within(".toolbar-container") do
+          expect(page).to have_css(".editable-toolbar-title--fixed", text: name, wait:)
+        end
       end
     end
 
@@ -386,8 +438,11 @@ module Pages
     def open_and_fill_add_list_modal(name)
       open_add_list_modal
       sleep(0.1)
-      page.find(".spot-modal .new-list--action-select input").set(name)
-      expect(page).to have_no_css(".ng-spinner-loader")
+      within(".spot-modal") do
+        page.find(".new-list--action-select input").set(name)
+        expect(page).to have_no_css(".ng-spinner-loader", wait: 10)
+        expect(page).to have_no_css(".ng-option.ng-option-disabled", text: "Loading...", wait: 10)
+      end
     end
 
     def open_add_list_modal

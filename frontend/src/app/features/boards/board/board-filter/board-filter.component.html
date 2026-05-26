@@ -1,1 +1,48 @@
+@if (showQuickFilters) {
+  <div
+    class="op-board-quick-filters"
+    data-test-selector="board-quick-filters"
+  >
+    <div class="op-board-quick-filters--group">
+      <label
+        class="op-board-quick-filters--label"
+        for="board-quick-filter-assignee"
+      >
+        {{ text.assignee }}
+      </label>
+      <select
+        id="board-quick-filter-assignee"
+        class="form--select op-board-quick-filters--select"
+        data-test-selector="board-quick-filter-assignee"
+        [value]="selectedAssignee"
+        (change)="onAssigneeQuickFilterChange($any($event.target).value)"
+      >
+        @for (option of assigneeOptions; track option.key) {
+          <option [value]="option.key">{{ option.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="op-board-quick-filters--group">
+      <label
+        class="op-board-quick-filters--label"
+        for="board-quick-filter-version"
+      >
+        {{ text.version }}
+      </label>
+      <select
+        id="board-quick-filter-version"
+        class="form--select op-board-quick-filters--select"
+        data-test-selector="board-quick-filter-version"
+        [value]="selectedVersion"
+        (change)="onVersionQuickFilterChange($any($event.target).value)"
+      >
+        @for (option of versionOptions; track option.key) {
+          <option [value]="option.key">{{ option.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+}
+
 <op-filter-container />

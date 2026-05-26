@@ -103,8 +103,12 @@ module Pages
 
     def to_page(number)
       within ".op-pagination--pages" do
-        click_link number.to_s
+        href = page.find("a.op-pagination--item-link[aria-label='Page #{number}']", wait: 10)[:href]
+        visit href
       end
+
+      wait_for_reload if using_cuprite?
+      expect_to_be_on_page(number)
     end
   end
 end

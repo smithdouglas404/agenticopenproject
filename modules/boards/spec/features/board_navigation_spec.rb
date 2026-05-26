@@ -79,7 +79,8 @@ RSpec.describe "Work Package boards spec",
     page.go_back
     expect(page).to have_current_path project_work_package_board_path(project, board_view)
 
-    wait_for_network_idle
+    board_page.wait_for_lists_to_finish_loading
+    expect(page).to have_no_css("opce-wp-full-view", wait: 10)
 
     # Open the details page with the info icon
     card = board_page.card_for(wp)
@@ -122,6 +123,8 @@ RSpec.describe "Work Package boards spec",
     subitem.click
 
     board_page = Pages::Board.new board_view
+    expect(page).to have_current_path(project_work_package_board_path(project, board_view.id))
+    board_page.wait_for_lists_to_finish_loading
     board_page.expect_query "List 1", editable: true
     board_page.add_card "List 1", "Task 1"
   end
@@ -147,6 +150,7 @@ RSpec.describe "Work Package boards spec",
 
     # Go to full view of WP
     full_view = split_view.switch_to_fullscreen
+    full_view.ensure_page_loaded
     full_view.expect_tab "Relations"
 
     # Go back to details view with selected tab
@@ -200,10 +204,12 @@ RSpec.describe "Work Package boards spec",
     split_view.expect_subject
 
     # Go to full view of WP
-    split_view.switch_to_fullscreen
-    wait_for_network_idle
-    find_by_id("action-show-more-dropdown-menu").click
-    click_link(I18n.t("js.button_delete"))
+    full_view = split_view.switch_to_fullscreen
+    full_view.ensure_page_loaded
+
+    retry_block do
+      full_view.select_from_context_menu(I18n.t("js.button_delete"))
+    end
 
     # Delete the WP
     destroy_modal.expect_listed(wp)

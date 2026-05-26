@@ -54,7 +54,8 @@ module Pages
     end
 
     def select_from_context_menu(item)
-      find("button[wpsinglecontextmenu]").click
+      find("button[wpsinglecontextmenu]", wait: 10).click
+      expect(page).to have_css(".op-context-menu--overlay", wait: 10)
       within(".op-context-menu--overlay") do
         click_link item
       end

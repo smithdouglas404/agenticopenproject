@@ -377,7 +377,14 @@ class AccountController < ApplicationController
     if OpenProject::Configuration.disable_password_login?
       render_404
     else
-      password_authentication(params[:username]&.strip, params[:password])
+      username = params[:username]&.strip
+      password = params[:password]&.sub(/[[:space:]]+\z/, "")
+
+      if username.present? && !username.match?(URI::MailTo::EMAIL_REGEXP)
+        flash.now[:warning] = I18n.t(:notice_account_login_use_email)
+      end
+
+      password_authentication(username, password)
     end
   end
 
