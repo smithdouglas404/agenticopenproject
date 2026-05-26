@@ -34,6 +34,11 @@ RSpec.describe MemberMailer do
   include OpenProject::ObjectLinking
   include ActionView::Helpers::UrlHelper
   include OpenProject::StaticRouting::UrlHelpers
+  include ViewComponent::TestHelpers
+
+  def render(component, &)
+    vc_test_controller.view_context.render(component, &)
+  end
 
   let(:current_user) { build_stubbed(:user) }
   let(:member) do

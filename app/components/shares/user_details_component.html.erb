@@ -2,7 +2,7 @@
 component_wrapper do
   flex_layout do |flex|
     flex.with_row do
-      helpers.primer_link_to_user(user, font_weight: :semibold, href: principal_show_path)
+      helpers.link_to_user(user, font_weight: :semibold, href: principal_show_path, target: :_blank)
     end
 
     flex.with_row(classes: "ellipsis") do

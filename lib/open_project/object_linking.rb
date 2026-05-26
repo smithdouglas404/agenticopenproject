@@ -44,28 +44,49 @@ module OpenProject
     # Displays a link to user's account page if active or registered
     # Will attach a user hover card to the link.
     def link_to_user(user, options = {}) # rubocop:disable Metrics/AbcSize
-      return h(user.to_s) unless user.is_a?(User)
-      return h(user.name) if (user.locked? || user.deleted?) && !User.current.admin?
+      return content_tag(:span, h(user.to_s), class: options[:classes]) unless user.is_a?(User)
+      return content_tag(:span, h(user.name), class: options[:classes]) if user_not_linkable?(user)
 
-      only_path = options.delete(:only_path) { true }
+      only_path = options[:only_path].nil? || options[:only_path]
       name = options.delete(:name) { user.name }
-      options[:title] ||= I18n.t(:label_user_named, name:)
+      options[:href] ||= user_url(user, only_path:)
+      options[:underline] ||= false
 
-      add_hover_card_options(user, options, only_path:)
+      options = add_hover_card_options(user, options, only_path:)
 
-      link_to(name, user_url(user, only_path:), options)
+      if respond_to?(:render)
+        render Primer::Beta::Link.new(**options) do
+          name
+        end
+      else
+        # Fallback for non-render contexts like mailers, filters, etc.
+        link_to name, options[:href],
+                target: options[:target],
+                class: options[:classes],
+                title: options[:title],
+                data: options[:data]
+      end
     end
 
     # Displays a link to group's account page
-    def link_to_group(group, options = {})
-      return h(group.to_s) unless group.is_a?(Group)
+    def link_to_group(group, options = {}) # rubocop:disable Metrics/AbcSize
+      return content_tag(:span, h(group.to_s), class: options[:classes]) unless group.is_a?(Group)
 
-      name = group.name
-      href = show_group_url(group,
-                            only_path: options.delete(:only_path) { true })
-      options[:title] ||= I18n.t(:label_group_named, name:)
+      only_path = options[:only_path].nil? || options[:only_path]
+      options[:href] ||= show_group_url(group, only_path:)
+      options[:title] ||= I18n.t(:label_group_named, name: group.name)
 
-      link_to(name, href, options)
+      if respond_to?(:render)
+        render Primer::Beta::Link.new(**options) do
+          group.name
+        end
+      else
+        # Fallback for non-render contexts like mailers, filters, etc.
+        link_to group.name, options[:href],
+                class: options[:classes],
+                title: options[:title],
+                data: options[:data]
+      end
     end
 
     # Generates a link to an attachment.
@@ -135,19 +156,6 @@ module OpenProject
       end
     end
 
-    # Like #link_to_user, but will render a Primer link instead of a regular link.
-    def primer_link_to_user(user, options = {})
-      options[:href] ||= user_path(user)
-      options[:target] ||= "_blank"
-      options[:underline] ||= false
-
-      options = add_hover_card_options(user, options)
-
-      render Primer::Beta::Link.new(**options) do
-        user.name
-      end
-    end
-
     private
 
     # Accepts a user and an options hash. Will apply a hover card config for the user to the options hash.
@@ -196,6 +204,10 @@ module OpenProject
     def v3_paths
       # Including the module breaks the application in strange and mysterious ways
       API::V3::Utilities::PathHelper::ApiV3Path
+    end
+
+    def user_not_linkable?(user)
+      (user.locked? || user.deleted?) && !User.current.admin?
     end
   end
 end

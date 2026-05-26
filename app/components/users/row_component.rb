@@ -47,7 +47,7 @@ module Users
       icon = helpers.avatar user, size: :mini
 
       link = helpers.link_to_user(user,
-                                  class: "op-principal--name",
+                                  classes: "op-principal--name",
                                   name: user.login,
                                   href: helpers.allowed_management_user_profile_path(user))
 

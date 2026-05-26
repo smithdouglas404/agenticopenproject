@@ -65,13 +65,13 @@ module OpenProject::TextFormatting
       def user_mention(user)
         link_to_user(user,
                      only_path: context[:only_path],
-                     class: "user-mention")
+                     classes: "user-mention")
       end
 
       def group_mention(group)
         link_to_group(group,
                       only_path: context[:only_path],
-                      class: "user-mention")
+                      classes: "user-mention")
       end
 
       def work_package_mention(work_package, mention)

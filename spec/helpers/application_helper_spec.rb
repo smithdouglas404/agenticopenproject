@@ -128,7 +128,7 @@ RSpec.describe ApplicationHelper do
       end
 
       context "right now" do
-        let(:time) { Time.now }
+        let(:time) { Time.zone.now }
 
         it { is_expected.to match /^<a/ }
         it { is_expected.to match /less than a minute/ }
@@ -138,7 +138,7 @@ RSpec.describe ApplicationHelper do
       context "some time ago" do
         let(:time) do
           Timecop.travel(2.weeks.ago) do
-            Time.now
+            Time.zone.now
           end
         end
 
@@ -150,7 +150,7 @@ RSpec.describe ApplicationHelper do
 
     context "without project" do
       context "right now" do
-        let(:time) { Time.now }
+        let(:time) { Time.zone.now }
 
         it { is_expected.to match /^<time/ }
         it { is_expected.to match /datetime="#{Regexp.escape(time.xmlschema)}"/ }
@@ -161,7 +161,7 @@ RSpec.describe ApplicationHelper do
       context "some time ago" do
         let(:time) do
           Timecop.travel(1.week.ago) do
-            Time.now
+            Time.zone.now
           end
         end
 
@@ -181,10 +181,11 @@ RSpec.describe ApplicationHelper do
 
       esc_name = "&lt;b&gt;Hello&lt;/b&gt; world"
 
-      exp_str = <<-HTML.squish
+      exp_str = <<~HTML.squish
         Added by
-        <a title="User #{esc_name}" data-hover-card-url="/users/#{author.id}/hover_card"
-           data-hover-card-trigger-target="trigger" href="/users/#{author.id}">#{esc_name}</a>
+        <a data-hover-card-url="/users/#{author.id}/hover_card"
+           data-hover-card-trigger-target="trigger" href="/users/#{author.id}"
+           data-view-component="true" class="Link">#{esc_name}</a>
         on 2023-06-02
       HTML
 

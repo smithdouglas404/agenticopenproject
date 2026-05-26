@@ -38,7 +38,7 @@ module WorkPackages
       end
 
       def truncated_user_name(user, hover_card: false)
-        helpers.primer_link_to_user(user, scheme: :primary, font_weight: :bold, hover_card:)
+        helpers.link_to_user(user, scheme: :primary, font_weight: :bold, hover_card:, target: :_blank)
       end
 
       def activity_anchor_link(journal)

@@ -10,14 +10,14 @@
         t(:label_meeting_created_by)
       end
     %>
-    <%= helpers.primer_link_to_user(@meeting.author, underline: true) %>.
+    <%= helpers.link_to_user(@meeting.author, underline: true, target: :_blank) %>.
   <% elsif @meeting.onetime_template? %>
     <%=
       render(Primer::Beta::Text.new(mr: 1)) do
         t(:label_meeting_created_by)
       end
     %>
-    <%= helpers.primer_link_to_user(@meeting.author, underline: true) %>.
+    <%= helpers.link_to_user(@meeting.author, underline: true, target: :_blank) %>.
   <% elsif @series %>
     <%= render(Primer::BaseComponent.new(tag: :div, classes: "hidden-for-mobile", mr: 2)) do %>
       <%= render(Meetings::SidePanel::StatusButtonComponent.new(meeting: @meeting, size: :small)) %>
@@ -36,7 +36,7 @@
         t(:label_meeting_created_by)
       end
     %>
-    <%= helpers.primer_link_to_user(@meeting.author, underline: true) %>.
+    <%= helpers.link_to_user(@meeting.author, underline: true, target: :_blank) %>.
   <% end %>
   <%=
     render(Primer::Beta::Text.new(ml: 1, mr: 1)) do

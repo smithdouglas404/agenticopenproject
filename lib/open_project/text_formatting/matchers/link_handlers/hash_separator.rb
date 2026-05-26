@@ -109,7 +109,7 @@ module OpenProject::TextFormatting::Matchers
         if user
           link_to_user(user,
                        only_path: context[:only_path],
-                       class: "user-mention")
+                       classes: "user-mention")
         end
       end
 
@@ -119,7 +119,7 @@ module OpenProject::TextFormatting::Matchers
         if group
           link_to_group(group,
                         only_path: context[:only_path],
-                        class: "user-mention")
+                        classes: "user-mention")
         end
       end
 
