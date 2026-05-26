@@ -113,7 +113,14 @@ OpenProject 17.5 improves workflow administration by allowing administrators to 
 
 ### Sprint sharing moved to the Corporate plan
 
+With OpenProject 17.5, sprint sharing across projects is now part of the Corporate plan. Existing sprint sharing configurations remain available, but creating or modifying shared sprint configurations now requires the Corporate plan.
 
+Sprint sharing was introduced to support scaled agile planning scenarios across multiple projects and teams. Moving the feature to the Corporate plan allows OpenProject to continue investing in advanced cross-project planning capabilities for larger organizational setups.
+
+In earlier OpenProject versions, sprint sharing was handled through shared versions. Organizations upgrading from versions earlier than OpenProject 17.3 should review their sprint sharing setup before upgrading, as legacy version-based sprint sharing is no longer available in OpenProject 17.5.
+
+> [!NOTE]
+> Sprint sharing configurations created with the new Backlogs and sprint system introduced in OpenProject 17.3 remain available after updating to OpenProject 17.5. Changes to sprint sharing availability only affect future activation and configuration changes.
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
