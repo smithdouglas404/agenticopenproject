@@ -27,7 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
 module ::ResourceManagement
   class ResourcePlannersController < BaseController
     include OpTurbo::ComponentStream
@@ -46,7 +45,10 @@ module ::ResourceManagement
                              .order(:name)
     end
 
-    def show; end
+    def show
+      @view = default_view
+      render "resource_management/resource_planner_views/show"
+    end
 
     def overview; end
 
@@ -115,11 +117,17 @@ module ::ResourceManagement
       @resource_planner = ResourcePlanner
                             .visible(current_user)
                             .where(project: @project)
+                            .with_children
                             .find(params[:id])
     end
 
     def build_resource_planner
       @resource_planner = ResourcePlanner.new(project: @project, principal: current_user)
+    end
+
+    def default_view
+      children = @resource_planner.children
+      children.find { |c| c.id == @resource_planner.default_view_id } || children.first
     end
 
     def create_params

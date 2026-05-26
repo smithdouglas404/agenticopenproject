@@ -27,29 +27,39 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+module ::ResourceManagement
+  class ResourcePlannerViewsController < BaseController
+    menu_item :resource_management
 
-Rails.application.routes.draw do
-  #  resources :resource_management,
-  #            controller: "resource_management/resource_management",
-  #            only: %i[] do
-  #    collection do
-  #      get "/", to: "resource_management/resource_management#overview", as: :overview
-  #    end
-  #  end
+    before_action :find_project_by_project_id
+    before_action :authorize
+    before_action :find_resource_planner
+    before_action :find_view, only: %i[show edit update destroy]
 
-  scope "projects/:project_id", as: "project" do
-    resources :resource_planners, controller: "resource_management/resource_planners" do
-      member do
-        post :toggle_public
-      end
+    def show; end
 
-      resources :views,
-                controller: "resource_management/resource_planner_views",
-                only: %i[show new create edit update destroy]
+    def new; end
 
-      collection do
-        get "menu" => "resource_management/menus#show"
-      end
+    def edit; end
+
+    def create; end
+
+    def update; end
+
+    def destroy; end
+
+    private
+
+    def find_resource_planner
+      @resource_planner = ResourcePlanner
+                            .visible(current_user)
+                            .where(project: @project)
+                            .with_children
+                            .find(params.expect(:resource_planner_id))
+    end
+
+    def find_view
+      @view = @resource_planner.children.find(params.expect(:id))
     end
   end
 end

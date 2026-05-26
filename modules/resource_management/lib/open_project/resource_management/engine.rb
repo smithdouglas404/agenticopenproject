@@ -56,6 +56,7 @@ module OpenProject::ResourceManagement
         permission :view_resource_planners,
                    {
                      "resource_management/resource_planners": %i[index show overview new create edit update destroy],
+                     "resource_management/resource_planner_views": %i[show new create edit update destroy],
                      "resource_management/menus": %i[show]
                    },
                    permissible_on: :project

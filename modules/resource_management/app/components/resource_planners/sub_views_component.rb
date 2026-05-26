@@ -28,28 +28,46 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  #  resources :resource_management,
-  #            controller: "resource_management/resource_management",
-  #            only: %i[] do
-  #    collection do
-  #      get "/", to: "resource_management/resource_management#overview", as: :overview
-  #    end
-  #  end
+module ResourcePlanners
+  class SubViewsComponent < ApplicationComponent
+    attr_reader :resource_planner, :selected_view
 
-  scope "projects/:project_id", as: "project" do
-    resources :resource_planners, controller: "resource_management/resource_planners" do
-      member do
-        post :toggle_public
+    def initialize(resource_planner:, selected_view: nil)
+      super
+
+      @resource_planner = resource_planner
+      @selected_view = selected_view
+    end
+
+    def call
+      render(Primer::Alpha::TabNav.new(label: I18n.t("resource_management.sub_views"))) do |component|
+        resource_planner.children.each { |child| add_view_tab(component, child) }
+        add_create_tab(component) if can_add_views?
       end
+    end
 
-      resources :views,
-                controller: "resource_management/resource_planner_views",
-                only: %i[show new create edit update destroy]
+    private
 
-      collection do
-        get "menu" => "resource_management/menus#show"
+    def add_view_tab(component, child)
+      component.with_tab(
+        selected: child.id == selected_view_id,
+        href: project_resource_planner_view_path(resource_planner.project, resource_planner, child)
+      ) { child.name }
+    end
+
+    def add_create_tab(component)
+      component.with_tab(href: new_project_resource_planner_view_path(resource_planner.project, resource_planner)) do
+        render(Primer::Beta::Octicon.new(icon: :plus, size: :medium))
       end
+    end
+
+    def selected_view_id
+      selected_view&.id || resource_planner.default_view_id
+    end
+
+    def can_add_views?
+      # TODO: Proper permission check
+      true
     end
   end
 end

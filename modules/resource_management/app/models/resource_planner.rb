@@ -38,6 +38,7 @@ class ResourcePlanner < PersistedView
 
   store_attribute :options, :start_date, :date
   store_attribute :options, :end_date, :date
+  store_attribute :options, :default_view_id, :integer
 
   # resource planner cannot be nested, queries are assigned to the sub-views
   validates :parent, absence: true

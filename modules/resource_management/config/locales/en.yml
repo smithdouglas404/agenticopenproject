@@ -67,6 +67,7 @@ en:
     label_resource_planner: "Resource planner"
     label_resource_planner_plural: "Resource planners"
     label_new_resource_planner: "New resource planner"
+    sub_views: "Views in this resource planner"
     public_caption: >
       Make this view public to all members of the project. This does not affect
       the visibility of work packages which still depends on each user

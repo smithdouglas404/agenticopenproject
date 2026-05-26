@@ -40,8 +40,10 @@ See COPYRIGHT and LICENSE files for more details.
       )
     end %>
 
+<%= render(ResourcePlanners::SubViewsComponent.new(resource_planner: @resource_planner, selected_view: @view)) %>
+
 <%= render(Primer::Beta::Blankslate.new) do |blankslate|
       blankslate.with_visual_icon(icon: :people)
-      blankslate.with_heading(tag: :h2) { @resource_planner.name }
+      blankslate.with_heading(tag: :h2) { @view&.name || @resource_planner.name }
       blankslate.with_description { t("resource_management.show.placeholder") }
     end %>
