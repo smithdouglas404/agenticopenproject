@@ -63,7 +63,8 @@ module Import
         @project_role = setup_project_role
         custom_field_registry = build_custom_field_registry
 
-        Import::JiraProject.where(jira_import_id: @jira_import.id, jira_project_id: @jira_import.project_ids).find_each do |jira_project|
+        Import::JiraProject.where(jira_import_id: @jira_import.id,
+                                  jira_project_id: @jira_import.project_ids).find_each do |jira_project|
           project = import_project(jira_project)
           update_custom_fields_in_project(project, jira_project, custom_field_registry)
           Import::JiraIssue.where(jira_import_id: @jira_import.id, jira_project_id: jira_project.id).find_each do |jira_issue|

@@ -258,7 +258,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
             described_class.new.perform(jira_import.id)
 
             expect(WorkPackage.find("DPPP-6")).to be_present
-            expect { WorkPackage.find( "DPPP-1123") }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { WorkPackage.find("DPPP-1123") }.to raise_error(ActiveRecord::RecordNotFound)
             expect(WorkPackage.count).to eq(1)
           end
         end
