@@ -69,11 +69,9 @@ module OpenProject::TextFormatting
     #     identifier:version:1.0.0
     #     identifier:source:some/file
     class ResourceLinksMatcher < RegexMatcher
-      # Per-render preload state shared between the matcher and the link
-      # handler. Pairs unscoped label resolution (`lookup`) with viewer-scoped
-      # link gating (`visible_ids`) so a single render computes both with a
-      # bounded number of round-trips and renders consistent labels for
-      # invisible WPs.
+      # Unscoped label resolution (`lookup`) paired with viewer-scoped
+      # link gating (`visible_ids`), so the link handler renders the
+      # same label for everyone and decides anchor-vs-text per viewer.
       class WorkPackagePreloadCache
         attr_reader :lookup, :visible_ids
 
@@ -90,8 +88,7 @@ module OpenProject::TextFormatting
           visible_ids.include?(work_package_id)
         end
 
-        # Per-process frozen singleton returned when no preload is in
-        # scope — not a factory; callers must not mutate it.
+        # Frozen singleton, not a factory — callers must not mutate it.
         EMPTY = new(lookup: {}.freeze, visible_ids: Set.new.freeze).freeze
       end
 
@@ -156,16 +153,13 @@ module OpenProject::TextFormatting
         ]
       end
 
-      # The active preload cache for the current render, or an empty
-      # singleton when no preload is in scope (classic mode, no `#N`
-      # references, or rendering outside `with_preloaded_resources`).
       def self.current_cache
         RequestStore.store[CACHE_KEY] || WorkPackagePreloadCache::EMPTY
       end
 
-      # Doc-level preload called by `PatternMatcherFilter`. Save/restores
-      # the cache so a nested `format_text` (e.g. custom-field formatter
-      # re-entering the pipeline) doesn't clobber the outer render.
+      # Save/restore so a nested `format_text` (e.g. a custom-field
+      # formatter re-entering the pipeline) doesn't clobber the outer
+      # render's cache.
       def self.with_preloaded_resources(doc, context)
         previous = RequestStore.store[CACHE_KEY]
         return yield unless preload_required?(context)
@@ -179,12 +173,8 @@ module OpenProject::TextFormatting
         RequestStore.store[CACHE_KEY] = previous
       end
 
-      # Two channels need the WP record at render time: semantic mode (to
-      # resolve `PROJ-7` to a row) and static-HTML output (to compose the
-      # type/subject anchor of a quickinfo macro). Classic-mode rich HTML
-      # and the as-text channel both render from the matched id alone —
-      # the latter short-circuits on `text_only?` before consulting the
-      # cache.
+      # Semantic mode needs the row to map `PROJ-7` to an id; static-HTML
+      # output needs `type`/`subject` to compose the quickinfo anchor.
       def self.preload_required?(context)
         Setting::WorkPackageIdentifier.semantic? || context[:as_static_html]
       end
@@ -215,22 +205,10 @@ module OpenProject::TextFormatting
         identifier
       end
 
-      # Label resolution is unscoped: a reference to an inaccessible
-      # work package still renders as its semantic identifier (e.g.
-      # `DCP-1`), just without a navigable anchor. Visibility is
-      # captured separately so the link handler can pick anchor-vs-text
-      # per WP without re-querying.
-      #
-      # Two SELECTs in the common case: one unscoped fetch by identifier,
-      # one visibility-scoped id pluck. A third targeted SELECT fires
-      # for historical aliases — the loaded row carries only the current
-      # identifier, so unmapped inputs are filled in from
-      # `WorkPackageSemanticAlias`. Static-HTML channels also eager-load
-      # `:type` and `:status` so the link handler can render the
-      # static-anchor variant of `##`/`###` macros without N+1 queries —
-      # those associations are the metadata a reader needs to recognise a
-      # WP reference flattened to text. Anything beyond that (project,
-      # versions, custom fields) stays out of this preload.
+      # Two SELECTs in the common case (unscoped fetch + visibility id
+      # pluck), a third when historical aliases need resolving. Static-
+      # HTML output additionally needs `:type` and `:status` to compose
+      # the anchor for `##`/`###` macros.
       def self.build_cache(identifiers, context = {})
         scope = WorkPackage.where_display_id_in(*identifiers)
         scope = if context[:as_static_html]

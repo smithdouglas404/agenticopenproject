@@ -30,11 +30,9 @@
 
 module OpenProject::TextFormatting::Formats
   module Markdown
-    # Text-output sibling of `Markdown::Formatter`. Shares the matcher and
-    # mention pipeline with the rich renderer so identifier resolution
-    # stays consistent across channels, then collapses the final DOM to
-    # text via `PlainTextOutputFilter`. Intended for plain/text mailers
-    # and other channels where HTML would be a foreign body.
+    # Runs the matcher and mention pipeline, then collapses the DOM to
+    # text via `PlainTextOutputFilter`. For `text/plain` mailers and
+    # other channels where HTML would be a foreign body.
     class TextFormatter < OpenProject::TextFormatting::Formats::BaseFormatter
       def initialize(context)
         super(context.merge(as_text: true))

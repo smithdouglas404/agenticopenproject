@@ -30,13 +30,10 @@
 
 module OpenProject::TextFormatting::Formats
   module Markdown
-    # Static-HTML sibling of `Markdown::Formatter`. Shares the same filter
-    # chain so identifier resolution, mention handling, and link rendering
-    # stay consistent, but signals `context[:as_static_html]` so matchers
-    # and filters emit server-rendered anchors in place of JS-hydrated
-    # custom elements. Intended for channels that cannot run JS — HTML
-    # mailers, server-side previews, archival exports — where dynamic
-    # widgets would collapse to empty placeholders.
+    # Inherits `Markdown::Formatter`'s filter chain but signals
+    # `context[:as_static_html]` so matchers emit server-rendered
+    # anchors instead of JS-hydrated custom elements. For channels
+    # that can't run JS — HTML mailers, server-side previews.
     class StaticHtmlFormatter < Formatter
       def initialize(context)
         super(context.merge(as_static_html: true))

@@ -30,10 +30,8 @@
 
 module OpenProject::TextFormatting
   module Filters
-    # Final stage of the plain-text pipeline. Earlier filters resolve
-    # mentions and macros to their text-mode shapes (driven by
-    # `context[:as_text]`); this stage collapses any remaining markup
-    # so the pipeline output is suitable for `text/plain` bodies.
+    # Final stage of the `markdown_as_text` pipeline — strips remaining
+    # markup so the output is safe for `text/plain` bodies.
     class PlainTextOutputFilter < HTML::Pipeline::Filter
       def call
         doc.text

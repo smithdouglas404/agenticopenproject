@@ -111,13 +111,8 @@ module OpenProject::TextFormatting::Matchers
                                                   data: { id:, display_id:, detailed: }
       end
 
-      # Static fallback for channels that cannot hydrate the quickinfo
-      # custom element. Composes type, optional status, label, and subject
-      # into the anchor; unresolved references collapse to the bare label.
-      # The label is the matched identifier (potentially a historical alias)
-      # to preserve what the author wrote — the `<mention>` envelope path
-      # in `MentionFilter` instead normalises to the WP's current
-      # `formatted_id`.
+      # The label keeps what the author wrote (possibly a historical
+      # alias) so the rendered text matches the source markdown.
       def render_static_work_package_macro(work_package, label, detailed:)
         return label unless work_package
 
@@ -144,12 +139,8 @@ module OpenProject::TextFormatting::Matchers
                 })
       end
 
-      # Plain-text channels and inaccessible WPs both render the label
-      # without an anchor or quickinfo. Visibility is checked only when a
-      # WP was preloaded — a nil work_package means a classic-mode render
-      # or an unresolved reference, neither of which needs gating. Mirrors
-      # `MentionFilter#text_only?`, which gates the same decision for
-      # `<mention>` envelopes; keep the two in sync.
+      # A nil WP means classic mode skipped the preload, or the reference
+      # didn't resolve — neither case needs visibility gating.
       def text_only?(work_package)
         context[:as_text] || (work_package && !preload_cache.visible?(work_package.id))
       end

@@ -30,16 +30,9 @@
 
 module OpenProject::TextFormatting
   module Helpers
-    # Composes the anchor text for a work-package quickinfo macro rendered
-    # in a static-HTML channel (mailers, server-side previews) — channels
-    # that cannot hydrate the JS-driven `<opce-macro-wp-quickinfo>` widget
-    # and so flatten the macro to an `<a>` whose text must carry enough
-    # context for a reader to recognise the reference: type, optional
-    # status, the identifier label, and the subject.
-    #
-    # Shared between the text-reference path (`LinkHandlers::WorkPackages`)
-    # and the envelope path (`Filters::MentionFilter`) so both render the
-    # same shape for the same WP.
+    # Anchor text for the static-HTML form of a WP quickinfo macro:
+    # `[status ]type label: subject`. Used in channels (HTML mailers,
+    # server-side previews) that can't hydrate the `<opce-*>` widget.
     module StaticMacroLabel
       def self.call(work_package, label:, detailed:)
         parts = []

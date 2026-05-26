@@ -49,13 +49,11 @@ module OpenProject::TextFormatting
 
       private
 
-      # Doc-level preload so a note with N user/group/WP mentions costs
-      # a bounded number of SELECTs rather than one per mention. WP
-      # mentions need the unscoped record (label) plus a separate
-      # visibility id pluck (anchor-vs-text gating); principals fold the
-      # two concerns into a single visibility-scoped fetch since
-      # invisible principals have no plain-text render path — they fall
-      # back to the literal envelope text instead.
+      # WP labels resolve regardless of viewer (so an inaccessible WP
+      # still renders its current formatted_id); a separate id pluck
+      # gates anchor-vs-text. Principals collapse the two concerns into
+      # one visibility-scoped fetch — invisible users and groups fall
+      # back to the literal envelope text.
       def preload_mentions
         preload_work_package_mentions
         preload_principal_mentions
@@ -70,8 +68,6 @@ module OpenProject::TextFormatting
         end
 
         scope = WorkPackage.where(id: ids)
-        # Static-HTML channels need `type` and `status` to render
-        # quickinfo envelopes as anchors instead of `<opce-*>` widgets.
         scope = scope.includes(:type, :status) if context[:as_static_html]
         @mentioned_work_packages = scope.index_by(&:id)
         @visible_mentioned_ids = WorkPackage.visible.where(id: ids).pluck(:id).to_set
@@ -118,8 +114,6 @@ module OpenProject::TextFormatting
       def work_package_mention(work_package, mention)
         return Nokogiri::XML::Text.new(work_package.formatted_id, mention.document) if text_only?(work_package)
 
-        # Match the label and URL convention used for `#N` text references
-        # elsewhere in the markdown pipeline.
         case mention.text.count("#")
         when 3 then work_package_quickinfo(work_package, detailed: true)
         when 2 then work_package_quickinfo(work_package, detailed: false)
@@ -127,12 +121,8 @@ module OpenProject::TextFormatting
         end
       end
 
-      # Plain-text channels and inaccessible WPs both render the
-      # `formatted_id` without an anchor or quickinfo widget — the
-      # latter would resolve to a hover-card endpoint the recipient
-      # can't reach. Mirrors `LinkHandlers::WorkPackages#text_only?`,
-      # which gates the matching decision for `#N` text references; keep
-      # the two in sync.
+      # The hover-card endpoint a quickinfo would link to is unreachable
+      # for plain-text recipients and for viewers without view permission.
       def text_only?(work_package)
         context[:as_text] || @visible_mentioned_ids.exclude?(work_package.id)
       end
@@ -147,11 +137,8 @@ module OpenProject::TextFormatting
                                                           detailed: }
       end
 
-      # Static fallback shared with the PatternMatcherFilter's `##`/`###`
-      # path so envelope-driven and text-driven references render the same
-      # shape in channels that cannot hydrate the custom element. Always
-      # uses the WP's current `formatted_id`, normalising any historical
-      # alias the envelope may have been authored with.
+      # Uses the WP's current `formatted_id` rather than the envelope text,
+      # so a renamed identifier doesn't leave a stale label in the mailer.
       def work_package_static_macro(work_package, detailed:)
         label = OpenProject::TextFormatting::Helpers::StaticMacroLabel
                   .call(work_package, label: work_package.formatted_id, detailed:)
@@ -172,12 +159,6 @@ module OpenProject::TextFormatting
                 })
       end
 
-      # WP label resolution is unscoped (preloaded above); visibility is
-      # gated separately in `text_only?` so an inaccessible WP renders
-      # its current formatted_id rather than the envelope text the
-      # author originally typed. Principals stay visibility-gated at the
-      # preload — there's no equivalent text-only render path for users
-      # or groups, so invisible principals fall back to the literal text.
       def class_from_mention(mention)
         id = mention_id(mention)&.to_i
         case mention.attributes["data-type"].value
