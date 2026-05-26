@@ -10,14 +10,56 @@ release_date: 2026-05-21
 
 Release date: 2026-05-21
 
-We released [OpenProject 17.5.0](https://community.openproject.org/versions/2293).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+We released [OpenProject 17.5.0](https://community.openproject.org/versions/2293). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+### Project-based work package identifiers for clearer references and Jira migrations
+
+OpenProject 17.5 introduces **optional project-based work package identifiers in Beta**. Administrators can choose between the **default numerical sequence** and **project-based IDs** for the entire OpenProject instance. The setting can be reverted later and existing numerical IDs continue to work throughout the application.
+
+![OpenProject administration to select either 'Instance-wide numerical sequence (default)' or 'Project-based semantic identifiers'](openproject-17-5-identifiers-setting.png)
+
+Project-based work package identifiers are especially useful for organizations migrating from Jira, as [existing Jira issue identifiers can now be preserved in OpenProject](#jira-migrator-support-for-jira-identifiers-due-dates-and-more). Beyond migrations, project-based IDs provide **shorter sequence numbers and clearer project context**, making it easier to recognize, reference, and share work packages across projects, emails, documents, chats, and integrations.
+
+#### Support across URLs, searches, exports, and integrations
+
+Even in Beta, project-based work package identifiers are supported across important areas of OpenProject, including URLs, searches, filters, exports, email notifications, APIs, and work package references in Documents and text editors. 
+
+Existing integrations such as GitHub and GitLab also support the new identifier format. 
+
+> [!NOTE]
+> Historical references remain functional when project identifiers change.
+
+### Jira Migrator support for Jira identifiers, due dates, and more
+
+shortly mention Jira Migrator release in beta with 17.4
+
+### Option to exclude work package types from Backlogs 
+
+### Redesigned sprint views and work package cards
+
+### Allow inline work package links within text paragraphs in the Documents module
+
+### Expanded work package mentions in CKEditor
+
+### Monthly scheduling options for meeting series
+
+### Debounce meeting emails to reduce email noise
+
+### Nested groups for organizational structures and inherited permissions
+
+### Allow multi-selection of roles in workflow
+
+
 
 ## Important updates and breaking changes
+
+### Sprint sharing moved to the Corporate plan
+
+## Important technical updates
+
+?
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
