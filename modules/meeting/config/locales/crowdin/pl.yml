@@ -331,6 +331,13 @@ pl:
 
           '
         confirm_button: Anuluj wystąpienie
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Nie ma żadnych spotkań do wyświetlenia
       desc: Możesz utworzyć nowe spotkanie lub zmienić kryteria filtrowania

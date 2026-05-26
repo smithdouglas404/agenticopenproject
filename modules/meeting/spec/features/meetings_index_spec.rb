@@ -188,7 +188,6 @@ RSpec.describe "Meetings", "Index", :js do
           # keeps the past filter selected when changing advanced filters (Regression #61875)" do
           meetings_page.open_filters
           meetings_page.remove_filter "invited_user_id"
-          click_on "Apply"
 
           wait_for_network_idle
 

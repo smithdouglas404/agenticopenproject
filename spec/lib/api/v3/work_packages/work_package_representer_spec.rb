@@ -162,7 +162,6 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
 
     describe "displayId" do
       context "when semantic work package ids are active",
-              with_flag: { semantic_work_package_ids: true },
               with_settings: { work_packages_identifier: "semantic" } do
         let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-123", project: workspace) }
 
@@ -1198,7 +1197,6 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       end
 
       context "in semantic mode",
-              with_flag: { semantic_work_package_ids: true },
               with_settings: { work_packages_identifier: "semantic" } do
         let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
 
@@ -1220,7 +1218,6 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       end
 
       context "in semantic mode",
-              with_flag: { semantic_work_package_ids: true },
               with_settings: { work_packages_identifier: "semantic" } do
         let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
 
@@ -1266,7 +1263,6 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
     # resource's `self` === another's `parent`, etc.). Auxiliary
     # endpoints (`pdf`, `generate_pdf`, `atom`) follow the same convention.
     context "with semantic identifier mode active",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic", feeds_enabled?: true } do
       let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-7", project: workspace) }
       let(:permissions) { all_permissions + [:export_work_packages] }
@@ -1795,8 +1791,6 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         # Without this, JSON rendered while in classic mode keeps serving
         # numeric `displayId` values after an admin switches to semantic mode,
         # because nothing else in the cache key reflects the setting flip.
-        with_flags(semantic_work_package_ids: true)
-
         with_settings(work_packages_identifier: "classic")
         classic_key = representer.json_cache_key
 

@@ -316,6 +316,13 @@ zh-CN:
 
           '
         confirm_button: 取消事件
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: 没有可显示的会议
       desc: 您可以创建新会议或更改筛选条件

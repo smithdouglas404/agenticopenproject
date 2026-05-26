@@ -36,6 +36,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :meetings do
+    resource :filters, only: %i[show]
+  end
+
   # Global route to show meetings over all projects and create form from the global view
   resources :meetings, only: %i[index show new create] do
     collection do

@@ -4,23 +4,13 @@
       data: {
         controller: "filter--filters-form",
         "filter--filters-form-output-format-value": "json",
+        "filter--filters-form-perform-turbo-requests-value": true,
         "filter--filters-form-display-filters-value": filters_expanded?
       }
     )
   ) do |subheader|
     subheader.with_quick_filter do
-      render(
-        OpPrimer::QuickFilter::SegmentedComponent.new(
-          name: I18n.t(:label_meeting_date_time),
-          query: @query,
-          filter_key: :time,
-          orders: { "future" => { start_time: :asc }, "past" => { start_time: :desc } },
-          path_args: [@project, :meetings]
-        )
-      ) do |component|
-        component.with_item(label: I18n.t(:label_upcoming_meetings_short), value: "future")
-        component.with_item(label: I18n.t(:label_past_meetings_short), value: "past")
-      end
+      render(Meetings::MeetingTimeFilterComponent.new(query: @query, project: @project))
     end
 
     subheader.with_filter_component do
@@ -66,6 +56,7 @@
         Meetings::MeetingFiltersComponent.new(
           query: @query,
           project: @project,
+          lazy_loaded_path: :meetings_filters_path,
           initially_expanded: filters_expanded?
         )
       )

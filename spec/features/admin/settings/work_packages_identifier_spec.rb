@@ -34,7 +34,6 @@ RSpec.describe "Work packages identifier admin settings", :js do
   shared_let(:admin) { create(:admin) }
 
   before do
-    with_flags(semantic_work_package_ids: true)
     login_as(admin)
   end
 

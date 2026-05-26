@@ -36,6 +36,7 @@ import {
   hideElement,
   showElement,
 } from 'core-app/shared/helpers/dom-helpers';
+import { PrimerMultiInputElement } from '@primer/view-components/app/lib/primer/forms/primer_multi_input';
 
 interface PrimerTextFieldElement extends HTMLElement {
   inputElement:HTMLInputElement;
@@ -56,12 +57,11 @@ export default class FiltersFormController extends Controller {
     'simpleFilter',
     'filter',
     'addFilterSelect',
-    'spacer',
     'operator',
     'filterValueContainer',
-    'filterValueSelect',
     'days',
     'singleDay',
+    'dateRange',
     'simpleValue',
   ];
 
@@ -70,12 +70,11 @@ export default class FiltersFormController extends Controller {
   declare readonly simpleFilterTargets:HTMLElement[];
   declare readonly filterTargets:HTMLElement[];
   declare readonly addFilterSelectTarget:HTMLSelectElement;
-  declare readonly spacerTarget:HTMLElement;
   declare readonly operatorTargets:HTMLSelectElement[];
   declare readonly filterValueContainerTargets:HTMLElement[];
-  declare readonly filterValueSelectTargets:HTMLSelectElement[];
   declare readonly daysTargets:HTMLInputElement[];
   declare readonly singleDayTargets:HTMLInputElement[];
+  declare readonly dateRangeTargets:HTMLInputElement[];
   declare readonly simpleValueTargets:HTMLInputElement[];
 
   declare readonly hasFilterFormToggleTarget:boolean;
@@ -102,20 +101,22 @@ export default class FiltersFormController extends Controller {
   });
 
   private boundListener:() => void;
+  private boundClearListener:(event:MouseEvent) => void;
 
   initialize() {
     // Initialize runs anytime an element with a controller connected to the DOM for the first time
     this.boundListener = debounce(this.sendForm.bind(this), 300);
+    this.boundClearListener = (event:MouseEvent) => this.clearInputWithButton(event);
   }
 
   connect() {
     const clearButton = document.getElementById(this.clearButtonIdValue);
-    clearButton?.addEventListener('click', (event:MouseEvent) => this.clearInputWithButton(event));
+    clearButton?.addEventListener('click', this.boundClearListener);
   }
 
   disconnect() {
     const clearButton = document.getElementById(this.clearButtonIdValue);
-    clearButton?.removeEventListener('click', (event:MouseEvent) => this.clearInputWithButton(event));
+    clearButton?.removeEventListener('click', this.boundClearListener);
   }
 
   addFilterSelectTargetConnected() {
@@ -140,10 +141,13 @@ export default class FiltersFormController extends Controller {
 
   filterValueContainerTargetConnected(target:HTMLElement) {
     this.addChangeListener(target);
-  }
-
-  filterValueSelectTargetConnected(target:HTMLElement) {
-    this.addChangeListener(target);
+    const filterName = target.getAttribute('data-filter-name');
+    if (filterName) {
+      const operator = this.findTargetByName(filterName, this.operatorTargets);
+      if (operator && this.noValueOperators.includes(operator.value)) {
+        target.setAttribute('hidden', '');
+      }
+    }
   }
 
   daysTargetConnected(target:HTMLElement) {
@@ -152,6 +156,31 @@ export default class FiltersFormController extends Controller {
 
   singleDayTargetConnected(target:HTMLElement) {
     this.addChangeListener(target);
+    this.registerAngularPickerWithMultiInput(target, 'opce-basic-single-date-picker');
+  }
+
+  dateRangeTargetConnected(target:HTMLElement) {
+    this.addChangeListener(target);
+    this.registerAngularPickerWithMultiInput(target, 'opce-range-date-picker');
+  }
+
+  // angular_component_tag serialises @Input() bindings as JSON in data-* attributes, so the
+  // Angular date picker wrapper's data-name holds a JSON-encoded value that primer-multi-input
+  // cannot use to identify its child fields.  date_picker.html.erb therefore also sets
+  // data-multi-input-name as a plain string with the intended field name.
+  // This method is called when the Stimulus target connects, i.e. after Angular has already
+  // bootstrapped the component and consumed its data-* attributes, so we can safely overwrite
+  // data-name with the plain string from data-multi-input-name without interfering with Angular.
+  // primer-multi-input.activateField() then uses data-name to show/hide the correct picker
+  // when the filter operator changes.
+  private registerAngularPickerWithMultiInput(target:HTMLElement, tagName:string) {
+    const wrapper = target.closest<HTMLElement>(tagName);
+    if (wrapper?.closest('primer-multi-input')) {
+      const multiInputName = wrapper.getAttribute('data-multi-input-name');
+      if (multiInputName) {
+        wrapper.setAttribute('data-name', multiInputName);
+      }
+    }
   }
 
   simpleValueTargetDisconnected(target:HTMLElement) {
@@ -166,15 +195,15 @@ export default class FiltersFormController extends Controller {
     this.removeChangeListener(target);
   }
 
-  filterValueSelectTargetDisconnected(target:HTMLElement) {
-    this.removeChangeListener(target);
-  }
-
   daysTargetDisconnected(target:HTMLElement) {
     this.removeChangeListener(target);
   }
 
   singleDayTargetDisconnected(target:HTMLElement) {
+    this.removeChangeListener(target);
+  }
+
+  dateRangeTargetDisconnected(target:HTMLElement) {
     this.removeChangeListener(target);
   }
 
@@ -215,22 +244,6 @@ export default class FiltersFormController extends Controller {
     }
   }
 
-  toggleMultiSelect({ params: { filterName } }:{ params:{ filterName:string } }) {
-    const valueContainer = this.findTargetByName(filterName, this.filterValueContainerTargets);
-    const singleSelect = this.findTargetByName<HTMLSelectElement>(filterName, this.filterValueSelectTargets, (selectField) => !selectField.multiple);
-    const multiSelect = this.findTargetByName<HTMLSelectElement>(filterName, this.filterValueSelectTargets, (selectField) => selectField.multiple);
-    if (valueContainer && singleSelect && multiSelect) {
-      if (valueContainer.classList.contains('multi-value')) {
-        const valueToSelect = this.getValueToSelect(multiSelect);
-        this.setSelectOptions(singleSelect, valueToSelect);
-      } else {
-        const valueToSelect = this.getValueToSelect(singleSelect);
-        this.setSelectOptions(multiSelect, valueToSelect);
-      }
-      valueContainer.classList.toggle('multi-value');
-    }
-  }
-
   private addChangeListener(target:HTMLElement) {
     if (!this.performTurboRequestsValue) { return; }
 
@@ -251,16 +264,6 @@ export default class FiltersFormController extends Controller {
     }
   }
 
-  private getValueToSelect(selectElement:HTMLSelectElement) {
-    return selectElement.selectedOptions[0]?.value;
-  }
-
-  private setSelectOptions(selectElement:HTMLSelectElement, selectedValue:string) {
-    Array.from(selectElement.options).forEach((option) => {
-      option.selected = option.value === selectedValue;
-    });
-  }
-
   addFilter(event:Event) {
     const filterName = (event.target as HTMLSelectElement).value;
     this.addFilterByName(filterName);
@@ -269,11 +272,10 @@ export default class FiltersFormController extends Controller {
   addFilterByName(filterName:string) {
     const selectedFilter = this.findTargetByName(filterName, this.filterTargets);
     if (selectedFilter) {
-      selectedFilter.classList.remove('hidden');
+      selectedFilter.removeAttribute('hidden');
     }
     this.addFilterSelectTarget.selectedOptions[0].disabled = true;
     this.addFilterSelectTarget.selectedIndex = 0;
-    this.setSpacerVisibility();
 
     this.focusFilterValueIfPossible(selectedFilter);
 
@@ -313,12 +315,11 @@ export default class FiltersFormController extends Controller {
 
   removeFilter({ params: { filterName } }:{ params:{ filterName:string } }) {
     const filterToRemove = this.findTargetByName(filterName, this.filterTargets);
-    filterToRemove?.classList.add('hidden');
+    filterToRemove?.setAttribute('hidden', '');
 
     const selectOptions = Array.from(this.addFilterSelectTarget.options);
     const removedFilterOption = selectOptions.find((option) => option.value === filterName);
     removedFilterOption?.removeAttribute('disabled');
-    this.setSpacerVisibility();
 
     if (this.performTurboRequestsValue) {
       this.sendForm();
@@ -340,18 +341,6 @@ export default class FiltersFormController extends Controller {
     inputElement.dispatchEvent(inputEvent);
   }
 
-  private setSpacerVisibility() {
-    if (this.anyFiltersStillVisible()) {
-      this.spacerTarget.classList.remove('hidden');
-    } else {
-      this.spacerTarget.classList.add('hidden');
-    }
-  }
-
-  private anyFiltersStillVisible() {
-    return this.filterTargets.some((filter) => !filter.classList.contains('hidden'));
-  }
-
   private readonly noValueOperators = ['*', '!*', 't', 'w'];
   private readonly daysOperators = ['>t-', '<t-', 't-', '<t+', '>t+', 't+'];
   private readonly onDateOperator = '=d';
@@ -362,23 +351,18 @@ export default class FiltersFormController extends Controller {
     const valueContainer = this.findTargetByName(filterName, this.filterValueContainerTargets);
     if (valueContainer) {
       if (this.noValueOperators.includes(selectedOperator)) {
-        valueContainer.classList.add('hidden');
+        valueContainer.setAttribute('hidden', '');
       } else {
-        valueContainer.classList.remove('hidden');
+        valueContainer.removeAttribute('hidden');
       }
 
+      const multiInput = valueContainer.querySelector<PrimerMultiInputElement>('primer-multi-input');
       if (this.daysOperators.includes(selectedOperator)) {
-        valueContainer.classList.add('days');
-        valueContainer.classList.remove('on-date');
-        valueContainer.classList.remove('between-dates');
+        multiInput?.activateField('days');
       } else if (selectedOperator === this.onDateOperator) {
-        valueContainer.classList.add('on-date');
-        valueContainer.classList.remove('days');
-        valueContainer.classList.remove('between-dates');
+        multiInput?.activateField('singleDay');
       } else if (selectedOperator === this.betweenDatesOperator) {
-        valueContainer.classList.add('between-dates');
-        valueContainer.classList.remove('days');
-        valueContainer.classList.remove('on-date');
+        multiInput?.activateField('dateRange');
       }
     }
   }
@@ -455,7 +439,7 @@ export default class FiltersFormController extends Controller {
   }
 
   private parseAdvancedFilters():InternalFilterValue[] {
-    const advancedFilters = this.filterTargets.filter((filter) => !filter.classList.contains('hidden'));
+    const advancedFilters = this.filterTargets.filter((filter) => !filter.hasAttribute('hidden'));
     const filters:InternalFilterValue[] = [];
 
     advancedFilters.forEach((filter) => {
@@ -498,7 +482,6 @@ export default class FiltersFormController extends Controller {
   }
 
   private readonly operatorsWithoutValues = ['*', '!*', 't', 'w'];
-  private readonly selectFilterTypes = ['list', 'list_all', 'list_optional'];
   private readonly dateFilterTypes = ['datetime_past', 'date'];
 
   private parseFilterValue(valueContainer:HTMLElement, filterName:string, filterType:string, operator:string) {
@@ -516,12 +499,14 @@ export default class FiltersFormController extends Controller {
       return [];
     }
 
-    if (this.selectFilterTypes.includes(filterType)) {
-      return this.parseSelectFilterValue(valueContainer, filterName);
-    }
-
     if (this.dateFilterTypes.includes(filterType)) {
       return this.parseDateFilterValue(valueContainer, filterName);
+    }
+
+    const hiddenField = valueContainer.querySelector<HTMLInputElement>('input[type="hidden"]');
+
+    if (hiddenField) {
+      return hiddenField.value ? [hiddenField.value] : null;
     }
 
     const value = this.findTargetByName(filterName, this.simpleValueTargets)?.value;
@@ -532,38 +517,21 @@ export default class FiltersFormController extends Controller {
     return null;
   }
 
-  private parseSelectFilterValue(valueContainer:HTMLElement, filterName:string) {
-    let selectFields;
-
-    if (valueContainer.classList.contains('multi-value')) {
-      selectFields = this.filterValueSelectTargets.filter((selectField) => selectField.multiple && selectField.getAttribute('data-filter-name') === filterName);
-    } else {
-      selectFields = this.filterValueSelectTargets.filter((selectField) => !selectField.multiple && selectField.getAttribute('data-filter-name') === filterName);
-    }
-
-    const selectedValues = _.flatten(Array.from(selectFields).map((selectField) => Array.from(selectField.selectedOptions).map((option) => option.value)));
-
-    if (selectedValues.length > 0) {
-      return selectedValues;
-    }
-
-    return null;
-  }
-
-  private parseDateFilterValue(valueContainer:HTMLElement, filterName:string) {
+  private parseDateFilterValue(_valueContainer:HTMLElement, filterName:string) {
     let value;
+    const operator = this.findTargetByName(filterName, this.operatorTargets)?.value;
 
-    if (valueContainer.classList.contains('days')) {
+    if (operator && this.daysOperators.includes(operator)) {
       const dateValue = this.findTargetByName(filterName, this.daysTargets)?.value;
 
       value = _.without([dateValue], '');
-    } else if (valueContainer.classList.contains('on-date')) {
-      const dateValue = this.findTargetById(`on-date-value-${filterName}`, this.singleDayTargets)?.value;
+    } else if (operator === this.onDateOperator) {
+      const dateValue = this.findTargetById(filterName, this.singleDayTargets)?.value;
 
       value = _.without([dateValue], '');
-    } else if (valueContainer.classList.contains('between-dates')) {
-      const fromValue = this.findTargetById(`between-dates-from-value-${filterName}`, this.singleDayTargets)?.value;
-      const toValue = this.findTargetById(`between-dates-to-value-${filterName}`, this.singleDayTargets)?.value;
+    } else if (operator === this.betweenDatesOperator) {
+      const rangeValue = this.findTargetById(filterName, this.dateRangeTargets)?.value;
+      const [fromValue, toValue] = rangeValue?.split(' - ') ?? [];
 
       value = [fromValue, toValue];
     }

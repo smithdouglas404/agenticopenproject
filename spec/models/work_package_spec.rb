@@ -923,7 +923,6 @@ RSpec.describe WorkPackage do
     end
 
     context "when semantic mode is active",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:infoline_project) { create(:project, identifier: "MYPROJ") }
 
@@ -935,7 +934,7 @@ RSpec.describe WorkPackage do
     end
 
     context "when semantic mode is not active",
-            with_flag: { semantic_work_package_ids: false } do
+            with_settings: { work_packages_identifier: "classic" } do
       let(:infoline_project) { create(:project) }
 
       it "renders the hash-prefixed numeric id" do
@@ -948,7 +947,6 @@ RSpec.describe WorkPackage do
     let(:task_type) { create(:type_task) }
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:work_package) { create(:work_package, project:, type: task_type, subject: "Hello world") }
 
@@ -958,7 +956,6 @@ RSpec.describe WorkPackage do
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { create(:project, identifier: "MACROPROJ", types: [task_type]) }
       let(:work_package) { create(:work_package, project:, type: task_type, subject: "Hello world") }

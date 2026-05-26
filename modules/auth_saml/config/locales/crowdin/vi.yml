@@ -50,13 +50,13 @@ vi:
       label_automatic_configuration: Cấu hình tự động
       label_metadata: Siêu dữ liệu
       label_metadata_endpoint: Điểm cuối siêu dữ liệu OpenProject
-      label_openproject_information: Thông tin dự án mở
+      label_openproject_information: Thông tin OpenProject
       label_configuration_details: Điểm cuối và chứng chỉ của nhà cung cấp danh tính
       label_configuration_encryption: Chữ ký và mã hóa
       label_add_new: Nhà cung cấp danh tính SAML mới
       label_edit: Chỉnh sửa nhà cung cấp danh tính SAML %{name}
       label_uid: Id người dùng nội bộ
-      label_mapping: lập bản đồ
+      label_mapping: Ánh xạ
       label_requested_attribute_for: 'Thuộc tính được yêu cầu cho: %{attribute}'
       no_results_table: Chưa có nhà cung cấp danh tính SAML nào được xác định.
       notice_created: Nhà cung cấp danh tính SAML mới đã được tạo thành công.

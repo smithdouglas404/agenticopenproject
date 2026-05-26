@@ -321,6 +321,13 @@ fr:
 
           '
         confirm_button: Annuler l'occurrence
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Il n'y a pas de réunions à afficher
       desc: Vous pouvez créer une nouvelle réunion ou modifier les critères de filtrage

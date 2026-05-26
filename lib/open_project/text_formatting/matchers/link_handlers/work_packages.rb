@@ -49,7 +49,7 @@ module OpenProject::TextFormatting::Matchers
         if WorkPackage::SemanticIdentifier.semantic_id?(identifier)
           # Semantic shapes are only meaningful in semantic mode; classic
           # instances render the literal text fallback.
-          return nil unless Setting::WorkPackageIdentifier.semantic_mode_active?
+          return nil unless Setting::WorkPackageIdentifier.semantic?
 
           render_for_semantic(identifier)
         else

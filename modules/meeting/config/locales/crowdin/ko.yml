@@ -316,6 +316,13 @@ ko:
 
           '
         confirm_button: 항목 취소
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: 표시할 미팅이 없습니다
       desc: 새 미팅을 만들거나 필터 기준을 변경할 수 있습니다
