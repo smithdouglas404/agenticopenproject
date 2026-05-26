@@ -462,7 +462,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     const newColumnsQueryProps:any = {
       'columns[]': ['id', 'subject'],
       showHierarchies: false,
-      showSums: true,
+      showSums: this.board.actionAttribute === 'assignee',
       pageSize: 500,
       filters: JSON.stringify(newFilters),
     };
