@@ -13,6 +13,11 @@
 - **Architecture**: Server-rendered HTML with Hotwire (Turbo + Stimulus). Legacy Angular components exist and are being migrated to custom elements. Uses GitHub's Primer Design System via ViewComponent.
 - **Editions**: Community, Enterprise (SSO, LDAP, SCIM), and BIM (construction industry, code in `modules/bim/`)
 
+## Branching Convention
+
+- Treat `epic` as the default main branch for this repository unless explicitly instructed otherwise.
+- When a task refers to the "main" branch, base branch, default branch, or merge target without further clarification, assume it means `epic`.
+
 ## Critical Setup Requirements
 
 **ALWAYS verify versions before building:**

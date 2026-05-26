@@ -190,6 +190,91 @@ RSpec.describe "Assignee action board",
     end
   end
 
+  context "with story points and estimated hours" do
+    let!(:bob_wp_with_sums_a) do
+      create(:work_package,
+             project:,
+             assigned_to: bobself_user,
+             subject: "Bob WP A",
+             story_points: 3,
+             estimated_hours: 4)
+    end
+
+    let!(:bob_wp_with_sums_b) do
+      create(:work_package,
+             project:,
+             assigned_to: bobself_user,
+             subject: "Bob WP B",
+             story_points: 5,
+             estimated_hours: 2.5)
+    end
+
+    let!(:foo_wp_with_sums) do
+      create(:work_package,
+             project:,
+             assigned_to: foobar_user,
+             subject: "Foo WP",
+             story_points: 13,
+             estimated_hours: 1)
+    end
+
+    before do
+      login_as(bobself_user)
+    end
+
+    it "shows accumulated story points and work totals per assignee column, " \
+       "and recomputes them after a card is moved" do
+      board_index.visit!
+
+      board_page = board_index.create_board title: "Totals Assignee Board",
+                                            action: "Assignee",
+                                            expect_empty: true
+
+      board_page.add_list option: "Bob Self"
+      board_page.expect_list "Bob Self"
+      board_page.add_list option: "Foo Bar"
+      board_page.expect_list "Foo Bar"
+
+      board_page.expect_card "Bob Self", "Bob WP A"
+      board_page.expect_card "Bob Self", "Bob WP B"
+      board_page.expect_card "Foo Bar", "Foo WP"
+
+      # Bob's column accumulates 3 + 5 = 8 story points and 4 + 2.5 = 6.5 hours.
+      # The pre-existing "Some Task" work package has no story points / hours and is ignored.
+      within(board_page.list_selector("Bob Self")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "8")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b6\.5\b/)
+      end
+
+      within(board_page.list_selector("Foo Bar")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "13")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b1\b/)
+      end
+
+      # Move "Bob WP B" (5 SP, 2.5 h) from Bob to Foo and expect the totals to refresh.
+      board_page.move_card_by_name("Bob WP B", from: "Bob Self", to: "Foo Bar")
+      board_page.expect_card "Foo Bar", "Bob WP B"
+
+      within(board_page.list_selector("Bob Self")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "3")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b4\b/)
+      end
+
+      within(board_page.list_selector("Foo Bar")) do
+        expect(page).to have_css('[data-test-selector="op-board-list--total-story-points-value"]',
+                                 exact_text: "18")
+        expect(page).to have_css('[data-test-selector="op-board-list--total-estimated-time-value"]',
+                                 text: /\b3\.5\b/)
+      end
+    end
+  end
+
   context "in a project without members" do
     before do
       login_as(admin)
