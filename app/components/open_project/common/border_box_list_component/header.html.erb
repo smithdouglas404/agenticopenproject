@@ -43,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
           )
         ) do |collapsible|
       %>
-        <% collapsible.with_title(tag: title_tag) { title } %>
+        <% collapsible.with_title(**title_arguments, tag: title_tag) { title } %>
         <% if render_count? %>
           <% collapsible.with_count(**counter_arguments) %>
         <% end %>
@@ -57,7 +57,7 @@ See COPYRIGHT and LICENSE files for more details.
   <% else %>
     <% grid.with_area(:heading) do %>
       <%= render(Primer::BaseComponent.new(tag: :div, classes: "op-border-box-list-header--heading-line")) do %>
-        <%= render(Primer::Beta::Truncate.new(tag: title_tag, classes: "Box-title")) { title } %>
+        <%= render(Primer::Beta::Truncate.new(**title_arguments, tag: title_tag, classes: title_classes)) { title } %>
         <% if render_count? %>
           <%= render(Primer::Beta::Counter.new(**counter_arguments)) %>
         <% end %>

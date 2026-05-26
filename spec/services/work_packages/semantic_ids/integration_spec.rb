@@ -34,7 +34,6 @@ require "spec_helper"
 # the full service stack: CreateService, UpdateService, and Projects::UpdateService.
 RSpec.describe "SemanticIds registry integration",
                type: :model,
-               with_flag: { semantic_work_package_ids: true },
                with_settings: { work_packages_identifier: "semantic" } do
   shared_let(:role) do
     create(:project_role,

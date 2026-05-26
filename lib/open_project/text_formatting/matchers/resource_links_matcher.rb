@@ -146,7 +146,7 @@ module OpenProject::TextFormatting
       def self.with_preloaded_resources(doc, _context)
         previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
 
-        return yield unless Setting::WorkPackageIdentifier.semantic_mode_active?
+        return yield unless Setting::WorkPackageIdentifier.semantic?
 
         identifiers = collect_work_package_identifiers(doc)
         return yield if identifiers.empty?

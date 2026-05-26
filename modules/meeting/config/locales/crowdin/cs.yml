@@ -333,6 +333,13 @@ cs:
 
           '
         confirm_button: Zrušit výskyt
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Žádné schůzky k zobrazení
       desc: Můžete vytvořit novou schůzku nebo změnit kritéria filtru
@@ -593,7 +600,7 @@ cs:
 
     '
   permission_edit_meetings: Upravit schůzku
-  permission_delete_meetings: Smazat schůzku
+  permission_delete_meetings: Odstranit schůzky
   permission_view_meetings: Zobrazit schůzky
   permission_manage_agendas: Správa zápisů
   permission_manage_agendas_explanation: Allows creating, editing and removing agenda items

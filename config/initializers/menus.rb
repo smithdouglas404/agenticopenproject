@@ -418,7 +418,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :work_packages_identifier,
             { controller: "/admin/settings/work_packages_identifier", action: :show },
-            if: ->(_) { OpenProject::FeatureDecisions.semantic_work_package_ids_active? && User.current.admin? },
+            if: ->(_) { User.current.admin? },
             caption: :label_identifier,
             parent: :admin_work_packages
 

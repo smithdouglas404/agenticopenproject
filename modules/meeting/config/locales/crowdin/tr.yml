@@ -321,6 +321,13 @@ tr:
 
           '
         confirm_button: Bu toplantıyı iptal et
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Gösterilecek toplantı yok
       desc: Yeni bir toplantı oluşturabilir veya filtre kriterlerini değiştirebilirsiniz

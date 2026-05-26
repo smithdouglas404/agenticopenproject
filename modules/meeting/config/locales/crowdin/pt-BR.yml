@@ -321,6 +321,13 @@ pt-BR:
 
           '
         confirm_button: Cancelar ocorrência
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Não há reuniões para exibir
       desc: Você pode criar uma nova reunião ou mudar o critério de filtro

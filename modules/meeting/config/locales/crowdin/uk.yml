@@ -331,6 +331,13 @@ uk:
 
           '
         confirm_button: Скасувати нараду
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Зустрічей не знайдено
       desc: Створіть зустріч або змініть параметри фільтра

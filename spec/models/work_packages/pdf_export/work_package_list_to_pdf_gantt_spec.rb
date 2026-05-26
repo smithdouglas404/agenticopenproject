@@ -228,14 +228,13 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageListToPdf do
 
   describe "work package id formatting" do
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false } do
+            with_settings: { work_packages_identifier: "classic" } do
       it "uses the numeric id and not the semantic identifier in the gantt chart" do
         expect(pdf[:strings]).to include("##{work_package_task.id}")
       end
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "uses the semantic identifier and not the numeric id in the gantt chart" do
         expect(pdf[:strings]).to include(work_package_task.identifier)

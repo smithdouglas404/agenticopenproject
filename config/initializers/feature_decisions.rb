@@ -62,7 +62,3 @@ OpenProject::FeatureDecisions.add :wiki_enhancements,
 OpenProject::FeatureDecisions.add :departments,
                                   description: "Enables the management of departments within the organization."
 
-OpenProject::FeatureDecisions.add :semantic_work_package_ids,
-                                  description: "Enables the use of semantic work package IDs, " \
-                                               "in the schema <project identifier>-<sequence number>. " \
-                                               "See #41855 for details."

@@ -54,7 +54,7 @@ RSpec.describe WorkPackage::PDFExport::DocumentGenerator do
 
   describe "#title" do
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false } do
+            with_settings: { work_packages_identifier: "classic" } do
       it "uses the numeric id in the filename" do
         expected_title = "PDF_Project_Feature_#{work_package.id}_Document_Generator_Specs_2023-06-30_23-59.pdf"
         expect(export_pdf.title).to eql(expected_title)
@@ -62,7 +62,6 @@ RSpec.describe WorkPackage::PDFExport::DocumentGenerator do
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "uses the semantic identifier in the filename" do
         expected_title = "PDF_Project_Feature_#{work_package.identifier}_Document_Generator_Specs_2023-06-30_23-59.pdf"

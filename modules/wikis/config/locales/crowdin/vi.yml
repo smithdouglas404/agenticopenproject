@@ -39,10 +39,10 @@ vi:
         header: Authentication
         user_bound_request: User-based request authentication
       base_configuration:
-        header: Configuration
-        provider_configured: Configuration complete
+        header: Cấu hình
+        provider_configured: Cấu hình complete
       errors:
-        not_configured: The connection could not be validated. Please finish configuration first.
+        not_configured: The connection could not be validated. Please finish cấu hình first.
         xwiki_oauth_connection_error: OpenProject could not connect to the configured XWiki instance.
         xwiki_oauth_request_error: An unexpected error occured when trying to communicate with the XWiki instance.
         xwiki_oauth_token_missing: OpenProject cannot test the user-level communication with XWiki as the user did not yet connect their XWiki account.
@@ -103,7 +103,7 @@ vi:
         no_results_description: Add a wiki provider to see them here.
         no_results_title: You don't have any wiki providers set up yet.
       wiki_providers:
-        index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
+        index_description: Add an external wiki service to link gói công việc (work package)s to existing wiki pages or create new ones directly from OpenProject.
         label_add_new: Add new wiki provider
         label_edit: Edit XWiki provider
         label_new_xwiki_instance: New XWiki provider
@@ -115,14 +115,14 @@ vi:
           openproject_oauth: OpenProject OAuth
         sections:
           general_information: Basic details
-          oauth_configuration: OAuth configuration
+          oauth_configuration: OAuth cấu hình
         url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
         xwiki_instance: XWiki Instance
         xwiki:
           oauth:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
             provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual cấu hình is needed on the XWiki side.
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.

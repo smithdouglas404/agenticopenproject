@@ -141,19 +141,6 @@ module OpenProject::Backlogs
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
     patch_with_namespace :API, :V3, :WorkPackages, :Schema, :SpecificWorkPackageSchema
 
-    config.to_prepare do
-      # Add available settings to the user preferences
-      UserPreferences::Schema.merge!(
-        "definitions/UserPreferences/properties",
-        {
-          "backlogs_versions_default_fold_state" => {
-            "type" => "string",
-            "enum" => %w[open closed]
-          }
-        }
-      )
-    end
-
     extend_api_response(:v3, :work_packages, :work_package,
                         &::OpenProject::Backlogs::Patches::API::WorkPackageRepresenter.extension)
 
@@ -184,10 +171,6 @@ module OpenProject::Backlogs
 
     add_api_endpoint "API::V3::Projects::ProjectsAPI", :id do
       mount ::API::V3::Sprints::SprintsByProjectAPI
-    end
-
-    config.to_prepare do
-      OpenProject::Backlogs::Hooks::LayoutHook
     end
 
     initializer "openproject_backlogs.event_subscriptions" do

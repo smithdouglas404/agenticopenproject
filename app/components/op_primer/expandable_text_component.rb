@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -25,18 +27,23 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+#
+module OpPrimer
+  class ExpandableTextComponent < Primer::Component # rubocop:disable OpenProject/AddPreviewForViewComponent
+    def initialize(**system_arguments)
+      super()
 
-module OpenProject::Backlogs::Hooks
-  class LayoutHook < OpenProject::Hook::ViewListener
-    include ::Backlogs::CommonHelper
-
-    def view_my_settings(context = {})
-      context[:controller].send(
-        :render_to_string,
-        partial: "shared/view_my_settings",
-        locals: {
-          user: context[:user]
-        }
+      @system_arguments = deny_tag_argument(**system_arguments)
+      @system_arguments[:tag] = :div
+      @system_arguments[:display] = :flex
+      @system_arguments[:align_items] = :baseline
+      @system_arguments[:data] = merge_data(
+        @system_arguments,
+        data: { controller: "truncation" }
+      )
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "gap-1 min-width-0"
       )
     end
   end

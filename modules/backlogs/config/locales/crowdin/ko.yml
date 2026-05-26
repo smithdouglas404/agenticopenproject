@@ -40,8 +40,6 @@ ko:
           in_planning: 계획 중
           active: 활성
           completed: 완료됨
-      user_preference:
-        backlogs_versions_default_fold_state: 접힌 스프린트 표시
       work_package:
         backlog_bucket: 백로그 버킷
         backlogs_work_package_type: 백로그 유형
@@ -101,7 +99,6 @@ ko:
       show:
         blankslate_title: 사용 가능한 번다운 데이터 없음
         blankslate_description: 스프린트의 시작 날짜와 종료 날짜를 설정하여 번다운 차트를 생성합니다.
-    caption_sprints_default_fold_state: "'백로그 및 스프린트' 페이지를 볼 때 스프린트는 기본적으로 확장되지 않습니다. 각각을 수동으로 확장해야 합니다."
     excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
 
       '

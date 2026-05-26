@@ -22,7 +22,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     let(:work_package) { create(:work_package, project:, author:) }
 
     context "in classic mode",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       let(:project) { create(:project, identifier: "macroproj") }
 
@@ -35,7 +34,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { create(:project, identifier: "MACROPROJ") }
 
@@ -53,7 +51,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     end
 
     context "when the referenced work package does not exist",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { create(:project, identifier: "MACROPROJ") }
 
@@ -73,7 +70,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   end
 
   describe ".with_preloaded_resources save/restore semantics",
-           with_flag: { semantic_work_package_ids: true },
            with_settings: { work_packages_identifier: "semantic" } do
     # A custom-field formatter or recursive markdown render may invoke the
     # text-formatting pipeline while an outer render is mid-iteration. The
@@ -113,7 +109,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   end
 
   describe "classic mode is query-free",
-           with_flag: { semantic_work_package_ids: false },
            with_settings: { work_packages_identifier: "classic" } do
     # Rendering a `#N` reference in classic mode must not run any
     # WorkPackage SELECTs: the preload is a no-op when `display_id` and
@@ -135,7 +130,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   end
 
   describe "N+1 query bound",
-           with_flag: { semantic_work_package_ids: true },
            with_settings: { work_packages_identifier: "semantic" } do
     include_context "with author signed in"
     let(:project) { create(:project, identifier: "NPLUSONE") }
@@ -153,7 +147,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   end
 
   describe "the `#PROJ-N` semantic reference",
-           with_flag: { semantic_work_package_ids: true },
            with_settings: { work_packages_identifier: "semantic" } do
     include_context "with author signed in"
     let(:project) { create(:project, identifier: "MACROPROJ") }
@@ -261,7 +254,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   end
 
   describe "the `#PROJ-N` semantic reference in classic mode",
-           with_flag: { semantic_work_package_ids: false },
            with_settings: { work_packages_identifier: "classic" } do
     include_context "with author signed in"
     let(:project) { create(:project, identifier: "macroproj") }
@@ -279,7 +271,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   end
 
   describe "prefixed resource refs with semantic-shaped identifiers",
-           with_flag: { semantic_work_package_ids: true },
            with_settings: { work_packages_identifier: "semantic" } do
     # `version#PROJ-1`, `message#PROJ-1`, etc. share the regex with the WP
     # macro because `\d+|PROJ-\d+` is a single alternation. The prefixed
@@ -306,7 +297,6 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
   end
 
   describe "visibility scoping",
-           with_flag: { semantic_work_package_ids: true },
            with_settings: { work_packages_identifier: "semantic" } do
     # The lookup cache must scope through `WorkPackage.visible` —
     # anything it surfaces ends up in the rendered link, so an

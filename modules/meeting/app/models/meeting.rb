@@ -216,6 +216,10 @@ class Meeting < ApplicationRecord
     start_time + duration.hours
   end
 
+  def past?
+    end_time < Time.current
+  end
+
   def to_s
     title
   end

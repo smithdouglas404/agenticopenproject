@@ -5,7 +5,7 @@ vi:
       resource_planner:
         name: Name
         start_date: Start date
-        end_date: Finish date
+        end_date: Ngày kết thúc
         default_view_class_name: Default view
         public: Public
         favorite: Favorite
@@ -14,7 +14,7 @@ vi:
         principal: Assignee
         state: State
         start_date: Start date
-        end_date: Finish date
+        end_date: Ngày kết thúc
         allocated_time: Allocated time
         user_filter: User filter
     errors:
@@ -29,8 +29,8 @@ vi:
               greater_than_start_date: must be after the start date.
   plugin_openproject_resource_management:
     name: OpenProject Resource Management
-    description: Provides resource management and capacity planning.
-  project_module_resource_management: Resource management
+    description: Provides quản lý tài nguyên (resource management) and capacity planning.
+  project_module_resource_management: Quản lý tài nguyên (Resource Management)
   permission_view_resource_planners: View resource planners
   permission_view_resource_planners_explanation: 'Allows users to access resource planners. It allows them to create and manage their own resource planners and view public resource planners. It does not allow users to view resource planners created by other users that are not shared publicly.
 
@@ -46,10 +46,10 @@ vi:
   label_resource_management: Resource planning
   button_next: Save
   resource_management:
-    label_resource_planner: Resource planner
-    label_resource_planner_plural: Resource planners
+    label_resource_planner: Resource Planner
+    label_resource_planner_plural: Resource Planners
     label_new_resource_planner: New resource planner
-    public_caption: 'Make this view public to all members of the project. This does not affect the visibility of work packages which still depends on each user permission.
+    public_caption: 'Make this view public to all members of the project. This does not affect the visibility of gói công việc (work package)s which still depends on each user permission.
 
       '
     favorite_caption: 'Make this view a favorite to add it on the top section of the sidebar menu.
@@ -67,7 +67,7 @@ vi:
       public: Public
       private: Private
     blankslate:
-      title: No resource planners yet
-      desc: Create a resource planner to start planning capacity for this project.
+      title: Chưa có kế hoạch tài nguyên (Resource Planner) nào
+      desc: Tạo một Resource Planner để bắt đầu lập kế hoạch năng suất cho dự án này.
     show:
-      placeholder: The detailed view for this resource planner is coming soon.
+      placeholder: Chế độ xem chi tiết cho Resource Planner này sẽ sớm ra mắt.

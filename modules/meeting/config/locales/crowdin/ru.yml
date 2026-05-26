@@ -331,6 +331,13 @@ ru:
 
           '
         confirm_button: Отменить событие
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Нет совещаний для отображения
       desc: Вы можете создать новое совещание или изменить критерии фильтра
@@ -431,7 +438,7 @@ ru:
             '
     presentation_mode:
       title: Режим презентации
-      button_present: Текущий
+      button_present: Презентация
       exit: Выйти из презентации
       current_item: Текущий элемент
       total_items: "%{current} из %{total}"

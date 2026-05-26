@@ -40,8 +40,6 @@ pt-PT:
           in_planning: Em planeamento
           active: Ativo
           completed: Concluído
-      user_preference:
-        backlogs_versions_default_fold_state: Mostrar sprints dobrados
       work_package:
         backlog_bucket: Grupo de backlog
         backlogs_work_package_type: Tipo de backlog
@@ -102,7 +100,6 @@ pt-PT:
       show:
         blankslate_title: Não há dados de burndown disponíveis
         blankslate_description: Defina a data de início e de fim do sprint para gerar um gráfico de burndown.
-    caption_sprints_default_fold_state: Os sprints não serão expandidos por defeito quando visualizar a página "Backlog e sprints". Cada um deles tem de ser expandido manualmente.
     excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
 
       '

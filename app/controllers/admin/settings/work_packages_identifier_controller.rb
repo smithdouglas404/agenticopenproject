@@ -32,8 +32,6 @@ module Admin::Settings
   class WorkPackagesIdentifierController < ::Admin::SettingsController
     include OpTurbo::ComponentStream
 
-    before_action :check_feature_flag
-
     current_menu_item :show do
       :work_packages_identifier
     end
@@ -83,8 +81,5 @@ module Admin::Settings
       call.on_failure { failure_callback(call) }
     end
 
-    def check_feature_flag
-      render_404 unless OpenProject::FeatureDecisions.semantic_work_package_ids_active?
-    end
   end
 end
