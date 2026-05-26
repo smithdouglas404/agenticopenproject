@@ -55,12 +55,12 @@ export default class RolesController extends Controller {
   }
 
   globalRoleValueChanged() {
-    this.toggleEnabled(this.memberAttributesTarget, !this.globalRoleValue);
-    this.toggleEnabled(this.memberPermissionsTarget, !this.globalRoleValue);
-    this.toggleEnabled(this.globalPermissionsTarget, this.globalRoleValue);
+    this.togglePermissionSection(this.memberAttributesTarget, !this.globalRoleValue);
+    this.togglePermissionSection(this.memberPermissionsTarget, !this.globalRoleValue);
+    this.togglePermissionSection(this.globalPermissionsTarget, this.globalRoleValue);
   }
 
-  private toggleEnabled(target:HTMLElement, enabled:boolean) {
+  private togglePermissionSection(target:HTMLElement, enabled:boolean) {
     toggleEnabled(target, enabled, true);
     target
       .querySelectorAll('input,select')
