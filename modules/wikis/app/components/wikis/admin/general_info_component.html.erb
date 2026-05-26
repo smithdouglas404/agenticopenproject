@@ -7,8 +7,11 @@
       end
 
       grid.with_area(:description, tag: :div, color: :subtle, test_selector: "wiki-provider-description") do
-        concat(render(Primer::Beta::Text.new) { "#{wiki_provider.name} - " })
-        concat(render(Primer::Beta::Link.new(href: wiki_provider.url, target: "_blank", underline: true)) { wiki_provider.url })
+        concat(render(Primer::Beta::Text.new) { "#{t("wikis.provider_types.#{wiki_provider}.name")} - #{wiki_provider.name} - #{wiki_provider.url}" })
+        if wiki_provider.url.present?
+          concat(render(Primer::Beta::Text.new) { " - " })
+          concat(helpers.static_link_to(href: wiki_provider.url, label: t("wikis.buttons.open_wiki"), underline: true))
+        end
       end
 
       grid.with_area(:"icon-button", tag: :div, color: :muted) do
