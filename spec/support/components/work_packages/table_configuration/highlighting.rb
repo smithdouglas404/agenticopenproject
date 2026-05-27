@@ -85,6 +85,7 @@ module Components
 
         retry_block do
           find(".op-tab-row--link", text: "HIGHLIGHTING", wait: 10).click
+          expect(page).to have_css(".op-tab-row--link_selected", text: "HIGHLIGHTING", wait: 10)
         end
       end
 

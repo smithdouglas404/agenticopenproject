@@ -45,13 +45,14 @@ class Queries::Meetings::Filters::InvitedUserFilter < Queries::Meetings::Filters
     when "="
       [operator_strategy.sql_for_field(values, MeetingParticipant.table_name, "user_id"), condition].join(" AND ")
     when "!"
-      return "1=1" if values.empty?
+      user_id = normalized_user_id(values.first)
+      return "1=1" if user_id.nil?
 
-      <<~SQL.squish
+      OpenProject::SqlSanitization.sanitize(<<~SQL.squish, user_id)
         NOT EXISTS (
           SELECT 1 FROM #{MeetingParticipant.table_name}
           WHERE #{MeetingParticipant.table_name}.meeting_id = meetings.id
-          AND #{MeetingParticipant.table_name}.user_id = '#{MeetingParticipant.connection.quote_string(values.first)}'
+          AND #{MeetingParticipant.table_name}.user_id = ?
           AND #{condition}
         )
       SQL
@@ -78,5 +79,13 @@ class Queries::Meetings::Filters::InvitedUserFilter < Queries::Meetings::Filters
 
   def self.key
     :invited_user_id
+  end
+
+  private
+
+  def normalized_user_id(value)
+    Integer(value, 10)
+  rescue ArgumentError, TypeError
+    nil
   end
 end

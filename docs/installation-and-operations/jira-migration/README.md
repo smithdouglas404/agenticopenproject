@@ -28,18 +28,18 @@ With the [end of life for Jira Data Center](https://www.openproject.org/blog/jir
 This import tool is currently in beta and can only import basic data: 
 
 - Projects
-- Issues (name, title, description, attachments)
+- Issues (name, title, description, attachments, due date, estimated hours, remaining hours)
 - Users (name, email, project membership)
 - Statuses
 - Types
 - Basic custom fields (see [Custom fields migration](./custom-fields/))
+- Issues identifiers (Beta, see [Work package identifiers](../../system-admin-guide/manage-work-packages/work-package-identifiers))
 
 ## Data not yet covered by the Migrator 
 
 ### Coming soon
 
 - Project identifiers
-- Issues identifiers
 - Relations between issues
 - Sprint assignments
 
@@ -65,6 +65,13 @@ Therefore, please make sure that you have [a backup of your OpenProject instance
 ### Setup the API connection
 
 Navigate to *Administration → Import*. To create a new import configuration, click the **+ Jira configuration** button.
+
+
+![Jira importer settings under OpenProject administration](openproject_admin_import_jira_import_initial.png)
+> [!IMPORTANT]
+>
+> To activate the configuration you need to activate project-based semantic identifiers on the OpenProject side first. If not yet active, you will see a warning banner. Once activated, the button will become selectable. 
+
 
 ![Jira importer settings under OpenProject administration](openproject_admin_import_jira_import.png)
 
