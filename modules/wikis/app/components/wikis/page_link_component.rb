@@ -45,17 +45,31 @@ module Wikis
     end
 
     def page_title
-      # TODO: Define behaviour for errors
-      page_info_result.either(->(pi) { pi.title }, ->(_) { "Nothing to see here" })
+      page_info_result.either(
+        ->(pi) { pi.title },
+        ->(error) do
+          case error
+          in { code: :not_found }
+            I18n.t("wikis.page_links.errors.page_not_found")
+          in { code: :forbidden }
+            I18n.t("wikis.page_links.errors.page_access_forbidden")
+          else
+            I18n.t("wikis.page_links.errors.unexpected")
+          end
+        end
+      )
     end
 
     def page_href
-      # TODO: Define behaviour for errors
-      page_info_result.either(->(pi) { pi.href }, ->(_) { "#" })
+      page_info_result.value!.href
+    end
+
+    def error?
+      page_info_result.failure?
     end
 
     def show_action_menu?
-      page_info_result.success? && actions.any?
+      actions.any?
     end
 
     def menu_items(menu)

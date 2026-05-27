@@ -33,7 +33,9 @@ require "digest/sha1"
 class User < Principal
   ScimEmail = Struct.new("ScimEmail", :value, :primary, :type)
 
-  VALID_NAME_REGEX = /\A[\d\p{Alpha}\p{Mark}\p{Space}\p{Emoji}'’´\-_.,@()+&*–]+\z/
+  VALID_NAME_CHARS = "\\d\\p{Alpha}\\p{Mark}\\p{Space}\\p{Emoji}'\\u{2019}´\\-_.,@()+&*–"
+  INVALID_NAME_REGEX = /[^#{VALID_NAME_CHARS}]/
+  VALID_NAME_REGEX   = /\A[#{VALID_NAME_CHARS}]+\z/
   CURRENT_USER_LOGIN_ALIAS = "me"
   USER_FORMATS_STRUCTURE = {
     firstname_lastname: %i[firstname lastname],

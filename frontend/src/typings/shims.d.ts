@@ -23,33 +23,6 @@ declare module 'observable-array';
 declare module 'dom-autoscroller';
 declare module 'core-vendor/enjoyhint';
 
-declare module '@hotwired/turbo' {
-  interface BrowserAdapter {
-    formSubmissionStarted:() => void;
-    formSubmissionFinished:() => void;
-  }
-
-  export const session:{
-    drive:boolean;
-    adapter:BrowserAdapter;
-  };
-
-  export const config:{
-    drive:{ progressBarDelay:number }
-  };
-
-  export const navigator:{
-    submitForm:(form:HTMLFormElement, submitter?:HTMLElement) => void;
-  };
-
-  export interface StreamElement {
-    templateElement:HTMLTemplateElement;
-    templateContent:DocumentFragment;
-  }
-
-  export function start():void;
-}
-
 declare global {
   const _:typeof TLodash;
   const I18n:I18n;

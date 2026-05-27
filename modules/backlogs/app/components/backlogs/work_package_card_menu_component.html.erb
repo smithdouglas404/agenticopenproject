@@ -62,7 +62,7 @@ See COPYRIGHT and LICENSE files for more details.
       id: dom_target(work_package, :menu, :copy_work_package_id),
       tag: :"clipboard-copy",
       label: t(".action_menu.copy_work_package_id"),
-      content_arguments: { value: work_package.id }
+      content_arguments: { value: work_package.display_id }
     ) do |item|
       item.with_leading_visual_icon(icon: :hash)
     end

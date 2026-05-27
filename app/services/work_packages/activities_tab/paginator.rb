@@ -52,6 +52,8 @@ class WorkPackages::ActivitiesTab::Paginator
   include Pagy::Method
   include WorkPackages::ActivitiesTab::JournalSortingInquirable
 
+  MAX_PAGES = 100
+
   def self.paginate(work_package, params = {})
     new(work_package, params).call
   end
@@ -72,7 +74,7 @@ class WorkPackages::ActivitiesTab::Paginator
         @filter = :all # Ignore filter when jumping to specific journal
         pagy_array_for_target_journal(anchor_type, target_record_id)
       else
-        pagy(:offset, base_journals, **pagy_options)
+        pagy(:offset, capped_journals, **pagy_options)
       end
 
     # For UI display: if user wants "oldest first" UI, reverse the array
@@ -87,7 +89,6 @@ class WorkPackages::ActivitiesTab::Paginator
     {
       page: params[:page] || 1,
       limit: params[:limit] || Pagy::DEFAULT[:limit],
-      max_pages: 100,
       request: { params: }
     }.compact
   end
@@ -125,6 +126,11 @@ class WorkPackages::ActivitiesTab::Paginator
 
   def base_journals
     combine_and_sort_records(fetch_journals, fetch_revisions)
+  end
+
+  def capped_journals
+    max_records = (params[:limit] || Pagy::DEFAULT[:limit]) * MAX_PAGES
+    base_journals.first(max_records)
   end
 
   def fetch_journals

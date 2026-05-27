@@ -39,7 +39,8 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_tab_nav(label: nil) do |tab_nav|
       tab_nav.with_tab(
         selected: selected_tab?(:types_and_statuses),
-        href: project_settings_backlogs_path(project)
+        href: project_settings_backlogs_path(project),
+        data: { turbo_action: "advance" }
       ) do |t|
         t.with_text { t("backlogs.types_and_statuses") }
       end
@@ -47,7 +48,8 @@ See COPYRIGHT and LICENSE files for more details.
       if User.current.allowed_in_project?(:share_sprint, project)
         tab_nav.with_tab(
           selected: selected_tab?(:sharing),
-          href: project_settings_backlog_sharing_path(project)
+          href: project_settings_backlog_sharing_path(project),
+          data: { turbo_action: "advance" }
         ) do |t|
           t.with_text { t("backlogs.sharing") }
         end
