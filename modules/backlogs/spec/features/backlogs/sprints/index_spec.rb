@@ -128,6 +128,35 @@ RSpec.describe "Sprint index", :js do
     end
   end
 
+  context "when a sprint is shared from another project" do
+    let(:source_project) do
+      create(:project, sprint_sharing: Projects::SprintSharing::SHARE_ALL_PROJECTS)
+    end
+    let(:receiving_project) do
+      create(:project, sprint_sharing: Projects::SprintSharing::RECEIVE_SHARED)
+    end
+    let(:sprints_page) { Pages::Sprints.new(receiving_project) }
+    let!(:shared_sprint) do
+      create(:sprint,
+             project: source_project,
+             name: "Shared sprint",
+             status: :in_planning,
+             start_date: Date.new(2025, 9, 1),
+             finish_date: Date.new(2025, 9, 7))
+    end
+
+    current_user do
+      create(:user, member_with_permissions: { receiving_project => permissions })
+    end
+
+    it "shows the shared sprint and links it to the receiving project" do
+      sprints_page.visit!
+
+      sprints_page.expect_sprint_present(shared_sprint)
+      sprints_page.expect_sprint_name_link(shared_sprint, href: project_backlogs_backlog_path(receiving_project))
+    end
+  end
+
   context "when rendering sprint name links" do
     let!(:planning_sprint) do
       create(:sprint,

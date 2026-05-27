@@ -69,9 +69,9 @@ module Backlogs
 
       def href_for_sprint # rubocop:disable Metrics/AbcSize
         @href_for_sprint ||= if sprint.active?
-                               project_work_package_board_path(sprint.project, sprint.task_board_for(sprint.project))
+                               project_work_package_board_path(project, sprint.task_board_for(project))
                              elsif sprint.in_planning?
-                               project_backlogs_backlog_path(sprint.project)
+                               project_backlogs_backlog_path(project)
                              elsif sprint.completed?
                                link_to_work_packages_table
                              end
@@ -81,7 +81,7 @@ module Backlogs
         default_columns = Setting.work_package_list_default_columns.map(&:to_s)
 
         project_work_packages_path(
-          sprint.project,
+          project,
           query_props: {
             f: [{ n: "sprintId", o: "=", v: [sprint.id.to_s] }],
             t: "position:asc",

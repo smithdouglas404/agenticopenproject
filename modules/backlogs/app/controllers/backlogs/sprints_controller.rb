@@ -53,7 +53,6 @@ module Backlogs
     def index
       @sprints = Sprint.for_project(@project)
                        .order_by_date
-                       .includes(:project) # TODO: remove?
                        .order(:name)
                        .page(helpers.page_param(params))
                        .per_page(helpers.per_page_param)
