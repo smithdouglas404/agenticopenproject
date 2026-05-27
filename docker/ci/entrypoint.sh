@@ -125,7 +125,7 @@ backend_stuff() {
 }
 
 frontend_stuff() {
-	execute_quiet "SECRET_KEY_BASE=1 DATABASE_URL=nulldb://db time bin/rails openproject:plugins:register_frontend assets:precompile"
+	execute_quiet "DATABASE_URL=nulldb://db time bin/rails openproject:plugins:register_frontend assets:precompile"
 	execute_quiet "cp -rp config/frontend_assets.manifest.json public/assets/frontend_assets.manifest.json"
 }
 
