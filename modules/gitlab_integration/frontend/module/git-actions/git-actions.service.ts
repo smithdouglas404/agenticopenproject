@@ -50,7 +50,7 @@ export class GitActionsService {
     const type = workPackage.type.name || '';
     const id = workPackage.displayId;
     const title = workPackage.subject;
-    const url = window.location.origin + workPackage.pathHelper.workPackagePath(id);
+    const url = window.location.origin + workPackage.pathHelper.workPackageShortPath(id);
     const description = '';
 
     return { id, type, title, url, description };

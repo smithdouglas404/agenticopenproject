@@ -112,7 +112,7 @@ RSpec.describe "Open the Gitlab tab", :js do
 
         commit_message_input_text = page.find_field("Commit message").value
         expect(commit_message_input_text)
-          .to eq("OP##{work_package.id} A test work_package\n\n#{work_package_url(work_package)}")
+          .to eq("OP##{work_package.id} A test work_package\n\n#{work_package_short_url(work_package)}")
       end
 
       it "allows the user to copy a commit message with newlines between title and link to the clipboard" do
