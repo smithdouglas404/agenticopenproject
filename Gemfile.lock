@@ -425,7 +425,7 @@ GEM
     capybara-screenshot (1.0.27)
       capybara (>= 1.0, < 4)
       launchy
-    carrierwave (2.2.6)
+    carrierwave (2.2.7)
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
       addressable (~> 2.6)
@@ -1594,7 +1594,7 @@ DEPENDENCIES
   capybara (~> 3.40.0)
   capybara-screenshot (~> 1.0.17)
   capybara_accessible_selectors!
-  carrierwave (~> 2.2.6)
+  carrierwave (~> 2.2.7)
   carrierwave_direct (~> 3.0.0)
   climate_control
   closure_tree (~> 9.7.0)
@@ -1849,11 +1849,12 @@ CHECKSUMS
   browser (6.2.0) sha256=281d5295788825c9396427c292c2d2be0a5c91875c93c390fde6e5d61a5ace2d
   budgets (1.0.0)
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
+  bundler (4.0.12) sha256=7f8b757d28dfb636e7b24fba2344ac6dd13b5b24f4b46d62573d483f211825ac
   byebug (13.0.0) sha256=d2263efe751941ca520fa29744b71972d39cbc41839496706f5d9b22e92ae05d
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   capybara-screenshot (1.0.27) sha256=afa1896cc23df77be1774e8d3b3ce3953bf060aeaa04ff87607b5daf689174f2
   capybara_accessible_selectors (0.15.0)
-  carrierwave (2.2.6) sha256=cd9b6108fc7544e97e7fbcc561bd319a09f23c96816fdd0df8f2f45ffdc0dac3
+  carrierwave (2.2.7) sha256=1ede8f502f420e8a34ca1ccbbc9dc92ea159e94583e1194b4ea720a5ccc2d855
   carrierwave_direct (3.0.0) sha256=da4105ec7beea2687817b95ad95181be3d657248ec1cb5a0e5c35a45b176fc2f
   cbor (0.5.10.2) sha256=df5104f7a62c881123e6505441b1e276208be1771540c2cc3b1de8a210a7c52c
   cgi (0.5.1) sha256=e93fcafc69b8a934fe1e6146121fa35430efa8b4a4047c4893764067036f18e9
