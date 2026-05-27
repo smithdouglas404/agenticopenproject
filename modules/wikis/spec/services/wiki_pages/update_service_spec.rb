@@ -225,4 +225,35 @@ RSpec.describe WikiPages::UpdateService do
       end
     end
   end
+
+  describe "replacing the attachments" do
+    let(:project) { create(:project) }
+    let(:wiki_page) { create(:wiki_page, wiki: project.wiki, author: user) }
+    let(:user) do
+      create(:user,
+             member_with_permissions: { project => %i[view_wiki_pages edit_wiki_pages] })
+    end
+
+    let!(:old_attachment) { create(:attachment, container: wiki_page) }
+    let!(:other_users_attachment) { create(:attachment, container: nil, author: create(:user)) }
+    let!(:new_attachment) { create(:attachment, container: nil, author: user) }
+
+    it "rejects other user's pending attachments and replaces attachments owned by the user" do
+      result = instance.call(attachment_ids: [other_users_attachment.id])
+
+      expect(result).to be_failure
+      expect(result.errors.symbols_for(:attachments)).to contain_exactly(:does_not_exist)
+
+      expect(wiki_page.attachments.reload).to contain_exactly(old_attachment)
+      expect(other_users_attachment.reload.container).to be_nil
+
+      result = instance.call(attachment_ids: [new_attachment.id])
+
+      expect(result).to be_success
+      expect(wiki_page.attachments.reload).to contain_exactly(new_attachment)
+      expect(new_attachment.reload.container).to eql wiki_page
+
+      expect(Attachment.find_by(id: old_attachment.id)).to be_nil
+    end
+  end
 end
