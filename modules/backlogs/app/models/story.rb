@@ -63,10 +63,16 @@ class Story < WorkPackage
   # Sprint column) nor an Agile::Sprint column. Unlike `.backlogs`, this is
   # not filtered by `Story.types` — the inbox surfaces every unassigned
   # work package regardless of the configured story-type setting.
-  def self.inbox_for(project_id)
-    candidates = Story.where(project_id:, version_id: nil, sprint_id: nil)
-                      .includes(:status, :type)
-                      .order(Arel.sql(Story::ORDER))
+  #
+  # By default closed-status work packages (Done / Closed / Rejected) are
+  # excluded so the inbox stays focused on actionable items. Pass
+  # `include_closed: true` to surface them too.
+  def self.inbox_for(project_id, include_closed: false)
+    scope = Story.where(project_id:, version_id: nil, sprint_id: nil)
+                 .includes(:status, :type)
+    scope = scope.joins(:status).where(statuses: { is_closed: false }) unless include_closed
+
+    candidates = scope.order(Arel.sql(Story::ORDER))
 
     candidates.each_with_index do |story, index|
       story.rank = index + 1

@@ -122,4 +122,25 @@ RSpec.describe Backlog, ".inbox_backlog" do
       expect(subject.stories.map(&:rank)).to eq([1, 2, 3])
     end
   end
+
+  describe "closed status filter" do
+    let(:closed_status) { create(:status, is_closed: true) }
+    let!(:open_wp) do
+      create(:work_package, project:, type: feature_type, status:, version: nil, sprint: nil)
+    end
+    let!(:closed_wp) do
+      create(:work_package, project:, type: feature_type, status: closed_status, version: nil, sprint: nil)
+    end
+
+    it "excludes work packages in a closed status by default" do
+      result = described_class.inbox_backlog(project)
+      expect(result.stories.map(&:id)).to include(open_wp.id)
+      expect(result.stories.map(&:id)).not_to include(closed_wp.id)
+    end
+
+    it "includes closed work packages when include_closed: true" do
+      result = described_class.inbox_backlog(project, include_closed: true)
+      expect(result.stories.map(&:id)).to include(open_wp.id, closed_wp.id)
+    end
+  end
 end

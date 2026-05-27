@@ -106,6 +106,7 @@ en:
       title: "Inbox"
       blankslate_title: "Inbox is empty"
       blankslate_description: "Work packages with no version or sprint assigned will appear here."
+      include_closed: "Include closed"
 
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"

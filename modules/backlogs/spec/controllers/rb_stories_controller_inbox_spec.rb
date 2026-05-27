@@ -103,4 +103,37 @@ RSpec.describe RbStoriesController, "inbox move flows" do
       expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-inbox"
     end
   end
+
+  describe "PUT #move preserves inbox_include_closed across the turbo-stream refresh" do
+    let(:story_to_move) { create(:story, status:, version: nil, project:) }
+
+    before { allow(Backlogs::InboxComponent).to receive(:new).and_call_original }
+
+    it "rebuilds the inbox component with include_closed: true when the param is set" do
+      put :move, params: {
+                   project_id: project.id,
+                   id: story_to_move.id,
+                   target_id: Backlogs::InboxComponent::INBOX_TARGET_ID,
+                   position: 1,
+                   inbox_include_closed: "1"
+                 },
+                 format: :turbo_stream
+
+      expect(response).to have_http_status :ok
+      expect(Backlogs::InboxComponent).to have_received(:new).with(hash_including(include_closed: true))
+    end
+
+    it "rebuilds the inbox component with include_closed: false when the param is absent" do
+      put :move, params: {
+                   project_id: project.id,
+                   id: story_to_move.id,
+                   target_id: Backlogs::InboxComponent::INBOX_TARGET_ID,
+                   position: 1
+                 },
+                 format: :turbo_stream
+
+      expect(response).to have_http_status :ok
+      expect(Backlogs::InboxComponent).to have_received(:new).with(hash_including(include_closed: false))
+    end
+  end
 end

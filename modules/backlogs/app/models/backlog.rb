@@ -54,8 +54,10 @@ class Backlog
     sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint:) }
   end
 
-  def self.inbox_backlog(project)
-    new(sprint: nil, stories: Story.inbox_for(project.id), inbox: true)
+  def self.inbox_backlog(project, include_closed: false)
+    new(sprint: nil,
+        stories: Story.inbox_for(project.id, include_closed:),
+        inbox: true)
   end
 
   def initialize(sprint:, stories:, owner_backlog: false, inbox: false)
