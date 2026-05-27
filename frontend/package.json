@@ -28,7 +28,7 @@
     "@types/hotwired__turbo": "^8.0.10",
     "@types/jquery": "^4.0.0",
     "@types/jquery-migrate": "^3.3.3",
-    "@types/lodash": "^4.17.23",
+    "@types/lodash": "^4.17.24",
     "@types/mousetrap": "^1.6.3",
     "@types/pako": "^2.0.4",
     "@types/rails__request.js": "^0.0.1",
