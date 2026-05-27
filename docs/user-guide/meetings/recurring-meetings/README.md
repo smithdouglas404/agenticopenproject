@@ -33,7 +33,7 @@ To create a new recurring meeting, click the green **+ Meeting** button in the u
 
 Enter your meeting's title, location, start and end date and time, duration, frequency and interval. Note that if you are creating a meeting from a global module you will first need to select a project to which the meeting belongs.
 
-![Form to create recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_fOrm.png)
+![Form to create recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_form.png)
 
 > [!TIP] 
 > Duration can be entered both in hours and minutes. For example for a meeting that should last for 1.5 hours, you can enter:
