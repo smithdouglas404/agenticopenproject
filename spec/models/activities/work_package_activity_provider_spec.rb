@@ -99,7 +99,7 @@ RSpec.describe Activities::WorkPackageActivityProvider do
       end
     end
 
-    context "when semantic IDs are enabled" do
+    context "when semantic IDs are enabled", with_settings: { work_packages_identifier: "semantic" } do
       # Override outer let!(:work_packages) so it doesn't force WP creation before the stub is active
       let!(:work_packages) { [] }
 
@@ -116,7 +116,6 @@ RSpec.describe Activities::WorkPackageActivityProvider do
       end
 
       before do
-        allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
         work_package
       end
 
