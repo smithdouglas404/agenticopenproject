@@ -109,7 +109,7 @@ en:
           title: Health Report
       oauth_application_info_component:
         confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
-        label_oauth_client_id: OAuth Client
+        label_oauth_client_id: OAuth Client ID
         label_pending: Pending
         replace_oauth_application: Replace OpenProject OAuth application
       oauth_client_info_component:
