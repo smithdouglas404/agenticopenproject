@@ -34,11 +34,10 @@ module OpenProject
     # `:external_text`) onto the primitive `only_path` / `static_html` /
     # `plain_text` context flags that the filter pipeline reads.
     #
-    # The collapse exists because external surfaces (mailers today; RSS, PDF,
-    # webhooks tomorrow) always need absolute URLs *and* static rendering for
-    # JS-dependent components — the two flags never travel apart in practice.
-    # A single mode value is the canonical API; the primitives stay available
-    # as per-flag escape hatches for callers that need an asymmetric mix.
+    # External surfaces always need absolute URLs *and* static rendering for
+    # JS-dependent components — the two flags are a coupled set. A single
+    # mode value is the canonical API; the primitives stay available as
+    # per-flag escape hatches for callers that need an asymmetric mix.
     module RenderMode
       DEFAULTS = {
         in_app_html: { only_path: true, static_html: false, plain_text: false }.freeze,

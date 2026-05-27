@@ -28,11 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Mailer-view wrappers around {OpenProject::TextFormatting#format_text}. They
-# pin the external rendering channel so mailer templates never have to
-# remember the `render_mode:` / `only_path:` / `static_html:` combination —
-# matching the `.html.erb` / `.text.erb` template extension to the helper name
-# keeps caller intent visible at the call site.
+# Pin the external rendering channel so mailer templates never have to
+# remember the `render_mode:` / `only_path:` / `static_html:` combination.
+# Matching the `.html.erb` / `.text.erb` extension to the helper name keeps
+# caller intent visible.
 module MailFormattingHelper
   def format_mail_html(*, **)
     format_text(*, render_mode: :external_html, **)
