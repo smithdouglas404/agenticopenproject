@@ -30,23 +30,24 @@
 
 module Backlogs
   class WorkPackageCardComponent < ApplicationComponent
-    attr_reader :work_package, :menu_src, :turbo_frame_only
+    attr_reader :work_package, :menu_src
 
     delegate :with_menu, :with_metric, to: :card
 
-    def initialize(work_package:, menu_src: nil, turbo_frame_only: false)
+    def initialize(work_package:, menu_src: nil)
       super()
 
       @work_package = work_package
       @menu_src = menu_src
-      @turbo_frame_only = turbo_frame_only
     end
 
     def call
-      render(card) do |common_card|
-        unless common_card.metric?
-          common_card.with_metric do
-            render(Backlogs::StoryPointsComponent.new(work_package:))
+      helpers.turbo_frame_tag("#{dom_id(work_package)}_card") do
+        render(card) do |common_card|
+          unless common_card.metric?
+            common_card.with_metric do
+              render(Backlogs::StoryPointsComponent.new(work_package:))
+            end
           end
         end
       end
@@ -61,8 +62,7 @@ module Backlogs
         show_assignee: true,
         show_priority: true,
         show_parent: true,
-        status_scheme: :secondary,
-        turbo_frame_only:
+        status_scheme: :secondary
       )
     end
 

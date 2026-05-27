@@ -33,7 +33,7 @@ module Backlogs
     private
 
     def build_card
-      WorkPackageCardComponent.new(work_package:, menu_src:, turbo_frame_only: true)
+      WorkPackageCardComponent.new(work_package:, menu_src:)
     end
 
     def draggable?
