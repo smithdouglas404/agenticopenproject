@@ -102,6 +102,11 @@ en:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
 
+    inbox_component:
+      title: "Inbox"
+      blankslate_title: "Inbox is empty"
+      blankslate_description: "Work packages with no version or sprint assigned will appear here."
+
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
@@ -176,6 +181,8 @@ en:
   label_sprint_impediments: "Sprint Impediments"
   label_sprint_new: "New sprint"
   label_task_board: "Task board"
+
+  notice_successful_move: "Successfully moved from %{from} to %{to}."
 
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"

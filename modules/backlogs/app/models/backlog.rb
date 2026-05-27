@@ -54,10 +54,15 @@ class Backlog
     sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint:) }
   end
 
-  def initialize(sprint:, stories:, owner_backlog: false)
+  def self.inbox_backlog(project)
+    new(sprint: nil, stories: Story.inbox_for(project.id), inbox: true)
+  end
+
+  def initialize(sprint:, stories:, owner_backlog: false, inbox: false)
     @sprint = sprint
     @stories = stories
     @owner_backlog = owner_backlog
+    @inbox = inbox
   end
 
   def updated_at
@@ -69,10 +74,14 @@ class Backlog
   end
 
   def sprint_backlog?
-    !owner_backlog?
+    !owner_backlog? && !inbox?
+  end
+
+  def inbox?
+    !!@inbox
   end
 
   def to_key
-    [sprint_id]
+    [inbox? ? "inbox" : sprint_id]
   end
 end

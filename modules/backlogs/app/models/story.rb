@@ -59,6 +59,22 @@ class Story < WorkPackage
     Story.backlogs(project.id, [sprint.id], options)[sprint.id]
   end
 
+  # Work packages in this project that belong to neither a Version (legacy
+  # Sprint column) nor an Agile::Sprint column. Unlike `.backlogs`, this is
+  # not filtered by `Story.types` — the inbox surfaces every unassigned
+  # work package regardless of the configured story-type setting.
+  def self.inbox_for(project_id)
+    candidates = Story.where(project_id:, version_id: nil, sprint_id: nil)
+                      .includes(:status, :type)
+                      .order(Arel.sql(Story::ORDER))
+
+    candidates.each_with_index do |story, index|
+      story.rank = index + 1
+    end
+
+    candidates.to_a
+  end
+
   def self.at_rank(project_id, sprint_id, rank)
     Story.where(Story.condition(project_id, sprint_id))
          .joins(:status)

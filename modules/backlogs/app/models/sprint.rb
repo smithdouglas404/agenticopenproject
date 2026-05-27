@@ -157,6 +157,13 @@ class Sprint < Version
     Impediment.default_scope.where(version_id: self, project_id: project)
   end
 
+  # Returns the VersionSetting governing how this sprint is displayed in the
+  # given project's backlog view. Falls back to the global (project_id: nil)
+  # setting when no project-specific entry exists.
+  def settings(project)
+    version_settings.find { |s| s.project_id == project.id || s.project_id.nil? }
+  end
+
   private
 
   def resolved_wiki

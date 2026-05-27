@@ -73,6 +73,7 @@ class RbMasterBacklogsController < RbApplicationController
 
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
+    @inbox_backlog = Backlog.inbox_backlog(@project)
 
     if OpenProject::FeatureDecisions.scrum_projects_active?
       @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date

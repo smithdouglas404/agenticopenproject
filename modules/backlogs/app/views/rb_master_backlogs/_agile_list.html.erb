@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <turbo-frame id="backlogs_container" refresh="morph" class="op-backlogs-page">
-  <% if @owner_backlogs.empty? && @sprints.empty? %>
+  <% if @owner_backlogs.empty? && @sprints.empty? && @inbox_backlog.stories.empty? %>
     <%=
       render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
         blankslate.with_visual_icon(icon: :versions)
@@ -41,6 +41,9 @@ See COPYRIGHT and LICENSE files for more details.
     %>
   <% else %>
     <div class="op-backlogs-container" data-controller="generic-drag-and-drop">
+      <div id="inbox_backlog_container" class="op-backlogs-lists">
+        <%= render(Backlogs::InboxComponent.new(inbox: @inbox_backlog, project: @project)) %>
+      </div>
       <div id="sprint_backlogs_container" class="op-backlogs-lists">
         <%= render(Backlogs::SprintComponent.with_collection(@sprints)) %>
       </div>

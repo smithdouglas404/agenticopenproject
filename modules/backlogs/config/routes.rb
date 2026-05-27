@@ -56,6 +56,15 @@ Rails.application.routes.draw do
         end
       end
 
+      # Non-nested stories endpoint used when the source column is the inbox
+      # (no sprint context in the URL). Dragging into a sprint/version column
+      # still routes here; the move action reads the destination from params[:target_id].
+      resources :stories, controller: :rb_stories, only: [], as: :inbox_story do
+        member do
+          put :move
+        end
+      end
+
       resources :sprints, controller: :rb_sprints, only: %i[update] do
         resource :query,            controller: :rb_queries,          only: :show
 

@@ -55,7 +55,9 @@ See COPYRIGHT and LICENSE files for more details.
   <% end %>
 
   <% grid.with_area(:menu) do %>
-    <%= render(Backlogs::StoryMenuComponent.new(story:, sprint:, max_position:)) %>
+    <% if sprint %>
+      <%= render(Backlogs::StoryMenuComponent.new(story:, sprint:, max_position:)) %>
+    <% end %>
   <% end %>
 
   <% grid.with_area(:subject) do %>
