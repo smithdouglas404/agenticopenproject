@@ -67,7 +67,7 @@ module Backlogs
 
       private
 
-      def href_for_sprint # rubocop:disable Metrics/AbcSize
+      def href_for_sprint
         @href_for_sprint ||= if sprint.active?
                                project_work_package_board_path(project, sprint.task_board_for(project))
                              elsif sprint.in_planning?
