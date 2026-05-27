@@ -28,16 +28,16 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { GitActionsMenuComponent } from './git-actions-menu.component';
+import { GitLabActionsMenuComponent } from './git-actions-menu.component';
 import { GitActionsService } from '../git-actions/git-actions.service';
 import { By } from '@angular/platform-browser';
 import { OpIconComponent } from 'core-app/shared/components/icon/icon.component';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpContextMenuLocalsToken } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 
-describe('GitActionsMenuComponent', () => {
-  let component:GitActionsMenuComponent;
-  let fixture:ComponentFixture<GitActionsMenuComponent>;
+describe('GitLabActionsMenuComponent', () => {
+  let component:GitLabActionsMenuComponent;
+  let fixture:ComponentFixture<GitLabActionsMenuComponent>;
   let element:DebugElement;
   let gitActionsService:{ gitCommand:ReturnType<typeof vi.fn>; commitMessage:ReturnType<typeof vi.fn>; commitMessageDisplayText:ReturnType<typeof vi.fn>; branchName:ReturnType<typeof vi.fn> };
   const I18nServiceStub = {
@@ -67,7 +67,7 @@ describe('GitActionsMenuComponent', () => {
     await TestBed
       .configureTestingModule({
         declarations: [
-          GitActionsMenuComponent,
+          GitLabActionsMenuComponent,
           OpIconComponent,
         ],
         providers: [
@@ -80,7 +80,7 @@ describe('GitActionsMenuComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GitActionsMenuComponent);
+    fixture = TestBed.createComponent(GitLabActionsMenuComponent);
     component = fixture.componentInstance;
     element = fixture.debugElement;
     gitActionsService = fixture.debugElement.injector.get(GitActionsService) as unknown as typeof gitActionsService;
