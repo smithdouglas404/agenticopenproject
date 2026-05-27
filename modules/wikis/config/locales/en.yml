@@ -88,7 +88,7 @@ en:
           inline wiki page link will no longer be accessible. This action is irreversible.
       forms:
         general_info_form_component:
-          xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
+          provider_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
         oauth_application_form_component:
           application_id: OpenProject OAuth Application ID
           application_secret: OpenProject OAuth Application secret
@@ -133,7 +133,7 @@ en:
         index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
         label_add_new: Add new wiki provider
         label_edit: Edit XWiki provider
-        label_new_xwiki_instance: New XWiki provider
+        label_new_provider: New XWiki provider
         label_wiki_platform: Wiki provider
         name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
         name_placeholder: XWiki knowledge base
@@ -144,7 +144,6 @@ en:
           general_information: General information
           oauth_configuration: OAuth configuration
         url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
-        xwiki_instance: Wiki Provider
         xwiki:
           oauth:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
