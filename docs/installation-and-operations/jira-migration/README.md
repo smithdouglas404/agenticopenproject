@@ -39,7 +39,7 @@ This import tool is currently in beta and can only import basic data:
 
 ### Coming soon
 
-- Project identifiers conscious 
+- Project identifiers
 - Relations between issues
 - Sprint assignments
 
