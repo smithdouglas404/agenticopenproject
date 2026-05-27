@@ -85,12 +85,18 @@ module WorkPackage::SemanticIdentifier
       super.extending(FinderMethods)
     end
 
+    # Returns the user-facing identifier for a work package given its id and identifier.
+    # In semantic mode: the project-based identifier (e.g. "PROJ-42")
+    # In classic mode: the numeric database ID (even if identifier is set in the DB)
     def display_id_for(id, identifier)
       return id unless Setting::WorkPackageIdentifier.semantic?
 
       identifier.presence || id
     end
 
+    # Returns the identifier formatted for inline UI display.
+    # Semantic mode: "PROJ-42" (no prefix — self-describing)
+    # Classic mode: "#42" (hash-prefixed)
     def formatted_id_for(id, identifier)
       did = display_id_for(id, identifier)
       did.is_a?(String) && did.match?(/[A-Za-z]/) ? did : "##{did}"
@@ -132,16 +138,10 @@ module WorkPackage::SemanticIdentifier
     end
   end
 
-  # Returns the user-facing identifier for this work package.
-  # In semantic mode: the project-based identifier (e.g. "PROJ-42")
-  # In classic mode: the numeric database ID
   def display_id
     self.class.display_id_for(id, identifier)
   end
 
-  # Returns the identifier formatted for inline UI display.
-  # Semantic mode: "PROJ-42" (no prefix — self-describing)
-  # Classic mode: "#42" (hash-prefixed)
   def formatted_id
     self.class.formatted_id_for(id, identifier)
   end
