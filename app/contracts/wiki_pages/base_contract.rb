@@ -32,6 +32,8 @@
 # considered to be one outside of this contract.
 module WikiPages
   class BaseContract < ::ModelContract
+    include ::Attachments::ValidateReplacements
+
     attribute :wiki
     attribute :title
     attribute :slug
