@@ -225,5 +225,31 @@ RSpec.describe AddViewAllPrincipalsPermissionToExistingRoles, type: :model do
         expect(user_with_empty_role.members.where(project: nil)).not_to include(migration_role) if migration_role
       end
     end
+
+    context "when a group has manage_members in a project" do
+      let(:project_role) { create(:project_role, name: "Project Manager") }
+      let(:group_member_user) { create(:user) }
+      let(:group) { create(:group, members: [group_member_user]) }
+
+      before do
+        project_role.add_permission!(:manage_members)
+        create(:member, project:, principal: group, roles: [project_role])
+      end
+
+      it "assigns the migration global role to the group and propagates it to members" do
+        ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) }
+
+        migration_role = GlobalRole.find_by(name: "View all users (migration)")
+        expect(migration_role).to be_present
+
+        group.reload
+        global_membership = group.members.find_by(project: nil)
+        expect(global_membership.roles).to include(migration_role)
+
+        group_member_user.reload
+        user_global_membership = group_member_user.members.find_by(project: nil)
+        expect(user_global_membership.roles).to include(migration_role)
+      end
+    end
   end
 end
