@@ -1,5 +1,10 @@
 import { Injector } from '@angular/core';
-import { displayClassName, editableClassName, readOnlyClassName } from 'core-app/shared/components/fields/display/display-field-renderer';
+import {
+  displayClassName,
+  displayTriggerLink,
+  editableClassName,
+  readOnlyClassName,
+} from 'core-app/shared/components/fields/display/display-field-renderer';
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { getPosition } from 'core-app/shared/helpers/set-click-position/set-click-position';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
@@ -38,6 +43,15 @@ export class EditCellHandler extends ClickOrEnterHandler implements TableEventHa
 
   protected processEvent(table:WorkPackageTable, evt:MouseEvent|KeyboardEvent):void {
     debugLog('Starting editing on cell: ', evt.target);
+
+    // Don't intercept clicks on anchor elements - let the browser follow the link
+    const clickTarget = evt.target as HTMLElement;
+    const foundElement = clickTarget.closest(`a:not(.${displayTriggerLink}),macro`);
+    if (foundElement) {
+      return;
+    }
+
+
     evt.preventDefault();
 
     // Locate the cell from event
@@ -61,7 +75,7 @@ export class EditCellHandler extends ClickOrEnterHandler implements TableEventHa
     // Get any existing edit state for this work package
     const form = table.editing.startEditing(workPackage, classIdentifier);
 
-    let positionOffset = 0;    
+    let positionOffset = 0;
     if (evt.type === 'click') {
       // Get the position where the user clicked.
       positionOffset = getPosition(evt as MouseEvent);
