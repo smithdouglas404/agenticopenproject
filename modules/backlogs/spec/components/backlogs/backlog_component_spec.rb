@@ -51,8 +51,10 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
     allow(user).to receive(:backlogs_preference).with(:versions_default_fold_state).and_return("open")
   end
 
-  def render_component
-    render_inline(described_class.new(backlog:, project:, current_user: user))
+  def render_component(inbox_include_closed: false)
+    render_inline(
+      described_class.new(backlog:, project:, current_user: user, inbox_include_closed:)
+    )
   end
 
   describe "rendering" do
@@ -120,6 +122,20 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
         expect(story_row["data-drop-url"]).to include("move")
+      end
+
+      it "carries inbox_include_closed=1 on the drop URL when configured" do
+        render_component(inbox_include_closed: true)
+
+        story_row = page.find(".Box-row[id='story_#{story1.id}']")
+        expect(story_row["data-drop-url"]).to include("inbox_include_closed=1")
+      end
+
+      it "omits the inbox_include_closed param by default" do
+        render_component
+
+        story_row = page.find(".Box-row[id='story_#{story1.id}']")
+        expect(story_row["data-drop-url"]).not_to include("inbox_include_closed")
       end
 
       it "renders story rows with proper classes" do

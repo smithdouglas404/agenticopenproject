@@ -49,8 +49,8 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     allow(user).to receive(:backlogs_preference).with(:versions_default_fold_state).and_return("open")
   end
 
-  def render_component
-    render_inline(described_class.new(inbox:, project:, current_user: user))
+  def render_component(include_closed: false)
+    render_inline(described_class.new(inbox:, project:, current_user: user, include_closed:))
   end
 
   describe "rendering" do
@@ -117,6 +117,13 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         expect(row["data-draggable-type"]).to eq("story")
         expect(row["data-drop-url"]).to match(%r{/projects/#{project.identifier}/stories/#{wp1.id}/move\z})
       end
+
+      it "appends inbox_include_closed=1 to the drop URL when include_closed is true" do
+        render_component(include_closed: true)
+
+        row = page.find(".Box-row[id='story_#{wp1.id}']")
+        expect(row["data-drop-url"]).to include("inbox_include_closed=1")
+      end
     end
 
     context "without stories" do
@@ -124,6 +131,39 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         render_component
 
         expect(page).to have_text(I18n.t("backlogs.inbox_component.blankslate_title"))
+      end
+    end
+
+    describe "include closed checkbox" do
+      it "renders the checkbox unchecked by default" do
+        render_component
+
+        checkbox = page.find("input[type=checkbox][name=inbox_include_closed]")
+        expect(checkbox.checked?).to be(false)
+        expect(page).to have_text(I18n.t("backlogs.inbox_component.include_closed"))
+      end
+
+      it "renders the checkbox checked when include_closed: true" do
+        render_component(include_closed: true)
+
+        checkbox = page.find("input[type=checkbox][name=inbox_include_closed]")
+        expect(checkbox.checked?).to be(true)
+      end
+
+      it "submits to the master backlogs URL, scoped to the backlogs_container turbo-frame" do
+        render_component
+
+        form = page.find("form[action$='/backlogs']")
+        expect(form["method"]).to eq("get")
+        expect(form["data-turbo-frame"]).to eq("backlogs_container")
+        expect(form["data-controller"]).to eq("backlogs--inbox-filter")
+      end
+
+      it "uses turbo_action: advance so the URL is pushed to browser history" do
+        render_component
+
+        form = page.find("form[action$='/backlogs']")
+        expect(form["data-turbo-action"]).to eq("advance")
       end
     end
   end

@@ -63,10 +63,16 @@ class Story < WorkPackage
   # Sprint column) nor an Agile::Sprint column. Unlike `.backlogs`, this is
   # not filtered by `Story.types` — the inbox surfaces every unassigned
   # work package regardless of the configured story-type setting.
-  def self.inbox_for(project_id)
-    candidates = Story.where(project_id:, version_id: nil, sprint_id: nil)
-                      .includes(:status, :type)
-                      .order(Arel.sql(Story::ORDER))
+  #
+  # By default closed-status work packages (Done / Closed / Rejected) are
+  # excluded so the inbox stays focused on actionable items. Pass
+  # `include_closed: true` to surface them too.
+  def self.inbox_for(project_id, include_closed: false)
+    scope = Story.where(project_id:, version_id: nil, sprint_id: nil)
+                 .includes(:status, :type)
+    scope = scope.joins(:status).where(statuses: { is_closed: false }) unless include_closed
+
+    candidates = scope.order(Arel.sql(Story::ORDER))
 
     candidates.each_with_index do |story, index|
       story.rank = index + 1
@@ -166,8 +172,19 @@ class Story < WorkPackage
   end
 
   def self.condition(project_id, sprint_ids, extras = [])
-    c = ["project_id = ? AND type_id in (?) AND version_id in (?)",
-         project_id, Story.types, sprint_ids]
+    # Backlog columns surface story-type work packages plus orphan tasks
+    # (Task type with no parent). Tasks normally live on the Sprint Task
+    # Board under a parent story; an orphan task has no story to live
+    # under, so it is treated as a first-class column item.
+    c = if Task.type
+          ["project_id = ? AND " \
+           "(type_id IN (?) OR (type_id = ? AND parent_id IS NULL)) AND " \
+           "version_id IN (?)",
+           project_id, Story.types, Task.type, sprint_ids]
+        else
+          ["project_id = ? AND type_id IN (?) AND version_id IN (?)",
+           project_id, Story.types, sprint_ids]
+        end
 
     if extras.size > 0
       c[0] += " " + extras.shift

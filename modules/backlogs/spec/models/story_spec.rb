@@ -193,7 +193,13 @@ RSpec.describe Story do
           story1
         end
 
-        it { expect(Story.backlogs(project, [version.id])[version.id]).to contain_exactly(story1) }
+        # An orphan task (parent_id IS NULL) surfaces in the backlog column
+        # alongside stories: there is no parent story to anchor it to the
+        # Sprint Task Board, so it is treated as a first-class column item.
+        it {
+          expect(Story.backlogs(project, [version.id])[version.id])
+            .to contain_exactly(story1, task)
+        }
       end
     end
   end

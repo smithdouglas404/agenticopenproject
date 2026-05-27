@@ -73,12 +73,17 @@ class RbMasterBacklogsController < RbApplicationController
 
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
-    @inbox_backlog = Backlog.inbox_backlog(@project)
+    @inbox_include_closed = inbox_include_closed?
+    @inbox_backlog = Backlog.inbox_backlog(@project, include_closed: @inbox_include_closed)
 
     if OpenProject::FeatureDecisions.scrum_projects_active?
       @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
     else
       @sprint_backlogs = Backlog.sprint_backlogs(@project)
     end
+  end
+
+  def inbox_include_closed?
+    ActiveModel::Type::Boolean.new.cast(params[:inbox_include_closed]) == true
   end
 end

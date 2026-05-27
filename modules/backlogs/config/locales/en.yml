@@ -106,20 +106,25 @@ en:
       title: "Inbox"
       blankslate_title: "Inbox is empty"
       blankslate_description: "Work packages with no version or sprint assigned will appear here."
+      include_closed: "Include closed"
 
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
+      # The count reflects every item in the column, which may include
+      # orphan tasks (Task type with no parent story) alongside stories.
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "No items in backlog"
+        one: "%{count} item in backlog"
+        other: "%{count} items in backlog"
 
     sprint_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
+      # The count reflects every item in the column, which may include
+      # orphan tasks (Task type with no parent story) alongside stories.
       label_story_count:
-        zero: "No stories in sprint"
-        one: "%{count} story in sprint"
-        other: "%{count} stories in sprint"
+        zero: "No items in sprint"
+        one: "%{count} item in sprint"
+        other: "%{count} items in sprint"
 
     backlog_menu_component:
       label_actions: "Backlog actions"

@@ -38,16 +38,17 @@ module Backlogs
     # identify the inbox column (it has no sprint/version primary key).
     INBOX_TARGET_ID = "inbox"
 
-    attr_reader :inbox, :project, :current_user
+    attr_reader :inbox, :project, :current_user, :include_closed
 
     delegate :stories, to: :inbox
 
-    def initialize(inbox:, project:, current_user: User.current, **system_arguments)
+    def initialize(inbox:, project:, current_user: User.current, include_closed: false, **system_arguments)
       super()
 
       @inbox = inbox
       @project = project
       @current_user = current_user
+      @include_closed = include_closed
 
       @system_arguments = system_arguments
       @system_arguments[:id] = "backlogs-inbox-component"
@@ -83,10 +84,16 @@ module Backlogs
     end
 
     def draggable_item_config(story)
+      # Carry the include-closed flag in the drop URL so dragging a story
+      # out of (or within) the inbox preserves the toggle on the subsequent
+      # turbo-stream refresh.
+      url_options = { project_id: project, id: story }
+      url_options[:inbox_include_closed] = "1" if include_closed
+
       {
         draggable_id: story.id,
         draggable_type: "story",
-        drop_url: move_backlogs_project_inbox_story_path(project, story)
+        drop_url: move_backlogs_project_inbox_story_path(url_options)
       }
     end
   end
