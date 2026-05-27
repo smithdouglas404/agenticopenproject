@@ -110,14 +110,14 @@ RSpec.describe Activities::WorkPackageActivityProvider do
         end
       end
 
+      let(:events) do
+        described_class
+          .find_events(event_scope, user, Time.zone.yesterday.to_datetime, Time.zone.tomorrow.to_datetime, {})
+      end
+
       before do
         allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
         work_package
-      end
-
-      let(:events) do
-        Activities::WorkPackageActivityProvider
-          .find_events(event_scope, user, Time.zone.yesterday.to_datetime, Time.zone.tomorrow.to_datetime, {})
       end
 
       it "uses the semantic identifier in the event title" do

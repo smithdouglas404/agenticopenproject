@@ -33,9 +33,9 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
                         permission: :view_work_packages
 
   def extend_event_query(query)
-    query.join(types_table).on(activity_journals_table[:type_id].eq(types_table[:id]))
-    query.join(statuses_table).on(activity_journals_table[:status_id].eq(statuses_table[:id]))
-    query.join(activitied_table).on(journals_table[:journable_id].eq(activitied_table[:id]))
+    join_types_table(query)
+    join_statuses_table(query)
+    join_activitied_table(query)
   end
 
   def event_query_projection
@@ -49,8 +49,7 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
   end
 
   def self.work_package_title(id, subject, type_name, identifier = nil)
-    formatted = identifier.presence || "##{id}"
-    "#{type_name} #{formatted}: #{subject}"
+    "#{type_name} #{WorkPackage.formatted_id_for(id, identifier)}: #{subject}"
   end
 
   protected
@@ -67,11 +66,11 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
   end
 
   def event_path(event)
-    url_helpers.work_package_path(event["identifier"].presence || event["journable_id"])
+    url_helpers.work_package_path(WorkPackage.display_id_for(event["journable_id"], event["identifier"]))
   end
 
   def event_url(event)
-    url_helpers.work_package_url(event["identifier"].presence || event["journable_id"],
+    url_helpers.work_package_url(WorkPackage.display_id_for(event["journable_id"], event["identifier"]),
                                  anchor: notes_anchor(event))
   end
 
@@ -81,6 +80,18 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
     version = event["version"].to_i
 
     version > 1 ? "note-#{version - 1}" : ""
+  end
+
+  def join_types_table(query)
+    query.join(types_table).on(activity_journals_table[:type_id].eq(types_table[:id]))
+  end
+
+  def join_statuses_table(query)
+    query.join(statuses_table).on(activity_journals_table[:status_id].eq(statuses_table[:id]))
+  end
+
+  def join_activitied_table(query)
+    query.join(activitied_table).on(journals_table[:journable_id].eq(activitied_table[:id]))
   end
 
   def types_table

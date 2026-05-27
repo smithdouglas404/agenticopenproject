@@ -84,6 +84,17 @@ module WorkPackage::SemanticIdentifier
     def relation
       super.extending(FinderMethods)
     end
+
+    def display_id_for(id, identifier)
+      return id unless Setting::WorkPackageIdentifier.semantic?
+
+      identifier.presence || id
+    end
+
+    def formatted_id_for(id, identifier)
+      did = display_id_for(id, identifier)
+      did.is_a?(String) && did.match?(/[A-Za-z]/) ? did : "##{did}"
+    end
   end
 
   # Returns true when value looks like a semantic work package identifier
@@ -125,17 +136,14 @@ module WorkPackage::SemanticIdentifier
   # In semantic mode: the project-based identifier (e.g. "PROJ-42")
   # In classic mode: the numeric database ID
   def display_id
-    return id unless Setting::WorkPackageIdentifier.semantic?
-
-    identifier.presence || id
+    self.class.display_id_for(id, identifier)
   end
 
   # Returns the identifier formatted for inline UI display.
   # Semantic mode: "PROJ-42" (no prefix — self-describing)
   # Classic mode: "#42" (hash-prefixed)
   def formatted_id
-    did = display_id
-    did.is_a?(String) && did.match?(/[A-Za-z]/) ? did : "##{did}"
+    self.class.formatted_id_for(id, identifier)
   end
 
   # Override ActiveRecord's default `to_param` so Rails URL helpers
