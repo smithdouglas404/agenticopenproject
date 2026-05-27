@@ -5737,7 +5737,7 @@ en:
       section_work_week: "Work week"
       section_holidays_and_closures: "Holidays and closures"
     work_packages:
-      work_package_identifier: "Work package identifier"
+      work_package_identifier: "Work package identifiers"
       not_allowed_text: "You do not have the necessary permissions to view this page."
       activities:
         enable_internal_comments: "Enable internal comments"
