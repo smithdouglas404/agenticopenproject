@@ -31,12 +31,9 @@
 require "rails_helper"
 
 RSpec.describe Backlogs::Sprints::TableComponent, type: :component do
-  def render_component(...)
-    render_inline(described_class.new(...))
-  end
-
-  let(:sprint) { create(:sprint) }
-  let(:other_sprint) { create(:sprint) }
+  let(:project) { create(:project) }
+  let(:sprint) { create(:sprint, project:) }
+  let(:other_sprint) { create(:sprint, project:) }
   let(:work_package_counts) do
     {
       sprint.id => 2,
@@ -45,7 +42,7 @@ RSpec.describe Backlogs::Sprints::TableComponent, type: :component do
   end
 
   subject(:rendered_component) do
-    render_component(rows: sprints, work_package_counts:)
+    render_inline(described_class.new(rows: sprints, project:, work_package_counts:))
   end
 
   shared_examples_for "rendering Border Box Grid headings" do

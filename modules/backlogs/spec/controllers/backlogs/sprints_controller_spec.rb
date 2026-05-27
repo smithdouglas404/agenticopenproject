@@ -51,6 +51,8 @@ RSpec.describe Backlogs::SprintsController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprints)).not_to be_nil
+        expect(assigns(:work_package_counts)).to be_a(Hash)
       end
     end
 

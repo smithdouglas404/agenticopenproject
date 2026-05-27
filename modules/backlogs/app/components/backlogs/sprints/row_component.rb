@@ -68,13 +68,15 @@ module Backlogs
       private
 
       def href_for_sprint
-        @href_for_sprint ||= if sprint.active?
-                               project_work_package_board_path(project, sprint.task_board_for(project))
-                             elsif sprint.in_planning?
-                               project_backlogs_backlog_path(project)
-                             elsif sprint.completed?
-                               link_to_work_packages_table
-                             end
+        return @href_for_sprint if defined?(@href_for_sprint)
+
+        @href_for_sprint = if sprint.active?
+                             project_work_package_board_path(project, sprint.task_board_for(project))
+                           elsif sprint.in_planning?
+                             project_backlogs_backlog_path(project)
+                           elsif sprint.completed?
+                             link_to_work_packages_table
+                           end
       end
 
       def link_to_work_packages_table
