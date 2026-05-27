@@ -41,7 +41,7 @@ class RbStoriesController < RbApplicationController
     call = Stories::UpdateService
       .new(user: current_user, story: @story)
       .call(
-        attributes: { version_id: move_params[:target_id] },
+        attributes: move_attributes,
         position: move_params[:position].to_i
       )
 
@@ -51,15 +51,21 @@ class RbStoriesController < RbApplicationController
       )
     end
 
-    replace_backlog_component_via_turbo_stream(sprint: @sprint)
+    # Refresh the source column the story came from.
+    if @sprint
+      replace_backlog_component_via_turbo_stream(sprint: @sprint)
+    else
+      replace_inbox_component_via_turbo_stream
+    end
 
     if @story.version_id != version_id_was
-      new_sprint = @story.version.becomes(Sprint)
+      from_name = @sprint ? @sprint.name : I18n.t("backlogs.inbox_component.title")
+      to_name, refresh_target = destination_for_flash
 
       render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
+        message: I18n.t(:notice_successful_move, from: from_name, to: to_name)
       )
-      replace_backlog_component_via_turbo_stream(sprint: new_sprint)
+      refresh_target.call
     end
 
     respond_with_turbo_streams
@@ -86,6 +92,32 @@ class RbStoriesController < RbApplicationController
   def replace_backlog_component_via_turbo_stream(sprint:)
     @backlog = Backlog.for(sprint:, project: @project)
     replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: @backlog, project: @project))
+  end
+
+  def replace_inbox_component_via_turbo_stream
+    inbox = Backlog.inbox_backlog(@project)
+    replace_via_turbo_stream(component: Backlogs::InboxComponent.new(inbox:, project: @project))
+  end
+
+  def move_attributes
+    if inbox_target?
+      { version_id: nil, sprint_id: nil }
+    else
+      { version_id: move_params[:target_id] }
+    end
+  end
+
+  def destination_for_flash
+    if inbox_target?
+      [I18n.t("backlogs.inbox_component.title"), -> { replace_inbox_component_via_turbo_stream }]
+    else
+      new_sprint = @story.version.becomes(Sprint)
+      [new_sprint.name, -> { replace_backlog_component_via_turbo_stream(sprint: new_sprint) }]
+    end
+  end
+
+  def inbox_target?
+    move_params[:target_id].to_s == Backlogs::InboxComponent::INBOX_TARGET_ID
   end
 
   def load_story

@@ -102,6 +102,11 @@ en:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
 
+    inbox_component:
+      title: "Inbox"
+      blankslate_title: "Inbox is empty"
+      blankslate_description: "Work packages with no version or sprint assigned will appear here."
+
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
