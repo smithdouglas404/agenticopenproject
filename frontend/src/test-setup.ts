@@ -1,5 +1,6 @@
 import { I18n } from 'i18n-js';
 import lodash from 'lodash';
+import '@testing-library/jest-dom/vitest';
 import { registerDialogStreamAction } from 'core-turbo/dialog-stream-action';
 
 registerDialogStreamAction();
