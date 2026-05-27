@@ -57,6 +57,33 @@ RSpec.describe "Backlogs Project Settings", :js do
     login_as current_user
   end
 
+  context "when navigating between tabs" do
+    let(:role) do
+      create(:project_role,
+             permissions: %i[select_backlog_types_and_statuses share_sprint])
+    end
+
+    it "persists the active tab in the URL when switching tabs" do
+      settings_page.visit!
+
+      expect(page).to have_heading "Backlogs"
+
+      expect(page).to have_current_path(project_settings_backlogs_path(project))
+
+      click_link I18n.t("backlogs.sharing")
+
+      expect(page).to have_current_path(project_settings_backlog_sharing_path(project))
+
+      page.refresh
+
+      expect(page).to have_current_path(project_settings_backlog_sharing_path(project))
+
+      click_link I18n.t("backlogs.types_and_statuses")
+
+      expect(page).to have_current_path(project_settings_backlogs_path(project))
+    end
+  end
+
   it "allows setting a status as done although it is not closed" do
     settings_page.visit!
 

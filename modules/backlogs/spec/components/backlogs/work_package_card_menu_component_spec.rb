@@ -153,11 +153,12 @@ RSpec.describe Backlogs::WorkPackageCardMenuComponent, type: :component do
         expect(clipboard[:value]).not_to include("/work_packages/#{work_package.id}")
       end
 
-      it "still copies the numeric primary key for the 'Copy work package ID' action" do
+      it "copies the semantic identifier for the 'Copy work package ID' action" do
         render_component
 
         clipboard_id = page.find("clipboard-copy##{"work_package_#{work_package.id}_menu_copy_work_package_id"}")
-        expect(clipboard_id[:value]).to eq(work_package.id.to_s)
+        semantic_id = work_package.reload.identifier
+        expect(clipboard_id[:value]).to eq(semantic_id)
       end
     end
 

@@ -34,6 +34,7 @@ import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
+import type { TurboBeforeFrameRenderEvent, TurboSubmitEndEvent } from '@hotwired/turbo';
 
 @Directive({
   selector: '[opModalWithTurboContent]',
@@ -78,7 +79,7 @@ export class ModalWithTurboContentDirective implements AfterViewInit, OnDestroy 
       .removeEventListener('cancelModalWithTurboContent', this.cancelListenerBound);
   }
 
-  private contextBasedListener(event:CustomEvent) {
+  private contextBasedListener(event:TurboSubmitEndEvent) {
     if (this.resource.id === 'new') {
       void this.propagateSuccessfulCreate(event);
     } else {
@@ -86,10 +87,8 @@ export class ModalWithTurboContentDirective implements AfterViewInit, OnDestroy 
     }
   }
 
-  private preserveSegmentAttributes(event:CustomEvent) {
-    const turboEvent = event as CustomEvent<{ newFrame?:HTMLElement }>;
-
-    const element = turboEvent.detail?.newFrame?.querySelector('segmented-control');
+  private preserveSegmentAttributes(event:TurboBeforeFrameRenderEvent) {
+    const element = event.detail?.newFrame?.querySelector('segmented-control');
     if (!element) return;
 
     const connectedCallback = Object.getOwnPropertyDescriptor(
@@ -114,13 +113,11 @@ export class ModalWithTurboContentDirective implements AfterViewInit, OnDestroy 
     this.cancel.emit();
   }
 
-  private async propagateSuccessfulCreate(event:CustomEvent) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  private async propagateSuccessfulCreate(event:TurboSubmitEndEvent) {
     const { fetchResponse } = event.detail;
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (fetchResponse.succeeded) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+    if (fetchResponse?.succeeded) {
+      if (!fetchResponse.response.body) return;
       const JSONresponse:unknown = await this.extractJSONFromResponse(fetchResponse.response.body);
 
       this.successfulCreate.emit(JSONresponse);
@@ -130,12 +127,10 @@ export class ModalWithTurboContentDirective implements AfterViewInit, OnDestroy 
     }
   }
 
-  private propagateSuccessfulUpdate(event:CustomEvent) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  private propagateSuccessfulUpdate(event:TurboSubmitEndEvent) {
     const { fetchResponse } = event.detail;
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (fetchResponse.succeeded) {
+    if (fetchResponse?.succeeded) {
       this.halEvents.push(
         this.resource as WorkPackageResource,
         { eventType: 'updated' },

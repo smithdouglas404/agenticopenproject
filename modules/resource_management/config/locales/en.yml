@@ -1,3 +1,4 @@
+---
 en:
   activerecord:
     attributes:
@@ -51,7 +52,7 @@ en:
     a planner and adjusting the allocated time and date range.
 
   label_resource_management: "Resource planning"
-  button_next: "Save" # TODO: This should be "Next" but we need to check the flow first
+  button_next: "Save"  # TODO: This should be "Next" but we need to check the flow first
 
   resource_management:
     label_resource_planner: "Resource planner"

@@ -42,7 +42,7 @@ import { ISnippet } from 'core-app/features/plugins/linked/openproject-github_in
   ],
   standalone: false,
 })
-export class GitActionsMenuComponent extends OPContextMenuComponent {
+export class GitHubActionsMenuComponent extends OPContextMenuComponent {
   readonly I18n = inject(I18nService);
   readonly gitActions = inject(GitActionsService);
 

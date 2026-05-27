@@ -105,6 +105,9 @@ Rails.application.routes.draw do
           post :duplicate_in_next, action: :duplicate_in_next_meeting
           put :move_to_section_dialog
           post :move_to_section
+          get :convert_to_work_package_dialog
+          post :convert_to_work_package
+          post :refresh_convert_to_work_package_dialog
         end
 
         resources :outcomes, controller: "meeting_outcomes", except: %i[index show] do
