@@ -40,34 +40,12 @@ module Backlogs
       current_user.allowed_in_project?(:manage_sprint_items, project)
     end
 
-    def split_url
-      url_helpers.project_backlogs_backlog_details_path(project, work_package, params)
-    end
-
-    def full_url
-      url_helpers.work_package_path(work_package)
-    end
-
     def drop_url
       url_helpers.move_project_backlogs_work_package_path(project, work_package, params)
     end
 
     def menu_src
       url_helpers.menu_project_backlogs_work_package_path(project, work_package, params)
-    end
-
-    # `story` data attrs match the live Stimulus controller and Dragula
-    # drag-type; renaming requires coordinated JS changes (separate PR).
-    def row_data
-      super.merge(
-        story: true,
-        controller: "backlogs--story",
-        backlogs__story_id_value: work_package.id,
-        backlogs__story_display_id_value: work_package.display_id,
-        backlogs__story_split_url_value: split_url,
-        backlogs__story_full_url_value: full_url,
-        backlogs__story_selected_class: "Box-row--blue"
-      )
     end
 
     def draggable_data
