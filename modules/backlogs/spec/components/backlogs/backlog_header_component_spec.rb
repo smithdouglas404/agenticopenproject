@@ -100,6 +100,12 @@ RSpec.describe Backlogs::BacklogHeaderComponent, type: :component do
         expect(page).to have_css(".Counter", text: "3")
       end
 
+      it "labels the counter generically ('items') because columns may include orphan tasks" do
+        render_component
+
+        expect(page).to have_css(".Counter[aria-label='3 items in backlog']")
+      end
+
       it "shows formatted date range with time tags" do
         render_component
 
