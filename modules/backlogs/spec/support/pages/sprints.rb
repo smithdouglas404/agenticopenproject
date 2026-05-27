@@ -129,7 +129,7 @@ module Pages
     end
 
     def sprint_selector(sprint)
-      "#sprint-#{sprint.id}"
+      "#sprint_#{sprint.id}"
     end
 
     def format_date(date)

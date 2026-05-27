@@ -62,7 +62,7 @@ module Backlogs
       end
 
       def row_css_id
-        "sprint-#{sprint.id}"
+        dom_id(sprint)
       end
 
       private
