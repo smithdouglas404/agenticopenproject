@@ -488,7 +488,7 @@ RSpec.shared_examples "an APIv3 attachment resource", content_type: :json, type:
 
       context "for a local text file" do
         it_behaves_like "for a local file" do
-          let(:expected_content_type) { "text/plain" }
+          let(:expected_content_type) { "text/plain; charset=utf-8" }
           let(:mock_file) { FileHelpers.mock_uploaded_file name: "foobar.txt" }
           let(:content_disposition) { "inline; filename=foobar.txt" }
         end
@@ -496,7 +496,7 @@ RSpec.shared_examples "an APIv3 attachment resource", content_type: :json, type:
 
       context "for a local JS file" do
         it_behaves_like "for a local file" do
-          let(:expected_content_type) { "text/plain" }
+          let(:expected_content_type) { "text/plain; charset=utf-8" }
           let(:mock_file) { FileHelpers.mock_uploaded_file name: "foobar.js", content_type: "text/x-javascript" }
           let(:content_disposition) { "inline; filename=foobar.js" }
         end

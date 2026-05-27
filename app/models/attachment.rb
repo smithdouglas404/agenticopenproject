@@ -93,7 +93,9 @@ class Attachment < ApplicationRecord
   # specifically when using S3 for attachments. In the case of S3 the file name for the downloaded
   # file will still be correct as it's part of the URL before the query.
   def external_url_options(expires_in: nil)
-    { content_disposition: content_disposition(include_filename: false), expires_in: }
+    options = { content_disposition: content_disposition(include_filename: false), expires_in: }
+    options[:content_type] = served_content_type if inlineable?
+    options
   end
 
   def external_storage?
@@ -116,6 +118,22 @@ class Attachment < ApplicationRecord
       "#{disposition}; filename=#{filename}"
     else
       disposition
+    end
+  end
+
+  # Content type used when serving this attachment over HTTP, both for the local
+  # API response and for the S3 presigned URL, so both paths stay in sync.
+  def served_content_type
+    if is_text?
+      # Even if the text mime type might differ, always output plain text so it
+      # isn't interpreted as e.g. a script or html file. Pin UTF-8 so browsers
+      # don't mis-decode non-ASCII content shown inline.
+      "text/plain; charset=utf-8"
+    elsif inlineable?
+      content_type
+    else
+      # For security reasons, mark all non-inlinable files as an octet-stream first
+      "application/octet-stream"
     end
   end
 
