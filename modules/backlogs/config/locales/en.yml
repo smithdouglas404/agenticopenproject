@@ -177,6 +177,8 @@ en:
   label_sprint_new: "New sprint"
   label_task_board: "Task board"
 
+  notice_successful_move: "Successfully moved from %{from} to %{to}."
+
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "Select done statuses"
