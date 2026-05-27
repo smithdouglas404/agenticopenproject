@@ -88,5 +88,27 @@ RSpec.describe TypesHelper do
         expect(subject.first[:key]).to eq :details
       end
     end
+
+    describe "field_format_label" do
+      subject(:groups) { helper.form_configuration_groups(type) }
+
+      before do
+        allow(type).to receive(:attribute_groups).and_return []
+      end
+
+      it "returns 'Builtin field' for built-in attributes" do
+        builtin = groups[:inactives].find { |a| a[:key] == "date" }
+        expect(builtin[:field_format_label]).to eq I18n.t("types.edit.form_configuration.builtin_field")
+      end
+
+      context "with a custom field" do
+        let!(:custom_field) { create(:wp_custom_field, :string, name: "My CF") }
+
+        it "returns the custom field format label" do
+          cf_attr = groups[:inactives].find { |a| a[:key] == custom_field.attribute_name }
+          expect(cf_attr[:field_format_label]).to eq I18n.t(:label_string)
+        end
+      end
+    end
   end
 end
