@@ -43,7 +43,7 @@ import { I18nService } from "core-app/core/i18n/i18n.service";
   ],
   standalone: false,
 })
-export class GitActionsMenuComponent extends OPContextMenuComponent {
+export class GitLabActionsMenuComponent extends OPContextMenuComponent {
   readonly I18n = inject(I18nService);
   readonly gitActions = inject(GitActionsService);
 
