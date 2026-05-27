@@ -98,9 +98,7 @@ Click **Add configuration** to proceed to the import runs overview. Initially, n
 
 You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode, but not after approving.
 
-![Empty import runs overview after creating a Jira import configuration](openproject_admin_import_jira_import_new_config_import_run
-
-_button.png)
+![Empty import runs overview after creating a Jira import configuration](openproject_admin_import_jira_import_new_config_import_run_button.png)
 
 Click **Import run** to start a new import.
 
