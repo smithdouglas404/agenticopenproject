@@ -33,7 +33,7 @@ To create a new recurring meeting, click the green **+ Meeting** button in the u
 
 Enter your meeting's title, location, start and end date and time, duration, frequency and interval. Note that if you are creating a meeting from a global module you will first need to select a project to which the meeting belongs.
 
-![Form to create recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_form.png)
+![Form to create recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_default_form.png)
 
 > [!TIP] 
 > Duration can be entered both in hours and minutes. For example for a meeting that should last for 1.5 hours, you can enter:
@@ -43,7 +43,11 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 > - 90min
 > - 1:30
 
-**Frequency** offers following options: 
+**Frequency** offers the following options: 
+
+> [!NOTE]
+>
+> Depending on the frequency choice, different additional fields may appear requiring input.
 
 - Every day
 
@@ -51,25 +55,14 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 
 - Every week
 
-- Day of month
+- Day of month: This option allows you to schedule meetings to recur on the same calendar date every month
 
-  You can schedule meetings to recur on the same calendar date every month. For example, selecting the 10th means the meeting takes place every month on the 10th at the specified time.
+- Monthly on a weekday: This option allows you choose an ordinal position and a week day 
 
-  ![Form to create recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_form_day.png)
 
-- Monthly on a weekday
-
-  The meeting recurs based on the position of a weekday within the month. This option allows you choose an ordinal position (first, second, third, fourth, last) and a week day (Monday-Sunday)
-
-  ![Form to create recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_form_monthly.png)
-
-  > [!NOTE]
-  >
-  > When the scheduled start time does not match the actual first occurrence,  the caption is extended to state: "The first occurrence of this series will be on (date/ time)".
-
-![Form to select position of the month when creating recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_form_position.png)
-
-![Form to select weekday when creating recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_form_weekday.png)
+> [!NOTE]
+>
+> When the scheduled start time does not match the actual first occurrence,  the caption is extended to state: "The first occurrence of this series will be on (date/ time)".
 
 **Interval** is a **required** integer field that defines the recurrence pattern of a meeting series. It specifies how often a meeting should repeat within the selected recurrence scheme. For example:
 
@@ -78,6 +71,10 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 
 > [!TIP]
 > For **working day-based recurrence**, the **Interval field is hidden** and always set to 1, meaning the meeting occurs on every working day without customization.
+
+**Position** is a **required** ordinal indicator field ranging from first, second, third, fourth to last. For example: Every first Monday of the Month.
+
+**Weekday** is a **required** day of the week ranging from Monday through Sunday. 
 
 **Meeting series ends** field is a select dropdown field that defines when a recurring meeting series should come to an end. The following options are possible:
 
@@ -103,9 +100,9 @@ You will be asked to decide whether or not meeting series participants should re
 ![A dialogue to select meeting related notification preferences when exiting a meeting draft mode in OpenProject](openproject_userguide_meetings_recurring_meeting_open_button_dialogue.png)
 
 > [!NOTE]
-> When meeting details or participants are updated, notifications are delayed by 1 minute. Any additional changes made during that time are combined into a single update email, to avoid multiple notifications. 
+> If the meeting details or participant list are updated, changes are consolidated to avoid multiple emails and are sent 1 minute after the last (or only) change is made. The only exception is when a meeting is deleted; in this case, these notifications are sent out separately and immediately.
 >
-> Participants will then receive one generic email showing who was added or removed and any meeting updates, such as date or time changes.
+> Participants will then receive one aggregate email showing who was added or removed and any meeting updates, such as date or time changes.
 
 You can always adjust the template at a later date by selecting the meeting series from the left hand menu and clicking **Edit template** on the meeting series index page. These changes will not affect past or already created (opened) meetings. 
 
