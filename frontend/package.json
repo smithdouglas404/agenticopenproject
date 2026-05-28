@@ -43,7 +43,7 @@
     "@vitest/browser-playwright": "^4.1.6",
     "@vitest/coverage-v8": "^4.1.6",
     "@vitest/eslint-plugin": "^1.6.16",
-    "angular-eslint": "^21.1.0",
+    "angular-eslint": "^21.4.0",
     "browserslist": "^4.28.1",
     "eslint": "^9.39.2",
     "eslint-plugin-import": "^2.32.0",
