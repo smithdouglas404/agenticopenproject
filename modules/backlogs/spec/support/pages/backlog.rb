@@ -268,13 +268,15 @@ module Pages
       end
     end
 
-    def click_in_inbox_move_menu(work_package, item_name)
+    def click_in_inbox_move_menu(work_package, item_name, wait: true)
       button = within(work_package_selector(work_package)) do
         find(:button, accessible_name: "Work package actions")
       end
       menu = open_controlled_menu(button)
       submenu = open_move_submenu(menu)
-      submenu.find(:menuitem, text: item_name).click
+      wait_for_turbo_stream(wait:) do
+        submenu.find(:menuitem, text: item_name).click
+      end
     end
 
     def within_sprint_story_menu(story, &)
@@ -292,13 +294,15 @@ module Pages
       end
     end
 
-    def click_in_sprint_story_move_menu(story, item_name)
+    def click_in_sprint_story_move_menu(story, item_name, wait: true)
       button = within(work_package_selector(story)) do
         find(:button, accessible_name: "Work package actions")
       end
       menu = open_controlled_menu(button)
       submenu = open_move_submenu(menu)
-      submenu.find(:menuitem, text: item_name).click
+      wait_for_turbo_stream(wait:) do
+        submenu.find(:menuitem, text: item_name).click
+      end
     end
 
     def drag_inbox_item_to_sprint(work_package, sprint)
