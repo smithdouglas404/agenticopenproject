@@ -249,7 +249,7 @@ For more information, please see the [GitHub advisory #GHSA-p9gq-hrgh-2645](http
 - Bugfix: NoMethodError in Calendar::ICalController#show \[[#71354](https://community.openproject.org/wp/71354)\]
 - Bugfix: User cannot create a WP with auto generated subject \[[#72207](https://community.openproject.org/wp/72207)\]
 - Bugfix: Backlogs: Not able to navigate through the more menu with arrows \[[#72460](https://community.openproject.org/wp/72460)\]
-- Bugfix: Missing feedback (sucess message) on deleting versions \[[#72719](https://community.openproject.org/wp/72719)\]
+- Bugfix: Missing feedback (success message) on deleting versions \[[#72719](https://community.openproject.org/wp/72719)\]
 - Bugfix: Error 500 when trying to delete a work package with unit costs on a relative URL root \[[#72857](https://community.openproject.org/wp/72857)\]
 - Bugfix: SCIM User API returns duplicate records \[[#73431](https://community.openproject.org/wp/73431)\]
 - Bugfix: FieldsetGroups are missing descriptions \[[#73501](https://community.openproject.org/wp/73501)\]

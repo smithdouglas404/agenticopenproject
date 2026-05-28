@@ -69,7 +69,7 @@ You can also define a webhook secret shared between GitHub and OpenProject. When
 
 Click **Save**.
 
-![Administration settings to specify webhook secret for GitHub integraiton in OpenProject](openproject-system-guide-github-webhook-secret.png)
+![Administration settings to specify webhook secret for GitHub integration in OpenProject](openproject-system-guide-github-webhook-secret.png)
 
 Finally you will need to activate the GitHub module under [Project settings](../../../user-guide/projects/project-settings/modules/) so that all information pulling through from GitHub will be shown in the work packages.
 
