@@ -3654,11 +3654,12 @@ en:
           new_features_list:
             line_0: "Project-based work package identifiers for clearer references."
             line_1: Jira Migrator support for Jira identifiers, due dates, and more.
-            line_2: Option to exclude work package types from Backlogs and redesigned sprint views.
-            line_3: Improved work package linking across Documents and text editors.
-            line_4: More flexible meeting schedules and reduced email notification noise.
-            line_5: Nested groups for organizational structures and inherited permissions.
-            line_6: Improved administration interfaces for workflows, users, and type configuration.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
