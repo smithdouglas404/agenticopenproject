@@ -47,7 +47,7 @@ module Components
         choose "Entire row by"
 
         # Open select field
-        within(page.all(".form--field")[1]) do
+        within(page.all(".form--field")[3]) do
           page.find(".ng-input input").click
         end
         page.find(".ng-dropdown-panel .ng-option", text: label).click
@@ -59,7 +59,7 @@ module Components
         choose "Highlighted attribute(s)"
 
         # Open select field
-        within(page.all(".form--field")[0]) do
+        within(page.all(".form--field")[1]) do
           page.find(".ng-input input").click
         end
 
