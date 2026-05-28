@@ -69,8 +69,31 @@ module OpenProject::TextFormatting
     #     identifier:version:1.0.0
     #     identifier:source:some/file
     class ResourceLinksMatcher < RegexMatcher
-      WORK_PACKAGES_LOOKUP_KEY = :text_formatting_work_packages_lookup
-      private_constant :WORK_PACKAGES_LOOKUP_KEY
+      # Unscoped label resolution (`lookup`) paired with viewer-scoped
+      # link gating (`visible_ids`), so the link handler renders the
+      # same label for everyone and decides anchor-vs-text per viewer.
+      class WorkPackagePreloadCache
+        attr_reader :lookup, :visible_ids
+
+        def initialize(lookup:, visible_ids:)
+          @lookup = lookup
+          @visible_ids = visible_ids
+        end
+
+        def fetch(identifier)
+          lookup[identifier.to_s]
+        end
+
+        def visible?(work_package_id)
+          visible_ids.include?(work_package_id)
+        end
+
+        # Frozen singleton, not a factory — callers must not mutate it.
+        EMPTY = new(lookup: {}.freeze, visible_ids: Set.new.freeze).freeze
+      end
+
+      CACHE_KEY = :text_formatting_work_package_preload_cache
+      private_constant :CACHE_KEY
 
       include ::OpenProject::TextFormatting::Truncation
       # used for the work package quick links
@@ -130,32 +153,32 @@ module OpenProject::TextFormatting
         ]
       end
 
-      # Returns the preloaded WorkPackage for the given identifier (numeric
-      # or semantic), or nil if no preload is active (classic mode, no `#N`
-      # references) or the WP couldn't be resolved. Lookup keys are always
-      # strings — see `index_by_id_and_identifier`.
-      def self.work_package_for(identifier)
-        RequestStore.store.dig(WORK_PACKAGES_LOOKUP_KEY, identifier.to_s)
+      def self.current_cache
+        RequestStore.store[CACHE_KEY] || WorkPackagePreloadCache::EMPTY
       end
 
-      # Doc-level preload called by `PatternMatcherFilter`. Save/restores
-      # the lookup so a nested `format_text` (e.g. custom-field formatter
-      # re-entering the pipeline) doesn't clobber the outer render. Classic
-      # mode skips the load — `display_id` collapses to numeric, so the
-      # link handler can render from the matched id alone.
-      def self.with_preloaded_resources(doc, _context)
-        previous = RequestStore.store[WORK_PACKAGES_LOOKUP_KEY]
-
-        return yield unless Setting::WorkPackageIdentifier.semantic?
+      # Save/restore so a nested `format_text` (e.g. a custom-field
+      # formatter re-entering the pipeline) doesn't clobber the outer
+      # render's cache.
+      def self.with_preloaded_resources(doc, context)
+        previous = RequestStore.store[CACHE_KEY]
+        return yield unless preload_required?(context)
 
         identifiers = collect_work_package_identifiers(doc)
         return yield if identifiers.empty?
 
-        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = build_lookup(identifiers)
+        RequestStore.store[CACHE_KEY] = build_cache(identifiers, context)
         yield
       ensure
-        RequestStore.store[WORK_PACKAGES_LOOKUP_KEY] = previous
+        RequestStore.store[CACHE_KEY] = previous
       end
+
+      # Semantic mode needs the row to map `PROJ-7` to an id; static-HTML
+      # output needs `type`/`subject` to compose the quickinfo anchor.
+      def self.preload_required?(context)
+        Setting::WorkPackageIdentifier.semantic? || context[:static_html]
+      end
+      private_class_method :preload_required?
 
       def self.collect_work_package_identifiers(doc)
         identifiers = Set.new
@@ -182,19 +205,25 @@ module OpenProject::TextFormatting
         identifier
       end
 
-      # 1 SELECT in the common case. A second targeted SELECT fires for
-      # historical aliases — the loaded WP row carries only its current
-      # identifier, so unmapped inputs must be filled in from
-      # `WorkPackageSemanticAlias`. The visible-id set passes through
-      # to the alias fold-in explicitly so each query enforces
-      # visibility at its own boundary, leaving no implicit trust for
-      # the cache to leak through.
-      def self.build_lookup(identifiers)
-        work_packages = WorkPackage.visible.where_display_id_in(*identifiers).select(:id, :identifier).to_a
+      # Two SELECTs in the common case (unscoped fetch + visibility id
+      # pluck), a third when historical aliases need resolving. Static-
+      # HTML output additionally needs `:type` and `:status` to compose
+      # the anchor for `##`/`###` macros.
+      def self.build_cache(identifiers, context = {})
+        scope = WorkPackage.where_display_id_in(*identifiers)
+        scope = if context[:static_html]
+                  scope.includes(:type, :status)
+                else
+                  scope.select(:id, :identifier)
+                end
+        work_packages = scope.to_a
+        all_wp_ids = work_packages.map(&:id)
+        visible_ids = WorkPackage.visible.where(id: all_wp_ids).pluck(:id).to_set
         lookup = index_by_id_and_identifier(work_packages)
-        fold_in_alias_keys(lookup, identifiers, visible_wp_ids: work_packages.map(&:id))
-        lookup
+        fold_in_alias_keys(lookup, identifiers, all_wp_ids:)
+        WorkPackagePreloadCache.new(lookup:, visible_ids:)
       end
+      private_class_method :build_cache
 
       # Keys are stringified at write time so callers can read with a single
       # `identifier.to_s` regardless of whether the input is a numeric id or
@@ -207,12 +236,12 @@ module OpenProject::TextFormatting
       end
       private_class_method :index_by_id_and_identifier
 
-      def self.fold_in_alias_keys(lookup, identifiers, visible_wp_ids:)
+      def self.fold_in_alias_keys(lookup, identifiers, all_wp_ids:)
         unmapped = identifiers.map(&:to_s) - lookup.keys
-        return if unmapped.empty? || visible_wp_ids.empty?
+        return if unmapped.empty? || all_wp_ids.empty?
 
         WorkPackageSemanticAlias
-          .where(work_package_id: visible_wp_ids, identifier: unmapped)
+          .where(work_package_id: all_wp_ids, identifier: unmapped)
           .pluck(:identifier, :work_package_id)
           .each { |ident, wp_id| lookup[ident] = lookup[wp_id.to_s] }
       end

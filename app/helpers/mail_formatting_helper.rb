@@ -28,37 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-
-RSpec.describe "Meeting requests",
-               :skip_csrf,
-               type: :rails_request do
-  shared_let(:project) { create(:project, enabled_module_names: %i[meetings]) }
-  shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_meetings edit_meetings] }) }
-  shared_let(:meeting) { create(:meeting, project:, author: user, state: :open) }
-
-  before do
-    login_as user
+# Pin the external rendering channel so mailer templates never have to
+# remember the `render_mode:` / `only_path:` / `static_html:` combination.
+# Matching the `.html.erb` / `.text.erb` extension to the helper name keeps
+# caller intent visible.
+module MailFormattingHelper
+  def format_mail_html(*, **)
+    format_text(*, render_mode: :external_html, **)
   end
 
-  describe "Update meeting state" do
-    it "allows to update the state with edit_meetings permission (Regression #63745)" do
-      put change_state_project_meeting_path(project, meeting, state: "in_progress"),
-          as: :turbo_stream
-
-      expect(response).to have_http_status(:ok)
-
-      expect(meeting.reload).to be_in_progress
-    end
-
-    it "handles a stale object gracefully (Bug #68703)" do
-      allow_any_instance_of(Meeting).to receive(:in_progress!).and_raise(ActiveRecord::StaleObjectError) # rubocop:disable RSpec/AnyInstance
-
-      put change_state_project_meeting_path(project, meeting, state: "in_progress"),
-          as: :turbo_stream
-
-      expect(response).to have_http_status(:ok)
-      expect(meeting.reload).to be_open
-    end
+  def format_mail_text(*, **)
+    format_text(*, render_mode: :external_text, **)
   end
 end
