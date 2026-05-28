@@ -181,6 +181,14 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
 
             expect(pagy.page).to eq(1)
           end
+
+          it "falls back to page 1 even when params[:page] is set alongside an unresolvable anchor" do
+            params[:anchor] = "comment-999999"
+            params[:page] = 3
+            pagy, _records = paginator.call
+
+            expect(pagy.page).to eq(1)
+          end
         end
 
         context "with activity anchor" do
@@ -751,19 +759,17 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
           params[:anchor] = "comment-#{journal_with_notes.id}"
           _pagy, records = paginator.call
 
-          expect(paginator.filter).to eq(:all) # resets to :all when anchoring
           expect(records.map(&:id)).to include(journal_with_notes.id)
         end
       end
 
       context "when anchoring to a journal that doesn't match the filter" do
-        it "ignores the filter and shows all journals (fallback behavior)" do
+        it "ignores the filter without mutating the filter reader" do
           params[:anchor] = "comment-#{journal_without_notes.id}"
           _pagy, records = paginator.call
 
-          expect(paginator.filter).to eq(:all) # resets to :all when anchoring
-          expect(records.map(&:id)).to include(journal_without_notes.id)
-          expect(records.map(&:id)).to include(journal_with_notes.id)
+          expect(records.map(&:id)).to include(journal_without_notes.id, journal_with_notes.id)
+          expect(paginator.filter).to eq(:only_comments)
         end
       end
     end

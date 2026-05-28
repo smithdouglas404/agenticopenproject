@@ -53,10 +53,6 @@ class WorkPackages::ActivitiesTab::Paginator::ActivitiesQuery
       .order(Arel.sql("activities.activity_at DESC, activities.id DESC"))
   end
 
-  def visible_journals
-    work_package.journals.internal_visible
-  end
-
   private
 
   attr_reader :work_package, :filter
@@ -68,7 +64,7 @@ class WorkPackages::ActivitiesTab::Paginator::ActivitiesQuery
   end
 
   def journals_leg_sql
-    apply_filter(visible_journals)
+    apply_filter(work_package.journals.internal_visible)
       .unscope(:order)
       .select("journals.id, #{quote(KIND_JOURNAL)} AS kind, journals.created_at AS activity_at")
       .to_sql

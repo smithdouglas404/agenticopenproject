@@ -36,9 +36,12 @@
 # - :only_comments - Shows only journals with notes
 # - :only_changes - Shows only journals with detected changes using SQL heuristics
 #
-# Anchor format (filter is reset to :all when using anchors):
+# Anchor format:
 # - "comment-{journal_id}" - Navigate to specific journal by ID
 # - "activity-{sequence_version}" - Navigate to journal by sequence version
+#
+# Anchored navigation bypasses the active filter so a deep link to a record
+# that wouldn't match the filter still resolves.
 #
 # Internally, the activities feed is materialised as a single UNION ALL
 # relation of journals and changesets (see {ActivitiesQuery}) and paginated
@@ -75,7 +78,6 @@ class WorkPackages::ActivitiesTab::Paginator
 
     pagy_obj, page_relation =
       if anchor_type && target_record_id
-        @filter = :all
         pagy_at_anchor(anchor_type, target_record_id)
       else
         pagy(:offset, activities_scope, **pagy_options)
@@ -89,12 +91,15 @@ class WorkPackages::ActivitiesTab::Paginator
 
   private
 
-  def activities_query
-    @activities_query ||= ActivitiesQuery.new(work_package, filter:)
+  # Activities relation (UNION of journals and changesets). Anchored
+  # navigation passes `filter: :all` so a deep link to a record that
+  # wouldn't match the active filter still resolves.
+  def activities_scope(filter: self.filter)
+    ActivitiesQuery.new(work_package, filter:).call
   end
 
-  def activities_scope
-    @activities_scope ||= activities_query.call
+  def visible_journals
+    work_package.journals.internal_visible
   end
 
   def limit
@@ -120,21 +125,22 @@ class WorkPackages::ActivitiesTab::Paginator
   end
 
   # An unresolvable anchor (deleted, never existed, not visible to the user)
-  # falls back to the default page from `pagy_options`.
+  # opens the tab at the newest page, the same as opening it without an
+  # anchor. Any `params[:page]` sent alongside is intentionally ignored: the
+  # anchor was the explicit navigation intent.
   def pagy_at_anchor(anchor_type, target_record_id)
-    options = pagy_options
-    options[:page] = page_for_anchor(anchor_type, target_record_id) || options[:page]
-    pagy(:offset, activities_scope, **options)
+    scope = activities_scope(filter: :all)
+    page = page_for_anchor(scope, anchor_type, target_record_id) || 1
+    pagy(:offset, scope, **pagy_options, page:)
   end
 
   # Resolves an anchor to its target page by counting records ahead of it.
-  # Returns nil when the anchor is unresolvable (e.g. deleted) so the caller
-  # falls back to page 1.
-  def page_for_anchor(anchor_type, target_record_id)
+  # Returns nil when the anchor is unresolvable so the caller falls back.
+  def page_for_anchor(scope, anchor_type, target_record_id)
     activity_at, anchor_id = locate_anchor(anchor_type, target_record_id)
     return nil unless activity_at && anchor_id
 
-    rows_ahead = activities_scope
+    rows_ahead = scope
       .where("(activities.activity_at, activities.id) > (?, ?)", activity_at, anchor_id)
       .count(:all)
 
@@ -146,16 +152,14 @@ class WorkPackages::ActivitiesTab::Paginator
   # number and leak the existence of internal journals through the URL.
   def locate_anchor(anchor_type, target_record_id)
     if anchor_type.comment?
-      activities_query.visible_journals
-        .where(id: target_record_id)
-        .pick(:created_at, :id)
+      visible_journals.where(id: target_record_id).pick(:created_at, :id)
     elsif anchor_type.activity?
       locate_anchor_by_sequence_version(target_record_id)
     end
   end
 
   def locate_anchor_by_sequence_version(sequence_version)
-    activities_query.visible_journals
+    visible_journals
       .with_sequence_version
       .where(ranked: { sequence_version: sequence_version })
       .pick(:created_at, :id)
