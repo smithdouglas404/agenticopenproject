@@ -41,7 +41,10 @@ Existing integrations such as GitHub and GitLab already support the new identifi
 
 When switching from the default numerical sequence to project-based work package identifiers, previously reserved numerical identifiers can be released again if they are no longer needed. This helps administrators avoid unnecessary gaps and keep numerical identifiers available if they later revert to the default sequence.
 
-screenshot
+> [!NOTE]
+> Releasing an identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+
+![OpenProject administration: Release reserved project identifiers](openproject-17-5-project-identifiers-release.png)
 
 ### Jira Migrator support for Jira identifiers, due dates, and more
 
@@ -65,7 +68,7 @@ OpenProject 17.5 redesigns sprint headers, backlog containers, and work package 
 
 Sprint views now provide clearer visual hierarchy, more consistent actions, and improved visibility of important information such as story points, priorities, assignees, and sprint status. Work package cards have also been redesigned to make important work item details easier to scan during sprint planning and backlog refinement.
 
-screenshot
+![Backlog and sprints view in OpenProject 17.5](openproject-17-5-backlogs-redesign.png)
 
 ### Allow inline work package links within text paragraphs in the Documents module
 
@@ -73,17 +76,17 @@ OpenProject 17.5 makes it easier to reference work packages naturally within Doc
 
 This allows teams to create more readable and structured documentation while still linking directly to relevant work packages. Inline work package links behave like regular inline elements and continue to open the referenced work package in a new tab.
 
-screenshot of most used size?
+![OpenProject Documents with an example how to link work packages and display them in-line, using different sizes](openproject-17-5-documents-work-package-linking.png)
 
 ### Expanded work package mentions in CKEditor
 
 OpenProject 17.5 also improves work package references in CKEditor-based text fields such as work package descriptions, agenda items in meetings, and wiki pages.
 
-Work package mentions using the `##` and `###` notation now expand directly inside the editor. Instead of displaying only the identifier, OpenProject now shows additional context such as the work package type, status, and subject while editing.
+Work package mentions using the `##` and `###` notation now expand directly inside the editor. Instead of displaying only the identifier, OpenProject now shows additional context such as the work package type, status, and subject **while still editing**.
 
 This makes referenced work packages easier to recognize without leaving the editor.
 
-screenshot
+![Example of using macros in a work package description, where I can see the details of the macro I include while still editing](openproject-17-5-work-package-macros.png)
 
 ### Monthly scheduling options for meeting series
 
