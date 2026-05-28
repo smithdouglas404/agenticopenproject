@@ -1902,6 +1902,7 @@ en:
         title: Title
         description: Description
       member:
+        blocked: "Blocked"
         roles: "Roles"
       notification:
         read_ian: "Read in-app"
