@@ -35,20 +35,18 @@
               size="small"
             ></svg>
           }
-          @if (portfolioModelsEnabled) {
-            @switch (project._type) {
-              @case ('Portfolio') {
-                <span class="description">
-                  <svg briefcase-icon size="xsmall" />
-                  {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
-                </span>
-              }
-              @case ('Program') {
-                <span class="description">
-                  <svg versions-icon size="xsmall" />
-                  {{ this.I18n.t('js.include_workspaces.types.program') }}
-                </span>
-              }
+          @switch (project._type) {
+            @case ('Portfolio') {
+              <span class="description">
+                <svg briefcase-icon size="xsmall" />
+                {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
+              </span>
+            }
+            @case ('Program') {
+              <span class="description">
+                <svg versions-icon size="xsmall" />
+                {{ this.I18n.t('js.include_workspaces.types.program') }}
+              </span>
             }
           }
         </span>
@@ -79,20 +77,18 @@
           data-test-selector="op-header-project-select--item-disabled-title"
         >
           <span>{{ project.name }}</span>
-          @if (portfolioModelsEnabled) {
-            @switch (project._type) {
-              @case ('Portfolio') {
-                <span class="description">
-                  <svg briefcase-icon size="xsmall" />
-                  {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
-                </span>
-              }
-              @case ('Program') {
-                <span class="description">
-                  <svg versions-icon size="xsmall" />
-                  {{ this.I18n.t('js.include_workspaces.types.program') }}
-                </span>
-              }
+          @switch (project._type) {
+            @case ('Portfolio') {
+              <span class="description">
+                <svg briefcase-icon size="xsmall" />
+                {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
+              </span>
+            }
+            @case ('Program') {
+              <span class="description">
+                <svg versions-icon size="xsmall" />
+                {{ this.I18n.t('js.include_workspaces.types.program') }}
+              </span>
             }
           }
         </span>

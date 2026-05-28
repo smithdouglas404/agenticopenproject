@@ -42,7 +42,6 @@ import { CurrentUserService } from 'core-app/core/current-user/current-user.serv
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { IProjectData } from 'core-app/shared/components/searchable-project-list/project-data';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
 @Component({
   selector: 'opce-header-project-select',
@@ -57,7 +56,6 @@ import { ConfigurationService } from 'core-app/core/config/configuration.service
 })
 export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implements OnInit, OnDestroy, AfterViewInit {
   readonly pathHelper = inject(PathHelperService);
-  readonly configuration = inject(ConfigurationService);
   readonly I18n = inject(I18nService);
   readonly currentProject = inject(CurrentProjectService);
   readonly searchableProjectListService = inject(SearchableProjectListService);
@@ -77,8 +75,6 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
   public dropModalOpen = false;
 
   public textFieldFocused = false;
-
-  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
 
   public canCreateNewProjects$ = this.currentUserService.hasCapabilities$('projects/create', 'global');
 
@@ -134,9 +130,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     no_favorites: this.I18n.t('js.favorite_projects.no_results'),
     no_favorites_subtext: this.I18n.t('js.favorite_projects.no_results_subtext'),
     project: {
-      singular: this.I18n.t('js.label_project'),
       plural: this.I18n.t('js.label_project_plural'),
-      list: this.I18n.t('js.label_project_list'),
       select: this.I18n.t('js.label_all_projects'),
       search_placeholder: this.I18n.t('js.include_projects.search_placeholder')
     },
@@ -149,9 +143,8 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     no_favorite_results: this.I18n.t('js.include_projects.no_favorite_results')
   };
 
-  // Computed text properties based on portfolio models feature flag
   public get currentText() {
-    return this.portfolioModelsEnabled ? this.text.workspace : this.text.project;
+    return this.text.workspace;
   }
 
   public displayMode:'all'|'favorited';

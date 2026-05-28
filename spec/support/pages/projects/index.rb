@@ -351,8 +351,15 @@ module Pages
         end
       end
 
-      def create_new_workspace
-        page.find('[data-test-selector="workspace-new-button"]').click
+      def create_new_workspace(type, open_menu: false)
+        label = I18n.t(:"label_#{type}")
+
+        if open_menu
+          click_on I18n.t(:button_add)
+          page.find(".ActionListItem", exact_text: label).click
+        else
+          page.find('[data-test-selector="workspace-new-button"]', exact_text: label).click
+        end
       end
 
       def save_query
