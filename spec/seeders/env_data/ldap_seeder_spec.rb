@@ -68,6 +68,7 @@ RSpec.describe EnvData::LdapSeeder do
       reset(:seed_ldap)
 
       allow(LdapGroups::SynchronizationJob).to receive(:perform_now)
+      allow_any_instance_of(LdapAuthSource).to receive(:test_connection) # rubocop:disable RSpec/AnyInstance
 
       seeder.seed!
 
@@ -124,6 +125,7 @@ RSpec.describe EnvData::LdapSeeder do
       reset(:seed_ldap)
 
       allow(LdapGroups::SynchronizationJob).to receive(:perform_now)
+      allow_any_instance_of(LdapAuthSource).to receive(:test_connection) # rubocop:disable RSpec/AnyInstance
 
       seeder.seed!
 
@@ -162,6 +164,7 @@ RSpec.describe EnvData::LdapSeeder do
       reset(:seed_ldap)
 
       allow(LdapGroups::SynchronizationJob).to receive(:perform_now)
+      allow_any_instance_of(LdapAuthSource).to receive(:test_connection) # rubocop:disable RSpec/AnyInstance
 
       seeder.seed!
 
@@ -221,6 +224,7 @@ RSpec.describe EnvData::LdapSeeder do
       reset(:seed_ldap)
 
       allow(LdapGroups::SynchronizationJob).to receive(:perform_now)
+      allow_any_instance_of(LdapAuthSource).to receive(:test_connection) # rubocop:disable RSpec/AnyInstance
 
       seeder.seed!
 
@@ -293,6 +297,62 @@ RSpec.describe EnvData::LdapSeeder do
       expect { seeder.seed! }
         .to raise_error(/LDAP connection 'foo'.*LOGIN/m)
         .and not_change(LdapAuthSource, :count)
+    end
+  end
+
+  describe "connection test", :settings_reset, skip_if_command_unavailable: "java" do
+    before(:all) do # rubocop:disable RSpec/BeforeAfterAll
+      ldif = Rails.root.join("spec/fixtures/ldap/users.ldif")
+      @ldap_server = Ladle::Server.new(quiet: false, port: ParallelHelper.port_for_ldap.to_s,
+                                       domain: "dc=example,dc=com", ldif:).start
+    end
+
+    after(:all) do # rubocop:disable RSpec/BeforeAfterAll
+      @ldap_server&.stop # rubocop:disable RSpec/InstanceVariable
+    end
+
+    let(:ldap_port) { ParallelHelper.port_for_ldap.to_s }
+    let(:common_env) do
+      {
+        "OPENPROJECT_SEED_LDAP_FOO_HOST" => "localhost",
+        "OPENPROJECT_SEED_LDAP_FOO_PORT" => ldap_port,
+        "OPENPROJECT_SEED_LDAP_FOO_SECURITY" => "plain_ldap",
+        "OPENPROJECT_SEED_LDAP_FOO_BASEDN" => "ou=people,dc=example,dc=com",
+        "OPENPROJECT_SEED_LDAP_FOO_LOGIN__MAPPING" => "uid",
+        "OPENPROJECT_SEED_LDAP_FOO_FIRSTNAME__MAPPING" => "givenName",
+        "OPENPROJECT_SEED_LDAP_FOO_LASTNAME__MAPPING" => "sn",
+        "OPENPROJECT_SEED_LDAP_FOO_MAIL__MAPPING" => "mail"
+      }
+    end
+
+    before do
+      stub_const("ENV", ENV.to_h.merge(common_env).merge(extra_env))
+      reset(:seed_ldap)
+      allow(LdapGroups::SynchronizationJob).to receive(:perform_now)
+    end
+
+    context "when credentials are correct" do
+      let(:extra_env) do
+        { "OPENPROJECT_SEED_LDAP_FOO_BINDUSER" => "uid=admin,ou=system",
+          "OPENPROJECT_SEED_LDAP_FOO_BINDPASSWORD" => "secret" }
+      end
+
+      it "saves the record and does not raise" do
+        expect { seeder.seed! }.not_to raise_error
+        expect(LdapAuthSource.last.name).to eq "foo"
+      end
+    end
+
+    context "when credentials are wrong" do
+      let(:extra_env) do
+        { "OPENPROJECT_SEED_LDAP_FOO_BINDUSER" => "uid=admin,ou=system",
+          "OPENPROJECT_SEED_LDAP_FOO_BINDPASSWORD" => "wrong" }
+      end
+
+      it "saves the record but prints a warning without raising" do
+        expect { seeder.seed! }.not_to raise_error
+        expect(LdapAuthSource.last.name).to eq "foo"
+      end
     end
   end
 end

@@ -47,6 +47,7 @@ module EnvData
 
           print_ldap_status(ldap)
           upsert_settings(ldap, options)
+          test_connection(ldap)
           update_filters(ldap, options["groupfilter"])
         end
       end
@@ -147,6 +148,14 @@ module EnvData
       print_status "   - Removing LDAP filter #{not_found_names} no longer present in ENV"
 
       not_found.destroy_all
+    end
+
+    def test_connection(ldap)
+      ldap.test_connection
+      print_status "   - LDAP connection to #{ldap.host}:#{ldap.port} successful"
+    rescue LdapAuthSource::Error => e
+      print_status "   - WARNING: LDAP connection test failed for '#{ldap.name}' " \
+                   "(#{ldap.host}:#{ldap.port}): #{e.message}"
     end
 
     def print_ldap_status(object)
