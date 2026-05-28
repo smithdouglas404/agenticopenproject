@@ -106,7 +106,7 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
       end
 
       it "assigns a project-NNNNN fallback identifier" do
-        expect(project.reload.identifier).to match(/\Aproject-[a-z0-9]{10}\z/)
+        expect(project.reload.identifier).to match(/\Aproject-[a-z0-9]{5}\z/)
       end
     end
 
