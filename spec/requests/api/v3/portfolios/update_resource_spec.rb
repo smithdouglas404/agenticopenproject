@@ -33,7 +33,7 @@ require "rack/test"
 require_relative "../workspaces/update_resource_examples"
 
 RSpec.describe "API v3 Portfolio resource update", content_type: :json do
-  describe "PATCH /api/v3/programs/:id" do
+  describe "PATCH /api/v3/portfolios/:id" do
     include_examples "APIv3 workspace update" do
       let(:path) { api_v3_paths.portfolio(workspace.id) }
       let(:workspace_factory_key) { :portfolio }
