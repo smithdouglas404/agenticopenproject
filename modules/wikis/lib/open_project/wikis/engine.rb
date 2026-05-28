@@ -86,7 +86,7 @@ module OpenProject::Wikis
            skip_permissions_check: true,
            after: :relations,
            badge: ->(work_package:, **) { Wikis::PageLinkService.new.count(work_package) },
-           if: ->(_project) {
+           if: lambda { |_project|
              Wikis::Provider.enabled.exists? &&
                OpenProject::FeatureDecisions.wiki_enhancements_active?
            }
@@ -104,9 +104,14 @@ module OpenProject::Wikis
     patch_with_namespace :WorkPackages, :CreateService
     patch_with_namespace :WorkPackages, :UpdateService
 
-    add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
-    add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }
+    add_api_path(:wiki_page_links) { "#{root}/wiki_page_links" }
+    add_api_path(:wiki_page_link) { |page_link_id| "#{wiki_page_links}/#{page_link_id}" }
+    add_api_path(:wiki_provider) { |provider_universal_identifier| "#{root}/wiki_providers/#{provider_universal_identifier}" }
     add_api_path(:work_package_page_links) { |work_package_id| "#{work_package(work_package_id)}/wiki_page_links" }
+
+    add_api_endpoint "API::V3::Root" do
+      mount ::API::V3::PageLinks::PageLinksAPI
+    end
 
     add_api_endpoint "API::V3::WorkPackages::WorkPackagesAPI", :id do
       mount ::API::V3::PageLinks::WorkPackageWikiPageLinksAPI
