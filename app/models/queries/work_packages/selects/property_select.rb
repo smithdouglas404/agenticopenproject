@@ -37,15 +37,9 @@ class Queries::WorkPackages::Selects::PropertySelect < Queries::WorkPackages::Se
 
   self.property_selects = {
     id: {
-      # Sorting by "ID" follows the displayed identifier. In semantic mode, the
-      # visible ID is `<project_identifier>-<sequence_number>`, so the database
-      # primary key is the wrong sort key — a work package moved between projects
-      # keeps its PK but receives a new sequence in the target project. Order by
-      # (project_id, sequence_number) keeps each project's rows monotone in their
-      # visible numbering and is backed by an existing partial unique index.
       sortable: -> {
         if Setting::WorkPackageIdentifier.semantic?
-          ["#{WorkPackage.table_name}.project_id", "#{WorkPackage.table_name}.sequence_number"]
+          ["#{Project.table_name}.identifier", "#{WorkPackage.table_name}.sequence_number"]
         else
           "#{WorkPackage.table_name}.id"
         end
