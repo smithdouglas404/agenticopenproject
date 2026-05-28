@@ -3473,17 +3473,19 @@ ko:
         header: 새로운 기능 및 제품 업데이트에 대해 알아보세요.
         learn_about: 새로운 모든 기능에 대해 자세히 알아보기
         missing: 아직 강조 표시된 기능이 없습니다.
-        '17_4':
-          new_features_title: '이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: 기본 사용자 지정 필드를 지원하는 Jira Migrator.
-            line_1: 백로그 개선 중에 작업 패키지를 구조화하고 우선 순위를 지정하기 위한 백로그 버킷.
-            line_2: 백로그 모듈에서 더욱 간편해진 드래그 앤 드롭 및 개선된 이동 옵션.
-            line_3: 스프린트 헤더의 스프린트 시작 및 완료 버튼.
-            line_4: 역할 간에 워크플로 설정 복사.
-            line_5: 홈 및 프로젝트 개요 페이지의 '내 미팅' 위젯.
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Enterprise Edition으로 업그레이드
       postgres_migration: 설치를 PostgreSQL로 마이그레이션

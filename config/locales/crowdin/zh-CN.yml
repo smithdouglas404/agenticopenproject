@@ -3453,17 +3453,19 @@ zh-CN:
         header: 了解新功能和产品更新。
         learn_about: 详细了解所有新功能
         missing: 目前还没有高亮显示的功能。
-        '17_4':
-          new_features_title: '此版本包含多项新功能和改进，例如：
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Jira Migrator，支持基本自定义字段。
-            line_1: 积压工作存储桶，用于在完善积压工作时构建工作包并确定其优先次序。
-            line_2: 在积压工作模块中更轻松地拖放，移动选项也得到了改进。
-            line_3: 冲刺标题中的冲刺“开始”和“完成”按钮。
-            line_4: 复制角色之间的工作流设置。
-            line_5: "“首页”和“项目概览”页面上的“我的会议”微件。"
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: 升级到企业版
       postgres_migration: 将您的安装迁移到 PostgreSQL

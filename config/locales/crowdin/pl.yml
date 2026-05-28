@@ -3639,17 +3639,19 @@ pl:
         header: Przeczytaj o nowych funkcjach i aktualizacjach produktów.
         learn_about: Dowiedz się więcej o wszystkich nowych funkcjach
         missing: Nie ma jeszcze wyróżnionych funkcji.
-        '17_4':
-          new_features_title: 'Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Migrator Jira z obsługą podstawowych pól niestandardowych.
-            line_1: Kategorie backlogu do strukturyzacji i priorytetyzacji pakietów roboczych podczas doskonalenia backlogu.
-            line_2: Łatwiejsze przeciąganie i upuszczanie oraz ulepszone opcje przenoszenia w module Backlogs.
-            line_3: Przyciski rozpoczęcia i zakończenia sprintu w nagłówku sprintu.
-            line_4: Kopiowanie ustawień przepływu pracy między rolami.
-            line_5: Widżet „Moje spotkania” na stronie głównej i stronach przeglądu projektów.
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Aktualizuj do wersji Enterprise
       postgres_migration: Migrowanie instalacji do PostgreSQL

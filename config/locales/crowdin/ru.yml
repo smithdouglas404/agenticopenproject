@@ -3650,17 +3650,19 @@ ru:
         header: Читайте о новых возможностях и обновлениях продуктов.
         learn_about: Узнайте больше о всех новых функциях
         missing: Нет выделенных функций.
-        '17_4':
-          new_features_title: 'Релиз содержит различные новые функции и улучшения, такие как:
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Мигратор Jira с поддержкой базовых пользовательских полей.
-            line_1: Разделы бэклога для структурирования и приоритизации пакетов работ во время уточнения бэклога.
-            line_2: Более удобное перетаскивание и улучшенные опции перемещения в Бэклогах.
-            line_3: Кнопки начала и завершения спринта в заголовке спринта.
-            line_4: Копирование настроек рабочего процесса между ролями.
-            line_5: Виджет «Мои встречи» на главной странице и странице «Обзор проектов».
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Обновить до корпоративной версии
       postgres_migration: Перенос вашей установки в PostgreSQL
