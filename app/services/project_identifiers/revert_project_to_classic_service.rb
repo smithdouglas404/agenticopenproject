@@ -51,24 +51,26 @@ module ProjectIdentifiers
     attr_reader :project
 
     def restore_classic_identifier
-      classic = identifier_generator.restore_identifier(project) ||
-                identifier_generator.suggest_identifier(project.name)
+      classic_id = identifier_generator.restore_identifier(project) ||
+                   identifier_generator.suggest_identifier(project.name)
       # Suppress notifications: this is a background system operation, not a user edit.
       Journal::NotificationConfiguration.with(false) do
-        project.update!(identifier: classic)
+        project.update!(identifier: classic_id)
       rescue ActiveRecord::RecordInvalid => e
-        handle_identifier_conflict(classic, e)
+        handle_update_failure(classic_id, e)
       end
     end
 
-    def handle_identifier_conflict(classic, error)
-      Rails.logger.warn "#{self.class}: identifier '#{classic}' taken for project #{project.id}, " \
-                        "falling back. (#{error.message})"
-      project.update!(identifier: identifier_generator.suggest_identifier(project.name))
+    def handle_update_failure(classic_id, error)
+      Rails.logger.warn "#{self.class}: Could not set identifier '#{classic_id}' for project #{project.id}; " \
+                        "falling back to a randomized suffix. (#{error.message})"
+      suffix = SecureRandom.alphanumeric(5).downcase
+      base = classic_id.first(Projects::Identifier::CLASSIC_IDENTIFIER_MAX_LENGTH - 6)
+      project.update!(identifier: "#{base}-#{suffix}")
     end
 
     def identifier_generator
-      ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new
+      @identifier_generator ||= ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new
     end
   end
 end

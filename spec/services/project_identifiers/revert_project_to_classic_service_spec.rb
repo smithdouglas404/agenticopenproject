@@ -116,7 +116,13 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
       let!(:project) do
         create(:project).tap do |p|
           p.update_columns(identifier: "MYAPP", wp_sequence_counter: 0)
-          FriendlyId::Slug.create!(sluggable: p, slug: "my-app")
+          # Remove p's own initial slug so "my-app" is the only entry in its slug history.
+          # Without this, the factory slug (newer created_at) would be returned first by
+          # restore_identifier, the update would succeed, and the conflict path would never fire.
+          FriendlyId::Slug.where(sluggable_id: p.id, sluggable_type: "Project").delete_all
+          # blocking_project already owns the "my-app" FriendlyId slug; reassign it so that
+          # restore_identifier returns "my-app" and project.update! conflicts with blocking_project.
+          FriendlyId::Slug.where(slug: "my-app", sluggable_type: "Project").update_all(sluggable_id: p.id)
         end
       end
 
@@ -124,11 +130,9 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
         expect { described_class.new(project).call }.not_to raise_error
       end
 
-      it "assigns a valid classic identifier that is not the conflicting one" do
+      it "assigns the conflicting identifier with a 5-character random suffix" do
         described_class.new(project).call
-        reloaded = project.reload
-        expect(reloaded.identifier).to match(Projects::Identifier::CLASSIC_FORMAT)
-        expect(reloaded.identifier).not_to eq("my-app")
+        expect(project.reload.identifier).to match(/\Amy-app-[a-z0-9]{5}\z/)
       end
 
       it "logs a warning containing the project id and the conflicting identifier" do
