@@ -31,5 +31,20 @@
 module Settings
   class UpdateContract < ::BaseContract
     include RequiresAdminGuard
+
+    validate :journal_aggregation_time_minutes_range
+
+    private
+
+    def journal_aggregation_time_minutes_range
+      return unless model.respond_to?(:[])
+
+      value = model[:journal_aggregation_time_minutes]
+      return if value.nil?
+
+      unless (0..3600).include?(value.to_i)
+        errors.add(:journal_aggregation_time_minutes, :inclusion)
+      end
+    end
   end
 end

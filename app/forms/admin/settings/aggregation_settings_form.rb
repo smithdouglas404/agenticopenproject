@@ -37,6 +37,7 @@ module Admin
         f.text_field name: :journal_aggregation_time_minutes,
                      type: :number,
                      min: 0,
+                     max: 3600,
                      input_width: :medium,
                      trailing_visual: { text: { text: I18n.t("datetime.units.minute_abbreviated", count: 2) } }
 

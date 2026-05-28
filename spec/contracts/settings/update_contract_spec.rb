@@ -39,4 +39,30 @@ RSpec.describe Settings::UpdateContract do
   end
 
   it_behaves_like "contract is valid for active admins and invalid for regular users"
+
+  describe "journal_aggregation_time_minutes validation" do
+    let(:current_user) { build_stubbed(:admin) }
+
+    [0, 5, 3600].each do |valid_value|
+      context "with value #{valid_value}" do
+        let(:contract) { described_class.new({ journal_aggregation_time_minutes: valid_value.to_s }, current_user) }
+
+        it_behaves_like "contract is valid"
+      end
+    end
+
+    [3601, 9_999_999, -1].each do |invalid_value|
+      context "with value #{invalid_value}" do
+        let(:contract) { described_class.new({ journal_aggregation_time_minutes: invalid_value.to_s }, current_user) }
+
+        it_behaves_like "contract is invalid", journal_aggregation_time_minutes: :inclusion
+      end
+    end
+
+    context "when not present in params" do
+      let(:contract) { described_class.new({}, current_user) }
+
+      it_behaves_like "contract is valid"
+    end
+  end
 end
