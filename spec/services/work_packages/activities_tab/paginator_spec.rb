@@ -206,43 +206,84 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
       end
     end
 
-    context "when record count exceeds MAX_PAGES cap" do
+    context "with a large activity history" do
       let(:test_limit) { 2 }
 
       before do
-        stub_const("#{described_class}::MAX_PAGES", 3)
         8.times do |i|
           create(:work_package_journal, user:, notes: "Comment #{i + 1}", journable: work_package, version: i + 2)
         end
         params[:limit] = test_limit
       end
 
-      it "caps total records to limit * MAX_PAGES" do
-        pagy, _records = paginator.call
-
-        expect(pagy.count).to eq(test_limit * 3)
-        expect(pagy.pages).to eq(3)
-      end
-
-      it "keeps the newest records when truncating" do
-        _pagy, records = paginator.call
-
-        notes = records.map(&:notes)
-        expect(notes).to include("Comment 8")
-        expect(notes).not_to include("Comment 1")
-      end
-
-      it "still resolves an anchor to a journal beyond the cap" do
+      it "resolves an anchor to the oldest journal on the last page" do
         oldest_journal = work_package.journals.order(:version).first
         params[:anchor] = "comment-#{oldest_journal.id}"
         pagy, records = paginator.call
 
         expect(records.map(&:id)).to include(oldest_journal.id)
+        expect(pagy.page).to eq(5)
+      end
 
-        aggregate_failures "breaks out of capped limit" do
-          expect(pagy.count).to eq(work_package.journals.count)
-          expect(pagy.pages).to eq(5)
-          expect(pagy.page).to eq(5), "expected oldest journal on last page (page 5), got page #{pagy.page}"
+      it "issues a bounded number of queries regardless of history size" do
+        described_class.new(work_package, params).call # warm autoloads + caches
+
+        50.times { |i| create(:work_package_journal, user:, journable: work_package, version: 10 + i) }
+
+        recorder = ActiveRecord::QueryRecorder.new do
+          described_class.new(work_package, params).call
+        end
+
+        # The wrapper runs against the page slice, so query count does not scale
+        # with history size. Ceiling leaves headroom for an extra eager-load
+        # without becoming brittle; actual count today is ~10.
+        expect(recorder.count).to be < 20,
+                                  "expected query count bounded regardless of history; got #{recorder.count}:\n" \
+                                  "#{recorder.log.join("\n")}"
+      end
+    end
+
+    # The journal factory chains each predecessor's `validity_period` upper
+    # bound to the next journal's `created_at`; two journals at the same
+    # `created_at` produce an empty range and trip the
+    # `validity_period_not_empty` constraint. A journal + changeset pair
+    # sidesteps that while still exercising the secondary id sort.
+    context "with a journal and a changeset at the same timestamp" do
+      let(:repository) { create(:repository_subversion, project:) }
+      let(:shared_time) { 1.day.ago }
+      let!(:tied_journal) do
+        create(:work_package_journal,
+               user:,
+               notes: "Tied with changeset",
+               journable: work_package,
+               version: 2,
+               created_at: shared_time)
+      end
+      let!(:tied_changeset) do
+        create(:changeset, repository:, committed_on: shared_time, revision: "tied")
+      end
+
+      before do
+        # Default sort can be :asc, which reverses the records. Pin to :desc so
+        # the relation's `id DESC` secondary sort surfaces in the result.
+        user.pref.update!(comments_sorting: :desc)
+        work_package.changesets << tied_changeset
+      end
+
+      it "breaks ties by id descending" do
+        _pagy, records = paginator.call
+
+        # Journals and changesets have independent id sequences, so the kind
+        # holding the higher id is determined at runtime — but whichever it
+        # is must come first under the `id DESC` secondary sort.
+        ordered_pairs = records.map { |r| r.is_a?(Changeset) ? [:changeset, r.id] : [:journal, r.id] }
+        journal_pos   = ordered_pairs.index([:journal, tied_journal.id])
+        changeset_pos = ordered_pairs.index([:changeset, tied_changeset.id])
+
+        if tied_journal.id > tied_changeset.id
+          expect(journal_pos).to be < changeset_pos
+        else
+          expect(changeset_pos).to be < journal_pos
         end
       end
     end
@@ -293,6 +334,25 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
           journal_notes = records.map(&:notes)
           expect(journal_notes).not_to include("Internal comment")
           expect(journal_notes).to include("Public comment")
+        end
+
+        it "falls back to page 1 when anchoring to an internal journal" do
+          params[:anchor] = "comment-#{internal_journal.id}"
+          pagy, _records = described_class.new(work_package, params).call
+
+          expect(pagy.page).to eq(1)
+        end
+
+        it "falls back to page 1 when anchoring to an internal journal by sequence_version" do
+          internal_sequence_version = Journal
+            .where(journable: work_package)
+            .with_sequence_version
+            .where(id: internal_journal.id)
+            .pick("ranked.sequence_version")
+          params[:anchor] = "activity-#{internal_sequence_version}"
+          pagy, _records = described_class.new(work_package, params).call
+
+          expect(pagy.page).to eq(1)
         end
       end
     end

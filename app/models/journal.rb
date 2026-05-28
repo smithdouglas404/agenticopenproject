@@ -122,7 +122,8 @@ class Journal < ApplicationRecord
 
   include ::Scopes::Scoped
 
-  scopes :with_sequence_version
+  scopes :with_sequence_version,
+         :internal_visible_for
 
   # Scopes to all journals excluding the initial journal - useful for change
   # logs like the history on issue#show

@@ -34,13 +34,7 @@ module WorkPackage::Journalized
   included do
     acts_as_journalized journals_association_extension: proc {
       def internal_visible
-        if EnterpriseToken.allows_to?(:internal_comments) &&
-            proxy_association.owner.project.enabled_internal_comments &&
-            User.current.allowed_in_project?(:view_internal_comments, proxy_association.owner.project)
-          all
-        else
-          where(internal: false)
-        end
+        merge(Journal.internal_visible_for(project: proxy_association.owner.project))
       end
     }
 
