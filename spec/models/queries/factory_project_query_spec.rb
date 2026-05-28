@@ -227,6 +227,65 @@ RSpec.describe Queries::Factory,
       it { is_expected.not_to be_changed }
     end
 
+    context "with the 'archived' id and with a search filter param" do
+      let(:id) { "archived" }
+      let(:params) do
+        {
+          filters: [
+            {
+              attribute: "name_and_identifier",
+              operator: "~",
+              values: ["foo"]
+            }
+          ]
+        }
+      end
+
+      it "returns a project query" do
+        expect(find)
+          .to be_a(ProjectQuery)
+      end
+
+      it "has no name" do
+        expect(find.name)
+          .to be_nil
+      end
+
+      it "preserves the archived (active=false) filter alongside the search filter" do
+        expect(find.filters.map { |filter| [filter.field, filter.operator, filter.values] })
+          .to eq([[:active, "=", ["f"]], [:name_and_identifier, "~", ["foo"]]])
+      end
+
+      it "is ordered by lft asc" do
+        expect(find.orders.map { |order| [order.attribute, order.direction] })
+          .to eq([%i[lft asc]])
+      end
+
+      it { is_expected.to be_changed }
+    end
+
+    context "with the 'archived' id and with a filter param that overrides the static active filter" do
+      let(:id) { "archived" }
+      let(:params) do
+        {
+          filters: [
+            {
+              attribute: "active",
+              operator: "=",
+              values: ["t"]
+            }
+          ]
+        }
+      end
+
+      it "lets the user-provided active filter take precedence over the static one" do
+        expect(find.filters.map { |filter| [filter.field, filter.operator, filter.values] })
+          .to eq([[:active, "=", ["t"]]])
+      end
+
+      it { is_expected.to be_changed }
+    end
+
     context "with the 'on_track' id" do
       let(:id) { "on_track" }
 
