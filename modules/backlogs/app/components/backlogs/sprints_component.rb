@@ -83,5 +83,35 @@ module Backlogs
         t(".blankslate.no_actions_description_text")
       end
     end
+
+    def initially_rendered_sprints
+      work_packages_available = 100 - work_packages_by_sprint_id[sprints.first.id]&.size.to_i
+
+      rendered_sprints = [sprints.first]
+
+      sprints[1..].each do |sprint|
+        if work_packages_by_sprint_id[sprint.id].nil?
+          work_packages_available -= 1
+
+          rendered_sprints << sprint
+        elsif work_packages_by_sprint_id[sprint.id].size < work_packages_available
+          work_packages_available -= work_packages_by_sprint_id[sprint.id].size
+
+          rendered_sprints << sprint
+        else
+          break
+        end
+      end
+
+      rendered_sprints
+    end
+
+    def turbo_frame_only_sprints
+      sprints - initially_rendered_sprints
+    end
+
+    def sprint_skeleton_height(sprint)
+      54 + (40 * work_packages_by_sprint_id[sprint.id]&.size.to_i) + (work_packages_by_sprint_id[sprint.id].nil? ? 80 : 0)
+    end
   end
 end

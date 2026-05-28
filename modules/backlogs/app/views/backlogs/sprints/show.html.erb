@@ -1,0 +1,8 @@
+<%=
+  turbo_frame_tag(dom_id(@sprint)) do
+    render Backlogs::SprintComponent.new(
+      project: @project,
+      sprint: @sprint
+    )
+  end
+%>

@@ -32,7 +32,7 @@ module Backlogs
   class BacklogBucketsController < BaseController
     include OpTurbo::ComponentStream
 
-    before_action :find_backlog_bucket, only: %i[edit_dialog destroy_dialog update destroy]
+    before_action :find_backlog_bucket, only: %i[edit_dialog destroy_dialog update destroy show]
 
     def new_dialog
       backlog_bucket = BacklogBucket.new(project: @project)
@@ -46,6 +46,10 @@ module Backlogs
 
     def destroy_dialog
       respond_with_dialog Backlogs::BucketDestroyModalComponent.new(backlog_bucket: @backlog_bucket)
+    end
+
+    def show
+      render "show", layout: false
     end
 
     def create

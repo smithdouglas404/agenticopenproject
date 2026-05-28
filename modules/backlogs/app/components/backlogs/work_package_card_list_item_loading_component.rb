@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -23,24 +23,25 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module WorkPackages::Scopes::BacklogsInboxFor
-  extend ActiveSupport::Concern
+module Backlogs
+  class WorkPackageCardListItemLoadingComponent < WorkPackageCardListItemComponent
+    def before_render
+      content
+    end
 
-  class_methods do
-    def backlogs_inbox_for(project:)
-      WorkPackage
-        .visible
-        .where(project:, sprint_id: nil, backlog_bucket_id: nil)
-        .without_excluded_type
-        .without_status_considered_closed
-        .includes(:assigned_to, :priority, :parent)
-        .order_by_position
-        .order(WorkPackage.arel_table[:id].asc)
+    def call
+      helpers.turbo_frame_tag("#{dom_id(work_package)}_card",
+                              loading: :lazy,
+                              src: work_packages_card_path(work_package,
+                                                           version: work_package.updated_at.to_i.to_s),
+                              "data-turbo-permanent-by-src": "") do
+        render(Primer::Alpha::SkeletonBox.new(width: "100%", height: "40px"))
+      end
     end
   end
 end

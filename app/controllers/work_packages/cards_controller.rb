@@ -28,32 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module WorkPackages::Scopes::WithoutStatusConsideredClosed
-  extend ActiveSupport::Concern
+class WorkPackages::CardsController < ApplicationController
+  before_action :find_work_package
+  before_action :authorize
 
-  class_methods do
-    def without_status_considered_closed
-      # Excludes work packages whose status is configured as "done" on the project
-      # the work package belongs to. The correlated subquery ensures each work package
-      # is always checked against its own project's status configuration.
-      # Additionally, all globally closed statuses are always treated as done,
-      # safeguarding against empty/corrupt project configuration (per AC).
-      status_subquery = <<~SQL.squish
-        NOT EXISTS (
-          SELECT 1
-          FROM done_statuses_for_project
-          WHERE project_id = work_packages.project_id
-            AND status_id = work_packages.status_id
-        )
-        AND NOT EXISTS (
-          SELECT 1
-          FROM statuses
-          WHERE id = work_packages.status_id
-            AND is_closed = TRUE
-        )
-      SQL
+  include OpTurbo::ComponentStream
 
-      where(status_subquery)
-    end
+  def show
+    expires_in 1.hour, public: false
+
+    render(Backlogs::WorkPackageCardComponent
+             .new(
+               work_package: @work_package,
+               menu_src: menu_project_backlogs_work_package_path(@work_package.project,
+                                                                 @work_package)
+             ),
+           layout: false)
+  end
+
+  private
+
+  def find_work_package
+    @work_package = WorkPackage.visible.find(params[:id])
   end
 end

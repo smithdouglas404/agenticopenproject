@@ -888,6 +888,8 @@ Rails.application.routes.draw do
         get :delete_dialog
       end
     end
+
+    resources :cards, only: %i[show]
   end
 
   resources :work_packages, only: %i[index show new] do

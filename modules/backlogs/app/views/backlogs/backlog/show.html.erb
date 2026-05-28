@@ -49,7 +49,10 @@ See COPYRIGHT and LICENSE files for more details.
   <%= turbo_frame_tag :backlogs_container,
                       refresh: :morph,
                       src: project_backlogs_backlog_path(@project, all: show_all_backlog),
-                      class: "op-backlogs-page" %>
+                      disabled: true,
+                      class: "op-backlogs-page" do %>
+    <%= render partial: "backlogs/backlog/backlog_list" %>
+  <% end %>
 <% end %>
 
 <% content_for :content_body_right do %>

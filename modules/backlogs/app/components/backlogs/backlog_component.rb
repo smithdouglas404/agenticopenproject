@@ -34,15 +34,15 @@ module Backlogs
     include OpTurbo::Streamable
     include CommonHelper
 
-    attr_reader :inbox_work_packages, :buckets, :project, :current_user
+    attr_reader :work_packages_by_backlog_id, :buckets, :project, :current_user
 
-    def initialize(inbox_work_packages:,
-                   buckets:,
+    def initialize(buckets:,
+                   work_packages_by_backlog_id:,
                    project:,
                    current_user: User.current)
       super()
 
-      @inbox_work_packages = inbox_work_packages
+      @work_packages_by_backlog_id = work_packages_by_backlog_id
       @buckets = buckets
       @project = project
       @current_user = current_user
@@ -55,7 +55,37 @@ module Backlogs
     private
 
     def total
-      @total ||= inbox_work_packages.count + (buckets&.sum { it.work_packages.size } || 0)
+      @total ||= work_packages_by_backlog_id.values.sum(&:count)
+    end
+
+    def initially_rendered_buckets
+      work_packages_available = 100 - work_packages_by_backlog_id[buckets.first.id]&.size.to_i
+
+      rendered_buckets = [buckets.first]
+
+      buckets[1..].each do |bucket|
+        if work_packages_by_backlog_id[bucket.id].nil?
+          work_packages_available -= 1
+
+          rendered_buckets << bucket
+        elsif work_packages_by_backlog_id[bucket.id].size < work_packages_available
+          work_packages_available -= work_packages_by_backlog_id[bucket.id].size
+
+          rendered_buckets << bucket
+        else
+          break
+        end
+      end
+
+      rendered_buckets
+    end
+
+    def turbo_frame_only_buckets
+      buckets - initially_rendered_buckets
+    end
+
+    def bucket_skeleton_height(bucket)
+      54 + (40 * work_packages_by_backlog_id[bucket.id]&.size.to_i) + (work_packages_by_backlog_id[bucket.id].nil? ? 80 : 0)
     end
   end
 end

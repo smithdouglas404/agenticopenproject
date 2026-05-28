@@ -34,6 +34,7 @@ import { filter, Subscription } from 'rxjs';
 export default class BacklogsController extends Controller<HTMLElement> {
   private service:HalEventsService|null = null;
   private subscription:Subscription|null = null;
+  private abortController:AbortController|null = null;
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   async connect() {
@@ -43,16 +44,45 @@ export default class BacklogsController extends Controller<HTMLElement> {
     this.subscription = this.service.aggregated$('WorkPackage')
       .pipe(filter((events) => events.some((event) => event.eventType === 'updated')))
       .subscribe(() => { this.refreshList(); });
+
+    this.abortController = new AbortController();
+    const { signal } = this.abortController;
+
+    document.addEventListener('turbo:before-morph-element', (event:Event) => {
+      const morphEvent = event as CustomEvent<{ newElement:Element }>;
+      const el = morphEvent.target as Element;
+      if (!(el.tagName === 'TURBO-FRAME' && el.hasAttribute('complete'))) { return; }
+
+      morphEvent.preventDefault();
+
+      // On turbo-frames
+      // * that are completed
+      // * have their src updated
+      // Only replace the src.
+      const newSrc = morphEvent.detail.newElement?.getAttribute('src');
+      if (newSrc && !el.getAttribute('src')?.endsWith(newSrc)) {
+        el.setAttribute('src', newSrc);
+      } else if (!el.hasAttribute('data-turbo-permanent-by-src')) {
+        void (el as FrameElement).reload();
+      }
+    }, { signal });
   }
 
   disconnect() {
     this.subscription?.unsubscribe();
     this.subscription = null;
     this.service = null;
+    this.abortController?.abort();
+    this.abortController = null;
   }
 
   private refreshList() {
-    void this.listElement.reload();
+    // The turbo frame is disabled upon loading the page. That way,
+    // the content is loaded on the initial request which is more efficient.
+    // But when updating, the disabled now needs to be removed.
+    const frame = this.listElement;
+    void frame.reload();
+    if (frame.disabled) frame.disabled = false;
   }
 
   private get listElement() {

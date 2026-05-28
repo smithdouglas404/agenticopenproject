@@ -37,10 +37,10 @@ module Backlogs
     end
 
     def show
+      load_backlogs
+
       case turbo_frame_request_id
       when "backlogs_container"
-        load_backlogs
-
         render partial: "backlogs/backlog/backlog_list", layout: false
       else
         render "backlogs/backlog/show"
@@ -70,14 +70,22 @@ module Backlogs
                        .not_completed
                        .order_by_date
                        .includes(:project, :task_boards)
+      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
 
       @work_packages_by_sprint_id = WorkPackage
                                       .where(sprint: @sprints, project: @project)
-                                      .includes(:type, :status, :assigned_to, :priority, :parent)
+                                      .select(:id, :sprint_id, :updated_at, :story_points)
                                       .order_by_position
                                       .group_by(&:sprint_id)
-      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-      @inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
+
+      # Includes the work packages of both the buckets and the inbox.
+      # This has the drawback of loading more work packages than are displayed in the inbox as pagination
+      # will only show the top 50 and lowest 10 work packages.
+      # But doing only a single query to the database has its benefits, and currently this seems quicker.
+      @work_packages_by_backlog_id = WorkPackage
+                                       .in_backlog_for(project: @project)
+                                       .select(:id, :backlog_bucket_id, :updated_at)
+                                       .group_by(&:backlog_bucket_id)
     end
   end
 end

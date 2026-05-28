@@ -75,11 +75,26 @@ See COPYRIGHT and LICENSE files for more details.
     end
   %>
 
-  <%= render Backlogs::BucketComponent.with_collection(buckets, project:) %>
-
+  <% initially_rendered_buckets.each do |bucket| %>
+    <%=
+      render Backlogs::BucketComponent.new(
+        project:,
+        backlog_bucket: bucket,
+        work_packages: work_packages_by_backlog_id[bucket.id] || []
+      )
+    %>
+  <% end %>
+  <% turbo_frame_only_buckets.each do |bucket| %>
+    <%= helpers.turbo_frame_tag(dom_id(bucket),
+                                refresh: :morph,
+                                loading: :lazy,
+                                src: project_backlogs_backlog_bucket_path(project, bucket, all_backlogs_params)) do %>
+      <%= render(Primer::Alpha::SkeletonBox.new(width: "100%", height: "#{bucket_skeleton_height(bucket)}px")) %>
+    <% end %>
+  <% end %>
   <%=
     render Backlogs::InboxComponent.new(
-      work_packages: inbox_work_packages,
+      work_packages: work_packages_by_backlog_id[nil] || [],
       project: project
     )
   %>

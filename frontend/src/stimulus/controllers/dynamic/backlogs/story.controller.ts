@@ -56,9 +56,12 @@ export default class StoryController extends Controller<HTMLElement> implements 
     this.abortController = new AbortController();
     const { signal } = this.abortController;
 
-    this.element.addEventListener('click', this, { signal });
-    this.element.addEventListener('dblclick', this, { signal });
-    this.element.addEventListener('keydown', this, { signal });
+    if (this.parentListItemElement) {
+      this.parentListItemElement.addEventListener('click', this, { signal });
+      this.parentListItemElement.addEventListener('dblclick', this, { signal });
+      this.parentListItemElement.addEventListener('keydown', this, { signal });
+    }
+
     document.addEventListener('turbo:visit', (event:TurboVisitEvent) => {
       this.syncSelectionFromUrl(event.detail.url);
     }, { signal });
@@ -88,14 +91,22 @@ export default class StoryController extends Controller<HTMLElement> implements 
     }
   }
 
+  private get parentListItemElement() {
+     return this.element.closest('li');
+  }
+
   markAsSelected():void {
-    this.element.classList.add(this.selectedClass);
-    this.element.setAttribute('aria-current', 'true');
+    if (!this.parentListItemElement) { return; }
+
+    this.parentListItemElement.classList.add(this.selectedClass);
+    this.parentListItemElement.setAttribute('aria-current', 'true');
   }
 
   unmarkAsSelected():void {
-    this.element.classList.remove(this.selectedClass);
-    this.element.removeAttribute('aria-current');
+    if (!this.parentListItemElement) { return; }
+
+    this.parentListItemElement.classList.remove(this.selectedClass);
+    this.parentListItemElement.removeAttribute('aria-current');
   }
 
   handleEvent(event:Event):void {

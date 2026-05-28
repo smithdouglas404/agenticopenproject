@@ -30,22 +30,25 @@
 
 module Backlogs
   class WorkPackageCardComponent < ApplicationComponent
-    attr_reader :work_package, :menu_src
+    attr_reader :work_package, :menu_src, :params
 
     delegate :with_menu, :with_metric, to: :card
 
-    def initialize(work_package:, menu_src: nil)
+    def initialize(work_package:, menu_src: nil, params: {})
       super()
 
       @work_package = work_package
       @menu_src = menu_src
+      @params = params
     end
 
     def call
-      render(card) do |common_card|
-        unless common_card.metric?
-          common_card.with_metric do
-            render(Backlogs::StoryPointsComponent.new(work_package:))
+      helpers.turbo_frame_tag("#{dom_id(work_package)}_card") do
+        render(card) do |common_card|
+          unless common_card.metric?
+            common_card.with_metric do
+              render(Backlogs::StoryPointsComponent.new(work_package:))
+            end
           end
         end
       end
@@ -60,8 +63,29 @@ module Backlogs
         show_assignee: true,
         show_priority: true,
         show_parent: true,
-        status_scheme: :secondary
+        status_scheme: :secondary,
+        data: data_attributes
       )
+    end
+
+    def split_url
+      url_helpers.project_backlogs_backlog_details_path(work_package.project, work_package, params)
+    end
+
+    def full_url
+      url_helpers.work_package_path(work_package)
+    end
+
+    def data_attributes
+      {
+        story: true,
+        controller: "backlogs--story",
+        backlogs__story_id_value: work_package.id,
+        backlogs__story_display_id_value: work_package.display_id,
+        backlogs__story_split_url_value: split_url,
+        backlogs__story_full_url_value: full_url,
+        backlogs__story_selected_class: "Box-row--blue"
+      }
     end
 
     def before_render

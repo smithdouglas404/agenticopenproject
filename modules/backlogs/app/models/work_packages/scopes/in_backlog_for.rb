@@ -28,32 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module WorkPackages::Scopes::WithoutStatusConsideredClosed
+module WorkPackages::Scopes::InBacklogFor
   extend ActiveSupport::Concern
 
   class_methods do
-    def without_status_considered_closed
-      # Excludes work packages whose status is configured as "done" on the project
-      # the work package belongs to. The correlated subquery ensures each work package
-      # is always checked against its own project's status configuration.
-      # Additionally, all globally closed statuses are always treated as done,
-      # safeguarding against empty/corrupt project configuration (per AC).
-      status_subquery = <<~SQL.squish
-        NOT EXISTS (
-          SELECT 1
-          FROM done_statuses_for_project
-          WHERE project_id = work_packages.project_id
-            AND status_id = work_packages.status_id
-        )
-        AND NOT EXISTS (
-          SELECT 1
-          FROM statuses
-          WHERE id = work_packages.status_id
-            AND is_closed = TRUE
-        )
-      SQL
-
-      where(status_subquery)
+    def in_backlog_for(project:)
+      WorkPackage
+        .visible
+        .where(project:, sprint_id: nil)
+        .without_excluded_type
+        .without_status_considered_closed
+        .order_by_position
+        .order(WorkPackage.arel_table[:id].asc)
     end
   end
 end
