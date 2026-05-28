@@ -244,7 +244,8 @@ en:
   notice_unsuccessful_start_with_reason: "The sprint could not be started: %{reason}"
   notice_unsuccessful_finish: "The sprint could not be completed."
   notice_unsuccessful_finish_with_reason: "The sprint could not be completed: %{reason}"
-
+  notice_work_package_invisible_after_move: >
+    The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"
   permission_select_backlog_types_and_statuses: "Select backlog types and statuses"
