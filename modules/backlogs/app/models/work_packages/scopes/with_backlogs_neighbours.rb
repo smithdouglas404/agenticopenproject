@@ -33,6 +33,20 @@ module WorkPackages::Scopes::WithBacklogsNeighbours
 
   class_methods do
     def with_backlogs_neighbours
+      # Adds neighbour ids (prev_id, prev_prev_id, next_id) to each row in the scope,
+      # computed via SQL window functions over the position-ordered list.
+      #
+      # These ids drive the move-up / move-down actions in the backlog UI:
+      #   - prev_id: the previous sibling, only used for its presence; if nil, the
+      #     current element is first in the scoped list.
+      #   - prev_prev_id: second previous sibling, used as the target prev_id when moving up
+      #   - next_id: the next sibling, used as the target prev_id when moving down; if nil
+      #     the current element is last in the scoped list.
+      #
+      # The position field alone is not sufficient for the move-up / move-down actions because
+      # the UI may hide certain work packages (e.g. closed ones), creating gaps that make the
+      # position field unreliable.
+      #
       # The subquery is required because WHERE clauses are applied before window functions
       # within a single SELECT. Chaining .find(id) directly would therefore filter rows
       # first, leaving the window function with a single row and returning nil for all
