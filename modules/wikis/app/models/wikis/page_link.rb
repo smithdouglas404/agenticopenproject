@@ -38,7 +38,5 @@ module Wikis
     def relation? = false
 
     def inline? = false
-
-    def render_author? = false
   end
 end
