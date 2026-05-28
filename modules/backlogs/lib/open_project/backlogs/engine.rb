@@ -135,7 +135,8 @@ module OpenProject::Backlogs
                Project
                User
                VersionsController
-               Version]
+               Version
+               WorkPackagesFilterHelper]
 
     patch_with_namespace :BasicData, :SettingSeeder
     patch_with_namespace :DemoData, :ProjectSeeder
