@@ -31,6 +31,66 @@ require "spec_helper"
 RSpec.describe Version do
   it { is_expected.to have_many :version_settings }
 
+  describe "completion with Done statuses configured" do
+    let(:project) { create(:project) }
+    let(:version) { create(:version, project:, effective_date: Date.yesterday) }
+    let(:open_status)   { create(:status, is_closed: false) }
+    let(:done_status)   { create(:status, is_closed: false) }
+    let(:closed_status) { create(:status, is_closed: true) }
+
+    before { project.done_statuses = [done_status] }
+
+    it "treats work packages in the project's done_statuses as 100% complete in progress" do
+      create(:work_package, project:, version:, status: open_status,   done_ratio: 0)
+      create(:work_package, project:, version:, status: done_status,   done_ratio: 0)
+      create(:work_package, project:, version:, status: closed_status, done_ratio: 0)
+
+      expect(version.completed_percent).to eq (0.0 + 100.0 + 100.0) / 3
+      expect(version.closed_percent).to eq 100.0 / 3
+    end
+
+    it "still counts done_ratio for open work packages not in done_statuses" do
+      create(:work_package, project:, version:, status: open_status, done_ratio: 40)
+      create(:work_package, project:, version:, status: done_status, done_ratio: 0)
+
+      expect(version.completed_percent).to eq (40.0 + 100.0) / 2
+      expect(version.closed_percent).to eq 0
+    end
+
+    it "counts done-status work packages as closed in the open/closed counts" do
+      create(:work_package, project:, version:, status: open_status)
+      create(:work_package, project:, version:, status: done_status)
+      create(:work_package, project:, version:, status: closed_status)
+
+      expect(version.open_issues_count).to eq 1
+      expect(version.closed_issues_count).to eq 2
+    end
+
+    it "considers the version completed when every work package is closed or done" do
+      create(:work_package, project:, version:, status: done_status)
+      create(:work_package, project:, version:, status: closed_status)
+
+      expect(version).to be_completed
+    end
+
+    it "does not consider the version completed while any work package is still open" do
+      create(:work_package, project:, version:, status: open_status)
+      create(:work_package, project:, version:, status: done_status)
+
+      expect(version).not_to be_completed
+    end
+
+    it "does not affect projects with no done_statuses configured" do
+      other_project = create(:project)
+      other_version = create(:version, project: other_project)
+      create(:work_package, project: other_project, version: other_version, status: done_status, done_ratio: 30)
+
+      expect(other_version.completed_percent).to eq 30
+      expect(other_version.open_issues_count).to eq 1
+      expect(other_version.closed_issues_count).to eq 0
+    end
+  end
+
   describe "rebuild positions" do
     def build_work_package(options = {})
       build(:work_package, options.reverse_merge(version_id: version.id,

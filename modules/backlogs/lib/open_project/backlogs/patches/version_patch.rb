@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -33,6 +35,63 @@ module OpenProject::Backlogs::Patches::VersionPatch
       accepts_nested_attributes_for :version_settings
 
       include InstanceMethods
+      prepend ProgressOverrides
+    end
+  end
+
+  # Overrides version completion logic so work packages whose status is listed
+  # in their project's "Done statuses" (configured via Backlogs project
+  # settings) count as fully complete throughout the roadmap: in the progress
+  # bar (issues_progress), the open/closed counts shown below it, the
+  # `completed?` predicate that drives "X days remaining" and the auto-close
+  # path in `Project#close_completed_versions`, and the filter in
+  # `VersionsController#find_versions`.
+  module ProgressOverrides
+    def open_issues_count
+      @open_issues_count ||= work_packages
+        .merge(WorkPackage.with_status_open)
+        .where("NOT (#{done_status_exists_sql})")
+        .size
+    end
+
+    def closed_issues_count
+      @closed_issues_count ||= issues_count - open_issues_count
+    end
+
+    private
+
+    def issues_progress(open)
+      return super unless open
+
+      @issues_progress ||= {}
+      @issues_progress[true] ||= begin
+        progress = 0
+
+        if issues_count > 0
+          done = work_packages
+            .where(statuses: { is_closed: false })
+            .includes(:status)
+            .sum(open_progress_sum_sql)
+          progress = done.to_f / (estimated_average * issues_count)
+        end
+        progress
+      end
+    end
+
+    def done_status_exists_sql
+      wp_table = WorkPackage.table_name
+      "EXISTS (SELECT 1 FROM done_statuses_for_project dsfp " \
+        "WHERE dsfp.project_id = #{wp_table}.project_id " \
+        "AND dsfp.status_id = #{wp_table}.status_id)"
+    end
+
+    def open_progress_sum_sql
+      wp_table = WorkPackage.table_name
+      self.class.sanitize_sql_array(
+        ["COALESCE(#{wp_table}.estimated_hours, ?) * " \
+         "CASE WHEN #{done_status_exists_sql} THEN 100 ELSE done_ratio END",
+         estimated_average]
+      )
     end
   end
 
