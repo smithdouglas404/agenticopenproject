@@ -126,7 +126,7 @@ class Attachment < ApplicationRecord
   def served_content_type
     if is_text?
       # Even if the text mime type might differ, always output plain text so it
-      # isn't interpreted as e.g. a script or html file. Pin UTF-8 so browsers
+      # isn't interpreted as e.g. a script. Pin UTF-8 so browsers
       # don't mis-decode non-ASCII content shown inline.
       "text/plain; charset=utf-8"
     elsif inlineable?
