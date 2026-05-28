@@ -141,6 +141,39 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
           it { assert_select "input", attributes: { name: "work_package[parent_id]" } }
         end
 
+        context "with work package list" do
+          context "with classic (numeric) identifiers" do
+            it "displays a hash-prefixed numeric id link for each work package" do
+              assert_select "ul li a", text: /\A#{Regexp.escape(work_package1.type.to_s)} ##{work_package1.id}\z/
+              assert_select "ul li a", text: /\A#{Regexp.escape(work_package2.type.to_s)} ##{work_package2.id}\z/
+            end
+          end
+
+          context "with semantic identifiers" do
+            let(:semantic_prefix) { "TESTPROJ" }
+
+            before do
+              allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
+              work_package1.update_columns(identifier: "#{semantic_prefix}-1", sequence_number: 1)
+              work_package2.update_columns(identifier: "#{semantic_prefix}-2", sequence_number: 2)
+            end
+
+            it "displays the semantic identifier in each link" do
+              get :edit, params: { ids: [work_package1.id, work_package2.id] }
+
+              assert_select "ul li a", text: /#{semantic_prefix}-1/
+              assert_select "ul li a", text: /#{semantic_prefix}-2/
+            end
+
+            it "does not display a bare numeric id in the links" do
+              get :edit, params: { ids: [work_package1.id, work_package2.id] }
+
+              assert_select "ul li a", text: /##{work_package1.id}/, count: 0
+              assert_select "ul li a", text: /##{work_package2.id}/, count: 0
+            end
+          end
+        end
+
         context "custom_field" do
           describe "#type" do
             it { assert_select "input", attributes: { name: "work_package[custom_field_values][#{custom_field1.id}]" } }
