@@ -38,7 +38,8 @@ module Backlogs
       helpers.turbo_frame_tag("#{dom_id(work_package)}_card",
                               loading: :lazy,
                               src: work_packages_card_path(work_package,
-                                                           version: work_package.updated_at.to_i.to_s)) do
+                                                           version: work_package.updated_at.to_i.to_s),
+                              "data-turbo-permanent-by-src": "") do
         render(Primer::Alpha::SkeletonBox.new(width: "100%", height: "40px"))
       end
     end

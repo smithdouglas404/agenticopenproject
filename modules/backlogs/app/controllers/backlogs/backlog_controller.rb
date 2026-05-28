@@ -74,6 +74,7 @@ module Backlogs
 
       @work_packages_by_sprint_id = WorkPackage
                                       .where(sprint: @sprints, project: @project)
+                                      .select(:id, :sprint_id, :updated_at, :story_points)
                                       .order_by_position
                                       .group_by(&:sprint_id)
 
@@ -83,6 +84,7 @@ module Backlogs
       # But doing only a single query to the database has its benefits, and currently this seems quicker.
       @work_packages_by_backlog_id = WorkPackage
                                        .in_backlog_for(project: @project)
+                                       .select(:id, :backlog_bucket_id, :updated_at)
                                        .group_by(&:backlog_bucket_id)
     end
   end

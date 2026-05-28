@@ -67,7 +67,7 @@ Rails.application.routes.draw do
           constraints: { work_package_id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT },
           defaults: { tab: :overview }
 
-      resources :backlog_buckets, only: %i[create update destroy] do
+      resources :backlog_buckets, only: %i[create update destroy show] do
         collection do
           get :new_dialog
         end
@@ -78,7 +78,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :sprints, param: :sprint_id, only: %i[create update] do
+      resources :sprints, param: :sprint_id, only: %i[create update show] do
         collection do
           get :new_dialog
           get :refresh_form
@@ -103,7 +103,6 @@ Rails.application.routes.draw do
         get "taskboard", to: "taskboard#show", as: :sprint_taskboard
         get "burndown_chart", to: "burndown_chart#show", as: :sprint_burndown_chart
       end
-
     end
   end
 

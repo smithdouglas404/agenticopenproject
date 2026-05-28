@@ -57,5 +57,35 @@ module Backlogs
     def total
       @total ||= work_packages_by_backlog_id.values.sum(&:count)
     end
+
+    def initially_rendered_buckets
+      work_packages_available = 100 - work_packages_by_backlog_id[buckets.first.id]&.size.to_i
+
+      rendered_buckets = [buckets.first]
+
+      buckets[1..].each do |bucket|
+        if work_packages_by_backlog_id[bucket.id].nil?
+          work_packages_available -= 1
+
+          rendered_buckets << bucket
+        elsif work_packages_by_backlog_id[bucket.id].size < work_packages_available
+          work_packages_available -= work_packages_by_backlog_id[bucket.id].size
+
+          rendered_buckets << bucket
+        else
+          break
+        end
+      end
+
+      rendered_buckets
+    end
+
+    def turbo_frame_only_buckets
+      buckets - initially_rendered_buckets
+    end
+
+    def bucket_skeleton_height(bucket)
+      54 + (40 * work_packages_by_backlog_id[bucket.id]&.size.to_i) + (work_packages_by_backlog_id[bucket.id].nil? ? 80 : 0)
+    end
   end
 end
