@@ -52,7 +52,7 @@ module OpenProject::Backlogs::List
       prev = acts_as_list_list.find_by(**id_or_position)
 
       if prev.blank?
-        # If it should be the first story, move it to the 1st position
+        # If prev is blank, it means the element should be inserted at the first position.
         insert_at
         move_to_top
       else
