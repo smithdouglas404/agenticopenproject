@@ -185,6 +185,7 @@ vi:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projects
         last_change: Last change
@@ -332,6 +333,8 @@ vi:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -903,6 +906,7 @@ vi:
         text: Hành động này sẽ không xóa bất kỳ dự án nào có trong danh sách. Bạn có chắc chắn muốn xóa danh sách dự án này?
     settings:
       header_details: Chi tiết cơ bản
+      header_identifier: Identifier
       header_status: trạng thái
       header_relations: Quan hệ dự án
       button_update_details: Cập nhật chi tiết
@@ -1378,6 +1382,7 @@ vi:
         untitled_group: Untitled group
         reset_title: Reset form cấu hình
         confirm_reset: Are you sure you want to reset the form cấu hình?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3976,7 +3981,7 @@ vi:
   label_home: Trang chủ
   label_subject_or_id: Chủ đề hoặc Mã
   label_calendar_subscriptions: Đăng ký lịch
-  label_identifier: định danh
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: trong
   label_in_less_than: ít hơn
@@ -4642,9 +4647,9 @@ vi:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Để cho phép người dùng đăng nhập, bạn có thể:'
       a: Nâng cấp gói thanh toán của bạn ([here](upgrade_url))
       b: Khóa hoặc xóa người dùng hiện tại ([here](users_url))
+      label: 'Để cho phép người dùng đăng nhập, bạn có thể:'
   more_actions: Nhiều chức năng hơn
   noscript_description: Bạn cần kích hoạt JavaScript để sử dụng OpenProject!
   noscript_heading: Đã tắt JavaScript
@@ -5478,7 +5483,7 @@ vi:
       section_work_week: tuần làm việc
       section_holidays_and_closures: Ngày lễ và đóng cửa
     work_packages:
-      work_package_identifier: Gói công việc (Work Package) identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: Bạn không có quyền cần thiết để xem trang này.
       activities:
         enable_internal_comments: Bật nhận xét nội bộ
@@ -5982,6 +5987,7 @@ vi:
       ancestor: Không được tiết lộ - Tổ tiên là vô hình vì thiếu quyền.
       definingProject: Không được tiết lộ - Dự án vô hình vì thiếu quyền.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Xác thực

@@ -39,8 +39,8 @@ es:
           other: "%{count} Participantes"
         participants_attended: Asistentes
         participants_invited: Invitados
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 'Participantes añadidos:'
+        participants_removed: 'Participantes eliminados:'
         project: Proyecto
         start_date: Fecha
         start_time: Hora de inicio
@@ -66,9 +66,9 @@ es:
         title: Título
         frequency: Frecuencia
         interval: Intervalo
-        monthly_day: Day of month
-        monthly_ordinal: Position
-        monthly_weekday: Weekday
+        monthly_day: Día del mes
+        monthly_ordinal: Posición
+        monthly_weekday: Día de la semana
         start_date: Empieza el
         start_time: Hora de inicio
         start_time_hour: Hora de inicio
@@ -291,8 +291,8 @@ es:
         new_date_time: Fecha y hora nuevas
         old_location: Ubicación antigua
         new_location: Nueva ubicación
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Añadido
+        removed_participants: Eliminado
     label_mail_all_participants: Enviar invitación por correo electrónico a los participantes
     types:
       one_time: Única
@@ -374,58 +374,22 @@ es:
         caption: Este texto aparecerá en cada página en el centro del pie de página.
       submit_button: Descargar
     notifications:
+      disabled: Participants will not receive email updates informing them of changes to the date, time or list of participants.
+      enabled: All participants will receive updated calendar invites informing them of changes to date, time or list of participants.
       sidepanel:
         title: Enviar actualizaciones de calendario por correo electrónico
         description:
-          disabled: Los participantes no recibirán un correo electrónico informándoles de los cambios.
-          enabled: Todos los participantes recibirán por correo electrónico invitaciones de calendario actualizadas en las que se les informará de los cambios.
           change_via_template: Para cambiar esto, edite la plantilla de la serie.
       dialog:
         title:
           enable: "¿Habilitar actualizaciones de calendario por correo electrónico?"
           disable: "¿Deshabilitar actualizaciones de calendario por correo electrónico?"
         message:
-          enable: 'Todos los participantes recibirán invitaciones de calendario actualizadas por correo electrónico cada vez que se produzca un cambio en la fecha, hora, lugar o participantes de la reunión. Una vez habilitada, se enviará inmediatamente un correo electrónico a todos los participantes.
-
-            '
-          disable: 'Los participantes ya no recibirán invitaciones de calendario actualizadas por correo electrónico cuando se produzcan cambios en la fecha, hora, lugar o participantes de la reunión. Si ya tenían una invitación a esta reunión, es posible que ya no sea precisa.
-
-            '
+          enable: Once enabled, an email will be sent out immediately to all participants.
+          disable: If they already had an invite for this meeting, it might no longer be accurate.
         confirm_label:
           enable: Habilitar actualizaciones por correo electrónico
           disable: Deshabilitar actualizaciones por correo electrónico
-      banner:
-        participants:
-          enabled: 'Todos los participantes recibirán por correo electrónico invitaciones actualizadas del calendario cuando usted añada o elimine participantes.
-
-            '
-          disabled: 'Las actualizaciones de calendario por correo electrónico están deshabilitadas. Los participantes no recibirán un correo electrónico informándoles cuando usted añada o elimine participantes.
-
-            '
-          draft_disabled: 'Los participantes no recibirán un correo electrónico en el que se les informe de que has añadido o eliminado a alguien.
-
-            '
-        onetime:
-          enabled: 'Todos los participantes recibirán por correo electrónico invitaciones actualizadas del calendario cuando usted añada o elimine participantes.
-
-            '
-          disabled: 'Los participantes no recibirán un correo electrónico informándoles de los cambios en la fecha, la hora o los participantes de la reunión.
-
-            '
-        occurrence:
-          enabled: 'Las actualizaciones de calendario por correo electrónico están habilitadas para la serie de reuniones. Todos los participantes recibirán invitaciones de calendario actualizadas en las que se les informará de los cambios en esta reunión.
-
-            '
-          disabled: 'Las actualizaciones de calendario por correo electrónico están deshabilitadas para la serie de reuniones. Los participantes no recibirán un correo electrónico informándoles de los cambios en esta reunión.
-
-            '
-        template:
-          enabled: 'Las actualizaciones de calendario por correo electrónico están habilitadas para la serie de reuniones. Todos los participantes recibirán invitaciones de calendario actualizadas en las que se les informará de los cambios en esta plantilla o en reuniones individuales.
-
-            '
-          disabled: 'Las actualizaciones de calendario por correo electrónico están deshabilitadas para la serie de reuniones. Los participantes no recibirán un correo electrónico informándoles de los cambios en esta plantilla o en reuniones individuales.
-
-            '
     presentation_mode:
       title: Modo de presentación
       button_present: Presente
@@ -442,7 +406,7 @@ es:
     widgets:
       blankslate:
         heading: No hay reuniones previstas
-        description: Upcoming meetings you are participating in will appear here.
+        description: Las próximas reuniones en las que participe aparecerán aquí.
       view_details: Ver todas las reuniones
   meeting_section:
     untitled_title: Sección sin título
@@ -495,41 +459,41 @@ es:
         one: Cada semana
         other: Cada %{count} semanas
       x_monthly:
-        one: Every month
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
-      monthly_nth_weekday: Monthly on a weekday
+        one: Cada mes
+        other: Cada %{count} meses
+      monthly_day_of_month: Día del mes
+      monthly_nth_weekday: Mensualmente en un día laborable
       every_weekday: Cada %{day_of_the_week}
       working_days: Todos los dias hábiles
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
-        third: third
-        fourth: fourth
-        last: last
+        first: primero
+        second: segundo
+        third: tercero
+        fourth: cuarto
+        last: última
       ordinal_options:
-        first: First
-        second: Second
-        third: Third
-        fourth: Fourth
-        last: Last
-    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
-    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
+        first: Primero
+        second: Segundo
+        third: Tercero
+        fourth: Cuarto
+        last: Último
+    actual_first_occurrence_mismatch_html: La primera aparición de esta serie será %{first_occurrence}
+    day_of_month_skipping_info: Se omitirán los meses con menos de %{monthly_day} días
     end_after:
-      never: Never
-      specific_date: After a specific date
-      iterations: After a number of occurrences
+      never: Nunca
+      specific_date: Después de una fecha específica
+      iterations: Después de un número de repeticiones
     starts: Empieza
     in_words:
       daily_interval: Cada %{interval} días
       working_days: Todos los dias hábiles
       weekly: Cada semana en %{weekday}
       weekly_interval: Cada %{interval} semanas el %{weekday}
-      monthly_day: Every month on the %{day}
-      monthly_day_interval: Every %{interval} months on the %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_day: Cada mes el %{day}
+      monthly_day_interval: Cada %{interval} meses en el %{day}
+      monthly_nth_weekday: Cada mes el %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Cada %{interval} meses en el %{ordinal} %{weekday}
       frequency: "%{base} a las %{time}"
       full: "%{base} a las %{time}, finaliza el %{end_date}"
       full_past: "%{base} a las %{time}, finalizó el %{end_date}"
@@ -638,6 +602,7 @@ es:
   label_agenda_item_duplicate_in_next_title: "¿Duplicar en la próxima reunión?"
   label_agenda_item_add_notes: Añadir notas
   label_agenda_item_add_outcome: Añadir resultado
+  label_agenda_item_convert_to_work_package: Convert to work package
   label_agenda_item_work_package_add: Añadir paquete de trabajo
   label_agenda_item_work_package: Paquete de trabajo del punto del orden del día
   label_section_rename: Renombrar sección

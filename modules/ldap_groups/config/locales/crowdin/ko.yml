@@ -22,6 +22,7 @@ ko:
         group_name_attribute: 그룹 이름 특성
         sync_users: 사용자 동기화
         base_dn: 기본 DN 검색
+        member_lookup_attribute: Group member attribute
     models:
       ldap_groups/synchronized_group: 동기화된 LDAP 그룹
       ldap_groups/synchronized_filter: LDAP 그룹 동기화 필터
@@ -32,7 +33,7 @@ ko:
   ldap_groups:
     label_menu_item: LDAP 그룹 동기화
     label_group_key: LDAP 그룹 필터 키
-    label_synchronize: 동기화
+    label_synchronize: Discover LDAP groups
     settings:
       name_attribute: LDAP 그룹 이름 특성
       name_attribute_text: 필터에 의해 생성될 때 OpenProject 그룹 명명에 사용되는 LDAP 특성입니다.
@@ -56,6 +57,9 @@ ko:
         base_dn_text: '이 필터에 사용할 검색 기본 DN을 입력하세요. 이 DN은 선택한 LDAP 연결의 기본 DN 아래에 있어야 합니다. 연결의 기본 DN을 재사용하려면 이 옵션을 비워두세요.
 
           '
+        member_lookup_attribute_text: 'Leave empty to use the default reverse lookup: OpenProject searches for users whose memberOf attribute matches the group DN. This requires the memberOf attribute to be present on user entries (Active Directory, OpenLDAP with memberof overlay). Set this to the attribute name on group entries that lists member DNs to use forward lookup instead. Examples: "uniqueMember" (groupOfUniqueNames), "member" (groupOfNames). Use this for LDAP servers that do not maintain the memberOf attribute on user entries.
+
+          '
     synchronized_groups:
       add_new: 동기화된 LDAP 그룹 추가
       destroy:
@@ -64,11 +68,16 @@ ko:
         confirmation: 계속하는 경우, 동기화된 그룹 %{name} 및 이를 통해 동기화된 %{users_count}명의 사용자 모두가 제거됩니다.
         info: OpenProject 그룹 자체 그리고 이 LDAP 동기화 외부에서 추가된 멤버는 제거되지 않습니다.
       help_text_html: |
-        이 모듈을 통해 LDAP 및 OpenProject 그룹 간에 동기화를 설정할 수 있습니다..
-        OpenProject와 연동하려면 LDAP 그룹이 <em>groupOfNames / memberOf</em> 특성 집합을 사용해야 합니다.
+        This module allows you to set up a synchronization between LDAP and OpenProject groups.
         <br/>
-        그룹은 cron 작업을 통해 시간별로 동기화됩니다.
-        [이 항목은 설명서를 참조하세요](docs_url).
+        By default, OpenProject uses <strong>reverse lookup</strong>: it searches for users whose <em>memberOf</em> attribute matches the group DN.
+        This requires the <em>memberOf</em> attribute to be present on user entries (Active Directory, OpenLDAP with memberof overlay).
+        <br/>
+        If your LDAP server does not maintain <em>memberOf</em> on user entries (e.g. it uses <em>groupOfUniqueNames</em> with <em>uniqueMember</em>),
+        you can configure <strong>forward lookup</strong> by setting the <em>Group member attribute</em> on the synchronization filter.
+        <br/>
+        Groups are synchronized hourly through a cron job.
+        [Please see our documentation on this topic](docs_url).
       no_results: 동기화된 그룹이 없습니다.
       no_members: 이 그룹에는 아직 동기화된 멤버가 없습니다.
       plural: 동기화된 LDAP 그룹

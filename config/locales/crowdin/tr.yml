@@ -185,6 +185,7 @@ tr:
         parse_error: 'Jira API yanıtı ayrıştırılamadı: %{message}'
         api_error: Jira API hata durumu döndürdü %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projeler
         last_change: Son değişiklik
@@ -338,6 +339,8 @@ tr:
             confirm_button: Anlaşıldı
           select_projects:
             title: Projeleri seçin
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -912,6 +915,7 @@ tr:
         text: Bu eylem, listenin içerdiği hiçbir projeyi silmeyecektir. Bu proje listesini silmek istediğinizden emin misiniz?
     settings:
       header_details: Temel bilgiler
+      header_identifier: Identifier
       header_status: Durum
       header_relations: Proje ilişkileri
       button_update_details: Detayları güncelle
@@ -1395,6 +1399,7 @@ tr:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -4043,7 +4048,7 @@ tr:
   label_home: Ana sayfa
   label_subject_or_id: Konu ya da ID
   label_calendar_subscriptions: Takvim abonelikleri
-  label_identifier: Tanımlayıcı
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: şurada
   label_in_less_than: daha azdır
@@ -4704,9 +4709,9 @@ tr:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Kullanıcının oturum açmasına izin vermek için şunlardan birini yapabilirsiniz:'
       a: Ödeme planınızı yükseltin ([here](upgrade_url))
       b: Mevcut bir kullanıcıyı kilitle veya sil ([buradan](users_url))
+      label: 'Kullanıcının oturum açmasına izin vermek için şunlardan birini yapabilirsiniz:'
   more_actions: Daha fazla işlev
   noscript_description: OpenProject'i kullanmak için JavaScript'i etkinleştirmeniz gerekiyor!
   noscript_heading: JavaScript kapalı
@@ -5537,7 +5542,7 @@ tr:
       section_work_week: Çalışma haftası
       section_holidays_and_closures: Tatiller ve kapanışlar
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: Bu sayfayı görüntülemek için gerekli izinlere sahip değilsiniz.
       activities:
         enable_internal_comments: Dahili yorumları etkinleştirin
@@ -6038,6 +6043,7 @@ tr:
       ancestor: Gizlendi - Seçilen en üst öge, eksik izinler nedeniyle görünmez.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Ön yetkilendirme

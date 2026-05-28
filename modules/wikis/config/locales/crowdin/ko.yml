@@ -53,6 +53,11 @@ ko:
     work_package_wikis_tab_component:
       inline_page_links: 인라인 페이지 링크
       referencing_pages: '다음에서 참조됨:'
+    page_links:
+      errors:
+        page_not_found: Linked wiki page no longer available
+        page_access_forbidden: You do not have permission to access this wiki page
+        unexpected: An unexpected error occurred
     page_link_component:
       remove: 페이지 링크 제거
     relation_page_links_component:
@@ -129,5 +134,3 @@ ko:
           openproject_oauth_description: XWiki가 OAuth를 사용하여 OpenProject 데이터에 액세스하도록 허용합니다.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: OpenProject가 OAuth를 사용하여 XWiki 데이터에 액세스하도록 허용합니다.
-    macro:
-      page_not_found: 링크된 위키 페이지를 더 이상 사용할 수 없음

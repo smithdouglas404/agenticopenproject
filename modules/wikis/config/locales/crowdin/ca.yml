@@ -57,6 +57,11 @@ ca:
     work_package_wikis_tab_component:
       inline_page_links: Inline page links
       referencing_pages: Referenced in
+    page_links:
+      errors:
+        page_not_found: Linked wiki page no longer available
+        page_access_forbidden: You do not have permission to access this wiki page
+        unexpected: An unexpected error occurred
     page_link_component:
       remove: Remove page link
     relation_page_links_component:
@@ -133,5 +138,3 @@ ca:
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
-    macro:
-      page_not_found: Linked wiki page no longer available

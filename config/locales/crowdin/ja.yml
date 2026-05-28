@@ -185,6 +185,7 @@ ja:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: プロジェクト
         last_change: Last change
@@ -332,6 +333,8 @@ ja:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -901,6 +904,7 @@ ja:
         text: この操作では、リストに含まれるプロジェクトは削除されません。本当にこのプロジェクトリストを削除しますか？
     settings:
       header_details: 基本情報
+      header_identifier: Identifier
       header_status: Status
       header_relations: プロジェクトの関係
       button_update_details: 基本情報の更新
@@ -1377,6 +1381,7 @@ ja:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3977,7 +3982,7 @@ ja:
   label_home: ホーム
   label_subject_or_id: タイトルまたはID
   label_calendar_subscriptions: カレンダーのサブスクリプション
-  label_identifier: 識別子
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: 今日から○日後
   label_in_less_than: 今日から○日後以前
@@ -4635,9 +4640,9 @@ ja:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'ユーザーがサインインできるようにするには、次のいずれかを行います: '
       a: お支払いプランをアップグレードします。 ([ここ](upgrade_url))
       b: 既存のユーザーをロックまたは削除する ([ここ](users_url))
+      label: 'ユーザーがサインインできるようにするには、次のいずれかを行います: '
   more_actions: 他の機能
   noscript_description: OpenProjectを使用するためにJavaScriptを有効にする必要があります！
   noscript_heading: JavaScriptは無効されています。
@@ -5463,7 +5468,7 @@ ja:
       section_work_week: 作業週
       section_holidays_and_closures: 休日と休業日
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: このページを表示するために必要な権限がありません。
       activities:
         enable_internal_comments: 内部コメントを有効にする
@@ -5967,6 +5972,7 @@ ja:
       ancestor: 未公開 - アクセス許可がないため、祖先は見えません。
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: 事前承認

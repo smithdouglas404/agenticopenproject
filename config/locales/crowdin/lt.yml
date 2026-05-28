@@ -185,6 +185,7 @@ lt:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projects
         last_change: Last change
@@ -350,6 +351,8 @@ lt:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -930,6 +933,7 @@ lt:
         text: Atlikus šį veiksmą nebus ištrintas nė vienas sąraše esantis projektas. Ar tikrai norite ištrinti šį projektų sąrašą?
     settings:
       header_details: Basic details
+      header_identifier: Identifier
       header_status: Status
       header_relations: Project relations
       button_update_details: Update details
@@ -1429,6 +1433,7 @@ lt:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -4165,7 +4170,7 @@ lt:
   label_home: Namai
   label_subject_or_id: Tema arba ID
   label_calendar_subscriptions: Kalendoriaus prenumeratos
-  label_identifier: Identifikatorius
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: " "
   label_in_less_than: mažiau nei
@@ -4835,9 +4840,9 @@ lt:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Norėdami leisti vartotojui prisijungti jūs galite: '
       a: Atnaujinti savo mokėjimo planą ([here](upgrade_url))
       b: Užrakinti arba panaikinti esamo naudotojo paskyrą ([here](users_url))
+      label: 'Norėdami leisti vartotojui prisijungti jūs galite: '
   more_actions: Daugiau funkcijų
   noscript_description: Jums reikia įjungti JavaScript, kad galėtumėte naudoti OpenProject!
   noscript_heading: JavaScript išjungta
@@ -5668,7 +5673,7 @@ lt:
       section_work_week: Darbo savaitė
       section_holidays_and_closures: Nedarbo dienos
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: You do not have the necessary permissions to view this page.
       activities:
         enable_internal_comments: Enable internal comments
@@ -6173,6 +6178,7 @@ lt:
       ancestor: Nerodoma - tėvas nematomas dėl teisių trūkumo.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Išankstinė autorizacija

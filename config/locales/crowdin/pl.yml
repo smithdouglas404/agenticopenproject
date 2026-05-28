@@ -185,6 +185,7 @@ pl:
         parse_error: 'Nie udało się przeanalizować odpowiedzi interfejsu API usługi Jira: %{message}'
         api_error: Interfejs API usługi Jira zwrócił status błędu %{status}
         401_error: Interfejs API Jira zwrócił błąd 401. Twój token uwierzytelniający mógł wygasnąć lub nie ma wymaganych uprawnień. Upewnij się, że token należy do administratora Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projekty
         last_change: Ostatnia zmiana
@@ -350,6 +351,8 @@ pl:
             confirm_button: Rozumiem
           select_projects:
             title: Wybierz projekty
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Protokół kontekstu modelu umożliwia agentom AI dostarczanie użytkownikom narzędzi i zasobów udostępnianych przez to wystąpienie OpenProject. Ta funkcja jest nadal w wersji beta.
@@ -930,6 +933,7 @@ pl:
         text: To działanie nie spowoduje usunięcia żadnego projektu znajdującego się na liście. Czy na pewno chcesz usunąć tę listę projektów?
     settings:
       header_details: Podstawowe szczegóły
+      header_identifier: Identifier
       header_status: Status
       header_relations: Relacje projektu
       button_update_details: Zaktualizuj szczegóły
@@ -1428,6 +1432,7 @@ pl:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -4158,7 +4163,7 @@ pl:
   label_home: Strona główna
   label_subject_or_id: Temat lub identyfikator
   label_calendar_subscriptions: Subskrypcje Kalendarza
-  label_identifier: Identyfikator
+  label_identifier: Identifiers
   label_project_identifier: Identyfikator projektu
   label_in: w
   label_in_less_than: w mniej niż
@@ -4828,9 +4833,9 @@ pl:
 
       '
     steps:
-      label: 'Aby zezwolić użytkownikowi na logowanie, możesz albo: '
       a: Zaktualizuj swój plan płatności ([here] (upgrade_url))
       b: Zablokuj lub usuń istniejącego użytkownika ([here] (users_url))
+      label: 'Aby zezwolić użytkownikowi na logowanie, możesz albo: '
   more_actions: Więcej funkcji
   noscript_description: Musisz aktywować JavaScript, aby korzystać z OpenProject!
   noscript_heading: Wyłączona obsługa JavaScript
@@ -5656,7 +5661,7 @@ pl:
       section_work_week: Tydzień roboczy
       section_holidays_and_closures: Dni wolne i zamknięcia
     work_packages:
-      work_package_identifier: Identyfikator pakietu roboczego
+      work_package_identifier: Work package identifiers
       not_allowed_text: Nie masz uprawnień niezbędnych do wyświetlenia tej strony.
       activities:
         enable_internal_comments: Włącz komentarze wewnętrzne
@@ -6163,6 +6168,7 @@ pl:
       ancestor: Nie ujawniono — przodek jest niewidoczny ze względu na brak uprawnień.
       definingProject: Nie ujawniono — projekt jest niewidoczny ze względu na brak uprawnień.
       definingWorkspace: Nie ujawniono — przestrzeń robocza jest niewidoczna ze względu na brak uprawnień.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pre-Autoryzacja

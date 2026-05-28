@@ -185,6 +185,7 @@ it:
         parse_error: 'Impossibile analizzare la risposta dell''API Jira: %{message}'
         api_error: Jira API ha restituito lo stato di errore %{status}
         401_error: L'API di Jira ha restituito un errore 401. Il token di autenticazione potrebbe essere scaduto o non disporre delle autorizzazioni necessarie. Assicurati che il token appartenga a un amministratore Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Progetti
         last_change: Ultima modifica
@@ -338,6 +339,8 @@ it:
             confirm_button: Ho capito
           select_projects:
             title: Seleziona i progetti
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Il protocollo di contesto del modello consente agli agenti di intelligenza artificiale di fornire ai propri utenti strumenti e risorse esposti da questa istanza di OpenProject. Questa funzionalità è ancora in versione beta.
@@ -910,6 +913,7 @@ it:
         text: Questa azione non eliminerà alcun progetto contenuto nell'elenco. Vuoi davvero eliminare questo elenco di progetti?
     settings:
       header_details: Informazioni base
+      header_identifier: Identifier
       header_status: Stato
       header_relations: Relazioni del progetto
       button_update_details: Aggiorna dettagli
@@ -1392,6 +1396,7 @@ it:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -4038,7 +4043,7 @@ it:
   label_home: Radice (home)
   label_subject_or_id: Oggetto o ID
   label_calendar_subscriptions: Iscrizioni calendario
-  label_identifier: Identificatore
+  label_identifier: Identifiers
   label_project_identifier: Identificatore di progetto
   label_in: in
   label_in_less_than: in meno di
@@ -4700,9 +4705,9 @@ it:
       Un nuovo utente (%{email}) ha tentato di creare un account su un ambiente OpenProject che gestisci (%{host}).
       L'utente non può attivare il proprio account dal momento che è stato raggiunto il limite di utente.
     steps:
-      label: 'Per consentire all''utente di registrarsi puoi: '
       a: Aggiorna il tuo piano di pagamento ([here](upgrade_url))
       b: Bloccare o eliminare un utente esistente ([here](users_url))
+      label: 'Per consentire all''utente di registrarsi puoi: '
   more_actions: Altre funzioni
   noscript_description: È necessario attivare JavaScript per poter usare OpenProject!
   noscript_heading: JavaScript disabilitato
@@ -5533,7 +5538,7 @@ it:
       section_work_week: Settimana lavorativa
       section_holidays_and_closures: Festività e chiusure
     work_packages:
-      work_package_identifier: Identificatore della macro-attività
+      work_package_identifier: Work package identifiers
       not_allowed_text: Non hai i permessi necessari per visualizzare questa pagina.
       activities:
         enable_internal_comments: Abilita commenti interni
@@ -6034,6 +6039,7 @@ it:
       ancestor: Non divulgato - L'antenato è invisibile a causa della mancanza dei permessi.
       definingProject: Non divulgato - Il progetto è invisibile a causa della mancanza dei permessi.
       definingWorkspace: Non visibile - Lo spazio di lavoro è invisibile a causa della mancanza di autorizzazioni.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pre-autorizzazione

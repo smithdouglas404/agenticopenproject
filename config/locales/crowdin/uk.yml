@@ -185,6 +185,7 @@ uk:
         parse_error: 'Не вдалося проаналізувати відповідь Jira API: %{message}'
         api_error: Інтерфейс Jira API повернув статус помилки «%{status}»
         401_error: Інтерфейс Jira API повернув помилку 401. Можливо, закінчився строк дії вашого маркера автентифікації або в нього немає необхідних дозволів. Переконайтеся, що маркер належить адміністратору Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Проєкти
         last_change: Остання зміна
@@ -350,6 +351,8 @@ uk:
             confirm_button: Зрозуміло
           select_projects:
             title: Виберіть проєкти
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Протокол контексту моделі дає змогу агентам ШІ надавати користувачам інструменти й ресурси, доступні в цьому екземплярі OpenProject. Ця функція досі доступна лише в бета-версії.
@@ -931,6 +934,7 @@ uk:
         text: Ця дія не призведе до видалення жодного проєкту зі списку. Справді видалити цей список проєктів?
     settings:
       header_details: Основна інформація
+      header_identifier: Identifier
       header_status: Статус
       header_relations: Зв’язки проєкту
       button_update_details: Оновити деталі
@@ -1427,6 +1431,7 @@ uk:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -4165,7 +4170,7 @@ uk:
   label_home: Додому
   label_subject_or_id: Тема або ідентифікатор
   label_calendar_subscriptions: Підписки на календарі
-  label_identifier: Ідентифікатор
+  label_identifier: Identifiers
   label_project_identifier: Ідентифікатор проєкту
   label_in: в
   label_in_less_than: менш ніж
@@ -4834,9 +4839,9 @@ uk:
       Новий користувач (%{email}) намагалися створити обліковий запис на середовищі OpenProject, яким ви керуєте (%{host}).
       Користувач не може активувати свій обліковий запис після досягнення ліміту користувача.
     steps:
-      label: 'To allow the user to sign in you can either: '
       a: Оновіть план платежів ([here](upgrade_url))
       b: Блокування або видалення існуючого користувача ([here](users_url))
+      label: 'To allow the user to sign in you can either: '
   more_actions: Додаткові функції
   noscript_description: Щоб використовувати OpenProject, потрібно ввімкнути підтримку JavaScript у Вашому браузері!
   noscript_heading: JavaScript відключений
@@ -5671,7 +5676,7 @@ uk:
       section_work_week: Робочий тиждень
       section_holidays_and_closures: Свята й вихідні
     work_packages:
-      work_package_identifier: Ідентифікатор пакета робіт
+      work_package_identifier: Work package identifiers
       not_allowed_text: У вас немає дозволів для перегляду цієї сторінки.
       activities:
         enable_internal_comments: Увімкнути внутрішні коментарі
@@ -6178,6 +6183,7 @@ uk:
       ancestor: Нерозкритий – предок невидимий через відсутність дозволів.
       definingProject: 'Нерозкритий: проєкт невидимий через відсутність дозволів.'
       definingWorkspace: 'Нерозкритий: робочий простір невидимий через відсутність дозволів.'
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Попередня авторизація

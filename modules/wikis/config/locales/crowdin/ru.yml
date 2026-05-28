@@ -65,6 +65,11 @@ ru:
     work_package_wikis_tab_component:
       inline_page_links: Ссылки на внутренние страницы
       referencing_pages: Ссылается в
+    page_links:
+      errors:
+        page_not_found: Linked wiki page no longer available
+        page_access_forbidden: You do not have permission to access this wiki page
+        unexpected: An unexpected error occurred
     page_link_component:
       remove: Удалить ссылку на страницу
     relation_page_links_component:
@@ -141,5 +146,3 @@ ru:
           openproject_oauth_description: Разрешить XWiki доступ к данным OpenProject с помощью OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Разрешить OpenProject доступ к данным XWiki с помощью OAuth.
-    macro:
-      page_not_found: Связанная вики-страница больше не доступна

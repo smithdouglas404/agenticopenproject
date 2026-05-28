@@ -185,6 +185,7 @@ ko:
         parse_error: 'Jira API 응답을 구문 분석하지 못했습니다: %{message}'
         api_error: Jira API가 오류 상태 %{status}을(를) 반환했습니다
         401_error: Jira API에서 401 오류를 반환했습니다. 인증 토큰이 만료되었거나 필요한 권한이 부족할 수 있습니다. 토큰이 Jira 관리자의 소유인지 확인하세요.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: 프로젝트
         last_change: 마지막 변경
@@ -332,6 +333,8 @@ ko:
             confirm_button: 이해함
           select_projects:
             title: 프로젝트 선택
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: 모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다. 이 기능은 아직 베타 버전입니다.
@@ -901,6 +904,7 @@ ko:
         text: 이 작업을 수행해도 목록에 포함된 프로젝트는 삭제되지 않습니다. 이 프로젝트 목록을 삭제하시겠습니까?
     settings:
       header_details: 기본 세부 정보
+      header_identifier: Identifier
       header_status: 상태
       header_relations: 프로젝트 관계
       button_update_details: 세부 정보 업데이트
@@ -1376,6 +1380,7 @@ ko:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3992,7 +3997,7 @@ ko:
   label_home: 홈
   label_subject_or_id: 제목 또는 ID
   label_calendar_subscriptions: 캘린더 구독
-  label_identifier: 식별자
+  label_identifier: Identifiers
   label_project_identifier: 프로젝트 식별자
   label_in: "-"
   label_in_less_than: 보다 작음
@@ -4650,9 +4655,9 @@ ko:
       회원님이 관리하는 OpenProject 환경(%{host})에서 새로운 사용자(%{email})가 계정을 만들려고 시도했습니다.
       사용자 제한에 도달한 후에는 해당 사용자가 계정을 활성화할 수 없습니다.
     steps:
-      label: '사용자가 로그인하게 허용하려면 다음 중 하나를 수행할 수 있습니다. '
       a: 결제 플랜([here](upgrade_url)) 업그레이드
       b: 기존 사용자([here](users_url)) 잠금 또는 삭제
+      label: '사용자가 로그인하게 허용하려면 다음 중 하나를 수행할 수 있습니다. '
   more_actions: 추가 기능
   noscript_description: OpenProject를 사용하려면 JavaScript를 활성화해야 합니다!
   noscript_heading: JavaScript 사용 안 함
@@ -5479,7 +5484,7 @@ ko:
       section_work_week: 근무 주
       section_holidays_and_closures: 공휴일 및 휴업일
     work_packages:
-      work_package_identifier: 작업 패키지 식별자
+      work_package_identifier: Work package identifiers
       not_allowed_text: 이 페이지를 보는 데 필요한 권한이 없습니다.
       activities:
         enable_internal_comments: 내부 코멘트 활성화
@@ -5983,6 +5988,7 @@ ko:
       ancestor: 숨겨짐 - 권한이 없어 상위 항목을 볼 수 없습니다.
       definingProject: 숨겨짐 - 권한이 없어 프로젝트를 볼 수 없습니다.
       definingWorkspace: 숨겨짐 - 권한이 없으므로 워크스페이스를 볼 수 없습니다.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: 사전 권한 부여

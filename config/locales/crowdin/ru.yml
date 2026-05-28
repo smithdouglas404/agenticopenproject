@@ -185,6 +185,7 @@ ru:
         parse_error: 'Не удалось разобрать ответ Jira API: %{message}'
         api_error: Jira API вернул статус ошибки %{status}
         401_error: Jira API вернул ошибку 401. Ваш токен аутентификации может быть истёк или не хватает необходимых разрешений. Пожалуйста, убедитесь, что токен принадлежит администратору Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Проекты
         last_change: Последнее изменение
@@ -350,6 +351,8 @@ ru:
             confirm_button: Понятно
           select_projects:
             title: Выбрать проекты
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Протокол контекста модели позволяет агентам ИИ предоставлять своим пользователям инструменты и ресурсы, открытые данным экземпляром OpenProject. Эта функция пока находится в стадии бета-версии.
@@ -930,6 +933,7 @@ ru:
         text: Это действие не приведет к удалению ни одного проекта, содержащегося в списке. Вы уверены, что хотите удалить этот список проектов?
     settings:
       header_details: Основные сведения
+      header_identifier: Identifier
       header_status: Статус
       header_relations: Отношения с проектом
       button_update_details: Обновить детали
@@ -1429,6 +1433,7 @@ ru:
         untitled_group: Безымянная группа
         reset_title: Сбросить настройки формы
         confirm_reset: Вы уверены, что хотите сбросить конфигурацию формы?
+        builtin_field: Built-in field
         reset_description: 'Это сбросит атрибуты к группе по умолчанию и отключит ВСЕ настраиваемые поля.
 
           '
@@ -4169,7 +4174,7 @@ ru:
   label_home: Главная
   label_subject_or_id: Тема или ID
   label_calendar_subscriptions: Подписки на календарь
-  label_identifier: Идентификатор
+  label_identifier: Identifiers
   label_project_identifier: Идентификатор проекта
   label_in: в
   label_in_less_than: менее чем
@@ -4839,9 +4844,9 @@ ru:
 
       '
     steps:
-      label: 'Для разрешения пользователю подписаться к вам необходимо: '
       a: Обновите ваш платежный план ([here](upgrade_url))
       b: Заблокировать или удалить существующего пользователя ([here](users_url))
+      label: 'Для разрешения пользователю подписаться к вам необходимо: '
   more_actions: Больше функций
   noscript_description: Для правильной работы OpenProject JavaScript должен быть включён!
   noscript_heading: JavaScript отключён
@@ -5662,7 +5667,7 @@ ru:
       section_work_week: Рабочая неделя
       section_holidays_and_closures: Праздничные и нерабочие дни
     work_packages:
-      work_package_identifier: Идентификатор пакета работ
+      work_package_identifier: Work package identifiers
       not_allowed_text: У вас нет необходимых прав для просмотра этой страницы.
       activities:
         enable_internal_comments: Включить служебные комментарии
@@ -6163,6 +6168,7 @@ ru:
       ancestor: Неизвестный - выбранный родитель невидим из-за отсутствия разрешений.
       definingProject: Нераскрыто - Проект невидим из-за отсутствия разрешений.
       definingWorkspace: Нераскрыто - Рабочее пространство невидимо из-за отсутствия разрешений.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Предавторизация

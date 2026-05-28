@@ -185,6 +185,7 @@ cs:
         parse_error: 'Nepodařilo se zpracovat odpověď z Jira API: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projekty
         last_change: Poslední změna
@@ -350,6 +351,8 @@ cs:
             confirm_button: Rozumím
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -931,6 +934,7 @@ cs:
         text: Tato akce neodstraní žádný projekt, který seznam obsahuje. Opravdu chcete tento seznam projektů smazat?
     settings:
       header_details: Základní údaje
+      header_identifier: Identifier
       header_status: Stav
       header_relations: Vztahy projektu
       button_update_details: Aktualizovat podrobnosti
@@ -1430,6 +1434,7 @@ cs:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -4168,7 +4173,7 @@ cs:
   label_home: Domů
   label_subject_or_id: Předmět nebo ID
   label_calendar_subscriptions: Odběr kalendáře
-  label_identifier: Identifikátor
+  label_identifier: Identifiers
   label_project_identifier: Identifikátor projektu
   label_in: v
   label_in_less_than: za méně než
@@ -4838,9 +4843,9 @@ cs:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Chcete-li umožnit uživateli přihlášení můžete buď: '
       a: Upgrade plánu plateb ([here](upgrade_url))
       b: Zamknutí nebo odstranění existujícího uživatele ([here](users_url))
+      label: 'Chcete-li umožnit uživateli přihlášení můžete buď: '
   more_actions: Další funkce
   noscript_description: Musíte aktivovat JavaScript pro použití OpenProject!
   noscript_heading: Javascript zakázán
@@ -5675,7 +5680,7 @@ cs:
       section_work_week: Pracovní týden
       section_holidays_and_closures: Dovolená a uzávěrky
     work_packages:
-      work_package_identifier: Identifikátor pracovního balíčku
+      work_package_identifier: Work package identifiers
       not_allowed_text: You do not have the necessary permissions to view this page.
       activities:
         enable_internal_comments: Enable internal comments
@@ -6182,6 +6187,7 @@ cs:
       ancestor: Nezveřejněno - Předák je neviditelný kvůli chybějícím oprávněním.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Předběžná autorizace

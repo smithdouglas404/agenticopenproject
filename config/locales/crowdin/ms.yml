@@ -185,6 +185,7 @@ ms:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projects
         last_change: Last change
@@ -332,6 +333,8 @@ ms:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -901,6 +904,7 @@ ms:
         text: Tindakan ini tidak akan memadamkan sebarang projek yang terkandung di dalam senarai. Adakah anda pasti untuk memadamkan senarai projek ini?
     settings:
       header_details: Butiran asas
+      header_identifier: Identifier
       header_status: Status
       header_relations: Project relations
       button_update_details: Update details
@@ -1374,6 +1378,7 @@ ms:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3984,7 +3989,7 @@ ms:
   label_home: Utama
   label_subject_or_id: Subjek atau ID
   label_calendar_subscriptions: Langganan kalendar
-  label_identifier: Pengenalan
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: dalam
   label_in_less_than: kurang daripada
@@ -4644,9 +4649,9 @@ ms:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Untuk membenarkan pengguna untuk daftar masuk, anda juga boleh: '
       a: Naik taraf pelan pembayaran anda ([di sini](upgrade_url))
       b: Kunci atau padam pengguna sedia ada ([di sini](users_url))
+      label: 'Untuk membenarkan pengguna untuk daftar masuk, anda juga boleh: '
   more_actions: Lebih banyak fungsi
   noscript_description: Anda perlu mengaktifkan JavaScript untuk menggunakan OpenProject!
   noscript_heading: JavaScript dinyahdayakan
@@ -5478,7 +5483,7 @@ ms:
       section_work_week: Minggu kerja
       section_holidays_and_closures: Hari perayaan dan penutupan
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: You do not have the necessary permissions to view this page.
       activities:
         enable_internal_comments: Enable internal comments
@@ -5978,6 +5983,7 @@ ms:
       ancestor: Tidak didedahkan - Leluhur tidak kelihatan kerana kurang kebenaran.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pra-kebenaran

@@ -53,6 +53,11 @@ zh-CN:
     work_package_wikis_tab_component:
       inline_page_links: 内联页面链接
       referencing_pages: 引用于
+    page_links:
+      errors:
+        page_not_found: Linked wiki page no longer available
+        page_access_forbidden: You do not have permission to access this wiki page
+        unexpected: An unexpected error occurred
     page_link_component:
       remove: 删除页面链接
     relation_page_links_component:
@@ -129,5 +134,3 @@ zh-CN:
           openproject_oauth_description: 允许 XWiki 使用 OAuth 访问 OpenProject 数据。
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: 允许 OpenProject 使用 OAuth 访问 XWiki 数据。
-    macro:
-      page_not_found: 关联的 Wiki 页面不再可用

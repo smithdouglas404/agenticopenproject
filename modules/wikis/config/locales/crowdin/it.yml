@@ -57,6 +57,11 @@ it:
     work_package_wikis_tab_component:
       inline_page_links: Collegamenti alle pagine inline
       referencing_pages: Citata in
+    page_links:
+      errors:
+        page_not_found: Linked wiki page no longer available
+        page_access_forbidden: You do not have permission to access this wiki page
+        unexpected: An unexpected error occurred
     page_link_component:
       remove: Rimuovi link della pagina
     relation_page_links_component:
@@ -133,5 +138,3 @@ it:
           openproject_oauth_description: Consenti a XWiki di accedere ai dati di OpenProject utilizzando un OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Consenti a OpenProject di accedere ai dati XWiki utilizzando OAuth.
-    macro:
-      page_not_found: La pagina wiki collegata non è più disponibile

@@ -52,15 +52,15 @@ es:
           confirm_button_text: Hacer pública
   admin:
     reserved_identifiers:
-      title: Reserved project identifiers
+      title: Identificadores de proyecto reservados
       lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
-      col_identifier: Identifier
-      col_project: Project
-      col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
-      filter_label: Filter identifiers
-      btn_release: Release
-      released_notice: Identifier "%{identifier}" has been released.
+      col_identifier: Identificador
+      col_project: Proyecto
+      col_reserved: Reservado
+      not_available_in_semantic_mode: Los identificadores reservados sólo están disponibles en el modo de identificador clásico.
+      filter_label: Identificadores de filtro
+      btn_release: Lanzamiento
+      released_notice: El identificador "%{identifier}" ha sido liberado.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
@@ -185,6 +185,7 @@ es:
         parse_error: 'Error al analizar la respuesta de la API de Jira: %{message}'
         api_error: La API de Jira ha devuelto el estado de error %{status}
         401_error: La API de Jira ha devuelto un error 401. Es posible que su token de autenticación haya caducado o que no disponga de los permisos necesarios. Asegúrese de que el token pertenece a un administrador de Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Proyectos
         last_change: Última modificación
@@ -338,6 +339,8 @@ es:
             confirm_button: Entendido
           select_projects:
             title: Seleccione los proyectos
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: El protocolo de contexto de modelo (MCP, por sus siglas en inglés) permite a los agentes de IA proporcionar a sus usuarios herramientas y recursos expuestos por esta instancia de OpenProject. Esta función aún se encuentra en fase beta.
@@ -908,6 +911,7 @@ es:
         text: Esta acción no eliminará ningún proyecto que contenga la lista. ¿Seguro que desea eliminar esta lista de proyectos?
     settings:
       header_details: Detalles básicos
+      header_identifier: Identifier
       header_status: Estado
       header_relations: Relaciones del proyecto
       button_update_details: Actualizar detalles
@@ -1391,6 +1395,7 @@ es:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -4029,7 +4034,7 @@ es:
   label_home: Inicio
   label_subject_or_id: Asunto o ID
   label_calendar_subscriptions: Suscripciones al calendario
-  label_identifier: Identificador
+  label_identifier: Identifiers
   label_project_identifier: Identificador del proyecto
   label_in: en
   label_in_less_than: en menos de
@@ -4691,9 +4696,9 @@ es:
       Un nuevo usuario (%{email}) intento crear una cuenta en el ambiente de Proyecto Abierto que usted administra (%{host}).
       El usuario no puede activar su cuenta debido a que el límite del usuario ha sido alcanzado.
     steps:
-      label: 'Para permitir al usuario ingresar, usted puede: '
       a: Mejore su plan de pago ([here](upgrade_url))
       b: Bloquear o eliminar un usuario existente ([here](users_url))
+      label: 'Para permitir al usuario ingresar, usted puede: '
   more_actions: Más funciones
   noscript_description: Necesita activar JavaScript para poder usar OpenProject!
   noscript_heading: JavaScript desactivado
@@ -5520,7 +5525,7 @@ es:
       section_work_week: Semana de trabajo
       section_holidays_and_closures: Vacaciones y cierres
     work_packages:
-      work_package_identifier: Identificador del paquete de trabajo
+      work_package_identifier: Work package identifiers
       not_allowed_text: No tiene los permisos necesarios para ver esta página.
       activities:
         enable_internal_comments: Habilitar comentarios internos
@@ -6021,6 +6026,7 @@ es:
       ancestor: No revelado - El antepasado es invisible por falta de permisos.
       definingProject: 'Oculto: el proyecto no se muestra porque no tiene los permisos necesarios.'
       definingWorkspace: 'Oculto: el espacio de trabajo no se muestra porque no tiene los permisos necesarios.'
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pre-autorización

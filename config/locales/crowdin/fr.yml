@@ -185,6 +185,7 @@ fr:
         parse_error: 'Échec de l''analyse de la réponse de l''API Jira : %{message}'
         api_error: L'API Jira a renvoyé le statut d'erreur %{status}
         401_error: L'API Jira a renvoyé une erreur 401. Votre jeton d'authentification peut avoir expiré ou ne pas avoir les autorisations requises. Veuillez vous assurer que le jeton appartient à un administrateur Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projets
         last_change: Dernière modification
@@ -338,6 +339,8 @@ fr:
             confirm_button: Compris
           select_projects:
             title: Sélectionner des projets
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Le protocole de contexte de modèle permet aux agents d'IA de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject. Cette fonctionnalité est encore en version bêta.
@@ -911,6 +914,7 @@ fr:
         text: Cette action ne supprimera aucun projet contenu dans la liste. Voulez-vous vraiment supprimer cette liste de projets ?
     settings:
       header_details: Informations de base
+      header_identifier: Identifier
       header_status: Statut
       header_relations: Relations du projet
       button_update_details: Mettre à jour les informations
@@ -1387,6 +1391,7 @@ fr:
         untitled_group: Groupe sans titre
         reset_title: Réinitialiser la configuration du formulaire
         confirm_reset: Êtes-vous sûr de vouloir réinitialiser la configuration du formulaire ?
+        builtin_field: Built-in field
         reset_description: 'Cette opération rétablit les attributs dans leur groupe par défaut et désactive TOUS les champs personnalisés.
 
           '
@@ -4031,7 +4036,7 @@ fr:
   label_home: Accueil
   label_subject_or_id: Objet ou ID
   label_calendar_subscriptions: Abonnements au calendrier
-  label_identifier: Identifiant
+  label_identifier: Identifiers
   label_project_identifier: Identifiant de projet
   label_in: dans
   label_in_less_than: dans moins de
@@ -4693,9 +4698,9 @@ fr:
       Un nouvel utilisateur (%{email}) a essayé de créer un compte sur un environnement OpenProject que vous gérez (%{host}).
       L'utilisateur ne peut pas activer son compte puisque la limite d'utilisateurs a été atteinte.
     steps:
-      label: 'Pour permettre à l''utilisateur de se connecter, vous pouvez soit: '
       a: Mettez à jour votre plan de paiement ([here](upgrade_url))
       b: Verrouiller ou supprimer un utilisateur existant ([here](users_url))
+      label: 'Pour permettre à l''utilisateur de se connecter, vous pouvez soit: '
   more_actions: Plus de fonctions
   noscript_description: Vous devez activer JavaScript afin d'utiliser OpenProject!
   noscript_heading: JavaScript désactivé
@@ -5526,7 +5531,7 @@ fr:
       section_work_week: Semaine de travail
       section_holidays_and_closures: Vacances et fermetures
     work_packages:
-      work_package_identifier: Identifiant du lot de travaux
+      work_package_identifier: Work package identifiers
       not_allowed_text: Vous n'avez pas les autorisations nécessaires pour voir cette page.
       activities:
         enable_internal_comments: Activer les commentaires internes
@@ -6031,6 +6036,7 @@ fr:
       ancestor: Non divulgué - l'ancêtre est invisible en raison d'un manque de permissions.
       definingProject: Non divulgué - Le projet est invisible parce qu'il n'a pas les autorisations nécessaires.
       definingWorkspace: Non divulgué - L'espace de travail est invisible parce qu'il n'a pas les autorisations nécessaires.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Préautorisation

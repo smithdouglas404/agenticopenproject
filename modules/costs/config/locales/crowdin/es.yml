@@ -39,6 +39,8 @@ es:
         unit: Nombre de la unidad
         unit_plural: Nombre de la unidad pluralizado
         default: Tipo de coste por defecto
+        for_all_projects: For all projects
+        rates: Rates
       work_package:
         costs_by_type: Unidades usadas
         labor_costs: Costos de mano de obra
@@ -88,6 +90,10 @@ es:
         work_package:
           is_not_a_valid_target_for_cost_entries: 'Paquete de trabajo #%{id} no es un objetivo válido para reasignar las entradas de costo.'
           nullify_is_not_valid_for_cost_entries: Las entradas de costo  no pueden ser asignadas a un proyecto.
+        cost_types_project:
+          attributes:
+            project_ids:
+              blank: Please select a project.
   attributes:
     comment: Comentario
     cost_type: Tipo de costo
@@ -129,7 +135,6 @@ es:
   label_current_default_rate: tasa de morosidad actual
   label_date_on: en
   label_deleted_cost_types: Eliminar tipos de costo
-  label_locked_cost_types: Tipos de costo bloqueados
   label_display_cost_entries: Mostrar los costos unitarios
   label_display_time_entries: Mostrar horas reportadas
   label_display_types: Mostrar tipos
@@ -229,6 +234,28 @@ es:
     errors:
       validation:
         start_time_different_date: La parte de fecha de startTime (%{start_time}) debe ser la misma que la fecha de spentOn (%{spent_on}).
+  label_available_cost_types_projects: Available cost types projects
+  cost_types:
+    errors:
+      no_cost_types_available: No cost types are available in this project. Please contact an administrator.
+    admin:
+      columns:
+        active_projects: Active projects
+      cost_type_projects:
+        for_all_projects_blank_slate:
+          heading: This cost type is enabled in all projects
+          description: Uncheck "For all projects" on the details tab to limit this cost type to specific projects.
+        no_projects:
+          heading: No projects assigned
+          description: Add projects so this cost type can be used in them.
+      rates:
+        title: Rate history
+    settings:
+      time_and_costs: Time & Costs
+      cost_types:
+        heading: Cost types
+        none_active: No cost types are currently active in this project.
+        for_all_projects_hint: This cost type is enabled in all projects.
   costs:
     widgets:
       actual_costs:

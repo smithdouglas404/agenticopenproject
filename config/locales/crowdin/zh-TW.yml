@@ -185,6 +185,7 @@ zh-TW:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projects
         last_change: Last change
@@ -332,6 +333,8 @@ zh-TW:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -901,6 +904,7 @@ zh-TW:
         text: 此動作不會刪除清單中包含的任何專案。您確定要刪除此專案清單？
     settings:
       header_details: 基本訊息
+      header_identifier: Identifier
       header_status: 狀態
       header_relations: 專案關係
       button_update_details: 更新
@@ -1374,6 +1378,7 @@ zh-TW:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3968,7 +3973,7 @@ zh-TW:
   label_home: Home
   label_subject_or_id: 主旨或 id
   label_calendar_subscriptions: 訂閱行事曆
-  label_identifier: 識別碼
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: 在
   label_in_less_than: 少於
@@ -4629,9 +4634,9 @@ zh-TW:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: '要允許用戶登錄，您可以： '
       a: "([在這裏](upgrade_url)) 升級付款計劃"
       b: "([在這裏](users_url)) 鎖定或刪除現有用戶"
+      label: '要允許用戶登錄，您可以： '
   more_actions: 更多功能
   noscript_description: 您必須啟用 Javascript 才能使用 OpenProject!
   noscript_heading: JavaScript 已停用
@@ -5465,7 +5470,7 @@ zh-TW:
       section_work_week: 工作週
       section_holidays_and_closures: 假日和休息日
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: 您沒有查看此頁面的必要權限。
       activities:
         enable_internal_comments: 啟用內部備註
@@ -5975,6 +5980,7 @@ zh-TW:
       ancestor: 未公開 - 由於缺少權限，上級不可見。
       definingProject: Undisclosed - 專案因缺乏權限而不見。
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: 提前授權
