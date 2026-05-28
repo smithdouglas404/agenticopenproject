@@ -107,12 +107,12 @@ $grid--widget-padding: 20px 20px 20px 20px
 .grid--area-content
   height: 100%
 
-  > *
+  .grid--widget-host
     display: flex
     flex-direction: column
     height: 100%
 
-    widget-header ~ *
+    > .grid--widget-content
       display: flex
       flex-direction: column
       flex: 1 1 auto
