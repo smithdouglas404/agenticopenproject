@@ -33,14 +33,6 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-if [ -f config/database.yml ]; then
-  echo
-  printf "\033[0;31mError\033[0m: Found local \`config/database.yml\` - The docker setup will not work with this file present."
-  echo " You could delete it or rename it for the time being."
-
-  exit 1
-fi
-
 if command -v docker-compose &> /dev/null
 then
   DOCKER_COMPOSE="docker-compose"

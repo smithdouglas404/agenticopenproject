@@ -52,6 +52,7 @@ x-op-backend: &backend
     - "opdata:/var/openproject/assets"
     - "bundle:/usr/local/bundle"
     - "tmp:/home/dev/openproject/tmp"
+    - "./config/database.yml.example:/home/dev/openproject/config/database.yml"
   tmpfs:
     - /home/dev/openproject/tmpfs/pids:uid=$DEV_UID,gid=$DEV_GID
   networks:
@@ -187,6 +188,7 @@ services:
       - "bundle:/usr/local/bundle"
       - "tmp-test:/home/dev/openproject/tmp"
       - "./tmp/capybara:/home/dev/openproject/tmp/capybara"
+      - "./config/database.yml.example:/home/dev/openproject/config/database.yml"
 
   # https://vitobotta.com/2019/09/04/rails-parallel-system-tests-selenium-docker/
   selenium-hub:
