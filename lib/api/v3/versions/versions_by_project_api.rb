@@ -33,8 +33,15 @@ module API
     module Versions
       class VersionsByProjectAPI < ::API::OpenProjectAPI
         resources :versions do
+          params do
+            optional :active,
+                     type: Boolean,
+                     desc: "When true, only return active (open) versions"
+          end
+
           after_validation do
             @versions = @project.shared_versions
+            @versions = @versions.with_status_open if params[:active]
 
             authorize_in_project(%i(view_work_packages manage_versions), project: @project)
           end

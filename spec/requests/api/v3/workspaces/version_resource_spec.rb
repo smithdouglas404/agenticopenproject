@@ -76,4 +76,24 @@ RSpec.describe "GET workspaces/:id/versions" do
 
     include_context "with versions by workspace"
   end
+
+  context "with active=true" do
+    shared_let(:closed_version) { create(:version, project:, status: "closed") }
+    shared_let(:locked_version) { create(:version, project:, status: "locked") }
+
+    current_user { permitted_user }
+
+    let(:get_path) { "#{api_v3_paths.versions_by_project(project.id)}?active=true" }
+
+    before do
+      get get_path
+    end
+
+    it_behaves_like "API V3 collection response", 4, 4, "Version"
+
+    it "only returns open versions" do
+      statuses = JSON.parse(response.body)["_embedded"]["elements"].pluck("status")
+      expect(statuses).to all(eq("open"))
+    end
+  end
 end
