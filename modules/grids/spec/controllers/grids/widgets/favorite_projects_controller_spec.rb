@@ -27,34 +27,27 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+
 require "rails_helper"
 
-RSpec.describe Grids::WidgetBoxComponent, type: :component do
-  def render_component(...)
-    render_inline(described_class.new(...))
-  end
+RSpec.describe Grids::Widgets::FavoriteProjectsController do
+  shared_let(:user) { create(:user) }
+  current_user { user }
 
-  subject(:rendered_component) do
-    render_component(key: "cool_widget", title: "Cool Widget")
-  end
+  describe "GET #show" do
+    let(:widget_instance) { instance_double(Grids::Widgets::FavoriteProjects, render_in: "content") }
 
-  it "renders a widget box" do
-    expect(rendered_component).to have_css ".widget-box"
-  end
+    before do
+      allow(Grids::Widgets::FavoriteProjects)
+        .to receive(:new)
+        .and_return(widget_instance)
 
-  it "renders turbo-frame around content" do
-    expect(rendered_component).to have_element :"turbo-frame", id: "cool_widget", target: "_top"
-  end
-
-  context "with footer content" do
-    subject(:rendered_component) do
-      render_inline(described_class.new(key: "cool_widget", title: "Cool Widget")) do |component|
-        component.with_footer { "Footer link" }
-      end
+      get :show
     end
 
-    it "renders a widget footer" do
-      expect(rendered_component).to have_css ".op-widget-box--footer", text: "Footer link"
+    it "renders widget", :aggregate_failures do
+      expect(response).to be_successful
+      expect(response.body).to eq "content"
     end
   end
 end

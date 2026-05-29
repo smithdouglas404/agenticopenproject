@@ -27,34 +27,24 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require "rails_helper"
 
-RSpec.describe Grids::WidgetBoxComponent, type: :component do
-  def render_component(...)
-    render_inline(described_class.new(...))
-  end
+module Grids
+  class WidgetBoxComponent < ApplicationComponent
+    class Footer < ApplicationComponent
+      def initialize(**system_arguments)
+        super()
 
-  subject(:rendered_component) do
-    render_component(key: "cool_widget", title: "Cool Widget")
-  end
-
-  it "renders a widget box" do
-    expect(rendered_component).to have_css ".widget-box"
-  end
-
-  it "renders turbo-frame around content" do
-    expect(rendered_component).to have_element :"turbo-frame", id: "cool_widget", target: "_top"
-  end
-
-  context "with footer content" do
-    subject(:rendered_component) do
-      render_inline(described_class.new(key: "cool_widget", title: "Cool Widget")) do |component|
-        component.with_footer { "Footer link" }
+        @system_arguments = system_arguments
+        @system_arguments[:tag] = :div
+        @system_arguments[:classes] = class_names(
+          "op-widget-box--footer",
+          system_arguments[:classes]
+        )
       end
-    end
 
-    it "renders a widget footer" do
-      expect(rendered_component).to have_css ".op-widget-box--footer", text: "Footer link"
+      def call
+        render(Primer::BaseComponent.new(**@system_arguments)) { content }
+      end
     end
   end
 end

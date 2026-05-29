@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,35 +26,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
-require "rails_helper"
+# ++
 
-RSpec.describe Grids::WidgetBoxComponent, type: :component do
-  def render_component(...)
-    render_inline(described_class.new(...))
-  end
-
-  subject(:rendered_component) do
-    render_component(key: "cool_widget", title: "Cool Widget")
-  end
-
-  it "renders a widget box" do
-    expect(rendered_component).to have_css ".widget-box"
-  end
-
-  it "renders turbo-frame around content" do
-    expect(rendered_component).to have_element :"turbo-frame", id: "cool_widget", target: "_top"
-  end
-
-  context "with footer content" do
-    subject(:rendered_component) do
-      render_inline(described_class.new(key: "cool_widget", title: "Cool Widget")) do |component|
-        component.with_footer { "Footer link" }
+module Homescreen
+  module Blocks
+    class FavoriteProjects < Grids::WidgetComponent
+      def call
+        render(Grids::Widgets::FavoriteProjects.new(current_user:))
       end
-    end
-
-    it "renders a widget footer" do
-      expect(rendered_component).to have_css ".op-widget-box--footer", text: "Footer link"
     end
   end
 end

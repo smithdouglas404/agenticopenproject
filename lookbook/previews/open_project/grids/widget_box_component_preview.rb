@@ -27,34 +27,27 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require "rails_helper"
 
-RSpec.describe Grids::WidgetBoxComponent, type: :component do
-  def render_component(...)
-    render_inline(described_class.new(...))
-  end
-
-  subject(:rendered_component) do
-    render_component(key: "cool_widget", title: "Cool Widget")
-  end
-
-  it "renders a widget box" do
-    expect(rendered_component).to have_css ".widget-box"
-  end
-
-  it "renders turbo-frame around content" do
-    expect(rendered_component).to have_element :"turbo-frame", id: "cool_widget", target: "_top"
-  end
-
-  context "with footer content" do
-    subject(:rendered_component) do
-      render_inline(described_class.new(key: "cool_widget", title: "Cool Widget")) do |component|
-        component.with_footer { "Footer link" }
+module OpenProject
+  module Grids
+    # @logical_path OpenProject/Grids
+    # @display min_height 300px
+    class WidgetBoxComponentPreview < Lookbook::Preview
+      # Use the default body for generic widget content.
+      def default
+        render_with_template
       end
-    end
 
-    it "renders a widget footer" do
-      expect(rendered_component).to have_css ".op-widget-box--footer", text: "Footer link"
+      # Use rows for the primary repeated widget content.
+      def with_rows
+        render_with_template
+      end
+
+      # Use the footer for secondary navigation or actions that should stay at the bottom,
+      # such as "View all ..." links.
+      def with_footer
+        render_with_template
+      end
     end
   end
 end
