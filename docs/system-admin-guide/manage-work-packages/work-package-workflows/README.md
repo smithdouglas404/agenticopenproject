@@ -72,17 +72,14 @@ You will then be able to select which existing workflow should be copied to sele
 
 
 
-![Example for copying a work package workflow in OpenProject administration](System-admin-guide-work-package-workflows_copy_type.png)
-
-
+![Example for copying a work package workflow from one type to another in OpenProject administration](System-admin-guide-work-package-workflows_copy_type.png)
 
 You can also copy to other roles by selecting a role or multiple target roles from the drop-down list.
 
+![Example for copying a work package workflow to other roles in OpenProject administration](System-admin-guide-work-package-workflows_copy_to_roles.png)
 
-
-![Example for copying a work package workflow in OpenProject administration](System-admin-guide-work-package-workflows_copy_to_roles.png)
-
-![Example for copying a work package workflow in OpenProject administration](System-admin-guide-work-package-workflows_copy_to_roles_save.png)
+![Example for copying a work package workflow in OpenProject administration,copy button highlighted](
+System-admin-guide-work-package-workflows_copy_to_roles_save.png)
 
 You can also choose to use the workflows for the source type and role as the blueprint for multiple target types at the same time.
 
