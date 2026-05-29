@@ -60,15 +60,20 @@ class Story < WorkPackage
   end
 
   # Work packages in this project that belong to neither a Version (legacy
-  # Sprint column) nor an Agile::Sprint column. Unlike `.backlogs`, this is
-  # not filtered by `Story.types` — the inbox surfaces every unassigned
-  # work package regardless of the configured story-type setting.
+  # Sprint column) nor an Agile::Sprint column. Filtered to the same type
+  # set the backlogs columns use — `Story.types ∪ Task.type` — so the
+  # Inbox mirrors what's draggable into a sprint/version column. Types not
+  # configured as story or task (Epics in the default config, Bugs,
+  # Features outside backlogs, etc.) intentionally drop out.
   #
   # By default closed-status work packages (Done / Closed / Rejected) are
   # excluded so the inbox stays focused on actionable items. Pass
   # `include_closed: true` to surface them too.
   def self.inbox_for(project_id, include_closed: false)
-    scope = Story.where(project_id:, version_id: nil, sprint_id: nil)
+    inbox_type_ids = inbox_type_ids()
+    return [] if inbox_type_ids.empty?
+
+    scope = Story.where(project_id:, version_id: nil, sprint_id: nil, type_id: inbox_type_ids)
                  .includes(:status, :type)
     scope = scope.joins(:status).where(statuses: { is_closed: false }) unless include_closed
 
@@ -79,6 +84,12 @@ class Story < WorkPackage
     end
 
     candidates.to_a
+  end
+
+  def self.inbox_type_ids
+    ids = Story.types.dup
+    ids << Task.type if Task.type.to_i > 0
+    ids.uniq
   end
 
   def self.at_rank(project_id, sprint_id, rank)

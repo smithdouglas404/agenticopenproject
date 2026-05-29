@@ -36,12 +36,13 @@ RSpec.describe Backlog, ".inbox_backlog" do
   let(:status) { create(:status) }
   let(:feature_type) { create(:type_feature) }
   let(:bug_type) { create(:type_bug) }
+  let(:task_type) { create(:type_task) }
   let(:version) { create(:version, project:) }
   let(:agile_sprint) { create(:agile_sprint, project:) }
 
   before do
     allow(Setting).to receive(:plugin_openproject_backlogs)
-      .and_return({ "story_types" => [feature_type.id.to_s], "task_type" => "0" })
+      .and_return({ "story_types" => [feature_type.id.to_s], "task_type" => task_type.id.to_s })
   end
 
   subject { described_class.inbox_backlog(project) }
@@ -96,13 +97,38 @@ RSpec.describe Backlog, ".inbox_backlog" do
     end
   end
 
-  context "when unassigned work packages are of non-story types" do
+  context "when unassigned work packages are of types outside story_types and task_type" do
     let!(:bug) do
       create(:work_package, project:, type: bug_type, status:, version: nil, sprint: nil)
     end
 
-    it "includes them regardless of the configured story_types" do
-      expect(subject.stories.map(&:id)).to include(bug.id)
+    it "excludes them so the Inbox mirrors the backlogs columns" do
+      expect(subject.stories.map(&:id)).not_to include(bug.id)
+    end
+  end
+
+  context "when unassigned work packages are of the configured task_type" do
+    let!(:task) do
+      create(:work_package, project:, type: task_type, status:, version: nil, sprint: nil)
+    end
+
+    it "includes them" do
+      expect(subject.stories.map(&:id)).to include(task.id)
+    end
+  end
+
+  context "when neither story_types nor task_type is configured" do
+    before do
+      allow(Setting).to receive(:plugin_openproject_backlogs)
+        .and_return({ "story_types" => [], "task_type" => "0" })
+    end
+
+    let!(:unassigned) do
+      create(:work_package, project:, type: feature_type, status:, version: nil, sprint: nil)
+    end
+
+    it "is empty" do
+      expect(subject.stories).to be_empty
     end
   end
 
