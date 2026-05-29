@@ -47,8 +47,8 @@ RSpec.describe Activities::WorkPackageActivityProvider do
 
   describe ".find_events" do
     context "when a work package has been created" do
-      let(:subject) do
-        Activities::WorkPackageActivityProvider
+      subject do
+        described_class
           .find_events(event_scope, user, Time.zone.yesterday.to_datetime, Time.zone.tomorrow.to_datetime, {})
       end
 
@@ -63,11 +63,11 @@ RSpec.describe Activities::WorkPackageActivityProvider do
       end
     end
 
-    context "should be selected and ordered correctly" do
+    context "when selecting and ordering events" do
       let!(:work_packages) { (1..5).map { create(:work_package, author: user).id.to_s } }
 
-      let(:subject) do
-        Activities::WorkPackageActivityProvider
+      subject do
+        described_class
           .find_events(event_scope, user, Time.zone.yesterday.to_datetime, Time.zone.tomorrow.to_datetime, limit: 3)
           .map { |a| a.journable_id.to_s }
       end
@@ -76,8 +76,8 @@ RSpec.describe Activities::WorkPackageActivityProvider do
     end
 
     context "when a work package has been created and then closed" do
-      let(:subject) do
-        Activities::WorkPackageActivityProvider
+      subject do
+        described_class
           .find_events(event_scope, user, Time.zone.yesterday.to_datetime, Time.zone.tomorrow.to_datetime, limit: 10)
       end
 
@@ -128,6 +128,7 @@ RSpec.describe Activities::WorkPackageActivityProvider do
       it "uses the semantic identifier in the event path" do
         semantic_id = work_package.reload.identifier
         expect(events[0].event_path).to eq("/work_packages/#{semantic_id}")
+        expect(events[0].event_path).not_to eq("/work_packages/#{work_package.id}")
       end
     end
 
@@ -167,11 +168,11 @@ RSpec.describe Activities::WorkPackageActivityProvider do
         end
       end
 
-      let(:subject) do
+      subject do
         # lft and rgt need to be updated
         project.reload
 
-        Activities::WorkPackageActivityProvider
+        described_class
           .find_events(
             event_scope,
             user,
