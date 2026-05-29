@@ -31,7 +31,7 @@
 module Backlogs
   module Sprints
     class TableComponent < ::OpPrimer::BorderBoxTableComponent
-      options :current_user, :project, :work_package_counts
+      options :project, :work_package_counts
 
       columns :name, :status, :start_date, :finish_date, :work_package_count
 

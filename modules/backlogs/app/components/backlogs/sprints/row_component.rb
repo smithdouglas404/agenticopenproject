@@ -32,10 +32,7 @@ module Backlogs
   module Sprints
     class RowComponent < ::OpPrimer::BorderBoxRowComponent
       delegate :project, to: :table
-
-      def sprint
-        model
-      end
+      alias_method :sprint, :model
 
       def name
         if href_for_sprint
