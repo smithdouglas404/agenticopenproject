@@ -36,7 +36,7 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 ![Form to create recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_default_form.png)
 
 > [!TIP] 
-> Duration can be entered both in hours and minutes. For example for a meeting that should last for 1.5 hours, you can enter:
+> Duration can be entered both in hours and minutes. For example for a meeting that should last for 1.5 hours, you can enter: >
 >
 > - 1.5h
 > - 90m
@@ -45,24 +45,16 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 
 **Frequency** offers the following options: 
 
-> [!NOTE]
->
-> Depending on the frequency choice, different additional fields may appear requiring input.
-
-- Every day
-
-- Every working day
-
-- Every week
-
+- Every day 
+- Every working day 
+- Every week 
 - Day of month: This option allows you to schedule meetings to recur on the same calendar date every month
-
 - Monthly on a weekday: This option allows you choose an ordinal position and a week day 
 
+Depending on the frequency choice, different additional fields may appear requiring input.
 
 > [!NOTE]
->
-> When the scheduled start time does not match the actual first occurrence,  the caption is extended to state: "The first occurrence of this series will be on (date/ time)".
+> If the scheduled start time does not match the actual first occurrence,  the caption is extended to state: "The first occurrence of this series will be on (date/ time)".
 
 **Interval** is a **required** integer field that defines the recurrence pattern of a meeting series. It specifies how often a meeting should repeat within the selected recurrence scheme. For example:
 
@@ -76,7 +68,7 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 
 **Weekday** is a **required** day of the week ranging from Monday through Sunday. 
 
-**Meeting series ends** field is a select dropdown field that defines when a recurring meeting series should come to an end. The following options are possible:
+**Meeting series ends** field is a select dropdown field that defines when a recurring meeting series should come to an end. The following options are available:
 
 - **Never** - the meeting series runs indefinitely
 - **After a specific date** – lets you specify an **end date** (the meeting might end before or on this date, depending on the original start date and frequency)
@@ -100,9 +92,8 @@ You will be asked to decide whether or not meeting series participants should re
 ![A dialogue to select meeting related notification preferences when exiting a meeting draft mode in OpenProject](openproject_userguide_meetings_recurring_meeting_open_button_dialogue.png)
 
 > [!NOTE]
-> If the meeting details or participant list are updated, changes are consolidated to avoid multiple emails and are sent 1 minute after the last (or only) change is made. The only exception is when a meeting is deleted; in this case, these notifications are sent out separately and immediately.
->
-> Participants will then receive one aggregate email showing who was added or removed and any meeting updates, such as date or time changes.
+Multiple meeting updates made within a short period of time are combined into a single notification email. Participants will receive one email showing all changes, including participant updates and changes to meeting details.
+Exception: Meeting deletion notifications are sent immediately and separately.
 
 You can always adjust the template at a later date by selecting the meeting series from the left hand menu and clicking **Edit template** on the meeting series index page. These changes will not affect past or already created (opened) meetings. 
 
