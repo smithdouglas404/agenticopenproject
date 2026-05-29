@@ -66,7 +66,7 @@ module Backlogs
       # Capture the source before the call; the service reloads @work_package internally via #move_after.
       source = @work_package.sprint
 
-      call = ::Backlogs::Stories::UpdateService.new(user: current_user, story: @work_package)
+      call = ::Backlogs::WorkPackages::UpdateService.new(user: current_user, story: @work_package)
                                    .call(**move_params.to_h.symbolize_keys)
 
       if call.success?

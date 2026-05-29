@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe ::Backlogs::Stories::UpdateService, type: :model do
+RSpec.describe Backlogs::WorkPackages::UpdateService, type: :model do
   let(:user) { build_stubbed(:user) }
   let(:story) { build_stubbed(:work_package) }
   let(:instance) { described_class.new(user:, story:) }

@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Backlogs::Stories::UpdateService
+class Backlogs::WorkPackages::UpdateService
   attr_accessor :user, :story
 
   def initialize(user:, story:)
