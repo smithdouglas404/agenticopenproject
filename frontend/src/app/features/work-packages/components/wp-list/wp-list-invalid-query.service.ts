@@ -44,6 +44,7 @@ interface QueryFormSchemaProperties {
   columns:SchemaAttributeObject<QueryColumn>;
   sortBy:SchemaAttributeObject<QuerySortByResource>;
   groupBy:SchemaAttributeObject<QueryGroupByResource>;
+  filtersSchemas:{ elements:QueryFilterInstanceSchemaResource[] };
 }
 
 type QueryFormSchema = SchemaResource & QueryFormSchemaProperties;
@@ -55,7 +56,11 @@ export class WorkPackagesListInvalidQueryService {
   public restoreQuery(query:QueryResource, form:QueryFormResource) {
     const payload = form.payload as QueryResource;
     const schema = form.schema as QueryFormSchema;
-    this.restoreFilters(query, payload, form.filtersSchemas);
+    // The form's filter schemas are embedded under the schema, not at the
+    // form's top level (`form.filtersSchemas` returns undefined). The
+    // `QueryFormResource#filtersSchemas` getter is misleading — see
+    // `apiv3-query-form.ts`, which also reads via `form.$embedded.schema...`.
+    this.restoreFilters(query, payload, schema.filtersSchemas.elements);
     this.restoreColumns(query, payload, schema);
     this.restoreSortBy(query, payload, schema);
     this.restoreGroupBy(query, payload, schema);
