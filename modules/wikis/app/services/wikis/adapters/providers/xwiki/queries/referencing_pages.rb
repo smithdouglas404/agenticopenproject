@@ -34,23 +34,44 @@ module Wikis
       module XWiki
         module Queries
           class ReferencingPages < BaseQuery
-            def call(input_data:, **)
-              # TODO: use real API endpoints once available
-
-              title = [
-                "What makes XWiki special?",
-                "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-              ]
-
-              results = []
-
-              if input_data.linkable.id % 2 == 0
-                results << Success(Results::PageInfo.new(identifier: "1337", title: title.sample, href: "#", provider:))
-                results << Success(Results::PageInfo.new(identifier: "1338", title: title.sample, href: "#", provider:))
+            def call(input_data:, auth_strategy:)
+              Adapters::Authentication[auth_strategy].call do |http|
+                Internal::Wikis.new(model: provider).call(http:).bind do |wiki_names|
+                  success(
+                    wiki_names.flat_map do |wiki_name|
+                      search_wiki(wiki_name:, linkable: input_data.linkable, number: input_data.number,
+                                  http:, auth_strategy:)
+                        .value_or([])
+                    end
+                  )
+                end
               end
+            end
 
-              success(results)
+            private
+
+            def search_wiki(wiki_name:, linkable:, number:, http:, auth_strategy:)
+              url = "#{base_rest_url}/wikis/#{wiki_name}/openproject/links/workPackages/#{linkable.id}"
+              response = http.with(headers: JSON_ACCEPT_HEADERS).get(url, params: { number: })
+              handle_response(response) { parse_search_results(response, auth_strategy:) }
+            end
+
+            def handle_response(response)
+              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
+
+              case response
+              in { status: 200..299 } then yield
+              in { status: 401 | 403 } then failure(code: :unauthorized)
+              in { status: 404 } then failure(code: :not_found)
+              else failure(code: :request_failed)
+              end
+            end
+
+            def parse_search_results(response, auth_strategy:)
+              results = response.json["searchResults"] || []
+              success(results.map { page_info(identifier: it["id"], auth_strategy:) })
+            rescue MultiJson::ParseError
+              failure(code: :invalid_response)
             end
           end
         end
