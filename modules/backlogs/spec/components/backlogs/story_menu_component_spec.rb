@@ -80,101 +80,54 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
       expect(page).to have_octicon(:"screen-full")
     end
 
-    it "shows a divider before move options" do
+    it "does not render a divider since the move-items section was removed" do
       render_component
 
-      expect(page).to have_css(".ActionList-sectionDivider")
+      expect(page).to have_no_css(".ActionList-sectionDivider")
     end
   end
 
-  describe "move menu items" do
-    it "shows Move to top item with move-to-top icon" do
+  # Move-to-top/up/down/bottom items are intentionally not rendered as part
+  # of the per-row menu. See the comment in story_menu_component.html.erb —
+  # they were the dominant contributor to the initial-render CPU spike on
+  # columns with many items. Drag-drop covers reorder for mouse/touch.
+  describe "move menu items (intentionally absent)" do
+    it "does not render Move to top" do
       render_component
 
-      expect(page).to have_text(I18n.t(:label_sort_highest))
-      expect(page).to have_octicon(:"move-to-top")
+      expect(page).to have_no_text(I18n.t(:label_sort_highest))
+      expect(page).to have_no_octicon(:"move-to-top")
     end
 
-    it "shows Move up item with chevron-up icon" do
+    it "does not render Move up" do
       render_component
 
-      expect(page).to have_text(I18n.t(:label_sort_higher))
-      expect(page).to have_octicon(:"chevron-up")
+      expect(page).to have_no_text(I18n.t(:label_sort_higher))
+      expect(page).to have_no_octicon(:"chevron-up")
     end
 
-    it "shows Move down item with chevron-down icon" do
+    it "does not render Move down" do
       render_component
 
-      expect(page).to have_text(I18n.t(:label_sort_lower))
-      expect(page).to have_octicon(:"chevron-down")
+      expect(page).to have_no_text(I18n.t(:label_sort_lower))
+      expect(page).to have_no_octicon(:"chevron-down")
     end
 
-    it "shows Move to bottom item with move-to-bottom icon" do
+    it "does not render Move to bottom" do
       render_component
 
-      expect(page).to have_text(I18n.t(:label_sort_lowest))
-      expect(page).to have_octicon(:"move-to-bottom")
-    end
-  end
-
-  describe "position logic" do
-    context "when item is first (position=1)" do
-      it "hides Move to top and Move up" do
-        render_component(position: 1, max_position: 3)
-
-        expect(page).to have_no_text(I18n.t(:label_sort_highest))
-        expect(page).to have_no_text(I18n.t(:label_sort_higher))
-      end
-
-      it "shows Move down and Move to bottom" do
-        render_component(position: 1, max_position: 3)
-
-        expect(page).to have_text(I18n.t(:label_sort_lower))
-        expect(page).to have_text(I18n.t(:label_sort_lowest))
-      end
+      expect(page).to have_no_text(I18n.t(:label_sort_lowest))
+      expect(page).to have_no_octicon(:"move-to-bottom")
     end
 
-    context "when item is last (position=max)" do
-      it "hides Move down and Move to bottom" do
-        render_component(position: 3, max_position: 3)
-
-        expect(page).to have_no_text(I18n.t(:label_sort_lower))
-        expect(page).to have_no_text(I18n.t(:label_sort_lowest))
-      end
-
-      it "shows Move to top and Move up" do
-        render_component(position: 3, max_position: 3)
-
-        expect(page).to have_text(I18n.t(:label_sort_highest))
-        expect(page).to have_text(I18n.t(:label_sort_higher))
-      end
-    end
-
-    context "when item is in the middle" do
-      it "shows all move options" do
-        render_component(position: 2, max_position: 3)
-
-        expect(page).to have_text(I18n.t(:label_sort_highest))
-        expect(page).to have_text(I18n.t(:label_sort_higher))
-        expect(page).to have_text(I18n.t(:label_sort_lower))
-        expect(page).to have_text(I18n.t(:label_sort_lowest))
-      end
-    end
-
-    context "when there is only one item (position=1, max=1)" do
-      it "hides all move options" do
-        render_component(position: 1, max_position: 1)
+    it "renders no move-items regardless of position in the column" do
+      [[1, 3], [2, 3], [3, 3], [1, 1]].each do |position, max|
+        render_component(position:, max_position: max)
 
         expect(page).to have_no_text(I18n.t(:label_sort_highest))
         expect(page).to have_no_text(I18n.t(:label_sort_higher))
         expect(page).to have_no_text(I18n.t(:label_sort_lower))
         expect(page).to have_no_text(I18n.t(:label_sort_lowest))
-      end
-
-      it "hides the divider" do
-        render_component(position: 1, max_position: 1)
-
-        expect(page).to have_no_css(".ActionList-sectionDivider")
       end
     end
   end

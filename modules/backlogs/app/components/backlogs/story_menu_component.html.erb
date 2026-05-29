@@ -54,9 +54,16 @@ See COPYRIGHT and LICENSE files for more details.
       item.with_leading_visual_icon(icon: :"screen-full")
     end
 
-    if show_move_items?
-      menu.with_divider
-      build_move_menu(menu)
-    end
+    # The four "Move to top / up / down / bottom" items were intentionally
+    # removed: each one inflates the per-row Primer::Alpha::ActionMenu DOM
+    # with an inline <form> (input + submit), and a backlog page with
+    # hundreds-to-thousands of rows hits 100% browser CPU during initial
+    # render upgrading all the <action-menu> custom elements. Reordering
+    # is still possible via drag/drop on the row's drag handle.
+    #
+    # An accessibility regression for keyboard-only users is acknowledged;
+    # restoring those items via a lazy server-fetch of the menu contents
+    # (Primer ActionMenu's `src:` mode) is tracked as a follow-up. See
+    # the perf-followup branch / PR for the diagnostic motivation.
   end
 %>

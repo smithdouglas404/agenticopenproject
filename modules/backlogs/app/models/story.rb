@@ -210,6 +210,10 @@ class Story < WorkPackage
     c
   end
 
-  # This forces NULLS-LAST ordering
-  ORDER = "CASE WHEN #{WorkPackage.table_name}.position IS NULL THEN 1 ELSE 0 END ASC, CASE WHEN #{WorkPackage.table_name}.position IS NULL THEN #{WorkPackage.table_name}.id ELSE #{WorkPackage.table_name}.position END ASC"
+  # Sort stories by position with NULL positions last, breaking ties by id.
+  # PostgreSQL's native `NULLS LAST` is equivalent to the older CASE WHEN
+  # form and is more legible to the planner — opening the door to an
+  # eventual `(project_id, version_id, position, id)` composite index that
+  # could serve the sort directly.
+  ORDER = "#{WorkPackage.table_name}.position ASC NULLS LAST, #{WorkPackage.table_name}.id ASC".freeze
 end
