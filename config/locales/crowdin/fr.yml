@@ -140,7 +140,7 @@ fr:
         custom_field_creation_failed: 'Échec de la création du champ personnalisé « %{name} » : %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Aucun hôte Jira n'est encore configuré
         description: Configurez un hôte Jira pour commencer à importer des éléments de Jira vers cette instance d'OpenProject.
@@ -285,7 +285,7 @@ fr:
               elements:
                 relations: Relations entre les tickets
                 project_ids: Identifiants de projet
-                issue_ids: Identifiants de tickets
+                issue_ids: Issue identifiers
                 sprints: Affectation des sprints
                 workflows: Flux de travail au niveau du projet
                 schemes: Schémas
@@ -5345,13 +5345,9 @@ fr:
   setting_welcome_title: Bloc de titre de bienvenue
   setting_welcome_on_homescreen: Afficher le bloc de bienvenue sur l'écran d'accueil
   setting_work_packages_identifier_classic: Séquence numérique à l'échelle de l'instance (par défaut)
-  setting_work_packages_identifier_classic_caption: 'Chaque lot de travaux obtient un numéro séquentiel commençant par 1 et incrémenté à chaque nouveau. Les nombres sont uniques dans cette instance, donc ils restent les mêmes même si les lots de travaux sont déplacés entre les projets.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
   setting_work_packages_identifier_semantic: Identifiants sémantiques basés sur le projet
-  setting_work_packages_identifier_semantic_caption: 'Chaque projet a un identifiant unique qui est préfixé à l''ID du lot de travaux. Si un lot de travaux a été déplacé vers un autre projet, un nouvel identifiant est généré, mais l''ancien continue de fonctionner.
-
-    '
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Mode de surbrillance par défaut
   setting_work_package_list_default_highlighted_attributes: Attributs en ligne mis en surbrillance par défaut
   setting_working_days: Jours ouvrés
