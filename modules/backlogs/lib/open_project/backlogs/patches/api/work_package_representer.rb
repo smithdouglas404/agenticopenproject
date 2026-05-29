@@ -72,6 +72,33 @@ module OpenProject::Backlogs
                        end
                      end,
                      setter: associated_resource_default_setter(:sprint, :sprint, :sprint)
+
+            resource :backlog_bucket,
+                     link_cache_if: ->(*) {
+                       represented.project.present? &&
+                         current_user.allowed_in_project?(:view_sprints, represented.project)
+                     },
+                     link: ->(*) {
+                       if represented.backlog_bucket.present?
+                         {
+                           href: api_v3_paths.backlog_bucket(represented.backlog_bucket_id),
+                           title: represented.backlog_bucket.name
+                         }
+                       else
+                         {
+                           href: nil
+                         }
+                       end
+                     },
+                     getter: ->(*) do
+                       if embed_links &&
+                          represented.project.present? &&
+                          represented.backlog_bucket.present? &&
+                          current_user.allowed_in_project?(:view_sprints, represented.project)
+                         ::API::V3::BacklogBuckets::BacklogBucketRepresenter.create(represented.backlog_bucket, current_user:)
+                       end
+                     end,
+                     setter: associated_resource_default_setter(:backlog_bucket, :backlog_bucket, :backlog_bucket)
           end
         end
       end

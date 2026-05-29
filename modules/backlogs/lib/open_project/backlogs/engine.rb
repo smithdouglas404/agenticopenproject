@@ -173,12 +173,26 @@ module OpenProject::Backlogs
       "#{root}/projects/#{id}/sprints"
     end
 
+    add_api_path :backlog_buckets do
+      "#{root}/backlog_buckets"
+    end
+
+    add_api_path :backlog_bucket do |id|
+      "#{root}/backlog_buckets/#{id}"
+    end
+
+    add_api_path :project_backlog_buckets do |id|
+      "#{root}/projects/#{id}/backlog_buckets"
+    end
+
     add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Sprints::SprintsAPI
+      mount ::API::V3::BacklogBuckets::BacklogBucketsAPI
     end
 
     add_api_endpoint "API::V3::Projects::ProjectsAPI", :id do
       mount ::API::V3::Sprints::SprintsByProjectAPI
+      mount ::API::V3::BacklogBuckets::BacklogBucketsByProjectAPI
     end
 
     initializer "openproject_backlogs.event_subscriptions" do
@@ -224,9 +238,16 @@ module OpenProject::Backlogs
         ::Type.add_constraint attribute, ->(_type, project: nil) { project.nil? || project.backlogs_enabled? }
       end
 
+      story_and_sprint_permission = ->(_type, project: nil) do
+        project.nil? || User.current.allowed_in_project?(:view_sprints, project)
+      end
+
+      ::Type.add_constraint :backlog_bucket, story_and_sprint_permission
+
       ::Type.add_default_mapping(:estimates_and_progress, :story_points)
       ::Type.add_default_mapping(:other, :position)
       ::Type.add_default_mapping(:details, :sprint)
+      ::Type.add_default_mapping(:details, :backlog_bucket)
 
       ::Queries::Register.register(::Query) do
         filter Queries::WorkPackages::Filter::SprintFilter
