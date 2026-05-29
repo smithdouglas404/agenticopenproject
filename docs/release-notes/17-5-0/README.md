@@ -62,6 +62,8 @@ For example, higher-level planning items such as Epics or Milestones can now be 
 
 ![Backlogs settings in OpenProject: Excluded work package types with example 'Candidate interview'](openproject-17-5-backlogs-seting-exclude-work-package-types.png)
 
+[Read more about the OpenProject Backlogs module](../../system-admin-guide/backlogs/).
+
 ### Redesigned sprint views and work package cards
 
 OpenProject 17.5 redesigns sprint headers, backlog containers, and work package cards in the Backlogs module to improve readability and usability during agile planning.
@@ -77,6 +79,8 @@ OpenProject 17.5 makes it easier to reference work packages naturally within Doc
 This allows teams to create more readable and structured documentation while still linking directly to relevant work packages. Inline work package links behave like regular inline elements and continue to open the referenced work package in a new tab.
 
 ![OpenProject Documents with an example how to link work packages and display them in-line, using different sizes](openproject-17-5-documents-work-package-linking.png)
+
+[Read more about OpenProject's Documents module](../../user-guide/documents/).
 
 ### Expanded work package mentions in CKEditor
 
@@ -101,6 +105,8 @@ This makes it easier to schedule recurring coordination meetings, steering commi
 OpenProject 17.5 improves meeting-related email behavior by reducing unnecessary update emails while meetings are actively edited.
 
 Instead of sending an email for every small change, OpenProject now consolidates frequent meeting updates into fewer emails. Emails are only sent after no further changes have been made for one minute. This helps reduce inbox noise during collaborative meeting preparation and editing.
+
+[Read more about OpenProject's Meetings module](../../user-guide/meetings/).
 
 ### Nested groups for organizational structures and inherited permissions
 
