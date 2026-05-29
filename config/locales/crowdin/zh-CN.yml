@@ -140,7 +140,7 @@ zh-CN:
         custom_field_creation_failed: 无法创建自定义字段 '%{name}'：%{message}
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: 尚未配置 Jira 主机
         description: 配置 Jira 主机，以开始将 Jira 中的条目导入此 OpenProject 实例。
@@ -279,7 +279,7 @@ zh-CN:
               elements:
                 relations: 问题之间的关系
                 project_ids: 项目标识符
-                issue_ids: 问题标识符
+                issue_ids: Issue identifiers
                 sprints: 冲刺任务
                 workflows: 项目级工作流
                 schemes: 方案
@@ -5276,13 +5276,9 @@ zh-CN:
   setting_welcome_title: 欢迎块标题
   setting_welcome_on_homescreen: 在主屏幕上显示欢迎信息
   setting_work_packages_identifier_classic: 实例范围的数字序列（默认）
-  setting_work_packages_identifier_classic_caption: '每个工作包会获得一个从 1 开始的顺序号，每新增一个工作包，编号会加 1。这些编号在此实例中是唯一的，因此即使工作包在项目之间移动，编号也不会改变。
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
   setting_work_packages_identifier_semantic: 基于项目的语义标识符
-  setting_work_packages_identifier_semantic_caption: '每个项目都有一个唯一标识符，该标识符会附加到工作包 ID 前面。如果工作包移至另一个项目，则会生成新的标识符，但原标识符仍可继续使用。
-
-    '
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: 默认突出显示模式
   setting_work_package_list_default_highlighted_attributes: 默认内联突出显示属性
   setting_working_days: 工作日

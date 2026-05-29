@@ -140,7 +140,7 @@ de:
         custom_field_creation_failed: 'Das nutzerdefinierte Feld ''%{name}'' konnte nicht erstellt werden: %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Noch keine Jira-Hosts konfiguriert
         description: Konfigurieren Sie einen Jira-Host, um mit dem Import von Elementen aus Jira in diese OpenProject-Instanz zu beginnen.
@@ -180,12 +180,12 @@ de:
         connection_error: 'Verbindung zum Jira-Server fehlgeschlagen: %{message}'
         connection_timeout: 'Die Verbindung zum Jira-Server wurde unterbrochen: %{message}'
         ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
-        ssrf_block_doc_link: Please see our [documentation](docs_url).
-        ssl_error: 'SSL error connecting to Jira server: %{message}'
+        ssrf_block_doc_link: Bitte sehen Sie sich unsere [Dokumentation](docs_url) an.
+        ssl_error: 'SSL-Fehler bei der Verbindung zum Jira-Server: %{message}'
         parse_error: 'Die Jira API-Antwort konnte nicht gelesen werden: %{message}'
         api_error: Jira API hat den Fehlerstatus %{status} zurückgegeben
         401_error: Jira API hat einen 401-Fehler zurückgegeben. Ihr Authentifizierungs-Token ist möglicherweise abgelaufen oder Sie haben nicht die erforderlichen Berechtigungen. Bitte stellen Sie sicher, dass das Token einem Jira-Administrator gehört.
-        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
+        429_error: Jira API hat einen 429 Fehler zurückgegeben. Das bedeutet, dass der Tokenbesitzer von der Jira Instanz begrenzt wurde. Bitte die Begrenzung der Zugriffsrate für diesen Benutzer deaktivieren.
       columns:
         projects: Projekte
         last_change: Letzte Änderung
@@ -285,7 +285,7 @@ de:
               elements:
                 relations: Beziehungen zwischen Tickets
                 project_ids: Projektkennungen
-                issue_ids: Ticketkennungen
+                issue_ids: Issue identifiers
                 sprints: Sprint-Zuweisungen
                 workflows: Workflows auf Projektebene
                 schemes: Schemas
@@ -340,7 +340,7 @@ de:
           select_projects:
             title: Projekte auswählen
       user:
-        unknown_name: Unknown
+        unknown_name: Unbekannt
     mcp_configurations:
       index:
         description: Das Model Context Protocol ermöglicht es KI-Agenten, ihren Nutzern Tools und Ressourcen bereitzustellen, die diese OpenProject-Instanz zur Verfügung stellt. Die Funktion befindet sich noch in der Beta-Phase.
@@ -5350,13 +5350,9 @@ de:
   setting_welcome_title: Titel des Willkommens-Block
   setting_welcome_on_homescreen: Willkommens-Block auf Startseite anzeigen
   setting_work_packages_identifier_classic: Instanzweite numerische Sequenz (Standard)
-  setting_work_packages_identifier_classic_caption: 'Jedes Arbeitspaket erhält eine fortlaufende Nummer, die mit 1 beginnt und mit jedem neuen Objekt erhöht wird. Die Nummern sind innerhalb dieser Instanz eindeutig. Sie bleiben also gleich, auch wenn Arbeitspakete zwischen Projekten verschoben werden.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
   setting_work_packages_identifier_semantic: Projektspezifische semantische Kennungen
-  setting_work_packages_identifier_semantic_caption: 'Jedes Projekt hat eine eindeutige Kennung, die der Arbeitspaket-ID vorangestellt ist. Wenn ein Arbeitspaket in ein anderes Projekt verschoben wird, wird eine neue Kennung generiert, aber die alte funktioniert weiter.
-
-    '
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Standard Hervorhebung
   setting_work_package_list_default_highlighted_attributes: Voreinstellung Inline Hervorherbung
   setting_working_days: Arbeitstage
