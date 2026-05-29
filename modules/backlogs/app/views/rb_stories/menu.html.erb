@@ -1,0 +1,99 @@
+<%# -- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++# %>
+
+<%# Response shape per Primer ActionMenu's deferred-content protocol:
+    the body must be a `Primer::Alpha::ActionMenu::List` with the same
+    `menu_id` the client used on the parent `Primer::Alpha::ActionMenu(src:)`.
+    The client side uses `dom_id(story)` as `menu_id` so they match here. %>
+<%
+  first_item = @story.position == 1
+  last_item  = @story.position == @max_position || @max_position.zero?
+  reorder_path = reorder_backlogs_project_sprint_story_path(@project, @sprint, @story)
+%>
+
+<%= render(Primer::Alpha::ActionMenu::List.new(menu_id: dom_id(@story))) do |list| %>
+  <% list.with_item(
+       tag: :a,
+       label: t(:"js.button_open_details"),
+       href: details_backlogs_project_backlogs_path(@project, @story),
+       content_arguments: { turbo_frame: "content-bodyRight", turbo_action: "advance" }
+     ) do |item| %>
+    <% item.with_leading_visual_icon(icon: :"op-view-split") %>
+  <% end %>
+  <% list.with_item(
+       tag: :a,
+       label: t(:"js.button_open_fullscreen"),
+       href: work_package_path(@story),
+       content_arguments: { turbo_frame: "_top" }
+     ) do |item| %>
+    <% item.with_leading_visual_icon(icon: :"screen-full") %>
+  <% end %>
+
+  <% unless first_item && last_item %>
+    <% list.with_divider %>
+
+    <% unless first_item %>
+      <% list.with_item(
+           label: t(:label_sort_highest),
+           tag: :button,
+           href: reorder_path,
+           form_arguments: { method: :post, inputs: [{ name: "direction", value: "highest" }] }
+         ) do |item| %>
+        <% item.with_leading_visual_icon(icon: :"move-to-top") %>
+      <% end %>
+      <% list.with_item(
+           label: t(:label_sort_higher),
+           tag: :button,
+           href: reorder_path,
+           form_arguments: { method: :post, inputs: [{ name: "direction", value: "higher" }] }
+         ) do |item| %>
+        <% item.with_leading_visual_icon(icon: :"chevron-up") %>
+      <% end %>
+    <% end %>
+
+    <% unless last_item %>
+      <% list.with_item(
+           label: t(:label_sort_lower),
+           tag: :button,
+           href: reorder_path,
+           form_arguments: { method: :post, inputs: [{ name: "direction", value: "lower" }] }
+         ) do |item| %>
+        <% item.with_leading_visual_icon(icon: :"chevron-down") %>
+      <% end %>
+      <% list.with_item(
+           label: t(:label_sort_lowest),
+           tag: :button,
+           href: reorder_path,
+           form_arguments: { method: :post, inputs: [{ name: "direction", value: "lowest" }] }
+         ) do |item| %>
+        <% item.with_leading_visual_icon(icon: :"move-to-bottom") %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -30,52 +30,15 @@
 
 module Backlogs
   class StoryMenuComponent < ApplicationComponent
-    attr_reader :story, :sprint, :project, :max_position, :current_user
+    attr_reader :story, :sprint, :project, :current_user
 
-    def initialize(story:, sprint:, max_position:, current_user: User.current)
+    def initialize(story:, sprint:, current_user: User.current)
       super()
 
       @story = story
       @sprint = sprint
       @project = sprint.project
-      @max_position = max_position
       @current_user = current_user
-    end
-
-    private
-
-    def show_move_items?
-      !(first_item? && last_item?)
-    end
-
-    def build_move_menu(menu)
-      unless first_item?
-        build_move_item(menu, label: I18n.t(:label_sort_highest), direction: "highest", icon: :"move-to-top")
-        build_move_item(menu, label: I18n.t(:label_sort_higher), direction: "higher", icon: :"chevron-up")
-      end
-      unless last_item?
-        build_move_item(menu, label: I18n.t(:label_sort_lower), direction: "lower", icon: :"chevron-down")
-        build_move_item(menu, label: I18n.t(:label_sort_lowest), direction: "lowest", icon: :"move-to-bottom")
-      end
-    end
-
-    def build_move_item(menu, label:, direction:, icon:)
-      menu.with_item(
-        label:,
-        tag: :button,
-        href: reorder_backlogs_project_sprint_story_path(project, sprint, story),
-        form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
-      ) do |item|
-        item.with_leading_visual_icon(icon:)
-      end
-    end
-
-    def first_item?
-      story.position == 1
-    end
-
-    def last_item?
-      story.position == max_position
     end
   end
 end

@@ -69,7 +69,7 @@ module OpenProject::Backlogs
                    { rb_master_backlogs: %i[index details],
                      rb_sprints: %i[index show show_name],
                      rb_wikis: :show,
-                     rb_stories: %i[index show],
+                     rb_stories: %i[index show menu],
                      rb_queries: :show,
                      rb_burndown_charts: :show,
                      rb_taskboards: :show,

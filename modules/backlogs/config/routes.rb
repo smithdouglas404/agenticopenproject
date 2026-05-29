@@ -82,6 +82,7 @@ Rails.application.routes.draw do
           member do
             put :move
             post :reorder
+            get :menu
           end
         end
 

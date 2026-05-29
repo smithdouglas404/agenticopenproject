@@ -27,43 +27,27 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
+<%# The menu's items (Open details, Open fullscreen, divider, four
+    Move-to actions) are rendered server-side by RbStoriesController#menu
+    and fetched on first hover/click via Primer ActionMenu's `src:` mode.
+    Eagerly rendering all those items inline blew up initial-render CPU
+    on backlogs pages with hundreds of rows; deferring means the inline
+    DOM is just the kebab trigger and an include-fragment placeholder. %>
 <%=
-  render(Primer::Alpha::ActionMenu.new(anchor_align: :end, classes: "hide-when-print")) do |menu|
+  render(
+    Primer::Alpha::ActionMenu.new(
+      menu_id: dom_id(story),
+      src: menu_backlogs_project_sprint_story_path(project, sprint, story),
+      preload: true,
+      anchor_align: :end,
+      classes: "hide-when-print"
+    )
+  ) do |menu|
     menu.with_show_button(
       scheme: :invisible,
       icon: :"kebab-horizontal",
       "aria-label": t(".label_actions"),
       tooltip_direction: :se
     )
-
-    menu.with_item(
-      tag: :a,
-      label: t(:"js.button_open_details"),
-      href: details_backlogs_project_backlogs_path(project, story),
-      content_arguments: { turbo_frame: "content-bodyRight", turbo_action: "advance" }
-    ) do |item|
-      item.with_leading_visual_icon(icon: :"op-view-split")
-    end
-
-    menu.with_item(
-      tag: :a,
-      label: t(:"js.button_open_fullscreen"),
-      href: work_package_path(story),
-      content_arguments: { turbo_frame: "_top" }
-    ) do |item|
-      item.with_leading_visual_icon(icon: :"screen-full")
-    end
-
-    # The four "Move to top / up / down / bottom" items were intentionally
-    # removed: each one inflates the per-row Primer::Alpha::ActionMenu DOM
-    # with an inline <form> (input + submit), and a backlog page with
-    # hundreds-to-thousands of rows hits 100% browser CPU during initial
-    # render upgrading all the <action-menu> custom elements. Reordering
-    # is still possible via drag/drop on the row's drag handle.
-    #
-    # An accessibility regression for keyboard-only users is acknowledged;
-    # restoring those items via a lazy server-fetch of the menu contents
-    # (Primer ActionMenu's `src:` mode) is tracked as a follow-up. See
-    # the perf-followup branch / PR for the diagnostic motivation.
   end
 %>
