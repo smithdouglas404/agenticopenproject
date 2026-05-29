@@ -34,16 +34,14 @@ module Wikis
       module XWiki
         module Queries
           class PageInfo < BaseQuery
-            ACCEPT_HEADERS = { "Accept" => "application/json" }.freeze
-
             def call(input_data:, auth_strategy:)
               ref = PageReference.parse(input_data.identifier)
               return failure(code: :not_found) unless ref
 
-              url = "#{provider.url.chomp('/')}/rest#{ref.rest_path}"
+              url = "#{base_rest_url}#{ref.rest_path}"
               Adapters::Authentication[auth_strategy].call do |http|
                 handle_response(
-                  http.with(headers: ACCEPT_HEADERS).get(url),
+                  http.with(headers: JSON_ACCEPT_HEADERS).get(url),
                   identifier: input_data.identifier
                 )
               end
