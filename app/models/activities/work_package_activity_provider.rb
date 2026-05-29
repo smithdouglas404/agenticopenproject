@@ -49,7 +49,7 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
   end
 
   def self.work_package_title(id, subject, type_name, identifier = nil)
-    "#{type_name} #{WorkPackage.formatted_id_for(id, identifier)}: #{subject}"
+    "#{type_name} #{WorkPackage::SemanticIdentifier.formatted_id_for(id, identifier)}: #{subject}"
   end
 
   protected
@@ -66,11 +66,11 @@ class Activities::WorkPackageActivityProvider < Activities::BaseActivityProvider
   end
 
   def event_path(event)
-    url_helpers.work_package_path(WorkPackage.display_id_for(event["journable_id"], event["identifier"]))
+    url_helpers.work_package_path(WorkPackage::SemanticIdentifier.display_id_for(event["journable_id"], event["identifier"]))
   end
 
   def event_url(event)
-    url_helpers.work_package_url(WorkPackage.display_id_for(event["journable_id"], event["identifier"]),
+    url_helpers.work_package_url(WorkPackage::SemanticIdentifier.display_id_for(event["journable_id"], event["identifier"]),
                                  anchor: notes_anchor(event))
   end
 

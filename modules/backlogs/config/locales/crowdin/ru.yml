@@ -28,8 +28,8 @@ ru:
     attributes:
       project:
         sprint_sharing: Совместное использование спринта
-        backlog_excluded_types: Excluded work package types
-        statuses_considered_closed: Statuses considered closed
+        backlog_excluded_types: Исключенные типы пакетов работ
+        statuses_considered_closed: Статусы, считающиеся закрытыми
       sprint:
         duration: Длительность
         finish_date: Дата окончания
@@ -89,7 +89,7 @@ ru:
       title: Настройки администрирования бэклога будут в будущем
       text: В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными.
     bucket_destroy_modal_component:
-      title: Delete backlog bucket?
+      title: Удалить раздел бэклога?
       details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     bucket_component:
       blankslate_title: Раздел бэклога пуст
@@ -146,7 +146,7 @@ ru:
       blankslate_title: "%{name} пустой"
       blankslate_description: Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их.
       label_actions: Действия в спринте
-      label_start_sprint: Start sprint
+      label_start_sprint: Начать спринт
       label_complete_sprint: Complete sprint
       start_sprint_disabled_reason_active_sprint: Другой спринт уже активен.
       start_sprint_disabled_reason_missing_dates: Для начала спринта необходимы даты начала и окончания.

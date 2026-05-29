@@ -34,7 +34,7 @@ vi:
   saml:
     menu_title: Nhà cung cấp SAML
     delete_title: Xóa nhà cung cấp SAML
-    delete_heading: Delete this SAML provider?
+    delete_heading: Xoá nhà cung cấp SAML này?
     info:
       title: Thông số cấu hình giao thức SAML
       description: 'Sử dụng các tham số này để định cấu hình kết nối nhà cung cấp danh tính của bạn với OpenProject.

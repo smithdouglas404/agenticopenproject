@@ -140,7 +140,7 @@ it:
         custom_field_creation_failed: 'Impossibile creare il campo personalizzato ''%{name}'': %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Nessun host Jira ancora configurato
         description: Configura un host Jira per iniziare a importare elementi da Jira a questa istanza di OpenProject.
@@ -185,6 +185,7 @@ it:
         parse_error: 'Impossibile analizzare la risposta dell''API Jira: %{message}'
         api_error: Jira API ha restituito lo stato di errore %{status}
         401_error: L'API di Jira ha restituito un errore 401. Il token di autenticazione potrebbe essere scaduto o non disporre delle autorizzazioni necessarie. Assicurati che il token appartenga a un amministratore Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Progetti
         last_change: Ultima modifica
@@ -284,7 +285,7 @@ it:
               elements:
                 relations: Relazioni tra i problemi
                 project_ids: Identificatori di progetto
-                issue_ids: Identificatori dei problemi
+                issue_ids: Issue identifiers
                 sprints: Assegnazioni sprint
                 workflows: Flussi di lavoro a livello di progetto
                 schemes: Schemi
@@ -338,6 +339,8 @@ it:
             confirm_button: Ho capito
           select_projects:
             title: Seleziona i progetti
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Il protocollo di contesto del modello consente agli agenti di intelligenza artificiale di fornire ai propri utenti strumenti e risorse esposti da questa istanza di OpenProject. Questa funzionalità è ancora in versione beta.
@@ -910,6 +913,7 @@ it:
         text: Questa azione non eliminerà alcun progetto contenuto nell'elenco. Vuoi davvero eliminare questo elenco di progetti?
     settings:
       header_details: Informazioni base
+      header_identifier: Identifier
       header_status: Stato
       header_relations: Relazioni del progetto
       button_update_details: Aggiorna dettagli
@@ -1392,6 +1396,7 @@ it:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3514,17 +3519,19 @@ it:
         header: Informati sulle nuove funzionalità e sugli aggiornamenti dei prodotti.
         learn_about: Scopri di più su tutte le nuove funzionalità
         missing: Non ci sono ancora caratteristiche evidenziate.
-        '17_4':
-          new_features_title: 'Questa versione contiene diverse nuove funzionalità e miglioramenti, come ad esempio:
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Migratore Jira con supporto per i campi personalizzati di base.
-            line_1: Bucket del backlog per strutturare e definire le priorità delle macro-attività durante l'affinamento del backlog.
-            line_2: Trascinamento più semplice e opzioni di spostamento migliorate nel modulo Backlogs.
-            line_3: Pulsanti Inizia e Completa sprint nell'intestazione dello sprint.
-            line_4: Copia le impostazioni del flusso di lavoro tra i ruoli.
-            line_5: Widget 'I miei incontri' sulle pagine Home e Panoramica del progetto.
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Aggiorna ad Enterprise edition
       postgres_migration: Migrazione dell'installazione su PostgreSQL
@@ -4038,7 +4045,7 @@ it:
   label_home: Radice (home)
   label_subject_or_id: Oggetto o ID
   label_calendar_subscriptions: Iscrizioni calendario
-  label_identifier: Identificatore
+  label_identifier: Identifiers
   label_project_identifier: Identificatore di progetto
   label_in: in
   label_in_less_than: in meno di
@@ -5345,13 +5352,9 @@ it:
   setting_welcome_title: Blocco di testo del titolo
   setting_welcome_on_homescreen: Mostra il blocco testo di benvenuto nella pagina home
   setting_work_packages_identifier_classic: Sequenza numerica a livello di istanza (predefinita)
-  setting_work_packages_identifier_classic_caption: 'Ogni macro-attività riceve un numero sequenziale a partire da 1, incrementato a ogni nuova creazione. I numeri sono univoci all''interno di questa istanza, quindi restano invariati anche se le macro-attività vengono spostate tra progetti.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
   setting_work_packages_identifier_semantic: Identificatori semantici basati su progetti
-  setting_work_packages_identifier_semantic_caption: 'Ogni progetto ha un identificatore univoco che viene anteposto all''ID della macro-attività. Se una macro-attività viene spostata in un altro progetto, viene generato un nuovo identificatore, ma quello precedente continua a funzionare.
-
-    '
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Modalità evidenziazione predefinita
   setting_work_package_list_default_highlighted_attributes: Attributi evidenziati in linea predefiniti
   setting_working_days: Giorni lavorativi
@@ -5533,7 +5536,7 @@ it:
       section_work_week: Settimana lavorativa
       section_holidays_and_closures: Festività e chiusure
     work_packages:
-      work_package_identifier: Identificatore della macro-attività
+      work_package_identifier: Work package identifiers
       not_allowed_text: Non hai i permessi necessari per visualizzare questa pagina.
       activities:
         enable_internal_comments: Abilita commenti interni
@@ -6034,6 +6037,7 @@ it:
       ancestor: Non divulgato - L'antenato è invisibile a causa della mancanza dei permessi.
       definingProject: Non divulgato - Il progetto è invisibile a causa della mancanza dei permessi.
       definingWorkspace: Non visibile - Lo spazio di lavoro è invisibile a causa della mancanza di autorizzazioni.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pre-autorizzazione

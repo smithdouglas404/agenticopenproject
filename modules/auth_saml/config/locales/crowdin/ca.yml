@@ -34,7 +34,7 @@ ca:
   saml:
     menu_title: Proveïdors SAML
     delete_title: Suprimeix el proveïdor SAML
-    delete_heading: Delete this SAML provider?
+    delete_heading: Suprimeix aquest proveïdor SAML?
     info:
       title: Paràmetres de configuració del protocol SAML
       description: 'Utilitzeu aquests paràmetres per configurar la connexió del vostre proveïdor d''identitat a OpenProject.
@@ -123,7 +123,7 @@ ca:
       idp_sso_service_url: 'L''URL del punt d''inici de sessió del proveïdor d''identitat
 
         '
-      idp_slo_service_url: 'The URL of the identity provider logout endpoint.
+      idp_slo_service_url: 'L''URL del punt final de tancament de sessió del proveïdor d''identitat.
 
         '
       idp_cert: 'Introduïu el certificat públic formatat per X509 PEM del proveïdor d''identitat. Podeu introduir diversos certificats separant-los amb una línia nova.

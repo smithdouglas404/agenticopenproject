@@ -106,6 +106,30 @@ RSpec.describe Query::Results, "sort by id" do
       end
     end
 
+    context "with rows from two projects whose identifiers invert the creation order" do
+      let(:np_project) { create(:project, identifier: "ABC") }
+      let!(:np_wp) do
+        wp = create(:work_package, project: np_project, subject: "First in ABC", skip_semantic_id_allocation: true)
+        wp.update_columns(sequence_number: 1, identifier: "ABC-1")
+        wp
+      end
+
+      let(:query) do
+        build_stubbed(:query,
+                      user:,
+                      project: nil,
+                      show_hierarchies: false,
+                      sort_criteria: [%w[id asc]],
+                      column_names: %i[id subject])
+      end
+
+      it "orders rows by the project identifier prefix, not by project_id" do
+        identifiers = described_class.new(query).work_packages.pluck(:identifier)
+
+        expect(identifiers).to eq(%w[ABC-1 LARGE-1 LARGE-2 LARGE-3])
+      end
+    end
+
     context "with a non-ID primary sort and a tie" do
       before do
         WorkPackage.where(id: wps.map(&:id)).update_all(subject: "Same subject")

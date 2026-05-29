@@ -52,15 +52,15 @@ es:
           confirm_button_text: Hacer pública
   admin:
     reserved_identifiers:
-      title: Reserved project identifiers
+      title: Identificadores de proyecto reservados
       lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
-      col_identifier: Identifier
-      col_project: Project
-      col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
-      filter_label: Filter identifiers
-      btn_release: Release
-      released_notice: Identifier "%{identifier}" has been released.
+      col_identifier: Identificador
+      col_project: Proyecto
+      col_reserved: Reservado
+      not_available_in_semantic_mode: Los identificadores reservados sólo están disponibles en el modo de identificador clásico.
+      filter_label: Identificadores de filtro
+      btn_release: Lanzamiento
+      released_notice: El identificador "%{identifier}" ha sido liberado.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
@@ -140,7 +140,7 @@ es:
         custom_field_creation_failed: 'No se ha podido crear el campo personalizado «%{name}»: %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Aún no se han configurado los hosts de Jira
         description: Configure un host de Jira para comenzar a importar elementos desde Jira a esta instancia de OpenProject.
@@ -185,6 +185,7 @@ es:
         parse_error: 'Error al analizar la respuesta de la API de Jira: %{message}'
         api_error: La API de Jira ha devuelto el estado de error %{status}
         401_error: La API de Jira ha devuelto un error 401. Es posible que su token de autenticación haya caducado o que no disponga de los permisos necesarios. Asegúrese de que el token pertenece a un administrador de Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Proyectos
         last_change: Última modificación
@@ -284,7 +285,7 @@ es:
               elements:
                 relations: Relaciones entre incidencias
                 project_ids: Identificadores de proyecto
-                issue_ids: Identificadores de incidencias
+                issue_ids: Issue identifiers
                 sprints: Asignaciones de sprint
                 workflows: Flujos de trabajo a nivel de proyecto
                 schemes: Esquemas
@@ -338,6 +339,8 @@ es:
             confirm_button: Entendido
           select_projects:
             title: Seleccione los proyectos
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: El protocolo de contexto de modelo (MCP, por sus siglas en inglés) permite a los agentes de IA proporcionar a sus usuarios herramientas y recursos expuestos por esta instancia de OpenProject. Esta función aún se encuentra en fase beta.
@@ -908,6 +911,7 @@ es:
         text: Esta acción no eliminará ningún proyecto que contenga la lista. ¿Seguro que desea eliminar esta lista de proyectos?
     settings:
       header_details: Detalles básicos
+      header_identifier: Identifier
       header_status: Estado
       header_relations: Relaciones del proyecto
       button_update_details: Actualizar detalles
@@ -1391,6 +1395,7 @@ es:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3505,17 +3510,19 @@ es:
         header: Obtenga información sobre nuevas funciones y actualizaciones de productos.
         learn_about: Más información sobre todas las nuevas funciones
         missing: Aún no hay funciones destacadas.
-        '17_4':
-          new_features_title: 'El lanzamiento incluye varias funciones nuevas y mejoras, tales como:
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Migrador de Jira compatible con campos personalizados básicos.
-            line_1: Buckets de backlog para estructurar y priorizar los paquetes de trabajo durante el proceso de refinamiento de backlogs.
-            line_2: Mayor facilidad para arrastrar y soltar y mejora de las opciones de desplazamiento en el módulo Backlogs.
-            line_3: Botones de inicio y finalización del sprint en el encabezado del sprint.
-            line_4: Función de copiar la configuración del flujo de trabajo entre roles.
-            line_5: El widget «Mis reuniones» en las páginas de inicio y de resumen del proyecto.
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Actualizar a Enterprise
       postgres_migration: Migrando su instalación a PostgreSQL
@@ -4029,7 +4036,7 @@ es:
   label_home: Inicio
   label_subject_or_id: Asunto o ID
   label_calendar_subscriptions: Suscripciones al calendario
-  label_identifier: Identificador
+  label_identifier: Identifiers
   label_project_identifier: Identificador del proyecto
   label_in: en
   label_in_less_than: en menos de
@@ -5332,13 +5339,9 @@ es:
   setting_welcome_title: Título del bloque de bienvenida
   setting_welcome_on_homescreen: Mostrar bloque de bienvenida en la pagina de inicio
   setting_work_packages_identifier_classic: Secuencia numérica para toda la instancia (predeterminada)
-  setting_work_packages_identifier_classic_caption: 'Cada paquete de trabajo recibe un número secuencial que empieza por 1 y se incrementa con cada nuevo paquete. Los números son únicos dentro de esta instancia, por lo que siguen siendo los mismos aunque los paquetes de trabajo se trasladen de un proyecto a otro.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
   setting_work_packages_identifier_semantic: Identificadores semánticos basados en proyectos
-  setting_work_packages_identifier_semantic_caption: 'Cada proyecto tiene un identificador único que se añade al principio del ID del paquete de trabajo. Si un paquete de trabajo se traslada a otro proyecto, se genera un nuevo identificador, pero el antiguo sigue funcionando.
-
-    '
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Modo de resaltado predeterminado
   setting_work_package_list_default_highlighted_attributes: Atributos resaltados en línea predeterminados
   setting_working_days: Días laborables
@@ -5520,7 +5523,7 @@ es:
       section_work_week: Semana de trabajo
       section_holidays_and_closures: Vacaciones y cierres
     work_packages:
-      work_package_identifier: Identificador del paquete de trabajo
+      work_package_identifier: Work package identifiers
       not_allowed_text: No tiene los permisos necesarios para ver esta página.
       activities:
         enable_internal_comments: Habilitar comentarios internos
@@ -6021,6 +6024,7 @@ es:
       ancestor: No revelado - El antepasado es invisible por falta de permisos.
       definingProject: 'Oculto: el proyecto no se muestra porque no tiene los permisos necesarios.'
       definingWorkspace: 'Oculto: el espacio de trabajo no se muestra porque no tiene los permisos necesarios.'
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pre-autorización

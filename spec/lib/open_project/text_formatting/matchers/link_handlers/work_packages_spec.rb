@@ -94,17 +94,17 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
       inner_doc = Nokogiri::HTML.fragment("##{inner.id}")
 
       matcher.with_preloaded_resources(outer_doc, {}) do
-        expect(matcher.work_package_for(outer.id)).to eq(outer)
+        expect(matcher.current_cache.fetch(outer.id)).to eq(outer)
 
         matcher.with_preloaded_resources(inner_doc, {}) do
-          expect(matcher.work_package_for(inner.id)).to eq(inner)
+          expect(matcher.current_cache.fetch(inner.id)).to eq(inner)
         end
 
-        expect(matcher.work_package_for(outer.id))
+        expect(matcher.current_cache.fetch(outer.id))
           .to eq(outer), "outer lookup should be restored after nested call"
       end
 
-      expect(matcher.work_package_for(outer.id)).to be_nil
+      expect(matcher.current_cache.fetch(outer.id)).to be_nil
     end
   end
 
@@ -134,15 +134,17 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     include_context "with author signed in"
     let(:project) { create(:project, identifier: "NPLUSONE") }
 
-    it "loads referenced work packages with a single SELECT regardless of count" do
+    it "loads referenced work packages with a fixed two-SELECT preload regardless of count" do
       wps = create_list(:work_package, 5, project:, author:)
       ids_text = wps.map { |wp| "##{wp.id}" }.join(" ")
 
       recorder = ActiveRecord::QueryRecorder.new { format_text(ids_text) }
       wp_selects = recorder.log.grep(/FROM "work_packages"/i)
 
-      expect(wp_selects.size).to eq(1),
-                                 "expected exactly one work_packages SELECT, got #{wp_selects.size}:\n#{wp_selects.join("\n")}"
+      # One unscoped fetch by identifier (label resolution) plus one
+      # visibility-scoped pluck on the resulting ids (link gating).
+      expect(wp_selects.size).to eq(2),
+                                 "expected exactly two work_packages SELECTs, got #{wp_selects.size}:\n#{wp_selects.join("\n")}"
     end
   end
 
@@ -199,7 +201,7 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     end
 
     context "with mixed numeric and semantic references in one render" do
-      it "resolves both with a single work_packages SELECT" do
+      it "resolves both with the fixed two-SELECT preload" do
         wps = create_list(:work_package, 2, project:, author:)
         wps.each(&:allocate_and_register_semantic_id)
         loaded = wps.map(&:reload)
@@ -209,8 +211,8 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
         recorder = ActiveRecord::QueryRecorder.new { rendered = format_text(text) }
         wp_selects = recorder.log.grep(/FROM "work_packages"/i)
 
-        expect(wp_selects.size).to eq(1),
-                                   "expected exactly one work_packages SELECT, got #{wp_selects.size}:\n#{wp_selects.join("\n")}"
+        expect(wp_selects.size).to eq(2),
+                                   "expected exactly two work_packages SELECTs, got #{wp_selects.size}:\n#{wp_selects.join("\n")}"
 
         # Both render with the user-facing display_id, regardless of which
         # form the user typed.
@@ -220,7 +222,7 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     end
 
     context "with a historical alias reference" do
-      it "resolves via the alias table with two round-trips total" do
+      it "resolves via the alias table with bounded round-trips" do
         wp = work_package.reload
         # Simulate a project rename: the WP keeps its current MACROPROJ-N
         # identifier on the row, but a historical OLD-prefix alias row
@@ -231,17 +233,17 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
         rendered = nil
         recorder = ActiveRecord::QueryRecorder.new { rendered = format_text("see #OLDPROJ-1") }
 
-        # Two targeted round-trips: (1) `where_display_id_in` runs a
-        # single WP SELECT whose WHERE clause includes an EXISTS
-        # subquery against the alias table; (2) a sidecar alias pluck
-        # maps the historical input string back to its WP for the
-        # cache. Scoped greps ignore incidental Setting/permission
-        # queries — a second match on either grep would indicate an
+        # Bounded round-trips: (1) `where_display_id_in` runs an unscoped
+        # WP SELECT whose WHERE includes an EXISTS subquery against the
+        # alias table, (2) a visibility-scoped id pluck for link gating,
+        # (3) a sidecar alias pluck maps the historical input string back
+        # to its WP for the cache. Scoped greps ignore incidental
+        # Setting/permission queries — additional matches indicate an
         # N+1 regression.
         wp_selects    = recorder.log.grep(/FROM "work_packages"/)
         alias_selects = recorder.log.grep(/FROM "work_package_semantic_aliases"/)
                                 .grep_v(/FROM "work_packages"/)
-        expect(wp_selects.size).to eq(1)
+        expect(wp_selects.size).to eq(2)
         expect(alias_selects.size).to eq(1)
 
         # Renders against the WP's CURRENT display_id, not the historical
@@ -298,11 +300,11 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
 
   describe "visibility scoping",
            with_settings: { work_packages_identifier: "semantic" } do
-    # The lookup cache must scope through `WorkPackage.visible` —
-    # anything it surfaces ends up in the rendered link, so an
-    # unscoped cache would let any user read back the project
-    # identifier of a WP just by guessing its primary key, semantic
-    # identifier, or historical alias.
+    # Label resolution is unscoped so notification recipients see the same
+    # identifier shape as authors, but anchors are still gated by
+    # `WorkPackage.visible` — the link handler emits a plain-text label
+    # for inaccessible WPs rather than a navigable URL or hover-card
+    # endpoint.
     include_context "with author signed in"
 
     let(:project) { create(:project, identifier: "VISIBLE") }
@@ -316,46 +318,44 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
     end
 
     context "with a semantic-shaped ref to an inaccessible work package" do
-      it "renders literal text and never surfaces the WP's display id" do
+      it "renders the formatted_id as plain text with no anchor or quickinfo" do
         wp = hidden_wp.reload
         rendered = format_text("see ##{wp.display_id} here")
 
-        expect(rendered).to include("##{wp.display_id}")
+        expect(rendered).to include(wp.formatted_id)
+        expect(rendered).not_to match(%r{<a[^>]*>\s*#{Regexp.escape(wp.formatted_id)}\s*</a>})
         expect(rendered).not_to include(%(href="/work_packages/#{wp.display_id}"))
         expect(rendered).not_to include("opce-macro-wp-quickinfo")
       end
     end
 
     context "with a numeric ref to an inaccessible work package in semantic mode" do
-      it "renders the numeric label and href without upgrading to the semantic identifier" do
+      it "upgrades the label to the formatted_id but does not render an anchor" do
         wp = hidden_wp.reload
         rendered = format_text("see ##{wp.id} here")
 
-        # The link still renders — `#42` was already in the user's input —
-        # but the upgrade to the WP's `formatted_id` / `display_id` (which
-        # would leak the project identifier) does not happen.
-        expect(rendered).to include(%(href="/work_packages/#{wp.id}"))
-        expect(rendered).to include(">##{wp.id}<")
+        expect(rendered).to include(wp.formatted_id)
+        expect(rendered).not_to match(%r{<a[^>]*>\s*#{Regexp.escape(wp.formatted_id)}\s*</a>})
+        expect(rendered).not_to include(%(href="/work_packages/#{wp.id}"))
         expect(rendered).not_to include(%(href="/work_packages/#{wp.display_id}"))
-        expect(rendered).not_to include(">#{wp.formatted_id}<")
       end
     end
 
     context "with a historical alias for an inaccessible work package" do
-      it "renders literal text and does not resolve via the alias table" do
+      it "resolves the alias and renders the current formatted_id as plain text" do
         wp = hidden_wp.reload
         WorkPackageSemanticAlias.create!(work_package_id: wp.id, identifier: "OLDHIDDEN-1")
 
         rendered = format_text("see #OLDHIDDEN-1 here")
 
-        expect(rendered).to include("#OLDHIDDEN-1")
+        expect(rendered).to include(wp.formatted_id)
+        expect(rendered).not_to match(%r{<a[^>]*>\s*#{Regexp.escape(wp.formatted_id)}\s*</a>})
         expect(rendered).not_to include(%(href="/work_packages/#{wp.display_id}"))
-        expect(rendered).not_to include(">#{wp.formatted_id}<")
       end
     end
 
     context "with visible and invisible refs mixed in one input" do
-      it "renders the visible ref normally and falls back to literal text for the invisible one" do
+      it "renders the visible ref as an anchor and the invisible ref as plain-text label" do
         visible = visible_wp.reload
         hidden = hidden_wp.reload
         rendered = format_text("see ##{visible.display_id} and ##{hidden.display_id}")
@@ -364,7 +364,8 @@ RSpec.describe OpenProject::TextFormatting::Matchers::LinkHandlers::WorkPackages
         expect(rendered).to include(">#{visible.formatted_id}<")
 
         expect(rendered).not_to include(%(href="/work_packages/#{hidden.display_id}"))
-        expect(rendered).to include("##{hidden.display_id}")
+        expect(rendered).to include(hidden.formatted_id)
+        expect(rendered).not_to match(%r{<a[^>]*>\s*#{Regexp.escape(hidden.formatted_id)}\s*</a>})
       end
     end
   end

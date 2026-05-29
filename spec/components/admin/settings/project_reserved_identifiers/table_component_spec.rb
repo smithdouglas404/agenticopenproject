@@ -36,7 +36,6 @@ RSpec.describe Admin::Settings::ProjectReservedIdentifiers::TableComponent, type
   shared_examples_for "rendering column headings" do
     it_behaves_like "rendering Border Box Grid heading", text: "Project"
     it_behaves_like "rendering Border Box Grid heading", text: "Identifier"
-    it_behaves_like "rendering Border Box Grid heading", text: "Reserved"
     it_behaves_like "rendering Border Box Grid mobile heading", text: "Reserved project identifiers"
   end
 
@@ -57,7 +56,7 @@ RSpec.describe Admin::Settings::ProjectReservedIdentifiers::TableComponent, type
 
     it_behaves_like "rendering Box", row_count: 1
     it_behaves_like "rendering column headings"
-    it_behaves_like "rendering Border Box Grid rows", row_count: 1, col_count: 3
+    it_behaves_like "rendering Border Box Grid rows", row_count: 1, col_count: 2
 
     it "renders the identifier" do
       expect(rendered_component).to have_text("old-id")
