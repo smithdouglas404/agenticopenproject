@@ -127,8 +127,7 @@ RSpec.describe Activities::WorkPackageActivityProvider do
 
       it "uses the semantic identifier in the event path" do
         semantic_id = work_package.reload.identifier
-        expect(events[0].event_path).to include(semantic_id)
-        expect(events[0].event_path).not_to include(work_package.id.to_s)
+        expect(events[0].event_path).to eq("/work_packages/#{semantic_id}")
       end
     end
 
