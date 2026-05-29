@@ -50,6 +50,37 @@ RSpec.describe Backlog do
         end
 
         it { expect(Backlog.owner_backlogs(@project)[0]).to be_owner_backlog }
+        it { expect(Backlog.owner_backlogs(@project)[0]).not_to be_truncated } # rubocop:disable RSpec/InstanceVariable, RSpec/DescribedClass
+      end
+
+      describe "WITH more work packages than the column limit" do
+        let(:feature_type) { create(:type_feature) }
+        let(:status) { create(:status) }
+        let(:truncating_project) do
+          create(:project).tap do |p|
+            allow(Setting).to receive(:plugin_openproject_backlogs)
+              .and_return({ "story_types" => [feature_type.id.to_s], "task_type" => "0" })
+            version = create(:version, project: p)
+            version.version_settings.create!(display: VersionSetting::DISPLAY_RIGHT, project: p)
+            Array.new(3) do |i|
+              create(:work_package, project: p, type: feature_type, status:, version:, position: i + 1)
+            end
+          end
+        end
+
+        before { stub_const("Story::COLUMN_LIMIT", 2) }
+
+        it "marks the backlog as truncated" do
+          expect(described_class.owner_backlogs(truncating_project)[0]).to be_truncated
+        end
+
+        it "caps the stories to COLUMN_LIMIT" do
+          expect(described_class.owner_backlogs(truncating_project)[0].stories.size).to eq(2)
+        end
+
+        it "exposes column_limit to callers (used by the view)" do
+          expect(described_class.owner_backlogs(truncating_project)[0].column_limit).to eq(2)
+        end
       end
     end
   end

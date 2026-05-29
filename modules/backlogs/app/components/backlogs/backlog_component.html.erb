@@ -59,5 +59,14 @@ See COPYRIGHT and LICENSE files for more details.
         <%= render(Backlogs::StoryComponent.new(story:, sprint:, max_position:)) %>
       <% end %>
     <% end %>
+    <% if backlog.truncated? %>
+      <% border_box.with_row(classes: "color-bg-attention Box-row--no-hover") do %>
+        <%=
+          render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
+            t("backlogs.column_truncated", count: backlog.column_limit)
+          end
+        %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

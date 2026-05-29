@@ -154,5 +154,35 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
 
       it_behaves_like "rendering Blank Slate", heading: "Sprint 1 is empty"
     end
+
+    context "when the column is truncated" do
+      let(:story) do
+        create(:story, project:, type: type_feature, status: default_status,
+                       priority: default_priority, story_points: 1, position: 1, version: sprint)
+      end
+      let(:stories) { [story] }
+      let(:backlog) { Backlog.new(sprint:, stories:, truncated: true) }
+
+      it "renders a truncation banner at the column footer" do
+        render_component
+
+        expect(page).to have_text(I18n.t("backlogs.column_truncated", count: Story::COLUMN_LIMIT))
+      end
+    end
+
+    context "when the column is not truncated" do
+      let(:story) do
+        create(:story, project:, type: type_feature, status: default_status,
+                       priority: default_priority, story_points: 1, position: 1, version: sprint)
+      end
+      let(:stories) { [story] }
+      let(:backlog) { Backlog.new(sprint:, stories:) }
+
+      it "does not render the truncation banner" do
+        render_component
+
+        expect(page).to have_no_text(I18n.t("backlogs.column_truncated", count: Story::COLUMN_LIMIT))
+      end
+    end
   end
 end
