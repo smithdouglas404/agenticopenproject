@@ -387,12 +387,15 @@ export default class FiltersFormController extends Controller {
   }
 
   sendForm() {
-    // Hidden-field mode: just sync the serialized filters into the hidden
-    // input. The host form takes care of submission and the field rides
-    // along with the rest of the form data.
+    // When we want the filter content to be written to a hidden input, do this.
+    // When we do not also want the turbo requests, we can exit early here. Otherwise the automatic redirect
+    // would also be triggered. We do not want this in the case where we use the filter input in another form
     if (this.hasFiltersInputTarget) {
       this.writeFiltersToHiddenInput();
-      return;
+
+      if (!this.performTurboRequestsValue) {
+        return;
+      }
     }
 
     const params = new URLSearchParams(window.location.search);
