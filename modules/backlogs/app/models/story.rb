@@ -73,8 +73,13 @@ class Story < WorkPackage
     inbox_type_ids = inbox_type_ids()
     return [] if inbox_type_ids.empty?
 
+    # `preload` is used instead of `includes` so the closed-status filter
+    # below (joins(:status).where(statuses: …)) does not silently upgrade
+    # the eager-load strategy to a single multi-table JOIN that selects
+    # every column from work_packages, statuses, and types. With preload
+    # we get one focused main query plus two small id-lookup queries.
     scope = Story.where(project_id:, version_id: nil, sprint_id: nil, type_id: inbox_type_ids)
-                 .includes(:status, :type)
+                 .preload(:status, :type)
     scope = scope.joins(:status).where(statuses: { is_closed: false }) unless include_closed
 
     candidates = scope.order(Arel.sql(Story::ORDER))
