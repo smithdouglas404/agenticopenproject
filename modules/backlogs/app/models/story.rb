@@ -59,6 +59,36 @@ class Story < WorkPackage
     Story.backlogs(project.id, [sprint.id], options)[sprint.id]
   end
 
+  # Per-column ceiling used by the master backlog page. Loading thousands of
+  # stories per column makes Ruby spend the bulk of the page-render time
+  # allocating ViewComponent instances. Cap to a workable size; columns with
+  # more items than this render a "showing first N" banner.
+  COLUMN_LIMIT = 200
+
+  # Returns [stories, truncated?] for a single backlog column. Uses the
+  # `LIMIT + 1` trick to detect truncation without a separate COUNT query.
+  # Each story gets a sequential `rank` set, matching `.backlogs`' behavior.
+  def self.backlog_for(project_id, sprint_id, limit: COLUMN_LIMIT)
+    candidates = Story.where(Story.condition(project_id, [sprint_id]))
+                      .preload(:status, :type)
+                      .order(Arel.sql(Story::ORDER))
+                      .limit(limit + 1)
+                      .to_a
+
+    truncate_and_rank(candidates, limit)
+  end
+
+  # Trims a `limit+1`-sized candidate array to `limit`, signals whether
+  # truncation happened, and assigns sequential `rank` values starting at 1.
+  # Shared by `backlog_for` and `inbox_for`.
+  def self.truncate_and_rank(candidates, limit)
+    truncated = candidates.size > limit
+    candidates = candidates.first(limit) if truncated
+    candidates.each_with_index { |story, i| story.rank = i + 1 }
+    [candidates, truncated]
+  end
+  private_class_method :truncate_and_rank
+
   # Work packages in this project that belong to neither a Version (legacy
   # Sprint column) nor an Agile::Sprint column. Filtered to the same type
   # set the backlogs columns use — `Story.types ∪ Task.type` — so the
@@ -69,9 +99,9 @@ class Story < WorkPackage
   # By default closed-status work packages (Done / Closed / Rejected) are
   # excluded so the inbox stays focused on actionable items. Pass
   # `include_closed: true` to surface them too.
-  def self.inbox_for(project_id, include_closed: false)
+  def self.inbox_for(project_id, include_closed: false, limit: COLUMN_LIMIT)
     inbox_type_ids = inbox_type_ids()
-    return [] if inbox_type_ids.empty?
+    return [[], false] if inbox_type_ids.empty?
 
     # `preload` is used instead of `includes` so the closed-status filter
     # below (joins(:status).where(statuses: …)) does not silently upgrade
@@ -82,13 +112,8 @@ class Story < WorkPackage
                  .preload(:status, :type)
     scope = scope.joins(:status).where(statuses: { is_closed: false }) unless include_closed
 
-    candidates = scope.order(Arel.sql(Story::ORDER))
-
-    candidates.each_with_index do |story, index|
-      story.rank = index + 1
-    end
-
-    candidates.to_a
+    candidates = scope.order(Arel.sql(Story::ORDER)).limit(limit + 1).to_a
+    truncate_and_rank(candidates, limit)
   end
 
   def self.inbox_type_ids

@@ -35,36 +35,41 @@ class Backlog
 
   def self.for(sprint:, project:)
     owner_backlog = sprint.settings(project)&.display == VersionSetting::DISPLAY_RIGHT
-    new(sprint:, stories: sprint.stories(project), owner_backlog:)
+    stories, truncated = Story.backlog_for(project.id, sprint.id)
+    new(sprint:, stories:, owner_backlog:, truncated:)
   end
 
   def self.owner_backlogs(project)
+    # Loop one bounded query per backlog instead of a single unbounded query
+    # across all of them. For typical projects (low single digits of backlog
+    # columns) the additional round trips are cheap and the LIMIT keeps any
+    # one column from dominating page-render time.
     backlogs = Sprint.apply_to(project).with_status_open.displayed_right(project).order(:name)
-
-    stories_by_sprints = Story.backlogs(project.id, backlogs.map(&:id))
-
-    backlogs.map { |sprint| new(stories: stories_by_sprints[sprint.id], owner_backlog: true, sprint:) }
+    backlogs.map do |sprint|
+      stories, truncated = Story.backlog_for(project.id, sprint.id)
+      new(stories:, owner_backlog: true, sprint:, truncated:)
+    end
   end
 
   def self.sprint_backlogs(project)
     sprints = Sprint.apply_to(project).with_status_open.displayed_left(project).order_by_date
-
-    stories_by_sprints = Story.backlogs(project.id, sprints.map(&:id))
-
-    sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint:) }
+    sprints.map do |sprint|
+      stories, truncated = Story.backlog_for(project.id, sprint.id)
+      new(stories:, sprint:, truncated:)
+    end
   end
 
   def self.inbox_backlog(project, include_closed: false)
-    new(sprint: nil,
-        stories: Story.inbox_for(project.id, include_closed:),
-        inbox: true)
+    stories, truncated = Story.inbox_for(project.id, include_closed:)
+    new(sprint: nil, stories:, inbox: true, truncated:)
   end
 
-  def initialize(sprint:, stories:, owner_backlog: false, inbox: false)
+  def initialize(sprint:, stories:, owner_backlog: false, inbox: false, truncated: false)
     @sprint = sprint
     @stories = stories
     @owner_backlog = owner_backlog
     @inbox = inbox
+    @truncated = truncated
   end
 
   def updated_at
@@ -81,6 +86,14 @@ class Backlog
 
   def inbox?
     !!@inbox
+  end
+
+  def truncated?
+    !!@truncated
+  end
+
+  def column_limit
+    Story::COLUMN_LIMIT
   end
 
   def to_key

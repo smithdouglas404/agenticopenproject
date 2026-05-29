@@ -90,6 +90,7 @@ en:
     task: "Task"
     task_color: "Task color"
     unassigned: "Unassigned"
+    column_truncated: "Showing the first %{count} items. Narrow the column (assign items to versions, or close completed work) to see the rest."
     user_preference:
       header_backlogs: "Backlogs module"
       button_update_backlogs: "Update backlogs module"

@@ -134,6 +134,26 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
       end
     end
 
+    describe "truncation banner" do
+      let(:inbox) { Backlog.new(sprint: nil, stories: [], inbox: true, truncated: true) }
+
+      it "is rendered when the inbox is truncated" do
+        render_component
+
+        expect(page).to have_text(I18n.t("backlogs.column_truncated", count: Story::COLUMN_LIMIT))
+      end
+
+      context "when not truncated" do
+        let(:inbox) { Backlog.new(sprint: nil, stories: [], inbox: true, truncated: false) }
+
+        it "is not rendered" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t("backlogs.column_truncated", count: Story::COLUMN_LIMIT))
+        end
+      end
+    end
+
     describe "include closed checkbox" do
       it "renders the checkbox unchecked by default" do
         render_component

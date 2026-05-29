@@ -169,4 +169,55 @@ RSpec.describe Backlog, ".inbox_backlog" do
       expect(result.stories.map(&:id)).to include(open_wp.id, closed_wp.id)
     end
   end
+
+  describe "truncation" do
+    # Use a tiny COLUMN_LIMIT so we don't need to create 201 work packages to
+    # exercise the truncation branch.
+    before { stub_const("Story::COLUMN_LIMIT", 2) }
+
+    context "when fewer items exist than COLUMN_LIMIT" do
+      let!(:wp1) do
+        create(:work_package, project:, type: feature_type, status:, version: nil, sprint: nil)
+      end
+
+      it "is not truncated" do
+        result = described_class.inbox_backlog(project)
+        expect(result.truncated?).to be(false)
+        expect(result.stories.size).to eq(1)
+      end
+    end
+
+    context "when exactly COLUMN_LIMIT items exist" do
+      let!(:wps) do
+        Array.new(2) do
+          create(:work_package, project:, type: feature_type, status:, version: nil, sprint: nil)
+        end
+      end
+
+      it "is not truncated" do
+        result = described_class.inbox_backlog(project)
+        expect(result.truncated?).to be(false)
+        expect(result.stories.size).to eq(2)
+      end
+    end
+
+    context "when more items exist than COLUMN_LIMIT" do
+      let!(:wps) do
+        Array.new(5) do
+          create(:work_package, project:, type: feature_type, status:, version: nil, sprint: nil)
+        end
+      end
+
+      it "is truncated and stories is capped to COLUMN_LIMIT" do
+        result = described_class.inbox_backlog(project)
+        expect(result.truncated?).to be(true)
+        expect(result.stories.size).to eq(2)
+      end
+
+      it "exposes the column_limit value to the view" do
+        result = described_class.inbox_backlog(project)
+        expect(result.column_limit).to eq(2)
+      end
+    end
+  end
 end
