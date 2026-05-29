@@ -93,7 +93,9 @@ class Attachment < ApplicationRecord
   # specifically when using S3 for attachments. In the case of S3 the file name for the downloaded
   # file will still be correct as it's part of the URL before the query.
   def external_url_options(expires_in: nil)
-    { content_disposition: content_disposition(include_filename: false), expires_in: }
+    { content_disposition: content_disposition(include_filename: false),
+      content_type: served_content_type,
+      expires_in: }
   end
 
   def external_storage?
@@ -119,11 +121,24 @@ class Attachment < ApplicationRecord
     end
   end
 
+  # Returns the Content-Type to use when serving this file inline in a browser.
+  # Text files are normalised to text/plain (prevents script execution) with an
+  # explicit charset. Non-inlineable files get application/octet-stream so the
+  # browser is forced to download them.
+  def served_content_type
+    if is_text?
+      "text/plain; charset=#{charset.presence || Setting.attachment_default_charset}"
+    elsif inlineable?
+      content_type
+    else
+      "application/octet-stream"
+    end
+  end
+
   # Returns the content type to use when serving the file to a browser.
   # For text files, ensures a charset is always present so browsers don't
-  # fall back to ISO-8859-1.
-  # We use a configurable fallback (default utf-8) so that administrators
-  # can control content types for previously uploaded attachments
+  # fall back to ISO-8859-1. Preserves the real MIME subtype (e.g. text/x-ruby)
+  # unlike served_content_type which normalises to text/plain for security.
   def serving_content_type
     return content_type unless is_text?
 

@@ -100,17 +100,7 @@ module API
       end
 
       def attachment_content_type(attachment)
-        if attachment.is_text?
-          # Even if the text mime type might differ, always output plain text
-          # so this doesn't get interpreted as e.g., a script or html file
-          charset = attachment.charset.presence || Setting.attachment_default_charset
-          "text/plain; charset=#{charset}"
-        elsif attachment.inlineable?
-          attachment.content_type
-        else
-          # For security reasons, mark all non-inlinable files as an octet-stream first
-          "application/octet-stream"
-        end
+        attachment.served_content_type
       end
 
       def set_cache_headers

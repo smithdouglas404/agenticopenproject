@@ -320,6 +320,11 @@ RSpec.describe Attachment do
       it_behaves_like "it uses content disposition inline" do
         let(:attachment) { text_attachment }
       end
+
+      it "includes response-content-type with text/plain and the detected charset in the S3 URL" do
+        url = text_attachment.external_url.to_s
+        expect(url).to include "response-content-type=text%2Fplain%3B%20charset%3D"
+      end
     end
 
     describe "for a video file" do
@@ -350,6 +355,10 @@ RSpec.describe Attachment do
       it "makes S3 use content_disposition 'attachment; filename=...'" do
         expect(binary_attachment.content_disposition).to eq "attachment; filename=textfile.txt.gz"
         expect(binary_attachment.external_url.to_s).to include "response-content-disposition=attachment"
+      end
+
+      it "includes response-content-type application/octet-stream in the S3 URL" do
+        expect(binary_attachment.external_url.to_s).to include "response-content-type=application%2Foctet-stream"
       end
     end
   end
