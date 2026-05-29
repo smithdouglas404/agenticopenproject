@@ -27,65 +27,74 @@
 //++
 
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { GlobalSearchInputComponent } from './global-search-input.component';
 
+// followItem is verified through the prototype against a stand-in context, avoiding
+// a real component instance whose many injected dependencies this branch never uses.
 describe('GlobalSearchInputComponent#followItem', () => {
-  let wpPathSpy:jasmine.Spy<(id:string) => string>;
-  let searchInScopeSpy:jasmine.Spy;
-  let context:Pick<GlobalSearchInputComponent, 'wpPath'|'selectedItem'> & { searchInScope:jasmine.Spy };
+  let wpPathArgs:string[];
+  let searchInScopeArgs:string[];
+  let context:Pick<GlobalSearchInputComponent, 'wpPath'|'selectedItem'> & { searchInScope:(scope:string) => void };
 
   function callFollowItem(item:unknown):void {
     GlobalSearchInputComponent.prototype.followItem.call(context, item);
   }
 
   beforeEach(() => {
-    wpPathSpy = jasmine.createSpy('wpPath').and.returnValue('/work_packages/PROJ-42');
-    searchInScopeSpy = jasmine.createSpy('searchInScope');
+    wpPathArgs = [];
+    searchInScopeArgs = [];
     context = {
-      wpPath: wpPathSpy,
+      wpPath: (id:string):string => {
+        wpPathArgs.push(id);
+        // A fragment keeps followItem's window.location assignment from navigating the runner.
+        return '#stub';
+      },
       selectedItem: undefined,
-      searchInScope: searchInScopeSpy,
+      searchInScope: (scope:string):void => {
+        searchInScopeArgs.push(scope);
+      },
     };
   });
 
   describe('when item is a HalResource', () => {
-    let item:HalResource;
+    let item:WorkPackageResource;
 
     beforeEach(() => {
-      item = Object.create(HalResource.prototype) as HalResource;
+      item = Object.create(HalResource.prototype) as WorkPackageResource;
       Object.defineProperty(item, 'id', { get: () => '42', configurable: true });
       Object.defineProperty(item, 'displayId', { get: () => 'PROJ-42', configurable: true });
     });
 
     it('calls wpPath with displayId', () => {
       callFollowItem(item);
-      expect(wpPathSpy).toHaveBeenCalledWith('PROJ-42');
+      expect(wpPathArgs).toEqual(['PROJ-42']);
     });
 
     it('does not call wpPath with the numeric id', () => {
       callFollowItem(item);
-      expect(wpPathSpy).not.toHaveBeenCalledWith('42');
+      expect(wpPathArgs).not.toContain('42');
     });
 
     it('sets selectedItem to the item', () => {
       callFollowItem(item);
-      expect(context.selectedItem).toBe(item as any);
+      expect(context.selectedItem).toBe(item);
     });
   });
 
   describe('when item is a scope option (not a HalResource)', () => {
     it('delegates to searchInScope and does not call wpPath', () => {
       callFollowItem({ projectScope: 'current_project', text: 'In this project ↵' });
-      expect(searchInScopeSpy).toHaveBeenCalledWith('current_project');
-      expect(wpPathSpy).not.toHaveBeenCalled();
+      expect(searchInScopeArgs).toEqual(['current_project']);
+      expect(wpPathArgs).toEqual([]);
     });
   });
 
   describe('when item is undefined', () => {
     it('does nothing', () => {
       callFollowItem(undefined);
-      expect(wpPathSpy).not.toHaveBeenCalled();
-      expect(searchInScopeSpy).not.toHaveBeenCalled();
+      expect(wpPathArgs).toEqual([]);
+      expect(searchInScopeArgs).toEqual([]);
     });
   });
 });
