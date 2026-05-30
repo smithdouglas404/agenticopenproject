@@ -30,6 +30,13 @@
 
 require "rails_helper"
 
+# The component itself renders only the deferred menu shell — a kebab
+# trigger and an include-fragment placeholder. The actual menu items
+# (Open details, Open fullscreen, divider, four Move-to actions) are
+# rendered server-side by RbStoriesController#menu and fetched by Primer
+# ActionMenu on first hover/click via the `src:` attribute. Item-level
+# behaviour is covered by the controller / view specs for #menu, not
+# here.
 RSpec.describe Backlogs::StoryMenuComponent, type: :component do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
@@ -40,8 +47,6 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
   let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, effective_date: Date.tomorrow) }
-  let(:position) { 2 }
-  let(:max_position) { 3 }
   let(:story) do
     create(:story,
            subject: "Test Story",
@@ -50,7 +55,7 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
            status: default_status,
            priority: default_priority,
            story_points: 5,
-           position:,
+           position: 2,
            version: sprint)
   end
 
@@ -60,75 +65,49 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
       .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
   end
 
-  def render_component(position: 2, max_position: 3)
-    story.update!(position:)
-    render_inline(described_class.new(story:, sprint:, max_position:, current_user: user))
+  def render_component
+    render_inline(described_class.new(story:, sprint:, current_user: user))
   end
 
-  describe "standard items" do
-    it "shows Open details link (split view)" do
+  describe "deferred shell" do
+    it "renders an action-menu element" do
       render_component
 
-      expect(page).to have_text(I18n.t(:"js.button_open_details"))
-      expect(page).to have_octicon(:"op-view-split")
+      expect(page).to have_css("action-menu")
     end
 
-    it "shows Open fullscreen link (full page)" do
+    it "renders the kebab trigger button" do
       render_component
 
-      expect(page).to have_text(I18n.t(:"js.button_open_fullscreen"))
-      expect(page).to have_octicon(:"screen-full")
+      expect(page).to have_octicon(:"kebab-horizontal")
     end
 
-    it "does not render a divider since the move-items section was removed" do
+    it "points the action-menu at the per-story menu URL via include-fragment" do
       render_component
 
-      expect(page).to have_no_css(".ActionList-sectionDivider")
+      expected_src = "/projects/#{project.identifier}/sprints/#{sprint.id}/stories/#{story.id}/menu"
+      expect(page).to have_css("include-fragment[src$='#{expected_src}']")
     end
   end
 
-  # Move-to-top/up/down/bottom items are intentionally not rendered as part
-  # of the per-row menu. See the comment in story_menu_component.html.erb —
-  # they were the dominant contributor to the initial-render CPU spike on
-  # columns with many items. Drag-drop covers reorder for mouse/touch.
-  describe "move menu items (intentionally absent)" do
-    it "does not render Move to top" do
+  describe "items not rendered inline" do
+    # These are the items the server returns from RbStoriesController#menu —
+    # they must NOT be present in the inline component output, otherwise the
+    # CPU regression from PR #20 returns.
+    it "does not render Open details / Open fullscreen inline" do
+      render_component
+
+      expect(page).to have_no_text(I18n.t(:"js.button_open_details"))
+      expect(page).to have_no_text(I18n.t(:"js.button_open_fullscreen"))
+    end
+
+    it "does not render any Move-to items inline" do
       render_component
 
       expect(page).to have_no_text(I18n.t(:label_sort_highest))
-      expect(page).to have_no_octicon(:"move-to-top")
-    end
-
-    it "does not render Move up" do
-      render_component
-
       expect(page).to have_no_text(I18n.t(:label_sort_higher))
-      expect(page).to have_no_octicon(:"chevron-up")
-    end
-
-    it "does not render Move down" do
-      render_component
-
       expect(page).to have_no_text(I18n.t(:label_sort_lower))
-      expect(page).to have_no_octicon(:"chevron-down")
-    end
-
-    it "does not render Move to bottom" do
-      render_component
-
       expect(page).to have_no_text(I18n.t(:label_sort_lowest))
-      expect(page).to have_no_octicon(:"move-to-bottom")
-    end
-
-    it "renders no move-items regardless of position in the column" do
-      [[1, 3], [2, 3], [3, 3], [1, 1]].each do |position, max|
-        render_component(position:, max_position: max)
-
-        expect(page).to have_no_text(I18n.t(:label_sort_highest))
-        expect(page).to have_no_text(I18n.t(:label_sort_higher))
-        expect(page).to have_no_text(I18n.t(:label_sort_lower))
-        expect(page).to have_no_text(I18n.t(:label_sort_lowest))
-      end
     end
   end
 end

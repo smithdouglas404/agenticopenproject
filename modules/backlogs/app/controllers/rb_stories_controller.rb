@@ -71,6 +71,21 @@ class RbStoriesController < RbApplicationController
     respond_with_turbo_streams
   end
 
+  # Returns the contents of the row's ActionMenu as an HTML fragment, loaded
+  # by `Primer::Alpha::ActionMenu(src:)` on first hover/click. Rendering the
+  # menu eagerly per row across hundreds of rows caused the backlogs page to
+  # peg browser CPU on initial render; deferring the items keeps the inline
+  # DOM minimal (just the kebab trigger) while still restoring the items
+  # (including the keyboard-accessible move actions) when the user opens
+  # the menu.
+  def menu
+    @max_position = WorkPackage
+      .where(Story.condition(@project.id, [@sprint.id]))
+      .maximum(:position) || 0
+
+    render layout: false
+  end
+
   def reorder
     call = Stories::UpdateService
       .new(user: current_user, story: @story)
