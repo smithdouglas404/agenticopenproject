@@ -28,21 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Queries
-      module Schemas
-        class EpicFilterDependencyRepresenter < ByWorkPackageFilterDependencyRepresenter
-          # Epic links may live in a different project than the work package
-          # linking to them (see docs/development/epic-link-implementation-tasks.md),
-          # so the value picker has to offer epics from every visible project —
-          # not only the current one. Override the project-scoped href callback
-          # from the parent class to always use the cross-project endpoint.
-          def href_callback
-            api_v3_paths.work_packages
-          end
-        end
-      end
+# Huge-list strategy that adds the cross_project= operator used by EpicFilter.
+# Defaults to cross_project= so newly added Epic filters span projects by default.
+module Queries::Filters::Strategies
+  class EpicHugeList < HugeList
+    self.supported_operators = ["cross_project=", "=", "!"]
+    self.default_operator = "cross_project="
+
+    def operator_map
+      super.merge("cross_project=" => ::Queries::Operators::EpicCrossProject)
     end
   end
 end

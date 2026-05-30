@@ -77,4 +77,39 @@ RSpec.describe Queries::WorkPackages::Filter::EpicFilter do
       expect(instance).to be_valid
     end
   end
+
+  describe "available operators" do
+    let(:filter) { described_class.create!(context: query) }
+
+    it "exposes equals, not-equals, and the cross-project variant" do
+      symbols = filter.available_operators.map { |op| op.symbol.to_s }
+      expect(symbols).to contain_exactly("=", "!", "cross_project=")
+    end
+
+    it "defaults to the cross-project operator so new epic filters span projects" do
+      expect(filter.default_operator.symbol.to_s).to eq("cross_project=")
+    end
+  end
+
+  describe "#cross_project?" do
+    let(:filter) { described_class.create!(context: query, values: %w[1]) }
+
+    it "is true when the cross-project operator is set" do
+      filter.operator = "cross_project="
+      expect(filter).to be_cross_project
+    end
+
+    it "is false when a project-scoped operator is set" do
+      filter.operator = "="
+      expect(filter).not_to be_cross_project
+    end
+  end
+
+  describe "SQL output of the cross-project operator" do
+    let(:filter) { described_class.create!(context: query, operator: "cross_project=", values: %w[1 2]) }
+
+    it "still filters by epic_id (the operator only signals scope removal at the query level)" do
+      expect(filter.where).to include("work_packages.epic_id")
+    end
+  end
 end

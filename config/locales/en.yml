@@ -3606,6 +3606,7 @@ en:
   label_operator_none: "is empty"
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
+  label_operator_epic_cross_project: "is (across projects)"
   label_operator_shared_with_user_any: "any"
   label_open: "open"
   label_closed: "closed"
