@@ -40,6 +40,7 @@ RSpec.describe API::V3::Versions::Schemas::VersionSchemaRepresenter do
   let(:new_record) { true }
   let(:allowed_sharings) { %w(tree system) }
   let(:allowed_status) { %w(open fixed closed) }
+  let(:allowed_kinds) { %w(sprint release) }
   let(:custom_field) do
     build_stubbed(:version_custom_field, :integer)
   end
@@ -52,7 +53,7 @@ RSpec.describe API::V3::Versions::Schemas::VersionSchemaRepresenter do
 
     allow(contract)
       .to receive(:writable?) do |attribute|
-      writable = %w(name description start_date due_date status sharing)
+      writable = %w(name description start_date due_date status sharing kind)
 
       if new_record
         writable << "project"
@@ -70,6 +71,11 @@ RSpec.describe API::V3::Versions::Schemas::VersionSchemaRepresenter do
       .to receive(:assignable_values)
       .with(:sharing, current_user)
       .and_return(allowed_sharings)
+
+    allow(contract)
+      .to receive(:assignable_values)
+      .with(:kind, current_user)
+      .and_return(allowed_kinds)
 
     allow(contract)
       .to receive(:available_custom_fields)
@@ -280,6 +286,31 @@ RSpec.describe API::V3::Versions::Schemas::VersionSchemaRepresenter do
 
         expect(subject)
           .to be_json_eql(allowed_sharings.to_json)
+          .at_path(allowed_path)
+      end
+    end
+
+    describe "kind" do
+      let(:path) { "kind" }
+
+      it_behaves_like "has basic schema properties" do
+        let(:type) { "String" }
+        let(:name) { Version.human_attribute_name("kind") }
+        let(:required) { true }
+        let(:writable) { true }
+        let(:location) { "_links" }
+      end
+
+      it "contains no link to the allowed values" do
+        expect(subject)
+          .not_to have_json_path("#{path}/_links/allowedValues")
+      end
+
+      it "embeds the allowed values" do
+        allowed_path = "#{path}/_embedded/allowedValues"
+
+        expect(subject)
+          .to be_json_eql(allowed_kinds.to_json)
           .at_path(allowed_path)
       end
     end

@@ -72,6 +72,10 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         expect(last_response.body)
           .to be_json_eql(123.to_json)
           .at_path("customField#{int_cf.id}")
+
+        expect(last_response.body)
+          .to be_json_eql("sprint".to_json)
+          .at_path("kind")
       end
     end
 
@@ -145,6 +149,7 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         endDate: "2018-01-09",
         status: "closed",
         sharing: "descendants",
+        kind: "release",
         _links: {
           "customField#{list_cf.id}": {
             href: api_v3_paths.custom_option(list_cf.custom_options.last.id)
@@ -178,6 +183,7 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         "endDate" => "2018-01-09",
         "status" => "closed",
         "sharing" => "descendants",
+        "kind" => "release",
         "_links/definingProject/title" => project.name,
         "_links/customField#{list_cf.id}/href" => api_v3_paths.custom_option(list_cf.custom_options.last.id),
         "customField#{int_cf.id}" => 5
@@ -403,6 +409,7 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         endDate: "2018-01-09",
         status: "closed",
         sharing: "descendants",
+        kind: "release",
         _links: {
           definingProject: {
             href: api_v3_paths.project(project.id)
@@ -439,6 +446,7 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         "endDate" => "2018-01-09",
         "status" => "closed",
         "sharing" => "descendants",
+        "kind" => "release",
         "_links/definingProject/title" => project.name,
         "_links/customField#{list_cf.id}/href" => api_v3_paths.custom_option(list_cf.custom_options.first.id),
         "customField#{int_cf.id}" => 5

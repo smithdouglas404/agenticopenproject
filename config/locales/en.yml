@@ -1547,6 +1547,7 @@ en:
         id_or_email: "Name or email address"
       version:
         effective_date: "Finish date"
+        kind: "Kind"
         sharing: "Sharing"
       wiki_content:
         text: "Text"
@@ -5219,6 +5220,8 @@ en:
     unlock_and_reset_failed_logins: "Unlock and reset failed logins"
     error_cannot_delete_user: "User cannot be deleted"
 
+  version_kind_release: "Release"
+  version_kind_sprint: "Sprint"
   version_status_closed: "closed"
   version_status_locked: "locked"
   version_status_open: "open"

@@ -28,12 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Versions
-  ::Queries::Register.register(VersionQuery) do
-    filter Filters::SharingFilter
-    filter Filters::NameFilter
-    filter Filters::KindFilter
+require "spec_helper"
 
-    order Orders::DefaultOrder
+RSpec.describe Queries::Versions::Filters::KindFilter do
+  include_context "filter tests"
+  let(:values) { ["release"] }
+  let(:model) { Version }
+
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :kind }
+    let(:human_name) { "Kind" }
+    let(:type) { :list }
+    let(:model) { Version }
+
+    describe "#allowed_values" do
+      it "returns the localized version kinds" do
+        expect(instance.allowed_values)
+          .to eq [["Sprint", "sprint"], ["Release", "release"]]
+      end
+    end
   end
 end

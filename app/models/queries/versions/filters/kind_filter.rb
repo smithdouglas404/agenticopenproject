@@ -28,12 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Versions
-  ::Queries::Register.register(VersionQuery) do
-    filter Filters::SharingFilter
-    filter Filters::NameFilter
-    filter Filters::KindFilter
+class Queries::Versions::Filters::KindFilter < Queries::Versions::Filters::VersionFilter
+  def allowed_values
+    Version::VERSION_KINDS.map do |name|
+      [I18n.t(:"version_kind_#{name}"), name]
+    end
+  end
 
-    order Orders::DefaultOrder
+  def type
+    :list
+  end
+
+  def self.key
+    :kind
   end
 end

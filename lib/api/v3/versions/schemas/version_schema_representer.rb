@@ -66,6 +66,9 @@ module API
           schema_with_allowed_string_collection :sharing,
                                                 type: "String"
 
+          schema_with_allowed_string_collection :kind,
+                                                type: "String"
+
           schema_with_allowed_link :project,
                                    as: :definingProject,
                                    has_default: false,

@@ -50,12 +50,17 @@ module Versions
     attribute :effective_date
     attribute :status
     attribute :sharing
+    attribute :kind
     attribute :wiki_page_title do
       validate_page_title_in_wiki
     end
 
     def assignable_statuses
       Version::VERSION_STATUSES
+    end
+
+    def assignable_kinds
+      Version::VERSION_KINDS
     end
 
     # Returns the sharings that +user+ can set the version to
