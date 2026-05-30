@@ -1712,6 +1712,7 @@ fr:
       attachment:
         attachment_content: Pièces jointes
         attachment_file_name: Nom de la pièce jointe
+        charset: Character set
         content_type: Type de contenu
         downloads: Téléchargements
         file: Fichier
@@ -1806,6 +1807,7 @@ fr:
         title: Titre
         description: Description
       member:
+        blocked: Blocked
         roles: Rôles
       notification:
         read_ian: Lire dans l'application
@@ -3503,6 +3505,9 @@ fr:
     additional:
       projects: Les projets visibles les plus récents de cette instance.
       no_visible_projects: Il n'y a aucun projet visible dans cette instance.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Les utilisateurs enregistrés les plus récents de cette instance.
     blocks:
       community: Communauté OpenProject
@@ -5960,6 +5965,17 @@ fr:
     warning: 'La modification des jours de la semaine considérés comme des jours ouvrables ou des jours non ouvrables peut affecter les jours de début et de fin de tous les lots de travaux et les cycles de vie de tous les projets dans ce cas.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Jours ouvrables** modifiés (%{changes})._
       days:

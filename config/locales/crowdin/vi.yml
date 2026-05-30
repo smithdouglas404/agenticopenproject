@@ -1700,6 +1700,7 @@ vi:
       attachment:
         attachment_content: Số lượng Tệp đính kèm
         attachment_file_name: Tên tập tin đính kèm
+        charset: Character set
         content_type: Loại nội dung
         downloads: Những mục đã tải xuống
         file: tập tin
@@ -1794,6 +1795,7 @@ vi:
         title: Tiêu đề
         description: Mô tả
       member:
+        blocked: Blocked
         roles: Vai trò
       notification:
         read_ian: Đọc trong ứng dụng
@@ -3448,6 +3450,9 @@ vi:
     additional:
       projects: Các dự án có thể nhìn thấy mới nhất trong trường hợp này.
       no_visible_projects: Không có không có thể nhìn thấy các dự án trong trường hợp này.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Người dùng đã đăng ký mới nhất trong trường hợp này.
     blocks:
       community: Cộng đồng OpenProject
@@ -5911,6 +5916,17 @@ vi:
     warning: 'Việc thay đổi ngày trong tuần được coi là ngày làm việc hay ngày không làm việc có thể ảnh hưởng đến ngày bắt đầu và ngày kết thúc của tất cả các gói công việc và vòng đời trong tất cả các dự án trong trường hợp này.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Ngày làm việc** đã thay đổi (%{changes})._
       days:

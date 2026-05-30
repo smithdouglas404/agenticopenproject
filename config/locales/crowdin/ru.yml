@@ -1764,6 +1764,7 @@ ru:
       attachment:
         attachment_content: Вложенный контент
         attachment_file_name: Название вложенного файла
+        charset: Character set
         content_type: Тип содержимого
         downloads: Загрузки
         file: Файл
@@ -1858,6 +1859,7 @@ ru:
         title: Название
         description: Описание
       member:
+        blocked: Blocked
         roles: Роль
       notification:
         read_ian: Читайте в приложении
@@ -3641,6 +3643,9 @@ ru:
     additional:
       projects: Новые видимые проекты в данном экземпляре.
       no_visible_projects: Не видимые проекты в данном экземпляре.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Новые зарегистрированные пользователи в данном экземпляре.
     blocks:
       community: OpenProject сообщество
@@ -6092,6 +6097,17 @@ ru:
     warning: 'Изменение дней недели, считающихся рабочими или нерабочими днями, может повлиять на начало и завершение всех пакетов работ и жизненных циклов во всех проектах.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Рабочие дни** изменены (%{changes})._
       days:
