@@ -42,6 +42,48 @@ RSpec.describe Version do
       expect(version.status)
         .to eq "open"
     end
+
+    it "sets the kind to be sprint" do
+      expect(version.kind)
+        .to eq "sprint"
+    end
+  end
+
+  describe "#kind" do
+    it "is valid for the allowed kinds" do
+      Version::VERSION_KINDS.each do |kind|
+        version.kind = kind
+        expect(version).to be_valid
+      end
+    end
+
+    it "is invalid for an unknown kind" do
+      version.kind = "bogus"
+      expect(version).not_to be_valid
+      expect(version.errors[:kind]).to be_present
+    end
+
+    describe "scopes" do
+      let!(:sprint_version) { create(:version, kind: "sprint") }
+      let!(:release_version) { create(:version, kind: "release") }
+
+      it ".sprints returns only sprint-kind versions" do
+        expect(described_class.sprints).to include(sprint_version)
+        expect(described_class.sprints).not_to include(release_version)
+      end
+
+      it ".releases returns only release-kind versions" do
+        expect(described_class.releases).to include(release_version)
+        expect(described_class.releases).not_to include(sprint_version)
+      end
+    end
+
+    describe "predicates" do
+      it { expect(build(:version, kind: "release")).to be_release }
+      it { expect(build(:version, kind: "release")).not_to be_sprint }
+      it { expect(build(:version, kind: "sprint")).to be_sprint }
+      it { expect(build(:version, kind: "sprint")).not_to be_release }
+    end
   end
 
   describe "validations" do

@@ -28,12 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Versions
-  ::Queries::Register.register(VersionQuery) do
-    filter Filters::SharingFilter
-    filter Filters::NameFilter
-    filter Filters::KindFilter
-
-    order Orders::DefaultOrder
+# Introduces a `kind` discriminator on versions so that the "Release" feature can
+# reuse the Version model while remaining a separate selection set from the existing
+# versions (which this deployment uses as Sprints).
+#
+# This migration is intentionally behavior-neutral: the column is added NOT NULL with a
+# default of "sprint", which backfills every existing row to "sprint" and makes all
+# existing version-creating code paths (forms, services, API) keep producing sprints
+# without any change. Only the future Release flow will set kind = "release".
+class AddKindToVersions < ActiveRecord::Migration[8.0]
+  def change
+    add_column :versions, :kind, :string, null: false, default: "sprint"
+    add_index :versions, :kind
   end
 end

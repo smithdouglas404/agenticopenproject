@@ -38,6 +38,10 @@ class Version < ApplicationRecord
 
   VERSION_STATUSES = %w(open locked closed).freeze
   VERSION_SHARINGS = %w(none descendants hierarchy tree system).freeze
+  # Discriminates versions used as Sprints (the existing behaviour) from those managed
+  # as Releases. Defaults to "sprint" at the database level so existing rows and all
+  # existing version-creating code paths keep producing sprints unchanged.
+  VERSION_KINDS = %w(sprint release).freeze
 
   validates :name,
             presence: true,
@@ -46,6 +50,7 @@ class Version < ApplicationRecord
   validates :effective_date, format: { with: /\A\d{4}-\d{2}-\d{2}\z/, message: :not_a_date, allow_nil: true }
   validates :start_date, format: { with: /\A\d{4}-\d{2}-\d{2}\z/, message: :not_a_date, allow_nil: true }
   validates :status, inclusion: { in: VERSION_STATUSES }
+  validates :kind, inclusion: { in: VERSION_KINDS }
   validate :validate_start_date_before_effective_date
 
   scopes :rolled_up,
@@ -65,6 +70,9 @@ class Version < ApplicationRecord
   }
 
   scope :systemwide, -> { where(sharing: "system") }
+
+  scope :sprints, -> { where(kind: "sprint") }
+  scope :releases, -> { where(kind: "release") }
 
   scope :shared_via_work_packages, ->(*args) {
     user = args.first || User.current
@@ -109,6 +117,14 @@ class Version < ApplicationRecord
 
   def open?
     status == "open"
+  end
+
+  def release?
+    kind == "release"
+  end
+
+  def sprint?
+    kind == "sprint"
   end
 
   # Returns true if the version is completed: finish date reached and no open issues

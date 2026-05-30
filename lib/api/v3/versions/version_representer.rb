@@ -101,6 +101,8 @@ module API
 
         property :sharing
 
+        property :kind
+
         date_time_property :created_at
         date_time_property :updated_at
 
