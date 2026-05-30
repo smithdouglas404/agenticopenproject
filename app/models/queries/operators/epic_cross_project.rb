@@ -28,42 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# Equals variant used by EpicFilter to signal that the work-package query
+# should ignore the board/query project scope and return matching epic
+# children from every visible project. SQL output is identical to Equals;
+# the symbol is what Query#project_filter_set? keys on.
 module Queries::Operators
-  OPERATORS = [
-    Queries::Operators::GreaterOrEqual,
-    Queries::Operators::LessOrEqual,
-    Queries::Operators::Equals,
-    Queries::Operators::NotEquals,
-    Queries::Operators::None,
-    Queries::Operators::All,
-    Queries::Operators::Contains,
-    Queries::Operators::NotContains,
-    Queries::Operators::InLessThan,
-    Queries::Operators::InMoreThan,
-    Queries::Operators::In,
-    Queries::Operators::Today,
-    Queries::Operators::ThisWeek,
-    Queries::Operators::LessThanAgo,
-    Queries::Operators::MoreThanAgo,
-    Queries::Operators::Ago,
-    Queries::Operators::OnDate,
-    Queries::Operators::BetweenDate,
-    Queries::Operators::Everywhere,
-    Queries::Operators::Relates,
-    Queries::Operators::Duplicates,
-    Queries::Operators::Duplicated,
-    Queries::Operators::Blocks,
-    Queries::Operators::Blocked,
-    Queries::Operators::Follows,
-    Queries::Operators::Precedes,
-    Queries::Operators::Includes,
-    Queries::Operators::PartOf,
-    Queries::Operators::Requires,
-    Queries::Operators::Required,
-    Queries::Operators::Epic,
-    Queries::Operators::EpicCrossProject,
-    Queries::Operators::Parent,
-    Queries::Operators::Children,
-    Queries::Operators::Child
-  ].index_by { |o| o.symbol.to_s }.freeze
+  class EpicCrossProject < Equals
+    label "operator_epic_cross_project"
+    set_symbol "cross_project="
+  end
 end

@@ -882,6 +882,25 @@ RSpec.describe Query,
 
       it_behaves_like "does not add a subproject id filter"
     end
+
+    context "with an epic filter using the cross_project= operator" do
+      before do
+        query.add_filter("epic", "cross_project=", ["1234"])
+      end
+
+      it_behaves_like "does not add a subproject id filter"
+    end
+
+    context "with an epic filter using the regular = operator",
+            with_settings: { display_subprojects_work_packages: false } do
+      before do
+        query.add_filter("epic", "=", ["1234"])
+      end
+
+      # Plain epic filter does not opt out of project scope, so the implicit
+      # subproject filter is still appended like for any other filter.
+      it_behaves_like "adds a subproject id filter", "!*"
+    end
   end
 
   describe "ical tokens" do

@@ -433,8 +433,18 @@ class Query < ApplicationRecord
   def project_filter_set?
     filters.any? do |filter|
       filter.is_a?(::Queries::WorkPackages::Filter::SubprojectFilter) ||
-        filter.is_a?(::Queries::WorkPackages::Filter::ProjectFilter)
+        filter.is_a?(::Queries::WorkPackages::Filter::ProjectFilter) ||
+        cross_project_epic_filter?(filter)
     end
+  end
+
+  # Epic filter set with the cross_project= operator opts the query out of the
+  # implicit project scope so work packages with the matching epic_id show up
+  # from every visible project, not only the query's own.
+  def cross_project_epic_filter?(filter)
+    filter.is_a?(::Queries::WorkPackages::Filter::EpicFilter) &&
+      filter.respond_to?(:cross_project?) &&
+      filter.cross_project?
   end
 
   def for_all?

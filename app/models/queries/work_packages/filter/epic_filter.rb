@@ -36,6 +36,13 @@ class Queries::WorkPackages::Filter::EpicFilter <
     operator_strategy.sql_for_field(no_templated_values, self.class.model.table_name, :epic_id)
   end
 
+  # When the operator is the cross-project variant, the query should ignore its
+  # project scope so work packages whose epic_id matches in *any* visible project
+  # show up. Query#project_filter_set? keys on this.
+  def cross_project?
+    operator.to_s == ::Queries::Operators::EpicCrossProject.symbol
+  end
+
   private
 
   # Epic links may be cross-project (see docs/development/epic-link-implementation-tasks.md),
@@ -44,5 +51,11 @@ class Queries::WorkPackages::Filter::EpicFilter <
   # marks the filter as invalid and the whole query short-circuits to no results.
   def visible_scope
     WorkPackage.visible
+  end
+
+  # Use a strategy that adds the cross_project= operator on top of the standard
+  # huge-list operators and defaults to it, so new epic filters span projects.
+  def type_strategy
+    @type_strategy ||= ::Queries::Filters::Strategies::EpicHugeList.new(self)
   end
 end

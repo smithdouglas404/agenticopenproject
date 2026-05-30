@@ -31,7 +31,36 @@
 require "spec_helper"
 
 RSpec.describe API::V3::Queries::Schemas::EpicFilterDependencyRepresenter do
-  it_behaves_like "relation filter dependency" do
-    let(:filter) { Queries::WorkPackages::Filter::EpicFilter.create!(context: query) }
+  include API::V3::Utilities::PathHelper
+
+  let(:project) { build_stubbed(:project) }
+  let(:query) { build_stubbed(:query, project:) }
+  let(:filter) { Queries::WorkPackages::Filter::EpicFilter.create!(context: query) }
+  let(:operator) { Queries::Operators::Equals }
+  let(:instance) { described_class.new(filter, operator, form_embedded: false) }
+
+  describe "#href_callback" do
+    subject(:href) { instance.href_callback }
+
+    it "returns the cross-project work_packages endpoint, ignoring the query's project" do
+      expect(href).to eq(api_v3_paths.work_packages)
+    end
+
+    it "produces the same href regardless of the current project, so cross-project epics are selectable" do
+      other_project = build_stubbed(:project)
+      other_query = build_stubbed(:query, project: other_project)
+      other_filter = Queries::WorkPackages::Filter::EpicFilter.create!(context: other_query)
+      other_instance = described_class.new(other_filter, operator, form_embedded: false)
+
+      expect(href).to eq(other_instance.href_callback)
+    end
+
+    it "produces the same href for a global (no-project) query" do
+      global_query = build_stubbed(:query, project: nil)
+      global_filter = Queries::WorkPackages::Filter::EpicFilter.create!(context: global_query)
+      global_instance = described_class.new(global_filter, operator, form_embedded: false)
+
+      expect(global_instance.href_callback).to eq(api_v3_paths.work_packages)
+    end
   end
 end

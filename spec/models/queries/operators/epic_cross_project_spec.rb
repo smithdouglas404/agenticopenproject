@@ -28,21 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Queries
-      module Schemas
-        class EpicFilterDependencyRepresenter < ByWorkPackageFilterDependencyRepresenter
-          # Epic links may live in a different project than the work package
-          # linking to them (see docs/development/epic-link-implementation-tasks.md),
-          # so the value picker has to offer epics from every visible project —
-          # not only the current one. Override the project-scoped href callback
-          # from the parent class to always use the cross-project endpoint.
-          def href_callback
-            api_v3_paths.work_packages
-          end
-        end
-      end
-    end
+require "spec_helper"
+
+RSpec.describe Queries::Operators::EpicCrossProject do
+  it "uses the cross_project= symbol" do
+    expect(described_class.symbol).to eq("cross_project=")
+  end
+
+  it "produces the same SQL as the regular Equals operator" do
+    sql = described_class.sql_for_field(%w[1 2], "work_packages", :epic_id)
+
+    expect(sql).to eq(Queries::Operators::Equals.sql_for_field(%w[1 2], "work_packages", :epic_id))
+  end
+
+  it "is registered in the operator index" do
+    expect(Queries::Operators::OPERATORS["cross_project="]).to eq(described_class)
   end
 end
