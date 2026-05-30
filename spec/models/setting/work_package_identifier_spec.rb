@@ -31,6 +31,12 @@
 require "spec_helper"
 
 RSpec.describe Setting::WorkPackageIdentifier do
+  describe "ALLOWED_VALUES" do
+    it "lists semantic before classic" do
+      expect(described_class::ALLOWED_VALUES).to eq [described_class::SEMANTIC, described_class::CLASSIC]
+    end
+  end
+
   context "when the setting is 'semantic'", with_settings: { work_packages_identifier: "semantic" } do
     it { expect(described_class.semantic?).to be true }
     it { expect(described_class.classic?).to be false }

@@ -32,7 +32,7 @@ class Setting
   module WorkPackageIdentifier
     CLASSIC  = "classic"
     SEMANTIC = "semantic"
-    ALLOWED_VALUES = [CLASSIC, SEMANTIC].freeze
+    ALLOWED_VALUES = [SEMANTIC, CLASSIC].freeze
 
     def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
     def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
