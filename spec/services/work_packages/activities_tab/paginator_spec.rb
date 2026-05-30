@@ -283,7 +283,9 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
 
         # Journals and changesets have independent id sequences, so the kind
         # holding the higher id is determined at runtime — but whichever it
-        # is must come first under the `id DESC` secondary sort.
+        # is must come first under the `id DESC` secondary sort. (Should a
+        # journal and changeset ever collide on both timestamp and id, the
+        # trailing `kind DESC` sort keeps the order deterministic.)
         ordered_pairs = records.map { |r| r.is_a?(Changeset) ? [:changeset, r.id] : [:journal, r.id] }
         journal_pos   = ordered_pairs.index([:journal, tied_journal.id])
         changeset_pos = ordered_pairs.index([:changeset, tied_changeset.id])
@@ -331,6 +333,13 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
       context "when user cannot see internal comments" do
         let(:member_role) { create(:project_role, permissions: %i[view_work_packages]) }
         let(:member_user) { create(:user, member_with_roles: { project => member_role }) }
+        let(:internal_sequence_version) do
+          Journal
+            .where(journable: work_package)
+            .with_sequence_version
+            .where(id: internal_journal.id)
+            .pick("ranked.sequence_version")
+        end
 
         before do
           allow(User).to receive(:current).and_return(member_user)
@@ -352,11 +361,6 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         end
 
         it "falls back to page 1 when anchoring to an internal journal by sequence_version" do
-          internal_sequence_version = Journal
-            .where(journable: work_package)
-            .with_sequence_version
-            .where(id: internal_journal.id)
-            .pick("ranked.sequence_version")
           params[:anchor] = "activity-#{internal_sequence_version}"
           pagy, _records = described_class.new(work_package, params).call
 

@@ -105,5 +105,23 @@ RSpec.describe OpenProject::JournalFormatter::Attachment do
 
       it { expect(instance.render(key, [attachment.filename.to_s, nil], html: false)).to eq(expected) }
     end
+
+    describe "attachment resolution" do
+      it "resolves the attachment through the request cache, querying once across renders" do
+        cache = JournalFormatterCache.new
+
+        recorder = ActiveRecord::QueryRecorder.new do
+          2.times { instance.render(key, [nil, attachment.filename.to_s], html: true, cache:) }
+        end
+
+        attachment_queries = recorder.log.grep(/FROM "attachments"/i)
+        expect(attachment_queries.size).to eq(1)
+      end
+
+      it "still resolves the attachment when no cache is supplied" do
+        expect(instance.render(key, [nil, attachment.filename.to_s], html: true))
+          .to include(attachment.filename.to_s)
+      end
+    end
   end
 end

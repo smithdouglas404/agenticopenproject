@@ -50,7 +50,7 @@ class WorkPackages::ActivitiesTab::Paginator::ActivitiesQuery
     Journal
       .from(Arel.sql("(#{union_sql}) AS activities"))
       .select(Arel.sql("activities.id, activities.kind, activities.activity_at"))
-      .order(Arel.sql("activities.activity_at DESC, activities.id DESC"))
+      .order(Arel.sql("activities.activity_at DESC, activities.id DESC, activities.kind DESC"))
   end
 
   private

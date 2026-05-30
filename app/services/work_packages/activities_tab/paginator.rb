@@ -165,30 +165,34 @@ class WorkPackages::ActivitiesTab::Paginator
       .pick(:created_at, :id)
   end
 
+  # The page slice arrives ordered by the database; that ordering is the source
+  # of truth for the feed, and rebuilding the list in ref order preserves it.
   def load_activities(page_relation)
-    activity_refs = page_relation.pluck(Arel.sql("activities.kind"), Arel.sql("activities.id"))
-    activities_by_kind = load_page_activities_by_kind(activity_refs)
+    ordered_refs = page_relation.pluck(Arel.sql("activities.kind"), Arel.sql("activities.id"))
+    records_by_kind = load_page_activities_by_kind(ordered_refs)
 
-    ordered_activities = activity_refs.filter_map { |kind, id| activities_by_kind[kind][id] }
-    eager_load_journals(ordered_activities)
+    ordered_refs.filter_map { |kind, id| records_by_kind[kind][id] }
   end
 
-  def load_page_activities_by_kind(activity_refs)
-    ids_by_kind = activity_refs.group_by(&:first).transform_values { it.map(&:last) }
+  def load_page_activities_by_kind(ordered_refs)
+    ids_by_kind = ordered_refs.group_by(&:first).transform_values { it.map(&:last) }
     {
       ActivitiesQuery::KIND_JOURNAL => load_page_journals(ids_by_kind[ActivitiesQuery::KIND_JOURNAL] || []),
       ActivitiesQuery::KIND_CHANGESET => load_page_changesets(ids_by_kind[ActivitiesQuery::KIND_CHANGESET] || [])
     }
   end
 
+  # Journals are wrapped for eager-loading here so the wrapper's batch queries
+  # (journable, predecessor, data, notifications) run against the page slice only.
   def load_page_journals(ids)
     return {} if ids.empty?
 
-    Journal
+    journals = Journal
       .where(id: ids)
       .with_sequence_version
       .includes(:user, :customizable_journals, :attachable_journals, :storable_journals, :notifications)
-      .index_by(&:id)
+
+    API::V3::Activities::ActivityEagerLoadingWrapper.wrap(journals).index_by(&:id)
   end
 
   def load_page_changesets(ids)
@@ -198,15 +202,5 @@ class WorkPackages::ActivitiesTab::Paginator
       .where(id: ids)
       .includes(:user, :repository)
       .index_by(&:id)
-  end
-
-  # Substitutes journals with their eager-loading wrappers so the wrapper's
-  # batch queries (journable, predecessor, data, notifications) run against
-  # the page slice only. Order from the input is preserved.
-  def eager_load_journals(activities)
-    journals = activities.grep(Journal)
-    wrapped_by_id = API::V3::Activities::ActivityEagerLoadingWrapper.wrap(journals).index_by(&:id)
-
-    activities.map { it.is_a?(Journal) ? wrapped_by_id[it.id] : it }
   end
 end
