@@ -55,4 +55,26 @@ RSpec.describe Queries::WorkPackages::Filter::EpicFilter do
       end
     end
   end
+
+  describe "cross-project epic visibility" do
+    let(:admin) { create(:admin) }
+    let(:epic_type) { create(:type, name: "Epic") }
+    let(:task_type) { create(:type, name: "Task") }
+    let(:epic_project) { create(:project, types: [epic_type, task_type]) }
+    let(:other_project) { create(:project, types: [epic_type, task_type]) }
+    let(:epic) { create(:work_package, project: epic_project, type: epic_type) }
+    let!(:linked_task) do
+      create(:work_package, project: other_project, type: task_type, epic_id: epic.id)
+    end
+    let(:other_query) { build(:query, project: other_project, user: admin) }
+    let(:instance) do
+      described_class.create!(name: :epic, context: other_query, operator: "=", values: [epic.id.to_s])
+    end
+
+    before { login_as(admin) }
+
+    it "is valid when filtering by an epic that lives in a different project" do
+      expect(instance).to be_valid
+    end
+  end
 end

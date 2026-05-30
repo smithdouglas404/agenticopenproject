@@ -35,4 +35,14 @@ class Queries::WorkPackages::Filter::EpicFilter <
   def where
     operator_strategy.sql_for_field(no_templated_values, self.class.model.table_name, :epic_id)
   end
+
+  private
+
+  # Epic links may be cross-project (see docs/development/epic-link-implementation-tasks.md),
+  # so the selectable epic must not be restricted to the current project's subtree the way
+  # ParentFilter is. Otherwise selecting an epic that lives outside the current project
+  # marks the filter as invalid and the whole query short-circuits to no results.
+  def visible_scope
+    WorkPackage.visible
+  end
 end
