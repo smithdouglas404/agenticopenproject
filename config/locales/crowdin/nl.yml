@@ -57,7 +57,7 @@ nl:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -5346,7 +5346,7 @@ nl:
   setting_welcome_on_homescreen: Toon het Welkom blok op thuisscherm
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Standaardmodus markeren
   setting_work_package_list_default_highlighted_attributes: Inline gemarkeerd standaardkenmerken
