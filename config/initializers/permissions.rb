@@ -228,6 +228,7 @@ Rails.application.reloader.to_prepare do
       map.permission :manage_versions,
                      {
                        "projects/settings/versions": [:show],
+                       "projects/settings/releases": [:show],
                        versions: %i[new create edit update close_completed destroy]
                      },
                      permissible_on: :project,

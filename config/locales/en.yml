@@ -667,6 +667,9 @@ en:
         no_results_title_text: There are currently no types available.
         form:
           enable_type_in_project: 'Enable type "%{type}"'
+      releases:
+        no_results_title_text: There are currently no releases for the project.
+        no_results_content_text: Create a new release
       versions:
         no_results_title_text: There are currently no versions for the project.
         no_results_content_text: Create a new version
@@ -3707,7 +3710,11 @@ en:
   label_relation_delete: "Delete relation"
   label_relation_edit: "Edit relation"
   label_relation_new: "New relation"
+  label_release: "Release"
+  label_release_edit: "Edit release"
+  label_release_new: "New release"
   label_release_notes: "Release notes"
+  label_release_plural: "Releases"
   label_remaining_work: "Remaining work"
   label_remove_column: "Remove column"
   label_remove_columns: "Remove selected columns"

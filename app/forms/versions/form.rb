@@ -34,6 +34,10 @@ module Versions
     include WikiHelper
 
     form do |f|
+      # Round-trip the version kind (sprint/release) so new versions are created with
+      # the kind chosen on the originating screen. Not user-editable here.
+      f.hidden(name: :kind)
+
       f.text_field(
         name: :name,
         label: attribute_name(:name),
