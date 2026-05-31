@@ -910,6 +910,8 @@ Rails.application.routes.draw do
   resources :versions, only: %i[show edit update destroy] do
     member do
       get :status_by
+      get :confirm_release
+      post :release
     end
   end
 

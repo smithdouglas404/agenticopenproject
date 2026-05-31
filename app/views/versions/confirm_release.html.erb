@@ -1,0 +1,86 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+<% html_title t("versions.release.confirm_title", name: @version.name) %>
+
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { t("versions.release.confirm_title", name: @version.name) }
+    header.with_breadcrumbs(
+      [{ href: project_overview_path(@project.id), text: @project.name },
+       { href: project_settings_releases_path(@project.id), text: t(:label_release_plural) },
+       { href: version_path(@version), text: @version.name },
+       t("versions.release.button")]
+    )
+  end
+%>
+
+<%= form_with url: release_version_path(@version), method: :post do |f| %>
+  <p><%= t("versions.release.incomplete_intro", count: @incomplete_work_packages.size) %></p>
+
+  <%= render(Primer::Beta::BorderBox.new(mb: 3)) do |box| %>
+    <% box.with_row do %>
+      <label>
+        <%= f.radio_button :strategy, "roll_forward", checked: @incomplete_work_packages.any? %>
+        <%= t("versions.release.strategy.roll_forward") %>
+      </label>
+      <div>
+        <%= f.label :target_version_id, t("versions.release.target_label") %>
+        <%= f.select :target_version_id,
+                     options_from_collection_for_select(@target_versions, :id, :name) %>
+      </div>
+    <% end %>
+    <% box.with_row do %>
+      <label>
+        <%= f.radio_button :strategy, "decouple" %>
+        <%= t("versions.release.strategy.decouple") %>
+      </label>
+    <% end %>
+    <% box.with_row do %>
+      <label>
+        <%= f.radio_button :strategy, "force", checked: @incomplete_work_packages.empty? %>
+        <%= t("versions.release.strategy.force") %>
+      </label>
+    <% end %>
+  <% end %>
+
+  <% if @incomplete_work_packages.any? %>
+    <%= render(Primer::Beta::BorderBox.new(mb: 3, test_selector: "release-incomplete-work-packages")) do |box| %>
+      <% box.with_header(font_weight: :bold) { t(:label_related_work_packages) } %>
+      <% @incomplete_work_packages.each do |issue| %>
+        <% box.with_row do %>
+          <%= render(::WorkPackages::InfoLineComponent.new(work_package: issue, font_size: :small)) %>
+          <%= content_tag(:span, issue.subject, class: "ellipsis") %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= render(Primer::Beta::Button.new(scheme: :primary, type: :submit)) { t("versions.release.submit") } %>
+  <%= render(Primer::Beta::Button.new(tag: :a, href: version_path(@version), scheme: :default)) { t(:button_cancel) } %>
+<% end %>

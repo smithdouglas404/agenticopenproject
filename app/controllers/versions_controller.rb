@@ -102,6 +102,29 @@ class VersionsController < ApplicationController
     redirect_to project_settings_versions_path(@project), status: :see_other
   end
 
+  # Confirmation screen for releasing a release: shows incomplete work packages and
+  # lets the user choose how to handle them before the release is closed.
+  def confirm_release
+    return redirect_to version_path(@version) unless @version.release? && @version.open?
+
+    @incomplete_work_packages = incomplete_release_work_packages
+    @target_versions = open_release_targets
+  end
+
+  def release
+    call = Versions::ReleaseService
+      .new(user: current_user, version: @version)
+      .call(strategy: params[:strategy], target_version: release_target_version)
+
+    if call.success?
+      flash[:notice] = t(".success")
+    else
+      flash[:error] = call.message
+    end
+
+    redirect_to version_path(@version), status: :see_other
+  end
+
   def destroy
     call = Versions::DeleteService
       .new(user: current_user,
@@ -132,6 +155,21 @@ class VersionsController < ApplicationController
   # version/roadmap screens keep creating sprints; the Releases screen passes "release".
   def new_version_kind
     params[:kind].presence_in(Version::VERSION_KINDS) || "sprint"
+  end
+
+  def release_target_version
+    Version.find_by(id: params[:target_version_id]) if params[:target_version_id].present?
+  end
+
+  def incomplete_release_work_packages
+    @version.release_work_packages
+      .merge(WorkPackage.with_status_open)
+      .includes(:status, :type)
+      .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
+  end
+
+  def open_release_targets
+    @project.shared_versions.releases.with_status_open.where.not(id: @version.id).order(:name)
   end
 
   def set_destroy_error_flash(call)

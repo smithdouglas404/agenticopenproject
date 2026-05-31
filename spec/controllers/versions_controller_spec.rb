@@ -425,4 +425,45 @@ RSpec.describe VersionsController do
       expect { Version.find(@deleted) }.to raise_error ActiveRecord::RecordNotFound
     end
   end
+
+  describe "#confirm_release" do
+    render_views
+
+    let(:release) { create(:version, project:, kind: "release") }
+
+    before { login_as(user) }
+
+    it "renders the confirmation for an open release" do
+      get :confirm_release, params: { id: release.id }
+
+      expect(response).to be_successful
+      expect(response).to render_template("confirm_release")
+    end
+
+    it "redirects when the version is not a release" do
+      get :confirm_release, params: { id: version2.id }
+      expect(response).to redirect_to(version_path(version2))
+    end
+  end
+
+  describe "#release" do
+    let(:release) { create(:version, project:, kind: "release") }
+
+    before { login_as(user) }
+
+    it "closes the release and redirects with a notice" do
+      post :release, params: { id: release.id, strategy: "force" }
+
+      expect(response).to redirect_to(version_path(release))
+      expect(release.reload.status).to eq("closed")
+      expect(flash[:notice]).to be_present
+    end
+
+    it "does not release on an invalid strategy" do
+      post :release, params: { id: release.id, strategy: "bogus" }
+
+      expect(release.reload.status).to eq("open")
+      expect(flash[:error]).to be_present
+    end
+  end
 end

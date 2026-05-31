@@ -229,7 +229,7 @@ Rails.application.reloader.to_prepare do
                      {
                        "projects/settings/versions": [:show],
                        "projects/settings/releases": [:show],
-                       versions: %i[new create edit update close_completed destroy]
+                       versions: %i[new create edit update close_completed destroy confirm_release release]
                      },
                      permissible_on: :project,
                      require: :member
