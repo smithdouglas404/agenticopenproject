@@ -42,9 +42,20 @@ module Versions
 
       target_version = (Version.find_by(id: target_version_id) if target_version_id.present?)
 
-      Versions::ReleaseService
+      result = Versions::ReleaseService
         .new(user:, version:)
         .call(strategy:, target_version:)
+
+      # Parameters were validated before enqueuing, but state can change before the job
+      # runs (e.g. the target release was closed). Log such failures so they are not
+      # silently lost; unexpected errors still propagate and fail the job normally.
+      unless result.success?
+        Rails.logger.error(
+          "Versions::ReleaseJob: releasing version #{version_id} (strategy=#{strategy}) failed: #{result.message}"
+        )
+      end
+
+      result
     end
   end
 end

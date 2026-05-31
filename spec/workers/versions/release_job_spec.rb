@@ -46,4 +46,14 @@ RSpec.describe Versions::ReleaseJob do
       described_class.perform_now(version_id: -1, user_id: user.id, strategy: "force")
     end.not_to raise_error
   end
+
+  it "logs (and does not raise) when the release can no longer be performed" do
+    release.update!(status: "closed") # no longer open, so the service rejects it
+
+    allow(Rails.logger).to receive(:error)
+    expect do
+      described_class.perform_now(version_id: release.id, user_id: user.id, strategy: "force")
+    end.not_to raise_error
+    expect(Rails.logger).to have_received(:error).with(/ReleaseJob/)
+  end
 end
