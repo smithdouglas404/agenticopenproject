@@ -31,26 +31,40 @@
 require "spec_helper"
 
 RSpec.describe Versions::ReleaseService do
-  shared_let(:user) { create(:admin) }
-  shared_let(:project) { create(:project) }
-  shared_let(:release) { create(:version, project:, name: "Release 1.0", kind: "release") }
-  shared_let(:next_release) { create(:version, project:, name: "Release 1.1", kind: "release") }
-  shared_let(:release_cf) { create(:version_wp_custom_field, version_kind: "release") }
-  shared_let(:closed_status) { create(:closed_status) }
-  shared_let(:open_status) { create(:status) }
+  let(:user) { create(:admin) }
+  let(:type) { create(:type) }
+  let(:project) { create(:project, types: [type]) }
+  let(:release) { create(:version, project:, name: "Release 1.0", kind: "release") }
+  let(:next_release) { create(:version, project:, name: "Release 1.1", kind: "release") }
+  # Multi-value version custom field marked as the Release field (the realistic setup).
+  let(:release_cf) { create(:multi_version_wp_custom_field, version_kind: "release") }
+  let(:closed_status) { create(:closed_status) }
+  let(:open_status) { create(:status) }
+
+  let!(:incomplete_wp) { create(:work_package, project:, type:, status: open_status) }
+  let!(:done_wp) { create(:work_package, project:, type:, status: closed_status) }
 
   subject(:service) { described_class.new(user:, version: release) }
 
-  # Links the work package to +version+ through the Release custom field.
-  def link_to_release(work_package, version)
-    CustomValue.create!(custom_field: release_cf, customized: work_package, value: version.id.to_s)
+  before do
+    # Activate the Release custom field for the project and type (as in real usage),
+    # then link the work packages to the release through it.
+    project.work_package_custom_fields << release_cf
+    type.custom_fields << release_cf
+    RequestStore.clear!
+    link_to_release(incomplete_wp, release)
+    link_to_release(done_wp, release)
   end
 
-  let!(:incomplete_wp) { create(:work_package, project:, status: open_status).tap { link_to_release(it, release) } }
-  let!(:done_wp) { create(:work_package, project:, status: closed_status).tap { link_to_release(it, release) } }
+  # Links the work package to +version+ through the Release custom field, the way the
+  # application does (so the value is a proper, available custom field value).
+  def link_to_release(work_package, version)
+    work_package.custom_field_values = { release_cf.id => [version.id.to_s] }
+    work_package.save!
+  end
 
   def linked_releases(work_package)
-    CustomValue.where(custom_field: release_cf, customized: work_package).pluck(:value)
+    CustomValue.where(custom_field: release_cf, customized: work_package).pluck(:value).compact_blank
   end
 
   describe "#call" do
@@ -98,6 +112,22 @@ RSpec.describe Versions::ReleaseService do
         result = service.call(strategy: "roll_forward", target_version: sprint)
 
         expect(result).to be_failure
+      end
+
+      it "fails when the target release belongs to an unrelated project" do
+        foreign_release = create(:version, project: create(:project), kind: "release")
+        result = service.call(strategy: "roll_forward", target_version: foreign_release)
+
+        expect(result).to be_failure
+        expect(release.reload.status).to eq("open")
+        expect(linked_releases(incomplete_wp)).to contain_exactly(release.id.to_s)
+      end
+    end
+
+    describe "journaling", with_settings: { journal_aggregation_time_minutes: 0 } do
+      it "records the release change in the affected work package's journal" do
+        expect { service.call(strategy: "decouple") }
+          .to change { incomplete_wp.reload.journals.count }.by(1)
       end
     end
 

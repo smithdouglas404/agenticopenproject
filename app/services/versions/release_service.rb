@@ -77,43 +77,70 @@ module Versions
     def validate_target(target_version)
       return I18n.t("versions.release.errors.target_required") if target_version.nil?
 
-      unless target_version.is_a?(Version) && target_version.release? &&
-             target_version.open? && target_version.id != @version.id
+      unless valid_target?(target_version)
         I18n.t("versions.release.errors.invalid_target")
       end
+    end
+
+    # The target must be a different, open release that is actually available to this
+    # release's project (the same set offered in the confirmation screen). This stops a
+    # user from rolling work packages forward onto an unrelated project's version by id.
+    def valid_target?(target_version)
+      target_version.is_a?(Version) &&
+        target_version.id != @version.id &&
+        allowed_target_versions.exists?(id: target_version.id)
+    end
+
+    def allowed_target_versions
+      @version.project.shared_versions.releases.with_status_open
     end
 
     def apply_strategy(strategy, target_version)
       return if strategy == "force"
 
-      scope = incomplete_release_custom_values
-      case strategy
-      when "decouple"
-        scope.delete_all
-      when "roll_forward"
-        # Avoid creating duplicate (work package, field, target) rows for work packages
-        # already linked to the target release.
-        already_in_target = CustomValue
-          .where(custom_field_id: release_custom_field_ids, customized_type: "WorkPackage", value: target_version.id.to_s)
-          .select(:customized_id)
-        scope.where(customized_id: already_in_target).delete_all
-        scope.update_all(value: target_version.id.to_s)
+      # Save through each work package so the Release custom field change is validated
+      # and journaled (visible in the work package history), rather than rewriting
+      # custom_values in bulk which would skip validations, callbacks and journals.
+      affected_work_packages.find_each do |work_package|
+        rewrite_release_links(work_package, strategy, target_version)
       end
     end
 
-    # Custom values that link this release's incomplete work packages to it.
-    def incomplete_release_custom_values
-      incomplete_ids = @version.release_work_packages.merge(WorkPackage.with_status_open).select(:id)
-
-      CustomValue.where(custom_field_id: release_custom_field_ids,
-                        customized_type: "WorkPackage",
-                        value: @version.id.to_s,
-                        customized_id: incomplete_ids)
+    def affected_work_packages
+      @version.release_work_packages.merge(WorkPackage.with_status_open)
     end
 
-    def release_custom_field_ids
-      @release_custom_field_ids ||=
-        WorkPackageCustomField.where(field_format: "version", version_kind: "release").select(:id)
+    def rewrite_release_links(work_package, strategy, target_version)
+      changes = release_link_changes(work_package, strategy, target_version)
+      return if changes.empty?
+
+      work_package.custom_field_values = changes
+      work_package.save!
+    end
+
+    # New Release custom field values per field for a work package, dropping this
+    # release and (for roll_forward) adding the target.
+    def release_link_changes(work_package, strategy, target_version)
+      release_custom_fields.each_with_object({}) do |custom_field, changes|
+        current = current_release_values(work_package, custom_field)
+        next unless current.include?(version_id_str)
+
+        remaining = current - [version_id_str]
+        changes[custom_field.id] = strategy == "roll_forward" ? (remaining + [target_version.id.to_s]).uniq : remaining
+      end
+    end
+
+    def current_release_values(work_package, custom_field)
+      CustomValue.where(customized: work_package, custom_field_id: custom_field.id).pluck(:value)
+    end
+
+    def release_custom_fields
+      @release_custom_fields ||=
+        WorkPackageCustomField.where(field_format: "version", version_kind: "release")
+    end
+
+    def version_id_str
+      @version_id_str ||= @version.id.to_s
     end
   end
 end

@@ -163,6 +163,7 @@ class VersionsController < ApplicationController
 
   def incomplete_release_work_packages
     @version.release_work_packages
+      .visible(current_user)
       .merge(WorkPackage.with_status_open)
       .includes(:status, :type)
       .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
