@@ -82,7 +82,7 @@ class Notifications::WorkflowJob < ApplicationJob
   end
 
   state :send_mails,
-        wait: -> { Setting.journal_aggregation_time_minutes.to_i.minutes } do |*notification_ids|
+        wait: -> { [Setting.journal_aggregation_time_minutes.to_i, 3600].min.minutes } do |*notification_ids|
     next unless notification_ids
 
     Notification
