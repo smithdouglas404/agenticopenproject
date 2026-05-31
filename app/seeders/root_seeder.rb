@@ -75,6 +75,7 @@ class RootSeeder < Seeder
   def do_seed!
     # Basic data needs be seeded before anything else.
     seed_basic_data
+    seed_release_custom_field
     seed_admin_user
     seed_oauth_data
     seed_demo_data
@@ -143,6 +144,11 @@ class RootSeeder < Seeder
   def seed_admin_user
     print_status "*** Seeding admin user"
     AdminUserSeeder.new(seed_data).seed!
+  end
+
+  def seed_release_custom_field
+    print_status "*** Seeding Release custom field"
+    ReleaseCustomFieldSeeder.new(seed_data).seed!
   end
 
   def seed_oauth_data
