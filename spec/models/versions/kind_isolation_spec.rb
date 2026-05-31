@@ -116,5 +116,21 @@ RSpec.describe "Version kind isolation" do # rubocop:disable RSpec/DescribeClass
 
       expect(contract.errors.symbols_for(:version_id)).to include(:inclusion)
     end
+
+    # Regression: a work package whose stored version_id is no longer offered for
+    # the sprint set (e.g. a release that leaked in before kind isolation) must
+    # stay editable, so unrelated changes such as setting a parent don't fail with
+    # "Version is not set to one of the allowed values."
+    it "does not re-validate an unchanged version_id when editing other attributes" do
+      persisted = create(:work_package, project:)
+      persisted.update_column(:version_id, release.id)
+      persisted.reload
+      persisted.subject = "Edited subject"
+
+      contract = WorkPackages::UpdateContract.new(persisted, build_stubbed(:admin))
+      contract.validate
+
+      expect(contract.errors.symbols_for(:version_id)).to be_empty
+    end
   end
 end
