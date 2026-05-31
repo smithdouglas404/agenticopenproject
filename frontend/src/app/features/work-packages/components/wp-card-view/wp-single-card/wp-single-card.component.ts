@@ -4,8 +4,10 @@ import {
   Component,
   EventEmitter, inject,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import {
   uiStateLinkClass,
@@ -54,10 +56,18 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implements OnInit {
+export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implements OnInit, OnChanges {
   @Input() public workPackage:WorkPackageResource;
 
   @Input() public selectedWhenOpen = false;
+
+  /**
+   * Whether the card's expensive content and its selection subscription are
+   * rendered. Defaults to true so existing callers (wp-grid, team planner) are
+   * unaffected. Boards set this to false initially and flip it to true once the
+   * card scrolls near the viewport (see WorkPackageCardViewComponent lazy hydration).
+   */
+  @Input() public hydrated = true;
 
   @Input() public showInfoButton = false;
 
@@ -129,8 +139,30 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   combinedDateDisplayField = CombinedDateDisplayField;
 
+  private selectionSubscribed = false;
+
   ngOnInit():void {
-    // Update selection state
+    if (this.hydrated) {
+      this.subscribeSelection();
+    }
+  }
+
+  ngOnChanges(changes:SimpleChanges):void {
+    // When a lazily-rendered card scrolls into view, hydrated flips to true.
+    // Start the selection subscription at that point (only once). The card body
+    // itself re-renders via the same change-detection pass that flipped the input.
+    if (changes.hydrated?.currentValue === true) {
+      this.subscribeSelection();
+    }
+  }
+
+  // Update selection state
+  private subscribeSelection():void {
+    if (this.selectionSubscribed) {
+      return;
+    }
+    this.selectionSubscribed = true;
+
     combineLatest([
       this.wpTableSelection.live$(),
       this.uiRouterGlobals.params$,

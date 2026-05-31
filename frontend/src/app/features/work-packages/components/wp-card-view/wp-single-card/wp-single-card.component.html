@@ -1,3 +1,11 @@
+@if (!hydrated) {
+  <div
+    class="op-wp-single-card op-wp-single-card_placeholder"
+    [ngClass]="'op-wp-single-card_' + orientation"
+    data-test-selector="op-wp-single-card"
+    aria-hidden="true">
+  </div>
+} @else {
 <div
   class="op-wp-single-card"
   data-test-selector="op-wp-single-card"
@@ -176,3 +184,4 @@
     </div>
   }
 </div>
+}

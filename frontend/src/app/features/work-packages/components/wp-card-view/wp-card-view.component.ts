@@ -9,7 +9,10 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild, OnDestroy,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  OnDestroy,
 } from '@angular/core';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
@@ -78,8 +81,25 @@ export class WorkPackageCardViewComponent extends UntilDestroyedMixin implements
   /** Whether on special mobile version of the cards shall be shown */
   @Input() public shrinkOnMobile = false;
 
+  /**
+   * When enabled, cards are rendered as lightweight placeholders and only
+   * hydrated into full cards once they scroll near the viewport. Used by boards,
+   * where a single column can hold hundreds of cards. Defaults to false so other
+   * consumers (wp-grid, team planner) keep rendering every card eagerly.
+   */
+  @Input() public lazyHydrate = false;
+
   /** Container reference */
   @ViewChild('container', { static: true }) public container:ElementRef;
+
+  /** Host elements of the rendered single cards, used to observe their visibility */
+  @ViewChildren('cardHost', { read: ElementRef })
+  public cardElements:QueryList<ElementRef<HTMLElement>>;
+
+  /** Ids of work packages whose cards have been hydrated (lazy mode only) */
+  public hydratedIds = new Set<string>();
+
+  private intersectionObserver?:IntersectionObserver;
 
   @Output() public onMoved = new EventEmitter<void>();
 
@@ -188,11 +208,88 @@ export class WorkPackageCardViewComponent extends UntilDestroyedMixin implements
     }
     this.wpTableSelection.registerSelectAllListener(() => this.cardView.renderedCards);
     this.wpTableSelection.registerDeselectAllListener();
+
+    if (this.lazyHydrate && 'IntersectionObserver' in window) {
+      this.setupLazyHydration();
+    }
   }
 
   ngOnDestroy():void {
     super.ngOnDestroy();
     this.cardDragDrop.destroy();
+    this.intersectionObserver?.disconnect();
+  }
+
+  /** Whether the card for the given work package should render its full content */
+  public isHydrated(wp:WorkPackageResource):boolean {
+    return !this.lazyHydrate || this.hydratedIds.has(wp.id!);
+  }
+
+  /**
+   * Observe every card host element; hydrate cards as they approach the viewport.
+   * A single observer per card view is used and re-pointed whenever the rendered
+   * set of cards changes (reorder, refresh, add/remove).
+   */
+  private setupLazyHydration():void {
+    this.intersectionObserver = new IntersectionObserver(
+      (entries) => this.onCardsIntersect(entries),
+      { root: this.container.nativeElement as HTMLElement, rootMargin: '200px 0px', threshold: 0 },
+    );
+
+    this.observeAll();
+
+    this.cardElements.changes
+      .pipe(this.untilDestroyed())
+      .subscribe(() => {
+        this.pruneHydratedIds();
+        this.observeAll();
+      });
+  }
+
+  private observeAll():void {
+    if (!this.intersectionObserver) {
+      return;
+    }
+
+    this.intersectionObserver.disconnect();
+    this.cardElements.forEach((ref) => this.intersectionObserver!.observe(ref.nativeElement));
+  }
+
+  private onCardsIntersect(entries:IntersectionObserverEntry[]):void {
+    let changed = false;
+
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      const el = entry.target as HTMLElement;
+      const id = el.dataset.workPackageId;
+      if (id && !this.hydratedIds.has(id)) {
+        this.hydratedIds.add(id);
+        changed = true;
+      }
+
+      this.intersectionObserver!.unobserve(el);
+    });
+
+    if (changed) {
+      this.cdRef.detectChanges();
+    }
+  }
+
+  /** Drop hydrated ids that are no longer present after a reorder/refresh/remove */
+  private pruneHydratedIds():void {
+    if (this.hydratedIds.size === 0) {
+      return;
+    }
+
+    const present = new Set(this.workPackages.map((wp) => wp.id!));
+    this.hydratedIds.forEach((id) => {
+      if (!present.has(id)) {
+        this.hydratedIds.delete(id);
+      }
+    });
   }
 
   public get workPackages():WorkPackageResource[] {
