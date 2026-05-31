@@ -154,6 +154,18 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
             it { assert_select "select", attributes: { name: "work_package[custom_field_values][#{custom_field_user.id}]" } }
           end
         end
+
+        describe "#version" do
+          shared_let(:sprint_version) { create(:version, project: project1, name: "Sprint A", kind: "sprint") }
+          shared_let(:release_version) { create(:version, project: project1, name: "Release ZZ", kind: "release") }
+
+          it "offers sprint versions but not releases for version_id" do
+            assert_select "select[name=?]", "work_package[version_id]" do
+              assert_select "option", text: "Sprint A"
+              assert_select "option", text: "Release ZZ", count: 0
+            end
+          end
+        end
       end
     end
 

@@ -116,7 +116,8 @@ class WorkPackages::MovesController < ApplicationController
     @types = @target_project.types.order(:position)
     @target_type = @types.find { |t| t.id.to_s == params[:new_type_id].to_s }
     @unavailable_type_in_target_project = set_unavailable_type_in_target_project
-    @available_versions = @target_project.assignable_versions
+    # version_id is the Sprint selection set; releases are not assignable to it.
+    @available_versions = @target_project.assignable_versions(kind: "sprint")
     @available_statuses = Workflow.available_statuses(@project)
     @notes = params[:notes] || ""
   end

@@ -42,11 +42,10 @@ RSpec.describe Queries::WorkPackages::Filter::VersionFilter do
     before do
       if project
         allow(project)
-          .to receive_message_chain(:shared_versions, :pluck)
+          .to receive_message_chain(:shared_versions, :sprints, :pluck)
           .and_return [version.id]
       else
-        allow(Version).to receive(:visible).and_return(scope)
-        allow(scope).to receive(:or).with(Version.systemwide).and_return(scope)
+        allow(Version).to receive_message_chain(:visible, :sprints).and_return(scope)
         allow(scope).to receive(:pluck).with(:id).and_return([version.id])
       end
     end
@@ -59,7 +58,7 @@ RSpec.describe Queries::WorkPackages::Filter::VersionFilter do
 
         it "is false if the value does not exist as a version" do
           allow(project)
-            .to receive_message_chain(:shared_versions, :pluck)
+            .to receive_message_chain(:shared_versions, :sprints, :pluck)
             .and_return []
 
           expect(instance).not_to be_valid
@@ -112,7 +111,7 @@ RSpec.describe Queries::WorkPackages::Filter::VersionFilter do
 
       before do
         allow(project)
-          .to receive(:shared_versions)
+          .to receive_message_chain(:shared_versions, :sprints)
           .and_return([version1, version2])
 
         instance.values = [version1.id.to_s]

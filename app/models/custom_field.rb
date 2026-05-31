@@ -84,6 +84,9 @@ class CustomField < ApplicationRecord
   validates :multi_value, absence: true, unless: :multi_value_possible?
   validates :allow_non_open_versions, absence: true, unless: :allow_non_open_versions_possible?
   validates :has_comment, absence: true, unless: :can_have_comment?
+  normalizes :version_kind, with: ->(value) { value.presence }
+  validates :version_kind, absence: true, unless: :version?
+  validates :version_kind, inclusion: { in: Version::VERSION_KINDS }, allow_blank: true
 
   before_validation :check_searchability
   after_destroy :destroy_help_text
@@ -458,13 +461,18 @@ class CustomField < ApplicationRecord
   end
 
   def deduce_versions(project, options: {})
-    if project&.persisted?
-      project.shared_versions
-    elsif options[:scope] == :visible
-      Version.visible
-    else
-      Version.systemwide
-    end
+    scope =
+      if project&.persisted?
+        project.shared_versions
+      elsif options[:scope] == :visible
+        Version.visible
+      else
+        Version.systemwide
+      end
+
+    # Restrict version custom fields configured with a version_kind (e.g. "release")
+    # to versions of that kind, keeping them a separate selection set from sprints.
+    version_kind.present? ? scope.where(kind: version_kind) : scope
   end
 
   def user_format_columns

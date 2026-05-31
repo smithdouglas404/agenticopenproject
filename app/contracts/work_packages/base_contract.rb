@@ -228,8 +228,11 @@ module WorkPackages
       end
     end
 
-    def assignable_versions(only_open: true)
-      model.try(:assignable_versions, only_open:) if model.project
+    # The native version_id field is the "Sprint" selection set, so it only offers
+    # versions of kind "sprint" by default. Version custom fields override +kind+
+    # via AssignableCustomFieldValues using the field's configured version_kind.
+    def assignable_versions(only_open: true, kind: "sprint")
+      model.try(:assignable_versions, only_open:, kind:) if model.project
     end
 
     def assignable_budgets
@@ -390,7 +393,7 @@ module WorkPackages
     end
 
     def validate_version_is_assignable
-      if model.version_id && model.assignable_versions.map(&:id).exclude?(model.version_id)
+      if model.version_id && assignable_versions.map(&:id).exclude?(model.version_id)
         errors.add :version_id, :inclusion
       end
     end

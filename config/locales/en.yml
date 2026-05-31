@@ -417,10 +417,16 @@ en:
           Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      version_kind:
+        all: >
+          Restrict this field to a single kind of version. Choose "Release" to make this a
+          Release field that only offers release versions, keeping it separate from sprints.
 
     tab:
       no_results_title_text: There are currently no custom fields.
       no_results_content_text: Create a new custom field
+    version_kind:
+      any: "Any kind"
 
   calculated_values:
     error_dialog:
@@ -1308,6 +1314,7 @@ en:
         regexp: "Regular expression"
         searchable: "Searchable"
         admin_only: "Admin-only"
+        version_kind: "Version kind"
       custom_value:
         value: "Value"
       design_color:

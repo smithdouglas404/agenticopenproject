@@ -26,9 +26,13 @@ module Boards
     end
 
     def versions(params)
+      # A version board creates one column per version, each backed by a work package
+      # version_id filter. version_id is the Sprint selection set, so only sprint
+      # versions yield valid columns (releases would build an invalid version_id filter).
       @versions ||= Version.includes(:project)
                            .where(projects: { id: params[:project].id })
                            .with_status_open
+                           .sprints
     end
 
     def create_query_params(params, version)

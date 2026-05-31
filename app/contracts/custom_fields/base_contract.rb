@@ -54,6 +54,7 @@ module CustomFields
     attribute :regexp
     attribute :searchable
     attribute :type
+    attribute :version_kind
 
     def validate_non_true_for_some_formats
       return unless %w[bool calculated_value].include?(field_format)

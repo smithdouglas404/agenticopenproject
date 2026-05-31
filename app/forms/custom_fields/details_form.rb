@@ -136,6 +136,19 @@ module CustomFields
         )
       end
 
+      if show_version_kind_field?
+        details_form.select_list(
+          name: :version_kind,
+          label: label(:version_kind),
+          caption: instructions(:version_kind),
+          include_blank: I18n.t("custom_fields.version_kind.any")
+        ) do |list|
+          Version::VERSION_KINDS.each do |kind|
+            list.option(value: kind, label: I18n.t(:"version_kind_#{kind}"))
+          end
+        end
+      end
+
       if show_has_comment_field?
         details_form.check_box(
           name: :has_comment,
@@ -275,6 +288,10 @@ module CustomFields
 
     def show_non_open_versions_field?
       %w[version].include?(model.field_format) && model.allow_non_open_versions_possible?
+    end
+
+    def show_version_kind_field?
+      model.is_a?(WorkPackageCustomField) && model.version?
     end
 
     def show_admin_only_field?
