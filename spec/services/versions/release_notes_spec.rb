@@ -82,4 +82,26 @@ RSpec.describe Versions::ReleaseNotes do
       it { expect(notes).not_to be_any }
     end
   end
+
+  describe "#merge_into" do
+    it "appends the notes to existing content, preserving it" do
+      result = notes.merge_into("Manually written intro.")
+
+      expect(result).to include("Manually written intro.")
+      expect(result).to include("# Release 1.0")
+    end
+
+    it "creates content when the page is blank" do
+      expect(notes.merge_into("")).to include("# Release 1.0")
+      expect(notes.merge_into(nil)).to include("# Release 1.0")
+    end
+
+    it "replaces the previous notes block on re-write, keeping other content (idempotent)" do
+      first = notes.merge_into("Manual content.")
+      second = notes.merge_into(first)
+
+      expect(second.scan("# Release 1.0").size).to eq(1)
+      expect(second).to include("Manual content.")
+    end
+  end
 end

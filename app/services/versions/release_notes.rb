@@ -57,7 +57,34 @@ module Versions
       sections.join("\n\n")
     end
 
+    # Returns +existing_text+ with this release's notes inserted or replaced in place,
+    # preserving any other content on the page. The notes are wrapped in version-scoped
+    # marker comments so re-writing updates them idempotently and never destroys other
+    # content (or another release's notes on the same page).
+    def merge_into(existing_text)
+      text = existing_text.to_s
+      return text.sub(notes_block_pattern) { notes_block } if text.match?(notes_block_pattern)
+
+      [text.presence, notes_block].compact.join("\n\n")
+    end
+
     private
+
+    def notes_block
+      [marker_start, to_markdown, marker_end].join("\n")
+    end
+
+    def notes_block_pattern
+      /#{Regexp.escape(marker_start)}.*?#{Regexp.escape(marker_end)}/m
+    end
+
+    def marker_start
+      "<!-- release-notes:#{@version.id} -->"
+    end
+
+    def marker_end
+      "<!-- /release-notes:#{@version.id} -->"
+    end
 
     def type_section(type, work_packages)
       heading = "## #{type&.name || I18n.t(:label_none)}"

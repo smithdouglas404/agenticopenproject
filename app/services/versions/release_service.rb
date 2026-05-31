@@ -106,8 +106,11 @@ module Versions
       end
     end
 
+    # Only work packages the acting user can see are affected, matching the confirmation
+    # screen and avoiding mutating work packages in other projects the user cannot access
+    # (e.g. for a shared/system release).
     def affected_work_packages
-      @version.release_work_packages.merge(WorkPackage.with_status_open)
+      @version.release_work_packages.visible(@user).merge(WorkPackage.with_status_open)
     end
 
     def rewrite_release_links(work_package, strategy, target_version)
@@ -115,7 +118,10 @@ module Versions
       return if changes.empty?
 
       work_package.custom_field_values = changes
-      work_package.save!
+      # Skip validations: we only set a valid Release custom field value, and an unrelated
+      # validation failure on a work package must not make the release un-releasable. The
+      # change is still journaled (journaling runs on save regardless of validation).
+      work_package.save(validate: false) # rubocop:disable Rails/SaveBang
     end
 
     # New Release custom field values per field for a work package, dropping this

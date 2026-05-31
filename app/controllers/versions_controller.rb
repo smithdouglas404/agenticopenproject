@@ -175,13 +175,16 @@ class VersionsController < ApplicationController
   end
 
   def persist_release_notes_to_wiki
-    notes = Versions::ReleaseNotes.new(@version).to_markdown
+    notes = Versions::ReleaseNotes.new(@version)
     page = @project.wiki.find_page(@version.wiki_page_title)
 
     if page
-      WikiPages::UpdateService.new(user: current_user, model: page).call(text: notes)
+      # Merge into the existing page so other content (and other releases' notes) is kept.
+      WikiPages::UpdateService.new(user: current_user, model: page)
+        .call(text: notes.merge_into(page.text))
     else
-      WikiPages::CreateService.new(user: current_user).call(wiki: @project.wiki, title: @version.wiki_page_title, text: notes)
+      WikiPages::CreateService.new(user: current_user)
+        .call(wiki: @project.wiki, title: @version.wiki_page_title, text: notes.to_markdown)
     end
   end
 
