@@ -63,6 +63,14 @@ RSpec.describe Version do
       expect(version.errors[:kind]).to be_present
     end
 
+    it "cannot be changed once the version is persisted" do
+      persisted = create(:version, kind: "sprint")
+      persisted.kind = "release"
+
+      expect(persisted).not_to be_valid
+      expect(persisted.errors.symbols_for(:kind)).to include(:unchangeable)
+    end
+
     describe "scopes" do
       let!(:sprint_version) { create(:version, kind: "sprint") }
       let!(:release_version) { create(:version, kind: "release") }

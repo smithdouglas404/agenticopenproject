@@ -45,7 +45,7 @@ See COPYRIGHT and LICENSE files for more details.
         "aria-label": t(:label_more)
       }
     ) do |menu|
-      if @project.versions.any?
+      if @project.versions.sprints.any?
         menu.with_item(
           tag: :button,
           label: t(:label_close_versions),

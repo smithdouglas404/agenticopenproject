@@ -291,6 +291,9 @@ RSpec.describe Project do
         create(:work_package, version: v)
       end
     end
+    let!(:completed_release) do
+      create(:version, project:, kind: "release", effective_date: Date.parse("2000-01-01"))
+    end
 
     before do
       project.close_completed_versions
@@ -308,6 +311,11 @@ RSpec.describe Project do
 
     it "keeps the version with open work packages open" do
       expect(version_with_open_wps.reload.status)
+        .to eq "open"
+    end
+
+    it "does not close completed release versions (only sprints)" do
+      expect(completed_release.reload.status)
         .to eq "open"
     end
   end

@@ -51,6 +51,7 @@ class Version < ApplicationRecord
   validates :start_date, format: { with: /\A\d{4}-\d{2}-\d{2}\z/, message: :not_a_date, allow_nil: true }
   validates :status, inclusion: { in: VERSION_STATUSES }
   validates :kind, inclusion: { in: VERSION_KINDS }
+  validate :validate_kind_unchanged, on: :update
   validate :validate_start_date_before_effective_date
 
   scopes :rolled_up,
@@ -216,6 +217,13 @@ class Version < ApplicationRecord
     if effective_date && start_date && effective_date < start_date
       errors.add :effective_date, :greater_than_start_date
     end
+  end
+
+  # The kind separates the sprint and release selection sets; changing it on an
+  # existing version would silently reclassify work packages that reference it
+  # (e.g. a sprint's version_id would become a release), breaking that isolation.
+  def validate_kind_unchanged
+    errors.add :kind, :unchangeable if kind_changed?
   end
 
   # Returns the average estimated time of assigned issues
