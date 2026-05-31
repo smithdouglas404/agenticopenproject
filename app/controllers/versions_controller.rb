@@ -54,8 +54,10 @@ class VersionsController < ApplicationController
   end
 
   def show
-    @issues = @version
-      .work_packages
+    # Releases collect work packages via their Release custom field, not version_id.
+    scope = @version.release? ? @version.release_work_packages : @version.work_packages
+
+    @issues = scope
       .visible
       .includes(:status, :type, :priority)
       .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")

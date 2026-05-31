@@ -128,6 +128,18 @@ class Version < ApplicationRecord
     kind == "sprint"
   end
 
+  # Work packages that reference this version through a Release custom field
+  # (a version custom field configured with version_kind "release"), as opposed
+  # to #work_packages which uses the native version_id (the Sprint selection set).
+  def release_work_packages
+    cf_ids = WorkPackageCustomField.where(field_format: "version", version_kind: "release").select(:id)
+    customized_ids = CustomValue
+      .where(custom_field_id: cf_ids, customized_type: "WorkPackage", value: id.to_s)
+      .select(:customized_id)
+
+    WorkPackage.where(id: customized_ids)
+  end
+
   # Returns true if the version is completed: finish date reached and no open issues
   def completed?
     effective_date && (effective_date <= Date.today) && open_issues_count.zero?

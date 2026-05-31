@@ -1,0 +1,58 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+<%
+  total = issues.size
+  done = issues.count { |issue| issue.status.is_closed? }
+  percent = total.zero? ? 0 : (done * 100.0 / total).round
+%>
+
+<%= render(Primer::Beta::BorderBox.new(mb: 3, test_selector: "release-readiness")) do |box| %>
+  <% box.with_header(font_weight: :bold) { t(:label_release_readiness) } %>
+  <% box.with_row do %>
+    <%= render(Primer::Beta::Text.new(font_size: :normal)) do %>
+      <%= t(:label_release_readiness_done) %>: <%= "#{done} / #{total}" %> (<%= percent %>%)
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render(Primer::Beta::BorderBox.new(test_selector: "release-work-packages")) do |box| %>
+  <% box.with_header(font_weight: :bold) { t(:label_related_work_packages) } %>
+  <% if issues.present? %>
+    <% issues.each do |issue| %>
+      <% box.with_row do %>
+        <%= render(::WorkPackages::InfoLineComponent.new(work_package: issue, font_size: :small)) %>
+        <%= content_tag(:span, issue.subject, class: "ellipsis") %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <% box.with_row do %>
+      <%= t("projects.settings.releases.no_work_packages") %>
+    <% end %>
+  <% end %>
+<% end %>

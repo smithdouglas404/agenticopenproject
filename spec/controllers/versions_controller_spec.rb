@@ -237,6 +237,27 @@ RSpec.describe VersionsController do
     subject { assigns(:version) }
 
     it { is_expected.to eq(version2) }
+
+    context "for a release version" do
+      let(:release) { create(:version, project:, kind: "release") }
+      let(:release_cf) { create(:version_wp_custom_field, version_kind: "release") }
+      let(:wp) { create(:work_package, project:) }
+
+      before do
+        CustomValue.create!(custom_field: release_cf, customized: wp, value: release.id.to_s)
+        get :show, params: { id: release.id }
+      end
+
+      it { expect(response).to be_successful }
+
+      it "assigns the release's custom-field work packages" do
+        expect(assigns(:issues)).to include(wp)
+      end
+
+      it "renders the release hub readiness section" do
+        expect(response.body).to include(I18n.t(:label_release_readiness))
+      end
+    end
   end
 
   describe "#new" do

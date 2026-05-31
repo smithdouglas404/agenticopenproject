@@ -32,7 +32,7 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_breadcrumbs(
       [{ href: project_overview_path(@project.id), text: @project.name },
        { href: project_settings_general_path(@project.id), text: I18n.t("label_project_settings") },
-       { href: project_settings_versions_path(@project.id), text: I18n.t("label_version_plural") },
+       { href: version_settings_path(@version), text: version_kind_label(@version, :plural) },
        @version.name]
     )
     if authorize_for(:versions, :edit)
@@ -88,17 +88,21 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<%= render(Grids::WidgetGridComponent.new) do |grid| %>
-  <% grid.with_widget(Projects::Settings::Versions::OverviewWidgetComponent, version: @version) %>
-  <% grid.with_widget(Projects::Settings::Versions::ProgressWidgetComponent, version: @version, project: @project) %>
-  <% if @version.wiki_page %>
-    <% grid.with_widget(Projects::Settings::Versions::WikiWidgetComponent, version: @version) %>
-  <% end %>
-  <% if @issues.present? %>
-    <% grid.with_widget(Projects::Settings::Versions::RelatedIssuesWidgetComponent, version: @version, issues: @issues) %>
-  <% end %>
-  <% if @version.work_packages.any? %>
-    <% grid.with_widget(Projects::Settings::Versions::WorkPackagesGraphWidgetComponent, version: @version) %>
+<% if @version.release? %>
+  <%= render "versions/release_hub", version: @version, issues: @issues %>
+<% else %>
+  <%= render(Grids::WidgetGridComponent.new) do |grid| %>
+    <% grid.with_widget(Projects::Settings::Versions::OverviewWidgetComponent, version: @version) %>
+    <% grid.with_widget(Projects::Settings::Versions::ProgressWidgetComponent, version: @version, project: @project) %>
+    <% if @version.wiki_page %>
+      <% grid.with_widget(Projects::Settings::Versions::WikiWidgetComponent, version: @version) %>
+    <% end %>
+    <% if @issues.present? %>
+      <% grid.with_widget(Projects::Settings::Versions::RelatedIssuesWidgetComponent, version: @version, issues: @issues) %>
+    <% end %>
+    <% if @version.work_packages.any? %>
+      <% grid.with_widget(Projects::Settings::Versions::WorkPackagesGraphWidgetComponent, version: @version) %>
+    <% end %>
   <% end %>
 <% end %>
 <%= call_hook :view_versions_show_bottom, version: @version %>

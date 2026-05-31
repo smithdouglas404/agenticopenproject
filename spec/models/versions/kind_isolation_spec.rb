@@ -61,6 +61,27 @@ RSpec.describe "Version kind isolation" do # rubocop:disable RSpec/DescribeClass
     end
   end
 
+  describe "Version#release_work_packages" do
+    let(:release_cf) { create(:version_wp_custom_field, version_kind: "release") }
+    let(:wp_in_release) { create(:work_package, project:) }
+    let(:wp_in_sprint) { create(:work_package, project:, version: sprint) }
+    let(:wp_in_other_release) { create(:work_package, project:) }
+    let(:other_release) { create(:version, project:, name: "Release 2.0", kind: "release") }
+
+    before do
+      CustomValue.create!(custom_field: release_cf, customized: wp_in_release, value: release.id.to_s)
+      CustomValue.create!(custom_field: release_cf, customized: wp_in_other_release, value: other_release.id.to_s)
+    end
+
+    it "returns work packages referencing the release via the release custom field" do
+      expect(release.release_work_packages).to contain_exactly(wp_in_release)
+    end
+
+    it "does not include work packages that merely have the version as their sprint (version_id)" do
+      expect(release.release_work_packages).not_to include(wp_in_sprint)
+    end
+  end
+
   describe "the native version_id field on a work package" do
     let(:work_package) { build(:work_package, project:) }
 
