@@ -149,7 +149,6 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         endDate: "2018-01-09",
         status: "closed",
         sharing: "descendants",
-        kind: "release",
         _links: {
           "customField#{list_cf.id}": {
             href: api_v3_paths.custom_option(list_cf.custom_options.last.id)
@@ -183,7 +182,7 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         "endDate" => "2018-01-09",
         "status" => "closed",
         "sharing" => "descendants",
-        "kind" => "release",
+        "kind" => "sprint", # kind is immutable on update; it stays as created
         "_links/definingProject/title" => project.name,
         "_links/customField#{list_cf.id}/href" => api_v3_paths.custom_option(list_cf.custom_options.last.id),
         "customField#{int_cf.id}" => 5
@@ -193,6 +192,15 @@ RSpec.describe "API v3 Version resource", content_type: :json do
         expect(response.body)
           .to be_json_eql(value.to_json)
           .at_path(path)
+      end
+    end
+
+    context "when attempting to change the kind" do
+      let(:body) { { kind: "release" }.to_json }
+
+      it "is rejected (kind is immutable after creation)" do
+        expect(response).to have_http_status(422)
+        expect(version.reload.kind).to eq("sprint")
       end
     end
 
