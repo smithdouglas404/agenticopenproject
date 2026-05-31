@@ -425,4 +425,84 @@ RSpec.describe VersionsController do
       expect { Version.find(@deleted) }.to raise_error ActiveRecord::RecordNotFound
     end
   end
+
+  describe "#confirm_release" do
+    render_views
+
+    let(:release) { create(:version, project:, kind: "release") }
+
+    before { login_as(user) }
+
+    it "renders the confirmation for an open release" do
+      get :confirm_release, params: { id: release.id }
+
+      expect(response).to be_successful
+      expect(response).to render_template("confirm_release")
+    end
+
+    it "disables roll-forward when there are no other open releases" do
+      get :confirm_release, params: { id: release.id }
+
+      assert_select "input[type=radio][value=roll_forward][disabled=disabled]"
+    end
+
+    it "enables roll-forward when another open release exists" do
+      create(:version, project:, kind: "release", name: "Next release")
+      get :confirm_release, params: { id: release.id }
+
+      assert_select "input[type=radio][value=roll_forward]"
+      assert_select "input[type=radio][value=roll_forward][disabled=disabled]", count: 0
+    end
+
+    it "redirects when the version is not a release" do
+      get :confirm_release, params: { id: version2.id }
+      expect(response).to redirect_to(version_path(version2))
+    end
+  end
+
+  describe "#release" do
+    let(:release) { create(:version, project:, kind: "release") }
+
+    before { login_as(user) }
+
+    it "closes the release and redirects with a notice" do
+      post :release, params: { id: release.id, strategy: "force" }
+
+      expect(response).to redirect_to(version_path(release))
+      expect(release.reload.status).to eq("closed")
+      expect(flash[:notice]).to be_present
+    end
+
+    it "does not release on an invalid strategy" do
+      post :release, params: { id: release.id, strategy: "bogus" }
+
+      expect(release.reload.status).to eq("open")
+      expect(flash[:error]).to be_present
+    end
+  end
+
+  describe "#write_release_notes" do
+    let!(:wiki) { create(:wiki, project:) }
+    let(:release) { create(:version, project:, kind: "release", wiki_page_title: "Release notes") }
+
+    before { login_as(user) }
+
+    it "writes the release notes to the linked wiki page" do
+      post :write_release_notes, params: { id: release.id }
+
+      expect(response).to redirect_to(version_path(release))
+      expect(flash[:notice]).to be_present
+
+      page = WikiPage.find_by(title: "Release notes")
+      expect(page).to be_present
+      expect(page.text).to include(release.name)
+    end
+
+    it "redirects without writing when no wiki page is linked" do
+      release.update_column(:wiki_page_title, nil)
+      post :write_release_notes, params: { id: release.id }
+
+      expect(response).to redirect_to(version_path(release))
+    end
+  end
 end

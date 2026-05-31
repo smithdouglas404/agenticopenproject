@@ -1038,6 +1038,34 @@ en:
     overview:
       work_packages_in_archived_projects: "The version is shared with archived projects which still have work packages assigned to this version. These are counted, but will not appear in the linked views."
       no_results_title_text: There are currently no work packages assigned to this version.
+    release_notes:
+      title: "Release notes"
+      hint: "Generated from the completed work packages in this release, grouped by type."
+      empty: "No completed work packages yet, so there are no release notes."
+      write_to_wiki: "Write to wiki page \"%{page}\""
+      written: "Release notes were written to the wiki page \"%{page}\"."
+      write_failed: "The release notes could not be written to the wiki page."
+    release:
+      success: "The release has been released."
+      button: "Release"
+      confirm_title: "Release %{name}"
+      incomplete_intro:
+        zero: "All work packages in this release are complete."
+        one: "1 work package in this release is not complete. Choose how to handle it:"
+        other: "%{count} work packages in this release are not complete. Choose how to handle them:"
+      strategy:
+        roll_forward: "Move them to another release"
+        decouple: "Remove them from this release"
+        force: "Keep them in this release"
+      target_label: "Target release"
+      submit: "Release"
+      errors:
+        unauthorized: "You are not allowed to release this version."
+        not_a_release: "Only releases can be released."
+        not_open: "Only open releases can be released."
+        invalid_strategy: "Please choose how to handle the incomplete work packages."
+        target_required: "Please select a release to move the incomplete work packages to."
+        invalid_target: "The selected target is not a valid open release."
 
   wiki:
     page_not_editable_index: The requested page does not (yet) exist. You have been redirected to the index of all wiki pages.

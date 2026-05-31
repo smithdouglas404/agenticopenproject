@@ -35,6 +35,22 @@ See COPYRIGHT and LICENSE files for more details.
        { href: version_settings_path(@version), text: version_kind_label(@version, :plural) },
        @version.name]
     )
+    if @version.release? && @version.open? && authorize_for(:versions, :release)
+      header.with_action_button(
+        tag: :a,
+        scheme: :primary,
+        mobile_icon: :rocket,
+        mobile_label: t("versions.release.button"),
+        size: :medium,
+        href: confirm_release_version_path(@version),
+        aria: { label: t("versions.release.button") },
+        data: { test_selector: "version-release-button" },
+        title: t("versions.release.button")
+      ) do |button|
+        button.with_leading_visual_icon(icon: :rocket)
+        t("versions.release.button")
+      end
+    end
     if authorize_for(:versions, :edit)
       header.with_action_button(
         tag: :a,
@@ -93,7 +109,8 @@ See COPYRIGHT and LICENSE files for more details.
              version: @version,
              issues: @issues,
              total_count: @issues_total_count,
-             closed_count: @issues_closed_count %>
+             closed_count: @issues_closed_count,
+             release_notes: @release_notes %>
 <% else %>
   <%= render(Grids::WidgetGridComponent.new) do |grid| %>
     <% grid.with_widget(Projects::Settings::Versions::OverviewWidgetComponent, version: @version) %>

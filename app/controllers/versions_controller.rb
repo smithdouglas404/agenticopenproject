@@ -102,6 +102,40 @@ class VersionsController < ApplicationController
     redirect_to project_settings_versions_path(@project), status: :see_other
   end
 
+  # Confirmation screen for releasing a release: shows incomplete work packages and
+  # lets the user choose how to handle them before the release is closed.
+  def confirm_release
+    return redirect_to version_path(@version) unless @version.release? && @version.open?
+
+    @incomplete_work_packages = incomplete_release_work_packages
+    @target_versions = open_release_targets
+  end
+
+  def release
+    call = Versions::ReleaseService
+      .new(user: current_user, version: @version)
+      .call(strategy: params[:strategy], target_version: release_target_version)
+
+    if call.success?
+      flash[:notice] = t(".success")
+    else
+      flash[:error] = call.message
+    end
+
+    redirect_to version_path(@version), status: :see_other
+  end
+
+  # Writes the generated release notes to the release's linked wiki page. The wiki
+  # services enforce :edit_wiki_pages, so this does not bypass wiki permissions.
+  def write_release_notes
+    unless @version.release? && @version.wiki_page_title.present? && @project.wiki
+      return redirect_to version_path(@version)
+    end
+
+    set_release_notes_flash(persist_release_notes_to_wiki)
+    redirect_to version_path(@version), status: :see_other
+  end
+
   def destroy
     call = Versions::DeleteService
       .new(user: current_user,
@@ -126,12 +160,52 @@ class VersionsController < ApplicationController
       .includes(:status, :type, :priority)
       .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
       .limit(RELEASE_ISSUES_DISPLAY_LIMIT)
+
+    @release_notes = Versions::ReleaseNotes.new(@version)
   end
 
   # The kind a freshly built version should get. Defaults to "sprint" so the existing
   # version/roadmap screens keep creating sprints; the Releases screen passes "release".
   def new_version_kind
     params[:kind].presence_in(Version::VERSION_KINDS) || "sprint"
+  end
+
+  def release_target_version
+    Version.find_by(id: params[:target_version_id]) if params[:target_version_id].present?
+  end
+
+  def persist_release_notes_to_wiki
+    notes = Versions::ReleaseNotes.new(@version)
+    page = @project.wiki.find_page(@version.wiki_page_title)
+
+    if page
+      # Merge into the existing page so other content (and other releases' notes) is kept.
+      WikiPages::UpdateService.new(user: current_user, model: page)
+        .call(text: notes.merge_into(page.text))
+    else
+      WikiPages::CreateService.new(user: current_user)
+        .call(wiki: @project.wiki, title: @version.wiki_page_title, text: notes.to_markdown)
+    end
+  end
+
+  def set_release_notes_flash(call)
+    if call.success?
+      flash[:notice] = t("versions.release_notes.written", page: @version.wiki_page_title)
+    else
+      flash[:error] = call.errors.full_messages.presence || t("versions.release_notes.write_failed")
+    end
+  end
+
+  def incomplete_release_work_packages
+    @version.release_work_packages
+      .visible(current_user)
+      .merge(WorkPackage.with_status_open)
+      .includes(:status, :type)
+      .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
+  end
+
+  def open_release_targets
+    @project.shared_versions.releases.with_status_open.where.not(id: @version.id).order(:name)
   end
 
   def set_destroy_error_flash(call)
