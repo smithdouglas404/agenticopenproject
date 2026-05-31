@@ -393,6 +393,14 @@ module WorkPackages
     end
 
     def validate_version_is_assignable
+      # Only validate when the version is actually being (re)assigned. An already
+      # persisted version_id must never block unrelated edits (e.g. setting a
+      # parent), so that work packages whose stored version is no longer offered
+      # -- a closed/locked version, or a version whose kind no longer matches the
+      # sprint selection set -- stay editable. This mirrors the pre-Release-feature
+      # behaviour where the current version was always kept assignable.
+      return unless model.version_id_changed?
+
       if model.version_id && assignable_versions.map(&:id).exclude?(model.version_id)
         errors.add :version_id, :inclusion
       end
