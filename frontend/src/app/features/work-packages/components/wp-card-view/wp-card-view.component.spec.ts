@@ -97,6 +97,30 @@ describe('WorkPackageCardViewComponent lazy hydration', () => {
       expect(component.isHydrated(wp('7'))).toBe(true);
       expect(component.isHydrated(wp('8'))).toBe(false);
     });
+
+    it('always hydrates new (unsaved) resources even in lazy mode', () => {
+      component.lazyHydrate = true;
+
+      expect(component.isHydrated({ id: 'new' } as WorkPackageResource)).toBe(true);
+      expect(component.isHydrated({ id: null } as unknown as WorkPackageResource)).toBe(true);
+    });
+  });
+
+  describe('hydrate', () => {
+    it('marks a card hydrated and triggers change detection', () => {
+      component.hydrate(wp('9'));
+
+      expect(component.hydratedIds.has('9')).toBe(true);
+      expect(detectChanges).toHaveBeenCalledTimes(1);
+    });
+
+    it('is a no-op for an already hydrated card', () => {
+      component.hydratedIds.add('9');
+
+      component.hydrate(wp('9'));
+
+      expect(detectChanges).not.toHaveBeenCalled();
+    });
   });
 
   describe('setupLazyHydration', () => {
@@ -113,6 +137,18 @@ describe('WorkPackageCardViewComponent lazy hydration', () => {
       expect(io.options.root).toBe(containerEl);
       expect(io.options.rootMargin).toBe('200px 0px');
       expect(io.observed.map((el) => (el as HTMLElement).dataset.workPackageId)).toEqual(['7', '8']);
+    });
+
+    it('falls back to eager rendering when IntersectionObserver is unavailable', () => {
+      delete (window as unknown as { IntersectionObserver?:typeof IntersectionObserver }).IntersectionObserver;
+      component.lazyHydrate = true;
+      component.cardElements = cardElementsFor('7');
+
+      (component as unknown as { setupLazyHydration:() => void }).setupLazyHydration();
+
+      expect(component.lazyHydrate).toBe(false);
+      expect(detectChanges).toHaveBeenCalledTimes(1);
+      expect(FakeIntersectionObserver.instances.length).toBe(0);
     });
   });
 

@@ -14,6 +14,7 @@
     <wp-single-card #cardHost
       [workPackage]="wp"
       [hydrated]="isHydrated(wp)"
+      (hydrateRequested)="hydrate(wp)"
       [attr.data-is-new]="isNewResource(wp) || undefined"
       [attr.data-work-package-id]="wp.id"
       [attr.data-class-identifier]="cardView.classIdentifier(wp)"

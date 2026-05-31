@@ -105,6 +105,9 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   @Output() cardContextMenu = new EventEmitter<{ workPackageId:string, event:MouseEvent }>();
 
+  /** Emitted when a not-yet-hydrated (lazy) card is focused, so it can be hydrated */
+  @Output() hydrateRequested = new EventEmitter<void>();
+
   readonly pathHelper = inject(PathHelperService);
   readonly I18n = inject(I18nService);
   readonly $state = inject(StateService);
@@ -185,6 +188,14 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   public classIdentifier(wp:WorkPackageResource):string {
     return this.cardView.classIdentifier(wp);
+  }
+
+  // Hydrate a lazily-rendered card when it receives focus (keyboard / assistive
+  // technology), so the full card is reachable without relying on scroll.
+  public requestHydration():void {
+    if (!this.hydrated) {
+      this.hydrateRequested.emit();
+    }
   }
 
   public emitStateLinkClicked(event:MouseEvent, wp:WorkPackageResource, detail?:boolean):void {

@@ -209,7 +209,7 @@ export class WorkPackageCardViewComponent extends UntilDestroyedMixin implements
     this.wpTableSelection.registerSelectAllListener(() => this.cardView.renderedCards);
     this.wpTableSelection.registerDeselectAllListener();
 
-    if (this.lazyHydrate && 'IntersectionObserver' in window) {
+    if (this.lazyHydrate) {
       this.setupLazyHydration();
     }
   }
@@ -222,7 +222,15 @@ export class WorkPackageCardViewComponent extends UntilDestroyedMixin implements
 
   /** Whether the card for the given work package should render its full content */
   public isHydrated(wp:WorkPackageResource):boolean {
-    return !this.lazyHydrate || this.hydratedIds.has(wp.id!);
+    return !this.lazyHydrate || isNewResource(wp) || this.hydratedIds.has(wp.id!);
+  }
+
+  /** Hydrate a single card on demand (e.g. when it receives keyboard focus) */
+  public hydrate(wp:WorkPackageResource):void {
+    if (wp.id && !this.hydratedIds.has(wp.id)) {
+      this.hydratedIds.add(wp.id);
+      this.cdRef.detectChanges();
+    }
   }
 
   /**
@@ -231,6 +239,15 @@ export class WorkPackageCardViewComponent extends UntilDestroyedMixin implements
    * set of cards changes (reorder, refresh, add/remove).
    */
   private setupLazyHydration():void {
+    // Without IntersectionObserver (older browsers/webviews) there is no way to
+    // detect when cards approach the viewport, so fall back to eager rendering
+    // rather than leaving every card stuck as a placeholder.
+    if (!('IntersectionObserver' in window)) {
+      this.lazyHydrate = false;
+      this.cdRef.detectChanges();
+      return;
+    }
+
     this.intersectionObserver = new IntersectionObserver(
       (entries) => this.onCardsIntersect(entries),
       { root: this.container.nativeElement as HTMLElement, rootMargin: '200px 0px', threshold: 0 },

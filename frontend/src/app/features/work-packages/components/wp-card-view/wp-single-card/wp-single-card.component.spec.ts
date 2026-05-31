@@ -88,6 +88,23 @@ describe('WorkPackageSingleCardComponent', () => {
       expect(subject()).toBeNull();
     });
 
+    it('keeps the subject text so the card stays findable and readable', () => {
+      const placeholderSubject = fixture.debugElement.query(
+        By.css('[data-test-selector="op-wp-single-card--placeholder-subject"]'),
+      );
+
+      expect(placeholderSubject).not.toBeNull();
+      expect(placeholderSubject.nativeElement.textContent).toContain('A subject');
+    });
+
+    it('requests hydration when focused', () => {
+      const emit = spyOn(fixture.componentInstance.hydrateRequested, 'emit');
+
+      placeholder().nativeElement.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+
+      expect(emit).toHaveBeenCalledTimes(1);
+    });
+
     it('does not subscribe to the selection state', () => {
       expect(selection.live$).not.toHaveBeenCalled();
     });

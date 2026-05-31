@@ -1,13 +1,6 @@
-@if (!hydrated) {
-  <div
-    class="op-wp-single-card op-wp-single-card_placeholder"
-    [ngClass]="'op-wp-single-card_' + orientation"
-    data-test-selector="op-wp-single-card"
-    aria-hidden="true">
-  </div>
-} @else {
 <div
   class="op-wp-single-card"
+  [class.op-wp-single-card_placeholder]="!hydrated"
   data-test-selector="op-wp-single-card"
   data-tour-selector="op-wp-single-card"
   role="button"
@@ -16,12 +9,24 @@
   [attr.data-qa-selected]="selected || undefined"
   [ngClass]="cardClasses()"
   [title]="cardTitle()"
+  (focusin)="requestHydration()"
   (click)="cardClicked.emit({ workPackageId: workPackage.id, event: $event })"
   (keydown.enter)="cardClicked.emit({ workPackageId: workPackage.id, event: $event })"
   (keydown.space)="cardClicked.emit({ workPackageId: workPackage.id, event: $event })"
   (dblclick)="cardDblClicked.emit({ workPackageId: workPackage.id, event: $event })"
   (contextmenu)="cardContextMenu.emit({ workPackageId: workPackage.id, event: $event })"
   >
+
+@if (!hydrated) {
+  <div class="op-wp-single-card--content op-wp-single-card--content_placeholder">
+    <span class="op-wp-single-card--content-id">#{{workPackage.id}}</span>
+    <span
+      class="op-wp-single-card--content-subject"
+      data-test-selector="op-wp-single-card--placeholder-subject"
+      [textContent]="wpSubject(workPackage)"
+    ></span>
+  </div>
+} @else {
 
   <div class="op-wp-single-card--highlighting"
     [ngClass]="cardHighlightingClass(workPackage)">
@@ -183,5 +188,5 @@
       }
     </div>
   }
-</div>
 }
+</div>
