@@ -99,14 +99,22 @@ module VersionsHelper
 
   # Link to the work package view filtered by the Release custom field for this
   # version, so users can see/work with the full list. Returns nil when no release
-  # custom field exists. Uses the first release custom field if several are defined.
+  # custom field exists.
   def release_work_packages_path(version)
-    cf = WorkPackageCustomField.find_by(field_format: "version", version_kind: "release")
-    return if cf.nil?
+    release_cf_ids = WorkPackageCustomField.where(field_format: "version", version_kind: "release").pluck(:id)
+    return if release_cf_ids.empty?
 
-    project_work_packages_path(
-      version.project,
-      query_props: { f: [{ n: "customField#{cf.id}", o: "=", v: [version.id.to_s] }] }.to_json
+    # Mirror Version#release_work_packages, which matches work packages by the Release
+    # custom field value regardless of project (so shared/system releases include work
+    # packages from other projects). Hence link to the cross-project work package view
+    # filtered by the Release custom field, NOT the release project's scoped view (which
+    # would omit work packages from the other projects the hub counts/lists).
+    #
+    # Work package query filters are AND-combined, so several release custom fields
+    # cannot be OR-ed into one link; with the expected single Release field this exactly
+    # mirrors the hub's relation.
+    work_packages_path(
+      query_props: { f: [{ n: "customField#{release_cf_ids.first}", o: "=", v: [version.id.to_s] }] }.to_json
     )
   end
 
