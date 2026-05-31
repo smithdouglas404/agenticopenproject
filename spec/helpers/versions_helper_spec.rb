@@ -104,4 +104,26 @@ RSpec.describe VersionsHelper do
                                         version)).to eq("<option selected=\"selected\" value=\"#{version.id}\">#{version.name}</option>")
     end
   end
+
+  describe "#release_work_packages_path" do
+    let(:release) { create(:version, project: create(:project), kind: "release") }
+
+    it "returns nil when no release custom field exists" do
+      expect(release_work_packages_path(release)).to be_nil
+    end
+
+    context "with a release custom field" do
+      let!(:release_cf) { create(:version_wp_custom_field, version_kind: "release") }
+
+      it "links to the cross-project work package view filtered by the release custom field" do
+        path = release_work_packages_path(release)
+
+        # cross-project (global) route, not scoped to the release project
+        expect(path).to start_with("/work_packages")
+        expect(path).not_to include("/projects/")
+        expect(path).to include(ERB::Util.url_encode("customField#{release_cf.id}"))
+        expect(path).to include(ERB::Util.url_encode(release.id.to_s))
+      end
+    end
+  end
 end
