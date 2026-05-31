@@ -35,14 +35,24 @@ module OpenProject::Backlogs::Patches::SetAttributesServicePatch
     def set_attributes(attributes)
       super
 
-      if work_package.parent_id_changed? &&
-         work_package.parent_id &&
-         !work_package.version_id_changed? &&
-         work_package.in_backlogs_type?
+      inherit_version_from_parent if inherit_version_from_parent?
+    end
 
-        closest = closest_story_or_impediment(work_package.parent_id)
-        work_package.version_id = closest.version_id if closest
-      end
+    def inherit_version_from_parent?
+      work_package.parent_id_changed? &&
+        work_package.parent_id &&
+        !work_package.version_id_changed? &&
+        work_package.in_backlogs_type?
+    end
+
+    def inherit_version_from_parent
+      closest = closest_story_or_impediment(work_package.parent_id)
+      return unless closest
+
+      # Mirror the parent's sprint onto the work package. This is a system-driven
+      # change, not a user assignment, so it must bypass the assignable-version
+      # check -- the parent may legitimately be in a closed/locked sprint.
+      work_package.change_by_system { work_package.version_id = closest.version_id }
     end
 
     def closest_story_or_impediment(parent_id)

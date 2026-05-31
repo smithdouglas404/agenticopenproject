@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -576,6 +578,28 @@ RSpec.describe WorkPackages::UpdateService, "version inheritance", type: :model 
           let(:child) { bug2 }
 
           it_behaves_like "changing the child's parent to the parent leaves child's version"
+        end
+      end
+
+      # Regression: parenting a task under a story whose sprint is closed must
+      # still succeed. The inherited version is set by the system (mirroring the
+      # parent), so it bypasses the assignable-version check even though a closed
+      # version is not otherwise assignable.
+      describe "WITH a story in a closed version as parent and a task as child" do
+        let(:closed_version) { create(:version, name: "Closed sprint", project:, status: "closed") }
+        let(:parent) { story }
+        let(:child) { task2 }
+
+        it "inherits the closed version onto the child without a validation error" do
+          # Simulate a sprint that was closed after the story was assigned to it.
+          story.save!
+          story.update_column(:version_id, closed_version.id)
+          child.save!
+
+          result = instance.call(parent_id: parent.id)
+
+          expect(result).to be_success
+          expect(child.reload.version).to eql closed_version
         end
       end
     end
