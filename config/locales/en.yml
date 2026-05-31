@@ -671,6 +671,7 @@ en:
         no_results_title_text: There are currently no releases for the project.
         no_results_content_text: Create a new release
         no_work_packages: No work packages are assigned to this release yet.
+        show_all_work_packages: "View all %{count} work packages"
       versions:
         no_results_title_text: There are currently no versions for the project.
         no_results_content_text: Create a new version

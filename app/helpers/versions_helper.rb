@@ -97,6 +97,19 @@ module VersionsHelper
     t(:"label_#{key}_#{suffix}")
   end
 
+  # Link to the work package view filtered by the Release custom field for this
+  # version, so users can see/work with the full list. Returns nil when no release
+  # custom field exists. Uses the first release custom field if several are defined.
+  def release_work_packages_path(version)
+    cf = WorkPackageCustomField.find_by(field_format: "version", version_kind: "release")
+    return if cf.nil?
+
+    project_work_packages_path(
+      version.project,
+      query_props: { f: [{ n: "customField#{cf.id}", o: "=", v: [version.id.to_s] }] }.to_json
+    )
+  end
+
   def version_wp_overview_graph_initial_filters(version)
     filters = []
     case version.sharing

@@ -254,6 +254,11 @@ RSpec.describe VersionsController do
         expect(assigns(:issues)).to include(wp)
       end
 
+      it "computes readiness counts via aggregates" do
+        expect(assigns(:issues_total_count)).to eq(1)
+        expect(assigns(:issues_closed_count)).to eq(0)
+      end
+
       it "renders the release hub readiness section" do
         expect(response.body).to include(I18n.t(:label_release_readiness))
       end

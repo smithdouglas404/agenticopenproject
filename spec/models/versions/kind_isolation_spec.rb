@@ -82,6 +82,22 @@ RSpec.describe "Version kind isolation" do # rubocop:disable RSpec/DescribeClass
     end
   end
 
+  describe ".shared_via_release_custom_fields (release visibility via work packages)" do
+    let(:admin) { create(:admin) }
+
+    it "returns releases referenced by a visible work package through a release custom field" do
+      release_cf = create(:version_wp_custom_field, version_kind: "release")
+      wp = create(:work_package, project:)
+      CustomValue.create!(custom_field: release_cf, customized: wp, value: release.id.to_s)
+
+      expect(Version.shared_via_release_custom_fields(admin)).to include(release)
+    end
+
+    it "is empty when no release custom fields exist" do
+      expect(Version.shared_via_release_custom_fields(admin)).to be_empty
+    end
+  end
+
   describe "the native version_id field on a work package" do
     let(:work_package) { build(:work_package, project:) }
 

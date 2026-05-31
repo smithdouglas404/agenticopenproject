@@ -53,14 +53,18 @@ class VersionsController < ApplicationController
     @versions.reject! { |version| !project_ids.include?(version.project_id) && @wps_by_version[version].blank? }
   end
 
-  def show
-    # Releases collect work packages via their Release custom field, not version_id.
-    scope = @version.release? ? @version.release_work_packages : @version.work_packages
+  # Cap on how many release work packages the hub renders inline; a "view all"
+  # link to the full filtered work package view is shown when there are more.
+  RELEASE_ISSUES_DISPLAY_LIMIT = 50
 
-    @issues = scope
-      .visible
-      .includes(:status, :type, :priority)
-      .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
+  def show
+    if @version.release?
+      show_release_hub
+    else
+      @issues = @version.work_packages.visible
+        .includes(:status, :type, :priority)
+        .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
+    end
   end
 
   def new
@@ -110,6 +114,19 @@ class VersionsController < ApplicationController
   end
 
   private
+
+  # Builds the release hub data: readiness counts via SQL aggregates (so large
+  # releases don't materialize the whole relation) and a capped list of issues.
+  def show_release_hub
+    base = @version.release_work_packages.visible
+
+    @issues_total_count = base.count
+    @issues_closed_count = base.joins(:status).where(statuses: { is_closed: true }).count
+    @issues = base
+      .includes(:status, :type, :priority)
+      .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
+      .limit(RELEASE_ISSUES_DISPLAY_LIMIT)
+  end
 
   # The kind a freshly built version should get. Defaults to "sprint" so the existing
   # version/roadmap screens keep creating sprints; the Releases screen passes "release".

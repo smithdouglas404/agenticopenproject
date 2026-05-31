@@ -60,7 +60,8 @@ class Version < ApplicationRecord
   # Returns versions that are either:
   # - from projects the user can see (via :view_work_packages)
   # - systemwide versions
-  # - or referenced by a work package visible to the user (e.g., via sharing)
+  # - or referenced by a work package visible to the user (e.g., via sharing),
+  #   both through the native version_id (sprints) and through a Release custom field
   scope :visible, ->(*args) {
     user = args.first || User.current
     joins(:project)
@@ -68,6 +69,7 @@ class Version < ApplicationRecord
       .or(Project.allowed_to(user, :manage_versions))
       .or(Version.systemwide)
       .or(Version.shared_via_work_packages(user))
+      .or(Version.shared_via_release_custom_fields(user))
   }
 
   scope :systemwide, -> { where(sharing: "system") }
@@ -80,6 +82,23 @@ class Version < ApplicationRecord
     where(id: WorkPackage.visible(user).where.not(version_id: nil).distinct.select(:version_id))
   }
 
+  # Versions referenced by a visible work package through a Release custom field.
+  # Mirrors #shared_via_work_packages for the version_id (sprint) link. Short-circuits
+  # when no release custom fields exist, to keep the hot #visible path cheap.
+  scope :shared_via_release_custom_fields, ->(*args) {
+    user = args.first || User.current
+    release_cf_ids = WorkPackageCustomField.where(field_format: "version", version_kind: "release").pluck(:id)
+    next none if release_cf_ids.empty?
+
+    referenced_version_ids = CustomValue
+      .where(custom_field_id: release_cf_ids, customized_type: "WorkPackage")
+      .where(customized_id: WorkPackage.visible(user).select(:id))
+      .where("custom_values.value ~ ?", "^[0-9]+$")
+      .select(Arel.sql("custom_values.value::bigint"))
+
+    where(id: referenced_version_ids)
+  }
+
   def self.with_status_open
     where(status: "open")
   end
@@ -89,7 +108,8 @@ class Version < ApplicationRecord
     systemwide? ||
       user.allowed_in_project?(:view_work_packages, project) ||
       user.allowed_in_project?(:manage_versions, project) ||
-      work_packages.visible(user).exists?
+      work_packages.visible(user).exists? ||
+      (release? && release_work_packages.visible(user).exists?)
   end
 
   def due_date

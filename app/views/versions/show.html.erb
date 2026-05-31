@@ -89,7 +89,11 @@ See COPYRIGHT and LICENSE files for more details.
 %>
 
 <% if @version.release? %>
-  <%= render "versions/release_hub", version: @version, issues: @issues %>
+  <%= render "versions/release_hub",
+             version: @version,
+             issues: @issues,
+             total_count: @issues_total_count,
+             closed_count: @issues_closed_count %>
 <% else %>
   <%= render(Grids::WidgetGridComponent.new) do |grid| %>
     <% grid.with_widget(Projects::Settings::Versions::OverviewWidgetComponent, version: @version) %>
