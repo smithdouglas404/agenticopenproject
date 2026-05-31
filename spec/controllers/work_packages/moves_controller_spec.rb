@@ -114,6 +114,15 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
         it "renders the new builder template" do
           expect(response).to render_template("work_packages/moves/new")
         end
+
+        context "with sprint and release versions in the project" do
+          shared_let(:sprint_version) { create(:version, project:, name: "Sprint A", kind: "sprint") }
+          shared_let(:release_version) { create(:version, project:, name: "Release 1.0", kind: "release") }
+
+          it "only offers sprint versions for the native version_id field" do
+            expect(assigns(:available_versions)).to contain_exactly(sprint_version)
+          end
+        end
       end
     end
   end

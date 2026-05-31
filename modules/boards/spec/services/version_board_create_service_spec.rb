@@ -41,7 +41,10 @@ RSpec.describe Boards::VersionBoardCreateService do
   shared_let(:excluded_versions) do
     [
       create(:version, project:, status: "closed"),
-      create(:version, project: other_project, sharing: "system")
+      create(:version, project: other_project, sharing: "system"),
+      # An open release version must not get a board column: version boards filter on
+      # version_id, which is the Sprint selection set, so a release id would be invalid.
+      create(:version, project:, name: "Release 9.9", kind: "release")
     ]
   end
 
@@ -102,6 +105,13 @@ RSpec.describe Boards::VersionBoardCreateService do
         expect(queries.count).to eq(versions.count)
 
         expect(queries.map(&:name)).to match_array(versions.map(&:name))
+      end
+
+      it "excludes release versions, even open ones", :aggregate_failures do
+        subject
+
+        expect(queries.map(&:name)).not_to include("Release 9.9")
+        expect(queries.count).to eq(versions.count)
       end
 
       it "sets the filters on each" do
