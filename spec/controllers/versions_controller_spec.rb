@@ -247,6 +247,30 @@ RSpec.describe VersionsController do
       get :new, params: { project_id: project.id }
       expect(response).to have_http_status(:ok)
     end
+
+    it "builds a sprint version by default" do
+      login_as(user)
+      get :new, params: { project_id: project.id }
+      expect(assigns(:version).kind).to eq("sprint")
+    end
+
+    it "builds a release version when kind=release" do
+      login_as(user)
+      get :new, params: { project_id: project.id, kind: "release" }
+      expect(assigns(:version).kind).to eq("release")
+    end
+
+    context "when rendering the release form" do
+      render_views
+
+      it "titles the page New release and posts the release kind" do
+        login_as(user)
+        get :new, params: { project_id: project.id, kind: "release" }
+
+        expect(response.body).to include("New release")
+        expect(response.body).to include('name="version[kind]"')
+      end
+    end
   end
 
   describe "#create" do
@@ -262,6 +286,21 @@ RSpec.describe VersionsController do
         version = Version.find_by(name: "test_add_version")
         expect(version).not_to be_nil
         expect(version.project).to eq(project)
+      end
+    end
+
+    context "with kind release" do
+      before do
+        login_as(user)
+        post :create, params: { project_id: project.id, version: { name: "Release 1.0", kind: "release" } }
+      end
+
+      it { expect(response).to redirect_to(project_settings_releases_path(project)) }
+
+      it "creates a release version" do
+        version = Version.find_by(name: "Release 1.0")
+        expect(version).to be_present
+        expect(version.kind).to eq("release")
       end
     end
   end

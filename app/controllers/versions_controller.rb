@@ -62,7 +62,7 @@ class VersionsController < ApplicationController
   end
 
   def new
-    @version = @project.versions.build
+    @version = @project.versions.build(kind: new_version_kind)
   end
 
   def edit; end
@@ -102,15 +102,23 @@ class VersionsController < ApplicationController
            model: @version)
       .call
 
-    unless call.success?
-      flash[:error] = call.errors.full_messages
-      flash[:error] << archived_project_mesage if archived_projects.any?
-    end
+    set_destroy_error_flash(call) unless call.success?
 
-    redirect_to project_settings_versions_path(@project), status: :see_other
+    redirect_to helpers.version_settings_path(@version), status: :see_other
   end
 
   private
+
+  # The kind a freshly built version should get. Defaults to "sprint" so the existing
+  # version/roadmap screens keep creating sprints; the Releases screen passes "release".
+  def new_version_kind
+    params[:kind].presence_in(Version::VERSION_KINDS) || "sprint"
+  end
+
+  def set_destroy_error_flash(call)
+    flash[:error] = call.errors.full_messages
+    flash[:error] << archived_project_mesage if archived_projects.any?
+  end
 
   def find_version
     @version = Version.visible.find(params[:id])
@@ -134,7 +142,7 @@ class VersionsController < ApplicationController
   end
 
   def redirect_back_or_version_settings
-    redirect_back_or_default(project_settings_versions_path(@project))
+    redirect_back_or_default(helpers.version_settings_path(@version))
   end
 
   def find_project

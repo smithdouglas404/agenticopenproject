@@ -769,6 +769,7 @@ Redmine::MenuManager.map :project_menu do |menu|
       }
     },
     versions: { caption: :label_version_plural },
+    releases: { caption: :label_release_plural },
     repository: { caption: :label_repository },
     time_entry_activities: { caption: :enumeration_activities },
     storage: { caption: :label_required_disk_storage }

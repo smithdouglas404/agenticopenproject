@@ -80,6 +80,23 @@ module VersionsHelper
     end
   end
 
+  # The project settings screen that manages a version, depending on its kind.
+  # Releases are managed on the Releases screen, everything else on the Versions screen.
+  def version_settings_path(version)
+    if version.release?
+      project_settings_releases_path(version.project)
+    else
+      project_settings_versions_path(version.project)
+    end
+  end
+
+  # Localized "Version"/"Release" label for a version depending on its kind.
+  # +suffix+ is one of :plural, :new, :edit.
+  def version_kind_label(version, suffix)
+    key = version.release? ? "release" : "version"
+    t(:"label_#{key}_#{suffix}")
+  end
+
   def version_wp_overview_graph_initial_filters(version)
     filters = []
     case version.sharing
