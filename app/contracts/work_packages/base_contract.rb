@@ -393,17 +393,28 @@ module WorkPackages
     end
 
     def validate_version_is_assignable
-      # Only validate when the version is actually being (re)assigned. An already
-      # persisted version_id must never block unrelated edits (e.g. setting a
-      # parent), so that work packages whose stored version is no longer offered
-      # -- a closed/locked version, or a version whose kind no longer matches the
-      # sprint selection set -- stay editable. This mirrors the pre-Release-feature
-      # behaviour where the current version was always kept assignable.
+      # Only validate a version the user is actually (re)assigning.
+      #
+      # An already persisted version_id must never block unrelated edits (e.g.
+      # setting a parent), so work packages whose stored version is no longer
+      # offered -- a closed/locked version, or a version whose kind no longer
+      # matches the sprint selection set -- stay editable. This mirrors the
+      # pre-Release-feature behaviour where the current version was always kept
+      # assignable.
+      #
+      # A version set by the system is likewise trusted: e.g. backlogs mirrors the
+      # parent story's sprint onto a child task, which may legitimately point at a
+      # closed/locked version that is not otherwise assignable.
       return unless model.version_id_changed?
+      return if version_id_changed_by_system?
 
       if model.version_id && assignable_versions.map(&:id).exclude?(model.version_id)
         errors.add :version_id, :inclusion
       end
+    end
+
+    def version_id_changed_by_system?
+      model.respond_to?(:changed_by_system) && model.changed_by_system.key?("version_id")
     end
 
     def validate_remaining_work_is_lower_than_work
