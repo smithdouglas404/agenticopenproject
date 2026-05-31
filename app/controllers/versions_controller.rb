@@ -165,10 +165,11 @@ class VersionsController < ApplicationController
   end
 
   def find_versions(subprojects, completed)
-    versions = @project.shared_versions.includes(:custom_values)
+    # The roadmap lists the Sprint selection set; releases have their own screen.
+    versions = @project.shared_versions.sprints.includes(:custom_values)
 
     if subprojects
-      versions = versions.or(@project.rolled_up_versions.includes(:custom_values))
+      versions = versions.or(@project.rolled_up_versions.sprints.includes(:custom_values))
     end
 
     versions = versions.visible.order(:name).except(:distinct).uniq

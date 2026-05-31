@@ -85,8 +85,9 @@ module TimeEntries
     end
 
     # Necessary for custom fields of type version.
-    def assignable_versions(only_open: true)
-      entity.try(:assignable_versions, only_open:) || project.try(:assignable_versions, only_open:) || []
+    def assignable_versions(only_open: true, kind: nil)
+      entity.try(:assignable_versions, only_open:, kind:) ||
+        project.try(:assignable_versions, only_open:, kind:) || []
     end
 
     private

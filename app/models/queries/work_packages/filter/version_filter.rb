@@ -93,10 +93,12 @@ class Queries::WorkPackages::Filter::VersionFilter <
   private
 
   def versions
+    # The work package "Version" filter targets the native version_id, which is the
+    # Sprint selection set. Releases are filtered via their version custom field.
     if project
-      project.shared_versions
+      project.shared_versions.sprints
     else
-      Version.visible
+      Version.visible.sprints
     end
   end
 end

@@ -28,12 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::VersionsController < Projects::SettingsController
-  menu_item :settings_versions
-
-  def show
-    # The project Versions settings screen manages the Sprint selection set;
-    # releases are managed on their own screen.
-    @versions = @project.shared_versions.sprints
+# Adds an optional `version_kind` discriminator to custom fields. For custom fields
+# of format "version" it restricts the selectable versions to a single Version#kind
+# (e.g. "release"), so a Release-typed work-package field only offers release versions.
+# When NULL the field offers versions of any kind (the existing behaviour).
+class AddVersionKindToCustomFields < ActiveRecord::Migration[8.0]
+  def change
+    add_column :custom_fields, :version_kind, :string, null: true, default: nil
   end
 end

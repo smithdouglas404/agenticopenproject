@@ -65,13 +65,16 @@ module Projects::Versions
     #
     # For custom fields configured with "Allow non-open versions" this can be called
     # with only_open: false, in which case locked and closed versions are returned as well.
-    def assignable_versions(only_open: true)
-      if only_open
-        @assignable_versions ||=
-          shared_versions.references(:project).with_status_open.order(:name).to_a
-      else
-        @assignable_versions_including_non_open ||= # rubocop:disable Naming/MemoizedInstanceVariableName
-          shared_versions.references(:project).order(:name).to_a
+    #
+    # When +kind+ is given (e.g. "sprint" or "release") the result is restricted to
+    # versions of that Version#kind. When nil, versions of any kind are returned.
+    def assignable_versions(only_open: true, kind: nil)
+      @assignable_versions ||= {}
+      @assignable_versions[[only_open, kind]] ||= begin
+        scope = shared_versions.references(:project)
+        scope = scope.where(versions: { kind: }) if kind
+        scope = scope.with_status_open if only_open
+        scope.order(:name).to_a
       end
     end
   end

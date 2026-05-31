@@ -35,6 +35,31 @@ RSpec.describe CustomField do
     described_class.destroy_all
   end
 
+  describe "#version_kind" do
+    it "is valid as nil/blank on a version field and normalizes blank to nil" do
+      cf = build(:version_wp_custom_field, version_kind: "")
+      expect(cf).to be_valid
+      expect(cf.version_kind).to be_nil
+    end
+
+    it "accepts an allowed kind on a version field" do
+      cf = build(:version_wp_custom_field, version_kind: "release")
+      expect(cf).to be_valid
+    end
+
+    it "rejects an unknown kind" do
+      cf = build(:version_wp_custom_field, version_kind: "bogus")
+      expect(cf).not_to be_valid
+      expect(cf.errors[:version_kind]).to be_present
+    end
+
+    it "must be blank for non-version fields" do
+      cf = build(:integer_wp_custom_field, version_kind: "release")
+      expect(cf).not_to be_valid
+      expect(cf.errors[:version_kind]).to be_present
+    end
+  end
+
   let(:field)  { build(:custom_field) }
   let(:field2) { build(:custom_field) }
 

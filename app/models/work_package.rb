@@ -286,16 +286,24 @@ class WorkPackage < ApplicationRecord
   #   * the version it was already assigned to
   #     (to make sure, that you can still update closed tickets)
   #   * for custom fields only_open: false can be used, if the CF is configured so
-  def assignable_versions(only_open: true)
-    if only_open
-      @assignable_versions ||= begin
-        current_version = version_id_changed? ? Version.find_by(id: version_id_was) : version
-        ((project&.assignable_versions || []) + [current_version]).compact.uniq
-      end
-    else
-      # The called method memoizes the result, no need to memoize it here.
-      project&.assignable_versions(only_open: false)
-    end
+  #
+  # When +kind+ is given the assignable versions are restricted to that Version#kind.
+  def assignable_versions(only_open: true, kind: nil)
+    # The called method memoizes the result, no need to memoize it here.
+    return project&.assignable_versions(only_open: false, kind:) unless only_open
+
+    @assignable_versions ||= {}
+    @assignable_versions[kind] ||=
+      ((project&.assignable_versions(kind:) || []) + [retained_assignable_version(kind)]).compact.uniq
+  end
+
+  # The version a work package is already assigned to remains assignable (so closed
+  # tickets stay editable), unless a +kind+ is requested that it does not match.
+  def retained_assignable_version(kind)
+    current_version = version_id_changed? ? Version.find_by(id: version_id_was) : version
+    return if kind && current_version && current_version.kind != kind
+
+    current_version
   end
 
   def to_s

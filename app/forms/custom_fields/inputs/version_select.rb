@@ -48,11 +48,11 @@ module CustomFields
         { autocomplete_options: }
       end
 
-      def assignable_versions(only_open:)
+      def assignable_versions(only_open:, kind: nil)
         if @object.is_a?(Project)
-          @object.assignable_versions(only_open:)
+          @object.assignable_versions(only_open:, kind:)
         elsif @object.respond_to?(:project) && @object.project.present?
-          @object.project.assignable_versions(only_open:)
+          @object.project.assignable_versions(only_open:, kind:)
         else
           Version.none
         end
