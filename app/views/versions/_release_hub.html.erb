@@ -60,3 +60,32 @@ See COPYRIGHT and LICENSE files for more details.
     <% end %>
   <% end %>
 <% end %>
+
+<%= render(Primer::Beta::BorderBox.new(mt: 3, test_selector: "release-notes")) do |box| %>
+  <% box.with_header(font_weight: :bold) { t("versions.release_notes.title") } %>
+  <% box.with_row do %>
+    <% if release_notes.any? %>
+      <%= render(Primer::Beta::Text.new(tag: :p, color: :muted)) { t("versions.release_notes.hint") } %>
+      <%= content_tag(
+            :textarea,
+            release_notes.to_markdown,
+            readonly: true, rows: 12,
+            class: "op-input-text",
+            style: "width: 100%; font-family: monospace;",
+            "aria-label": t("versions.release_notes.title"),
+            data: { test_selector: "release-notes-content" }
+          ) %>
+      <% if version.wiki_page_title.present? && version.project.wiki && authorize_for(:versions, :write_release_notes) %>
+        <%= render(
+              Primer::Beta::Button.new(
+                tag: :a, mt: 2, scheme: :default,
+                href: write_release_notes_version_path(version),
+                data: { turbo_method: :post, turbo_confirm: t(:text_are_you_sure) }
+              )
+            ) { t("versions.release_notes.write_to_wiki", page: version.wiki_page_title) } %>
+      <% end %>
+    <% else %>
+      <%= t("versions.release_notes.empty") %>
+    <% end %>
+  <% end %>
+<% end %>

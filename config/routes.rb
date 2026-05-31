@@ -912,6 +912,7 @@ Rails.application.routes.draw do
       get :status_by
       get :confirm_release
       post :release
+      post :write_release_notes
     end
   end
 

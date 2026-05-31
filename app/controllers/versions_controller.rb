@@ -125,6 +125,17 @@ class VersionsController < ApplicationController
     redirect_to version_path(@version), status: :see_other
   end
 
+  # Writes the generated release notes to the release's linked wiki page. The wiki
+  # services enforce :edit_wiki_pages, so this does not bypass wiki permissions.
+  def write_release_notes
+    unless @version.release? && @version.wiki_page_title.present? && @project.wiki
+      return redirect_to version_path(@version)
+    end
+
+    set_release_notes_flash(persist_release_notes_to_wiki)
+    redirect_to version_path(@version), status: :see_other
+  end
+
   def destroy
     call = Versions::DeleteService
       .new(user: current_user,
@@ -149,6 +160,8 @@ class VersionsController < ApplicationController
       .includes(:status, :type, :priority)
       .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
       .limit(RELEASE_ISSUES_DISPLAY_LIMIT)
+
+    @release_notes = Versions::ReleaseNotes.new(@version)
   end
 
   # The kind a freshly built version should get. Defaults to "sprint" so the existing
@@ -159,6 +172,25 @@ class VersionsController < ApplicationController
 
   def release_target_version
     Version.find_by(id: params[:target_version_id]) if params[:target_version_id].present?
+  end
+
+  def persist_release_notes_to_wiki
+    notes = Versions::ReleaseNotes.new(@version).to_markdown
+    page = @project.wiki.find_page(@version.wiki_page_title)
+
+    if page
+      WikiPages::UpdateService.new(user: current_user, model: page).call(text: notes)
+    else
+      WikiPages::CreateService.new(user: current_user).call(wiki: @project.wiki, title: @version.wiki_page_title, text: notes)
+    end
+  end
+
+  def set_release_notes_flash(call)
+    if call.success?
+      flash[:notice] = t("versions.release_notes.written", page: @version.wiki_page_title)
+    else
+      flash[:error] = call.errors.full_messages.presence || t("versions.release_notes.write_failed")
+    end
   end
 
   def incomplete_release_work_packages

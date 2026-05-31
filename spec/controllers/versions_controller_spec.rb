@@ -466,4 +466,29 @@ RSpec.describe VersionsController do
       expect(flash[:error]).to be_present
     end
   end
+
+  describe "#write_release_notes" do
+    let!(:wiki) { create(:wiki, project:) }
+    let(:release) { create(:version, project:, kind: "release", wiki_page_title: "Release notes") }
+
+    before { login_as(user) }
+
+    it "writes the release notes to the linked wiki page" do
+      post :write_release_notes, params: { id: release.id }
+
+      expect(response).to redirect_to(version_path(release))
+      expect(flash[:notice]).to be_present
+
+      page = WikiPage.find_by(title: "Release notes")
+      expect(page).to be_present
+      expect(page.text).to include(release.name)
+    end
+
+    it "redirects without writing when no wiki page is linked" do
+      release.update_column(:wiki_page_title, nil)
+      post :write_release_notes, params: { id: release.id }
+
+      expect(response).to redirect_to(version_path(release))
+    end
+  end
 end
