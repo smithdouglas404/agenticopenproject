@@ -1047,6 +1047,7 @@ en:
       write_failed: "The release notes could not be written to the wiki page."
     release:
       success: "The release has been released."
+      processing: "The release is being processed in the background."
       button: "Release"
       confirm_title: "Release %{name}"
       incomplete_intro:

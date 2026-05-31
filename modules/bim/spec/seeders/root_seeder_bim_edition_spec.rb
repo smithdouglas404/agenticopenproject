@@ -265,7 +265,8 @@ RSpec.describe RootSeeder,
     end
 
     it "creates 1 project with custom fields" do
-      expect(CustomField.count).to eq 12
+      # +1 for the seeded "Release" work package custom field (ReleaseCustomFieldSeeder).
+      expect(CustomField.count).to eq 13
     end
 
     it "creates 2 additional types for development" do

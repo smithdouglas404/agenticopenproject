@@ -57,6 +57,10 @@ class VersionsController < ApplicationController
   # link to the full filtered work package view is shown when there are more.
   RELEASE_ISSUES_DISPLAY_LIMIT = 50
 
+  # Above this many incomplete work packages, the release is processed in a background
+  # job so the web request is not blocked.
+  RELEASE_ASYNC_THRESHOLD = 100
+
   def show
     if @version.release?
       show_release_hub
@@ -112,14 +116,16 @@ class VersionsController < ApplicationController
   end
 
   def release
-    call = Versions::ReleaseService
-      .new(user: current_user, version: @version)
-      .call(strategy: params[:strategy], target_version: release_target_version)
+    service = Versions::ReleaseService.new(user: current_user, version: @version)
+    error = service.validate(strategy: params[:strategy], target_version: release_target_version)
 
-    if call.success?
-      flash[:notice] = t(".success")
+    if error
+      flash[:error] = error
+    elsif large_release?
+      enqueue_release_job
+      flash[:notice] = t(".processing")
     else
-      flash[:error] = call.message
+      perform_release(service)
     end
 
     redirect_to version_path(@version), status: :see_other
@@ -172,6 +178,33 @@ class VersionsController < ApplicationController
 
   def release_target_version
     Version.find_by(id: params[:target_version_id]) if params[:target_version_id].present?
+  end
+
+  def perform_release(service)
+    result = service.call(strategy: params[:strategy], target_version: release_target_version)
+
+    if result.success?
+      flash[:notice] = t("versions.release.success")
+    else
+      flash[:error] = result.message
+    end
+  end
+
+  def enqueue_release_job
+    Versions::ReleaseJob.perform_later(
+      version_id: @version.id,
+      user_id: current_user.id,
+      strategy: params[:strategy],
+      target_version_id: params[:target_version_id]
+    )
+  end
+
+  def large_release?
+    @version.release_work_packages
+      .visible(current_user)
+      .merge(WorkPackage.with_status_open)
+      .limit(RELEASE_ASYNC_THRESHOLD + 1)
+      .count > RELEASE_ASYNC_THRESHOLD
   end
 
   def persist_release_notes_to_wiki

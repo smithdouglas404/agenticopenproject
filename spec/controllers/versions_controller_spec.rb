@@ -479,6 +479,18 @@ RSpec.describe VersionsController do
       expect(release.reload.status).to eq("open")
       expect(flash[:error]).to be_present
     end
+
+    it "processes large releases in a background job instead of blocking" do
+      # Force the async path regardless of work package count.
+      stub_const("VersionsController::RELEASE_ASYNC_THRESHOLD", -1)
+
+      expect do
+        post :release, params: { id: release.id, strategy: "force" }
+      end.to have_enqueued_job(Versions::ReleaseJob)
+
+      expect(release.reload.status).to eq("open") # closed by the job, not synchronously
+      expect(flash[:notice]).to be_present
+    end
   end
 
   describe "#write_release_notes" do

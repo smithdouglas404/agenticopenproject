@@ -63,6 +63,13 @@ module Versions
       ServiceResult.failure(message: e.message)
     end
 
+    # Validates the parameters without performing the release. Returns an error message
+    # or nil. Lets callers (e.g. the controller) give immediate feedback before deciding
+    # to run the release synchronously or in a background job.
+    def validate(strategy:, target_version: nil)
+      validation_error(strategy.to_s, target_version)
+    end
+
     private
 
     def validation_error(strategy, target_version)
