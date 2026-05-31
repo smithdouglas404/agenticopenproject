@@ -40,24 +40,29 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
+<% has_targets = @target_versions.any? %>
 <%= form_with url: release_version_path(@version), method: :post do |f| %>
   <p><%= t("versions.release.incomplete_intro", count: @incomplete_work_packages.size) %></p>
 
   <%= render(Primer::Beta::BorderBox.new(mb: 3)) do |box| %>
     <% box.with_row do %>
       <label>
-        <%= f.radio_button :strategy, "roll_forward", checked: @incomplete_work_packages.any? %>
+        <%= f.radio_button :strategy, "roll_forward",
+                           checked: @incomplete_work_packages.any? && has_targets,
+                           disabled: !has_targets %>
         <%= t("versions.release.strategy.roll_forward") %>
       </label>
-      <div>
-        <%= f.label :target_version_id, t("versions.release.target_label") %>
-        <%= f.select :target_version_id,
-                     options_from_collection_for_select(@target_versions, :id, :name) %>
-      </div>
+      <% if has_targets %>
+        <div>
+          <%= f.label :target_version_id, t("versions.release.target_label") %>
+          <%= f.select :target_version_id,
+                       options_from_collection_for_select(@target_versions, :id, :name) %>
+        </div>
+      <% end %>
     <% end %>
     <% box.with_row do %>
       <label>
-        <%= f.radio_button :strategy, "decouple" %>
+        <%= f.radio_button :strategy, "decouple", checked: @incomplete_work_packages.any? && !has_targets %>
         <%= t("versions.release.strategy.decouple") %>
       </label>
     <% end %>

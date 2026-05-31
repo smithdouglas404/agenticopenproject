@@ -1062,7 +1062,7 @@ en:
       errors:
         unauthorized: "You are not allowed to release this version."
         not_a_release: "Only releases can be released."
-        already_released: "This release has already been released."
+        not_open: "Only open releases can be released."
         invalid_strategy: "Please choose how to handle the incomplete work packages."
         target_required: "Please select a release to move the incomplete work packages to."
         invalid_target: "The selected target is not a valid open release."

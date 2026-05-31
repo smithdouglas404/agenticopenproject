@@ -440,6 +440,20 @@ RSpec.describe VersionsController do
       expect(response).to render_template("confirm_release")
     end
 
+    it "disables roll-forward when there are no other open releases" do
+      get :confirm_release, params: { id: release.id }
+
+      assert_select "input[type=radio][value=roll_forward][disabled=disabled]"
+    end
+
+    it "enables roll-forward when another open release exists" do
+      create(:version, project:, kind: "release", name: "Next release")
+      get :confirm_release, params: { id: release.id }
+
+      assert_select "input[type=radio][value=roll_forward]"
+      assert_select "input[type=radio][value=roll_forward][disabled=disabled]", count: 0
+    end
+
     it "redirects when the version is not a release" do
       get :confirm_release, params: { id: version2.id }
       expect(response).to redirect_to(version_path(version2))

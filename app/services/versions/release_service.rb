@@ -68,7 +68,7 @@ module Versions
     def validation_error(strategy, target_version)
       return I18n.t("versions.release.errors.unauthorized") unless @user.allowed_in_project?(:manage_versions, @version.project)
       return I18n.t("versions.release.errors.not_a_release") unless @version.release?
-      return I18n.t("versions.release.errors.already_released") unless @version.open?
+      return I18n.t("versions.release.errors.not_open") unless @version.open?
       return I18n.t("versions.release.errors.invalid_strategy") unless STRATEGIES.include?(strategy)
 
       validate_target(target_version) if strategy == "roll_forward"
