@@ -32,10 +32,12 @@ module Projects::Versions
   extend ActiveSupport::Concern
 
   included do
-    # Closes open and locked project versions that are completed
+    # Closes open and locked completed project versions. Scoped to sprints: this is
+    # triggered from the Versions (sprint) settings screen; releases have their own
+    # lifecycle and must not be mutated here.
     def close_completed_versions
       Version.transaction do
-        versions.where(status: %w(open locked)).find_each do |version|
+        versions.sprints.where(status: %w(open locked)).find_each do |version|
           if version.completed?
             version.update_attribute(:status, "closed")
           end
