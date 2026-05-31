@@ -69,6 +69,7 @@
       </div>
       <wp-card-view [dragOutOfHandler]="canDragOutOfHandler"
         [dragInto]="canDragInto"
+        [lazyHydrate]="true"
         [workPackageAddedHandler]="workPackageAddedHandler"
         [cardsRemovable]="board.isFree && canDragOutOf"
         [showInfoButton]="true"

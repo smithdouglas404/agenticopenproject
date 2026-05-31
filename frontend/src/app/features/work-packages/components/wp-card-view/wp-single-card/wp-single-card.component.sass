@@ -28,6 +28,12 @@
   &_ghosted
     opacity: 0.5
 
+  // Lightweight stand-in rendered for not-yet-hydrated lazy cards (boards).
+  // Reserves roughly the height of a typical card (no cover image) so the
+  // scrollbar is approximately proportioned and hydration causes minimal reflow.
+  &_placeholder
+    min-height: 92px
+
   &_selected
     background-color: var(--selection-bgColor)
     .op-icon--wrapper

@@ -4,8 +4,10 @@ import {
   Component,
   EventEmitter, inject,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import {
   uiStateLinkClass,
@@ -54,10 +56,18 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implements OnInit {
+export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implements OnInit, OnChanges {
   @Input() public workPackage:WorkPackageResource;
 
   @Input() public selectedWhenOpen = false;
+
+  /**
+   * Whether the card's expensive content and its selection subscription are
+   * rendered. Defaults to true so existing callers (wp-grid, team planner) are
+   * unaffected. Boards set this to false initially and flip it to true once the
+   * card scrolls near the viewport (see WorkPackageCardViewComponent lazy hydration).
+   */
+  @Input() public hydrated = true;
 
   @Input() public showInfoButton = false;
 
@@ -95,6 +105,9 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   @Output() cardContextMenu = new EventEmitter<{ workPackageId:string, event:MouseEvent }>();
 
+  /** Emitted when a not-yet-hydrated (lazy) card is focused, so it can be hydrated */
+  @Output() hydrateRequested = new EventEmitter<void>();
+
   readonly pathHelper = inject(PathHelperService);
   readonly I18n = inject(I18nService);
   readonly $state = inject(StateService);
@@ -129,8 +142,30 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   combinedDateDisplayField = CombinedDateDisplayField;
 
+  private selectionSubscribed = false;
+
   ngOnInit():void {
-    // Update selection state
+    if (this.hydrated) {
+      this.subscribeSelection();
+    }
+  }
+
+  ngOnChanges(changes:SimpleChanges):void {
+    // When a lazily-rendered card scrolls into view, hydrated flips to true.
+    // Start the selection subscription at that point (only once). The card body
+    // itself re-renders via the same change-detection pass that flipped the input.
+    if (changes.hydrated?.currentValue === true) {
+      this.subscribeSelection();
+    }
+  }
+
+  // Update selection state
+  private subscribeSelection():void {
+    if (this.selectionSubscribed) {
+      return;
+    }
+    this.selectionSubscribed = true;
+
     combineLatest([
       this.wpTableSelection.live$(),
       this.uiRouterGlobals.params$,
@@ -153,6 +188,14 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   public classIdentifier(wp:WorkPackageResource):string {
     return this.cardView.classIdentifier(wp);
+  }
+
+  // Hydrate a lazily-rendered card when it receives focus (keyboard / assistive
+  // technology), so the full card is reachable without relying on scroll.
+  public requestHydration():void {
+    if (!this.hydrated) {
+      this.hydrateRequested.emit();
+    }
   }
 
   public emitStateLinkClicked(event:MouseEvent, wp:WorkPackageResource, detail?:boolean):void {
