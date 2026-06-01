@@ -140,7 +140,6 @@ RSpec.describe Filters::FilterFormComponent, type: :component do
     it "omits the data attribute by default" do
       render_form(query:, wrap_with_controller: true)
 
-      # The controller wrapper exists, but without the output-format attribute.
       expect(page).to have_element "data-controller": "filter--filters-form" do |wrapper|
         expect(wrapper["data-filter--filters-form-output-format-value"]).to be_nil
       end
@@ -149,7 +148,41 @@ RSpec.describe Filters::FilterFormComponent, type: :component do
     it "raises on unknown values" do
       expect do
         described_class.new(builder: nil, query:, output_format: :bogus)
-      end.to raise_error(ArgumentError, /Unknown output_format/)
+      end.to raise_error(Primer::FetchOrFallbackHelper::InvalidValueError, /Expected one of/)
+    end
+  end
+
+  describe "wrapper system arguments" do
+    it "forwards standard system arguments to the controller wrapper" do
+      render_form(
+        query:,
+        wrap_with_controller: true,
+        id: "custom-filter-wrapper",
+        aria: { label: "Filters" },
+        data: { test_selector: "filters-wrapper" }
+      )
+
+      expect(page).to have_element :div,
+                                   id: "custom-filter-wrapper",
+                                   "aria-label": "Filters",
+                                   "data-test-selector": "filters-wrapper"
+    end
+
+    it "merges caller classes and data with the required wrapper data" do
+      render_form(
+        query:,
+        wrap_with_controller: true,
+        classes: "custom-class",
+        data: {
+          controller: "custom-controller",
+          action: "keydown->custom#close"
+        }
+      )
+
+      expect(page).to have_element :div,
+                                   class: %w[op-filters-form -expanded custom-class],
+                                   "data-controller": "filter--filters-form",
+                                   "data-action": "keydown->custom#close"
     end
   end
 

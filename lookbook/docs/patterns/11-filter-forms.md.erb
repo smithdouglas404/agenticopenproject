@@ -98,9 +98,10 @@ The host server receives the canonical string in
 
 ### Combining with non-filter inputs
 
-`FilterFormComponent` composes with other forms via
-`Primer::Forms::FormList`. All children share the same builder and
-therefore submit through the same `<form>`.
+`FilterFormComponent` is rendered next to normal Primer form objects, not
+inside `Primer::Forms::FormList`. Render any regular form objects through
+a `FormList`, then render `FilterFormComponent` with the same builder. All
+fields still submit through the same surrounding `<form>`.
 
 <%= embed OpenProject::Filter::FilterFormPreview, :combined_with_other_inputs, panels: %i[preview source] %>
 

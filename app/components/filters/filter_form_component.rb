@@ -74,6 +74,9 @@
 # in a Primer dialog or another container that clips overflow, so the dropdown
 # portal renders outside that container instead of being clipped.
 class Filters::FilterFormComponent < ApplicationComponent
+  include Primer::AttributesHelper
+  include Primer::FetchOrFallbackHelper
+
   OUTPUT_FORMATS = %i[params json].freeze
 
   def initialize(builder:, query:,
@@ -81,15 +84,31 @@ class Filters::FilterFormComponent < ApplicationComponent
                  wrap_with_controller: false,
                  hidden_input_name: nil,
                  output_format: nil,
-                 autocomplete_append_to: nil)
+                 autocomplete_append_to: nil,
+                 **wrapper_arguments)
     super()
     @builder = builder
     @query = query
     @allowed_filters = allowed_filters || query.available_advanced_filters
     @wrap_with_controller = wrap_with_controller
     @hidden_input_name = hidden_input_name
-    @output_format = validate_output_format(output_format)
+    @output_format = fetch_or_fallback(OUTPUT_FORMATS, output_format.to_sym) if output_format
     @autocomplete_append_to = autocomplete_append_to
+    @wrapper_arguments = wrapper_arguments
+    @wrapper_arguments[:tag] ||= :div
+    @wrapper_arguments[:classes] = class_names(
+      "op-filters-form -expanded",
+      @wrapper_arguments[:classes]
+    )
+    @wrapper_arguments[:data] = merge_data(
+      @wrapper_arguments,
+      {
+        data: {
+          controller: "filter--filters-form",
+          filter__filters_form_output_format_value: @output_format&.to_s
+        }
+      }
+    )
   end
 
   private
@@ -98,23 +117,6 @@ class Filters::FilterFormComponent < ApplicationComponent
 
   def form_list
     Primer::Forms::FormList.new(*sub_forms)
-  end
-
-  def controller_data_attributes
-    attrs = { controller: "filter--filters-form" }
-    attrs["filter--filters-form-output-format-value"] = @output_format.to_s if @output_format
-    attrs
-  end
-
-  def validate_output_format(format)
-    return nil if format.nil?
-
-    sym = format.to_sym
-    unless OUTPUT_FORMATS.include?(sym)
-      raise ArgumentError,
-            "Unknown output_format #{format.inspect}; expected one of #{OUTPUT_FORMATS.inspect}"
-    end
-    sym
   end
 
   def hidden_filters_input

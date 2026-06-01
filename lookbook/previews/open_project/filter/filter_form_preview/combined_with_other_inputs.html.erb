@@ -1,6 +1,7 @@
-<%# `Filters::FilterFormComponent` is a component — combine it with %>
-<%# other forms in a single `Primer::Forms::FormList` to share one builder %>
-<%# (and therefore one submission) with non-filter inputs. %>
+<%# `Filters::FilterFormComponent` is a ViewComponent that shares the %>
+<%# surrounding Primer form builder with other form objects. Render normal %>
+<%# Primer form objects through FormList, then render the filter component %>
+<%# next to that list with the same builder. %>
 <%
   note_form = Class.new(ApplicationForm) do
     form do |f|
@@ -9,17 +10,13 @@
   end
 %>
 <%= primer_form_with(url: "/foo", method: :post) do |f| %>
-  <%=
-    render(
-      Primer::Forms::FormList.new(
-        note_form.new(f),
+  <%= render(Primer::Forms::FormList.new(note_form.new(f))) %>
+  <%= render(
         Filters::FilterFormComponent.new(
           builder: f,
           query: query,
           wrap_with_controller: true,
           hidden_input_name: "filters"
         )
-      )
-    )
-  %>
+      ) %>
 <% end %>
