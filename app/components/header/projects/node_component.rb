@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,23 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Redmine::MenuManager::TopMenu::ProjectsMenu
-  def render_projects_top_menu_node
-    return "" if User.current.anonymous? and Setting.login_required?
-    return "" if User.current.anonymous? and User.current.number_of_known_projects.zero?
+module Header
+  module Projects
+    class NodeComponent < ApplicationComponent
+      def initialize(component:, node:, current_project_id:, favorited_ids:, jump:)
+        super()
+        @component = component
+        @node = node
+        @current_project_id = current_project_id
+        @favorited_ids = favorited_ids
+        @jump = jump
+      end
 
-    render_projects_dropdown
+      private
+
+      def project = @node[:project]
+      def children = @node[:children]
+      def current? = project.id == @current_project_id
+      def favorited? = @favorited_ids.include?(project.id)
+      def expanded? = @node[:expanded]
+      def matches_query? = @node[:matches_query]
+
+      def href
+        @jump.present? ? helpers.project_path(project.identifier, jump: @jump) : helpers.project_path(project.identifier)
+      end
+
+      def label
+        helpers.project_node_label(project, favorited: favorited?)
+      end
+    end
   end
-
-  private
-
-  def render_projects_dropdown
-    render(Header::ProjectSelectComponent.new(
-             current_project: @project,
-             current_menu_item: current_menu_item,
-             current_user: User.current
-           ))
-  end
-
-  include OpenProject::StaticRouting::UrlHelpers
 end

@@ -97,14 +97,13 @@ By default, `FilterableTreeView` filters the tree client-side. When the tree is 
 
 #### Behavior summary
 
-- On initial rendering, the component fetches the full tree from `src`.
+- On initial rendering, the component fetches a tree from `src`.
 - Every change to the filter input triggers a debounced (300 ms) GET request to `src`.
 - Switching the segmented control triggers a fetch for all modes except `"selected"`, which is handled client-side.
 - Toggling **"Include sub-items"** does **not** immediately trigger a server request. The current `include_sub_items` value is sent on the next fetch (query or filter-mode change), and the server must return the appropriate descendants at that point.
 - After a filtered response is received, the client automatically expands all sub-trees.
 - When the filter is cleared, the expansion state from before filtering started is restored.
 - When the form is submitted, the component sends all nodes that have been checked at **some point in time** (no matter whether the current filter shows them or not).
-- When the form is submitted with **"Include sub-items"** checked,
 - On form submit: The form receives the complete selection regardless of the current filter state:
    - Nodes currently visible and checked are submitted via the `TreeView`'s normal form inputs.
    - Nodes that were checked but are currently filtered out (not in the DOM) are submitted via hidden inputs injected by the component directly.

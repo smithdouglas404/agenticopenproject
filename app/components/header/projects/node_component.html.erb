@@ -27,55 +27,47 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% project = node[:project] %>
-<% children = node[:children] %>
-<% is_current = project.id == current_project_id %>
-<% is_favorited = favorited_ids.include?(project.id) %>
-<% href = jump.present? ? project_path(project.identifier, jump:) : project_path(project.identifier) %>
-<% is_expanded = node[:expanded] %>
-<% label = project_node_label(project, favorited: is_favorited) %>
-<% matches_query = node[:matches_query] %>
-
 <% add_icons = ->(tree_node) do
-     if is_current
+     if current?
        tree_node.with_trailing_action_button(
          icon: :"x-circle",
          tag: :a,
-         href: home_path(jump:),
+         href: home_path(jump: @jump),
          show_tooltip: false,
-         aria: { label: t("header_project_select.leave_project") },
+         aria: { label: t("header.project_select_component.leave_project") },
          data: { test_selector: "op-header-project-select--remove-item" }
        )
      end
    end %>
 
 <% if children.any? %>
-  <% component.with_sub_tree(
+  <% @component.with_sub_tree(
        label:,
        select_variant: :none,
-       current: is_current,
-       expanded: is_expanded,
+       current: current?,
+       expanded: expanded?,
        href:,
-       disabled: !matches_query,
+       disabled: !matches_query?,
        data: { node_id: project.id, test_selector: "op-header-project-select--item" }
      ) do |sub| %>
     <% add_icons.call(sub) %>
     <% children.each do |child_node| %>
-      <%= render "header/projects/node",
-                 component: sub,
-                 node: child_node,
-                 current_project_id: current_project_id,
-                 favorited_ids: favorited_ids,
-                 jump: %>
+      <%= render Header::Projects::NodeComponent.new(
+            component: sub,
+            node: child_node,
+            current_project_id: @current_project_id,
+            favorited_ids: @favorited_ids,
+            jump: @jump
+          ) %>
     <% end %>
   <% end %>
 <% else %>
-  <% component.with_leaf(
+  <% @component.with_leaf(
        label:,
        select_variant: :none,
-       current: is_current,
+       current: current?,
        href:,
-       disabled: !matches_query,
+       disabled: !matches_query?,
        data: { node_id: project.id, test_selector: "op-header-project-select--item" }
      ) do |leaf| %>
     <% add_icons.call(leaf) %>

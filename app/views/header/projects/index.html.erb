@@ -35,11 +35,12 @@ See COPYRIGHT and LICENSE files for more details.
       )
     ) do |tree| %>
   <% @tree.each do |node| %>
-    <%= render "header/projects/node",
-               component: tree,
-               node: node,
-               current_project_id: @current_project_id,
-               favorited_ids: @favorited_ids,
-               jump: @jump %>
+    <%= render Header::Projects::NodeComponent.new(
+          component: tree,
+          node:,
+          current_project_id: @current_project_id,
+          favorited_ids: @favorited_ids,
+          jump: @jump
+        ) %>
   <% end %>
 <% end %>

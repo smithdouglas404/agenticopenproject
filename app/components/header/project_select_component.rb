@@ -32,7 +32,9 @@ module Header
   class ProjectSelectComponent < ApplicationComponent
     include OpenProject::StaticRouting::UrlHelpers
 
-    def initialize(current_project: nil, current_user: User.current, current_menu_item: nil)
+    delegate :logged?, to: :@current_user
+
+    def initialize(current_project: nil, current_menu_item: nil, current_user: User.current)
       super()
       @current_project = current_project
       @current_user = current_user
@@ -40,7 +42,7 @@ module Header
     end
 
     def trigger_label
-      @current_project&.name || I18n.t("header_project_select.all_projects")
+      @current_project&.name || t(".all_projects")
     end
 
     def tree_src
@@ -52,10 +54,6 @@ module Header
 
     def can_create_projects?
       @current_user.allowed_globally?(:add_project)
-    end
-
-    def logged_in?
-      @current_user.logged?
     end
   end
 end

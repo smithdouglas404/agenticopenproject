@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render(
       Primer::Alpha::Overlay.new(
-        title: t("header_project_select.title"),
+        title: t(".title"),
         visually_hide_title: true,
         anchor_side: :outside_bottom,
         anchor_align: :start,
@@ -41,7 +41,8 @@ See COPYRIGHT and LICENSE files for more details.
        id: "projects-menu",
        classes: "op-project-select--trigger-button",
        scheme: :invisible,
-       data: { "test-selector": "op-projects-menu" }
+       data: { "test-selector": "op-projects-menu" },
+       accesskey: "5"
      ) do |button| %>
      <%= trigger_label %>
     <% button.with_trailing_visual_icon(icon: :"triangle-down") %>
@@ -55,15 +56,17 @@ See COPYRIGHT and LICENSE files for more details.
           Primer::OpenProject::FilterableTreeView.new(
             src: tree_src,
             include_sub_items_check_box_arguments: { hidden: true },
-            filter_mode_control_arguments: logged_in? ? {} : { hidden: true },
-            filter_input_arguments: { name: "filter", label: t(:label_filter), visually_hide_label: true,
+            filter_mode_control_arguments: logged? ? {} : { hidden: true },
+            filter_input_arguments: { name: "filter",
+                                      label: t(:label_filter),
+                                      visually_hide_label: true,
                                       data: { test_selector: "op-header-project-select--search" } },
             no_results_node_arguments: { data: { test_selector: "op-header-project-select--no-results" }, label: I18n.t("filterable_tree_view.no_results_text") }
           )
         ) do |tree_view| %>
-      <% if logged_in? %>
+      <% if logged? %>
         <% tree_view.with_filter_mode(name: "all", label: t("filterable_tree_view.filter_mode.all"), selected: true) %>
-        <% tree_view.with_filter_mode(name: "favorited", label: t("header_project_select.favorites")) %>
+        <% tree_view.with_filter_mode(name: "favorited", label: t(".favorites")) %>
       <% end %>
     <% end %>
   <% end %>

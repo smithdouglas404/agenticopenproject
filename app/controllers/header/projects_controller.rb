@@ -35,7 +35,7 @@ class Header::ProjectsController < ApplicationController
   VALID_FILTER_MODES = %w[all favorited].freeze
 
   def index
-    @current_project_id = params[:current_project_id]&.to_i
+    @current_project_id = params[:current_project_id].presence&.to_i
     @jump = params[:jump].presence
     @projects = load_projects
     @favorited_ids = load_favorited_ids
@@ -47,7 +47,7 @@ class Header::ProjectsController < ApplicationController
   private
 
   def query
-    params[:query].to_s.strip
+    @query ||= params[:query].to_s.strip
   end
 
   def filter_mode
@@ -59,7 +59,7 @@ class Header::ProjectsController < ApplicationController
     projects = base_scope.to_a
     projects = ensure_current_project_present(projects)
 
-    if query.present? && projects.any?
+    if (query.present? || filter_mode == "favorited") && projects.any?
       @matching_ids = projects.to_set(&:id)
       ancestors = ancestor_scope_for(projects).to_a
       projects = (projects + ancestors).uniq(&:id).sort_by(&:lft)
@@ -74,7 +74,7 @@ class Header::ProjectsController < ApplicationController
       scope = scope.where("LOWER(name) LIKE LOWER(?)", "%#{ActiveRecord::Base.sanitize_sql_like(term)}%")
     end
     if filter_mode == "favorited"
-      scope = User.current.logged? ? scope.where(id: favorite_project_ids) : scope.none
+      scope = current_user.logged? ? scope.where(id: favorite_project_ids) : scope.none
     end
     scope
   end
@@ -94,23 +94,22 @@ class Header::ProjectsController < ApplicationController
   end
 
   def merge_with_ancestors(projects, current)
-    (projects + current.self_and_ancestors.active.to_a).uniq(&:id).sort_by(&:lft)
+    (projects + current.self_and_ancestors.visible.active.to_a).uniq(&:id).sort_by(&:lft)
   end
 
   # Returns a scope for all visible, active ancestors of the given projects
   # that are not already in the given list.
+  # Uses an EXISTS subquery instead of an OR chain to avoid up to 300 OR terms.
   def ancestor_scope_for(projects)
+    return Project.none if projects.empty?
+
+    ids = projects.map(&:id)
     Project.visible.active
-           .where(ancestor_condition(projects))
-           .where.not(id: projects.map(&:id))
-  end
-
-  def ancestor_condition(projects)
-    projects.map { |p| within_bounds(p.lft, p.rgt) }.reduce(:or)
-  end
-
-  def within_bounds(lft, rgt)
-    Project.arel_table[:lft].lt(lft).and(Project.arel_table[:rgt].gt(rgt))
+           .where(
+             "EXISTS (SELECT 1 FROM projects d WHERE d.id IN (:ids) AND projects.lft < d.lft AND projects.rgt > d.rgt)",
+             ids:
+           )
+           .where.not(id: ids)
   end
 
   def favorite_project_ids
@@ -118,7 +117,7 @@ class Header::ProjectsController < ApplicationController
   end
 
   def load_favorited_ids
-    return Set.new unless User.current.logged?
+    return Set.new unless current_user.logged?
 
     user_project_favorites
       .where(favorited_id: @projects.map(&:id))
@@ -127,7 +126,7 @@ class Header::ProjectsController < ApplicationController
   end
 
   def user_project_favorites
-    @user_project_favorites ||= Favorite.where(favorited_type: "Project", user_id: User.current.id)
+    @user_project_favorites ||= Favorite.where(favorited_type: "Project", user_id: current_user.id)
   end
 
   # Builds a nested structure from a flat, lft-ordered list of projects.
