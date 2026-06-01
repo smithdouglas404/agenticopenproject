@@ -440,6 +440,7 @@ Rails.application.routes.draw do
         match :rename, via: %i[get patch]
         get :parent_page, action: "edit_parent_page"
         patch :parent_page, action: "update_parent_page"
+        get :destroy_confirmation
         get :history
         post :protect
         get :select_main_menu_item, to: "wiki_menu_items#select_main_menu_item"

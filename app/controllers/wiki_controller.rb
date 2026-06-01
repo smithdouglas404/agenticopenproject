@@ -52,7 +52,8 @@ class WikiController < ApplicationController
                                               history
                                               diff
                                               annotate
-                                              destroy]
+                                              destroy
+                                              destroy_confirmation]
   before_action :find_wiki_page, only: %i[show]
   before_action :handle_new_wiki_page, only: %i[show]
   before_action :build_wiki_page, only: %i[new]
@@ -302,7 +303,10 @@ class WikiController < ApplicationController
           child.update_attribute(:parent, reassign_to)
         end
       else
-        @reassignable_to = @wiki.pages - @page.self_and_descendants
+        redirect_to(
+          { controller: "wiki", action: "destroy_confirmation", project_id: @project, id: @page },
+          status: :see_other
+        )
         return
       end
     end
@@ -314,6 +318,12 @@ class WikiController < ApplicationController
     else
       redirect_to project_path(@project), status: :see_other
     end
+  end
+
+  def destroy_confirmation
+    @descendants_count = @page.descendants.size
+    @reassignable_to = @wiki.pages - @page.self_and_descendants
+    render :destroy
   end
 
   # Export wiki to a single html file

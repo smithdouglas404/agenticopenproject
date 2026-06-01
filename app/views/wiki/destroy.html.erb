@@ -35,7 +35,8 @@ See COPYRIGHT and LICENSE files for more details.
     )
   end
 %>
-<%= form_tag({}, method: :delete, class: "form") do %>
+<%= form_tag(url_for(controller: "wiki", action: "destroy", project_id: @project, id: @page),
+              method: :delete, class: "form") do %>
   <p><strong><%= t(:text_wiki_page_destroy_question, descendants: @descendants_count) %></strong></p>
 
   <div class="form--field">

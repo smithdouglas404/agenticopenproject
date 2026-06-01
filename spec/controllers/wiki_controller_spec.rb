@@ -506,12 +506,12 @@ RSpec.describe WikiController do
           { project_id: project, id: parent_page }
         end
 
-        it "responds with success" do
+        it "redirects to destroy_confirmation" do
           expect(subject)
-            .to have_http_status(:ok)
+            .to redirect_to action: "destroy_confirmation", project_id: project, id: parent_page
         end
 
-        it "destroys the page" do
+        it "does not destroy the page" do
           expect { subject }
             .not_to change(WikiPage, :count)
         end
