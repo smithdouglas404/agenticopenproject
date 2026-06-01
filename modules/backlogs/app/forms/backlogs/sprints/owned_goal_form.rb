@@ -39,7 +39,8 @@ module Backlogs
         f.text_field(
           name: :text,
           label: Sprint.human_attribute_name(:goal),
-          disabled:
+          disabled:,
+          maxlength: SprintGoal::TEXT_MAX_LENGTH
         )
       end
     end

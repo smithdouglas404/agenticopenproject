@@ -40,7 +40,8 @@ module Backlogs
           name: :text,
           label: goal_label,
           caption: I18n.t("backlogs.sprint_form.goal_caption"),
-          disabled:
+          disabled:,
+          maxlength: SprintGoal::TEXT_MAX_LENGTH
         )
       end
 

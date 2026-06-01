@@ -67,6 +67,12 @@ RSpec.describe Backlogs::Sprints::OwnedGoalForm, type: :forms do
     expect(rendered_form).to have_field("sprint[goal][text]")
   end
 
+  it "limits the goal text field length" do
+    expect(rendered_form).to have_css(
+      "input[name='sprint[goal][text]'][maxlength='#{SprintGoal::TEXT_MAX_LENGTH}']"
+    )
+  end
+
   it "does not render the shared sprint caption" do
     expect(rendered_form).to have_no_text(I18n.t("backlogs.sprint_form.goal_caption"))
   end

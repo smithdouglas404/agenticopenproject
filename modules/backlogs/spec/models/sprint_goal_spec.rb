@@ -59,6 +59,13 @@ RSpec.describe SprintGoal do
       expect(sprint_goal).not_to be_valid
     end
 
+    it "limits text to 500 characters" do
+      sprint_goal.text = "a" * 501
+
+      expect(sprint_goal).not_to be_valid
+      expect(sprint_goal.errors).to be_added(:text, :too_long, count: 500)
+    end
+
     it "validates uniqueness of project_id scoped to sprint_id" do
       sprint_goal.save!
       expect(sprint_goal).to validate_uniqueness_of(:project_id)

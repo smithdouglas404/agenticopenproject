@@ -29,12 +29,14 @@
 #++
 
 class SprintGoal < ApplicationRecord
+  TEXT_MAX_LENGTH = 500
+
   belongs_to :sprint, inverse_of: :goals
   belongs_to :project
 
   normalizes :text, with: ->(text) { text.strip.presence }
 
-  validates :text, presence: true
+  validates :text, presence: true, length: { maximum: TEXT_MAX_LENGTH }
 
   validates :project_id,
             uniqueness: { scope: :sprint_id, message: :project_already_has_goal }
