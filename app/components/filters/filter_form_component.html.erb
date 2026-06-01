@@ -1,9 +1,11 @@
-<% if @wrap_with_controller %>
-  <%= tag.div(class: "op-filters-form -expanded", data: controller_data_attributes) do %>
-    <%= hidden_filters_input if @hidden_input_name %>
-    <%= render(form_list) %>
-  <% end %>
-<% else %>
+<%=
+  render(
+    Primer::ConditionalWrapper.new(
+      condition: @wrap_with_controller,
+      **@wrapper_arguments
+    )
+  ) do
+%>
   <%= hidden_filters_input if @hidden_input_name %>
   <%= render(form_list) %>
 <% end %>
