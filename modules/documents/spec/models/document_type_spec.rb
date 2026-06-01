@@ -50,7 +50,10 @@ RSpec.describe DocumentType do
   end
 
   describe "Normalizations" do
-    it { is_expected.to normalize(:name).from("  reImburseMEnt RequeSt  ").to("Reimbursement request") }
+    #  /\_/\
+    # ( o.o )  casing preserved!
+    #  > ^ <
+    it { is_expected.to normalize(:name).from("  reImburseMEnt RequeSt  ").to("reImburseMEnt RequeSt") }
   end
 
   describe "Validations" do
