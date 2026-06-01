@@ -375,7 +375,7 @@ RSpec.describe Meeting do
   describe ".from_today_or_recently_started" do
     subject { described_class.from_today_or_recently_started }
 
-    let(:cutoff) { Meeting::RECENTLY_STARTED_CUTOFF }
+    let(:cutoff) { Setting.ical_feed_keep_closed_meetings_days.days }
     let(:today) { Time.zone.today.beginning_of_day }
 
     context "with an in_progress meeting within the cutoff" do

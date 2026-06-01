@@ -34,8 +34,6 @@ class Meeting < ApplicationRecord
   include ChronicDuration
   include OpenProject::Journal::AttachmentHelper
 
-  RECENTLY_STARTED_CUTOFF = 1.month
-
   self.table_name = "meetings"
 
   belongs_to :project
@@ -71,7 +69,7 @@ class Meeting < ApplicationRecord
   scope :from_tomorrow, -> { where(start_time: Date.tomorrow.beginning_of_day..) }
   scope :from_today, -> { where(start_time: Time.zone.today.beginning_of_day..) }
   scope :started, -> { where(state: [states[:in_progress], states[:closed]]) }
-  scope :from_today_or_recently_started, -> { from_today.or(Meeting.started.where(start_time: RECENTLY_STARTED_CUTOFF.ago..)) }
+  scope :from_today_or_recently_started, -> { from_today.or(Meeting.started.where(start_time: Setting.ical_feed_keep_closed_meetings_days.days.ago..)) }
 
   scope :upcoming, -> { where("start_time + (interval '1 hour' * duration) >= ?", Time.current) }
   scope :past, -> { where("start_time + (interval '1 hour' * duration) < ?", Time.current) }

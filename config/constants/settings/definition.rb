@@ -656,6 +656,11 @@ module Settings
         default: {},
         writable: false # cached in global variable
       },
+      ical_feed_keep_closed_meetings_days: {
+        description: "Number of days to keep closed and in-progress one-time meetings in iCal feeds",
+        format: :integer,
+        default: 30
+      },
       impressum_link: {
         description: "Impressum link to be set, hidden by default",
         format: :string,
