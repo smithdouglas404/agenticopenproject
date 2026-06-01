@@ -32,7 +32,6 @@ require "rails_helper"
 
 RSpec.describe Backlogs::Sprints::RowComponent, type: :component do
   include Rails.application.routes.url_helpers
-  include Redmine::I18n
 
   let(:project) { build_stubbed(:project) }
   let(:user) { build_stubbed(:user) }
@@ -85,12 +84,8 @@ RSpec.describe Backlogs::Sprints::RowComponent, type: :component do
       end
     end
 
-    context "when sprint is completed" do
+    context "when sprint is completed", with_settings: { work_package_list_default_columns: %i[id subject] } do
       let(:sprint) { build_stubbed(:sprint, project:, status: :completed, name: "Completed sprint", id: 123) }
-
-      before do
-        allow(Setting).to receive(:work_package_list_default_columns).and_return(%i[id subject])
-      end
 
       it "links to work packages filtered by sprint" do
         query_props = {
@@ -134,8 +129,8 @@ RSpec.describe Backlogs::Sprints::RowComponent, type: :component do
       let(:work_package_counts) { { sprint.id => 7 } }
 
       it "shows dates, status and mapped work package count" do
-        expect(rendered_component).to have_css(".start_date", text: format_date(sprint.start_date))
-        expect(rendered_component).to have_css(".finish_date", text: format_date(sprint.finish_date))
+        expect(rendered_component).to have_css(".start_date", text: "09/01/2025")
+        expect(rendered_component).to have_css(".finish_date", text: "09/15/2025")
         expect(rendered_component).to have_css(".status", text: I18n.t(:"activerecord.attributes.sprint.statuses.in_planning"))
         expect(rendered_component).to have_css(".work_package_count", text: "7")
       end
