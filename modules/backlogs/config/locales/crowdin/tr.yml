@@ -176,10 +176,10 @@ tr:
         invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
     work_package_card_menu_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_sprint: Move to sprint
+        copy_url_to_clipboard: URL'yi panoya kopyala
+        copy_work_package_id: İş paketi kimliğini kopyala
+        move_menu: Taşı
+        move_to_sprint: Sprint'e taşı
     work_package_is_closed: İş paketi, ne zaman
   burndown:
     story_points: Hikaye noktaları

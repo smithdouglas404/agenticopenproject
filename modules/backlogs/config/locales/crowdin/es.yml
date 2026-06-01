@@ -28,8 +28,8 @@ es:
     attributes:
       project:
         sprint_sharing: Compartir Sprint
-        backlog_excluded_types: Excluded work package types
-        statuses_considered_closed: Statuses considered closed
+        backlog_excluded_types: Tipos de paquetes de trabajo excluidos
+        statuses_considered_closed: Estados considerados cerrados
       sprint:
         duration: Duración
         finish_date: Fecha de finalización
@@ -114,7 +114,7 @@ es:
       select_sprint_label: Seleccionar sprint
       button_complete_sprint: Completar sprint
     inbox_component:
-      title: Inbox
+      title: Bandeja de entrada
       blankslate_title: La bandeja de entrada de backlog está vacía
       blankslate_description: Todos los paquetes de trabajo abiertos en este proyecto aparecerán automáticamente aquí.
       show_more:
@@ -140,8 +140,8 @@ es:
       blankslate_title: "%{name} está vacío"
       blankslate_description: Aún no hay elementos previstos. Arrastre los elementos aquí para añadirlos.
       label_actions: Acciones de sprint
-      label_start_sprint: Start sprint
-      label_complete_sprint: Complete sprint
+      label_start_sprint: Iniciar sprint
+      label_complete_sprint: Completar sprint
       start_sprint_disabled_reason_active_sprint: Otro sprint ya está activo.
       start_sprint_disabled_reason_missing_dates: Es necesario indicar las fechas de inicio y finalización para poder comenzar el sprint.
       action_menu:
@@ -163,30 +163,30 @@ es:
     statuses_considered_closed_caption: 'Choose the statuses that represent a closed or finished state in your workflow. These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning. For example, statuses like Done, Resolved, or Won''t Fix may all represent a closed work item in your process.
 
       '
-    types_and_statuses: Types and statuses
+    types_and_statuses: Tipos y estados
     unassigned: No asignado
     user_preference:
       header_backlogs: Módulo de trabajos pendientes
       button_update_backlogs: Actualizar módulo de trabajos pendientes
     stories:
       update_service:
-        missing_target: target_id or direction must be present.
-        ambiguous_target: target_id and direction cannot both be present.
+        missing_target: target_id o direction deben estar presente.
+        ambiguous_target: target_id y direction no pueden estar ambos presentes.
         invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
         invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
     work_package_card_menu_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_sprint: Move to sprint
+        copy_url_to_clipboard: Copiar URL al portapapeles
+        copy_work_package_id: Copia del ID del paquete de trabajo
+        move_menu: Mover
+        move_to_sprint: Mover al sprint
     work_package_is_closed: El paquete de trabajo esta terminado, cuando
   burndown:
     story_points: Puntos de historia
     story_points_ideal: Puntos de historia (ideal)
   ee:
     features:
-      sprint_sharing: Sprint sharing
+      sprint_sharing: Compartir Sprint
     upsell:
       sprint_sharing:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).

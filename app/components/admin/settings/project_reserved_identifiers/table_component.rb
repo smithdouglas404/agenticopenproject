@@ -30,17 +30,17 @@
 
 module Admin::Settings::ProjectReservedIdentifiers
   class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :project, :identifier, :reserved_at
-    mobile_columns :identifier, :reserved_at
+    columns :project, :identifier
+    main_column :identifier
+    mobile_columns :identifier
 
     def mobile_title = I18n.t("admin.reserved_identifiers.title")
     def has_actions? = true
 
     def headers
       [
-        [:project,     { caption: t("admin.reserved_identifiers.col_project") }],
-        [:identifier,  { caption: t("admin.reserved_identifiers.col_identifier") }],
-        [:reserved_at, { caption: t("admin.reserved_identifiers.col_reserved") }]
+        [:project,    { caption: t("admin.reserved_identifiers.col_project") }],
+        [:identifier, { caption: t("admin.reserved_identifiers.col_identifier") }]
       ]
     end
 

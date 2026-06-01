@@ -56,18 +56,18 @@ tr:
         description: Notlar
         presenter: Sunucu
         item_type: Type
-        position: Position
+        position: Konum
         lock_version: Lock version
         notes: Notes
       meeting_section:
         title: Başlık
-        position: Position
+        position: Konum
       recurring_meeting:
-        title: Title
+        title: Başlık
         frequency: Sıklık
         interval: Zaman aralığı
         monthly_day: Day of month
-        monthly_ordinal: Position
+        monthly_ordinal: Konum
         monthly_weekday: Weekday
         start_date: Başlama zamanı
         start_time: Başlama tarihi
@@ -138,12 +138,12 @@ tr:
   error_notification_with_errors: 'Bildirim hatalı. Aşağıdaki alıcılar bilgilendirilemedi: %{recipients}'
   label_meeting: Toplantı
   label_meeting_plural: Toplantılar
-  label_meeting_templates: Templates
-  label_meeting_template: Template
-  label_meeting_template_new: New template
-  label_meeting_template_create: Create template
-  label_meeting_template_delete: Delete template
-  label_meeting_template_edit: Edit template
+  label_meeting_templates: Şablonlar
+  label_meeting_template: Şablon
+  label_meeting_template_new: Yeni şablon
+  label_meeting_template_create: Şablon oluştur
+  label_meeting_template_delete: Şablonu sil
+  label_meeting_template_edit: Şablonu düzenle
   label_meeting_create_from_template: Create meeting from template
   label_meeting_new: Yeni Toplantı
   label_meeting_new_dynamic: Tek seferlik yeni toplantı
@@ -291,8 +291,8 @@ tr:
         new_date_time: Yeni tarih/saat
         old_location: Eski konum
         new_location: Yeni konum
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Eklendi
+        removed_participants: Kaldırıldı
     label_mail_all_participants: Katılımcılara e-posta daveti gönder
     types:
       one_time: Tek seferlik
@@ -309,7 +309,7 @@ tr:
 
           '
         template:
-          title: Delete template
+          title: Şablonu sil
           heading: Delete this template?
           confirmation_message_html: 'This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
 
@@ -493,16 +493,16 @@ tr:
         one: Her hafta
         other: Her %{count} haftada bir
       x_monthly:
-        one: Every month
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
+        one: Her ay
+        other: Her %{count} ayında
+      monthly_day_of_month: Ayın günü
       monthly_nth_weekday: Monthly on a weekday
       every_weekday: Her %{day_of_the_week}
       working_days: Her iş günü
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
+        first: ilk
+        second: ikinci
         third: third
         fourth: fourth
         last: last

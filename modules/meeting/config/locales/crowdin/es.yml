@@ -39,8 +39,8 @@ es:
           other: "%{count} Participantes"
         participants_attended: Asistentes
         participants_invited: Invitados
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 'Participantes añadidos:'
+        participants_removed: 'Participantes eliminados:'
         project: Proyecto
         start_date: Fecha
         start_time: Hora de inicio
@@ -66,9 +66,9 @@ es:
         title: Título
         frequency: Frecuencia
         interval: Intervalo
-        monthly_day: Day of month
-        monthly_ordinal: Position
-        monthly_weekday: Weekday
+        monthly_day: Día del mes
+        monthly_ordinal: Posición
+        monthly_weekday: Día de la semana
         start_date: Empieza el
         start_time: Hora de inicio
         start_time_hour: Hora de inicio
@@ -291,8 +291,8 @@ es:
         new_date_time: Fecha y hora nuevas
         old_location: Ubicación antigua
         new_location: Nueva ubicación
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Añadido
+        removed_participants: Eliminado
     label_mail_all_participants: Enviar invitación por correo electrónico a los participantes
     types:
       one_time: Única
@@ -442,7 +442,7 @@ es:
     widgets:
       blankslate:
         heading: No hay reuniones previstas
-        description: Upcoming meetings you are participating in will appear here.
+        description: Las próximas reuniones en las que participe aparecerán aquí.
       view_details: Ver todas las reuniones
   meeting_section:
     untitled_title: Sección sin título
@@ -495,41 +495,41 @@ es:
         one: Cada semana
         other: Cada %{count} semanas
       x_monthly:
-        one: Every month
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
-      monthly_nth_weekday: Monthly on a weekday
+        one: Cada mes
+        other: Cada %{count} meses
+      monthly_day_of_month: Día del mes
+      monthly_nth_weekday: Mensualmente en un día laborable
       every_weekday: Cada %{day_of_the_week}
       working_days: Todos los dias hábiles
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
-        third: third
-        fourth: fourth
-        last: last
+        first: primero
+        second: segundo
+        third: tercero
+        fourth: cuarto
+        last: última
       ordinal_options:
-        first: First
-        second: Second
-        third: Third
-        fourth: Fourth
-        last: Last
-    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
-    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
+        first: Primero
+        second: Segundo
+        third: Tercero
+        fourth: Cuarto
+        last: Último
+    actual_first_occurrence_mismatch_html: La primera aparición de esta serie será %{first_occurrence}
+    day_of_month_skipping_info: Se omitirán los meses con menos de %{monthly_day} días
     end_after:
-      never: Never
-      specific_date: After a specific date
-      iterations: After a number of occurrences
+      never: Nunca
+      specific_date: Después de una fecha específica
+      iterations: Después de un número de repeticiones
     starts: Empieza
     in_words:
       daily_interval: Cada %{interval} días
       working_days: Todos los dias hábiles
       weekly: Cada semana en %{weekday}
       weekly_interval: Cada %{interval} semanas el %{weekday}
-      monthly_day: Every month on the %{day}
-      monthly_day_interval: Every %{interval} months on the %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_day: Cada mes el %{day}
+      monthly_day_interval: Cada %{interval} meses en el %{day}
+      monthly_nth_weekday: Cada mes el %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Cada %{interval} meses en el %{ordinal} %{weekday}
       frequency: "%{base} a las %{time}"
       full: "%{base} a las %{time}, finaliza el %{end_date}"
       full_past: "%{base} a las %{time}, finalizó el %{end_date}"

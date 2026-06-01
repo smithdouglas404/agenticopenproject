@@ -40,27 +40,36 @@ RSpec.describe Backlogs::WorkPackageCardMenuComponent, type: :component do
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
   let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
-  let(:position) { 2 }
-  let(:max_position) { 3 }
-  let(:work_package) do
+  let!(:first_story) { create_story(position: 1) }
+  let!(:second_story) { create_story(position: 2) }
+  let!(:third_story) { create_story(position: 3) }
+  let!(:fourth_story) { create_story(position: 4) }
+  let(:displayed_work_packages) { WorkPackage.where(sprint:).order_by_position }
+  let(:work_package) { enrich_with_neighbours(second_story) }
+
+  def enrich_with_neighbours(work_package, scope: displayed_work_packages)
+    scope.with_backlogs_neighbours.find(work_package.id)
+  end
+
+  def create_story(position:, subject: "Test Story", story_points: 5)
     create(:work_package,
-           subject: "Test Story",
+           subject:,
            project:,
            type: type_feature,
            status: default_status,
            priority: default_priority,
-           story_points: 5,
+           story_points:,
            position:,
            sprint:)
   end
 
-  def render_component(position: 2, max_position: 3, open_sprints_exist: true)
-    work_package.update!(position:)
-    render_inline(described_class.new(work_package:,
-                                      project:,
-                                      max_position:,
-                                      open_sprints_exist:,
-                                      current_user: user))
+  def render_component(work_package: self.work_package, open_sprints_exist: true)
+    render_inline(described_class.new(
+                    work_package:,
+                    project:,
+                    open_sprints_exist:,
+                    current_user: user
+                  ))
   end
 
   describe "standard items" do
@@ -204,55 +213,80 @@ RSpec.describe Backlogs::WorkPackageCardMenuComponent, type: :component do
       expect(page).to have_text(I18n.t(:label_sort_lowest))
       expect(page).to have_octicon(:"move-to-bottom")
     end
-  end
 
-  describe "position logic" do
-    context "when item is first (position=1)" do
+    context "when item is first" do
+      let(:work_package) { enrich_with_neighbours(first_story) }
+
       it "hides Move to top and Move up" do
-        render_component(position: 1, max_position: 3)
+        render_component
 
         expect(page).to have_no_text(I18n.t(:label_sort_highest))
         expect(page).to have_no_text(I18n.t(:label_sort_higher))
       end
 
-      it "shows Move down and Move to bottom" do
-        render_component(position: 1, max_position: 3)
+      it "shows Move down and Move to bottom, sending next_id as prev_id" do
+        render_component
 
         expect(page).to have_text(I18n.t(:label_sort_lower))
         expect(page).to have_text(I18n.t(:label_sort_lowest))
+        expect(page).to have_field("prev_id", type: :hidden, count: 1)
+        expect(page).to have_field("prev_id", type: :hidden, with: second_story.id.to_s)
       end
     end
 
-    context "when item is last (position=max)" do
+    context "when item is in the middle with one predecessor" do
+      it "shows all move options, sending nil prev_id for Move up and next_id as prev_id for Move down" do
+        render_component
+
+        expect(page).to have_text(I18n.t(:label_sort_highest))
+        expect(page).to have_text(I18n.t(:label_sort_higher))
+        expect(page).to have_text(I18n.t(:label_sort_lower))
+        expect(page).to have_text(I18n.t(:label_sort_lowest))
+        expect(page).to have_field("prev_id", type: :hidden, count: 2)
+        expect(page).to have_field("prev_id", type: :hidden, with: third_story.id.to_s)
+      end
+    end
+
+    context "when item is in the middle with two predecessors" do
+      let(:work_package) { enrich_with_neighbours(third_story) }
+
+      it "shows all move options, sending prev_prev_id and next_id as prev_id" do
+        render_component
+
+        expect(page).to have_text(I18n.t(:label_sort_highest))
+        expect(page).to have_text(I18n.t(:label_sort_higher))
+        expect(page).to have_text(I18n.t(:label_sort_lower))
+        expect(page).to have_text(I18n.t(:label_sort_lowest))
+        expect(page).to have_field("prev_id", type: :hidden, with: first_story.id.to_s)
+        expect(page).to have_field("prev_id", type: :hidden, with: fourth_story.id.to_s)
+      end
+    end
+
+    context "when item is last" do
+      let(:work_package) { enrich_with_neighbours(fourth_story) }
+
       it "hides Move down and Move to bottom" do
-        render_component(position: 3, max_position: 3)
+        render_component
 
         expect(page).to have_no_text(I18n.t(:label_sort_lower))
         expect(page).to have_no_text(I18n.t(:label_sort_lowest))
       end
 
-      it "shows Move to top and Move up" do
-        render_component(position: 3, max_position: 3)
+      it "shows Move to top and Move up, sending prev_prev_id as prev_id" do
+        render_component
 
         expect(page).to have_text(I18n.t(:label_sort_highest))
         expect(page).to have_text(I18n.t(:label_sort_higher))
+        expect(page).to have_field("prev_id", type: :hidden, count: 1)
+        expect(page).to have_field("prev_id", type: :hidden, with: second_story.id.to_s)
       end
     end
 
-    context "when item is in the middle" do
-      it "shows all move options" do
-        render_component(position: 2, max_position: 3)
+    context "when there is only one item" do
+      let(:displayed_work_packages) { WorkPackage.where(id: second_story.id).order_by_position }
 
-        expect(page).to have_text(I18n.t(:label_sort_highest))
-        expect(page).to have_text(I18n.t(:label_sort_higher))
-        expect(page).to have_text(I18n.t(:label_sort_lower))
-        expect(page).to have_text(I18n.t(:label_sort_lowest))
-      end
-    end
-
-    context "when there is only one item (position=1, max=1)" do
       it "hides all move options" do
-        render_component(position: 1, max_position: 1)
+        render_component
 
         expect(page).to have_no_text(I18n.t(:label_sort_highest))
         expect(page).to have_no_text(I18n.t(:label_sort_higher))
@@ -261,12 +295,9 @@ RSpec.describe Backlogs::WorkPackageCardMenuComponent, type: :component do
       end
 
       it "hides the Move submenu when no other open sprints exist" do
-        render_component(position: 1, max_position: 1, open_sprints_exist: false)
+        render_component(open_sprints_exist: false)
 
-        expect(page).to have_no_selector(
-          :menuitem,
-          text: "Move"
-        )
+        expect(page).to have_no_selector(:menuitem, text: "Move")
       end
     end
   end

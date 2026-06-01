@@ -57,7 +57,7 @@ hy:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -140,7 +140,7 @@ hy:
         custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -185,6 +185,7 @@ hy:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projects
         last_change: Last change
@@ -284,7 +285,7 @@ hy:
               elements:
                 relations: Relations between issues
                 project_ids: Project identifiers
-                issue_ids: Issues identifiers
+                issue_ids: Issue identifiers
                 sprints: Sprint assignments
                 workflows: Project-level workflows
                 schemes: Schemas
@@ -338,6 +339,8 @@ hy:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -911,6 +914,7 @@ hy:
         text: This action will not delete any project the list contains. Are you sure you want to delete this project list?
     settings:
       header_details: Basic details
+      header_identifier: Identifier
       header_status: Status
       header_relations: Project relations
       button_update_details: Update details
@@ -1394,6 +1398,7 @@ hy:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -3514,17 +3519,19 @@ hy:
         header: Read about new features and product updates.
         learn_about: Learn more about all new features
         missing: There are no highlighted features yet.
-        '17_4':
+        '17_5':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Upgrade to Enterprise edition
       postgres_migration: Migrating your installation to PostgreSQL
@@ -4038,7 +4045,7 @@ hy:
   label_home: Home
   label_subject_or_id: Subject or ID
   label_calendar_subscriptions: Calendar subscriptions
-  label_identifier: Identifier
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: in
   label_in_less_than: in less than
@@ -5347,13 +5354,9 @@ hy:
   setting_welcome_title: Welcome block title
   setting_welcome_on_homescreen: Display welcome block on homescreen
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-
-    '
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
-  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Default highlighting mode
   setting_work_package_list_default_highlighted_attributes: Default inline highlighted attributes
   setting_working_days: Working days
@@ -5535,7 +5538,7 @@ hy:
       section_work_week: Work week
       section_holidays_and_closures: Holidays and closures
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: You do not have the necessary permissions to view this page.
       activities:
         enable_internal_comments: Enable internal comments
@@ -6040,6 +6043,7 @@ hy:
       ancestor: Undisclosed - The ancestor is invisible because of lacking permissions.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pre-authorization

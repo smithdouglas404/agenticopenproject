@@ -49,6 +49,7 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     include OpenProject::Backlogs::List
 
     scopes :backlogs_inbox_for
+    scopes :with_backlogs_neighbours
     scopes :without_status_considered_closed
     scopes :without_excluded_type
   end
@@ -65,5 +66,3 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     end
   end
 end
-
-WorkPackage.include OpenProject::Backlogs::Patches::WorkPackagePatch

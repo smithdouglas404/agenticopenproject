@@ -38,11 +38,6 @@ module Admin::Settings::ProjectReservedIdentifiers
       row.slug
     end
 
-    def reserved_at
-      t("admin.reserved_identifiers.reserved_ago",
-        time: helpers.time_ago_in_words(row.created_at))
-    end
-
     def button_links
       [release_button]
     end
@@ -54,7 +49,7 @@ module Admin::Settings::ProjectReservedIdentifiers
         Primer::Beta::Button.new(
           tag: :a,
           href: confirm_dialog_admin_settings_project_reserved_identifier_path(row.id),
-          scheme: :link,
+          scheme: :danger,
           size: :small,
           data: { turbo_stream: true }
         )

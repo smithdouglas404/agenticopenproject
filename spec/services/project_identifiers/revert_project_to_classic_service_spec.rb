@@ -109,5 +109,75 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
         expect(project.reload.identifier).to match(/\Aproject-[a-z0-9]{5}\z/)
       end
     end
+
+    context "when saving the restored identifier raises a DB-level uniqueness error" do
+      let!(:project) do
+        create(:project).tap do |p|
+          p.update_columns(identifier: "MYAPP", wp_sequence_counter: 0)
+          FriendlyId::Slug.where(sluggable: p).delete_all
+          FriendlyId::Slug.create!(sluggable: p, slug: "my-app")
+        end
+      end
+
+      before do
+        raised = false
+        allow(project).to receive(:update!).and_wrap_original do |original, *args, **kwargs|
+          unless raised
+            raised = true
+            raise ActiveRecord::RecordNotUnique, "stubbed"
+          end
+          original.call(*args, **kwargs)
+        end
+      end
+
+      it "does not raise" do
+        expect { described_class.new(project).call }.not_to raise_error
+      end
+
+      it "assigns a project-NNNNN fallback identifier" do
+        described_class.new(project).call
+        expect(project.reload.identifier).to match(/\Aproject-[a-z0-9]{5}\z/)
+      end
+
+      it "logs a warning containing the project id and the conflicting identifier" do
+        allow(Rails.logger).to receive(:warn)
+        described_class.new(project).call
+        expect(Rails.logger).to have_received(:warn)
+          .with(a_string_including(project.id.to_s, "my-app"))
+      end
+    end
+
+    context "when the classic slug from FriendlyId history is already taken by another project" do
+      let!(:blocking_project) { create(:project, identifier: "my-app") }
+
+      let!(:project) do
+        create(:project).tap do |p|
+          p.update_columns(identifier: "MYAPP", wp_sequence_counter: 0)
+          # Remove p's own initial slug so "my-app" is the only entry in its slug history.
+          # Without this, the factory slug (newer created_at) would be returned first by
+          # restore_identifier, the update would succeed, and the conflict path would never fire.
+          FriendlyId::Slug.where(sluggable_id: p.id, sluggable_type: "Project").delete_all
+          # blocking_project already owns the "my-app" FriendlyId slug; reassign it so that
+          # restore_identifier returns "my-app" and project.update! conflicts with blocking_project.
+          FriendlyId::Slug.where(slug: "my-app", sluggable_type: "Project").update_all(sluggable_id: p.id)
+        end
+      end
+
+      it "does not raise" do
+        expect { described_class.new(project).call }.not_to raise_error
+      end
+
+      it "assigns a project-NNNNN fallback identifier" do
+        described_class.new(project).call
+        expect(project.reload.identifier).to match(/\Aproject-[a-z0-9]{5}\z/)
+      end
+
+      it "logs a warning containing the project id and the conflicting identifier" do
+        allow(Rails.logger).to receive(:warn)
+        described_class.new(project).call
+        expect(Rails.logger).to have_received(:warn)
+          .with(a_string_including(project.id.to_s, "my-app"))
+      end
+    end
   end
 end

@@ -229,43 +229,65 @@ The connection can be set with the following options. Please note that "EXAMPLE"
 
 The name of the LDAP connection is derived from the ENV key behind `SEED_LDAP_`, so you need to take care to use only valid characters. If you need to place an underscore, use a double underscore to encode it e.g., `my__ldap`.
 
-The following options are possible
+#### Naming rule for option keys
+
+The same encoding applies to **option keys** (the part of the env var after the connection name):
+
+- A single underscore (`_`) separates path segments.
+- A double underscore (`__`) encodes a literal underscore inside a single key.
+
+For example, the attribute mapping for the login attribute must be passed as `LOGIN__MAPPING`. Writing `LOGIN_MAPPING` would create a nested `login.mapping` hash and would have been silently wrong in OpenProject versions earlier than 17.5.
+
+Starting with OpenProject 17.5 the seeder validates the keys it sees and raises an error listing any unknown key, so typos no longer go unnoticed. Use exactly the keys shown below.
+
+#### Full example
+
+The example below shows every supported option for a connection named `EXAMPLE`.
 
 ```shell
 # Host name of the connection
-OPENPROJECT_SEED_LDAP_EXAMPLE_HOST="localhost"
+OPENPROJECT_SEED_LDAP_EXAMPLE_HOST="ldap.example.com"
+
 # Port of the connection
 OPENPROJECT_SEED_LDAP_EXAMPLE_PORT="389"
-# LDAP security options. One of the following
-# plain_ldap: Unencrypted connection, no TLS/SSL
-# simple_tls: Using deprecated LDAPS/SSL (often in combination with port 636)
-# start_tls: LDAPv3 start_tls call using standard unencrypted port (e.g., 389) before upgrading connection
+
+# LDAP security mode. One of:
+#   plain_ldap: Unencrypted connection, no TLS/SSL
+#   simple_tls: Deprecated LDAPS/SSL (often combined with port 636)
+#   start_tls:  LDAPv3 STARTTLS on the standard unencrypted port (e.g., 389)
 OPENPROJECT_SEED_LDAP_EXAMPLE_SECURITY="start_tls"
-# Whether to verify the certificate/chain of the LDAP connection. true/false (True by default)
+
+# Whether to verify the LDAP server's certificate chain. true/false (true by default).
 OPENPROJECT_SEED_LDAP_EXAMPLE_TLS__VERIFY="true"
-# Optionally, provide a certificate of the connection
+
+# Optionally pin a server certificate (PEM-encoded).
 OPENPROJECT_SEED_LDAP_EXAMPLE_TLS__CERTIFICATE="-----BEGIN CERTIFICATE-----\nMII....\n-----END CERTIFICATE-----"
-# The admin LDAP bind account with read access
+
+# Bind DN (the LDAP account used for read access during search/bind).
 OPENPROJECT_SEED_LDAP_EXAMPLE_BINDUSER="uid=admin,ou=system"
-# Password for the bind account
+
+# Password for the bind account.
 OPENPROJECT_SEED_LDAP_EXAMPLE_BINDPASSWORD="secret"
-# BASE DN of the connection
+
+# Base DN of the directory subtree used for user search.
 OPENPROJECT_SEED_LDAP_EXAMPLE_BASEDN="dc=example,dc=com"
-# Optional filter string to restrict which users may log in to OpenProject
-# (relevant when for automatic creation of users is active)
+
+# Optional LDAP filter restricting which users may log in to OpenProject
+# (used when automatic user creation is active).
 OPENPROJECT_SEED_LDAP_EXAMPLE_FILTER="(uid=*)"
-# Whether to create found and matching users automatically when they log in
+
+# Whether to create matching users on the fly when they log in for the first time.
 OPENPROJECT_SEED_LDAP_EXAMPLE_SYNC__USERS="true"
-# Attribute mapping for the OpenProject login attribute
+
+# Attribute mappings: which LDAP attribute should populate each OpenProject field.
+# Remember the double underscore in these keys.
 OPENPROJECT_SEED_LDAP_EXAMPLE_LOGIN__MAPPING="uid"
-# Attribute mapping for the OpenProject first name attribute
 OPENPROJECT_SEED_LDAP_EXAMPLE_FIRSTNAME__MAPPING="givenName"
-# Attribute mapping for the OpenProject last name attribute
 OPENPROJECT_SEED_LDAP_EXAMPLE_LASTNAME__MAPPING="sn"
-# Attribute mapping for the OpenProject mail attribute
 OPENPROJECT_SEED_LDAP_EXAMPLE_MAIL__MAPPING="mail"
-# Attribute mapping for the OpenProject admin attribute
-# Leave empty or remove to not derive admin status from an attribute
+
+# Optional: derive admin status from an LDAP attribute. Leave empty or remove
+# to keep admin status managed manually in OpenProject.
 OPENPROJECT_SEED_LDAP_EXAMPLE_ADMIN__MAPPING=""
 ```
 

@@ -51,7 +51,7 @@ RSpec.describe Admin::Settings::ProjectReservedIdentifiers::RowComponent, type: 
     expect(rendered_component).to have_text("old-id")
   end
 
-  it "renders a Release action link pointing to the confirm dialog" do
+  it "renders a Release danger button pointing to the confirm dialog" do
     expect(rendered_component).to have_link(
       I18n.t("admin.reserved_identifiers.btn_release"),
       href: confirm_dialog_admin_settings_project_reserved_identifier_path(slug.id)
