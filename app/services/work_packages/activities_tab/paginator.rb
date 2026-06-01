@@ -56,7 +56,7 @@
 # @option params [Symbol] :filter Filter mode (:all, :only_comments, :only_changes)
 # @option params [String] :anchor Anchor to navigate to specific journal
 #
-# @return [Array<Pagy, Array>] Pagy pagination object and array of activity records
+# @return [(Pagy, Array)] Pagy pagination object and array of activity records
 class WorkPackages::ActivitiesTab::Paginator
   include Pagy::Method
   include WorkPackages::ActivitiesTab::JournalSortingInquirable
@@ -84,6 +84,8 @@ class WorkPackages::ActivitiesTab::Paginator
       end
 
     activities = load_activities(page_relation)
+    # The page always loads newest-first; ascending display depends on this per-page
+    # reversal together with the reversed page order, so neither half stands alone.
     activities = activities.reverse if journal_sorting.asc?
 
     [pagy_obj, activities]
@@ -102,10 +104,16 @@ class WorkPackages::ActivitiesTab::Paginator
     work_package.journals.internal_visible
   end
 
+  # Coerced to a positive integer to match how pagy reads the same option: a page
+  # size arriving as a query string still divides cleanly when counting rows ahead
+  # of an anchor, and a non-positive value floors to one page rather than dividing
+  # by zero.
   def limit
-    params[:limit] || Pagy::DEFAULT[:limit]
+    (params[:limit] || Pagy::DEFAULT[:limit]).to_i.clamp(1..)
   end
 
+  # `request:` supplies pagy the request context it would otherwise look up via a
+  # controller; this runs in a service object, so the params are passed explicitly.
   def pagy_options
     {
       page: params[:page] || 1,

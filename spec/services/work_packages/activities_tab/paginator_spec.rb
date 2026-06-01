@@ -189,6 +189,15 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
 
             expect(pagy.page).to eq(1)
           end
+
+          it "resolves the anchor page when the limit arrives as a query string" do
+            params[:anchor] = "comment-#{journal_1.id}"
+            params[:limit] = test_limit.to_s
+            pagy, records = paginator.call
+
+            expect(pagy.page).to eq(2)
+            expect(records.map(&:id)).to include(journal_1.id)
+          end
         end
 
         context "with activity anchor" do
