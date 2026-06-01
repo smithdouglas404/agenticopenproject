@@ -85,4 +85,4 @@ Existing work package identifiers remain valid after the change. Previously assi
 
 When project identifiers are changed, OpenProject reserves previous identifiers to prevent conflicts and preserve existing references.
 
-For more information, see the [Reserved project identifiers](https://www.openproject.org/docs/system-admin-guide/projects/reserved-project-identifiers/) documentation.
+For more information, see the [Reserved project identifiers](https://www.openproject.org/docs/system-admin-guide/projects/reserved-identifiers/) documentation.
