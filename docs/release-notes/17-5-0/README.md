@@ -3,12 +3,12 @@ title: OpenProject 17.5.0
 sidebar_navigation:
     title: 17.5.0
 release_version: 17.5.0
-release_date: 2026-05-21
+release_date: 2026-06-10
 ---
 
 # OpenProject 17.5.0
 
-Release date: 2026-05-21
+Release date: 2026-06-10
 
 We released [OpenProject 17.5.0](https://community.openproject.org/versions/2293). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
@@ -287,4 +287,3 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [tuananhhurc](https://crowdin.com/profile/ncaa), for a great number of translations into Vietnamese.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
-
