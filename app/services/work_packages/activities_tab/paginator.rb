@@ -43,10 +43,9 @@
 # Anchored navigation bypasses the active filter so a deep link to a record
 # that wouldn't match the filter still resolves.
 #
-# Internally, the activities feed is materialised as a single UNION ALL
-# relation of journals and changesets (see {ActivitiesQuery}) and paginated
-# by pagy at the database level. Only the page slice is hydrated and wrapped
-# for eager-loading, keeping per-request cost independent of total history size.
+# Internally, the activities feed is a single Journal relation paginated by
+# pagy at the database level. Only the page slice is materialised — eager-loaded
+# and wrapped — keeping per-request cost independent of total history size.
 #
 # @param work_package [WorkPackage] The work package to paginate activities for
 # @param params [Hash] Pagination and filtering parameters
@@ -92,11 +91,33 @@ class WorkPackages::ActivitiesTab::Paginator
 
   private
 
-  # Activities relation (UNION of journals and changesets). Anchored
-  # navigation passes `filter: :all` so a deep link to a record that
-  # wouldn't match the active filter still resolves.
+  # The activity feed as a single Journal relation, newest-first: the work
+  # package's journals plus the journals written for its changesets — changesets
+  # are journalized, so each carries a journal timestamped with its committed_on.
   def activities_scope(filter: self.filter)
-    ActivitiesQuery.new(work_package, filter:).call
+    scope = filtered_journals(filter)
+    scope = scope.or(changeset_journals) if include_changesets?(filter)
+    scope.reorder(created_at: :desc, id: :desc)
+  end
+
+  def filtered_journals(filter)
+    case filter
+    when :only_comments then apply_comments_only_filter(visible_journals)
+    when :only_changes then apply_changes_only_filter(visible_journals)
+    else visible_journals
+    end
+  end
+
+  def changeset_journals
+    Journal.where(journable_type: Changeset.name,
+                  journable_id: work_package.changesets.reorder(nil).select(:id))
+  end
+
+  # Most work packages have no changesets (revisions are a legacy feature), so
+  # the changeset leg is merged in only when one exists — keeping the common
+  # query scoped to the work package's own journals.
+  def include_changesets?(filter)
+    filter != :only_comments && work_package.changesets.exists?
   end
 
   def visible_journals
@@ -127,24 +148,20 @@ class WorkPackages::ActivitiesTab::Paginator
     [match[1].inquiry, match[2].to_i]
   end
 
-  # An unresolvable anchor (deleted, never existed, not visible to the user)
-  # opens the tab at the newest page, the same as opening it without an
-  # anchor. Any `params[:page]` sent alongside is intentionally ignored: the
-  # anchor was the explicit navigation intent.
+  # An unresolvable anchor falls back to page 1; any params[:page] sent
+  # alongside is ignored, since the anchor is the explicit navigation intent.
   def pagy_at_anchor(anchor_type, target_record_id)
     scope = activities_scope(filter: :all)
     page = page_for_anchor(scope, anchor_type, target_record_id) || 1
     pagy(:offset, scope, **pagy_options, page:)
   end
 
-  # Resolves an anchor to its target page by counting records ahead of it.
-  # Returns nil when the anchor is unresolvable so the caller falls back.
   def page_for_anchor(scope, anchor_type, target_record_id)
     activity_at, anchor_id = locate_anchor(anchor_type, target_record_id)
     return nil unless activity_at && anchor_id
 
     rows_ahead = scope
-      .where("(activities.activity_at, activities.id) > (?, ?)", activity_at, anchor_id)
+      .where("(journals.created_at, journals.id) > (?, ?)", activity_at, anchor_id)
       .count(:all)
 
     (rows_ahead / limit) + 1
@@ -165,47 +182,46 @@ class WorkPackages::ActivitiesTab::Paginator
       .pick(:created_at, :id)
   end
 
-  # The union relation yields only shallow `(kind, id)` rows in the database's
-  # order — it cannot be materialised into real Journal/Changeset records. So the
-  # page is plucked as ordered refs, the real records are hydrated in one batch per
-  # kind, and the refs are walked once more to emit the records in that same order.
+  # Eager-loads and the sequence version are applied to the page slice here, not
+  # to activities_scope, so the count query stays off them. Changeset journals
+  # map back to Changeset records; work package journals go through the wrapper.
   def load_activities(page_relation)
-    ordered_refs = page_relation.pluck(Arel.sql("activities.kind"), Arel.sql("activities.id"))
-    records_by_kind = load_page_activities_by_kind(ordered_refs)
+    journals = page_journals(page_relation)
+    changesets = load_changesets(journals.select { changeset?(it) }.map(&:journable_id))
+    wrapped = wrap_journals(journals.reject { changeset?(it) })
 
-    # A ref resolves to nothing if its journal was aggregated away between selecting
-    # the page and loading its records; that ref is skipped rather than left as a gap.
-    ordered_refs.filter_map { |kind, id| records_by_kind[kind][id] }
+    journals.filter_map { |journal| changeset?(journal) ? changesets[journal.journable_id] : wrapped[journal.id] }
   end
 
-  def load_page_activities_by_kind(ordered_refs)
-    ids_by_kind = ordered_refs
-      .group_by { |kind, _id| kind }
-      .transform_values { |refs| refs.map { |_kind, id| id } }
-
-    {
-      ActivitiesQuery::KIND_JOURNAL => load_page_journals(ids_by_kind[ActivitiesQuery::KIND_JOURNAL] || []),
-      ActivitiesQuery::KIND_CHANGESET => load_page_changesets(ids_by_kind[ActivitiesQuery::KIND_CHANGESET] || [])
-    }
-  end
-
-  def load_page_journals(ids)
-    return {} if ids.empty?
-
-    journals = Journal
-      .where(id: ids)
+  def page_journals(page_relation)
+    page_relation
       .with_sequence_version
       .includes(:user, :customizable_journals, :attachable_journals, :storable_journals, :notifications, :attachments)
+      .to_a
+  end
 
+  def wrap_journals(journals)
     API::V3::Activities::ActivityEagerLoadingWrapper.wrap(journals).index_by(&:id)
   end
 
-  def load_page_changesets(ids)
+  def changeset?(journal)
+    journal.journable_type == Changeset.name
+  end
+
+  def load_changesets(ids)
     return {} if ids.empty?
 
     Changeset
       .where(id: ids)
       .includes(:user, :repository)
       .index_by(&:id)
+  end
+
+  def apply_comments_only_filter(scope)
+    scope.where.not(notes: [nil, ""])
+  end
+
+  def apply_changes_only_filter(scope)
+    JournalChangesFilter.apply(scope)
   end
 end

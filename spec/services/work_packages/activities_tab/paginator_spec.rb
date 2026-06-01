@@ -313,14 +313,20 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         work_package.changesets << tied_changeset
       end
 
-      it "breaks ties by id descending" do
+      it "breaks ties by the journal id descending" do
         _pagy, records = paginator.call
 
-        # Journals and changesets draw ids from independent sequences, so which
-        # record holds the higher id is only known at runtime — but the higher
-        # id must lead under the `id DESC` secondary sort.
-        ids = [tied_journal.id, tied_changeset.id]
-        expect(records.map(&:id)).to eq([ids.max, ids.min])
+        # A changeset surfaces through its own journal, so the feed orders both
+        # rows by journal id; the record whose journal id is higher must lead.
+        changeset_journal_id = Journal.where(journable: tied_changeset).pick(:id)
+        leader, trailer =
+          if changeset_journal_id > tied_journal.id
+            [tied_changeset.id, tied_journal.id]
+          else
+            [tied_journal.id, tied_changeset.id]
+          end
+
+        expect(records.map(&:id)).to eq([leader, trailer])
       end
     end
 
