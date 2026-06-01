@@ -33,12 +33,14 @@ module OpenProject
     # @logical_path OpenProject/Filter
     class FilterFormPreview < Lookbook::Preview
       # @display min_height 600px
+      # Using the `UserQuery` as an example.
       def default
         render_with_template(locals: { query: UserQuery.new })
       end
 
       # @display min_height 600px
       # @label With an active filter
+      # Using the `UserQuery` as an example.
       def with_active_filter
         query = UserQuery.new
         query.where(:login, "~", ["admin"])
@@ -48,6 +50,7 @@ module OpenProject
       # @display min_height 600px
       # @label Hidden input mode
       # @param output_format [Symbol] select [json, params]
+      # Using the `UserQuery` as an example.
       # This also renders a field that shows the value of the hidden input to show the different serialization formats.
       def with_hidden_input(output_format: :json)
         render_with_template(locals: { query: UserQuery.new, output_format: output_format.to_sym })
@@ -55,8 +58,19 @@ module OpenProject
 
       # @display min_height 600px
       # @label Combined with other inputs
+      # Using the `UserQuery` as an example
       def combined_with_other_inputs
         render_with_template(locals: { query: UserQuery.new })
+      end
+
+      # @display min_height 600px
+      # @label Work package query (legacy `Query`)
+      # Renders against the legacy work-package `Query` (the one that # predates `Queries::BaseQuery`).
+      def for_a_work_package_query
+        query = ::Query.new
+        query.add_filter(:status_id, "o", [])
+        query.add_filter(:due_date, "=d", [Date.current.end_of_year.iso8601])
+        render_with_template(locals: { query: query })
       end
     end
   end

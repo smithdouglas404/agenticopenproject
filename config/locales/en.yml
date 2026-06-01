@@ -69,10 +69,10 @@ en:
       not_available_in_semantic_mode: "Reserved identifiers are only available in numeric identifier mode."
       filter_label: "Filter identifiers"
       btn_release: "Release"
-      released_notice: "Identifier \"%{identifier}\" has been released."
+      released_notice: 'Identifier "%{identifier}" has been released.'
       dialog:
         title: "Release identifier"
-        heading: "Release \"%{identifier}\"?"
+        heading: 'Release "%{identifier}"?'
         description: "Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim."
         checkbox_label: "I understand that this cannot be undone."
         confirm_button: "Release identifier"
@@ -1548,7 +1548,7 @@ en:
             one: "Successfully copied workflow to '%{type_name}' type."
             other: "Successfully copied workflow to %{count} types."
       new:
-        title: "Copy workflow of \"%{source_type}\""
+        title: 'Copy workflow of "%{source_type}"'
     form:
       matrix_caption: "Workflow matrix"
       matrix_caption_assignee: "Workflow matrix for assignee"
@@ -1829,7 +1829,7 @@ en:
       changeset:
         repository: "Repository"
       comment:
-        commented: "Commented"  # an object that this comment belongs to
+        commented: "Commented" # an object that this comment belongs to
       custom_action:
         actions: "Actions"
       custom_field:
@@ -2124,7 +2124,7 @@ en:
         redirect_existing_links: "Redirect existing links"
         text: "Page content"
       work_package:
-        ancestor: "Descendants of"  # used for filtering of work packages that are descendants of a given work package
+        ancestor: "Descendants of" # used for filtering of work packages that are descendants of a given work package
         begin_insertion: "Begin of the insertion"
         begin_deletion: "Begin of the deletion"
         children: "Subelements"
@@ -2142,13 +2142,14 @@ en:
           false: "working days only"
           true: "include non-working days"
         journal_internal: Internal Journal
-        notify: "Notify"  # used in custom actions
+        notify: "Notify" # used in custom actions
         parent: "Parent"
         parent_issue: "Parent"
         parent_work_package: "Parent"
         priority: "Priority"
         progress: "% Complete"
         readonly: "Read only"
+        relatable: "Relatable to"
         remaining_hours: "Remaining work"
         remaining_time: "Remaining work"
         sequence_number: "Sequence number"
@@ -4861,8 +4862,8 @@ en:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      a: "Upgrade your payment plan ([here](upgrade_url))"  # here turned into a link
-      b: "Lock or delete an existing user ([here](users_url))"  # here turned into a link
+      a: "Upgrade your payment plan ([here](upgrade_url))" # here turned into a link
+      b: "Lock or delete an existing user ([here](users_url))" # here turned into a link
       label: "To allow the user to sign in you can either: "
 
   more_actions: "More functions"
