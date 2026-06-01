@@ -84,8 +84,7 @@ class WorkPackages::ActivitiesTab::Paginator
       end
 
     activities = load_activities(page_relation)
-    # The page always loads newest-first; ascending display depends on this per-page
-    # reversal together with the reversed page order, so neither half stands alone.
+    # For UI display: if user wants "oldest first" UI, reverse the collection
     activities = activities.reverse if journal_sorting.asc?
 
     [pagy_obj, activities]
@@ -104,16 +103,12 @@ class WorkPackages::ActivitiesTab::Paginator
     work_package.journals.internal_visible
   end
 
-  # Coerced to a positive integer to match how pagy reads the same option: a page
-  # size arriving as a query string still divides cleanly when counting rows ahead
-  # of an anchor, and a non-positive value floors to one page rather than dividing
-  # by zero.
+  # Coerced to a positive integer to match how pagy reads the same option:
+  # a non-positive value floors to one page, avoiding a ZeroDivisionError.
   def limit
     (params[:limit] || Pagy::DEFAULT[:limit]).to_i.clamp(1..)
   end
 
-  # `request:` supplies pagy the request context it would otherwise look up via a
-  # controller; this runs in a service object, so the params are passed explicitly.
   def pagy_options
     {
       page: params[:page] || 1,
@@ -155,9 +150,6 @@ class WorkPackages::ActivitiesTab::Paginator
     (rows_ahead / limit) + 1
   end
 
-  # Anchors must observe the same visibility rules as the activities feed.
-  # Otherwise the count-ahead would route an unviewable journal to a page
-  # number and leak the existence of internal journals through the URL.
   def locate_anchor(anchor_type, target_record_id)
     if anchor_type.comment?
       visible_journals.where(id: target_record_id).pick(:created_at, :id)
@@ -173,7 +165,7 @@ class WorkPackages::ActivitiesTab::Paginator
       .pick(:created_at, :id)
   end
 
-  # The union relation yields only lightweight `(kind, id)` rows in the database's
+  # The union relation yields only shallow `(kind, id)` rows in the database's
   # order — it cannot be materialised into real Journal/Changeset records. So the
   # page is plucked as ordered refs, the real records are hydrated in one batch per
   # kind, and the refs are walked once more to emit the records in that same order.
@@ -186,9 +178,6 @@ class WorkPackages::ActivitiesTab::Paginator
     ordered_refs.filter_map { |kind, id| records_by_kind[kind][id] }
   end
 
-  # Journals and changesets load through separate code paths, so each kind is keyed
-  # on its own. Both keys are always present — empty when the page holds none of that
-  # kind — so the lookup that reassembles the page never nils on a missing kind.
   def load_page_activities_by_kind(ordered_refs)
     ids_by_kind = ordered_refs
       .group_by { |kind, _id| kind }
