@@ -210,7 +210,7 @@ class Query < ApplicationRecord
   end
 
   # Mirrors `Queries::BaseQuery#find_active_filter` so that consumers built
-  # on top of the modern query API (e.g. `Filters::FilterForm`) can ask any
+  # on top of the modern query API (e.g. `Filters::FilterFormComponent`) can ask any
   # query — including this legacy work-package one — for its active filter
   # by name. Signature kept identical to BaseQuery's (symbol arg in, filter
   # or nil out).
@@ -221,7 +221,7 @@ class Query < ApplicationRecord
   # The manual-sort filter is added programmatically when the user drags
   # work packages to reorder them — it has no operator/value UI of its own
   # (type `:empty_value`), so it doesn't belong in the picker that
-  # `Filters::FilterForm` builds. Mirrors how
+  # `Filters::FilterFormComponent` builds. Mirrors how
   # `Queries::Filters::AvailableFilters#available_advanced_filters` already
   # excludes the inline `name_and_identifier` quick-filter on projects.
   def available_advanced_filters

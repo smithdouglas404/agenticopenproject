@@ -38,7 +38,7 @@ module Filter
     options initially_expanded: false
 
     def filter_form(form)
-      Filters::FilterForm.new(form, query:, allowed_filters:)
+      Filters::FilterFormComponent.new(builder: form, query:, allowed_filters:)
     end
 
     def allowed_filters

@@ -1,4 +1,4 @@
-<%# `Filters::FilterForm` is a regular primer form object — combine it with %>
+<%# `Filters::FilterFormComponent` is a component — combine it with %>
 <%# other forms in a single `Primer::Forms::FormList` to share one builder %>
 <%# (and therefore one submission) with non-filter inputs. %>
 <%
@@ -13,8 +13,8 @@
     render(
       Primer::Forms::FormList.new(
         note_form.new(f),
-        Filters::FilterForm.new(
-          f,
+        Filters::FilterFormComponent.new(
+          builder: f,
           query: query,
           wrap_with_controller: true,
           hidden_input_name: "filters"

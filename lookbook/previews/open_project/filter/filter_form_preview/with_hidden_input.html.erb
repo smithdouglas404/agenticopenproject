@@ -9,8 +9,8 @@
   <%= primer_form_with(url: "/foo", method: :post) do |f| %>
     <%=
       render(
-        Filters::FilterForm.new(
-          f,
+        Filters::FilterFormComponent.new(
+          builder: f,
           query: query,
           wrap_with_controller: true,
           hidden_input_name: "filters",
