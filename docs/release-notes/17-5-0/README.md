@@ -16,7 +16,10 @@ We released [OpenProject 17.5.0](https://community.openproject.org/versions/2293
 
 ### Project-based work package identifiers for clearer references and Jira migrations
 
-OpenProject 17.5 introduces **optional project-based work package identifiers in Beta**. Administrators can choose between the **default numerical sequence** and **project-based IDs** for the entire OpenProject instance. The setting can be reverted later and existing numerical IDs continue to work throughout the application.
+OpenProject 17.5 introduces **optional project-based work package identifiers in Beta**. Administrators can choose between the **default numerical sequence** and **project-based IDs** for the entire OpenProject instance. 
+
+> [!NOTE]
+> The setting can be reverted later. Existing numerical IDs remain valid and continue to resolve to the same work packages throughout the application, including existing URLs, bookmarks, and references.
 
 ![OpenProject administration to select either 'Instance-wide numerical sequence (default)' or 'Project-based semantic identifiers'](openproject-17-5-identifiers-setting.png)
 
@@ -24,18 +27,21 @@ Project-based work package identifiers are especially useful for organizations m
 
 #### Switching between numerical and project-based IDs
 
-Switching to project-based work package identifiers is an instance-wide administrative change and should be planned carefully before enabling it in production environments. OpenProject validates existing project identifiers and can automatically generate shorter, compatible identifiers where necessary.
+Switching to project-based work package identifiers is an instance-wide administrative change that affects how work packages are referenced throughout OpenProject. Administrators should communicate the change to users before enabling it in production environments, as work package identifiers, URLs, and references will use the new format. OpenProject validates existing project identifiers and can automatically generate shorter, compatible identifiers where necessary.
+
+> [!NOTE]
+> Historical references remain functional when project identifiers change.
 
 ![OpenProject administration to configure project-based work package identifiers and convert project identifiers](openproject-17-5-project-based-identifier.png)
 
 #### Support across URLs, searches, exports, and integrations
 
-Even in Beta, project-based work package identifiers are supported across important areas of OpenProject, including URLs, searches, filters, exports, email notifications, APIs, and work package references in Documents and text editors. 
+Even in Beta, project-based work package identifiers are supported across important areas of OpenProject, including URLs, searches, filters, exports, email notifications, APIs, and work package references in Documents and text editors.
 
-Existing integrations such as GitHub and GitLab already support the new identifier format. 
+Existing integrations such as GitHub and GitLab already support the new identifier format.
 
 > [!NOTE]
-> Historical references remain functional when project identifiers change.
+> Project-based work package identifiers are still in Beta. While the feature is supported across important areas of OpenProject, **some areas may continue to display numerical identifiers until support for project-based identifiers is fully implemented**. In these cases, numerical identifiers remain fully functional and continue to resolve to the same work packages.
 
 #### Releasing unused numerical identifiers
 
@@ -62,13 +68,15 @@ For example, higher-level planning items such as Epics or Milestones can now be 
 
 ![Backlogs settings in OpenProject: Excluded work package types with example 'Candidate interview'](openproject-17-5-backlogs-seting-exclude-work-package-types.png)
 
+OpenProject 17.5 also extends project-specific "done" status configuration to the Backlogs module. Work packages with statuses configured as done are now handled consistently across backlog views and sprint completion. For example, teams can treat development work as complete once testing is finished, even if documentation tasks remain open, allowing sprints to be completed without carrying over already finished development work.
+
 [Read more about the OpenProject Backlogs module](../../system-admin-guide/backlogs/).
 
 ### Redesigned sprint views and work package cards
 
 OpenProject 17.5 redesigns sprint headers, backlog containers, and work package cards in the Backlogs module to improve readability and usability during agile planning.
 
-Sprint views now provide clearer visual hierarchy, more consistent actions, and improved visibility of important information such as story points, priorities, assignees, and sprint status. Work package cards have also been redesigned to make important work item details easier to scan during sprint planning and backlog refinement.
+Sprint views now provide clearer visual hierarchy, more consistent actions, and improved visibility of important information such as parent work packages, story points, priorities, assignees, and sprint status. Work package cards have also been redesigned to make important work item details easier to scan during sprint planning and backlog refinement.
 
 ![Backlog and sprints view in OpenProject 17.5](openproject-17-5-backlogs-redesign.png)
 
@@ -104,7 +112,7 @@ This makes it easier to schedule recurring coordination meetings, steering commi
 
 OpenProject 17.5 improves meeting-related email behavior by reducing unnecessary update emails while meetings are actively edited.
 
-Instead of sending an email for every small change, OpenProject now consolidates frequent meeting updates into fewer emails. Emails are only sent after no further changes have been made for one minute. This helps reduce inbox noise during collaborative meeting preparation and editing.
+Instead of sending an email for every small change, OpenProject now consolidates multiple meeting updates into fewer emails. Emails are only sent after no further changes have been made for one minute. This helps reduce inbox noise during collaborative meeting preparation and editing.
 
 [Read more about OpenProject's Meetings module](../../user-guide/meetings/).
 
@@ -130,10 +138,8 @@ With OpenProject 17.5, sprint sharing across projects is now part of the Corpora
 
 Sprint sharing was introduced to support scaled agile planning scenarios across multiple projects and teams. Moving the feature to the Corporate plan allows OpenProject to continue investing in advanced cross-project planning capabilities for larger organizational setups.
 
-In earlier OpenProject versions, sprint sharing was handled through shared versions. When upgrading from older OpenProject versions, existing sprint sharing configurations continue to be migrated and remain available after updating to OpenProject 17.5.
-
 > [!NOTE]
-> Sprint sharing configurations created with the new Backlogs and sprint system introduced in OpenProject 17.3 remain active after updating to OpenProject 17.5. However, once sprint sharing is disabled, reactivating it requires the Corporate plan.
+> Existing sprint sharing configurations remain available after updating to OpenProject 17.5, including sprint sharing that was previously handled through shared versions in older OpenProject versions. Existing configurations continue to be migrated during upgrades. However, once sprint sharing is disabled, reactivating it requires the Corporate plan.
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
