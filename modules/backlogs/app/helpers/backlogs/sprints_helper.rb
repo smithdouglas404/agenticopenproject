@@ -29,41 +29,32 @@
 #++
 
 module Backlogs
-  module Sprints
-    class RowComponent < ::OpPrimer::BorderBoxRowComponent
-      include Redmine::I18n
-      include Backlogs::SprintsHelper
-
-      delegate :project, to: :table
-      alias_method :sprint, :model
-
-      def name
-        if (href = href_for_sprint(sprint, project))
-          render(Primer::Beta::Link.new(href:, font_weight: :bold)) { sprint.name }
-        else
-          sprint.name
-        end
+  module SprintsHelper
+    # Returns the appropriate path for a sprint based on its status, or nil if no link applies.
+    # TODO: consider shared sprints here regarding boards.
+    def href_for_sprint(sprint, project)
+      if sprint.active? && (board = sprint.task_board_for(project))
+        project_work_package_board_path(project, board)
+      elsif sprint.in_planning?
+        project_backlogs_backlog_path(project)
+      elsif sprint.completed?
+        sprint_work_packages_path(sprint, project)
       end
+    end
 
-      def status
-        render(SprintStatusBadgeComponent.new(sprint:))
-      end
+    private
 
-      def start_date
-        format_date(sprint.start_date) if sprint.start_date
-      end
+    def sprint_work_packages_path(sprint, project)
+      default_columns = Setting.work_package_list_default_columns.map(&:to_s)
 
-      def finish_date
-        format_date(sprint.finish_date) if sprint.finish_date
-      end
-
-      def work_package_count
-        table.work_package_counts.fetch(sprint.id, 0)
-      end
-
-      def row_css_id
-        dom_id(sprint)
-      end
+      project_work_packages_path(
+        project,
+        query_props: {
+          f: [{ n: "sprintId", o: "=", v: [sprint.id.to_s] }],
+          t: "position:asc",
+          c: default_columns | ["sprint"]
+        }.to_json
+      )
     end
   end
 end
