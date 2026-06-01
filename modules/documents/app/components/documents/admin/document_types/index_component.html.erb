@@ -48,26 +48,26 @@
       end
 
       flex.with_row do
-        render(border_box_container(data: drop_target_config)) do |component|
-          component.with_header(font_weight: :bold) do
-            grid_layout("op-documents-types-list--header", tag: :div, align_items: :center) do |grid|
-              grid.with_area(:name, tag: :div, mr: 3) do
-                render(Primer::Beta::Text.new(font_weight: :semibold)) { I18n.t("documents.index_page.type") }
-              end
-
-              grid.with_area(:"documents-count", tag: :div, hide: :sm) do
-                render(Primer::Beta::Text.new(font_weight: :semibold)) { I18n.t("label_documents") }
-              end
-            end
-          end
+        render(
+          OpenProject::Common::BorderBoxListComponent.new(
+            container: "#{wrapper_key}-list",
+            position: :relative,
+            data: drop_target_config
+          )
+        ) do |list|
+          list.with_header(
+            title: I18n.t("documents.index_page.type"),
+            title_tag: :h3,
+            count: document_types.size
+          )
 
           if document_types.empty?
-            component.with_row do
+            list.with_item do
               render(Primer::Beta::Text.new(color: :subtle)) { t(:no_results_title_text) }
             end
           else
             document_types.each do |document_type|
-              component.with_row(test_selector: "document-type-row-#{document_type.id}", data: draggable_item_config(document_type)) do
+              list.with_item(test_selector: "document-type-row-#{document_type.id}", data: draggable_item_config(document_type)) do
                 render(item_component_class.new(enumeration: document_type, max_position: max_position))
               end
             end
