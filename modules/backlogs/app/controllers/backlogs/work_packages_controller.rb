@@ -71,7 +71,7 @@ module Backlogs
       if call.success?
         move_work_package_to_target_component_via_turbo_stream(source:, target: call.result.sprint)
 
-        if work_package_invisible_after_move?(call.result, move_params[:target_id])
+        if work_package_invisible_after_move?(call.result)
           backlog_name = call.result.backlog_bucket&.name || I18n.t(:label_inbox)
           render_flash_message_via_turbo_stream(
             message: I18n.t(:notice_work_package_invisible_after_move, backlog: backlog_name)
@@ -138,8 +138,8 @@ module Backlogs
 
     # After a work package is moved to the backlog, it might no longer be visible due to
     # the project settings for excluded types and statuses.
-    def work_package_invisible_after_move?(work_package, move_target_id)
-      return false unless move_target_id&.start_with?("backlog_bucket", "inbox")
+    def work_package_invisible_after_move?(work_package)
+      return false if work_package.sprint_id?
 
       @project.backlog_excluded_type_ids.include?(work_package.type_id) ||
         @project.done_status_ids.include?(work_package.status_id)
