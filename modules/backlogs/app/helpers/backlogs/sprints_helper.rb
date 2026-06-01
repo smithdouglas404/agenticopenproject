@@ -31,7 +31,6 @@
 module Backlogs
   module SprintsHelper
     # Returns the appropriate path for a sprint based on its status, or nil if no link applies.
-    # TODO: consider shared sprints here regarding boards.
     def href_for_sprint(sprint, project)
       if sprint.active? && (board = sprint.task_board_for(project))
         project_work_package_board_path(project, board)
