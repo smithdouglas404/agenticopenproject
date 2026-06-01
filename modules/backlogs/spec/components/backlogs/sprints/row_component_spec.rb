@@ -82,6 +82,16 @@ RSpec.describe Backlogs::Sprints::RowComponent, type: :component do
           expect(rendered_component).to have_link("Active sprint", href: project_work_package_board_path(project, board))
         end
       end
+
+      context "and the board is missing" do
+        before do
+          allow(sprint).to receive(:task_board_for).with(project).and_return(nil)
+        end
+
+        it "renders the sprint name as text instead of a link" do
+          expect(rendered_component).to have_no_link("Active sprint")
+        end
+      end
     end
 
     context "when sprint is completed", with_settings: { work_package_list_default_columns: %i[id subject] } do
@@ -98,19 +108,6 @@ RSpec.describe Backlogs::Sprints::RowComponent, type: :component do
           "Completed sprint",
           href: project_work_packages_path(project, query_props:)
         )
-      end
-    end
-
-    context "when sprint status does not match any known branch" do
-      let(:sprint) { build_stubbed(:sprint, project:, name: "Unknown sprint") }
-
-      before do
-        allow(sprint).to receive_messages(active?: false, in_planning?: false, completed?: false)
-      end
-
-      it "renders plain text without a link" do
-        expect(rendered_component).to have_text("Unknown sprint")
-        expect(rendered_component).to have_no_link("Unknown sprint")
       end
     end
   end
