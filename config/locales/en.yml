@@ -4359,6 +4359,7 @@ en:
   label_total_days_off: "Total days off"
   macro_execution_error: "Error executing the macro %{macro_name}"
   macro_unavailable: "Macro %{macro_name} cannot be displayed."
+  macro_unknown: "Unknown or unsupported macro."
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
