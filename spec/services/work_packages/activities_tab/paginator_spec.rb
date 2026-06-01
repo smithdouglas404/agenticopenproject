@@ -206,6 +206,47 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
       end
     end
 
+    context "when record count exceeds MAX_PAGES cap" do
+      let(:test_limit) { 2 }
+
+      before do
+        stub_const("#{described_class}::MAX_PAGES", 3)
+        8.times do |i|
+          create(:work_package_journal, user:, notes: "Comment #{i + 1}", journable: work_package, version: i + 2)
+        end
+        params[:limit] = test_limit
+      end
+
+      it "caps total records to limit * MAX_PAGES" do
+        pagy, _records = paginator.call
+
+        expect(pagy.count).to eq(test_limit * 3)
+        expect(pagy.pages).to eq(3)
+      end
+
+      it "keeps the newest records when truncating" do
+        _pagy, records = paginator.call
+
+        notes = records.map(&:notes)
+        expect(notes).to include("Comment 8")
+        expect(notes).not_to include("Comment 1")
+      end
+
+      it "still resolves an anchor to a journal beyond the cap" do
+        oldest_journal = work_package.journals.order(:version).first
+        params[:anchor] = "comment-#{oldest_journal.id}"
+        pagy, records = paginator.call
+
+        expect(records.map(&:id)).to include(oldest_journal.id)
+
+        aggregate_failures "breaks out of capped limit" do
+          expect(pagy.count).to eq(work_package.journals.count)
+          expect(pagy.pages).to eq(5)
+          expect(pagy.page).to eq(5), "expected oldest journal on last page (page 5), got page #{pagy.page}"
+        end
+      end
+    end
+
     context "with internal comments filtering" do
       let!(:internal_journal) do
         create(:work_package_journal,

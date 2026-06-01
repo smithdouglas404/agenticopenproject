@@ -321,6 +321,13 @@ fr:
 
           '
         confirm_button: Annuler l'occurrence
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Il n'y a pas de réunions à afficher
       desc: Vous pouvez créer une nouvelle réunion ou modifier les critères de filtrage
@@ -367,58 +374,22 @@ fr:
         caption: Ce texte apparaîtra sur chaque page au centre du pied de page.
       submit_button: Télécharger
     notifications:
+      disabled: Participants will not receive email updates informing them of changes to the date, time or list of participants.
+      enabled: All participants will receive updated calendar invites informing them of changes to date, time or list of participants.
       sidepanel:
         title: Mises à jour du calendrier par e-mail
         description:
-          disabled: Les participants ne recevront aucun e-mail pour les informer des modifications.
-          enabled: Tous les participants recevront des invitations de calendrier mises à jour par e-mail les informant des modifications.
           change_via_template: Pour modifier cela, éditez le modèle de la série.
       dialog:
         title:
           enable: Activer les mises à jour du calendrier par e-mail ?
           disable: Désactiver les mises à jour du calendrier par e-mail ?
         message:
-          enable: 'Tous les participants recevront des invitations actualisées par e-mail chaque fois que la date, l''heure, le lieu ou les participants de la réunion seront modifiés. Une fois l''option activée, un e-mail sera immédiatement envoyé à tous les participants.
-
-            '
-          disable: 'Les participants ne recevront plus d''invitations actualisées par e-mail lorsque la date, l''heure, le lieu ou les participants de la réunion seront modifiés. S''ils ont déjà reçu une invitation pour cette réunion, il se peut qu''elle ne soit plus exacte.
-
-            '
+          enable: Once enabled, an email will be sent out immediately to all participants.
+          disable: If they already had an invite for this meeting, it might no longer be accurate.
         confirm_label:
           enable: Activer les mises à jour par e-mail
           disable: Désactiver les mises à jour par e-mail
-      banner:
-        participants:
-          enabled: 'Tous les participants recevront des invitations de calendrier mises à jour par e-mail lorsque vous ajouterez ou supprimerez des participants.
-
-            '
-          disabled: 'Les mises à jour du calendrier par e-mail sont désactivées. Les participants ne recevront pas d''e-mail les informant de l''ajout ou de la suppression de participants.
-
-            '
-          draft_disabled: 'Les participants ne recevront pas d''e-mail les informant de l''ajout ou de la suppression de participants.
-
-            '
-        onetime:
-          enabled: 'Tous les participants recevront des invitations de calendrier mises à jour par e-mail lorsque vous ajouterez ou supprimerez des participants.
-
-            '
-          disabled: 'Les participants ne recevront pas d''e-mail les informant des changements de date, d''heure ou de participants.
-
-            '
-        occurrence:
-          enabled: 'Les mises à jour du calendrier par e-mail sont activées pour la série de réunions. Tous les participants recevront des invitations de calendrier mises à jour les informant des modifications que vous avez apportées à cet événement.
-
-            '
-          disabled: 'Les mises à jour du calendrier par e-mail sont désactivées pour la série de réunions. Les participants ne recevront pas d''e-mail les informant des modifications apportées à cet événement.
-
-            '
-        template:
-          enabled: 'Les mises à jour du calendrier par e-mail sont activées pour la série de réunions. Tous les participants recevront des invitations de calendrier mises à jour les informant des changements que vous avez apportés à ce modèle ou à des occurrences individuelles.
-
-            '
-          disabled: 'Les mises à jour du calendrier par e-mail sont désactivées pour la série de réunions. Les participants ne recevront pas d''e-mail les informant des modifications que vous avez apportées à ce modèle ou aux événements individuels.
-
-            '
     presentation_mode:
       title: Mode de Présentation
       button_present: Présenter
@@ -488,18 +459,18 @@ fr:
         one: Toutes les semaines
         other: Toutes les %{count} semaines
       x_monthly:
-        one: Every month
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
-      monthly_nth_weekday: Monthly on a weekday
+        one: Chaque mois
+        other: Tous les %{count} mois
+      monthly_day_of_month: Jour du mois
+      monthly_nth_weekday: Tous les mois, un jour de semaine
       every_weekday: Chaque %{day_of_the_week}
       working_days: Chaque jour ouvrable
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
-        third: third
-        fourth: fourth
+        first: premier
+        second: deuxième
+        third: troisième
+        fourth: quatrième
         last: last
       ordinal_options:
         first: First
@@ -631,6 +602,7 @@ fr:
   label_agenda_item_duplicate_in_next_title: Duplication lors de la prochaine réunion ?
   label_agenda_item_add_notes: Ajouter des notes
   label_agenda_item_add_outcome: Ajouter un résultat
+  label_agenda_item_convert_to_work_package: Convert to work package
   label_agenda_item_work_package_add: Ajouter lot de travaux
   label_agenda_item_work_package: Lot de travaux du point de l'ordre du jour
   label_section_rename: Renommer la section

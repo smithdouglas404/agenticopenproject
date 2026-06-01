@@ -42,7 +42,7 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to_backlogs_settings
+      redirect_back_or_to_backlogs_settings
     else
       flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
       render action: :show, status: :unprocessable_entity
@@ -53,13 +53,13 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
     WorkPackages::RebuildPositionsService.new(project: @project).call
     flash[:notice] = I18n.t("backlogs.positions_rebuilt_successfully")
 
-    redirect_to_backlogs_settings
+    redirect_back_or_to_backlogs_settings
   rescue ActiveRecord::ActiveRecordError
     flash[:error] = I18n.t("backlogs.positions_could_not_be_rebuilt")
 
     log_rebuild_position_error
 
-    redirect_to_backlogs_settings
+    redirect_back_or_to_backlogs_settings
   end
 
   private
@@ -75,8 +75,8 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
     permitted
   end
 
-  def redirect_to_backlogs_settings
-    redirect_to project_settings_backlogs_path(@project)
+  def redirect_back_or_to_backlogs_settings
+    redirect_back_or_to project_settings_backlogs_path(@project)
   end
 
   def log_rebuild_position_error

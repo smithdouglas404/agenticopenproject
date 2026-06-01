@@ -28,8 +28,8 @@ ru:
     attributes:
       project:
         sprint_sharing: Совместное использование спринта
-        backlog_excluded_types: Excluded work package types
-        statuses_considered_closed: Statuses considered closed
+        backlog_excluded_types: Исключенные типы пакетов работ
+        statuses_considered_closed: Статусы, считающиеся закрытыми
       sprint:
         duration: Длительность
         finish_date: Дата окончания
@@ -40,8 +40,6 @@ ru:
           in_planning: В планировании
           active: Активен
           completed: Завершён
-      user_preference:
-        backlogs_versions_default_fold_state: Покажите спринты в свернутом виде
       work_package:
         backlog_bucket: Раздел бэклога
         backlogs_work_package_type: Тип невыполненной работы
@@ -91,7 +89,7 @@ ru:
       title: Настройки администрирования бэклога будут в будущем
       text: В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными.
     bucket_destroy_modal_component:
-      title: Delete backlog bucket?
+      title: Удалить раздел бэклога?
       details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     bucket_component:
       blankslate_title: Раздел бэклога пуст
@@ -103,8 +101,7 @@ ru:
     burndown_chart:
       show:
         blankslate_title: Нет данных о выгорании
-        blankslate_description: Установите дату начала и окончания для спринта для создания графика выгорания.
-    caption_sprints_default_fold_state: Спринты не будут раскрываться по умолчанию при просмотре страницы 'Бэклог и спринты'. Каждый из них должен быть развернут вручную.
+        blankslate_description: Установите дату начала и окончания спринта для создания диаграммы выгорания.
     excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
 
       '
@@ -127,7 +124,7 @@ ru:
         few: Показать еще %{count} элементов
         many: Показать еще %{count} элементов
         other: Показать еще %{count} элементов
-    label_burndown_chart: Сводная таблица
+    label_burndown_chart: Диаграмма выгорания
     label_is_done_status: Статус %{status_name} означает завершение,
     label_sprint_board: Доска для спринта
     move_to_sprint_dialog_component:
@@ -144,12 +141,12 @@ ru:
     rebuild_positions: Восстановить позиции
     remaining_hours: Оставшиеся часы
     sharing: Совместное использование
-    show_burndown_chart: Сводная таблица
+    show_burndown_chart: Диаграмма выгорания
     sprint_component:
       blankslate_title: "%{name} пустой"
       blankslate_description: Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их.
       label_actions: Действия в спринте
-      label_start_sprint: Start sprint
+      label_start_sprint: Начать спринт
       label_complete_sprint: Complete sprint
       start_sprint_disabled_reason_active_sprint: Другой спринт уже активен.
       start_sprint_disabled_reason_missing_dates: Для начала спринта необходимы даты начала и окончания.
@@ -206,7 +203,7 @@ ru:
   label_backlog_bucket_new: Новый раздел бэклога
   label_inbox: Входящие
   label_backlogs: Бэклоги
-  label_burndown_chart: Сводная таблица
+  label_burndown_chart: Диаграмма выгорания
   label_sprint_board: Доска для спринта
   label_points_burn_down: Вниз
   label_points_burn_up: Вверх

@@ -36,8 +36,14 @@ RSpec.describe WorkPackage::SemanticIdentifier do
   let(:work_package) { create(:work_package, project:) }
 
   before do
+    # "MYPROJ" is only valid as a project identifier in semantic mode, and the WP
+    # after_create callback only assigns an identifier when semantic mode is active.
+    # Stub both during setup, then restore so each context's with_settings: controls
+    # the mode under test without the stub overriding it.
     allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
     work_package
+    allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_call_original
+    allow(Setting::WorkPackageIdentifier).to receive(:classic?).and_call_original
   end
 
   describe ".semantically_sequenced" do
@@ -69,7 +75,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "after_create registration" do
+  describe "after_create registration", with_settings: { work_packages_identifier: "semantic" } do
     it "assigns a sequence number" do
       expect(work_package.reload.sequence_number).to eq(1)
     end
@@ -382,7 +388,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "WorkPackage.where_display_id_in" do
+  describe "WorkPackage.where_display_id_in", with_settings: { work_packages_identifier: "semantic" } do
     let(:work_package2) { create(:work_package, project:) }
     let(:work_package3) { create(:work_package, project:) }
     let(:other_project) { create(:project, identifier: "OTHER") }
@@ -552,7 +558,6 @@ RSpec.describe WorkPackage::SemanticIdentifier do
 
   describe "#display_id" do
     context "when semantic mode is active",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "returns the semantic identifier" do
         expect(work_package.display_id).to eq("MYPROJ-1")
@@ -560,7 +565,6 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
 
     context "when semantic mode is active but identifier is nil",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { work_package.update_columns(identifier: nil) }
 
@@ -570,7 +574,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
 
     context "when semantic mode is not active",
-            with_flag: { semantic_work_package_ids: false } do
+            with_settings: { work_packages_identifier: "classic" } do
       it "returns the numeric id" do
         expect(work_package.display_id).to eq(work_package.id)
       end
@@ -579,7 +583,6 @@ RSpec.describe WorkPackage::SemanticIdentifier do
 
   describe "#formatted_id" do
     context "when semantic mode is active",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "returns the semantic identifier without hash prefix" do
         expect(work_package.formatted_id).to eq("MYPROJ-1")
@@ -587,7 +590,6 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
 
     context "when semantic mode is active but identifier is nil",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       before { work_package.update_columns(identifier: nil) }
 
@@ -597,10 +599,24 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
 
     context "when semantic mode is not active",
-            with_flag: { semantic_work_package_ids: false } do
+            with_settings: { work_packages_identifier: "classic" } do
       it "returns hash-prefixed numeric id" do
         expect(work_package.formatted_id).to eq("##{work_package.id}")
       end
+    end
+  end
+
+  describe ".format_display_id" do
+    it "returns the semantic identifier unchanged when it carries letters" do
+      expect(described_class.format_display_id("MYPROJ-1")).to eq("MYPROJ-1")
+    end
+
+    it "hash-prefixes a numeric integer" do
+      expect(described_class.format_display_id(42)).to eq("#42")
+    end
+
+    it "hash-prefixes a numeric string" do
+      expect(described_class.format_display_id("42")).to eq("#42")
     end
   end
 
@@ -608,7 +624,6 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     include Rails.application.routes.url_helpers
 
     context "when semantic mode is active",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       it "returns the semantic identifier" do
         expect(work_package.to_param).to eq("MYPROJ-1")
@@ -629,7 +644,6 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
 
     context "when classic mode is active",
-            with_flag: { semantic_work_package_ids: false },
             with_settings: { work_packages_identifier: "classic" } do
       it "returns the numeric id as a string" do
         expect(work_package.to_param).to eq(work_package.id.to_s)
@@ -679,7 +693,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "#allocate_and_register_semantic_id" do
+  describe "#allocate_and_register_semantic_id", with_settings: { work_packages_identifier: "semantic" } do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
     let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
 

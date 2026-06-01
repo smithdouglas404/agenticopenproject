@@ -57,7 +57,7 @@ zh-CN:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -140,7 +140,7 @@ zh-CN:
         custom_field_creation_failed: 无法创建自定义字段 '%{name}'：%{message}
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: 尚未配置 Jira 主机
         description: 配置 Jira 主机，以开始将 Jira 中的条目导入此 OpenProject 实例。
@@ -185,6 +185,7 @@ zh-CN:
         parse_error: 无法解析 Jira API 响应：%{message}
         api_error: Jira API 返回错误状态 %{status}
         401_error: Jira API 返回 401 错误。您的身份验证令牌可能已过期或缺少所需权限。请确保该令牌属于 Jira 管理员。
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: 项目
         last_change: 上次更改
@@ -278,7 +279,7 @@ zh-CN:
               elements:
                 relations: 问题之间的关系
                 project_ids: 项目标识符
-                issue_ids: 问题标识符
+                issue_ids: Issue identifiers
                 sprints: 冲刺任务
                 workflows: 项目级工作流
                 schemes: 方案
@@ -332,6 +333,8 @@ zh-CN:
             confirm_button: 明白了
           select_projects:
             title: 选择项目
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Model Context Protocol 允许 AI 智能体向其用户提供此 OpenProject 实例所公开的工具和资源。此功能仍处于测试阶段。
@@ -900,6 +903,7 @@ zh-CN:
         text: 此操作不会删除列表中包含的任何项目。确定要删除此项目列表吗？
     settings:
       header_details: 基本信息
+      header_identifier: Identifier
       header_status: 状态
       header_relations: 项目关系
       button_update_details: 更新详情
@@ -1374,6 +1378,7 @@ zh-CN:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -1691,6 +1696,7 @@ zh-CN:
       attachment:
         attachment_content: 附件内容
         attachment_file_name: 附件文件名
+        charset: Character set
         content_type: 内容类型
         downloads: 下载
         file: 文件
@@ -1785,6 +1791,7 @@ zh-CN:
         title: 标题
         description: 描述
       member:
+        blocked: Blocked
         roles: 角色
       notification:
         read_ian: 在app中读取
@@ -3439,6 +3446,9 @@ zh-CN:
     additional:
       projects: 此 OpenProject 实例中的最新可见项目。
       no_visible_projects: 这个 OpenProject 中没有可见的项目。
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: 此 OpenProject 实例中的最新注册用户。
     blocks:
       community: OpenProject 社区
@@ -3448,17 +3458,19 @@ zh-CN:
         header: 了解新功能和产品更新。
         learn_about: 详细了解所有新功能
         missing: 目前还没有高亮显示的功能。
-        '17_4':
-          new_features_title: '此版本包含多项新功能和改进，例如：
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Jira Migrator，支持基本自定义字段。
-            line_1: 积压工作存储桶，用于在完善积压工作时构建工作包并确定其优先次序。
-            line_2: 在积压工作模块中更轻松地拖放，移动选项也得到了改进。
-            line_3: 冲刺标题中的冲刺“开始”和“完成”按钮。
-            line_4: 复制角色之间的工作流设置。
-            line_5: "“首页”和“项目概览”页面上的“我的会议”微件。"
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: 升级到企业版
       postgres_migration: 将您的安装迁移到 PostgreSQL
@@ -3972,7 +3984,7 @@ zh-CN:
   label_home: 首页
   label_subject_or_id: 主题或ID
   label_calendar_subscriptions: 日历订阅
-  label_identifier: 标识符
+  label_identifier: Identifiers
   label_project_identifier: 项目标识符
   label_in: 在
   label_in_less_than: 在小于
@@ -4629,9 +4641,9 @@ zh-CN:
       新用户 (%{email}) 试图在您管理的 OpenProject 环境 (%{host}) 上创建帐户。
       由于已达到用户限制，此用户无法激活其帐户。
     steps:
-      label: '要允许用户登录, 您可以: '
       a: "([在这里](upgrade_url)) 升级付款计划"
       b: "([在这里](users_url)) 锁定或删除现有用户"
+      label: '要允许用户登录, 您可以: '
   more_actions: 更多功能
   noscript_description: 您需要激活JavaScript才能使用 OpenProject！
   noscript_heading: JavaScript 被禁用
@@ -5269,13 +5281,9 @@ zh-CN:
   setting_welcome_title: 欢迎块标题
   setting_welcome_on_homescreen: 在主屏幕上显示欢迎信息
   setting_work_packages_identifier_classic: 实例范围的数字序列（默认）
-  setting_work_packages_identifier_classic_caption: '每个工作包会获得一个从 1 开始的顺序号，每新增一个工作包，编号会加 1。这些编号在此实例中是唯一的，因此即使工作包在项目之间移动，编号也不会改变。
-
-    '
-  setting_work_packages_identifier_semantic: 基于项目的语义标识符
-  setting_work_packages_identifier_semantic_caption: '每个项目都有一个唯一标识符，该标识符会附加到工作包 ID 前面。如果工作包移至另一个项目，则会生成新的标识符，但原标识符仍可继续使用。
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: 默认突出显示模式
   setting_work_package_list_default_highlighted_attributes: 默认内联突出显示属性
   setting_working_days: 工作日
@@ -5457,7 +5465,7 @@ zh-CN:
       section_work_week: 工作周
       section_holidays_and_closures: 节假日与停业
     work_packages:
-      work_package_identifier: 工作包标识符
+      work_package_identifier: Work package identifiers
       not_allowed_text: 您没有查看此页面的权限。
       activities:
         enable_internal_comments: 启用内部评论
@@ -5887,6 +5895,17 @@ zh-CN:
     warning: '在这种情况下，更改一周中哪几天被视为工作日或非工作日会影响所有项目中所有工作包和生命周期的开始日期和结束日期。
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**工作日**已更改（%{changes}）。_
       days:
@@ -5961,6 +5980,7 @@ zh-CN:
       ancestor: 未公开 - 由于缺少权限，上级不可见。
       definingProject: 未公开 - 由于缺少权限，项目不可见。
       definingWorkspace: 未公开 - 由于缺少权限，工作空间不可见。
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: 预授权

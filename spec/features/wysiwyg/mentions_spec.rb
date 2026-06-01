@@ -225,7 +225,6 @@ RSpec.describe "Wysiwyg work package mentions",
   end
 
   context "in classic mode",
-          with_flag: { semantic_work_package_ids: false },
           with_settings: { work_packages_identifier: "classic" } do
     let(:wp_display_id) { mentioned_work_package.id }
     let(:wp_label) { "##{mentioned_work_package.id}" }
@@ -234,7 +233,6 @@ RSpec.describe "Wysiwyg work package mentions",
   end
 
   context "in semantic mode",
-          with_flag: { semantic_work_package_ids: true },
           with_settings: { work_packages_identifier: "semantic" } do
     let!(:project) do
       create(:project, :semantic, enabled_module_names: %w[work_package_tracking])

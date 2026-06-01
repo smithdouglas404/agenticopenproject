@@ -57,7 +57,7 @@ pl:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -140,7 +140,7 @@ pl:
         custom_field_creation_failed: 'Nie udało się utworzyć pola niestandardowego „%{name}”: %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Nie skonfigurowano jeszcze hostów Jira
         description: Skonfiguruj host usługi Jira, aby rozpocząć importowanie elementów z Jira do tego wystąpienia OpenProject.
@@ -185,6 +185,7 @@ pl:
         parse_error: 'Nie udało się przeanalizować odpowiedzi interfejsu API usługi Jira: %{message}'
         api_error: Interfejs API usługi Jira zwrócił status błędu %{status}
         401_error: Interfejs API Jira zwrócił błąd 401. Twój token uwierzytelniający mógł wygasnąć lub nie ma wymaganych uprawnień. Upewnij się, że token należy do administratora Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projekty
         last_change: Ostatnia zmiana
@@ -296,7 +297,7 @@ pl:
               elements:
                 relations: Relacje między problemami
                 project_ids: Identyfikatory projektów
-                issue_ids: Identyfikatory problemów
+                issue_ids: Issue identifiers
                 sprints: Przypisania sprintów
                 workflows: Przepływy pracy na poziomie projektu
                 schemes: Schematy
@@ -350,6 +351,8 @@ pl:
             confirm_button: Rozumiem
           select_projects:
             title: Wybierz projekty
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Protokół kontekstu modelu umożliwia agentom AI dostarczanie użytkownikom narzędzi i zasobów udostępnianych przez to wystąpienie OpenProject. Ta funkcja jest nadal w wersji beta.
@@ -930,6 +933,7 @@ pl:
         text: To działanie nie spowoduje usunięcia żadnego projektu znajdującego się na liście. Czy na pewno chcesz usunąć tę listę projektów?
     settings:
       header_details: Podstawowe szczegóły
+      header_identifier: Identifier
       header_status: Status
       header_relations: Relacje projektu
       button_update_details: Zaktualizuj szczegóły
@@ -1428,6 +1432,7 @@ pl:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -1752,6 +1757,7 @@ pl:
       attachment:
         attachment_content: Zawartość załącznika
         attachment_file_name: Nazwa pliku załącznika
+        charset: Character set
         content_type: Typ zawartości
         downloads: Pliki do pobrania
         file: Plik
@@ -1846,6 +1852,7 @@ pl:
         title: Tytuł
         description: Opis
       member:
+        blocked: Blocked
         roles: Role
       notification:
         read_ian: Odczytaj w aplikacji
@@ -3625,6 +3632,9 @@ pl:
     additional:
       projects: Najnowsze projekty
       no_visible_projects: W tym wystąpieniu nie ma żadnych widocznych projektów.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Nowi użytkownicy
     blocks:
       community: Społeczność OpenProject
@@ -3634,17 +3644,19 @@ pl:
         header: Przeczytaj o nowych funkcjach i aktualizacjach produktów.
         learn_about: Dowiedz się więcej o wszystkich nowych funkcjach
         missing: Nie ma jeszcze wyróżnionych funkcji.
-        '17_4':
-          new_features_title: 'Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Migrator Jira z obsługą podstawowych pól niestandardowych.
-            line_1: Kategorie backlogu do strukturyzacji i priorytetyzacji pakietów roboczych podczas doskonalenia backlogu.
-            line_2: Łatwiejsze przeciąganie i upuszczanie oraz ulepszone opcje przenoszenia w module Backlogs.
-            line_3: Przyciski rozpoczęcia i zakończenia sprintu w nagłówku sprintu.
-            line_4: Kopiowanie ustawień przepływu pracy między rolami.
-            line_5: Widżet „Moje spotkania” na stronie głównej i stronach przeglądu projektów.
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Aktualizuj do wersji Enterprise
       postgres_migration: Migrowanie instalacji do PostgreSQL
@@ -4158,7 +4170,7 @@ pl:
   label_home: Strona główna
   label_subject_or_id: Temat lub identyfikator
   label_calendar_subscriptions: Subskrypcje Kalendarza
-  label_identifier: Identyfikator
+  label_identifier: Identifiers
   label_project_identifier: Identyfikator projektu
   label_in: w
   label_in_less_than: w mniej niż
@@ -4828,9 +4840,9 @@ pl:
 
       '
     steps:
-      label: 'Aby zezwolić użytkownikowi na logowanie, możesz albo: '
       a: Zaktualizuj swój plan płatności ([here] (upgrade_url))
       b: Zablokuj lub usuń istniejącego użytkownika ([here] (users_url))
+      label: 'Aby zezwolić użytkownikowi na logowanie, możesz albo: '
   more_actions: Więcej funkcji
   noscript_description: Musisz aktywować JavaScript, aby korzystać z OpenProject!
   noscript_heading: Wyłączona obsługa JavaScript
@@ -5469,13 +5481,9 @@ pl:
   setting_welcome_title: Tytuł bloku powitalnego
   setting_welcome_on_homescreen: Wyświetl wiadomość powitalną na ekranie głównym
   setting_work_packages_identifier_classic: Sekwencja liczbowa dla całego wystąpienia (domyślnie)
-  setting_work_packages_identifier_classic_caption: 'Każdy pakiet roboczy otrzymuje numer kolejny zaczynający się od 1 i zwiększany z każdym nowym pakietem. Numery są unikalne w ramach tego wystąpienia, więc pozostają takie same, nawet jeśli pakiety robocze są przenoszone między projektami.
-
-    '
-  setting_work_packages_identifier_semantic: Identyfikatory semantyczne oparte na projektach
-  setting_work_packages_identifier_semantic_caption: 'Każdy projekt ma unikalny identyfikator, który jest poprzedzony identyfikatorem pakietu roboczego. Jeśli pakiet roboczy zostanie przeniesiony do innego projektu, generowany jest nowy identyfikator, ale stary nadal działa.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Domyślny tryb wyróżniania
   setting_work_package_list_default_highlighted_attributes: Domyślnie wyróżniane atrybuty wyświetlane w treści
   setting_working_days: Dni robocze
@@ -5656,7 +5664,7 @@ pl:
       section_work_week: Tydzień roboczy
       section_holidays_and_closures: Dni wolne i zamknięcia
     work_packages:
-      work_package_identifier: Identyfikator pakietu roboczego
+      work_package_identifier: Work package identifiers
       not_allowed_text: Nie masz uprawnień niezbędnych do wyświetlenia tej strony.
       activities:
         enable_internal_comments: Włącz komentarze wewnętrzne
@@ -6089,6 +6097,17 @@ pl:
     warning: 'Zmiana dni tygodnia, które są uważane za dni robocze lub nierobocze, może wpłynąć na dni rozpoczęcia i zakończenia wszystkich pakietów roboczych i cykli życia we wszystkich projektach w tym wystąpieniu.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _Zmieniono **Dni robocze** (%{changes})._
       days:
@@ -6163,6 +6182,7 @@ pl:
       ancestor: Nie ujawniono — przodek jest niewidoczny ze względu na brak uprawnień.
       definingProject: Nie ujawniono — projekt jest niewidoczny ze względu na brak uprawnień.
       definingWorkspace: Nie ujawniono — przestrzeń robocza jest niewidoczna ze względu na brak uprawnień.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Pre-Autoryzacja

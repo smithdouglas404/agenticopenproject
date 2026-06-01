@@ -43,6 +43,7 @@ class MeetingsController < ApplicationController
   before_action :check_for_enterprise_token, only: %i[create new_dialog fetch_templates]
 
   helper :watchers
+  include Meetings::QueryLoading
   include MeetingsHelper
   include Layout
   include WatchersHelper
@@ -53,14 +54,41 @@ class MeetingsController < ApplicationController
   include OpTurbo::FlashStreamHelper
   include Meetings::AgendaComponentStreams
   include MetaTagsHelper
+  include FlashMessagesOutputSafetyHelper
 
   menu_item :new_meeting, only: %i[new create]
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     load_meetings
 
-    render "index",
-           locals: { menu_name: project_or_global_menu }
+    respond_to do |format|
+      format.html do
+        render "index", locals: { menu_name: project_or_global_menu }
+      end
+
+      format.turbo_stream do
+        update_via_turbo_stream(
+          component: Meetings::MeetingTimeFilterComponent.new(query: @query, project: @project)
+        )
+        update_via_turbo_stream(
+          component: Meetings::MeetingFilterButtonComponent.new(query: @query, project: @project, disable_buttons: false)
+        )
+
+        current_url = url_for(params.permit(:controller, :action, :filters, :project_id, :sortBy, :upcoming))
+        turbo_streams << turbo_stream.replace(
+          "meetings-index-results",
+          Meetings::IndexResultsComponent.new(
+            grouped_meetings: @grouped_meetings,
+            meetings: @meetings,
+            project: @project,
+            upcoming: params[:upcoming]
+          )
+        )
+        turbo_streams << turbo_stream.push_state(current_url)
+
+        render turbo_stream: turbo_streams
+      end
+    end
   end
 
   current_menu_item :index do
@@ -284,12 +312,14 @@ class MeetingsController < ApplicationController
       @meeting.in_progress!
     end
 
-    if @meeting.errors.any?
-      update_sidebar_state_component_via_turbo_stream
-    else
-      update_all_via_turbo_stream
-      update_backlog_via_turbo_stream(collapsed: nil)
-    end
+    update_all_via_turbo_stream
+    update_backlog_via_turbo_stream(collapsed: nil)
+
+    respond_with_turbo_streams
+  rescue ActiveRecord::StaleObjectError
+    @meeting.errors.add(:base, :error_conflict)
+    update_sidebar_state_component_via_turbo_stream
+    render_error_flash_message_via_turbo_stream(message: join_flash_messages(@meeting.errors))
 
     respond_with_turbo_streams
   end
@@ -438,31 +468,7 @@ class MeetingsController < ApplicationController
     end
   end
 
-  def load_query
-    query = ParamsToQueryService.new(
-      Meeting,
-      current_user
-    ).call(params)
-
-    apply_default_filter_if_none_given(query)
-    apply_default_time_filter_and_sort(query)
-    query.where("project_id", "=", @project.id) if @project
-
-    query
-  end
-
-  def apply_default_time_filter_and_sort(query)
-    return if query.filters.any? { |f| f.name == :time }
-
-    query.where("time", "=", Queries::Meetings::Filters::TimeFilter::FUTURE_VALUE)
-    query.order(start_time: :asc)
-  end
-
-  def apply_default_filter_if_none_given(query)
-    return if params.key?(:filters)
-
-    query.where("invited_user_id", "=", [User.current.id.to_s])
-  end
+  def load_query = build_meeting_query
 
   def load_meetings
     @query = load_query

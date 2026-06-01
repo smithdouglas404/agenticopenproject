@@ -81,6 +81,11 @@ module Settings
       organization_name: {
         default: "My Organization"
       },
+      attachment_default_charset: {
+        description: "Fallback charset used when serving text attachments whose encoding was not detected on upload",
+        format: :string,
+        default: "utf-8"
+      },
       attachment_max_size: {
         default: 5120
       },

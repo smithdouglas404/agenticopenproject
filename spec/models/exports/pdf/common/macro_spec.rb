@@ -203,7 +203,6 @@ RSpec.describe Exports::PDF::Common::Macro do
 
     describe "with semantic identifier" do
       describe "in semantic mode",
-               with_flag: { semantic_work_package_ids: true },
                with_settings: { work_packages_identifier: "semantic" } do
         let(:semantic_project) { create(:project, identifier: "PROJ") }
         let(:semantic_work_package) do
@@ -284,7 +283,7 @@ RSpec.describe Exports::PDF::Common::Macro do
       end
 
       describe "in classic mode",
-               with_flag: { semantic_work_package_ids: false } do
+               with_settings: { work_packages_identifier: "classic" } do
         let(:markdown) { "see #PROJ-1 here" }
 
         it "falls through to literal text without emitting a mention" do

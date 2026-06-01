@@ -40,8 +40,6 @@ de:
           in_planning: In Planung
           active: Aktiv
           completed: Abgeschlossen
-      user_preference:
-        backlogs_versions_default_fold_state: Zeige Versionen eingeklappt
       work_package:
         backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Backlog Typ
@@ -89,8 +87,8 @@ de:
       title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
       text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
     bucket_destroy_modal_component:
-      title: Delete backlog bucket?
-      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
+      title: Backlog Bucket löschen?
+      details: Der Backlog Bucket '%{name}' wird gelöscht und alle Arbeitspakete werden in den Eingangs Backlog verschoben. Kein Arbeitspaket wird gelöscht.
     bucket_component:
       blankslate_title: Backlog Bucket ist leer
       blankslate_description: Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
@@ -102,7 +100,6 @@ de:
       show:
         blankslate_title: Keine Burndown-Daten verfügbar
         blankslate_description: Legen Sie Start- und Enddatum für den Sprint fest, um ein Burndown-Diagramm zu erstellen.
-    caption_sprints_default_fold_state: Versionen werden beim Anzeigen des Backlogs standardmäßig nicht aufgeklappt. Sie müssen manuell geöffnet werden.
     excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
 
       '
@@ -117,7 +114,7 @@ de:
       select_sprint_label: Sprint auswählen
       button_complete_sprint: Sprint abschließen
     inbox_component:
-      title: Inbox
+      title: Posteingang
       blankslate_title: Eingangs-Backlog ist leer
       blankslate_description: Alle offenen Arbeitspakete in diesem Projekt werden automatisch hier angezeigt.
       show_more:
@@ -143,8 +140,8 @@ de:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
       label_actions: Sprint-Aktionen
-      label_start_sprint: Start sprint
-      label_complete_sprint: Complete sprint
+      label_start_sprint: Sprint starten
+      label_complete_sprint: Sprint abschließen
       start_sprint_disabled_reason_active_sprint: Ein anderer Sprint ist bereits aktiv.
       start_sprint_disabled_reason_missing_dates: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
       action_menu:
@@ -179,17 +176,17 @@ de:
         invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
     work_package_card_menu_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_sprint: Move to sprint
+        copy_url_to_clipboard: URL in die Zwischenablage kopieren
+        copy_work_package_id: Arbeitspaket-ID kopieren
+        move_menu: Verschieben
+        move_to_sprint: Zum Sprint verschieben
     work_package_is_closed: Arbeitspaket ist abgeschlossen, wenn
   burndown:
     story_points: Story-Points
     story_points_ideal: Story-Points (ideal)
   ee:
     features:
-      sprint_sharing: Sprint sharing
+      sprint_sharing: Sprints teilen
     upsell:
       sprint_sharing:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
@@ -245,6 +242,6 @@ de:
         sprint_sharing: Sprints teilen
       backlogs:
         sharing_form_component:
-          sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
+          sharing_description: Dieses Projekt kann entweder seine eigenen Sprints teilen, geteilte Sprints empfangen oder Sprints unabhängig bearbeiten (kein Teilen).
           sharing_fallback_description: Lacking a corporate enterprise plan, the sharing options are limited to the project's own sprints. The currently active setting remains active.
   remaining_hours: verbleibender Aufwand

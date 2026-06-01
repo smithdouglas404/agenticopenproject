@@ -118,7 +118,6 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
       end
 
       describe "with a semantic work package identifier",
-               with_flag: { semantic_work_package_ids: true },
                with_settings: { work_packages_identifier: "semantic" } do
         let(:semantic_project) { create(:project, :semantic, public: false, types: [type, type2]) }
         let(:semantic_target_project) { create(:project, :semantic, public: false, types: [type, type2]) }

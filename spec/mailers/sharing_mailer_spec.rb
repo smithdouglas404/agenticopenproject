@@ -67,7 +67,6 @@ RSpec.describe SharingMailer do
     end
 
     context "with semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:work_package) do
         build_stubbed(:work_package,

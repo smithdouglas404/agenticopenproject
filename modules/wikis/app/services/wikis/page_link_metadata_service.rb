@@ -68,7 +68,7 @@ module Wikis
           ON metadata.identifier = wiki_page_links.identifier AND metadata.provider_id = wiki_page_links.provider_id
       SQL
 
-      join_expression = ActiveRecord::Base.sanitize_sql_array([join_string, *identifier_title_map.flatten])
+      join_expression = OpenProject::SqlSanitization.sanitize(join_string, *identifier_title_map.flatten)
 
       relation.joins(join_expression).select("wiki_page_links.*, metadata.title as title")
     end

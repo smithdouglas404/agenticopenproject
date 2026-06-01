@@ -37,7 +37,7 @@ module WorkPackage::Exports
         if WorkPackage::SemanticIdentifier.numeric_id?(matcher.identifier)
           true
         elsif WorkPackage::SemanticIdentifier.semantic_id?(matcher.identifier)
-          Setting::WorkPackageIdentifier.semantic_mode_active?
+          Setting::WorkPackageIdentifier.semantic?
         else
           false
         end

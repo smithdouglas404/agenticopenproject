@@ -156,7 +156,6 @@ RSpec.describe OpenProject::JournalFormatter::Cause do
     end
 
     context "in semantic mode",
-            with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
       let(:semantic_project) { create(:project, identifier: "MACROPROJ") }
       let(:work_package) { create(:work_package, project: semantic_project) }

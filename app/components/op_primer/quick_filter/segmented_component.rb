@@ -32,6 +32,7 @@ module OpPrimer
   module QuickFilter
     class SegmentedComponent < ApplicationComponent
       include ApplicationHelper
+      include OpTurbo::Streamable
 
       renders_many :items, Item
 
@@ -45,9 +46,9 @@ module OpPrimer
         @orders = orders
       end
 
-      def render?
-        items.any?
-      end
+      def wrapper_key = "quick-filter-#{@filter_key}"
+
+      def render? = items.any?
 
       private
 

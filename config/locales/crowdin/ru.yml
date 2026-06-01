@@ -57,7 +57,7 @@ ru:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -140,7 +140,7 @@ ru:
         custom_field_creation_failed: 'Не удалось создать пользовательское поле ''%{name}'': %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Хосты Jira еще не настроены
         description: Настройте хост Jira, чтобы начать импортировать элементы из Jira в этот экземпляр OpenProject.
@@ -185,6 +185,7 @@ ru:
         parse_error: 'Не удалось разобрать ответ Jira API: %{message}'
         api_error: Jira API вернул статус ошибки %{status}
         401_error: Jira API вернул ошибку 401. Ваш токен аутентификации может быть истёк или не хватает необходимых разрешений. Пожалуйста, убедитесь, что токен принадлежит администратору Jira.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Проекты
         last_change: Последнее изменение
@@ -296,7 +297,7 @@ ru:
               elements:
                 relations: Отношения между проблемами
                 project_ids: Идентификаторы проекта
-                issue_ids: Идентификаторы задач
+                issue_ids: Issue identifiers
                 sprints: Назначения спринта
                 workflows: Рабочие процессы на уровне проекта
                 schemes: Схемы
@@ -350,6 +351,8 @@ ru:
             confirm_button: Понятно
           select_projects:
             title: Выбрать проекты
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: Протокол контекста модели позволяет агентам ИИ предоставлять своим пользователям инструменты и ресурсы, открытые данным экземпляром OpenProject. Эта функция пока находится в стадии бета-версии.
@@ -930,6 +933,7 @@ ru:
         text: Это действие не приведет к удалению ни одного проекта, содержащегося в списке. Вы уверены, что хотите удалить этот список проектов?
     settings:
       header_details: Основные сведения
+      header_identifier: Identifier
       header_status: Статус
       header_relations: Отношения с проектом
       button_update_details: Обновить детали
@@ -1429,6 +1433,7 @@ ru:
         untitled_group: Безымянная группа
         reset_title: Сбросить настройки формы
         confirm_reset: Вы уверены, что хотите сбросить конфигурацию формы?
+        builtin_field: Built-in field
         reset_description: 'Это сбросит атрибуты к группе по умолчанию и отключит ВСЕ настраиваемые поля.
 
           '
@@ -1759,6 +1764,7 @@ ru:
       attachment:
         attachment_content: Вложенный контент
         attachment_file_name: Название вложенного файла
+        charset: Character set
         content_type: Тип содержимого
         downloads: Загрузки
         file: Файл
@@ -1853,6 +1859,7 @@ ru:
         title: Название
         description: Описание
       member:
+        blocked: Blocked
         roles: Роль
       notification:
         read_ian: Читайте в приложении
@@ -3636,6 +3643,9 @@ ru:
     additional:
       projects: Новые видимые проекты в данном экземпляре.
       no_visible_projects: Не видимые проекты в данном экземпляре.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Новые зарегистрированные пользователи в данном экземпляре.
     blocks:
       community: OpenProject сообщество
@@ -3645,17 +3655,19 @@ ru:
         header: Читайте о новых возможностях и обновлениях продуктов.
         learn_about: Узнайте больше о всех новых функциях
         missing: Нет выделенных функций.
-        '17_4':
-          new_features_title: 'Релиз содержит различные новые функции и улучшения, такие как:
+        '17_5':
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Мигратор Jira с поддержкой базовых пользовательских полей.
-            line_1: Разделы бэклога для структурирования и приоритизации пакетов работ во время уточнения бэклога.
-            line_2: Более удобное перетаскивание и улучшенные опции перемещения в Бэклогах.
-            line_3: Кнопки начала и завершения спринта в заголовке спринта.
-            line_4: Копирование настроек рабочего процесса между ролями.
-            line_5: Виджет «Мои встречи» на главной странице и странице «Обзор проектов».
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Обновить до корпоративной версии
       postgres_migration: Перенос вашей установки в PostgreSQL
@@ -4169,7 +4181,7 @@ ru:
   label_home: Главная
   label_subject_or_id: Тема или ID
   label_calendar_subscriptions: Подписки на календарь
-  label_identifier: Идентификатор
+  label_identifier: Identifiers
   label_project_identifier: Идентификатор проекта
   label_in: в
   label_in_less_than: менее чем
@@ -4839,9 +4851,9 @@ ru:
 
       '
     steps:
-      label: 'Для разрешения пользователю подписаться к вам необходимо: '
       a: Обновите ваш платежный план ([here](upgrade_url))
       b: Заблокировать или удалить существующего пользователя ([here](users_url))
+      label: 'Для разрешения пользователю подписаться к вам необходимо: '
   more_actions: Больше функций
   noscript_description: Для правильной работы OpenProject JavaScript должен быть включён!
   noscript_heading: JavaScript отключён
@@ -5474,13 +5486,9 @@ ru:
   setting_welcome_title: Заголовок приветствия
   setting_welcome_on_homescreen: Показывать приветствие на домашней странице
   setting_work_packages_identifier_classic: Числовая последовательность для всего экземпляра (по умолчанию)
-  setting_work_packages_identifier_classic_caption: 'Каждый пакет работ получает порядковый номер, начинающийся с 1 и увеличивающийся с каждым новым пакетом. Номера уникальны в пределах данного экземпляра, поэтому они остаются неизменными, даже если пакеты работ перемещаются между проектами.
-
-    '
-  setting_work_packages_identifier_semantic: Семантические идентификаторы на основе проекта
-  setting_work_packages_identifier_semantic_caption: 'Каждый проект имеет уникальный идентификатор, который является префиксом к идентификатору рабочего пакета. Если рабочий пакет перемещается в другой проект, генерируется новый идентификатор, но старый продолжает функционировать.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Способ выделения по умолчанию
   setting_work_package_list_default_highlighted_attributes: Выделенные встроенные атрибуты по умолчанию
   setting_working_days: Рабочие дни
@@ -5662,7 +5670,7 @@ ru:
       section_work_week: Рабочая неделя
       section_holidays_and_closures: Праздничные и нерабочие дни
     work_packages:
-      work_package_identifier: Идентификатор пакета работ
+      work_package_identifier: Work package identifiers
       not_allowed_text: У вас нет необходимых прав для просмотра этой страницы.
       activities:
         enable_internal_comments: Включить служебные комментарии
@@ -6089,6 +6097,17 @@ ru:
     warning: 'Изменение дней недели, считающихся рабочими или нерабочими днями, может повлиять на начало и завершение всех пакетов работ и жизненных циклов во всех проектах.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Рабочие дни** изменены (%{changes})._
       days:
@@ -6163,6 +6182,7 @@ ru:
       ancestor: Неизвестный - выбранный родитель невидим из-за отсутствия разрешений.
       definingProject: Нераскрыто - Проект невидим из-за отсутствия разрешений.
       definingWorkspace: Нераскрыто - Рабочее пространство невидимо из-за отсутствия разрешений.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Предавторизация

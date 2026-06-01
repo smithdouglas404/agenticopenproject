@@ -92,7 +92,6 @@ RSpec.describe WorkPackagesHelper do
     end
 
     describe "in semantic mode",
-             with_flag: { semantic_work_package_ids: true },
              with_settings: { work_packages_identifier: "semantic" } do
       let(:stub_work_package) { build_stubbed(:work_package, type: stub_type, identifier: "MACROPROJ-42") }
 

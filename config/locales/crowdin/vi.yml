@@ -57,7 +57,7 @@ vi:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -127,7 +127,7 @@ vi:
         trial: thử nghiệm
     jemalloc_allocator: Bộ cấp phát bộ nhớ Jemalloc
     journal_aggregation:
-      caption: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
+      caption: 'User actions on a gói công việc (work package) (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
 
         '
     import:
@@ -140,13 +140,13 @@ vi:
         custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
       configuration:
-        title: Jira configuration
-        new: New configuration
+        title: Jira cấu hình
+        new: New cấu hình
       banner:
         title: Beta - Try it out!
         description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
@@ -159,12 +159,12 @@ vi:
           name: Name
           url: Jira Server/Data Center URL
           personal_access_token: Personal Access Token
-        button_add: Add configuration
-        button_save: Save configuration
-        button_test: Test configuration
+        button_add: Add cấu hình
+        button_save: Save cấu hình
+        button_test: Test cấu hình
         button_delete_token: Delete token
         delete_token_confirm: Are you sure you want to delete the token? This will disable the Jira connection.
-        label_testing: Testing configuration...
+        label_testing: Testing cấu hình...
       token_deleted: Token was successfully deleted.
       test:
         success: Successfully connected to %{server} (version %{version})
@@ -173,7 +173,7 @@ vi:
         connection_error: 'Connection error: %{message}'
         parse_error: Failed to parse the response from the server. The server may not be a valid Jira instance.
         api_error: Jira API returned error status %{status}. Please check your Jira instance URL and API token.
-        token_error: Invalid API token. Please check your credentials in the configuration.
+        token_error: Invalid API token. Please check your credentials in the cấu hình.
         missing_credentials: Please provide both URL and Personal Access Token to test the connection
         invalid_url: Please provide a valid URL
       client:
@@ -185,6 +185,7 @@ vi:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projects
         last_change: Last change
@@ -202,7 +203,7 @@ vi:
         index:
           description: You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing.
           button_import_run: Import run
-          button_edit_configuration: Edit configuration
+          button_edit_configuration: Edit cấu hình
         status:
           initial: Start
           instance_meta_fetching: Fetching meta data
@@ -223,7 +224,7 @@ vi:
           reverted: Reverted
           finalizing: Finalizing
           finalizing_error: Error during finalizing
-          finalizing_done: Completed
+          finalizing_done: Đã hoàn thành
         wizard:
           button_retry: Retry
           parts:
@@ -232,7 +233,7 @@ vi:
             issues:
               other: "%{count} issues"
             work_packages:
-              other: "%{count} work packages"
+              other: "%{count} gói công việc (work package)s"
             types:
               other: "%{count} types"
             statuses:
@@ -253,7 +254,7 @@ vi:
           sections:
             fetch_data:
               title: Fetch instance meta data
-              caption_done: Completed
+              caption_done: Đã hoàn thành
               description: Check what data is available for import in the host Jira instance.
               button_fetch: Check available data
               label_progress: Fetching data from Jira...
@@ -262,7 +263,7 @@ vi:
             import_scope:
               title: Import scope
               caption: Choose what you want to import into OpenProject
-              caption_done: Completed
+              caption_done: Đã hoàn thành
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
               label_supported_data: Supported data
@@ -278,7 +279,7 @@ vi:
               elements:
                 relations: Relations between issues
                 project_ids: Project identifiers
-                issue_ids: Issues identifiers
+                issue_ids: Issue identifiers
                 sprints: Sprint assignments
                 workflows: Project-level workflows
                 schemes: Schemas
@@ -290,12 +291,12 @@ vi:
                 users: Involved users and groups
             confirm_import:
               title: Import data
-              caption: Review your import settings and start the import
-              caption_done: Completed
+              caption: Review your import thiết lập and start the import
+              caption_done: Đã hoàn thành
               label_available_data: Data to be imported
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
-              description: You are about to start an import run with the following settings.
+              description: You are about to start an import run with the following thiết lập.
               label_progress: Import in progress...
               label_import_data: Currently importing
             import_result:
@@ -317,7 +318,7 @@ vi:
           import_dialog:
             title: Please make sure you have a backup!
             confirm_button: Start import
-            description: 'Imports change your OpenProject configuration. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
+            description: 'Imports change your OpenProject cấu hình. After the import you will have the opportunity to review the changes. While in review, you have an option to revert or approve the import. After approving the import reverting will no longer be possible. Therefore, please, make sure that you have [a backup of your OpenProject instance](link) before proceeding.
 
               '
             confirm: I understand and have a backup
@@ -332,6 +333,8 @@ vi:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -421,7 +424,7 @@ vi:
         notification_text_default: "<p>Xin chào,</p> <p>Một dự án mới đã được tạo: projectValue:name</p> <p>Thank you</p>\n"
       work_packages_identifier:
         page_header:
-          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical gói công việc (work package) IDs or semantic project-specific ones that prepend the project identifier to the gói công việc (work package) ID.
         banner:
           existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
@@ -430,7 +433,7 @@ vi:
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
-          label_example_work_package_id: Example work package ID
+          label_example_work_package_id: Example gói công việc (work package) ID
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
@@ -446,14 +449,14 @@ vi:
         button_autofix: Convert identifiers
         button_save: Convert identifiers
         dialog:
-          title: Change work package identifiers
-          heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          title: Change gói công việc (work package) identifiers
+          heading: Enable project-based gói công việc (work package) IDs?
+          description: 'This will change IDs for all gói công việc (work package)s in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
 
             '
           confirm_button: Change identifiers
-          checkbox_label: I understand that this will permanently change all work package IDs
-        success_banner: Successfully updated work package identifier format.
+          checkbox_label: I understand that this will permanently change all gói công việc (work package) IDs
+        success_banner: Successfully updated gói công việc (work package) identifier format.
         in_progress:
           header_semantic: Converting to project-based identifiers
           header_classic: Converting to numeric identifiers
@@ -903,6 +906,7 @@ vi:
         text: Hành động này sẽ không xóa bất kỳ dự án nào có trong danh sách. Bạn có chắc chắn muốn xóa danh sách dự án này?
     settings:
       header_details: Chi tiết cơ bản
+      header_identifier: Identifier
       header_status: trạng thái
       header_relations: Quan hệ dự án
       button_update_details: Cập nhật chi tiết
@@ -927,7 +931,7 @@ vi:
       change_identifier_dialog_title: Change project identifier
       change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
       change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all gói công việc (work package)s in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
 
         '
       subitems:
@@ -1000,8 +1004,8 @@ vi:
         new_label: Ưu tiên mới
       creation_wizard:
         errors:
-          no_work_package_type: Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project.
-          no_status_when_submitted: Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type.
+          no_work_package_type: Failed to enable project initiation request because it requires at least one active gói công việc (work package) type and this project has none. Please add at least one gói công việc (work package) type to this project.
+          no_status_when_submitted: Failed to enable project initiation request because gói công việc (work package) type %{type} requires at least one status associated with it. Please enable at least one status workflow for this gói công việc (work package) type.
         export:
           description_attachment_export: Tạo tác được tạo sẽ được lưu dưới dạng tệp đính kèm PDF vào gói tác phẩm tạo tác.
           description_file_link_export: Gói công việc tạo tác sẽ có liên kết tệp tới tệp PDF được lưu trữ trong bộ lưu trữ tệp bên ngoài. Yêu cầu lưu trữ tệp đang hoạt động với các thư mục dự án được quản lý tự động cho dự án này. Hiện tại chỉ hỗ trợ lưu trữ tệp Nextcloud.
@@ -1353,7 +1357,7 @@ vi:
         label_group: Group
         reset_to_defaults: Reset to defaults
         add_attribute_group: Add attribute group
-        add_query_group: Add table of related work packages
+        add_query_group: Add table of related gói công việc (work package)s
         delete_group: Delete group
         remove_attribute: Remove from group
         drag_to_activate: Drag fields from here to activate them
@@ -1370,14 +1374,15 @@ vi:
         confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
         group_name_label: Group name
         row_actions: Row actions
-        query_group_label: Work packages table
+        query_group_label: Gói công việc (Work Package)s table
         empty_group_hint: Drag attributes here
-        invalid_attribute_groups: The form configuration payload is invalid.
-        invalid_query: The embedded query configuration is invalid.
-        not_found: The requested form configuration item could not be found.
+        invalid_attribute_groups: The form cấu hình payload không hợp lệ.
+        invalid_query: The embedded query cấu hình không hợp lệ.
+        not_found: The requested form cấu hình item could not be found.
         untitled_group: Untitled group
-        reset_title: Reset form configuration
-        confirm_reset: Are you sure you want to reset the form configuration?
+        reset_title: Reset form cấu hình
+        confirm_reset: Are you sure you want to reset the form cấu hình?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -1437,10 +1442,10 @@ vi:
         mode:
           from_role:
             label: Copy to other roles
-            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+            caption: Copy the current workflow to one or more roles inside the same gói công việc (work package) type. If the selected role already has a workflow the current one will be overwritten.
           from_type:
             label: Copy to another type
-            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+            caption: Copy the current workflow to another gói công việc (work package)s type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
       from_roles:
         create:
           notice:
@@ -1465,24 +1470,24 @@ vi:
         label: Filter by type name…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: Configure status transitions for each gói công việc (work package) type.
   work_flows:
     index:
       no_results_title_text: Hiện tại không có quy trình làm việc nào.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: Delete gói công việc (work package)
+      heading: Permanently delete this gói công việc (work package)?
+      description: Are you sure you want to delete the gói công việc (work package) "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this gói công việc (work package) will be recursively removed.
+      cross_project_warning: 'Gói công việc (Work Package)s from the following projects will be deleted: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages and all associated data will be permanently deleted:'
-      description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      title: Delete %{count} gói công việc (work package)s
+      heading: Permanently delete these %{count} gói công việc (work package)s?
+      description: 'The following gói công việc (work package)s and all associated data will be permanently deleted:'
+      description_with_children: 'The following gói công việc (work package)s, including children and all associated data, will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected gói công việc (work package)s and their children will be permanently deleted.
+      cross_project_warning: 'These gói công việc (work package)s span multiple projects: %{projects}'
       children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
@@ -1680,7 +1685,7 @@ vi:
     attributes:
       work_package_semantic_alias:
         identifier: Identifier
-        work_package: Work package
+        work_package: Gói công việc (Work Package)
       jira_import:
         projects: Projects
       import/jira:
@@ -1695,6 +1700,7 @@ vi:
       attachment:
         attachment_content: Số lượng Tệp đính kèm
         attachment_file_name: Tên tập tin đính kèm
+        charset: Character set
         content_type: Loại nội dung
         downloads: Những mục đã tải xuống
         file: tập tin
@@ -1789,6 +1795,7 @@ vi:
         title: Tiêu đề
         description: Mô tả
       member:
+        blocked: Blocked
         roles: Vai trò
       notification:
         read_ian: Đọc trong ứng dụng
@@ -3443,6 +3450,9 @@ vi:
     additional:
       projects: Các dự án có thể nhìn thấy mới nhất trong trường hợp này.
       no_visible_projects: Không có không có thể nhìn thấy các dự án trong trường hợp này.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Người dùng đã đăng ký mới nhất trong trường hợp này.
     blocks:
       community: Cộng đồng OpenProject
@@ -3452,17 +3462,19 @@ vi:
         header: Đọc về các tính năng mới và cập nhật sản phẩm.
         learn_about: Tìm hiểu thêm về tất cả các tính năng mới
         missing: Chưa có tính năng nổi bật nào.
-        '17_4':
+        '17_5':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: Nâng cấp lên phiên bản Enterprise
       postgres_migration: Di chuyển cài đặt của bạn sang PostgreSQL
@@ -3550,7 +3562,7 @@ vi:
     notifications_and_email:
       title: Notification and email
       tabs:
-        notifications: Notification settings
+        notifications: Notification thiết lập
         email_reminders: Email reminders
     access_tokens:
       description: Mã thông báo của nhà cung cấp được OpenProject phát hành, cho phép các ứng dụng khác truy cập vào nó. Mã thông báo của khách hàng được phát hành bởi các ứng dụng khác, cho phép OpenProject truy cập chúng.
@@ -3634,8 +3646,8 @@ vi:
         enabled: Temporarily pause daily email reminders
         date_range: Pause period
       email_alerts:
-        title: Email alerts for other items that are not work packages
-        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        title: Email alerts for other items that are not gói công việc (work package)s
+        description: Notifications today are limited to gói công việc (work package)s. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3648,7 +3660,7 @@ vi:
     notifications:
       participating:
         title: Participating
-        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        description: Notifications for all activities in gói công việc (work package)s you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3657,10 +3669,10 @@ vi:
         shared: Shared with me
       date_alerts:
         title: Date alerts
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        description: Automatic notifications when important dates are approaching for open gói công việc (work package)s you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
-        due_date: Finish date
+        due_date: Ngày kết thúc
         overdue: Overdue
         times:
           same_day: On the same day
@@ -3674,14 +3686,14 @@ vi:
         title: Non-participating
         description: Additional notifications for activities in all projects.
         submit_button: Update preferences
-        work_package_created: New work packages
+        work_package_created: New gói công việc (work package)s
         work_package_commented: All new comments
         work_package_processed: All status changes
         work_package_prioritized: All priority changes
         work_package_scheduled: All date changes
       project_specific_settings:
-        title: Project-specific notification settings
-        description: These project-specific settings override default settings above.
+        title: Project-specific notification thiết lập
+        description: These project-specific thiết lập override default thiết lập above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3976,7 +3988,7 @@ vi:
   label_home: Trang chủ
   label_subject_or_id: Chủ đề hoặc Mã
   label_calendar_subscriptions: Đăng ký lịch
-  label_identifier: định danh
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: trong
   label_in_less_than: ít hơn
@@ -4461,7 +4473,7 @@ vi:
   button_edit_non_working_time: Edit time off
   label_continued_from_previous_year: continued from previous year
   label_continues_into_next_year: continues into next year
-  label_end_date: Finish date
+  label_end_date: Ngày kết thúc
   label_working_days: Working days
   label_non_working_times_with_count: "%{year} time off (%{count})"
   label_non_working_times_summary: "%{year} summary"
@@ -4531,10 +4543,10 @@ vi:
       note: 'Lưu ý: “%{note}”'
     sharing:
       work_packages:
-        allowed_actions_html: 'You have the following permissions on this work package: %{allowed_actions}. This can change depending on your project role and permissions.'
+        allowed_actions_html: 'You have the following permissions on this gói công việc (work package): %{allowed_actions}. This can change depending on your project role and permissions.'
         create_account: Để truy cập gói công việc này, bạn cần tạo và kích hoạt tài khoản trên %{instance}.
         open_work_package: Mở gói công việc
-        subject: Work package %{id} was shared with you
+        subject: Gói công việc (Work Package) %{id} was shared with you
         enterprise_text: Chia sẻ các gói công việc với người dùng không phải là thành viên của dự án.
         summary:
           user: "%{user} đã chia sẻ gói công việc với bạn với quyền %{role_rights}"
@@ -4642,9 +4654,9 @@ vi:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Để cho phép người dùng đăng nhập, bạn có thể:'
       a: Nâng cấp gói thanh toán của bạn ([here](upgrade_url))
       b: Khóa hoặc xóa người dùng hiện tại ([here](users_url))
+      label: 'Để cho phép người dùng đăng nhập, bạn có thể:'
   more_actions: Nhiều chức năng hơn
   noscript_description: Bạn cần kích hoạt JavaScript để sử dụng OpenProject!
   noscript_heading: Đã tắt JavaScript
@@ -4757,7 +4769,7 @@ vi:
         drag_handle:
           label: Drag to reorder
         menu:
-          label_actions: Work package actions
+          label_actions: Gói công việc (Work Package) actions
         parent: Parent
   permission_add_work_package_comments: Thêm nhận xét
   permission_add_work_packages: Thêm mới Gói công việc
@@ -5039,7 +5051,7 @@ vi:
       update_timeout: |-
         Giữ thông tin dung lượng ổ đĩa cần thiết cuối cùng cho kho lưu trữ trong N phút.
         Vì việc tính dung lượng đĩa cần thiết của kho lưu trữ có thể tốn kém nên hãy tăng giá trị này để giảm tác động đến hiệu suất.
-      oauth_application_details_html: 'The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:'
+      oauth_application_details_html: 'The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration thiết lập:'
       oauth_application_details_link_text: Đi tới trang cài đặt
       setup_documentation_details: 'Nếu bạn cần trợ giúp định cấu hình bộ lưu trữ tệp mới, vui lòng kiểm tra tài liệu:'
       setup_documentation_details_link_text: Thiết lập kho lưu trữ tập tin
@@ -5133,7 +5145,7 @@ vi:
   setting_smtp_domain: Tên miền SMTP HELO
   setting_activity_days_default: Ngày hiển thị trên hoạt động dự án
   setting_api_tokens_enabled: Enable API tokens
-  setting_api_tokens_enabled_caption: 'Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
+  setting_api_tokens_enabled_caption: 'Decide whether users can create personal API tokens in their account thiết lập. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
 
     '
   setting_app_subtitle: phụ đề ứng dụng
@@ -5214,7 +5226,7 @@ vi:
   setting_mail_handler_body_delimiter_regex: Xén các email phù hợp với biểu thức này
   setting_mail_handler_ignore_filenames: Tập tin đính kèm mail bị bỏ qua
   setting_new_project_user_role_id: Vai trò được cấp cho người dùng không phải quản trị viên tạo dự án
-  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit project attributes and to manage members are listed, so that the creator can complete the project setup.
+  setting_new_project_user_role_id_caption: 'Only roles that include the permissions to edit thuộc tính dự án and to manage members are listed, so that the creator can complete the project setup.
 
     '
   setting_new_project_send_confirmation_email: Gửi thông báo cho tác giả khi tạo dự án mới
@@ -5288,13 +5300,9 @@ vi:
   setting_welcome_title: Tiêu đề khối chào mừng
   setting_welcome_on_homescreen: Hiển thị khối chào mừng trên màn hình chính
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-
-    '
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
-  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Chế độ đánh dấu mặc định
   setting_work_package_list_default_highlighted_attributes: Thuộc tính được đánh dấu nội tuyến mặc định
   setting_working_days: Ngày làm việc
@@ -5478,7 +5486,7 @@ vi:
       section_work_week: tuần làm việc
       section_holidays_and_closures: Ngày lễ và đóng cửa
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: Bạn không có quyền cần thiết để xem trang này.
       activities:
         enable_internal_comments: Bật nhận xét nội bộ
@@ -5570,7 +5578,7 @@ vi:
   text_default_administrator_account_changed: Tài khoản quản trị viên mặc định đã thay đổi
   text_default_encoding: 'Mặc định: UTF-8'
   text_destroy: xóa
-  text_destroy_with_associated: 'There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:'
+  text_destroy_with_associated: 'There are additional objects associated with the gói công việc (work package)(s) that are to be deleted. Those objects are of the following types:'
   text_destroy_what_to_do: Bạn muốn làm gì?
   text_diff_truncated: "... Sự khác biệt này đã bị cắt bớt vì nó vượt quá kích thước tối đa có thể được hiển thị."
   text_email_delivery_not_configured: |-
@@ -5629,7 +5637,7 @@ vi:
   text_plugin_assets_writable: Thư mục nội dung plugin có thể ghi
   text_powered_by: Được cung cấp bởi %{link}
   text_project_identifier_info: Chỉ cho phép chữ cái viết thường (a-z), số, dấu gạch ngang và dấu gạch dưới, phải bắt đầu bằng chữ cái viết thường.
-  text_project_identifier_description: The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".
+  text_project_identifier_description: The project identifier is prepended to all gói công việc (work package) IDs. If the identifier is "PROJ" for example, the gói công việc (work package) identifier will be "PROJ-12" or "PROJ-246".
   text_project_identifier_url_description: The project identifier is included in the URL of the project.
   text_project_identifier_handle_format: Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters).
   text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
@@ -5745,7 +5753,7 @@ vi:
   version_status_locked: bị khóa
   version_status_open: mở
   note: Lưu ý
-  note_password_login_disabled_link: Password login has been disabled through a [configuration setting](configuration_url).
+  note_password_login_disabled_link: Password login has been disabled through a [cấu hình setting](cấu hình_url).
   warning: Cảnh báo
   warning_attachments_not_saved: "%{count} tệp không thể lưu được."
   warning_imminent_user_limit_html: 'You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
@@ -5825,7 +5833,7 @@ vi:
     reminders:
       label_remind_at: ngày
       note_placeholder: Tại sao bạn đặt lời nhắc này?
-      create_success_message_html: Reminder set successfully. You will receive a notification for this work package %{reminder_time}.
+      create_success_message_html: Reminder set successfully. You will receive a notification for this gói công việc (work package) %{reminder_time}.
       success_update_message: Đã cập nhật lời nhắc thành công.
       success_deletion_message: Đã xóa lời nhắc thành công.
   sharing:
@@ -5908,6 +5916,17 @@ vi:
     warning: 'Việc thay đổi ngày trong tuần được coi là ngày làm việc hay ngày không làm việc có thể ảnh hưởng đến ngày bắt đầu và ngày kết thúc của tất cả các gói công việc và vòng đời trong tất cả các dự án trong trường hợp này.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Ngày làm việc** đã thay đổi (%{changes})._
       days:
@@ -5982,6 +6001,7 @@ vi:
       ancestor: Không được tiết lộ - Tổ tiên là vô hình vì thiếu quyền.
       definingProject: Không được tiết lộ - Dự án vô hình vì thiếu quyền.
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: Xác thực

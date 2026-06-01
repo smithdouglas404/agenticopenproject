@@ -56,8 +56,7 @@ module Header
     end
 
     def show_workspace_type_badge?(project)
-      OpenProject::FeatureDecisions.portfolio_models_active? &&
-        project.workspace_type.in?(%w[portfolio program])
+      project.workspace_type.in?(%w[portfolio program])
     end
   end
 end

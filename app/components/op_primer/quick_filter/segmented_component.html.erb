@@ -27,13 +27,15 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(Primer::Alpha::SegmentedControl.new("aria-label": @name, full_width: false)) do |control| %>
-  <% items.each do |item| %>
-    <% control.with_item(
-         tag: :a,
-         href: href_for(item.value),
-         label: item.label,
-         selected: current_value == item.value
-       ) %>
+<%= component_wrapper do %>
+  <%= render(Primer::Alpha::SegmentedControl.new("aria-label": @name, full_width: false)) do |control| %>
+    <% items.each do |item| %>
+      <% control.with_item(
+           tag: :a,
+           href: href_for(item.value),
+           label: item.label,
+           selected: current_value == item.value
+         ) %>
+    <% end %>
   <% end %>
 <% end %>

@@ -215,7 +215,6 @@ RSpec.describe WorkPackages::AutoCompletesController do
       end
 
       context "in classic mode",
-              with_flag: { semantic_work_package_ids: false },
               with_settings: { work_packages_identifier: "classic" } do
         it "exposes displayId as the stringified numeric id" do
           expect(entry).to include("displayId" => work_package1.id.to_s)
@@ -223,7 +222,6 @@ RSpec.describe WorkPackages::AutoCompletesController do
       end
 
       context "in semantic mode",
-              with_flag: { semantic_work_package_ids: true },
               with_settings: { work_packages_identifier: "semantic" } do
         let(:project) { create(:project, identifier: "MENTPROJ") }
 

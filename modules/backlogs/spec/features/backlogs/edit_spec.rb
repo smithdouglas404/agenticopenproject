@@ -173,7 +173,7 @@ RSpec.describe "Edit", :js do
       it "moves a work package to a different sprint" do
         planning_page.expect_story_in_sprint(work_package, first_sprint)
 
-        planning_page.click_in_sprint_story_move_menu(work_package, "Move to sprint")
+        planning_page.click_in_sprint_story_move_menu(work_package, "Move to sprint", wait: false)
 
         within("#move-to-sprint-dialog") do
           expect(page).to have_no_select("target_id", with_options: [first_sprint.name])

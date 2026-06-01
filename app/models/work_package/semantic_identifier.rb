@@ -121,21 +121,36 @@ module WorkPackage::SemanticIdentifier
     end
   end
 
-  # Returns the user-facing identifier for this work package.
+  # Returns the user-facing identifier for a work package given its id and identifier.
   # In semantic mode: the project-based identifier (e.g. "PROJ-42")
-  # In classic mode: the numeric database ID
-  def display_id
-    return id unless Setting::WorkPackageIdentifier.semantic_mode_active?
+  # In classic mode: the numeric database ID (even if identifier is set in the DB)
+  def self.display_id_for(id, identifier)
+    return id unless Setting::WorkPackageIdentifier.semantic?
 
     identifier.presence || id
   end
 
-  # Returns the identifier formatted for inline UI display.
+  # Formats a resolved display id for inline UI display.
   # Semantic mode: "PROJ-42" (no prefix — self-describing)
   # Classic mode: "#42" (hash-prefixed)
+  def self.format_display_id(display_id)
+    display_id.is_a?(String) && display_id.match?(/[A-Za-z]/) ? display_id : "##{display_id}"
+  end
+
+  # Returns the inline-formatted identifier for a work package given its id and identifier.
+  def self.formatted_id_for(id, identifier)
+    format_display_id(display_id_for(id, identifier))
+  end
+
+  # Returns the user-facing identifier for this work package.
+  # In semantic mode: the project-based identifier (e.g. "PROJ-42")
+  # In classic mode: the numeric database ID
+  def display_id
+    WorkPackage::SemanticIdentifier.display_id_for(id, identifier)
+  end
+
   def formatted_id
-    did = display_id
-    did.is_a?(String) && did.match?(/[A-Za-z]/) ? did : "##{did}"
+    WorkPackage::SemanticIdentifier.format_display_id(display_id)
   end
 
   # Override ActiveRecord's default `to_param` so Rails URL helpers

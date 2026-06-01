@@ -218,7 +218,6 @@ RSpec.describe WikiPages::CreateService do
   end
 
   context "with a semantic-identifier reference",
-          with_flag: { semantic_work_package_ids: true },
           with_settings: { work_packages_identifier: "semantic" } do
     let(:project) { create(:project, :semantic) }
     let(:work_package) do
@@ -326,7 +325,6 @@ RSpec.describe WikiPages::CreateService do
   end
 
   context "with a semantic-shape reference in classic mode",
-          with_flag: { semantic_work_package_ids: false },
           with_settings: { work_packages_identifier: "classic" } do
     let(:text) { "See #PROJ-1 for context." }
 

@@ -8,7 +8,7 @@ import { registerInputCaptionStreamAction } from './input-caption-stream-action'
 import { addTurboGlobalListeners } from './turbo-global-listeners';
 import { applyTurboNavigationPatch } from './turbo-navigation-patch';
 import { debugLog, whenDebugging } from 'core-app/shared/helpers/debug_output';
-import { TURBO_EVENTS } from './constants';
+import { getTurboEvents } from './utils';
 import { StreamActions } from '@hotwired/turbo';
 import { addTurboAngularWrapper } from 'core-turbo/turbo-angular-wrapper';
 import { registerActionMenuMorphRemount } from './action-menu-morph-remount';
@@ -21,13 +21,13 @@ Turbo.start();
 
 // Register logging of events
 whenDebugging(() => {
-  TURBO_EVENTS
+  getTurboEvents()
     .filter((name) => name !== 'turbo:before-stream-render')
     .forEach((name:string) => {
-    document.addEventListener(name, (event) => {
-      debugLog(`[TURBO EVENT ${name}] %O`, event);
+      document.addEventListener(name, (event) => {
+        debugLog(`[TURBO EVENT ${name}] %O`, event);
+      });
     });
-  });
 
   document.addEventListener('turbo:before-stream-render', (event) => {
     const { detail: { newStream:stream } } = event;
@@ -60,5 +60,10 @@ TurboPower.initialize(Turbo.StreamActions);
 document.addEventListener('turbo:frame-missing', (event) => {
   const { detail: { response, visit } } = event;
   event.preventDefault();
+  whenDebugging(() => {
+    const frameId = event.target instanceof Element ? event.target.id : undefined;
+    const message = frameId ? `no turbo-frame#${frameId} in` : 'destination frame id missing for';
+    console.error(`${message} response from ${response.url}`);
+  });
   void visit(response.url, {});
 });

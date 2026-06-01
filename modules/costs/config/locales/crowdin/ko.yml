@@ -39,6 +39,8 @@ ko:
         unit: 단위 이름
         unit_plural: 복수형 단위 이름
         default: 기본 비용 유형
+        for_all_projects: For all projects
+        rates: Rates
       work_package:
         costs_by_type: 소비 단위
         labor_costs: 노동 비용
@@ -84,6 +86,10 @@ ko:
         work_package:
           is_not_a_valid_target_for_cost_entries: '작업 패키지 #%{id}은(는) 비용 항목 재할당에 올바른 대상이 아닙니다.'
           nullify_is_not_valid_for_cost_entries: 비용 항목은 프로젝트에 할당할 수 없습니다.
+        cost_types_project:
+          attributes:
+            project_ids:
+              blank: Please select a project.
   attributes:
     comment: 코멘트
     cost_type: 비용 유형
@@ -125,7 +131,6 @@ ko:
   label_current_default_rate: 현재 기본 요금
   label_date_on: "-"
   label_deleted_cost_types: 삭제된 비용 유형
-  label_locked_cost_types: 잠긴 비용 유형
   label_display_cost_entries: 단위 비용 표시
   label_display_time_entries: 보고된 시간 표시
   label_display_types: 유형 표시
@@ -225,6 +230,28 @@ ko:
     errors:
       validation:
         start_time_different_date: startTime(%{start_time})의 날짜 부분은 spentOn(%{spent_on}) 날짜와 동일해야 합니다.
+  label_available_cost_types_projects: Available cost types projects
+  cost_types:
+    errors:
+      no_cost_types_available: No cost types are available in this project. Please contact an administrator.
+    admin:
+      columns:
+        active_projects: Active projects
+      cost_type_projects:
+        for_all_projects_blank_slate:
+          heading: This cost type is enabled in all projects
+          description: Uncheck "For all projects" on the details tab to limit this cost type to specific projects.
+        no_projects:
+          heading: No projects assigned
+          description: Add projects so this cost type can be used in them.
+      rates:
+        title: Rate history
+    settings:
+      time_and_costs: Time & Costs
+      cost_types:
+        heading: Cost types
+        none_active: No cost types are currently active in this project.
+        for_all_projects_hint: This cost type is enabled in all projects.
   costs:
     widgets:
       actual_costs:

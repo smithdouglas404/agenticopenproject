@@ -321,6 +321,13 @@ pt-PT:
 
           '
         confirm_button: Cancelar ocorrência
+      occurrence_past:
+        title: Delete occurrence
+        heading: Delete this occurrence?
+        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+
+          '
+        confirm_button: Delete occurrence
     blankslate:
       title: Não há reuniões para apresentar
       desc: Pode criar uma nova reunião ou alterar os critérios de filtragem
@@ -367,58 +374,22 @@ pt-PT:
         caption: Este texto vai aparecer em todas as páginas ao centro do rodapé.
       submit_button: Transferir
     notifications:
+      disabled: Participants will not receive email updates informing them of changes to the date, time or list of participants.
+      enabled: All participants will receive updated calendar invites informing them of changes to date, time or list of participants.
       sidepanel:
         title: Atualizações do calendário por e-mail
         description:
-          disabled: Os participantes não receberão um e-mail a informá-los das alterações.
-          enabled: Todos os participantes receberão convites de calendário atualizados por e-mail, com informações sobre as alterações.
           change_via_template: Para alterar, edite o modelo de série.
       dialog:
         title:
           enable: Ativar atualizações do calendário por e-mail?
           disable: Desativar atualizações do calendário por e-mail?
         message:
-          enable: 'Todos os participantes receberão convites de calendário atualizados por e-mail sempre que houver uma alteração na data, hora, local ou participantes da reunião. Uma vez ativado, será enviado imediatamente um e-mail a todos os participantes.
-
-            '
-          disable: 'Os participantes deixarão de receber convites de calendário atualizados por e-mail quando houver alterações a data, hora, local ou participantes da reunião. Se já tiverem um convite para esta reunião, este poderá já não estar correto.
-
-            '
+          enable: Once enabled, an email will be sent out immediately to all participants.
+          disable: If they already had an invite for this meeting, it might no longer be accurate.
         confirm_label:
           enable: Ativar atualizações por e-mail
           disable: Desativar atualizações por e-mail
-      banner:
-        participants:
-          enabled: 'Todos os participantes receberão convites de calendário atualizados via e-mail quando adicionar ou remover participantes.
-
-            '
-          disabled: 'As atualizações de calendário por e-mails estão desativadas. Os participantes não receberão um e-mail a informar quando adiciona ou remove participantes.
-
-            '
-          draft_disabled: 'Os participantes não receberão um e-mail a informá-los quando adiciona ou remove participantes.
-
-            '
-        onetime:
-          enabled: 'Todos os participantes receberão convites de calendário atualizados via e-mail quando adicionar ou remover participantes.
-
-            '
-          disabled: 'Os participantes não receberão um e-mail a informá-los de alterações à data, hora ou aos participantes da reunião.
-
-            '
-        occurrence:
-          enabled: 'As atualizações da agenda de e-mail estão ativadas para as séries de reuniões. Todos os participantes receberão convites atualizados da agenda a informar sobre as suas alterações nesta ocorrência.
-
-            '
-          disabled: 'As atualizações da agenda de e-mail estão desativadas para as séries de reuniões. Os participantes não vão receber um e-mail a informar sobre as suas alterações nesta ocorrência.
-
-            '
-        template:
-          enabled: 'As atualizações da agenda de e-mail estão ativadas para as séries de reuniões. Todos os participantes receberão convites atualizados da agenda a informar sobre as suas alterações a este modelo ou a ocorrências individuais.
-
-            '
-          disabled: 'As atualizações da agenda de e-mail estão desativadas para as séries de reuniões. Os participantes não vão receber um e-mail a informar sobre as suas alterações a ocorrências individuais.
-
-            '
     presentation_mode:
       title: Modo de apresentação
       button_present: Apresentar
@@ -631,6 +602,7 @@ pt-PT:
   label_agenda_item_duplicate_in_next_title: Duplicar na próxima reunião?
   label_agenda_item_add_notes: Adicionar notas
   label_agenda_item_add_outcome: Adicionar resultado
+  label_agenda_item_convert_to_work_package: Convert to work package
   label_agenda_item_work_package_add: Adicionar pacote de trabalho
   label_agenda_item_work_package: Pacote de trabalho do ponto da ordem de trabalhos
   label_section_rename: Mudar o nome da secção

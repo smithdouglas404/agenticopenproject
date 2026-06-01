@@ -66,24 +66,5 @@ See COPYRIGHT and LICENSE files for more details.
         <% tree_view.with_filter_mode(name: "favorited", label: t("header_project_select.favorites")) %>
       <% end %>
     <% end %>
-
-    <% unless OpenProject::FeatureDecisions.portfolio_models_active? %>
-      <%= helpers.flex_layout(justify_content: :flex_end, p: 2) do |bar| %>
-        <% bar.with_column(mr: 2) do %>
-          <%= render(Primer::Beta::Button.new(tag: :a, href: projects_path, test_selector: "list-project-btn")) do |button| %>
-            <% button.with_leading_visual_icon(icon: :"list-unordered") %>
-            <%= t("header_project_select.project_list") %>
-          <% end %>
-        <% end %>
-        <% if can_create_projects? %>
-          <% bar.with_column do %>
-            <%= render(Primer::Beta::Button.new(tag: :a, href: new_project_path, scheme: :primary, test_selector: "create-project-btn")) do |button| %>
-              <% button.with_leading_visual_icon(icon: :plus) %>
-              <%= t(:label_project) %>
-            <% end %>
-          <% end %>
-        <% end %>
-      <% end %>
-    <% end %>
   <% end %>
 <% end %>

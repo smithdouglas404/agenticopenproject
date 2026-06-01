@@ -141,7 +141,7 @@ RSpec.describe Backlogs::WorkPackageCardListComponent, type: :component do
 
     it "keeps condensed row padding with spacious header padding" do
       expect(rendered_component).to have_css(
-        ".Box.Box--condensed.op-border-box-list_header-padding-spacious"
+        ".Box.Box--condensed.op-border-box-list_header-padding-default"
       )
     end
 

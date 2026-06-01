@@ -62,7 +62,7 @@ module Backlogs
 
       @system_arguments = system_arguments
       @system_arguments[:padding] = :condensed
-      @system_arguments[:header_padding] = :spacious
+      @system_arguments[:header_padding] = :default
       merge_drag_and_drop_data! if drag_and_drop
 
       @list = OpenProject::Common::BorderBoxListComponent.new(
@@ -81,6 +81,9 @@ module Backlogs
       **system_arguments,
       &
     )
+      system_arguments[:title_arguments] ||= {}
+      system_arguments[:title_arguments][:font_size] ||= 4
+
       @list.with_header(
         title:,
         count:,

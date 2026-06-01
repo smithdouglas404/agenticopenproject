@@ -49,10 +49,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :wiki_page_link_macro, controller: "wikis/page_link" do
-    get :load
-  end
-
   resources :projects, only: %i[] do
     resources :work_packages, only: %i[] do
       resources :wikis, only: %i[] do
@@ -61,5 +57,19 @@ Rails.application.routes.draw do
         end
       end
     end
+  end
+
+  resources :relation_wiki_page_links, only: %i[create destroy], controller: "wikis/relation_page_links" do
+    collection do
+      get :link_existing_dialog
+    end
+
+    member do
+      get :confirm_delete_dialog
+    end
+  end
+
+  resource :wiki_page_link_macro, controller: "wikis/page_link_macro", only: [] do
+    get :load
   end
 end

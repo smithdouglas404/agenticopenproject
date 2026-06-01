@@ -159,49 +159,4 @@ RSpec.describe "Top menu items", :js do
       end
     end
   end
-
-  describe "Projects" do
-    let(:top_menu) { find_by_id("projects-menu") }
-
-    context "as an admin" do
-      let(:user) { create(:admin) }
-
-      it "displays all items" do
-        expect(page).to have_test_selector("list-project-btn")
-        expect(page).to have_test_selector("create-project-btn")
-      end
-
-      it "visits the projects page" do
-        page.find_test_selector("list-project-btn").click
-
-        expect(page).to have_current_path(projects_path)
-      end
-    end
-
-    context "as a user without project permission" do
-      before do
-        ProjectRole.non_member.update_attribute :permissions, [:view_project]
-      end
-
-      it "does not display new_project" do
-        expect(page).to have_test_selector("list-project-btn")
-        expect(page).to have_no_test_selector("create-project-btn")
-      end
-    end
-
-    context "as an anonymous user" do
-      let(:user) { create(:anonymous) }
-      let(:open_menu) { false }
-
-      around do |example|
-        project.update(public: false)
-        example.run
-        project.update(public: true)
-      end
-
-      it "does not show the menu" do
-        expect(page).to have_no_css("#projects-menu")
-      end
-    end
-  end
 end

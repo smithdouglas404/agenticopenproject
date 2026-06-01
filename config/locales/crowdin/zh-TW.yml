@@ -57,7 +57,7 @@ zh-TW:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -140,7 +140,7 @@ zh-TW:
         custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
         semantic_identifiers_must_be_enabled:
           title: Project-based semantic identifiers must be enabled.
-          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -185,6 +185,7 @@ zh-TW:
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
       columns:
         projects: Projects
         last_change: Last change
@@ -278,7 +279,7 @@ zh-TW:
               elements:
                 relations: Relations between issues
                 project_ids: Project identifiers
-                issue_ids: Issues identifiers
+                issue_ids: Issue identifiers
                 sprints: Sprint assignments
                 workflows: Project-level workflows
                 schemes: Schemas
@@ -332,6 +333,8 @@ zh-TW:
             confirm_button: Understood
           select_projects:
             title: Select projects
+      user:
+        unknown_name: Unknown
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -901,6 +904,7 @@ zh-TW:
         text: 此動作不會刪除清單中包含的任何專案。您確定要刪除此專案清單？
     settings:
       header_details: 基本訊息
+      header_identifier: Identifier
       header_status: 狀態
       header_relations: 專案關係
       button_update_details: 更新
@@ -1374,6 +1378,7 @@ zh-TW:
         untitled_group: Untitled group
         reset_title: Reset form configuration
         confirm_reset: Are you sure you want to reset the form configuration?
+        builtin_field: Built-in field
         reset_description: 'This will reset the attributes to their default group and disable ALL custom fields.
 
           '
@@ -1689,6 +1694,7 @@ zh-TW:
       attachment:
         attachment_content: 附件內容
         attachment_file_name: 附件檔案名稱
+        charset: Character set
         content_type: 檔案類型
         downloads: 下載
         file: 檔案
@@ -1783,6 +1789,7 @@ zh-TW:
         title: 標題
         description: 說明
       member:
+        blocked: Blocked
         roles: 角色
       notification:
         read_ian: 在應用程式內閱讀
@@ -3435,6 +3442,9 @@ zh-TW:
     additional:
       projects: 最新的可見專案
       no_visible_projects: 最新的可見專案
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: 最新註冊的使用者
     blocks:
       community: OpenProject 社群
@@ -3444,17 +3454,19 @@ zh-TW:
         header: 閱讀關於新功能和產品更新的資訊。
         learn_about: 進一步瞭解所有新功能
         missing: 目前還沒有突出顯示的功能。
-        '17_4':
+        '17_5':
           new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
-            line_2: Easier drag and drop and improved move options in the Backlogs module.
-            line_3: Sprint Start and Complete buttons in the sprint header.
-            line_4: Copy workflow settings between roles.
-            line_5: "'My Meetings' widget on the Home and Project Overview pages."
+            line_0: Project-based work package identifiers for clearer references.
+            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
+            line_2: Option to exclude work package types from Backlogs.
+            line_3: Redesigned sprint views.
+            line_4: Improved work package linking across Documents and text editors.
+            line_5: More flexible meeting schedules and reduced email notification noise.
+            line_6: Nested groups for organizational structures and inherited permissions.
+            line_7: Improved administration interfaces for workflows, users, and type configuration.
     links:
       upgrade_enterprise_edition: 升級到企業版
       postgres_migration: 將您的安裝遷移到 PostgreSQL
@@ -3968,7 +3980,7 @@ zh-TW:
   label_home: Home
   label_subject_or_id: 主旨或 id
   label_calendar_subscriptions: 訂閱行事曆
-  label_identifier: 識別碼
+  label_identifier: Identifiers
   label_project_identifier: Project identifier
   label_in: 在
   label_in_less_than: 少於
@@ -4629,9 +4641,9 @@ zh-TW:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: '要允許用戶登錄，您可以： '
       a: "([在這裏](upgrade_url)) 升級付款計劃"
       b: "([在這裏](users_url)) 鎖定或刪除現有用戶"
+      label: '要允許用戶登錄，您可以： '
   more_actions: 更多功能
   noscript_description: 您必須啟用 Javascript 才能使用 OpenProject!
   noscript_heading: JavaScript 已停用
@@ -5273,13 +5285,9 @@ zh-TW:
   setting_welcome_title: 歡迎區塊標題
   setting_welcome_on_homescreen: 在主頁面上顯示歡迎區塊
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-
-    '
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
-  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
-
-    '
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: 預設顯示模式
   setting_work_package_list_default_highlighted_attributes: 預設顯眼屬性
   setting_working_days: 工作日
@@ -5465,7 +5473,7 @@ zh-TW:
       section_work_week: 工作週
       section_holidays_and_closures: 假日和休息日
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Work package identifiers
       not_allowed_text: 您沒有查看此頁面的必要權限。
       activities:
         enable_internal_comments: 啟用內部備註
@@ -5895,6 +5903,17 @@ zh-TW:
     warning: '變更一週中哪些天為工作日或非工作日，可能會影響此實例中所有專案的工作套件與生命週期的開始及結束日期。
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**工作日**已更改 (%{changes})。_
       days:
@@ -5975,6 +5994,7 @@ zh-TW:
       ancestor: 未公開 - 由於缺少權限，上級不可見。
       definingProject: Undisclosed - 專案因缺乏權限而不見。
       definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: 提前授權
