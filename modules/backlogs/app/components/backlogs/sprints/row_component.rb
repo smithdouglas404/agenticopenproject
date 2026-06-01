@@ -31,6 +31,8 @@
 module Backlogs
   module Sprints
     class RowComponent < ::OpPrimer::BorderBoxRowComponent
+      include Redmine::I18n
+
       delegate :project, to: :table
       alias_method :sprint, :model
 
@@ -47,11 +49,11 @@ module Backlogs
       end
 
       def start_date
-        helpers.format_date(sprint.start_date) if sprint.start_date
+        format_date(sprint.start_date) if sprint.start_date
       end
 
       def finish_date
-        helpers.format_date(sprint.finish_date) if sprint.finish_date
+        format_date(sprint.finish_date) if sprint.finish_date
       end
 
       def work_package_count
@@ -67,8 +69,9 @@ module Backlogs
       def href_for_sprint
         return @href_for_sprint if defined?(@href_for_sprint)
 
-        @href_for_sprint = if sprint.active?
-                             project_work_package_board_path(project, sprint.task_board_for(project))
+        # TODO: consider shared sprints here regarding boards:
+        @href_for_sprint = if sprint.active? && (board = sprint.task_board_for(project))
+                             project_work_package_board_path(project, board)
                            elsif sprint.in_planning?
                              project_backlogs_backlog_path(project)
                            elsif sprint.completed?

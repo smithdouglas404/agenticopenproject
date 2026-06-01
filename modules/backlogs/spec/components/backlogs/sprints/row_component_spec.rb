@@ -32,10 +32,7 @@ require "rails_helper"
 
 RSpec.describe Backlogs::Sprints::RowComponent, type: :component do
   include Rails.application.routes.url_helpers
-
-  def format_date(date)
-    ApplicationController.helpers.format_date(date)
-  end
+  include Redmine::I18n
 
   let(:project) { build_stubbed(:project) }
   let(:user) { build_stubbed(:user) }
