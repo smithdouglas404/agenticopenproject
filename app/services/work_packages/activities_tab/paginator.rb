@@ -165,17 +165,27 @@ class WorkPackages::ActivitiesTab::Paginator
       .pick(:created_at, :id)
   end
 
-  # The page slice arrives ordered by the database; that ordering is the source
-  # of truth for the feed, and rebuilding the list in ref order preserves it.
+  # The union relation yields only lightweight `(kind, id)` rows in the database's
+  # order — it cannot be materialised into real Journal/Changeset records. So the
+  # page is plucked as ordered refs, the real records are hydrated in one batch per
+  # kind, and the refs are walked once more to emit the records in that same order.
   def load_activities(page_relation)
     ordered_refs = page_relation.pluck(Arel.sql("activities.kind"), Arel.sql("activities.id"))
     records_by_kind = load_page_activities_by_kind(ordered_refs)
 
+    # A ref resolves to nothing if its journal was aggregated away between selecting
+    # the page and loading its records; that ref is skipped rather than left as a gap.
     ordered_refs.filter_map { |kind, id| records_by_kind[kind][id] }
   end
 
+  # Journals and changesets load through separate code paths, so each kind is keyed
+  # on its own. Both keys are always present — empty when the page holds none of that
+  # kind — so the lookup that reassembles the page never nils on a missing kind.
   def load_page_activities_by_kind(ordered_refs)
-    ids_by_kind = ordered_refs.group_by(&:first).transform_values { it.map(&:last) }
+    ids_by_kind = ordered_refs
+      .group_by { |kind, _id| kind }
+      .transform_values { |refs| refs.map { |_kind, id| id } }
+
     {
       ActivitiesQuery::KIND_JOURNAL => load_page_journals(ids_by_kind[ActivitiesQuery::KIND_JOURNAL] || []),
       ActivitiesQuery::KIND_CHANGESET => load_page_changesets(ids_by_kind[ActivitiesQuery::KIND_CHANGESET] || [])
