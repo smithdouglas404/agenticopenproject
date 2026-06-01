@@ -12,6 +12,7 @@ import { getTurboEvents } from './utils';
 import { StreamActions } from '@hotwired/turbo';
 import { addTurboAngularWrapper } from 'core-turbo/turbo-angular-wrapper';
 import { registerActionMenuMorphRemount } from './action-menu-morph-remount';
+import { registerDispatchEventStreamActionGuard } from './dispatch-event-stream-action';
 
 Turbo.session.drive = true;
 Turbo.config.drive.progressBarDelay = 100;
@@ -55,6 +56,7 @@ applyTurboNavigationPatch();
 
 // Register turbo power actions
 TurboPower.initialize(Turbo.StreamActions);
+registerDispatchEventStreamActionGuard();
 
 // Error handling when "Content missing" returned
 document.addEventListener('turbo:frame-missing', (event) => {
