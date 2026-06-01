@@ -259,14 +259,13 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
     context "with a journal and a changeset at the same timestamp" do
       let(:repository) { create(:repository_subversion, project:) }
       let(:shared_time) { 1.day.ago }
-      let!(:tied_journal) do
-        create(:work_package_journal,
-               user:,
-               notes: "Tied with changeset",
-               journable: work_package,
-               version: 2,
-               created_at: shared_time)
+      let(:work_package) do
+        create(:work_package,
+               project:,
+               author: user,
+               journals: { shared_time => { notes: "Tied with changeset" } })
       end
+      let(:tied_journal) { work_package.journals.sole }
       let!(:tied_changeset) do
         create(:changeset, repository:, committed_on: shared_time, revision: "tied")
       end
@@ -281,20 +280,11 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
       it "breaks ties by id descending" do
         _pagy, records = paginator.call
 
-        # Journals and changesets have independent id sequences, so the kind
-        # holding the higher id is determined at runtime — but whichever it
-        # is must come first under the `id DESC` secondary sort. (Should a
-        # journal and changeset ever collide on both timestamp and id, the
-        # trailing `kind DESC` sort keeps the order deterministic.)
-        ordered_pairs = records.map { |r| r.is_a?(Changeset) ? [:changeset, r.id] : [:journal, r.id] }
-        journal_pos   = ordered_pairs.index([:journal, tied_journal.id])
-        changeset_pos = ordered_pairs.index([:changeset, tied_changeset.id])
-
-        if tied_journal.id > tied_changeset.id
-          expect(journal_pos).to be < changeset_pos
-        else
-          expect(changeset_pos).to be < journal_pos
-        end
+        # Journals and changesets draw ids from independent sequences, so which
+        # record holds the higher id is only known at runtime — but the higher
+        # id must lead under the `id DESC` secondary sort.
+        ids = [tied_journal.id, tied_changeset.id]
+        expect(records.map(&:id)).to eq([ids.max, ids.min])
       end
     end
 
