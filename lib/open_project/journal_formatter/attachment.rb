@@ -41,7 +41,7 @@ class OpenProject::JournalFormatter::Attachment < JournalFormatter::Base
     if options[:html]
       label, old_value, value = *format_html_details(label, old_value, value)
 
-      value = format_html_attachment_detail(key.to_s.sub("attachments_", ""), value, options[:cache])
+      value = format_html_attachment_detail(key.to_s.sub("attachments_", ""), value)
     end
 
     render_attachment_detail_text(label, value, old_value)
@@ -67,23 +67,11 @@ class OpenProject::JournalFormatter::Attachment < JournalFormatter::Base
     nil
   end
 
-  def format_html_attachment_detail(key, value, cache)
-    if value.present? && (a = find_attachment(key.to_i, cache))
+  def format_html_attachment_detail(key, value)
+    if value.present? && a = Attachment.find_by(id: key.to_i)
       link_to_attachment(a, only_path: false)
     elsif value.present?
       value
-    end
-  end
-
-  # Resolve through the request-scoped cache so a feed rendering many journals
-  # issues one lookup per attachment instead of one per detail occurrence.
-  def find_attachment(id, cache)
-    if cache
-      cache.fetch(Attachment, id) do # rubocop:disable Lint/UselessDefaultValueArgument
-        Attachment.find_by(id:)
-      end
-    else
-      Attachment.find_by(id:)
     end
   end
 end

@@ -189,15 +189,13 @@ class WorkPackages::ActivitiesTab::Paginator
     }
   end
 
-  # Journals are wrapped for eager-loading here so the wrapper's batch queries
-  # (journable, predecessor, data, notifications) run against the page slice only.
   def load_page_journals(ids)
     return {} if ids.empty?
 
     journals = Journal
       .where(id: ids)
       .with_sequence_version
-      .includes(:user, :customizable_journals, :attachable_journals, :storable_journals, :notifications)
+      .includes(:user, :customizable_journals, :attachable_journals, :storable_journals, :notifications, :attachments)
 
     API::V3::Activities::ActivityEagerLoadingWrapper.wrap(journals).index_by(&:id)
   end

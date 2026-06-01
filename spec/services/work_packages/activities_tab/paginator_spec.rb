@@ -260,6 +260,33 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
       end
     end
 
+    context "when the page holds comment journals carrying inline attachments" do
+      let!(:comment_journals) do
+        Array.new(3) do |i|
+          journal = create(:work_package_journal,
+                           user:, notes: "Comment #{i}", journable: work_package, version: i + 2)
+          create(:attachment, container: journal, author: user, filename: "inline_#{i}.png")
+          journal
+        end
+      end
+
+      # Rendering a comment body reads `journal.attachments` (the inline-image
+      # rewrite), so the page slice must preload them or each comment costs a query.
+      it "preloads journal attachments so rendering bodies does not query per comment" do
+        _pagy, records = paginator.call
+        journals = records.grep_v(Changeset)
+
+        recorder = ActiveRecord::QueryRecorder.new do
+          journals.each { it.attachments.to_a }
+        end
+
+        attachment_queries = recorder.log.count { it.match?(/FROM\s+"attachments"/) && it.include?("container_type") }
+        expect(attachment_queries).to eq(0),
+                                      "expected journal attachments preloaded; got #{attachment_queries}:\n" \
+                                      "#{recorder.log.join("\n")}"
+      end
+    end
+
     # The journal factory chains each predecessor's `validity_period` upper
     # bound to the next journal's `created_at`; two journals at the same
     # `created_at` produce an empty range and trip the
