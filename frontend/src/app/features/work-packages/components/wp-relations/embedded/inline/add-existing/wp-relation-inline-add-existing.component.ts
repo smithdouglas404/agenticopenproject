@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
   WorkPackageInlineCreateService,
@@ -127,6 +127,12 @@ export class WpRelationInlineAddExistingComponent {
 
   public get workPackage() {
     return this.wpInlineCreate.referenceTarget!;
+  }
+
+  @HostListener('keydown.escape', ['$event'])
+  public onEscapeKey(event:KeyboardEvent):void {
+    event.stopPropagation();
+    this.cancel();
   }
 
   public cancel() {

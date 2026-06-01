@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component, HostListener, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -76,9 +76,9 @@ export class WorkPackageRelationsAutocompleteComponent extends OpAutocompleterCo
 
   getOptionsFn = this.getAutocompleterData.bind(this);
 
-  @HostListener('keydown.escape')
-  public reset() {
-    this.cancel.emit();
+  public override canceled(event:unknown):void {
+    (event as Event)?.stopPropagation();
+    super.canceled(event);
   }
 
   changed(workPackage:IWorkPackageAutocompleteItem|null) {

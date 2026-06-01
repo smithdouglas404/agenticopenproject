@@ -4,6 +4,7 @@
     <div class="wp-relations-input-section">
       <wp-relations-autocomplete [workPackage]="workPackage"
           (change)="onSelected($event)"
+          (cancel)="cancel()"
           [filters]="queryFilters"
           [filterCandidatesFor]="relationType"
           data-test-selector="wp-relations-autocomplete"
