@@ -179,9 +179,17 @@ Sections will show the sum of all the durations of all containing items (or at l
 
 #### Link a work package to a meeting
 
-If you select the **Work package** option, you can link a work package by entering either a work package ID, type, status or starting to type in a keyword, which will open a list of possible options.
+If you select the **Work package** option, you can either add it as an independent agenda item or link it in the text of another item.  As an independent agenda item, you can link a work package by entering either a work package ID, type,  status or starting to type in a keyword, which will open a list of  possible options.
 
 ![Add work package](openproject_userguide_meetings_add_work_package.png)
+
+To link a work package in the text of another item, enter **#**, **##** or **###** followed by the work package ID, type, status or a keyword in **Notes**. A drop-down list of matching work packages is displayed, allowing you to select the desired item. This makes it easier to see which work packages are being linked while editing a page. 
+
+![Link work package](openproject_userguide_meetings_link_work_package.png)
+
+> [!TIP] 
+>
+> The number of **#** characters entered determines how detailed each work package is displayed and linked.
 
 #### Edit a meeting agenda
 
