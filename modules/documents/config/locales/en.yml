@@ -143,6 +143,8 @@ en:
         message: There must always be at least one document type configured. Create another one first if you want to delete this one.
 
     admin:
+      document_types:
+        button_add: "Type"
       collaboration_settings:
         page_header:
           description: |-
