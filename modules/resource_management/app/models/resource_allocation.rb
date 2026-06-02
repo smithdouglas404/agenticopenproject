@@ -29,6 +29,8 @@
 #++
 
 class ResourceAllocation < ApplicationRecord
+  ALLOWED_ENTITY_TYPES = %w[WorkPackage].freeze
+
   belongs_to :entity, polymorphic: true, optional: false
   belongs_to :principal, class_name: "User", optional: true, inverse_of: :resource_allocations
 
@@ -45,6 +47,10 @@ class ResourceAllocation < ApplicationRecord
   validates :allocated_time,
             presence: true,
             numericality: { only_integer: true, greater_than: 0 }
+
+  validates :entity_type,
+            inclusion: { in: ALLOWED_ENTITY_TYPES },
+            allow_blank: true
 
   validate :end_date_after_start_date
 

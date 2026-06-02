@@ -35,12 +35,12 @@ RSpec.describe ResourceAllocations::CreateService, type: :model do
   shared_let(:owner) do
     create(:user, member_with_permissions: { project => %i[view_resource_planners allocate_user_resources] })
   end
-  shared_let(:planner) { create(:resource_planner, project:, principal: owner) }
+  shared_let(:work_package) { create(:work_package, project:) }
 
   let(:assignee) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
   let(:params) do
     {
-      entity: planner,
+      entity: work_package,
       principal: assignee,
       start_date: Date.new(2026, 1, 1),
       end_date: Date.new(2026, 1, 31),
@@ -53,7 +53,7 @@ RSpec.describe ResourceAllocations::CreateService, type: :model do
   it "creates a resource allocation" do
     result = service_call
     expect(result).to be_success, "expected success but got: #{result.errors.full_messages}"
-    expect(result.result.entity).to eq(planner)
+    expect(result.result.entity).to eq(work_package)
     expect(result.result.principal).to eq(assignee)
     expect(result.result.allocated_time).to eq(8)
   end

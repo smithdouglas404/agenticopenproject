@@ -70,9 +70,9 @@ RSpec.describe ResourceAllocation do
   describe "validations" do
     shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
     shared_let(:owner) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
-    shared_let(:planner) { create(:resource_planner, project:, principal: owner) }
+    shared_let(:work_package) { create(:work_package, project:) }
 
-    let(:allocation) { build(:resource_allocation, entity: planner, principal: owner) }
+    let(:allocation) { build(:resource_allocation, entity: work_package, principal: owner) }
 
     it "is valid with the factory defaults" do
       expect(allocation).to be_valid
@@ -112,6 +112,23 @@ RSpec.describe ResourceAllocation do
       it "does not require principal (column is nullable)" do
         allocation.principal = nil
         expect(allocation).to be_valid
+      end
+    end
+
+    describe "entity type" do
+      it "lists the supported entity types" do
+        expect(described_class::ALLOWED_ENTITY_TYPES).to eq(%w[WorkPackage])
+      end
+
+      it "is valid when the entity type is in the allowed list" do
+        allocation.entity = work_package
+        expect(allocation).to be_valid
+      end
+
+      it "is invalid when the entity type is outside the allowed list" do
+        allocation.entity = create(:resource_planner, project:, principal: owner)
+        expect(allocation).not_to be_valid
+        expect(allocation.errors.symbols_for(:entity_type)).to include(:inclusion)
       end
     end
 
@@ -175,7 +192,7 @@ RSpec.describe ResourceAllocation do
   describe "user_filter serialization" do
     shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
     shared_let(:owner) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
-    shared_let(:planner) { create(:resource_planner, project:, principal: owner) }
+    shared_let(:work_package) { create(:work_package, project:) }
 
     it "serializes filters using the same coder as UserQuery" do
       coder = described_class.type_for_attribute(:user_filter).coder
@@ -191,7 +208,7 @@ RSpec.describe ResourceAllocation do
       filter.operator = "~"
       filter.values = ["alice"]
 
-      allocation = create(:resource_allocation, entity: planner, principal: owner, user_filter: [filter])
+      allocation = create(:resource_allocation, entity: work_package, principal: owner, user_filter: [filter])
 
       reloaded = described_class.find(allocation.id)
       expect(reloaded.user_filter.size).to eq(1)
@@ -201,7 +218,7 @@ RSpec.describe ResourceAllocation do
     end
 
     it "defaults to an empty array" do
-      allocation = create(:resource_allocation, entity: planner, principal: owner)
+      allocation = create(:resource_allocation, entity: work_package, principal: owner)
       expect(allocation.reload.user_filter).to eq([])
     end
   end
