@@ -46,6 +46,7 @@ class ResourceAllocation < ApplicationRecord
   register_journal_formatted_fields "principal_id", "requested_by_id", "reviewed_by_id",
                                     formatter_key: :named_association
   register_journal_formatted_fields "entity_gid", formatter_key: :polymorphic_association
+  register_journal_formatted_fields "filter_name", formatter_key: :plaintext
 
   enum :state, {
     requested: "requested",
@@ -62,6 +63,8 @@ class ResourceAllocation < ApplicationRecord
   validates :entity_type,
             inclusion: { in: ALLOWED_ENTITY_TYPES },
             allow_blank: true
+
+  validates :filter_name, presence: true, if: :filter_based?
 
   validate :end_date_after_start_date
 
@@ -81,6 +84,14 @@ class ResourceAllocation < ApplicationRecord
     else
       super
     end
+  end
+
+  def filter_based?
+    user_filter.present?
+  end
+
+  def user_assigned?
+    principal_id.present?
   end
 
   def allocated_hours
