@@ -44,7 +44,7 @@ describe('OpDisableWhenCheckedController', () => {
 
   describe('basic disable on check', () => {
     beforeEach(async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="disable-when-checked">
           <label>
             <input type="checkbox"
@@ -58,7 +58,6 @@ describe('OpDisableWhenCheckedController', () => {
                  aria-label="Text field">
         </div>
       `);
-      await ctx.nextFrame();
     });
 
     it('disables effect targets when cause is checked', async () => {
@@ -91,7 +90,7 @@ describe('OpDisableWhenCheckedController', () => {
 
   describe('reversed mode', () => {
     beforeEach(async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="disable-when-checked"
              data-disable-when-checked-reversed-value="true">
           <label>
@@ -106,7 +105,6 @@ describe('OpDisableWhenCheckedController', () => {
                  aria-label="Text field">
         </div>
       `);
-      await ctx.nextFrame();
     });
 
     it('enables effect targets when cause is checked', async () => {
@@ -122,7 +120,7 @@ describe('OpDisableWhenCheckedController', () => {
 
   describe('select option handling', () => {
     it('resets select value when selected option becomes disabled', async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="disable-when-checked">
           <label>
             <input type="checkbox"
@@ -140,7 +138,6 @@ describe('OpDisableWhenCheckedController', () => {
           </select>
         </div>
       `);
-      await ctx.nextFrame();
 
       const select = ctx.container.querySelector<HTMLSelectElement>('select[aria-label="Options"]')!;
 

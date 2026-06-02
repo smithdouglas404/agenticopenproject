@@ -57,7 +57,7 @@ nl:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -458,7 +458,7 @@ nl:
         dialog:
           title: Change work package identifiers
           heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Change identifiers
@@ -937,7 +937,7 @@ nl:
       change_identifier_dialog_title: Change project identifier
       change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
       change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1717,6 +1717,7 @@ nl:
       attachment:
         attachment_content: Inhoud van de bijlage
         attachment_file_name: Naam bijlage
+        charset: Character set
         content_type: Content-type
         downloads: Downloads
         file: Bestand
@@ -1811,6 +1812,7 @@ nl:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: Rollen
       notification:
         read_ian: Read in-app
@@ -2056,6 +2058,7 @@ nl:
         priority: Prioriteit
         progress: "% Voltooid"
         readonly: Alleen lezen
+        relatable: Relatable to
         remaining_hours: Resterend werk
         remaining_time: Resterend werk
         sequence_number: Sequence number
@@ -3506,6 +3509,9 @@ nl:
     additional:
       projects: Nieuwste zichtbare projecten in deze instantie.
       no_visible_projects: Er zijn geen zichtbare projecten binnen deze instantie.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Nieuwste geregistreerde gebruikers in deze instantie.
     blocks:
       community: OpenProject gemeenschap
@@ -4074,6 +4080,7 @@ nl:
   label_journal_diff: Beschrijving vergelijking
   label_language: Taal
   label_languages: Talen
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Ga naar een project...
@@ -4538,6 +4545,7 @@ nl:
   label_total_days_off: Total days off
   macro_execution_error: Fout bij het uitvoeren van de macro %{macro_name}
   macro_unavailable: Macro %{macro_name} kan niet worden weergegeven.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] macro %{macro_name}"
     errors:
@@ -5214,6 +5222,10 @@ nl:
   setting_consent_required: Toestemming vereist
   setting_consent_decline_mail: Toestemming contact e-mailadres
   setting_cross_project_work_package_relations: Sta werkpakketten over meerdere projecten toe
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: De eerste week in het jaar bevat
   setting_date_format: Datum
   setting_default_language: Standaard taal
@@ -5254,6 +5266,9 @@ nl:
   setting_work_package_properties: Werkpakketeigenschappen
   setting_work_package_startdate_is_adddate: Huidige datum als begindatum voor nieuwe werkpakketten gebruiken
   setting_work_packages_projects_export_limit: Werkpakketten / Projecten exportlimiet
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Gebruikerslogin, naam en e-mailadres voor alle aanvragen vastleggen
   setting_login_required: Verificatie vereist
@@ -5341,7 +5356,7 @@ nl:
   setting_welcome_on_homescreen: Toon het Welkom blok op thuisscherm
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Standaardmodus markeren
   setting_work_package_list_default_highlighted_attributes: Inline gemarkeerd standaardkenmerken
@@ -5953,6 +5968,17 @@ nl:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Werkdagen** veranderd (%{changes})._
       days:

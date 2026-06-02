@@ -130,10 +130,7 @@ form forwards it as `appendTo` to every autocompleter it renders.
 | You want…                                                | Use                       |
 |----------------------------------------------------------|---------------------------|
 | The standard OpenProject filter panel on an index page   | `Filter::FilterComponent` |
-| Filters inside a dialog or a non-filter form             | `Filters::FilterForm`     |
-| Coordination with a quick filter input in a sub-header   | `Filter::FilterComponent` (the sub-header attaches the controller) |
-| The serialized filter string in `params` on submit       | `Filters::FilterForm` + `hidden_input_name:` |
-| Autocompleter dropdowns to escape a clipping container   | `Filters::FilterForm` + `autocomplete_append_to:` |
+| Filters inside a dialog or a non-filter form             | `Filters::FilterForm` + `hidden_input_name:`   |
 
 ## Stimulus controller placement
 
@@ -163,6 +160,8 @@ default.
 `Queries::BaseQuery` and used to live only there — `Query` now mirrors it
 with the same signature, so passing a `Query` (or any of its subclasses)
 to `FilterForm` works exactly like passing a `BaseQuery` subclass.
+
+<%= embed OpenProject::Filter::FilterFormPreview, :for_a_work_package_query, panels: %i[preview source] %>
 
 What `FilterForm` does *not* do for you on the legacy side: parsing the
 form submission back into a `Query#filters` collection. The work-package

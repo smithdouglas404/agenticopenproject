@@ -346,6 +346,10 @@ $scrollbar-size: 10px
   color: white
   flex-shrink: 0
 
+@mixin focus
+  outline: var(--focus-outline, 2px solid #0969da)
+  outline-offset: -2px
+
 @mixin show-on-focus
   position: absolute
   right: -10000px

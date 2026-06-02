@@ -40,6 +40,7 @@ ko:
           in_planning: 계획 중
           active: 활성
           completed: 완료됨
+        work_packages: Work packages
       work_package:
         backlog_bucket: 백로그 버킷
         backlogs_work_package_type: 백로그 유형
@@ -186,18 +187,19 @@ ko:
     upsell:
       sprint_sharing:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
+  label_all_sprints: All sprints
   label_backlog: 백로그
+  label_backlogs: 백로그
+  label_backlog_and_sprints: 백로그 및 스프린트
   label_backlog_bucket_edit: 백로그 버킷 편집
   label_backlog_bucket_new: 새로운 백로그 버킷
-  label_inbox: 받은 편지함
-  label_backlogs: 백로그
   label_burndown_chart: 번다운 차트
+  label_inbox: 받은 편지함
   label_sprint_board: 스프린트 보드
   label_points_burn_down: 아래
   label_points_burn_up: 위
   label_sprint_edit: 스프린트 편집
   label_sprint_new: 새로운 스프린트
-  label_backlog_and_sprints: 백로그 및 스프린트
   label_task_board: 작업 보드
   notice_successful_start: 스프린트가 시작되었습니다.
   notice_successful_finish: 스프린트가 완료되었습니다.
@@ -205,6 +207,9 @@ ko:
   notice_unsuccessful_start_with_reason: '스프린트를 시작할 수 없습니다: %{reason}'
   notice_unsuccessful_finish: 스프린트를 완료할 수 없습니다.
   notice_unsuccessful_finish_with_reason: '스프린트를 완료할 수 없습니다: %{reason}'
+  notice_work_package_invisible_after_move: 'The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
+
+    '
   permission_create_sprints: 스프린트 만들기
   permission_manage_sprint_items: 스프린트 항목 관리
   permission_select_backlog_types_and_statuses: Select backlog types and statuses

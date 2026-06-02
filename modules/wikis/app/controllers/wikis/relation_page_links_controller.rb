@@ -32,21 +32,62 @@ module Wikis
   class RelationPageLinksController < ApplicationController
     include OpTurbo::ComponentStream
 
-    before_action :find_page_link
     before_action :authorize
 
+    def create
+      service_result = RelationPageLinks::CreateService.new(user: current_user).call(relation_page_link_params)
+      if service_result.success?
+        page_link = service_result.result
+        turbo_redirect_for_linkable(page_link.linkable)
+      else
+        message = service_result.errors.full_messages.join(" ")
+        render_error_flash_message_via_turbo_stream(message:)
+        respond_to_with_turbo_streams
+      end
+    end
+
     def destroy
-      # TODO: implement delete service
+      # TODO: Wikis::PageLinks::DeleteService
+      page_link = find_page_link
+      page_link.destroy!
+
+      turbo_redirect_for_linkable(page_link.linkable)
     end
 
     def confirm_delete_dialog
-      respond_with_dialog(DeleteRelationPageLinkConfirmationDialog.new(page_link: @page_link))
+      page_link = find_page_link
+      respond_with_dialog(DeleteRelationPageLinkConfirmationDialog.new(page_link:))
+    end
+
+    def link_existing_dialog
+      linkable = WorkPackage.visible.find(params.expect(:work_package))
+      provider = Provider.visible.find(params.expect(:provider))
+      respond_with_dialog Wikis::LinkExistingWikiPageDialog.new(linkable:, provider:)
     end
 
     private
 
     def find_page_link
-      @page_link = RelationPageLink.find(params.expect(:id))
+      RelationPageLink.find(params.expect(:id))
+    end
+
+    def relation_page_link_params
+      params.expect(wikis_relation_page_link: %i[identifier provider_id linkable_type linkable_id])
+            .merge(author_id: current_user.id)
+    end
+
+    def turbo_redirect_for_linkable(linkable)
+      path = derive_path_from_linkable(linkable)
+      return redirect_to path, status: :see_other if path
+
+      head :no_content
+    end
+
+    def derive_path_from_linkable(linkable)
+      case linkable
+      when WorkPackage
+        project_work_package_wikis_tab_index_path(work_package_id: linkable.id, project_id: linkable.project_id)
+      end
     end
   end
 end

@@ -156,6 +156,34 @@ RSpec.describe Filters::FilterForm, type: :forms do
     end
   end
 
+  describe "value-less operators (operator `data-no-value` attribute)" do
+    # A date custom field surfaces operators whose `requires_value?` is
+    # false (`t`, `w`, `!*`) alongside ones that require a value (`=d`,
+    # `>t-`, …). That's enough to assert both branches of the dispatch.
+    let!(:date_field) { create(:user_custom_field, field_format: "date") }
+
+    it "marks value-less operators with data-no-value and leaves the rest untouched" do
+      render_form
+
+      operator_select = page.find(:element, :select,
+                                  name: "operator_cf_#{date_field.id}",
+                                  visible: :all)
+
+      # `t` (Today) — `Queries::Operators::Today` declares `require_value false`.
+      expect(operator_select).to have_element :option,
+                                              value: "t",
+                                              "data-no-value": "true",
+                                              visible: :all
+
+      # `=d` (OnDate) — declares `require_value true` (the default).
+      expect(operator_select).to have_element :option,
+                                              value: "=d",
+                                              visible: :all do |option|
+        expect(option["data-no-value"]).to be_nil
+      end
+    end
+  end
+
   describe "autocomplete_append_to:" do
     # `appendTo` arrives at the angular component as a JSON-encoded data
     # attribute (`angular_component_tag` json-encodes its `inputs:` hash).

@@ -45,14 +45,13 @@ describe('FlashController', () => {
 
   describe('without autohide', () => {
     it('keeps flash items visible', async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="flash">
           <div data-flash-target="item" data-autohide="true" role="alert">
             Success message
           </div>
         </div>
       `);
-      await ctx.nextFrame();
 
       expect(ctx.screen.getByRole('alert')).toBeInTheDocument();
     });
@@ -62,14 +61,13 @@ describe('FlashController', () => {
     it('schedules removal of autohide items', async () => {
       const timeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="flash" data-flash-autohide-value="true">
           <div data-flash-target="item" data-autohide="true" role="alert">
             Success message
           </div>
         </div>
       `);
-      await ctx.nextFrame();
 
       const autohideCall = timeoutSpy.mock.calls.find(([, delay]) => delay === SUCCESS_AUTOHIDE_TIMEOUT);
 
@@ -81,14 +79,13 @@ describe('FlashController', () => {
     it('does not schedule removal for items without data-autohide', async () => {
       const timeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="flash" data-flash-autohide-value="true">
           <div data-flash-target="item" role="alert">
             Error message
           </div>
         </div>
       `);
-      await ctx.nextFrame();
 
       const autohideCall = timeoutSpy.mock.calls.find(([, delay]) => delay === SUCCESS_AUTOHIDE_TIMEOUT);
 
@@ -100,13 +97,12 @@ describe('FlashController', () => {
 
   describe('flashTargetDisconnected', () => {
     it('removes empty item containers when flash target is removed', async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="flash">
           <div data-flash-target="item" data-testid="item-container"></div>
           <div data-flash-target="flash" data-testid="flash-content">Content</div>
         </div>
       `);
-      await ctx.nextFrame();
 
       ctx.screen.getByTestId('flash-content').remove();
       await ctx.nextFrame();

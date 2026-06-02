@@ -40,6 +40,7 @@ pt-BR:
           in_planning: Em planejamento
           active: Ativa
           completed: Concluída
+        work_packages: Work packages
       work_package:
         backlog_bucket: Grupo de backlog
         backlogs_work_package_type: Tipo de backlog
@@ -190,18 +191,19 @@ pt-BR:
     upsell:
       sprint_sharing:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
+  label_all_sprints: All sprints
   label_backlog: Backlog
+  label_backlogs: Backlogs
+  label_backlog_and_sprints: Backlog e sprints
   label_backlog_bucket_edit: Editar grupo de backlog
   label_backlog_bucket_new: Novo grupo de backlog
-  label_inbox: Caixa de entrada
-  label_backlogs: Backlogs
   label_burndown_chart: Gráfico de burndown
+  label_inbox: Caixa de entrada
   label_sprint_board: Quadro de sprints
   label_points_burn_down: Abaixo
   label_points_burn_up: Acima
   label_sprint_edit: Editar sprint
   label_sprint_new: Nova sprint
-  label_backlog_and_sprints: Backlog e sprints
   label_task_board: Quadro de tarefas
   notice_successful_start: A sprint foi iniciada.
   notice_successful_finish: A sprint foi concluída.
@@ -209,6 +211,9 @@ pt-BR:
   notice_unsuccessful_start_with_reason: 'Não foi possível iniciar a sprint: %{reason}'
   notice_unsuccessful_finish: Não foi possível concluir a sprint.
   notice_unsuccessful_finish_with_reason: 'Não foi possível concluir a sprint: %{reason}'
+  notice_work_package_invisible_after_move: 'The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
+
+    '
   permission_create_sprints: Criar sprints
   permission_manage_sprint_items: Gerenciar itens da sprint
   permission_select_backlog_types_and_statuses: Select backlog types and statuses

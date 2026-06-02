@@ -57,7 +57,7 @@ el:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -458,7 +458,7 @@ el:
         dialog:
           title: Change work package identifiers
           heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Change identifiers
@@ -938,7 +938,7 @@ el:
       change_identifier_dialog_title: Change project identifier
       change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
       change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1718,6 +1718,7 @@ el:
       attachment:
         attachment_content: Περιεχόμενο συνημμένου
         attachment_file_name: Όνομα συνημμένου αρχείου
+        charset: Character set
         content_type: Content-type
         downloads: Λήψεις
         file: Aρχείο
@@ -1812,6 +1813,7 @@ el:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: Ρόλοι
       notification:
         read_ian: Read in-app
@@ -2057,6 +2059,7 @@ el:
         priority: Προτεραιότητα
         progress: "% Complete"
         readonly: Read only
+        relatable: Relatable to
         remaining_hours: Υπολειπόμενες Ώρες
         remaining_time: Υπολειπόμενες Ώρες
         sequence_number: Sequence number
@@ -3509,6 +3512,9 @@ el:
     additional:
       projects: Νεότερα ορατά έργα σε αυτό το στιγμιότυπο της εφαρμογής.
       no_visible_projects: Δεν υπάρχουν ορατά έργα σε αυτό το στιγμιότυπο της εφαρμογής.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Νεότεροι εγγεγραμμένοι χρήστες αυτού του στιγμιότυπου της εφαρμογής.
     blocks:
       community: Κοινότητα OpenProject
@@ -4077,6 +4083,7 @@ el:
   label_journal_diff: Σύγκριση Περιγραφών
   label_language: Γλώσσα
   label_languages: Languages
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Μεταβείτε σε ένα έργο...
@@ -4541,6 +4548,7 @@ el:
   label_total_days_off: Total days off
   macro_execution_error: Σφάλμα στην εκτέλεση της μακροεντολής %{macro_name}
   macro_unavailable: Η μακροεντολή %{macro_name} δεν μπορεί να εμφανιστεί.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Μακροεντολή %{macro_name}"
     errors:
@@ -5223,6 +5231,10 @@ el:
   setting_consent_required: Απαιτείται συγκατάθεση
   setting_consent_decline_mail: Συγκατάθεση επικοινωνίας διεύθυνσης email
   setting_cross_project_work_package_relations: Επιτρέψτε συσχετισμό πακέτων εργασίας μεταξύ έργων
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Η πρώτη εβδομάδα του έτους περιέχει
   setting_date_format: Ημερομηνία
   setting_default_language: Προεπιλεγμένη γλώσσα
@@ -5263,6 +5275,9 @@ el:
   setting_work_package_properties: Ιδιότητες πακέτου εργασίας
   setting_work_package_startdate_is_adddate: Χρήση σημερινής ημερομηνίας ως ημερομηνία έναρξης για νέα πακέτα εργασίας
   setting_work_packages_projects_export_limit: Work packages / Projects export limit
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Καταγραφή των στοιχείων εισόδου, του ονόματος και της διεύθυνσης email του χρήστη για όλα τα αιτήματα
   setting_login_required: Απαιτείται ταυτοποίηση
@@ -5350,7 +5365,7 @@ el:
   setting_welcome_on_homescreen: Εμφάνιση μπλοκ καλωσορίσματος στην αρχική σελίδα
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Προεπιλεγμένη λειτουργία επισήμανσης
   setting_work_package_list_default_highlighted_attributes: Προεπιλεγμένα inline χαρακτηριστικά με επισήμανση
@@ -5964,6 +5979,17 @@ el:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:

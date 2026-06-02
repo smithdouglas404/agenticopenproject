@@ -31,10 +31,15 @@ ms:
         authentication_method: Kaedah Pengesahan
         creator: Pencipta
         drive: ID Pemacu
+        file_link_origin: File link origin ID
         host: Hos
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: Nama
         password: Kata laluan aplikasi
         provider_type: Jenis penyedia
+        storage: Storage
+        storage_url: Storage URL
         tenant: ID Direktori (penyewa)
     errors:
       messages:
@@ -108,21 +113,25 @@ ms:
         remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'Keluarkan Pengguna daripada Kumpulan:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       one_drive_sync_service:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       sharepoint_sync_service:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
+        set_folder_permission: 'Set managed project Folder permissions:'
     errors:
       messages:
         error: Ralat yang tidak dijangka berlaku. Sila semak log OpenProject untuk mendapatkan maklumat lanjut atau hubungi pentadbir
+        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
         forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject tidak dapat mengesahkan dengan Pembekal Storan. Sila pastikan anda mempunyai akses kepadanya.
       models:

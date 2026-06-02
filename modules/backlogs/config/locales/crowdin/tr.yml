@@ -40,6 +40,7 @@ tr:
           in_planning: Planlanıyor
           active: Aktif
           completed: Tamamlandı
+        work_packages: Work packages
       work_package:
         backlog_bucket: Birikmiş İş Havuzu
         backlogs_work_package_type: Bekleme listesi türü
@@ -190,18 +191,19 @@ tr:
     upsell:
       sprint_sharing:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
+  label_all_sprints: All sprints
   label_backlog: Backlog
+  label_backlogs: İş listeleri
+  label_backlog_and_sprints: Backlog and sprints
   label_backlog_bucket_edit: Edit backlog bucket
   label_backlog_bucket_new: New backlog bucket
-  label_inbox: Gelen Kutusu
-  label_backlogs: İş listeleri
   label_burndown_chart: Burndown grafiği
+  label_inbox: Gelen Kutusu
   label_sprint_board: Sprint panosu
   label_points_burn_down: Aşağı
   label_points_burn_up: Yukarı
   label_sprint_edit: Sprint düzenle
   label_sprint_new: Yeni sprint
-  label_backlog_and_sprints: Backlog and sprints
   label_task_board: Görev panosu
   notice_successful_start: Sprint başladı.
   notice_successful_finish: Sprint tamamlandı.
@@ -209,6 +211,9 @@ tr:
   notice_unsuccessful_start_with_reason: 'Sprint başlatılamadı: %{reason}'
   notice_unsuccessful_finish: Sprint tamamlanamadı.
   notice_unsuccessful_finish_with_reason: 'Sprint tamamlanamadı: %{reason}'
+  notice_work_package_invisible_after_move: 'The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
+
+    '
   permission_create_sprints: Sprintler oluşturma
   permission_manage_sprint_items: Sprint öğelerini yönetme
   permission_select_backlog_types_and_statuses: Select backlog types and statuses

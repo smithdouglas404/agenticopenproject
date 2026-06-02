@@ -31,10 +31,15 @@ vi:
         authentication_method: Phương thức xác thực
         creator: Người sáng tạo
         drive: ID ổ đĩa
+        file_link_origin: File link origin ID
         host: chủ nhà
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: tên
         password: Mật khẩu ứng dụng
         provider_type: Loại nhà cung cấp
+        storage: Storage
+        storage_url: Storage URL
         tenant: ID thư mục (đối tượng thuê)
     errors:
       messages:
@@ -108,21 +113,25 @@ vi:
         remote_folders: 'Đọc nội dung của thư mục nhóm:'
         remove_user_from_group: 'Xóa người dùng khỏi nhóm:'
         rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       one_drive_sync_service:
         create_folder: 'Tạo thư mục dự án được quản lý:'
         ensure_root_folder_permissions: 'Đặt quyền thư mục cơ sở:'
         hide_inactive_folders: 'Ẩn các thư mục không hoạt động Bước:'
         remote_folders: 'Đọc nội dung của thư mục gốc trên ổ đĩa:'
         rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       sharepoint_sync_service:
         create_folder: 'Tạo thư mục dự án được quản lý:'
         ensure_root_folder_permissions: 'Đặt quyền thư mục cơ sở:'
         hide_inactive_folders: 'Ẩn các thư mục không hoạt động Bước:'
         remote_folders: 'Đọc nội dung của thư mục gốc trên ổ đĩa:'
         rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
+        set_folder_permission: 'Set managed project Folder permissions:'
     errors:
       messages:
         error: Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra nhật ký OpenProject để biết thêm thông tin hoặc liên hệ với quản trị viên
+        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
         forbidden: OpenProject không thể truy cập tài nguyên được yêu cầu. Vui lòng kiểm tra cấu hình quyền của bạn trên Nhà cung cấp bộ nhớ.
         unauthorized: OpenProject không thể xác thực với Nhà cung cấp lưu trữ. Hãy đảm bảo rằng bạn có quyền truy cập vào nó.
       models:

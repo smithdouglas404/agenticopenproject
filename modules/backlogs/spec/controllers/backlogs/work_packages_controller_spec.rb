@@ -31,17 +31,23 @@
 require "rails_helper"
 
 RSpec.describe Backlogs::WorkPackagesController do
+  # Gets the html content of the template of the first turbo-stream with the
+  # given action.
+  def turbo_stream_template(action:)
+    Nokogiri("<response>#{response.body}</response>").css("turbo-stream[action=#{action}] template").first.inner_html
+  end
+
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
 
   current_user { user }
 
   shared_let(:user) { create(:admin) }
-  shared_let(:project) { create(:project) }
+  shared_let(:project) { create(:project, types: [type_feature, type_task]) }
   shared_let(:status) { create(:status, name: "status 1", is_default: true) }
 
   let(:sprint) { create(:sprint, name: "Agile Sprint 1", project:) }
-  let(:work_package) { create(:work_package, status:, sprint:, project:) }
+  let(:work_package) { create(:work_package, status:, sprint:, project:, type: type_feature) }
 
   shared_examples "respecting the all param for inbox pagination" do
     context "with an inbox over the pagination threshold" do
@@ -110,6 +116,18 @@ RSpec.describe Backlogs::WorkPackagesController do
     end
 
     context "with a Sprint as source" do
+      shared_examples "shows a flash message after moving a work package that turns invisible" do |target_name|
+        it "shows a flash message after moving the work package" do
+          subject
+
+          message = "The work package was moved to #{target_name} but is not visible"
+          expect(response).to be_successful
+          expect(response).to have_http_status :ok
+          expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+          expect(turbo_stream_template(action: "flash")).to include(message)
+        end
+      end
+
       context "with the same Sprint as target" do
         let(:target_id) { "sprint:#{sprint.id}" }
 
@@ -172,6 +190,22 @@ RSpec.describe Backlogs::WorkPackagesController do
           expect(assigns(:work_package)).to eq(work_package_in_sprint)
         end
 
+        context "when the project is configured to exclude the work packages status from backlogs" do
+          before do
+            project.done_statuses << status
+          end
+
+          include_examples "shows a flash message after moving a work package that turns invisible", "Inbox"
+        end
+
+        context "when the project is configured to exclude the work packages type from backlogs" do
+          before do
+            project.backlog_excluded_types << type_feature
+          end
+
+          include_examples "shows a flash message after moving a work package that turns invisible", "Inbox"
+        end
+
         it "moves the work_package to the inbox at the given position" do
           subject
 
@@ -182,7 +216,7 @@ RSpec.describe Backlogs::WorkPackagesController do
       end
 
       context "with a Backlog Bucket as target" do
-        let(:bucket) { create(:backlog_bucket, project:) }
+        let(:bucket) { create(:backlog_bucket, name: "My Bucket", project:) }
         let!(:bucket_items) { create_list(:work_package, 2, project:, status:, backlog_bucket: bucket) }
         let(:target_id) { "backlog_bucket:#{bucket.id}" }
         let(:prev_id) { bucket_items.first.id }
@@ -196,6 +230,22 @@ RSpec.describe Backlogs::WorkPackagesController do
                                                 method: "morph"
           expect(response).to have_turbo_stream action: "replace",
                                                 target: "backlogs-backlog-component-#{project.id}"
+        end
+
+        context "when the project is configured to exclude the work packages status from backlogs" do
+          before do
+            project.done_statuses << status
+          end
+
+          include_examples "shows a flash message after moving a work package that turns invisible", "My Bucket"
+        end
+
+        context "when the project is configured to exclude the work packages type from backlogs" do
+          before do
+            project.backlog_excluded_types << type_feature
+          end
+
+          include_examples "shows a flash message after moving a work package that turns invisible", "My Bucket"
         end
 
         it "moves the work_package into the bucket at the given position" do
@@ -228,9 +278,9 @@ RSpec.describe Backlogs::WorkPackagesController do
 
         context "when service call fails" do
           before do
-            allow(Stories::UpdateService)
+            allow(Backlogs::WorkPackages::UpdateService)
               .to receive(:new)
-              .and_return(instance_double(Stories::UpdateService, call: ServiceResult.failure(message: "Error")))
+              .and_return(instance_double(Backlogs::WorkPackages::UpdateService, call: ServiceResult.failure(message: "Error")))
           end
 
           it "renders an error flash with 422", :aggregate_failures do
@@ -466,9 +516,9 @@ RSpec.describe Backlogs::WorkPackagesController do
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
 
       before do
-        update_service = instance_double(Stories::UpdateService, call: service_result)
+        update_service = instance_double(Backlogs::WorkPackages::UpdateService, call: service_result)
 
-        allow(Stories::UpdateService)
+        allow(Backlogs::WorkPackages::UpdateService)
           .to receive(:new)
           .and_return(update_service)
       end

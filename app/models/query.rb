@@ -63,6 +63,7 @@ class Query < ApplicationRecord
   validate :validate_timestamps
 
   include Scopes::Scoped
+
   scopes :visible,
          :having_views
 
@@ -215,6 +216,16 @@ class Query < ApplicationRecord
   # or nil out).
   def find_active_filter(name)
     filters.detect { |f| f.name == name }
+  end
+
+  # The manual-sort filter is added programmatically when the user drags
+  # work packages to reorder them — it has no operator/value UI of its own
+  # (type `:empty_value`), so it doesn't belong in the picker that
+  # `Filters::FilterForm` builds. Mirrors how
+  # `Queries::Filters::AvailableFilters#available_advanced_filters` already
+  # excludes the inline `name_and_identifier` quick-filter on projects.
+  def available_advanced_filters
+    super.grep_v(::Queries::WorkPackages::Filter::ManualSortFilter)
   end
 
   def normalized_name

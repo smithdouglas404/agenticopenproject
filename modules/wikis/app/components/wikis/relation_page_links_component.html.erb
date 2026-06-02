@@ -37,14 +37,23 @@ See COPYRIGHT and LICENSE files for more details.
         end
         header.with_column do
           render(Primer::Alpha::ActionMenu.new) do |menu|
-            menu.with_show_button(disabled: true) do |button|
+            menu.with_show_button(disabled: !can_manage_links?) do |button|
               button.with_leading_visual_icon(icon: :plus)
               button.with_trailing_action_icon(icon: :"triangle-down")
 
               t("wikis.buttons.wiki_page")
             end
 
-            menu.with_item(label: "placeholder item")
+            menu.with_item(
+              label: t(".link_existing"),
+              tag: :a,
+              href: link_existing_dialog_relation_wiki_page_links_path(work_package:, provider:),
+              content_arguments: { data: { controller: "async-dialog" } }
+            )
+            menu.with_item(
+              label: t(".link_new"),
+              disabled: true # work in progress
+            )
           end
         end
       end
@@ -52,7 +61,7 @@ See COPYRIGHT and LICENSE files for more details.
 
     if !user_connected?
       box.with_row do
-        render(Wikis::OAuthLoginComponent.new(provider, return_url: work_package_url(@work_package, tab: :wikis)))
+        render(Wikis::OAuthLoginComponent.new(provider, return_url: work_package_url(work_package, tab: :wikis)))
       end
     elsif page_links.empty?
       box.with_row do
@@ -62,7 +71,7 @@ See COPYRIGHT and LICENSE files for more details.
             blankslate.with_description { t(".empty_text") }
           end
         else
-          render(Wikis::OAuthLoginComponent.new(provider, return_url: work_package_url(@work_package, tab: :wikis)))
+          render(Wikis::OAuthLoginComponent.new(provider, return_url: work_package_url(work_package, tab: :wikis)))
         end
       end
     else

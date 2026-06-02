@@ -2,5 +2,5 @@
 ru:
   overviews:
     label_home: "%{workspace_type} главная"
-    label_dashboard: Панель
+    label_dashboard: Дашборд
     label_overview: Обзор

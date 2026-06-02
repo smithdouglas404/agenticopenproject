@@ -40,6 +40,7 @@ cs:
           in_planning: V plánování
           active: Aktivní
           completed: Dokončen
+        work_packages: Work packages
       work_package:
         backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Typ nevyřízené položky
@@ -198,18 +199,19 @@ cs:
     upsell:
       sprint_sharing:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
+  label_all_sprints: All sprints
   label_backlog: Backlog
+  label_backlogs: Nevyřízené položky
+  label_backlog_and_sprints: Backlog and sprints
   label_backlog_bucket_edit: Edit backlog bucket
   label_backlog_bucket_new: New backlog bucket
-  label_inbox: Inbox
-  label_backlogs: Nevyřízené položky
   label_burndown_chart: Burndown chart
+  label_inbox: Inbox
   label_sprint_board: Sprint board
   label_points_burn_down: Dolů
   label_points_burn_up: Nahoru
   label_sprint_edit: Upravit sprint
   label_sprint_new: Nový sprint
-  label_backlog_and_sprints: Backlog and sprints
   label_task_board: Tabule úkolů
   notice_successful_start: Sprint byl zahájen.
   notice_successful_finish: Sprint byl dokončen.
@@ -217,6 +219,9 @@ cs:
   notice_unsuccessful_start_with_reason: 'Sprint nebylo možné zahájit: %{reason}'
   notice_unsuccessful_finish: Sprint nebylo možné dokončit.
   notice_unsuccessful_finish_with_reason: 'Sprint nebylo možné dokončit: %{reason}'
+  notice_work_package_invisible_after_move: 'The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
+
+    '
   permission_create_sprints: Vytváření sprintů
   permission_manage_sprint_items: Správa položek sprintu
   permission_select_backlog_types_and_statuses: Select backlog types and statuses

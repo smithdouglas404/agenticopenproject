@@ -57,7 +57,7 @@ cs:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -472,7 +472,7 @@ cs:
         dialog:
           title: Změna identifikátorů pracovních balíčků
           heading: Aktivovat projektové identifikátory pracovních balíčků?
-          description: 'Toto změní identifikátory pro všechny pracovní balíčky ve všech projektech v této instanci. Předchozí identifikátory a adresy URL budou pokračovat ve správném přesměrování. Dokončení této změny bude nějakou dobu trvat.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Změnit identifikátory
@@ -959,7 +959,7 @@ cs:
       change_identifier_dialog_title: Změnit identifikátor projektu
       change_identifier_format_hint_semantic: Pouze velká písmena (A-Z), číslice nebo podtržítka. Maximálně 10 znaků. Musí začínat písmenem.
       change_identifier_format_hint_legacy: Pouze malá písmena (a-z), číslice, pomlčky nebo podtržítka.
-      change_identifier_warning: 'Tímto se trvale změní identifikátory a adresy URL všech pracovních balíčků v tomto projektu. Předchozí identifikátory a adresy URL budou nicméně nadále správně přesměrovány.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1761,6 +1761,7 @@ cs:
       attachment:
         attachment_content: Obsah přílohy
         attachment_file_name: Název souboru přílohy
+        charset: Character set
         content_type: Content-type
         downloads: Ke stažení
         file: Soubor
@@ -1857,6 +1858,7 @@ cs:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: Role
       notification:
         read_ian: Read in-app
@@ -2102,6 +2104,7 @@ cs:
         priority: Priorita
         progress: "% Dokončeno"
         readonly: Pouze pro čtení
+        relatable: Relatable to
         remaining_hours: Zbývající práce
         remaining_time: Zbývající práce
         sequence_number: Sequence number
@@ -3640,6 +3643,9 @@ cs:
     additional:
       projects: Nejnovější projekty v systému
       no_visible_projects: V této instanci nejsou žádné viditelné projekty.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Poslední registrovaní uživatelé v této instalaci.
     blocks:
       community: OpenProject komunita
@@ -4208,6 +4214,7 @@ cs:
   label_journal_diff: Popis porovnání
   label_language: Jazyk
   label_languages: Jazyky
+  label_export_plural: Exports
   label_external_links: Externí odkazy
   label_locale: Jazyk a region
   label_jump_to_a_project: Přejít na projekt...
@@ -4678,6 +4685,7 @@ cs:
   label_total_days_off: Total days off
   macro_execution_error: Chyba při provádění makra %{macro_name}
   macro_unavailable: Makro %{macro_name} nelze zobrazit.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -5368,6 +5376,10 @@ cs:
   setting_consent_required: Souhlas vyžadován
   setting_consent_decline_mail: Kontaktní e-mailová adresa pro souhlas
   setting_cross_project_work_package_relations: Povolit vztahy mezi projekty a pracovními balíčky
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: První týden v roce obsahuje
   setting_date_format: Datum
   setting_default_language: Výchozí jazyk
@@ -5408,6 +5420,9 @@ cs:
   setting_work_package_properties: Vlastnosti pracovního balíčku
   setting_work_package_startdate_is_adddate: Použít aktuální datum jako počáteční datum pro nové úkoly
   setting_work_packages_projects_export_limit: Limit exportu pracovních balíčků / projektů
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Logovat uživatelský login a emailovou adresu pro všechny požadavky
   setting_login_required: Vyžadována autentizace
@@ -5495,7 +5510,7 @@ cs:
   setting_welcome_on_homescreen: Zobrazit uvítací blok na domovské obrazovce
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Výchozí režim zvýraznění
   setting_work_package_list_default_highlighted_attributes: Výchozí inline zvýrazněné atributy
@@ -6111,6 +6126,17 @@ cs:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Pracovní dny** změněny (%{changes})._
       days:

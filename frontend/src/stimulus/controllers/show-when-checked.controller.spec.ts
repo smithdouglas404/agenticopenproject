@@ -44,7 +44,7 @@ describe('OpShowWhenCheckedController', () => {
 
   describe('show-when="checked"', () => {
     beforeEach(async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="show-when-checked">
           <label>
             <input type="checkbox"
@@ -61,7 +61,6 @@ describe('OpShowWhenCheckedController', () => {
           </div>
         </div>
       `);
-      await ctx.nextFrame();
     });
 
     it('shows element when checkbox is checked', async () => {
@@ -91,7 +90,7 @@ describe('OpShowWhenCheckedController', () => {
 
   describe('show-when="unchecked"', () => {
     it('hides element when checkbox is checked, shows when unchecked', async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="show-when-checked">
           <label>
             <input type="checkbox"
@@ -108,7 +107,6 @@ describe('OpShowWhenCheckedController', () => {
           </div>
         </div>
       `);
-      await ctx.nextFrame();
 
       const checkbox = ctx.screen.getByRole('checkbox', { name: 'Toggle' });
       const el = ctx.screen.getByTestId('conditional');
@@ -129,7 +127,7 @@ describe('OpShowWhenCheckedController', () => {
 
   describe('reversed mode', () => {
     it('inverts the checked/unchecked logic', async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="show-when-checked"
              data-show-when-checked-reversed-value="true">
           <label>
@@ -146,7 +144,6 @@ describe('OpShowWhenCheckedController', () => {
           </div>
         </div>
       `);
-      await ctx.nextFrame();
 
       const el = ctx.screen.getByTestId('conditional');
 
@@ -159,7 +156,7 @@ describe('OpShowWhenCheckedController', () => {
 
   describe('visibility toggle via data-set-visibility', () => {
     it('uses CSS visibility instead of hidden attribute', async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="show-when-checked">
           <label>
             <input type="checkbox"
@@ -177,7 +174,6 @@ describe('OpShowWhenCheckedController', () => {
           </div>
         </div>
       `);
-      await ctx.nextFrame();
 
       const el = ctx.screen.getByTestId('conditional');
 

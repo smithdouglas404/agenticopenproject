@@ -39,8 +39,8 @@ ru:
         unit: Наименование количественного показателя
         unit_plural: Множественное наименование количественного показателя
         default: Тип затрат по умолчанию
-        for_all_projects: For all projects
-        rates: Rates
+        for_all_projects: Для всех проектов
+        rates: Ставки
       work_package:
         costs_by_type: Затраченное количество
         labor_costs: Трудовые расходы
@@ -101,7 +101,7 @@ ru:
         cost_types_project:
           attributes:
             project_ids:
-              blank: Please select a project.
+              blank: Пожалуйста, выберите проект.
   attributes:
     comment: Комментарий
     cost_type: Тип затрат
@@ -248,20 +248,20 @@ ru:
       no_cost_types_available: No cost types are available in this project. Please contact an administrator.
     admin:
       columns:
-        active_projects: Active projects
+        active_projects: Активные проекты
       cost_type_projects:
         for_all_projects_blank_slate:
-          heading: This cost type is enabled in all projects
-          description: Uncheck "For all projects" on the details tab to limit this cost type to specific projects.
+          heading: Этот тип затрат включен во всех проектах
+          description: Снимите флажок "Для всех проектов" на вкладке "Детали", чтобы ограничить этот тип затрат конкретными проектами.
         no_projects:
-          heading: No projects assigned
-          description: Add projects so this cost type can be used in them.
+          heading: Проекты не назначены
+          description: Добавьте проекты, чтобы в них можно было использовать этот тип расходов.
       rates:
-        title: Rate history
+        title: История ставок
     settings:
-      time_and_costs: Time & Costs
+      time_and_costs: Время и затраты
       cost_types:
-        heading: Cost types
+        heading: Типы затрат
         none_active: No cost types are currently active in this project.
         for_all_projects_hint: This cost type is enabled in all projects.
   costs:

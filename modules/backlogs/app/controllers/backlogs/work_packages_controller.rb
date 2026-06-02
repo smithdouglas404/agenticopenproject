@@ -61,15 +61,22 @@ module Backlogs
       )
     end
 
-    def move
+    def move # rubocop:disable Metrics/AbcSize
       # Capture the source before the call; the service reloads @work_package internally via #move_after.
       source = @work_package.sprint
 
-      call = Stories::UpdateService.new(user: current_user, story: @work_package)
+      call = ::Backlogs::WorkPackages::UpdateService.new(user: current_user, story: @work_package)
                                    .call(**move_params.to_h.symbolize_keys)
 
       if call.success?
         move_work_package_to_target_component_via_turbo_stream(source:, target: call.result.sprint)
+
+        if work_package_invisible_after_move?(call.result)
+          backlog_name = call.result.backlog_bucket&.name || I18n.t(:label_inbox)
+          render_flash_message_via_turbo_stream(
+            message: I18n.t(:notice_work_package_invisible_after_move, backlog: backlog_name)
+          )
+        end
       else
         render_error_flash_message_via_turbo_stream(
           message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
@@ -127,6 +134,15 @@ module Backlogs
       else
         @work_packages.merge(WorkPackage.backlogs_inbox_for(project: @project))
       end
+    end
+
+    # After a work package is moved to the backlog, it might no longer be visible due to
+    # the project settings for excluded types and statuses.
+    def work_package_invisible_after_move?(work_package)
+      return false if work_package.sprint_id?
+
+      @project.backlog_excluded_type_ids.include?(work_package.type_id) ||
+        @project.done_status_ids.include?(work_package.status_id)
     end
   end
 end

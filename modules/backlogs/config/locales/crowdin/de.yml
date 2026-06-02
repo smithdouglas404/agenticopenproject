@@ -40,6 +40,7 @@ de:
           in_planning: In Planung
           active: Aktiv
           completed: Abgeschlossen
+        work_packages: Work packages
       work_package:
         backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Backlog Typ
@@ -190,18 +191,19 @@ de:
     upsell:
       sprint_sharing:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
+  label_all_sprints: All sprints
   label_backlog: Backlog
+  label_backlogs: Backlogs
+  label_backlog_and_sprints: Backlog und Sprints
   label_backlog_bucket_edit: Backlog Bucket bearbeiten
   label_backlog_bucket_new: Neuer Backlog Bucket
-  label_inbox: Posteingang
-  label_backlogs: Backlogs
   label_burndown_chart: Burndown-Diagramm
+  label_inbox: Posteingang
   label_sprint_board: Sprint-Board
   label_points_burn_down: Runter
   label_points_burn_up: Hoch
   label_sprint_edit: Sprint bearbeiten
   label_sprint_new: Neuer Sprint
-  label_backlog_and_sprints: Backlog und Sprints
   label_task_board: Taskboard
   notice_successful_start: Der Sprint wurde gestartet.
   notice_successful_finish: Der Sprint wurde abgeschlossen.
@@ -209,6 +211,9 @@ de:
   notice_unsuccessful_start_with_reason: 'Der Sprint konnte nicht gestartet werden: %{reason}'
   notice_unsuccessful_finish: Der Sprint konnte nicht abgeschlossen werden.
   notice_unsuccessful_finish_with_reason: 'Der Sprint konnte nicht abgeschlossen werden: %{reason}'
+  notice_work_package_invisible_after_move: 'The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
+
+    '
   permission_create_sprints: Sprints erstellen
   permission_manage_sprint_items: Sprint-Elemente verwalten
   permission_select_backlog_types_and_statuses: Select backlog types and statuses

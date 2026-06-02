@@ -57,7 +57,7 @@ si:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -458,7 +458,7 @@ si:
         dialog:
           title: Change work package identifiers
           heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Change identifiers
@@ -939,7 +939,7 @@ si:
       change_identifier_dialog_title: Change project identifier
       change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
       change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1719,6 +1719,7 @@ si:
       attachment:
         attachment_content: ඇමුණුමක් අන්තර්ගතය
         attachment_file_name: ඇමුණුම් ගොනු නම
+        charset: Character set
         content_type: Content-type
         downloads: බාගැනීම්
         file: ගොනුව
@@ -1813,6 +1814,7 @@ si:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: භූමිකාවන්
       notification:
         read_ian: Read in-app
@@ -2058,6 +2060,7 @@ si:
         priority: ප්රමුඛතාව
         progress: "% Complete"
         readonly: Read only
+        relatable: Relatable to
         remaining_hours: Remaining work
         remaining_time: Remaining work
         sequence_number: Sequence number
@@ -3510,6 +3513,9 @@ si:
     additional:
       projects: මෙම අවස්ථාවෙහිදී නවතම දෘශ්ය ව්යාපෘති.
       no_visible_projects: මෙම අවස්ථාවෙහිදී දෘශ්යමාන ව්යාපෘති නොමැත.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: මෙම අවස්ථාවෙහිදී නවතම ලියාපදිංචි පරිශීලකයින්.
     blocks:
       community: විවෘත ව්යාපෘති ප්රජාව
@@ -4078,6 +4084,7 @@ si:
   label_journal_diff: විස්තරය සංසන්දනය
   label_language: " "
   label_languages: Languages
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: ව්යාපෘතියකට පනින්න...
@@ -4542,6 +4549,7 @@ si:
   label_total_days_off: Total days off
   macro_execution_error: සාර්ව ක්රියාත්මක කිරීමේ දෝෂය %{macro_name}
   macro_unavailable: සාර්ව %{macro_name} පෙන්විය නොහැක.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] සාර්ව %{macro_name}"
     errors:
@@ -5228,6 +5236,10 @@ si:
   setting_consent_required: කැමැත්ත අවශ්ය
   setting_consent_decline_mail: කැමැත්ත සම්බන්ධතා තැපැල් ලිපිනය
   setting_cross_project_work_package_relations: හරස් ව්යාපෘති වැඩ පැකේජ සබඳතා ඉඩ දෙන්න
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: First week in year contains
   setting_date_format: දිනය
   setting_default_language: පෙරනිමි භාෂාව
@@ -5268,6 +5280,9 @@ si:
   setting_work_package_properties: වැඩ පැකේජය ගුණ
   setting_work_package_startdate_is_adddate: නව වැඩ පැකේජ සඳහා ආරම්භක දිනය ලෙස වත්මන් දිනය භාවිතා කරන්න
   setting_work_packages_projects_export_limit: Work packages / Projects export limit
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: සියලුම ඉල්ලීම් සඳහා පරිශීලක පිවිසුම, නම සහ තැපැල් ලිපිනය ලොග් වන්න
   setting_login_required: සත්යාපන අවශ්ය
@@ -5355,7 +5370,7 @@ si:
   setting_welcome_on_homescreen: homescreen මත ප්රදර්ශනය පිළිගැනීමේ වාරණ
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: පෙරනිමි ඉස්මතු මාදිලිය
   setting_work_package_list_default_highlighted_attributes: පෙරනිමි පේළිගත උද්දීපිත ගුණාංග
@@ -5969,6 +5984,17 @@ si:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:

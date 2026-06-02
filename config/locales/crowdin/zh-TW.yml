@@ -57,7 +57,7 @@ zh-TW:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
@@ -451,7 +451,7 @@ zh-TW:
         dialog:
           title: Change work package identifiers
           heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Change identifiers
@@ -929,7 +929,7 @@ zh-TW:
       change_identifier_dialog_title: Change project identifier
       change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
       change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1694,6 +1694,7 @@ zh-TW:
       attachment:
         attachment_content: 附件內容
         attachment_file_name: 附件檔案名稱
+        charset: Character set
         content_type: 檔案類型
         downloads: 下載
         file: 檔案
@@ -1788,6 +1789,7 @@ zh-TW:
         title: 標題
         description: 說明
       member:
+        blocked: Blocked
         roles: 角色
       notification:
         read_ian: 在應用程式內閱讀
@@ -2033,6 +2035,7 @@ zh-TW:
         priority: 優先等級
         progress: 完成度(%)
         readonly: 唯讀
+        relatable: Relatable to
         remaining_hours: 剩餘工作
         remaining_time: 剩餘工作
         sequence_number: Sequence number
@@ -3440,6 +3443,9 @@ zh-TW:
     additional:
       projects: 最新的可見專案
       no_visible_projects: 最新的可見專案
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: 最新註冊的使用者
     blocks:
       community: OpenProject 社群
@@ -4008,6 +4014,7 @@ zh-TW:
   label_journal_diff: 內容對比
   label_language: 語言
   label_languages: 語言
+  label_export_plural: Exports
   label_external_links: 外部連結
   label_locale: 語言和地區
   label_jump_to_a_project: 前往一個專案...
@@ -4469,6 +4476,7 @@ zh-TW:
   label_total_days_off: Total days off
   macro_execution_error: 執行巨集 (%{macro_name}) 錯誤
   macro_unavailable: 巨集 "%{macro_name}" 無法顯示
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] 巨集 %{macro_name}"
     errors:
@@ -5154,6 +5162,10 @@ zh-TW:
   setting_consent_required: 是否需要使用者允許
   setting_consent_decline_mail: 同意郵件列在通訊錄
   setting_cross_project_work_package_relations: 允許將跨專案之工作套件關聯起來
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: 一年的第一週從哪一天開始
   setting_date_format: 日期
   setting_default_language: 預設語言
@@ -5194,6 +5206,9 @@ zh-TW:
   setting_work_package_properties: 工作套件屬性
   setting_work_package_startdate_is_adddate: 使用目前日期作為新工作套件的開始日期
   setting_work_packages_projects_export_limit: 工作套件/專案匯出數量限制
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: 記錄所有使用者登入、姓名和郵件地址等資料
   setting_login_required: 需要身份驗證
@@ -5281,7 +5296,7 @@ zh-TW:
   setting_welcome_on_homescreen: 在主頁面上顯示歡迎區塊
   setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: 預設顯示模式
   setting_work_package_list_default_highlighted_attributes: 預設顯眼屬性
@@ -5898,6 +5913,17 @@ zh-TW:
     warning: '變更一週中哪些天為工作日或非工作日，可能會影響此實例中所有專案的工作套件與生命週期的開始及結束日期。
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**工作日**已更改 (%{changes})。_
       days:
