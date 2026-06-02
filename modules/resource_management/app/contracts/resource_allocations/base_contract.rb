@@ -40,6 +40,7 @@ module ResourceAllocations
     attribute :end_date
     attribute :allocated_time
     attribute :user_filter
+    attribute :filter_name
 
     validate :user_allowed_to_allocate
 

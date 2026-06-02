@@ -94,6 +94,14 @@ class ResourceAllocation < ApplicationRecord
     principal_id.present?
   end
 
+  def candidate_query
+    UserQuery.new.tap do |query|
+      user_filter.each do |filter|
+        query.where(filter.field, filter.operator, filter.values)
+      end
+    end
+  end
+
   def allocated_hours
     return if allocated_time.nil?
 

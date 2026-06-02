@@ -379,5 +379,77 @@ RSpec.describe ResourceAllocation do
       allocation = create(:resource_allocation, entity: work_package, principal: owner)
       expect(allocation.reload.user_filter).to eq([])
     end
+
+    it "round-trips the custom-field filters from the :with_user_filter trait" do
+      allocation = create(:resource_allocation, :with_user_filter, entity: work_package)
+
+      filters = allocation.reload.user_filter
+      expect(filters.size).to eq(2)
+
+      job_title = UserCustomField.find_by(name: "Job title")
+      language = UserCustomField.find_by(name: "Spoken language")
+
+      job_title_filter = filters.find { |f| f.name.to_s == job_title.column_name }
+      language_filter = filters.find { |f| f.name.to_s == language.column_name }
+
+      expect(job_title_filter.operator).to eq("=")
+      expect(job_title_filter.values).to eq(job_title.custom_options.where(value: "Developer").pluck(:id).map(&:to_s))
+
+      # "is (OR)" — matches users speaking German or English.
+      expect(language_filter.operator).to eq("=")
+      expect(language_filter.values)
+        .to match_array(language.custom_options.where(value: %w[German English]).pluck(:id).map(&:to_s))
+    end
+  end
+
+  describe "matching users with the :with_user_filter criteria" do
+    shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
+    shared_let(:work_package) { create(:work_package, project:) }
+
+    # Materializes the "Job title" and "Spoken language" custom fields and the
+    # Developer + (German OR English) filter.
+    shared_let(:allocation) { create(:resource_allocation, :with_user_filter, entity: work_package) }
+    shared_let(:job_title) { UserCustomField.find_by(name: "Job title") }
+    shared_let(:language) { UserCustomField.find_by(name: "Spoken language") }
+
+    def option_id(custom_field, value)
+      custom_field.custom_options.find_by(value:).id
+    end
+
+    def user_with(job_title_value, *languages)
+      create(:user).tap do |user|
+        user.custom_field_values = {
+          job_title.id => option_id(job_title, job_title_value),
+          language.id => languages.map { |spoken| option_id(language, spoken) }
+        }
+        user.save!(validate: false)
+      end
+    end
+
+    shared_let(:german_developer) { user_with("Developer", "German") }
+    shared_let(:english_developer) { user_with("Developer", "English") }
+    shared_let(:bilingual_developer) { user_with("Developer", "French", "English") }
+    shared_let(:french_developer) { user_with("Developer", "French") }
+    shared_let(:german_designer) { user_with("Designer", "German") }
+
+    describe "#candidate_query" do
+      # `UserQuery#results` is scoped to what the current user may see.
+      current_user { create(:admin) }
+
+      it "is a UserQuery carrying the stored filter criteria" do
+        query = allocation.candidate_query
+
+        expect(query).to be_a(UserQuery)
+        expect(query.filters.map { |f| f.name.to_s })
+          .to contain_exactly(job_title.column_name, language.column_name)
+      end
+
+      it "resolves to developers speaking German or English (is (OR)), and excludes the rest" do
+        results = allocation.candidate_query.results
+
+        expect(results).to include(german_developer, english_developer, bilingual_developer)
+        expect(results).not_to include(french_developer, german_designer)
+      end
+    end
   end
 end
