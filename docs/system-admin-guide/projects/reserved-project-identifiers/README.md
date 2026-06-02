@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: Reserved identifiers 
+  title: Reserved project identifiers 
   priority: 50
 description: Manage reserved project identifiers and release identifiers that are no longer needed.
 keywords: reserved identifier, reserved project identifier, project identifier, release identifier, identifier redirect, project rename
@@ -18,7 +18,7 @@ Reserved identifiers cannot be used by other projects. A project identifier that
 
 If a reserved identifier is no longer needed, administrators can release it and make it available for use by other projects.
 
-To release a reserved project identifier navigate to **Administration** → **Projects** → **Reserved identifiers**. You will see a list of reserved project identifiers, including the project name and the served identifier. 
+To release a reserved project identifier navigate to **Administration** → **Projects** → **Reserved project identifiers**. You will see a list of reserved project identifiers, including the project name and the served identifier. 
 
 A search field above the table can be used to filter the list. If no reserved identifiers exist, the table will be empty.
 
