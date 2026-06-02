@@ -45,7 +45,8 @@
                 label: t("types.edit.form_configuration.add_query_group"),
                 tag: :button,
                 content_arguments: {
-                  data: { action: "click->admin--type-form-configuration--main#addQueryGroup" }
+                  data: { action: "click->admin--type-form-configuration--main#addQueryGroup",
+                          test_selector: "admin--type-form-configuration--add-query-group" }
                 }
               ) do |item|
                 item.with_leading_visual_icon(icon: :table)

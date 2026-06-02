@@ -28,7 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserCardView < PersistedView
+class UserCard < PersistedView
+  include ResourceManagement::Categorized
+
   SECONDARY_INFO = %w[role email login none].freeze
   TAG_SOURCES    = %w[groups roles none].freeze
   CARD_SIZES     = %w[compact default expanded].freeze
@@ -51,6 +53,13 @@ class UserCardView < PersistedView
 
   def results
     effective_query&.results
+  end
+
+  # Returns a fresh, unsaved UserQuery suitable for this view. Used by the
+  # create flow (saved and linked to the view) and by the configure-view
+  # dialog (rendered against the FilterComponent without being saved).
+  def build_default_query
+    UserQuery.new(project:, principal:)
   end
 
   private

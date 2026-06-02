@@ -96,6 +96,7 @@ Rails.application.routes.draw do
           get :menu
           put :move
           get :move_to_sprint_dialog
+          get :move_to_bucket_dialog
         end
       end
 
