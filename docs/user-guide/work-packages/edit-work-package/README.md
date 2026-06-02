@@ -117,7 +117,7 @@ Starting with OpenProject 13.0 you can add emojis to all text editors. Type a co
 ![openproject_user_guide_wp_comment_emojis](openproject_user_guide_wp_comment_emojis.png)
 
 ### Linking work packages
-To learn more about how to link work packages within the text editor, please consult this page [Rich text editor in OpenProject](../wysiwyg/).
+To learn more about how to link work packages within the text editor, please consult this page [Rich text editor in OpenProject](../../wysiwyg/).
 
 ## Attach files to work packages
 
