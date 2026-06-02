@@ -688,7 +688,9 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
   }
 
   private sanitizedValue(value: string): string {
-    if (!value) return '';
+    if (!value) {
+      return '';
+    }
 
     const sanitized = this.sanitizer.sanitize(SecurityContext.HTML, value) ?? '';
 
