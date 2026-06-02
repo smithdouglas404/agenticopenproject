@@ -58,13 +58,29 @@ RSpec.describe ResourceAllocations::CreateService, type: :model do
     expect(result.result.allocated_time).to eq(8)
   end
 
-  it "defaults the state to requested" do
-    expect(service_call.result.state).to eq("requested")
+  it "defaults the state to allocated" do
+    expect(service_call.result.state).to eq("allocated")
+  end
+
+  it "stamps requested_by and reviewed_by with the calling user" do
+    result = service_call
+    expect(result.result.requested_by).to eq(owner)
+    expect(result.result.reviewed_by).to eq(owner)
+  end
+
+  it "ignores requested_by and reviewed_by passed in params" do
+    other_user = create(:user)
+    result = described_class.new(user: owner).call(
+      params.merge(requested_by: other_user, reviewed_by: other_user)
+    )
+    expect(result).to be_success, "expected success but got: #{result.errors.full_messages}"
+    expect(result.result.requested_by).to eq(owner)
+    expect(result.result.reviewed_by).to eq(owner)
   end
 
   it "honors an explicitly-passed state" do
-    result = described_class.new(user: owner).call(params.merge(state: "allocated"))
-    expect(result.result.state).to eq("allocated")
+    result = described_class.new(user: owner).call(params.merge(state: "requested"))
+    expect(result.result.state).to eq("requested")
   end
 
   context "when allocated_time is zero" do

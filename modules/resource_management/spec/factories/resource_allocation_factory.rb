@@ -32,7 +32,9 @@ FactoryBot.define do
   factory :resource_allocation, class: "ResourceAllocation" do
     entity factory: :work_package
     principal factory: :user
-    state { "requested" }
+    requested_by factory: :user
+    reviewed_by { requested_by }
+    state { "allocated" }
     start_date { Date.new(2026, 1, 5) }
     end_date { Date.new(2026, 1, 9) }
     allocated_time { 5 * 8 * 60 } # 5 days of 8 hours in minutes

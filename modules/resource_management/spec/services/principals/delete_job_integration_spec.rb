@@ -55,4 +55,21 @@ RSpec.describe Principals::DeleteJob, "ResourceAllocation", type: :model do
       expect { job }.not_to change { unassigned_allocation.reload.principal_id }
     end
   end
+
+  context "with a resource allocation requested or reviewed by the principal" do
+    let!(:requested_allocation) { create(:resource_allocation, requested_by: principal) }
+    let!(:reviewed_allocation) { create(:resource_allocation, reviewed_by: principal) }
+
+    it "rewrites requested_by to the deleted user placeholder" do
+      job
+
+      expect(requested_allocation.reload.requested_by).to eq deleted_user
+    end
+
+    it "rewrites reviewed_by to the deleted user placeholder" do
+      job
+
+      expect(reviewed_allocation.reload.reviewed_by).to eq deleted_user
+    end
+  end
 end

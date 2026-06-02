@@ -27,21 +27,11 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-module ResourceAllocations
-  class SetAttributesService < ::BaseServices::SetAttributes
-    private
-
-    def set_default_attributes(_params)
-      model.change_by_system do
-        # When a resource allocation is created via this service it bypasses
-        # the request/approval flow and is directly allocated. This is currently
-        # the only way to create resource allocations, so this is the default.
-        # The request/approve flow will get custom services later
-        model.state ||= "allocated"
-        model.requested_by = user
-        model.reviewed_by = user
-      end
+class AddUsersToResourceAllocations < ActiveRecord::Migration[8.1]
+  def change
+    change_table :resource_allocations, bulk: true do |t|
+      t.references :requested_by, foreign_key: { to_table: :users }, null: true
+      t.references :reviewed_by, foreign_key: { to_table: :users }, null: true
     end
   end
 end
