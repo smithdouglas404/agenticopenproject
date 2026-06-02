@@ -62,6 +62,18 @@ class ResourceAllocation < ApplicationRecord
     entity&.project
   end
 
+  def entity_gid
+    entity&.to_gid.to_s
+  end
+
+  def entity=(value)
+    if value.is_a?(String) && value.starts_with?("gid://")
+      super(GlobalID::Locator.locate(value, only: ALLOWED_ENTITY_TYPES.map(&:safe_constantize)))
+    else
+      super
+    end
+  end
+
   def allocated_hours
     return if allocated_time.nil?
 
