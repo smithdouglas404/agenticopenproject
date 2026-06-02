@@ -39,8 +39,8 @@
               hidden: !initial_filter_mode_automatic?
             ) do
               render(
-                ::Filters::FilterForm.new(
-                  f,
+                ::Filters::FilterFormComponent.new(
+                  builder: f,
                   query: @filter_query,
                   wrap_with_controller: true,
                   hidden_input_name: "filters",
