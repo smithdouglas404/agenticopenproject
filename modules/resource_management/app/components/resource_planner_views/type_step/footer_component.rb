@@ -28,26 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module ResourcePlannerViews
+  module TypeStep
+    class FooterComponent < ApplicationComponent
+      include OpTurbo::Streamable
+      include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
+      def wrapper_key
+        ResourcePlannerViews::NewDialogComponent::FOOTER_ID
+      end
 
-    def initialize(resource_planner:, project:)
-      super
+      def call
+        component_wrapper do
+          component_collection do |buttons|
+            buttons.with_component(
+              Primer::Beta::Button.new(
+                data: { "close-dialog-id": ResourcePlannerViews::NewDialogComponent::DIALOG_ID },
+                mr: 1
+              )
+            ) { I18n.t(:button_cancel) }
 
-      @resource_planner = resource_planner
-      @project = project
-    end
-
-    private
-
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+            buttons.with_component(
+              Primer::Beta::Button.new(
+                scheme: :primary,
+                form: ResourcePlannerViews::NewDialogComponent::FORM_ID,
+                type: :submit
+              )
+            ) { I18n.t("button_next") }
+          end
+        end
+      end
     end
   end
 end

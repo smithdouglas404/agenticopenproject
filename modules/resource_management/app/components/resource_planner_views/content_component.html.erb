@@ -27,29 +27,14 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render(
-    Primer::Alpha::Dialog.new(
-      title:,
-      size: :large,
-      position: :right,
-      id: DIALOG_ID,
-      data: { "keep-open-on-submit": true }
-    )
-  ) do |d|
-    d.with_header(variant: :large)
-
-    d.with_body do
-      render(
-        ResourcePlanners::FormComponent.new(
-          resource_planner: @resource_planner,
-          project: @project
-        )
-      )
-    end
-
-    d.with_footer do
-      render(ResourcePlanners::FooterComponent.new)
-    end
-  end
-%>
+<%= component_wrapper do %>
+  <% if inner_component %>
+    <%= render(inner_component) %>
+  <% else %>
+    <%= render(Primer::Beta::Blankslate.new) do |blankslate|
+          blankslate.with_visual_icon(icon: :people)
+          blankslate.with_heading(tag: :h2) { placeholder_heading }
+          blankslate.with_description { t("resource_management.show.placeholder") }
+        end %>
+  <% end %>
+<% end %>

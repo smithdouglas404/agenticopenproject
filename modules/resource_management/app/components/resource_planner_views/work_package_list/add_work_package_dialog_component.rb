@@ -28,26 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
+module ResourcePlannerViews::WorkPackageList
+  class AddWorkPackageDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
+    DIALOG_ID = "rm-add-work-package-dialog"
+    FORM_ID = "rm-add-work-package-form"
 
-    def initialize(resource_planner:, project:)
+    def initialize(view:, project:, resource_planner:)
       super
 
-      @resource_planner = resource_planner
+      @view = view
       @project = project
+      @resource_planner = resource_planner
     end
 
     private
 
     def title
-      I18n.t("resource_management.label_new_resource_planner")
+      I18n.t("resource_management.work_package_list.add_work_package_dialog.title")
+    end
+
+    def form_url
+      work_packages_project_resource_planner_view_path(@project, @resource_planner, @view)
+    end
+
+    def already_added_work_package_ids
+      @view.effective_query&.ordered_work_packages&.pluck(:work_package_id) || []
     end
   end
 end

@@ -29,25 +29,52 @@
 #++
 
 module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
+  class SubViewsComponent < ApplicationComponent
     include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
+    attr_reader :resource_planner, :selected_view
 
-    def initialize(resource_planner:, project:)
+    def initialize(resource_planner:, selected_view: nil)
       super
 
       @resource_planner = resource_planner
-      @project = project
+      @selected_view = selected_view
+    end
+
+    def call
+      component_wrapper do
+        render(Primer::Alpha::TabNav.new(label: I18n.t("resource_management.sub_views"))) do |component|
+          resource_planner.children.each { |child| add_view_tab(component, child) }
+          add_create_tab(component) if can_add_views?
+        end
+      end
     end
 
     private
 
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+    def add_view_tab(component, child)
+      component.with_tab(
+        selected: child.id == selected_view_id,
+        href: project_resource_planner_view_path(resource_planner.project, resource_planner, child)
+      ) { child.name }
+    end
+
+    def add_create_tab(component)
+      component.with_tab(
+        href: new_project_resource_planner_view_path(resource_planner.project, resource_planner),
+        data: { controller: "async-dialog" }
+      ) do
+        render(Primer::Beta::Octicon.new(icon: :plus, size: :medium))
+      end
+    end
+
+    def selected_view_id
+      selected_view&.id || resource_planner.default_view_id
+    end
+
+    def can_add_views?
+      # TODO: Proper permission check
+      true
     end
   end
 end

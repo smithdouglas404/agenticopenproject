@@ -28,26 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
-
-    def initialize(resource_planner:, project:)
+module ResourcePlannerViews::WorkPackageList
+  class ContentComponent < ApplicationComponent
+    def initialize(view:, project:, resource_planner:)
       super
 
-      @resource_planner = resource_planner
+      @view = view
       @project = project
+      @resource_planner = resource_planner
     end
 
     private
 
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+    def work_packages
+      @view.effective_query&.results&.work_packages || WorkPackage.none
     end
   end
 end

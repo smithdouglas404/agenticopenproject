@@ -30,26 +30,51 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render(
     Primer::Alpha::Dialog.new(
+      id: DIALOG_ID,
       title:,
       size: :large,
       position: :right,
-      id: DIALOG_ID,
       data: { "keep-open-on-submit": true }
     )
-  ) do |d|
-    d.with_header(variant: :large)
+  ) do |dialog|
+    dialog.with_header(variant: :large)
 
-    d.with_body do
+    dialog.with_body do
       render(
-        ResourcePlanners::FormComponent.new(
-          resource_planner: @resource_planner,
-          project: @project
+        ResourcePlannerViews::ConfigureStep::FormComponent.new(
+          view: @view,
+          url: form_url,
+          method: :patch,
+          form_id: FORM_ID,
+          dialog_id: DIALOG_ID,
+          filter_query: @view.effective_query
         )
       )
     end
 
-    d.with_footer do
-      render(ResourcePlanners::FooterComponent.new)
+    dialog.with_footer do
+      # `mr: :auto` pushes the destructive action to the left; the dialog
+      # footer's flex layout right-aligns the remaining buttons.
+      concat(
+        render(
+          Primer::Beta::Button.new(
+            tag: :a,
+            href: form_url,
+            scheme: :danger,
+            mr: :auto,
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: I18n.t("resource_management.configure_view_dialog.delete_confirmation")
+            }
+          )
+        ) { I18n.t(:button_delete) }
+      )
+      concat(
+        render(Primer::Beta::Button.new(data: { "close-dialog-id": DIALOG_ID })) { I18n.t(:button_cancel) }
+      )
+      concat(
+        render(Primer::Beta::Button.new(scheme: :primary, form: FORM_ID, type: :submit)) { I18n.t(:button_save) }
+      )
     end
   end
 %>

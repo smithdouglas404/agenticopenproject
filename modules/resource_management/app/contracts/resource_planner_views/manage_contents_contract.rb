@@ -28,26 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module ResourcePlannerViews
+  # Authorizes changing a view's contents (picking, removing, and reordering
+  # work packages). This only mutates the view's ordered work packages, not the
+  # view model itself, so we reuse BaseContract's owner/public rule but skip
+  # model validation.
+  class ManageContentsContract < BaseContract
+    protected
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
-
-    def initialize(resource_planner:, project:)
-      super
-
-      @resource_planner = resource_planner
-      @project = project
-    end
-
-    private
-
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+    def validate_model?
+      false
     end
   end
 end

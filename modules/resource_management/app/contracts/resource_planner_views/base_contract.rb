@@ -28,43 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ResourcePlanner < PersistedView
-  self.allowed_children = %w[UserCard ResourceWorkPackageList]
+module ResourcePlannerViews
+  class BaseContract < ::ModelContract
+    def self.model
+      PersistedView
+    end
 
-  # Virtual attributes used by the new-planner form. They are not persisted on
-  # the planner itself: `default_view_class_name` is consumed when creating the
-  # initial child view, and `favorite` is consumed by `add_favoriting_user`.
-  attr_accessor :default_view_class_name, :favorite
+    attribute :name
 
-  store_attribute :options, :start_date, :date
-  store_attribute :options, :end_date, :date
-  store_attribute :options, :default_view_id, :integer
+    validate :user_allowed_to_manage_parent
 
-  # resource planner cannot be nested, queries are assigned to the sub-views
-  validates :parent, absence: true
-  validates :query, absence: true
+    private
 
-  # resource planner must belong to a project and a user
-  validates :principal, :project,
-            presence: true
+    def user_allowed_to_manage_parent
+      planner = model.parent
+      return if planner.nil?
 
-  validate :end_date_after_start_date
+      return if planner.principal == user &&
+                user.allowed_in_project?(:view_resource_planners, planner.project)
+      return if planner.public? &&
+                user.allowed_in_project?(:manage_public_resource_planners, planner.project)
 
-  include ResourceManagement::Categorized
-
-  def visible?(user)
-    return false if project.nil?
-    return false unless user.allowed_in_project?(:view_resource_planners, project)
-
-    public? || principal == user
-  end
-
-  private
-
-  def end_date_after_start_date
-    return if start_date.blank? || end_date.blank?
-    return if end_date > start_date
-
-    errors.add :end_date, :greater_than_start_date
+      errors.add :base, :error_unauthorized
+    end
   end
 end

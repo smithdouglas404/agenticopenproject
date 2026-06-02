@@ -28,26 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
-
-    def initialize(resource_planner:, project:)
-      super
-
-      @resource_planner = resource_planner
-      @project = project
-    end
-
+module ResourcePlannerViews
+  # The query is torn down by PersistedView#destroy_query_if_orphaned (which
+  # cascades to its ordered_work_packages) and favorites by acts_as_favoritable.
+  class DeleteService < ::BaseServices::Delete
     private
 
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+    # Keep the parent planner consistent: if the deleted view was its default,
+    # repoint the default at a remaining view (or clear it).
+    def after_perform(call)
+      return call unless call.success?
+
+      planner = call.result.parent
+      if planner.is_a?(ResourcePlanner) && planner.default_view_id == call.result.id
+        planner.update!(default_view_id: planner.children.reload.first&.id)
+      end
+
+      call
     end
   end
 end

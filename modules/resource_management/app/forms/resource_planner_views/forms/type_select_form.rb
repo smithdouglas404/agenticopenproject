@@ -28,26 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
-
-    def initialize(resource_planner:, project:)
-      super
-
-      @resource_planner = resource_planner
-      @project = project
-    end
-
-    private
-
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+module ResourcePlannerViews
+  module Forms
+    class TypeSelectForm < ApplicationForm
+      form do |f|
+        f.advanced_radio_button_group(
+          name: :view_class_name,
+          label: I18n.t("resource_management.new_view_dialog.title"),
+          visually_hide_label: true,
+          scope_name_to_model: false
+        ) do |group|
+          ResourcePlanner.allowed_children.each_with_index do |class_name, index|
+            i18n_key = class_name.constantize.model_name.i18n_key
+            group.radio_button(
+              value: class_name,
+              label: I18n.t("resource_management.view_types.#{i18n_key}.label", default: class_name.underscore.humanize),
+              caption: I18n.t("resource_management.view_types.#{i18n_key}.caption", default: nil),
+              checked: index.zero?
+            )
+          end
+        end
+      end
     end
   end
 end

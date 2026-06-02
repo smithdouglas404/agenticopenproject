@@ -28,26 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module ResourceManagement
+  # Tags persisted views that belong to the resource management area with the
+  # matching `category` so they can be told apart from work-package or project
+  # views. Applies to the planner and every view type nested below it.
+  module Categorized
+    extend ActiveSupport::Concern
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
-
-    def initialize(resource_planner:, project:)
-      super
-
-      @resource_planner = resource_planner
-      @project = project
+    included do
+      after_initialize :set_default_category
     end
 
     private
 
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
+    def set_default_category
+      self.category ||= "resource_management" if new_record?
     end
   end
 end

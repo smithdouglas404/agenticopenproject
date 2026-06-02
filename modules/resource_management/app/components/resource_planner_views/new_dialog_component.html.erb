@@ -30,26 +30,26 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render(
     Primer::Alpha::Dialog.new(
+      id: DIALOG_ID,
       title:,
       size: :large,
       position: :right,
-      id: DIALOG_ID,
       data: { "keep-open-on-submit": true }
     )
-  ) do |d|
-    d.with_header(variant: :large)
+  ) do |dialog|
+    dialog.with_header(variant: :large)
 
-    d.with_body do
+    dialog.with_body do
       render(
-        ResourcePlanners::FormComponent.new(
+        ResourcePlannerViews::TypeStep::FormComponent.new(
           resource_planner: @resource_planner,
           project: @project
         )
       )
     end
 
-    d.with_footer do
-      render(ResourcePlanners::FooterComponent.new)
+    dialog.with_footer do
+      render(ResourcePlannerViews::TypeStep::FooterComponent.new)
     end
   end
 %>

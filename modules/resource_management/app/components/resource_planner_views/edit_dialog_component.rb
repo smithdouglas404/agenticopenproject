@@ -28,26 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
+module ResourcePlannerViews
+  class EditDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
+    DIALOG_ID = "edit-resource-planner-view-dialog"
+    FORM_ID = "edit-resource-planner-view-form"
+    FOOTER_ID = "edit-resource-planner-view-footer"
 
-    def initialize(resource_planner:, project:)
+    def initialize(view:, project:, resource_planner:)
       super
 
-      @resource_planner = resource_planner
+      @view = view
       @project = project
+      @resource_planner = resource_planner
     end
 
     private
 
     def title
-      I18n.t("resource_management.label_new_resource_planner")
+      I18n.t("resource_management.configure_view_dialog.title")
+    end
+
+    def form_url
+      project_resource_planner_view_path(@project, @resource_planner, @view)
     end
   end
 end

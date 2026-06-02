@@ -28,26 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlanners
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module ResourcePlannerViews
+  class DeleteContract < ::DeleteContract
+    delete_permission(lambda do
+      next true if user.active_admin?
 
-    DIALOG_ID = "new-resource-planner-dialog"
-    FORM_ID = "new-resource-planner-form"
-    FOOTER_ID = "new-resource-planner-footer"
+      planner = model.parent
+      next false if planner.nil? || planner.project.nil?
 
-    def initialize(resource_planner:, project:)
-      super
+      owns_planner = planner.principal == user &&
+                     user.allowed_in_project?(:view_resource_planners, planner.project)
+      can_manage_public = planner.public? &&
+                          user.allowed_in_project?(:manage_public_resource_planners, planner.project)
 
-      @resource_planner = resource_planner
-      @project = project
-    end
-
-    private
-
-    def title
-      I18n.t("resource_management.label_new_resource_planner")
-    end
+      owns_planner || can_manage_public
+    end)
   end
 end
