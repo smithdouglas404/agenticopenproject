@@ -116,12 +116,10 @@ en:
       oauth_application_info_component:
         confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
         label_oauth_client_id: OAuth Client ID
-        label_pending: Pending
         replace_oauth_application: Replace OpenProject OAuth application
       oauth_client_info_component:
         confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
         label_oauth_client_id: OAuth Client ID
-        label_pending: Pending
         replace_oauth_client: Replace XWiki OAuth application
       side_panel:
         health_status_component:
@@ -154,7 +152,8 @@ en:
           oauth:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
             provider_oauth: Wiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID and client secret have been pre-generated for you — copy them along with the redirect URI into your XWiki OIDC client registration. You can change the client ID and secret if needed.
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth.
+            provider_oauth_configuration: Copy these values to the [XWiki OIDC Connection client](xwiki_oidc_link).
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.

@@ -30,7 +30,7 @@
 
 module Wikis::Admin::Forms
   class OAuthApplicationFormComponent < Wikis::Admin::WikiProviderComponent
-    OPENPROJECT_PLUGIN_ADMIN_PATH = "/bin/admin/XWiki/XWikiPreferences?editor=globaladmin&section=OpenProject"
+    include Wikis::Admin::XWikiAdminUrlHelper
 
     def self.wrapper_key = :wiki_provider_oauth_application_section
 
@@ -47,7 +47,7 @@ module Wikis::Admin::Forms
     end
 
     def xwiki_admin_url
-      "#{wiki_provider.url.to_s.chomp('/')}#{OPENPROJECT_PLUGIN_ADMIN_PATH}"
+      super("OpenProject")
     end
   end
 end
