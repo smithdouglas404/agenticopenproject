@@ -62,5 +62,9 @@ Rails.application.routes.draw do
         get "menu" => "resource_management/menus#show"
       end
     end
+
+    resources :resource_allocations,
+              controller: "resource_management/resource_allocations",
+              only: %i[new create edit update destroy]
   end
 end

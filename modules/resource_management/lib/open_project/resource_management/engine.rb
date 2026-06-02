@@ -72,12 +72,12 @@ module OpenProject::ResourceManagement
                    dependencies: %i[view_resource_planners]
 
         # `allocate_user_resources` gates create/update/delete on
-        # ResourceAllocation records. No controller actions yet — the
-        # ResourceAllocations::*Contract classes consume this directly via
-        # `allowed_in_project?`. The `contract_actions` map keeps the
+        # ResourceAllocation records, both via the controller actions below and
+        # directly in the ResourceAllocations::*Contract classes (which consume
+        # it through `allowed_in_project?`). The `contract_actions` map keeps the
         # permission discoverable for API contracts.
         permission :allocate_user_resources,
-                   {},
+                   { "resource_management/resource_allocations": %i[new create edit update destroy] },
                    permissible_on: :project,
                    dependencies: %i[view_resource_planners],
                    contract_actions: { resource_allocation: %i[create update destroy] }
