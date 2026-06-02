@@ -97,7 +97,7 @@ RSpec.describe "form query configuration", :js do
       form.expect_group("Empty test", "Empty test")
     end
 
-    it "can edit a query group by clicking the Work packages table link" do
+    it "can edit a query group by clicking the related work packages table link" do
       form.add_query_group("Link test", :children, expect: false)
       form.expect_group("Link test", "Link test")
 

@@ -85,9 +85,8 @@ module OpenProject
         }
       end
 
-      def show_parent?
-        show_parent && work_package.parent&.visible?
-      end
+      def show_parent? = show_parent && work_package.parent
+      def parent_visible? = work_package.parent&.visible?
 
       def show_footer?
         additional_details? || show_parent?

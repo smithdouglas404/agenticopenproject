@@ -31,6 +31,8 @@
 require "rails_helper"
 
 RSpec.describe OpenProject::Common::WorkPackageCardComponent, type: :component do
+  include Rails.application.routes.url_helpers
+
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:default_status) { create(:default_status) }
   shared_let(:default_priority) { create(:default_priority) }
@@ -38,6 +40,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardComponent, type: :component d
   shared_let(:project) { create(:project, types: [type_feature]) }
 
   let(:menu_src) { "/work_packages/#{work_package.id}/menu" }
+  let(:parent) { nil }
   let(:work_package) do
     create(:work_package,
            project:,
@@ -47,7 +50,8 @@ RSpec.describe OpenProject::Common::WorkPackageCardComponent, type: :component d
            subject: "Card subject",
            story_points: 5,
            position: 1,
-           sprint: nil)
+           sprint: nil,
+           parent:)
   end
 
   let(:component) do
@@ -59,71 +63,118 @@ RSpec.describe OpenProject::Common::WorkPackageCardComponent, type: :component d
     render_inline(component)
   end
 
-  describe "card content" do
-    it "renders the work-package info line (type + id)" do
-      expect(rendered_component).to have_text("FEATURE")
-      expect(rendered_component).to have_text("##{work_package.id}")
+  it "renders the work-package info line (type + id)" do
+    expect(rendered_component).to have_text("FEATURE")
+    expect(rendered_component).to have_text("##{work_package.id}")
+  end
+
+  it "renders the subject in semibold text" do
+    expect(rendered_component).to have_text("Card subject")
+  end
+
+  it "does not render story points by default" do
+    expect(rendered_component).to have_no_text("5 points", normalize_ws: true)
+  end
+
+  it "renders the metric slot when provided" do
+    rendered = render_inline(component) do |card|
+      card.with_metric { "Custom metric" }
     end
 
-    it "renders the subject in semibold text" do
-      expect(rendered_component).to have_text("Card subject")
-    end
+    expect(rendered).to have_text("Custom metric")
+  end
 
-    it "does not render story points by default" do
-      expect(rendered_component).to have_no_text("5 points", normalize_ws: true)
-    end
+  it "renders a WorkPackageCardComponent::Menu kebab" do
+    expect(rendered_component).to have_element :"action-menu"
+    expect(rendered_component).to have_button(menu_button_id)
+  end
 
-    it "renders the metric slot when provided" do
-      rendered = render_inline(component) do |card|
-        card.with_metric { "Custom metric" }
+  it "uses the work package actions label" do
+    expect(rendered_component).to have_button(
+      menu_button_id,
+      accessible_name: I18n.t("open_project.common.work_package_card_component.menu.label_actions")
+    )
+  end
+
+  it "uses the provided menu src" do
+    expect(rendered_component).to have_element "include-fragment", src: menu_src
+  end
+
+  it "supports inline menu items through the menu slot" do
+    rendered = render_inline(component) do |card|
+      card.with_menu(button_aria_label: "Card actions") do |menu|
+        menu.with_item(label: "Open", href: "/work_packages/#{work_package.id}")
       end
-
-      expect(rendered).to have_text("Custom metric")
     end
 
-    it "renders a WorkPackageCardComponent::Menu kebab" do
-      expect(rendered_component).to have_element :"action-menu"
-      expect(rendered_component).to have_button(menu_button_id)
+    expect(rendered).to have_link "Open", href: "/work_packages/#{work_package.id}"
+    expect(rendered).to have_button(menu_button_id, accessible_name: "Card actions")
+    expect(rendered).to have_no_element "include-fragment"
+  end
+
+  it "supports deferred menu loading through the menu slot" do
+    rendered = render_inline(described_class.new(work_package:)) do |card|
+      card.with_menu(src: menu_src)
     end
 
-    it "uses the work package actions label" do
-      expect(rendered_component).to have_button(
-        menu_button_id,
-        accessible_name: I18n.t("open_project.common.work_package_card_component.menu.label_actions")
-      )
+    expect(rendered).to have_element "include-fragment", src: menu_src
+  end
+
+  it "uses the menu slot before the initializer menu source" do
+    rendered = render_inline(component) do |card|
+      card.with_menu(src: "/slot-menu")
     end
 
-    it "uses the provided menu src" do
-      expect(rendered_component).to have_element "include-fragment", src: menu_src
+    expect(rendered).to have_element "include-fragment", src: "/slot-menu"
+    expect(rendered).to have_no_element "include-fragment", src: menu_src
+  end
+
+  describe "parent display" do
+    context "when show_parent is false (default)" do
+      let(:parent) { create(:work_package, project:) }
+
+      it "does not render the parent row" do
+        expect(rendered_component).to have_no_text("Parent")
+      end
     end
 
-    it "supports inline menu items through the menu slot" do
-      rendered = render_inline(component) do |card|
-        card.with_menu(button_aria_label: "Card actions") do |menu|
-          menu.with_item(label: "Open", href: "/work_packages/#{work_package.id}")
+    context "when show_parent is true" do
+      let(:component) { described_class.new(work_package:, menu_src:, show_parent: true) }
+
+      context "when the work package has no parent" do
+        let(:parent) { nil }
+
+        it "does not render the parent row" do
+          expect(rendered_component).to have_no_text("Parent")
         end
       end
 
-      expect(rendered).to have_link "Open", href: "/work_packages/#{work_package.id}"
-      expect(rendered).to have_button(menu_button_id, accessible_name: "Card actions")
-      expect(rendered).to have_no_element "include-fragment"
-    end
+      context "when the work package has a visible parent" do
+        let(:parent) { create(:work_package, project:, subject: "Parent subject") }
 
-    it "supports deferred menu loading through the menu slot" do
-      rendered = render_inline(described_class.new(work_package:)) do |card|
-        card.with_menu(src: menu_src)
+        before { allow(work_package.parent).to receive(:visible?).and_return(true) }
+
+        it "renders a link to the parent" do
+          expect(rendered_component).to have_text("Parent")
+          expect(rendered_component).to have_link("Parent subject", href: work_package_path(parent))
+        end
+
+        it "does not render Undisclosed" do
+          expect(rendered_component).to have_no_text("Undisclosed")
+        end
       end
 
-      expect(rendered).to have_element "include-fragment", src: menu_src
-    end
+      context "when the work package has a non-visible parent" do
+        let(:parent) { create(:work_package, project:, subject: "Hidden subject") }
 
-    it "uses the menu slot before the initializer menu source" do
-      rendered = render_inline(component) do |card|
-        card.with_menu(src: "/slot-menu")
+        before { allow(work_package.parent).to receive(:visible?).and_return(false) }
+
+        it "renders Undisclosed instead of a link" do
+          expect(rendered_component).to have_text("Parent")
+          expect(rendered_component).to have_text("Undisclosed")
+          expect(rendered_component).to have_no_link("Hidden subject")
+        end
       end
-
-      expect(rendered).to have_element "include-fragment", src: "/slot-menu"
-      expect(rendered).to have_no_element "include-fragment", src: menu_src
     end
   end
 end
