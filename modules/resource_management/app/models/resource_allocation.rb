@@ -38,6 +38,15 @@ class ResourceAllocation < ApplicationRecord
 
   serialize :user_filter, coder: Queries::Serialization::Filters.new(UserQuery)
 
+  acts_as_journalized
+
+  register_journal_formatted_fields "state", formatter_key: :plaintext
+  register_journal_formatted_fields "start_date", "end_date", formatter_key: :datetime
+  register_journal_formatted_fields "allocated_time", formatter_key: :allocated_time
+  register_journal_formatted_fields "principal_id", "requested_by_id", "reviewed_by_id",
+                                    formatter_key: :named_association
+  register_journal_formatted_fields "entity_gid", formatter_key: :polymorphic_association
+
   enum :state, {
     requested: "requested",
     allocated: "allocated",
