@@ -120,6 +120,11 @@ en:
       meeting_agenda_item: "Agenda item"
       meeting_agenda: "Agenda"
       meeting_section: "Section"
+      meeting_outcome: "Meeting outcome"
+      meeting_participant: "Meeting participant"
+      recurring_meeting_interim_response: "Recurring meeting interim response"
+      scheduled_meeting: "Scheduled meeting"
+      journal/meeting_participant_journal: "Meeting participant journal"
       token/ical_meeting:
         one: "iCal Meeting subscription"
         other: "iCal Meeting subscription"

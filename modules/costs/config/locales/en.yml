@@ -88,6 +88,8 @@ en:
       time_entry_activity:
         one: "Time tracking activity"
         other: "Time tracking activities"
+      cost_types_project: "Cost types project"
+      time_entry_activities_project: "Time entry activities project"
       rate: "Rate"
     errors:
       models:

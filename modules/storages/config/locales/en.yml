@@ -72,6 +72,8 @@ en:
               unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: File
+      storages/file_link: "File link"
+      storages/last_project_folder: "Last project folder"
       storages/storage: Storage
   api_v3:
     errors:
