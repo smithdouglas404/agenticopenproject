@@ -73,7 +73,10 @@ module Admin::Settings
     def find_slug
       @slug = Project.identifier_slugs.historically_reserved.find(params.expect(:id))
     rescue ActiveRecord::RecordNotFound
-      render_404
+      render_error_flash_message_via_turbo_stream(
+        message: t("admin.reserved_identifiers.identifier_not_found")
+      )
+      respond_with_turbo_streams(status: :not_found)
     end
 
     def build_query
