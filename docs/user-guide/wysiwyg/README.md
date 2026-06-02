@@ -41,10 +41,6 @@ CKEditor uses widgets to display block elements such as images, tables, and othe
 
 When you have a widget selected, you can remove or cut it. You can create a newline below it by selecting the widget and pressing `ENTER` or `↓ (ARROW DOWN)`, or a newline above it by pressing `SHIFT+enter` or `↑ (ARROW UP)`. This is especially needed when the widget is the first or last element on the page to insert a line below or above it.
 
-Work package mentions with `(##)`and `(###)`are expanded into widgets, allowing you to view work package quick information directly within the CKEditor. This also helps to see which work package is being linked while editing a page.
-
-![Work package mentions with an hash](openproject_user_guide_workpackage_mentions.png)
-
 ### Code Blocks
 
 As CKEditor5 currently does not provide support for code blocks, OpenProject can display, but not edit code blocks within the CKEditor instance. A code block can be edited through a modal window within a `CodeMirror` editor instance. This has the advantage of providing syntax highlighting and code sensing ([for supported languages](https://codemirror.net/mode/)).
@@ -149,6 +145,10 @@ To avoid processing these items, preceding them with a bang `!` character such a
 For work packages and users, typing `#` or `@` will open an autocomplete dropdown for visible work packages and users, respectively.
 
 ![Autocomplete dropdown for visible work packages](openproject_user_guide_macros_autocompletion.png)
+![Link a work package using an hash](openproject_user_guide_workpackage_mentions.png)
+
+> [!Tip]
+> To show more details when linking a work package, type either  `##` or `###` followed by the work package ID, subject, type or a keyword.
 
 ## Embedding of work package attributes and project attributes
 
