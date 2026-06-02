@@ -102,6 +102,44 @@ RSpec.describe ResourceAllocation do
     end
   end
 
+  describe "#user_assigned? / #filter_based?" do
+    let(:assignee) { build_stubbed(:user) }
+    let(:filter) do
+      UserQuery.new.filter_for(:name).tap do |f|
+        f.operator = "~"
+        f.values = ["alice"]
+      end
+    end
+
+    context "with an explicit user (no filter)" do
+      subject(:allocation) { described_class.new(principal: assignee, user_filter: []) }
+
+      it { is_expected.to be_user_assigned }
+      it { is_expected.not_to be_filter_based }
+    end
+
+    context "with a filter placeholder (no principal)" do
+      subject(:allocation) { described_class.new(principal: nil, user_filter: [filter]) }
+
+      it { is_expected.not_to be_user_assigned }
+      it { is_expected.to be_filter_based }
+    end
+
+    context "with a real user assigned to a filter allocation" do
+      subject(:allocation) { described_class.new(principal: assignee, user_filter: [filter]) }
+
+      it { is_expected.to be_user_assigned }
+      it { is_expected.to be_filter_based }
+    end
+
+    context "with neither a principal nor a filter" do
+      subject(:allocation) { described_class.new(principal: nil, user_filter: []) }
+
+      it { is_expected.not_to be_user_assigned }
+      it { is_expected.not_to be_filter_based }
+    end
+  end
+
   describe "entity GlobalID handling" do
     shared_let(:project) { create(:project) }
     shared_let(:work_package) { create(:work_package, project:) }
@@ -263,6 +301,46 @@ RSpec.describe ResourceAllocation do
         end
       end
     end
+
+    describe "filter_name (filter-based allocations)" do
+      let(:filter) do
+        UserQuery.new.filter_for(:name).tap do |f|
+          f.operator = "~"
+          f.values = ["alice"]
+        end
+      end
+
+      it "is not filter-based and needs no filter_name with only a principal" do
+        allocation.user_filter = []
+        expect(allocation).to be_valid
+        expect(allocation).not_to be_filter_based
+      end
+
+      it "requires a filter_name once a user_filter is present" do
+        allocation.user_filter = [filter]
+        allocation.filter_name = nil
+
+        expect(allocation).to be_filter_based
+        expect(allocation).not_to be_valid
+        expect(allocation.errors.symbols_for(:filter_name)).to include(:blank)
+      end
+
+      it "is valid as a placeholder (filter, no principal) with a name" do
+        allocation.principal = nil
+        allocation.user_filter = [filter]
+        allocation.filter_name = "Full stack Developer (DE-EN)"
+
+        expect(allocation).to be_valid
+      end
+
+      it "allows a real principal alongside a named filter (assigned placeholder)" do
+        allocation.principal = owner
+        allocation.user_filter = [filter]
+        allocation.filter_name = "Full stack Developer (DE-EN)"
+
+        expect(allocation).to be_valid
+      end
+    end
   end
 
   describe "user_filter serialization" do
@@ -284,7 +362,11 @@ RSpec.describe ResourceAllocation do
       filter.operator = "~"
       filter.values = ["alice"]
 
-      allocation = create(:resource_allocation, entity: work_package, principal: owner, user_filter: [filter])
+      allocation = create(:resource_allocation,
+                          entity: work_package,
+                          principal: owner,
+                          filter_name: "Alices",
+                          user_filter: [filter])
 
       reloaded = described_class.find(allocation.id)
       expect(reloaded.user_filter.size).to eq(1)

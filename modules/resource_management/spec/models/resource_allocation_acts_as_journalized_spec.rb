@@ -79,6 +79,13 @@ RSpec.describe ResourceAllocation do
         expect(allocation.last_journal.details).to include("allocated_time" => [2400, 999])
       end
 
+      it "tracks filter_name changes" do
+        allocation.update!(filter_name: "Full stack Developer (DE-EN)")
+
+        expect(allocation.last_journal.data.filter_name).to eq("Full stack Developer (DE-EN)")
+        expect(allocation.last_journal.details).to include("filter_name" => [nil, "Full stack Developer (DE-EN)"])
+      end
+
       it "renders the allocated_time change in hours, not minutes" do
         allocation.update!(allocated_time: 999)
 
