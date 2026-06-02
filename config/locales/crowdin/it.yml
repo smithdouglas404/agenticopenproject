@@ -458,7 +458,7 @@ it:
         dialog:
           title: Cambia gli identificatori della macro-attività
           heading: Abilitare gli ID delle macro-attività basati sul progetto?
-          description: 'Questa operazione modificherà gli ID di tutte le macro-attività in tutti i progetti di questa istanza. Gli identificatori e gli URL precedenti continueranno a reindirizzare correttamente. Questa modifica richiederà un po'' di tempo per essere completata.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Cambia identificatori
@@ -938,7 +938,7 @@ it:
       change_identifier_dialog_title: Modifica l'identificatore del progetto
       change_identifier_format_hint_semantic: Solo lettere maiuscole (A–Z), numeri o underscore. Massimo 10 caratteri. Deve iniziare con una lettera.
       change_identifier_format_hint_legacy: Solo lettere minuscole (a–z), numeri, trattini o underscore.
-      change_identifier_warning: 'Questa operazione modificherà in modo permanente gli identificatori e gli URL di tutte le macro-attività in questo progetto. Gli identificatori e gli URL precedenti continueranno comunque a reindirizzare correttamente.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

@@ -472,7 +472,7 @@ cs:
         dialog:
           title: Změna identifikátorů pracovních balíčků
           heading: Aktivovat projektové identifikátory pracovních balíčků?
-          description: 'Toto změní identifikátory pro všechny pracovní balíčky ve všech projektech v této instanci. Předchozí identifikátory a adresy URL budou pokračovat ve správném přesměrování. Dokončení této změny bude nějakou dobu trvat.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Změnit identifikátory
@@ -959,7 +959,7 @@ cs:
       change_identifier_dialog_title: Změnit identifikátor projektu
       change_identifier_format_hint_semantic: Pouze velká písmena (A-Z), číslice nebo podtržítka. Maximálně 10 znaků. Musí začínat písmenem.
       change_identifier_format_hint_legacy: Pouze malá písmena (a-z), číslice, pomlčky nebo podtržítka.
-      change_identifier_warning: 'Tímto se trvale změní identifikátory a adresy URL všech pracovních balíčků v tomto projektu. Předchozí identifikátory a adresy URL budou nicméně nadále správně přesměrovány.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

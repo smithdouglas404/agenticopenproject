@@ -458,7 +458,7 @@ de:
         dialog:
           title: Arbeitspaket-Kennungen ändern
           heading: Aktivieren Sie projektspezifische Arbeitspaket-Kennungen?
-          description: 'Dadurch werden die Kennungen aller Arbeitspakete in allen Projekten ändern. Die bisherigen Kennungen und URLs werden weiterhin funktionieren und umgeleitet. Diese Änderung wird einige Zeit in Anspruch nehmen.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Kennungen ändern
@@ -938,7 +938,7 @@ de:
       change_identifier_dialog_title: Projektkennung ändern
       change_identifier_format_hint_semantic: Nur Großbuchstaben (A-Z), Zahlen oder Unterstriche erlaubt. Maximal 10 Zeichen. Muss mit einem Buchstaben beginnen.
       change_identifier_format_hint_legacy: Nur Kleinbuchstaben (a-z), Zahlen, Bindestriche oder Unterstriche erlaubt.
-      change_identifier_warning: 'Dies wird die Kennungen und URLs aller Arbeitspakete in diesem Projekt dauerhaft ändern. Die bisherigen Werte bleiben jedoch weiterhin korrekt und werden umgeleitet.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

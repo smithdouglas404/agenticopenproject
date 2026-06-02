@@ -476,7 +476,7 @@ en:
           heading: Enable project-based work package IDs?
           description: >
             This will change IDs for all work packages in all projects in this instance.
-            Previous identifiers and URLs will continue to redirect properly.
+            Previous identifiers and URLs will continue to work.
             This change will take some time to complete.
           confirm_button: Change identifiers
           checkbox_label: I understand that this will permanently change all work package IDs
@@ -989,7 +989,7 @@ en:
       change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
       change_identifier_warning: >
         This will permanently change identifiers and URLs of all work packages in this project.
-        The previous identifier and URLs will nevertheless continue to redirect properly.
+        The previous identifiers and URLs will nevertheless continue to work.
       subitems:
         template_section: >
           Select templates to be used when creating new subitems.

@@ -458,7 +458,7 @@ pt-BR:
         dialog:
           title: Alterar identificadores do pacote de trabalho
           heading: Ativar IDs de pacotes de trabalho por projeto?
-          description: 'Isso alterará os IDs de todos os pacotes de trabalho em todos os projetos nesta instância. Os identificadores e URLs anteriores continuarão redirecionando corretamente. Essa alteração levará algum tempo para ser concluída.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Alterar identificadores
@@ -939,7 +939,7 @@ pt-BR:
       change_identifier_dialog_title: Alterar identificador do projeto
       change_identifier_format_hint_semantic: Apenas letras maiúsculas (A–Z), números ou sublinhados. Máximo de 10 caracteres. Deve começar com uma letra.
       change_identifier_format_hint_legacy: Apenas letras minúsculas (a–z), números, hífens ou sublinhados.
-      change_identifier_warning: 'Isso alterará permanentemente os identificadores e URLs de todos os pacotes de trabalho deste projeto. No entanto, os identificadores e URLs anteriores continuarão a redirecionar corretamente.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

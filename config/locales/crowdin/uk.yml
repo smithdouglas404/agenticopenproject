@@ -472,7 +472,7 @@ uk:
         dialog:
           title: Змінити ідентифікатори пакетів робіт
           heading: Увімкнути ідентифікатори пакетів робіт із зазначенням проєктів?
-          description: 'Це призведе до зміни ідентифікаторів усіх пакетів робіт у всіх проєктах цього екземпляра. Попередні ідентифікатори і URL-адреси й далі перенаправлятимуть, куди слід. Для впровадження цієї зміни знадобиться деякий час.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Змінити ідентифікатори
@@ -959,7 +959,7 @@ uk:
       change_identifier_dialog_title: Змінити ідентифікатор проєкту
       change_identifier_format_hint_semantic: Може містити лише великі літери (A–Z), цифри або символи підкреслення; усього — щонайбільше 10 символів. Має починатися з літери.
       change_identifier_format_hint_legacy: Може містити лише малі літери (a–z), цифри, тире або символи підкреслення.
-      change_identifier_warning: 'Ця дія назавжди змінить ідентифікатори і URL-адреси всіх пакетів робіт у цьому проєкті. Однак попередні ідентифікатори і URL-адреси й далі перенаправлятимуть, куди слід.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

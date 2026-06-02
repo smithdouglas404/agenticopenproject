@@ -472,7 +472,7 @@ pl:
         dialog:
           title: Zmień identyfikatory pakietów roboczych
           heading: Czy włączyć identyfikatory pakietów roboczych oparte na projektach?
-          description: 'Spowoduje to zmianę identyfikatorów wszystkich pakietów roboczych we wszystkich projektach w tym wystąpieniu. Poprzednie identyfikatory i adresy URL będą nadal przekierowywać prawidłowo. Wprowadzenie tej zmiany zajmie trochę czasu.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Zmień identyfikatory
@@ -958,7 +958,7 @@ pl:
       change_identifier_dialog_title: Zmień identyfikator projektu
       change_identifier_format_hint_semantic: Tylko wielkie litery (A–Z), cyfry lub znaki podkreślenia. Maksymalnie 10 znaków. Musi zaczynać się od litery.
       change_identifier_format_hint_legacy: Tylko małe litery (a–z), cyfry, myślniki lub znaki podkreślenia.
-      change_identifier_warning: 'Spowoduje to trwałą zmianę identyfikatorów i adresów URL wszystkich pakietów roboczych w tym projekcie. Poprzednie identyfikatory i adresy URL będą jednak nadal przekierowywać prawidłowo.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

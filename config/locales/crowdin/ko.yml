@@ -451,7 +451,7 @@ ko:
         dialog:
           title: 작업 패키지 식별자 변경
           heading: 프로젝트 기반 작업 패키지 ID를 활성화하시겠습니까?
-          description: '이렇게 하면 해당 인스턴스의 모든 프로젝트에 있는 모든 작업 패키지의 ID가 변경됩니다. 이전 식별자 및 URL은 계속해서 제대로 리디렉션됩니다. 이 변경 사항은 완료되는 데 다소 시간이 걸립니다.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: 식별자 변경
@@ -929,7 +929,7 @@ ko:
       change_identifier_dialog_title: 프로젝트 식별자 변경
       change_identifier_format_hint_semantic: 대문자(A-Z), 숫자 또는 밑줄만 사용할 수 있습니다. 최대 10자이고, 문자로 시작해야 합니다.
       change_identifier_format_hint_legacy: 소문자(a-z), 숫자, 대시 또는 밑줄만 사용할 수 있습니다.
-      change_identifier_warning: '이렇게 하면 이 프로젝트에 있는 모든 작업 패키지의 식별자 및 URL이 영구적으로 변경됩니다. 그렇지만 이전 식별자 및 URL은 계속해서 제대로 리디렉션됩니다.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

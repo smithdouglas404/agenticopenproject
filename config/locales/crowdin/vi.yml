@@ -451,7 +451,7 @@ vi:
         dialog:
           title: Change gói công việc (work package) identifiers
           heading: Enable project-based gói công việc (work package) IDs?
-          description: 'This will change IDs for all gói công việc (work package)s in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Change identifiers
@@ -931,7 +931,7 @@ vi:
       change_identifier_dialog_title: Change project identifier
       change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
       change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all gói công việc (work package)s in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

@@ -472,7 +472,7 @@ ru:
         dialog:
           title: Изменить идентификаторы пакета работ
           heading: Включить ID пакета работ на основе проектов?
-          description: 'Это изменит идентификаторы всех пакетов работ во всех проектах в этом экземпляре. Предыдущие идентификаторы и URL-адреса будут перенаправляться правильно. Это изменение займет некоторое время для завершения.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Изменить идентификаторы
@@ -958,7 +958,7 @@ ru:
       change_identifier_dialog_title: Изменить идентификатор проекта
       change_identifier_format_hint_semantic: Только заглавные буквы (A-Z), цифры или символы подчеркивания. Не более 10 символов. Должно начинаться с буквы.
       change_identifier_format_hint_legacy: Только строчные буквы (a-z), цифры, тире или знаки подчеркивания.
-      change_identifier_warning: 'Это навсегда изменит идентификаторы и URL всех пакетов работ в этом проекте. Тем не менее, прежние идентификаторы и URL будут продолжать правильно перенаправлять.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

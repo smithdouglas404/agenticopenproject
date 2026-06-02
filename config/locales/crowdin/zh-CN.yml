@@ -451,7 +451,7 @@ zh-CN:
         dialog:
           title: 更改工作包标识符
           heading: 是否启用基于项目的工作包 ID？
-          description: '此操作将在此实例中更改所有项目中所有工作包的 ID。之前的标识符和 URL 将继续正确重定向。此更改需要一些时间才能完成。
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: 更改标识符
@@ -928,7 +928,7 @@ zh-CN:
       change_identifier_dialog_title: 更改项目标识符
       change_identifier_format_hint_semantic: 只能使用大写字母 (A-Z)、数字或下划线。最多 10 个字符。必须以字母开头。
       change_identifier_format_hint_legacy: 只能使用小写字母（a-z）、数字、破折号或下划线。
-      change_identifier_warning: '此操作将永久更改此项目中所有工作包的标识符和 URL。之前的标识符和 URL 将继续正常重定向。
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:

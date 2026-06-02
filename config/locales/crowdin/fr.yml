@@ -458,7 +458,7 @@ fr:
         dialog:
           title: Modifier les identifiants de lots de travaux
           heading: Activer les ID de lots de travaux basés sur le projet ?
-          description: 'Cette opération modifiera les identifiants de tous les lots de travaux de tous les projets dans cette instance. Les identifiants et URL précédents continueront de rediriger correctement. Cette modification prendra un certain temps.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Modifier les identifiants
@@ -939,7 +939,7 @@ fr:
       change_identifier_dialog_title: Modifier l'identifiant du projet
       change_identifier_format_hint_semantic: Uniquement des lettres majuscules (A-Z), des chiffres ou des traits de soulignement. Maximum 10 caractères. Doit commencer par une lettre.
       change_identifier_format_hint_legacy: Uniquement des lettres minuscules (a-z), des chiffres, des tirets ou des traits de soulignement.
-      change_identifier_warning: 'Cela modifiera de manière permanente les identifiants et les URL de tous les lots de travaux de ce projet. L''identifiant et l''URL précédents continueront néanmoins la redirection correctement.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
