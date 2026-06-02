@@ -101,7 +101,7 @@ export class ConfigurationService {
   public get attachmentWhitelist():string[] {
     return this.systemPreference<string[]>('attachmentWhitelist') ?? [];
   }
-  
+
   public dateFormatPresent():boolean {
     return !!this.systemPreference('dateFormat');
   }

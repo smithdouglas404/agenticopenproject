@@ -46,7 +46,7 @@ import {
 } from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as Y from 'yjs';
-import { useBlockNoteAttachments, BlockNoteEditorRef } from '../hooks/useBlockNoteAttachments';
+import { useBlockNoteAttachments, EditorHandle } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
 
@@ -95,7 +95,7 @@ export function OpBlockNoteEditor({
   // placeholder block on failed uploads, but the editor is created later
   // in this function. We pass a lazy getter that reads from a ref assigned
   // after useCreateBlockNote, breaking the would-be circular dependency.
-  const editorRef = useRef<BlockNoteEditorRef | null>(null);
+  const editorRef = useRef<EditorHandle | null>(null);
   const getEditor = useCallback(() => editorRef.current, []);
 
   const { enabled: attachmentsEnabled, uploadFile } = useBlockNoteAttachments(
@@ -138,7 +138,8 @@ export function OpBlockNoteEditor({
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   useOpBlockNoteExtensions(editor);
-  editorRef.current = editor;
+
+  useEffect(() => { editorRef.current = editor; }, [editor]);
   type EditorType = typeof editor;
   const theme = useOpTheme();
 

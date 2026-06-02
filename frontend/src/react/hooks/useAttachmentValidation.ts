@@ -30,10 +30,9 @@
 
 import { useCallback } from 'react';
 
-export interface AttachmentValidationResult {
-  valid:boolean;
-  reason?:string;
-}
+export type AttachmentValidationResult =
+  | { valid:true }
+  | { valid:false; reason:string };
 
 export function useAttachmentValidation() {
   const validateFile = useCallback(async (file:File):Promise<AttachmentValidationResult> => {
@@ -51,7 +50,14 @@ export function useAttachmentValidation() {
       return { valid: true };
     }
 
-    if (whitelist.includes(file.type)) {
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    const allowed = whitelist.some((entry) =>
+      entry.startsWith('*')
+        ? entry.slice(1).replace(/^\./, '').toLowerCase() === ext
+        : entry === file.type,
+    );
+
+    if (allowed) {
       return { valid: true };
     }
 

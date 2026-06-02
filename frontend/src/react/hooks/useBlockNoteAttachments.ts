@@ -38,14 +38,14 @@ export interface BlockNoteAttachmentsResult {
   uploadFile?:(file:File, blockId?:string) => Promise<string>;
 }
 
-export interface BlockNoteEditorRef {
+export interface EditorHandle {
   removeBlocks:(ids:string[]) => void;
 }
 
 export function useBlockNoteAttachments(
   attachmentsCollectionKey:string,
   attachmentsUploadUrl:string,
-  getEditor?:() => BlockNoteEditorRef | null,
+  getEditor?:() => EditorHandle | null,
 ):BlockNoteAttachmentsResult {
   const enabled = (
     attachmentsCollectionKey !== undefined &&
@@ -75,7 +75,7 @@ export function useBlockNoteAttachments(
 
     const validation = await validateFile(file);
     if (!validation.valid) {
-      pluginContext.services.notifications.addError(validation.reason ?? 'File not allowed');
+      pluginContext.services.notifications.addError(validation.reason);
       removePlaceholder(blockId);
       return '';
     }
@@ -92,10 +92,10 @@ export function useBlockNoteAttachments(
         throw new Error('Upload returned no download location');
       }
       return href;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error:any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      pluginContext.services.notifications.addError(error);
+    } catch (error) {
+      pluginContext.services.notifications.addError(
+        error instanceof Error ? error.message : String(error),
+      );
       removePlaceholder(blockId);
 
       // Return '' instead of rethrowing: BlockNote 0.44.x doesn't catch
