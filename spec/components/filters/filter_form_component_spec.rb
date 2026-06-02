@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Filters::FilterForm, type: :forms do
+RSpec.describe Filters::FilterFormComponent, type: :component do
   include ViewComponent::TestHelpers
 
   let(:query) { UserQuery.new }
@@ -44,7 +44,7 @@ RSpec.describe Filters::FilterForm, type: :forms do
   def render_form(form_options = options)
     render_in_view_context(form_options) do |form_options|
       primer_form_with(url: "/foo", method: :post) do |f|
-        render(Filters::FilterForm.new(f, **form_options))
+        render(Filters::FilterFormComponent.new(builder: f, **form_options))
       end
     end
   end
@@ -140,19 +140,49 @@ RSpec.describe Filters::FilterForm, type: :forms do
     it "omits the data attribute by default" do
       render_form(query:, wrap_with_controller: true)
 
-      # The controller wrapper exists, but without the output-format attribute.
       expect(page).to have_element "data-controller": "filter--filters-form" do |wrapper|
         expect(wrapper["data-filter--filters-form-output-format-value"]).to be_nil
       end
     end
 
     it "raises on unknown values" do
-      # `Primer::Forms::Base.new` accepts a nil builder without complaint,
-      # which lets us exercise the keyword validation without spinning up
-      # a real form context.
       expect do
-        described_class.new(nil, query:, output_format: :bogus)
-      end.to raise_error(ArgumentError, /Unknown output_format/)
+        described_class.new(builder: nil, query:, output_format: :bogus)
+      end.to raise_error(Primer::FetchOrFallbackHelper::InvalidValueError, /Expected one of/)
+    end
+  end
+
+  describe "wrapper system arguments" do
+    it "forwards standard system arguments to the controller wrapper" do
+      render_form(
+        query:,
+        wrap_with_controller: true,
+        id: "custom-filter-wrapper",
+        aria: { label: "Filters" },
+        data: { test_selector: "filters-wrapper" }
+      )
+
+      expect(page).to have_element :div,
+                                   id: "custom-filter-wrapper",
+                                   "aria-label": "Filters",
+                                   "data-test-selector": "filters-wrapper"
+    end
+
+    it "merges caller classes and data with the required wrapper data" do
+      render_form(
+        query:,
+        wrap_with_controller: true,
+        classes: "custom-class",
+        data: {
+          controller: "custom-controller",
+          action: "keydown->custom#close"
+        }
+      )
+
+      expect(page).to have_element :div,
+                                   class: %w[op-filters-form -expanded custom-class],
+                                   "data-controller": "filter--filters-form",
+                                   "data-action": "keydown->custom#close"
     end
   end
 

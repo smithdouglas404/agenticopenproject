@@ -37,7 +37,7 @@ module Queries::WorkPackages::Filter::FilterForWpMixin
     raise NotImplementedError, "There would be too many candidates"
   end
 
-  # Tell `Filters::FilterForm`'s dispatch to render these filters with a
+  # Tell `Filters::FilterFormComponent`'s dispatch to render these filters with a
   # server-side autocompleter (the candidate set is too large for an inline
   # `<select>`). Mirrors what the legacy Angular WP filter UI does — see
   # `filter-searchable-multiselect-value.component.html`, which renders an

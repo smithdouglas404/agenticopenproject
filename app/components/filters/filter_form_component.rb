@@ -31,29 +31,28 @@
 # Renders the list of filter input fields (one row per available filter plus an
 # "add filter" select) for a given query as part of a Primer form.
 #
-# Unlike most primer forms, this form does not declare a static set of inputs
-# via the `form do |f| ... end` DSL. The set of inputs depends on the query's
-# available and active filters and is built dynamically at render time. The
-# form re-uses the builder of the surrounding `primer_form_with` so that the
-# emitted field names match what the controller expects (top-level
-# `operator_<filter>` and `<filter>_value` fields).
+# The set of inputs depends on the query's available and active filters and is
+# built dynamically at render time. The component receives the builder of the
+# surrounding `primer_form_with` so that the emitted field names match what the
+# controller expects (top-level `operator_<filter>` and `<filter>_value` fields).
 #
-# Embed it in any primer form like a normal sub-form:
+# Embed it in any primer form:
 #
 #   <%= primer_form_with(url: ...) do |f| %>
 #     <%= f.text_field(name: :title) %>
-#     <%= render(Filters::FilterForm.new(f, query: @query)) %>
+#     <%= render(Filters::FilterFormComponent.new(builder: f, query: @query)) %>
 #   <% end %>
 #
 # Customise the set of advertised filters by passing `allowed_filters:` (used
 # by `Filter::FilterComponent` subclasses that restrict or reorder the list).
 #
-# By default the form does *not* attach the `filter--filters-form` Stimulus
+# By default the component does *not* attach the `filter--filters-form` Stimulus
 # controller, because in the standard layout (e.g. `Projects::IndexSubHeaderComponent`)
 # the controller has to sit on a common ancestor of the advanced filter form
 # *and* the inline quick filter input so that `sendForm()` can collect values
 # from both. For standalone embeds with no co-located quick filter, pass
-# `wrap_with_controller: true` and the form will emit its own controller wrapper.
+# `wrap_with_controller: true` and the component will emit its own controller
+# wrapper.
 #
 # Pass `hidden_input_name:` (e.g. `"filters"`) to also emit a hidden input
 # bound to the Stimulus controller's `filtersInput` target. The controller
@@ -65,50 +64,50 @@
 # hidden field (and into the URL when `sendForm` redirects). Supported values:
 #   * `:params` (default) — URL-style string: `name ~ "foo"&login ! "bar"`.
 #   * `:json`             — JSON array: `[{"name":{"operator":"~","values":["foo"]}}, ...]`.
-# Only meaningful when this form owns the controller (`wrap_with_controller: true`);
-# otherwise the host's controller wrapper decides.
+# Only meaningful when this component owns the controller
+# (`wrap_with_controller: true`); otherwise the host's controller wrapper
+# decides.
 #
 # `autocomplete_append_to:` forwards an `appendTo` selector (or DOM reference
 # string ng-select understands, e.g. `"#my-dialog"` or `"body"`) to every
-# autocompleter the form renders. Use this when the form is embedded in a
-# Primer dialog or another container that clips overflow, so the dropdown
+# autocompleter the component renders. Use this when the component is embedded
+# in a Primer dialog or another container that clips overflow, so the dropdown
 # portal renders outside that container instead of being clipped.
-class Filters::FilterForm < ApplicationForm
+class Filters::FilterFormComponent < ApplicationComponent
+  include Primer::AttributesHelper
+  include Primer::FetchOrFallbackHelper
+
   OUTPUT_FORMATS = %i[params json].freeze
 
-  def initialize(query:,
+  def initialize(builder:, query:,
                  allowed_filters: nil,
                  wrap_with_controller: false,
                  hidden_input_name: nil,
                  output_format: nil,
-                 autocomplete_append_to: nil)
+                 autocomplete_append_to: nil,
+                 **wrapper_arguments)
     super()
+    @builder = builder
     @query = query
     @allowed_filters = allowed_filters || query.available_advanced_filters
     @wrap_with_controller = wrap_with_controller
     @hidden_input_name = hidden_input_name
-    @output_format = validate_output_format(output_format)
+    @output_format = fetch_or_fallback(OUTPUT_FORMATS, output_format.to_sym) if output_format
     @autocomplete_append_to = autocomplete_append_to
-  end
-
-  # Skip the autofocus traversal `Primer::Forms::Base#before_render` performs:
-  # it walks `inputs`, which requires a static `form do |f| ... end` block.
-  # The sub-forms rendered via `FormList` run their own `before_render`.
-  def before_render; end
-
-  def perform_render(&)
-    list = @view_context.render(Primer::Forms::FormList.new(*sub_forms))
-    content = @hidden_input_name ? @view_context.safe_join([hidden_filters_input, list]) : list
-    return content unless @wrap_with_controller
-
-    # `op-filters-form -expanded` carries the layout styles for the filter
-    # rows (label on its own line above operator/value) and makes the form
-    # visible (`op-filters-form` alone is `display: none`).
-    @view_context.content_tag(
-      :div,
-      content,
-      class: "op-filters-form -expanded",
-      data: controller_data_attributes
+    @wrapper_arguments = wrapper_arguments
+    @wrapper_arguments[:tag] ||= :div
+    @wrapper_arguments[:classes] = class_names(
+      "op-filters-form -expanded",
+      @wrapper_arguments[:classes]
+    )
+    @wrapper_arguments[:data] = merge_data(
+      @wrapper_arguments,
+      {
+        data: {
+          controller: "filter--filters-form",
+          filter__filters_form_output_format_value: @output_format&.to_s
+        }
+      }
     )
   end
 
@@ -116,25 +115,12 @@ class Filters::FilterForm < ApplicationForm
 
   attr_reader :query, :allowed_filters
 
-  def controller_data_attributes
-    attrs = { controller: "filter--filters-form" }
-    attrs["filter--filters-form-output-format-value"] = @output_format.to_s if @output_format
-    attrs
-  end
-
-  def validate_output_format(format)
-    return nil if format.nil?
-
-    sym = format.to_sym
-    unless OUTPUT_FORMATS.include?(sym)
-      raise ArgumentError,
-            "Unknown output_format #{format.inspect}; expected one of #{OUTPUT_FORMATS.inspect}"
-    end
-    sym
+  def form_list
+    Primer::Forms::FormList.new(*sub_forms)
   end
 
   def hidden_filters_input
-    @view_context.hidden_field_tag(
+    hidden_field_tag(
       @hidden_input_name,
       "",
       data: { "filter--filters-form-target": "filtersInput" }
@@ -154,8 +140,6 @@ class Filters::FilterForm < ApplicationForm
     )
   end
 
-  # Maps over all filters (active and inactive).
-  # In case a filter is active, the active one will be preferred over the inactive one.
   def map_filter
     allowed_filters.map do |allowed_filter|
       active_filter = query.find_active_filter(allowed_filter.name)
