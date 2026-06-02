@@ -62,6 +62,19 @@ class ResourceAllocation < ApplicationRecord
     entity&.project
   end
 
+  def allocated_hours
+    return if allocated_time.nil?
+
+    allocated_time / 60.0
+  end
+
+  def allocated_hours=(value)
+    hours = value.is_a?(String) ? DurationConverter.parse(value) : value
+    self.allocated_time = hours.nil? ? nil : (Float(hours) * 60).round
+  rescue ChronicDuration::DurationParseError, ArgumentError, TypeError
+    self.allocated_time = nil
+  end
+
   private
 
   def end_date_after_start_date

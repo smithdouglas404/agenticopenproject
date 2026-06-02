@@ -59,6 +59,49 @@ RSpec.describe ResourceAllocation do
     end
   end
 
+  describe "#allocated_hours" do
+    subject(:allocation) { described_class.new }
+
+    describe "reader" do
+      it "returns the persisted minutes as hours" do
+        allocation.allocated_time = 150
+        expect(allocation.allocated_hours).to eq(2.5)
+      end
+
+      it "is nil when allocated_time is unset" do
+        expect(allocation.allocated_hours).to be_nil
+      end
+    end
+
+    describe "writer" do
+      it "stores a numeric value of hours as minutes" do
+        allocation.allocated_hours = 8
+        expect(allocation.allocated_time).to eq(480)
+      end
+
+      it "parses a duration string via chronic duration" do
+        allocation.allocated_hours = "2h30m"
+        expect(allocation.allocated_time).to eq(150)
+      end
+
+      it "parses a decimal-hours string" do
+        allocation.allocated_hours = "2.5"
+        expect(allocation.allocated_time).to eq(150)
+      end
+
+      it "clears the value when given nil" do
+        allocation.allocated_time = 480
+        allocation.allocated_hours = nil
+        expect(allocation.allocated_time).to be_nil
+      end
+
+      it "falls back to nil for an unparseable string (so validation can reject it)" do
+        allocation.allocated_hours = "not a duration"
+        expect(allocation.allocated_time).to be_nil
+      end
+    end
+  end
+
   describe "validations" do
     shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
     shared_let(:owner) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
