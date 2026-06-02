@@ -28,39 +28,45 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Users
-  module Profile
-    class AttributesComponent < ApplicationComponent
-      include ApplicationHelper
-      include OpTurbo::Streamable
-      include OpPrimer::ComponentHelpers
+require "spec_helper"
 
-      def initialize(user:)
-        super()
+RSpec.describe UserCustomFieldSections::CreateService do
+  let(:admin) { build_stubbed(:admin) }
+  let(:user) { build_stubbed(:user) }
 
-        @user = user
-      end
+  subject(:call) { described_class.new(user: current_user).call(name: "New section") }
 
-      def render?
-        user_is_allowed_to_see_email || sections_with_fields.any?
-      end
+  context "when called by an admin" do
+    let(:current_user) { admin }
 
-      def sections_with_fields
-        @sections_with_fields ||= begin
-          filled_cf_ids = @user.custom_values
-                               .where(custom_field: UserCustomField.visible(User.current))
-                               .where.not(value: [nil, ""])
-                               .select(:custom_field_id)
+    it "creates the section successfully" do
+      expect(call).to be_success
+      expect(call.result).to be_a(UserCustomFieldSection)
+      expect(call.result.name).to eq("New section")
+    end
 
-          UserCustomFieldSection
-            .with_custom_fields(filled_cf_ids)
-            .map { |section| [section, section.custom_fields] }
-        end
-      end
+    it "persists the section to the database" do
+      expect { call }.to change(UserCustomFieldSection, :count).by(1)
+    end
+  end
 
-      def user_is_allowed_to_see_email
-        User.current == @user || User.current.allowed_globally?(:view_user_email)
-      end
+  context "when called by a non-admin" do
+    let(:current_user) { user }
+
+    it "fails authorization" do
+      expect(call).not_to be_success
+      expect(call.result).not_to be_persisted
+    end
+  end
+
+  context "with invalid attributes" do
+    let(:current_user) { admin }
+
+    subject(:call) { described_class.new(user: admin).call(name: "") }
+
+    it "fails validation" do
+      expect(call).not_to be_success
+      expect(call.result.errors[:name]).to be_present
     end
   end
 end

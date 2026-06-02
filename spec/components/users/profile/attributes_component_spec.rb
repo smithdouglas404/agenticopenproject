@@ -58,21 +58,21 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
 
     context "when user has a custom field with a present value" do
       let(:custom_field) { create(:user_custom_field, :string) }
-      let(:user) { build(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello")]) }
+      let(:user) { create(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello")]) }
 
       it { is_expected.to be(true) }
     end
 
     context "when user has a custom field with a blank value" do
       let(:custom_field) { create(:user_custom_field, :string) }
-      let(:user) { build(:user, custom_values: [build(:custom_value, custom_field:, value: "  ")]) }
+      let(:user) { create(:user, custom_values: [build(:custom_value, custom_field:, value: "")]) }
 
       it { is_expected.to be(false) }
     end
 
     context "when user has a non-visible custom field with a present value" do
       let(:custom_field) { create(:user_custom_field, :string, admin_only: true) }
-      let(:user) { build(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello")]) }
+      let(:user) { create(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello")]) }
 
       it { is_expected.to be(false) }
     end
@@ -82,7 +82,7 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
     let(:section)      { create(:user_custom_field_section, name: "Profile info") }
     let(:custom_field) { create(:user_custom_field, :string, admin_only:, user_custom_field_section: section) }
     let(:admin_only)   { false }
-    let(:user)         { build_stubbed(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello custom field")]) }
+    let(:user)         { create(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello custom field")]) }
 
     current_user { build(:admin) }
 
@@ -96,13 +96,21 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
       expect(page).to have_text("Profile info")
     end
 
-    context "when admin_only and current user is not admin" do
+    context "when admin_only" do
       let(:admin_only) { true }
 
-      current_user { logged_in_user }
+      context "and current user is admin" do
+        it "renders the field" do
+          expect(page).to have_text("Hello custom field")
+        end
+      end
 
-      it "does not render the field" do
-        expect(page).to have_no_text("Hello custom field")
+      context "and current user is not admin" do
+        current_user { logged_in_user }
+
+        it "does not render the field" do
+          expect(page).to have_no_text("Hello custom field")
+        end
       end
     end
 
@@ -122,10 +130,10 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
       let(:field_in_first)  { create(:user_custom_field, :string, name: "In first",  user_custom_field_section: section_first) }
       let(:field_in_second) { create(:user_custom_field, :string, name: "In second", user_custom_field_section: section_second) }
       let(:user) do
-        build_stubbed(:user, custom_values: [
-                        build(:custom_value, custom_field: field_in_first,  value: "Value A"),
-                        build(:custom_value, custom_field: field_in_second, value: "Value B")
-                      ])
+        create(:user, custom_values: [
+                 build(:custom_value, custom_field: field_in_first, value: "Value A"),
+                 build(:custom_value, custom_field: field_in_second, value: "Value B")
+               ])
       end
 
       it "renders section headings in position order" do
@@ -147,10 +155,10 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
                                             position_in_custom_field_section: 2)
       end
       let(:user) do
-        build_stubbed(:user, custom_values: [
-                        build(:custom_value, custom_field: first_field, value: "First value"),
-                        build(:custom_value, custom_field: second_field, value: "Second value")
-                      ])
+        create(:user, custom_values: [
+                 build(:custom_value, custom_field: first_field, value: "First value"),
+                 build(:custom_value, custom_field: second_field, value: "Second value")
+               ])
       end
 
       it "renders fields in position_in_custom_field_section order" do
@@ -170,12 +178,12 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
                                                 position_in_custom_field_section: 1)
       end
       let(:user) do
-        build_stubbed(:user, custom_values: [
-                        build(:custom_value, custom_field: list_field, value: list_field.possible_values[0]),
-                        build(:custom_value, custom_field: list_field, value: list_field.possible_values[1]),
-                        build(:custom_value, custom_field: list_field, value: list_field.possible_values[2]),
-                        build(:custom_value, custom_field: text_field, value: "This is **formatted** text.")
-                      ])
+        create(:user, custom_values: [
+                 build(:custom_value, custom_field: list_field, value: list_field.possible_values[0]),
+                 build(:custom_value, custom_field: list_field, value: list_field.possible_values[1]),
+                 build(:custom_value, custom_field: list_field, value: list_field.possible_values[2]),
+                 build(:custom_value, custom_field: text_field, value: "This is **formatted** text.")
+               ])
       end
 
       it "renders multi-select values as a comma-separated list" do

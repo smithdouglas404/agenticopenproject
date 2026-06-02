@@ -28,25 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Users
-  module Form
-    class CustomFieldSectionsComponent < ApplicationComponent
-      def initialize(form:)
-        super()
-        @form = form
-      end
+require "spec_helper"
 
-      def sections
-        @sections ||= begin
-          visible_cf_ids = @form.object.visible_custom_field_values.map(&:custom_field_id)
+RSpec.describe UserCustomFieldSections::DeleteService do
+  let(:admin) { build_stubbed(:admin) }
+  let(:user) { build_stubbed(:user) }
+  let(:section) { create(:user_custom_field_section) }
 
-          UserCustomFieldSection
-            .with_custom_fields(visible_cf_ids)
-            .map do |section|
-              Users::Form::CustomFieldSectionComponent.new(section:, fields: section.custom_fields, form: @form)
-            end
-        end
-      end
+  context "when called by an admin on an empty section" do
+    subject(:call) { described_class.new(user: admin, model: section).call }
+
+    it "deletes the section" do
+      expect(call).to be_success
+      expect(UserCustomFieldSection.exists?(section.id)).to be(false)
+    end
+  end
+
+  context "when called by a non-admin" do
+    subject(:call) { described_class.new(user: user, model: section).call }
+
+    it "fails authorization" do
+      expect(call).not_to be_success
+      expect(UserCustomFieldSection.exists?(section.id)).to be(true)
+    end
+  end
+
+  context "when the section has custom fields" do
+    before { create(:user_custom_field, user_custom_field_section: section) }
+
+    subject(:call) { described_class.new(user: admin, model: section).call }
+
+    it "fails with an in_use error" do
+      expect(call).not_to be_success
+      expect(call.result.errors).to be_of_kind(:base, :in_use)
+    end
+
+    it "does not delete the section" do
+      call
+      expect(UserCustomFieldSection.exists?(section.id)).to be(true)
     end
   end
 end
