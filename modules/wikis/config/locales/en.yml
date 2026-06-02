@@ -152,8 +152,8 @@ en:
           oauth:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application.
             provider_oauth: Wiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth.
             provider_oauth_configuration: Copy these values to the [XWiki OIDC Connection client](xwiki_oidc_link).
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth.
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
