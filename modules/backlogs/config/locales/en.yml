@@ -93,6 +93,7 @@ en:
 
     models:
       sprint: "Sprint"
+      backlog_bucket: "Backlog bucket"
 
   backlogs:
     administration_blankslate:

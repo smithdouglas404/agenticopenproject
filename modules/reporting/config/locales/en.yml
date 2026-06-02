@@ -32,6 +32,10 @@ en:
     name: "OpenProject Reporting"
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
 
+  activerecord:
+    models:
+      cost_query: "Cost query"
+
   button_save_report_as: "Save report as..."
 
   comments: "Comment"

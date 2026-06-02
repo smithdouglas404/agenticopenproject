@@ -46,6 +46,11 @@ en:
         ci_details: "CI Details"
       gitlab_merge_request:
         labels: "Labels"
+    models:
+      gitlab_issue: "GitLab issue"
+      gitlab_merge_request: "GitLab merge request"
+      gitlab_pipeline: "GitLab pipeline"
+      gitlab_user: "GitLab user"
     errors:
       models:
         gitlab_issue:

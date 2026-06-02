@@ -5,6 +5,10 @@ en:
     name: "OpenProject Calendar"
     description: "Provides calendar views."
 
+  activerecord:
+    models:
+      i_cal_token_query_assignment: "iCal token query assignment"
+
   label_calendar: "Calendar"
   label_calendar_plural: "Calendars"
   label_new_calendar: "New calendar"

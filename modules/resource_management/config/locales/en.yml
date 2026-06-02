@@ -27,6 +27,8 @@ en:
           attributes:
             end_date:
               greater_than_start_date: "must be after the start date."
+    models:
+      resource_allocation: "Resource allocation"
 
   plugin_openproject_resource_management:
     name: "OpenProject Resource Management"

@@ -43,6 +43,7 @@ en:
     models:
       document: "Document"
       documents: "Documents"
+      document_type: "Document type"
     attributes:
       document:
         content_binary: "Content binary"
