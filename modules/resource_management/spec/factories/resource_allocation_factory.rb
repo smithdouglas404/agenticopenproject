@@ -30,7 +30,7 @@
 
 FactoryBot.define do
   factory :resource_allocation, class: "ResourceAllocation" do
-    entity factory: :resource_planner
+    entity factory: :work_package
     principal factory: :user
     state { "requested" }
     start_date { Date.new(2026, 1, 5) }
