@@ -37,13 +37,13 @@ module Wikis
             def call(input_data:, auth_strategy:)
               Adapters::Authentication[auth_strategy].call do |http|
                 Internal::Wikis.new(model: provider).call(http:).bind do |wiki_names|
-                  success(
-                    wiki_names.flat_map do |wiki_name|
-                      search_wiki(wiki_name:, linkable: input_data.linkable, number: input_data.number,
-                                  http:, auth_strategy:)
-                        .value_or([])
+                  wiki_names.reduce(Success([])) do |acc, wiki_name|
+                    acc.bind do |results|
+                      search_wiki(wiki_name:, linkable: input_data.linkable,
+                                  number: input_data.number, http:, auth_strategy:)
+                        .fmap { results + it }
                     end
-                  )
+                  end
                 end
               end
             end

@@ -181,27 +181,14 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
       end
     end
 
-    context "when one wiki's search fails, others still contribute" do
-      let(:page_id) { "xwiki:Main.WebHome" }
-      let(:page_rest_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/Main/pages/WebHome" }
-
+    context "when one wiki's search fails" do
       before do
         stub_wikis(%w[xwiki broken_wiki])
-        stub_search("xwiki", [{ "id" => page_id, "title" => "Home",
-                                "links" => [{ "href" => page_rest_url, "rel" => "http://www.xwiki.org/rel/page" }] }])
+        stub_search("xwiki", [])
         stub_request(:get, search_endpoint("broken_wiki")).to_return(status: 500, body: "")
-        stub_request(:get, page_rest_url)
-          .to_return(status: 200,
-                     body: { "title" => "Home", "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/" }.to_json,
-                     headers: { "Content-Type" => "application/json" })
       end
 
-      it { is_expected.to be_success }
-
-      it "returns results from the healthy wiki and skips the failed one" do
-        page_results = result.value!
-        expect(page_results.map { it.value!.identifier }).to contain_exactly(page_id)
-      end
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }
     end
 
     context "when no OAuth token exists for the user" do
