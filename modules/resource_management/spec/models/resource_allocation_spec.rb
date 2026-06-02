@@ -32,18 +32,10 @@ require "spec_helper"
 
 RSpec.describe ResourceAllocation do
   describe "associations" do
-    it "belongs to a polymorphic entity" do
-      association = described_class.reflect_on_association(:entity)
-      expect(association.macro).to eq(:belongs_to)
-      expect(association.options[:polymorphic]).to be(true)
-    end
-
-    it "belongs to a principal (user), optional" do
-      association = described_class.reflect_on_association(:principal)
-      expect(association.macro).to eq(:belongs_to)
-      expect(association.options[:class_name]).to eq("User")
-      expect(association.options[:optional]).to be(true)
-    end
+    it { is_expected.to belong_to(:entity).required }
+    it { is_expected.to belong_to(:principal).class_name("User").inverse_of(:resource_allocations).optional }
+    it { is_expected.to belong_to(:requested_by).class_name("User").optional }
+    it { is_expected.to belong_to(:reviewed_by).class_name("User").optional }
   end
 
   describe "state enum" do

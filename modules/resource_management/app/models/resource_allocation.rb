@@ -33,6 +33,8 @@ class ResourceAllocation < ApplicationRecord
 
   belongs_to :entity, polymorphic: true, optional: false
   belongs_to :principal, class_name: "User", optional: true, inverse_of: :resource_allocations
+  belongs_to :requested_by, class_name: "User", optional: true
+  belongs_to :reviewed_by, class_name: "User", optional: true
 
   serialize :user_filter, coder: Queries::Serialization::Filters.new(UserQuery)
 
