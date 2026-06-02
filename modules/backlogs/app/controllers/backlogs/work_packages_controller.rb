@@ -32,7 +32,7 @@ module Backlogs
   class WorkPackagesController < BaseController
     include OpTurbo::ComponentStream
 
-    before_action :load_work_package
+    before_action :load_work_package, only: %i[menu move move_to_sprint_dialog]
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
@@ -44,6 +44,13 @@ module Backlogs
                current_user:
              ),
              layout: false)
+    end
+
+    def add_existing_dialog
+      respond_with_dialog Backlogs::AddExistingWorkPackageDialogComponent.new(
+        project: @project,
+        target_id: params[:target_id]
+      )
     end
 
     def move_to_sprint_dialog
@@ -60,6 +67,26 @@ module Backlogs
         project: @project,
         move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
       )
+    end
+
+    def add_existing
+      work_package = WorkPackage.visible.where(project: @project).find(params[:work_package_id])
+      # Capture the source before the call; the service reloads work_package internally via #move_after.
+      source_sprint = work_package.sprint
+
+      call = WorkPackages::UpdateService
+        .new(user: current_user, story: work_package)
+        .call(target_id: params[:target_id])
+
+      if call.success?
+        move_work_package_to_target_component_via_turbo_stream(source_sprint:, target_sprint: call.result.sprint)
+      else
+        render_error_flash_message_via_turbo_stream(
+          message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+        )
+      end
+
+      respond_with_turbo_streams(status: call)
     end
 
     def move # rubocop:disable Metrics/AbcSize
