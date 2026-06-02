@@ -102,6 +102,47 @@ RSpec.describe ResourceAllocation do
     end
   end
 
+  describe "entity GlobalID handling" do
+    shared_let(:project) { create(:project) }
+    shared_let(:work_package) { create(:work_package, project:) }
+
+    subject(:allocation) { described_class.new }
+
+    describe "#entity_gid" do
+      it "returns the GlobalID string of the entity" do
+        allocation.entity = work_package
+        expect(allocation.entity_gid).to eq(work_package.to_gid.to_s)
+      end
+
+      it "is an empty string when no entity is set" do
+        expect(allocation.entity_gid).to eq("")
+      end
+    end
+
+    describe "#entity=" do
+      it "assigns a plain record directly" do
+        allocation.entity = work_package
+        expect(allocation.entity).to eq(work_package)
+      end
+
+      it "resolves a GlobalID string to the record" do
+        allocation.entity = work_package.to_gid.to_s
+        expect(allocation.entity).to eq(work_package)
+      end
+
+      it "round-trips an entity through entity_gid" do
+        allocation.entity = work_package.to_gid.to_s
+        expect(allocation.entity_gid).to eq(work_package.to_gid.to_s)
+      end
+
+      it "ignores a GlobalID of a type outside ALLOWED_ENTITY_TYPES" do
+        disallowed = create(:user)
+        allocation.entity = disallowed.to_gid.to_s
+        expect(allocation.entity).to be_nil
+      end
+    end
+  end
+
   describe "validations" do
     shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
     shared_let(:owner) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
