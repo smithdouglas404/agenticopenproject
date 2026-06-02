@@ -87,6 +87,7 @@ module Components
 
       def search_and_select(query)
         search query
+        wait_for_network_idle
         selector = "#{results_selector} #{item_selector}"
         item = page.first(selector, text: query, wait: 5) || page.find(selector, wait: 5)
         item.click

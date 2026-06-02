@@ -52,22 +52,10 @@ See COPYRIGHT and LICENSE files for more details.
        classes: "op-project-select--body", data: { controller: "header-project-select",
                                                    test_selector: "op-header-project-select" }
      ) do %>
-    <%= render(
-          Primer::OpenProject::FilterableTreeView.new(
-            src: tree_src,
-            include_sub_items_check_box_arguments: { hidden: true },
-            filter_mode_control_arguments: logged? ? {} : { hidden: true },
-            filter_input_arguments: { name: "filter",
-                                      label: t(:label_filter),
-                                      visually_hide_label: true,
-                                      data: { test_selector: "op-header-project-select--search" } },
-            no_results_node_arguments: { data: { test_selector: "op-header-project-select--no-results" }, label: I18n.t("filterable_tree_view.no_results_text") }
-          )
-        ) do |tree_view| %>
-      <% if logged? %>
-        <% tree_view.with_filter_mode(name: "all", label: t("filterable_tree_view.filter_mode.all"), selected: true) %>
-        <% tree_view.with_filter_mode(name: "favorited", label: t(".favorites")) %>
-      <% end %>
-    <% end %>
+    <%= helpers.turbo_frame_tag "op-header-project-frame",
+                                src: tree_src,
+                                loading: :lazy,
+                                target: "_top",
+                                class: "op-project-select--frame" %>
   <% end %>
 <% end %>

@@ -36,24 +36,32 @@ const NON_DEFAULT_FILTER_MODES = new Set(['favorited']);
 
 export default class HeaderProjectSelectController extends Controller {
   connect():void {
-    const stored = window.OpenProject.guardedLocalStorage(STORAGE_KEY);
-    if (stored && NON_DEFAULT_FILTER_MODES.has(stored)) {
-      // Defer until after all Stimulus/Catalyst controllers have connected (including
-      // filterable-tree-view), so its click listener is already set up when
-      // we programmatically activate the stored filter mode.
-      setTimeout(() => {
-        this.element
-          .querySelector<HTMLElement>(`[data-name="${stored}"]`)
-          ?.click();
-      }, 0);
-    }
-
     this.element.addEventListener('click', this.onFilterModeClick);
+
+    // Before the overlay becomes visible, inject the stored filter mode into
+    // the turbo-frame src so the server renders the correct initial state.
+    const popover = this.element.closest<HTMLElement>('[popover]');
+    popover?.addEventListener('beforetoggle', this.onBeforeFirstOpen, { once: true });
   }
 
   disconnect():void {
     this.element.removeEventListener('click', this.onFilterModeClick);
   }
+
+  private onBeforeFirstOpen = ():void => {
+    const stored = window.OpenProject.guardedLocalStorage(STORAGE_KEY);
+    if (!stored || !NON_DEFAULT_FILTER_MODES.has(stored)) return;
+
+    const frame = this.element.querySelector<HTMLElement>('turbo-frame#op-header-project-frame');
+    if (!frame) return;
+
+    const src = frame.getAttribute('src');
+    if (!src) return;
+
+    const url = new URL(src, window.location.href);
+    url.searchParams.set('filter_mode', stored);
+    frame.setAttribute('src', url.toString());
+  };
 
   private onFilterModeClick = (event:MouseEvent):void => {
     const button = (event.target as HTMLElement).closest<HTMLElement>('[data-name]');

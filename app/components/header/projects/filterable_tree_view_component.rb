@@ -29,31 +29,24 @@
 #++
 
 module Header
-  class ProjectSelectComponent < ApplicationComponent
-    include OpenProject::StaticRouting::UrlHelpers
+  module Projects
+    class FilterableTreeViewComponent < ApplicationComponent
+      def initialize(current_project_id:, jump:, filter_mode:)
+        super()
+        @current_project_id = current_project_id
+        @jump = jump
+        @filter_mode = filter_mode
+      end
 
-    delegate :logged?, to: :@current_user
+      private
 
-    def initialize(current_project: nil, current_menu_item: nil, current_user: User.current)
-      super()
-      @current_project = current_project
-      @current_user = current_user
-      @current_menu_item = current_menu_item
-    end
+      def tree_src
+        helpers.header_projects_path(current_project_id: @current_project_id, jump: @jump.presence)
+      end
 
-    def trigger_label
-      @current_project&.name || t(".all_projects")
-    end
-
-    def tree_src
-      frame_header_projects_path(
-        current_project_id: @current_project&.id,
-        jump: @current_menu_item.presence
-      )
-    end
-
-    def can_create_projects?
-      @current_user.allowed_globally?(:add_project)
+      def logged?
+        helpers.current_user.logged?
+      end
     end
   end
 end

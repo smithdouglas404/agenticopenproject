@@ -29,7 +29,7 @@
 #++
 
 class Header::ProjectsController < ApplicationController
-  no_authorization_required! :index
+  no_authorization_required! :index, :frame
 
   MAX_NUMBER_OF_PROJECTS = 300
   VALID_FILTER_MODES = %w[all favorited].freeze
@@ -42,6 +42,14 @@ class Header::ProjectsController < ApplicationController
     @tree = build_tree(@projects)
 
     render layout: false
+  end
+
+  def frame
+    render Header::Projects::FilterableTreeViewComponent.new(
+      current_project_id: params[:current_project_id].presence&.to_i,
+      jump: params[:jump].presence,
+      filter_mode: filter_mode
+    ), layout: false
   end
 
   private

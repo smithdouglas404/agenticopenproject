@@ -311,7 +311,11 @@ Rails.application.routes.draw do
   end
 
   namespace :header do
-    resources :projects, only: :index
+    resources :projects, only: :index do
+      collection do
+        get :frame
+      end
+    end
   end
 
   %w[portfolio project program].each do |workspace_type|
