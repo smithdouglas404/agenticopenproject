@@ -28,33 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require_relative "../../support/pages/backlog"
+module Backlogs
+  class MoveToBucketDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-RSpec.describe "Sprint header", :js do
-  shared_let(:project) { create(:project) }
-  shared_let(:other_project) { create(:project) }
-  shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] }) }
-  shared_let(:sprint) do
-    create(:sprint, project:,
-                    start_date: Date.new(2025, 9, 1),
-                    finish_date: Date.new(2025, 9, 14))
-  end
+    DIALOG_ID = "move-to-backlog-bucket-dialog"
+    FORM_ID = "move-to-backlog-bucket-dialog-form"
 
-  let(:backlog_page) { Pages::Backlog.new(project) }
+    attr_reader :work_package, :project, :buckets, :move_action
 
-  before { login_as(user) }
+    def initialize(work_package:, project:, move_action:)
+      super()
 
-  describe "sprint header" do
-    shared_let(:wp_in_project) { create(:work_package, project:, sprint:, story_points: 5) }
-    shared_let(:wp_in_project2) { create(:work_package, project:, sprint:, story_points: 3) }
-    shared_let(:wp_in_other_project) { create(:work_package, project: other_project, sprint:, story_points: 10) }
-
-    it "only counts work packages belonging to the viewed project" do
-      backlog_page.visit!
-
-      backlog_page.expect_sprint_story_points(sprint, 8)
-      backlog_page.expect_sprint_work_package_count(sprint, 2)
+      @work_package = work_package
+      @project = project
+      @move_action = move_action
+      @buckets = BacklogBucket.where(project:).order_alphabetically
+      @buckets = @buckets.where.not(id: work_package.backlog_bucket_id) if work_package.backlog_bucket_id
     end
   end
 end

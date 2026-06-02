@@ -36,18 +36,11 @@ module Backlogs
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
-      work_package = displayed_work_packages.with_backlogs_neighbours.find(@work_package.id)
-
-      open_sprints_exist = Sprint.for_project(@project)
-                                 .visible
-                                 .not_completed
-                                 .where.not(id: @work_package.sprint_id)
-                                 .exists?
-
       render(Backlogs::WorkPackageCardMenuComponent.new(
                project: @project,
-               work_package:,
-               open_sprints_exist:,
+               work_package: work_package_with_backlog_neighbours,
+               open_sprints_exist: target_open_sprints.exists?,
+               other_buckets_exist: target_buckets.exists?,
                current_user:
              ),
              layout: false)
@@ -55,6 +48,14 @@ module Backlogs
 
     def move_to_sprint_dialog
       respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
+        work_package: @work_package,
+        project: @project,
+        move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
+      )
+    end
+
+    def move_to_bucket_dialog
+      respond_with_dialog Backlogs::MoveToBucketDialogComponent.new(
         work_package: @work_package,
         project: @project,
         move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
@@ -134,6 +135,21 @@ module Backlogs
       else
         @work_packages.merge(WorkPackage.backlogs_inbox_for(project: @project))
       end
+    end
+
+    def work_package_with_backlog_neighbours
+      displayed_work_packages.with_backlogs_neighbours.find(@work_package.id)
+    end
+
+    def target_open_sprints
+      Sprint.for_project(@project)
+            .visible.not_completed
+            .where.not(id: @work_package.sprint_id)
+    end
+
+    def target_buckets
+      BacklogBucket.where(project: @project)
+                   .where.not(id: @work_package.backlog_bucket_id)
     end
 
     # After a work package is moved to the backlog, it might no longer be visible due to
