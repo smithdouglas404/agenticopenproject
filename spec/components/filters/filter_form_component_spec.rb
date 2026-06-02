@@ -50,9 +50,9 @@ RSpec.describe Filters::FilterFormComponent, type: :component do
   end
 
   describe "basic rendering" do
-    before { render_form }
-
     it "renders an Add filter select advertising the query's filters" do
+      render_form
+
       # Sanity: at least the well-known UserQuery filters are advertised
       # (option text is `User.human_attribute_name(filter.name)`).
       expect(page).to have_select "add_filter_select",
