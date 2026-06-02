@@ -44,6 +44,7 @@ FactoryBot.define do
 
     trait :with_user_filter do
       principal { nil }
+      filter_name { "Full stack Developer (DE-EN)" }
       transient do
         job_title_custom_field do
           UserCustomField.find_by(name: "Job title") ||
@@ -51,17 +52,28 @@ FactoryBot.define do
                    name: "Job title",
                    possible_values: ["Developer", "Designer", "Project Manager", "Product Manager"])
         end
+        spoken_language_custom_field do
+          UserCustomField.find_by(name: "Spoken language") ||
+            create(:user_custom_field, :list,
+                   name: "Spoken language",
+                   multi_value: true,
+                   possible_values: %w[German English French Spanish Italian Dutch Portuguese Polish])
+        end
       end
+      # Build real UserQuery filter objects (not hashes): the serialization
+      # coder dumps via `filter.field`, so it only accepts filter instances.
+      # The filter matches developers who speak German or English ("DE-EN"),
+      # leaving the other languages as non-matching values to test against.
       user_filter do
-        cf = job_title_custom_field
-        developer_option = cf.custom_options.find_by(value: "Developer")
-        [
-          {
-            "attribute" => cf.column_name,
-            "operator" => "=",
-            "values" => [developer_option.id.to_s]
-          }
-        ]
+        job_title = job_title_custom_field
+        language = spoken_language_custom_field
+        developer_option = job_title.custom_options.find_by(value: "Developer")
+        language_options = language.custom_options.where(value: %w[German English])
+
+        query = UserQuery.new
+        query.where(job_title.column_name, "=", [developer_option.id.to_s])
+        query.where(language.column_name, "=", language_options.map { |option| option.id.to_s })
+        query.filters
       end
     end
   end
