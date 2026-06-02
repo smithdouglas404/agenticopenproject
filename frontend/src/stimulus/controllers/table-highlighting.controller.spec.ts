@@ -63,8 +63,7 @@ describe('TableHighlightingController', () => {
       controllers: { 'table-highlighting': TableHighlightingController },
     });
 
-    ctx.appendHTML(tableTemplate);
-    await ctx.nextFrame();
+    await ctx.mount(tableTemplate);
   });
 
   afterEach(() => ctx.dispose());
@@ -101,13 +100,12 @@ describe('TableHighlightingController', () => {
   });
 
   it('does not error on tables without colgroup', async () => {
-    ctx.appendHTML(`
+    await ctx.mount(`
       <table data-controller="table-highlighting">
         <thead><tr><th>Col</th></tr></thead>
         <tbody><tr><td>Val</td></tr></tbody>
       </table>
     `);
-    await ctx.nextFrame();
 
     expect(() => {
       ctx.screen.getAllByRole('columnheader').at(-1)!

@@ -357,11 +357,11 @@ RSpec.describe Backlogs::SprintsController do
     describe "POST #start" do
       let!(:sprint) { create(:sprint, project:) }
       let(:service_result) { ServiceResult.success(result: sprint.tap { it.status = "active" }) }
-      let(:service) { instance_double(Sprints::StartService, call: service_result) }
+      let(:service) { instance_double(Backlogs::Sprints::StartService, call: service_result) }
       let(:request_params) { { project_id: project.id, sprint_id: sprint.id } }
 
       before do
-        allow(Sprints::StartService)
+        allow(Backlogs::Sprints::StartService)
           .to receive(:new)
           .with(user:, model: sprint)
           .and_return(service)
@@ -527,10 +527,10 @@ RSpec.describe Backlogs::SprintsController do
           result: sprint.tap { |finished_sprint| finished_sprint.status = "completed" }
         )
       end
-      let(:service) { instance_double(Sprints::FinishService, call: service_result) }
+      let(:service) { instance_double(Backlogs::Sprints::FinishService, call: service_result) }
 
       before do
-        allow(Sprints::FinishService)
+        allow(Backlogs::Sprints::FinishService)
           .to receive(:new)
           .with(user:, model: sprint)
           .and_return(service)

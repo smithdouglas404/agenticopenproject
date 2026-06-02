@@ -81,8 +81,7 @@ describe('TruncationController', () => {
 
   describe('initialization', () => {
     beforeEach(async () => {
-      ctx.appendHTML(truncationTemplate);
-      await ctx.nextFrame();
+      await ctx.mount(truncationTemplate);
     });
 
     it('connects successfully', () => {
@@ -113,8 +112,7 @@ describe('TruncationController', () => {
 
   describe('expander button click', () => {
     beforeEach(async () => {
-      ctx.appendHTML(truncationTemplate);
-      await ctx.nextFrame();
+      await ctx.mount(truncationTemplate);
     });
 
     it('toggles expanded state', async () => {
@@ -142,8 +140,7 @@ describe('TruncationController', () => {
 
   describe('expandedValue changes', () => {
     beforeEach(async () => {
-      ctx.appendHTML(truncationTemplate);
-      await ctx.nextFrame();
+      await ctx.mount(truncationTemplate);
     });
 
     it('updates aria-label when expanded', async () => {
@@ -209,8 +206,8 @@ describe('TruncationController', () => {
         </div>
       `;
 
-      ctx.appendHTML(shortTextTemplate);
-      await waitForResize();
+      await ctx.mount(shortTextTemplate);
+      await ctx.nextFrame();
 
       const expander = ctx.container.querySelector<HTMLElement>('[data-truncation-target="expander"]')!;
 
@@ -247,8 +244,7 @@ describe('TruncationController', () => {
 
   describe('resize() method', () => {
     it('updates expander visibility when content dimensions change', async () => {
-      ctx.appendHTML(truncationTemplate);
-      await ctx.nextFrame();
+      await ctx.mount(truncationTemplate);
 
       const controller = ctx.getController<TruncationController>('truncation');
       const expander = ctx.container.querySelector<HTMLElement>('[data-truncation-target="expander"]')!;
@@ -284,8 +280,7 @@ describe('TruncationController', () => {
     });
 
     it('keeps expander visible when expanded even if not truncated', async () => {
-      ctx.appendHTML(truncationTemplate);
-      await ctx.nextFrame();
+      await ctx.mount(truncationTemplate);
 
       const controller = ctx.getController<TruncationController>('truncation');
       const expander = ctx.container.querySelector<HTMLElement>('[data-truncation-target="expander"]')!;
