@@ -150,7 +150,7 @@ en:
         url_caption: The host address of your wiki platform including the https://. It should not be longer than 255 characters.
         xwiki:
           oauth:
-            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application.
             provider_oauth: Wiki OAuth
             provider_oauth_description: Allow OpenProject to access XWiki data using OAuth.
             provider_oauth_configuration: Copy these values to the [XWiki OIDC Connection client](xwiki_oidc_link).
