@@ -54,6 +54,19 @@ module MetaTagsHelper
         }.compact
   end
 
+  # Emits a <link rel="canonical"> pointing to the numeric-ID URL, normalising
+  # semantic identifiers and project slugs for search engines.
+  def canonical_link_tag
+    canonical_path =
+      if @work_package && controller_name == "work_packages" && request.path_parameters[:id].present?
+        work_package_canonical_path
+      elsif @project && request.path.match?(%r{/projects/[^/]+})
+        project_canonical_path
+      end
+
+    tag.link rel: :canonical, href: "#{request.base_url}#{canonical_path}" if canonical_path
+  end
+
   ##
   # Writer of html_title as string
   def html_title(*args)
@@ -70,5 +83,17 @@ module MetaTagsHelper
       parts << h(@project.name) if @project
       parts.concat @html_title.map(&:to_s) if @html_title
     end
+  end
+
+  private
+
+  def work_package_canonical_path
+    request.path
+      .sub("/projects/#{request.path_parameters[:project_id]}", "/projects/#{@work_package.project_id}")
+      .sub("/work_packages/#{request.path_parameters[:id]}", "/work_packages/#{@work_package.id}")
+  end
+
+  def project_canonical_path
+    request.path.sub(%r{/projects/[^/]+}, "/projects/#{@project.id}")
   end
 end
