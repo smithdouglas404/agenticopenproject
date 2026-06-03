@@ -57,10 +57,11 @@ fr:
       col_identifier: Identifiant
       col_project: Projet
       col_reserved: Réservé
-      not_available_in_semantic_mode: Les identifiants réservés ne sont disponibles qu'en mode identifiant numérique.
-      filter_label: Filter identifiers
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
       btn_release: Release
       released_notice: L'identifiant "%{identifier}" a été publié.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
         title: Identifiant de publication
         heading: Publier «%{identifier} » ?
@@ -458,7 +459,7 @@ fr:
         dialog:
           title: Modifier les identifiants de lots de travaux
           heading: Activer les ID de lots de travaux basés sur le projet ?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
+          description: 'Cette opération modifiera les identifiants de tous les lots de travaux de tous les projets dans ce cas. Les identifiants et URL précédents continueront à fonctionner. Cette modification prendra un certain temps.
 
             '
           confirm_button: Modifier les identifiants
@@ -939,7 +940,7 @@ fr:
       change_identifier_dialog_title: Modifier l'identifiant du projet
       change_identifier_format_hint_semantic: Uniquement des lettres majuscules (A-Z), des chiffres ou des traits de soulignement. Maximum 10 caractères. Doit commencer par une lettre.
       change_identifier_format_hint_legacy: Uniquement des lettres minuscules (a-z), des chiffres, des tirets ou des traits de soulignement.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
+      change_identifier_warning: 'Cela modifiera de manière permanente les identifiants et les URL de tous les lots de travail de ce projet. Les identifiants et URL précédents continueront néanmoins à fonctionner.
 
         '
       subitems:
@@ -1363,12 +1364,12 @@ fr:
     edit:
       form_configuration:
         tab: Configuration du formulaire
-        label_group: Groupe
-        reset_to_defaults: Rétablir les valeurs par défaut
-        add_attribute_group: Ajouter un groupe d’attributs
-        add_query_group: Ajouter un tableau des lots de travaux associés
-        delete_group: Supprimer le groupe
-        remove_attribute: Retirer du groupe
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Faites glisser les champs à partir d'ici pour les activer
         drag_to_reorder: Glisser pour réorganiser
         edit_query: Modifier la requête
@@ -1378,12 +1379,12 @@ fr:
         no_inactive_attributes: Pas d'attributs inactifs
         blankslate_title: Aucun groupe pour le moment
         blankslate_description: Ajoutez des groupes à l'aide du bouton ci-dessus ou faites glisser des attributs depuis le panneau de gauche.
-        group_actions: Actions de groupe
-        rename_group: Renommer le groupe
-        confirm_delete_group: Êtes-vous sûr de vouloir supprimer ce groupe ? Cette action ne peut pas être annulée.
-        group_name_label: Nom du groupe
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Actions de ligne
-        query_group_label: Tableau des lots de travaux
+        query_group_label: Related work packages table
         empty_group_hint: Glisser les attributs ici
         invalid_attribute_groups: La charge utile de la configuration du formulaire n'est pas valide.
         invalid_query: La configuration de la requête intégrée n'est pas valide.
@@ -4274,7 +4275,7 @@ fr:
   label_project_new: Nouveau projet
   label_project_plural: Projets
   label_project_list_plural: Listes de projets
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: Cycle de vie du projet
   label_project_attributes_plural: Attributs du projet
   label_project_custom_field_plural: Attributs du projet
@@ -4826,6 +4827,7 @@ fr:
         menu:
           label_actions: Actions du lot de travaux
         parent: Parent
+        undisclosed: Undisclosed
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages

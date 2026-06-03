@@ -2,72 +2,131 @@
 es:
   activerecord:
     attributes:
-      resource_planner:
-        name: Nombre
-        start_date: Fecha de inicio
-        end_date: Fecha de finalización
-        default_view_class_name: Vista por defecto
-        public: Público
-        favorite: Favorito
       resource_allocation:
+        allocated_time: Allocated time
+        end_date: Finish date
         entity: Entity
         principal: Assignee
-        state: State
         start_date: Start date
-        end_date: Finish date
-        allocated_time: Allocated time
+        state: State
         user_filter: User filter
+      resource_planner:
+        default_view_class_name: Vista por defecto
+        end_date: Fecha de finalización
+        favorite: Favorito
+        name: Nombre
+        public: Público
+        start_date: Fecha de inicio
     errors:
       models:
-        resource_planner:
-          attributes:
-            end_date:
-              greater_than_start_date: debe ser posterior a la fecha de inicio.
         resource_allocation:
           attributes:
             end_date:
               greater_than_start_date: must be after the start date.
-  plugin_openproject_resource_management:
-    name: Gestión de recursos de OpenProject
-    description: Proporciona gestión de recursos y planificación de capacidades.
-  project_module_resource_management: Gestión de recursos
-  permission_view_resource_planners: Ver planificadores de recursos
-  permission_view_resource_planners_explanation: 'Permite a los usuarios acceder a los planificadores de recursos. Les permite crear y gestionar sus propios planificadores de recursos, así como consultar los planificadores de recursos públicos. No permite a los usuarios consultar los planificadores de recursos creados por otros usuarios que no se hayan compartido públicamente.
+        resource_planner:
+          attributes:
+            end_date:
+              greater_than_start_date: debe ser posterior a la fecha de inicio.
+        resource_work_package_list:
+          attributes:
+            query:
+              must_be_work_package_query: must be a work package query.
+    models:
+      resource_allocation: Resource Allocation
+      resource_planner: Resource Planner
+      resource_work_package_list: Work packages list
+      user_card: User cards
+  button_next: Next
+  label_resource_management: Planificación de recursos
+  permission_allocate_user_resources: Allocate user resources
+  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
 
     '
   permission_manage_public_resource_planners: Gestionar los planificadores de recursos públicos
   permission_manage_public_resource_planners_explanation: 'Permite a los usuarios crear y gestionar planificadores de recursos públicos. Les permite ver, crear, gestionar y publicar sus propios planificadores de recursos. No permite a los usuarios ver los planificadores de recursos creados por otros usuarios que no se hayan compartido públicamente.
 
     '
-  permission_allocate_user_resources: Allocate user resources
-  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
+  permission_view_resource_planners: Ver planificadores de recursos
+  permission_view_resource_planners_explanation: 'Permite a los usuarios acceder a los planificadores de recursos. Les permite crear y gestionar sus propios planificadores de recursos, así como consultar los planificadores de recursos públicos. No permite a los usuarios consultar los planificadores de recursos creados por otros usuarios que no se hayan compartido públicamente.
 
     '
-  label_resource_management: Planificación de recursos
-  button_next: Guardar
+  plugin_openproject_resource_management:
+    description: Proporciona gestión de recursos y planificación de capacidades.
+    name: Gestión de recursos de OpenProject
+  project_module_resource_management: Gestión de recursos
   resource_management:
-    label_resource_planner: Planificador de recursos
-    label_resource_planner_plural: Planificadores de recursos
-    label_new_resource_planner: Nuevo planificador de recursos
-    public_caption: 'Haga que esta vista sea pública para todos los miembros del proyecto. Esto no afecta a la visibilidad de los paquetes de trabajo, que sigue dependiendo de los permisos de cada usuario.
-
-      '
+    action:
+      delete: Eliminar
+      favorite: Añadir a favoritos
+      make_private: Marcar como privado
+      make_public: Marcar como público
+      unfavorite: Eliminar de favoritos
+    blankslate:
+      desc: Cree un planificador de recursos para empezar a planificar la capacidad de este proyecto.
+      title: Aún no hay planificadores de recursos
+    configure_view_dialog:
+      delete_confirmation: Are you sure you want to delete this view? This cannot be undone.
+      filter_mode:
+        automatic:
+          caption: An automatically-generated list that displays items that meet criteria you define.
+          label: Automatically filtered
+        label: Item selection
+        manual:
+          caption: A custom list of items you manually add and remove. Filtering is not possible.
+          label: Manually hand-picked
+      title: Configure view
     favorite_caption: 'Convierta esta vista en favorita para añadirla a la sección superior del menú de la barra lateral.
 
       '
-    view_types:
-      UserCardView: Tarjetas de usuario
-    action:
-      favorite: Añadir a favoritos
-      unfavorite: Eliminar de favoritos
-      make_public: Marcar como público
-      make_private: Marcar como privado
-      delete: Eliminar
-    sidebar:
-      public: Público
-      private: Privado
-    blankslate:
-      title: Aún no hay planificadores de recursos
-      desc: Cree un planificador de recursos para empezar a planificar la capacidad de este proyecto.
+    label_new_resource_planner: Nuevo planificador de recursos
+    label_resource_planner: Planificador de recursos
+    label_resource_planner_plural: Planificadores de recursos
+    new_view_dialog:
+      title: Add View
+    public_caption: 'Haga que esta vista sea pública para todos los miembros del proyecto. Esto no afecta a la visibilidad de los paquetes de trabajo, que sigue dependiendo de los permisos de cada usuario.
+
+      '
     show:
       placeholder: La vista detallada de este planificador de recursos estará disponible en breve.
+    sidebar:
+      private: Privado
+      public: Público
+    sub_views: Views in this resource planner
+    view_types:
+      resource_work_package_list:
+        caption: Create a view based on work packages and see its details and allocation in a list
+        label: Work packages list
+      user_card:
+        caption: Create a view based on users and see their details and allocation in a list of user cards
+        label: Users card list
+    work_package_list:
+      add_work_package_dialog:
+        title: Add work package
+      allocation_placeholder: "—"
+      blank:
+        description: There are no work packages matching this view's filters yet.
+        title: No work packages to display
+      columns:
+        allocated_members: Allocated members
+        allocation: Allocation
+        dates: Dates
+      context_menu:
+        add_filter_criteria: Add filter criteria
+        add_user_group: Add user group
+        edit_total_work: Edit total work
+        label: More actions
+        move: Move
+        move_down: Move down
+        move_to_bottom: Move to bottom
+        move_to_top: Move to top
+        move_up: Move up
+        remove: Remove
+        remove_confirmation: Remove this work package from the view?
+        see_allocation: See allocation
+      mobile_title: Work packages
+      query_name: 'Resource management work packages: %{name}'
+      subheader:
+        add: Add
+        add_work_package: Add work package
+        allocate: Allocate
+        settings: Configure view
