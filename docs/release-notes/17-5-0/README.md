@@ -43,6 +43,8 @@ Existing integrations such as GitHub and GitLab already support the new identifi
 > [!NOTE]
 > Project-based work package identifiers are still in Beta. While the feature is supported across important areas of OpenProject, **some areas may continue to display numerical identifiers until support for project-based identifiers is fully implemented**. In these cases, numerical identifiers remain fully functional and continue to resolve to the same work packages.
 
+[See our system admin guide for detailed information on how to manage work package identifiers](../../system-admin-guide/manage-work-packages/work-package-identifiers/).
+
 #### Releasing unused numerical identifiers
 
 When switching from the default numerical sequence to project-based work package identifiers, previously reserved numerical identifiers can be released again if they are no longer needed. This helps administrators avoid unnecessary gaps and keep numerical identifiers available if they later revert to the default sequence.
