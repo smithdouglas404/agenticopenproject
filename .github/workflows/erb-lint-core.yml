@@ -1,0 +1,31 @@
+name: ERB lint
+
+on:
+  pull_request:
+    paths:
+      - '**/*.erb'
+      - '.erb_lint.yml'
+      - '.erb_linters/**'
+
+jobs:
+  erb-lint:
+    name: ERB lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1
+      - name: Install erb_lint
+        run: gem install -N erb_lint erblint-github
+      - name: Run erb-lint
+        uses: tk0miya/action-erblint@44c5fe3552356fe8bff23f30d534aa4258aa3f7b # v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-check
+          fail_on_error: true
