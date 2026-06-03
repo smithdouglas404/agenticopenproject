@@ -32,10 +32,9 @@ module Wikis
   module Adapters
     module Providers
       module XWiki
-        # Represents a parsed XWiki stable page identifier in canonical document reference format:
+        # Represents an XWiki page identifier in canonical document reference format:
         # "wikiName:Space1.Space2.PageName" — e.g. "xwiki:Main.WebHome"
-        # Maps to the REST API path: /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
-        PageReference = Data.define(:wiki, :spaces, :page) do
+        CanonicalPageReference = Data.define(:wiki, :spaces, :page) do
           def self.parse(identifier)
             wiki, page_path = identifier.split(":", 2)
             return nil if page_path.blank?
@@ -46,6 +45,8 @@ module Wikis
             new(wiki:, spaces:, page:)
           end
 
+          # Maps the reference to the REST API path, excluding the `/rest` prefix, e.g.
+          # /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
           def rest_path
             spaces_path = spaces.map { "/spaces/#{CGI.escapeURIComponent(it)}" }.join
             "/wikis/#{CGI.escapeURIComponent(wiki)}#{spaces_path}/pages/#{CGI.escapeURIComponent(page)}"

@@ -31,7 +31,7 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Wikis::Adapters::Providers::XWiki::PageReference do
+RSpec.describe Wikis::Adapters::Providers::XWiki::CanonicalPageReference do
   describe ".parse" do
     subject { described_class.parse(identifier) }
 

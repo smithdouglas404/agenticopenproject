@@ -37,7 +37,7 @@ module Wikis
             include Concerns::XWikiQuery
 
             def call(input_data:, auth_strategy:)
-              ref = PageReference.parse(input_data.identifier)
+              ref = CanonicalPageReference.parse(input_data.identifier)
               return failure(code: :not_found) unless ref
 
               authenticated(auth_strategy) do |http|
