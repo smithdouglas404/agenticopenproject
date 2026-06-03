@@ -45,7 +45,7 @@ module Wikis::Admin::Forms
     end
 
     def xwiki_admin_url
-      XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenProject")
+      Wikis::Admin::XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenProject")
     end
   end
 end

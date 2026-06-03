@@ -62,7 +62,7 @@ module Wikis::Admin::Forms
     end
 
     def xwiki_oidc_admin_url
-      XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenID Connect")
+      Wikis::Admin::XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenID Connect")
     end
   end
 end

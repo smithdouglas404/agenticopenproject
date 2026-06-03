@@ -33,7 +33,7 @@ module Wikis::Admin
     ADMIN_PATH = "/bin/admin/XWiki/XWikiPreferences"
 
     def self.url(base_url:, section:)
-      "#{base_url.to_s.chomp('/')}#{ADMIN_PATH}?#{{ editor: "globaladmin", section: }.to_query}"
+      "#{base_url.to_s.chomp('/')}#{ADMIN_PATH}?#{{ editor: 'globaladmin', section: }.to_query}"
     end
   end
 end
