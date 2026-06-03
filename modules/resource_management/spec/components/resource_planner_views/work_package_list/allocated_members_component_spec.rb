@@ -46,8 +46,11 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::AllocatedMembersComponent,
            filter_name: name)
   end
 
+  # nil means no visibility restriction (every principal is visible).
+  let(:visible_principal_ids) { nil }
+
   subject(:rendered) do
-    render_inline(described_class.new(allocations:))
+    render_inline(described_class.new(allocations:, visible_principal_ids:))
     page
   end
 
@@ -108,6 +111,34 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::AllocatedMembersComponent,
       label = I18n.t("resource_management.work_package_list.allocated_members.unassigned")
       expect(rendered).to have_css("avatar-fallback[data-alt-text='#{label}']")
       expect(rendered).to have_text(label)
+    end
+  end
+
+  context "with a member the current user cannot see" do
+    let(:hidden_user) { create(:user, firstname: "Hidden", lastname: "Person") }
+    let(:allocations) { [assigned_allocation(assignee), assigned_allocation(hidden_user)] }
+    let(:visible_principal_ids) { Set[assignee.id] }
+
+    it "names only the visible member but still counts the hidden one" do
+      expect(rendered).to have_css("avatar-fallback[data-unique-id='#{assignee.id}']")
+      expect(rendered).to have_text("Michael Johnson")
+      expect(rendered).to have_text("+1")
+    end
+
+    it "does not reveal the hidden member's avatar or name" do
+      expect(rendered).to have_no_css("avatar-fallback[data-unique-id='#{hidden_user.id}']")
+      expect(rendered).to have_no_text("Hidden Person")
+    end
+  end
+
+  context "when every member is hidden from the current user" do
+    let(:allocations) { [assigned_allocation(assignee), assigned_allocation(create(:user))] }
+    let(:visible_principal_ids) { Set.new }
+
+    it "shows an anonymous count instead of names or avatars" do
+      expect(rendered).to have_no_css("avatar-fallback")
+      expect(rendered).to have_no_text("Michael Johnson")
+      expect(rendered).to have_text("2 users")
     end
   end
 

@@ -30,7 +30,7 @@
 
 module ResourcePlannerViews::WorkPackageList
   class ContentComponent < ApplicationComponent
-    def initialize(view:, project:, resource_planner:, work_packages: [], allocations: {})
+    def initialize(view:, project:, resource_planner:, work_packages: [], allocations: {}, visible_principal_ids: nil)
       super
 
       @view = view
@@ -38,10 +38,11 @@ module ResourcePlannerViews::WorkPackageList
       @resource_planner = resource_planner
       @work_packages = work_packages
       @allocations = allocations
+      @visible_principal_ids = visible_principal_ids
     end
 
     private
 
-    attr_reader :work_packages, :allocations
+    attr_reader :work_packages, :allocations, :visible_principal_ids
   end
 end

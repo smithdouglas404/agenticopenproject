@@ -27,20 +27,24 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= flex_layout(align_items: :center) do |container| %>
-  <%= container.with_column do %>
-    <%= render(Primer::OpenProject::AvatarStack.new(tooltipped: true, body_arguments: { label: tooltip_label })) do |stack| %>
-      <% avatar_options.each do |options| %>
-        <% stack.with_avatar_with_fallback(**options) %>
+<% if named? %>
+  <%= flex_layout(align_items: :center) do |container| %>
+    <%= container.with_column do %>
+      <%= render(Primer::OpenProject::AvatarStack.new(tooltipped: true, body_arguments: { label: tooltip_label })) do |stack| %>
+        <% avatar_options.each do |options| %>
+          <% stack.with_avatar_with_fallback(**options) %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%= container.with_column(ml: 2) do %>
+      <%= render(Primer::Beta::Text.new(font_size: :small)) { lead_name } %>
+    <% end %>
+    <% if additional? %>
+      <%= container.with_column(ml: 1) do %>
+        <%= render(Primer::Beta::Text.new(font_size: :small, color: :muted)) { additional_label } %>
       <% end %>
     <% end %>
   <% end %>
-  <%= container.with_column(ml: 2) do %>
-    <%= render(Primer::Beta::Text.new(font_size: :small)) { lead_name } %>
-  <% end %>
-  <% if additional? %>
-    <%= container.with_column(ml: 1) do %>
-      <%= render(Primer::Beta::Text.new(font_size: :small, color: :muted)) { additional_label } %>
-    <% end %>
-  <% end %>
+<% else %>
+  <%= render(Primer::Beta::Text.new(font_size: :small, color: :muted)) { anonymous_label } %>
 <% end %>

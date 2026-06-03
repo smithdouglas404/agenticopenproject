@@ -132,6 +132,9 @@ en:
         title: Add work package
       allocated_members:
         additional: "+%{count}"
+        other_users:
+          one: "%{count} user"
+          other: "%{count} users"
         unassigned: Unassigned
       allocation:
         hours: "%{value}h"

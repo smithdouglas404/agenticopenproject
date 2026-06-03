@@ -39,30 +39,53 @@ module ResourcePlannerViews::WorkPackageList
 
     AVATAR_SIZE = 20
 
-    def initialize(allocations:)
+    # `visible_principal_ids` are the principals the current user may see. Members
+    # whose principal is not in that set are still counted, but never named or
+    # given a (potentially identity-revealing) avatar. A nil set means no
+    # restriction.
+    def initialize(allocations:, visible_principal_ids: nil)
       super
 
       @allocations = allocations
+      @visible_principal_ids = visible_principal_ids
     end
 
     def render?
       allocations.any?
     end
 
+    # Whether at least one member can be named — a visible user or a filter
+    # placeholder. When false, every member is hidden and only a count is shown.
+    def named?
+      identifiable.any?
+    end
+
     private
 
-    attr_reader :allocations
+    attr_reader :allocations, :visible_principal_ids
+
+    # Members we may reveal: filter placeholders (no user) and allocations whose
+    # principal is visible to the current user.
+    def identifiable
+      @identifiable ||= allocations.select do |allocation|
+        allocation.principal_id.nil? ||
+          visible_principal_ids.nil? ||
+          visible_principal_ids.include?(allocation.principal_id)
+      end
+    end
 
     def avatar_options
-      allocations.map { |allocation| avatar_options_for(allocation) }
+      identifiable.map { |allocation| avatar_options_for(allocation) }
     end
 
     # The name shown beside the stack. The stack's own overflow indicator is not
     # numeric, so the count of the remaining members is spelled out separately.
     def lead_name
-      member_name(allocations.first)
+      member_name(identifiable.first)
     end
 
+    # Members beyond the named lead, including those hidden from this user, so
+    # hidden allocations are surfaced as a count rather than silently dropped.
     def additional_count
       allocations.size - 1
     end
@@ -73,6 +96,11 @@ module ResourcePlannerViews::WorkPackageList
 
     def additional_label
       t("resource_management.work_package_list.allocated_members.additional", count: additional_count)
+    end
+
+    # Shown when none of the members may be named: a bare count of the members.
+    def anonymous_label
+      t("resource_management.work_package_list.allocated_members.other_users", count: allocations.size)
     end
 
     # A real principal resolves to their avatar (falling back to generated
@@ -90,8 +118,9 @@ module ResourcePlannerViews::WorkPackageList
     end
 
     # Shown in the stack's hover tooltip, since the names are not rendered inline.
+    # Only names members we may reveal.
     def tooltip_label
-      allocations.map { |allocation| member_name(allocation) }.join(", ")
+      identifiable.map { |allocation| member_name(allocation) }.join(", ")
     end
 
     # The assigned user's name, the filter name for an unassigned filter

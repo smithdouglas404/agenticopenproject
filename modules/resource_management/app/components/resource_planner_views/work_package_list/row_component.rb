@@ -105,7 +105,7 @@ module ResourcePlannerViews::WorkPackageList
     def allocated_members
       return render(Primer::Beta::Text.new(color: :muted)) { allocation_placeholder } if allocations.empty?
 
-      render(AllocatedMembersComponent.new(allocations:))
+      render(AllocatedMembersComponent.new(allocations:, visible_principal_ids: table.visible_principal_ids))
     end
 
     def button_links

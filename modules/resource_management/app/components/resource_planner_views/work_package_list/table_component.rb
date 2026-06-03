@@ -34,15 +34,16 @@ module ResourcePlannerViews::WorkPackageList
 
     mobile_columns :subject, :priority
 
-    attr_reader :view, :project, :resource_planner
+    attr_reader :view, :project, :resource_planner, :visible_principal_ids
 
-    def initialize(view:, project:, resource_planner:, allocations: {}, **)
+    def initialize(view:, project:, resource_planner:, allocations: {}, visible_principal_ids: nil, **)
       super(**)
 
       @view = view
       @project = project
       @resource_planner = resource_planner
       @allocations = allocations
+      @visible_principal_ids = visible_principal_ids
     end
 
     def manual? = view.manually_picked?

@@ -205,8 +205,19 @@ module ::ResourceManagement
         project: @project,
         resource_planner: @resource_planner,
         work_packages:,
-        allocations:
+        allocations:,
+        visible_principal_ids: visible_principal_ids(allocations)
       )
+    end
+
+    # The principals among the allocations that the current user may see. The
+    # members column keeps the rest as an anonymous count rather than revealing
+    # who they are.
+    def visible_principal_ids(allocations)
+      principal_ids = allocations.values.flatten.filter_map(&:principal_id).uniq
+      return Set.new if principal_ids.empty?
+
+      Principal.visible(current_user).where(id: principal_ids).pluck(:id).to_set
     end
 
     def render_configure_step(view, status: :ok)
