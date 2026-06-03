@@ -52,8 +52,8 @@ export function useAttachmentValidation() {
 
     const ext = file.name.split('.').pop()?.toLowerCase();
     const allowed = whitelist.some((entry) =>
-      entry.startsWith('*')
-        ? entry.slice(1).replace(/^\./, '').toLowerCase() === ext
+      entry.startsWith('*.')
+        ? entry.slice(2).toLowerCase() === ext
         : entry === file.type,
     );
 

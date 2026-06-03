@@ -45,8 +45,20 @@ function mockFile(name:string, type:string):File {
   return new File([''], name, { type });
 }
 
+let originalOpenProject:unknown;
+let originalI18n:unknown;
+
 beforeEach(() => {
-  (window as unknown as { I18n:unknown }).I18n = { t: (_key:string, opts?:{ value?:string }) => `not allowed: ${opts?.value ?? ''}` };
+  const win = window as unknown as { OpenProject:unknown; I18n:unknown };
+  originalOpenProject = win.OpenProject;
+  originalI18n = win.I18n;
+  win.I18n = { t: (_key:string, opts?:{ value?:string }) => `not allowed: ${opts?.value ?? ''}` };
+});
+
+afterEach(() => {
+  const win = window as unknown as { OpenProject:unknown; I18n:unknown };
+  win.OpenProject = originalOpenProject;
+  win.I18n = originalI18n;
 });
 
 describe('useAttachmentValidation', () => {
@@ -92,11 +104,11 @@ describe('useAttachmentValidation', () => {
       expect(validation.valid).toBe(true);
     });
 
-    it('allows a file matching a *ext glob (no dot)', async () => {
+    it('does not match a *ext glob without a dot (backend also rejects this format)', async () => {
       mockPluginContext(['*png']);
       const { result } = renderHook(() => useAttachmentValidation());
       const validation = await result.current.validateFile(mockFile('photo.png', 'image/png'));
-      expect(validation.valid).toBe(true);
+      expect(validation.valid).toBe(false);
     });
 
     it('is case-insensitive for the extension', async () => {

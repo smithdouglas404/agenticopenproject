@@ -71,16 +71,16 @@ export function useBlockNoteAttachments(
   }, [getEditor]);
 
   const uploadFile = useCallback(async (file:File, blockId?:string):Promise<string> => {
-    const pluginContext = await window.OpenProject.getPluginContext();
-
-    const validation = await validateFile(file);
-    if (!validation.valid) {
-      pluginContext.services.notifications.addError(validation.reason);
-      removePlaceholder(blockId);
-      return '';
-    }
-
     try {
+      const pluginContext = await window.OpenProject.getPluginContext();
+
+      const validation = await validateFile(file);
+      if (!validation.valid) {
+        pluginContext.services.notifications.addError(validation.reason);
+        removePlaceholder(blockId);
+        return '';
+      }
+
       const service = pluginContext.services.attachmentsResourceService;
       const uploadFiles:IUploadFile[] = [{ file }];
       const result = await firstValueFrom(
@@ -93,9 +93,8 @@ export function useBlockNoteAttachments(
       }
       return href;
     } catch (error) {
-      pluginContext.services.notifications.addError(
-        error instanceof Error ? error.message : String(error),
-      );
+      const pluginContext = await window.OpenProject.getPluginContext().catch(() => null);
+      pluginContext?.services.notifications.addError(error as never);
       removePlaceholder(blockId);
 
       // Return '' instead of rethrowing: BlockNote 0.44.x doesn't catch
