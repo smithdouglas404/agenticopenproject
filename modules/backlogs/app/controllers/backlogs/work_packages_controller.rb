@@ -58,7 +58,7 @@ module Backlogs
       respond_with_dialog Backlogs::MoveToBucketDialogComponent.new(
         work_package: @work_package,
         project: @project,
-        move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
+        move_action: move_project_backlogs_work_package_path(@project, @work_package, backlog_filter_params)
       )
     end
 
