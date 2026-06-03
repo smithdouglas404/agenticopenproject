@@ -36,18 +36,10 @@ module OpPrimer
     def initialize(flash_type: nil, **system_arguments)
       @unique_key = system_arguments.delete(:unique_key)
       @flash_type = flash_type&.to_sym
+      @scheme = system_arguments[:scheme]&.to_sym
+      @autohide = success?
 
-      system_arguments[:test_selector] ||= "op-primer-flash-message"
-      system_arguments[:dismiss_scheme] ||= :remove
-      system_arguments[:dismiss_label] ||= dismiss_label_for(@flash_type)
-      system_arguments[:data] ||= {}
-      system_arguments[:data]["flash-target"] = "flash"
-      system_arguments[:data]["flash-type"] = @flash_type
-      system_arguments[:data]["flash-role"] = aria_role
-      system_arguments[:role] ||= aria_role
-
-      @autohide = autohide?
-      system_arguments[:data]["autohide"] = @autohide
+      apply_accessibility_defaults(system_arguments)
 
       super
     end
@@ -58,27 +50,58 @@ module OpPrimer
       super
     end
 
+    def live_region_message
+      strip_tags(trimmed_content.to_s.gsub(%r{<br\s*/?>}i, " ")).squish
+    end
+
+    def live_region_politeness
+      urgent? ? "assertive" : "polite"
+    end
+
     private
+
+    def apply_accessibility_defaults(system_arguments)
+      system_arguments.reverse_merge!(
+        test_selector: "op-primer-flash-message",
+        dismiss_scheme: :remove,
+        dismiss_label:,
+        role: aria_role
+      )
+      system_arguments[:aria] = { live: live_region_politeness }.merge(system_arguments[:aria] || {})
+      apply_flash_data_attributes(system_arguments[:data] ||= {})
+    end
+
+    def apply_flash_data_attributes(data)
+      data.merge!(
+        "flash-target" => "flash",
+        "flash-type" => @flash_type,
+        "flash-role" => aria_role,
+        "autohide" => @autohide
+      )
+    end
 
     def render?
       trimmed_content.present?
     end
 
-    def autohide?
-      @flash_type.in?([:success, :notice])
-    end
-
     def aria_role
-      @flash_type.in?([:error, :danger]) ? "alert" : "status"
+      urgent? ? "alert" : "status"
     end
 
-    def dismiss_label_for(type)
-      case type
-      when :error, :danger
+    def dismiss_label
+      if urgent?
         I18n.t("js.dismiss_error_notification", default: "Dismiss error notification")
       else
         I18n.t("js.dismiss_notification", default: "Dismiss notification")
       end
+    end
+
+    def success?
+      @scheme == :success || @flash_type.in?(%i[success notice])
+    end
+
+    def urgent?
+      @scheme == :danger || @flash_type.in?(%i[error danger])
     end
   end
 end

@@ -48,6 +48,38 @@ RSpec.describe OpPrimer::FlashComponent, type: :component do
       it "renders the banner text" do
         expect(rendered_component).to have_css ".Banner-message .Banner-title", text: "Flash Text"
       end
+
+      it "renders a polite status region" do
+        expect(rendered_component).to have_css '[role="status"][aria-live="polite"]'
+      end
+
+      it "marks the flash for polite announcement" do
+        expect(rendered_component).to have_css '[data-announcement="Flash Text"][data-politeness="polite"]'
+      end
+    end
+
+    context "with danger scheme" do
+      let(:content) { "Flash Error" }
+
+      subject(:rendered_component) { render_component(content, scheme: :danger) }
+
+      it "renders an assertive alert region" do
+        expect(rendered_component).to have_css '[role="alert"][aria-live="assertive"]'
+      end
+
+      it "marks the flash for assertive announcement" do
+        expect(rendered_component).to have_css '[data-announcement="Flash Error"][data-politeness="assertive"]'
+      end
+    end
+
+    context "with success scheme" do
+      let(:content) { "Flash Text" }
+
+      subject(:rendered_component) { render_component(content, scheme: :success) }
+
+      it "marks the flash for autohide" do
+        expect(rendered_component).to have_css '[data-autohide="true"]'
+      end
     end
 
     context "with blank content" do
@@ -94,6 +126,20 @@ RSpec.describe OpPrimer::FlashComponent, type: :component do
 
       it "renders the banner text within the template" do
         expect(rendered_template).to have_css ".Banner-message .Banner-title", text: "Flash Text"
+      end
+
+      it "renders announcement data within the template" do
+        expect(rendered_template).to have_css '[data-announcement="Flash Text"][data-politeness="polite"]'
+      end
+    end
+
+    context "with HTML content" do
+      let(:content) { "First line<br />Second line".html_safe }
+
+      it "provides a text-only live region message" do
+        component = described_class.new.with_content(content)
+
+        expect(component.live_region_message).to eq "First line Second line"
       end
     end
 

@@ -47,11 +47,8 @@ module FlashMessagesHelper
   #
   # @return [String] an HTML-safe string.
   def render_flash_messages_as_turbo_streams
-    streams = build_flash_entries.flat_map do |entry|
-      [
-        entry[:component].render_as_turbo_stream(view_context: self, action: :flash),
-        render_live_region_stream(entry[:announcement], politeness: entry[:politeness])
-      ].compact
+    streams = build_flash_entries.map do |entry|
+      entry[:component].render_as_turbo_stream(view_context: self, action: :flash)
     end
 
     safe_join(streams)
@@ -73,15 +70,14 @@ module FlashMessagesHelper
       .reject { |k, _| k.start_with? "_" }
       .reject { |k, _| k.to_s == "op_modal" }
       .map do |key, value|
-      type = key.to_sym
+        type = key.to_sym
+        component = build_flash_component(type, value)
 
-      {
-        type:,
-        politeness: flash_politeness(type),
-        announcement: flash_announcement_text(value),
-        component: build_flash_component(type, value)
-      }
-    end
+        {
+          type:,
+          component:
+        }
+      end
   end
 
   def mapped_flash_type(type)
@@ -94,15 +90,6 @@ module FlashMessagesHelper
       :success
     else
       :default
-    end
-  end
-
-  def flash_politeness(type)
-    case type
-    when :error, :danger
-      "assertive"
-    else
-      "polite"
     end
   end
 
@@ -126,25 +113,5 @@ module FlashMessagesHelper
         component.with_action_button(**action_button_arguments) { action_button_content }
       end
     end
-  end
-
-  def flash_announcement_text(value)
-    content =
-      if value.respond_to?(:to_h)
-        hash = value.to_h.with_indifferent_access
-        hash[:message] || value
-      else
-        value
-      end
-
-    ActionController::Base.helpers.strip_tags(join_flash_messages(content).to_s).squish
-  end
-
-  def render_live_region_stream(message, politeness:)
-    return if message.blank?
-
-    OpTurbo::StreamComponent
-      .new(action: :liveRegion, message:, politeness:, target: nil)
-      .render_in(self)
   end
 end
