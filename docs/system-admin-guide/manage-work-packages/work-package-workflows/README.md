@@ -31,7 +31,7 @@ Once opened, you can configure workflows for this type:
 
 ![Tabs to select between default transitions, when the user is the author or when the user is the assignee](openproject_system_guide_wp_workflows_role_list.png)
 
-2. Select the **role** or **roles** for which you want to configure the workflow from the select panel. The workflow table will update automatically when switching roles. The role panel will also update to reflect the selected number of roles.
+2. Select the **role** or **roles** for which you want to configure the workflow from the select panel. The workflow table will update automatically when switching roles. The role panel will also update to reflect the selected number of roles. When multiple roles are selected, the checkboxes of the workflow table assign transitions for all. When only some of the selected roles have the transition, the checkboxes are marked as partial.
 
    ![Panel to select roles for a work package type in default transitions](openproject_system_guide_wp_workflows_select_role.png)
 
