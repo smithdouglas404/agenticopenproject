@@ -3,9 +3,11 @@ en:
   activerecord:
     attributes:
       resource_allocation:
+        allocated_hours: Hours
         allocated_time: Allocated time
         end_date: Finish date
         entity: Entity
+        filter_name: Resource filter name
         principal: Assignee
         start_date: Start date
         state: State
@@ -66,6 +68,18 @@ en:
       make_private: Make private
       make_public: Make public
       unfavorite: Remove from favorites
+    allocate_resource_dialog:
+      title: Allocate resource
+      submit: Allocate
+      success_message: Resource allocated.
+      kind:
+        label: Allocation type
+        principal:
+          label: User
+          caption: Allocate hours for a specific user.
+        filter:
+          label: Filter criteria
+          caption: Set filter criteria based on user attributes to create a placeholder resource.
     blankslate:
       desc: Create a resource planner to start planning capacity for this project.
       title: No resource planners yet

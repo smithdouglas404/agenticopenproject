@@ -77,7 +77,7 @@ module OpenProject::ResourceManagement
         # it through `allowed_in_project?`). The `contract_actions` map keeps the
         # permission discoverable for API contracts.
         permission :allocate_user_resources,
-                   { "resource_management/resource_allocations": %i[new create edit update destroy] },
+                   { "resource_management/resource_allocations": %i[new step create edit update destroy] },
                    permissible_on: :project,
                    dependencies: %i[view_resource_planners],
                    contract_actions: { resource_allocation: %i[create update destroy] }

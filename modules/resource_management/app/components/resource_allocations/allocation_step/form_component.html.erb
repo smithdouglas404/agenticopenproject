@@ -1,0 +1,16 @@
+<%=
+  component_wrapper do
+    primer_form_with(
+      model: @allocation,
+      scope: :resource_allocation,
+      url: project_resource_allocations_path(@project),
+      method: :post,
+      html: {
+        data: { turbo_stream: true },
+        id: ResourceAllocations::NewDialogComponent::FORM_ID
+      }
+    ) do |f|
+      render(form_list_component(f))
+    end
+  end
+%>

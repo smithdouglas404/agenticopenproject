@@ -35,6 +35,7 @@ module ResourceAllocations
     end
 
     attribute :principal
+    attribute :principal_explicit
     attribute :state
     attribute :start_date
     attribute :end_date

@@ -55,6 +55,8 @@ class ResourceAllocation < ApplicationRecord
     canceled: "canceled"
   }
 
+  scope :needs_principal_assignment, -> { where(principal_explicit: false, principal_id: nil) }
+
   validates :state, :start_date, :end_date, presence: true
   validates :allocated_time,
             presence: true,
@@ -64,7 +66,13 @@ class ResourceAllocation < ApplicationRecord
             inclusion: { in: ALLOWED_ENTITY_TYPES },
             allow_blank: true
 
-  validates :filter_name, presence: true, if: :filter_based?
+  with_options if: :principal_explicit? do
+    validates :principal, presence: true
+    validates :filter_name, absence: true
+    validates :user_filter, absence: true
+  end
+
+  validates :filter_name, presence: true, unless: :principal_explicit?
 
   validate :end_date_after_start_date
 
@@ -87,11 +95,15 @@ class ResourceAllocation < ApplicationRecord
   end
 
   def filter_based?
-    user_filter.present?
+    !principal_explicit?
   end
 
   def user_assigned?
     principal_id.present?
+  end
+
+  def needs_principal_assignment?
+    !principal_explicit? && principal_id.blank?
   end
 
   def candidate_query

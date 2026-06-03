@@ -65,6 +65,12 @@ Rails.application.routes.draw do
 
     resources :resource_allocations,
               controller: "resource_management/resource_allocations",
-              only: %i[new create edit update destroy]
+              only: %i[new create edit update destroy] do
+      collection do
+        # Step 2 of the "Allocate resource" dialog: swaps the kind selection for
+        # the allocation form of the chosen `allocation_kind`.
+        get :step
+      end
+    end
   end
 end
