@@ -64,11 +64,14 @@ en:
         xwiki_oauth_request_error: An unexpected error occured when trying to communicate with the XWiki instance.
         xwiki_oauth_token_missing: OpenProject cannot test the user-level communication with XWiki as the user did not yet connect their XWiki account.
         xwiki_oauth_unauthorized: The user token was not recognized by XWiki.
+    link_existing_wiki_page_dialog:
+      title: Add existing wiki page
+    link_existing_wiki_page_form:
+      no_results: No wiki pages found
+      placeholder: Search for a wiki page
     work_package_wikis_tab_component:
       inline_page_links: Inline page links
       referencing_pages: Referenced in
-    link_existing_wiki_page_dialog:
-      title: Add existing wiki page
     page_links:
       errors:
         page_not_found: Linked wiki page no longer available

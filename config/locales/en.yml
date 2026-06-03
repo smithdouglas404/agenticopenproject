@@ -453,6 +453,7 @@ en:
             OpenProject can automatically update these so that they are valid as in the examples below.
             Click on 'Convert identifiers' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
