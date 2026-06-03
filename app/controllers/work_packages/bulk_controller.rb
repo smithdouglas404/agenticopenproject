@@ -139,6 +139,8 @@ class WorkPackages::BulkController < ApplicationController
     return attributes unless WorkPackage::SemanticIdentifier.semantic_id?(raw.to_s)
 
     wp = WorkPackage.find_by_display_id(raw)
+    # If the semantic ID hasn't resolved to a proper package, default to 0, which is an invalid value
+    # that will trigger errors in the main update service
     attributes.merge(parent_id: wp ? wp.id : 0)
   end
 
