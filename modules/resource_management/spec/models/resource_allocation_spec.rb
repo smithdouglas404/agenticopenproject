@@ -33,9 +33,16 @@ require "spec_helper"
 RSpec.describe ResourceAllocation do
   describe "associations" do
     it { is_expected.to belong_to(:entity).required }
-    it { is_expected.to belong_to(:principal).class_name("User").inverse_of(:resource_allocations).optional }
     it { is_expected.to belong_to(:requested_by).class_name("User").optional }
     it { is_expected.to belong_to(:reviewed_by).class_name("User").optional }
+
+    # The association is optional; principal is only required (via a conditional
+    # validation) for explicit allocations, so the matcher is checked against a
+    # filter-based one where principal may legitimately be nil.
+    it "has an optional principal" do
+      allocation = build(:resource_allocation, principal_explicit: false, principal: nil, filter_name: "Devs")
+      expect(allocation).to belong_to(:principal).class_name("User").inverse_of(:resource_allocations).optional
+    end
   end
 
   describe "state enum" do
@@ -147,6 +154,20 @@ RSpec.describe ResourceAllocation do
 
     it "returns only filter placeholders without a principal" do
       expect(described_class.needs_principal_assignment).to contain_exactly(unassigned_placeholder)
+    end
+  end
+
+  describe ".for_principal" do
+    shared_let(:project) { create(:project) }
+    shared_let(:work_package) { create(:work_package, project:) }
+    shared_let(:user) { create(:user) }
+
+    let!(:for_user) { create(:resource_allocation, entity: work_package, principal: user) }
+
+    before { create(:resource_allocation, entity: work_package, principal: create(:user)) }
+
+    it "returns only the allocations of the given principal" do
+      expect(described_class.for_principal(user)).to contain_exactly(for_user)
     end
   end
 

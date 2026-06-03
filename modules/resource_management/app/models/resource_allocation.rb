@@ -56,6 +56,7 @@ class ResourceAllocation < ApplicationRecord
   }
 
   scope :needs_principal_assignment, -> { where(principal_explicit: false, principal_id: nil) }
+  scope :for_principal, ->(principal) { where(principal:) }
 
   validates :state, :start_date, :end_date, presence: true
   validates :allocated_time,
