@@ -1,5 +1,5 @@
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, inject } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
@@ -65,6 +65,14 @@ export class WorkPackageRelationsCreateComponent {
         this.notificationService.handleRawError(err, this.workPackage);
         this.toggleRelationsCreateForm();
       });
+  }
+
+  @HostListener('keydown.escape', ['$event'])
+  public onEscapeKey(event:KeyboardEvent):void {
+    if (this.showRelationsCreateForm) {
+      event.stopPropagation();
+      this.toggleRelationsCreateForm();
+    }
   }
 
   public toggleRelationsCreateForm() {
