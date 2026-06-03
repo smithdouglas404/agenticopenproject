@@ -28,41 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Admin::Forms
-  class OAuthClientFormComponent < Wikis::Admin::WikiProviderComponent
-    def self.wrapper_key = :wiki_provider_oauth_client_section
+require "spec_helper"
+require_module_spec_helper
 
-    options in_wizard: false,
-            oauth_client: nil
-
-    def form_url
-      query = in_wizard ? { continue_wizard: wiki_provider.id } : {}
-      url_helpers.admin_settings_wiki_provider_oauth_client_path(wiki_provider, query)
+RSpec.describe Wikis::Admin::XWikiAdminUrlHelper do
+  describe ".url" do
+    it "appends the admin path and encodes the section" do
+      expect(described_class.url(base_url: "https://xwiki.example.com/", section: "OpenProject"))
+        .to eq("https://xwiki.example.com/bin/admin/XWiki/XWikiPreferences?editor=globaladmin&section=OpenProject")
     end
 
-    def form_method
-      resolved_oauth_client.persisted? ? :patch : :post
+    it "handles a section with spaces" do
+      expect(described_class.url(base_url: "https://xwiki.example.com/", section: "OpenID Connect"))
+        .to eq("https://xwiki.example.com/bin/admin/XWiki/XWikiPreferences?editor=globaladmin&section=OpenID+Connect")
     end
 
-    def cancel_button_path
-      url_helpers.edit_admin_settings_wiki_provider_path(wiki_provider)
-    end
-
-    def resolved_oauth_client
-      oauth_client ||
-        wiki_provider.oauth_client ||
-        wiki_provider.build_oauth_client(
-          client_id: Wikis::XWikiProvider.generate_client_id,
-          client_secret: Wikis::XWikiProvider.generate_client_secret
-        )
-    end
-
-    def validation_message_for(attribute)
-      resolved_oauth_client.errors.messages_for(attribute).to_sentence.presence
-    end
-
-    def xwiki_oidc_admin_url
-      Wikis::Admin::XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenID Connect")
+    it "strips a trailing slash from the base URL" do
+      expect(described_class.url(base_url: "https://xwiki.example.com/", section: "OpenProject"))
+        .to eq(described_class.url(base_url: "https://xwiki.example.com", section: "OpenProject"))
     end
   end
 end

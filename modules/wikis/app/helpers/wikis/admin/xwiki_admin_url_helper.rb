@@ -28,41 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Admin::Forms
-  class OAuthClientFormComponent < Wikis::Admin::WikiProviderComponent
-    def self.wrapper_key = :wiki_provider_oauth_client_section
+module Wikis::Admin
+  module XWikiAdminUrlHelper
+    ADMIN_PATH = "/bin/admin/XWiki/XWikiPreferences"
 
-    options in_wizard: false,
-            oauth_client: nil
-
-    def form_url
-      query = in_wizard ? { continue_wizard: wiki_provider.id } : {}
-      url_helpers.admin_settings_wiki_provider_oauth_client_path(wiki_provider, query)
-    end
-
-    def form_method
-      resolved_oauth_client.persisted? ? :patch : :post
-    end
-
-    def cancel_button_path
-      url_helpers.edit_admin_settings_wiki_provider_path(wiki_provider)
-    end
-
-    def resolved_oauth_client
-      oauth_client ||
-        wiki_provider.oauth_client ||
-        wiki_provider.build_oauth_client(
-          client_id: Wikis::XWikiProvider.generate_client_id,
-          client_secret: Wikis::XWikiProvider.generate_client_secret
-        )
-    end
-
-    def validation_message_for(attribute)
-      resolved_oauth_client.errors.messages_for(attribute).to_sentence.presence
-    end
-
-    def xwiki_oidc_admin_url
-      Wikis::Admin::XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenID Connect")
+    def self.url(base_url:, section:)
+      "#{base_url.to_s.chomp('/')}#{ADMIN_PATH}?#{{ editor: 'globaladmin', section: }.to_query}"
     end
   end
 end
