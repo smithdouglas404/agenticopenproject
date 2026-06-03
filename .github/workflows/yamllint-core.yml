@@ -25,8 +25,7 @@ jobs:
       - name: Run Yamllint
         uses: reviewdog/action-yamllint@f01d8a48fd8d89f89895499fca2cff09f9e9e8c0 # v1.21.0
         with:
-          github_token: ${{ secrets.github_token }}
-          fail_level: error
+          reporter: github-pr-check
           yamllint_flags: >
             .yamllint.yml
             config/locales/en.yml
