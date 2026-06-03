@@ -29,18 +29,8 @@
 #++
 
 module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
-
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
-
-    delegate :project, to: :linkable
-
-    def relation? = false
-
-    def inline? = false
-
-    def render_author? = false
+  module RelationPageLinks
+    class DeleteService < ::BaseServices::Delete
+    end
   end
 end

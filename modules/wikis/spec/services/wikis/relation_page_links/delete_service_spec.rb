@@ -28,19 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
+require "spec_helper"
 
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
+require "services/base_services/behaves_like_delete_service"
 
-    delegate :project, to: :linkable
-
-    def relation? = false
-
-    def inline? = false
-
-    def render_author? = false
+RSpec.describe Wikis::RelationPageLinks::DeleteService, type: :model do
+  it_behaves_like "BaseServices delete service" do
+    let(:factory) { :relation_wiki_page_link }
   end
 end

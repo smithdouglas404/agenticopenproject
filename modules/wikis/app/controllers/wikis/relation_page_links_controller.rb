@@ -47,11 +47,15 @@ module Wikis
     end
 
     def destroy
-      # TODO: Wikis::PageLinks::DeleteService
       page_link = find_page_link
-      page_link.destroy!
-
-      turbo_redirect_for_linkable(page_link.linkable)
+      service_result = Wikis::RelationPageLinks::DeleteService.new(user: current_user, model: page_link).call
+      if service_result.success?
+        turbo_redirect_for_linkable(page_link.linkable)
+      else
+        message = service_result.errors.full_messages.join(" ")
+        render_error_flash_message_via_turbo_stream(message:)
+        respond_to_with_turbo_streams
+      end
     end
 
     def confirm_delete_dialog
