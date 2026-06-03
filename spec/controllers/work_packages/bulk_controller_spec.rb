@@ -616,6 +616,29 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
       end
     end
 
+    context "with semantic identifiers",
+            with_settings: { work_packages_identifier: "semantic" } do
+      before do
+        work_package1.update_columns(identifier: "PROJ-1", sequence_number: 1)
+        work_package2.update_columns(identifier: "PROJ-2", sequence_number: 2)
+        put :update,
+            params: {
+              ids: work_package_ids,
+              work_package: { done_ratio: 150 }
+            }
+      end
+
+      it "shows semantic identifiers in the error flash" do
+        expect(flash[:error]).to include("PROJ-1")
+        expect(flash[:error]).to include("PROJ-2")
+      end
+
+      it "does not show bare numeric ids in the error flash" do
+        expect(flash[:error]).not_to include("##{work_package1.id}")
+        expect(flash[:error]).not_to include("##{work_package2.id}")
+      end
+    end
+
     describe "updating two children with dates to a new parent (Regression #28670)" do
       let(:task1) do
         create(:work_package,

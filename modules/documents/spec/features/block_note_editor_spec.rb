@@ -127,6 +127,8 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
 
         # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property
         expect(editor.element.find_link(text: "pet a tiger").native.property("href")).to end_with("/wp/#{work_package.id}")
+
+        editor.wait_for_autosave { document.reload.description&.include?("##{work_package.id}") }
       end
 
       it "inserts an xxs inline link via # notation" do
@@ -141,6 +143,8 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         expect(editor.element).to have_no_text("…") # inline chip loading state
         expect(editor.element.text).to match(/##{work_package.display_id}/)
         # xxs chip shows only the ID — no title link
+
+        editor.wait_for_autosave { document.reload.description&.include?("##{work_package.id}") }
       end
 
       it "inserts an xs inline link via ## notation" do
@@ -157,6 +161,8 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property
         expect(editor.element.find_link(text: "pet a tiger").native.property("href"))
           .to end_with("/wp/#{work_package.id}")
+
+        editor.wait_for_autosave { document.reload.description&.include?("##{work_package.id}") }
       end
 
       it "inserts an s inline link via ### notation" do
@@ -173,6 +179,8 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property
         expect(editor.element.find_link(text: "pet a tiger").native.property("href"))
           .to end_with("/wp/#{work_package.id}")
+
+        editor.wait_for_autosave { document.reload.description&.include?("##{work_package.id}") }
       end
     end
   end
