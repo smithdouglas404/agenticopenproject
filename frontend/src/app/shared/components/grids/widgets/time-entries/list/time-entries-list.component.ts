@@ -101,7 +101,11 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
   }
 
   public entityName(entry:TimeEntryResource):string {
-    return `#${entry.entity.id!}: ${entry.entity.name}`;
+    const entity = entry.entity;
+    const formattedId = entity instanceof WorkPackageResource
+      ? entity.formattedId
+      : `#${idFromLink(entity.href)}`;
+    return `${formattedId}: ${entity.name}`;
   }
 
   public entityId(entry:TimeEntryResource):string {
@@ -145,7 +149,7 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
       showClose: true,
       closeByDocument: true,
       passedData: [
-        `#${idFromLink(entry.workPackage?.href)} ${entry.workPackage?.name}`,
+        entry.entity ? this.entityName(entry) : '',
         `${this.i18n.t(
           'js.units.hour',
           { count: this.timezone.toHours(entry.hours) },

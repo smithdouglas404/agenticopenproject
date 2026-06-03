@@ -23,37 +23,38 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackageTypes
-  module FormConfiguration
-    class MainContentComponent < ApplicationComponent
-      include OpTurbo::Streamable
-      include OpPrimer::ComponentHelpers
+module Wikis
+  class SearchPagesController < ApplicationController
+    include Dry::Monads[:result]
 
-      def initialize(type:, group_components:, ee_available:)
-        super
-        @type = type
-        @group_components = group_components
-        @ee_available = ee_available
-      end
+    # The search is project independent and thus permission independent. The user will see results according to
+    # the permissions set in each wiki.
+    no_authorization_required! :show
 
-      private
+    def show
+      provider = Provider.visible.find(params.expect(:provider_id))
+      query = params[:query]
+      form_name = params[:name]
+      builder = ActionView::Helpers::FormBuilder.new("", nil, view_context, {})
+      search_result = search_pages(query, provider)
 
-      def ee_available?
-        @ee_available
-      end
+      render layout: false, locals: { search_result:, builder:, name: form_name }
+    end
 
-      def groups_container_data
-        {
-          "test-selector": "type-form-configuration-groups-container",
-          "admin--type-form-configuration--main-target": "groupsContainer",
-          "admin--type-form-configuration--drag-and-drop-target": "container",
-          "target-allowed-drag-type": "group"
-        }
+    private
+
+    def search_pages(query, provider)
+      return Success([]) if query.blank?
+
+      Adapters::Input::SearchPages.build(query:).bind do |input_data|
+        provider.auth_strategy_for(current_user).bind do |auth_strategy|
+          provider.resolve("queries.search_pages").call(input_data:, auth_strategy:)
+        end
       end
     end
   end

@@ -55,6 +55,15 @@ module WorkPackageTypes
       }
     end
 
+    def active_list_data
+      {
+        controller: "admin--type-form-configuration--drag-and-drop",
+        "admin--type-form-configuration--drag-and-drop-handle-selector-value": ".group-handle",
+        "admin--type-form-configuration--drag-and-drop-target": "scrollContainer",
+        "admin--type-form-configuration--rows-drag-and-drop-target": "scrollContainer"
+      }
+    end
+
     def group_components
       @groups.map.with_index do |group, i|
         WorkPackageTypes::FormConfiguration::GroupComponent.new(

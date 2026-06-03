@@ -31,19 +31,39 @@
 module WorkPackages
   module Admin
     module Settings
-      class IdentifierAutofixSectionComponent < ApplicationComponent
-        DISPLAY_COUNT = ProjectIdentifiers::IdentifierAutofix::PreviewQuery::DISPLAY_COUNT
+      class IdentifierAutofixRowComponent < OpPrimer::BorderBoxRowComponent
+        def project
+          render(Primer::Beta::Link.new(href: project_path(model[:project]))) { model[:project].name }
+        end
 
-        def initialize(projects_data:, total_count: projects_data.size)
-          super()
-          @total_count = total_count
-          @displayed = projects_data.first(DISPLAY_COUNT)
-          @remaining_count = [total_count - @displayed.size, 0].max
+        def previous_identifier
+          flex_layout(direction: :column) do |col|
+            col.with_row { render(Primer::Beta::Text.new) { model[:current_identifier] } }
+            if (label = error_label).present?
+              col.with_row do
+                render(Primer::OpenProject::InlineMessage.new(scheme: :critical, size: :small)) { label }
+              end
+            end
+          end
+        end
+
+        def autofixed_suggestion
+          model[:suggested_identifier]
+        end
+
+        # The sequence number is derived deterministically from the identifier so it looks
+        # varied across projects but is stable across renders. Range: 1–500.
+        def example_work_package_id
+          identifier = model[:suggested_identifier]
+          "#{identifier}-#{(identifier.bytes.sum % 500) + 1}"
         end
 
         private
 
-        attr_reader :total_count, :displayed, :remaining_count
+        def error_label
+          I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_#{model[:error_reason]}",
+                 default: "")
+        end
       end
     end
   end
