@@ -21,7 +21,7 @@ OpenProject 17.5 introduces **optional project-based work package identifiers in
 > [!NOTE]
 > The setting can be reverted later. Existing numerical IDs remain valid and continue to resolve to the same work packages throughout the application, including existing URLs, bookmarks, and references.
 
-![OpenProject administration to select either 'Instance-wide numerical sequence (default)' or 'Project-based semantic identifiers'](openproject-17-5-identifiers-setting.png)
+![Work package table for version 17.5 with highlighted project-based work package IDs](openproject-community-project-based-ids-highlighted.png)
 
 Project-based work package identifiers are especially useful for organizations migrating from Jira, as [existing Jira issue identifiers can now be preserved in OpenProject](#jira-migrator-support-for-jira-identifiers-due-dates-and-more). Beyond migrations, project-based IDs provide **shorter sequence numbers and clearer project context**, making it easier to recognize, reference, and share work packages across projects, emails, documents, chats, and integrations.
 
@@ -32,7 +32,7 @@ Switching to project-based work package identifiers is an instance-wide administ
 > [!NOTE]
 > Historical references remain functional when project identifiers change.
 
-![OpenProject administration to configure project-based work package identifiers and convert project identifiers](openproject-17-5-project-based-identifier.png)
+![OpenProject administration to select either 'Instance-wide numerical sequence (default)' or 'Project-based semantic identifiers'](openproject-17-5-identifiers-setting.png)
 
 #### Support across URLs, searches, exports, and integrations
 
