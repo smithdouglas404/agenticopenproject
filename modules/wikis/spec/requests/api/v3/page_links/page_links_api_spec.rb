@@ -31,7 +31,7 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe "API v3 wiki page links resource" do
+RSpec.describe "API v3 wiki page links resource", content_type: :json do
   include API::V3::Utilities::PathHelper
 
   let(:work_package) { create(:work_package) }
@@ -40,7 +40,7 @@ RSpec.describe "API v3 wiki page links resource" do
 
   let(:project) { work_package.project }
 
-  let(:user) { create(:user, member_with_permissions: { project => %i(view_work_packages) }) }
+  let(:user) { create(:user, member_with_permissions: { project => %i(view_work_packages manage_wiki_page_links) }) }
 
   let(:relation_page_links) { create_list(:relation_wiki_page_link, 3, provider: xwiki_provider, linkable: work_package) }
   let(:inline_page_links) { create_list(:inline_wiki_page_link, 3, provider: internal_wiki, linkable: work_package) }
@@ -75,6 +75,80 @@ RSpec.describe "API v3 wiki page links resource" do
 
       it_behaves_like "API V3 collection response", 3, 3, "WikiPageLink", "WikiPageLinkCollection" do
         let(:elements) { Wikis::PageLink.where(linkable: work_package, provider: internal_wiki).order(id: :desc).all }
+      end
+    end
+  end
+
+  describe "POST /api/v3/wiki_page_links" do
+    let(:user) { create(:user, member_with_permissions: { project => %i(view_work_packages manage_wiki_page_links) }) }
+
+    let(:path) { api_v3_paths.wiki_page_links }
+    let(:author) { create(:user, member_with_permissions: { project => %i(view_work_packages) }) }
+
+    let(:params) do
+      { _type: "Collection", _embedded: { elements: embedded_elements } }
+    end
+
+    let(:valid_element) do
+      {
+        identifier: "/wiki/path/to/kiwi",
+        type: "urn:openproject-org:api:v3:wikiPageLinks:Relation",
+        author: { href: api_v3_paths.user(author.id) },
+        linkable: { href: api_v3_paths.work_package(work_package.id) },
+        provider: { href: api_v3_paths.wiki_provider(xwiki_provider.universal_identifier) }
+      }
+    end
+
+    let(:embedded_elements) { [valid_element] }
+
+    let(:response_body) { last_response.body }
+
+    before do
+      post path, params.to_json
+    end
+
+    context "when all embedded elements are valid" do
+      it_behaves_like "API V3 collection response", 1, 1, "WikiPageLink", "WikiPageLinkCollection" do
+        let(:elements) { Wikis::PageLink.order(id: :desc).limit(1) }
+        let(:expected_status_code) { 201 }
+      end
+    end
+
+    context "when some embedded elements are invalid" do
+      let(:embedded_elements) do
+        [
+          valid_element,
+          { identifier: "/wiki/path/to/invalid_page",
+            provider: { href: "/api/v3/wiki_providers/-100" },
+            linkable: { href: api_v3_paths.work_package(work_package.id) },
+            author: { href: api_v3_paths.user(user.id) } }
+        ]
+      end
+
+      it "does not create any records" do
+        expect(last_response).to have_http_status(422)
+
+        page_link = Wikis::PageLink.where(identifier: [valid_element["identifier"], "/wiki/path/to/invalid_page"])
+        expect(page_link).to be_empty
+      end
+
+      it "contains the error" do
+        json = MultiJson.load(response_body)
+
+        expect(json["message"]).to match(/Wiki Provider does not exist/)
+      end
+    end
+
+    context "when elements are empty" do
+      let(:embedded_elements) { [] }
+
+      it "returns a missing element error" do
+        expect(last_response).to have_http_status(422)
+        response_body = last_response.body
+
+        expect(response_body).to be_json_eql("Error".to_json).at_path("_type")
+        expect(response_body)
+          .to be_json_eql("urn:openproject-org:api:v3:errors:PropertyMissingError".to_json).at_path("errorIdentifier")
       end
     end
   end
