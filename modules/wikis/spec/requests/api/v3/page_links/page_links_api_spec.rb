@@ -89,7 +89,7 @@ RSpec.describe "API v3 wiki page links resource", content_type: :json do
       { _type: "Collection", _embedded: { elements: embedded_elements } }
     end
 
-    let(:valid_element) do
+    let(:external_wiki_element) do
       {
         identifier: "/wiki/path/to/kiwi",
         type: "urn:openproject-org:api:v3:wikiPageLinks:Relation",
@@ -99,7 +99,18 @@ RSpec.describe "API v3 wiki page links resource", content_type: :json do
       }
     end
 
-    let(:embedded_elements) { [valid_element] }
+    let(:other_work_package) { create(:work_package, project:) }
+    let(:internal_wiki_element) do
+      {
+        identifier: "/wiki/anotherWiki/Waka/Waka",
+        type: "urn:openproject-org:api:v3:wikiPageLinks:Relation",
+        author: { href: api_v3_paths.user(author.id) },
+        linkable: { href: api_v3_paths.work_package(other_work_package.id) },
+        provider: { href: api_v3_paths.wiki_provider(internal_wiki.universal_identifier) }
+      }
+    end
+
+    let(:embedded_elements) { [external_wiki_element, internal_wiki_element] }
 
     let(:response_body) { last_response.body }
 
@@ -108,8 +119,8 @@ RSpec.describe "API v3 wiki page links resource", content_type: :json do
     end
 
     context "when all embedded elements are valid" do
-      it_behaves_like "API V3 collection response", 1, 1, "WikiPageLink", "WikiPageLinkCollection" do
-        let(:elements) { Wikis::PageLink.order(id: :desc).limit(1) }
+      it_behaves_like "API V3 collection response", 2, 2, "WikiPageLink", "WikiPageLinkCollection" do
+        let(:elements) { Wikis::PageLink.order(created_at: :asc).last(2) }
         let(:expected_status_code) { 201 }
       end
     end
@@ -117,7 +128,7 @@ RSpec.describe "API v3 wiki page links resource", content_type: :json do
     context "when some embedded elements are invalid" do
       let(:embedded_elements) do
         [
-          valid_element,
+          internal_wiki_element,
           { identifier: "/wiki/path/to/invalid_page",
             provider: { href: "/api/v3/wiki_providers/-100" },
             linkable: { href: api_v3_paths.work_package(work_package.id) },
@@ -128,7 +139,7 @@ RSpec.describe "API v3 wiki page links resource", content_type: :json do
       it "does not create any records" do
         expect(last_response).to have_http_status(422)
 
-        page_link = Wikis::PageLink.where(identifier: [valid_element["identifier"], "/wiki/path/to/invalid_page"])
+        page_link = Wikis::PageLink.where(identifier: [internal_wiki_element["identifier"], "/wiki/path/to/invalid_page"])
         expect(page_link).to be_empty
       end
 
