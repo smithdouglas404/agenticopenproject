@@ -98,7 +98,7 @@ BIM stands for Building Information Modeling. In OpenProject, we offer a special
 
 ### Board
 
-A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-boards) or [advanced Action boards](../user-guide/agile-boards). Use advanced Action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/).
+A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. In OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-boards) or [advanced Action boards](../user-guide/agile-boards). Use advanced Action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/).
 
 **More information on boards in OpenProject**
 
@@ -200,7 +200,7 @@ Excel synchronization is an integration in OpenProject which allows you to easil
 
 ### File storage
 
-File storages can be configured in the System Administration and then be selected in the [project settings](#project-settings). OpenProject offers a [Nextcloud integration](#nextcloud-integration) to support file storage. [More information on file storage with the Nextcloud integration](../user-guide/file-management/nextcloud-integration/).
+File storages can be configured in the system administration and then be selected in the [project settings](#project-settings). OpenProject offers a [Nextcloud integration](#nextcloud-integration) to support file storage. [More information on file storage with the Nextcloud integration](../user-guide/file-management/nextcloud-integration/).
 
 ### Filters
 
@@ -509,6 +509,10 @@ SAML (Security Assertion Markup Language) is an open standard for exchanging aut
 
 OpenProject offers the possibility to share work packages with external groups or users that are not [members](#member) of the project. This feature is an [Enterprise add-on](#enterprise-add-on). Every user with whom a work package is shared must either already be a user of the instance or be newly created. The latter requires special rights. [Read more about OpenProject's feature to share work packages with project non-members](../user-guide/work-packages/share-work-packages/).
 
+### Sprint
+
+A sprint is a time-boxed iteration used in agile project management. In OpenProject, sprints are managed through the [Backlogs](#backlogs) module and include attributes such as start and end dates. Sprint [boards](#board) are automatically created when a sprint is started.
+
 ### Story points
 
 Story points is a term known in Scrum. They are defined as numbers assigned to a [work package](#work-package) used to estimate (relatively) the size of the work. In OpenProject, you can add story points to work packages. [Read how to work with story points in OpenProject](../user-guide/backlogs-scrum/#story-points).
@@ -599,7 +603,11 @@ If you need a Category that applies to all projects on your instance, we recomme
 
 ### Work package ID
 
-Work package ID is defined as a unique ascending number assigned to a newly created work package. Work package IDs cannot be changed and are numbered across all projects of an OpenProject instance (therefore, the numbering within a project may not be sequential).
+In OpenProject, every work package has a unique ID (identifier). It is automatically assigned when a work package is created. Work package IDs are configured globally and apply across the entire OpenProject instance.
+
+By default, work package IDs are numerical, ascending numbers, for example 429. Since OpenProject 17.5, system [administrators](#admin) can optionally switch to project-based work package IDs, which consist of a project-specific prefix and an ascending number (e.g. OP-382). Work package IDs are usually displayed with a preceding #, such as #429 or #OP-382.
+
+Administrators can configure work package identifiers under *→ Administration → Work packages → Identifiers*. [Read more in the OpenProject system admin guide](../system-admin-guide/manage-work-packages/work-package-identifiers/).
 
 ### Work package subject
 
