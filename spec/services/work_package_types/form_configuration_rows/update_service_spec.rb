@@ -68,6 +68,25 @@ module WorkPackageTypes
         expect(result).to be_success
         expect(type.reload.attribute_groups.flat_map(&:members)).not_to include("version")
       end
+
+      it "removes unavailable attributes from legacy form configurations when updating rows" do
+        custom_field = create(:work_package_custom_field, field_format: "string")
+        deleted_custom_field_attribute = "custom_field_999999"
+        removed_plugin_attribute = "removed_plugin_attribute"
+        type.update_column(:attribute_groups, [
+                             ["Legacy custom group", [deleted_custom_field_attribute, removed_plugin_attribute, "priority"]]
+                           ])
+
+        result = described_class
+          .new(user:, type:, row_key: custom_field.attribute_name)
+          .call(target_id: "Legacy custom group", position: 1)
+
+        expect(result).to be_success
+
+        attributes = type.reload.attribute_groups.first.attributes
+        expect(attributes).to eq([custom_field.attribute_name, "priority"])
+        expect(type.custom_field_ids).to contain_exactly(custom_field.id)
+      end
     end
   end
 end
