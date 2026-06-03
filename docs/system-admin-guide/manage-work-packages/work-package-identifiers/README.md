@@ -4,7 +4,7 @@ sidebar_navigation:
   title: Identifiers
   priority: 500
 description: Manage Work package identifiers.
-keywords: work package identifier, identifier, project-based identifier, numeric if, numeric identifier, semantic identifier, JIRA migration
+keywords: work package identifier, identifier, project-based identifier, numeric id, numeric identifier, semantic identifier, JIRA migration
 ---
 
 # Manage work package identifiers
@@ -63,7 +63,7 @@ The project-based identifier mode is not permanent. Administrators can switch be
 
 Changing the identifier mode affects how work packages are displayed and referenced throughout OpenProject.
 
-After enabling project-based identifiers, work packages use the new identifier format throughout the application, including:
+After enabling project-based identifiers, work packages will use the new identifier format throughout the application, including:
 
 - URLs
 - Work package references
