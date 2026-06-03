@@ -64,6 +64,11 @@ RSpec.describe SharingMailer do
         expect(mail.subject)
           .to eq(I18n.t("mail.sharing.work_packages.subject", id: "##{work_package.id}"))
       end
+
+      it "links to the work package by its numeric id" do
+        expect(mail.html_part.body.encoded).to include("/work_packages/#{work_package.id}")
+        expect(mail.text_part.body.encoded).to include("/work_packages/#{work_package.id}")
+      end
     end
 
     context "with semantic mode",
@@ -80,6 +85,19 @@ RSpec.describe SharingMailer do
       it "sets the subject with the semantic identifier without # prefix" do
         expect(mail.subject)
           .to eq(I18n.t("mail.sharing.work_packages.subject", id: "PROJ-42"))
+      end
+
+      it "links to the work package by its semantic identifier, not the numeric id" do
+        expect(mail.html_part.body.encoded).to include("/work_packages/PROJ-42")
+        expect(mail.html_part.body.encoded).not_to include("/work_packages/#{work_package.id}")
+
+        expect(mail.text_part.body.encoded).to include("/work_packages/PROJ-42")
+        expect(mail.text_part.body.encoded).not_to include("/work_packages/#{work_package.id}")
+      end
+
+      it "renders the text-part heading with the semantic identifier, not the numeric id" do
+        expect(mail.text_part.body.encoded).to include("= PROJ-42 #{work_package.subject} =")
+        expect(mail.text_part.body.encoded).not_to include("##{work_package.id}")
       end
     end
 

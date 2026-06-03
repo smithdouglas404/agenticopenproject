@@ -681,6 +681,42 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
         expect(new_parent.due_date).to eq(task2.due_date)
       end
     end
+
+    describe "bulk parent assignment with semantic identifiers",
+             with_settings: { work_packages_identifier: "semantic" } do
+      let(:sem_project) do
+        create(:project, identifier: "SEMPROJ", types: [type]).tap do |p|
+          create(:member, project: p, principal: user, roles: [role])
+        end
+      end
+      let(:parent_wp) { create(:work_package, project: sem_project).reload }
+      let(:child1)    { create(:work_package, project: sem_project).reload }
+      let(:child2)    { create(:work_package, project: sem_project).reload }
+
+      it "accepts a semantic identifier and assigns the parent" do
+        put :update,
+            params: {
+              ids: [child1.id, child2.id],
+              work_package: { parent_id: parent_wp.identifier }
+            }
+
+        expect(response).to have_http_status(:found)
+        expect(child1.reload.parent_id).to eq(parent_wp.id)
+        expect(child2.reload.parent_id).to eq(parent_wp.id)
+      end
+
+      it "reports an error for an unknown semantic identifier" do
+        put :update,
+            params: {
+              ids: [child1.id, child2.id],
+              work_package: { parent_id: "SEMPROJ-9999" }
+            }
+
+        expect(flash[:error]).to be_present
+        expect(child1.reload.parent_id).to be_nil
+        expect(child2.reload.parent_id).to be_nil
+      end
+    end
   end
 
   describe "#destroy" do
