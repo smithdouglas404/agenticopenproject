@@ -30,8 +30,6 @@
 
 module Wikis::Admin::Forms
   class OAuthClientFormComponent < Wikis::Admin::WikiProviderComponent
-    include Wikis::Admin::XWikiAdminUrlHelper
-
     def self.wrapper_key = :wiki_provider_oauth_client_section
 
     options in_wizard: false,
@@ -64,7 +62,7 @@ module Wikis::Admin::Forms
     end
 
     def xwiki_oidc_admin_url
-      xwiki_admin_url("OpenID%20Connect")
+      XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenID Connect")
     end
   end
 end

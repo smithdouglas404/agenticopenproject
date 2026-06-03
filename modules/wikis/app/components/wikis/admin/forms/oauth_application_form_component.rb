@@ -30,8 +30,6 @@
 
 module Wikis::Admin::Forms
   class OAuthApplicationFormComponent < Wikis::Admin::WikiProviderComponent
-    include Wikis::Admin::XWikiAdminUrlHelper
-
     def self.wrapper_key = :wiki_provider_oauth_application_section
 
     delegate :oauth_application, to: :wiki_provider
@@ -47,7 +45,7 @@ module Wikis::Admin::Forms
     end
 
     def xwiki_admin_url
-      super("OpenProject")
+      XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenProject")
     end
   end
 end

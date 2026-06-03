@@ -28,12 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Admin
-  module XWikiAdminUrlHelper
-    ADMIN_PATH = "/bin/admin/XWiki/XWikiPreferences"
+require "spec_helper"
+require_module_spec_helper
 
-    def self.url(base_url:, section:)
-      "#{base_url.to_s.chomp('/')}#{ADMIN_PATH}?#{{ editor: "globaladmin", section: }.to_query}"
+RSpec.describe Wikis::Admin::XWikiAdminUrlHelper do
+  describe ".url" do
+    it "appends the admin path and encodes the section" do
+      expect(described_class.url(base_url: "https://xwiki.example.com/", section: "OpenProject"))
+        .to eq("https://xwiki.example.com/bin/admin/XWiki/XWikiPreferences?editor=globaladmin&section=OpenProject")
+    end
+
+    it "handles a section with spaces" do
+      expect(described_class.url(base_url: "https://xwiki.example.com/", section: "OpenID Connect"))
+        .to eq("https://xwiki.example.com/bin/admin/XWiki/XWikiPreferences?editor=globaladmin&section=OpenID+Connect")
+    end
+
+    it "strips a trailing slash from the base URL" do
+      expect(described_class.url(base_url: "https://xwiki.example.com/", section: "OpenProject"))
+        .to eq(described_class.url(base_url: "https://xwiki.example.com", section: "OpenProject"))
     end
   end
 end
