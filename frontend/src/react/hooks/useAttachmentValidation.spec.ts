@@ -32,7 +32,7 @@ import { renderHook } from '@testing-library/react';
 import { useAttachmentValidation } from './useAttachmentValidation';
 
 function mockPluginContext(whitelist:string[]) {
-  (window as any).OpenProject = {
+  (window as unknown as { OpenProject:unknown }).OpenProject = {
     getPluginContext: () => Promise.resolve({
       services: {
         configurationService: { attachmentWhitelist: whitelist },
@@ -46,7 +46,7 @@ function mockFile(name:string, type:string):File {
 }
 
 beforeEach(() => {
-  (window as any).I18n = { t: (_key:string, opts?:{ value?:string }) => `not allowed: ${opts?.value ?? ''}` };
+  (window as unknown as { I18n:unknown }).I18n = { t: (_key:string, opts?:{ value?:string }) => `not allowed: ${opts?.value ?? ''}` };
 });
 
 describe('useAttachmentValidation', () => {
@@ -120,9 +120,7 @@ describe('useAttachmentValidation', () => {
       const { result } = renderHook(() => useAttachmentValidation());
       const validation = await result.current.validateFile(mockFile('photo.png', 'image/png'));
       expect(validation.valid).toBe(false);
-      if (!validation.valid) {
-        expect(validation.reason).toBe('not allowed: image/png');
-      }
+      expect((validation as { valid:false; reason:string }).reason).toBe('not allowed: image/png');
     });
   });
 });
