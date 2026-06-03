@@ -42,38 +42,36 @@ You can freely **configure the attributes shown** for each work package type to 
 > [!NOTE]
 > Following parts of the Work package form configuration are an Enterprise add-on:
 > 
->- **Add new attribute groups**
-> - **Rename attribute groups**
-> - **Add table of related work packages to a work package form**
+>- **Add new sections**
+> - **Rename sections**
+> - **Add related work packages table to a work package form**
 
 [feature: edit_attribute_groups ]
 
 To configure a type, first select the type from the list of types (see above) and select the tab **Form configuration**.
 
 Active attributes shown on the right will be displayed in the work package form for this type.
-You can then decide for each attribute which group it should be assigned to (using drag and drop or removing it by clicking **delete**). You can also rename attribute groups simply by clicking on the menu **(...)** or re-order attribute groups via the move options on the menu.
+You can then decide for each attribute which section it should be assigned to (using drag and drop or removing it by clicking **delete**). You can also rename sections simply by clicking on the menu **(...)** or re-order sections via the move options on the menu.
 
-Inactive attributes are displayed on the left. Attributes which have been deleted are also shown in the **Inactive** column on the left. You can filter and search for attributes without scrolling. This column also includes [custom fields](../../custom-fields) which have been created. The custom fields can also be added using drag and drop to the right to be displayed in the form.
+Inactive attributes are displayed on the left and can be filtered for using the search panel. Attributes which have been deleted are also shown in the **Inactive** column on the left. This column also includes [custom fields](../../custom-fields) which have been created. The custom fields can also be added using drag and drop to the right to be displayed in the form.
 
 > [!IMPORTANT]
 >
 > Starting with OpenProject 15.0, when adding new custom fields to a type through the  form configuration, the added custom fields will not automatically be enabled in all projects that have this work package type currently enabled.
 
-To add additional group, click the **+ Add** button and select **Add attribute group**. Give the new group a name. You can then assign attributes (e.g. custom fields) via drag and drop. Note that adding attribute groups is only possible with the [OpenProject Enterprise on-premises](https://www.openproject.org/enterprise-edition/) and the [OpenProject Enterprise cloud](https://www.openproject.org/enterprise-edition/#hosting-options).
+To add additional sections, click the **+ Add** button and select **Section**. Give it a name. You can then assign attributes (e.g. custom fields) via drag and drop. Note that adding sections is only possible with the [OpenProject Enterprise on-premises](https://www.openproject.org/enterprise-edition/) and the [OpenProject Enterprise cloud](https://www.openproject.org/enterprise-edition/#hosting-options).
 
-In case you made a mistake, click the **Reset to defaults** button to reset all settings to the original state.
+In case you made a mistake, click the **Reset form** button to reset all settings to the original state.
 
-Finally, **save** the settings to apply them.
+Your configuration settings are automatically saved.
 
 ![Sys-admin-type-form-configuration](openproject_system_guide_wp_form_configuration.png)
 
-![More form configuration details](openproject_system_guide_wp_form_configuration_continued.png)
-
-![Add button for attribute group](openproject_system_guide_wp_add_attribute_group.png)
+![Add button for attribute group](openproject_system_guide_wp_add_section.png)
 
 If you then create a new work package of this type, the input form will have exactly these attributes selected in the form configuration.
 
-In this case, all attributes on the right are displayed under the corresponding attribute group.
+In this case, all attributes on the right are displayed under the corresponding attribute section.
 
 ![work package form configuration](openproject_system_guide_new_risk_wp.png)
 
@@ -83,7 +81,7 @@ Watch the following video to see how you can customize your work packages with c
 
 ## Add table of related work packages to a work package form (Enterprise add-on)
 
-Also, you can add a table of related work packages to your work package form. Click the green **+ Add** button and choose **Add table of related work packages** from the drop-down list.
+Also, you can add a table of related work packages to your work package form. Click the green **+ Add** button and choose **Related work packages table** from the drop-down list.
 
 [feature: work_package_query_relation_columns ]
 
