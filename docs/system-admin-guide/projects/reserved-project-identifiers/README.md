@@ -35,5 +35,5 @@ Select the confirmation checkbox and click **Release identifier** to continue.
 > [!WARNING]
 > Releasing an identifier cannot be undone. Existing external links, bookmarks, integrations, and references that rely on the released identifier will no longer resolve. The identifier becomes available for any project to claim.
 
-> [!TIP]
+> [!WARNING]
 > Only release a reserved identifier when you are certain it is no longer needed. If there is any possibility that existing links, integrations, documentation, or user bookmarks still reference the identifier, it is usually safer to keep it reserved.

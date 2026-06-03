@@ -18,5 +18,5 @@ The **Projects** page lets you configure settings for projects in your instance,
 | [Project attributes](project-attributes)                    | View, create and modify project attributes in OpenProject    |
 | [New project](new-project)                                  | Choose which modules are enabled by default for new projects and what roles are given to non-admin users who create a project |
 | [Project lists](project-lists)                              | Define which project attributes should be visible as columns in the cross-project global project lists and Gantt views |
-| [Reserved project identifiers](reserved-project-identifiers) | Manage reserved project identifiers and release identifiers that are no longer needed. |
+| [Reserved project identifiers](reserved-project-identifiers) | Release reserved project identifiers that are no longer needed. |
 

@@ -4,7 +4,7 @@ sidebar_navigation:
   title: Identifiers
   priority: 500
 description: Manage Work package identifiers.
-keywords: work package identifier, identifier, project-based identifier, numeric id, numeric identifier, semantic identifier, JIRA migration
+keywords: work package identifier, identifier, project-based identifier, numeric id, semantic id, numeric identifier, semantic identifier, JIRA migration
 ---
 
 # Manage work package identifiers
@@ -80,6 +80,7 @@ Existing work package identifiers remain valid after the change. Previously assi
 
 > [!TIP]
 > Before enabling project-based identifiers in a production environment, inform users about the change so they understand the new identifier format they will encounter.
+> We also recommend implementing the switch outside of main working hours, to avoid any possible conflicts with ongoing user activity.
 
 ## Reserved project identifiers
 

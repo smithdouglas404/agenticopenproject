@@ -184,7 +184,7 @@ If your OpenProject instance uses project-based work package identifiers, the **
 
 <div class="glossary">
 
-The **ID** uniquely identifies a work package within OpenProject. Depending on the configuration of your OpenProject instance, it may be displayed as a numerical identifier or a project-based identifier. IDs are assigned automatically and can be used to reference, search for, and link to work packages.
+The **ID** uniquely identifies a work package within OpenProject. Depending on the configuration of your OpenProject instance, it may be displayed as a numerical identifier (for example, 12345) or a project-based identifier (for example, PROJ-123). IDs are assigned automatically and can be used to reference, search for, and link to work packages.
 
 </div>
 
