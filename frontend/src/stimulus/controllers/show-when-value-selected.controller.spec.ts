@@ -44,7 +44,7 @@ describe('OpShowWhenValueSelectedController', () => {
 
   describe('data-value matching', () => {
     beforeEach(async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="show-when-value-selected">
           <select data-show-when-value-selected-target="cause"
                   data-target-name="type"
@@ -69,7 +69,6 @@ describe('OpShowWhenValueSelectedController', () => {
                  aria-label="Effect B">
         </div>
       `);
-      await ctx.nextFrame();
     });
 
     it('shows matching effect and hides non-matching', async () => {
@@ -119,7 +118,7 @@ describe('OpShowWhenValueSelectedController', () => {
 
   describe('data-not-value matching', () => {
     it('hides effect when select matches not-value', async () => {
-      ctx.appendHTML(`
+      await ctx.mount(`
         <div data-controller="show-when-value-selected">
           <select data-show-when-value-selected-target="cause"
                   data-target-name="mode"
@@ -136,7 +135,6 @@ describe('OpShowWhenValueSelectedController', () => {
                  aria-label="Advanced options">
         </div>
       `);
-      await ctx.nextFrame();
 
       const select = ctx.container.querySelector<HTMLSelectElement>('select[aria-label="Mode"]')!;
       const effect = ctx.container.querySelector<HTMLInputElement>('input[aria-label="Advanced options"]')!;

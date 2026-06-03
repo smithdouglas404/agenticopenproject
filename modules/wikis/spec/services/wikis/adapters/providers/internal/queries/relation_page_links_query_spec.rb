@@ -35,7 +35,7 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
 
   let(:provider) { create(:internal_wiki_provider) }
   let(:input_data) { Wikis::Adapters::Input::RelationPageLinks.build(linkable: work_package).value! }
-  let(:auth_strategy) { provider.auth_strategy_for(current_user).value! }
+  let(:auth_strategy) { provider.auth_strategy_for(user).value! }
 
   let(:wiki_page) { create(:wiki_page) }
   let(:project) { wiki_page.project }
@@ -48,10 +48,10 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
     create(:relation_wiki_page_link, provider:, linkable: work_package, identifier: "THIS IS NO MOON")
   end
 
-  current_user { create(:user) }
+  let(:user) { create(:user) }
 
   before do
-    create(:member, project:, user: current_user, roles: [create(:project_role, permissions:)])
+    create(:member, project:, user:, roles: [create(:project_role, permissions:)])
 
     link_to_existing_page
     link_to_non_existing_page

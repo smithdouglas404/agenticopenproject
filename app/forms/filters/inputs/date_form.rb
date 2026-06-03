@@ -95,7 +95,7 @@ class Filters::Inputs::DateForm < Filters::Inputs::BaseFilterForm
       label: :singleDay,
       hidden: value.nil?,
       leading_visual: { icon: :calendar },
-      value:,
+      value: value || "",
       datepicker_options: { input_attributes: { "data-filter--filters-form-target" => "singleDay" } },
       data: { "filter-name": filter_name }
     )

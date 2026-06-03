@@ -6,12 +6,14 @@
       method: form_method
     ) do |form|
       flex_layout do |oauth_client_row|
-        oauth_client_row.with_row do
-          render(Primer::Beta::Text.new(font_weight: :bold)) { t("wikis.admin.wiki_providers.#{wiki_provider}.oauth.provider_oauth") }
-        end
-
         oauth_client_row.with_row(mb: 3) do
-          render(Primer::Beta::Text.new(color: :subtle)) { t("wikis.admin.wiki_providers.#{wiki_provider}.oauth.provider_oauth_description") }
+          render(Primer::Beta::Text.new) do
+            helpers.link_translate(
+              "wikis.admin.wiki_providers.#{wiki_provider}.oauth.provider_oauth_configuration",
+              links: { xwiki_oidc_link: xwiki_oidc_admin_url },
+              external: true
+            )
+          end
         end
 
         oauth_client_row.with_row(mb: 3) do

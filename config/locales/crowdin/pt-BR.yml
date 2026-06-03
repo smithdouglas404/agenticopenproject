@@ -57,10 +57,11 @@ pt-BR:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
-      filter_label: Filter identifiers
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
@@ -458,7 +459,7 @@ pt-BR:
         dialog:
           title: Alterar identificadores do pacote de trabalho
           heading: Ativar IDs de pacotes de trabalho por projeto?
-          description: 'Isso alterará os IDs de todos os pacotes de trabalho em todos os projetos nesta instância. Os identificadores e URLs anteriores continuarão redirecionando corretamente. Essa alteração levará algum tempo para ser concluída.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Alterar identificadores
@@ -939,7 +940,7 @@ pt-BR:
       change_identifier_dialog_title: Alterar identificador do projeto
       change_identifier_format_hint_semantic: Apenas letras maiúsculas (A–Z), números ou sublinhados. Máximo de 10 caracteres. Deve começar com uma letra.
       change_identifier_format_hint_legacy: Apenas letras minúsculas (a–z), números, hífens ou sublinhados.
-      change_identifier_warning: 'Isso alterará permanentemente os identificadores e URLs de todos os pacotes de trabalho deste projeto. No entanto, os identificadores e URLs anteriores continuarão a redirecionar corretamente.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1367,12 +1368,12 @@ pt-BR:
     edit:
       form_configuration:
         tab: Configuração do formulário
-        label_group: Grupo
-        reset_to_defaults: Redefinir para os padrões
-        add_attribute_group: Adicionar grupo de atributo
-        add_query_group: Adicionar tabela de pacotes de trabalho relacionados
-        delete_group: Excluir grupo
-        remove_attribute: Remover do grupo
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Arraste campos daqui para ativá-los
         drag_to_reorder: Arraste para reordenar
         edit_query: Editar consulta
@@ -1382,12 +1383,12 @@ pt-BR:
         no_inactive_attributes: Nenhum atributo inativo
         blankslate_title: Nenhum grupo ainda
         blankslate_description: Adicione grupos usando o botão acima ou arraste atributos do painel esquerdo.
-        group_actions: Ações de grupo
-        rename_group: Renomear grupo
-        confirm_delete_group: Tem certeza que deseja excluir este grupo? Esta ação não pode ser revertida automaticamente.
-        group_name_label: Nome do grupo
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Ações de linha
-        query_group_label: Tabela de pacotes de trabalho
+        query_group_label: Related work packages table
         empty_group_hint: Arraste atributos aqui
         invalid_attribute_groups: O payload de configuração do formulário é inválido.
         invalid_query: A configuração da consulta incorporada é inválida.
@@ -1716,6 +1717,7 @@ pt-BR:
       attachment:
         attachment_content: Conteúdo anexado
         attachment_file_name: Nome do arquivo anexado
+        charset: Character set
         content_type: Tipo de conteúdo
         downloads: Transferências
         file: Arquivo
@@ -1810,6 +1812,7 @@ pt-BR:
         title: Título
         description: Descrição
       member:
+        blocked: Blocked
         roles: Papéis
       notification:
         read_ian: Lido no aplicativo
@@ -2055,6 +2058,7 @@ pt-BR:
         priority: Prioridade
         progress: "% de conclusão"
         readonly: Somente leitura
+        relatable: Relatable to
         remaining_hours: Trabalho restante
         remaining_time: Trabalho restante
         sequence_number: Número sequencial
@@ -3507,6 +3511,9 @@ pt-BR:
     additional:
       projects: Projetos mais recentes visíveis nesta instância.
       no_visible_projects: Não há nenhum projeto visível nesta instância.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Usuários mais recentes registrados nesta instância.
     blocks:
       community: Comunidade do OpenProject
@@ -4075,6 +4082,7 @@ pt-BR:
   label_journal_diff: Comparação de Descrição
   label_language: Idioma
   label_languages: Idiomas
+  label_export_plural: Exports
   label_external_links: Links externos
   label_locale: Idioma e região
   label_jump_to_a_project: Saltar para um projeto...
@@ -4271,7 +4279,7 @@ pt-BR:
   label_project_new: Novo projeto
   label_project_plural: Projetos
   label_project_list_plural: Listas de projeto
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: Ciclo de vida do projeto
   label_project_attributes_plural: Atributos do projeto
   label_project_custom_field_plural: Atributos do projeto
@@ -4539,6 +4547,7 @@ pt-BR:
   label_total_days_off: Total de dias de folga
   macro_execution_error: Erro de execução da macro %{macro_name}
   macro_unavailable: Macro %{macro_name} não pode ser exibida.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -4821,6 +4830,7 @@ pt-BR:
         menu:
           label_actions: Ações do pacote de trabalho
         parent: Parent
+        undisclosed: Undisclosed
   permission_add_work_package_comments: Adicionar comentários
   permission_add_work_packages: Adicionar pacotes de trabalho
   permission_add_messages: Postar mensagens
@@ -5216,6 +5226,10 @@ pt-BR:
   setting_consent_required: Consentimento necessário
   setting_consent_decline_mail: E-mail de contato do consentimento
   setting_cross_project_work_package_relations: Permitir relacionamento entre pacotes de trabalho de diferentes projetos
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: A primeira semana no ano contém
   setting_date_format: Data
   setting_default_language: Idioma padrão
@@ -5256,6 +5270,9 @@ pt-BR:
   setting_work_package_properties: Propriedades do pacote de trabalho
   setting_work_package_startdate_is_adddate: Usar a data atual como data para início dos novos pacotes de trabalho
   setting_work_packages_projects_export_limit: Limite de exportação de pacote de trabalho / projetos
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Período de agregação
   setting_log_requesting_user: Registrar início de sessão do usuário, nome e endereço de e-mail para todas as requisições
   setting_login_required: Autenticação requerida
@@ -5343,7 +5360,7 @@ pt-BR:
   setting_welcome_on_homescreen: Exibir bloco de boas-vindas na tela inicial
   setting_work_packages_identifier_classic: Sequência numérica global da instância (padrão)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Identificadores semânticos baseados em projeto
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Modo de destaque padrão
   setting_work_package_list_default_highlighted_attributes: Atributos embutidos com destaque padrão
@@ -5951,6 +5968,17 @@ pt-BR:
     warning: 'Alterar quais dias da semana são considerados dias úteis ou não úteis pode afetar as datas de início e término de todos os pacotes de trabalho e ciclos de vida em todos os projetos desta instância.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Dias úteis** alterado (%{changes})._
       days:

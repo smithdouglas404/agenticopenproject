@@ -57,10 +57,11 @@ ko:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
-      filter_label: Filter identifiers
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
@@ -451,7 +452,7 @@ ko:
         dialog:
           title: 작업 패키지 식별자 변경
           heading: 프로젝트 기반 작업 패키지 ID를 활성화하시겠습니까?
-          description: '이렇게 하면 해당 인스턴스의 모든 프로젝트에 있는 모든 작업 패키지의 ID가 변경됩니다. 이전 식별자 및 URL은 계속해서 제대로 리디렉션됩니다. 이 변경 사항은 완료되는 데 다소 시간이 걸립니다.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: 식별자 변경
@@ -929,7 +930,7 @@ ko:
       change_identifier_dialog_title: 프로젝트 식별자 변경
       change_identifier_format_hint_semantic: 대문자(A-Z), 숫자 또는 밑줄만 사용할 수 있습니다. 최대 10자이고, 문자로 시작해야 합니다.
       change_identifier_format_hint_legacy: 소문자(a-z), 숫자, 대시 또는 밑줄만 사용할 수 있습니다.
-      change_identifier_warning: '이렇게 하면 이 프로젝트에 있는 모든 작업 패키지의 식별자 및 URL이 영구적으로 변경됩니다. 그렇지만 이전 식별자 및 URL은 계속해서 제대로 리디렉션됩니다.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1352,12 +1353,12 @@ ko:
     edit:
       form_configuration:
         tab: 양식 구성
-        label_group: Group
-        reset_to_defaults: Reset to defaults
-        add_attribute_group: Add attribute group
-        add_query_group: Add table of related work packages
-        delete_group: Delete group
-        remove_attribute: Remove from group
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Drag fields from here to activate them
         drag_to_reorder: Drag to reorder
         edit_query: Edit query
@@ -1367,12 +1368,12 @@ ko:
         no_inactive_attributes: No inactive attributes
         blankslate_title: No groups yet
         blankslate_description: Add groups using the button above or drag attributes from the left panel.
-        group_actions: Group actions
-        rename_group: Rename group
-        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
-        group_name_label: Group name
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Row actions
-        query_group_label: Work packages table
+        query_group_label: Related work packages table
         empty_group_hint: Drag attributes here
         invalid_attribute_groups: The form configuration payload is invalid.
         invalid_query: The embedded query configuration is invalid.
@@ -1698,6 +1699,7 @@ ko:
       attachment:
         attachment_content: 첨부 파일 콘텐츠
         attachment_file_name: 첨부 파일 이름
+        charset: Character set
         content_type: 콘텐츠 유형
         downloads: 다운로드
         file: 파일
@@ -1792,6 +1794,7 @@ ko:
         title: 제목
         description: 설명
       member:
+        blocked: Blocked
         roles: 역할
       notification:
         read_ian: 인앱 읽기
@@ -2037,6 +2040,7 @@ ko:
         priority: 우선 순위
         progress: 완료 %
         readonly: 읽기 전용
+        relatable: Relatable to
         remaining_hours: 남은 작업
         remaining_time: 남은 작업
         sequence_number: 시퀀스 번호
@@ -3464,6 +3468,9 @@ ko:
     additional:
       projects: 이 경우 최신 표시 프로젝트입니다.
       no_visible_projects: 이 경우 표시되는 프로젝트가 없습니다.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: 이 경우 최신 등록 된 사용자입니다.
     blocks:
       community: OpenProject 커뮤니티
@@ -4032,6 +4039,7 @@ ko:
   label_journal_diff: 설명 비교
   label_language: 언어
   label_languages: 언어
+  label_export_plural: Exports
   label_external_links: 외부 링크
   label_locale: 언어 및 지역
   label_jump_to_a_project: 프로젝트로 이동...
@@ -4228,7 +4236,7 @@ ko:
   label_project_new: 새 프로젝트
   label_project_plural: 프로젝트
   label_project_list_plural: 프로젝트 목록
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: 프로젝트 수명 주기
   label_project_attributes_plural: 프로젝트 특성
   label_project_custom_field_plural: 프로젝트 특성
@@ -4493,6 +4501,7 @@ ko:
   label_total_days_off: 총 휴가
   macro_execution_error: 매크로 %{macro_name} 실행 중에 오류 발생
   macro_unavailable: 매크로 %{macro_name}은(는) 표시할 수 없습니다.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] 매크로 %{macro_name}"
     errors:
@@ -4778,6 +4787,7 @@ ko:
         menu:
           label_actions: 작업 패키지 액션
         parent: Parent
+        undisclosed: Undisclosed
   permission_add_work_package_comments: 코멘트 추가
   permission_add_work_packages: 작업 패키지 추가
   permission_add_messages: 메시지 게시
@@ -5174,6 +5184,10 @@ ko:
   setting_consent_required: 동의 필요
   setting_consent_decline_mail: 동의 연락처 메일 주소
   setting_cross_project_work_package_relations: 교차 프로젝트 작업 패키지 관계 허용
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: 1년의 첫 주 기준
   setting_date_format: 날짜
   setting_default_language: 기본 언어
@@ -5212,6 +5226,9 @@ ko:
   setting_work_package_properties: 작업 패키지 속성
   setting_work_package_startdate_is_adddate: 새 작업 패키지에 대한 시작 날짜로 현재 날짜 사용
   setting_work_packages_projects_export_limit: 작업 패키지/프로젝트 내보내기 제한
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: 집계 기간
   setting_log_requesting_user: 모든 요청에 대한 로그 사용자 로그인, 이름 및 메일 주소
   setting_login_required: 인증이 필요함
@@ -5299,7 +5316,7 @@ ko:
   setting_welcome_on_homescreen: 홈 화면에 환영 블록 표시
   setting_work_packages_identifier_classic: 인스턴스 전체의 숫자 시퀀스(기본값)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: 프로젝트 기반 시맨틱 식별자
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: 기본 강조 표시 모드
   setting_work_package_list_default_highlighted_attributes: 기본 인라인 강조 표시 특성
@@ -5912,6 +5929,17 @@ ko:
     warning: '근무일 또는 휴무일로 간주되는 요일을 변경하면 이 인스턴스의 모든 프로젝트에 있는 모든 작업 패키지와 수명 주기의 시작 날짜 및 완료 날짜에 영향을 미칠 수 있습니다.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**근무일**이 변경되었습니다(%{changes})._
       days:

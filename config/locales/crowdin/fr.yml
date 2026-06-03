@@ -54,22 +54,23 @@ fr:
     reserved_identifiers:
       title: Reserved project identifiers
       lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
-      col_identifier: Identifier
-      col_project: Project
-      col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
-      filter_label: Filter identifiers
+      col_identifier: Identifiant
+      col_project: Projet
+      col_reserved: Réservé
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
       btn_release: Release
-      released_notice: Identifier "%{identifier}" has been released.
+      released_notice: L'identifiant "%{identifier}" a été publié.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
-        title: Release identifier
-        heading: Release "%{identifier}"?
-        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
-        checkbox_label: I understand that this cannot be undone.
-        confirm_button: Release identifier
-      empty_heading: No reserved identifiers
-      reserved_ago: "%{time} ago"
-      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
+        title: Identifiant de publication
+        heading: Publier «%{identifier} » ?
+        description: La publication de cet identifiant ne peut pas être annulée. Les liens externes et les intégrations qui les utilisent cesseront de fonctionner, et le nom devient disponible pour tout nouveau projet à réclamer.
+        checkbox_label: Je comprends que cette action ne peut pas être annulée.
+        confirm_button: Identifiant de publication
+      empty_heading: Aucun identifiant réservé
+      reserved_ago: il y a %{time}
+      empty_body: Lorsque l'identifiant d'un projet change, l'identifiant précédent apparaît ici afin que vous puissiez le libérer en toute sécurité.
     plugins:
       no_results_title_text: Aucun plugin n'est actuellement installé.
       no_results_content_text: Consultez notre page sur les intégrations et les plugins pour plus d'informations.
@@ -139,8 +140,8 @@ fr:
         cannot_delete_with_imports: Impossible de supprimer un hôte Jira avec des importations existantes
         custom_field_creation_failed: 'Échec de la création du champ personnalisé « %{name} » : %{message}'
         semantic_identifiers_must_be_enabled:
-          title: Project-based semantic identifiers must be enabled.
-          description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
+          title: Les identificateurs sémantiques basés sur les projets doivent être activés.
+          description: Jira utilise des identificateurs de ticket composés d'une clé de projet et d'un numéro de séquence (PRJ-123). OpenProject le prend également en charge, mais cela doit être activé [ici](link).
       blank:
         title: Aucun hôte Jira n'est encore configuré
         description: Configurez un hôte Jira pour commencer à importer des éléments de Jira vers cette instance d'OpenProject.
@@ -179,13 +180,13 @@ fr:
       client:
         connection_error: 'Échec de la connexion au serveur Jira : %{message}'
         connection_timeout: 'La connexion au serveur Jira a expiré : %{message}'
-        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
-        ssrf_block_doc_link: Please see our [documentation](docs_url).
-        ssl_error: 'SSL error connecting to Jira server: %{message}'
+        ssrf_blocked: 'Connexion bloquée : l''hôte Jira se résout en une adresse IP privée. Si votre instance Jira fonctionne sur un réseau interne, autorisez son IP via la variable d''environnement OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST.'
+        ssrf_block_doc_link: Veuillez consulter notre [documentation](docs_url).
+        ssl_error: 'Échec de la connexion au serveur Jira : %{message}'
         parse_error: 'Échec de l''analyse de la réponse de l''API Jira : %{message}'
         api_error: L'API Jira a renvoyé le statut d'erreur %{status}
         401_error: L'API Jira a renvoyé une erreur 401. Votre jeton d'authentification peut avoir expiré ou ne pas avoir les autorisations requises. Veuillez vous assurer que le jeton appartient à un administrateur Jira.
-        429_error: Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user.
+        429_error: L'API Jira a renvoyé une erreur 429. Cela signifie que le propriétaire du jeton a été limité par l'instance Jira. Veuillez désactiver la limitation de débit pour cet utilisateur.
       columns:
         projects: Projets
         last_change: Dernière modification
@@ -285,7 +286,7 @@ fr:
               elements:
                 relations: Relations entre les tickets
                 project_ids: Identifiants de projet
-                issue_ids: Issue identifiers
+                issue_ids: Identifiants de tickets
                 sprints: Affectation des sprints
                 workflows: Flux de travail au niveau du projet
                 schemes: Schémas
@@ -340,7 +341,7 @@ fr:
           select_projects:
             title: Sélectionner des projets
       user:
-        unknown_name: Unknown
+        unknown_name: Inconnu
     mcp_configurations:
       index:
         description: Le protocole de contexte de modèle permet aux agents d'IA de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject. Cette fonctionnalité est encore en version bêta.
@@ -432,7 +433,7 @@ fr:
         page_header:
           description: Vous avez le choix entre des identifiants numériques classiques pour les lots de travaux et des identifiants sémantiques spécifiques aux projets, qui ajoutent l'identifiant du projet à l'identifiant du lot de travaux.
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
+          existing_identifiers_notice: 'Les identifiants existants de %{project_count} projets ne répondent pas aux exigences des identifiants sémantiques basés sur les projets. OpenProject peut les mettre à jour automatiquement pour qu''ils soient valides, comme dans les exemples ci-dessous. Cliquez sur « Corriger automatiquement et enregistrer » pour mettre à jour les identifiants de tous les projets de cette manière et activer les identifiants sémantiques basés sur les projets.
 
             '
         box_header:
@@ -453,21 +454,21 @@ fr:
           remaining_projects:
             one: "... 1 projet supplémentaire"
             other: "... %{count} projets supplémentaires"
-        button_autofix: Convert identifiers
-        button_save: Convert identifiers
+        button_autofix: Convertir les identifiants
+        button_save: Convertir les identifiants
         dialog:
           title: Modifier les identifiants de lots de travaux
           heading: Activer les ID de lots de travaux basés sur le projet ?
-          description: 'Cette opération modifiera les identifiants de tous les lots de travaux de tous les projets dans cette instance. Les identifiants et URL précédents continueront de rediriger correctement. Cette modification prendra un certain temps.
+          description: 'Cette opération modifiera les identifiants de tous les lots de travaux de tous les projets dans ce cas. Les identifiants et URL précédents continueront à fonctionner. Cette modification prendra un certain temps.
 
             '
           confirm_button: Modifier les identifiants
           checkbox_label: Je comprends que cela changera définitivement tous les identifiants du lot de travaux
         success_banner: Le format de l'identifiant du lot de travaux a été mis à jour.
         in_progress:
-          header_semantic: Converting to project-based identifiers
-          header_classic: Converting to numeric identifiers
-          footer_message: Background conversion is in progress. You can safely leave this page.
+          header_semantic: Conversion en des identifiants basés sur des projets
+          header_classic: Conversion en identifiants numériques
+          footer_message: La conversion en arrière-plan est en cours. Vous pouvez quitter cette page en toute sécurité.
     workflows:
       tabs:
         default_transitions: Transitions par défaut
@@ -914,7 +915,7 @@ fr:
         text: Cette action ne supprimera aucun projet contenu dans la liste. Voulez-vous vraiment supprimer cette liste de projets ?
     settings:
       header_details: Informations de base
-      header_identifier: Identifier
+      header_identifier: Identifiant
       header_status: Statut
       header_relations: Relations du projet
       button_update_details: Mettre à jour les informations
@@ -939,7 +940,7 @@ fr:
       change_identifier_dialog_title: Modifier l'identifiant du projet
       change_identifier_format_hint_semantic: Uniquement des lettres majuscules (A-Z), des chiffres ou des traits de soulignement. Maximum 10 caractères. Doit commencer par une lettre.
       change_identifier_format_hint_legacy: Uniquement des lettres minuscules (a-z), des chiffres, des tirets ou des traits de soulignement.
-      change_identifier_warning: 'Cela modifiera de manière permanente les identifiants et les URL de tous les lots de travaux de ce projet. L''identifiant et l''URL précédents continueront néanmoins la redirection correctement.
+      change_identifier_warning: 'Cela modifiera de manière permanente les identifiants et les URL de tous les lots de travail de ce projet. Les identifiants et URL précédents continueront néanmoins à fonctionner.
 
         '
       subitems:
@@ -1363,12 +1364,12 @@ fr:
     edit:
       form_configuration:
         tab: Configuration du formulaire
-        label_group: Groupe
-        reset_to_defaults: Rétablir les valeurs par défaut
-        add_attribute_group: Ajouter un groupe d’attributs
-        add_query_group: Ajouter un tableau des lots de travaux associés
-        delete_group: Supprimer le groupe
-        remove_attribute: Retirer du groupe
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Faites glisser les champs à partir d'ici pour les activer
         drag_to_reorder: Glisser pour réorganiser
         edit_query: Modifier la requête
@@ -1378,12 +1379,12 @@ fr:
         no_inactive_attributes: Pas d'attributs inactifs
         blankslate_title: Aucun groupe pour le moment
         blankslate_description: Ajoutez des groupes à l'aide du bouton ci-dessus ou faites glisser des attributs depuis le panneau de gauche.
-        group_actions: Actions de groupe
-        rename_group: Renommer le groupe
-        confirm_delete_group: Êtes-vous sûr de vouloir supprimer ce groupe ? Cette action ne peut pas être annulée.
-        group_name_label: Nom du groupe
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Actions de ligne
-        query_group_label: Tableau des lots de travaux
+        query_group_label: Related work packages table
         empty_group_hint: Glisser les attributs ici
         invalid_attribute_groups: La charge utile de la configuration du formulaire n'est pas valide.
         invalid_query: La configuration de la requête intégrée n'est pas valide.
@@ -1391,7 +1392,7 @@ fr:
         untitled_group: Groupe sans titre
         reset_title: Réinitialiser la configuration du formulaire
         confirm_reset: Êtes-vous sûr de vouloir réinitialiser la configuration du formulaire ?
-        builtin_field: Built-in field
+        builtin_field: Champ intégré
         reset_description: 'Cette opération rétablit les attributs dans leur groupe par défaut et désactive TOUS les champs personnalisés.
 
           '
@@ -1712,6 +1713,7 @@ fr:
       attachment:
         attachment_content: Pièces jointes
         attachment_file_name: Nom de la pièce jointe
+        charset: Jeu de caractères
         content_type: Type de contenu
         downloads: Téléchargements
         file: Fichier
@@ -1806,6 +1808,7 @@ fr:
         title: Titre
         description: Description
       member:
+        blocked: Bloqué
         roles: Rôles
       notification:
         read_ian: Lire dans l'application
@@ -2051,6 +2054,7 @@ fr:
         priority: Priorité
         progress: "% réalisé"
         readonly: Lecture seule
+        relatable: Relatable to
         remaining_hours: Travail restant
         remaining_time: Travail restant
         sequence_number: Numéro de séquence
@@ -3491,8 +3495,8 @@ fr:
           other: "%{count} vérifications ont renvoyé un avertissement"
       summary:
         failure: Certaines vérifications ont échoué et le système ne fonctionne pas comme prévu.
-        success: All connections and systems are working as expected.
-        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+        success: Toutes les connexions et les systèmes fonctionnent comme prévu.
+        warning: Certaines vérifications ont renvoyé un avertissement. Cela peut entraîner un comportement inattendu.
     result_component:
       status:
         failed: Échec
@@ -3503,6 +3507,9 @@ fr:
     additional:
       projects: Les projets visibles les plus récents de cette instance.
       no_visible_projects: Il n'y a aucun projet visible dans cette instance.
+      favorite_projects:
+        no_results: Vous n'avez pas de projet favori
+        no_results_subtext: Ajoutez un ou plusieurs projets comme favoris dans leur vue d'ensemble ou dans une liste de projets.
       users: Les utilisateurs enregistrés les plus récents de cette instance.
     blocks:
       community: Communauté OpenProject
@@ -3513,14 +3520,14 @@ fr:
         learn_about: En savoir plus sur les nouvelles fonctionnalités
         missing: Il n'y a pas encore de fonctionnalités mises en évidence.
         '17_5':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que:
 
             '
           new_features_list:
-            line_0: Project-based work package identifiers for clearer references.
-            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
-            line_2: Option to exclude work package types from Backlogs.
-            line_3: Redesigned sprint views.
+            line_0: Identificateurs de lots de travail basés sur des projets pour des références plus claires.
+            line_1: Prise en charge par Jira Migrator des identifiants Jira, des dates d'échéance, etc.
+            line_2: Possibilité d'exclure des types de lots de travail des carnets de commandes.
+            line_3: Refonte des vues de sprint.
             line_4: Improved work package linking across Documents and text editors.
             line_5: More flexible meeting schedules and reduced email notification noise.
             line_6: Nested groups for organizational structures and inherited permissions.
@@ -4071,6 +4078,7 @@ fr:
   label_journal_diff: Comparaison de description
   label_language: Langue
   label_languages: Langues
+  label_export_plural: Exports
   label_external_links: Liens externes
   label_locale: Langue et région
   label_jump_to_a_project: Accéder à un projet...
@@ -4267,7 +4275,7 @@ fr:
   label_project_new: Nouveau projet
   label_project_plural: Projets
   label_project_list_plural: Listes de projets
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: Cycle de vie du projet
   label_project_attributes_plural: Attributs du projet
   label_project_custom_field_plural: Attributs du projet
@@ -4535,6 +4543,7 @@ fr:
   label_total_days_off: Nombre total de jours de congé
   macro_execution_error: Erreur lors de l'exécution de la macro %{macro_name}
   macro_unavailable: La macro %{macro_name} ne peut être affichée.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -4818,6 +4827,7 @@ fr:
         menu:
           label_actions: Actions du lot de travaux
         parent: Parent
+        undisclosed: Undisclosed
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages
@@ -5219,6 +5229,10 @@ fr:
   setting_consent_required: Accord requis
   setting_consent_decline_mail: Adresse mail de contact de l'accord
   setting_cross_project_work_package_relations: Autoriser les relations entre lots de travaux de projets différents
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: La première semaine de l'année contient
   setting_date_format: Date
   setting_default_language: Langue par défaut
@@ -5259,6 +5273,9 @@ fr:
   setting_work_package_properties: Propriétés du lot de travaux
   setting_work_package_startdate_is_adddate: Utiliser la date actuelle comme date de début des nouveaux lots de travaux
   setting_work_packages_projects_export_limit: Limite d'exportation des lots de travaux/projets
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Période d'agrégation
   setting_log_requesting_user: Enregistrer le login utilisateur, nom et adresse e-mail pour toutes les requêtes
   setting_login_required: Authentification requise
@@ -5346,7 +5363,7 @@ fr:
   setting_welcome_on_homescreen: Afficher le bloc de bienvenue sur l'écran d'accueil
   setting_work_packages_identifier_classic: Séquence numérique à l'échelle de l'instance (par défaut)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Identifiants sémantiques basés sur le projet
+  setting_work_packages_identifier_semantic: Identificateurs sémantiques basés sur des projets (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Mode de surbrillance par défaut
   setting_work_package_list_default_highlighted_attributes: Attributs en ligne mis en surbrillance par défaut
@@ -5960,6 +5977,17 @@ fr:
     warning: 'La modification des jours de la semaine considérés comme des jours ouvrables ou des jours non ouvrables peut affecter les jours de début et de fin de tous les lots de travaux et les cycles de vie de tous les projets dans ce cas.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Jours ouvrables** modifiés (%{changes})._
       days:

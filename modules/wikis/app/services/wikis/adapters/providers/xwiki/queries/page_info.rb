@@ -34,48 +34,24 @@ module Wikis
       module XWiki
         module Queries
           class PageInfo < BaseQuery
+            include Concerns::XWikiQuery
+
             def call(input_data:, auth_strategy:)
               ref = PageReference.parse(input_data.identifier)
               return failure(code: :not_found) unless ref
 
-              url = "#{base_rest_url}#{ref.rest_path}"
-              Adapters::Authentication[auth_strategy].call do |http|
-                handle_response(
-                  http.with(headers: JSON_ACCEPT_HEADERS).get(url),
-                  identifier: input_data.identifier
-                )
+              authenticated(auth_strategy) do |http|
+                handle_response(http.get(rest_url(ref.rest_path))) do |data|
+                  success(
+                    Results::PageInfo.new(
+                      identifier: input_data.identifier,
+                      title: data["title"],
+                      href: data["xwikiAbsoluteUrl"],
+                      provider:
+                    )
+                  )
+                end
               end
-            end
-
-            private
-
-            def handle_response(response, identifier:)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
-
-              case response
-              in { status: 200..299 }
-                handle_success_response(response, identifier:)
-              in { status: 401 | 403 }
-                failure(code: :unauthorized)
-              in { status: 404 }
-                failure(code: :not_found)
-              else
-                failure(code: :request_failed)
-              end
-            end
-
-            def handle_success_response(response, identifier:)
-              data = response.json
-              success(
-                Results::PageInfo.new(
-                  identifier:,
-                  title: data["title"],
-                  href: data["xwikiAbsoluteUrl"],
-                  provider:
-                )
-              )
-            rescue MultiJson::ParseError
-              failure(code: :invalid_response)
             end
           end
         end

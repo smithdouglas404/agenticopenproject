@@ -31,10 +31,15 @@ ja:
         authentication_method: 認証方法
         creator: 作成者
         drive: ドライブ ID
+        file_link_origin: File link origin ID
         host: ホスト
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: 名称
         password: アプリケーションのパスワード
         provider_type: プロバイダーの種類
+        storage: Storage
+        storage_url: Storage URL
         tenant: ディレクトリ (テナント) ID
     errors:
       messages:
@@ -108,21 +113,25 @@ ja:
         remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: グループからユーザーを削除します：
         rename_project_folder: 管理プロジェクトフォルダの名前を変更します：
+        set_folder_permission: 'Set managed project Folder permissions:'
       one_drive_sync_service:
         create_folder: プロジェクトフォルダの作成を管理：
         ensure_root_folder_permissions: ベースフォルダの権限を設定：
         hide_inactive_folders: 非アクティブフォルダを隠す ステップ
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 管理プロジェクトフォルダの名前を変更します：
+        set_folder_permission: 'Set managed project Folder permissions:'
       sharepoint_sync_service:
         create_folder: プロジェクトフォルダの作成を管理：
         ensure_root_folder_permissions: ベースフォルダの権限を設定：
         hide_inactive_folders: 非アクティブフォルダを隠す ステップ：
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 管理プロジェクトフォルダの名前を変更します：
+        set_folder_permission: 'Set managed project Folder permissions:'
     errors:
       messages:
         error: 予期しないエラーが発生しました。OpenProject のログを確認するか、管理者に連絡してください。
+        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
         forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProjectはストレージプロバイダと認証できませんでした。アクセスできることを確認してください。
       models:

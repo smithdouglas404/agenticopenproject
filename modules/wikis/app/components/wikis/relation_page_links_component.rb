@@ -35,13 +35,15 @@ module Wikis
 
     alias_method :provider, :model
 
+    attr_reader :work_package
+
     def initialize(model = nil, work_package: nil, **)
       @work_package = work_package
       super(model, **)
     end
 
     def page_links
-      @page_links ||= page_link_service.relation_page_links_for(provider:, linkable: @work_package)
+      @page_links ||= page_link_service.relation_page_links_for(provider:, linkable: work_package)
     end
 
     def user_connected?
@@ -52,6 +54,10 @@ module Wikis
 
     def page_link_service
       @page_link_service ||= PageLinkService.new
+    end
+
+    def can_manage_links?
+      helpers.current_user.allowed_in_project?(:manage_wiki_page_links, work_package.project)
     end
   end
 end

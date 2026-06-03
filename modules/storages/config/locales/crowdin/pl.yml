@@ -31,10 +31,15 @@ pl:
         authentication_method: Metoda uwierzytelniania
         creator: Twórca
         drive: Identyfikator dysku
+        file_link_origin: File link origin ID
         host: Host
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: Nazwa
         password: Hasło aplikacji
         provider_type: Typ dostawcy
+        storage: Storage
+        storage_url: Storage URL
         tenant: Identyfikator katalogu (dzierżawcy)
     errors:
       messages:
@@ -108,21 +113,25 @@ pl:
         remote_folders: 'Odczytaj zawartość folderu zespołu:'
         remove_user_from_group: 'Usuń użytkownika z grupy:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       one_drive_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
         remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       sharepoint_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
         remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
+        set_folder_permission: 'Set managed project Folder permissions:'
     errors:
       messages:
         error: Wystąpił nieoczekiwany błąd. Sprawdź dzienniki OpenProject, aby uzyskać więcej informacji lub skontaktuj się z administratorem
+        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
         forbidden: OpenProject nie mógł uzyskać dostępu do żądanego zasobu. Sprawdź konfigurację uprawnień do dostawcy magazynu.
         unauthorized: OpenProject nie mógł uwierzytelnić się z dostawcą magazynu. Upewnij się, że masz do niego dostęp.
       models:

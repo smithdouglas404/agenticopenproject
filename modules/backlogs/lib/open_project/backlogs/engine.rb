@@ -57,6 +57,7 @@ module OpenProject::Backlogs
                      "backlogs/work_packages": %i[index show menu],
                      "backlogs/inbox": :menu,
                      "backlogs/burndown_chart": :show,
+                     "backlogs/sprints": :index,
                      "backlogs/taskboard": :show },
                    permissible_on: :project,
                    dependencies: %i[view_work_packages show_board_views]
@@ -69,7 +70,7 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { "backlogs/backlog_buckets": %i[new_dialog create edit_dialog update destroy_dialog destroy],
+                   { "backlogs/buckets": %i[new_dialog create edit_dialog update destroy_dialog destroy],
                      "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
                    require: :member,
@@ -82,7 +83,7 @@ module OpenProject::Backlogs
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items]
 
         permission :manage_sprint_items,
-                   { "backlogs/work_packages": %i[move move_to_sprint_dialog] },
+                   { "backlogs/work_packages": %i[move move_to_sprint_dialog move_to_bucket_dialog] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: %i[view_sprints edit_work_packages]
@@ -115,6 +116,13 @@ module OpenProject::Backlogs
            { controller: "/backlogs/backlog", action: :show },
            if: Proc.new { |project| project.module_enabled?(:backlogs) },
            caption: :label_backlog_and_sprints,
+           parent: :backlogs
+
+      menu :project_menu,
+           :all_sprints,
+           { controller: "/backlogs/sprints", action: :index },
+           if: Proc.new { |project| project.module_enabled?(:backlogs) },
+           caption: :label_all_sprints,
            parent: :backlogs
 
       # Menu items that are always present

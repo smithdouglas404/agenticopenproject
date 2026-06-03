@@ -62,8 +62,7 @@ describe('CheckAllController', () => {
 
   describe('without checkable controller', () => {
     beforeEach(async () => {
-      ctx.appendHTML(checkAllTemplate);
-      await ctx.nextFrame();
+      await ctx.mount(checkAllTemplate);
     });
 
     it('does nothing and does not error', () => {
@@ -76,9 +75,10 @@ describe('CheckAllController', () => {
 
   describe('with checkable controller', () => {
     beforeEach(async () => {
-      ctx.appendHTML(checkableTemplate);
-      ctx.appendHTML(checkAllTemplate);
-      await ctx.nextFrame();
+      await ctx.mount(`
+        ${checkableTemplate}
+        ${checkAllTemplate}
+      `);
     });
 
     it('toggles checkboxes', async () => {

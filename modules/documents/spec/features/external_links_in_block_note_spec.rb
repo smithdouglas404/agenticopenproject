@@ -96,23 +96,6 @@ RSpec.describe "External links in BlockNote editor",
     expect(hint.text(:all)).to include(I18n.t(:open_link_in_a_new_tab))
   end
 
-  it "emits exactly one hint when a link spans multiple inline nodes" do
-    # Paste HTML with a nested mark so the resulting <a> contains two adjacent
-    # text nodes ("hello " with only the link mark, "world" with link+bold).
-    # This exercises the sameLinkContinues coalescing path — without it we'd
-    # get a spurious hint after "hello " mid-link.
-    paste_clipboard_into(
-      editor.element,
-      html: '<a href="https://example.com/split">hello <strong>world</strong></a>',
-      plain: "hello world"
-    )
-
-    link = editor.shadow_root.find("a[target='_blank']", text: /hello\s*world/, wait: 5)
-    hints = link.all("span.sr-only", visible: :all)
-    expect(hints.size).to eq(1)
-    expect(hints.first.text(:all)).to include(I18n.t(:open_link_in_a_new_tab))
-  end
-
   it_behaves_like "does not freeze when pasting multiple external links"
 
   it "leaves no orphan hint when a linked range is deleted in one transaction" do

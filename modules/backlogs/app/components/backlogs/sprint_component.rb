@@ -57,11 +57,11 @@ module Backlogs
     private
 
     def show_start_sprint_action?
-      sprint.in_planning? && ::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
+      sprint.in_planning? && ::Backlogs::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
     end
 
     def show_finish_sprint_action?
-      sprint.active? && ::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint:)
+      sprint.active? && ::Backlogs::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint:)
     end
 
     def disable_start_sprint_action?
@@ -119,10 +119,6 @@ module Backlogs
 
     def show_burndown_link?
       sprint.active?
-    end
-
-    def user_allowed?(permission)
-      current_user.allowed_in_project?(permission, project)
     end
   end
 end

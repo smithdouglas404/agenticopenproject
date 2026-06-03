@@ -41,6 +41,24 @@ module FormFields
           #{select_from_work_package_dropdown(subject)}
         JS
       end
+
+      # Unfortunately, op-blocknote-extensions search input is removed
+      # on every blur event, and checking for elements to be on the
+      # screen with capybara triggers those. Therefore it's done via js.
+      def wait_for_shadow_content(text)
+        page.evaluate_async_script(<<~JS)
+          (function(done) {
+            var shadowRoot = #{shadow_root_query}
+            var textToFind = #{text.to_json};
+            #{shadow_root_observe_js}
+
+            shadowRootWaitFor(shadowRoot, function() {
+              return shadowRoot.textContent.includes(textToFind);
+            }, done);
+          })(arguments[arguments.length - 1]);
+        JS
+      end
+
       def content
         # capybara does not yet support getting content directly
         # on shadow roots
@@ -89,6 +107,15 @@ module FormFields
 
       def element
         shadow_root.find("div[role='textbox']")
+      end
+
+      # Retries the given block using Capybara's default wait time until it returns
+      # truthy. Use this before checking a database field that is written by the
+      # editor's async autosave.
+      def wait_for_autosave(&)
+        page.document.synchronize(Capybara.default_max_wait_time) do
+          raise Capybara::ElementNotFound unless yield
+        end
       end
 
       private
@@ -153,8 +180,9 @@ module FormFields
             #{shadow_root_observe_js}
 
             shadowRootWaitFor(shadowRoot, function() {
-              var element = Array.prototype.slice.call(shadowRoot.querySelectorAll("div"))
-                .find(function(div) { return div.textContent.trim() === textToClick; });
+              var titles = Array.prototype.slice.call(shadowRoot.querySelectorAll(".op-bn-work-package--title"));
+              var span = titles.find(function(s) { return s.textContent.trim() === textToClick; });
+              var element = span && span.closest("[role='option']");
               if (element) {
                 element.dispatchEvent(new Event("mousedown", { bubbles: true }));
                 return true;

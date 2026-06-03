@@ -39,7 +39,7 @@ See COPYRIGHT and LICENSE files for more details.
   <% end %>
 
   <% grid.with_area(:info_line) do %>
-    <%= render(WorkPackages::InfoLineComponent.new(work_package:, status_scheme:)) %>
+    <%= render(WorkPackages::InfoLineComponent.new(work_package:, status_scheme:, wrap: false)) %>
   <% end %>
 
   <% grid.with_area(:actions) do %>
@@ -60,7 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
       <%= render(
             Primer::Beta::Text.new(
               tag: :span,
-              classes: "__hl_inline_priority_#{work_package.priority.id} __hl_inline__small_dot"
+              classes: "__hl_inline_priority_#{work_package.priority.id} __hl_inline__small_dot no-wrap"
             )
           ) do %>
         <span class="op-work-package-card--priority-name"><%= work_package.priority.name %></span>
@@ -95,14 +95,18 @@ See COPYRIGHT and LICENSE files for more details.
           <% flex.with_row(classes: "ellipsis") do %>
             <%= render(Primer::Beta::Text.new(color: :muted, font_size: :small)) do %>
               <%= "#{t('.parent')}: " %>
-              <%= render(
-                    Primer::Beta::Link.new(
-                      href: work_package_path(work_package.parent),
-                      underline: false,
-                      color: :default
-                    )
-                  ) do %>
-                <%= work_package.parent.subject %>
+              <% if parent_visible? %>
+                <%= render(
+                      Primer::Beta::Link.new(
+                        href: work_package_path(work_package.parent),
+                        underline: false,
+                        color: :default
+                      )
+                    ) do %>
+                  <%= work_package.parent.subject %>
+                <% end %>
+              <% else %>
+                <%= t(".undisclosed") %>
               <% end %>
             <% end %>
           <% end %>

@@ -316,6 +316,10 @@ module Settings
       cross_project_work_package_relations: {
         default: true
       },
+      csv_escape_formulas: {
+        default: true,
+        description: "Escapes cells with single quote in CSV exports that begin with a spreadsheet formula character (e.g., =,@)"
+      },
       database_cipher_key: {
         description: "Encryption key for repository credentials",
         format: :string,
@@ -660,6 +664,11 @@ module Settings
         description: "Hide menu items in the menu sidebar for each main menu (such as Administration and Projects).",
         default: {},
         writable: false # cached in global variable
+      },
+      ical_feed_keep_closed_meetings_days: {
+        description: "Number of days to keep closed and in-progress one-time meetings in iCal feeds",
+        format: :integer,
+        default: 30
       },
       impressum_link: {
         description: "Impressum link to be set, hidden by default",

@@ -43,12 +43,11 @@ describe('DisableWhenClickedController', () => {
   afterEach(() => ctx.dispose());
 
   it('disables button after click', async () => {
-    ctx.appendHTML(`
+    await ctx.mount(`
       <button data-controller="disable-when-clicked">
         Submit
       </button>
     `);
-    await ctx.nextFrame();
 
     const button = ctx.screen.getByRole('button', { name: 'Submit' });
 
@@ -60,13 +59,12 @@ describe('DisableWhenClickedController', () => {
   });
 
   it('replaces button text when text value is set', async () => {
-    ctx.appendHTML(`
+    await ctx.mount(`
       <button data-controller="disable-when-clicked"
               data-disable-when-clicked-text-value="Processing...">
         Submit
       </button>
     `);
-    await ctx.nextFrame();
 
     const button = ctx.screen.getByRole('button', { name: 'Submit' });
 
