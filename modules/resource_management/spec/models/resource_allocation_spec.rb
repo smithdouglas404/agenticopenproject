@@ -102,41 +102,51 @@ RSpec.describe ResourceAllocation do
     end
   end
 
-  describe "#user_assigned? / #filter_based?" do
+  describe "#user_assigned? / #filter_based? / #needs_principal_assignment?" do
     let(:assignee) { build_stubbed(:user) }
-    let(:filter) do
-      UserQuery.new.filter_for(:name).tap do |f|
-        f.operator = "~"
-        f.values = ["alice"]
-      end
-    end
 
-    context "with an explicit user (no filter)" do
-      subject(:allocation) { described_class.new(principal: assignee, user_filter: []) }
+    context "with an explicit user allocation" do
+      subject(:allocation) { described_class.new(principal_explicit: true, principal: assignee) }
 
       it { is_expected.to be_user_assigned }
       it { is_expected.not_to be_filter_based }
+      it { is_expected.not_to be_needs_principal_assignment }
     end
 
-    context "with a filter placeholder (no principal)" do
-      subject(:allocation) { described_class.new(principal: nil, user_filter: [filter]) }
+    context "with an unassigned filter placeholder" do
+      subject(:allocation) { described_class.new(principal_explicit: false, principal: nil) }
 
       it { is_expected.not_to be_user_assigned }
       it { is_expected.to be_filter_based }
+      it { is_expected.to be_needs_principal_assignment }
     end
 
-    context "with a real user assigned to a filter allocation" do
-      subject(:allocation) { described_class.new(principal: assignee, user_filter: [filter]) }
+    context "with a filter placeholder that has a principal assigned" do
+      subject(:allocation) { described_class.new(principal_explicit: false, principal: assignee) }
 
       it { is_expected.to be_user_assigned }
       it { is_expected.to be_filter_based }
+      it { is_expected.not_to be_needs_principal_assignment }
+    end
+  end
+
+  describe ".needs_principal_assignment" do
+    shared_let(:project) { create(:project) }
+    shared_let(:work_package) { create(:work_package, project:) }
+
+    let!(:unassigned_placeholder) do
+      create(:resource_allocation, entity: work_package, principal_explicit: false, principal: nil, filter_name: "Devs")
     end
 
-    context "with neither a principal nor a filter" do
-      subject(:allocation) { described_class.new(principal: nil, user_filter: []) }
+    before do
+      # An explicit allocation and an already-assigned placeholder must be excluded.
+      create(:resource_allocation, entity: work_package)
+      create(:resource_allocation, entity: work_package,
+                                   principal_explicit: false, principal: create(:user), filter_name: "Devs")
+    end
 
-      it { is_expected.not_to be_user_assigned }
-      it { is_expected.not_to be_filter_based }
+    it "returns only filter placeholders without a principal" do
+      expect(described_class.needs_principal_assignment).to contain_exactly(unassigned_placeholder)
     end
   end
 
@@ -223,8 +233,17 @@ RSpec.describe ResourceAllocation do
         expect(allocation.errors[:allocated_time]).to be_present
       end
 
-      it "does not require principal (column is nullable)" do
+      it "requires a principal for an explicit allocation" do
+        allocation.principal_explicit = true
         allocation.principal = nil
+        expect(allocation).not_to be_valid
+        expect(allocation.errors.symbols_for(:principal)).to include(:blank)
+      end
+
+      it "does not require a principal for a filter placeholder" do
+        allocation.principal_explicit = false
+        allocation.principal = nil
+        allocation.filter_name = "Devs"
         expect(allocation).to be_valid
       end
     end
@@ -302,7 +321,7 @@ RSpec.describe ResourceAllocation do
       end
     end
 
-    describe "filter_name (filter-based allocations)" do
+    describe "allocation kind (principal_explicit)" do
       let(:filter) do
         UserQuery.new.filter_for(:name).tap do |f|
           f.operator = "~"
@@ -310,35 +329,49 @@ RSpec.describe ResourceAllocation do
         end
       end
 
-      it "is not filter-based and needs no filter_name with only a principal" do
-        allocation.user_filter = []
-        expect(allocation).to be_valid
-        expect(allocation).not_to be_filter_based
+      context "when explicit (principal_explicit: true)" do
+        before { allocation.principal_explicit = true }
+
+        it "is valid with a principal and no filter" do
+          expect(allocation).to be_valid
+        end
+
+        it "rejects a filter_name" do
+          allocation.filter_name = "Devs"
+          expect(allocation).not_to be_valid
+          expect(allocation.errors.symbols_for(:filter_name)).to include(:present)
+        end
+
+        it "rejects a user_filter" do
+          allocation.user_filter = [filter]
+          expect(allocation).not_to be_valid
+          expect(allocation.errors.symbols_for(:user_filter)).to include(:present)
+        end
       end
 
-      it "requires a filter_name once a user_filter is present" do
-        allocation.user_filter = [filter]
-        allocation.filter_name = nil
+      context "when filter-based (principal_explicit: false)" do
+        before do
+          allocation.principal_explicit = false
+          allocation.principal = nil
+        end
 
-        expect(allocation).to be_filter_based
-        expect(allocation).not_to be_valid
-        expect(allocation.errors.symbols_for(:filter_name)).to include(:blank)
-      end
+        it "requires a filter_name" do
+          allocation.filter_name = nil
+          expect(allocation).not_to be_valid
+          expect(allocation.errors.symbols_for(:filter_name)).to include(:blank)
+        end
 
-      it "is valid as a placeholder (filter, no principal) with a name" do
-        allocation.principal = nil
-        allocation.user_filter = [filter]
-        allocation.filter_name = "Full stack Developer (DE-EN)"
+        it "is valid as an unassigned placeholder with a name" do
+          allocation.filter_name = "Full stack Developer (DE-EN)"
+          expect(allocation).to be_valid
+        end
 
-        expect(allocation).to be_valid
-      end
-
-      it "allows a real principal alongside a named filter (assigned placeholder)" do
-        allocation.principal = owner
-        allocation.user_filter = [filter]
-        allocation.filter_name = "Full stack Developer (DE-EN)"
-
-        expect(allocation).to be_valid
+        it "allows a real principal alongside a named filter (assigned placeholder)" do
+          allocation.principal = owner
+          allocation.filter_name = "Full stack Developer (DE-EN)"
+          allocation.user_filter = [filter]
+          expect(allocation).to be_valid
+        end
       end
     end
   end
@@ -364,7 +397,8 @@ RSpec.describe ResourceAllocation do
 
       allocation = create(:resource_allocation,
                           entity: work_package,
-                          principal: owner,
+                          principal_explicit: false,
+                          principal: nil,
                           filter_name: "Alices",
                           user_filter: [filter])
 

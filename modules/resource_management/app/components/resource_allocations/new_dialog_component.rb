@@ -28,33 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require_relative "shared_contract_examples"
+module ResourceAllocations
+  class NewDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-RSpec.describe ResourceAllocations::UpdateContract do
-  include_context "ModelContract shared context"
+    DIALOG_ID = "allocate-resource-dialog"
+    FORM_ID = "allocate-resource-form"
+    FOOTER_ID = "allocate-resource-footer"
+    # Shared by both step forms so swapping step 1 for step 2 targets the same
+    # Turbo stream wrapper.
+    BODY_ID = "allocate-resource-dialog-body"
 
-  it_behaves_like "resource allocation contract" do
-    let(:contract) { described_class.new(resource_allocation, current_user) }
-  end
+    def initialize(project:, work_package: nil)
+      super
 
-  describe "writable attributes" do
-    let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
-    let(:current_user) do
-      create(:user, member_with_permissions: { project => %i[view_resource_planners allocate_user_resources] })
-    end
-    let(:work_package) { create(:work_package, project:) }
-    let(:resource_allocation) { build_stubbed(:resource_allocation, entity: work_package, principal: current_user) }
-    let(:contract) { described_class.new(resource_allocation, current_user) }
-
-    it "does not allow entity to be set" do
-      expect(contract.writable?(:entity)).to be(false)
+      @project = project
+      @work_package = work_package
     end
 
-    it "allows principal, state, dates, allocated_time, and user_filter" do
-      %i[principal principal_explicit state start_date end_date allocated_time user_filter].each do |attr|
-        expect(contract.writable?(attr)).to be(true), "expected #{attr} to be writable"
-      end
+    private
+
+    def title
+      I18n.t("resource_management.allocate_resource_dialog.title")
     end
   end
 end

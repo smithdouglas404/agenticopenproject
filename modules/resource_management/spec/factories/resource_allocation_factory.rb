@@ -39,10 +39,12 @@ FactoryBot.define do
     end_date { Date.new(2026, 1, 9) }
     allocated_time { 5 * 8 * 60 } # 5 days of 8 hours in minutes
     user_filter { [] }
+    principal_explicit { true }
 
     traits_for_enum :state
 
     trait :with_user_filter do
+      principal_explicit { false }
       principal { nil }
       filter_name { "Full stack Developer (DE-EN)" }
       transient do
