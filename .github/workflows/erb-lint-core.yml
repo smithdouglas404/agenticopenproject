@@ -26,6 +26,4 @@ jobs:
       - name: Run erb-lint
         uses: tk0miya/action-erblint@44c5fe3552356fe8bff23f30d534aa4258aa3f7b # v1
         with:
-          github_token: ${{ secrets.github_token }}
           reporter: github-pr-check
-          fail_on_error: true
