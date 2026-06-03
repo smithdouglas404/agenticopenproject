@@ -33,109 +33,113 @@ require "spec_helper"
 module API
   module V3
     module PageLinks
-      RSpec.describe PageLinkRepresenter, :rendering do
+      RSpec.describe RelationPageLinkRepresenter, :rendering do
         include Utilities::PathHelper
 
-        let(:inline_page_link) { build_stubbed(:inline_wiki_page_link) }
         let(:current_user) { create(:user) }
 
-        let(:represented) { inline_page_link }
+        let(:relation_page_link) { build_stubbed(:relation_wiki_page_link) }
+        let(:embed_links) { false }
+
+        let(:represented) { relation_page_link }
         let(:project) { represented.linkable.project }
 
-        let(:embed_links) { false }
         let(:representer) { described_class.new(represented, current_user:, embed_links:) }
 
         subject(:resulting_json) { representer.to_json }
 
         describe "_links" do
-          describe "self" do
+          describe "author" do
             it_behaves_like "has a titled link" do
-              let(:link) { "self" }
-              let(:href) { "/api/v3/wiki_page_links/#{represented.id}" }
-              let(:title) { represented.identifier }
+              let(:link) { "author" }
+              let(:href) { "/api/v3/users/#{represented.author_id}" }
+              let(:title) { represented.author.name }
             end
           end
 
-          describe "provider" do
-            it_behaves_like "has a titled link" do
-              let(:link) { "provider" }
-              let(:href) { "/api/v3/wiki_providers/#{represented.provider.universal_identifier}" }
-              let(:title) { represented.provider.name }
-            end
-          end
+          describe "delete" do
+            let(:permission) { :manage_wiki_page_links }
 
-          describe "linkable" do
-            it_behaves_like "has a titled link" do
-              let(:link) { "linkable" }
-              let(:href) { "/api/v3/work_packages/#{represented.linkable_id}" }
-              let(:title) { represented.linkable.name }
+            let(:link) { "delete" }
+            let(:href) { "/api/v3/wiki_page_links/#{represented.id}" }
+            let(:method) { :delete }
+
+            it_behaves_like "has an untitled action link"
+
+            context "when there is no associated linkable" do
+              before { represented.linkable = nil }
+
+              it_behaves_like "has no link"
             end
           end
         end
 
         describe "properties" do
           it_behaves_like "property", :wikiPageLinkType do
-            let(:value) { URN_INLINE_PAGE_LINK }
-          end
-
-          it_behaves_like "property", :_type do
-            let(:value) { "WikiPageLink" }
-          end
-
-          it_behaves_like "property", :identifier do
-            let(:value) { represented.identifier }
-          end
-
-          it_behaves_like "datetime property", :createdAt do
-            let(:value) { represented.created_at }
-          end
-
-          it_behaves_like "datetime property", :updatedAt do
-            let(:value) { represented.updated_at }
+            let(:value) { URN_RELATION_PAGE_LINK }
           end
         end
 
         describe ".from_hash" do
-          let(:provider) { create(:xwiki_provider) }
-          let(:provider_href) { api_v3_paths.wiki_provider(provider.universal_identifier) }
-
           let(:author) { current_user }
           let(:author_href) { api_v3_paths.user(author.id) }
 
           let(:work_package) { create(:work_package) }
           let(:work_package_href) { api_v3_paths.work_package(work_package.id) }
 
+          let(:provider) { create(:xwiki_provider) }
+
           let(:hash) do
             { wiki_page_type: API::V3::PageLinks::URN_PAGE_LINK_TYPE["Wikis::RelationPageLink"],
               identifier: "/an/actual/valid/page/identifier",
               _links: {
-                provider: { href: provider_href, title: provider.name },
+                author: { href: author_href },
+                provider: { href: api_v3_paths.wiki_provider(provider.universal_identifier) },
                 linkable: { href: work_package_href }
               } }.deep_stringify_keys
           end
 
           subject(:parsed) { described_class.new(ParserStruct.new, current_user:).from_hash(hash) }
 
-          describe "provider" do
-            context "when the provider exists" do
-              it "sets #provider to the correct provider" do
-                expect(parsed.provider).to eq(provider)
+          describe "author" do
+            context "when the current user is not an admin and setting is off" do
+              it "sets the author to the current user" do
+                expect(parsed["author"]).to eq(current_user)
               end
             end
 
-            context "when the provider does not exist" do
-              let(:provider_href) { "/api/v3/wiki_providers/-100" }
+            context "when the current user is an admin" do
+              let(:current_user) { create(:admin) }
 
-              it "sets #provider to an Inexistent provider" do
-                expect(parsed.provider).to be_a(Wikis::InexistentProvider)
+              context "when the setting is apiv3_write_readonly_attributes disabled" do
+                it "sets the author to the current user" do
+                  expect(parsed["author"]).to eq(current_user)
+                end
               end
-            end
 
-            context "when the link can't be parsed" do
-              let(:provider_href) { api_v3_paths.user(current_user) }
+              context "when the setting apiv3_write_readonly_attributes enabled",
+                      with_settings: { apiv3_write_readonly_attributes: true } do
+                context "and the author exists" do
+                  it "sets the author to the provided user" do
+                    expect(parsed["author"]).to eq(author)
+                  end
+                end
 
-              it "sets #provider to nil" do
-                expect(parsed.provider).to be_nil
+                context "when the author does not exist" do
+                  let(:author_href) { api_v3_paths.user("abc") }
+
+                  it "sets #author to an Inexistent User" do
+                    expect(parsed["author"]).to eq(::Users::InexistentUser.new)
+                  end
+                end
+
+                context "when the href can't be parsed" do
+                  let(:author_href) { "/api/v3/foods/schnitzel" }
+
+                  it "sets #author to an Inexistent User" do
+                    expect(parsed["author"]).to be_nil
+                  end
+                end
               end
             end
           end
