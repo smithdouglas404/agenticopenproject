@@ -99,7 +99,7 @@ module ResourcePlannerViews::WorkPackageList
     end
 
     def allocation
-      render(Primer::Beta::Text.new(color: :muted)) { allocation_placeholder }
+      render(AllocationProgressComponent.new(work_package:))
     end
 
     def allocated_members

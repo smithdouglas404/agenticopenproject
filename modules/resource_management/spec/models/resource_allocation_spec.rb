@@ -486,4 +486,42 @@ RSpec.describe ResourceAllocation do
       end
     end
   end
+
+  describe ".with_allocated_time" do
+    shared_let(:work_package) { create(:work_package) }
+    shared_let(:other_work_package) { create(:work_package) }
+
+    def total
+      described_class
+        .with_allocated_time(WorkPackage.where(id: work_package.id))
+        .first
+        .allocated_time_total
+    end
+
+    it "exposes the summed allocated_time of the work package's allocations" do
+      create(:resource_allocation, entity: work_package, allocated_time: 120)
+      create(:resource_allocation, entity: work_package, allocated_time: 300)
+
+      expect(total).to eq(420)
+    end
+
+    it "counts only allocations in the 'allocated' state" do
+      create(:resource_allocation, entity: work_package, allocated_time: 120)
+      create(:resource_allocation, :requested, entity: work_package, allocated_time: 999)
+      create(:resource_allocation, :rejected, entity: work_package, allocated_time: 999)
+      create(:resource_allocation, :canceled, entity: work_package, allocated_time: 999)
+
+      expect(total).to eq(120)
+    end
+
+    it "does not bleed allocations from other work packages" do
+      create(:resource_allocation, entity: other_work_package, allocated_time: 500)
+
+      expect(total).to eq(0)
+    end
+
+    it "is zero when the work package has no allocations" do
+      expect(total).to eq(0)
+    end
+  end
 end

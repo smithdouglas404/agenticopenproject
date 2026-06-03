@@ -130,6 +130,10 @@ en:
     work_package_list:
       add_work_package_dialog:
         title: Add work package
+      allocation:
+        hours: "%{value}h"
+        no_work: No work planned on this work package
+        summary: "%{allocated} / %{scheduled}"
       allocation_placeholder: —
       blank:
         description: There are no work packages matching this view's filters yet.

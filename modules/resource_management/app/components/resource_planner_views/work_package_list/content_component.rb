@@ -41,7 +41,7 @@ module ResourcePlannerViews::WorkPackageList
     private
 
     def work_packages
-      @view.effective_query&.results&.work_packages || WorkPackage.none
+      @view.allocated_work_packages
     end
   end
 end
