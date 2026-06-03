@@ -70,6 +70,7 @@ en:
       filter_label: "Search identifiers"
       btn_release: "Release"
       released_notice: 'Identifier "%{identifier}" has been released.'
+      identifier_not_found: "The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page."
       dialog:
         title: "Release identifier"
         heading: 'Release "%{identifier}"?'

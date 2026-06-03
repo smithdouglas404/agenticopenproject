@@ -87,8 +87,8 @@ RSpec.describe "Inbox column in sprint planning view", :js do
 
       it "shows the sprint blankslate with settings link and sprint button" do
         planning_page.expect_inbox_blankslate
-        planning_page.expect_backlog_blankslate
-        planning_page.expect_backlog_blankslate_description(
+        planning_page.expect_sprints_blankslate
+        planning_page.expect_sprints_blankslate_description(
           "To start planning your sprint, create one here or go to the project settings to receive sprints from a different project."
         )
         planning_page.expect_backlog_settings_link
@@ -100,9 +100,9 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       let(:additional_permissions) { %i[create_sprints] }
 
       it "shows the sprint blankslate without the settings link" do
-        planning_page.expect_backlog_blankslate
+        planning_page.expect_sprints_blankslate
         planning_page.expect_no_backlog_settings_link
-        planning_page.expect_backlog_blankslate_description(
+        planning_page.expect_sprints_blankslate_description(
           "To start planning your sprint, create one here."
         )
         planning_page.expect_new_sprint_button
@@ -113,8 +113,8 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       let(:additional_permissions) { %i[share_sprint] }
 
       it "shows the sprint blankslate with settings link but no sprint button" do
-        planning_page.expect_backlog_blankslate
-        planning_page.expect_backlog_blankslate_description(
+        planning_page.expect_sprints_blankslate
+        planning_page.expect_sprints_blankslate_description(
           "To start planning your sprint, go to the project settings to receive sprints from a different project."
         )
         planning_page.expect_backlog_settings_link
@@ -124,8 +124,8 @@ RSpec.describe "Inbox column in sprint planning view", :js do
 
     context "when the user cannot create sprints or manage sprint sharing" do
       it "shows the sprint blankslate without action copy, settings link, or sprint button" do
-        planning_page.expect_backlog_blankslate
-        planning_page.expect_backlog_blankslate_description(
+        planning_page.expect_sprints_blankslate
+        planning_page.expect_sprints_blankslate_description(
           "No sprints are available for this project yet."
         )
         planning_page.expect_no_backlog_settings_link
@@ -143,8 +143,8 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       let(:additional_permissions) { %i[create_sprints share_sprint] }
 
       it "shows the sprint blankslate without a sprint button and keeps the settings link" do
-        planning_page.expect_backlog_blankslate
-        planning_page.expect_backlog_blankslate_description(
+        planning_page.expect_sprints_blankslate
+        planning_page.expect_sprints_blankslate_description(
           "This project receives sprints from a different project. Manage this in the project settings."
         )
         planning_page.expect_backlog_settings_link
@@ -154,8 +154,8 @@ RSpec.describe "Inbox column in sprint planning view", :js do
 
     context "when the user cannot manage sprint sharing" do
       it "shows the sprint blankslate without settings link or sprint button" do
-        planning_page.expect_backlog_blankslate
-        planning_page.expect_backlog_blankslate_description(
+        planning_page.expect_sprints_blankslate
+        planning_page.expect_sprints_blankslate_description(
           "This project receives shared sprints from a different project, but none are available right now."
         )
         planning_page.expect_no_backlog_settings_link
@@ -167,8 +167,8 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       let(:additional_permissions) { %i[create_sprints] }
 
       it "shows the sprint blankslate without settings link or sprint button" do
-        planning_page.expect_backlog_blankslate
-        planning_page.expect_backlog_blankslate_description(
+        planning_page.expect_sprints_blankslate
+        planning_page.expect_sprints_blankslate_description(
           "This project receives shared sprints from a different project, but none are available right now."
         )
         planning_page.expect_no_backlog_settings_link
@@ -188,7 +188,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       before { planning_page.visit! }
 
       it "renders the shared sprint instead of the blankslate" do
-        planning_page.expect_no_backlog_blankslate
+        planning_page.expect_no_sprints_blankslate
         planning_page.expect_sprint_names_in_order("Shared Sprint")
       end
     end
@@ -200,7 +200,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
     before { planning_page.visit! }
 
     it "renders the sprint and hides the sprint blankslate" do
-      planning_page.expect_no_backlog_blankslate
+      planning_page.expect_no_sprints_blankslate
       planning_page.expect_sprint_names_in_order("Sprint 1")
     end
   end
@@ -217,50 +217,46 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       planning_page.expect_inbox_item(inbox_wp1)
       planning_page.expect_inbox_item(inbox_wp2)
       planning_page.expect_inbox_item(inbox_wp3)
-      planning_page.expect_inbox_items_in_order(inbox_wp1, inbox_wp2, inbox_wp3)
+      planning_page.expect_work_packages_in_inbox_in_order(work_packages: [inbox_wp1, inbox_wp2, inbox_wp3])
       planning_page.expect_no_inbox_blankslate
     end
 
     it "allows reordering items via the kebab menu", :aggregate_failures do
       # First item has no upward actions
 
-      planning_page.within_inbox_menu(inbox_wp1) do |menu|
-        planning_page.within_move_submenu(menu) do |submenu|
-          expect(submenu).to have_no_selector(:menuitem, text: "Move to top")
-          expect(submenu).to have_no_selector(:menuitem, text: "Move up")
-          expect(submenu).to have_selector(:menuitem, text: "Move down")
-          expect(submenu).to have_selector(:menuitem, text: "Move to bottom")
-        end
+      planning_page.within_work_package_move_submenu(inbox_wp1) do |submenu|
+        expect(submenu).to have_no_selector(:menuitem, text: "Move to top")
+        expect(submenu).to have_no_selector(:menuitem, text: "Move up")
+        expect(submenu).to have_selector(:menuitem, text: "Move down")
+        expect(submenu).to have_selector(:menuitem, text: "Move to bottom")
       end
 
       wait_for_network_idle
 
       # Last item has no downward actions
-      planning_page.within_inbox_menu(inbox_wp3) do |menu|
-        planning_page.within_move_submenu(menu) do |submenu|
-          expect(submenu).to have_selector(:menuitem, text: "Move to top")
-          expect(submenu).to have_selector(:menuitem, text: "Move up")
-          expect(submenu).to have_no_selector(:menuitem, text: "Move down")
-          expect(submenu).to have_no_selector(:menuitem, text: "Move to bottom")
-        end
+      planning_page.within_work_package_move_submenu(inbox_wp3) do |submenu|
+        expect(submenu).to have_selector(:menuitem, text: "Move to top")
+        expect(submenu).to have_selector(:menuitem, text: "Move up")
+        expect(submenu).to have_no_selector(:menuitem, text: "Move down")
+        expect(submenu).to have_no_selector(:menuitem, text: "Move to bottom")
       end
 
       wait_for_network_idle
 
-      planning_page.click_in_inbox_move_menu(inbox_wp1, "Move down")
-      planning_page.expect_inbox_items_in_order(inbox_wp2, inbox_wp1, inbox_wp3)
+      planning_page.click_in_work_package_move_submenu(inbox_wp1, "Move down")
+      planning_page.expect_work_packages_in_inbox_in_order(work_packages: [inbox_wp2, inbox_wp1, inbox_wp3])
 
-      planning_page.click_in_inbox_move_menu(inbox_wp1, "Move down")
-      planning_page.expect_inbox_items_in_order(inbox_wp2, inbox_wp3, inbox_wp1)
+      planning_page.click_in_work_package_move_submenu(inbox_wp1, "Move down")
+      planning_page.expect_work_packages_in_inbox_in_order(work_packages: [inbox_wp2, inbox_wp3, inbox_wp1])
 
-      planning_page.click_in_inbox_move_menu(inbox_wp2, "Move to bottom")
-      planning_page.expect_inbox_items_in_order(inbox_wp3, inbox_wp1, inbox_wp2)
+      planning_page.click_in_work_package_move_submenu(inbox_wp2, "Move to bottom")
+      planning_page.expect_work_packages_in_inbox_in_order(work_packages: [inbox_wp3, inbox_wp1, inbox_wp2])
 
-      planning_page.click_in_inbox_move_menu(inbox_wp2, "Move to top")
-      planning_page.expect_inbox_items_in_order(inbox_wp2, inbox_wp3, inbox_wp1)
+      planning_page.click_in_work_package_move_submenu(inbox_wp2, "Move to top")
+      planning_page.expect_work_packages_in_inbox_in_order(work_packages: [inbox_wp2, inbox_wp3, inbox_wp1])
 
-      planning_page.click_in_inbox_move_menu(inbox_wp1, "Move up")
-      planning_page.expect_inbox_items_in_order(inbox_wp2, inbox_wp1, inbox_wp3)
+      planning_page.click_in_work_package_move_submenu(inbox_wp1, "Move up")
+      planning_page.expect_work_packages_in_inbox_in_order(work_packages: [inbox_wp2, inbox_wp1, inbox_wp3])
     end
 
     describe "moving backlog items to a sprint via the 'Move to sprint' menu item" do
@@ -270,9 +266,9 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       before { planning_page.visit! }
 
       it "moves the item to the bottom of the selected sprint" do
-        planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint", wait: false)
+        planning_page.click_in_work_package_move_submenu(inbox_wp1, "Move to sprint", wait: false)
 
-        within("#move-to-sprint-dialog") do
+        within_modal "Move to sprint" do
           # Expect to have all sprints listed
           expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
 
@@ -281,15 +277,15 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         end
 
         planning_page.expect_no_inbox_item(inbox_wp1)
-        planning_page.expect_story_in_sprint(inbox_wp1, sprint)
+        planning_page.expect_work_package_in_sprint(inbox_wp1, sprint)
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [sprint_wp, inbox_wp1])
       end
 
       context "when the target sprint is completed (race condition #73750)" do
         it "shows an error and does not move the item" do
-          planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint", wait: false)
+          planning_page.click_in_work_package_move_submenu(inbox_wp1, "Move to sprint", wait: false)
 
-          within("#move-to-sprint-dialog") do
+          within_modal "Move to sprint" do
             expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
             select sprint.name, from: "target_id"
 
@@ -306,26 +302,26 @@ RSpec.describe "Inbox column in sprint planning view", :js do
 
           # Item was *not* moved:
           planning_page.expect_inbox_item(inbox_wp1)
-          planning_page.expect_story_not_in_sprint(inbox_wp1, sprint)
+          planning_page.expect_work_package_not_in_sprint(inbox_wp1, sprint)
         end
       end
     end
 
     describe "moving backlog items to a sprint via drag-and-drop" do
       it "moves multiple items into the sprint one by one" do
-        planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
+        planning_page.drag_work_package_to_sprint(inbox_wp1, sprint)
         planning_page.expect_no_inbox_item(inbox_wp1)
 
-        planning_page.drag_inbox_item_to_sprint(inbox_wp2, sprint)
+        planning_page.drag_work_package_to_sprint(inbox_wp2, sprint)
         planning_page.expect_no_inbox_item(inbox_wp2)
 
-        planning_page.drag_inbox_item_to_sprint(inbox_wp3, sprint)
+        planning_page.drag_work_package_to_sprint(inbox_wp3, sprint)
         planning_page.expect_no_inbox_item(inbox_wp3)
 
         planning_page.expect_inbox_blankslate
-        planning_page.expect_story_in_sprint(inbox_wp1, sprint)
-        planning_page.expect_story_in_sprint(inbox_wp2, sprint)
-        planning_page.expect_story_in_sprint(inbox_wp3, sprint)
+        planning_page.expect_work_package_in_sprint(inbox_wp1, sprint)
+        planning_page.expect_work_package_in_sprint(inbox_wp2, sprint)
+        planning_page.expect_work_package_in_sprint(inbox_wp3, sprint)
       end
 
       context "with real authentication and a private project" do
@@ -343,7 +339,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         end
 
         it "moves a backlog item to the sprint without an error (Regression#73416)" do
-          planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
+          planning_page.drag_work_package_to_sprint(inbox_wp1, sprint)
           planning_page.expect_no_inbox_item(inbox_wp1)
         end
       end
@@ -363,38 +359,34 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         bottom_item = items_in_visual_order[2]
 
         # First item has no upward actions
-        planning_page.within_sprint_story_menu(top_item) do |menu|
-          planning_page.within_move_submenu(menu) do |submenu|
-            expect(submenu).to have_no_selector(:menuitem, text: "Move to top")
-            expect(submenu).to have_no_selector(:menuitem, text: "Move up")
-            expect(submenu).to have_selector(:menuitem, text: "Move down")
-            expect(submenu).to have_selector(:menuitem, text: "Move to bottom")
-          end
+        planning_page.within_work_package_move_submenu(top_item) do |submenu|
+          expect(submenu).to have_no_selector(:menuitem, text: "Move to top")
+          expect(submenu).to have_no_selector(:menuitem, text: "Move up")
+          expect(submenu).to have_selector(:menuitem, text: "Move down")
+          expect(submenu).to have_selector(:menuitem, text: "Move to bottom")
         end
 
         # Last item has no downward actions
-        planning_page.within_sprint_story_menu(bottom_item) do |menu|
-          planning_page.within_move_submenu(menu) do |submenu|
-            expect(submenu).to have_selector(:menuitem, text: "Move to top")
-            expect(submenu).to have_selector(:menuitem, text: "Move up")
-            expect(submenu).to have_no_selector(:menuitem, text: "Move down")
-            expect(submenu).to have_no_selector(:menuitem, text: "Move to bottom")
-          end
+        planning_page.within_work_package_move_submenu(bottom_item) do |submenu|
+          expect(submenu).to have_selector(:menuitem, text: "Move to top")
+          expect(submenu).to have_selector(:menuitem, text: "Move up")
+          expect(submenu).to have_no_selector(:menuitem, text: "Move down")
+          expect(submenu).to have_no_selector(:menuitem, text: "Move to bottom")
         end
 
-        planning_page.click_in_sprint_story_move_menu(top_item, "Move down")
+        planning_page.click_in_work_package_move_submenu(top_item, "Move down")
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [middle_item, top_item, bottom_item])
 
-        planning_page.click_in_sprint_story_move_menu(top_item, "Move down")
+        planning_page.click_in_work_package_move_submenu(top_item, "Move down")
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [middle_item, bottom_item, top_item])
 
-        planning_page.click_in_sprint_story_move_menu(middle_item, "Move to bottom")
+        planning_page.click_in_work_package_move_submenu(middle_item, "Move to bottom")
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [bottom_item, top_item, middle_item])
 
-        planning_page.click_in_sprint_story_move_menu(middle_item, "Move to top")
+        planning_page.click_in_work_package_move_submenu(middle_item, "Move to top")
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [middle_item, bottom_item, top_item])
 
-        planning_page.click_in_sprint_story_move_menu(top_item, "Move up")
+        planning_page.click_in_work_package_move_submenu(top_item, "Move up")
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [middle_item, top_item, bottom_item])
       end
     end
@@ -406,14 +398,14 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       before { planning_page.visit! }
 
       it "moves all sprint items back to the inbox" do
-        planning_page.drag_sprint_item_to_inbox(sprint_wp1)
+        planning_page.drag_work_package_to_backlog_inbox(sprint_wp1)
         wait_for_network_idle
 
-        planning_page.drag_sprint_item_to_inbox(sprint_wp2)
+        planning_page.drag_work_package_to_backlog_inbox(sprint_wp2)
         wait_for_network_idle
 
-        planning_page.expect_story_not_in_sprint(sprint_wp1, sprint)
-        planning_page.expect_story_not_in_sprint(sprint_wp2, sprint)
+        planning_page.expect_work_package_not_in_sprint(sprint_wp1, sprint)
+        planning_page.expect_work_package_not_in_sprint(sprint_wp2, sprint)
         planning_page.expect_inbox_item(sprint_wp1)
         planning_page.expect_inbox_item(sprint_wp2)
       end
@@ -428,7 +420,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         end
 
         it "hides the work package after move and shows an explanation" do
-          planning_page.drag_sprint_item_to_inbox(sprint_wp1)
+          planning_page.drag_work_package_to_backlog_inbox(sprint_wp1)
           wait_for_network_idle
 
           message =
@@ -436,7 +428,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
             "its type or status is excluded from the backlog."
 
           planning_page.expect_and_dismiss_flash(message:, type: :default)
-          planning_page.expect_story_not_in_sprint(sprint_wp1, sprint)
+          planning_page.expect_work_package_not_in_sprint(sprint_wp1, sprint)
           planning_page.expect_no_inbox_item(sprint_wp1)
         end
       end
@@ -464,27 +456,27 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       planning_page.expect_no_inbox_show_more
 
       # Drag an inbox item to the sprint
-      planning_page.drag_inbox_item_to_sprint(inbox_items.first, sprint)
+      planning_page.drag_work_package_to_sprint(inbox_items.first, sprint)
       planning_page.expect_no_inbox_show_more
 
       # Reorder within the inbox via menu
-      planning_page.click_in_inbox_move_menu(inbox_items.last, "Move up")
+      planning_page.click_in_work_package_move_submenu(inbox_items.last, "Move up")
       planning_page.expect_no_inbox_show_more
 
       # Reorder within the sprint via menu
-      planning_page.click_in_sprint_story_move_menu(sprint_wp1, "Move down")
+      planning_page.click_in_work_package_move_submenu(sprint_wp1, "Move down")
       planning_page.expect_no_inbox_show_more
 
       # Move an inbox item to the sprint via the dialog
-      planning_page.click_in_inbox_move_menu(inbox_items.last, "Move to sprint", wait: false)
-      within("#move-to-sprint-dialog") do
+      planning_page.click_in_work_package_move_submenu(inbox_items.last, "Move to sprint", wait: false)
+      within_modal "Move to sprint" do
         select sprint.name, from: "target_id"
         click_button "Move"
       end
       planning_page.expect_no_inbox_show_more
 
       # Open a sprint story details view, edit the subject, and close
-      details_view = planning_page.open_sprint_story_details(sprint_wp1)
+      details_view = planning_page.open_work_package_details(sprint_wp1)
       details_view.edit_field("subject").update("Updated subject")
       details_view.expect_and_dismiss_toaster message: "Successful update."
       details_view.close

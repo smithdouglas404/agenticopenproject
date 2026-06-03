@@ -59,9 +59,9 @@ module ResourcePlanners
     end
 
     def after_perform(call)
-      # The initial child view will be created here using
-      # `params[:default_view_class_name]`. The view classes themselves are
-      # not yet implemented, so we only validate the value at this stage.
+      # The initial child view is created in a second dialog step by
+      # ResourcePlannerViewsController#create. That flow also sets
+      # `default_view_id` on the planner via ResourcePlannerViews::CreateService.
       call.result.add_favoriting_user(user) if call.success? && params[:favorite]
       call
     end

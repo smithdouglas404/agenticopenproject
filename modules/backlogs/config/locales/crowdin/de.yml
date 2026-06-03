@@ -124,6 +124,8 @@ de:
     label_burndown_chart: Burndown-Diagramm
     label_is_done_status: Status %{status_name} bedeutet abgeschlossen
     label_sprint_board: Sprint-Board
+    move_to_bucket_dialog_component:
+      title: Move to backlog bucket
     move_to_sprint_dialog_component:
       title: Zum Sprint verschieben
       label_sprint: Sprint
@@ -180,6 +182,8 @@ de:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
         copy_work_package_id: Arbeitspaket-ID kopieren
         move_menu: Verschieben
+        move_to_backlog_bucket: Move to backlog bucket
+        move_to_inbox: Move to inbox
         move_to_sprint: Zum Sprint verschieben
     work_package_is_closed: Arbeitspaket ist abgeschlossen, wenn
   burndown:

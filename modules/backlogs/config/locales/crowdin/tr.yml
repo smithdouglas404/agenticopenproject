@@ -124,6 +124,8 @@ tr:
     label_burndown_chart: Burndown grafiği
     label_is_done_status: Durum %{status_name} tamamlandı anlamına geliyor
     label_sprint_board: Sprint board
+    move_to_bucket_dialog_component:
+      title: Move to backlog bucket
     move_to_sprint_dialog_component:
       title: Move to sprint
       label_sprint: Sprint
@@ -180,6 +182,8 @@ tr:
         copy_url_to_clipboard: URL'yi panoya kopyala
         copy_work_package_id: İş paketi kimliğini kopyala
         move_menu: Taşı
+        move_to_backlog_bucket: Move to backlog bucket
+        move_to_inbox: Move to inbox
         move_to_sprint: Sprint'e taşı
     work_package_is_closed: İş paketi, ne zaman
   burndown:
