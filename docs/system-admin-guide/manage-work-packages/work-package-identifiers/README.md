@@ -4,7 +4,7 @@ sidebar_navigation:
   title: Identifiers
   priority: 500
 description: Manage Work package identifiers.
-keywords: work package identifier, identifier, project-based identifier, numeric id, semantic id, numeric identifier, semantic identifier, JIRA migration
+keywords: work package identifier, identifier, project-based identifier, numeric id, semantic id, numeric identifier, semantic identifier, jira migration
 ---
 
 # Manage work package identifiers
