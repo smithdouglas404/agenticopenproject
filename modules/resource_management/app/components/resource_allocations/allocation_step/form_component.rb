@@ -61,36 +61,35 @@ module ResourceAllocations
       end
 
       def form_list_component(form)
-        result = [
+        prepends = if filter_based?
+                     [
+                       ResourceAllocations::Forms::FilterNameForm.new(form),
+                       ::Filters::FilterForm.new(
+                         form,
+                         query: @allocation.candidate_query,
+                         wrap_with_controller: true,
+                         hidden_input_name: "filters",
+                         output_format: :json,
+                         autocomplete_append_to: "##{dialog_id}"
+                       )
+                     ]
+                   else
+                     [
+                       ResourceAllocations::Forms::PrincipalForm.new(
+                         form,
+                         project: @project,
+                         dialog_id: dialog_id
+                       )
+                     ]
+                   end
+
+        Primer::Forms::FormList.new(
+          *prepends,
           ResourceAllocations::Forms::WorkPackageForm.new(form, project: @project, dialog_id: dialog_id),
           ResourceAllocations::Forms::DateRangeForm.new(form, dialog_id: dialog_id),
           ResourceAllocations::Forms::HoursForm.new(form),
           ResourceAllocations::Forms::AllocationKindForm.new(form, allocation_kind: @allocation_kind)
-
-        ]
-        result = if filter_based?
-                   [
-                     ResourceAllocations::Forms::FilterNameForm.new(form),
-                     ::Filters::FilterForm.new(
-                       form,
-                       query: @allocation.candidate_query,
-                       wrap_with_controller: true,
-                       hidden_input_name: "filters",
-                       output_format: :json,
-                       autocomplete_append_to: "##{dialog_id}"
-                     )
-                   ] + result
-                 else
-                   [
-                     ResourceAllocations::Forms::PrincipalForm.new(
-                       form,
-                       project: @project,
-                       dialog_id: dialog_id
-                     )
-                   ] + result
-                 end
-
-        Primer::Forms::FormList.new(*result)
+        )
       end
     end
   end
