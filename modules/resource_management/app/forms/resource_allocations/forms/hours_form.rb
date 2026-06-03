@@ -30,9 +30,6 @@
 
 module ResourceAllocations
   module Forms
-    # The allocated duration, entered in chronic-duration syntax (e.g. "40h",
-    # "1d 4h"). The `chronic-duration` Stimulus controller normalises the input
-    # to a canonical hours string on blur.
     class HoursForm < ApplicationForm
       form do |f|
         f.text_field(
@@ -48,9 +45,8 @@ module ResourceAllocations
 
       private
 
-      # The duration is entered as `allocated_hours` but stored and validated as
-      # `allocated_time`. Surface that attribute's errors on this field, each
-      # formatted like Primer's own field errors ("Hours can't be blank.").
+      # The field is `allocated_hours` but the model validates `allocated_time`;
+      # relabel that attribute's errors onto this field.
       def allocated_time_error
         label = ResourceAllocation.human_attribute_name(:allocated_hours)
         model.errors.messages_for(:allocated_time)
@@ -59,9 +55,6 @@ module ResourceAllocations
              .presence
       end
 
-      # Renders the stored duration as e.g. "40h", matching what the model's
-      # `allocated_hours=` setter accepts back. Only relevant when re-rendering
-      # the step after a validation error.
       def formatted_hours
         return if model.allocated_hours.nil?
 

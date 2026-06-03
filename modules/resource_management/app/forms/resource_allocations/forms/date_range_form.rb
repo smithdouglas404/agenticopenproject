@@ -30,8 +30,6 @@
 
 module ResourceAllocations
   module Forms
-    # The allocation's start and finish dates, shown side by side. The date
-    # pickers are told they live in the dialog so their popovers are not clipped.
     class DateRangeForm < ApplicationForm
       form do |f|
         f.group(layout: :horizontal) do |dates|

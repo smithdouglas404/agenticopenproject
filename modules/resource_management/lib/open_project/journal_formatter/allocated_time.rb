@@ -28,9 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Renders the journaled allocated_time, which is stored in minutes, as a
-# human-readable duration in hours (e.g. "8h"), respecting the instance's
-# duration format setting.
+# `allocated_time` is journaled in minutes; render it as a duration in hours.
 class OpenProject::JournalFormatter::AllocatedTime < JournalFormatter::Attribute
   private
 

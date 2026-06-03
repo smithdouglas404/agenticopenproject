@@ -30,10 +30,6 @@
 
 module ResourceAllocations
   module Forms
-    # The work package the allocation is for. It is the polymorphic `entity`,
-    # submitted as `entity_type` + `entity_id` and resolved back to a WorkPackage
-    # in the controller. A remote autocompleter over all work packages in the
-    # project; pre-selection flows through the bound model's `entity_id`.
     class WorkPackageForm < ApplicationForm
       form do |f|
         f.hidden name: :entity_type, value: "WorkPackage"
@@ -61,10 +57,8 @@ module ResourceAllocations
 
       private
 
-      # The work package is submitted as `entity_id`, but the model keys the
-      # polymorphic association's presence/type errors on `entity`/`entity_type`.
-      # Surface them on this field, each formatted like Primer's own field errors
-      # ("Work package must exist.").
+      # The field is `entity_id` but the model keys errors on the polymorphic
+      # `entity`/`entity_type`; relabel them onto this field.
       def entity_error
         messages = model.errors.messages_for(:entity) + model.errors.messages_for(:entity_type)
         messages

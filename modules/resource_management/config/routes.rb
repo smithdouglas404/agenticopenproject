@@ -47,8 +47,6 @@ Rails.application.routes.draw do
                 controller: "resource_management/resource_planner_views",
                 only: %i[show new create edit update destroy] do
         member do
-          # Search-and-pick dialog for manually hand-picked views, and the
-          # endpoints that add/remove a work package to/from the query.
           get :new_work_package
           post :work_packages, action: :add_work_package
           put "work_packages/:work_package_id/move", action: :move_work_package, as: :move_work_package
@@ -67,8 +65,6 @@ Rails.application.routes.draw do
               controller: "resource_management/resource_allocations",
               only: %i[new create edit update destroy] do
       collection do
-        # Step 2 of the "Allocate resource" dialog: swaps the kind selection for
-        # the allocation form of the chosen `allocation_kind`.
         get :step
       end
     end

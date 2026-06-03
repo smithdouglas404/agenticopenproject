@@ -37,8 +37,6 @@ See COPYRIGHT and LICENSE files for more details.
   ) do |dialog|
     dialog.with_header(variant: :large)
 
-    # Gives the autocompleter dropdown room in this content-sized modal — the
-    # shared fix for autocompleters in centered dialogs.
     dialog.with_body(classes: "Overlay-body_autocomplete_height") do
       primer_form_with(
         url: form_url,

@@ -64,18 +64,15 @@ module OpenProject::ResourceManagement
                    },
                    permissible_on: :project
 
-        # `manage_public_resource_planners` adds the publish-flip action. The
-        # contract additionally requires the planner itself to be public.
+        # Beyond this permission, the contract additionally requires the planner
+        # itself to be public.
         permission :manage_public_resource_planners,
                    { "resource_management/resource_planners": %i[toggle_public] },
                    permissible_on: :project,
                    dependencies: %i[view_resource_planners]
 
-        # `allocate_user_resources` gates create/update/delete on
-        # ResourceAllocation records, both via the controller actions below and
-        # directly in the ResourceAllocations::*Contract classes (which consume
-        # it through `allowed_in_project?`). The `contract_actions` map keeps the
-        # permission discoverable for API contracts.
+        # The `contract_actions` map keeps the permission discoverable for the
+        # API contracts that consume it via `allowed_in_project?`.
         permission :allocate_user_resources,
                    { "resource_management/resource_allocations": %i[new step create edit update destroy] },
                    permissible_on: :project,
