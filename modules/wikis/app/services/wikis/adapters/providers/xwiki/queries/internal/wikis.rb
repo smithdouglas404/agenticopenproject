@@ -36,33 +36,15 @@ module Wikis
           module Internal
             # Fetches the list of all wiki IDs from an XWiki farm.
             # Used as a preflight by other queries that need to iterate over all wikis.
+            # Not registered in the IoC container — call directly from XWiki queries only.
             # Returns Success(["xwiki", "mywiki", ...])
             class Wikis < BaseQuery
+              include Concerns::XWikiQuery
+
               def call(http:)
-                handle_response(http.with(headers: JSON_ACCEPT_HEADERS).get("#{base_rest_url}/wikis"))
-              end
-
-              private
-
-              def handle_response(response)
-                return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
-
-                case response
-                in { status: 200..299 }
-                  handle_success_response(response)
-                in { status: 401 | 403 }
-                  failure(code: :unauthorized)
-                else
-                  failure(code: :request_failed)
+                handle_response(http.get(rest_url("wikis"))) do |data|
+                  success((data["wikis"] || []).filter_map { it["id"] })
                 end
-              end
-
-              def handle_success_response(response)
-                data = response.json
-                wiki_ids = (data["wikis"] || []).filter_map { it["id"] }
-                success(wiki_ids)
-              rescue MultiJson::ParseError
-                failure(code: :invalid_response)
               end
             end
           end

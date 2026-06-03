@@ -32,8 +32,6 @@ module Wikis::Adapters
   class BaseQuery
     include Dry::Monads[:result]
 
-    JSON_ACCEPT_HEADERS = { "Accept" => "application/json" }.freeze
-
     attr_reader :provider
 
     def initialize(model:)
@@ -52,10 +50,6 @@ module Wikis::Adapters
 
     def failure(code:)
       Failure(Results::Error.new(source: self.class, code:))
-    end
-
-    def base_rest_url
-      "#{provider.url.chomp('/')}/rest"
     end
 
     def page_info(identifier:, auth_strategy:)
