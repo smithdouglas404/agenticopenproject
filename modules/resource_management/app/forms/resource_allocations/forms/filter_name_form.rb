@@ -30,8 +30,6 @@
 
 module ResourceAllocations
   module Forms
-    # The placeholder's display name shown for a `filter` allocation, rendered
-    # above the filter-criteria builder (`Filters::FilterForm`).
     class FilterNameForm < ApplicationForm
       form do |f|
         f.text_field(

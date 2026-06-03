@@ -30,8 +30,6 @@
 
 module ResourceAllocations
   module Forms
-    # The explicit-user picker shown for a `principal` allocation. The typeahead
-    # is scoped to active users who are members of the current project.
     class PrincipalForm < ApplicationForm
       form do |f|
         f.autocompleter(
@@ -62,9 +60,8 @@ module ResourceAllocations
 
       private
 
-      # The picker submits `principal_id`; any model error is keyed on the
-      # `principal` association. Surface those errors on this field, each
-      # formatted like Primer's own field errors ("Assignee can't be blank.").
+      # The field is `principal_id` but the model keys errors on the `principal`
+      # association; relabel them onto this field.
       def principal_error
         label = ResourceAllocation.human_attribute_name(:principal)
         model.errors.messages_for(:principal)

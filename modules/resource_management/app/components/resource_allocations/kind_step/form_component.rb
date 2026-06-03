@@ -30,8 +30,6 @@
 
 module ResourceAllocations
   module KindStep
-    # Step 1 of the dialog: the kind selection. Submits via GET to #new, which
-    # swaps in the step 2 form keyed on the chosen `allocation_kind`.
     class FormComponent < ApplicationComponent
       include ApplicationHelper
       include OpTurbo::Streamable

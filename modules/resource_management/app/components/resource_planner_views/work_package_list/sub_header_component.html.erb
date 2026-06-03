@@ -39,8 +39,6 @@ See COPYRIGHT and LICENSE files for more details.
     )
 
     if @view.manually_picked?
-      # Hand-picked views can both allocate and pull in existing work packages,
-      # so the primary action becomes a dropdown.
       subheader.with_action_menu(
         leading_icon: :plus,
         trailing_icon: :"triangle-down",

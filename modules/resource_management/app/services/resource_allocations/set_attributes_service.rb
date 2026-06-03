@@ -34,10 +34,8 @@ module ResourceAllocations
 
     def set_default_attributes(_params)
       model.change_by_system do
-        # When a resource allocation is created via this service it bypasses
-        # the request/approval flow and is directly allocated. This is currently
-        # the only way to create resource allocations, so this is the default.
-        # The request/approve flow will get custom services later
+        # This service bypasses the request/approval flow and allocates directly;
+        # the request/approve flow will get its own services later.
         model.state ||= "allocated"
         model.requested_by = user
         model.reviewed_by = user

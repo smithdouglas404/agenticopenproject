@@ -30,10 +30,6 @@
 
 module ResourceAllocations
   module AllocationStep
-    # Step 2 of the dialog: the allocation details. Shares the body wrapper key
-    # with the step 1 form so the controller can swap one for the other via a
-    # Turbo stream. For the filter kind it also renders the criteria builder
-    # (`Filters::FilterForm`) over a UserQuery.
     class FormComponent < ApplicationComponent
       include ApplicationHelper
       include OpTurbo::Streamable
