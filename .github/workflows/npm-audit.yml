@@ -151,14 +151,61 @@ jobs:
             gh pr close "$pr_number" --delete-branch
           done
 
-          pr_body=$(
+          pr_body_file=$(mktemp)
+
+          {
             echo 'Created by GitHub action.'
             echo
-            echo 'Runs `npm audit fix --package-lock-only --ignore-scripts` for the root and frontend npm lockfiles.'
+            echo '## Impacted packages'
+          } > "$pr_body_file"
+
+          node <<'NODE' >> "$pr_body_file"
+          const fs = require('fs');
+
+          const reports = [
+            ['root', 'reports/npm-audit-root-before.json'],
+            ['frontend', 'reports/npm-audit-frontend-before.json']
+          ];
+          let foundPackages = false;
+
+          for (const [label, reportPath] of reports) {
+            if (!fs.existsSync(reportPath)) {
+              continue;
+            }
+
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            const vulnerabilities = Object.entries(report.vulnerabilities || {})
+              .sort(([left], [right]) => left.localeCompare(right));
+
+            if (vulnerabilities.length === 0) {
+              continue;
+            }
+
+            foundPackages = true;
+            console.log('');
+            console.log(`### ${label}`);
+
+            for (const [name, details] of vulnerabilities) {
+              console.log(`- \`${name}\` (${details.severity})`);
+            }
+          }
+
+          if (!foundPackages) {
+            console.log('');
+            console.log('No vulnerable packages were reported before the fix.');
+          }
+          NODE
+
+          {
             for pr_number in $pr_numbers; do
+              if [ "$pr_number" = "$(echo "$pr_numbers" | head -1)" ]; then
+                echo
+                echo '## Replaced PRs'
+                echo
+              fi
               echo "Replaces #$pr_number"
             done
-          )
+          } >> "$pr_body_file"
 
           temp_branch="$BRANCH_PREFIX-$(date "+%Y%m%d%H%M%S")"
 
@@ -172,6 +219,6 @@ jobs:
             --base "$BASE_BRANCH" \
             --head "$temp_branch" \
             --title "Run npm audit fix" \
-            --body "$pr_body"
+            --body-file "$pr_body_file"
 
           echo "Created a PR with npm audit fixes (${temp_branch}) against ${BASE_BRANCH}"
