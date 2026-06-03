@@ -50,7 +50,7 @@ See COPYRIGHT and LICENSE files for more details.
               menu.with_item(
                 id: dom_target(backlog_bucket, :menu, :edit_backlog_bucket),
                 label: t(".action_menu.edit_backlog_bucket"),
-                href: edit_dialog_project_backlogs_backlog_bucket_path(project, backlog_bucket, all_backlogs_params),
+                href: edit_dialog_project_backlogs_bucket_path(project, backlog_bucket, all_backlogs_params),
                 content_arguments: { data: { controller: "async-dialog" } }
               ) do |item|
                 item.with_leading_visual_icon(icon: :pencil)
@@ -60,7 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
                 id: dom_target(backlog_bucket, :menu, :delete_backlog_bucket),
                 label: t(".action_menu.delete_backlog_bucket"),
                 scheme: :danger,
-                href: destroy_dialog_project_backlogs_backlog_bucket_path(project, backlog_bucket, all_backlogs_params),
+                href: destroy_dialog_project_backlogs_bucket_path(project, backlog_bucket, all_backlogs_params),
                 content_arguments: { data: { controller: "async-dialog" } }
               ) do |item|
                 item.with_leading_visual_icon(icon: :trash)

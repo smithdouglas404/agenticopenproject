@@ -37,6 +37,7 @@ export interface StimulusTestContext {
   container:HTMLElement;
   screen:BoundFunctions<typeof queries>;
   appendHTML(html:string):void;
+  mount(html:string):Promise<void>;
   getController<T extends Controller>(identifier:string, element?:Element):T;
   nextFrame():Promise<void>;
   dispose():void;
@@ -72,6 +73,11 @@ export async function setupStimulusTest(options:SetupOptions):Promise<StimulusTe
       const template = document.createElement('template');
       template.innerHTML = html.trim();
       container.appendChild(template.content.cloneNode(true));
+    },
+
+    async mount(html:string) {
+      this.appendHTML(html);
+      await this.nextFrame();
     },
 
     getController<T extends Controller>(identifier:string, element?:Element):T {

@@ -31,10 +31,15 @@ cs:
         authentication_method: Authentication Method
         creator: Autor
         drive: ID disku
+        file_link_origin: File link origin ID
         host: Hostitel
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: Název
         password: Heslo aplikace
         provider_type: Typ poskytovatele
+        storage: Storage
+        storage_url: Storage URL
         tenant: ID adresáře (tenant)
     errors:
       messages:
@@ -108,21 +113,25 @@ cs:
         remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'Odebrat uživatele ze skupiny:'
         rename_project_folder: 'Přejmenovat spravovanou složku projektu:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       one_drive_sync_service:
         create_folder: 'Managed Project Folder Creation:'
         ensure_root_folder_permissions: 'Nastavit základní oprávnění složky:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Přejmenovat spravovanou složku projektu:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       sharepoint_sync_service:
         create_folder: 'Managed Project Folder Creation:'
         ensure_root_folder_permissions: 'Nastavit oprávnění základní složky:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Přejmenovat spravovanou složku projektu:'
+        set_folder_permission: 'Set managed project Folder permissions:'
     errors:
       messages:
         error: Došlo k neočekávané chybě. Zkontrolujte prosím OpenProject logy pro více informací nebo kontaktujte správce
+        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
         forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject se nemohl autentizovat s poskytovatelem úložiště. Ujistěte se, že k němu máte přístup.
       models:

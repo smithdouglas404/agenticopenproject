@@ -31,10 +31,15 @@ ko:
         authentication_method: 인증 방법
         creator: 생성자
         drive: 드라이브 ID
+        file_link_origin: File link origin ID
         host: 호스트
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: 이름
         password: 애플리케이션 암호
         provider_type: 공급자 유형
+        storage: Storage
+        storage_url: Storage URL
         tenant: 디렉터리(테넌트) ID
     errors:
       messages:
@@ -108,21 +113,25 @@ ko:
         remote_folders: '팀 폴더의 콘텐츠 읽기:'
         remove_user_from_group: '그룹에서 사용자 제거:'
         rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       one_drive_sync_service:
         create_folder: '관리되는 프로젝트 폴더 생성:'
         ensure_root_folder_permissions: '기본 폴더 권한 설정:'
         hide_inactive_folders: '비활성 폴더 숨기기 단계:'
         remote_folders: '드라이브 루트 폴더의 콘텐츠 읽기:'
         rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       sharepoint_sync_service:
         create_folder: '관리되는 프로젝트 폴더 생성:'
         ensure_root_folder_permissions: '기본 폴더 권한 설정:'
         hide_inactive_folders: '비활성 폴더 숨기기 단계:'
         remote_folders: '드라이브 루트 폴더의 콘텐츠 읽기:'
         rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
+        set_folder_permission: 'Set managed project Folder permissions:'
     errors:
       messages:
         error: 예기치 않은 오류가 발생했습니다. OpenProject 로그에서 자세한 내용을 확인하거나 관리자에게 문의하세요
+        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
         forbidden: 요청된 리소스에 OpenProject가 액세스할 수 없습니다. 저장소 공급자의 권한 구성을 확인하세요.
         unauthorized: OpenProject가 저장소 공급자를 인증할 수 없습니다. 액세스 권한이 있는지 확인하세요.
       models:

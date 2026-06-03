@@ -275,6 +275,10 @@ paths:
     "$ref": "./paths/meeting_agenda_items.yml"
   "/api/v3/meetings/{meeting_id}/agenda_items/{id}":
     "$ref": "./paths/meeting_agenda_item.yml"
+  "/api/v3/meetings/{meeting_id}/agenda_items/{agenda_item_id}/outcomes":
+    "$ref": "./paths/meeting_agenda_item_outcomes.yml"
+  "/api/v3/meetings/{meeting_id}/agenda_items/{agenda_item_id}/outcomes/{id}":
+    "$ref": "./paths/meeting_agenda_item_outcome.yml"
   "/api/v3/meetings/{id}/attachments":
     "$ref": "./paths/meeting_attachments.yml"
   "/api/v3/meetings/{id}/form":
@@ -892,6 +896,12 @@ components:
       "$ref": "./components/schemas/meeting_agenda_item_write_model.yml"
     MeetingAgendaItemCollectionModel:
       "$ref": "./components/schemas/meeting_agenda_item_collection_model.yml"
+    MeetingOutcomeCollectionModel:
+      "$ref": "./components/schemas/meeting_outcome_collection_model.yml"
+    MeetingOutcomeModel:
+      "$ref": "./components/schemas/meeting_outcome_model.yml"
+    MeetingOutcomeWriteModel:
+      "$ref": "./components/schemas/meeting_outcome_write_model.yml"
     MeetingCollectionModel:
       "$ref": "./components/schemas/meeting_collection_model.yml"
     MeetingModel:

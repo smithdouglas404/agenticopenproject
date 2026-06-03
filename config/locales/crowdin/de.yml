@@ -57,10 +57,11 @@ de:
       col_identifier: Kennung
       col_project: Projekt
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
-      filter_label: Filter identifiers
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
@@ -458,7 +459,7 @@ de:
         dialog:
           title: Arbeitspaket-Kennungen ändern
           heading: Aktivieren Sie projektspezifische Arbeitspaket-Kennungen?
-          description: 'Dadurch werden die Kennungen aller Arbeitspakete in allen Projekten ändern. Die bisherigen Kennungen und URLs werden weiterhin funktionieren und umgeleitet. Diese Änderung wird einige Zeit in Anspruch nehmen.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Kennungen ändern
@@ -938,7 +939,7 @@ de:
       change_identifier_dialog_title: Projektkennung ändern
       change_identifier_format_hint_semantic: Nur Großbuchstaben (A-Z), Zahlen oder Unterstriche erlaubt. Maximal 10 Zeichen. Muss mit einem Buchstaben beginnen.
       change_identifier_format_hint_legacy: Nur Kleinbuchstaben (a-z), Zahlen, Bindestriche oder Unterstriche erlaubt.
-      change_identifier_warning: 'Dies wird die Kennungen und URLs aller Arbeitspakete in diesem Projekt dauerhaft ändern. Die bisherigen Werte bleiben jedoch weiterhin korrekt und werden umgeleitet.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1366,12 +1367,12 @@ de:
     edit:
       form_configuration:
         tab: Formularkonfiguration
-        label_group: Gruppe
-        reset_to_defaults: Auf Standardwerte zurücksetzen
-        add_attribute_group: Attributgruppe hinzufügen
-        add_query_group: Tabelle mit zugehörigen Arbeitspaketen hinzufügen
-        delete_group: Gruppe löschen
-        remove_attribute: Aus Gruppe entfernen
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Felder aus diesem Bereich herausziehen, um sie zu aktivieren
         drag_to_reorder: Ziehen zum Neuordnen
         edit_query: Abfrage bearbeiten
@@ -1381,12 +1382,12 @@ de:
         no_inactive_attributes: Keine inaktiven Attribute
         blankslate_title: Noch keine Gruppen
         blankslate_description: Fügen Sie Gruppen über die Schaltfläche oben hinzu oder ziehen Sie Attribute aus dem linken Bereich.
-        group_actions: Aktionen der Gruppe
-        rename_group: Rename group
-        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
-        group_name_label: Gruppenname
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Weitere Aktionen
-        query_group_label: Arbeitspaket-Tabelle
+        query_group_label: Related work packages table
         empty_group_hint: Attribute hierher ziehen
         invalid_attribute_groups: Die abgesendeten Daten der Formularkonfiguration sind ungültig.
         invalid_query: Die eingebettete Abfrage ist ungültig.
@@ -2056,6 +2057,7 @@ de:
         priority: Priorität
         progress: "% abgeschlossen"
         readonly: Nur Lesezugriff
+        relatable: Relatable to
         remaining_hours: Verbleibender Aufwand
         remaining_time: Verbleibender Aufwand
         sequence_number: Sequence number
@@ -4077,6 +4079,7 @@ de:
   label_journal_diff: Beschreibungsvergleich
   label_language: Sprache
   label_languages: Sprachen
+  label_export_plural: Exports
   label_external_links: Externe Links
   label_locale: Sprache und Region
   label_jump_to_a_project: Zu einem Projekt springen...
@@ -4273,7 +4276,7 @@ de:
   label_project_new: Neues Projekt
   label_project_plural: Projekte
   label_project_list_plural: Projektlisten
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: Projekt-Lebenszyklus
   label_project_attributes_plural: Projektattribute
   label_project_custom_field_plural: Projektattribute
@@ -4541,6 +4544,7 @@ de:
   label_total_days_off: Gesamtzahl freier Tage
   macro_execution_error: Fehler beim Ausführen des Makros %{macro_name}
   macro_unavailable: Das Makro %{macro_name} kann nicht angezeigt werden.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Makro %{macro_name}"
     errors:
@@ -4828,6 +4832,7 @@ de:
         menu:
           label_actions: Arbeitspaket-Aktionen
         parent: Übergeordnetes Arbeitspaket
+        undisclosed: Undisclosed
   permission_add_work_package_comments: Kommentare hinzufügen
   permission_add_work_packages: Arbeitspakete hinzufügen
   permission_add_messages: Forenbeiträge hinzufügen
@@ -5229,6 +5234,10 @@ de:
   setting_consent_required: Einwilligung erforderlich
   setting_consent_decline_mail: Kontaktadresse bei Rückfragen zur Einwilligung
   setting_cross_project_work_package_relations: Arbeitspaket-Beziehungen zwischen Projekten erlauben
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Die erste Woche im Jahr enthält
   setting_date_format: Datum
   setting_default_language: Standard-Sprache
@@ -5269,6 +5278,9 @@ de:
   setting_work_package_properties: Arbeitspaket-Eigenschaften
   setting_work_package_startdate_is_adddate: Neue Arbeitspakete haben "Heute" als Anfangsdatum
   setting_work_packages_projects_export_limit: Arbeitspakete / Exportlimit für Projekte
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregationszeitraum
   setting_log_requesting_user: Logge Benutzer Login, Name und Mailadresse für alle Anfragen
   setting_login_required: Authentifizierung erforderlich

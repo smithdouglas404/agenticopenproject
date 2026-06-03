@@ -36,18 +36,11 @@ module Backlogs
 
     # Deferred ActionMenu items (Primer include-fragment).
     def menu
-      work_package = displayed_work_packages.with_backlogs_neighbours.find(@work_package.id)
-
-      open_sprints_exist = Sprint.for_project(@project)
-                                 .visible
-                                 .not_completed
-                                 .where.not(id: @work_package.sprint_id)
-                                 .exists?
-
       render(Backlogs::WorkPackageCardMenuComponent.new(
                project: @project,
-               work_package:,
-               open_sprints_exist:,
+               work_package: work_package_with_backlog_neighbours,
+               open_sprints_exist: target_open_sprints.exists?,
+               other_buckets_exist: target_buckets.exists?,
                current_user:
              ),
              layout: false)
@@ -61,15 +54,30 @@ module Backlogs
       )
     end
 
-    def move
+    def move_to_bucket_dialog
+      respond_with_dialog Backlogs::MoveToBucketDialogComponent.new(
+        work_package: @work_package,
+        project: @project,
+        move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
+      )
+    end
+
+    def move # rubocop:disable Metrics/AbcSize
       # Capture the source before the call; the service reloads @work_package internally via #move_after.
       source = @work_package.sprint
 
-      call = Stories::UpdateService.new(user: current_user, story: @work_package)
+      call = ::Backlogs::WorkPackages::UpdateService.new(user: current_user, story: @work_package)
                                    .call(**move_params.to_h.symbolize_keys)
 
       if call.success?
         move_work_package_to_target_component_via_turbo_stream(source:, target: call.result.sprint)
+
+        if work_package_invisible_after_move?(call.result)
+          backlog_name = call.result.backlog_bucket&.name || I18n.t(:label_inbox)
+          render_flash_message_via_turbo_stream(
+            message: I18n.t(:notice_work_package_invisible_after_move, backlog: backlog_name)
+          )
+        end
       else
         render_error_flash_message_via_turbo_stream(
           message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
@@ -127,6 +135,30 @@ module Backlogs
       else
         @work_packages.merge(WorkPackage.backlogs_inbox_for(project: @project))
       end
+    end
+
+    def work_package_with_backlog_neighbours
+      displayed_work_packages.with_backlogs_neighbours.find(@work_package.id)
+    end
+
+    def target_open_sprints
+      Sprint.for_project(@project)
+            .visible.not_completed
+            .where.not(id: @work_package.sprint_id)
+    end
+
+    def target_buckets
+      BacklogBucket.where(project: @project)
+                   .where.not(id: @work_package.backlog_bucket_id)
+    end
+
+    # After a work package is moved to the backlog, it might no longer be visible due to
+    # the project settings for excluded types and statuses.
+    def work_package_invisible_after_move?(work_package)
+      return false if work_package.sprint_id?
+
+      @project.backlog_excluded_type_ids.include?(work_package.type_id) ||
+        @project.done_status_ids.include?(work_package.status_id)
     end
   end
 end

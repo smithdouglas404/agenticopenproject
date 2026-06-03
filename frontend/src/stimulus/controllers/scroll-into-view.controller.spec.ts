@@ -46,13 +46,12 @@ describe('ScrollIntoViewController', () => {
   it('calls scrollIntoView on connect', async () => {
     const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView');
 
-    ctx.appendHTML(`
+    await ctx.mount(`
       <div data-controller="scroll-into-view">
         Target element
       </div>
     `);
-    // Two frames: one for Stimulus connect, one for the setTimeout(fn, 0)
-    await ctx.nextFrame();
+    // One extra frame for the setTimeout(fn, 0)
     await ctx.nextFrame();
 
     expect(scrollSpy).toHaveBeenCalledWith({ block: 'center' });

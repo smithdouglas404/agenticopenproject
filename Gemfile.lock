@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/citizensadvice/capybara_accessible_selectors
-  revision: 5b9ce7840d04270e99f4f0cb03989e05437326a6
-  tag: v0.15.0
+  revision: 568699fc71b6648e7186a4ac77bba072447c131e
+  tag: v0.16.0
   specs:
     capybara_accessible_selectors (0.15.0)
       capybara (~> 3.36)
@@ -361,7 +361,7 @@ GEM
     awesome_nested_set (3.9.0)
       activerecord (>= 4.0.0, < 8.2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1254.0)
+    aws-partitions (1.1255.0)
     aws-sdk-core (3.250.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -631,7 +631,7 @@ GEM
     fuubar (2.5.1)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
-    glob (0.4.0)
+    glob (0.5.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
     good_job (4.18.2)
@@ -649,7 +649,7 @@ GEM
       mini_mime (~> 1.1)
       representable (~> 3.0)
       retriable (~> 3.1)
-    google-apis-gmail_v1 (0.50.0)
+    google-apis-gmail_v1 (0.51.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.3.1)
       base64 (~> 0.2)
@@ -756,7 +756,7 @@ GEM
     job-iteration (1.14.0)
       activejob (>= 7.1)
     json (2.19.7)
-    json-jwt (1.17.0)
+    json-jwt (1.17.1)
       activesupport (>= 4.2)
       aes_key_wrap
       base64
@@ -885,7 +885,7 @@ GEM
     oj (3.17.1)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
-    okcomputer (1.19.1)
+    okcomputer (1.19.2)
       benchmark
     omniauth-saml (1.10.6)
       omniauth (~> 1.3, >= 1.3.2)
@@ -1335,7 +1335,7 @@ GEM
     rspec-support (3.13.7)
     rspec-wait (1.0.2)
       rspec (>= 3.4)
-    rubocop (1.86.2)
+    rubocop (1.87.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -1830,7 +1830,7 @@ CHECKSUMS
   auto_strip_attributes (2.6.0) sha256=a7e2e0cf744de2bcd947fd68014220702bcc88c81274c1cd9ce6f7316aae39b0
   awesome_nested_set (3.9.0) sha256=3ce99e816550f97f4de118e621630070aacf24928b920fe4a68846578a8daaed
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
-  aws-partitions (1.1254.0) sha256=6528ff87656b48f1761c69cce0d111d389c840daf3893b55f8ea41f923710117
+  aws-partitions (1.1255.0) sha256=490ffc1f032d3eac771cf4a94ab7a3c7999c5edbe6fb7660904e702e291c93b5
   aws-sdk-core (3.250.0) sha256=8df71164c7e5f2ff411782a3dc3a1ab5c0a73170284409ead111f385e9992963
   aws-sdk-kms (1.128.0) sha256=20ce3957f80c7b40b3115a7e902af52b15a6eef42fe6b2e19db72f8e8c9e5658
   aws-sdk-s3 (1.224.0) sha256=7d443c4ae9eda795b60e081d41f49b498e2483f1fc204f3239176ec922ed7879
@@ -1945,11 +1945,11 @@ CHECKSUMS
   front_matter_parser (1.0.1) sha256=bae298bda01db95788a4d6452f1670a3d198c6716c8d3727db9a95533deb7b7b
   fugit (1.12.2) sha256=643f2bf28db263bd400cbf8e0dd8b76b2c9b94bdb130e12d2394de04d9c20e5e
   fuubar (2.5.1) sha256=b272a7804b282661c7fab583a3764f92543cb482c365ae39c685cd218fdd4880
-  glob (0.4.0) sha256=893dc9e2d24abe13dda907ce0cda576f680ff382f2a6cf9e543f98ecbe29238c
+  glob (0.5.0) sha256=6397ae620b2f71b00424ec6c880c92d5ddcf6c44e6035c0b610a59efe16418fd
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   good_job (4.18.2) sha256=7e557a15865fc7b7ad4ab71644cf1d4189a2a1869d3b381e5e88741c540beca6
   google-apis-core (1.0.2) sha256=ba4579aaadc902d6cc7bc8db88f566ab00f5e31ea87ab41e9f9a032c470f2629
-  google-apis-gmail_v1 (0.50.0) sha256=4feb5e6766c2243f86142b603a22359c36401d51786e2a6cbed63a42173a17c1
+  google-apis-gmail_v1 (0.51.0) sha256=cec89406ee645e71697a0eb0237e972df213d4dde86a772b05979175c48a6d11
   google-cloud-env (2.3.1) sha256=0faac01eb27be78c2591d64433663b1a114f8f7af55a4f819755426cac9178e7
   google-logging-utils (0.2.0) sha256=675462b4ea5affa825a3442694ca2d75d0069455a1d0956127207498fca3df7b
   google-protobuf (4.35.0) sha256=95346162c792ed78c9a28cbf2d937a53f706de6df36a27471582f63f03c30c0d
@@ -1992,7 +1992,7 @@ CHECKSUMS
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
   job-iteration (1.14.0) sha256=f154f978109acc838c0359ecde2fdd4dccc3382f95a22e03a58ac561a3615224
   json (2.19.7) sha256=fe432c8639f6efff69f9d73b518a3705d9581ab93156f981ea72806e1e5bcc3e
-  json-jwt (1.17.0) sha256=6ff99026b4c54281a9431179f76ceb81faa14772d710ef6169785199caadc4cc
+  json-jwt (1.17.1) sha256=5e1ced0f7b206b4c567efee19e6503c1426a819749132926cda579ec013d1f46
   json-schema (6.2.0) sha256=e8bff46ed845a22c1ab2bd0d7eccf831c01fe23bb3920caa4c74db4306813666
   json_schemer (2.5.0) sha256=2f01fb4cce721a4e08dd068fc2030cffd0702a7f333f1ea2be6e8991f00ae396
   json_spec (1.1.5) sha256=7a77b97a92c787e2aa3fbc4a1239afc3342c781151dc98cfb81461b3b7cad10f
@@ -2044,7 +2044,7 @@ CHECKSUMS
   nokogiri (1.19.3-x86_64-linux-gnu) sha256=2f5078620fe12e83669b5b17311b32532a8153d02eee7ad06948b926d6080976
   nokogiri (1.19.3-x86_64-linux-musl) sha256=248c906d2166eca5efb56d52fdee5f9a1f51d69a72e2b64fdac647b4ce39ea3f
   oj (3.17.1) sha256=b00687f10bf68a32bfb633b87624174faf0989a5c96aff2f3f96f992717ce782
-  okcomputer (1.19.1) sha256=7df770e768434816d228407f0786563827cbf34cb379933578829720cb4f1e77
+  okcomputer (1.19.2) sha256=d069aedf1e31b8ebe7e1fdf9e327dee158ea49b9fbdebebc2f1bed4690cb7a6d
   omniauth (1.9.2)
   omniauth-openid-connect (0.5.0)
   omniauth-openid_connect-providers (0.2.0)
@@ -2230,7 +2230,7 @@ CHECKSUMS
   rspec-retry (0.6.2) sha256=6101ba23a38809811ae3484acde4ab481c54d846ac66d5037ccb40131a60d858
   rspec-support (3.13.7) sha256=0640e5570872aafefd79867901deeeeb40b0c9875a36b983d85f54fb7381c47c
   rspec-wait (1.0.2) sha256=865f921239325d3d26fc10ded4bdd485d8b58bcaaad1a28dd85ed15266b5a912
-  rubocop (1.86.2) sha256=bb2e97f635eda42c448f2588f4a6ff78f221b8bdfdf65b1e9b07fbd57521b45d
+  rubocop (1.87.0) sha256=b9d9ddf55116a513f8ef2c7ae660662d8b49301f118d3f0df61865b33a5c188d
   rubocop-ast (1.49.1) sha256=4412f3ee70f6fe4546cc489548e0f6fcf76cafcfa80fa03af67098ffed755035
   rubocop-capybara (2.23.0) sha256=f9ea1ba3a7561ee8e88cf76fc378ce517ce5327155f305ee7b5c2500e5aee357
   rubocop-factory_bot (2.28.0) sha256=4b17fc02124444173317e131759d195b0d762844a71a29fe8139c1105d92f0cb

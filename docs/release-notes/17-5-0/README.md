@@ -3,21 +3,143 @@ title: OpenProject 17.5.0
 sidebar_navigation:
     title: 17.5.0
 release_version: 17.5.0
-release_date: 2026-05-21
+release_date: 2026-06-10
 ---
 
 # OpenProject 17.5.0
 
-Release date: 2026-05-21
+Release date: 2026-06-10
 
-We released [OpenProject 17.5.0](https://community.openproject.org/versions/2293).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+We released [OpenProject 17.5.0](https://community.openproject.org/versions/2293). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+### Project-based work package identifiers for clearer references and Jira migrations
+
+OpenProject 17.5 introduces **optional project-based work package identifiers in Beta**. Administrators can choose between the **default numerical sequence** and **project-based IDs** for the entire OpenProject instance. 
+
+> [!NOTE]
+> The setting can be reverted later. Existing numerical IDs remain valid and continue to resolve to the same work packages throughout the application, including existing URLs, bookmarks, and references.
+
+![OpenProject administration to select either 'Instance-wide numerical sequence (default)' or 'Project-based semantic identifiers'](openproject-17-5-identifiers-setting.png)
+
+Project-based work package identifiers are especially useful for organizations migrating from Jira, as [existing Jira issue identifiers can now be preserved in OpenProject](#jira-migrator-support-for-jira-identifiers-due-dates-and-more). Beyond migrations, project-based IDs provide **shorter sequence numbers and clearer project context**, making it easier to recognize, reference, and share work packages across projects, emails, documents, chats, and integrations.
+
+#### Switching between numerical and project-based IDs
+
+Switching to project-based work package identifiers is an instance-wide administrative change that affects how work packages are referenced throughout OpenProject. Administrators should communicate the change to users before enabling it in production environments, as work package identifiers, URLs, and references will use the new format. OpenProject validates existing project identifiers and can automatically generate shorter, compatible identifiers where necessary.
+
+> [!NOTE]
+> Historical references remain functional when project identifiers change.
+
+![OpenProject administration to configure project-based work package identifiers and convert project identifiers](openproject-17-5-project-based-identifier.png)
+
+#### Support across URLs, searches, exports, and integrations
+
+Even in Beta, project-based work package identifiers are supported across important areas of OpenProject, including URLs, searches, filters, exports, email notifications, APIs, and work package references in Documents and text editors.
+
+Existing integrations such as GitHub and GitLab already support the new identifier format.
+
+> [!NOTE]
+> Project-based work package identifiers are still in Beta. While the feature is supported across important areas of OpenProject, **some areas may continue to display numerical identifiers until support for project-based identifiers is fully implemented**. In these cases, numerical identifiers remain fully functional and continue to resolve to the same work packages.
+
+#### Releasing unused numerical identifiers
+
+When switching from the default numerical sequence to project-based work package identifiers, previously reserved numerical identifiers can be released again if they are no longer needed. This helps administrators avoid unnecessary gaps and keep numerical identifiers available if they later revert to the default sequence.
+
+> [!NOTE]
+> Releasing an identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+
+![OpenProject administration: Release reserved project identifiers](openproject-17-5-project-identifiers-release.png)
+
+### Jira Migrator support for Jira identifiers, due dates, and more
+
+OpenProject 17.5 further improves the Jira Migrator that was [introduced in Beta with OpenProject 17.4](../17-4-0/#support-basic-custom-fields-migration-from-jira). Jira issue identifiers can now be preserved during migration when using [project-based work package identifiers](#project-based-work-package-identifiers-for-clearer-references-and-jira-migrations).
+
+This helps organizations maintain existing references, naming conventions, and established workflows when transitioning from Jira to OpenProject. 
+
+In addition to Jira identifiers, OpenProject 17.5 also adds support for migrating due dates, estimated hours, and remaining hours. [Read more about the Jira Migrator in our documentation](../../installation-and-operations/jira-migration/).
+
+### Option to exclude work package types from Backlogs 
+
+OpenProject 17.5 introduces more flexible backlog configuration by allowing project administrators to exclude specific work package types from Backlogs. This helps teams keep sprint planning and backlog refinement focused on actionable work items.
+
+For example, higher-level planning items such as Epics or Milestones can now be excluded from backlog views while still remaining available elsewhere in the project. The configuration is available in the Backlogs project settings and can be customized per project.
+
+![Backlogs settings in OpenProject: Excluded work package types with example 'Candidate interview'](openproject-17-5-backlogs-seting-exclude-work-package-types.png)
+
+OpenProject 17.5 also extends project-specific "done" status configuration to the Backlogs module. Work packages with statuses configured as done are now handled consistently across backlog views and sprint completion. For example, teams can treat development work as complete once testing is finished, even if documentation tasks remain open, allowing sprints to be completed without carrying over already finished development work.
+
+[Read more about the OpenProject Backlogs module](../../system-admin-guide/backlogs/).
+
+### Redesigned sprint views and work package cards
+
+OpenProject 17.5 redesigns sprint headers, backlog containers, and work package cards in the Backlogs module to improve readability and usability during agile planning.
+
+Sprint views now provide clearer visual hierarchy, more consistent actions, and improved visibility of important information such as parent work packages, story points, priorities, assignees, and sprint status. Work package cards have also been redesigned to make important work item details easier to scan during sprint planning and backlog refinement.
+
+![Backlog and sprints view in OpenProject 17.5](openproject-17-5-backlogs-redesign.png)
+
+### Allow inline work package links within text paragraphs in the Documents module
+
+OpenProject 17.5 makes it easier to reference work packages naturally within Documents, which use the BlockNote editor. Work package links can now be inserted directly inside text paragraphs instead of always appearing as separate blocks.
+
+This allows teams to create more readable and structured documentation while still linking directly to relevant work packages. Inline work package links behave like regular inline elements and continue to open the referenced work package in a new tab.
+
+![OpenProject Documents with an example how to link work packages and display them in-line, using different sizes](openproject-17-5-documents-work-package-linking.png)
+
+[Read more about OpenProject's Documents module](../../user-guide/documents/).
+
+### Expanded work package mentions in CKEditor
+
+OpenProject 17.5 also improves work package references in CKEditor-based text fields such as work package descriptions, agenda items in meetings, and wiki pages.
+
+Work package mentions using the `##` and `###` notation now expand directly inside the editor. Instead of displaying only the identifier, OpenProject now shows additional context such as the work package type, status, and subject **while still editing**.
+
+This makes referenced work packages easier to recognize without leaving the editor.
+
+![Example of using macros in a work package description, where I can see the details of the macro I include while still editing](openproject-17-5-work-package-macros.png)
+
+### Monthly scheduling options for meeting series
+
+OpenProject 17.5 adds more flexible scheduling options for recurring meetings. Meeting series can now repeat monthly based on patterns such as the first Monday or last Friday of a month.
+
+This makes it easier to schedule recurring coordination meetings, steering committees, retrospectives, or review meetings that follow common organizational schedules.
+
+![OpenProject meeting with overlay to Edit, set to "Every month on the fifth"](openproject-17-5-meetings-monthly.png)
+
+### Debounce meeting emails to reduce email noise
+
+OpenProject 17.5 improves meeting-related email behavior by reducing unnecessary update emails while meetings are actively edited.
+
+Instead of sending an email for every small change, OpenProject now consolidates multiple meeting updates into fewer emails. Emails are only sent after no further changes have been made for one minute. This helps reduce inbox noise during collaborative meeting preparation and editing.
+
+[Read more about OpenProject's Meetings module](../../user-guide/meetings/).
+
+### Nested groups for organizational structures and inherited permissions
+
+OpenProject 17.5 introduces nested groups to better represent organizational structures such as departments, teams, or business units.
+
+Groups can now contain subgroups, allowing administrators to model hierarchies directly in OpenProject. Permissions and memberships can also be inherited from parent groups, making it easier to manage access rights consistently across larger organizations.
+
+![Mockup showing users and permissions sorted into hierarchical groups](openproject-17-5-nested-groups-mockup.png)
+
+### Allow multi-selection of roles in workflow
+
+OpenProject 17.5 improves workflow administration by allowing administrators to select and configure multiple roles at once in the workflow configuration. This makes it easier and faster to manage workflows across complex role setups and reduces repetitive configuration work for administrators.
+
+![OpenProject workflows – multimple roles selected](openproject-17-5-workflows-multi-select.png)
 
 ## Important updates and breaking changes
+
+### Sprint sharing moved to the Corporate plan
+
+With OpenProject 17.5, sprint sharing across projects is now part of the Corporate plan. Existing sprint sharing configurations remain available after updating, but creating, modifying, or reactivating shared sprint configurations now requires the Corporate plan.
+
+Sprint sharing was introduced to support scaled agile planning scenarios across multiple projects and teams. Moving the feature to the Corporate plan allows OpenProject to continue investing in advanced cross-project planning capabilities for larger organizational setups.
+
+> [!NOTE]
+> Existing sprint sharing configurations remain available after updating to OpenProject 17.5, including sprint sharing that was previously handled through shared versions in older OpenProject versions. Existing configurations continue to be migrated during upgrades. However, once sprint sharing is disabled, reactivating it requires the Corporate plan.
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
@@ -154,12 +276,14 @@ In these Release Notes, we will give an overview of important feature changes. A
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Walid Ibrahim, billy kenne, Agustín Dall'Alba.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. 
 
+Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Walid Ibrahim, billy kenne, and Agustín Dall'Alba.
+
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [Đorđe Dželebdžić](https://crowdin.com/profile/djordje.dzelebdzic), for an outstanding number of translations into Serbian (Cyrillic).
+- [tuananhhurc](https://crowdin.com/profile/ncaa), for a great number of translations into Vietnamese.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

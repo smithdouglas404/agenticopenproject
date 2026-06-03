@@ -31,10 +31,15 @@ pt-BR:
         authentication_method: Método de Autenticação
         creator: Criador
         drive: Drive ID
+        file_link_origin: File link origin ID
         host: Servidor
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: Nome
         password: Senha do aplicativo
         provider_type: Tipo de provedor
+        storage: Storage
+        storage_url: Storage URL
         tenant: ID do diretório (cliente)
     errors:
       messages:
@@ -108,21 +113,25 @@ pt-BR:
         remote_folders: 'Ler conteúdo da pasta da equipe:'
         remove_user_from_group: 'Remover usuário do grupo:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       one_drive_sync_service:
         create_folder: 'Criação de pastas gerenciadas para projetos:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Etapa "Ocultar pastas inativas":'
         remote_folders: 'Ler conteúdo da pasta raiz no drive:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
+        set_folder_permission: 'Set managed project Folder permissions:'
       sharepoint_sync_service:
         create_folder: 'Criação de pastas gerenciadas para projetos:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Etapa "Ocultar pastas inativas":'
         remote_folders: 'Ler conteúdo da pasta raiz no drive:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
+        set_folder_permission: 'Set managed project Folder permissions:'
     errors:
       messages:
         error: Ocorreu um erro inesperado. Verifique os registros do OpenProject para obter mais informações ou entre em contato com um administrador
+        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
         forbidden: O OpenProject não conseguiu acessar o recurso solicitado. Verifique a configuração de permissões no Provedor de Armazenamento.
         unauthorized: O OpenProject não conseguiu se autenticar com o provedor de armazenamento. Verifique se você possui acesso a ele.
       models:
