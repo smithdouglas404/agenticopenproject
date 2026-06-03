@@ -94,9 +94,23 @@ module OpenProject::Wikis
       menu :admin_menu,
            :wiki_providers,
            { controller: "/wikis/admin/wiki_providers", action: :index },
-           if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
+           if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.wiki_enhancements_active? },
            caption: :project_module_wiki_platforms,
            icon: :book
+
+      menu :admin_menu,
+           :internal_wiki_provider,
+           { controller: "/wikis/admin/internal_wiki_provider", action: :show },
+           parent: :wiki_providers,
+           if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.wiki_enhancements_active? },
+           caption: :"menus.admin.internal_wiki_provider"
+
+      menu :admin_menu,
+           :external_wiki_providers,
+           { controller: "/wikis/admin/wiki_providers", action: :index },
+           parent: :wiki_providers,
+           if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.wiki_enhancements_active? },
+           caption: :"menus.admin.external_wiki_providers"
     end
 
     patch_with_namespace :WikiPages, :CreateService

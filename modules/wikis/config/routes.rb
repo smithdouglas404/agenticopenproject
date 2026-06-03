@@ -31,6 +31,7 @@
 Rails.application.routes.draw do
   namespace :admin do
     namespace :settings do
+      resource :internal_wiki_provider, controller: "/wikis/admin/internal_wiki_provider", only: %i[show update]
       resources :wiki_providers, controller: "/wikis/admin/wiki_providers", except: [:show] do
         member do
           get :confirm_destroy
