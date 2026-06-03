@@ -46,7 +46,9 @@ module ::ResourceManagement
                   only: %i[new_work_package add_work_package remove_work_package
                            move_work_package reorder_work_package]
 
-    def show; end
+    def show
+      @content_component = work_package_list_content
+    end
 
     def new
       if params[:view_class_name].present?
@@ -188,12 +190,22 @@ module ::ResourceManagement
     end
 
     def replace_work_package_list
-      replace_via_turbo_stream(
-        component: ResourcePlannerViews::ContentComponent.new(
-          view: @view,
-          project: @project,
-          resource_planner: @resource_planner
-        )
+      replace_via_turbo_stream(component: work_package_list_content)
+    end
+
+    # Loads the view's work packages and their allocations in one place so the
+    # allocation columns (progress bar and members) share a single query rather
+    # than each issuing their own.
+    def work_package_list_content(view = @view)
+      work_packages = view.is_a?(ResourceWorkPackageList) ? view.work_packages.to_a : []
+      allocations = ResourceAllocation.allocated_for_work_packages(work_packages)
+
+      ResourcePlannerViews::ContentComponent.new(
+        view:,
+        project: @project,
+        resource_planner: @resource_planner,
+        work_packages:,
+        allocations:
       )
     end
 
@@ -242,13 +254,7 @@ module ::ResourceManagement
           selected_view: view
         )
       )
-      replace_via_turbo_stream(
-        component: ResourcePlannerViews::ContentComponent.new(
-          view:,
-          project: @project,
-          resource_planner: @resource_planner
-        )
-      )
+      replace_via_turbo_stream(component: work_package_list_content(view))
       close_dialog_via_turbo_stream("##{ResourcePlannerViews::EditDialogComponent::DIALOG_ID}")
       respond_with_turbo_streams
     end

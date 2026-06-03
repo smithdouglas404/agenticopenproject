@@ -36,15 +36,22 @@ module ResourcePlannerViews::WorkPackageList
 
     attr_reader :view, :project, :resource_planner
 
-    def initialize(view:, project:, resource_planner:, **)
+    def initialize(view:, project:, resource_planner:, allocations: {}, **)
       super(**)
 
       @view = view
       @project = project
       @resource_planner = resource_planner
+      @allocations = allocations
     end
 
     def manual? = view.manually_picked?
+
+    # The allocations of a work package, taken from the page-wide map the
+    # controller loaded; shared by the allocation progress and members columns.
+    def allocations_for(work_package)
+      @allocations[work_package.id] || []
+    end
 
     main_column :subject
 

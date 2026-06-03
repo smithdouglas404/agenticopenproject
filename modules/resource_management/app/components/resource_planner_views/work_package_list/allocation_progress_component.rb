@@ -31,15 +31,15 @@
 module ResourcePlannerViews::WorkPackageList
   # Renders how much of a work package's scheduled work is covered by resource
   # allocations: an "12h / 35h" label (allocated / scheduled), a percentage,
-  # and a colored bar. Relies on `allocated_time_total` being preloaded onto
-  # the work package by `ResourceAllocation.with_allocated_time`.
+  # and a colored bar. The allocations are the ones loaded once for the page.
   class AllocationProgressComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    def initialize(work_package:)
+    def initialize(work_package:, allocations:)
       super
 
       @work_package = work_package
+      @allocations = allocations
     end
 
     # Without scheduled work there is nothing to allocate against (and no
@@ -50,16 +50,10 @@ module ResourcePlannerViews::WorkPackageList
 
     private
 
-    attr_reader :work_package
-
-    def allocated_minutes
-      return 0 unless work_package.respond_to?(:allocated_time_total)
-
-      work_package.allocated_time_total.to_i
-    end
+    attr_reader :work_package, :allocations
 
     def allocated_hours
-      allocated_minutes / 60.0
+      allocations.sum { |allocation| allocation.allocated_time.to_i } / 60.0
     end
 
     # Total work: the rolled-up value for a parent, falling back to the work

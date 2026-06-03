@@ -42,9 +42,10 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::RowComponent, type: :compo
   let(:view) do
     ResourceWorkPackageList.create!(name: "List", parent: resource_planner, project:, principal: user, query:)
   end
+  let(:allocations) { {} }
   let(:table) do
     ResourcePlannerViews::WorkPackageList::TableComponent.new(
-      rows: work_packages, view:, project:, resource_planner:
+      rows: work_packages, view:, project:, resource_planner:, allocations:
     )
   end
 
@@ -85,6 +86,17 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::RowComponent, type: :compo
 
     it "renders no drag handle" do
       expect(rendered).to have_no_css(".DragHandle")
+    end
+  end
+
+  context "with members allocated to the work package" do
+    let(:query) { automatic_query }
+    let(:member) { create(:user, firstname: "Michael", lastname: "Johnson") }
+    let(:allocation) { create(:resource_allocation, entity: work_packages.first, principal: member) }
+    let(:allocations) { { work_packages.first.id => [allocation] } }
+
+    it "renders the allocated members' avatar stack instead of the placeholder" do
+      expect(rendered).to have_css("avatar-fallback[data-unique-id='#{member.id}']")
     end
   end
 

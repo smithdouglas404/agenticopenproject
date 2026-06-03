@@ -32,12 +32,14 @@ module ResourcePlannerViews
   class ContentComponent < ApplicationComponent
     include OpTurbo::Streamable
 
-    def initialize(view:, project:, resource_planner:)
+    def initialize(view:, project:, resource_planner:, work_packages: [], allocations: {})
       super
 
       @view = view
       @project = project
       @resource_planner = resource_planner
+      @work_packages = work_packages
+      @allocations = allocations
     end
 
     private
@@ -48,7 +50,9 @@ module ResourcePlannerViews
         ResourcePlannerViews::WorkPackageList::ContentComponent.new(
           view: @view,
           project: @project,
-          resource_planner: @resource_planner
+          resource_planner: @resource_planner,
+          work_packages: @work_packages,
+          allocations: @allocations
         )
       end
     end

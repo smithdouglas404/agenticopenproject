@@ -57,20 +57,15 @@ class ResourceAllocation < ApplicationRecord
 
   scope :needs_principal_assignment, -> { where(principal_explicit: false, principal_id: nil) }
 
-  # Augments a WorkPackage relation with `allocated_time_total` (in minutes):
-  # the summed `allocated_time` of every `allocated` allocation belonging to
-  # each work package. A correlated subquery keeps the augmentation in a single
-  # query (no N+1) without multiplying rows the way a join + group by would.
-  def self.with_allocated_time(work_package_scope)
-    subquery = allocated
-                 .where(entity_type: "WorkPackage")
-                 .where("#{table_name}.entity_id = #{WorkPackage.table_name}.id")
-                 .select(Arel.sql("COALESCE(SUM(#{table_name}.allocated_time), 0)"))
-
-    work_package_scope.select(
-      WorkPackage.arel_table[Arel.star],
-      Arel.sql("(#{subquery.to_sql}) AS allocated_time_total")
-    )
+  # The `allocated` allocations for the given work packages, grouped by work
+  # package id and with principals eager-loaded. Loaded once per page so the
+  # allocation columns (progress bar and members) share a single query.
+  def self.allocated_for_work_packages(work_packages)
+    allocated
+      .where(entity_type: "WorkPackage", entity_id: work_packages.map(&:id))
+      .includes(:principal)
+      .order(:id)
+      .group_by(&:entity_id)
   end
 
   validates :state, :start_date, :end_date, presence: true

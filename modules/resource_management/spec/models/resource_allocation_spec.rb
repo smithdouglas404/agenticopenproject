@@ -487,41 +487,42 @@ RSpec.describe ResourceAllocation do
     end
   end
 
-  describe ".with_allocated_time" do
+  describe ".allocated_for_work_packages" do
     shared_let(:work_package) { create(:work_package) }
     shared_let(:other_work_package) { create(:work_package) }
 
-    def total
-      described_class
-        .with_allocated_time(WorkPackage.where(id: work_package.id))
-        .first
-        .allocated_time_total
+    def allocations_for(*work_packages)
+      described_class.allocated_for_work_packages(work_packages)
     end
 
-    it "exposes the summed allocated_time of the work package's allocations" do
-      create(:resource_allocation, entity: work_package, allocated_time: 120)
-      create(:resource_allocation, entity: work_package, allocated_time: 300)
+    it "groups the work package's allocations by entity id" do
+      first = create(:resource_allocation, entity: work_package, allocated_time: 120)
+      second = create(:resource_allocation, entity: work_package, allocated_time: 300)
 
-      expect(total).to eq(420)
+      expect(allocations_for(work_package)).to eq(work_package.id => [first, second])
     end
 
-    it "counts only allocations in the 'allocated' state" do
-      create(:resource_allocation, entity: work_package, allocated_time: 120)
+    it "includes only allocations in the 'allocated' state" do
+      allocated = create(:resource_allocation, entity: work_package, allocated_time: 120)
       create(:resource_allocation, :requested, entity: work_package, allocated_time: 999)
       create(:resource_allocation, :rejected, entity: work_package, allocated_time: 999)
       create(:resource_allocation, :canceled, entity: work_package, allocated_time: 999)
 
-      expect(total).to eq(120)
+      expect(allocations_for(work_package)).to eq(work_package.id => [allocated])
     end
 
-    it "does not bleed allocations from other work packages" do
+    it "covers several work packages and omits those without allocations" do
+      mine = create(:resource_allocation, entity: work_package, allocated_time: 120)
       create(:resource_allocation, entity: other_work_package, allocated_time: 500)
 
-      expect(total).to eq(0)
+      result = allocations_for(work_package, other_work_package)
+
+      expect(result[work_package.id]).to eq([mine])
+      expect(result).to have_key(other_work_package.id)
     end
 
-    it "is zero when the work package has no allocations" do
-      expect(total).to eq(0)
+    it "is empty when the work packages have no allocations" do
+      expect(allocations_for(work_package)).to eq({})
     end
   end
 end

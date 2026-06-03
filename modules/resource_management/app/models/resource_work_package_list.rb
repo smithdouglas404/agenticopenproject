@@ -63,11 +63,9 @@ class ResourceWorkPackageList < PersistedView
     effective_query&.manually_sorted? || false
   end
 
-  # The work packages of this view, each carrying `allocated_time_total` loaded
-  # straight from the database for the allocation progress column.
-  def allocated_work_packages
-    base = effective_query&.results&.work_packages || WorkPackage.none
-    ResourceAllocation.with_allocated_time(base)
+  # The work packages selected by this view's query.
+  def work_packages
+    effective_query&.results&.work_packages || WorkPackage.none
   end
 
   private

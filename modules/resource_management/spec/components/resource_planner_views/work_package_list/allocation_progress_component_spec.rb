@@ -31,31 +31,29 @@
 require "rails_helper"
 
 RSpec.describe ResourcePlannerViews::WorkPackageList::AllocationProgressComponent, type: :component do
-  # Loads the work package through the same select augmentation the view uses,
-  # so `allocated_time_total` is present exactly as it is at render time.
   # `derived_hours` mimics a parent's rolled-up total work; `own_hours` mimics a
   # leaf whose work lives in `estimated_hours` (where derived stays nil).
-  def loaded_work_package(allocated_minutes:, derived_hours: nil, own_hours: nil)
-    work_package = create(:work_package)
-    work_package.update_columns(derived_estimated_hours: derived_hours, estimated_hours: own_hours)
-    if allocated_minutes.positive?
-      create(:resource_allocation, entity: work_package, allocated_time: allocated_minutes)
+  def work_package_with(derived_hours: nil, own_hours: nil)
+    create(:work_package).tap do |wp|
+      wp.update_columns(derived_estimated_hours: derived_hours, estimated_hours: own_hours)
     end
+  end
 
-    ResourceAllocation
-      .with_allocated_time(WorkPackage.where(id: work_package.id))
-      .first
+  # Allocations are only summed by their `allocated_time`, so stubbed records suffice.
+  def allocations_totaling(*hours)
+    hours.map { |value| build_stubbed(:resource_allocation, allocated_time: (value * 60).to_i) }
   end
 
   subject(:rendered) do
-    render_inline(described_class.new(work_package:))
+    render_inline(described_class.new(work_package:, allocations:))
     page
   end
 
   context "when allocations cover only part of the scheduled work" do
-    let(:work_package) { loaded_work_package(derived_hours: 35, allocated_minutes: 12 * 60) }
+    let(:work_package) { work_package_with(derived_hours: 35) }
+    let(:allocations) { allocations_totaling(8, 4) }
 
-    it "renders allocated / scheduled, the coverage percentage and a partial accent bar" do
+    it "sums the allocations and renders allocated / scheduled with a partial accent bar" do
       expect(rendered).to have_text("12h / 35h")
       expect(rendered).to have_text("34%")
       expect(rendered).to have_css(".Progress-item.color-bg-accent-emphasis[style*='width: 34%']")
@@ -63,7 +61,8 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::AllocationProgressComponen
   end
 
   context "when the work package is a leaf with only its own estimated work" do
-    let(:work_package) { loaded_work_package(own_hours: 35, allocated_minutes: 12 * 60) }
+    let(:work_package) { work_package_with(own_hours: 35) }
+    let(:allocations) { allocations_totaling(12) }
 
     it "falls back to estimated_hours for the total work" do
       expect(rendered).to have_text("12h / 35h")
@@ -72,7 +71,8 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::AllocationProgressComponen
   end
 
   context "when allocations exactly cover the scheduled work" do
-    let(:work_package) { loaded_work_package(derived_hours: 80, allocated_minutes: 80 * 60) }
+    let(:work_package) { work_package_with(derived_hours: 80) }
+    let(:allocations) { allocations_totaling(80) }
 
     it "renders a full success bar at 100%" do
       expect(rendered).to have_text("100%")
@@ -81,7 +81,8 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::AllocationProgressComponen
   end
 
   context "when allocations exceed the scheduled work" do
-    let(:work_package) { loaded_work_package(derived_hours: 20, allocated_minutes: 40 * 60) }
+    let(:work_package) { work_package_with(derived_hours: 20) }
+    let(:allocations) { allocations_totaling(40) }
 
     it "renders a danger bar capped at 100% while the label shows the real ratio" do
       expect(rendered).to have_text("40h / 20h")
@@ -91,7 +92,8 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::AllocationProgressComponen
   end
 
   context "when nothing is allocated yet" do
-    let(:work_package) { loaded_work_package(derived_hours: 100, allocated_minutes: 0) }
+    let(:work_package) { work_package_with(derived_hours: 100) }
+    let(:allocations) { [] }
 
     it "renders an empty accent bar at 0%" do
       expect(rendered).to have_text("0h / 100h")
@@ -101,7 +103,8 @@ RSpec.describe ResourcePlannerViews::WorkPackageList::AllocationProgressComponen
   end
 
   context "when the work package has no scheduled work" do
-    let(:work_package) { loaded_work_package(allocated_minutes: 12 * 60) }
+    let(:work_package) { work_package_with }
+    let(:allocations) { allocations_totaling(12) }
 
     it "renders a danger alert icon instead of a bar" do
       expect(rendered).to have_no_css(".Progress-item")

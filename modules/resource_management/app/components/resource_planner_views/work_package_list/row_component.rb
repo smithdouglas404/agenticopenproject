@@ -99,11 +99,13 @@ module ResourcePlannerViews::WorkPackageList
     end
 
     def allocation
-      render(AllocationProgressComponent.new(work_package:))
+      render(AllocationProgressComponent.new(work_package:, allocations:))
     end
 
     def allocated_members
-      render(Primer::Beta::Text.new(color: :muted)) { allocation_placeholder }
+      return render(Primer::Beta::Text.new(color: :muted)) { allocation_placeholder } if allocations.empty?
+
+      render(AllocatedMembersComponent.new(allocations:))
     end
 
     def button_links
@@ -111,6 +113,10 @@ module ResourcePlannerViews::WorkPackageList
     end
 
     private
+
+    def allocations
+      @allocations ||= table.allocations_for(work_package)
+    end
 
     def allocation_placeholder
       I18n.t("resource_management.work_package_list.allocation_placeholder")

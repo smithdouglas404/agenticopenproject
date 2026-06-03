@@ -130,6 +130,9 @@ en:
     work_package_list:
       add_work_package_dialog:
         title: Add work package
+      allocated_members:
+        additional: "+%{count}"
+        unassigned: Unassigned
       allocation:
         hours: "%{value}h"
         no_work: No work planned on this work package
