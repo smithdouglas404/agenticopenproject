@@ -122,12 +122,13 @@ RSpec.describe Header::ProjectsController do
       end
     end
 
-    context "with current_project_id for a project not in the default list" do
+    context "with current_project_id for a project outside the default limit" do
       let(:invisible_child) { create(:project, name: "Hidden Child", parent: parent_project) }
 
       subject(:make_request) { get :index, params: { current_project_id: invisible_child.id } }
 
       before do
+        stub_const("Header::ProjectsController::MAX_NUMBER_OF_PROJECTS", 1)
         create(:member, principal: current_user, project: invisible_child, roles: [role])
       end
 
