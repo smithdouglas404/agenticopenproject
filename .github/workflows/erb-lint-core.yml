@@ -24,6 +24,6 @@ jobs:
       - name: Install erb_lint
         run: gem install -N erb_lint erblint-github
       - name: Run erb-lint
-        uses: tk0miya/action-erblint@44c5fe3552356fe8bff23f30d534aa4258aa3f7b # v1
+        uses: opf/action-erblint@49c54b56c60d0c50885065468cf149b61d5c2a60 # main
         with:
           reporter: github-pr-check
