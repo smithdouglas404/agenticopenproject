@@ -179,16 +179,13 @@ Sections will show the sum of all the durations of all containing items (or at l
 
 #### Link a work package to a meeting
 
-If you select the **Work package** option, you can either add it as an independent agenda item or link it in the text of another agenda item.  As an independent agenda item, you can link a work package by entering either a work package ID, type,  status or starting to type in a keyword, which will open a list of  possible options.
+To link a work package to a meeting, click the **+ Add** button and select the **Work package** option. Enter a work package ID, type, status or a keyword, this will open a list of work packages for you to choose from.
 
 ![Add work package](openproject_userguide_meetings_add_work_package.png)
 
-To link a work package in the text of another agenda item, enter **#**, **##** or **###** followed by the work package ID, type, status or a keyword in **Notes**. A drop-down list of matching work packages is displayed, allowing you to select the desired item. This makes it easier to see which work packages are being linked while editing a page. 
+The meeting will appear under the *Meetings* tab of the linked work package. 
 
-![Link work package](openproject_userguide_meetings_link_work_package.png)
-
-> [!TIP] 
-> The number of # characters determines the level of detail displayed for each work package
+You can also include work packages into the description section of other agenda items, by using # mention, same as in the CKEditor. In this case the meeting will not be linked to the work package and will not be displayed under the *Meetings* tab of mentioned work packages.
 
 #### Edit a meeting agenda
 
