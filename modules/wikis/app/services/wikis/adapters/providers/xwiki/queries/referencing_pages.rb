@@ -41,8 +41,7 @@ module Wikis
                 Internal::Wikis.new(model: provider).call(http:).bind do |wiki_names|
                   wiki_names.reduce(Success([])) do |acc, wiki_name|
                     acc.bind do |results|
-                      search_wiki(wiki_name:, linkable: input_data.linkable,
-                                  number: input_data.number, http:, auth_strategy:)
+                      search_wiki(wiki_name:, input_data:, http:, auth_strategy:)
                         .fmap { results + it }
                     end
                   end
@@ -52,10 +51,14 @@ module Wikis
 
             private
 
-            def search_wiki(wiki_name:, linkable:, number:, http:, auth_strategy:)
-              url = rest_url("wikis/#{wiki_name}/openproject/links/workPackages/#{linkable.id}")
-              handle_response(http.get(url, params: { number: })) do |data|
-                success((data["searchResults"] || []).map { page_info(identifier: it["id"], auth_strategy:) })
+            def search_wiki(wiki_name:, input_data:, http:, auth_strategy:)
+              url = rest_url("wikis/#{wiki_name}/openproject/links/workPackages/#{input_data.linkable.id}")
+              handle_response(http.get(url, params: { number: input_data.number })) do |data|
+                success(
+                  (data["searchResults"] || [])
+                    .uniq { |r| r["id"] }
+                    .map { page_info(identifier: it["id"], auth_strategy:) }
+                )
               end
             end
           end

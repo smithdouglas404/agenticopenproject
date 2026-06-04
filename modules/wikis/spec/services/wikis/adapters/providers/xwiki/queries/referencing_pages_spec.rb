@@ -125,12 +125,11 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
     context "when a custom number is provided" do
       let(:input_data) { Wikis::Adapters::Input::ReferencingPages.build(linkable:, number: 25).value! }
 
+      def search_endpoint(wiki_name) = super.sub("number=10", "number=25")
+
       before do
         stub_wikis(["xwiki"])
-        stub_request(:get, "https://xwiki.example.com/rest/wikis/xwiki/openproject/links/workPackages/#{linkable.id}?number=25")
-          .with(headers: { "Authorization" => "Bearer user-bearer-token" })
-          .to_return(status: 200, body: { "links" => [], "searchResults" => [] }.to_json,
-                     headers: { "Content-Type" => "application/json" })
+        stub_search("xwiki", [])
       end
 
       it { is_expected.to be_success }
@@ -149,10 +148,12 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
         stub_search("myfarm", [{ "id" => page_id_wiki2, "title" => "Docs Index",
                                  "links" => [{ "href" => page_rest_wiki2, "rel" => "http://www.xwiki.org/rel/page" }] }])
         stub_request(:get, page_rest_wiki1)
+          .with(headers: { "Authorization" => "Bearer user-bearer-token" })
           .to_return(status: 200,
                      body: { "title" => "Home", "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/" }.to_json,
                      headers: { "Content-Type" => "application/json" })
         stub_request(:get, page_rest_wiki2)
+          .with(headers: { "Authorization" => "Bearer user-bearer-token" })
           .to_return(status: 200,
                      body: { "title" => "Docs Index",
                              "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Docs/" }.to_json,
@@ -165,6 +166,33 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
         page_results = result.value!
         expect(page_results).to all(be_success)
         expect(page_results.map { it.value!.identifier }).to contain_exactly(page_id_wiki1, page_id_wiki2)
+      end
+    end
+
+    context "when the same page appears multiple times in results" do
+      let(:page_identifier) { "xwiki:Main.WebHome" }
+      let(:page_rest_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/Main/pages/WebHome" }
+      let(:page_absolute_url) { "https://xwiki.example.com/bin/view/Main/" }
+      let(:duplicate_result) do
+        { "id" => page_identifier, "title" => "Home",
+          "links" => [{ "href" => page_rest_url, "rel" => "http://www.xwiki.org/rel/page" }] }
+      end
+
+      before do
+        stub_wikis(["xwiki"])
+        stub_search("xwiki", [duplicate_result, duplicate_result])
+        stub_request(:get, page_rest_url)
+          .with(headers: { "Authorization" => "Bearer user-bearer-token" })
+          .to_return(status: 200,
+                     body: { "title" => "Home", "xwikiAbsoluteUrl" => page_absolute_url }.to_json,
+                     headers: { "Content-Type" => "application/json" })
+      end
+
+      it { is_expected.to be_success }
+
+      it "deduplicates by page identifier" do
+        expect(result.value!.size).to eq(1)
+        expect(result.value!.first.value!.identifier).to eq(page_identifier)
       end
     end
 
