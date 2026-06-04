@@ -32,16 +32,7 @@ Each sprint is displayed in a dedicated container showing key planning informati
 Depending on the sprint status, either a **Start sprint** (for sprints in planning) or **Complete sprint** (for active sprints) button will be displayed.
 
 > [!NOTE]
-> The **Start sprint** button is disabled if another sprint is already active or if no sprint dates have been defined.
-
-### Sprint sharing
-
-[feature: sprint_sharing ]
-
-Sprint sharing allows multiple projects to use the same sprint structure. A sprint can be shared with other projects, subprojects, or not shared. This is configured under [project settings](../projects/project-settings/backlogs-settings). 
-
-Shared sprints can help teams coordinate planning across projects and support scaled agile frameworks such as SAFe.
-
+> The **Start sprint** button is disabled if another sprint is already active or if no sprint dates have been defined. The button might also not exist if you lack the permission to "Start/complete sprints".
 
 ### Backlog buckets
 
@@ -50,12 +41,9 @@ Backlog buckets help you organize and prioritize work packages within the backlo
 > [!NOTE]
 > Backlog buckets are project-specific and are not shared across projects.
 
-
-You can sort work packages within a backlog bucket via drag and drop or by using the **Move** option from the work package menu.
-
 ### Work packages in backlogs
 
-Work packages displayed in the Backlog and sprints view show  the following information:
+Work packages displayed in the Backlog and sprints view show the following information:
 
 - Type
 - ID
@@ -75,6 +63,8 @@ A work package:
 - can only belong to one backlog bucket at a time.
 - cannot belong to a sprint and a backlog bucket at the same time.
 - cannot belong to a backlog bucket and the Inbox backlog at the same time.
+
+You can sort work packages within all containers (backlog bucket, inbox and sprints)  via drag and drop or by using the **Move** option from the work package menu.
 
 #### Create a backlog bucket
 
@@ -136,7 +126,7 @@ Depending on the current location of the work package, you can move it:
 
 ### Excluded work package types and statuses
 
-Depending on the project configuration, certain work package types and statuses can be excluded from backlog views. 
+Depending on the project configuration, certain work package types and statuses can be excluded from backlog views. This can be configured under [project backlog settings](../projects/project-settings/backlogs-settings).
 
 Excluded work packages: 
 - do not appear in the Inbox backlog.
@@ -180,7 +170,7 @@ If there are still unfinished work packages in the sprint, a dialog will open pr
 - Move them to the bottom of the Inbox backlog
 - Move them to another sprint
 
-Work packages in statuses configured as closed are not moved when a sprint is completed.
+Work packages in statuses configured as closed under [project backlog settings](../projects/project-settings/backlogs-settings) are not moved when a sprint is completed.
 
 If you choose to move work packages to another sprint, you will need to select the target sprint from the list. After making your selection, click the **Complete sprint** button to finish the sprint. The sprint will then be marked as completed, and other sprints can be started.
 
@@ -262,3 +252,11 @@ The sprint burndown is calculated from the sum of estimated story points. If a u
 The remaining story points per sprint are displayed in the chart. Optionally, the ideal burn-down can be displayed for reference. The ideal burndown assumes a linear completion of story points from the beginning to the end of a sprint.
 
 ![An example of a burndown chart in OpenProject](openproject_user_guide_backlogs_burndown_chart_example.png)
+
+### Sprint sharing
+
+[feature: sprint_sharing ]
+
+Sprint sharing allows multiple projects to use the same sprint structure. A sprint can be shared with other projects, subprojects, or not shared. This is configured under [project settings](../projects/project-settings/backlogs-settings). 
+
+Shared sprints can help teams coordinate planning across projects and support scaled agile frameworks such as SAFe.
