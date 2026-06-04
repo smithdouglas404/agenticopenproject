@@ -28,18 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "dry/core/container/stub"
-require "dry/monads"
-
-Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
-
-RSpec.configure do |config|
-  config.include Dry::Monads[:result]
-
-  config.prepend_before do
-    Wikis::Adapters::Registry.enable_stubs!
-  end
-  config.append_after do
-    Wikis::Adapters::Registry.unstub
+module XWikiStubs
+  def stub_wiki_list(wiki_names, token: "user-bearer-token")
+    stub_request(:get, wikis_endpoint)
+      .with(headers: { "Authorization" => "Bearer #{token}" })
+      .to_return(status: 200,
+                 body: { "wikis" => wiki_names.map { |id| { "id" => id } } }.to_json,
+                 headers: { "Content-Type" => "application/json" })
   end
 end

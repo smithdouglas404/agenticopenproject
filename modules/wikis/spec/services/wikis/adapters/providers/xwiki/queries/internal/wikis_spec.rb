@@ -32,45 +32,18 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::Internal::Wikis, :webmock do
+  include XWikiStubs
+
   describe "#call" do
     let(:wiki_provider) { create(:xwiki_provider, url: "https://xwiki.example.com/") }
-    let(:endpoint_url) { "https://xwiki.example.com/rest/wikis" }
+    let(:wikis_endpoint) { "https://xwiki.example.com/rest/wikis" }
     let(:http) { OpenProject.httpx.bearer_auth("user-bearer-token") }
     let(:query) { described_class.new(model: wiki_provider) }
 
     subject(:result) { query.call(http:) }
 
     context "when the farm has multiple wikis" do
-      let(:wikis_response) do
-        {
-          "links" => [
-            { "href" => "https://xwiki.example.com/rest/wikis/query", "rel" => "http://www.xwiki.org/rel/query",
-              "type" => nil, "hrefLang" => nil }
-          ],
-          "wikis" => [
-            {
-              "links" => [
-                { "href" => "https://xwiki.example.com/rest/wikis/xwiki/spaces",
-                  "rel" => "http://www.xwiki.org/rel/spaces", "type" => nil, "hrefLang" => nil }
-              ],
-              "id" => "xwiki", "name" => "xwiki", "description" => nil, "owner" => nil
-            },
-            {
-              "links" => [
-                { "href" => "https://xwiki.example.com/rest/wikis/myfarm/spaces",
-                  "rel" => "http://www.xwiki.org/rel/spaces", "type" => nil, "hrefLang" => nil }
-              ],
-              "id" => "myfarm", "name" => "myfarm", "description" => nil, "owner" => nil
-            }
-          ]
-        }.to_json
-      end
-
-      before do
-        stub_request(:get, endpoint_url)
-          .with(headers: { "Authorization" => "Bearer user-bearer-token" })
-          .to_return(status: 200, body: wikis_response, headers: { "Content-Type" => "application/json" })
-      end
+      before { stub_wiki_list(%w[xwiki myfarm]) }
 
       it { is_expected.to be_success }
 
@@ -80,12 +53,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::Internal::Wikis, :web
     end
 
     context "when the response has no wikis" do
-      before do
-        stub_request(:get, endpoint_url)
-          .to_return(status: 200,
-                     body: { "links" => [], "wikis" => [] }.to_json,
-                     headers: { "Content-Type" => "application/json" })
-      end
+      before { stub_wiki_list([]) }
 
       it { is_expected.to be_success }
 
@@ -95,32 +63,32 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::Internal::Wikis, :web
     end
 
     context "when access is unauthorized" do
-      before { stub_request(:get, endpoint_url).to_return(status: 401, body: "") }
+      before { stub_request(:get, wikis_endpoint).to_return(status: 401, body: "") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :unauthorized)) }
     end
 
     context "when access is forbidden" do
-      before { stub_request(:get, endpoint_url).to_return(status: 403, body: "") }
+      before { stub_request(:get, wikis_endpoint).to_return(status: 403, body: "") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :unauthorized)) }
     end
 
     context "when XWiki returns a non-2xx status" do
-      before { stub_request(:get, endpoint_url).to_return(status: 500, body: "Internal Server Error") }
+      before { stub_request(:get, wikis_endpoint).to_return(status: 500, body: "Internal Server Error") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }
     end
 
     context "when a network error occurs" do
-      before { stub_request(:get, endpoint_url).to_timeout }
+      before { stub_request(:get, wikis_endpoint).to_timeout }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :connection_error)) }
     end
 
     context "when the response body is not valid JSON" do
       before do
-        stub_request(:get, endpoint_url)
+        stub_request(:get, wikis_endpoint)
           .to_return(status: 200, body: "not json", headers: { "Content-Type" => "application/json" })
       end
 
