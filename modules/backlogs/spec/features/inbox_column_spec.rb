@@ -231,8 +231,6 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         expect(submenu).to have_selector(:menuitem, text: "Move to bottom")
       end
 
-      wait_for_network_idle
-
       # Last item has no downward actions
       planning_page.within_work_package_move_submenu(inbox_wp3) do |submenu|
         expect(submenu).to have_selector(:menuitem, text: "Move to top")
