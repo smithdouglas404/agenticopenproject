@@ -46,8 +46,8 @@ module Wikis
                   success(
                     Results::PageInfo.new(
                       identifier: ref.to_s,
-                      title: data.fetch("title"),
-                      href: data.fetch("xwikiAbsoluteUrl"),
+                      title: fetch_json(data, "title"),
+                      href: fetch_json(data, "xwikiAbsoluteUrl"),
                       provider:
                     )
                   )

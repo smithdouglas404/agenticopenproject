@@ -130,5 +130,14 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::CanonicalPageInfo, :w
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :invalid_response)) }
     end
+
+    context "when the response body is unexpected JSON" do
+      before do
+        stub_request(:put, page_url)
+          .to_return(status: 200, body: { error: "An error occured" }.to_json, headers: { "Content-Type" => "application/json" })
+      end
+
+      it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :invalid_response)) }
+    end
   end
 end

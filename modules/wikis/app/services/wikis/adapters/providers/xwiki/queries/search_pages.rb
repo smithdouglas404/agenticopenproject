@@ -44,14 +44,14 @@ module Wikis
               authenticated(auth_strategy) do |http|
                 handle_response(http.get(rest_url("wikis/query", query:))) do |json|
                   success(
-                    json.fetch("searchResults")
-                        .uniq { |r| r.fetch("id") }
-                        .map do |r|
-                          result = canonical_page_info(identifier: r.fetch("id"), auth_strategy:)
-                          return result if result.failure?
+                    fetch_json(json, "searchResults")
+                      .uniq { |r| fetch_json(r, "id") }
+                      .map do |r|
+                        result = canonical_page_info(identifier: fetch_json(r, "id"), auth_strategy:)
+                        return result if result.failure?
 
-                          result.value!
-                        end
+                        result.value!
+                      end
                   )
                 end
               end
