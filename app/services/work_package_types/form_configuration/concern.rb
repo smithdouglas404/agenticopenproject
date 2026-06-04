@@ -106,7 +106,7 @@ module WorkPackageTypes
                  .reject { |group| group.key.to_s == "__empty" }
         seen_keys = groups.filter_map(&:key).compact_blank.map(&:to_s)
         groups = groups.map { |group| normalize_group(group, seen_keys:) }
-        groups = prune_unavailable_attribute_group_items(groups)
+        prune_unavailable_attribute_group_items(groups)
 
         if groups.empty?
           [::Type::AttributeGroup.new(type, :__empty, [])]

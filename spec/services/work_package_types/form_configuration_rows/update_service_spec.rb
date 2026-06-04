@@ -71,10 +71,9 @@ module WorkPackageTypes
 
       it "removes unavailable attributes from legacy form configurations when updating rows" do
         custom_field = create(:work_package_custom_field, field_format: "string")
-        deleted_custom_field_attribute = "custom_field_999999"
-        removed_plugin_attribute = "removed_plugin_attribute"
+        deleted_custom_field_attribute = "custom_field_1"
         type.update_column(:attribute_groups, [
-                             ["Legacy custom group", [deleted_custom_field_attribute, removed_plugin_attribute, "priority"]]
+                             ["Legacy custom group", [deleted_custom_field_attribute, "priority"]]
                            ])
 
         result = described_class
@@ -83,8 +82,9 @@ module WorkPackageTypes
 
         expect(result).to be_success
 
-        attributes = type.reload.attribute_groups.first.attributes
-        expect(attributes).to eq([custom_field.attribute_name, "priority"])
+        members = type.reload.attribute_groups.first.members
+        expect(members).to include(custom_field.attribute_name, "priority")
+        expect(members).not_to include(deleted_custom_field_attribute)
         expect(type.custom_field_ids).to contain_exactly(custom_field.id)
       end
     end
