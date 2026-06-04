@@ -32,27 +32,24 @@ module Wikis
   module Adapters
     module Providers
       module XWiki
-        module Queries
-          class PageInfo < BaseQuery
-            include Concerns::XWikiQuery
+        # Represents an XWiki page identifier using the "stable" page identifier format: e.g. 0b89a
+        StablePageReference = Data.define(:uid) do
+          class << self
+            def parse(uid)
+              return nil if uid.nil?
 
-            def call(input_data:, auth_strategy:)
-              ref = CanonicalPageReference.parse(input_data.identifier)
-              return failure(code: :not_found) unless ref
-
-              authenticated(auth_strategy) do |http|
-                handle_response(http.get(rest_url(ref.rest_path))) do |data|
-                  success(
-                    Results::PageInfo.new(
-                      identifier: input_data.identifier,
-                      title: data["title"],
-                      href: data["xwikiAbsoluteUrl"],
-                      provider:
-                    )
-                  )
-                end
-              end
+              new(uid:)
             end
+          end
+
+          # Maps the reference to the REST API path, excluding the `/rest` prefix, e.g.
+          # /openproject/documents/0b89a
+          def rest_path
+            "/openproject/documents/#{CGI.escapeURIComponent(uid)}"
+          end
+
+          def to_s
+            uid
           end
         end
       end

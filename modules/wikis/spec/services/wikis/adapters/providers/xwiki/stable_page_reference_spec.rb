@@ -28,35 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        # Represents an XWiki page identifier in canonical document reference format:
-        # "wikiName:Space1.Space2.PageName" — e.g. "xwiki:Main.WebHome"
-        CanonicalPageReference = Data.define(:wiki, :spaces, :page) do
-          def self.parse(identifier)
-            wiki, page_path = identifier.split(":", 2)
-            return nil if page_path.blank?
+require "spec_helper"
+require_module_spec_helper
 
-            *spaces, page = page_path.split(".")
-            return nil if spaces.empty?
+RSpec.describe Wikis::Adapters::Providers::XWiki::StablePageReference do
+  describe ".parse" do
+    subject { described_class.parse(identifier) }
 
-            new(wiki:, spaces:, page:)
-          end
+    let(:identifier) { "123abc" }
 
-          # Maps the reference to the REST API path, excluding the `/rest` prefix, e.g.
-          # /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
-          def rest_path
-            spaces_path = spaces.map { "/spaces/#{CGI.escapeURIComponent(it)}" }.join
-            "/wikis/#{CGI.escapeURIComponent(wiki)}#{spaces_path}/pages/#{CGI.escapeURIComponent(page)}"
-          end
+    it { is_expected.to have_attributes(uid: "123abc") }
 
-          def to_s
-            "#{wiki}:#{spaces.join('.')}.#{page}"
-          end
-        end
-      end
+    context "when passing nil" do
+      let(:identifier) { nil }
+
+      it { is_expected.to be_nil }
+    end
+  end
+
+  describe "#rest_path" do
+    subject { described_class.parse(identifier).rest_path }
+
+    let(:identifier) { "123abc" }
+
+    it { is_expected.to eq("/openproject/documents/123abc") }
+  end
+
+  describe "#to_s" do
+    subject { described_class.parse(identifier).to_s }
+
+    let(:identifier) { "123abc" }
+
+    it "roundtrips" do
+      expect(subject).to eq(identifier)
     end
   end
 end

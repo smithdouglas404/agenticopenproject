@@ -31,52 +31,46 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
-  it "is registered" do
-    expect(Wikis::Adapters::Registry.resolve("xwiki.queries.page_info")).to eq(described_class)
+RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::CanonicalPageInfo, :webmock do
+  it "is not registered" do
+    expect(Wikis::Adapters::Registry.resolve("xwiki.queries.page_info")).not_to eq(described_class)
   end
 
   describe "#call" do
     let(:user) { create(:user) }
-    let(:wiki_provider) { create(:xwiki_provider, :with_connected_user, url: "https://xwiki.example.com/", connected_user: user) }
+    let(:wiki_provider) { create(:xwiki_provider, :for_local_connection, connected_user: user) }
     let(:identifier) { "xwiki:Main.WebHome" }
-    let(:page_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/Main/pages/WebHome" }
+    let(:page_url) { "https://xwiki.local/rest/openproject/documents?docRef=xwiki:Main.WebHome" }
     let(:auth_strategy) { Wikis::Adapters::Input::AuthStrategy.build(key: :bearer_token, user:, provider: wiki_provider).value! }
     let(:input_data) { Wikis::Adapters::Input::PageInfo.build(identifier:).value! }
     let(:query) { described_class.new(model: wiki_provider) }
 
     subject(:result) { query.call(input_data:, auth_strategy:) }
 
-    context "when the page exists" do
-      let(:page_response) do
-        { "title" => "Home", "xwikiAbsoluteUrl" => "https://xwiki.example.com/bin/view/Main/" }.to_json
-      end
-
-      before do
-        stub_request(:get, page_url)
-          .with(headers: { "Authorization" => "Bearer user-bearer-token" })
-          .to_return(status: 200, body: page_response, headers: { "Content-Type" => "application/json" })
-      end
+    context "when the page exists", vcr: "xwiki/canonical_page_info" do
+      # Set the expected identifier according to the stable identifier returned by XWiki (or update the VCR cassette accordingly)
+      let(:expected_identifier) { "484f4" }
 
       it "returns Success with title and href" do
         expect(result).to be_success
         expect(result.value!).to have_attributes(
-          identifier:,
+          identifier: expected_identifier,
           title: "Home",
-          href: "https://xwiki.example.com/bin/view/Main/"
+          href: "https://xwiki.local/bin/view/Main/"
         )
       end
     end
 
     context "with a nested space identifier" do
       let(:identifier) { "xwiki:MySpace.SubSpace.PageName" }
-      let(:page_url) { "https://xwiki.example.com/rest/wikis/xwiki/spaces/MySpace/spaces/SubSpace/pages/PageName" }
-      let(:absolute_url) { "https://xwiki.example.com/bin/view/MySpace/SubSpace/PageName" }
+      let(:page_url) do
+        "https://xwiki.local/rest/openproject/documents?docRef=xwiki:MySpace.SubSpace.PageName"
+      end
+      let(:absolute_url) { "https://xwiki.local/bin/view/MySpace/SubSpace/PageName" }
 
       before do
-        stub_request(:get, page_url)
-          .to_return(status: 200, body: { "title" => "Nested Page",
-                                          "xwikiAbsoluteUrl" => absolute_url }.to_json,
+        stub_request(:put, page_url)
+          .to_return(status: 200, body: { id: "foo", title: "Nested Page", xwikiAbsoluteUrl: absolute_url }.to_json,
                      headers: { "Content-Type" => "application/json" })
       end
 
@@ -93,44 +87,44 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::PageInfo, :webmock do
     end
 
     context "when no OAuth token exists for the user" do
-      let(:wiki_provider) { create(:xwiki_provider, :with_oauth_client, url: "https://xwiki.example.com/") }
+      let(:wiki_provider) { create(:xwiki_provider, :with_oauth_client, url: "https://xwiki.local/") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :missing_token)) }
     end
 
     context "when the page is not found" do
-      before { stub_request(:get, page_url).to_return(status: 404, body: "") }
+      before { stub_request(:put, page_url).to_return(status: 404, body: "") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :not_found)) }
     end
 
     context "when access is unauthorized" do
-      before { stub_request(:get, page_url).to_return(status: 401, body: "") }
+      before { stub_request(:put, page_url).to_return(status: 401, body: "") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :unauthorized)) }
     end
 
     context "when access is forbidden" do
-      before { stub_request(:get, page_url).to_return(status: 403, body: "") }
+      before { stub_request(:put, page_url).to_return(status: 403, body: "") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :unauthorized)) }
     end
 
     context "when XWiki returns a non-2xx status" do
-      before { stub_request(:get, page_url).to_return(status: 500, body: "Internal Server Error") }
+      before { stub_request(:put, page_url).to_return(status: 500, body: "Internal Server Error") }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }
     end
 
     context "when a network error occurs" do
-      before { stub_request(:get, page_url).to_timeout }
+      before { stub_request(:put, page_url).to_timeout }
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :connection_error)) }
     end
 
     context "when the response body is not valid JSON" do
       before do
-        stub_request(:get, page_url)
+        stub_request(:put, page_url)
           .to_return(status: 200, body: "not json", headers: { "Content-Type" => "application/json" })
       end
 

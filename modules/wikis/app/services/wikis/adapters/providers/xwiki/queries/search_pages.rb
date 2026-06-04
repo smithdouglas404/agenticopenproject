@@ -47,7 +47,7 @@ module Wikis
                     json.fetch("searchResults")
                         .uniq { |r| r.fetch("id") }
                         .map do |r|
-                          result = page_info(identifier: r.fetch("id"), auth_strategy:)
+                          result = canonical_page_info(identifier: r.fetch("id"), auth_strategy:)
                           return result if result.failure?
 
                           result.value!
@@ -61,6 +61,12 @@ module Wikis
 
             def escape_quotes(string)
               string.gsub("\\", "\\\\").gsub('"', '\"')
+            end
+
+            def canonical_page_info(identifier:, auth_strategy:)
+              Input::PageInfo.build(identifier:).bind do |input_data|
+                CanonicalPageInfo.new(model: provider).call(input_data:, auth_strategy:)
+              end
             end
           end
         end

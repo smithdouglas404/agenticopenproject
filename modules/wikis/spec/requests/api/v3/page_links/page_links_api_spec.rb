@@ -168,10 +168,10 @@ RSpec.describe "API v3 wiki page links resource", content_type: :json do
 
   def stub_provider_queries
     internal_class = class_double(Wikis::Adapters::Providers::Internal::Queries::PageInfo)
-    xwiki_class = class_double(Wikis::Adapters::Providers::XWiki::Queries::PageInfo)
+    xwiki_class = class_double(Wikis::Adapters::Providers::XWiki::Queries::StablePageInfo)
 
     internal_query = instance_double(Wikis::Adapters::Providers::Internal::Queries::PageInfo)
-    xwiki_query = instance_double(Wikis::Adapters::Providers::XWiki::Queries::PageInfo)
+    xwiki_query = instance_double(Wikis::Adapters::Providers::XWiki::Queries::StablePageInfo)
 
     Wikis::Adapters::Registry.stub("internal.queries.page_info", internal_class)
     Wikis::Adapters::Registry.stub("xwiki.queries.page_info", xwiki_class)

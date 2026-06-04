@@ -32,28 +32,28 @@ module Wikis
   module Adapters
     module Providers
       module XWiki
-        # Represents an XWiki page identifier in canonical document reference format:
-        # "wikiName:Space1.Space2.PageName" — e.g. "xwiki:Main.WebHome"
-        CanonicalPageReference = Data.define(:wiki, :spaces, :page) do
-          def self.parse(identifier)
-            wiki, page_path = identifier.split(":", 2)
-            return nil if page_path.blank?
+        module Queries
+          # Fetch page information using a stable XWiki identifier
+          class StablePageInfo < BaseQuery
+            include Concerns::XWikiQuery
 
-            *spaces, page = page_path.split(".")
-            return nil if spaces.empty?
+            def call(input_data:, auth_strategy:)
+              ref = StablePageReference.parse(input_data.identifier)
+              return failure(code: :not_found) unless ref
 
-            new(wiki:, spaces:, page:)
-          end
-
-          # Maps the reference to the REST API path, excluding the `/rest` prefix, e.g.
-          # /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
-          def rest_path
-            spaces_path = spaces.map { "/spaces/#{CGI.escapeURIComponent(it)}" }.join
-            "/wikis/#{CGI.escapeURIComponent(wiki)}#{spaces_path}/pages/#{CGI.escapeURIComponent(page)}"
-          end
-
-          def to_s
-            "#{wiki}:#{spaces.join('.')}.#{page}"
+              authenticated(auth_strategy) do |http|
+                handle_response(http.get(rest_url(ref.rest_path))) do |data|
+                  success(
+                    Results::PageInfo.new(
+                      identifier: ref.to_s,
+                      title: data.fetch("title"),
+                      href: data.fetch("xwikiAbsoluteUrl"),
+                      provider:
+                    )
+                  )
+                end
+              end
+            end
           end
         end
       end
