@@ -32,13 +32,25 @@ class UserCustomField < CustomField
   belongs_to :user_custom_field_section, class_name: "UserCustomFieldSection", foreign_key: :custom_field_section_id,
                                          inverse_of: :custom_fields
 
-  acts_as_list column: :position_in_custom_field_section, scope: [:custom_field_section_id]
-
   validates :custom_field_section_id, presence: true
+
+  after_create_commit :add_to_section_order
+  after_destroy_commit :remove_from_section_order
 
   scopes :visible
 
   def type_name
     :label_user_plural
+  end
+
+  private
+
+  def add_to_section_order
+    user_custom_field_section.add_to_order(column_name)
+  end
+
+  def remove_from_section_order
+    section = user_custom_field_section
+    section.remove_from_order(column_name) unless section.nil? || section.frozen?
   end
 end

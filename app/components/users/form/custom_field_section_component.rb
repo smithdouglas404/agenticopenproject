@@ -31,15 +31,31 @@
 module Users
   module Form
     class CustomFieldSectionComponent < ApplicationComponent
-      def initialize(section:, fields:, form:)
+      def initialize(section:, form:, contract:, user:)
         super()
         @section = section
-        @fields = fields
         @form = form
+        @contract = contract
+        @user = user
+        @visible_cfs_by_key = visible_cfs_by_key(section)
       end
 
       def title
         @section.name.presence || I18n.t("settings.user_attributes.label_untitled_section")
+      end
+
+      def built_in?(key)
+        UserCustomFieldSection::BUILT_IN_ATTRIBUTES.include?(key)
+      end
+
+      def visible_custom_field(key)
+        @visible_cfs_by_key[key]
+      end
+
+      private
+
+      def visible_cfs_by_key(section)
+        section.custom_fields.visible(User.current).index_by(&:column_name)
       end
     end
   end

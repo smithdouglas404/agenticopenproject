@@ -179,6 +179,11 @@ RSpec.describe "edit users", :js do
   context "as global user" do
     shared_let(:global_manage_user) { create(:user, global_permissions: %i[view_all_principals manage_user create_user]) }
     let(:current_user) { global_manage_user }
+    let!(:default_section) do
+      create(:user_custom_field_section).tap do |s|
+        s.update_column(:attribute_order, UserCustomFieldSection::BUILT_IN_ATTRIBUTES)
+      end
+    end
 
     it "can too edit the user" do
       visit edit_user_path(user)

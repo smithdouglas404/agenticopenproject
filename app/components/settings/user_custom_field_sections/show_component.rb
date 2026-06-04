@@ -39,7 +39,8 @@ module Settings
         super
 
         @user_custom_field_section = user_custom_field_section
-        @user_custom_fields = user_custom_field_section.custom_fields
+        @ordered_attributes = user_custom_field_section.attribute_order
+        @custom_fields_by_key = user_custom_field_section.custom_fields_by_key
 
         @first_and_last = first_and_last
       end
@@ -59,15 +60,25 @@ module Settings
           generic_drag_and_drop_target: "container",
           "target-container-accessor": ".Box > ul",
           "target-id": @user_custom_field_section.id,
-          "target-allowed-drag-type": "custom-field"
+          "target-allowed-drag-type": "user-field"
         }
       end
 
-      def draggable_item_config(user_custom_field)
+      def draggable_item_config_for_custom_field(user_custom_field)
         {
           "draggable-id": user_custom_field.id,
-          "draggable-type": "custom-field",
+          "draggable-type": "user-field",
           "drop-url": drop_admin_settings_user_custom_field_path(user_custom_field)
+        }
+      end
+
+      def draggable_item_config_for_built_in(key)
+        {
+          "draggable-id": key,
+          "draggable-type": "user-field",
+          "drop-url": drop_admin_settings_user_custom_field_section_built_in_attribute_path(
+            @user_custom_field_section, key
+          )
         }
       end
 

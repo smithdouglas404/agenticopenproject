@@ -29,7 +29,7 @@
 #++
 
 module UserCustomFields
-  class DropService < ::BaseServices::BaseCallable
+  class MoveService < ::BaseServices::BaseCallable
     def initialize(user:, user_custom_field:)
       super()
       @user = user
@@ -37,46 +37,13 @@ module UserCustomFields
     end
 
     def perform
-      service_call = validate_permissions
-      service_call = perform_drop(service_call, params) if service_call.success?
-      service_call
-    end
+      return ServiceResult.failure(errors: { base: :error_unauthorized }) unless @user.admin?
 
-    def validate_permissions
-      if @user.admin?
-        ServiceResult.success
-      else
-        ServiceResult.failure(errors: { base: :error_unauthorized })
-      end
-    end
-
-    def perform_drop(service_call, params)
-      section_changed, current_section, old_section = move_to_target_section(params)
-      current_section.add_to_order(@user_custom_field.column_name, position: params[:position]&.to_i)
-
-      service_call.success = true
-      service_call.result = { section_changed:, current_section: current_section.reload, old_section: }
-      service_call
+      section = @user_custom_field.user_custom_field_section
+      section.move_in_order(@user_custom_field.column_name, params[:move_to]&.to_sym)
+      ServiceResult.success(result: section)
     rescue StandardError => e
-      service_call.success = false
-      service_call.errors = e.message
-      service_call
-    end
-
-    private
-
-    def move_to_target_section(params)
-      current_section = @user_custom_field.user_custom_field_section
-      new_section_id = params[:target_id]&.to_i
-
-      return [false, current_section, nil] if current_section.id == new_section_id
-
-      old_section = current_section
-      current_section = UserCustomFieldSection.find(new_section_id)
-      old_section.remove_from_order(@user_custom_field.column_name)
-      @user_custom_field.update!(custom_field_section_id: current_section.id)
-
-      [true, current_section, old_section.reload]
+      ServiceResult.failure(errors: e.message)
     end
   end
 end

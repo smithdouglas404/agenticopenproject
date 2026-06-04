@@ -46,16 +46,7 @@ module Users
       end
 
       def sections_with_fields
-        @sections_with_fields ||= begin
-          filled_cf_ids = @user.custom_values
-                               .where(custom_field: UserCustomField.visible(User.current))
-                               .where.not(value: [nil, ""])
-                               .select(:custom_field_id)
-
-          UserCustomFieldSection
-            .with_custom_fields(filled_cf_ids)
-            .map { |section| [section, section.custom_fields] }
-        end
+        @sections_with_fields ||= UserCustomFieldSection.with_filled_fields_for(@user)
       end
 
       def user_is_allowed_to_see_email

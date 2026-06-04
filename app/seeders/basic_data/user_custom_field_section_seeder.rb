@@ -27,29 +27,26 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Standard
-  class BasicDataSeeder < ::BasicDataSeeder
-    def data_seeder_classes
-      [
-        ::BasicData::BuiltinUsersSeeder,
-        ::BasicData::ProjectRoleSeeder,
-        ::BasicData::WorkPackageRoleSeeder,
-        ::BasicData::ProjectQueryRoleSeeder,
-        ::BasicData::GlobalRoleSeeder,
-        ::BasicData::TimeEntryActivitySeeder,
-        ::BasicData::ColorSeeder,
-        ::BasicData::ColorSchemeSeeder,
-        ::BasicData::PluginAuthProviderSeeder,
-        ::BasicData::ProjectPhaseColorSeeder,
-        ::BasicData::ProjectPhaseDefinitionSeeder,
-        ::BasicData::StatusSeeder,
-        ::BasicData::TypeSeeder,
-        ::BasicData::WorkflowSeeder,
-        ::BasicData::PrioritySeeder,
-        ::BasicData::SettingSeeder,
-        ::BasicData::ProjectCustomFieldSectionSeeder,
-        ::BasicData::UserCustomFieldSectionSeeder
-      ]
+
+module BasicData
+  class UserCustomFieldSectionSeeder < Seeder
+    def seed_data!
+      # The default section is intentionally untitled — it renders the I18n fallback
+      # label in the UI.  The name validation is bypassed to match the migration that
+      # creates the same section for existing installations.
+      section = UserCustomFieldSection.new(
+        position: 1,
+        attribute_order: UserCustomFieldSection::BUILT_IN_ATTRIBUTES
+      )
+      section.save!(validate: false)
+    end
+
+    def applicable?
+      UserCustomFieldSection.none?
+    end
+
+    def not_applicable_message
+      "Skipping user custom field section as there are already some configured"
     end
   end
 end

@@ -1,0 +1,7 @@
+<%# locals: (f:, contract:, user:) -%>
+<div class="form--field -required">
+  <%= f.text_field :lastname,
+                   required: true,
+                   disabled: !contract.writable?(:lastname),
+                   container_class: "-middle" %>
+</div>

@@ -70,8 +70,8 @@ module Admin::Settings
     def list_items; end
 
     def move
-      result = CustomFields::UpdateService.new(user: current_user, model: @custom_field).call(
-        move_to: params.expect(:move_to)&.to_sym
+      result = UserCustomFields::MoveService.new(user: current_user, user_custom_field: @custom_field).call(
+        move_to: params.expect(:move_to)
       )
 
       if result.success?

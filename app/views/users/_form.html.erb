@@ -30,14 +30,12 @@ See COPYRIGHT and LICENSE files for more details.
 <%= error_messages_for @user %>
 
 <section class="form--section">
-  <%= render partial: "users/form/basic_attributes", locals: { f: f, contract: @contract } %>
-
   <% if current_user.admin? %>
     <%= render partial: "users/form/admin_flag", locals: { f: f } %>
   <% end %>
 
-  <% UserCustomFieldSection.with_custom_fields(UserCustomField.visible(User.current)).each do |section| %>
-    <%= render Users::Form::CustomFieldSectionComponent.new(section:, fields: section.custom_fields, form: f) %>
+  <% UserCustomFieldSection.includes(:custom_fields).each do |section| %>
+    <%= render Users::Form::CustomFieldSectionComponent.new(section:, form: f, contract: @contract, user: @user) %>
   <% end %>
   <%= call_hook(:view_users_form, user: @user, form: f) %>
 </section>

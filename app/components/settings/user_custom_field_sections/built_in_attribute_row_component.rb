@@ -30,27 +30,24 @@
 
 module Settings
   module UserCustomFieldSections
-    class CustomFieldRowComponent < ApplicationComponent
+    class BuiltInAttributeRowComponent < ApplicationComponent
       include ApplicationHelper
       include OpPrimer::ComponentHelpers
       include OpTurbo::Streamable
 
-      def initialize(user_custom_field:, first:, last:)
+      def initialize(section:, attribute_key:, first:, last:)
         super()
-        @user_custom_field = user_custom_field
+        @section = section
+        @attribute_key = attribute_key
         @first = first
         @last = last
       end
 
-      private
-
-      def edit_action_item(menu)
-        menu.with_item(label: t("label_edit"),
-                       href: edit_admin_settings_user_custom_field_path(@user_custom_field),
-                       data: { turbo: "false", test_selector: "user-custom-field-edit" }) do |item|
-          item.with_leading_visual_icon(icon: :pencil)
-        end
+      def attribute_label
+        User.human_attribute_name(@attribute_key)
       end
+
+      private
 
       def move_actions(menu)
         unless @first
@@ -64,28 +61,17 @@ module Settings
       end
 
       def move_action_item(menu, move_to, label_text, icon)
-        menu.with_item(label: label_text,
-                       href: move_admin_settings_user_custom_field_path(@user_custom_field, move_to:),
-                       form_arguments: {
-                         method: :put, data: { "turbo-stream": true, test_selector: "user-custom-field-move-#{move_to}" }
-                       }) do |item|
+        menu.with_item(
+          label: label_text,
+          href: move_admin_settings_user_custom_field_section_built_in_attribute_path(
+            @section, @attribute_key, move_to:
+          ),
+          form_arguments: {
+            method: :put,
+            data: { "turbo-stream": true, test_selector: "built-in-attribute-move-#{move_to}" }
+          }
+        ) do |item|
           item.with_leading_visual_icon(icon:)
-        end
-      end
-
-      def delete_action_item(menu)
-        menu.with_item(label: t("text_destroy"),
-                       scheme: :danger,
-                       href: admin_settings_user_custom_field_path(@user_custom_field),
-                       form_arguments: {
-                         method: :delete,
-                         data: {
-                           turbo_confirm: t(:text_are_you_sure),
-                           turbo_stream: true,
-                           test_selector: "user-custom-field-delete"
-                         }
-                       }) do |item|
-          item.with_leading_visual_icon(icon: :trash)
         end
       end
     end

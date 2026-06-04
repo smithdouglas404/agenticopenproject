@@ -20,7 +20,7 @@
                 menu.with_show_button(icon: "kebab-horizontal", "aria-label": t("settings.user_attributes.label_section_actions"), scheme: :invisible)
                 edit_action_item(menu)
                 move_actions(menu)
-                if @user_custom_fields.empty?
+                if @ordered_attributes.empty?
                   delete_action_item(menu)
                 else
                   disabled_delete_action_item(menu)
@@ -42,7 +42,7 @@
           end
         end
       end
-      if @user_custom_fields.empty?
+      if @ordered_attributes.empty?
         component.with_row(data: { "empty-list-item": true }) do
           flex_layout(align_items: :center, justify_content: :space_between) do |empty_list_container|
             empty_list_container.with_column(ml: 4, mr: 2) do
@@ -70,17 +70,31 @@
           end
         end
       else
-        first_and_last = [@user_custom_fields.first, @user_custom_fields.last]
-        @user_custom_fields.each do |user_custom_field|
-          component.with_row(
-            data: draggable_item_config(user_custom_field)
-          ) do
-            render(
-              custom_field_row_component_class.new(
-                user_custom_field:,
-                first_and_last:
+        @ordered_attributes.each_with_index do |key, index|
+          first = index == 0
+          last  = index == @ordered_attributes.size - 1
+
+          if UserCustomFieldSection::BUILT_IN_ATTRIBUTES.include?(key)
+            component.with_row(data: draggable_item_config_for_built_in(key)) do
+              render(
+                Settings::UserCustomFieldSections::BuiltInAttributeRowComponent.new(
+                  section: @user_custom_field_section,
+                  attribute_key: key,
+                  first:,
+                  last:
+                )
               )
-            )
+            end
+          elsif (cf = @custom_fields_by_key[key])
+            component.with_row(data: draggable_item_config_for_custom_field(cf)) do
+              render(
+                custom_field_row_component_class.new(
+                  user_custom_field: cf,
+                  first:,
+                  last:
+                )
+              )
+            end
           end
         end
       end

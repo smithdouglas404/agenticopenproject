@@ -32,6 +32,11 @@ require "spec_helper"
 
 RSpec.describe "create users" do
   shared_let(:admin) { create(:admin) }
+  shared_let(:default_section) do
+    create(:user_custom_field_section).tap do |s|
+      s.update_column(:attribute_order, UserCustomFieldSection::BUILT_IN_ATTRIBUTES)
+    end
+  end
   let(:current_user) { admin }
   let!(:auth_source) { create(:ldap_auth_source) }
   let(:new_user_page) { Pages::NewUser.new }

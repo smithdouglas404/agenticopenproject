@@ -719,6 +719,8 @@ en:
     reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    multi_value_more:
+      other: "and %{count} more"
     no_role_assigment: "No role assignment"
     instructions:
       is_required:
@@ -754,9 +756,6 @@ en:
         project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
       visible_on_user_card:
         all: "When checked, this field's value is shown in the user information card when hovering over a user across the application."
-
-    multi_value_more:
-      other: "and %{count} more"
 
     tab:
       no_results_title_text: There are currently no custom fields.
@@ -1960,8 +1959,6 @@ en:
         workspace_type: "Workspace type"
       project_custom_field:
         custom_field_section: Section
-      user_custom_field:
-        custom_field_section: Section
       subproject_template_assignment:
         workspace_type: "Workspace type"
       project/phase:
@@ -2074,6 +2071,8 @@ en:
       group_detail:
         parent: "Parent group"
         organizational_unit: "Organizational unit"
+      user_custom_field:
+        custom_field_section: Section
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -4587,10 +4586,10 @@ en:
   label_user_named: "User %{name}"
   label_user_activity_html: "%{value}'s activity"
   label_user_anonymous: "Anonymous"
+  label_user_attributes_plural: "User attributes"
   label_user_menu: "User menu"
   label_user_new: "New user"
   label_user_plural: "Users"
-  label_user_attributes_plural: "User attributes"
   label_user_search: "Search for user"
   label_user_settings: "User settings"
   label_users_settings: "Users settings"
@@ -5696,15 +5695,17 @@ en:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     user_attributes:
-      label_untitled_section: "Untitled section"
       heading: "User attributes"
       heading_description: "These user attributes appear on user profiles and information cards. You can add new attributes, group them into sections and re-order them."
+      label_built_in: "Built-in"
+      label_built_in_attribute_actions: "Built-in attribute actions"
+      label_edit_section: "Edit title"
       label_new_attribute: "User attribute"
       label_new_section: "Section"
-      label_edit_section: "Edit title"
-      label_section_actions: "Section actions"
-      label_user_custom_field_actions: "User attribute actions"
       label_no_user_custom_fields: "No user attributes defined in this section"
+      label_section_actions: "Section actions"
+      label_untitled_section: "Untitled section"
+      label_user_custom_field_actions: "User attribute actions"
       new:
         heading: "New attribute"
     project_initiation_request:

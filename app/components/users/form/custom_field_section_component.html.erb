@@ -1,7 +1,11 @@
 <fieldset class="form--fieldset">
   <legend class="form--fieldset-legend"><%= title %></legend>
 
-  <% @fields.each do |custom_field| %>
-    <%= render Users::Form::CustomFieldFieldComponent.new(custom_field:, form: @form) %>
+  <% @section.attribute_order.each do |key| %>
+    <% if built_in?(key) %>
+      <%= render "users/form/built_in_fields/#{key}", f: @form, contract: @contract, user: @user %>
+    <% elsif (cf = visible_custom_field(key)) %>
+      <%= render Users::Form::CustomFieldFieldComponent.new(custom_field: cf, form: @form) %>
+    <% end %>
   <% end %>
 </fieldset>

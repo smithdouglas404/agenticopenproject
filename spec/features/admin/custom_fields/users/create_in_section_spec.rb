@@ -102,7 +102,8 @@ RSpec.describe "Create user custom fields in sections", :js do
 
       context "without any existing sections" do
         before do
-          UserCustomFieldSection.destroy_all
+          UserCustomField.delete_all
+          UserCustomFieldSection.delete_all
           cf_index_page.visit!
         end
 

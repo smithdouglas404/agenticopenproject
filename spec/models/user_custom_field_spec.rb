@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+require "rails_helper"
 
 RSpec.describe UserCustomField do
   describe "validations" do
@@ -64,25 +64,38 @@ RSpec.describe UserCustomField do
     end
   end
 
-  describe "acts_as_list within a section" do
+  describe "attribute_order integration" do
     let(:section) { create(:user_custom_field_section) }
-    let!(:cf_first) { create(:user_custom_field, user_custom_field_section: section, position_in_custom_field_section: 1) }
-    let!(:cf_second) { create(:user_custom_field, user_custom_field_section: section, position_in_custom_field_section: 2) }
 
-    it "orders fields by position within the section" do
-      expect(section.custom_fields.to_a).to eq([cf_first, cf_second])
+    it "appends itself to the section's attribute_order on creation" do
+      cf = create(:user_custom_field, user_custom_field_section: section)
+      expect(section.reload.attribute_order).to include(cf.column_name)
     end
 
-    it "keeps positions scoped per section" do
+    it "orders fields by creation order when multiple are created" do
+      cf1 = create(:user_custom_field, user_custom_field_section: section)
+      cf2 = create(:user_custom_field, user_custom_field_section: section)
+      expect(section.reload.attribute_order).to eq([cf1.column_name, cf2.column_name])
+    end
+
+    it "removes itself from the section's attribute_order on destruction" do
+      cf = create(:user_custom_field, user_custom_field_section: section)
+      cf.destroy
+      expect(section.reload.attribute_order).not_to include(cf.column_name)
+    end
+
+    it "scopes positions per section (each section is independent)" do
       other_section = create(:user_custom_field_section)
-      cf_other = create(:user_custom_field, user_custom_field_section: other_section)
-      expect(cf_other.position_in_custom_field_section).to eq(1)
+      cf1 = create(:user_custom_field, user_custom_field_section: section)
+      cf2 = create(:user_custom_field, user_custom_field_section: other_section)
+      expect(section.reload.attribute_order).to eq([cf1.column_name])
+      expect(other_section.reload.attribute_order).to eq([cf2.column_name])
     end
   end
 
   describe ".visible" do
     let!(:admin_only_cf) { create(:user_custom_field, admin_only: true) }
-    let!(:public_cf) { create(:user_custom_field, admin_only: false) }
+    let!(:public_cf)     { create(:user_custom_field, admin_only: false) }
 
     context "for an admin" do
       it "returns all custom fields" do
@@ -98,11 +111,17 @@ RSpec.describe UserCustomField do
     end
   end
 
-  describe "section cascade deletion" do
-    it "is destroyed when its section is destroyed" do
-      section = create(:user_custom_field_section)
-      cf = create(:user_custom_field, user_custom_field_section: section)
-      expect { section.destroy }.to change { described_class.exists?(cf.id) }.from(true).to(false)
+  describe "section deletion restriction" do
+    let(:section) { create(:user_custom_field_section) }
+    let!(:cf) { create(:user_custom_field, user_custom_field_section: section) }
+
+    it "raises when attempting to destroy a section that still holds custom fields" do
+      expect { section.destroy! }.to raise_error(ActiveRecord::DeleteRestrictionError)
+    end
+
+    it "removes itself from the section's attribute_order when destroyed individually" do
+      cf.destroy!
+      expect(section.reload.attribute_order).not_to include(cf.column_name)
     end
   end
 end

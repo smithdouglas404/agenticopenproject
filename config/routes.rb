@@ -799,6 +799,15 @@ Rails.application.routes.draw do
         collection do
           get :new_link
         end
+        resources :built_in_attributes,
+                  controller: "/admin/settings/user_custom_field_sections/built_in_attributes",
+                  param: :key,
+                  only: [] do
+          member do
+            put :move
+            put :drop
+          end
+        end
       end
 
       resource :working_days_and_hours, controller: "/admin/settings/working_days_and_hours_settings", only: %i[show update] do

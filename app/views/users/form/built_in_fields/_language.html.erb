@@ -1,0 +1,7 @@
+<%# locals: (f:, contract:, user:) -%>
+<div class="form--field">
+  <%= f.select :language,
+               lang_options_for_select,
+               prompt: "--- #{t(:actionview_instancetag_blank_option)} ---",
+               container_class: "-middle" %>
+</div>

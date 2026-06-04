@@ -1,0 +1,10 @@
+<%# locals: (f:, contract:, user:) -%>
+<% unless user.new_record? %>
+<div class="form--field -required">
+  <%= f.text_field :login,
+                   required: true,
+                   disabled: !contract.writable?(:login),
+                   size: 25,
+                   container_class: "-middle" %>
+</div>
+<% end %>
