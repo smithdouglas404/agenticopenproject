@@ -27,19 +27,19 @@ ro:
   activerecord:
     attributes:
       project:
-        sprint_sharing: Sprint sharing
-        backlog_excluded_types: Excluded work package types
-        statuses_considered_closed: Statuses considered closed
+        sprint_sharing: Partajarea Sprint
+        backlog_excluded_types: Tipuri de pachete de lucru excluse
+        statuses_considered_closed: Statusuri considerate închise
       sprint:
-        duration: Duration
-        finish_date: Finish date
-        goal: Sprint goal
-        name: Sprint name
-        sharing: Sharing
+        duration: Durată
+        finish_date: Dată finalizare
+        goal: Obiectiv Sprint
+        name: Nume sprint
+        sharing: Partajare
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: În planificare
+          active: Activ
+          completed: Finalizat
       work_package:
         backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Tipul de restante
@@ -164,7 +164,7 @@ ro:
       one: "%{count} story point"
       few: "%{count} story points"
       other: "%{count} story points"
-    statuses_considered_closed_caption: 'Choose the statuses that represent a closed or finished state in your workflow. These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning. For example, statuses like Done, Resolved, or Won''t Fix may all represent a closed work item in your process.
+    statuses_considered_closed_caption: 'Alege stările care reprezintă o stare închisă sau finalizată în fluxul tău de lucru. Acestea vor fi tratate ca stare "închisă" în cadrul raportării (de exemplu, burndown) și al planificării sprinturilor. De exemplu, statusurile precum Done, Resolved sau Won''t Fix pot reprezenta toate un element de lucru închis în procesul tău.
 
       '
     types_and_statuses: Types and statuses

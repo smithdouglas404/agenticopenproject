@@ -322,12 +322,12 @@ es:
           '
         confirm_button: Cancelar repetición
       occurrence_past:
-        title: Delete occurrence
-        heading: Delete this occurrence?
-        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+        title: Eliminar repetición
+        heading: "¿Eliminar esta repetición?"
+        confirmation_message_html: 'Esta acción no es reversible. Procede con precaución.
 
           '
-        confirm_button: Delete occurrence
+        confirm_button: Eliminar repetición
     blankslate:
       title: No hay reuniones que mostrar
       desc: Puedes crear una nueva reunión o cambiar los criterios de filtrado

@@ -66,9 +66,9 @@ fr:
         title: Titre
         frequency: Fréquence
         interval: Intervalle
-        monthly_day: Day of month
+        monthly_day: Jour du mois
         monthly_ordinal: Position
-        monthly_weekday: Weekday
+        monthly_weekday: En semaine
         start_date: Commence le
         start_time: Heure de début
         start_time_hour: Heure de début
@@ -241,7 +241,7 @@ fr:
         description: Il n'y a pas encore de participants.
     attachments:
       onetime_template: Ces fichiers joints seront inclus dans toutes les futures réunions de la série.
-      series_template: Ces fichiers joints seront inclus dans toutes les futures réunions de la série.
+      series_template: Ces fichiers joints seront inclus dans toutes les réunions futures de la série.
       text: Les fichiers joints sont accessibles à tous les participants à la réunion. Vous pouvez également les glisser-déposer dans les notes relatives aux points de l'ordre du jour.
     copy:
       title: 'Copier la réunion : %{title}'
@@ -324,7 +324,7 @@ fr:
       occurrence_past:
         title: Supprimer l'occurrence
         heading: Supprimer cette occurrence ?
-        confirmation_message_html: 'Cette action n''est pas réversible. Veuillez procéder avec prudence.
+        confirmation_message_html: 'Cette action est irréversible. Veuillez procéder avec prudence.
 
           '
         confirm_button: Supprimer l'occurrence
@@ -507,29 +507,29 @@ fr:
         second: deuxième
         third: troisième
         fourth: quatrième
-        last: last
+        last: dernier
       ordinal_options:
-        first: First
-        second: Second
-        third: Third
-        fourth: Fourth
-        last: Last
-    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
-    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
+        first: Premier
+        second: Deuxième
+        third: Troisième
+        fourth: Quatrième
+        last: Dernier
+    actual_first_occurrence_mismatch_html: La première occurrence de cette série sera %{first_occurrence}
+    day_of_month_skipping_info: Les mois comportant moins de %{monthly_day} jours seront ignorés
     end_after:
-      never: Never
-      specific_date: After a specific date
-      iterations: After a number of occurrences
+      never: Jamais
+      specific_date: Après une date spécifique
+      iterations: Après un nombre d'occurrences
     starts: Début
     in_words:
       daily_interval: Tous les %{interval} jours
       working_days: Chaque jour ouvrable
       weekly: Chaque semaine le %{weekday}
       weekly_interval: Toutes les %{interval} semaines le %{weekday}
-      monthly_day: Every month on the %{day}
-      monthly_day_interval: Every %{interval} months on the %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_day: Chaque mois, le %{day}
+      monthly_day_interval: Toutes les %{interval} semaines, le %{day}
+      monthly_nth_weekday: Chaque mois, le %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Tous les %{interval} mois, le %{ordinal} %{weekday}
       frequency: "%{base} à %{time}"
       full: "%{base} à %{time}, se termine le %{end_date}"
       full_past: "%{base} à %{time}, terminée le %{end_date}"

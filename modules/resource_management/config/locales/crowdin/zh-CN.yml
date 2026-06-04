@@ -10,13 +10,13 @@ zh-CN:
         public: 公开
         favorite: 收藏夹
       resource_allocation:
-        entity: Entity
-        principal: Assignee
+        entity: 实体
+        principal: 受理人
         state: 地区
         start_date: 开始日期
         end_date: 结束日期
         allocated_time: 分配时间
-        user_filter: User filter
+        user_filter: 用户筛选器
     errors:
       models:
         resource_planner:
@@ -39,8 +39,8 @@ zh-CN:
   permission_manage_public_resource_planners_explanation: '允许用户创建和管理公开的资源规划工具。用户可以查看、创建、管理和发布自己的资源规划工具，但不可以查看其他用户创建的未公开共享的资源规划工具。
 
     '
-  permission_allocate_user_resources: Allocate user resources
-  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
+  permission_allocate_user_resources: 分配用户资源
+  permission_allocate_user_resources_explanation: '允许用户在资源规划工具中创建、更新和删除资源分配。这包括为规划工具分配用户（或用户筛选器），以及调整分配的时间和日期范围。
 
     '
   label_resource_management: 资源规划

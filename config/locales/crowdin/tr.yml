@@ -437,6 +437,7 @@ tr:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Proje
           label_previous_identifier: Önceki tanımlayıcı
           label_autofixed_suggestion: Gelecek tanımlayıcı

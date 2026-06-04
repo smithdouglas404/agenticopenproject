@@ -108,25 +108,25 @@ it:
         remote_folders: 'Leggi i contenuti della cartella di team:'
         remove_user_from_group: 'Rimuovi Utenti dal Gruppo:'
         rename_project_folder: 'Rinomina la cartella del progetto gestita:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Imposta le autorizzazioni delle cartelle dei progetti gestiti:'
       one_drive_sync_service:
         create_folder: 'Creazione della cartella di progetto gestita:'
         ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
         hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
         remote_folders: 'Leggi il contenuto della cartella radice dell''unità:'
         rename_project_folder: 'Rinomina la cartella di progetto gestita:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Imposta le autorizzazioni delle cartelle dei progetti gestiti:'
       sharepoint_sync_service:
         create_folder: 'Creazione della cartella di progetto gestita:'
         ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
         hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
         remote_folders: 'Leggi il contenuto della cartella radice dell''unità:'
         rename_project_folder: 'Rinomina la cartella di progetto gestita:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Imposta le autorizzazioni delle cartelle dei progetti gestiti:'
     errors:
       messages:
         error: Si è verificato un errore inatteso. Controlla i log di OpenProject per maggiori informazioni o contatta un amministratore
-        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
+        folder_id_collision: Più archivi di progetto stanno tentando di gestire la cartella di progetto %{folder}. La sincronizzazione è stata ignorata.
         forbidden: OpenProject non ha potuto accedere alla risorsa richiesta. Verifica la configurazione delle autorizzazioni sul fornitore di servizi di archiviazione.
         unauthorized: OpenProject non è riuscito ad autenticarsi con il fornitore di servizi di archiviazione. Assicurati di avervi accesso.
       models:

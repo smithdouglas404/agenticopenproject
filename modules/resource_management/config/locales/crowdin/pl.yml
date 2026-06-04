@@ -10,13 +10,13 @@ pl:
         public: Publiczny
         favorite: Ulubione
       resource_allocation:
-        entity: Entity
-        principal: Assignee
-        state: State
-        start_date: Start date
-        end_date: Finish date
-        allocated_time: Allocated time
-        user_filter: User filter
+        entity: Pole
+        principal: Przypisana osoba
+        state: Stan
+        start_date: Data rozpoczęcia
+        end_date: Data zakończenia
+        allocated_time: Przydzielony czas
+        user_filter: Filtr użytkownika
     errors:
       models:
         resource_planner:
@@ -26,7 +26,7 @@ pl:
         resource_allocation:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: musi być późniejsza niż data rozpoczęcia.
   plugin_openproject_resource_management:
     name: Zarządzanie zasobami OpenProject
     description: Zapewnia zarządzanie zasobami i planowanie obciążeń.
@@ -39,8 +39,8 @@ pl:
   permission_manage_public_resource_planners_explanation: 'Umożliwia użytkownikom tworzenie planistów zasobów oraz zarządzanie nimi. Pozwala im na przeglądanie, tworzenie, zarządzanie i publikowanie własnych planistów zasobów. Nie pozwala użytkownikom przeglądać nieudostępnionych publicznie planistów zasobów utworzonych przez innych użytkowników.
 
     '
-  permission_allocate_user_resources: Allocate user resources
-  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
+  permission_allocate_user_resources: Przydziel zasoby użytkownika
+  permission_allocate_user_resources_explanation: 'Umożliwia użytkownikom tworzenie, aktualizowanie i usuwanie przydziałów zasobów w planiście zasobów. Obejmuje to przypisywanie użytkowników (lub filtrów użytkowników) do planisty oraz dostosowywanie przydzielonego czasu i zakresu dat.
 
     '
   label_resource_management: Planowanie zasobów

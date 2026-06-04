@@ -449,6 +449,7 @@ cs:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Projekt
           label_previous_identifier: Předchozí identifikátor
           label_autofixed_suggestion: Budoucí identifikátor
@@ -1214,8 +1215,8 @@ cs:
     groups:
       member_in_these_groups: 'Tento uživatel je v současné době členem následujících skupin:'
       no_results_title_text: Tento uživatel není v současné době členem žádné skupiny.
-      summary_with_more_html: Member of %{names} and %{count_link}.
-      more: "%{count} další..."
+      summary_with_more_html: Člen %{names} a %{count_link}.
+      more: "%{count} dalších"
       summary_html: Člen %{names}.
     memberships:
       no_results_title_text: Tento uživatel není v současné době členem projektu.

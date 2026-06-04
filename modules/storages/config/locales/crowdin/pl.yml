@@ -108,25 +108,25 @@ pl:
         remote_folders: 'Odczytaj zawartość folderu zespołu:'
         remove_user_from_group: 'Usuń użytkownika z grupy:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Ustaw uprawnienia zarządzanego folderu projektu:'
       one_drive_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
         remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Ustaw uprawnienia zarządzanego folderu projektu:'
       sharepoint_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
         remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Ustaw uprawnienia zarządzanego folderu projektu:'
     errors:
       messages:
         error: Wystąpił nieoczekiwany błąd. Sprawdź dzienniki OpenProject, aby uzyskać więcej informacji lub skontaktuj się z administratorem
-        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
+        folder_id_collision: Folderem projektu %{folder} próbuje zarządzać wiele magazynów projektów. Jego synchronizacja została pominięta.
         forbidden: OpenProject nie mógł uzyskać dostępu do żądanego zasobu. Sprawdź konfigurację uprawnień do dostawcy magazynu.
         unauthorized: OpenProject nie mógł uwierzytelnić się z dostawcą magazynu. Upewnij się, że masz do niego dostęp.
       models:

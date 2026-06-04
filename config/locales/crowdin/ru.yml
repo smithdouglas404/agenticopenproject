@@ -449,6 +449,7 @@ ru:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Проект
           label_previous_identifier: Предыдущий идентификатор
           label_autofixed_suggestion: Следующий идентификатор

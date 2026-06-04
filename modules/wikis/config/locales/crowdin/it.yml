@@ -21,14 +21,14 @@ it:
         other: Collegamenti alle pagine inline
       wikis/internal_provider: Wiki interno
       wikis/provider:
-        one: Wiki provider
-        other: Wiki providers
+        one: Fornitore Wiki
+        other: Fornitori Wiki
       wikis/relation_page_link:
         one: Link alla pagina delle relazioni
         other: Link alle pagine delle relazioni
       wikis/xwiki_provider:
-        one: XWiki provider
-        other: XWiki providers
+        one: Fornitore XWiki
+        other: Fornitori XWiki
   permission_manage_wiki_page_links: Gestire i link delle pagine Wiki
   project_module_wiki_platforms: Fornitori Wiki
   wikis:
@@ -39,18 +39,18 @@ it:
       wiki_page: Pagina wiki
     health_checks:
       authentication:
-        existing_token: User token
-        header: Authentication
-        user_bound_request: User-based request authentication
+        existing_token: Token utente
+        header: Autenticazione
+        user_bound_request: Autenticazione richiesta basata sull'utente
       base_configuration:
-        header: Configuration
-        provider_configured: Configuration complete
+        header: Configurazione
+        provider_configured: Configurazione completa
       errors:
-        not_configured: The connection could not be validated. Please finish configuration first.
-        xwiki_oauth_connection_error: OpenProject could not connect to the configured XWiki instance.
-        xwiki_oauth_request_error: An unexpected error occured when trying to communicate with the XWiki instance.
-        xwiki_oauth_token_missing: OpenProject cannot test the user-level communication with XWiki as the user did not yet connect their XWiki account.
-        xwiki_oauth_unauthorized: The user token was not recognized by XWiki.
+        not_configured: Non è stato possibile verificare la connessione. Prima è necessario completare la configurazione.
+        xwiki_oauth_connection_error: OpenProject non è riuscito a connettersi all'istanza XWiki configurata.
+        xwiki_oauth_request_error: Si è verificato un errore imprevisto durante il tentativo di comunicare con l'istanza XWiki.
+        xwiki_oauth_token_missing: OpenProject non può testare la comunicazione a livello utente con XWiki poiché l'utente non ha ancora collegato il proprio account XWiki.
+        xwiki_oauth_unauthorized: Il token utente non è stato riconosciuto da XWiki.
     work_package_wikis_tab_component:
       inline_page_links: Collegamenti alle pagine inline
       referencing_pages: Citata in
@@ -66,8 +66,8 @@ it:
     admin:
       destroy_confirmation_dialog_component:
         title: Elimina fornitore wiki
-        heading: Permanently delete this wiki provider?
-        description_html: The wiki provider %{wiki_provider} and all the related wiki page links will be deleted. In addition, every inline wiki page link will no longer be accessible. This action is irreversible.
+        heading: Eliminare definitivamente questo fornitore wiki?
+        description_html: Il fornitore wiki %{wiki_provider} e tutti i collegamenti alle pagine wiki associati verranno eliminati. Inoltre, tutti i collegamenti incorporati alle pagine wiki non saranno più accessibili. Questa azione è irreversibile.
       forms:
         general_info_form_component:
           xwiki_instance_description: Assicurati di avere privilegi di amministrazione nella tua istanza XWiki prima di procedere con la configurazione.
@@ -79,13 +79,13 @@ it:
       health_status:
         show:
           actions:
-            download_report: Download
-            rerun_checks: Re-run all checks
-            run_checks: Run checks now
-          last_check: 'Last check: %{datetime}'
-          no_health_report: No report available
-          no_health_report_description: Run the checks now for a full health status report for this wiki provider.
-          title: Health Report
+            download_report: Scarica
+            rerun_checks: Riesegui tutti i controlli
+            run_checks: Esegui i controlli ora
+          last_check: 'Ultimo controllo: %{datetime}'
+          no_health_report: Nessun report disponibile
+          no_health_report_description: Esegui subito i controlli per ottenere un report completo sullo stato di integrità di questo fornitore wiki.
+          title: Report sullo stato
       oauth_application_info_component:
         confirm_replace_oauth_application: Questa azione reimposterà le credenziali OAuth correnti. Dopo la conferma dovrai reinserire le credenziali nella tua istanza XWiki e tutti gli utenti dovranno autorizzare nuovamente l'accesso. Vuoi davvero procedere?
         label_pending: In sospeso
@@ -96,10 +96,10 @@ it:
         replace_oauth_client: Sostituisci l'applicazione XWiki OAuth
       side_panel:
         health_status_component:
-          last_check: 'Last check: %{datetime}'
-          open_report: Open full health report
-          run_checks: Run checks now
-          title: Health status report
+          last_check: 'Ultimo controllo: %{datetime}'
+          open_report: Apri il report completo sullo stato
+          run_checks: Esegui i controlli ora
+          title: Report sullo stato di salute
       wiki_provider_list_component:
         label_creation_time: Creato
         label_name: Nome

@@ -28,8 +28,8 @@ pt-BR:
     attributes:
       project:
         sprint_sharing: Compartilhamento de sprints
-        backlog_excluded_types: Excluded work package types
-        statuses_considered_closed: Statuses considered closed
+        backlog_excluded_types: Tipos de pacote de trabalho excluídos
+        statuses_considered_closed: Estados considerados fechados
       sprint:
         duration: Duração
         finish_date: Data de conclusão
@@ -87,8 +87,8 @@ pt-BR:
       title: As configurações administrativas do backlog estão evoluindo
       text: Estamos reformulando o módulo de Backlogs. Em breve, você poderá ver aqui as configurações de administração de sprints e backlogs. As configurações do projeto continuam disponíveis normalmente.
     bucket_destroy_modal_component:
-      title: Delete backlog bucket?
-      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
+      title: Excluir grupo de backlog?
+      details: O grupo de backlog “%{name}” será excluído e todos os pacotes de trabalho serão movidos para a caixa de entrada do backlog. Nenhum pacote de trabalho será excluído.
     bucket_component:
       blankslate_title: O grupo de backlog está vazio
       blankslate_description: Arraste os itens para cá para adicioná-los.
@@ -100,7 +100,7 @@ pt-BR:
       show:
         blankslate_title: Nenhum dado de burndown disponível
         blankslate_description: Defina a data de início e término da sprint para gerar o gráfico de burndown.
-    excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
+    excluded_work_package_types_caption: 'Escolha quais tipos de pacote de trabalho ocultar do backlog. Itens dos tipos selecionados não aparecerão automaticamente no backlog, mantendo o foco no trabalho que importa para sua equipe. Por exemplo, tipos como épicos ou marcos, que são gerenciados em um nível mais alto, podem ser ocultados para manter o backlog focado em itens acionáveis.
 
       '
     finish_sprint_dialog_component:
@@ -114,7 +114,7 @@ pt-BR:
       select_sprint_label: Selecionar sprint
       button_complete_sprint: Concluir sprint
     inbox_component:
-      title: Inbox
+      title: Caixa de entrada
       blankslate_title: A caixa de entrada do backlog está vazia
       blankslate_description: Todos os pacotes de trabalho abertos neste projeto aparecerão automaticamente aqui.
       show_more:
@@ -140,8 +140,8 @@ pt-BR:
       blankslate_title: "%{name} está vazio"
       blankslate_description: Ainda não há itens planejados. Arraste os itens para este espaço para adicioná-los.
       label_actions: Ações da sprint
-      label_start_sprint: Start sprint
-      label_complete_sprint: Complete sprint
+      label_start_sprint: Iniciar sprint
+      label_complete_sprint: Concluir sprint
       start_sprint_disabled_reason_active_sprint: Outra sprint já está ativa.
       start_sprint_disabled_reason_missing_dates: As datas de início e término são obrigatórias para iniciar a sprint.
       action_menu:
@@ -160,36 +160,36 @@ pt-BR:
     story_points:
       one: "%{count} ponto de história"
       other: "%{count} pontos de história"
-    statuses_considered_closed_caption: 'Choose the statuses that represent a closed or finished state in your workflow. These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning. For example, statuses like Done, Resolved, or Won''t Fix may all represent a closed work item in your process.
+    statuses_considered_closed_caption: 'Escolha os estados que representam um estado fechado ou concluído no seu fluxo de trabalho. Esses estados serão tratados como o estado “Fechado” em relatórios (por exemplo, burndown) e no planejamento de sprint. Por exemplo, estados como Concluído, Resolvido ou Não será corrigido podem representar um item de trabalho fechado no seu processo.
 
       '
-    types_and_statuses: Types and statuses
+    types_and_statuses: Tipos de estados
     unassigned: Não atribuída
     user_preference:
       header_backlogs: Módulo de backlogs
       button_update_backlogs: Atualizar módulo de backlogs
     stories:
       update_service:
-        missing_target: target_id or direction must be present.
-        ambiguous_target: target_id and direction cannot both be present.
-        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
-        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
+        missing_target: id_target ou direção deve estar presente.
+        ambiguous_target: target_id e direção não podem estar presentes ao mesmo tempo.
+        invalid_target_type: 'target_type deve ser um dos seguintes: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, caixa de entrada.'
+        invalid_direction: 'direção deve ser um dos seguintes: superior, mais alto, inferior, mais baixo.'
     work_package_card_menu_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_sprint: Move to sprint
+        copy_url_to_clipboard: Copiar URL para a área de transferência
+        copy_work_package_id: Copiar ID do pacotes de trabalho
+        move_menu: Mover
+        move_to_sprint: Mover para sprint
     work_package_is_closed: Pacote de trabalho está pronto, quando
   burndown:
     story_points: Pontos de história
     story_points_ideal: Pontos de história (ideal)
   ee:
     features:
-      sprint_sharing: Sprint sharing
+      sprint_sharing: Compartilhamento de sprints
     upsell:
       sprint_sharing:
-        description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
+        description: Compartilhe sprints entre projetos para alinhar equipes e coordenar o trabalho em configurações ágeis em escala (SAFe).
   label_backlog: Backlog
   label_backlog_bucket_edit: Editar grupo de backlog
   label_backlog_bucket_new: Novo grupo de backlog
@@ -211,8 +211,8 @@ pt-BR:
   notice_unsuccessful_finish_with_reason: 'Não foi possível concluir a sprint: %{reason}'
   permission_create_sprints: Criar sprints
   permission_manage_sprint_items: Gerenciar itens da sprint
-  permission_select_backlog_types_and_statuses: Select backlog types and statuses
-  permission_select_backlog_types_and_statuses_explanation: 'Allows choosing which work package types to hide from the backlog. Also allows defining which statuses represent a closed or finished state in the project''s workflow.
+  permission_select_backlog_types_and_statuses: Selecionar tipos e estados do backlog
+  permission_select_backlog_types_and_statuses_explanation: 'Permite escolher quais tipos de pacote de trabalho ocultar do backlog. Também permite definir quais estados representam um estado fechado ou concluído no fluxo de trabalho do projeto.
 
     '
   permission_share_sprint: Compartilhar sprint
@@ -242,6 +242,6 @@ pt-BR:
         sprint_sharing: Compartilhar sprints
       backlogs:
         sharing_form_component:
-          sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
-          sharing_fallback_description: Lacking a corporate enterprise plan, the sharing options are limited to the project's own sprints. The currently active setting remains active.
+          sharing_description: Este projeto pode compartilhar suas próprias sprints, receber sprints compartilhadas ou gerenciar sprints de forma independente (sem compartilhamento).
+          sharing_fallback_description: Na ausência de um plano corporativo empresarial, as opções de compartilhamento ficam limitadas aos próprios sprints do projeto. A configuração atualmente ativa permanece em vigor.
   remaining_hours: trabalho restante

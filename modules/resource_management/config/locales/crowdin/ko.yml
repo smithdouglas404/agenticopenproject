@@ -10,13 +10,13 @@ ko:
         public: 공개
         favorite: 즐겨찾기
       resource_allocation:
-        entity: Entity
-        principal: Assignee
-        state: State
-        start_date: Start date
-        end_date: Finish date
-        allocated_time: Allocated time
-        user_filter: User filter
+        entity: 엔티티
+        principal: 담당자
+        state: 상태
+        start_date: 시작 날짜
+        end_date: 완료 날짜
+        allocated_time: 할당된 시간
+        user_filter: 사용자 필터
     errors:
       models:
         resource_planner:
@@ -26,7 +26,7 @@ ko:
         resource_allocation:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: "- 시작 날짜 후여야 합니다."
   plugin_openproject_resource_management:
     name: OpenProject 리소스 관리
     description: 리소스 관리 및 용량 계획을 제공합니다.
@@ -39,8 +39,8 @@ ko:
   permission_manage_public_resource_planners_explanation: '사용자가 리소스 플래너를 만들고 관리하도록 허용합니다. 사용자는 고유한 리소스 플래너를 보고 만들고 관리하며 게시할 수 있습니다. 다른 사용자가 만든 공개적으로 공유되지 않은 리소스 플래너는 볼 수 없습니다.
 
     '
-  permission_allocate_user_resources: Allocate user resources
-  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
+  permission_allocate_user_resources: 사용자 리소스 할당
+  permission_allocate_user_resources_explanation: '사용자가 리소스 플래너 내에서 리소스 할당을 만들고, 업데이트하고, 삭제할 수 있습니다. 여기에는 플래너에 사용자(또는 사용자 필터)를 할당하고 할당된 시간 및 날짜 범위를 조정하는 것이 포함됩니다.
 
     '
   label_resource_management: 리소스 계획
