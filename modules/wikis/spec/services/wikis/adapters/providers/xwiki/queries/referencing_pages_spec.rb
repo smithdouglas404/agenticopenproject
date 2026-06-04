@@ -91,17 +91,14 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
 
       before do
         stub_wikis(["xwiki"])
-        stub_search("xwiki", [
-          {
-            "type" => "page",
-            "id" => page_identifier,
-            "title" => "Eric's Space #2",
-            "wiki" => "xwiki",
-            "space" => "Main.Eric's Space",
-            "pageName" => "WebHome",
-            "links" => [{ "href" => page_rest_url, "rel" => "http://www.xwiki.org/rel/page" }]
-          }
-        ])
+        stub_search("xwiki", [{ "type" => "page",
+                                "id" => page_identifier,
+                                "title" => "Eric's Space #2",
+                                "wiki" => "xwiki",
+                                "space" => "Main.Eric's Space",
+                                "pageName" => "WebHome",
+                                "links" => [{ "href" => page_rest_url,
+                                              "rel" => "http://www.xwiki.org/rel/page" }] }])
         stub_request(:get, page_rest_url)
           .with(headers: { "Authorization" => "Bearer user-bearer-token" })
           .to_return(
