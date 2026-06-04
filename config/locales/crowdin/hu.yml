@@ -1741,6 +1741,7 @@ hu:
       attachment:
         attachment_content: Melléklet tartalma
         attachment_file_name: Melléklet fájl neve
+        charset: Character set
         content_type: Content-type
         downloads: Letöltés
         file: Fájl
@@ -1837,6 +1838,7 @@ hu:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: Szerepkörök
       notification:
         read_ian: Read in-app
@@ -2082,6 +2084,7 @@ hu:
         priority: Fontosság
         progress: "%-ban kész"
         readonly: Olvasható
+        relatable: Relatable to
         remaining_hours: Fennmaradó órák
         remaining_time: Fennmaradó órák
         sequence_number: Sequence number
@@ -3574,6 +3577,9 @@ hu:
     additional:
       projects: Legújabb projektek ebben az esetben.
       no_visible_projects: Ebben a példányban nincsenek látható projektek.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Legújabb regisztrált felhasználók ebben az esetben.
     blocks:
       community: OpenProject Közösség
@@ -4144,6 +4150,7 @@ hu:
   label_journal_diff: Leírás összehasonlítás
   label_language: Nyelv
   label_languages: Languages
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Ugrás a projekthez
@@ -4796,9 +4803,9 @@ hu:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'A felhasználó bejelentkezéséhez a következőket teheti: '
       a: Fizetés módjának frissítése ([here](upgrade_url))
       b: Felhasználó zárolása vagy törlése ([here](users_url))
+      label: 'A felhasználó bejelentkezéséhez a következőket teheti: '
   more_actions: További funkciók
   noscript_description: Engedélyezze a JavaScriptet, hogy használni tudja az OpenProjectet !
   noscript_heading: JavaScript le van tiltva
@@ -5318,6 +5325,10 @@ hu:
   setting_consent_required: Beleegyezés szükséges
   setting_consent_decline_mail: Hozzájárulás a kapcsolattartói e-mail címhez
   setting_cross_project_work_package_relations: Projektek közötti feladatcsoportok kapcsolatainak engedélyezése
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: 'Az év első hete tartalmazza
 
     '
@@ -5360,6 +5371,9 @@ hu:
   setting_work_package_properties: feladatcsoport tulajdonságok
   setting_work_package_startdate_is_adddate: Az aktuális dátum használata, mint kezdő dátuma az új feladatcsoportoknak
   setting_work_packages_projects_export_limit: Work packages / Projects export limit
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Jelentkezzen be a felhasználóként, név és e-mail cím minden lekéréshez
   setting_login_required: Hitelesítés szükséges
@@ -6061,6 +6075,17 @@ hu:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:

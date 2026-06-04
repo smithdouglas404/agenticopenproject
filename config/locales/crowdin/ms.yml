@@ -1698,6 +1698,7 @@ ms:
       attachment:
         attachment_content: Kandungan lampiran
         attachment_file_name: Nama fail lampiran
+        charset: Character set
         content_type: Content-type
         downloads: Muat turun
         file: Fail
@@ -1792,6 +1793,7 @@ ms:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: 'Peranan
 
           '
@@ -2039,6 +2041,7 @@ ms:
         priority: Keutamaan
         progress: "% Selesai"
         readonly: Baca sahaja
+        relatable: Relatable to
         remaining_hours: Kerja yang berbaki
         remaining_time: Kerja yang berbaki
         sequence_number: Sequence number
@@ -3456,6 +3459,9 @@ ms:
     additional:
       projects: Projek terbaru yang dapat dilihat dalam contoh ini.
       no_visible_projects: Tiada projek yang dapat dilihat dalam contoh ini.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Pengguna berdaftar terbaru dalam contoh ini
     blocks:
       community: Komuniti OpenProject
@@ -4026,6 +4032,7 @@ ms:
   label_journal_diff: Perbandingan Deskripsi
   label_language: Bahasa
   label_languages: Bahasa-bahasa
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Lompat ke projek...
@@ -4654,9 +4661,9 @@ ms:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Untuk membenarkan pengguna untuk daftar masuk, anda juga boleh: '
       a: Naik taraf pelan pembayaran anda ([di sini](upgrade_url))
       b: Kunci atau padam pengguna sedia ada ([di sini](users_url))
+      label: 'Untuk membenarkan pengguna untuk daftar masuk, anda juga boleh: '
   more_actions: Lebih banyak fungsi
   noscript_description: Anda perlu mengaktifkan JavaScript untuk menggunakan OpenProject!
   noscript_heading: JavaScript dinyahdayakan
@@ -5173,6 +5180,10 @@ ms:
   setting_consent_required: Persetujuan yang diperlukan
   setting_consent_decline_mail: Alamat mel hubungan pemberi persetujuan
   setting_cross_project_work_package_relations: Benarkan hubungan pakej kerja rentas projek
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: 'Minggu pertama dalam tahun mengandungi '
   setting_date_format: Tarikh
   setting_default_language: Bahasa default
@@ -5213,6 +5224,9 @@ ms:
   setting_work_package_properties: Ciri-ciri pakej kerja
   setting_work_package_startdate_is_adddate: Guna tarikh semasa sebagai tarikh mula untuk pakej kerja baharu
   setting_work_packages_projects_export_limit: Pakej kerja / Had eksport projek
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Log masuk pengguna yang direkodkan, nama, dan alamat mel untuk semua permintaan
   setting_login_required: Pengesahan diperlukan
@@ -5911,6 +5925,17 @@ ms:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Hari bekerja** telah diubah (%{changes})._
       days:

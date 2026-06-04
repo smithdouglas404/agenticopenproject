@@ -1702,6 +1702,7 @@ vi:
       attachment:
         attachment_content: Số lượng Tệp đính kèm
         attachment_file_name: Tên tập tin đính kèm
+        charset: Character set
         content_type: Loại nội dung
         downloads: Những mục đã tải xuống
         file: tập tin
@@ -1796,6 +1797,7 @@ vi:
         title: Tiêu đề
         description: Mô tả
       member:
+        blocked: Blocked
         roles: Vai trò
       notification:
         read_ian: Đọc trong ứng dụng
@@ -2041,6 +2043,7 @@ vi:
         priority: Độ ưu tiên
         progress: "% Hoàn thành"
         readonly: Chỉ đọc
+        relatable: Relatable to
         remaining_hours: Công việc còn lại
         remaining_time: Công việc còn lại
         sequence_number: Sequence number
@@ -2633,7 +2636,7 @@ vi:
     base: 'Lỗi tổng quan:'
     body: cơ thể
     category: thể loại
-    comment: bình luận
+    comment: Nhận xét
     comments: bình luận
     content: Nội dung
     color: màu sắc
@@ -3450,6 +3453,9 @@ vi:
     additional:
       projects: Các dự án có thể nhìn thấy mới nhất trong trường hợp này.
       no_visible_projects: Không có không có thể nhìn thấy các dự án trong trường hợp này.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Người dùng đã đăng ký mới nhất trong trường hợp này.
     blocks:
       community: Cộng đồng OpenProject
@@ -4018,6 +4024,7 @@ vi:
   label_journal_diff: So sánh mô tả
   label_language: ngôn ngữ
   label_languages: ngôn ngữ
+  label_export_plural: Exports
   label_external_links: Liên kết ngoài
   label_locale: Ngôn ngữ và khu vực
   label_jump_to_a_project: Chuyển đến một dự án...
@@ -4353,7 +4360,7 @@ vi:
   label_used_by: Được dùng bởi
   label_used_by_types: Được sử dụng bởi các loại
   label_used_in_projects: Được sử dụng trong các dự án
-  label_user: người dùng
+  label_user: Người dùng
   label_user_and_permission: Người dùng và quyền
   label_user_named: Người dùng %{name}
   label_user_activity_html: "%{value}'s activity"
@@ -4652,9 +4659,9 @@ vi:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Để cho phép người dùng đăng nhập, bạn có thể:'
       a: Nâng cấp gói thanh toán của bạn ([here](upgrade_url))
       b: Khóa hoặc xóa người dùng hiện tại ([here](users_url))
+      label: 'Để cho phép người dùng đăng nhập, bạn có thể:'
   more_actions: Nhiều chức năng hơn
   noscript_description: Bạn cần kích hoạt JavaScript để sử dụng OpenProject!
   noscript_heading: Đã tắt JavaScript
@@ -5173,6 +5180,10 @@ vi:
   setting_consent_required: Cần có sự đồng ý
   setting_consent_decline_mail: Địa chỉ email liên hệ đồng ý
   setting_cross_project_work_package_relations: Cho phép quan hệ gói công việc giữa các dự án
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Tuần đầu tiên trong năm
   setting_date_format: ngày
   setting_default_language: Ngôn ngữ mặc định
@@ -5213,6 +5224,9 @@ vi:
   setting_work_package_properties: Thuộc tính gói công việc
   setting_work_package_startdate_is_adddate: Sử dụng ngày hiện tại làm ngày bắt đầu cho các gói công việc mới
   setting_work_packages_projects_export_limit: Gói công việc / Giới hạn xuất dự án
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Ghi nhật ký thông tin đăng nhập, tên và địa chỉ thư của người dùng cho tất cả các yêu cầu
   setting_login_required: Yêu cầu xác thực
@@ -5915,6 +5929,17 @@ vi:
     warning: 'Việc thay đổi ngày trong tuần được coi là ngày làm việc hay ngày không làm việc có thể ảnh hưởng đến ngày bắt đầu và ngày kết thúc của tất cả các gói công việc và vòng đời trong tất cả các dự án trong trường hợp này.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Ngày làm việc** đã thay đổi (%{changes})._
       days:

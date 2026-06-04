@@ -1766,6 +1766,7 @@ ru:
       attachment:
         attachment_content: Вложенный контент
         attachment_file_name: Название вложенного файла
+        charset: Кодировка
         content_type: Тип содержимого
         downloads: Загрузки
         file: Файл
@@ -1860,6 +1861,7 @@ ru:
         title: Название
         description: Описание
       member:
+        blocked: Заблокирован
         roles: Роль
       notification:
         read_ian: Читайте в приложении
@@ -2105,6 +2107,7 @@ ru:
         priority: Приоритет
         progress: "% завершения"
         readonly: Только для чтения
+        relatable: Relatable to
         remaining_hours: Оставшиеся часы
         remaining_time: Оставшиеся часы
         sequence_number: Порядковый номер
@@ -3643,6 +3646,9 @@ ru:
     additional:
       projects: Новые видимые проекты в данном экземпляре.
       no_visible_projects: Не видимые проекты в данном экземпляре.
+      favorite_projects:
+        no_results: У вас нет избранных проектов
+        no_results_subtext: Добавьте один или несколько проектов в избранное через их обзор или в списке проектов.
       users: Новые зарегистрированные пользователи в данном экземпляре.
     blocks:
       community: OpenProject сообщество
@@ -4211,6 +4217,7 @@ ru:
   label_journal_diff: Описание сравнения
   label_language: Язык
   label_languages: Языки
+  label_export_plural: Exports
   label_external_links: Внешние ссылки
   label_locale: Язык и регион
   label_jump_to_a_project: Перейти к проекту...
@@ -4849,9 +4856,9 @@ ru:
 
       '
     steps:
-      label: 'Для разрешения пользователю подписаться к вам необходимо: '
       a: Обновите ваш платежный план ([here](upgrade_url))
       b: Заблокировать или удалить существующего пользователя ([here](users_url))
+      label: 'Для разрешения пользователю подписаться к вам необходимо: '
   more_actions: Больше функций
   noscript_description: Для правильной работы OpenProject JavaScript должен быть включён!
   noscript_heading: JavaScript отключён
@@ -5359,6 +5366,10 @@ ru:
   setting_consent_required: Требуется согласие
   setting_consent_decline_mail: Контактный почтовый адрес для согласия
   setting_cross_project_work_package_relations: Разрешить перекрестные связи пакетов работ проекта
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Первая неделя в году содержит
   setting_date_format: Дата
   setting_default_language: Язык по умолчанию
@@ -5399,6 +5410,9 @@ ru:
   setting_work_package_properties: Свойства пакета работ
   setting_work_package_startdate_is_adddate: Использовать текущую дату как дату начала для новых пакетов работ
   setting_work_packages_projects_export_limit: Ограничение экспорта пакетов работ / проектов
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Период агрегации
   setting_log_requesting_user: Журналировать входное имя, имя и адрес электронной почты для всех запросов
   setting_login_required: Требуется аутентификация
@@ -6096,6 +6110,17 @@ ru:
     warning: 'Изменение дней недели, считающихся рабочими или нерабочими днями, может повлиять на начало и завершение всех пакетов работ и жизненных циклов во всех проектах.
 
       '
+    dialog:
+      title: Изменение рабочих дней
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Рабочие дни** изменены (%{changes})._
       days:

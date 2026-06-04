@@ -3,15 +3,17 @@ zh-CN:
   activerecord:
     attributes:
       wikis/page_link:
+        identifier: 标识符
         provider: Wiki 提供商
+      wikis/provider:
+        name: 名称
+        universal_identifier: 通用标识符
       wikis/xwiki_provider:
         authentication_method: 身份验证方式
         authentication_methods:
           oauth2_sso: 通过 OpenID Connect 身份提供商进行单点登录
           two_way_oauth2: 双向 OAuth 2.0 授权代码流
-        name: 名称
         token_exchange_scope: XWiki 范围
-        universal_identifier: 通用标识符
         url: 实例 URL
         wiki_audience: XWiki 受众
     errors: {}
@@ -39,8 +41,19 @@ zh-CN:
     buttons:
       connect_account: 连接 %{provider} 帐户
       done_continue: 完成, 继续
+      open_wiki: 打开 wiki
       save_and_continue: 保存并继续
       wiki_page: Wiki 页面
+    instructions:
+      xwiki:
+        integration: XWiki 管理
+        oauth_application_details_html: 关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 [XWiki OpenProject 集成设置](xwiki_admin_link)中。
+    provider_types:
+      xwiki:
+        name: XWiki
+    delete_relation_page_link_confirmation_dialog:
+      title: 删除相关 wiki 页面链接
+      heading: 是否删除相关 wiki 页面链接？
     health_checks:
       authentication:
         existing_token: 用户令牌
@@ -55,12 +68,24 @@ zh-CN:
         xwiki_oauth_request_error: 尝试与 XWiki 实例通信时发生意外错误。
         xwiki_oauth_token_missing: OpenProject 无法测试用户与 XWiki 的用户级通信，因为用户尚未关联他们的 XWiki 帐户。
         xwiki_oauth_unauthorized: XWiki 未识别用户令牌。
+    link_existing_wiki_page_dialog:
+      title: 添加现有 wiki 页面
+    link_existing_wiki_page_form:
+      no_results: No wiki pages found
+      placeholder: Search for a wiki page
     work_package_wikis_tab_component:
       inline_page_links: 内联页面链接
       referencing_pages: 引用于
+    page_links:
+      errors:
+        page_not_found: 关联的 wiki 页面不再可用
+        page_access_forbidden: 您无权访问此 wiki 页面
+        unexpected: 发生意外错误
     page_link_component:
       remove: 删除页面链接
     relation_page_links_component:
+      link_existing: 现有 wiki 页面
+      link_new: 新 wiki 页面
       empty_heading: 无相关页面
       empty_text: 手动添加链接到其他相关Wiki页面。
     oauth_login_component:
@@ -74,12 +99,15 @@ zh-CN:
         description_html: Wiki 提供商 %{wiki_provider} 和所有相关的 wiki 页面链接将被删除。此外，每个内联 wiki 页面链接也将无法再访问。此操作无法撤消。
       forms:
         general_info_form_component:
-          xwiki_instance_description: 在进行设置之前，请确保您在 XWiki 实例中具有管理权限。
+          provider_description: 在进行设置之前，请确保您在 XWiki 实例中具有管理权限。
         oauth_application_form_component:
-          application_id: 应用程序 ID
-          application_secret: 应用程序密钥
+          application_id: OpenProject OAuth 应用程序 ID
+          application_secret: OpenProject OAuth 应用程序密钥
         oauth_client_form_component:
-          client_id: 客户端 ID
+          client_id: Wiki OAuth 客户端 ID
+          client_secret: Wiki OAuth 客户端密钥
+          redirect_uri: 重定向 URI
+          redirect_uri_caption: 将该值复制到 XWiki OIDC 客户端注册的重定向 URI 字段中。
       health_status:
         show:
           actions:
@@ -92,11 +120,11 @@ zh-CN:
           title: 健康报告
       oauth_application_info_component:
         confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在 XWiki 实例中重新输入凭据，所有用户都必须重新授权。确定要继续吗？
-        label_pending: 待处理
+        label_oauth_client_id: OAuth 客户端 ID
         replace_oauth_application: 替换 OpenProject OAuth 应用程序
       oauth_client_info_component:
         confirm_replace_oauth_client: 此操作将重置当前的 XWiki OAuth 凭据。所有用户都需要针对 XWiki 进行重新授权。确定要继续吗？
-        label_pending: 待处理
+        label_oauth_client_id: OAuth 客户端 ID
         replace_oauth_client: 替换 XWiki OAuth 应用程序
       side_panel:
         health_status_component:
@@ -114,25 +142,23 @@ zh-CN:
         index_description: 添加外部 Wiki 服务，以将工作包链接到现有 Wiki 页面，或直接从 OpenProject 创建新页面。
         label_add_new: 添加新 Wiki 提供商
         label_edit: 编辑 XWiki 提供商
-        label_new_xwiki_instance: 新建 XWiki 提供商
+        label_new_provider: 新建 XWiki 提供商
         label_wiki_platform: Wiki 提供商
-        name_caption: 为您的存储空间命名，以便用户可以区分多个 Wiki 平台。
+        name_caption: Give your wiki provider a name so that users can differentiate between multiple wiki platforms.
         name_placeholder: XWiki 知识库
         new_provider_html: 有关详情，请阅读我们关于[设置 XWiki 集成](docs_url)的文档。
         oauth:
           openproject_oauth: OpenProject OAuth
         sections:
-          general_information: 基本信息
+          general_information: 常规信息
           oauth_configuration: OAuth 配置
-        url_caption: 请添加您的 Wiki 平台的主机地址（包含 https://）。该地址的长度不应超过 255 个字符。
-        xwiki_instance: XWiki 实例
+        url_caption: The host address of your wiki platform including the https://. It should not be longer than 255 characters.
         xwiki:
           oauth:
-            openproject_oauth_description: 允许 XWiki 使用 OAuth 应用程序访问 OpenProject 数据。请将以下凭据复制到您的 XWiki 实例。
-            provider_oauth: XWiki OAuth
-            provider_oauth_description: 允许 OpenProject 使用 OAuth 访问 XWiki 数据。将自动生成一个客户端 ID，以向 XWiki 标识 OpenProject — 无需在 XWiki 端进行手动配置。
+            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application.
+            provider_oauth: Wiki OAuth
+            provider_oauth_configuration: Copy these values to the [XWiki OIDC Connection client](xwiki_oidc_link).
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth.
           openproject_oauth_description: 允许 XWiki 使用 OAuth 访问 OpenProject 数据。
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: 允许 OpenProject 使用 OAuth 访问 XWiki 数据。
-    macro:
-      page_not_found: 关联的 Wiki 页面不再可用

@@ -109,7 +109,7 @@ zh-CN:
         token_caption: 要详细了解如何激活企业版，请查阅我们的[文档](docs_url)。
       add_token: 上传企业版支持令牌
       replace_token: 替换您当前的支持令牌
-      order: 订购本地部署版的 Enterprise edition
+      order: 订购本地部署的 Enterprise edition
       paste: 粘贴您企业版的支持令牌
       required_for_feature: 此功能仅限具激活的企业版支持令牌的订阅者使用。
       enterprise_link: 如需了解详细信息，请单击此处。
@@ -1700,6 +1700,7 @@ zh-CN:
       attachment:
         attachment_content: 附件内容
         attachment_file_name: 附件文件名
+        charset: 字符集
         content_type: 内容类型
         downloads: 下载
         file: 文件
@@ -1772,7 +1773,7 @@ zh-CN:
         page: 页
         row_count: 行数
         column_count: 列数
-        widgets: 微件
+        widgets: 小部件
       journal:
         notes: 备注
         cause_type: Cause 类型
@@ -1794,6 +1795,7 @@ zh-CN:
         title: 标题
         description: 描述
       member:
+        blocked: 已阻止
         roles: 角色
       notification:
         read_ian: 在app中读取
@@ -2039,6 +2041,7 @@ zh-CN:
         priority: 优先级
         progress: "% 完成"
         readonly: 只读
+        relatable: 可关联到
         remaining_hours: 剩余工时
         remaining_time: 剩余工时
         sequence_number: 序列号
@@ -3448,6 +3451,9 @@ zh-CN:
     additional:
       projects: 此 OpenProject 实例中的最新可见项目。
       no_visible_projects: 这个 OpenProject 中没有可见的项目。
+      favorite_projects:
+        no_results: 您没有收藏的项目
+        no_results_subtext: 通过项目概览或项目列表添加一个或多个项目作为收藏项目。
       users: 此 OpenProject 实例中的最新注册用户。
     blocks:
       community: OpenProject 社区
@@ -4016,6 +4022,7 @@ zh-CN:
   label_journal_diff: 描述的对比
   label_language: 语言
   label_languages: 语言
+  label_export_plural: 导出
   label_external_links: 外部链接
   label_locale: 语言和地区
   label_jump_to_a_project: 跳转到一个项目...
@@ -4268,7 +4275,7 @@ zh-CN:
   label_revision_id: 修订版本 %{value}
   label_revision_plural: 修订
   label_roadmap: 路线图
-  label_roadmap_edit: 编辑路线图%{name}
+  label_roadmap_edit: 编辑路线图 %{name}
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: 该版本没有工作包。
   label_roadmap_overdue: "%{value} 超时"
@@ -4641,9 +4648,9 @@ zh-CN:
       新用户 (%{email}) 试图在您管理的 OpenProject 环境 (%{host}) 上创建帐户。
       由于已达到用户限制，此用户无法激活其帐户。
     steps:
-      label: '要允许用户登录, 您可以: '
       a: "([在这里](upgrade_url)) 升级付款计划"
       b: "([在这里](users_url)) 锁定或删除现有用户"
+      label: '要允许用户登录, 您可以: '
   more_actions: 更多功能
   noscript_description: 您需要激活JavaScript才能使用 OpenProject！
   noscript_heading: JavaScript 被禁用
@@ -5034,7 +5041,7 @@ zh-CN:
       managed: 在 OpenProject 中创建新的存储库
     storage:
       not_available: 磁盘存储开销不可用于此存储库。
-      update_timeout: 在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。
+      update_timeout: 在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。
       oauth_application_details_html: 关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中：
       oauth_application_details_link_text: 转到设置页面
       setup_documentation_details: 如果您在配置新文件存储方面需要帮助，请查看文档：
@@ -5156,6 +5163,10 @@ zh-CN:
   setting_consent_required: 需要征得同意
   setting_consent_decline_mail: 同意联系邮件地址
   setting_cross_project_work_package_relations: 允许跨项目工作包关系
+  setting_csv_escape_formulas: 在 CSV 导出中转义公式
+  setting_csv_escape_formulas_text: '通过在以 =、+、- 或 @ 等字符开头的小节格前加上单引号，在 CSV 导出中转义电子表格公式。这样，当在 Excel 等电子表格应用程序中打开导出文件时，就能减少 CSV 公式注入。但这样做的缺点是会修改 CSV 内部的字符串值，因此如果下游工具需要精确、未转义的小节格值，则可能需要禁用此功能。
+
+    '
   setting_first_week_of_year: 全年首周包含
   setting_date_format: 日期
   setting_default_language: 默认语言
@@ -5196,6 +5207,9 @@ zh-CN:
   setting_work_package_properties: 工作包属性
   setting_work_package_startdate_is_adddate: 使用当前日期作为新工作包的开始日期
   setting_work_packages_projects_export_limit: 工作包/项目导出限制
+  setting_work_packages_projects_export_limit_text: '单次导出可包含的最大工作包或项目数。会根据此限制截断较大的导出。
+
+    '
   setting_journal_aggregation_time_minutes: 聚合周期
   setting_log_requesting_user: 记录所有请求的用户帐户，名称和邮件地址
   setting_login_required: 需要身份验证
@@ -5265,7 +5279,7 @@ zh-CN:
   setting_session_ttl_hint: 当设置的值低于5时，其作用类似于禁用。
   setting_session_ttl_enabled: 会话过期
   setting_start_of_week: 一周起始日
-  setting_sys_api_enabled: 启用存储库管理网页服务
+  setting_sys_api_enabled: 启用版本库管理 web 服务
   setting_sys_api_description: 存储库管理网页服务提供了集成的，用户授权的存储库访问。
   setting_time_format: 时间
   setting_total_percent_complete_mode: 计算 完成% 层次结构总数
@@ -5748,7 +5762,7 @@ zh-CN:
   warning_user_limit_reached_admin_html: '添加额外的用户将超出当前限值。请[升级您的方案](upgrade_url)，以确保外部用户能够访问此实例。
 
     '
-  warning_user_limit_reached_instructions: '您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
+  warning_user_limit_reached_instructions: '您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
 
     '
   warning_protocol_mismatch_html: ''
@@ -5896,6 +5910,17 @@ zh-CN:
     warning: '在这种情况下，更改一周中哪几天被视为工作日或非工作日会影响所有项目中所有工作包和生命周期的开始日期和结束日期。
 
       '
+    dialog:
+      title: 更改工作天数
+      description: '在这种情况下，更改一周中哪几天被视为工作日或非工作日会影响所有项目中所有工作包和生命周期的开始日期和结束日期。
+
+        '
+      removed_title: 您将从非工作日列表中移除以下日期：
+      warning: '更改可能需要一些时间才能生效。在所有相关工作包和项目生命周期更新后，您将收到通知。
+
+        '
+      heading: 是否更改工作天数？
+      confirm_button: 保存并重新安排
     journal_note:
       changed: _**工作日**已更改（%{changes}）。_
       days:

@@ -5,7 +5,6 @@ import {
 } from 'core-app/shared/components/searchable-project-list/searchable-project-list.service';
 import { IProjectData } from 'core-app/shared/components/searchable-project-list/project-data';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
 
@@ -19,7 +18,6 @@ import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
 export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
   readonly I18n = inject(I18nService);
   readonly pathHelper = inject(PathHelperService);
-  readonly configuration = inject(ConfigurationService);
   readonly searchableProjectListService = inject(SearchableProjectListService);
   readonly elementRef = inject(ElementRef);
   readonly cdRef = inject(ChangeDetectorRef);
@@ -57,8 +55,6 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
     does_not_match_search: this.I18n.t('js.include_projects.tooltip.does_not_match_search'),
     include_all_selected: this.I18n.t('js.include_projects.tooltip.include_all_selected')
   };
-
-  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
 
   ngOnInit():void {
     if (this.root) {
