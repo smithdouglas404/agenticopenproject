@@ -55,19 +55,15 @@ You can then decide for each attribute which section it should be assigned to (u
 
 Inactive attributes are displayed on the left and can be filtered for using the search panel. Attributes which have been deleted are also shown in the **Inactive** column on the left. This column also includes [custom fields](../../custom-fields) which have been created. The custom fields can also be added using drag and drop to the right to be displayed in the form.
 
-> [!IMPORTANT]
->
-> Starting with OpenProject 15.0, when adding new custom fields to a type through the  form configuration, the added custom fields will not automatically be enabled in all projects that have this work package type currently enabled.
+![Sys-admin-type-form-configuration](openproject_system_guide_wp_form_configuration.png)
 
 To add additional sections, click the **+ Add** button and select **Section**. Give it a name. You can then assign attributes (e.g. custom fields) via drag and drop. Note that adding sections is only possible with the [OpenProject Enterprise on-premises](https://www.openproject.org/enterprise-edition/) and the [OpenProject Enterprise cloud](https://www.openproject.org/enterprise-edition/#hosting-options).
 
 In case you made a mistake, click the **Reset form** button to reset all settings to the original state.
 
-Your configuration settings are automatically saved.
-
-![Sys-admin-type-form-configuration](openproject_system_guide_wp_form_configuration.png)
-
 ![Add button for attribute group](openproject_system_guide_wp_add_section.png)
+
+Your configuration settings are automatically saved.
 
 If you then create a new work package of this type, the input form will have exactly these attributes selected in the form configuration.
 
@@ -81,13 +77,13 @@ Watch the following video to see how you can customize your work packages with c
 
 ## Add table of related work packages to a work package form (Enterprise add-on)
 
-Also, you can add a table of related work packages to your work package form. Click the green **+ Add** button and choose **Related work packages table** from the drop-down list.
+You can add a table of related work packages to your work package form. Click the green **+ Add** button and choose **Related work packages table** from the drop-down list.
 
 [feature: work_package_query_relation_columns ]
 
 ![Sys-admin-table-of-related-work-packages](openproject_system_guide_table_of_related_wp.png)
 
-Now, you can configure which related work packages should be included in your embedded list, e.g. child work packages or work packages related to this work package, and more. Then you can configure how the list should be filtered, grouped, etc. The configuration of the work package table can be done according to the [work package table configuration](../../../user-guide/work-packages/work-package-table-configuration/).
+You can then configure which related work packages should be included in your embedded list, e.g. child work packages or work packages related to this work package, and more. Then you can configure how the list should be filtered, grouped, etc. The configuration of the work package table can be done according to the [work package table configuration](../../../user-guide/work-packages/work-package-table-configuration/).
 
 Click the green **Apply** button to add this work package list to your form.
 
@@ -106,12 +102,18 @@ Please refer to [this guide](automatic-subjects) for a detailed description of a
 
 ## Activate work package types for projects
 
-Under *Administration -> Work packages -> Types* on the tab **Projects** you can select for which projects this work package type should be activated.
+Under **Administration → Work packages → Types**, open the **Projects** tab to select for which projects a work package type should be activated.
 
-The **Activated for new projects by default** setting in the Types will only activate this type for new projects. For existing projects, the type needs to be activated manually.
-This can be also configured in the [project settings](../../../user-guide/projects/project-settings).
+The **Enabled for new projects by default** setting (which can be selected when creating or editing a work package type) only activates the type for newly created projects. It does not activate the type for existing projects.
 
-![activate projects for work package types](image-20200116150513323.png)
+For existing projects, work package types can also be activated manually in the [project settings](../../../user-guide/projects/project-settings). There, work package types can be enabled or disabled on a per-project basis.
+
+To activate a work package type for all projects, enable the **Enable for all projects** switch.
+
+If **Enable for all projects** is disabled, a list of projects is displayed. Select the projects for which the work package type should be available and click **Save**.
+
+![activate projects for work package types in OpenProject administration](openproject_system_guide_wp_type_activate_projects.png)
+
 
 ## Activate templates for PDF exports
 
