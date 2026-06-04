@@ -90,6 +90,24 @@ class WorkPackages::ActivitiesTab::Paginator
 
   private
 
+  def parse_anchor
+    anchor = params[:anchor] # e.g., "comment-78758" (without #)
+    return unless anchor
+
+    match = anchor.match(/^(comment|activity)-(\d+)$/)
+    return unless match
+
+    [match[1].inquiry, match[2].to_i]
+  end
+
+  # An unresolvable anchor falls back to page 1; any params[:page] sent
+  # alongside is ignored, since the anchor is the explicit navigation intent.
+  def pagy_at_anchor(anchor_type, target_record_id)
+    scope = activities_scope(filter: :all)
+    page = page_for_anchor(scope, anchor_type, target_record_id) || 1
+    pagy(:offset, scope, **pagy_options, page:)
+  end
+
   # The activity feed as a single Journal relation, newest-first: the work
   # package's journals plus the journals written for its changesets — changesets
   # are journalized, so each carries a journal timestamped with its committed_on.
@@ -97,6 +115,44 @@ class WorkPackages::ActivitiesTab::Paginator
     scope = filtered_journals(filter)
     scope = scope.or(changeset_journals) if include_changesets?(filter)
     scope.reorder(created_at: :desc, id: :desc)
+  end
+
+  def pagy_options
+    {
+      page: params[:page] || 1,
+      limit:,
+      request: { params: }
+    }.compact
+  end
+
+  # Coerced to a positive integer to match how pagy reads the same option:
+  # a non-positive value floors to one page, avoiding a ZeroDivisionError.
+  def limit
+    (params[:limit] || Pagy::DEFAULT[:limit]).to_i.clamp(1..)
+  end
+
+  # Eager-loads are applied to the page slice here, not to activities_scope, so
+  # the count query stays off them. Changeset journals map back to Changeset
+  # records; work package journals go through the wrapper.
+  def load_activities(page_relation)
+    journals = page_journals(page_relation)
+    changesets = load_changesets(journals.select { changeset?(it) }.map(&:journable_id))
+    wrapped = wrap_journals(journals.reject { changeset?(it) })
+
+    journals.filter_map { |journal| changeset?(journal) ? changesets[journal.journable_id] : wrapped[journal.id] }
+  end
+
+  def page_for_anchor(scope, anchor_type, target_record_id)
+    activity_at, anchor_id = locate_anchor(anchor_type, target_record_id)
+    return nil unless activity_at && anchor_id
+
+    record_resolved_anchor(anchor_type, anchor_id)
+
+    rows_ahead = scope
+      .where("(journals.created_at, journals.id) > (?, ?)", activity_at, anchor_id)
+      .count(:all)
+
+    (rows_ahead / limit) + 1
   end
 
   def filtered_journals(filter)
@@ -119,100 +175,10 @@ class WorkPackages::ActivitiesTab::Paginator
     filter != :only_comments && work_package.changesets.exists?
   end
 
-  def visible_journals
-    work_package.journals.internal_visible
-  end
-
-  # Coerced to a positive integer to match how pagy reads the same option:
-  # a non-positive value floors to one page, avoiding a ZeroDivisionError.
-  def limit
-    (params[:limit] || Pagy::DEFAULT[:limit]).to_i.clamp(1..)
-  end
-
-  def pagy_options
-    {
-      page: params[:page] || 1,
-      limit:,
-      request: { params: }
-    }.compact
-  end
-
-  def parse_anchor
-    anchor = params[:anchor] # e.g., "comment-78758" (without #)
-    return unless anchor
-
-    match = anchor.match(/^(comment|activity)-(\d+)$/)
-    return unless match
-
-    [match[1].inquiry, match[2].to_i]
-  end
-
-  # An unresolvable anchor falls back to page 1; any params[:page] sent
-  # alongside is ignored, since the anchor is the explicit navigation intent.
-  def pagy_at_anchor(anchor_type, target_record_id)
-    scope = activities_scope(filter: :all)
-    page = page_for_anchor(scope, anchor_type, target_record_id) || 1
-    pagy(:offset, scope, **pagy_options, page:)
-  end
-
-  def page_for_anchor(scope, anchor_type, target_record_id)
-    activity_at, anchor_id = locate_anchor(anchor_type, target_record_id)
-    return nil unless activity_at && anchor_id
-
-    record_resolved_anchor(anchor_type, anchor_id)
-
-    rows_ahead = scope
-      .where("(journals.created_at, journals.id) > (?, ?)", activity_at, anchor_id)
-      .count(:all)
-
-    (rows_ahead / limit) + 1
-  end
-
-  # A comment anchor already matches the DOM's data-anchor-comment-id. An activity
-  # anchor has no rendered counterpart, so hand the comment id it resolved to back
-  # to the client to scroll to instead.
-  def record_resolved_anchor(anchor_type, anchor_id)
-    @resolved_anchor = anchor_id if anchor_type.activity?
-  end
-
-  def locate_anchor(anchor_type, target_record_id)
-    if anchor_type.comment?
-      visible_journals.where(id: target_record_id).pick(:created_at, :id)
-    elsif anchor_type.activity?
-      locate_anchor_by_sequence_version(target_record_id)
-    end
-  end
-
-  def locate_anchor_by_sequence_version(sequence_version)
-    visible_journals
-      .with_sequence_version
-      .where(ranked: { sequence_version: sequence_version })
-      .pick(:created_at, :id)
-  end
-
-  # Eager-loads are applied to the page slice here, not to activities_scope, so
-  # the count query stays off them. Changeset journals map back to Changeset
-  # records; work package journals go through the wrapper.
-  def load_activities(page_relation)
-    journals = page_journals(page_relation)
-    changesets = load_changesets(journals.select { changeset?(it) }.map(&:journable_id))
-    wrapped = wrap_journals(journals.reject { changeset?(it) })
-
-    journals.filter_map { |journal| changeset?(journal) ? changesets[journal.journable_id] : wrapped[journal.id] }
-  end
-
   def page_journals(page_relation)
     page_relation
       .includes(:user, :customizable_journals, :attachable_journals, :storable_journals, :notifications, :attachments)
       .to_a
-  end
-
-  def wrap_journals(journals)
-    API::V3::Activities::ActivityEagerLoadingWrapper.wrap(journals).index_by(&:id)
-  end
-
-  def changeset?(journal)
-    journal.journable_type == Changeset.name
   end
 
   def load_changesets(ids)
@@ -224,11 +190,45 @@ class WorkPackages::ActivitiesTab::Paginator
       .index_by(&:id)
   end
 
+  def wrap_journals(journals)
+    API::V3::Activities::ActivityEagerLoadingWrapper.wrap(journals).index_by(&:id)
+  end
+
+  def changeset?(journal)
+    journal.journable_type == Changeset.name
+  end
+
+  def locate_anchor(anchor_type, target_record_id)
+    if anchor_type.comment?
+      visible_journals.where(id: target_record_id).pick(:created_at, :id)
+    elsif anchor_type.activity?
+      locate_anchor_by_sequence_version(target_record_id)
+    end
+  end
+
+  # A comment anchor already matches the DOM's data-anchor-comment-id. An activity
+  # anchor has no rendered counterpart, so hand the comment id it resolved to back
+  # to the client to scroll to instead.
+  def record_resolved_anchor(anchor_type, anchor_id)
+    @resolved_anchor = anchor_id if anchor_type.activity?
+  end
+
   def apply_comments_only_filter(scope)
     scope.where.not(notes: [nil, ""])
   end
 
   def apply_changes_only_filter(scope)
     JournalChangesFilter.apply(scope)
+  end
+
+  def visible_journals
+    work_package.journals.internal_visible
+  end
+
+  def locate_anchor_by_sequence_version(sequence_version)
+    visible_journals
+      .with_sequence_version
+      .where(ranked: { sequence_version: sequence_version })
+      .pick(:created_at, :id)
   end
 end
