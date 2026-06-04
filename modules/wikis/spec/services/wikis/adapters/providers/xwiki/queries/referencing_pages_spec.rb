@@ -53,20 +53,6 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
 
     subject(:result) { query.call(input_data:, auth_strategy:) }
 
-    def search_endpoint(wiki_name)
-      "https://xwiki.example.com/rest/wikis/#{wiki_name}/openproject/links/workPackages/#{linkable.id}?number=10"
-    end
-
-    def stub_search(wiki_name, search_results)
-      stub_request(:get, search_endpoint(wiki_name))
-        .with(headers: { "Authorization" => "Bearer user-bearer-token" })
-        .to_return(
-          status: 200,
-          body: { "links" => [], "searchResults" => search_results }.to_json,
-          headers: { "Content-Type" => "application/json" }
-        )
-    end
-
     context "when a single wiki returns results" do
       let(:page_identifier) { "xwiki:Main.Eric's Space.WebHome" }
       let(:page_rest_url) do
@@ -76,14 +62,16 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
 
       before do
         stub_wiki_list(["xwiki"])
-        stub_search("xwiki", [{ "type" => "page",
-                                "id" => page_identifier,
-                                "title" => "Eric's Space #2",
-                                "wiki" => "xwiki",
-                                "space" => "Main.Eric's Space",
-                                "pageName" => "WebHome",
-                                "links" => [{ "href" => page_rest_url,
-                                              "rel" => "http://www.xwiki.org/rel/page" }] }])
+        stub_search("xwiki",
+                    [{ "type" => "page",
+                       "id" => page_identifier,
+                       "title" => "Eric's Space #2",
+                       "wiki" => "xwiki",
+                       "space" => "Main.Eric's Space",
+                       "pageName" => "WebHome",
+                       "links" => [{ "href" => page_rest_url,
+                                     "rel" => "http://www.xwiki.org/rel/page" }] }],
+                    linkable:)
         stub_request(:get, page_rest_url)
           .with(headers: { "Authorization" => "Bearer user-bearer-token" })
           .to_return(
@@ -107,11 +95,9 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
     context "when a custom number is provided" do
       let(:input_data) { Wikis::Adapters::Input::ReferencingPages.build(linkable:, number: 25).value! }
 
-      def search_endpoint(wiki_name) = super.sub("number=10", "number=25")
-
       before do
         stub_wiki_list(["xwiki"])
-        stub_search("xwiki", [])
+        stub_search("xwiki", [], linkable:, number: 25)
       end
 
       it { is_expected.to be_success }
@@ -126,9 +112,11 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
       before do
         stub_wiki_list(%w[xwiki myfarm])
         stub_search("xwiki", [{ "id" => page_id_wiki1, "title" => "Home",
-                                "links" => [{ "href" => page_rest_wiki1, "rel" => "http://www.xwiki.org/rel/page" }] }])
+                                "links" => [{ "href" => page_rest_wiki1, "rel" => "http://www.xwiki.org/rel/page" }] }],
+                    linkable:)
         stub_search("myfarm", [{ "id" => page_id_wiki2, "title" => "Docs Index",
-                                 "links" => [{ "href" => page_rest_wiki2, "rel" => "http://www.xwiki.org/rel/page" }] }])
+                                 "links" => [{ "href" => page_rest_wiki2, "rel" => "http://www.xwiki.org/rel/page" }] }],
+                    linkable:)
         stub_request(:get, page_rest_wiki1)
           .with(headers: { "Authorization" => "Bearer user-bearer-token" })
           .to_return(status: 200,
@@ -162,7 +150,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
 
       before do
         stub_wiki_list(["xwiki"])
-        stub_search("xwiki", [duplicate_result, duplicate_result])
+        stub_search("xwiki", [duplicate_result, duplicate_result], linkable:)
         stub_request(:get, page_rest_url)
           .with(headers: { "Authorization" => "Bearer user-bearer-token" })
           .to_return(status: 200,
@@ -181,7 +169,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
     context "when no pages are found across all wikis" do
       before do
         stub_wiki_list(["xwiki"])
-        stub_search("xwiki", [])
+        stub_search("xwiki", [], linkable:)
       end
 
       it { is_expected.to be_success }
@@ -194,8 +182,8 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::ReferencingPages, :we
     context "when one wiki's search fails" do
       before do
         stub_wiki_list(%w[xwiki broken_wiki])
-        stub_search("xwiki", [])
-        stub_request(:get, search_endpoint("broken_wiki")).to_return(status: 500, body: "")
+        stub_search("xwiki", [], linkable:)
+        stub_request(:get, search_endpoint("broken_wiki", linkable)).to_return(status: 500, body: "Internal Server Error")
       end
 
       it { is_expected.to be_failure.and have_attributes(failure: have_attributes(code: :request_failed)) }

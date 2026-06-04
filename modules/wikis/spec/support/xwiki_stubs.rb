@@ -36,4 +36,16 @@ module XWikiStubs
                  body: { "wikis" => wiki_names.map { |id| { "id" => id } } }.to_json,
                  headers: { "Content-Type" => "application/json" })
   end
+
+  def search_endpoint(wiki_name, linkable, number: 10)
+    "https://xwiki.example.com/rest/wikis/#{wiki_name}/openproject/links/workPackages/#{linkable.id}?number=#{number}"
+  end
+
+  def stub_search(wiki_name, search_results, linkable:, number: 10, token: "user-bearer-token")
+    stub_request(:get, search_endpoint(wiki_name, linkable, number:))
+      .with(headers: { "Authorization" => "Bearer #{token}" })
+      .to_return(status: 200,
+                 body: { "searchResults" => search_results }.to_json,
+                 headers: { "Content-Type" => "application/json" })
+  end
 end
