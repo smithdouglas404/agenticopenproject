@@ -72,11 +72,14 @@ ru:
         xwiki_oauth_request_error: An unexpected error occured when trying to communicate with the XWiki instance.
         xwiki_oauth_token_missing: OpenProject cannot test the user-level communication with XWiki as the user did not yet connect their XWiki account.
         xwiki_oauth_unauthorized: The user token was not recognized by XWiki.
+    link_existing_wiki_page_dialog:
+      title: Add existing wiki page
+    link_existing_wiki_page_form:
+      no_results: No wiki pages found
+      placeholder: Search for a wiki page
     work_package_wikis_tab_component:
       inline_page_links: Ссылки на внутренние страницы
       referencing_pages: Ссылается в
-    link_existing_wiki_page_dialog:
-      title: Add existing wiki page
     page_links:
       errors:
         page_not_found: Linked wiki page no longer available
@@ -122,12 +125,10 @@ ru:
       oauth_application_info_component:
         confirm_replace_oauth_application: Это действие сбросит текущие учетные данные OAuth. После подтверждения Вам придется заново ввести учетные данные в Вашем экземпляре XWiki, а все пользователи должны будут заново авторизоваться. Вы уверены, что хотите продолжить?
         label_oauth_client_id: OAuth Client ID
-        label_pending: В ожидании
         replace_oauth_application: Заменить приложение OpenProject OAuth
       oauth_client_info_component:
         confirm_replace_oauth_client: Это действие сбросит текущие учетные данные XWiki OAuth. Все пользователи должны будут повторно авторизоваться в XWiki. Вы уверены, что хотите продолжить?
         label_oauth_client_id: OAuth Client ID
-        label_pending: В ожидании
         replace_oauth_client: Заменить приложение XWiki OAuth
       side_panel:
         health_status_component:
@@ -147,7 +148,7 @@ ru:
         label_edit: Редактировать провайдера XWiki
         label_new_provider: New XWiki provider
         label_wiki_platform: Провайдер Wiki
-        name_caption: Дайте своему хранилищу имя, чтобы пользователи могли различать несколько вики-платформ.
+        name_caption: Give your wiki provider a name so that users can differentiate between multiple wiki platforms.
         name_placeholder: База знаний XWiki
         new_provider_html: Прочитайте нашу документацию по [настройке интеграции XWiki](docs_url) для получения дополнительной информации.
         oauth:
@@ -155,12 +156,13 @@ ru:
         sections:
           general_information: General information
           oauth_configuration: Конфигурация OAuth
-        url_caption: Пожалуйста, добавьте адрес хоста Вашей вики-платформы, включая https://. Его длина не должна превышать 255 символов.
+        url_caption: The host address of your wiki platform including the https://. It should not be longer than 255 characters.
         xwiki:
           oauth:
-            openproject_oauth_description: Разрешите XWiki получить доступ к данным OpenProject с помощью приложения OAuth. Скопируйте приведенные ниже учетные данные в Ваш экземпляр XWiki.
+            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application.
             provider_oauth: Wiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID and client secret have been pre-generated for you — copy them along with the redirect URI into your XWiki OIDC client registration. You can change the client ID and secret if needed.
+            provider_oauth_configuration: Copy these values to the [XWiki OIDC Connection client](xwiki_oidc_link).
+            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth.
           openproject_oauth_description: Разрешить XWiki доступ к данным OpenProject с помощью OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Разрешить OpenProject доступ к данным XWiki с помощью OAuth.

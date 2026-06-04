@@ -31,15 +31,15 @@ es:
         authentication_method: Método de autenticación
         creator: Autor
         drive: ID de unidad
-        file_link_origin: File link origin ID
+        file_link_origin: ID de origen del enlace del archivo
         host: Host
-        linkable_to_storage: Linkable to storage
-        linkable_to_storage_url: Linkable to storage URL
+        linkable_to_storage: Se puede vincular a un almacenamiento
+        linkable_to_storage_url: Se puede vincular a una URL de almacenamiento
         name: Nombre
         password: Contraseña de aplicación
         provider_type: Tipo de proveedor
-        storage: Storage
-        storage_url: Storage URL
+        storage: Almacenamiento
+        storage_url: URL de almacenamiento
         tenant: Directory (tenant) ID
     errors:
       messages:
@@ -113,25 +113,25 @@ es:
         remote_folders: 'Leer el contenido de la carpeta del equipo:'
         remove_user_from_group: 'Eliminar usuario del grupo:'
         rename_project_folder: 'Cambiar el nombre de la carpeta del proyecto gestionado:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Configurar los permisos de la carpeta del proyecto gestionado:'
       one_drive_sync_service:
         create_folder: 'Creación de carpetas de proyecto gestionadas:'
         ensure_root_folder_permissions: 'Establecer permisos de carpeta base:'
         hide_inactive_folders: 'Ocultar paso de carpetas inactivas:'
         remote_folders: 'Leer el contenido de la carpeta raíz de la unidad:'
         rename_project_folder: 'Cambiar el nombre de la carpeta del proyecto gestionado:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Configurar los permisos de la carpeta del proyecto gestionado:'
       sharepoint_sync_service:
         create_folder: 'Creación de carpetas de proyecto gestionadas:'
         ensure_root_folder_permissions: 'Establecer permisos de carpeta base:'
         hide_inactive_folders: 'Ocultar paso de carpetas inactivas:'
         remote_folders: 'Leer el contenido de la carpeta raíz de la unidad:'
         rename_project_folder: 'Cambiar el nombre de la carpeta del proyecto gestionado:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Configurar los permisos de la carpeta del proyecto gestionado:'
     errors:
       messages:
         error: Se ha producido un error inesperado. Compruebe los registros de OpenProject para obtener más información o póngase en contacto con un administrador
-        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
+        folder_id_collision: Hay varios almacenamientos de proyectos que intentan gestionar la carpeta del proyecto %{folder}. Se ha omitido su sincronización.
         forbidden: OpenProject no ha podido acceder al recurso solicitado. Compruebe su configuración de permisos en el proveedor de almacenamiento.
         unauthorized: OpenProject no pudo autenticarse con el proveedor de almacenamiento. Asegúrese de que tiene acceso al mismo.
       models:

@@ -40,7 +40,7 @@ tr:
           in_planning: Planlanıyor
           active: Aktif
           completed: Tamamlandı
-        work_packages: Work packages
+        work_packages: İş paketleri
       work_package:
         backlog_bucket: Birikmiş İş Havuzu
         backlogs_work_package_type: Bekleme listesi türü

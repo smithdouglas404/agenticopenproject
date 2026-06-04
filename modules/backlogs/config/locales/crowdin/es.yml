@@ -40,7 +40,7 @@ es:
           in_planning: En planificación
           active: Activo
           completed: Completado
-        work_packages: Work packages
+        work_packages: Paquetes de trabajo
       work_package:
         backlog_bucket: Buckets de backlog
         backlogs_work_package_type: Tipo de Backlog
@@ -88,8 +88,8 @@ es:
       title: Las opciones de configuración de Backlog están cambiando
       text: Ahora mismo estamos rediseñando el módulo «Backlogs». La configuración de administración para los sprints y los backlogs estará disponible aquí en breve. La configuración a nivel de proyecto sigue estando disponible.
     bucket_destroy_modal_component:
-      title: Delete backlog bucket?
-      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
+      title: "¿Eliminar bucket de backlog?"
+      details: Se eliminará el bucket de backlog «%{name}» y todos los paquetes de trabajo se trasladarán a la bandeja de entrada de tareas pendientes. No se eliminará ningún paquete de trabajo.
     bucket_component:
       blankslate_title: El bucket de backlog está vacío
       blankslate_description: Arrastre los elementos aquí para añadirlos.
@@ -101,7 +101,7 @@ es:
       show:
         blankslate_title: No hay datos de trabajo pendiente disponibles
         blankslate_description: Establezca la fecha de inicio y finalización del sprint para generar un gráfico de trabajo pendiente.
-    excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
+    excluded_work_package_types_caption: 'Elige qué tipos de paquetes de trabajo quieres ocultar en el backlog. Los elementos de los tipos seleccionados no aparecerán automáticamente en el backlog, lo que te permitirá centrarte en el trabajo que realmente importa a tu equipo. Por ejemplo, puedes ocultar tipos como «Épicos» o «Hitos», que se gestionan a un nivel superior, para que el backlog se centre en elementos sobre los que se pueda actuar.
 
       '
     finish_sprint_dialog_component:
@@ -125,7 +125,7 @@ es:
     label_is_done_status: El estado %{status_name} significa completado
     label_sprint_board: Tablero Sprint
     move_to_bucket_dialog_component:
-      title: Move to backlog bucket
+      title: Mover al bucket de backlog
     move_to_sprint_dialog_component:
       title: Mover al sprint
       label_sprint: Sprint
@@ -163,7 +163,7 @@ es:
     story_points:
       one: "%{count} punto de historia"
       other: "%{count} puntos de historia"
-    statuses_considered_closed_caption: 'Choose the statuses that represent a closed or finished state in your workflow. These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning. For example, statuses like Done, Resolved, or Won''t Fix may all represent a closed work item in your process.
+    statuses_considered_closed_caption: 'Elige los estados que representen un estado cerrado o finalizado en tu flujo de trabajo. Estos se considerarán como el estado «Cerrado» en los informes (por ejemplo, el diagrama Burndown) y en la planificación de sprints. Por ejemplo, estados como «Hecho», «Resuelto» o «No se corregirá» pueden representar un elemento de trabajo cerrado en tu proceso.
 
       '
     types_and_statuses: Tipos y estados
@@ -173,17 +173,17 @@ es:
       button_update_backlogs: Actualizar módulo de trabajos pendientes
     stories:
       update_service:
-        missing_target: target_id o direction deben estar presente.
+        missing_target: target_id o direction debe estar presente.
         ambiguous_target: target_id y direction no pueden estar ambos presentes.
-        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
-        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
+        invalid_target_type: 'target_type debe ser uno de los siguientes: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
+        invalid_direction: 'la dirección debe ser una de las siguientes: higher, highest, lower, lowest.'
     work_package_card_menu_component:
       action_menu:
         copy_url_to_clipboard: Copiar URL al portapapeles
-        copy_work_package_id: Copia del ID del paquete de trabajo
+        copy_work_package_id: Copiar el ID del paquete de trabajo
         move_menu: Mover
-        move_to_backlog_bucket: Move to backlog bucket
-        move_to_inbox: Move to inbox
+        move_to_backlog_bucket: Mover al bucket de backlog
+        move_to_inbox: Mover a la bandeja de entrada
         move_to_sprint: Mover al sprint
     work_package_is_closed: El paquete de trabajo esta terminado, cuando
   burndown:
@@ -194,8 +194,8 @@ es:
       sprint_sharing: Compartir Sprint
     upsell:
       sprint_sharing:
-        description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
-  label_all_sprints: All sprints
+        description: Comparte sprints entre proyectos para coordinar a los equipos y organizar el trabajo en entornos ágiles a gran escala (SAFe).
+  label_all_sprints: Todos los sprints
   label_backlog: Backlog
   label_backlogs: Backlogs
   label_backlog_and_sprints: Backlog y sprints
@@ -215,13 +215,13 @@ es:
   notice_unsuccessful_start_with_reason: 'El sprint no pudo iniciarse: %{reason}'
   notice_unsuccessful_finish: El sprint no pudo completarse.
   notice_unsuccessful_finish_with_reason: 'El sprint no pudo completarse: %{reason}'
-  notice_work_package_invisible_after_move: 'The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
+  notice_work_package_invisible_after_move: 'El paquete de trabajo se ha trasladado a %{backlog}, pero no se ve porque su tipo o estado están excluidos de la lista de tareas pendientes.
 
     '
   permission_create_sprints: Crear sprints
   permission_manage_sprint_items: Gestionar elementos de sprint
-  permission_select_backlog_types_and_statuses: Select backlog types and statuses
-  permission_select_backlog_types_and_statuses_explanation: 'Allows choosing which work package types to hide from the backlog. Also allows defining which statuses represent a closed or finished state in the project''s workflow.
+  permission_select_backlog_types_and_statuses: Selecciona los tipos y estados del backlog
+  permission_select_backlog_types_and_statuses_explanation: 'Permite elegir qué tipos de paquetes de trabajo se quieren ocultar del backlog. También permite definir qué estados indican un estado cerrado o finalizado en el flujo de trabajo del proyecto.
 
     '
   permission_share_sprint: Compartir sprint
@@ -251,6 +251,6 @@ es:
         sprint_sharing: Compartir sprints
       backlogs:
         sharing_form_component:
-          sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
-          sharing_fallback_description: Lacking a corporate enterprise plan, the sharing options are limited to the project's own sprints. The currently active setting remains active.
+          sharing_description: Este proyecto puede compartir sus propios sprints, recibir sprints compartidos o gestionar los sprints de forma independiente (sin compartir).
+          sharing_fallback_description: Al no haber un plan de empresa, las opciones para compartir se limitan a los sprints del propio proyecto. La configuración actualmente activa sigue vigente.
   remaining_hours: trabajo restante

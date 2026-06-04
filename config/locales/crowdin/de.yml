@@ -437,6 +437,7 @@ de:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Projekt
           label_previous_identifier: Vorherige Kennung
           label_autofixed_suggestion: Zukünftige Kennung

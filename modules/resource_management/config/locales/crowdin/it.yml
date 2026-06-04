@@ -3,13 +3,13 @@ it:
   activerecord:
     attributes:
       resource_allocation:
-        allocated_time: Allocated time
-        end_date: Finish date
-        entity: Entity
-        principal: Assignee
-        start_date: Start date
-        state: State
-        user_filter: User filter
+        allocated_time: Tempo assegnato
+        end_date: Data di fine
+        entity: Entità
+        principal: Assegnatario
+        start_date: Data di inizio
+        state: Stato
+        user_filter: Filtro utente
       resource_planner:
         default_view_class_name: Vista predefinita
         end_date: Data di fine
@@ -22,7 +22,7 @@ it:
         resource_allocation:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: deve essere successiva alla data di inizio.
         resource_planner:
           attributes:
             end_date:
@@ -30,16 +30,16 @@ it:
         resource_work_package_list:
           attributes:
             query:
-              must_be_work_package_query: must be a work package query.
+              must_be_work_package_query: deve essere una query di macro-attività.
     models:
-      resource_allocation: Resource Allocation
-      resource_planner: Resource Planner
-      resource_work_package_list: Work packages list
-      user_card: User cards
-  button_next: Next
+      resource_allocation: Allocazione delle risorse
+      resource_planner: Pianificatore di risorse
+      resource_work_package_list: Elenco macro-attività
+      user_card: Schede utente
+  button_next: Avanti
   label_resource_management: Pianificazione delle risorse
-  permission_allocate_user_resources: Allocate user resources
-  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
+  permission_allocate_user_resources: Assegnazione delle risorse utente
+  permission_allocate_user_resources_explanation: 'Consente di creare, aggiornare ed eliminare allocazioni delle risorse all''interno di un pianificatore risorse. Ciò include l''assegnazione di utenti o filtri utente a un pianificatore e la regolazione del tempo allocato e dell''intervallo di date.
 
     '
   permission_manage_public_resource_planners: Gestire i pianificatori di risorse pubbliche
@@ -65,16 +65,16 @@ it:
       desc: Crea un pianificatore di risorse per iniziare a pianificare la capacità di questo progetto.
       title: Ancora nessun pianificatore di risorse
     configure_view_dialog:
-      delete_confirmation: Are you sure you want to delete this view? This cannot be undone.
+      delete_confirmation: Vuoi davvero eliminare questa vista? Questa azione è irreversibile.
       filter_mode:
         automatic:
-          caption: An automatically-generated list that displays items that meet criteria you define.
-          label: Automatically filtered
-        label: Item selection
+          caption: Un elenco generato automaticamente che mostra gli elementi che soddisfano i criteri definiti.
+          label: Filtrato automaticamente
+        label: Selezione elementi
         manual:
-          caption: A custom list of items you manually add and remove. Filtering is not possible.
-          label: Manually hand-picked
-      title: Configure view
+          caption: Un elenco personalizzato di elementi che puoi aggiungere e rimuovere manualmente. Il filtraggio non è disponibile.
+          label: Selezionato manualmente
+      title: Configura vista
     favorite_caption: 'Aggiungi questa vista ai preferiti per mostrarla nella sezione superiore del menu laterale.
 
       '
@@ -82,7 +82,7 @@ it:
     label_resource_planner: Pianificatore di risorse
     label_resource_planner_plural: Pianificatori di risorse
     new_view_dialog:
-      title: Add View
+      title: Aggiungi vista
     public_caption: 'Rendi questa vista pubblica per tutti i membri del progetto. Questo non influisce sulla visibilità delle macro-attività, che continua a dipendere dalle autorizzazioni di ciascun utente.
 
       '
@@ -91,42 +91,42 @@ it:
     sidebar:
       private: Privato
       public: Pubblico
-    sub_views: Views in this resource planner
+    sub_views: Viste in questo pianificatore di risorse
     view_types:
       resource_work_package_list:
-        caption: Create a view based on work packages and see its details and allocation in a list
-        label: Work packages list
+        caption: Crea una vista basata su macro-attività e visualizza i dettagli e l'allocazione in un elenco
+        label: Elenco macro-attività
       user_card:
-        caption: Create a view based on users and see their details and allocation in a list of user cards
-        label: Users card list
+        caption: Crea una vista basata sugli utenti per consultare i loro dettagli e le allocazioni in un elenco di schede utente
+        label: Elenco di schede utenti
     work_package_list:
       add_work_package_dialog:
-        title: Add work package
+        title: Aggiungi macro-attività
       allocation_placeholder: "—"
       blank:
-        description: There are no work packages matching this view's filters yet.
-        title: No work packages to display
+        description: Non ci sono ancora macro-attività che corrispondono ai filtri di questa vista.
+        title: Nessuna macro-attività da visualizzare
       columns:
-        allocated_members: Allocated members
-        allocation: Allocation
-        dates: Dates
+        allocated_members: Membri assegnati
+        allocation: Allocazione
+        dates: Date
       context_menu:
-        add_filter_criteria: Add filter criteria
-        add_user_group: Add user group
-        edit_total_work: Edit total work
-        label: More actions
-        move: Move
-        move_down: Move down
-        move_to_bottom: Move to bottom
-        move_to_top: Move to top
-        move_up: Move up
-        remove: Remove
-        remove_confirmation: Remove this work package from the view?
-        see_allocation: See allocation
-      mobile_title: Work packages
-      query_name: 'Resource management work packages: %{name}'
+        add_filter_criteria: Aggiungi criteri di filtro
+        add_user_group: Aggiungi gruppo utente
+        edit_total_work: Modifica lavoro totale
+        label: Altre azioni
+        move: Sposta
+        move_down: Sposta giu
+        move_to_bottom: Sposta in fondo
+        move_to_top: Sposta in cima
+        move_up: Sposta in alto
+        remove: Rimuovi
+        remove_confirmation: Rimuovere questa macro-attività dalla vista?
+        see_allocation: Vedi l'assegnazione
+      mobile_title: Macro-attività
+      query_name: 'Pacchetti di lavoro per la gestione delle risorse: %{name}'
       subheader:
-        add: Add
-        add_work_package: Add work package
-        allocate: Allocate
-        settings: Configure view
+        add: Aggiungi
+        add_work_package: Aggiungi macro-attività
+        allocate: Alloca
+        settings: Configura vista

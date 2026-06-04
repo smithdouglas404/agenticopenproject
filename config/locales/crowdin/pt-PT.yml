@@ -57,11 +57,11 @@ pt-PT:
       col_identifier: Identificador
       col_project: Projeto
       col_reserved: Reservado
-      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
-      filter_label: Search identifiers
+      not_available_in_semantic_mode: Os identificadores de projeto reservados só estão disponíveis no modo de identificador numérico.
+      filter_label: Pesquisar identificadores
       btn_release: Lançamento
       released_notice: O identificador "%{identifier}" foi lançado.
-      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
+      identifier_not_found: Não foi possível encontrar o identificador reservado. Pode já ter sido lançado ou o projeto pode ter sido eliminado. Recarregue a página.
       dialog:
         title: Lançar identificador
         heading: Lançar "%{identifier}"?
@@ -437,6 +437,7 @@ pt-PT:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Projeto
           label_previous_identifier: Identificador anterior
           label_autofixed_suggestion: Identificador de futuro
@@ -1369,12 +1370,12 @@ pt-PT:
     edit:
       form_configuration:
         tab: Configuração do formulário
-        label_group: Section
-        reset_to_defaults: Reset form
-        add_attribute_group: Section
-        add_query_group: Related work packages table
-        delete_group: Delete section
-        remove_attribute: Remove from section
+        label_group: Secção
+        reset_to_defaults: Repor formulário
+        add_attribute_group: Secção
+        add_query_group: Tabela de pacotes de trabalho relacionados
+        delete_group: Eliminar secção
+        remove_attribute: Remover da secção
         drag_to_activate: Arraste campos daqui para ativá-los
         drag_to_reorder: Arrastar para reordenar
         edit_query: Editar consulta
@@ -1384,12 +1385,12 @@ pt-PT:
         no_inactive_attributes: Não há atributos inativos
         blankslate_title: Ainda sem grupos
         blankslate_description: Adicione grupos no botão acima ou arraste atributos do painel esquerdo.
-        group_actions: Section actions
-        rename_group: Rename section
-        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
-        group_name_label: Section name
+        group_actions: Ações da secção
+        rename_group: Mudar o nome da secção
+        confirm_delete_group: Tem a certeza de que quer eliminar esta secção? Esta ação não pode ser revertida automaticamente.
+        group_name_label: Nome da secção
         row_actions: Ações de linha
-        query_group_label: Related work packages table
+        query_group_label: Tabela de pacotes de trabalho relacionados
         empty_group_hint: Arraste os atributos para aqui
         invalid_attribute_groups: A carga útil da configuração do formulário é inválida.
         invalid_query: A configuração da consulta incorporada é inválida.
@@ -4280,7 +4281,7 @@ pt-PT:
   label_project_new: Novo Projecto
   label_project_plural: Projetos
   label_project_list_plural: Listas do projeto
-  label_reserved_identifiers: Reserved project identifiers
+  label_reserved_identifiers: Identificadores de projeto reservados
   label_project_life_cycle: Ciclo de vida do projeto
   label_project_attributes_plural: Atributos do projeto
   label_project_custom_field_plural: Atributos do projeto
@@ -4829,7 +4830,7 @@ pt-PT:
         menu:
           label_actions: Ações do pacote de trabalho
         parent: Principal
-        undisclosed: Undisclosed
+        undisclosed: Não revelado
   permission_add_work_package_comments: Adicionar comentários
   permission_add_work_packages: Adicionar pacotes de trabalho
   permission_add_messages: Publicar mensagens

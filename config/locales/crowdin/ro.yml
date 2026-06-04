@@ -443,8 +443,9 @@ ro:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Project
-          label_previous_identifier: Previous identifier
+          label_previous_identifier: Identificator anterior
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
@@ -776,10 +777,10 @@ ro:
       move_user_failed: Failed to move user between departments.
   pagination:
     label: Pagination
-    prev: Previous
-    prev_page: Previous Page
-    next: Next
-    next_page: Next Page
+    prev: Înapoi
+    prev_page: Pagina anterioară
+    next: Înainte
+    next_page: Pagina următoare
     page: Page %{number}
     page_with_more: Page %{number}...
   mcp_configurations:
@@ -871,8 +872,8 @@ ro:
   portfolios:
     index:
       search:
-        label: Portfolio name filter
-        placeholder: Search portfolios
+        label: Filtru nume portofoliu
+        placeholder: Caută portofolii
       sub_items_html:
         one: "<strong>1</strong> sub-item"
         few: "<strong>%{count}</strong> sub-items"
@@ -3898,7 +3899,7 @@ ro:
   label_ical_access_key_generation_hint: Automatically generated when subscribing to a calendar.
   label_ical_access_key_latest: latest
   label_ical_access_key_revoke: Revocă
-  label_integrations: Integrations
+  label_integrations: Integrări
   label_add_column: Adaugă coloană
   label_applied_status: Stare aplicată
   label_archive_project: Arhivează proiect
@@ -4256,7 +4257,7 @@ ro:
   label_news_view_all: Afișează toate știrile
   label_next: Înainte
   label_next_week: Săptămâna viitoare
-  label_next_year: Next year
+  label_next_year: Anul următor
   label_no_change_option: "(Fără modificări)"
   label_no_data: Nu există date de afișat
   label_no_due_date: fără dată finalizare
@@ -4513,7 +4514,7 @@ ro:
   label_what_is_this: Discutați cu noi?
   label_week: Săptămână
   label_widget: Widget
-  label_widget_new: New widget
+  label_widget_new: Widget nou
   label_wiki_content_added: Pagină wiki adăugată
   label_wiki_content_updated: Pagină wiki actualizată
   label_wiki_toc: Cuprins
@@ -4607,7 +4608,7 @@ ro:
   button_add_non_working_time: Time off
   button_edit_non_working_time: Edit time off
   label_continued_from_previous_year: continued from previous year
-  label_continues_into_next_year: continues into next year
+  label_continues_into_next_year: continuă în anul următor
   label_end_date: Finish date
   label_working_days: Working days
   label_non_working_times_with_count: "%{year} time off (%{count})"
@@ -5935,7 +5936,7 @@ ro:
       info: Ştergerea pachetul de lucru este o acţiune ireversibilă.
       title: Ştergere a pachetului de lucru
     progress:
-      label_note: 'Note:'
+      label_note: 'Notă:'
       modal:
         work_based_help_text: Each field is automatically calculated from the two others when possible.
         status_based_help_text: "% Complete is set by work package status."

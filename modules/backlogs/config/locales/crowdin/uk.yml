@@ -28,8 +28,8 @@ uk:
     attributes:
       project:
         sprint_sharing: Спільний доступ до спринту
-        backlog_excluded_types: Excluded work package types
-        statuses_considered_closed: Statuses considered closed
+        backlog_excluded_types: Виключені типи пакетів робіт
+        statuses_considered_closed: Статуси, що вважаються закритими
       sprint:
         duration: Тривалість
         finish_date: Дата завершення
@@ -40,7 +40,7 @@ uk:
           in_planning: На етапі планування
           active: Активний
           completed: Завершений
-        work_packages: Work packages
+        work_packages: Пакети робіт
       work_package:
         backlog_bucket: Сегмент беклогу
         backlogs_work_package_type: Тип Backlog-у
@@ -90,8 +90,8 @@ uk:
       title: Ми змінюємо налаштування адміністратора в модулі беклогів
       text: Зараз ми переробляємо модуль невиконаних завдань (беклогів). Налаштування адміністратора для спринтів і беклогів з’являться тут найближчим часом. Налаштування на рівні проєктів залишаються доступними.
     bucket_destroy_modal_component:
-      title: Delete backlog bucket?
-      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
+      title: Видалити сегмент беклогу?
+      details: Сегмент беклогу «%{name}» буде видалено, а всі пакети робіт — переміщено у вхідні завдання беклогу. Пакети робіт не видаляться.
     bucket_component:
       blankslate_title: Сегмент беклогу порожній
       blankslate_description: Щоб додати елементи, перетягніть їх сюди.
@@ -103,7 +103,7 @@ uk:
       show:
         blankslate_title: Немає даних про згорання завдань
         blankslate_description: Визначте дату початку й завершення спринту, щоб згенерувати діаграму згорання завдань.
-    excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
+    excluded_work_package_types_caption: 'Виберіть, які типи пакетів робіт слід приховати в беклозі. Елементи вибраних типів не відображатимуться в беклозі автоматично, що дає змогу зосередитися на завданнях своєї команди. Наприклад, ви можете приховати такі типи, як епіки чи віхи, якими керують на вищому рівні, щоб переглядати лише ті завдання, з якими можна працювати.
 
       '
     finish_sprint_dialog_component:
@@ -117,7 +117,7 @@ uk:
       select_sprint_label: Вибрати спринт
       button_complete_sprint: Завершити спринт
     inbox_component:
-      title: Inbox
+      title: Вхідні
       blankslate_title: Немає вхідних завдань беклогу
       blankslate_description: Тут автоматично з’являтимуться всі відкриті пакети робіт цього проєкту.
       show_more:
@@ -129,7 +129,7 @@ uk:
     label_is_done_status: Стан %{status_name} означає виконано
     label_sprint_board: Дошка спринту
     move_to_bucket_dialog_component:
-      title: Move to backlog bucket
+      title: Перемістити в сегмент беклогу
     move_to_sprint_dialog_component:
       title: Перемістити в спринт
       label_sprint: Спринт
@@ -149,8 +149,8 @@ uk:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
       label_actions: Дії зі спринтом
-      label_start_sprint: Start sprint
-      label_complete_sprint: Complete sprint
+      label_start_sprint: Почати спринт
+      label_complete_sprint: Завершити спринт
       start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.
       start_sprint_disabled_reason_missing_dates: Щоб запустити спринт, необхідно вказати дату початку й завершення.
       action_menu:
@@ -174,7 +174,7 @@ uk:
     statuses_considered_closed_caption: 'Choose the statuses that represent a closed or finished state in your workflow. These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning. For example, statuses like Done, Resolved, or Won''t Fix may all represent a closed work item in your process.
 
       '
-    types_and_statuses: Types and statuses
+    types_and_statuses: Типи й статуси
     unassigned: Не призначено
     user_preference:
       header_backlogs: Модуль невиконаних завдань

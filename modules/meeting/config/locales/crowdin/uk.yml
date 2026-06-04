@@ -41,8 +41,8 @@ uk:
           other: "%{count} учасника"
         participants_attended: Учасники
         participants_invited: Запрошені
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 'Учасників додано:'
+        participants_removed: 'Учасників видалено:'
         project: Проєкт
         start_date: Дата
         start_time: Час початку
@@ -68,9 +68,9 @@ uk:
         title: Назва
         frequency: Частота
         interval: Інтервал
-        monthly_day: Day of month
+        monthly_day: День місяця
         monthly_ordinal: Position
-        monthly_weekday: Weekday
+        monthly_weekday: Будній день
         start_date: Починається
         start_time: Час початку
         start_time_hour: Час початку
@@ -301,8 +301,8 @@ uk:
         new_date_time: Нова дата/час
         old_location: Старе розташування
         new_location: Нове розташування
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Додано
+        removed_participants: Вилучено
     label_mail_all_participants: Надіслати лист із запрошенням усім учасникам
     types:
       one_time: Одноразова
@@ -473,12 +473,12 @@ uk:
         many: Кожні %{count} тижнів
         other: Кожні %{count} тижня
       x_monthly:
-        one: Every month
-        few: Every %{count} months
-        many: Every %{count} months
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
-      monthly_nth_weekday: Monthly on a weekday
+        one: Щомісяця
+        few: Що %{count} місяці
+        many: Що %{count} місяців
+        other: Що %{count} місяця
+      monthly_day_of_month: День місяця
+      monthly_nth_weekday: Щомісяця в будній день
       every_weekday: Кожний(-на) %{day_of_the_week}
       working_days: Кожен робочий день
     monthly:

@@ -443,6 +443,7 @@ lv:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier

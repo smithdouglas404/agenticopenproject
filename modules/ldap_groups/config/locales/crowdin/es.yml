@@ -22,7 +22,7 @@ es:
         group_name_attribute: Atributo de nombre de grupo
         sync_users: Sincronizar usuarios
         base_dn: DN base de búsqueda
-        member_lookup_attribute: Group member attribute
+        member_lookup_attribute: Atributo del miembro del grupo
     models:
       ldap_groups/synchronized_group: Grupo de LDAP sincronizado
       ldap_groups/synchronized_filter: Filtro de sincronización de grupos de LDAP
@@ -33,7 +33,7 @@ es:
   ldap_groups:
     label_menu_item: Sincronización de grupos de LDAP
     label_group_key: Clave de filtro de grupo de LDAP
-    label_synchronize: Discover LDAP groups
+    label_synchronize: Descubrir grupos LDAP
     settings:
       name_attribute: Atributo de nombre de grupos de LDAP
       name_attribute_text: El atributo LDAP usado para asignar un nombre al grupo de OpenProject al crearlo mediante un filtro
@@ -57,7 +57,7 @@ es:
         base_dn_text: 'Escriba el DN base de búsqueda que quiera usar con este filtro. Necesita estar debajo del DN base de la conexión LDAP seleccionada. Deje esta opción en blanco para reutilizar el DN base de la conexión
 
           '
-        member_lookup_attribute_text: 'Leave empty to use the default reverse lookup: OpenProject searches for users whose memberOf attribute matches the group DN. This requires the memberOf attribute to be present on user entries (Active Directory, OpenLDAP with memberof overlay). Set this to the attribute name on group entries that lists member DNs to use forward lookup instead. Examples: "uniqueMember" (groupOfUniqueNames), "member" (groupOfNames). Use this for LDAP servers that do not maintain the memberOf attribute on user entries.
+        member_lookup_attribute_text: 'Déjalo en blanco para usar la búsqueda inversa predeterminada: OpenProject busca usuarios cuyo atributo «memberOf» coincida con el DN del grupo. Para ello, es necesario que el atributo «memberOf» esté presente en las entradas de usuario (Active Directory, OpenLDAP con la superposición «memberof»). Configúralo con el nombre del atributo de las entradas de grupo que enumera los DN de los miembros para utilizar la búsqueda directa en su lugar. Ejemplos: «uniqueMember» (groupOfUniqueNames), «member» (groupOfNames). Utilízalo para servidores LDAP que no mantienen el atributo memberOf en las entradas de usuario.
 
           '
     synchronized_groups:
@@ -68,16 +68,16 @@ es:
         confirmation: Si continúa, se eliminarán el grupo sincronizado %{name} y %{users_count} usuarios sincronizados mediante este.
         info: El propio grupo OpenProject y los miembros añadidos fuera de esta sincronización LDAP no se eliminarán.
       help_text_html: |
-        This module allows you to set up a synchronization between LDAP and OpenProject groups.
+        Este módulo te permite configurar una sincronización entre los grupos de LDAP y OpenProject.
         <br/>
-        By default, OpenProject uses <strong>reverse lookup</strong>: it searches for users whose <em>memberOf</em> attribute matches the group DN.
-        This requires the <em>memberOf</em> attribute to be present on user entries (Active Directory, OpenLDAP with memberof overlay).
+        Por defecto, OpenProject utiliza la <strong>búsqueda inversa</strong>: busca usuarios cuyo atributo <em>memberOf</em> coincida con el DN del grupo.
+        Esto requiere que el atributo <em>memberOf</em> esté presente en las entradas de usuario (Active Directory, OpenLDAP con la superposición memberof).
         <br/>
-        If your LDAP server does not maintain <em>memberOf</em> on user entries (e.g. it uses <em>groupOfUniqueNames</em> with <em>uniqueMember</em>),
-        you can configure <strong>forward lookup</strong> by setting the <em>Group member attribute</em> on the synchronization filter.
+        Si tu servidor LDAP no mantiene <em>memberOf</em> en las entradas de usuario (por ejemplo, si usa <em>groupOfUniqueNames</em> con <em>uniqueMember</em>),
+        puedes configurar <strong>la búsqueda directa</strong> estableciendo el <em>atributo de miembro del grupo</em> en el filtro de sincronización.
         <br/>
-        Groups are synchronized hourly through a cron job.
-        [Please see our documentation on this topic](docs_url).
+        Los grupos se sincronizan cada hora mediante una tarea cron.
+        [Consulta nuestra documentación sobre este tema](docs_url).
       no_results: No se encontraron grupos sincronizados.
       no_members: Este grupo aún no tiene miembros sincronizados.
       plural: Grupos de LDAP sincronizados

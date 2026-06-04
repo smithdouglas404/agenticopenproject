@@ -33,7 +33,7 @@ es:
           title: Subelementos
         project_favorites:
           title: Proyectos favoritos
-          no_results: You currently have no favorite projects. Add one or multiple projects as favorite through their overview or in a project list.
+          no_results: Actualmente no tienes proyectos favoritos. Añada uno o varios proyectos como favoritos a través del resumen del proyecto o en una lista de proyectos.
         time_entries_current_user:
           title: Mi tiempo invertido
           displayed_days: 'Días mostrados en el widget:'
