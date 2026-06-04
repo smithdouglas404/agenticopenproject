@@ -39,15 +39,19 @@ import {
   map,
   shareReplay,
   take,
-  tap,
 } from 'rxjs/operators';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { multiInput } from '@openproject/reactivestates';
 import { TransitionService } from '@uirouter/core';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
+import { WP_ID_URL_PATTERN } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export type SupportedAttributeModels = 'project'|'workPackage';
+
+// Matches a work package reference that is a numeric ID ("1234") or a semantic
+// identifier ("PROJ-42"). Anything else is treated as a subject reference.
+const WP_ID_OR_SEMANTIC = new RegExp(`^(?:${WP_ID_URL_PATTERN})$`);
 
 @Injectable({ providedIn: 'root' })
 export class AttributeModelLoaderService {
@@ -103,7 +107,6 @@ export class AttributeModelLoaderService {
       .values$()
       .pipe(
         take(1),
-        tap({ next: (val) => console.log(`VAL ${val}`), error: (err) => console.error(`ERR ${err}`) }),
       );
   }
 
@@ -140,8 +143,9 @@ export class AttributeModelLoaderService {
       return throwError(this.text.not_found);
     }
 
-    // Return global reference to the subject
-    if (/^[1-9]\d*$/.test(id)) {
+    // Resolve a numeric ID or semantic identifier globally; the API show
+    // endpoint resolves both forms transparently.
+    if (WP_ID_OR_SEMANTIC.test(id)) {
       return this
         .apiV3Service
         .work_packages
@@ -152,7 +156,7 @@ export class AttributeModelLoaderService {
         );
     }
 
-    // Otherwise, look for subject IN the current project (if we're in project context)
+    // Otherwise, treat the reference as a subject and look it up in the current project
     return this
       .apiV3Service
       .withOptionalProject(this.currentProject.id)

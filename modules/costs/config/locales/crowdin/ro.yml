@@ -267,7 +267,7 @@ ro:
         blankslate:
           heading: Start tracking your time and costs
           description: Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget.
-          action: Log time
+          action: Înregistrare timp
         view_details: View actual costs details
   ee:
     features:

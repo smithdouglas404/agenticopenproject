@@ -449,6 +449,7 @@ uk:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Проєкт
           label_previous_identifier: Попередній ідентифікатор
           label_autofixed_suggestion: Майбутній ідентифікатор

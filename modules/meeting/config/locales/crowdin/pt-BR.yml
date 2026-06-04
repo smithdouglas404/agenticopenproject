@@ -39,8 +39,8 @@ pt-BR:
           other: "%{count} participantes"
         participants_attended: Presentes
         participants_invited: Convidados
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 'Participantes adicionados:'
+        participants_removed: 'Participantes removidos:'
         project: Projeto
         start_date: Data
         start_time: Hora de início
@@ -66,9 +66,9 @@ pt-BR:
         title: Título
         frequency: Frequência
         interval: Intervalo
-        monthly_day: Day of month
-        monthly_ordinal: Position
-        monthly_weekday: Weekday
+        monthly_day: Dia do mês
+        monthly_ordinal: Posição
+        monthly_weekday: Dia da semana
         start_date: Começa em
         start_time: Hora de início
         start_time_hour: Hora de início
@@ -291,8 +291,8 @@ pt-BR:
         new_date_time: Nova data/hora
         old_location: Localização antiga
         new_location: Nova localização
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Adicionado
+        removed_participants: Removido
     label_mail_all_participants: Enviar convite por e-mail para todos os participantes
     types:
       one_time: Única
@@ -322,12 +322,12 @@ pt-BR:
           '
         confirm_button: Cancelar ocorrência
       occurrence_past:
-        title: Delete occurrence
-        heading: Delete this occurrence?
-        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+        title: Excluir ocorrência
+        heading: Excluir esta ocorrência?
+        confirmation_message_html: 'Esta ação não pode ser revertida. Prossiga com cuidado.
 
           '
-        confirm_button: Delete occurrence
+        confirm_button: Excluir ocorrência
     blankslate:
       title: Não há reuniões para exibir
       desc: Você pode criar uma nova reunião ou mudar o critério de filtro
@@ -374,8 +374,8 @@ pt-BR:
         caption: Este texto aparecerá centralizado no rodapé de todas as páginas.
       submit_button: Baixar
     notifications:
-      disabled: Participants will not receive email updates informing them of changes to the date, time or list of participants.
-      enabled: All participants will receive updated calendar invites informing them of changes to date, time or list of participants.
+      disabled: Os participantes não receberão notificações por e-mail sobre alterações na data, horário ou lista de participantes.
+      enabled: Todos os participantes receberão convites de calendário atualizados informando sobre alterações na data, horário ou lista de participantes.
       sidepanel:
         title: Atualizações do calendário por e-mail
         description:
@@ -385,8 +385,8 @@ pt-BR:
           enable: Habilitar atualizações de calendário por e-mail?
           disable: Desabilitar atualizações de calendário por e-mail?
         message:
-          enable: Once enabled, an email will be sent out immediately to all participants.
-          disable: If they already had an invite for this meeting, it might no longer be accurate.
+          enable: Uma vez ativado, um e-mail será enviado imediatamente a todos os participantes.
+          disable: Se já tiverem um convite para esta reunião, ele pode não estar mais válido.
         confirm_label:
           enable: Habilitar atualizações por e-mail
           disable: Desabilitar atualizações por e-mail
@@ -459,41 +459,41 @@ pt-BR:
         one: Todas as semanas
         other: A cada %{count} semanas
       x_monthly:
-        one: Every month
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
-      monthly_nth_weekday: Monthly on a weekday
+        one: A cada mês
+        other: A cada %{count} meses
+      monthly_day_of_month: Dia do mês
+      monthly_nth_weekday: Mensalmente em um dia da semana
       every_weekday: Todos os %{day_of_the_week}
       working_days: Todos os dias úteis
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
-        third: third
-        fourth: fourth
-        last: last
+        first: primeiro
+        second: segundo
+        third: terceiro
+        fourth: quarto
+        last: último
       ordinal_options:
-        first: First
-        second: Second
-        third: Third
-        fourth: Fourth
-        last: Last
-    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
-    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
+        first: Primeiro
+        second: Segundo
+        third: Terceira
+        fourth: Quarto
+        last: Última
+    actual_first_occurrence_mismatch_html: A primeira ocorrência desta série será %{first_occurrence}
+    day_of_month_skipping_info: Meses com menos de %{monthly_day} dias serão ignorados
     end_after:
-      never: Never
-      specific_date: After a specific date
-      iterations: After a number of occurrences
+      never: Nunca
+      specific_date: Após uma data específica
+      iterations: Após um número de ocorrências
     starts: Começa
     in_words:
       daily_interval: A cada %{interval} dias
       working_days: Todos os dias úteis
       weekly: Todas as semanas na %{weekday}
       weekly_interval: Todas as %{interval} semanas em %{weekday}
-      monthly_day: Every month on the %{day}
-      monthly_day_interval: Every %{interval} months on the %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_day: Todo mês no dia %{day}
+      monthly_day_interval: A cada %{interval} meses no dia %{day}
+      monthly_nth_weekday: Todo mês na %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: A cada %{interval} meses na %{ordinal} %{weekday}
       frequency: "%{base} em %{time}"
       full: "%{base} em %{time}, termina em %{end_date}"
       full_past: "%{base} em %{time}, terminou em %{end_date}"
@@ -604,7 +604,7 @@ pt-BR:
   label_agenda_item_duplicate_in_next_title: Duplicar na próxima reunião?
   label_agenda_item_add_notes: Adicionar anotações
   label_agenda_item_add_outcome: Adicionar resultado
-  label_agenda_item_convert_to_work_package: Convert to work package
+  label_agenda_item_convert_to_work_package: Converter para pacote de trabalho
   label_agenda_item_work_package_add: Adicionar pacote de trabalho
   label_agenda_item_work_package: Pacote de trabalho do Item da pauta
   label_section_rename: Renomear seção

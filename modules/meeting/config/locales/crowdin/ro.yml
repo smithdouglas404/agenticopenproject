@@ -59,7 +59,7 @@ ro:
         item_type: Type
         position: Position
         lock_version: Lock version
-        notes: Notes
+        notes: Note
       meeting_section:
         title: Titlu
         position: Position
@@ -401,8 +401,8 @@ ro:
       exit: Exit presentation
       current_item: Current item
       total_items: "%{current} of %{total}"
-      previous: Previous
-      next: Next
+      previous: Înapoi
+      next: Înainte
       no_items: No agenda items
       no_items_flash: There are no agenda items to present.
     ical_response:
@@ -586,7 +586,7 @@ ro:
   label_meeting_index_today: Azi
   label_meeting_index_tomorrow: Mâine
   label_meeting_index_this_week: Mai târziu în această săptămână
-  label_meeting_index_later: Next week and later
+  label_meeting_index_later: Săptămâna viitoare și mai târziu
   label_agenda_items: Agenda items
   label_agenda_items_reordered: reordonat
   label_agenda_item_add: Add agenda item

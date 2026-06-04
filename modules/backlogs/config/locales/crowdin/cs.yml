@@ -43,7 +43,7 @@ cs:
         work_packages: Pracovní balíčky
       work_package:
         backlog_bucket: Sekce backlogu
-        backlogs_work_package_type: Typ nevyřízené položky
+        backlogs_work_package_type: Typ backlogu
         position: Pozice
         sprint: Sprint
         story_points: Body příběhu
@@ -205,8 +205,8 @@ cs:
         description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
   label_all_sprints: All sprints
   label_backlog: Backlog
-  label_backlogs: Nevyřízené položky
-  label_backlog_and_sprints: Backlog and sprints
+  label_backlogs: Backlogy
+  label_backlog_and_sprints: Backlogy a sprinty
   label_backlog_bucket_edit: Edit backlog bucket
   label_backlog_bucket_new: New backlog bucket
   label_burndown_chart: Burndown chart
@@ -235,7 +235,7 @@ cs:
   permission_share_sprint: Sdílení sprintu
   permission_start_complete_sprint: Zahájení/ukončení sprintu
   permission_view_sprints: Zobrazení sprintů
-  project_module_backlogs: Nevyřízené položky
+  project_module_backlogs: Backlogy
   projects:
     settings:
       backlog_sharing:
@@ -259,6 +259,6 @@ cs:
         sprint_sharing: Sdílet sprinty
       backlogs:
         sharing_form_component:
-          sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
+          sharing_description: Tento projekt může buď sdílet vlastní sprinty, přijímat sdílené sprinty, nebo sprinty zpracovávat samostatně (bez sdílení).
           sharing_fallback_description: Lacking a corporate enterprise plan, the sharing options are limited to the project's own sprints. The currently active setting remains active.
   remaining_hours: Zbývající práce

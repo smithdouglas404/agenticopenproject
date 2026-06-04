@@ -65,9 +65,9 @@ zh-CN:
         title: 标题
         frequency: 周期
         interval: 间隔
-        monthly_day: Day of month
-        monthly_ordinal: Position
-        monthly_weekday: Weekday
+        monthly_day: 一个月中的某天
+        monthly_ordinal: 位置
+        monthly_weekday: 工作日
         start_date: 开始日期：
         start_time: 开始时间
         start_time_hour: 开始时间
@@ -317,12 +317,12 @@ zh-CN:
           '
         confirm_button: 取消事件
       occurrence_past:
-        title: Delete occurrence
-        heading: Delete this occurrence?
-        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+        title: 删除事件
+        heading: 是否删除此事件？
+        confirmation_message_html: '此操作无法撤消。请谨慎处理。
 
           '
-        confirm_button: Delete occurrence
+        confirm_button: 删除事件
     blankslate:
       title: 没有可显示的会议
       desc: 您可以创建新会议或更改筛选条件
@@ -369,8 +369,8 @@ zh-CN:
         caption: 此文本将出现在每一页的页脚中心。
       submit_button: 下载
     notifications:
-      disabled: Participants will not receive email updates informing them of changes to the date, time or list of participants.
-      enabled: All participants will receive updated calendar invites informing them of changes to date, time or list of participants.
+      disabled: 参与者不会收到向其通知日期、时间或参与者名单更改的电子邮件更新。
+      enabled: 所有参与者都将收到通知其日期、时间或参与者名单更改的更新日历邀请。
       sidepanel:
         title: 电子邮件日历更新
         description:
@@ -380,8 +380,8 @@ zh-CN:
           enable: 启用电子邮件日历更新？
           disable: 禁用电子邮件日历更新？
         message:
-          enable: Once enabled, an email will be sent out immediately to all participants.
-          disable: If they already had an invite for this meeting, it might no longer be accurate.
+          enable: 启用后，将立即向所有参与者发送电子邮件。
+          disable: 如果他们已经收到这次会议的邀请，该邀请的信息可能不再准确。
         confirm_label:
           enable: 启用电子邮件更新
           disable: 禁用电子邮件更新
@@ -452,40 +452,44 @@ zh-CN:
       x_weekly:
         other: 每 %{count} 周
       x_monthly:
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
-      monthly_nth_weekday: Monthly on a weekday
+        other: |-
+          One
+          每月
+          Other
+          每 %{count} 个月
+      monthly_day_of_month: 一个月中的某天
+      monthly_nth_weekday: 每月的某个工作日
       every_weekday: 每个 %{day_of_the_week}
       working_days: 每个工作日
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
-        third: third
-        fourth: fourth
-        last: last
+        first: 第一个
+        second: 第二个
+        third: 第三个
+        fourth: 第四个
+        last: 最后一个
       ordinal_options:
-        first: First
-        second: Second
-        third: Third
-        fourth: Fourth
-        last: Last
-    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
-    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
+        first: 第一个
+        second: 第二个
+        third: 第三个
+        fourth: 第四个
+        last: 最后一个
+    actual_first_occurrence_mismatch_html: 此系列的第一个事件将是%{first_occurrence}
+    day_of_month_skipping_info: 将跳过天数少于 %{monthly_day} 天的月份
     end_after:
-      never: Never
-      specific_date: After a specific date
-      iterations: After a number of occurrences
+      never: 从不
+      specific_date: 在特定日期之后
+      iterations: 在数次事件之后
     starts: 开始
     in_words:
       daily_interval: 每 %{interval} 天
       working_days: 每个工作日
       weekly: 每 %{weekday}
       weekly_interval: 每 %{interval} 周在 %{weekday}
-      monthly_day: Every month on the %{day}
-      monthly_day_interval: Every %{interval} months on the %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_day: 每月 %{day} 日
+      monthly_day_interval: 每 %{interval} 个月的 %{day} 日
+      monthly_nth_weekday: 每月第 %{ordinal} 个%{weekday}
+      monthly_nth_weekday_interval: 每 %{interval} 个月第 %{ordinal} 个%{weekday}
       frequency: "%{base} 在 %{time}"
       full: "%{base} 在 %{time}，在 %{end_date} 结束"
       full_past: "%{base} 在 %{time}，于 %{end_date}结束"
@@ -581,10 +585,10 @@ zh-CN:
   label_agenda_item_actions: 议程项目行动
   label_agenda_item_move_to_next_title: 是否移至下一次会议？
   label_agenda_item_move: 移动
-  label_agenda_item_move_to_next: 移动到下次会议
-  label_agenda_item_move_to_backlog: 移动到待办事项
-  label_agenda_item_move_to_current_meeting: 移动到当前会议
-  label_agenda_item_move_to_section: 移动到小节
+  label_agenda_item_move_to_next: 移至下次会议
+  label_agenda_item_move_to_backlog: 移至待办事项
+  label_agenda_item_move_to_current_meeting: 移至当前会议
+  label_agenda_item_move_to_section: 移至小节
   label_agenda_item_move_to_top: 移至顶部
   label_agenda_item_move_to_bottom: 移至底部
   label_agenda_item_move_up: 向上移动
@@ -594,7 +598,7 @@ zh-CN:
   label_agenda_item_duplicate_in_next_title: 是否在下次会议中重复？
   label_agenda_item_add_notes: 添加备注
   label_agenda_item_add_outcome: 添加成果
-  label_agenda_item_convert_to_work_package: Convert to work package
+  label_agenda_item_convert_to_work_package: 转换为工作包
   label_agenda_item_work_package_add: 添加工作包
   label_agenda_item_work_package: 议程项目工作包
   label_section_rename: 重命名章节

@@ -30,13 +30,13 @@ pt-PT:
         resource_work_package_list:
           attributes:
             query:
-              must_be_work_package_query: must be a work package query.
+              must_be_work_package_query: deve ser uma consulta sobre um pacote de trabalho.
     models:
-      resource_allocation: Resource Allocation
-      resource_planner: Resource Planner
-      resource_work_package_list: Work packages list
-      user_card: User cards
-  button_next: Next
+      resource_allocation: Alocação de recursos
+      resource_planner: Planeador de recursos
+      resource_work_package_list: Lista de pacotes de trabalho
+      user_card: Cartões de utilizador
+  button_next: Seguinte
   label_resource_management: Planeamento de recursos
   permission_allocate_user_resources: Alocar recursos do utilizador
   permission_allocate_user_resources_explanation: 'Permite aos utilizadores criar, atualizar e eliminar atribuições de recursos dentro de um planeador de recursos. Isto inclui atribuir utilizadores (ou filtros de utilizadores) a um planeador e ajustar o tempo e o intervalo de datas alocados.
@@ -65,16 +65,16 @@ pt-PT:
       desc: Crie um planeador de recursos para começar a planear a capacidade para este projeto.
       title: Ainda não há planeadores de recursos
     configure_view_dialog:
-      delete_confirmation: Are you sure you want to delete this view? This cannot be undone.
+      delete_confirmation: Tem a certeza de que quer eliminar esta vista? Esta ação não pode ser anulada.
       filter_mode:
         automatic:
-          caption: An automatically-generated list that displays items that meet criteria you define.
-          label: Automatically filtered
-        label: Item selection
+          caption: Uma lista gerada automaticamente que apresenta os elementos correspondentes aos critérios que definir.
+          label: Filtrado automaticamente
+        label: Seleção de elemento
         manual:
-          caption: A custom list of items you manually add and remove. Filtering is not possible.
-          label: Manually hand-picked
-      title: Configure view
+          caption: Uma lista personalizada de elementos que pode adicionar e remover manualmente. Não é possível filtrar.
+          label: Seleção manual
+      title: Configurar vista
     favorite_caption: 'Torne esta vista num favorito para a adicionar à secção superior do menu da barra lateral.
 
       '
@@ -82,7 +82,7 @@ pt-PT:
     label_resource_planner: Planeador de recursos
     label_resource_planner_plural: Planeadores de recursos
     new_view_dialog:
-      title: Add View
+      title: Adicionar vista
     public_caption: 'Torne esta vista pública para todos os membros do projeto. Não afeta a visibilidade dos pacotes de trabalho, que continua a depender da permissão de cada utilizador.
 
       '
@@ -91,42 +91,42 @@ pt-PT:
     sidebar:
       private: Privado
       public: Público
-    sub_views: Views in this resource planner
+    sub_views: Vistas neste planeador de recursos
     view_types:
       resource_work_package_list:
-        caption: Create a view based on work packages and see its details and allocation in a list
-        label: Work packages list
+        caption: Crie uma vista com base nos pacotes de trabalho e veja os seus detalhes e a sua atribuição numa lista
+        label: Lista de pacotes de trabalho
       user_card:
-        caption: Create a view based on users and see their details and allocation in a list of user cards
-        label: Users card list
+        caption: Crie uma vista baseada nos utilizadores e veja os seus detalhes e atribuição numa lista de cartões de utilizador
+        label: Lista de cartões de utilizadores
     work_package_list:
       add_work_package_dialog:
-        title: Add work package
+        title: Adicionar pacote de trabalho
       allocation_placeholder: "—"
       blank:
-        description: There are no work packages matching this view's filters yet.
-        title: No work packages to display
+        description: Ainda não existem pacotes de trabalho correspondentes aos filtros desta vista.
+        title: Não há pacotes de trabalho a apresentar
       columns:
-        allocated_members: Allocated members
-        allocation: Allocation
-        dates: Dates
+        allocated_members: Membros alocados
+        allocation: Alocação
+        dates: Datas
       context_menu:
-        add_filter_criteria: Add filter criteria
-        add_user_group: Add user group
-        edit_total_work: Edit total work
-        label: More actions
-        move: Move
-        move_down: Move down
-        move_to_bottom: Move to bottom
-        move_to_top: Move to top
-        move_up: Move up
-        remove: Remove
-        remove_confirmation: Remove this work package from the view?
-        see_allocation: See allocation
-      mobile_title: Work packages
-      query_name: 'Resource management work packages: %{name}'
+        add_filter_criteria: Adicionar critérios de filtragem
+        add_user_group: Adicionar grupo de utilizador
+        edit_total_work: Editar trabalho total
+        label: Mais ações
+        move: Mover
+        move_down: Mover para baixo
+        move_to_bottom: Mover para a base
+        move_to_top: Mover para o topo
+        move_up: Mover para cima
+        remove: Remover
+        remove_confirmation: Remover este pacote de trabalho da vista?
+        see_allocation: Ver alocação
+      mobile_title: Pacotes de trabalho
+      query_name: 'Pacotes de trabalho de gestão de recursos: %{name}'
       subheader:
-        add: Add
-        add_work_package: Add work package
-        allocate: Allocate
-        settings: Configure view
+        add: Adicionar
+        add_work_package: Adicionar pacote de trabalho
+        allocate: Alocar
+        settings: Configurar vista

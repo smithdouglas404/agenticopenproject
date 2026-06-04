@@ -261,9 +261,9 @@ uk:
     settings:
       time_and_costs: Time & Costs
       cost_types:
-        heading: Cost types
-        none_active: No cost types are currently active in this project.
-        for_all_projects_hint: This cost type is enabled in all projects.
+        heading: Типи витрат
+        none_active: Зараз у цьому проєкті немає активних типів витрат.
+        for_all_projects_hint: Цей тип витрат увімкнено у всіх проєктах.
   costs:
     widgets:
       actual_costs:

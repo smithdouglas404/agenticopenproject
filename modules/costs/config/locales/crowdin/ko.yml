@@ -39,8 +39,8 @@ ko:
         unit: 단위 이름
         unit_plural: 복수형 단위 이름
         default: 기본 비용 유형
-        for_all_projects: For all projects
-        rates: Rates
+        for_all_projects: 모든 프로젝트용
+        rates: 요금
       work_package:
         costs_by_type: 소비 단위
         labor_costs: 노동 비용
@@ -89,7 +89,7 @@ ko:
         cost_types_project:
           attributes:
             project_ids:
-              blank: Please select a project.
+              blank: 프로젝트를 선택하세요.
   attributes:
     comment: 코멘트
     cost_type: 비용 유형
@@ -230,28 +230,28 @@ ko:
     errors:
       validation:
         start_time_different_date: startTime(%{start_time})의 날짜 부분은 spentOn(%{spent_on}) 날짜와 동일해야 합니다.
-  label_available_cost_types_projects: Available cost types projects
+  label_available_cost_types_projects: 사용 가능한 비용 유형 프로젝트
   cost_types:
     errors:
-      no_cost_types_available: No cost types are available in this project. Please contact an administrator.
+      no_cost_types_available: 이 프로젝트에는 비용 유형이 없습니다. 관리자에게 문의하세요.
     admin:
       columns:
-        active_projects: Active projects
+        active_projects: 활성 프로젝트
       cost_type_projects:
         for_all_projects_blank_slate:
-          heading: This cost type is enabled in all projects
-          description: Uncheck "For all projects" on the details tab to limit this cost type to specific projects.
+          heading: 이 비용 유형은 모든 프로젝트에서 활성화되었습니다
+          description: 이 비용 유형을 특정 프로젝트로 제한하려면 세부 정보 탭에서 "모든 프로젝트용"을 선택 취소합니다.
         no_projects:
-          heading: No projects assigned
-          description: Add projects so this cost type can be used in them.
+          heading: 할당된 프로젝트 없음
+          description: 이 비용 유형을 프로젝트에 사용할 수 있도록 프로젝트를 추가합니다.
       rates:
-        title: Rate history
+        title: 요금 기록
     settings:
-      time_and_costs: Time & Costs
+      time_and_costs: 시간 & 비용
       cost_types:
-        heading: Cost types
-        none_active: No cost types are currently active in this project.
-        for_all_projects_hint: This cost type is enabled in all projects.
+        heading: 비용 유형
+        none_active: 이 프로젝트에는 현재 활성화된 비용 유형이 없습니다.
+        for_all_projects_hint: 이 비용 유형은 모든 프로젝트에서 활성화되었습니다.
   costs:
     widgets:
       actual_costs:

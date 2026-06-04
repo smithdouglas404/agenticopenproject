@@ -163,9 +163,9 @@ class Journal < ApplicationRecord
 
   def attachments_visible?(user = User.current)
     if internal?
-      super && user.allowed_in_project?(:view_internal_comments, project)
+      journable.attachments_visible?(user) && user.allowed_in_project?(:view_internal_comments, project)
     else
-      super
+      journable.attachments_visible?(user)
     end
   end
 

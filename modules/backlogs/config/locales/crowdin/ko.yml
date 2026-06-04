@@ -28,8 +28,8 @@ ko:
     attributes:
       project:
         sprint_sharing: 스프린트 공유
-        backlog_excluded_types: Excluded work package types
-        statuses_considered_closed: Statuses considered closed
+        backlog_excluded_types: 제외된 작업 패키지 유형
+        statuses_considered_closed: 마감됨으로 간주되는 상태
       sprint:
         duration: 기간
         finish_date: 완료 날짜
@@ -40,7 +40,7 @@ ko:
           in_planning: 계획 중
           active: 활성
           completed: 완료됨
-        work_packages: Work packages
+        work_packages: 작업 패키지
       work_package:
         backlog_bucket: 백로그 버킷
         backlogs_work_package_type: 백로그 유형
@@ -87,8 +87,8 @@ ko:
       title: 백로그 관리자 설정을 개선하는 중입니다
       text: 백로그 모듈을 현재 재설계하는 중입니다. 스프린트 및 백로그에 대한 관리자 설정이 조만간 여기에 표시될 예정입니다. 프로젝트 수준 설정은 계속 사용할 수 있습니다.
     bucket_destroy_modal_component:
-      title: Delete backlog bucket?
-      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
+      title: 백로그 버킷을 삭제하시겠습니까?
+      details: 백로그 버킷 '%{name}'이(가) 삭제되고 모든 작업 패키지가 백로그 받은 편지함으로 이동됩니다. 작업 패키지는 삭제되지 않습니다.
     bucket_component:
       blankslate_title: 백로그 버킷이 비어 있습니다.
       blankslate_description: 항목을 여기로 드래그하여 추가합니다.
@@ -100,7 +100,7 @@ ko:
       show:
         blankslate_title: 사용 가능한 번다운 데이터 없음
         blankslate_description: 스프린트의 시작 날짜와 종료 날짜를 설정하여 번다운 차트를 생성합니다.
-    excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
+    excluded_work_package_types_caption: '백로그에서 숨길 작업 패키지 유형을 선택합니다. 선택한 유형의 항목은 백로그에 자동으로 표시되지 않으므로 팀에 중요한 작업에 집중할 수 있습니다. 예를 들어, 상위 수준에서 관리되는 에픽이나 마일스톤과 같은 유형은 백로그를 실행 가능한 항목에 집중할 수 있도록 숨길 수 있습니다.
 
       '
     finish_sprint_dialog_component:
@@ -114,7 +114,7 @@ ko:
       select_sprint_label: 스프린트 선택
       button_complete_sprint: 스프린트 완료
     inbox_component:
-      title: Inbox
+      title: 받은 편지함
       blankslate_title: 백로그 받은 편지함이 비어 있습니다
       blankslate_description: 이 프로젝트에서 열려 있는 모든 작업 패키지가 자동으로 여기에 표시됩니다.
       show_more:
@@ -123,7 +123,7 @@ ko:
     label_is_done_status: "%{status_name} 상태는 완료를 의미합니다."
     label_sprint_board: 스프린트 보드
     move_to_bucket_dialog_component:
-      title: Move to backlog bucket
+      title: 백로그 버킷으로 이동
     move_to_sprint_dialog_component:
       title: 스프린트로 이동
       label_sprint: 스프린트
@@ -140,8 +140,8 @@ ko:
       blankslate_title: "%{name}이(가) 비어 있습니다"
       blankslate_description: 아직 계획된 항목이 없습니다. 항목을 추가하려면 여기로 드래그하세요.
       label_actions: 스프린트 작업
-      label_start_sprint: Start sprint
-      label_complete_sprint: Complete sprint
+      label_start_sprint: 스프린트 시작
+      label_complete_sprint: 스프린트 완료
       start_sprint_disabled_reason_active_sprint: 다른 스프린트가 이미 활성화되어 있습니다.
       start_sprint_disabled_reason_missing_dates: 스프린트를 시작하려면 시작 날짜와 종료 날짜가 필요합니다.
       action_menu:
@@ -159,39 +159,39 @@ ko:
         no_actions_description_text: 아직 이 프로젝트에 사용할 수 있는 스프린트가 없습니다.
     story_points:
       other: "%{count} 스토리 포인트"
-    statuses_considered_closed_caption: 'Choose the statuses that represent a closed or finished state in your workflow. These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning. For example, statuses like Done, Resolved, or Won''t Fix may all represent a closed work item in your process.
+    statuses_considered_closed_caption: '해당 워크플로에서 마감 또는 완료 상태를 나타내는 상태를 선택하세요. 이러한 상태는 보고(예: 번다운) 및 스프린트 계획 전반에서 "마감됨" 상태로 처리됩니다. 예를 들어, 완료됨, 해결됨 또는 수정 안 함 등의 상태는 모두 해당 프로세스에서 마감된 작업 항목을 나타낼 수 있습니다.
 
       '
-    types_and_statuses: Types and statuses
+    types_and_statuses: 유형 및 상태
     unassigned: 할당되지 않음
     user_preference:
       header_backlogs: 백로그 모듈
       button_update_backlogs: 백로그 모듈 업데이트
     stories:
       update_service:
-        missing_target: target_id or direction must be present.
-        ambiguous_target: target_id and direction cannot both be present.
-        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
-        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
+        missing_target: target_id 또는 direction이 있어야 합니다.
+        ambiguous_target: target_id와 direction 둘 다가 존재할 수는 없습니다.
+        invalid_target_type: 'target_type은 다음 중 하나여야 합니다: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
+        invalid_direction: 'direction은 다음 중 하나여야 합니다: higher, highest, lower, lowest.'
     work_package_card_menu_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_backlog_bucket: Move to backlog bucket
-        move_to_inbox: Move to inbox
-        move_to_sprint: Move to sprint
+        copy_url_to_clipboard: 클립보드에 URL 복사
+        copy_work_package_id: 작업 패키지 ID 복사
+        move_menu: 이동
+        move_to_backlog_bucket: 백로그 버킷으로 이동
+        move_to_inbox: 받은 편지함으로 이동
+        move_to_sprint: 스프린트로 이동
     work_package_is_closed: 다음 경우에 작업 패키지가 완료됩니다.
   burndown:
     story_points: 스토리 포인트
     story_points_ideal: 스토리 포인트(적합함)
   ee:
     features:
-      sprint_sharing: Sprint sharing
+      sprint_sharing: 스프린트 공유
     upsell:
       sprint_sharing:
-        description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
-  label_all_sprints: All sprints
+        description: 프로젝트 간에 스프린트를 공유하여 팀을 조율하고 확장된 애자일 설정(SAFe)에서 작업을 조정합니다.
+  label_all_sprints: 모든 스프린트
   label_backlog: 백로그
   label_backlogs: 백로그
   label_backlog_and_sprints: 백로그 및 스프린트
@@ -211,13 +211,13 @@ ko:
   notice_unsuccessful_start_with_reason: '스프린트를 시작할 수 없습니다: %{reason}'
   notice_unsuccessful_finish: 스프린트를 완료할 수 없습니다.
   notice_unsuccessful_finish_with_reason: '스프린트를 완료할 수 없습니다: %{reason}'
-  notice_work_package_invisible_after_move: 'The work package was moved to %{backlog} but is not visible because its type or status is excluded from the backlog.
+  notice_work_package_invisible_after_move: '작업 패키지가 %{backlog}(으)로 이동되었지만 해당 유형이나 상태가 백로그에서 제외되었으므로 표시되지 않습니다.
 
     '
   permission_create_sprints: 스프린트 만들기
   permission_manage_sprint_items: 스프린트 항목 관리
-  permission_select_backlog_types_and_statuses: Select backlog types and statuses
-  permission_select_backlog_types_and_statuses_explanation: 'Allows choosing which work package types to hide from the backlog. Also allows defining which statuses represent a closed or finished state in the project''s workflow.
+  permission_select_backlog_types_and_statuses: 백로그 유형 및 상태 선택
+  permission_select_backlog_types_and_statuses_explanation: '백로그에서 숨길 작업 패키지 유형을 선택할 수 있습니다. 또한 프로젝트의 워크플로에서 마감 또는 완료 상태를 나타내는 상태를 정의할 수 있습니다.
 
     '
   permission_share_sprint: 스프린트 공유
@@ -247,6 +247,6 @@ ko:
         sprint_sharing: 스프린트 공유
       backlogs:
         sharing_form_component:
-          sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
-          sharing_fallback_description: Lacking a corporate enterprise plan, the sharing options are limited to the project's own sprints. The currently active setting remains active.
+          sharing_description: 이 프로젝트는 자체 스프린트를 공유하거나, 공유 스프린트를 받거나, 스프린트를 독립적으로 처리할 수 있습니다(공유 없음).
+          sharing_fallback_description: 기업 엔터프라이즈 플랜이 없는 경우 공유 옵션은 프로젝트 고유한 스프린트로 제한됩니다. 현재 활성 설정이 활성 상태로 유지됩니다.
   remaining_hours: 남은 작업
