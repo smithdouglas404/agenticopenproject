@@ -93,7 +93,7 @@
     end
 
     layout.with_tab(name: I18n.t("documents.versions.tab_title")) do
-      turbo_frame_tag(dom_id(document, :versions), src: document_versions_path(document), loading: :lazy) do
+      helpers.turbo_frame_tag(helpers.dom_id(document, :versions), src: document_versions_path(document), loading: :lazy) do
         tag.div(class: "loading-indicator -compact")
       end
     end
