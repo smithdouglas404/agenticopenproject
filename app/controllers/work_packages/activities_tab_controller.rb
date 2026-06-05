@@ -176,7 +176,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
     respond_with_turbo_streams
   end
 
-  def toggle_reaction # rubocop:disable Metrics/AbcSize
+  def toggle_reaction
     emoji_reaction_service = EmojiReactions::ToggleEmojiReactionService
       .call(user: User.current,
             reactable: @journal,
