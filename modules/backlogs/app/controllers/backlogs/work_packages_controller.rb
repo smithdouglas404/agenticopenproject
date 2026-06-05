@@ -113,7 +113,7 @@ module Backlogs
 
     def backlog_component
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
-      buckets = BacklogBucket.for_project(@project)
+      buckets = filtered_buckets_for(@project)
 
       Backlogs::BacklogComponent.new(
         inbox_work_packages:,

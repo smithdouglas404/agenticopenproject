@@ -355,6 +355,14 @@ module Pages
       expect(page).to have_css("#create-work-package-dialog")
     end
 
+    def expect_sprint(sprint)
+      expect(page).to have_css(sprint_selector(sprint))
+    end
+
+    def expect_no_sprint(sprint)
+      expect(page).to have_no_css(sprint_selector(sprint))
+    end
+
     def open_create_bucket_dialog
       within_owner_backlogs do
         find_test_selector("op-backlog-buckets--new-backlog-bucket-button").click
@@ -371,6 +379,10 @@ module Pages
       within_owner_backlogs do
         expect(page).to have_no_link(BacklogBucket.human_model_name, exact: true)
       end
+    end
+
+    def expect_backlog_bucket(bucket)
+      expect(page).to have_css(bucket_selector(bucket))
     end
 
     def expect_no_backlog_bucket(bucket)
@@ -392,6 +404,24 @@ module Pages
     def expect_work_package_not_draggable(work_package)
       expect(page)
         .to have_no_css(draggable_work_package_selector(work_package))
+    end
+
+    def apply_sprint_filter(*sprints)
+      within_sprint_backlogs { click_button "Sprints" }
+      within("dialog#sprint-filter-select-panel-dialog[open]") do
+        sprints.each { |sprint| click_on sprint.name }
+        click_on "Apply"
+      end
+      wait_for_network_idle
+    end
+
+    def apply_bucket_filter(*buckets)
+      within_owner_backlogs { click_button "Backlog buckets" }
+      within("dialog#bucket-filter-select-panel-dialog[open]") do
+        buckets.each { |bucket| click_on bucket.name }
+        click_on "Apply"
+      end
+      wait_for_network_idle
     end
 
     def drag_work_package(moved, before: nil, into: nil)

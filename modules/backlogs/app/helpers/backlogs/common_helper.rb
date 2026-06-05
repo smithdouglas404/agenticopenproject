@@ -56,15 +56,21 @@ module Backlogs
     end
 
     def all_sprints_for(project)
-      RequestStore.fetch(:"all_sprints_#{project.id}") do
-        Sprint.for_project(project).not_completed.order_by_date.includes(:project, :task_boards)
-      end
+      Sprint.for_project(project).not_completed.order_by_date.includes(:project, :task_boards)
     end
 
     def all_buckets_for(project)
-      RequestStore.fetch(:"all_buckets_#{project.id}") do
-        BacklogBucket.for_project(project)
-      end
+      BacklogBucket.for_project(project)
+    end
+
+    def filtered_sprints_for(project)
+      relation = all_sprints_for(project)
+      backlog_filters.sprint_ids.present? ? relation.where(id: backlog_filters.sprint_ids) : relation
+    end
+
+    def filtered_buckets_for(project)
+      relation = all_buckets_for(project)
+      backlog_filters.bucket_ids.present? ? relation.where(id: backlog_filters.bucket_ids) : relation
     end
   end
 end
