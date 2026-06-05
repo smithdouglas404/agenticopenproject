@@ -28,22 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectCustomFields
-  class MoveService < ::BaseServices::BaseCallable
-    def initialize(user:, project_custom_field:)
-      super()
-      @user = user
-      @project_custom_field = project_custom_field
-    end
+# Shared behaviour for custom fields that belong to a CustomFieldSection and
+# maintain their position within that section via attribute_order.
+# Include in UserCustomField and ProjectCustomField.
+module CustomField::Sectionable
+  extend ActiveSupport::Concern
 
-    def perform
-      return ServiceResult.failure(errors: { base: :error_unauthorized }) unless @user.admin?
+  included do
+    belongs_to :custom_field_section, class_name: "CustomFieldSection",
+                                      inverse_of: false
 
-      section = @project_custom_field.project_custom_field_section
-      section.move_in_order(@project_custom_field.column_name, params[:move_to]&.to_sym)
-      ServiceResult.success(result: section)
-    rescue StandardError => e
-      ServiceResult.failure(errors: e.message)
-    end
+    validates :custom_field_section_id, presence: true
+
+    after_create_commit :add_to_section_order
+    after_destroy_commit :remove_from_section_order
+  end
+
+  def add_to_section_order
+    custom_field_section.add_to_order(column_name)
+  end
+
+  def remove_from_section_order
+    section = custom_field_section
+    section.remove_from_order(column_name) unless section.nil? || section.frozen?
   end
 end

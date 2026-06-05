@@ -70,7 +70,7 @@ module Admin::Settings
     def list_items; end
 
     def move
-      result = UserCustomFields::MoveService.new(user: current_user, user_custom_field: @custom_field).call(
+      result = CustomFields::MoveService.new(user: current_user, custom_field: @custom_field).call(
         move_to: params.expect(:move_to)
       )
 
@@ -86,7 +86,7 @@ module Admin::Settings
     end
 
     def drop
-      result = ::UserCustomFields::DropService.new(user: current_user, user_custom_field: @custom_field).call(
+      result = CustomFields::DropService.new(user: current_user, custom_field: @custom_field).call(
         target_id: params[:target_id],
         position: params[:position]
       )

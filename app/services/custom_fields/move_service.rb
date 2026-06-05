@@ -28,19 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module UserCustomFields
+module CustomFields
   class MoveService < ::BaseServices::BaseCallable
-    def initialize(user:, user_custom_field:)
+    def initialize(user:, custom_field:)
       super()
       @user = user
-      @user_custom_field = user_custom_field
+      @custom_field = custom_field
     end
 
     def perform
       return ServiceResult.failure(errors: { base: :error_unauthorized }) unless @user.admin?
 
-      section = @user_custom_field.user_custom_field_section
-      section.move_in_order(@user_custom_field.column_name, params[:move_to]&.to_sym)
+      section = @custom_field.custom_field_section
+      section.move_in_order(@custom_field.column_name, params[:move_to]&.to_sym)
       ServiceResult.success(result: section)
     rescue StandardError => e
       ServiceResult.failure(errors: e.message)

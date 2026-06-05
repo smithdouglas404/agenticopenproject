@@ -29,16 +29,14 @@
 #++
 
 class ProjectCustomField < CustomField
+  include CustomField::Sectionable
+
   belongs_to :project_custom_field_section, class_name: "ProjectCustomFieldSection", foreign_key: :custom_field_section_id,
                                             inverse_of: :custom_fields
   has_many :project_custom_field_project_mappings, class_name: "ProjectCustomFieldProjectMapping", foreign_key: :custom_field_id,
                                                    dependent: :destroy, inverse_of: :project_custom_field
   has_many :projects, through: :project_custom_field_project_mappings
 
-  validates :custom_field_section_id, presence: true
-
-  after_create_commit :add_to_section_order
-  after_destroy_commit :remove_from_section_order
   after_save :activate_required_field_in_all_projects, if: :is_for_all?
 
   # Relevant for user fields to allow membership assignment
@@ -156,14 +154,5 @@ class ProjectCustomField < CustomField
       Project.pluck(:id).map { |project_id| { project_id:, custom_field_id: id } },
       unique_by: %i[custom_field_id project_id]
     )
-  end
-
-  def add_to_section_order
-    project_custom_field_section.add_to_order(column_name)
-  end
-
-  def remove_from_section_order
-    section = project_custom_field_section
-    section.remove_from_order(column_name) unless section.nil? || section.frozen?
   end
 end

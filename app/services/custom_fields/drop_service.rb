@@ -28,12 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectCustomFields
+module CustomFields
   class DropService < ::BaseServices::BaseCallable
-    def initialize(user:, project_custom_field:)
+    def initialize(user:, custom_field:)
       super()
       @user = user
-      @project_custom_field = project_custom_field
+      @custom_field = custom_field
     end
 
     def perform
@@ -52,7 +52,7 @@ module ProjectCustomFields
 
     def perform_drop(service_call, params)
       section_changed, current_section, old_section = move_to_target_section(params)
-      current_section.add_to_order(@project_custom_field.column_name, position: params[:position]&.to_i)
+      current_section.add_to_order(@custom_field.column_name, position: params[:position]&.to_i)
 
       service_call.success = true
       service_call.result = { section_changed:, current_section: current_section.reload, old_section: }
@@ -66,15 +66,15 @@ module ProjectCustomFields
     private
 
     def move_to_target_section(params)
-      current_section = @project_custom_field.project_custom_field_section
+      current_section = @custom_field.custom_field_section
       new_section_id = params[:target_id]&.to_i
 
       return [false, current_section, nil] if current_section.id == new_section_id
 
       old_section = current_section
-      current_section = ProjectCustomFieldSection.find(new_section_id)
-      old_section.remove_from_order(@project_custom_field.column_name)
-      @project_custom_field.update!(custom_field_section_id: current_section.id)
+      current_section = CustomFieldSection.find(new_section_id)
+      old_section.remove_from_order(@custom_field.column_name)
+      @custom_field.update!(custom_field_section_id: current_section.id)
 
       [true, current_section, old_section.reload]
     end
