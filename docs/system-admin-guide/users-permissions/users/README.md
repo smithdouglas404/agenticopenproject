@@ -40,13 +40,26 @@ Column headers can be clicked to toggle sort direction. Arrows indicate sort ord
 
 ## Filter users
 
-At the top of the user list is a filter box. Filter by status. group or name, then click the green **Apply** button to filter the list. Click the **Clear** button to reset the filter fields and refresh the list.
+Below the search panel is the **+ Add filter** form. Here, you can filter by group, status, name or username, and your list is automatically updated. Each filter button displays advanced filters to narrow down results with precision. Click the **x** symbol in front of each selected filter to clear the filter and the **x** symbol at the **top-right corner** to close the form.
 
-* **Status** - select from Active, All or Locked Temporarily. Each selection shows the number of users.
+![Add filter form](openproject_systemguide_add_filters.png)
+
 * **Group** - select from the list of existing groups.
-* **Name** - enter any text; this can contain a "%" wild card for 0 or more characters. The filter applies to user name, first name, last name and email address.
+* **Status** - select from Active, Registered, Locked, Invited, Deleted. Each selection shows the number of users.
+* **Name** - enter any text; this can contain a "%" wild card for 0 or more characters. The filter applies to first name, last name and email address.
+* **Username** - enter any text; this can contain a "%" wild card for 0 or more characters. The filter applies to user name.
 
 ![Filter users in OpenProject](openproject_systemguide_filter_users.png)
+
+## Configure view
+
+To configure how the table of users is displayed, click on the More menu **(...)**. 
+
+![Menu for configure view](openproject_systemguide_configure_view.png)
+
+This opens up a form where you can add columns, or manage and reorder columns via drag and drop. Click **Apply** to save your changes.
+
+![Open configure view form](openproject_systemguide_configure_view_form.png)
 
 ## Lock and unlock users
 
