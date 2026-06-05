@@ -34,6 +34,8 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   include WorkPackages::ActivitiesTab::JournalSortingInquirable
   include WorkPackages::ActivitiesTab::StimulusControllers
 
+  Filters = WorkPackages::ActivitiesTab::Filters
+
   before_action :find_work_package
   before_action :find_journal, only: %i[emoji_actions item_actions edit cancel_edit update toggle_reaction]
   before_action :set_filter
@@ -184,7 +186,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
       update_via_turbo_stream(
         component: WorkPackages::ActivitiesTab::Journals::ItemComponent::Show.new(
           journal: @journal,
-          filter: params[:filter]&.to_sym || :all,
+          filter: params[:filter]&.to_sym || Filters::ALL,
           grouped_emoji_reactions: grouped_emoji_reactions_for_journal
         )
       )
@@ -245,7 +247,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def set_filter
-    @filter = (params[:filter] || params.dig(:journal, :filter))&.to_sym || :all
+    @filter = (params[:filter] || params.dig(:journal, :filter))&.to_sym || Filters::ALL
   end
 
   def sanitized_journal_notes
@@ -257,7 +259,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def handle_successful_create_call(call)
-    if @filter == :only_changes
+    if @filter == Filters::ONLY_CHANGES
       handle_only_changes_filter_on_create
     else
       handle_other_filters_on_create(call)
@@ -265,7 +267,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def handle_only_changes_filter_on_create
-    @filter = :all # reset filter
+    @filter = Filters::ALL # reset filter
     # we need to update the whole tab in order to reset the filter
     # as the added journal would not be shown otherwise
     replace_whole_tab
@@ -362,7 +364,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
                  .journals
                  .internal_visible
 
-    if @filter == :only_comments
+    if @filter == Filters::ONLY_COMMENTS
       journals = journals.where.not(notes: "")
     end
 

@@ -62,12 +62,14 @@ class WorkPackages::ActivitiesTab::Paginator
   include Pagy::Method
   include WorkPackages::ActivitiesTab::JournalSortingInquirable
 
+  Filters = WorkPackages::ActivitiesTab::Filters
+
   attr_reader :work_package, :params, :filter, :resolved_anchor
 
   def initialize(work_package, params = {})
     @work_package = work_package
     @params = params
-    @filter = params[:filter]&.to_sym || :all
+    @filter = params[:filter]&.to_sym || Filters::ALL
     @resolved_anchor = nil
   end
 
@@ -103,7 +105,7 @@ class WorkPackages::ActivitiesTab::Paginator
   # An unresolvable anchor falls back to page 1; any params[:page] sent
   # alongside is ignored, since the anchor is the explicit navigation intent.
   def pagy_at_anchor(anchor_type, target_record_id)
-    scope = activities_scope(filter: :all)
+    scope = activities_scope(filter: Filters::ALL)
     page = page_for_anchor(scope, anchor_type, target_record_id) || 1
     pagy(:offset, scope, **pagy_options, page:)
   end
@@ -157,8 +159,8 @@ class WorkPackages::ActivitiesTab::Paginator
 
   def filtered_journals(filter)
     case filter
-    when :only_comments then apply_comments_only_filter(visible_journals)
-    when :only_changes then apply_changes_only_filter(visible_journals)
+    when Filters::ONLY_COMMENTS then apply_comments_only_filter(visible_journals)
+    when Filters::ONLY_CHANGES then apply_changes_only_filter(visible_journals)
     else visible_journals
     end
   end
@@ -172,7 +174,7 @@ class WorkPackages::ActivitiesTab::Paginator
   # the changeset leg is merged in only when one exists — keeping the common
   # query scoped to the work package's own journals.
   def include_changesets?(filter)
-    filter != :only_comments && work_package.changesets.exists?
+    filter != Filters::ONLY_COMMENTS && work_package.changesets.exists?
   end
 
   def page_journals(page_relation)

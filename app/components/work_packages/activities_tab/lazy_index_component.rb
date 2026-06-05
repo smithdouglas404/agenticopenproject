@@ -37,7 +37,7 @@ module WorkPackages
       include WorkPackages::ActivitiesTab::SharedHelpers
       include WorkPackages::ActivitiesTab::StimulusControllers
 
-      def initialize(work_package:, journals:, paginator:, last_server_timestamp:, filter: :all, resolved_anchor: nil)
+      def initialize(work_package:, journals:, paginator:, last_server_timestamp:, filter: Filters::ALL, resolved_anchor: nil)
         super
 
         @work_package = work_package

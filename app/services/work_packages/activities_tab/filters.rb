@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-#
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,17 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages::ActivitiesTab::Journals
-  class HiddenForm < ApplicationForm
-    form do |journals_form|
-      journals_form.hidden(name: :last_update_timestamp, value: @last_server_timestamp)
-      journals_form.hidden(name: :filter, value: @filter)
-    end
-
-    def initialize(last_server_timestamp:, filter: WorkPackages::ActivitiesTab::Filters::ALL)
-      super()
-      @last_server_timestamp = last_server_timestamp
-      @filter = filter
+module WorkPackages
+  module ActivitiesTab
+    # Filter modes for the work package activity feed, shared by the controller,
+    # the paginator and the journal components. The frontend mirrors these as the
+    # matching string values on its filter Stimulus controller.
+    module Filters
+      ALL           = :all
+      ONLY_COMMENTS = :only_comments
+      ONLY_CHANGES  = :only_changes
     end
   end
 end
