@@ -35,11 +35,11 @@ class ProjectCustomField < CustomField
                                                    dependent: :destroy, inverse_of: :project_custom_field
   has_many :projects, through: :project_custom_field_project_mappings
 
-  acts_as_list column: :position_in_custom_field_section, scope: [:custom_field_section_id]
-
-  after_save :activate_required_field_in_all_projects, if: :is_for_all?
-
   validates :custom_field_section_id, presence: true
+
+  after_create_commit :add_to_section_order
+  after_destroy_commit :remove_from_section_order
+  after_save :activate_required_field_in_all_projects, if: :is_for_all?
 
   # Relevant for user fields to allow membership assignment
   has_one :custom_fields_role, foreign_key: :custom_field_id, dependent: :destroy, inverse_of: :custom_field
@@ -156,5 +156,14 @@ class ProjectCustomField < CustomField
       Project.pluck(:id).map { |project_id| { project_id:, custom_field_id: id } },
       unique_by: %i[custom_field_id project_id]
     )
+  end
+
+  def add_to_section_order
+    project_custom_field_section.add_to_order(column_name)
+  end
+
+  def remove_from_section_order
+    section = project_custom_field_section
+    section.remove_from_order(column_name) unless section.nil? || section.frozen?
   end
 end

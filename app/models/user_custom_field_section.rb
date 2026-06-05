@@ -78,8 +78,4 @@ class UserCustomFieldSection < CustomFieldSection
   def untitled?
     name.blank?
   end
-
-  def custom_fields_by_key
-    custom_fields.index_by(&:column_name)
-  end
 end

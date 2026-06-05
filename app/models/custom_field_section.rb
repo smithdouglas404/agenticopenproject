@@ -66,6 +66,15 @@ class CustomFieldSection < ApplicationRecord
   end
 
   # move_to: :highest | :higher | :lower | :lowest
+  def custom_fields_by_key
+    custom_fields.index_by(&:column_name)
+  end
+
+  def custom_fields_in_order
+    cf_by_key = custom_fields_by_key
+    attribute_order.filter_map { |key| cf_by_key[key] }
+  end
+
   def move_in_order(key, move_to)
     idx = attribute_order.index(key)
     return unless idx

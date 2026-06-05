@@ -52,7 +52,7 @@
                 menu.with_show_button(icon: "kebab-horizontal", "aria-label": t("settings.project_attributes.label_section_actions"), scheme: :invisible)
                 edit_action_item(menu)
                 move_actions(menu)
-                if @project_custom_fields.empty?
+                if @ordered_cfs.empty?
                   delete_action_item(menu)
                 else
                   disabled_delete_action_item(menu)
@@ -74,7 +74,7 @@
           end
         end
       end
-      if @project_custom_fields.empty?
+      if @ordered_cfs.empty?
         component.with_row(data: { "empty-list-item": true }) do
           flex_layout(align_items: :center, justify_content: :space_between) do |empty_list_container|
             empty_list_container.with_column(ml: 4, mr: 2) do
@@ -102,15 +102,13 @@
           end
         end
       else
-        first_and_last = [@project_custom_fields.first, @project_custom_fields.last]
-        @project_custom_fields.each do |project_custom_field|
-          component.with_row(
-            data: draggable_item_config(project_custom_field)
-          ) do
+        @ordered_cfs.each_with_index do |cf, index|
+          component.with_row(data: draggable_item_config(cf)) do
             render(
               custom_field_row_component_class.new(
-                project_custom_field:,
-                first_and_last:
+                project_custom_field: cf,
+                first: index == 0,
+                last: index == @ordered_cfs.size - 1
               )
             )
           end
