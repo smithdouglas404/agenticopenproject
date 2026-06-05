@@ -20,15 +20,16 @@ To manage users click on your avatar (top right corner) and select **Administrat
 
 In the Community edition there is no limit to the number of users. In Enterprise editions (cloud and on-premises) the user limit is based on your subscription. The number of users for your subscription is thus not bound to names. For example, if you block a user you can add a new one without upgrading.
 
-| Topic                                           | Content                                                  |
-| ----------------------------------------------- | -------------------------------------------------------- |
-| [User list](#user-list)                         | Manage all users in OpenProject.                         |
-| [Filter users](#filter-users)                   | Filter users in the list.                                |
-| [Lock and unlock users](#lock-and-unlock-users) | Block a user permanently in the system or unlock a user. |
-| [Create users](#create-users)                   | Invite or create new users. Resend or delete user invitations                              |
-| [Manage user settings](#manage-user-settings)   | Manage user details.                                     |
-| [Authentication](#authentication)               | Set and use authentication methods.                      |
-| [Delete users](#delete-users)                   | Delete a user from the system.                           |
+| Topic                                           | Content                                                      |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| [User list](#user-list)                         | Manage all users in OpenProject.                             |
+| [Filter users](#filter-users)                   | Filter users in the list.                                    |
+| [Configure view](#configure-view)               | Configure how user information is displayed.                 |
+| [Lock and unlock users](#lock-and-unlock-users) | Block a user permanently in the system or unlock a user.     |
+| [Create users](#create-users)                   | Invite or create new users. Resend or delete user invitations |
+| [Manage user settings](#manage-user-settings)   | Manage user details.                                         |
+| [Authentication](#authentication)               | Set and use authentication methods.                          |
+| [Delete users](#delete-users)                   | Delete a user from the system.                               |
 
 ## User list
 
