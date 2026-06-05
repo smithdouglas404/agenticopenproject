@@ -33,10 +33,11 @@ class Activities::DocumentActivityProvider < Activities::BaseActivityProvider
                         permission: :view_documents
 
   def event_query_projection
+    journals = Journal.arel_table.name
     [
       activity_journal_projection_statement(:title, "document_title"),
       activity_journal_projection_statement(:project_id, "project_id"),
-      "MAX(#{Journal.arel_table.name}.version) OVER (PARTITION BY #{Journal.arel_table.name}.journable_id) AS journable_max_version"
+      Arel.sql("MAX(#{journals}.version) OVER (PARTITION BY #{journals}.journable_id) AS journable_max_version")
     ]
   end
 
