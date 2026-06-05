@@ -29,16 +29,18 @@
   ++#
 %>
 
-<%
-  helpers.content_controller(
-    "documents--init-yjs-provider",
-    "documents--init-yjs-provider-hocuspocus-url-value": Setting.collaborative_editing_hocuspocus_url,
-    "documents--init-yjs-provider-token-payload-value": token_payload,
-    "documents--init-yjs-provider-document-name-value": resource_url,
-    "documents--init-yjs-provider-token-expires-in-seconds-value": token_expires_in_seconds,
-    "documents--init-yjs-provider-refresh-url-value": refresh_token_url
-  )
-%>
+<% unless readonly %>
+  <%
+    helpers.content_controller(
+      "documents--init-yjs-provider",
+      "documents--init-yjs-provider-hocuspocus-url-value": Setting.collaborative_editing_hocuspocus_url,
+      "documents--init-yjs-provider-token-payload-value": token_payload,
+      "documents--init-yjs-provider-document-name-value": resource_url,
+      "documents--init-yjs-provider-token-expires-in-seconds-value": token_expires_in_seconds,
+      "documents--init-yjs-provider-refresh-url-value": refresh_token_url
+    )
+  %>
+<% end %>
 
 <%=
   render(
@@ -50,7 +52,10 @@
     )
   ) do |layout|
     layout.with_header do
-      render Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:)
+      safe_join([
+        render(Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:, version_journal:)),
+        version_journal ? render(Documents::ShowEditView::VersionBannerComponent.new(document, version_journal:, project:)) : ""
+      ])
     end
 
     layout.with_tab(name: I18n.t("activerecord.models.document"), show_left: true) do
@@ -85,6 +90,12 @@
 
     layout.with_tab(name: t(:label_attachment_plural), active: true) do
       render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, readonly:)
+    end
+
+    layout.with_tab(name: I18n.t("documents.versions.tab_title")) do
+      turbo_frame_tag(dom_id(document, :versions), src: document_versions_path(document), loading: :lazy) do
+        tag.div(class: "loading-indicator -compact")
+      end
     end
   end
 %>

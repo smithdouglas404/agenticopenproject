@@ -27,22 +27,44 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
 module Documents
-  module ShowEditView
-    class BlockNoteEditorComponent < ApplicationComponent
-      include OpPrimer::ComponentHelpers
+  class VersionsController < ApplicationController
+    before_action :find_document
+    before_action :authorize
 
-      alias_method :document, :model
+    def index
+      @max_version = @document.journals.maximum(:version).to_i
+      journals_scope = @document.journals
+        .preload(:user, :data)
+        .order(version: :desc)
 
-      options :project, :token_payload, :resource_url, :token_expires_in_seconds, :state, :readonly, :version_journal
+      page = [params[:page].to_i, 1].max
+      per_page = page == 1 ? 20 : 50
 
-      private
+      # For pages after the first, offset by 20 + (page - 2) * 50
+      offset = page == 1 ? 0 : 20 + (page - 2) * 50
+      @journals = journals_scope.offset(offset).limit(per_page + 1)
 
-      def refresh_token_url
-        project_document_refresh_token_path(project, document)
+      @has_more = @journals.size > per_page
+      @journals = @journals.first(per_page)
+      @next_page = @has_more ? page + 1 : nil
+
+      respond_to do |format|
+        format.html
+        format.turbo_stream
       end
+    end
+
+    private
+
+    def find_document
+      @document = Document.visible.find(params[:document_id])
+      @project = @document.project
+    end
+
+    def default_breadcrumb
+      @document.title
     end
   end
 end

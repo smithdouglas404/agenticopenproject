@@ -27,22 +27,21 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
 module Documents
-  module ShowEditView
-    class BlockNoteEditorComponent < ApplicationComponent
-      include OpPrimer::ComponentHelpers
+  class RestoreVersionService
+    def initialize(user:, document:)
+      @user = user
+      @document = document
+    end
 
-      alias_method :document, :model
+    def call(journal:)
+      attrs = { description: journal.data.description }
+      attrs[:content_binary] = journal.data.content_binary if @document.collaborative?
 
-      options :project, :token_payload, :resource_url, :token_expires_in_seconds, :state, :readonly, :version_journal
-
-      private
-
-      def refresh_token_url
-        project_document_refresh_token_path(project, document)
-      end
+      Documents::UpdateService
+        .new(user: @user, model: @document)
+        .call(attrs)
     end
   end
 end

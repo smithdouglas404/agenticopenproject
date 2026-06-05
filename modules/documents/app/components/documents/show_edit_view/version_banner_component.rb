@@ -27,21 +27,34 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
 module Documents
   module ShowEditView
-    class BlockNoteEditorComponent < ApplicationComponent
+    class VersionBannerComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
       alias_method :document, :model
 
-      options :project, :token_payload, :resource_url, :token_expires_in_seconds, :state, :readonly, :version_journal
+      options :version_journal, :project
 
-      private
+      def author
+        version_journal.user
+      end
 
-      def refresh_token_url
-        project_document_refresh_token_path(project, document)
+      def created_at
+        version_journal.created_at
+      end
+
+      def can_manage?
+        User.current.allowed_in_project?(:manage_documents, project)
+      end
+
+      def restore_path
+        restore_version_document_path(document, version_id: version_journal.id)
+      end
+
+      def save_copy_path
+        save_copy_document_path(document, version_id: version_journal.id)
       end
     end
   end

@@ -35,7 +35,8 @@ class Activities::DocumentActivityProvider < Activities::BaseActivityProvider
   def event_query_projection
     [
       activity_journal_projection_statement(:title, "document_title"),
-      activity_journal_projection_statement(:project_id, "project_id")
+      activity_journal_projection_statement(:project_id, "project_id"),
+      "MAX(#{Journal.arel_table.name}.version) OVER (PARTITION BY #{Journal.arel_table.name}.journable_id) AS journable_max_version"
     ]
   end
 
@@ -48,16 +49,24 @@ class Activities::DocumentActivityProvider < Activities::BaseActivityProvider
   end
 
   def event_path(event)
-    url_helpers.document_url(url_helper_parameter(event))
+    url_helpers.document_url(versioned_url_params(event))
   end
 
   def event_url(event)
-    url_helpers.document_url(url_helper_parameter(event))
+    url_helpers.document_url(versioned_url_params(event))
   end
 
   private
 
-  def url_helper_parameter(event)
-    event["journable_id"]
+  def versioned_url_params(event)
+    document_id = event["journable_id"]
+    journal_version = event["version"].to_i
+    max_version = event["journable_max_version"].to_i
+
+    if journal_version < max_version
+      { id: document_id, version: event["event_id"] }
+    else
+      document_id
+    end
   end
 end

@@ -27,21 +27,43 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
 module Documents
-  module ShowEditView
-    class BlockNoteEditorComponent < ApplicationComponent
-      include OpPrimer::ComponentHelpers
+  class SaveCopyService
+    def initialize(user:, document:)
+      @user = user
+      @document = document
+    end
 
-      alias_method :document, :model
+    def call(journal:)
+      attrs = {
+        title: "#{@document.title} (copy)",
+        description: journal.data.description,
+        project: @document.project,
+        type_id: @document.type_id,
+        kind: @document.kind
+      }
+      attrs[:content_binary] = journal.data.content_binary if @document.collaborative?
 
-      options :project, :token_payload, :resource_url, :token_expires_in_seconds, :state, :readonly, :version_journal
+      result = Documents::CreateService
+        .new(user: @user)
+        .call(attrs)
 
-      private
+      copy_attachments(result.result) if result.success?
 
-      def refresh_token_url
-        project_document_refresh_token_path(project, document)
+      result
+    end
+
+    private
+
+    def copy_attachments(new_document)
+      @document.attachments.each do |source|
+        copy = source.copy
+        copy.container = new_document
+        copy.author = @user
+        copy.save!
+      rescue StandardError => e
+        Rails.logger.error("Failed to copy attachment #{source.id} to document #{new_document.id}: #{e.message}")
       end
     end
   end

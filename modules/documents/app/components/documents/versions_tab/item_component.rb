@@ -27,21 +27,49 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
 module Documents
-  module ShowEditView
-    class BlockNoteEditorComponent < ApplicationComponent
+  module VersionsTab
+    class ItemComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      alias_method :document, :model
+      alias_method :journal, :model
 
-      options :project, :token_payload, :resource_url, :token_expires_in_seconds, :state, :readonly, :version_journal
+      options :document, :max_version
 
-      private
+      def author
+        journal.user
+      end
 
-      def refresh_token_url
-        project_document_refresh_token_path(project, document)
+      def latest?
+        journal.version == max_version
+      end
+
+      def version_url
+        return document_path(document) if latest?
+
+        document_path(document, version: journal.id)
+      end
+
+      def content_changed?
+        journal.version == 1 ||
+          journal.details.key?("content_binary") ||
+          journal.details.key?("description")
+      end
+
+      def change_details
+        details = []
+
+        if journal.version == 1
+          details << I18n.t("documents.versions.created")
+        else
+          details << I18n.t("documents.versions.content_updated") if journal.details[:content_binary].present?
+          details << I18n.t("documents.versions.description_updated") if journal.details[:description].present?
+          details << I18n.t("documents.versions.title_updated") if journal.details[:title].present?
+          details << I18n.t("documents.versions.type_updated") if journal.details[:type_id].present?
+        end
+
+        details
       end
     end
   end

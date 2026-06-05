@@ -29,33 +29,19 @@
   ++#
 %>
 
-<% html_title(t(:label_document_plural), @document.title) %>
+<%= turbo_frame_tag dom_id(@document, :versions) do %>
+  <ul id="<%= dom_id(@document, :versions_list) %>" class="op-activity-list">
+    <% @journals.each do |journal| %>
+      <%= render Documents::VersionsTab::ItemComponent.new(journal, document: @document, max_version: @max_version) %>
+    <% end %>
+  </ul>
 
-<% if @document.collaborative? %>
-  <% if Setting.real_time_text_collaboration_enabled? %>
-    <%=
-      render(
-        Documents::ShowEditView::BlockNoteEditorComponent.new(
-          @document,
-          project: @project,
-          token_payload: @token_payload,
-          state: @state,
-          resource_url: @resource_url,
-          token_expires_in_seconds: @token_expires_in_seconds,
-          readonly: @readonly,
-          version_journal: @version_journal
-        )
-      )
-    %>
-  <% else %>
-    <%=
-      render(
-        Documents::ShowEditView::CollaborationDisabledNoticeComponent.new(
-          @document, project: @project, state: :show
-        )
-      )
-    %>
+  <% if @next_page %>
+    <div id="<%= dom_id(@document, :versions_load_more) %>">
+      <%= link_to I18n.t("documents.versions.load_more"),
+                  document_versions_path(@document, page: @next_page),
+                  data: { turbo_stream: true },
+                  class: "button -secondary" %>
+    </div>
   <% end %>
-<% else %>
-  <%= render partial: "classic_show", locals: { document: @document, project: @project, attachments: @attachments, version_journal: @version_journal } %>
 <% end %>

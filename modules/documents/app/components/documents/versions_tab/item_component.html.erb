@@ -29,33 +29,36 @@
   ++#
 %>
 
-<% html_title(t(:label_document_plural), @document.title) %>
+<li class="op-activity-list--item">
+  <div class="op-activity-list--item-title">
+    <% if content_changed? %>
+      <%= link_to I18n.t("documents.versions.version_label", version: journal.version), version_url %>
+      <% if latest? %>
+        <span class="spot-caption">(<%= I18n.t("documents.versions.current") %>)</span>
+      <% end %>
+    <% else %>
+      <%= I18n.t("documents.versions.version_label", version: journal.version) %>
+    <% end %>
+  </div>
 
-<% if @document.collaborative? %>
-  <% if Setting.real_time_text_collaboration_enabled? %>
-    <%=
-      render(
-        Documents::ShowEditView::BlockNoteEditorComponent.new(
-          @document,
-          project: @project,
-          token_payload: @token_payload,
-          state: @state,
-          resource_url: @resource_url,
-          token_expires_in_seconds: @token_expires_in_seconds,
-          readonly: @readonly,
-          version_journal: @version_journal
-        )
+  <%=
+    render(
+      Activities::ItemSubtitleComponent.new(
+        user: author,
+        datetime: journal.created_at,
+        is_creation: journal.version == 1,
+        is_deletion: false,
+        is_work_package: false,
+        journable_type: "Document"
       )
-    %>
-  <% else %>
-    <%=
-      render(
-        Documents::ShowEditView::CollaborationDisabledNoticeComponent.new(
-          @document, project: @project, state: :show
-        )
-      )
-    %>
+    )
+  %>
+
+  <% unless change_details.empty? %>
+    <ul class="op-activity-list--item-details">
+      <% change_details.each do |detail| %>
+        <li class="op-activity-list--item-detail"><%= detail %></li>
+      <% end %>
+    </ul>
   <% end %>
-<% else %>
-  <%= render partial: "classic_show", locals: { document: @document, project: @project, attachments: @attachments, version_journal: @version_journal } %>
-<% end %>
+</li>
