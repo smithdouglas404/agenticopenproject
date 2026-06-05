@@ -31,6 +31,7 @@
 module Backlogs
   class BacklogController < BaseController
     include WorkPackages::WithSplitView
+    include Backlogs::Concerns::ContainerLoading
 
     current_menu_item %i[show details] do
       :backlog
@@ -39,7 +40,7 @@ module Backlogs
     def show
       case turbo_frame_request_id
       when "backlogs_container"
-        load_backlogs
+        load_container_data
 
         render partial: "backlogs/backlog/backlog_list", layout: false
       else
@@ -51,7 +52,7 @@ module Backlogs
       if turbo_frame_request?
         render "work_packages/split_view", layout: false
       else
-        load_backlogs
+        load_container_data
 
         render "backlogs/backlog/show"
       end
@@ -61,31 +62,6 @@ module Backlogs
 
     def split_view_base_route
       project_backlogs_backlog_path(@project, request.query_parameters)
-    end
-
-    def load_backlogs
-      @backlog_buckets = BacklogBucket.for_project(@project)
-
-      @sprints = Sprint.for_project(@project)
-                       .not_completed
-                       .order_by_date
-                       .includes(:project, :task_boards)
-      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-
-      @work_packages_by_sprint_id = WorkPackage
-                                      .where(sprint: @sprints, project: @project)
-                                      .includes(:type, :status, :assigned_to, :priority, :parent)
-                                      .order_by_position
-                                      .group_by(&:sprint_id)
-
-      # Includes the work packages of both the buckets and the inbox.
-      # This has the drawback of loading more work packages than are displayed in the inbox as pagination
-      # will only show the top 50 and lowest 10 work packages.
-      # But doing only a single query to the database has its benefits, and currently this seems quicker.
-      @work_packages_by_backlog_id = WorkPackage
-                                       .in_backlog_for(project: @project)
-                                       .includes(:type, :status, :assigned_to, :priority, :parent)
-                                       .group_by(&:backlog_bucket_id)
     end
   end
 end

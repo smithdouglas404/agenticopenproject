@@ -31,6 +31,7 @@
 module Backlogs
   class WorkPackagesController < BaseController
     include OpTurbo::ComponentStream
+    include Backlogs::Concerns::ContainerLoading
 
     before_action :load_work_package
 
@@ -104,14 +105,11 @@ module Backlogs
     end
 
     def backlog_component
-      buckets = BacklogBucket.for_project(@project)
+      load_backlog_data
 
-      work_packages_by_backlog_id = WorkPackage
-                                       .in_backlog_for(project: @project)
-                                       .includes(:type, :status, :assigned_to, :priority, :parent)
-                                       .group_by(&:backlog_bucket_id)
-
-      Backlogs::BacklogComponent.new(buckets:, work_packages_by_backlog_id:, project: @project)
+      Backlogs::BacklogComponent.new(buckets: @backlog_buckets,
+                                     work_packages_by_backlog_id: @work_packages_by_backlog_id,
+                                     project: @project)
     end
 
     def load_work_package
