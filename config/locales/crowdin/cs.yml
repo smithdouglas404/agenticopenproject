@@ -149,8 +149,8 @@ cs:
         title: Jira configuration
         new: Nová konfigurace
       banner:
-        title: Beta - Try it out!
-        description: This Jira Migrator is currently in beta. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.
+        title: Beta verze - Vyzkoušejte si ji!
+        description: Tento Jira Migrátor je v současné době v beta verzi. Momentálně podporujeme pouze Jira Server/Data Center verze 10. a 11.x. Cloudové instance nejsou v tuto chvíli podporovány.
         contribution_callout: 'Please, help us improve the Jira Migrator with your feedback and private data donations. You can [join the development community](link) of the Jira Migrator.
 
           '
@@ -210,7 +210,7 @@ cs:
           instance_meta_fetching: Fetching meta data
           instance_meta_error: Error fetching meta data
           instance_meta_done: Meta data fetched
-          import_scope: Select scope
+          import_scope: Zvolte rozsah
           configuring: Select scope
           projects_meta_fetching: Fetching project data
           projects_meta_error: Error fetching project data
@@ -307,12 +307,12 @@ cs:
                 issues: Issues
                 issue_details: Issue description, history, comments and attachments
                 custom_fields: A subset of custom fields
-                users: Involved users and groups
+                users: Zapojení uživatelé a skupiny
             confirm_import:
               title: Import dat
               caption: Review your import settings and start the import
               caption_done: Completed
-              label_available_data: Data to be imported
+              label_available_data: Data k importu
               label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
@@ -321,11 +321,11 @@ cs:
             import_result:
               title: Import run results
               caption: Review import run or revert import
-              info: Import run was successful.
+              info: Import proběhl úspěšně.
               label_results: Importováno
               label_revert: Revert import
               button_revert: Revert import
-              button_done: Approve import
+              button_done: Schválit import
               preview_description: The imported data is currently in review mode. Click "Approve import" to make the import permanent or "Revert import" to undo all changes made in this import run.
               label_finalize_import: Approve import
               label_finalizing: Approving import...
@@ -1285,10 +1285,10 @@ cs:
         not_set: Nenastaveno
       future:
         title: Budoucí rozvrhy
-        description: Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically.
+        description: Naplánujte změny pracovního rozvrhu s předstihem. Jakmile datum nastane, vaše pracovní rozvrhy se automaticky aktualizují.
         add_button: Přidat budoucí rozvrh
         blank_title: Žádné budoucí rozvrhy
-        blank_description: Create a future schedule to plan changes ahead of time
+        blank_description: Vytvořte budoucí rozvrh pro včasné plánování změn
       history:
         title: Historie rozvrhu
         description: Prohlédněte si své minulé pracovní rozvrhy.
@@ -3755,10 +3755,10 @@ cs:
       label: Přidat…
   my_account:
     notifications_and_email:
-      title: Notification and email
+      title: Oznámení a e-mail
       tabs:
-        notifications: Notification settings
-        email_reminders: Email reminders
+        notifications: Nastavení oznámení
+        email_reminders: E-mailové připomínky
     access_tokens:
       description: Poskytovatelské tokeny vydává OpenProject a umožňuje tím přístup ostatním aplikacím. Klientské tokeny jsou vydávány jinými aplikacemi a umožňují OpenProjectu přistup k nim.
       no_results:
@@ -3772,7 +3772,7 @@ cs:
       simple_revoke_confirmation: Opravdu chcete zrušit tento token?
       tabs:
         client:
-          title: Client tokens
+          title: Klientské tokeny
         provider:
           title: Poskytovatelské tokeny
       token/api:
@@ -3800,8 +3800,8 @@ cs:
         table_title: Tokeny aplikací OAuth
         text_hint: OAuth application tokens allow third-party applications to connect with this OpenProject instance.
       oauth_client:
-        blank_description: There are no OAuth client tokens yet.
-        blank_title: No OAuth client tokens
+        blank_description: Zatím neexistují žádné tokeny OAuth.
+        blank_title: Žádné klientské tokeny OAuth
         failed: An error occurred and the token couldn't be removed. Please try again later.
         integration_type: Typ integrace
         table_title: Klientské tokeny OAuth
@@ -3848,9 +3848,9 @@ cs:
         document_added: Document added
         forum_messages: Forum message posted
         wiki_page_added: Wiki page added
-        wiki_page_updated: Wiki page updated
+        wiki_page_updated: Wiki stránka aktualizována
         membership_added: Membership added
-        membership_updated: Membership updated
+        membership_updated: Členství bylo aktualizováno
         submit_button: Update alerts
     notifications:
       participating:
@@ -3864,7 +3864,7 @@ cs:
         shared: Shared with me
       date_alerts:
         title: Date alerts
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        description: Automatická upozornění na blížící se důležitá data otevřených pracovních balíčků, do kterých jste zapojeni (přiřazený, odpovědný pracovník nebo pozorovatel).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -4680,11 +4680,11 @@ cs:
   label_continues_into_next_year: pokračování do dalšího roku
   label_end_date: Finish date
   label_working_days: Working days
-  label_non_working_times_with_count: "%{year} time off (%{count})"
-  label_non_working_times_summary: "%{year} summary"
-  label_total_user_non_working_times: Personal non-working days
-  label_total_global_non_working_days: Global non-working days
-  label_total_days_off: Total days off
+  label_non_working_times_with_count: Volna v roce %{year} (%{count})
+  label_non_working_times_summary: Souhrn roku %{year}
+  label_total_user_non_working_times: Osobní nepracovní dny
+  label_total_global_non_working_days: Dny pracovního klidu
+  label_total_days_off: Celkový počet dnů volna
   macro_execution_error: Chyba při provádění makra %{macro_name}
   macro_unavailable: Makro %{macro_name} nelze zobrazit.
   macro_unknown: Unknown or unsupported macro.
