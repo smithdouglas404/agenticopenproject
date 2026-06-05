@@ -43,7 +43,7 @@ module Backlogs
     private
 
     def filter_fields_for
-      backlog_filters.to_h
+      backlog_filter_params
         .except(filter_field)
         .flat_map do |name, value|
           if value.is_a?(Array)
