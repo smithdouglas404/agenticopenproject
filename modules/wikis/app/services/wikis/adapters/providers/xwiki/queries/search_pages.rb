@@ -36,7 +36,9 @@ module Wikis
           class SearchPages < BaseQuery
             include Concerns::XWikiQuery
 
-            MAXIMUM_RESULTS = 50
+            # Limiting result size rather strictly, because each result will cause another HTTP call to XWiki, this does not
+            # scale well. A stricter limit improves the worst case latency.
+            MAXIMUM_RESULTS = 20
 
             def call(input_data:, auth_strategy:)
               query = { q: "\"#{escape_quotes input_data.query}\"", number: MAXIMUM_RESULTS }
