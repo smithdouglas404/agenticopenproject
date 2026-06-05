@@ -110,7 +110,7 @@ class WorkPackages::ActivitiesTab::Paginator
 
   def changeset_journals
     Journal.where(journable_type: Changeset.name,
-                  journable_id: work_package.changesets.reorder(nil).select(:id))
+                  journable_id: work_package.changesets.except(:order).select(:id))
   end
 
   # Most work packages have no changesets (revisions are a legacy feature), so
