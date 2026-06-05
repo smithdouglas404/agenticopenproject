@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   resources :relation_wiki_page_links, only: %i[create destroy], controller: "wikis/relation_page_links" do
     collection do
       get :link_existing_dialog
+      post :create_and_link_new_wiki_page
     end
 
     member do
@@ -73,5 +74,10 @@ Rails.application.routes.draw do
     get :load
   end
 
-  resource :search_wiki_pages, controller: "wikis/search_pages", only: %i[show]
+  resource :wiki_pages, controller: "wikis/pages", only: [] do
+    get :search
+    get :create_new_page_dialog
+    post :continue_create_new_page_dialog
+    post :create_and_link
+  end
 end

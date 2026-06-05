@@ -29,14 +29,38 @@
 #++
 
 module Wikis
-  class SearchPagesController < ApplicationController
+  class PagesController < ApplicationController
+    include OpTurbo::ComponentStream
     include Dry::Monads[:result]
+
+    before_action :authorize, except: %i[search]
 
     # The search is project independent and thus permission independent. The user will see results according to
     # the permissions set in each wiki.
-    no_authorization_required! :show
+    no_authorization_required! :search
 
-    def show
+    def create_and_link
+      # TODO: implement service to create page and link
+      render_error_flash_message_via_turbo_stream(
+        message: "Not implemented yet. Trying to create a new page with #{create_new_page_params.to_h}"
+      )
+      respond_to_with_turbo_streams
+    end
+
+    def create_new_page_dialog
+      linkable = WorkPackage.visible.find(params.expect(:linkable))
+      provider = Provider.visible.find(params.expect(:provider))
+      respond_with_dialog Wikis::CreateNewWikiPageDialog.new(linkable:, provider:, title: nil)
+    end
+
+    def continue_create_new_page_dialog
+      params = create_new_page_params
+      linkable = WorkPackage.visible.find(params[:linkable_id])
+      provider = Provider.visible.find(params[:provider_id])
+      respond_with_dialog Wikis::CreateNewWikiPageDialog.new(linkable:, provider:, title: params[:title])
+    end
+
+    def search
       provider = Provider.visible.find(params.expect(:provider_id))
       query = params[:query]
       form_name = params[:name]
@@ -55,6 +79,20 @@ module Wikis
         provider.auth_strategy_for(current_user).bind do |auth_strategy|
           provider.resolve("queries.search_pages").call(input_data:, auth_strategy:)
         end
+      end
+    end
+
+    def create_new_page_params
+      params.expect(wikis_forms_create_new_wiki_page_form_model: %i[provider_id linkable_type linkable_id title])
+            .merge(parent_page_identifier: parse_identifier(params[:wiki_page_selection]))
+    end
+
+    def parse_identifier(wiki_page_selection)
+      case wiki_page_selection
+      in [selected_page]
+        MultiJson.load(selected_page, symbolize_keys: true)[:value]
+      else
+        nil
       end
     end
   end
