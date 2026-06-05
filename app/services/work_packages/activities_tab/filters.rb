@@ -30,9 +30,6 @@
 
 module WorkPackages
   module ActivitiesTab
-    # Filter modes for the work package activity feed, shared by the controller,
-    # the paginator and the journal components. The frontend mirrors these as the
-    # matching string values on its filter Stimulus controller.
     module Filters
       ALL           = :all
       ONLY_COMMENTS = :only_comments
