@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,44 +26,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module OpenProject::Backlogs::Patches::WorkPackagePatch
+module WorkPackages::Scopes::InInboxFor
   extend ActiveSupport::Concern
 
-  included do
-    prepend InstanceMethods
-    extend ClassMethods
-
-    register_journal_formatted_fields "story_points", "position", formatter_key: :decimal
-
-    validates_numericality_of :story_points, only_integer: true,
-                                             allow_nil: true,
-                                             greater_than_or_equal_to: 0,
-                                             less_than: 10_000,
-                                             if: -> { backlogs_enabled? }
-
-    belongs_to :sprint, optional: true
-    belongs_to :backlog_bucket, optional: true
-
-    include OpenProject::Backlogs::List
-
-    scopes :in_backlog_for
-    scopes :in_inbox_for
-    scopes :with_backlogs_neighbours
-    scopes :without_status_considered_closed
-    scopes :without_excluded_type
-  end
-
-  module ClassMethods
-    def order_by_position
-      order(arel_table[:position].asc.nulls_last)
-    end
-  end
-
-  module InstanceMethods
-    def backlogs_enabled?
-      project&.backlogs_enabled?
+  class_methods do
+    def in_inbox_for(project:)
+      in_backlog_for(project:)
+        .where(backlog_bucket: nil)
     end
   end
 end

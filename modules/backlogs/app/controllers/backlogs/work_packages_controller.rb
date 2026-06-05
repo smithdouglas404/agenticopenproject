@@ -127,7 +127,7 @@ module Backlogs
       elsif @work_package.backlog_bucket_id?
         @work_packages.merge(@work_package.backlog_bucket.displayed_work_packages)
       else
-        @work_packages.merge(WorkPackage.in_backlog_for(project: @project).where(backlog_bucket_id: nil))
+        @work_packages.merge(WorkPackage.in_inbox_for(project: @project))
       end
     end
   end
