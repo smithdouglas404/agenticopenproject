@@ -28,18 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "dry/core/container/stub"
-require "dry/monads"
+module Wikis
+  module Adapters
+    module Providers
+      module XWiki
+        module Queries
+          module Internal
+            # Fetches the list of all wiki IDs from an XWiki farm.
+            # Used as a preflight by other queries that need to iterate over all wikis.
+            # Not registered in the IoC container — call directly from XWiki queries only.
+            # Returns Success(["xwiki", "mywiki", ...])
+            class Wikis < BaseQuery
+              include Concerns::XWikiQuery
 
-Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
-
-RSpec.configure do |config|
-  config.include Dry::Monads[:result]
-
-  config.prepend_before do
-    Wikis::Adapters::Registry.enable_stubs!
-  end
-  config.append_after do
-    Wikis::Adapters::Registry.unstub
+              def call(http:)
+                handle_response(http.get(rest_url("wikis"))) do |data|
+                  success((data["wikis"] || []).filter_map { it["id"] })
+                end
+              end
+            end
+          end
+        end
+      end
+    end
   end
 end

@@ -34,23 +34,32 @@ module Wikis
       module XWiki
         module Queries
           class ReferencingPages < BaseQuery
-            def call(input_data:, **)
-              # TODO: use real API endpoints once available
+            include Concerns::XWikiQuery
 
-              title = [
-                "What makes XWiki special?",
-                "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-              ]
-
-              results = []
-
-              if input_data.linkable.id % 2 == 0
-                results << Success(Results::PageInfo.new(identifier: "1337", title: title.sample, href: "#", provider:))
-                results << Success(Results::PageInfo.new(identifier: "1338", title: title.sample, href: "#", provider:))
+            def call(input_data:, auth_strategy:)
+              authenticated(auth_strategy) do |http|
+                Internal::Wikis.new(model: provider).call(http:).bind do |wiki_names|
+                  wiki_names.reduce(Success([])) do |acc, wiki_name|
+                    acc.bind do |results|
+                      search_wiki(wiki_name:, input_data:, http:, auth_strategy:)
+                        .fmap { results + it }
+                    end
+                  end
+                end
               end
+            end
 
-              success(results)
+            private
+
+            def search_wiki(wiki_name:, input_data:, http:, auth_strategy:)
+              url = rest_url("wikis/#{wiki_name}/openproject/links/workPackages/#{input_data.linkable.id}")
+              handle_response(http.get(url, params: { number: input_data.number })) do |data|
+                success(
+                  (data["searchResults"] || [])
+                    .uniq { |r| r["id"] }
+                    .map { page_info(identifier: it["id"], auth_strategy:) }
+                )
+              end
             end
           end
         end
