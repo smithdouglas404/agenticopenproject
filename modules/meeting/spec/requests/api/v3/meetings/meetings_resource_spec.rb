@@ -275,6 +275,34 @@ RSpec.describe "API v3 Meeting resource", content_type: :json do
         .at_path("title")
     end
 
+    context "when PATCHing the same participants multiple times" do
+      let(:participant_user) do
+        create(:user, member_with_permissions: { project => [:view_meetings] })
+      end
+      let(:body_with_participants) do
+        {
+          lockVersion: meeting.lock_version,
+          _links: {
+            participants: [{ href: api_v3_paths.user(participant_user.id) }]
+          }
+        }.to_json
+      end
+
+      it "does not create duplicate participant records" do
+        patch path, body_with_participants
+        expect(last_response).to have_http_status(:ok)
+
+        updated_lock = JSON.parse(last_response.body)["lockVersion"]
+        second_body = { lockVersion: updated_lock,
+                        _links: { participants: [{ href: api_v3_paths.user(participant_user.id) }] } }.to_json
+        patch path, second_body
+        expect(last_response).to have_http_status(:ok)
+
+        expect(meeting.participants.reload.where(user_id: participant_user.id).count).to eq(1)
+        expect(last_response.body).to have_json_size(1).at_path("_embedded/participants")
+      end
+    end
+
     context "without edit_meetings permission" do
       let(:permissions) { %i[view_meetings] }
 
