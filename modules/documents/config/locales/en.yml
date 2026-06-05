@@ -69,6 +69,7 @@ en:
       restore_confirm: "Are you sure you want to restore this version? The current version will remain accessible via the version history."
       restore_success: "Document version has been restored successfully."
       save_copy_success: "A copy of this document version has been created."
+      aria_version_entry: "Version entry"
       created: "Document created"
       content_updated: "Content updated"
       description_updated: "Description updated"

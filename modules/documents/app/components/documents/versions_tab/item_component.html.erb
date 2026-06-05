@@ -29,36 +29,56 @@
   ++#
 %>
 
-<li class="op-activity-list--item">
-  <div class="op-activity-list--item-title">
-    <% if content_changed? %>
-      <%= link_to I18n.t("documents.versions.version_label", version: journal.version), version_url %>
-      <% if latest? %>
-        <span class="spot-caption">(<%= I18n.t("documents.versions.current") %>)</span>
-      <% end %>
-    <% else %>
-      <%= I18n.t("documents.versions.version_label", version: journal.version) %>
-    <% end %>
-  </div>
+<%=
+  component_wrapper(class: "documents-versions-tab--item") do
+    flex_layout(
+      my: 2,
+      border: :left,
+      pl: 3,
+      classes: "work-packages-activities-tab-journals-item-component-details--journal-details-container"
+    ) do |item_container|
+      item_container.with_row(
+        flex_layout: true,
+        align_items: :center,
+        classes: "work-packages-activities-tab-journals-item-component-details--journal-details-header ellipsis"
+      ) do |header|
+        header.with_column(mr: 2, classes: "work-packages-activities-tab-journals-item-component-details--timeline-icon") do
+          render Primer::Beta::Octicon.new(icon: "history", size: :small, color: :subtle,
+                                          "aria-label": I18n.t("documents.versions.aria_version_entry"))
+        end
 
-  <%=
-    render(
-      Activities::ItemSubtitleComponent.new(
-        user: author,
-        datetime: journal.created_at,
-        is_creation: journal.version == 1,
-        is_deletion: false,
-        is_work_package: false,
-        journable_type: "Document"
-      )
-    )
-  %>
+        header.with_column(mr: 2) do
+          render Users::AvatarComponent.new(user: author, show_name: false, size: :mini)
+        end
 
-  <% unless change_details.empty? %>
-    <ul class="op-activity-list--item-details">
-      <% change_details.each do |detail| %>
-        <li class="op-activity-list--item-detail"><%= detail %></li>
-      <% end %>
-    </ul>
-  <% end %>
-</li>
+        header.with_column(mr: 1, classes: "ellipsis hidden-for-mobile") do
+          helpers.primer_link_to_user(author, scheme: :primary, font_weight: :bold)
+        end
+
+        header.with_column(mr: 1) do
+          render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
+            helpers.format_time(journal.created_at)
+          end
+        end
+      end
+
+      item_container.with_row(pl: 7, mt: 1) do
+        if content_changed?
+          link_to version_label, version_url,
+                  class: "spot-link",
+                  data: { turbo_frame: "_top" }
+        else
+          render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) { version_label }
+        end
+      end
+
+      unless change_details.empty?
+        item_container.with_row(pl: 7, mt: 1) do
+          render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
+            change_details.join(", ")
+          end
+        end
+      end
+    end
+  end
+%>

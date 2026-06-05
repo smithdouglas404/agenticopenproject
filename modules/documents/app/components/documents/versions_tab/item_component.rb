@@ -58,18 +58,20 @@ module Documents
       end
 
       def change_details
+        return [I18n.t("documents.versions.created")] if journal.version == 1
+
         details = []
-
-        if journal.version == 1
-          details << I18n.t("documents.versions.created")
-        else
-          details << I18n.t("documents.versions.content_updated") if journal.details[:content_binary].present?
-          details << I18n.t("documents.versions.description_updated") if journal.details[:description].present?
-          details << I18n.t("documents.versions.title_updated") if journal.details[:title].present?
-          details << I18n.t("documents.versions.type_updated") if journal.details[:type_id].present?
-        end
-
+        details << I18n.t("documents.versions.content_updated") if journal.details.key?("content_binary")
+        details << I18n.t("documents.versions.description_updated") if journal.details.key?("description")
+        details << I18n.t("documents.versions.title_updated") if journal.details.key?("title")
+        details << I18n.t("documents.versions.type_updated") if journal.details.key?("type_id")
         details
+      end
+
+      def version_label
+        label = I18n.t("documents.versions.version_label", version: journal.version)
+        label += " (#{I18n.t('documents.versions.current')})" if latest?
+        label
       end
     end
   end

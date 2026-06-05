@@ -37,7 +37,7 @@ module Documents
       @max_version = @document.journals.maximum(:version).to_i
       journals_scope = @document.journals
         .preload(:user, :data)
-        .order(version: :desc)
+        .reorder(version: :desc)
 
       page = [params[:page].to_i, 1].max
       per_page = page == 1 ? 20 : 50
