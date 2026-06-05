@@ -335,6 +335,7 @@ RSpec.describe "Search", :js, :selenium, with_settings: { per_page_options: "5" 
                               "subject")
         table.expect_work_package_listed(work_packages.last)
         filters.remove_filter("subject")
+        table.expect_work_package_listed(*work_packages[17..22]) # This line ensures that the table is completely rendered.
         page.find_by_id("filter-by-text-input").set(work_packages[5].subject)
         table.expect_work_package_subject(work_packages[5].subject)
         table.ensure_work_package_not_listed!(work_packages.last)
@@ -398,7 +399,6 @@ RSpec.describe "Search", :js, :selenium, with_settings: { per_page_options: "5" 
         expect(current_url).to include("q=Other+work+package")
         expect(current_url).to include("filter=work_packages")
         expect(current_url).to include("scope=&")
-
 
         table = Pages::EmbeddedWorkPackagesTable.new(find(".work-packages-embedded-view--container"))
         table.expect_work_package_count(1)
