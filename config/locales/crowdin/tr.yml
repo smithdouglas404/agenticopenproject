@@ -1722,6 +1722,7 @@ tr:
       attachment:
         attachment_content: Ek içeriği
         attachment_file_name: Ek dosya adı
+        charset: Character set
         content_type: İçerik tipi
         downloads: İndirmeler
         file: Dosya
@@ -1816,6 +1817,7 @@ tr:
         title: Başlık
         description: Açıklama
       member:
+        blocked: Blocked
         roles: Yetkiler
       notification:
         read_ian: Uygulama içi okuyun
@@ -2061,6 +2063,7 @@ tr:
         priority: Öncelik
         progress: Tamamlanma yüzdesi
         readonly: Salt okunur
+        relatable: Relatable to
         remaining_hours: Kalan çalışma
         remaining_time: Kalan çalışma
         sequence_number: Sıra numarası
@@ -3517,6 +3520,9 @@ tr:
     additional:
       projects: Bu bölümdeki görülebilir en yeni projeler.
       no_visible_projects: Bu durumda görünür bir proje yok.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Bu bölümdeki kaydolan en son kullanıcılar.
     blocks:
       community: OpenProject topluluğu
@@ -4085,6 +4091,7 @@ tr:
   label_journal_diff: Açıklama Karşılaştırması
   label_language: Dil
   label_languages: Diller
+  label_export_plural: Exports
   label_external_links: Harici Bağlantılar
   label_locale: Dil ve bölge
   label_jump_to_a_project: Projeye git...
@@ -4714,9 +4721,9 @@ tr:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Kullanıcının oturum açmasına izin vermek için şunlardan birini yapabilirsiniz:'
       a: Ödeme planınızı yükseltin ([here](upgrade_url))
       b: Mevcut bir kullanıcıyı kilitle veya sil ([buradan](users_url))
+      label: 'Kullanıcının oturum açmasına izin vermek için şunlardan birini yapabilirsiniz:'
   more_actions: Daha fazla işlev
   noscript_description: OpenProject'i kullanmak için JavaScript'i etkinleştirmeniz gerekiyor!
   noscript_heading: JavaScript kapalı
@@ -5236,6 +5243,10 @@ tr:
   setting_consent_required: Onay gerekli
   setting_consent_decline_mail: Onay iletişim posta adresi
   setting_cross_project_work_package_relations: Projeler arası iş paketi ilişkilerine izin ver
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Yılın ilk haftası
   setting_date_format: Tarih
   setting_default_language: Varsayılan dil
@@ -5274,6 +5285,9 @@ tr:
   setting_work_package_properties: İş paketi özellikleri
   setting_work_package_startdate_is_adddate: Yeni iş paketlerinde şu anki tarihi başlangıç tarihi olarak kullan
   setting_work_packages_projects_export_limit: İş paketleri / Projeler dışa aktarım limiti
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Tüm istekler için kullanıcı oturum açma, ad ve posta adresini girme
   setting_login_required: Kimlik doğrulaması gerekli
@@ -5969,6 +5983,17 @@ tr:
     warning: 'Haftanın hangi günlerinin iş günü veya iş günü olmayan günler olarak kabul edileceğinin değiştirilmesi, bu sistemdeki tüm projelerdeki tüm iş paketlerinin ve yaşam döngülerinin başlangıç ve bitiş günlerini etkileyebilir.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Çalışma günleri** değişti (%{changes})._
       days:

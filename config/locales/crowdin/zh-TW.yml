@@ -1696,6 +1696,7 @@ zh-TW:
       attachment:
         attachment_content: 附件內容
         attachment_file_name: 附件檔案名稱
+        charset: Character set
         content_type: 檔案類型
         downloads: 下載
         file: 檔案
@@ -1790,6 +1791,7 @@ zh-TW:
         title: 標題
         description: 說明
       member:
+        blocked: Blocked
         roles: 角色
       notification:
         read_ian: 在應用程式內閱讀
@@ -2035,6 +2037,7 @@ zh-TW:
         priority: 優先等級
         progress: 完成度(%)
         readonly: 唯讀
+        relatable: Relatable to
         remaining_hours: 剩餘工作
         remaining_time: 剩餘工作
         sequence_number: Sequence number
@@ -3442,6 +3445,9 @@ zh-TW:
     additional:
       projects: 最新的可見專案
       no_visible_projects: 最新的可見專案
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: 最新註冊的使用者
     blocks:
       community: OpenProject 社群
@@ -3948,7 +3954,7 @@ zh-TW:
   label_filter_add: 新增條件
   label_filter_by: 篩選條件：
   label_filter_any_name_attribute: 名稱屬性
-  label_filter_plural: 篩選條件
+  label_filter_plural: 篩選器
   label_filters_toggle: 顯示/隱藏篩選條件
   label_float: 浮點數
   label_folder: 資料夾
@@ -3962,8 +3968,8 @@ zh-TW:
   label_global_modules: 全域模組
   label_global_roles: 全域角色
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: 之前
-  label_group_by: 分類
+  label_greater_or_equal: ">="
+  label_group_by: 分組依據
   label_group_new: 新增群組
   label_group: 群組
   label_group_named: 群組名稱 %{name}
@@ -3975,7 +3981,7 @@ zh-TW:
   label_hierarchy: 階層
   label_hierarchy_leaf: 頁面結構頁
   label_home: Home
-  label_subject_or_id: 名稱或 id
+  label_subject_or_id: 主旨或 id
   label_calendar_subscriptions: 訂閱行事曆
   label_identifier: Identifiers
   label_project_identifier: Project identifier
@@ -4010,6 +4016,7 @@ zh-TW:
   label_journal_diff: 內容對比
   label_language: 語言
   label_languages: 語言
+  label_export_plural: Exports
   label_external_links: 外部連結
   label_locale: 語言和地區
   label_jump_to_a_project: 前往一個專案...
@@ -4027,7 +4034,7 @@ zh-TW:
   label_latest_revision_plural: 最新版本
   label_ldap_authentication: LDAP 認證
   label_learn_more: 了解更多
-  label_less_or_equal: 之後
+  label_less_or_equal: "<="
   label_less_than_ago: 幾天內
   label_link_url: 連結(URL)
   label_list: 清單
@@ -4639,9 +4646,9 @@ zh-TW:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: '要允許用戶登錄，您可以： '
       a: "([在這裏](upgrade_url)) 升級付款計劃"
       b: "([在這裏](users_url)) 鎖定或刪除現有用戶"
+      label: '要允許用戶登錄，您可以： '
   more_actions: 更多功能
   noscript_description: 您必須啟用 Javascript 才能使用 OpenProject!
   noscript_heading: JavaScript 已停用
@@ -5158,6 +5165,10 @@ zh-TW:
   setting_consent_required: 是否需要使用者允許
   setting_consent_decline_mail: 同意郵件列在通訊錄
   setting_cross_project_work_package_relations: 允許將跨專案之工作套件關聯起來
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: 一年的第一週從哪一天開始
   setting_date_format: 日期
   setting_default_language: 預設語言
@@ -5198,6 +5209,9 @@ zh-TW:
   setting_work_package_properties: 工作套件屬性
   setting_work_package_startdate_is_adddate: 使用目前日期作為新工作套件的開始日期
   setting_work_packages_projects_export_limit: 工作套件/專案匯出數量限制
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: 記錄所有使用者登入、姓名和郵件地址等資料
   setting_login_required: 需要身份驗證
@@ -5902,6 +5916,17 @@ zh-TW:
     warning: '變更一週中哪些天為工作日或非工作日，可能會影響此實例中所有專案的工作套件與生命週期的開始及結束日期。
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**工作日**已更改 (%{changes})。_
       days:

@@ -44,6 +44,7 @@ RSpec.describe "API v3 Meeting Agenda Items sub-resource", content_type: :json d
   let(:meeting) { create(:meeting, project:, author: current_user) }
   let!(:section) { create(:meeting_section, meeting:) }
   let!(:agenda_item) { create(:meeting_agenda_item, meeting:, meeting_section: section, author: current_user) }
+  let!(:outcome) { create(:meeting_outcome, meeting_agenda_item: agenda_item, author: current_user, notes: "Embedded outcome") }
 
   before do
     login_as current_user
@@ -64,6 +65,10 @@ RSpec.describe "API v3 Meeting Agenda Items sub-resource", content_type: :json d
       expect(last_response.body)
         .to have_json_size(1)
         .at_path("_embedded/elements")
+
+      expect(last_response.body)
+        .to have_json_size(1)
+        .at_path("_embedded/elements/0/_embedded/outcomes")
     end
 
     context "without view_meetings permission" do
@@ -128,6 +133,10 @@ RSpec.describe "API v3 Meeting Agenda Items sub-resource", content_type: :json d
       expect(last_response.body)
         .to be_json_eql(agenda_item.id.to_json)
         .at_path("id")
+
+      expect(last_response.body)
+        .to have_json_size(1)
+        .at_path("_embedded/outcomes")
     end
 
     context "with an item from another meeting" do
@@ -158,7 +167,7 @@ RSpec.describe "API v3 Meeting Agenda Items sub-resource", content_type: :json d
 
       it "renders the work package link as undisclosed" do
         expect(last_response.body)
-          .to be_json_eql(::API::V3::URN_UNDISCLOSED.to_json)
+          .to be_json_eql(API::V3::URN_UNDISCLOSED.to_json)
           .at_path("_links/workPackage/href")
       end
     end

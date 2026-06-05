@@ -1520,7 +1520,7 @@ es:
           automatic_with_children: Fechas determinadas por paquetes de trabajo secundarios.
           automatic_with_predecessor: La fecha de inicio la fija un predecesor.
           manual_mobile: Programado manualmente.
-          manually_scheduled: Programado manualmente. No afectadas por relaciones.
+          manually_scheduled: Programado manualmente. Fechas no afectadas por relaciones.
       blankslate:
         title: Sin predecesores
         description: Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano.
@@ -1716,6 +1716,7 @@ es:
       attachment:
         attachment_content: Contenido del archivo adjunto
         attachment_file_name: Nombre de archivo adjunto
+        charset: Juego de caracteres
         content_type: Tipo de contenido
         downloads: Descargas
         file: Archivo
@@ -1810,6 +1811,7 @@ es:
         title: Título
         description: Descripción
       member:
+        blocked: Bloqueado
         roles: Perfiles
       notification:
         read_ian: Leer dentro de la aplicación
@@ -2055,6 +2057,7 @@ es:
         priority: Prioridad
         progress: "% Completado"
         readonly: Solo lectura
+        relatable: Relacionado con
         remaining_hours: Trabajo restante
         remaining_time: Trabajo restante
         sequence_number: Número de secuencia
@@ -3503,6 +3506,9 @@ es:
     additional:
       projects: Projectos visibles mas recientes en esta instancia.
       no_visible_projects: No hay ningún proyecto visible en esta instancia.
+      favorite_projects:
+        no_results: No tiene proyectos favoritos
+        no_results_subtext: Añada uno o varios proyectos como favoritos a través del resumen del proyecto o en una lista de proyectos.
       users: Usuarios registrados mas recientes en esta instancia.
     blocks:
       community: OpenProject Community
@@ -4071,6 +4077,7 @@ es:
   label_journal_diff: Comparación de la descripción
   label_language: Idioma
   label_languages: Idiomas
+  label_export_plural: Exportaciones
   label_external_links: Enlaces externos
   label_locale: Idioma y región
   label_jump_to_a_project: Saltar a un proyecto...
@@ -4701,9 +4708,9 @@ es:
       Un nuevo usuario (%{email}) intento crear una cuenta en el ambiente de Proyecto Abierto que usted administra (%{host}).
       El usuario no puede activar su cuenta debido a que el límite del usuario ha sido alcanzado.
     steps:
-      label: 'Para permitir al usuario ingresar, usted puede: '
       a: Mejore su plan de pago ([here](upgrade_url))
       b: Bloquear o eliminar un usuario existente ([here](users_url))
+      label: 'Para permitir al usuario ingresar, usted puede: '
   more_actions: Más funciones
   noscript_description: Necesita activar JavaScript para poder usar OpenProject!
   noscript_heading: JavaScript desactivado
@@ -5217,6 +5224,10 @@ es:
   setting_consent_required: Se requiere consentimiento
   setting_consent_decline_mail: Consentimiento de la dirección de correo electrónico
   setting_cross_project_work_package_relations: Permitir relaciones cruzadas en paquetes de trabajo de proyecto
+  setting_csv_escape_formulas: Fórmulas de escape en las exportaciones CSV
+  setting_csv_escape_formulas_text: 'Para evitar que las fórmulas de las hojas de cálculo se incluyan en las exportaciones CSV, añade una comilla simple delante de las celdas que empiecen con caracteres como =, +, - o @. Esto evita la inserción de fórmulas en el CSV cuando los archivos exportados se abren en aplicaciones de hojas de cálculo como Excel. La desventaja es que se modifican los valores de las cadenas dentro del CSV, así que quizá quieras desactivar esta opción si las herramientas posteriores necesitan los valores exactos de las celdas, sin escapar.
+
+    '
   setting_first_week_of_year: La primera semana del año contiene
   setting_date_format: Fecha
   setting_default_language: Idioma predeterminado
@@ -5257,6 +5268,9 @@ es:
   setting_work_package_properties: Propiedades de paquete de trabajo
   setting_work_package_startdate_is_adddate: Usar fecha actual como fecha de inicio para nuevos paquetes de trabajo
   setting_work_packages_projects_export_limit: Fecha límite para exportar paquete de trabajo o proyectos
+  setting_work_packages_projects_export_limit_text: 'Número máximo de paquetes de trabajo o proyectos que se pueden incluir en una sola exportación. Las exportaciones más grandes se truncan hasta este límite.
+
+    '
   setting_journal_aggregation_time_minutes: Período de agregación
   setting_log_requesting_user: Registrar inicio de sesión de usuario, nombre, y dirección de correo para todas las solicitudes
   setting_login_required: Autentificación requerida
@@ -5954,6 +5968,17 @@ es:
     warning: 'Cambiar qué días de la semana se consideran laborables y cuáles no, puede afectar a las fechas de inicio y fin de todos los paquetes de trabajo y ciclos de vida en todos los proyectos de esta instancia.
 
       '
+    dialog:
+      title: Cambiar los días laborables
+      description: 'Cambiar qué días de la semana se consideran laborables y cuáles no, puede afectar a las fechas de inicio y fin de todos los paquetes de trabajo y ciclos de vida en todos los proyectos de esta instancia.
+
+        '
+      removed_title: 'Eliminará los siguientes días de la lista de días no laborables:'
+      warning: 'Los cambios pueden tardar algún tiempo en surtir efecto. Se le notificará cuando todos los paquetes de trabajo pertinentes se hayan actualizado.
+
+        '
+      heading: "¿Cambiar los días laborables?"
+      confirm_button: Guardar y reprogramar
     journal_note:
       changed: _**Días laborales** cambiados (%{changes})._
       days:

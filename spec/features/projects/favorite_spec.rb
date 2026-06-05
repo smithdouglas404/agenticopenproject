@@ -85,7 +85,7 @@ RSpec.describe "Favorite projects", :js do
       visit home_path
 
       expect(page).to have_text "Favorite projects"
-      expect(page).to have_test_selector "favorite-project", text: "My favorite!"
+      expect(page).to have_test_selector "favorite-projects-widget--project-name", text: "My favorite!"
 
       retry_block do
         top_menu.toggle unless top_menu.open?
@@ -127,7 +127,7 @@ RSpec.describe "Favorite projects", :js do
         visit home_path
 
         expect(page).to have_text "Favorite projects"
-        expect(page).to have_test_selector "favorite-project", text: "My favorite!"
+        expect(page).to have_test_selector "favorite-projects-widget--project-name", text: "My favorite!"
         expect(page).to have_no_text "Other project"
 
         my_page.visit!
@@ -146,7 +146,7 @@ RSpec.describe "Favorite projects", :js do
         visit home_path
 
         expect(page).to have_text "Favorite projects"
-        expect(page).to have_test_selector "favorite-project", text: "My favorite!"
+        expect(page).to have_test_selector "favorite-projects-widget--project-name", text: "My favorite!"
 
         retry_block do
           top_menu.toggle unless top_menu.open?

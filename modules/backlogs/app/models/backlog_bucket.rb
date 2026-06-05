@@ -29,6 +29,8 @@
 #++
 
 class BacklogBucket < ApplicationRecord
+  include ::Scopes::Scoped
+
   self.table_name = "backlog_buckets"
 
   belongs_to :project
@@ -44,6 +46,8 @@ class BacklogBucket < ApplicationRecord
            inverse_of: :backlog_bucket
 
   scope :order_alphabetically, -> { order(:name) }
+
+  scopes :visible
 
   validates :name, :project, presence: true
 

@@ -162,7 +162,7 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.14.0"
+gem "mcp", "~> 0.17.0"
 
 gem "meta-tags", "~> 2.23.0"
 
@@ -200,7 +200,7 @@ gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
 gem "nokogiri", "~> 1.19.2"
 
-gem "carrierwave", "~> 2.2.6"
+gem "carrierwave", "~> 2.2.7"
 gem "carrierwave_direct", "~> 3.0.0"
 gem "fog-aws"
 gem "ssrf_filter", "~> 1.3"
@@ -238,10 +238,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.34.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.93.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.94.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.10.0"
+gem "view_component", "~> 4.11.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
@@ -265,11 +265,10 @@ group :test do
   gem "rack-test", "~> 2.2.0"
   gem "shoulda-context", "~> 2.0"
 
-  gem "parallel_tests", "~> 5.7"
   # Test prof provides factories from code
   # and other niceties
   gem "test-prof", "~> 1.6.0"
-  gem "turbo_tests", github: "opf/turbo_tests", ref: "2_2_5_with_patches"
+  gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"
   gem "rspec", "~> 3.13.2"
@@ -296,7 +295,7 @@ group :test do
   gem "rails-controller-testing", "~> 1.0.2"
 
   gem "capybara", "~> 3.40.0"
-  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.15.0"
+  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.16.0"
   gem "capybara-screenshot", "~> 1.0.17"
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
@@ -318,6 +317,8 @@ group :test do
   gem "equivalent-xml", "~> 0.6"
   gem "json_spec", "~> 1.1.4"
   gem "shoulda-matchers", "~> 7.0", require: nil
+
+  gem "parallel_tests", "~> 4.0"
 end
 
 group :ldap do
@@ -366,7 +367,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", "~> 2.35.1"
+  gem "rubocop-rails", "~> 2.35.2"
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 

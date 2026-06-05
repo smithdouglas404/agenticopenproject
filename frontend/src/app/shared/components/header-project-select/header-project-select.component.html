@@ -95,29 +95,6 @@
         } @else {
           <op-loading-project-list class="op-project-list-modal--loading" />
         }
-        @if (!portfolioModelsEnabled) {
-          <div
-            class="spot-action-bar">
-            <div class="spot-action-bar--right">
-              <a
-                class="button spot-action-bar--action"
-                [href]="allProjectsPath()"
-                >
-                <svg list-unordered-icon size="small" />
-                <span [textContent]="currentText.list"></span>
-              </a>
-              @if (canCreateNewProjects$ | async) {
-                <a
-                  class="button -primary spot-action-bar--action"
-                  [href]="newProjectPath()"
-                  >
-                  <svg plus-icon size="small" />
-                  <span [textContent]="text.project.singular"></span>
-                </a>
-              }
-            </div>
-          </div>
-        }
       </div>
     }
   </ng-container>

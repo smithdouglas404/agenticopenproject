@@ -1805,6 +1805,7 @@ ar:
       attachment:
         attachment_content: Attachment content
         attachment_file_name: Attachment file name
+        charset: Character set
         content_type: Content-type
         downloads: التحميلات
         file: ملف
@@ -1899,6 +1900,7 @@ ar:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: دور
       notification:
         read_ian: Read in-app
@@ -2144,6 +2146,7 @@ ar:
         priority: الأولوية
         progress: "% Complete"
         readonly: Read only
+        relatable: Relatable to
         remaining_hours: Remaining work
         remaining_time: Remaining work
         sequence_number: Sequence number
@@ -3766,6 +3769,9 @@ ar:
     additional:
       projects: أحدث المشاريع المرئية في هذه الجلسة.
       no_visible_projects: There are no visible projects in this instance.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: أحدث المستخدمين المسجلين في هذه الجلسة.
     blocks:
       community: مجتمع أوبِن بروجِكت
@@ -4334,6 +4340,7 @@ ar:
   label_journal_diff: مقارنة التوصيف
   label_language: اللغة
   label_languages: Languages
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: الانتقال بسرعة إلى مشروع...
@@ -4980,9 +4987,9 @@ ar:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'To allow the user to sign in you can either: '
       a: Upgrade your payment plan ([here](upgrade_url))
       b: Lock or delete an existing user ([here](users_url))
+      label: 'To allow the user to sign in you can either: '
   more_actions: المزيد من الوظائف
   noscript_description: تحتاج إلى تفعيل جافا سكريبت لاستخدام open project!
   noscript_heading: جافا سكريبت
@@ -5498,6 +5505,10 @@ ar:
   setting_consent_required: Consent required
   setting_consent_decline_mail: Consent contact mail address
   setting_cross_project_work_package_relations: السماح بعلاقات عبر-المشروع مجموعة العمل
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: First week in year contains
   setting_date_format: التاريخ
   setting_default_language: اللغة الافتراضية
@@ -5538,6 +5549,9 @@ ar:
   setting_work_package_properties: خصائص مجموعة العمل
   setting_work_package_startdate_is_adddate: استخدام التاريخ الحالي كتاريخ البدء لمجموعات العمل الجديدة
   setting_work_packages_projects_export_limit: حد تصدير حزم العمل / المشاريع
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: تسجيل الدخول تسجيل دخول المستخدم واسم وعنوان البريد لجميع الطلبات
   setting_login_required: مطلوب مصادقة
@@ -6251,6 +6265,17 @@ ar:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:

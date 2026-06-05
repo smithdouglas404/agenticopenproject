@@ -1758,6 +1758,7 @@ uk:
       attachment:
         attachment_content: Вміст вкладення
         attachment_file_name: Назва файлу вкладеного файлу
+        charset: Набір символів
         content_type: Тип контенту
         downloads: Завантаження
         file: Файл
@@ -1852,6 +1853,7 @@ uk:
         title: Заголовок
         description: Опис
       member:
+        blocked: Заблоковано
         roles: Роль
       notification:
         read_ian: Читайте в додатку
@@ -2097,6 +2099,7 @@ uk:
         priority: Пріоритет
         progress: "% завершення"
         readonly: Лише читання
+        relatable: Можна пов’язати з
         remaining_hours: Залишок роботи
         remaining_time: Залишок роботи
         sequence_number: Порядковий номер
@@ -3639,6 +3642,9 @@ uk:
     additional:
       projects: Нові видимі проекти в цьому екземплярі.
       no_visible_projects: У цьому випадку немає видимих проектів.
+      favorite_projects:
+        no_results: У вас немає вибраних проєктів
+        no_results_subtext: 'Додайте один або кілька проєктів у вибране: це можна зробити на сторінці огляду або в списку проєктів.'
       users: Нові зареєстровані користувачі в цьому екземплярі.
     blocks:
       community: Спільнота OpenProject
@@ -4188,7 +4194,7 @@ uk:
   label_index_by_title: Індекс за назвою
   label_information: Інформація
   label_information_plural: Інформація
-  label_installation_guides: Інструкції із встановлення
+  label_installation_guides: Інструкції зі встановлення
   label_integer: Ціле число
   label_interface: Інтерфейс
   label_internal: Власне
@@ -4207,6 +4213,7 @@ uk:
   label_journal_diff: Опис Порівняння
   label_language: Мова
   label_languages: Мови
+  label_export_plural: Експорти
   label_external_links: Зовнішні посилання
   label_locale: Мова й регіон
   label_jump_to_a_project: Перейти до проекту...
@@ -4844,9 +4851,9 @@ uk:
       Новий користувач (%{email}) намагалися створити обліковий запис на середовищі OpenProject, яким ви керуєте (%{host}).
       Користувач не може активувати свій обліковий запис після досягнення ліміту користувача.
     steps:
-      label: 'To allow the user to sign in you can either: '
       a: Оновіть план платежів ([here](upgrade_url))
       b: Блокування або видалення існуючого користувача ([here](users_url))
+      label: 'To allow the user to sign in you can either: '
   more_actions: Додаткові функції
   noscript_description: Щоб використовувати OpenProject, потрібно ввімкнути підтримку JavaScript у Вашому браузері!
   noscript_heading: JavaScript відключений
@@ -5368,6 +5375,10 @@ uk:
   setting_consent_required: Потрібна згода
   setting_consent_decline_mail: Згода на контактну пошту
   setting_cross_project_work_package_relations: Дозволити взаємозв'язок між робочими пакетами і проектами
+  setting_csv_escape_formulas: Екранування формул при експорті в CSV
+  setting_csv_escape_formulas_text: 'При експорті у формат CSV екрануйте формули в електронних таблицях, додаючи до клітинок, які починаються із символів =, +, - або @, префікс з однією лапкою. Так ви зменшите ймовірність ін’єкції формул CSV під час відкриття експортованих файлів у програмах для роботи з електронними таблицями, наприклад в Excel. Однак це може призвести до зміни рядкових значень у файлі CSV, тому це налаштування можна вимкнути, якщо для роботи в подальших інструментах потрібні точні значення клітинок без екранування.
+
+    '
   setting_first_week_of_year: Перший тиждень у році містить
   setting_date_format: Дата
   setting_default_language: Мова за замовчуванням
@@ -5408,6 +5419,9 @@ uk:
   setting_work_package_properties: Властивості робочого пакета
   setting_work_package_startdate_is_adddate: Використовувати поточну дату в якості дати початку роботи для нових пакетів
   setting_work_packages_projects_export_limit: Ліміт експорту пакетів робіт / проєктів
+  setting_work_packages_projects_export_limit_text: 'Максимальна кількість пакетів робіт або проєктів, які можна включити в один експорт. Більші експорти обрізаються до цього ліміту.
+
+    '
   setting_journal_aggregation_time_minutes: Період агрегації
   setting_log_requesting_user: Запишіть логін користувача, ім'я та поштову адресу для всіх запитів
   setting_login_required: Необхідна аутентифікація
@@ -6111,6 +6125,17 @@ uk:
     warning: 'Якщо змінити дні тижня, які вважаються робочими чи неробочими, це може вплинути на дати початку й завершення всіх пакетів робіт і життєвих циклів проєктів в усіх проєктах цього екземпляра.
 
       '
+    dialog:
+      title: Змінити робочі дні
+      description: 'Якщо змінити дні тижня, які вважаються робочими чи неробочими, це може вплинути на дати початку й завершення всіх пакетів робіт і життєвих циклів в усіх проєктах цього екземпляра.
+
+        '
+      removed_title: 'Ви вилучите ці дні зі списку неробочих:'
+      warning: 'Застосування змін може тривати деякий час. Ви отримаєте сповіщення, коли всі відповідні пакети робіт і життєві цикли проєктів буде оновлено.
+
+        '
+      heading: Змінити робочі дні?
+      confirm_button: Зберегти й перепланувати
     journal_note:
       changed: _**Робочі дні** змінено (%{changes})._
       days:

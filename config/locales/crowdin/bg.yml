@@ -1721,6 +1721,7 @@ bg:
       attachment:
         attachment_content: Attachment content
         attachment_file_name: Attachment file name
+        charset: Character set
         content_type: Content-type
         downloads: Файлове за изтегляне
         file: Файл
@@ -1815,6 +1816,7 @@ bg:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: Роли
       notification:
         read_ian: Read in-app
@@ -2060,6 +2062,7 @@ bg:
         priority: Приоритет
         progress: "% Завършено"
         readonly: Само за четене
+        relatable: Relatable to
         remaining_hours: Оставаща работа
         remaining_time: Оставаща работа
         sequence_number: Sequence number
@@ -3510,6 +3513,9 @@ bg:
     additional:
       projects: Най-новите проекти, видими в този случай.
       no_visible_projects: There are no visible projects in this instance.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Най-новите регистрирани потребители в този случай.
     blocks:
       community: OpenProject Общността
@@ -4078,6 +4084,7 @@ bg:
   label_journal_diff: Сравнение на описание
   label_language: Език
   label_languages: Езици
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Отиди на проект...
@@ -4708,9 +4715,9 @@ bg:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'За да разрешите на потребителя да влезе, можете да: '
       a: Актуализирайте плана си за плащане ([тук](upgrade_url))
       b: Заключване или изтриване на съществуващ потребител ([тук](users_url))
+      label: 'За да разрешите на потребителя да влезе, можете да: '
   more_actions: Още функции
   noscript_description: Трябва да активирате JavaScript за да ползвате OpenProject!
   noscript_heading: JavaScript е изключен
@@ -5226,6 +5233,10 @@ bg:
   setting_consent_required: Consent required
   setting_consent_decline_mail: Consent contact mail address
   setting_cross_project_work_package_relations: Allow cross-project work package relations
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: First week in year contains
   setting_date_format: Дата
   setting_default_language: Език по подразбиране
@@ -5266,6 +5277,9 @@ bg:
   setting_work_package_properties: Work package properties
   setting_work_package_startdate_is_adddate: Use current date as start date for new work packages
   setting_work_packages_projects_export_limit: Work packages / Projects export limit
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Log user login, name, and mail address for all requests
   setting_login_required: Authentication required
@@ -5967,6 +5981,17 @@ bg:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:

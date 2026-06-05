@@ -26,6 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+---
 en:
   js:
     ajax:
@@ -227,15 +228,6 @@ en:
           new_date: "(new)"
         add_non_working_day: "Non-working day"
         already_added_error: "A non-working day for this date exists already. There can only be one non-working day created for each unique date."
-        change_button: "Save and reschedule"
-        change_title: "Change working days"
-        removed_title: "You will remove the following days from the non-working days list:"
-        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
-        warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
-
-
-          Are you sure you want to continue?
 
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
@@ -443,7 +435,6 @@ en:
     label_per_page: "Per page:"
     label_please_wait: "Please wait"
     label_project: "Project"
-    label_project_list: "Project lists"
     label_project_plural: "Projects"
     label_visibility_settings: "Visibility settings"
     label_quote_comment: "Quote this comment"

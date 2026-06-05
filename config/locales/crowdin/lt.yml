@@ -1762,6 +1762,7 @@ lt:
       attachment:
         attachment_content: Prisegto failo turinys
         attachment_file_name: Prisegto failo vardas
+        charset: Character set
         content_type: Content-type
         downloads: Atsisiuntimai
         file: Failas
@@ -1856,6 +1857,7 @@ lt:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: Vaidmenys
       notification:
         read_ian: Read in-app
@@ -2101,6 +2103,7 @@ lt:
         priority: Pirmenybė
         progress: "% baigta"
         readonly: Tik skaitymui
+        relatable: Relatable to
         remaining_hours: Liko darbo
         remaining_time: Liko darbo
         sequence_number: Sequence number
@@ -3639,6 +3642,9 @@ lt:
     additional:
       projects: Naujausi matomi projektai.
       no_visible_projects: Šiame egzemplioriuje nėra matomų projektų.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: Naujausi registruoti naudotojai.
     blocks:
       community: OpenProject community
@@ -4207,6 +4213,7 @@ lt:
   label_journal_diff: Aprašymų palyginimas
   label_language: Kalba
   label_languages: Kalbos
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Peršokti į projektą...
@@ -4845,9 +4852,9 @@ lt:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'Norėdami leisti vartotojui prisijungti jūs galite: '
       a: Atnaujinti savo mokėjimo planą ([here](upgrade_url))
       b: Užrakinti arba panaikinti esamo naudotojo paskyrą ([here](users_url))
+      label: 'Norėdami leisti vartotojui prisijungti jūs galite: '
   more_actions: Daugiau funkcijų
   noscript_description: Jums reikia įjungti JavaScript, kad galėtumėte naudoti OpenProject!
   noscript_heading: JavaScript išjungta
@@ -5365,6 +5372,10 @@ lt:
   setting_consent_required: Reikia sutikimo
   setting_consent_decline_mail: Sutikimo kontaktinis pašto adresas
   setting_cross_project_work_package_relations: Leisti tarp-projektinius darbų paketo ryšius
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Pirma metų savaitė turi
   setting_date_format: Data
   setting_default_language: Numatytoji kalba
@@ -5405,6 +5416,9 @@ lt:
   setting_work_package_properties: Darbų paketo ypatybės
   setting_work_package_startdate_is_adddate: Naudoti dabartinę datą kaip naujų darbų paketų pradžios datą
   setting_work_packages_projects_export_limit: Darbo paketų / Projektų eksporto limitas
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Įrašyti vartotojo vardą, prisijungimo vardą, e. pašto adresą visiems prašymams
   setting_login_required: Reikalinga autentifikacija
@@ -6106,6 +6120,17 @@ lt:
     warning: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Darbo dienos** pakeistos (%{changes})._
       days:

@@ -1721,6 +1721,7 @@ sv:
       attachment:
         attachment_content: Bifogat innehåll
         attachment_file_name: Bilagans filnamn
+        charset: Character set
         content_type: Content-type
         downloads: Nedladdningar
         file: Fil
@@ -1815,6 +1816,7 @@ sv:
         title: Title
         description: Description
       member:
+        blocked: Blocked
         roles: Roll
       notification:
         read_ian: Read in-app
@@ -2060,6 +2062,7 @@ sv:
         priority: Prioritet
         progress: "% Complete"
         readonly: Read only
+        relatable: Relatable to
         remaining_hours: Återstående arbete
         remaining_time: Återstående arbete
         sequence_number: Sequence number
@@ -3512,6 +3515,9 @@ sv:
     additional:
       projects: De senast synliga projekten just nu.
       no_visible_projects: Det finns inga synliga projekt i denna instans.
+      favorite_projects:
+        no_results: You have no favorite projects
+        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
       users: De senast registrerade användarna just nu.
     blocks:
       community: OpenProject community
@@ -4080,6 +4086,7 @@ sv:
   label_journal_diff: Jämför beskrivning
   label_language: Språk
   label_languages: Språk
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Hoppa till projekt...
@@ -4710,9 +4717,9 @@ sv:
       A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
       The user cannot activate their account since the user limit has been reached.
     steps:
-      label: 'För att tillåta användaren att logga in kan du antingen: '
       a: Utöka din betalplan ([here](upgrade_url))
       b: Låsa eller radera en existerande användare ([here](users_url))
+      label: 'För att tillåta användaren att logga in kan du antingen: '
   more_actions: Fler funktioner
   noscript_description: Du måste aktivera JavaScript för att använda OpenProject!
   noscript_heading: JavaScript inaktiverat
@@ -5220,6 +5227,10 @@ sv:
   setting_consent_required: Samtycke krävs
   setting_consent_decline_mail: Samtycke kontaktadress
   setting_cross_project_work_package_relations: Tillåt relationer mellan arbetspaket i olika projekt
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: First week in year contains
   setting_date_format: Datum
   setting_default_language: Standardspråk
@@ -5260,6 +5271,9 @@ sv:
   setting_work_package_properties: Egenskaper för arbetspaket
   setting_work_package_startdate_is_adddate: Använda aktuellt datum som startdatum för nya arbetspaket
   setting_work_packages_projects_export_limit: Exportgräns för arbetspaket/projekt
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Logga användarnamn, namn och E-postadress för alla anrop
   setting_login_required: Autentisering krävs
@@ -5955,6 +5969,17 @@ sv:
     warning: 'Att ändra vilka veckodagar som anses vara arbetsdagar eller icke-arbetsdagar kan påverka start- och slutdagar för alla arbetspaket och livscykler i alla projekt i detta fall.
 
       '
+    dialog:
+      title: Change working days
+      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+
+        '
+      removed_title: 'You will remove the following days from the non-working days list:'
+      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+
+        '
+      heading: Change the working days?
+      confirm_button: Save and reschedule
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:
