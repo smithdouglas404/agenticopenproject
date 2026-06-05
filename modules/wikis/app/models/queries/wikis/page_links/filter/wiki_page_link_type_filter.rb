@@ -37,18 +37,20 @@ module Queries
 
           def type = :list
 
-          def name = :type
-
           def human_name
-            ::Wikis::PageLink.human_attribute_name(name)
+            ::Wikis::PageLink.human_attribute_name(:type)
           end
 
           def allowed_values
             API::V3::PageLinks::URN_PAGE_LINK_TYPE.invert.to_a
           end
 
+          def values=(values)
+            @values = Array(values).map { API::V3::PageLinks::URN_PAGE_LINK_TYPE.invert[it] }
+          end
+
           def where
-            where(type: values)
+            operator_strategy.sql_for_field(values, model.table_name, "type")
           end
         end
       end
