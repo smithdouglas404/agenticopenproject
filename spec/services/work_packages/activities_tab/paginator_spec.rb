@@ -124,6 +124,16 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         _pagy, records = paginator.call
         expect(records).to eq([changeset_2, journal, changeset_1, work_package.journals.first])
       end
+
+      it "preloads changeset projects so rendering them issues no per-row query" do
+        _pagy, records = paginator.call
+        changesets = records.grep(Changeset)
+
+        expect(changesets.size).to eq(2)
+        # format_text(changeset, :comments) reads changeset.project (a has_one
+        # through :repository) for each row at render time.
+        expect { changesets.each(&:project) }.to have_a_query_limit(0)
+      end
     end
 
     context "with pagination" do

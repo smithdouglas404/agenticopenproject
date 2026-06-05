@@ -213,7 +213,7 @@ class WorkPackages::ActivitiesTab::Paginator
 
     Changeset
       .where(id: ids)
-      .includes(:user, :repository)
+      .includes(:user, :repository, :project)
       .index_by(&:id)
   end
 
