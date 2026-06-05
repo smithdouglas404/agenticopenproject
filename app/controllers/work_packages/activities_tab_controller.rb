@@ -247,7 +247,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def set_filter
-    @filter = (params[:filter] || params.dig(:journal, :filter))&.to_sym || Filters::ALL
+    @filter = Filters.cast(params[:filter] || params.dig(:journal, :filter))
   end
 
   def sanitized_journal_notes

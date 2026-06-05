@@ -807,6 +807,27 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
       end
     end
 
+    context "with an unrecognised filter value" do
+      let(:initial_journal) { work_package.journals.find_by(version: 1) }
+      let!(:journal_with_notes) do
+        create(:work_package_journal, user:, notes: "A comment", journable: work_package, version: 2)
+      end
+
+      before do
+        params[:filter] = "bogus"
+      end
+
+      it "normalises the filter to :all" do
+        expect(paginator.filter).to eq(:all)
+      end
+
+      it "returns the unfiltered feed" do
+        _pagy, records = paginator.call
+
+        expect(records.map(&:id)).to include(initial_journal.id, journal_with_notes.id)
+      end
+    end
+
     context "with filter and deep linking" do
       let!(:journal_with_notes) do
         create(:work_package_journal,

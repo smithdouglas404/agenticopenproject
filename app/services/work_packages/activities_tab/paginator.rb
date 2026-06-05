@@ -69,7 +69,7 @@ class WorkPackages::ActivitiesTab::Paginator
   def initialize(work_package, params = {})
     @work_package = work_package
     @params = params
-    @filter = params[:filter]&.to_sym || Filters::ALL
+    @filter = Filters.cast(params[:filter])
     @resolved_anchor = nil
   end
 

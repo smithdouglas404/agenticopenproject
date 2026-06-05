@@ -28,20 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module ActivitiesTab
-    module Filters
-      ALL           = :all
-      ONLY_COMMENTS = :only_comments
-      ONLY_CHANGES  = :only_changes
+require "spec_helper"
 
-      VALUES = [ALL, ONLY_COMMENTS, ONLY_CHANGES].freeze
+RSpec.describe WorkPackages::ActivitiesTab::Filters do
+  describe ".cast" do
+    it "returns a known mode given as a symbol unchanged" do
+      expect(described_class.cast(:only_comments)).to eq(:only_comments)
+    end
 
-      # Coerces an incoming filter param (string or symbol) to a known mode,
-      # falling back to ALL for anything unrecognised.
-      def self.cast(value)
-        VALUES.find { it.to_s == value.to_s } || ALL
-      end
+    it "coerces a known mode given as a string to its symbol" do
+      expect(described_class.cast("only_changes")).to eq(:only_changes)
+    end
+
+    it "falls back to ALL for an unknown value" do
+      expect(described_class.cast("bogus")).to eq(described_class::ALL)
+    end
+
+    it "falls back to ALL for a blank string" do
+      expect(described_class.cast("")).to eq(described_class::ALL)
+    end
+
+    it "falls back to ALL for nil" do
+      expect(described_class.cast(nil)).to eq(described_class::ALL)
     end
   end
 end
