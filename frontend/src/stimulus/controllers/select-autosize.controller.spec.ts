@@ -45,14 +45,13 @@ describe('SelectAutosizeController', () => {
 
   // updateSize is debounced (100ms), so assertions use waitFor
   it('sets size to option count on connect', async () => {
-    ctx.appendHTML(`
+    await ctx.mount(`
       <select data-controller="select-autosize" aria-label="Items">
         <option>A</option>
         <option>B</option>
         <option>C</option>
       </select>
     `);
-    await ctx.nextFrame();
 
     const select = ctx.container.querySelector('select')!;
 
@@ -64,14 +63,13 @@ describe('SelectAutosizeController', () => {
   it('respects size limit', async () => {
     const options = Array.from({ length: 15 }, (_, i) => `<option>Item ${i}</option>`).join('');
 
-    ctx.appendHTML(`
+    await ctx.mount(`
       <select data-controller="select-autosize"
               data-select-autosize-size-limit-value="5"
               aria-label="Items">
         ${options}
       </select>
     `);
-    await ctx.nextFrame();
 
     const select = ctx.container.querySelector('select')!;
 
@@ -83,12 +81,11 @@ describe('SelectAutosizeController', () => {
   it('defaults size limit to 10', async () => {
     const options = Array.from({ length: 20 }, (_, i) => `<option>Item ${i}</option>`).join('');
 
-    ctx.appendHTML(`
+    await ctx.mount(`
       <select data-controller="select-autosize" aria-label="Items">
         ${options}
       </select>
     `);
-    await ctx.nextFrame();
 
     const select = ctx.container.querySelector('select')!;
 

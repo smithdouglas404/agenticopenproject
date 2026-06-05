@@ -662,7 +662,7 @@ ru:
       update_relation: Нажмите, чтобы изменить тип отношения
       show_relations: Показать отношения
       add_predecessor: Добавить предшественника
-      add_successor: Добавить преемника
+      add_successor: Добавить последователя
       remove: Удалить связь
       save: Сохранить связь
       abort: Прервать

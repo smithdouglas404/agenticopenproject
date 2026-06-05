@@ -20,6 +20,7 @@ import {
 } from '@fullcalendar/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { TimeEntryResource } from 'core-app/features/hal/resources/time-entry-resource';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import interactionPlugin from '@fullcalendar/interaction';
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
@@ -620,7 +621,10 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
 
   private entityName(entry:TimeEntryResource):string {
     const entity = entry.entity;
-    return `#${idFromLink(entity.href)}: ${entity.name}`;
+    const formattedId = entity instanceof WorkPackageResource
+      ? entity.formattedId
+      : `#${idFromLink(entity.href)}`;
+    return `${formattedId}: ${entity.name}`;
   }
 
   private popoverHtml(

@@ -39,8 +39,8 @@ pt-PT:
           other: "%{count} Participantes"
         participants_attended: Participantes
         participants_invited: Convidados
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 'Participantes adicionados:'
+        participants_removed: 'Participantes removidos:'
         project: Projeto
         start_date: Data
         start_time: Hora de início
@@ -66,9 +66,9 @@ pt-PT:
         title: Título
         frequency: Frequência
         interval: Intervalo
-        monthly_day: Day of month
-        monthly_ordinal: Position
-        monthly_weekday: Weekday
+        monthly_day: Dia do mês
+        monthly_ordinal: Posição
+        monthly_weekday: Dia da semana
         start_date: Inicia em
         start_time: Hora de início
         start_time_hour: Hora de início
@@ -291,8 +291,8 @@ pt-PT:
         new_date_time: Nova data/hora
         old_location: Localização antiga
         new_location: Nova localização
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Adicionado
+        removed_participants: Removido
     label_mail_all_participants: Enviar e-mail de convite aos participantes
     types:
       one_time: Única
@@ -322,12 +322,12 @@ pt-PT:
           '
         confirm_button: Cancelar ocorrência
       occurrence_past:
-        title: Delete occurrence
-        heading: Delete this occurrence?
-        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+        title: Eliminar ocorrência
+        heading: Eliminar esta ocorrência?
+        confirmation_message_html: 'Esta ação não pode ser anulada. Proceda com cuidado.
 
           '
-        confirm_button: Delete occurrence
+        confirm_button: Eliminar ocorrência
     blankslate:
       title: Não há reuniões para apresentar
       desc: Pode criar uma nova reunião ou alterar os critérios de filtragem
@@ -374,8 +374,8 @@ pt-PT:
         caption: Este texto vai aparecer em todas as páginas ao centro do rodapé.
       submit_button: Transferir
     notifications:
-      disabled: Participants will not receive email updates informing them of changes to the date, time or list of participants.
-      enabled: All participants will receive updated calendar invites informing them of changes to date, time or list of participants.
+      disabled: Os participantes não receberão e-mails a informá-los sobre alterações na data, hora ou lista de participantes.
+      enabled: Todos os participantes receberão convites atualizados no calendário, informando-os sobre alterações na data, hora ou lista de participantes.
       sidepanel:
         title: Atualizações do calendário por e-mail
         description:
@@ -385,8 +385,8 @@ pt-PT:
           enable: Ativar atualizações do calendário por e-mail?
           disable: Desativar atualizações do calendário por e-mail?
         message:
-          enable: Once enabled, an email will be sent out immediately to all participants.
-          disable: If they already had an invite for this meeting, it might no longer be accurate.
+          enable: Uma vez ativado, será imediatamente enviado um e-mail a todos os participantes.
+          disable: Se já receberam um convite para esta reunião, é possível que não esteja atualizado.
         confirm_label:
           enable: Ativar atualizações por e-mail
           disable: Desativar atualizações por e-mail
@@ -406,7 +406,7 @@ pt-PT:
     widgets:
       blankslate:
         heading: Não há reuniões futuras
-        description: Upcoming meetings you are participating in will appear here.
+        description: As próximas reuniões em que vai participar aparecerão aqui.
       view_details: Ver todas as reuniões
   meeting_section:
     untitled_title: Secção sem título
@@ -459,41 +459,41 @@ pt-PT:
         one: Todas as semanas
         other: A cada %{count} semanas
       x_monthly:
-        one: Every month
-        other: Every %{count} months
-      monthly_day_of_month: Day of month
-      monthly_nth_weekday: Monthly on a weekday
+        one: Todos os meses
+        other: A cada %{count} meses
+      monthly_day_of_month: Dia do mês
+      monthly_nth_weekday: Mensalmente num dia da semana
       every_weekday: A cada %{day_of_the_week}
       working_days: Todos os dias úteis
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
-        third: third
-        fourth: fourth
-        last: last
+        first: primeira
+        second: segunda
+        third: terceira
+        fourth: quarta
+        last: última
       ordinal_options:
-        first: First
-        second: Second
-        third: Third
-        fourth: Fourth
-        last: Last
-    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
-    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
+        first: Primeira
+        second: Segunda
+        third: Terceira
+        fourth: Quarta
+        last: Última
+    actual_first_occurrence_mismatch_html: A primeira ocorrência desta série será %{first_occurrence}
+    day_of_month_skipping_info: Os meses com menos de %{monthly_day} dias serão ignorados
     end_after:
-      never: Never
-      specific_date: After a specific date
-      iterations: After a number of occurrences
+      never: Nunca
+      specific_date: Após uma data específica
+      iterations: Após um certo número de ocorrências
     starts: Começa
     in_words:
       daily_interval: A cada %{interval} dias
       working_days: Todos os dias úteis
       weekly: Todas as semanas à/ao %{weekday}
       weekly_interval: A cada %{interval} semanas à/ao %{weekday}
-      monthly_day: Every month on the %{day}
-      monthly_day_interval: Every %{interval} months on the %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_day: Todos os meses a %{day}
+      monthly_day_interval: A cada %{interval} meses a %{day}
+      monthly_nth_weekday: Todos os meses a %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: A cada %{interval} meses a %{ordinal} %{weekday}
       frequency: "%{base} às %{time}"
       full: "%{base} às %{time}, termina a %{end_date}"
       full_past: "%{base} às %{time}, terminou a %{end_date}"
@@ -602,7 +602,7 @@ pt-PT:
   label_agenda_item_duplicate_in_next_title: Duplicar na próxima reunião?
   label_agenda_item_add_notes: Adicionar notas
   label_agenda_item_add_outcome: Adicionar resultado
-  label_agenda_item_convert_to_work_package: Convert to work package
+  label_agenda_item_convert_to_work_package: Converter em pacote de trabalho
   label_agenda_item_work_package_add: Adicionar pacote de trabalho
   label_agenda_item_work_package: Pacote de trabalho do ponto da ordem de trabalhos
   label_section_rename: Mudar o nome da secção

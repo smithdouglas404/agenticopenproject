@@ -322,12 +322,12 @@ es:
           '
         confirm_button: Cancelar repetición
       occurrence_past:
-        title: Delete occurrence
-        heading: Delete this occurrence?
-        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+        title: Eliminar repetición
+        heading: "¿Eliminar esta repetición?"
+        confirmation_message_html: 'Esta acción no es reversible. Procede con precaución.
 
           '
-        confirm_button: Delete occurrence
+        confirm_button: Eliminar repetición
     blankslate:
       title: No hay reuniones que mostrar
       desc: Puedes crear una nueva reunión o cambiar los criterios de filtrado
@@ -374,8 +374,8 @@ es:
         caption: Este texto aparecerá en cada página en el centro del pie de página.
       submit_button: Descargar
     notifications:
-      disabled: Participants will not receive email updates informing them of changes to the date, time or list of participants.
-      enabled: All participants will receive updated calendar invites informing them of changes to date, time or list of participants.
+      disabled: Los participantes no recibirán notificaciones por correo electrónico sobre cambios en la fecha, la hora o la lista de participantes.
+      enabled: Todos los participantes recibirán invitaciones actualizadas en el calendario para informarles de cualquier cambio en la fecha, la hora o la lista de participantes.
       sidepanel:
         title: Enviar actualizaciones de calendario por correo electrónico
         description:
@@ -385,8 +385,8 @@ es:
           enable: "¿Habilitar actualizaciones de calendario por correo electrónico?"
           disable: "¿Deshabilitar actualizaciones de calendario por correo electrónico?"
         message:
-          enable: Once enabled, an email will be sent out immediately to all participants.
-          disable: If they already had an invite for this meeting, it might no longer be accurate.
+          enable: Una vez activado, se enviará inmediatamente un correo electrónico a todos los participantes.
+          disable: Si ya tenían una invitación para esta reunión, es posible que ya no sea válida.
         confirm_label:
           enable: Habilitar actualizaciones por correo electrónico
           disable: Deshabilitar actualizaciones por correo electrónico
@@ -602,7 +602,7 @@ es:
   label_agenda_item_duplicate_in_next_title: "¿Duplicar en la próxima reunión?"
   label_agenda_item_add_notes: Añadir notas
   label_agenda_item_add_outcome: Añadir resultado
-  label_agenda_item_convert_to_work_package: Convert to work package
+  label_agenda_item_convert_to_work_package: Convertir a paquete de trabajo
   label_agenda_item_work_package_add: Añadir paquete de trabajo
   label_agenda_item_work_package: Paquete de trabajo del punto del orden del día
   label_section_rename: Renombrar sección

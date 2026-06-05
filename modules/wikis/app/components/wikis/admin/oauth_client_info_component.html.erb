@@ -6,7 +6,7 @@
         if oauth_client.present?
           concat(render(Primer::Beta::Label.new(scheme: :success)) { t(:label_completed) })
         else
-          concat(render(Primer::Beta::Label.new(scheme: :secondary)) { t(".label_pending") })
+          concat(render(Primer::Beta::Label.new(scheme: :attention)) { t(:label_incomplete) })
         end
       end
 

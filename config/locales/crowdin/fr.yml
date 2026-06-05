@@ -52,15 +52,16 @@ fr:
           confirm_button_text: Passer en public
   admin:
     reserved_identifiers:
-      title: Reserved project identifiers
-      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      title: Identifiants de projet réservés
+      lede_html: Lorsque l'identifiant d'un projet est renommé, l'ancien identifiant reste réservé afin que les liens et intégrations existants continuent de fonctionner.<br>Vous pouvez ici libérer les identifiants réservés afin qu'ils puissent être utilisés par d'autres projets.
       col_identifier: Identifiant
       col_project: Projet
       col_reserved: Réservé
-      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
-      filter_label: Filter identifiers
+      not_available_in_semantic_mode: Les identifiants de projet réservés ne sont disponibles qu'en mode d'identifiant numérique.
+      filter_label: Rechercher des identifiants
       btn_release: Release
       released_notice: L'identifiant "%{identifier}" a été publié.
+      identifier_not_found: L'identifiant réservé est introuvable. Il a peut-être déjà été libéré ou le projet a peut-être été supprimé. Veuillez actualiser la page.
       dialog:
         title: Identifiant de publication
         heading: Publier «%{identifier} » ?
@@ -436,6 +437,7 @@ fr:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Projet
           label_previous_identifier: Identifiant précédent
           label_autofixed_suggestion: Futur identifiant
@@ -458,7 +460,7 @@ fr:
         dialog:
           title: Modifier les identifiants de lots de travaux
           heading: Activer les ID de lots de travaux basés sur le projet ?
-          description: 'Cette opération modifiera les identifiants de tous les lots de travaux de tous les projets dans cette instance. Les identifiants et URL précédents continueront de rediriger correctement. Cette modification prendra un certain temps.
+          description: 'Cette opération modifiera les identifiants de tous les lots de travaux de tous les projets dans ce cas. Les identifiants et URL précédents continueront à fonctionner. Cette modification prendra un certain temps.
 
             '
           confirm_button: Modifier les identifiants
@@ -939,7 +941,7 @@ fr:
       change_identifier_dialog_title: Modifier l'identifiant du projet
       change_identifier_format_hint_semantic: Uniquement des lettres majuscules (A-Z), des chiffres ou des traits de soulignement. Maximum 10 caractères. Doit commencer par une lettre.
       change_identifier_format_hint_legacy: Uniquement des lettres minuscules (a-z), des chiffres, des tirets ou des traits de soulignement.
-      change_identifier_warning: 'Cela modifiera de manière permanente les identifiants et les URL de tous les lots de travaux de ce projet. L''identifiant et l''URL précédents continueront néanmoins la redirection correctement.
+      change_identifier_warning: 'Cela modifiera de manière permanente les identifiants et les URL de tous les lots de travail de ce projet. Les identifiants et URL précédents continueront néanmoins à fonctionner.
 
         '
       subitems:
@@ -1363,12 +1365,12 @@ fr:
     edit:
       form_configuration:
         tab: Configuration du formulaire
-        label_group: Groupe
-        reset_to_defaults: Rétablir les valeurs par défaut
-        add_attribute_group: Ajouter un groupe d’attributs
-        add_query_group: Ajouter un tableau des lots de travaux associés
-        delete_group: Supprimer le groupe
-        remove_attribute: Retirer du groupe
+        label_group: Section
+        reset_to_defaults: Réinitialiser le formulaire
+        add_attribute_group: Section
+        add_query_group: Tableau des lots de travaux associés
+        delete_group: Supprimer la section
+        remove_attribute: Supprimer de la section
         drag_to_activate: Faites glisser les champs à partir d'ici pour les activer
         drag_to_reorder: Glisser pour réorganiser
         edit_query: Modifier la requête
@@ -1378,12 +1380,12 @@ fr:
         no_inactive_attributes: Pas d'attributs inactifs
         blankslate_title: Aucun groupe pour le moment
         blankslate_description: Ajoutez des groupes à l'aide du bouton ci-dessus ou faites glisser des attributs depuis le panneau de gauche.
-        group_actions: Actions de groupe
-        rename_group: Renommer le groupe
-        confirm_delete_group: Êtes-vous sûr de vouloir supprimer ce groupe ? Cette action ne peut pas être annulée.
-        group_name_label: Nom du groupe
+        group_actions: Actions relatives à la section
+        rename_group: Renommer la section
+        confirm_delete_group: Êtes-vous sûr de vouloir supprimer cette section ? Cette action ne peut pas être annulée.
+        group_name_label: Nom de la section
         row_actions: Actions de ligne
-        query_group_label: Tableau des lots de travaux
+        query_group_label: Tableau des lots de travaux connexes
         empty_group_hint: Glisser les attributs ici
         invalid_attribute_groups: La charge utile de la configuration du formulaire n'est pas valide.
         invalid_query: La configuration de la requête intégrée n'est pas valide.
@@ -2053,6 +2055,7 @@ fr:
         priority: Priorité
         progress: "% réalisé"
         readonly: Lecture seule
+        relatable: Relatif à
         remaining_hours: Travail restant
         remaining_time: Travail restant
         sequence_number: Numéro de séquence
@@ -3526,10 +3529,10 @@ fr:
             line_1: Prise en charge par Jira Migrator des identifiants Jira, des dates d'échéance, etc.
             line_2: Possibilité d'exclure des types de lots de travail des carnets de commandes.
             line_3: Refonte des vues de sprint.
-            line_4: Improved work package linking across Documents and text editors.
-            line_5: More flexible meeting schedules and reduced email notification noise.
-            line_6: Nested groups for organizational structures and inherited permissions.
-            line_7: Improved administration interfaces for workflows, users, and type configuration.
+            line_4: Amélioration de la liaison des lots de travaux dans les documents et les éditeurs de texte.
+            line_5: Des horaires de réunions plus flexibles et des notifications par courriel réduites.
+            line_6: Groupes imbriqués pour les structures organisationnelles et les autorisations héritées.
+            line_7: Amélioration des interfaces d'administration des flux de travail, des utilisateurs et de la configuration des types.
     links:
       upgrade_enterprise_edition: Passer à la version Enterprise
       postgres_migration: Migration de votre installation vers PostgreSQL
@@ -4043,7 +4046,7 @@ fr:
   label_home: Accueil
   label_subject_or_id: Objet ou ID
   label_calendar_subscriptions: Abonnements au calendrier
-  label_identifier: Identifiers
+  label_identifier: Identifiants
   label_project_identifier: Identifiant de projet
   label_in: dans
   label_in_less_than: dans moins de
@@ -4076,6 +4079,7 @@ fr:
   label_journal_diff: Comparaison de description
   label_language: Langue
   label_languages: Langues
+  label_export_plural: Exportations
   label_external_links: Liens externes
   label_locale: Langue et région
   label_jump_to_a_project: Accéder à un projet...
@@ -4272,7 +4276,7 @@ fr:
   label_project_new: Nouveau projet
   label_project_plural: Projets
   label_project_list_plural: Listes de projets
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Identifiants de projet réservés
   label_project_life_cycle: Cycle de vie du projet
   label_project_attributes_plural: Attributs du projet
   label_project_custom_field_plural: Attributs du projet
@@ -4540,6 +4544,7 @@ fr:
   label_total_days_off: Nombre total de jours de congé
   macro_execution_error: Erreur lors de l'exécution de la macro %{macro_name}
   macro_unavailable: La macro %{macro_name} ne peut être affichée.
+  macro_unknown: Macro inconnue ou non prise en charge.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -4823,6 +4828,7 @@ fr:
         menu:
           label_actions: Actions du lot de travaux
         parent: Parent
+        undisclosed: Non divulgué
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages
@@ -5224,6 +5230,10 @@ fr:
   setting_consent_required: Accord requis
   setting_consent_decline_mail: Adresse mail de contact de l'accord
   setting_cross_project_work_package_relations: Autoriser les relations entre lots de travaux de projets différents
+  setting_csv_escape_formulas: Échapper les formules dans les exportations CSV
+  setting_csv_escape_formulas_text: 'Échappez les formules de feuille de calcul dans les exportations CSV en préfixant les cellules commençant par des caractères tels que =, +, - ou @ par une apostrophe simple. Cela réduit les risques d''injection de formule CSV lorsque les fichiers exportés sont ouverts dans des applications de feuille de calcul telles qu''Excel. L''inconvénient est que les valeurs de chaîne dans le CSV sont modifiées. Vous pouvez donc désactiver cette option si des outils en aval nécessitent les valeurs de cellule exactes, non échappées.
+
+    '
   setting_first_week_of_year: La première semaine de l'année contient
   setting_date_format: Date
   setting_default_language: Langue par défaut
@@ -5264,6 +5274,9 @@ fr:
   setting_work_package_properties: Propriétés du lot de travaux
   setting_work_package_startdate_is_adddate: Utiliser la date actuelle comme date de début des nouveaux lots de travaux
   setting_work_packages_projects_export_limit: Limite d'exportation des lots de travaux/projets
+  setting_work_packages_projects_export_limit_text: 'Nombre maximal de lots de travaux ou de projets pouvant être inclus dans une même exportation. Les exportations plus volumineuses sont tronquées à cette limite.
+
+    '
   setting_journal_aggregation_time_minutes: Période d'agrégation
   setting_log_requesting_user: Enregistrer le login utilisateur, nom et adresse e-mail pour toutes les requêtes
   setting_login_required: Authentification requise
@@ -5350,9 +5363,9 @@ fr:
   setting_welcome_title: Bloc de titre de bienvenue
   setting_welcome_on_homescreen: Afficher le bloc de bienvenue sur l'écran d'accueil
   setting_work_packages_identifier_classic: Séquence numérique à l'échelle de l'instance (par défaut)
-  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
-  setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
+  setting_work_packages_identifier_classic_caption: 'Chaque lot de travaux reçoit un numéro séquentiel commençant à 1 (par exemple, #1234). Les numéros sont uniques au sein de l''instance et restent identiques même si les lots de travaux sont déplacés entre des projets.'
+  setting_work_packages_identifier_semantic: Identificateurs sémantiques basés sur des projets (Beta)
+  setting_work_packages_identifier_semantic_caption: Chaque projet possède un identifiant de projet unique préfixé à un numéro (par exemple, PROJ-11). La numérotation de chaque projet commence à 1. Si un lot de travaux est déplacé vers un autre projet, un nouvel identifiant est généré, mais l'ancien continuera de fonctionner.
   setting_work_package_list_default_highlighting_mode: Mode de surbrillance par défaut
   setting_work_package_list_default_highlighted_attributes: Attributs en ligne mis en surbrillance par défaut
   setting_working_days: Jours ouvrés
@@ -5534,7 +5547,7 @@ fr:
       section_work_week: Semaine de travail
       section_holidays_and_closures: Vacances et fermetures
     work_packages:
-      work_package_identifier: Work package identifiers
+      work_package_identifier: Identifiants des lots de travaux
       not_allowed_text: Vous n'avez pas les autorisations nécessaires pour voir cette page.
       activities:
         enable_internal_comments: Activer les commentaires internes
@@ -5966,16 +5979,16 @@ fr:
 
       '
     dialog:
-      title: Change working days
-      description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+      title: Modifier les jours ouvrés
+      description: 'Modifier les jours de la semaine considérés comme ouvrés ou non ouvrés peut avoir une incidence sur les dates de début et de fin de tous les lots de travaux et cycles de vie dans tous les projets de cette instance.
 
         '
-      removed_title: 'You will remove the following days from the non-working days list:'
-      warning: 'The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+      removed_title: 'Vous supprimerez les jours suivants de la liste des jours non ouvrés :'
+      warning: 'Les modifications peuvent prendre un certain temps avant de prendre effet. Vous recevrez une notification lorsque tous les lots de travaux et cycles de vie de projet concernés auront été mis à jour.
 
         '
-      heading: Change the working days?
-      confirm_button: Save and reschedule
+      heading: Modifier les jours ouvrés ?
+      confirm_button: Enregistrer et reprogrammer
     journal_note:
       changed: _**Jours ouvrables** modifiés (%{changes})._
       days:
@@ -6050,7 +6063,7 @@ fr:
       ancestor: Non divulgué - l'ancêtre est invisible en raison d'un manque de permissions.
       definingProject: Non divulgué - Le projet est invisible parce qu'il n'a pas les autorisations nécessaires.
       definingWorkspace: Non divulgué - L'espace de travail est invisible parce qu'il n'a pas les autorisations nécessaires.
-      workPackage: Undisclosed - The work package is invisible because of lacking permissions.
+      workPackage: 'Non divulgué : le lot de travaux est invisible en raison d''autorisations insuffisantes.'
   doorkeeper:
     pre_authorization:
       status: Préautorisation

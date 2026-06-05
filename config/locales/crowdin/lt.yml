@@ -57,10 +57,11 @@ lt:
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
-      filter_label: Filter identifiers
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
       btn_release: Release
       released_notice: Identifier "%{identifier}" has been released.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
@@ -448,6 +449,7 @@ lt:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
@@ -472,7 +474,7 @@ lt:
         dialog:
           title: Change work package identifiers
           heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Change identifiers
@@ -958,7 +960,7 @@ lt:
       change_identifier_dialog_title: Change project identifier
       change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
       change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1405,12 +1407,12 @@ lt:
     edit:
       form_configuration:
         tab: Formos konfigūracija
-        label_group: Group
-        reset_to_defaults: Reset to defaults
-        add_attribute_group: Add attribute group
-        add_query_group: Add table of related work packages
-        delete_group: Delete group
-        remove_attribute: Remove from group
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Drag fields from here to activate them
         drag_to_reorder: Drag to reorder
         edit_query: Edit query
@@ -1420,12 +1422,12 @@ lt:
         no_inactive_attributes: No inactive attributes
         blankslate_title: No groups yet
         blankslate_description: Add groups using the button above or drag attributes from the left panel.
-        group_actions: Group actions
-        rename_group: Rename group
-        confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
-        group_name_label: Group name
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Row actions
-        query_group_label: Work packages table
+        query_group_label: Related work packages table
         empty_group_hint: Drag attributes here
         invalid_attribute_groups: The form configuration payload is invalid.
         invalid_query: The embedded query configuration is invalid.
@@ -2101,6 +2103,7 @@ lt:
         priority: Pirmenybė
         progress: "% baigta"
         readonly: Tik skaitymui
+        relatable: Relatable to
         remaining_hours: Liko darbo
         remaining_time: Liko darbo
         sequence_number: Sequence number
@@ -4210,6 +4213,7 @@ lt:
   label_journal_diff: Aprašymų palyginimas
   label_language: Kalba
   label_languages: Kalbos
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Peršokti į projektą...
@@ -4406,7 +4410,7 @@ lt:
   label_project_new: Naujas projektas
   label_project_plural: Projektai
   label_project_list_plural: Projektų sąrašai
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: Project life cycle
   label_project_attributes_plural: Projekto atributai
   label_project_custom_field_plural: Projekto atributai
@@ -4680,6 +4684,7 @@ lt:
   label_total_days_off: Total days off
   macro_execution_error: Klaida vykdant makrokomandą %{macro_name}
   macro_unavailable: Makrokomanda %{macro_name} negali būti rodoma.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Makro %{macro_name}"
     errors:
@@ -4969,6 +4974,7 @@ lt:
         menu:
           label_actions: Work package actions
         parent: Parent
+        undisclosed: Undisclosed
   permission_add_work_package_comments: Add comments
   permission_add_work_packages: Pridėti darbų paketų
   permission_add_messages: Skelbti pranešimus
@@ -5366,6 +5372,10 @@ lt:
   setting_consent_required: Reikia sutikimo
   setting_consent_decline_mail: Sutikimo kontaktinis pašto adresas
   setting_cross_project_work_package_relations: Leisti tarp-projektinius darbų paketo ryšius
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Pirma metų savaitė turi
   setting_date_format: Data
   setting_default_language: Numatytoji kalba
@@ -5406,6 +5416,9 @@ lt:
   setting_work_package_properties: Darbų paketo ypatybės
   setting_work_package_startdate_is_adddate: Naudoti dabartinę datą kaip naujų darbų paketų pradžios datą
   setting_work_packages_projects_export_limit: Darbo paketų / Projektų eksporto limitas
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Įrašyti vartotojo vardą, prisijungimo vardą, e. pašto adresą visiems prašymams
   setting_login_required: Reikalinga autentifikacija

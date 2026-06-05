@@ -153,7 +153,7 @@ export default class FiltersFormController extends Controller {
     const filterName = target.getAttribute('data-filter-name');
     if (filterName) {
       const operator = this.findTargetByName(filterName, this.operatorTargets);
-      if (operator && this.noValueOperators.includes(operator.value)) {
+      if (operator && this.operatorRequiresNoValue(operator)) {
         target.setAttribute('hidden', '');
       }
     }
@@ -354,16 +354,24 @@ export default class FiltersFormController extends Controller {
     inputElement.dispatchEvent(inputEvent);
   }
 
-  private readonly noValueOperators = ['*', '!*', 't', 'w'];
   private readonly daysOperators = ['>t-', '<t-', 't-', '<t+', '>t+', 't+'];
   private readonly onDateOperator = '=d';
   private readonly betweenDatesOperator = '<>d';
+
+  // Whether the operator currently selected in `operatorElement` declares
+  // itself value-less. Driven by the `data-no-value` attribute that
+  // `Filters::Inputs::BaseFilterForm#add_operator` emits on each `<option>`
+  // whose `Operator.requires_value?` is false — keeps the symbol list in
+  // one place (Ruby) instead of duplicating it here.
+  private operatorRequiresNoValue(operatorElement:HTMLSelectElement):boolean {
+    return operatorElement.selectedOptions[0]?.hasAttribute('data-no-value') ?? false;
+  }
 
   setValueVisibility({ target, params: { filterName } }:{ target:HTMLSelectElement, params:{ filterName:string } }) {
     const selectedOperator = target.value;
     const valueContainer = this.findTargetByName(filterName, this.filterValueContainerTargets);
     if (valueContainer) {
-      if (this.noValueOperators.includes(selectedOperator)) {
+      if (this.operatorRequiresNoValue(target)) {
         valueContainer.setAttribute('hidden', '');
       } else {
         valueContainer.removeAttribute('hidden');
@@ -456,7 +464,9 @@ export default class FiltersFormController extends Controller {
       const type = filter.getAttribute('data-filter-type');
       const operator = filter.getAttribute('data-filter-operator');
       if (name && type && operator) {
-        const value = this.parseFilterValue(filter, name, type, operator) as string[]|null;
+        // Quick filters carry an operator that always requires a value
+        // (the inline search input).
+        const value = this.parseFilterValue(filter, name, type, operator, false) as string[]|null;
 
         if (value) {
           filters.push({ name, operator, value });
@@ -473,11 +483,13 @@ export default class FiltersFormController extends Controller {
     advancedFilters.forEach((filter) => {
       const filterName = filter.getAttribute('data-filter-name')!;
       const filterType = filter.getAttribute('data-filter-type');
-      const parsedOperator = this.findTargetByName(filterName, this.operatorTargets)?.value;
+      const operatorTarget = this.findTargetByName(filterName, this.operatorTargets);
+      const parsedOperator = operatorTarget?.value;
       const valueContainer = this.findTargetByName(filterName, this.filterValueContainerTargets);
 
-      if (valueContainer && filterName && filterType && parsedOperator) {
-        const parsedValue = this.parseFilterValue(valueContainer, filterName, filterType, parsedOperator) as string[]|null;
+      if (valueContainer && filterName && filterType && parsedOperator && operatorTarget) {
+        const requiresNoValue = this.operatorRequiresNoValue(operatorTarget);
+        const parsedValue = this.parseFilterValue(valueContainer, filterName, filterType, parsedOperator, requiresNoValue) as string[]|null;
 
         if (parsedValue) {
           filters.push({ name: filterName, operator: parsedOperator, value: parsedValue });
@@ -509,10 +521,9 @@ export default class FiltersFormController extends Controller {
     return value && value.length > 0 ? value.replace(/"/g, '\\"') : '';
   }
 
-  private readonly operatorsWithoutValues = ['*', '!*', 't', 'w'];
   private readonly dateFilterTypes = ['datetime_past', 'date'];
 
-  private parseFilterValue(valueContainer:HTMLElement, filterName:string, filterType:string, operator:string) {
+  private parseFilterValue(valueContainer:HTMLElement, filterName:string, filterType:string, operator:string, requiresNoValue:boolean) {
     const checkbox = valueContainer.querySelector<HTMLInputElement>('input[type="checkbox"]');
 
     if (checkbox) {
@@ -523,7 +534,7 @@ export default class FiltersFormController extends Controller {
       return (valueContainer.querySelector<HTMLInputElement>('input[name="value"]'))?.value.split(',');
     }
 
-    if (this.operatorsWithoutValues.includes(operator)) {
+    if (requiresNoValue) {
       return [];
     }
 

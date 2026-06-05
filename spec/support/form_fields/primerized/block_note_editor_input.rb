@@ -109,6 +109,15 @@ module FormFields
         shadow_root.find("div[role='textbox']")
       end
 
+      # Retries the given block using Capybara's default wait time until it returns
+      # truthy. Use this before checking a database field that is written by the
+      # editor's async autosave.
+      def wait_for_autosave(&)
+        page.document.synchronize(Capybara.default_max_wait_time) do
+          raise Capybara::ElementNotFound unless yield
+        end
+      end
+
       private
 
       # Attention: This only works with selenium, not with cuprite,

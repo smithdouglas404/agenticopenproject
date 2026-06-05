@@ -51,6 +51,8 @@ module Wikis
       private
 
       def author_must_be_user
+        return if user.admin? && Setting.apiv3_write_readonly_attributes?
+
         errors.add(:author, :invalid) unless author == user
       end
 

@@ -30,7 +30,7 @@
 
 module Backlogs
   class BacklogController < BaseController
-    include WorkPackages::WithSplitView
+    include ::WorkPackages::WithSplitView
     include Backlogs::Concerns::ContainerLoading
 
     current_menu_item %i[show details] do

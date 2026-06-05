@@ -43,6 +43,21 @@ Rails.application.routes.draw do
         post :toggle_public
       end
 
+      resources :views,
+                controller: "resource_management/resource_planner_views",
+                only: %i[show new create edit update destroy] do
+        member do
+          # Search-and-pick dialog for manually hand-picked views, and the
+          # endpoints that add/remove a work package to/from the query.
+          get :new_work_package
+          post :work_packages, action: :add_work_package
+          put "work_packages/:work_package_id/move", action: :move_work_package, as: :move_work_package
+          put "work_packages/:work_package_id/reorder", action: :reorder_work_package, as: :reorder_work_package
+
+          delete "work_packages/:work_package_id", action: :remove_work_package, as: :remove_work_package
+        end
+      end
+
       collection do
         get "menu" => "resource_management/menus#show"
       end

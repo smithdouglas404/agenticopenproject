@@ -150,18 +150,30 @@ RSpec.describe WorkPackageMailer do
         it "renders the hash-prefixed numeric id in the text body" do
           expect(mail.text_part.body.to_s).to include("##{referenced_wp.id}")
         end
+
+        it "links to the work package by its numeric id" do
+          expect(mail.html_part.body.to_s)
+            .to include("/notifications/details/#{parent_wp.id}/activity")
+        end
       end
 
       context "with semantic mode",
               with_settings: { work_packages_identifier: "semantic" } do
         before do
           referenced_wp.update_columns(identifier: "DEMO-1", sequence_number: 1)
+          parent_wp.update_columns(identifier: "DEMO-2", sequence_number: 2)
         end
 
         it "renders the bare semantic identifier in the text body" do
           body = mail.text_part.body.to_s
           expect(body).to include("DEMO-1")
           expect(body).not_to match(/##{referenced_wp.id}\b/)
+        end
+
+        it "links to the work package by its semantic identifier, not the numeric id" do
+          body = mail.html_part.body.to_s
+          expect(body).to include("/notifications/details/DEMO-2/activity")
+          expect(body).not_to include("/notifications/details/#{parent_wp.id}/activity")
         end
       end
     end

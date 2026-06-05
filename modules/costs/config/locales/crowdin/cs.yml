@@ -39,7 +39,7 @@ cs:
         unit: Název jednotky
         unit_plural: Název Pluralizované jednotky
         default: Typ nákladů ve výchozím nastavení
-        for_all_projects: For all projects
+        for_all_projects: Pro všechny projekty
         rates: Rates
       work_package:
         costs_by_type: Strávené jednotky
@@ -101,7 +101,7 @@ cs:
         cost_types_project:
           attributes:
             project_ids:
-              blank: Please select a project.
+              blank: Prosím vyberte projekt.
   attributes:
     comment: Komentář
     cost_type: Typ nákladu

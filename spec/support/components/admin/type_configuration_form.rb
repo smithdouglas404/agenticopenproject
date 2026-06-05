@@ -37,7 +37,7 @@ module Components
       include Rails.application.routes.url_helpers
 
       def add_button_dropdown
-        page.find(:test_id, "type-form-configuration-add-button", text: /\A#{Regexp.escape(I18n.t(:button_add))}\z/)
+        page.find_test_selector("type-form-configuration-add-button")
       end
 
       def reset_button
@@ -127,7 +127,7 @@ module Components
         SeleniumHubWaiter.wait unless using_cuprite?
 
         add_button_dropdown.click
-        click_on I18n.t("types.edit.form_configuration.add_query_group")
+        page.find_test_selector("admin--type-form-configuration--add-query-group").click
 
         modal = ::Components::WorkPackages::TableConfigurationModal.new
         expect(page).to have_css(".wp-table--configuration-modal", wait: 10)

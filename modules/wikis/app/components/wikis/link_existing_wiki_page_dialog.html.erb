@@ -28,11 +28,14 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= render(Primer::Alpha::Dialog.new(id:, title: t(".title"), size: :large, **system_arguments)) do |dialog| %>
-  <% dialog.with_body do
-    primer_form_with(**form_options) do |form|
-      render(Wikis::LinkExistingWikiPageForm.new(form))
+  <%
+    dialog.with_body(classes: "Overlay-body_autocomplete_height") do
+      primer_form_with(**form_options) do |form|
+        render(Wikis::LinkExistingWikiPageForm.new(form))
+      end
     end
-  end %>
+  %>
+
   <% dialog.with_footer do %>
     <%= render(Primer::Beta::Button.new(data: { "close-dialog-id": id })) { t("button_cancel") } %>
     <%= render(Primer::Beta::Button.new(scheme: :primary, form: form_id, type: :submit)) { t("button_add") } %>

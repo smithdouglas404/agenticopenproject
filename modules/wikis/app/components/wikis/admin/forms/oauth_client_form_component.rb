@@ -60,5 +60,9 @@ module Wikis::Admin::Forms
     def validation_message_for(attribute)
       resolved_oauth_client.errors.messages_for(attribute).to_sentence.presence
     end
+
+    def xwiki_oidc_admin_url
+      Wikis::Admin::XWikiAdminUrlHelper.url(base_url: wiki_provider.url, section: "OpenID Connect")
+    end
   end
 end

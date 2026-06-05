@@ -47,11 +47,15 @@ module Wikis
     end
 
     def destroy
-      # TODO: Wikis::PageLinks::DeleteService
       page_link = find_page_link
-      page_link.destroy!
-
-      turbo_redirect_for_linkable(page_link.linkable)
+      service_result = Wikis::RelationPageLinks::DeleteService.new(user: current_user, model: page_link).call
+      if service_result.success?
+        turbo_redirect_for_linkable(page_link.linkable)
+      else
+        message = service_result.errors.full_messages.join(" ")
+        render_error_flash_message_via_turbo_stream(message:)
+        respond_to_with_turbo_streams
+      end
     end
 
     def confirm_delete_dialog
@@ -72,8 +76,17 @@ module Wikis
     end
 
     def relation_page_link_params
-      params.expect(wikis_relation_page_link: %i[identifier provider_id linkable_type linkable_id])
-            .merge(author_id: current_user.id)
+      params.expect(wikis_relation_page_link: %i[provider_id linkable_type linkable_id])
+            .merge(author_id: current_user.id, identifier: parse_identifier(params[:wiki_page_selection]))
+    end
+
+    def parse_identifier(wiki_page_selection)
+      case wiki_page_selection
+      in [selected_page]
+        MultiJson.load(selected_page, symbolize_keys: true)[:value]
+      else
+        nil
+      end
     end
 
     def turbo_redirect_for_linkable(linkable)

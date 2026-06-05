@@ -117,9 +117,11 @@ RSpec.describe Admin::Settings::ProjectReservedIdentifiersController do
       end
 
       context "with an unknown id" do
-        it "renders 404" do
+        it "responds with a turbo stream error flash" do
           get :confirm_dialog, params: { id: 0 }, format: :turbo_stream
           expect(response).to have_http_status(:not_found)
+          expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+          expect(response.body).to include(I18n.t("admin.reserved_identifiers.identifier_not_found"))
         end
       end
     end
@@ -127,9 +129,11 @@ RSpec.describe Admin::Settings::ProjectReservedIdentifiersController do
     context "when the slug is the project's own current active identifier" do
       let!(:slug) { project.slugs.find_by!(slug: "current-id") }
 
-      it "renders 404 because the slug is not historically reserved" do
+      it "responds with a turbo stream error flash because the slug is not historically reserved" do
         get :confirm_dialog, params: { id: slug.id }, format: :turbo_stream
         expect(response).to have_http_status(:not_found)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+        expect(response.body).to include(I18n.t("admin.reserved_identifiers.identifier_not_found"))
       end
     end
   end
@@ -147,9 +151,11 @@ RSpec.describe Admin::Settings::ProjectReservedIdentifiersController do
     end
 
     context "with an unknown id" do
-      it "renders 404" do
-        delete :destroy, params: { id: 0 }
+      it "responds with a turbo stream error flash" do
+        delete :destroy, params: { id: 0 }, format: :turbo_stream
         expect(response).to have_http_status(:not_found)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+        expect(response.body).to include(I18n.t("admin.reserved_identifiers.identifier_not_found"))
       end
     end
   end

@@ -135,7 +135,6 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
       search_placeholder: this.I18n.t('js.include_projects.search_placeholder')
     },
     workspace: {
-      list: this.I18n.t('js.label_workspace_list'),
       search_placeholder: this.I18n.t('js.include_workspaces.search_placeholder')
     },
     search_favorites_placeholder: this.I18n.t('js.include_projects.search_placeholder_favorites'),

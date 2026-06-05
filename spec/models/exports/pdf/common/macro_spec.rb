@@ -320,6 +320,30 @@ RSpec.describe Exports::PDF::Common::Macro do
       end
     end
 
+    describe "with a semantic work package identifier",
+             with_settings: { work_packages_identifier: "semantic" } do
+      let(:semantic_project) { create(:project, identifier: "PROJ") }
+      let(:semantic_work_package) do
+        wp = create(:work_package, project: semantic_project, type: type_task, subject: "Semantic subject")
+        wp.allocate_and_register_semantic_id
+        wp.reload
+      end
+      let(:user) do
+        create(
+          :user,
+          member_with_permissions: {
+            project => %i[view_work_packages view_project_attributes view_project],
+            semantic_project => %i[view_work_packages view_project_attributes view_project]
+          }
+        )
+      end
+      let(:markdown) { "workPackageValue:#{semantic_work_package.identifier}:subject" }
+
+      it "outputs the attribute value for the work package addressed by its semantic identifier" do
+        expect(formatted).to eq("Semantic subject")
+      end
+    end
+
     describe "with restricted work package ID and attribute" do
       let(:markdown) { "workPackageValue:#{restricted_work_package.id}:subject" }
 

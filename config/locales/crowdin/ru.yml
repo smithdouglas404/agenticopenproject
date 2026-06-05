@@ -54,21 +54,22 @@ ru:
     reserved_identifiers:
       title: Reserved project identifiers
       lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
-      col_identifier: Identifier
-      col_project: Project
-      col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
-      filter_label: Filter identifiers
-      btn_release: Release
+      col_identifier: Идентификатор
+      col_project: Проект
+      col_reserved: Зарезервировано
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
+      btn_release: Релиз
       released_notice: Identifier "%{identifier}" has been released.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
         description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
-        checkbox_label: I understand that this cannot be undone.
-        confirm_button: Release identifier
-      empty_heading: No reserved identifiers
-      reserved_ago: "%{time} ago"
+        checkbox_label: Я понимаю, что это действие нельзя отменить.
+        confirm_button: Идентификатор релиза
+      empty_heading: Нет зарезервированных идентификаторов
+      reserved_ago: "%{time} назад"
       empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: В настоящее время плагины не установлены.
@@ -139,7 +140,7 @@ ru:
         cannot_delete_with_imports: Невозможно удалить хост Jira с существующими импортами
         custom_field_creation_failed: 'Не удалось создать пользовательское поле ''%{name}'': %{message}'
         semantic_identifiers_must_be_enabled:
-          title: Project-based semantic identifiers must be enabled.
+          title: Семантические идентификаторы на основе проекта должны быть включены.
           description: Jira uses issue identifiers consisting of a project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Хосты Jira еще не настроены
@@ -180,8 +181,8 @@ ru:
         connection_error: 'Не удалось подключиться к серверу Jira: %{message}'
         connection_timeout: 'Время подключения к серверу Jira истекло: %{message}'
         ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
-        ssrf_block_doc_link: Please see our [documentation](docs_url).
-        ssl_error: 'SSL error connecting to Jira server: %{message}'
+        ssrf_block_doc_link: Пожалуйста, ознакомьтесь с нашей [документацией](docs_url).
+        ssl_error: 'Ошибка SSL при подключении к серверу Jira: %{message}'
         parse_error: 'Не удалось разобрать ответ Jira API: %{message}'
         api_error: Jira API вернул статус ошибки %{status}
         401_error: Jira API вернул ошибку 401. Ваш токен аутентификации может быть истёк или не хватает необходимых разрешений. Пожалуйста, убедитесь, что токен принадлежит администратору Jira.
@@ -352,7 +353,7 @@ ru:
           select_projects:
             title: Выбрать проекты
       user:
-        unknown_name: Unknown
+        unknown_name: Неизвестен
     mcp_configurations:
       index:
         description: Протокол контекста модели позволяет агентам ИИ предоставлять своим пользователям инструменты и ресурсы, открытые данным экземпляром OpenProject. Эта функция пока находится в стадии бета-версии.
@@ -448,6 +449,7 @@ ru:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Проект
           label_previous_identifier: Предыдущий идентификатор
           label_autofixed_suggestion: Следующий идентификатор
@@ -467,20 +469,20 @@ ru:
             few: "... еще %{count} проектов"
             many: "... еще %{count} проектов"
             other: "... еще %{count} проектов"
-        button_autofix: Convert identifiers
-        button_save: Convert identifiers
+        button_autofix: Конвертировать идентификаторы
+        button_save: Конвертировать идентификаторы
         dialog:
           title: Изменить идентификаторы пакета работ
           heading: Включить ID пакета работ на основе проектов?
-          description: 'Это изменит идентификаторы всех пакетов работ во всех проектах в этом экземпляре. Предыдущие идентификаторы и URL-адреса будут перенаправляться правильно. Это изменение займет некоторое время для завершения.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
 
             '
           confirm_button: Изменить идентификаторы
           checkbox_label: Я понимаю, что это навсегда изменит все идентификаторы пакета работ
         success_banner: Формат идентификатора пакета работ успешно обновлен.
         in_progress:
-          header_semantic: Converting to project-based identifiers
-          header_classic: Converting to numeric identifiers
+          header_semantic: Переход на идентификаторы, основанные на проекте
+          header_classic: Преобразование в числовые идентификаторы
           footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
@@ -933,7 +935,7 @@ ru:
         text: Это действие не приведет к удалению ни одного проекта, содержащегося в списке. Вы уверены, что хотите удалить этот список проектов?
     settings:
       header_details: Основные сведения
-      header_identifier: Identifier
+      header_identifier: Идентификатор
       header_status: Статус
       header_relations: Отношения с проектом
       button_update_details: Обновить детали
@@ -958,7 +960,7 @@ ru:
       change_identifier_dialog_title: Изменить идентификатор проекта
       change_identifier_format_hint_semantic: Только заглавные буквы (A-Z), цифры или символы подчеркивания. Не более 10 символов. Должно начинаться с буквы.
       change_identifier_format_hint_legacy: Только строчные буквы (a-z), цифры, тире или знаки подчеркивания.
-      change_identifier_warning: 'Это навсегда изменит идентификаторы и URL всех пакетов работ в этом проекте. Тем не менее, прежние идентификаторы и URL будут продолжать правильно перенаправлять.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
 
         '
       subitems:
@@ -1405,12 +1407,12 @@ ru:
     edit:
       form_configuration:
         tab: Настройка форм
-        label_group: Группа
-        reset_to_defaults: Восстановить значения по умолчанию
-        add_attribute_group: Добавить группу атрибутов
-        add_query_group: Добавить таблицу связанных пакетов работ
-        delete_group: Удалить группу
-        remove_attribute: Удалить из группы
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Чтобы включить поля, перетащите их отсюда
         drag_to_reorder: Перетащите, чтобы изменить порядок
         edit_query: Редактировать представление
@@ -1420,12 +1422,12 @@ ru:
         no_inactive_attributes: Нет неактивных атрибутов
         blankslate_title: Нет групп
         blankslate_description: Добавьте группы с помощью кнопки выше или перетащите атрибуты с левой панели.
-        group_actions: Действия с группами
-        rename_group: Переименовать группу
-        confirm_delete_group: Вы уверены, что хотите удалить эту группу? Это действие не может быть автоматически отменено.
-        group_name_label: Имя группы
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Действия со строками
-        query_group_label: Таблица пакетов работ
+        query_group_label: Related work packages table
         empty_group_hint: Перетащите атрибуты сюда
         invalid_attribute_groups: Конфигурация формы является недопустимой.
         invalid_query: Недопустимая конфигурация встраиваемого представления.
@@ -1433,7 +1435,7 @@ ru:
         untitled_group: Безымянная группа
         reset_title: Сбросить настройки формы
         confirm_reset: Вы уверены, что хотите сбросить конфигурацию формы?
-        builtin_field: Built-in field
+        builtin_field: Встроенное поле
         reset_description: 'Это сбросит атрибуты к группе по умолчанию и отключит ВСЕ настраиваемые поля.
 
           '
@@ -1579,14 +1581,14 @@ ru:
         children: Дочерние пакеты работ
         dates: Даты
         predecessors: Предшественники
-        successors: Последующие задачи
+        successors: Последователи
         blankslate:
           predecessors:
             title: Нет пакетов предшественников
             description: Этот пакет работ не имеет никаких предшественников.
           successors:
-            title: Нет последующих задач
-            description: Этот пакет работ не имеет никаких преемников.
+            title: Нет последователей
+            description: Этот пакет работ не имеет никаких последователей.
           children:
             title: Нет дочерних задач
             description: Этот пакет работ не имеет никаких дочерних элементов.
@@ -1764,7 +1766,7 @@ ru:
       attachment:
         attachment_content: Вложенный контент
         attachment_file_name: Название вложенного файла
-        charset: Character set
+        charset: Кодировка
         content_type: Тип содержимого
         downloads: Загрузки
         file: Файл
@@ -1859,7 +1861,7 @@ ru:
         title: Название
         description: Описание
       member:
-        blocked: Blocked
+        blocked: Заблокирован
         roles: Роль
       notification:
         read_ian: Читайте в приложении
@@ -2105,6 +2107,7 @@ ru:
         priority: Приоритет
         progress: "% завершения"
         readonly: Только для чтения
+        relatable: Relatable to
         remaining_hours: Оставшиеся часы
         remaining_time: Оставшиеся часы
         sequence_number: Порядковый номер
@@ -2618,7 +2621,7 @@ ru:
         other: Приоритеты
       meeting_participant: Участник совещания
       member: Участник
-      message: Message
+      message: Сообщение
       news: Новости
       notification:
         one: Уведомление
@@ -2914,7 +2917,7 @@ ru:
   button_download: Скачать
   button_disable: Отключить
   button_duplicate: Дублировать
-  button_duplicate_and_follow: Скопировать и наблюдать
+  button_duplicate_and_follow: Дублировать и следовать
   button_edit: Правка
   button_enable: Включить
   button_edit_associated_wikipage: 'Редактировать связанную wiki-страницу: %{page_title}'
@@ -3623,16 +3626,16 @@ ru:
           few: "%{count} checks failed"
           many: "%{count} checks failed"
           other: "%{count} checks failed"
-        success: All checks passed
+        success: Все проверки пройдены
         warnings:
           one: "%{count} check returned a warning"
           few: "%{count} checks returned a warning"
           many: "%{count} checks returned a warning"
           other: "%{count} checks returned a warning"
       summary:
-        failure: Some checks failed and the system does not work as expected.
-        success: All connections and systems are working as expected.
-        warning: Some checks returned a warning. This can lead to unexpected behaviour.
+        failure: Некоторые проверки не удались, и система работает не так, как ожидалось.
+        success: Все соединения и системы работают, как и ожидалось.
+        warning: Некоторые проверки вернули предупреждение. Это может привести к неожиданному поведению.
     result_component:
       status:
         failed: Ошибка
@@ -3644,8 +3647,8 @@ ru:
       projects: Новые видимые проекты в данном экземпляре.
       no_visible_projects: Не видимые проекты в данном экземпляре.
       favorite_projects:
-        no_results: You have no favorite projects
-        no_results_subtext: Add one or multiple projects as favorite through their overview or in a project list.
+        no_results: У вас нет избранных проектов
+        no_results_subtext: Добавьте один или несколько проектов в избранное через их обзор или в списке проектов.
       users: Новые зарегистрированные пользователи в данном экземпляре.
     blocks:
       community: OpenProject сообщество
@@ -3656,7 +3659,7 @@ ru:
         learn_about: Узнайте больше о всех новых функциях
         missing: Нет выделенных функций.
         '17_5':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Релиз содержит различные новые функции и улучшения, такие как:
 
             '
           new_features_list:
@@ -4069,7 +4072,7 @@ ru:
   label_custom_field_default_type: Пустой тип
   label_custom_style: Дизайн
   label_custom_style_description: Выберите, как OpenProject будет выглядеть с помощью тем, выберите цвета по умолчанию, которые Вы будете использовать в приложении, и как будет выглядеть экспорт.
-  label_dashboard: Панель
+  label_dashboard: Дашборд
   label_database_version: Версия PostgreSQL
   label_date: Дата
   label_dates: Даты
@@ -4181,7 +4184,7 @@ ru:
   label_home: Главная
   label_subject_or_id: Тема или ID
   label_calendar_subscriptions: Подписки на календарь
-  label_identifier: Identifiers
+  label_identifier: Идентификаторы
   label_project_identifier: Идентификатор проекта
   label_in: в
   label_in_less_than: менее чем
@@ -4214,6 +4217,7 @@ ru:
   label_journal_diff: Описание сравнения
   label_language: Язык
   label_languages: Языки
+  label_export_plural: Exports
   label_external_links: Внешние ссылки
   label_locale: Язык и регион
   label_jump_to_a_project: Перейти к проекту...
@@ -4410,7 +4414,7 @@ ru:
   label_project_new: Новый проект
   label_project_plural: Проекты
   label_project_list_plural: Списки проектов
-  label_reserved_identifiers: Reserved identifiers
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: Жизненный цикл проекта
   label_project_attributes_plural: Атрибуты проекта
   label_project_custom_field_plural: Атрибуты проекта
@@ -4684,6 +4688,7 @@ ru:
   label_total_days_off: Всего дней отдыха
   macro_execution_error: Ошибка при выполнении макроса %{macro_name}
   macro_unavailable: Макрос %{macro_name} не может быть отображен.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: макро [Placeholder] %{macro_name}
     errors:
@@ -4965,10 +4970,11 @@ ru:
     common:
       work_package_card_component:
         drag_handle:
-          label: Drag to reorder
+          label: Перетащите, чтобы изменить порядок
         menu:
           label_actions: Действия с пакетом работ
         parent: Parent
+        undisclosed: Undisclosed
   permission_add_work_package_comments: Добавить комментарии
   permission_add_work_packages: Добавление пакетов работ
   permission_add_messages: Написать сообщения
@@ -5152,7 +5158,7 @@ ru:
   query_fields:
     active_or_archived: активно или в архиве
     assigned_to_role: Роль назначенного
-    assignee_or_group: Назначенец или его группа
+    assignee_or_group: Назначенный или его группа
     member_of_group: Группа назначенного
     name_or_identifier: Имя или идентификатор
     only_subproject_id: Только подпроект
@@ -5360,6 +5366,10 @@ ru:
   setting_consent_required: Требуется согласие
   setting_consent_decline_mail: Контактный почтовый адрес для согласия
   setting_cross_project_work_package_relations: Разрешить перекрестные связи пакетов работ проекта
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Первая неделя в году содержит
   setting_date_format: Дата
   setting_default_language: Язык по умолчанию
@@ -5400,6 +5410,9 @@ ru:
   setting_work_package_properties: Свойства пакета работ
   setting_work_package_startdate_is_adddate: Использовать текущую дату как дату начала для новых пакетов работ
   setting_work_packages_projects_export_limit: Ограничение экспорта пакетов работ / проектов
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Период агрегации
   setting_log_requesting_user: Журналировать входное имя, имя и адрес электронной почты для всех запросов
   setting_login_required: Требуется аутентификация
@@ -5670,7 +5683,7 @@ ru:
       section_work_week: Рабочая неделя
       section_holidays_and_closures: Праздничные и нерабочие дни
     work_packages:
-      work_package_identifier: Work package identifiers
+      work_package_identifier: Идентификатор пакета работ
       not_allowed_text: У вас нет необходимых прав для просмотра этой страницы.
       activities:
         enable_internal_comments: Включить служебные комментарии
@@ -5762,7 +5775,7 @@ ru:
   text_default_administrator_account_changed: Первоначальная учетная запись администратора была изменена
   text_default_encoding: 'По-умолчанию: UTF-8'
   text_destroy: Удалить
-  text_destroy_with_associated: 'Есть дополнительные объекты, ассоцированные с пакетом(-ами) работ, которые должны быть удалены. Это объекты следующих типов:'
+  text_destroy_with_associated: 'Существуют дополнительные объекты, связанные с удаляемым рабочим пакетом (пакетами). Эти объекты относятся к следующим типам:'
   text_destroy_what_to_do: Что Вы хотите сделать?
   text_diff_truncated: "... Этот разностность(diff) была усечена, так как она превышает максимальный размер, которые может быть отображен."
   text_email_delivery_not_configured: |-
@@ -6098,7 +6111,7 @@ ru:
 
       '
     dialog:
-      title: Change working days
+      title: Изменение рабочих дней
       description: 'Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
 
         '

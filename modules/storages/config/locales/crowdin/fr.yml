@@ -31,10 +31,15 @@ fr:
         authentication_method: Méthode d'authentification
         creator: Créateur
         drive: ID du lecteur
+        file_link_origin: ID d'origine du lien de fichier
         host: Hôte
+        linkable_to_storage: Élément pouvant être lié à un espace de stockage
+        linkable_to_storage_url: URL de l'élément pouvant être lié à un espace de stockage
         name: Nom
         password: Mot de passe de l'application
         provider_type: Type de fournisseur
+        storage: Espace de stockage
+        storage_url: URL de l'espace de stockage
         tenant: ID du répertoire (locataire)
     errors:
       messages:
@@ -108,21 +113,25 @@ fr:
         remote_folders: 'Lisez le contenu du dossier de l''équipe :'
         remove_user_from_group: 'Retirer l''utilisateur de ce groupe :'
         rename_project_folder: 'Renommer le dossier du projet géré :'
+        set_folder_permission: 'Définir les autorisations du dossier de projet géré :'
       one_drive_sync_service:
         create_folder: 'Création du dossier du projet géré :'
         ensure_root_folder_permissions: 'Définir les autorisations du dossier de base :'
         hide_inactive_folders: 'Masquer l''étape des dossiers inactifs :'
         remote_folders: 'Lire le contenu du dossier racine du lecteur :'
         rename_project_folder: 'Renommer le dossier du projet géré :'
+        set_folder_permission: 'Définir les autorisations du dossier de projet géré :'
       sharepoint_sync_service:
         create_folder: 'Création du dossier du projet géré :'
         ensure_root_folder_permissions: 'Définir les autorisations du dossier de base :'
         hide_inactive_folders: 'Masquer l''étape des dossiers inactifs :'
         remote_folders: 'Lire le contenu du dossier racine du lecteur :'
         rename_project_folder: 'Renommer le dossier du projet géré :'
+        set_folder_permission: 'Définir les autorisations du dossier de projet géré :'
     errors:
       messages:
         error: Une erreur inattendue s'est produite. Veuillez consulter les journaux d'OpenProject pour obtenir plus d'informations ou contactez un administrateur
+        folder_id_collision: Plusieurs espaces de stockage de projet tentent de gérer le dossier de projet %{folder}. Sa synchronisation a été ignorée.
         forbidden: OpenProject n'a pas pu accéder à la ressource demandée. Veuillez vérifier la configuration de vos permissions sur le fournisseur de stockage.
         unauthorized: OpenProject n'a pas pu s'authentifier auprès du fournisseur de stockage. Veuillez vous assurer que vous y avez accès.
       models:
