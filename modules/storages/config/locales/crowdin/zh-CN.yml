@@ -126,7 +126,7 @@ zh-CN:
     errors:
       messages:
         error: 发生意外错误。请检查日志获取更多信息或联系管理员
-        folder_id_collision: 多个项目存储尝试管理项目文件夹 %{folder}。已跳过文件夹同步。
+        folder_id_collision: 多个项目存储空间尝试管理项目文件夹 %{folder}。已跳过文件夹同步。
         forbidden: OpenProject 无法访问请求的资源。请检查存储提供程序上的权限配置。
         unauthorized: 无法通过存储提供商进行身份验证。请确保您有访问权限。
       models:

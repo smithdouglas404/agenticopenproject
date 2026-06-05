@@ -69,7 +69,7 @@ uk:
         frequency: Частота
         interval: Інтервал
         monthly_day: День місяця
-        monthly_ordinal: Position
+        monthly_ordinal: Позиція
         monthly_weekday: Будній день
         start_date: Починається
         start_time: Час початку
@@ -332,12 +332,12 @@ uk:
           '
         confirm_button: Скасувати нараду
       occurrence_past:
-        title: Delete occurrence
-        heading: Delete this occurrence?
-        confirmation_message_html: 'This action is not reversible. Please proceed with caution.
+        title: Видалити повторення
+        heading: Видалити це повторення?
+        confirmation_message_html: 'Зверніть увагу: цю дію не можна відмінити.
 
           '
-        confirm_button: Delete occurrence
+        confirm_button: Видалити повторення
     blankslate:
       title: Зустрічей не знайдено
       desc: Створіть зустріч або змініть параметри фільтра
@@ -452,7 +452,7 @@ uk:
     widgets:
       blankslate:
         heading: Немає запланованих нарад
-        description: Upcoming meetings you are participating in will appear here.
+        description: Тут відображатимуться майбутні зустрічі, у яких ви маєте взяти участь.
       view_details: Переглянути всі наради
   meeting_section:
     untitled_title: Розділ без назви
@@ -519,33 +519,33 @@ uk:
       working_days: Кожен робочий день
     monthly:
       inflected_ordinal:
-        first: first
-        second: second
-        third: third
-        fourth: fourth
-        last: last
+        first: перший(-а)
+        second: другий(-а)
+        third: третій(-я)
+        fourth: четвертий(-а)
+        last: останній(-я)
       ordinal_options:
-        first: First
-        second: Second
-        third: Third
-        fourth: Fourth
-        last: Last
-    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
-    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
+        first: Перший(-а)
+        second: Другий(-а)
+        third: Третій(-я)
+        fourth: Четвертий(-а)
+        last: Останній(-я)
+    actual_first_occurrence_mismatch_html: Перша нарада цієї серії — %{first_occurrence}
+    day_of_month_skipping_info: Місяці з меншою кількістю днів, ніж %{monthly_day}, буде пропущено
     end_after:
-      never: Never
-      specific_date: After a specific date
-      iterations: After a number of occurrences
+      never: Ніколи
+      specific_date: Після конкретної дати
+      iterations: Після певної кількості повторень
     starts: Починається
     in_words:
       daily_interval: Через %{interval} дн.
       working_days: Кожен робочий день
       weekly: Щотижня в %{weekday}
       weekly_interval: Через %{interval} тижн. у %{weekday}
-      monthly_day: Every month on the %{day}
-      monthly_day_interval: Every %{interval} months on the %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_day: 'Щомісяця в цей день: %{day}'
+      monthly_day_interval: 'Що %{interval} міс. у цей день: %{day}'
+      monthly_nth_weekday: 'Щомісяця в цей день: %{ordinal} %{weekday}'
+      monthly_nth_weekday_interval: 'Що %{interval} міс. у цей день: %{ordinal} %{weekday}'
       frequency: "%{base} о %{time}"
       full: "%{base} о %{time}, закінчується %{end_date}"
       full_past: "%{base} о %{time}, завершено %{end_date}"

@@ -108,25 +108,25 @@ uk:
         remote_folders: 'Читання вмісту папки команди:'
         remove_user_from_group: 'Вилучення користувача з групи:'
         rename_project_folder: 'Перейменування керованої папки проєкту:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Налаштувати дозволи керованої папки проєкту:'
       one_drive_sync_service:
         create_folder: 'Створення керованої папки проєкту:'
         ensure_root_folder_permissions: 'Установлення дозволів для основної папки:'
         hide_inactive_folders: 'Етап «Приховайте неактивні папки»:'
         remote_folders: 'Читання вмісту кореневої папки диска:'
         rename_project_folder: 'Перейменування папки керованого проекту:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Налаштувати дозволи керованої папки проєкту:'
       sharepoint_sync_service:
         create_folder: 'Створення керованої папки проєкту:'
         ensure_root_folder_permissions: 'Установлення дозволів для основної папки:'
         hide_inactive_folders: 'Етап «Приховайте неактивні папки»:'
         remote_folders: 'Читання вмісту кореневої папки диска:'
         rename_project_folder: 'Перейменування папки керованого проекту:'
-        set_folder_permission: 'Set managed project Folder permissions:'
+        set_folder_permission: 'Налаштувати дозволи керованої папки проєкту:'
     errors:
       messages:
         error: Сталася неочікувана помилка. Щоб дізнатися більше, перегляньте журнали OpenProject або зверніться до адміністратора.
-        folder_id_collision: Multiple project storages try to manage the project folder %{folder}. Its synchronization was skipped.
+        folder_id_collision: Папкою проєкту «%{folder}» намагаються керувати кілька сховищ проєктів. Її синхронізацію було пропущено.
         forbidden: OpenProject не вдалось отримати доступ до запитаного ресурсу. Перевірте конфігурацію дозволів на доступ до сховища.
         unauthorized: OpenProject не вдалося автентифікуватись у постачальника сховища. Переконайтеся, що ви маєте до нього доступ.
       models:

@@ -10,13 +10,13 @@ uk:
         public: Загальнодоступне
         favorite: Вибране
       resource_allocation:
-        entity: Entity
-        principal: Assignee
-        state: State
-        start_date: Start date
-        end_date: Finish date
-        allocated_time: Allocated time
-        user_filter: User filter
+        entity: Сутність
+        principal: Виконавець
+        state: Стан
+        start_date: Дата початку
+        end_date: Дата завершення
+        allocated_time: Виділений час
+        user_filter: Фільтр користувачів
     errors:
       models:
         resource_planner:
@@ -26,7 +26,7 @@ uk:
         resource_allocation:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: не має передувати даті початку.
   plugin_openproject_resource_management:
     name: Керування ресурсами OpenProject
     description: Забезпечує керування ресурсами й планування завантаження.
@@ -39,8 +39,8 @@ uk:
   permission_manage_public_resource_planners_explanation: 'Дає змогу користувачам створювати загальнодоступні планувальники ресурсів і керувати ними. Дозволяє їм переглядати, створювати й публікувати власні планувальники ресурсів, а також керувати ними. Не дозволяє переглядати планувальники ресурсів інших користувачів, які не є загальнодоступними.
 
     '
-  permission_allocate_user_resources: Allocate user resources
-  permission_allocate_user_resources_explanation: 'Allows users to create, update, and delete resource allocations within a resource planner. This includes assigning users (or user filters) to a planner and adjusting the allocated time and date range.
+  permission_allocate_user_resources: Призначати ресурси користувачів
+  permission_allocate_user_resources_explanation: 'Дозволяє користувачам створювати, оновлювати й видаляти призначення ресурсів у планувальнику ресурсів. Це, зокрема, стосується призначення користувачів (або фільтрів користувачів) планувальнику й коригування виділеного часу й діапазону дат.
 
     '
   label_resource_management: Планування ресурсів
