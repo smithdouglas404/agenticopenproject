@@ -31,49 +31,29 @@
 
 <%=
   component_wrapper(class: "documents-versions-tab--item") do
-    flex_layout(
-      my: 2,
-      border: :left,
-      pl: 3,
-      classes: "work-packages-activities-tab-journals-item-component-details--journal-details-container"
-    ) do |item_container|
-      item_container.with_row(
-        flex_layout: true,
-        align_items: :center,
-        classes: "work-packages-activities-tab-journals-item-component-details--journal-details-header ellipsis"
-      ) do |header|
-        header.with_column(mr: 2, classes: "work-packages-activities-tab-journals-item-component-details--timeline-icon") do
-          render Primer::Beta::Octicon.new(icon: "history", size: :small, color: :subtle,
-                                          "aria-label": I18n.t("documents.versions.aria_version_entry"))
-        end
+    flex_layout(align_items: :center, my: 2) do |row|
+      row.with_column(mr: 2) do
+        render Users::AvatarComponent.new(user: author, show_name: false, size: :mini)
+      end
 
-        header.with_column(mr: 2) do
-          render Users::AvatarComponent.new(user: author, show_name: false, size: :mini)
-        end
+      row.with_column(mr: 2, classes: "ellipsis hidden-for-mobile") do
+        helpers.primer_link_to_user(author, scheme: :primary, font_weight: :bold)
+      end
 
-        header.with_column(mr: 1, classes: "ellipsis hidden-for-mobile") do
-          helpers.primer_link_to_user(author, scheme: :primary, font_weight: :bold)
-        end
-
-        header.with_column(mr: 1) do
+      row.with_column(mr: 2) do
+        if content_changed?
+          link_to format_time(journal.created_at), version_url,
+                  class: "spot-link",
+                  data: { turbo_frame: "_top" }
+        else
           render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
             format_time(journal.created_at)
           end
         end
       end
 
-      item_container.with_row(pl: 7, mt: 1) do
-        if content_changed?
-          link_to version_label, version_url,
-                  class: "spot-link",
-                  data: { turbo_frame: "_top" }
-        else
-          render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) { version_label }
-        end
-      end
-
       unless change_details.empty?
-        item_container.with_row(pl: 7, mt: 1) do
+        row.with_column do
           render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
             change_details.join(", ")
           end

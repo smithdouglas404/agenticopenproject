@@ -43,14 +43,8 @@ module Documents
         journal.user
       end
 
-      def latest?
-        journal.version == max_version
-      end
-
       def version_url
-        return document_path(document) if latest?
-
-        document_path(document, version: journal.id)
+        journal.version == max_version ? document_path(document) : document_path(document, version: journal.id)
       end
 
       def content_changed?
@@ -73,13 +67,8 @@ module Documents
         details << I18n.t("documents.versions.description_updated") if journal.details.key?("description")
         details << I18n.t("documents.versions.title_updated") if journal.details.key?("title")
         details << I18n.t("documents.versions.type_updated") if journal.details.key?("type_id")
+        details << I18n.t("documents.versions.restored") if restore_journal?
         details
-      end
-
-      def version_label
-        label = I18n.t("documents.versions.version_label", version: journal.version)
-        label += " (#{I18n.t('documents.versions.current')})" if latest?
-        label
       end
     end
   end

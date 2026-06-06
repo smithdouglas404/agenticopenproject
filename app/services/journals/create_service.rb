@@ -552,6 +552,8 @@ module Journals
     end
 
     def aggregatable?(predecessor, notes, internal, cause)
+      return false if journable.try(:skip_journal_aggregation)
+
       predecessor.present? &&
         aggregation_active? &&
         within_aggregation_time?(predecessor) &&
@@ -576,12 +578,7 @@ module Journals
     end
 
     def only_one_or_same_cause?(predecessor, cause)
-      # Both plain saves (no cause): can aggregate
-      return true if cause.blank? && predecessor.cause.empty?
-      # One side has a cause, the other doesn't: never aggregate
-      return false if cause.blank? || predecessor.cause.empty?
-      # Both have a cause: aggregate only when identical
-      predecessor.cause == cause.to_hash
+      predecessor.cause.empty? || cause.blank? || predecessor.cause == cause
     end
 
     def only_one_note?(predecessor, notes)

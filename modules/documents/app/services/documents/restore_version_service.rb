@@ -39,9 +39,8 @@ module Documents
       attrs = { description: journal.data.description }
       attrs[:content_binary] = journal.data.content_binary if @document.collaborative?
 
-      # Set a distinct cause so acts_as_journalized always creates a new journal
-      # entry rather than aggregating with the most recent one. Without this, the
-      # version that was current before restoring would be silently overwritten.
+      # Prevent aggregation so restore always appends a new journal entry.
+      @document.skip_journal_aggregation = true
       @document.journal_cause = CauseOfChange::Base.new("document_version_restored",
                                                          "restored_journal_id" => journal.id)
 
