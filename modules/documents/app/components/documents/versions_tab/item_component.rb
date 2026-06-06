@@ -56,7 +56,13 @@ module Documents
       def content_changed?
         journal.version == 1 ||
           journal.details.key?("content_binary") ||
-          journal.details.key?("description")
+          journal.details.key?("description") ||
+          restore_journal? ||
+          (document.collaborative? && journal.data.content_binary.present?)
+      end
+
+      def restore_journal?
+        journal.cause&.dig("type") == "document_version_restored"
       end
 
       def change_details
