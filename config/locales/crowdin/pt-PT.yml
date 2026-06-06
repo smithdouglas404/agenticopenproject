@@ -3162,8 +3162,8 @@ pt-PT:
       edit_attribute_groups:
         description: 'Personalize a configuração do formulário com estes complementos adicionais:'
         features:
-          groups: Adicionar novos grupos de atributos
-          rename: Mude o nome de grupos de atributos
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Adicione uma tabela de pacotes de trabalho relacionados
       readonly_work_packages:
         description: Marque pacotes de trabalho como só de leitura para estados específicos.

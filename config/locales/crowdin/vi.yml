@@ -3105,8 +3105,8 @@ vi:
       edit_attribute_groups:
         description: 'Tùy chỉnh cấu hình biểu mẫu với các tiện ích bổ sung sau:'
         features:
-          groups: Thêm nhóm thuộc tính mới
-          rename: Đổi tên nhóm thuộc tính
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Thêm bảng các gói công việc liên quan
       readonly_work_packages:
         description: Đánh dấu các gói công việc là chỉ đọc đối với các trạng thái cụ thể.

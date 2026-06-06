@@ -3155,8 +3155,8 @@ es:
       edit_attribute_groups:
         description: 'Personalice la configuración del formulario con estas extensiones:'
         features:
-          groups: Añadir nuevos grupos de atributos
-          rename: Cambiar nombre de grupos de atributos
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Añadir una tabla de paquetes de trabajo relacionados
       readonly_work_packages:
         description: Marque los paquetes de trabajo como de solo lectura para estados específicos.

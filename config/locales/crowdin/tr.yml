@@ -3169,8 +3169,8 @@ tr:
       edit_attribute_groups:
         description: 'Bu ek eklentilerle form yapılandırmasını özelleştirin:'
         features:
-          groups: Yeni öznitelik grubu ekleyin
-          rename: Öznitelik gruplarını yeniden adlandırın
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: İlgili iş paketleri tablosu ekleyin
       readonly_work_packages:
         description: Mark work packages as read-only for specific statuses.

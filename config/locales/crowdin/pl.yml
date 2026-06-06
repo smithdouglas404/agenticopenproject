@@ -3280,8 +3280,8 @@ pl:
       edit_attribute_groups:
         description: 'Dostosuj konfigurację formularza za pomocą tych dodatków:'
         features:
-          groups: Dodaj nowe grupy atrybutów
-          rename: Zmieniaj nazwy grup atrybutów
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Dodaj tabelę powiązanych pakietów roboczych
       readonly_work_packages:
         description: Oznacz pakiety robocze jako tylko do odczytu w przypadku określonych statusów.

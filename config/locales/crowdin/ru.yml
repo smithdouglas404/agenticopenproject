@@ -3289,8 +3289,8 @@ ru:
       edit_attribute_groups:
         description: 'Настроить конфигурацию формы с помощью этих дополнений:'
         features:
-          groups: Добавить новую группу атрибутов
-          rename: Переименовать группы атрибутов
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Добавить таблицу связанных пакетов работ
       readonly_work_packages:
         description: Отметить пакеты работ только для чтения для определённых статусов.

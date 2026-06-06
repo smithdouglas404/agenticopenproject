@@ -3157,8 +3157,8 @@ fr:
       edit_attribute_groups:
         description: 'Personnalisez la configuration du formulaire avec ces add-ons supplémentaires :'
         features:
-          groups: Ajouter de nouveaux groupes d'attributs
-          rename: Renommer les groupes d'attributs
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Ajouter un tableau des lots de travaux associés
       readonly_work_packages:
         description: Marquer les lots de travaux comme étant en lecture seule pour des statuts spécifiques.

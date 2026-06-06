@@ -3158,8 +3158,8 @@ de:
       edit_attribute_groups:
         description: 'Anpassen der Form-Konfiguration mit diesen zusätzlichen Add-ons:'
         features:
-          groups: Neue Attributgruppen hinzufügen
-          rename: Attributgruppen umbenennen
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Tabelle mit zugehörigen Arbeitspaketen hinzufügen
       readonly_work_packages:
         description: Arbeitspakete in bestimmten Status als schreibgeschützt markieren.

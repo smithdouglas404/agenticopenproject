@@ -3099,8 +3099,8 @@ zh-TW:
       edit_attribute_groups:
         description: 使用以下額外附加元件自訂表單設定：
         features:
-          groups: 增加新的屬性群組
-          rename: 重新命名群组屬性
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: 新增相關工作套件表
       readonly_work_packages:
         description: 將特定狀態的工作套件標記為唯讀。

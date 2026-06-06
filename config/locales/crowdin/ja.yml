@@ -3106,8 +3106,8 @@ ja:
       edit_attribute_groups:
         description: これらの追加機能でフォームの設定をカスタマイズします：
         features:
-          groups: 新しい属性グループを追加
-          rename: 属性グループの名前を変更
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: 関連するワークパッケージのテーブルを追加
       readonly_work_packages:
         description: 特定のステータスのワークパッケージを読み取り専用としてマークします。

@@ -3114,8 +3114,8 @@ id:
       edit_attribute_groups:
         description: 'Customize form configuration with these additional add-ons:'
         features:
-          groups: Menambahkan atribut kelompok-kelompok baru
-          rename: Rename attribute groups
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Add a table of related work packages
       readonly_work_packages:
         description: Mark work packages as read-only for specific statuses.

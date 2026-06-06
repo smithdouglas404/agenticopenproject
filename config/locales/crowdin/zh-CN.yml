@@ -3103,8 +3103,8 @@ zh-CN:
       edit_attribute_groups:
         description: 使用这些附加组件自定义表单配置：
         features:
-          groups: 添加新属性组
-          rename: 重命名属性组
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: 添加一个相关工作包表
       readonly_work_packages:
         description: 标记工作包为只读的特定状态。
