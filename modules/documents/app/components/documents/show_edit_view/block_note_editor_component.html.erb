@@ -105,11 +105,11 @@
       end
     end
 
-    layout.with_tab(name: t(:label_attachment_plural), active: true) do
+    layout.with_tab(name: t(:label_attachment_plural), active: !version_journal) do
       render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, readonly:)
     end
 
-    layout.with_tab(name: I18n.t("documents.versions.tab_title")) do
+    layout.with_tab(name: I18n.t("documents.versions.tab_title"), active: !!version_journal) do
       helpers.turbo_frame_tag(helpers.dom_id(document, :versions), src: document_versions_path(document), loading: :lazy) do
         tag.div(class: "loading-indicator -compact")
       end
