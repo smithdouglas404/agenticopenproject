@@ -37,10 +37,10 @@ module Documents
 
     def call(journal:)
       attrs = {
-        title: "#{@document.title} (copy)",
+        title: "#{journal.data.title} (copy)",
         description: journal.data.description,
         project: @document.project,
-        type_id: @document.type_id,
+        type_id: journal.data.type_id,
         kind: @document.kind
       }
       attrs[:content_binary] = journal.data.content_binary if @document.collaborative?

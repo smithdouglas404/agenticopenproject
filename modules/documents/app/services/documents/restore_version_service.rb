@@ -36,7 +36,11 @@ module Documents
     end
 
     def call(journal:)
-      attrs = { description: journal.data.description }
+      attrs = {
+        title: journal.data.title,
+        description: journal.data.description,
+        type_id: journal.data.type_id
+      }
       attrs[:content_binary] = journal.data.content_binary if @document.collaborative?
 
       # Prevent aggregation so restore always appends a new journal entry.

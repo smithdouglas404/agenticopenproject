@@ -76,6 +76,7 @@ en:
       title_updated: "Title updated"
       type_updated: "Type updated"
       restored: "Restored from earlier version"
+      saved_at: "Saved"
 
     page_header:
       heading: "All documents"

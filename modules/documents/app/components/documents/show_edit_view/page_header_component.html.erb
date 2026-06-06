@@ -47,7 +47,7 @@
       end
 
       header.with_description do
-        render(Documents::ShowEditView::PageHeader::InfoLineComponent.new(document))
+        render(Documents::ShowEditView::PageHeader::InfoLineComponent.new(document, version_journal:))
       end
 
       header.with_breadcrumbs(breadcrumbs_items)

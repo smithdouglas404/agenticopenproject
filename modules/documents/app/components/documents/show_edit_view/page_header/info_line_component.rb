@@ -37,8 +37,11 @@ module Documents
         include OpPrimer::FormHelpers
         include OpTurbo::Streamable
         include Redmine::I18n
+        include AvatarHelper
 
         alias_method :document, :model
+
+        options version_journal: nil
 
         private
 
