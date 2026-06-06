@@ -59,7 +59,7 @@
         end
       end
 
-      <% if version_journal %>
+      if version_journal
         flex.with_column do
           flex_layout(align_items: :center) do |author_row|
             author_row.with_column(mr: 2) do
@@ -84,11 +84,11 @@
             end
           end
         end
-      <% else %>
+      else
         flex.with_column do
           render(Documents::ShowEditView::PageHeader::ConnectionStatusComponent.new(document))
         end
-      <% end %>
+      end
     end
   end
 %>
