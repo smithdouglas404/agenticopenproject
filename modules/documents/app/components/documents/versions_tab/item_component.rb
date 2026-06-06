@@ -59,16 +59,43 @@ module Documents
         journal.cause&.dig("type") == "document_version_restored"
       end
 
-      def change_details
+      # Simple text-only change descriptions (content, restored, etc.)
+      def simple_changes
         return [I18n.t("documents.versions.created")] if journal.version == 1
 
         details = []
         details << I18n.t("documents.versions.content_updated") if journal.details.key?("content_binary")
         details << I18n.t("documents.versions.description_updated") if journal.details.key?("description")
-        details << I18n.t("documents.versions.title_updated") if journal.details.key?("title")
-        details << I18n.t("documents.versions.type_updated") if journal.details.key?("type_id")
         details << I18n.t("documents.versions.restored") if restore_journal?
         details
+      end
+
+      # Structured attribute changes with old/new values for title and type
+      def attribute_changes
+        changes = []
+
+        if (title_vals = journal.details["title"])
+          changes << { label: Document.human_attribute_name(:title), old: title_vals.first, new_val: title_vals.last }
+        end
+
+        if (type_vals = journal.details["type_id"])
+          old_type = DocumentType.find_by(id: type_vals.first)
+          new_type = DocumentType.find_by(id: type_vals.last)
+          changes << { label: Document.human_attribute_name(:type_id), old: old_type&.name, new_val: new_type&.name }
+        end
+
+        changes
+      end
+
+      def format_attribute_change(label:, old:, new_val:)
+        label_html = content_tag(:strong, label)
+        if old.present? && new_val.present?
+          safe_join([label_html, " changed from ", content_tag(:em, old), " to ", content_tag(:em, new_val)])
+        elsif new_val.present?
+          safe_join([label_html, " set to ", content_tag(:em, new_val)])
+        elsif old.present?
+          safe_join([label_html, " deleted (", content_tag(:em, old), ")"])
+        end
       end
     end
   end

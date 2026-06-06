@@ -31,34 +31,62 @@
 
 <%=
   component_wrapper(class: "documents-versions-tab--item") do
-    flex_layout(align_items: :center, my: 2) do |row|
-      row.with_column(mr: 2) do
-        render Users::AvatarComponent.new(user: author, show_name: false, size: :mini)
-      end
+    concat(
+      flex_layout(align_items: :center, mt: 2, mb: 1) do |row|
+        row.with_column(mr: 2) do
+          render Users::AvatarComponent.new(user: author, show_name: false, size: :mini)
+        end
 
-      row.with_column(mr: 2, classes: "ellipsis hidden-for-mobile") do
-        helpers.primer_link_to_user(author, scheme: :primary, font_weight: :bold)
-      end
+        row.with_column(mr: 2, classes: "ellipsis hidden-for-mobile") do
+          helpers.primer_link_to_user(author, scheme: :primary, font_weight: :bold)
+        end
 
-      row.with_column(mr: 2) do
         if content_changed?
-          link_to format_time(journal.created_at), version_url,
-                  class: "spot-link",
-                  data: { turbo_frame: "_top" }
-        else
+          row.with_column(mr: 2) do
+            render(Primer::Beta::Button.new(
+              tag: :a,
+              href: version_url,
+              size: :small,
+              scheme: :default,
+              data: { turbo_frame: "_top" }
+            )) { I18n.t("documents.versions.view") }
+          end
+        end
+
+        row.with_column do
           render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
             format_time(journal.created_at)
           end
         end
       end
+    )
 
-      unless change_details.empty?
-        row.with_column do
-          render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
-            change_details.join(", ")
+    simple_changes.each do |text|
+      concat(
+        flex_layout(align_items: :baseline, pl: 1, pb: 1) do |detail|
+          detail.with_column(mr: 2, classes: "work-packages-activities-tab-journals-item-component-details--journal-detail-stem-line") do
+            ""
+          end
+          detail.with_column do
+            render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) { text }
           end
         end
-      end
+      )
+    end
+
+    attribute_changes.each do |change|
+      concat(
+        flex_layout(align_items: :baseline, pl: 1, pb: 1) do |detail|
+          detail.with_column(mr: 2, classes: "work-packages-activities-tab-journals-item-component-details--journal-detail-stem-line") do
+            ""
+          end
+          detail.with_column do
+            render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) do
+              format_attribute_change(**change)
+            end
+          end
+        end
+      )
     end
   end
 %>
