@@ -101,9 +101,10 @@ export function OpBlockNoteEditor({
       schema,
       // BlockNote 0.51 tightened `collaboration.provider` to a non-null shape
       // and `awareness: Awareness | undefined` (vs Hocuspocus's
-      // `Awareness | null`). Omit the whole `collaboration` block when no
-      // provider is wired up; cast the provider at the boundary otherwise.
-      ...(hocuspocusProvider && {
+      // `Awareness | null`). Cast the provider at the boundary.
+      // For read-only mode without a live provider (e.g. version history),
+      // pass a no-op provider so BlockNote still loads content from the fragment.
+      ...((hocuspocusProvider || doc.getXmlFragment('document-store').length > 0) && {
         collaboration: {
           fragment: doc.getXmlFragment('document-store'),
           user: {
@@ -111,7 +112,7 @@ export function OpBlockNoteEditor({
             color: generateRandomColor(),
             id: activeUser.id,
           } as unknown as CollaborativeUser,
-          provider: hocuspocusProvider as unknown as { awareness?:NonNullable<HocuspocusProvider['awareness']> },
+          provider: (hocuspocusProvider ?? { awareness: undefined }) as unknown as { awareness?:NonNullable<HocuspocusProvider['awareness']> },
           showCursorLabels: 'activity' as const,
         },
       }),
