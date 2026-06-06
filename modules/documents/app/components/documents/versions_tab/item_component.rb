@@ -31,6 +31,7 @@
 module Documents
   module VersionsTab
     class ItemComponent < ApplicationComponent
+      include ApplicationHelper
       include OpPrimer::ComponentHelpers
       include OpTurbo::Streamable
 
