@@ -279,7 +279,10 @@ class DocumentsController < ApplicationController
 
     @version_journal = journal
     @document.description = journal.data.description
-    @document.content_binary = journal.data.content_binary if @document.collaborative?
+    if @document.collaborative?
+      @version_content_binary = journal.data.content_binary
+      @document.content_binary = @version_content_binary
+    end
     @readonly = true
   end
 

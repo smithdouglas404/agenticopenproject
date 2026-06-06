@@ -74,13 +74,30 @@
               data: { "documents--editor-connection-target": "error" }
             ),
             tag.div(data: { "documents--editor-connection-target": "editor" }) do
-              primer_form_with(
-                model: document,
-                url: document_path(document),
-                method: :patch,
-                data: { turbo: false }
-              ) do |form|
-                render Documents::BlockNoteEditorForm.new(form, token_payload:, readonly:)
+              if version_journal && version_content_binary.present?
+                render(
+                  Primer::BaseComponent.new(
+                    tag: "op-block-note", mt: 1, mb: 1,
+                    "collaboration-enabled": false,
+                    "active-user": { id: helpers.current_user.id, username: helpers.current_user.name }.to_json,
+                    "read-only": true,
+                    "initial-content": version_content_binary,
+                    "open-project-url": helpers.root_url,
+                    "attachments-upload-url": "",
+                    "attachments-collection-key": "",
+                    "blocknote-stylesheet-url": helpers.variable_asset_path("blocknote.css"),
+                    "shadow-dom-stylesheet-url": helpers.variable_asset_path("styles.css")
+                  )
+                )
+              else
+                primer_form_with(
+                  model: document,
+                  url: document_path(document),
+                  method: :patch,
+                  data: { turbo: false }
+                ) do |form|
+                  render Documents::BlockNoteEditorForm.new(form, token_payload:, readonly:)
+                end
               end
             end
           ]
