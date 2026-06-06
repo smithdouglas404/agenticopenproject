@@ -32,6 +32,7 @@ module Documents
   module VersionsTab
     class ItemComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
+      include OpTurbo::Streamable
 
       alias_method :journal, :model
 
