@@ -28,8 +28,7 @@
  * ++
  */
 
-import { BlockNoteEditor, BlockNoteEditorOptions, BlockNoteSchema } from '@blocknote/core';
-import { yXmlFragmentToBlocks } from '@blocknote/core/yjs';
+import { BlockNoteEditorOptions, BlockNoteSchema } from '@blocknote/core';
 import { ExternalLinkA11yExtension } from '../extensions/external-link-a11y';
 import { ExternalLinkCaptureExtension } from '../extensions/external-link-capture';
 import { User } from '@blocknote/core/comments';
@@ -97,40 +96,23 @@ export function OpBlockNoteEditor({
     initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
   }, [openProjectUrl, localeString]);
 
-  // When there is no live provider (e.g. viewing a historical version), convert
-  // the pre-loaded Y.Doc to BlockNote blocks for use as initialContent.
-  const initialBlocks = useMemo(() => {
-    if (hocuspocusProvider) return undefined;
-    try {
-      const tempEditor = BlockNoteEditor.create({ schema });
-      return yXmlFragmentToBlocks(tempEditor, doc.getXmlFragment('document-store'));
-    } catch {
-      return undefined;
-    }
-  }, [hocuspocusProvider, doc]);
-
   const editorParams = useMemo<Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>>(() => {
     return {
       schema,
-      // BlockNote 0.51 tightened `collaboration.provider` to a non-null shape
-      // and `awareness: Awareness | undefined` (vs Hocuspocus's
-      // `Awareness | null`). Omit the whole `collaboration` block when no
-      // provider is wired up; cast the provider at the boundary otherwise.
-      ...(hocuspocusProvider && {
-        collaboration: {
-          fragment: doc.getXmlFragment('document-store'),
-          user: {
-            name: activeUser.username,
-            color: generateRandomColor(),
-            id: activeUser.id,
-          } as unknown as CollaborativeUser,
-          provider: hocuspocusProvider as unknown as { awareness?:NonNullable<HocuspocusProvider['awareness']> },
-          showCursorLabels: 'activity' as const,
-        },
-      }),
-      // For static read-only rendering (e.g. version history), convert the
-      // pre-loaded Y.Doc to blocks and pass as initialContent.
-      ...(!hocuspocusProvider && initialBlocks && { initialContent: initialBlocks }),
+      // Always wire up the collaboration fragment so BlockNote loads content
+      // from the Y.Doc. When no live provider is available (e.g. version history
+      // read-only view), pass a no-op provider. BlockNote's yCursor extension
+      // guards all awareness accesses with typeof checks, so undefined is safe.
+      collaboration: {
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: activeUser.username,
+          color: generateRandomColor(),
+          id: activeUser.id,
+        } as unknown as CollaborativeUser,
+        provider: (hocuspocusProvider ?? { awareness: undefined }) as unknown as { awareness?:NonNullable<HocuspocusProvider['awareness']> },
+        showCursorLabels: 'activity' as const,
+      },
       dictionary: localeDictionary,
       ...(attachmentsEnabled && { uploadFile }),
       extensions: [
@@ -138,7 +120,7 @@ export function OpBlockNoteEditor({
         ...(captureExternalLinks ? [ExternalLinkCaptureExtension] : []),
       ],
     };
-  }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks, initialBlocks]);
+  }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks]);
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   useOpBlockNoteExtensions(editor);
