@@ -28,29 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Documents
-  class RestoreVersionService
-    def initialize(user:, document:)
-      @user = user
-      @document = document
-    end
+class AddTypeIdToDocumentJournals < ActiveRecord::Migration[8.0]
+  def change
+    add_reference :document_journals, :type, foreign_key: { to_table: :document_types }, null: true
 
-    def call(journal:)
-      attrs = {
-        title: journal.data.title,
-        description: journal.data.description
-      }
-      attrs[:type_id] = journal.data.type_id if journal.data.type_id.present?
-      attrs[:content_binary] = journal.data.content_binary if @document.collaborative?
-
-      # Prevent aggregation so restore always appends a new journal entry.
-      @document.skip_journal_aggregation = true
-      @document.journal_cause = CauseOfChange::Base.new("document_version_restored",
-                                                         "restored_journal_id" => journal.id)
-
-      Documents::UpdateService
-        .new(user: @user, model: @document)
-        .call(attrs)
+    # Backfill type_id from the corresponding document's current type
+    reversible do |dir|
+      dir.up do
+        execute <<~SQL.squish
+          UPDATE document_journals
+          SET type_id = documents.type_id
+          FROM journals
+          JOIN documents ON documents.id = journals.journable_id
+          WHERE journals.data_type = 'Journal::DocumentJournal'
+            AND journals.data_id = document_journals.id
+        SQL
+      end
     end
   end
 end
