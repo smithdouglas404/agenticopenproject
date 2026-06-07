@@ -20,6 +20,15 @@
   "exclude": [
     "src/stimulus/controllers/**/*.spec.ts"
   ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    },
+    "strictTemplates": false
+  },
   "types": [
     "node",
     "react"

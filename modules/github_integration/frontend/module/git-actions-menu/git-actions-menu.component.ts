@@ -27,7 +27,7 @@
 //++
 
 import copy from 'copy-text-to-clipboard';
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { GitActionsService } from '../git-actions/git-actions.service';
 import { WorkPackageResource } from "core-app/features/hal/resources/work-package-resource";
 import { OPContextMenuComponent } from "core-app/shared/components/op-context-menu/op-context-menu.component";
@@ -40,6 +40,7 @@ import { ISnippet } from 'core-app/features/plugins/linked/openproject-github_in
   styleUrls: [
     './styles/git-actions-menu.sass',
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class GitHubActionsMenuComponent extends OPContextMenuComponent {
