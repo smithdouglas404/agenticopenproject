@@ -33,7 +33,13 @@
   component_wrapper do
     flex_layout(tag: :div, align_items: :center, test_selector: "document-info-line") do |flex|
       flex.with_column(hide: :sm, mr: 3) do
-        if allowed_to_manage_documents?
+        if version_journal
+          version_type = DocumentType.find_by(id: version_journal.data.type_id)
+          render(Primer::Beta::Button.new(disabled: true)) do |button|
+            button.with_trailing_visual_icon(icon: :"triangle-down")
+            version_type&.name || document.type.name
+          end
+        elsif allowed_to_manage_documents?
           render(Primer::Alpha::ActionMenu.new(select_variant: :single)) do |menu|
             menu.with_show_button do |button|
               button.with_trailing_visual_icon(icon: :"triangle-down")

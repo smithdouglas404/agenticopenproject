@@ -35,11 +35,11 @@
   <% end %>
 <% end %>
 
-<% if @next_page %>
+<% if @has_more %>
   <%= turbo_stream.replace dom_id(@document, :versions_load_more) do %>
     <div id="<%= dom_id(@document, :versions_load_more) %>">
       <%= link_to I18n.t("documents.versions.load_more"),
-                  document_versions_path(@document, page: @next_page),
+                  document_versions_path(@document, offset: @next_offset),
                   data: { turbo_stream: true },
                   class: "button -secondary" %>
     </div>

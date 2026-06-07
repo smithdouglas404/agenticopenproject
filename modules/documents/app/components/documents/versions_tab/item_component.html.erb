@@ -30,7 +30,10 @@
 %>
 
 <%=
-  component_wrapper(class: "documents-versions-tab--item") do
+  is_active = active_journal_id && active_journal_id == journal.id
+  wrapper_attrs = { id: "journal-#{journal.id}", class: "documents-versions-tab--item" }
+  wrapper_attrs[:style] = "background-color: var(--bgColor-accent-muted, #ddf4ff); border-radius: 4px;" if is_active
+  component_wrapper(**wrapper_attrs) do
     concat(
       flex_layout(align_items: :center, mt: 2, mb: 1) do |row|
         row.with_column(mr: 2) do

@@ -37,14 +37,18 @@ module Documents
 
       alias_method :journal, :model
 
-      options :document, :max_version
+      options :document, :max_version, active_journal_id: nil
 
       def author
         journal.user
       end
 
       def version_url
-        journal.version == max_version ? document_path(document) : document_path(document, version: journal.id)
+        if journal.version == max_version
+          document_path(document, tab: :versions)
+        else
+          document_path(document, version: journal.id, tab: :versions)
+        end
       end
 
       def content_changed?

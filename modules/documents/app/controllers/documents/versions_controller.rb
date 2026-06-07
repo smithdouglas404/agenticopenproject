@@ -39,16 +39,30 @@ module Documents
         .preload(:user, :data)
         .reorder(version: :desc)
 
-      page = [params[:page].to_i, 1].max
-      per_page = page == 1 ? 20 : 50
+      scroll_to_id = params[:scroll_to].presence&.to_i
+      @scroll_to_id = scroll_to_id
 
-      # For pages after the first, offset by 20 + (page - 2) * 50
-      offset = page == 1 ? 0 : 20 + (page - 2) * 50
-      @journals = journals_scope.offset(offset).limit(per_page + 1)
-
-      @has_more = @journals.size > per_page
-      @journals = @journals.first(per_page)
-      @next_page = @has_more ? page + 1 : nil
+      if scroll_to_id
+        # Load enough items so the target journal is included (journals are ordered desc by version)
+        target_journal = @document.journals.find_by(id: scroll_to_id)
+        if target_journal
+          target_offset = @document.journals.where("version > ?", target_journal.version).count
+          load_count = [target_offset + 1, 20].max
+        else
+          load_count = 20
+        end
+        @journals = journals_scope.limit(load_count + 1)
+        @has_more = @journals.size > load_count
+        @journals = @journals.first(load_count)
+        @next_offset = load_count
+      else
+        offset = [params[:offset].to_i, 0].max
+        per_page = offset == 0 ? 20 : 50
+        @journals = journals_scope.offset(offset).limit(per_page + 1)
+        @has_more = @journals.size > per_page
+        @journals = @journals.first(per_page)
+        @next_offset = offset + per_page
+      end
 
       respond_to do |format|
         format.html
