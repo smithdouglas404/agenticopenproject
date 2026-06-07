@@ -49,28 +49,38 @@ See COPYRIGHT and LICENSE files for more details.
         )
       end
 
-      if backlog_bucket_creation_allowed?
-        head.with_actions do
-          render Primer::Beta::Button.new(
-            tag: :a,
-            label: BacklogBucket.human_model_name,
-            href: new_dialog_project_backlogs_buckets_path(project, all_backlogs_params),
-            data: {
-              controller: "async-dialog",
-              test_selector: "op-backlog-buckets--new-backlog-bucket-button"
-            }
-          ) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            BacklogBucket.human_model_name
-          end
+      head.with_actions do
+        toggle = link_to(
+          group_by_epic_toggle_path,
+          class: "button #{'-active' if group_by_epic}",
+          data: {
+            test_selector: "op-backlog-group-by-epic",
+            turbo_frame: "backlogs_container",
+            turbo_action: :advance
+          }
+        ) do
+          concat(render(Primer::Beta::Octicon.new(:"list-unordered", mr: 1)))
+          concat(content_tag(:span, group_by_epic ? t("backlogs.grouped_by_epic") : t("backlogs.group_by_epic")))
         end
-      elsif sprint_creation_allowed?
-        # Ugly hack:
-        # This button will not be rendered, but still takes up space to push the left side down a bit.
-        # Remove as soon as the `+ Sprint` button moves from the Subhead into a SubHeader.
-        head.with_actions do
-          render(Primer::Beta::Button.new(tag: :a, visibility: :hidden)) { "spacer" }
-        end
+
+        bucket = if backlog_bucket_creation_allowed?
+                   render(Primer::Beta::Button.new(
+                            tag: :a,
+                            label: BacklogBucket.human_model_name,
+                            href: new_dialog_project_backlogs_buckets_path(project, all_backlogs_params),
+                            data: {
+                              controller: "async-dialog",
+                              test_selector: "op-backlog-buckets--new-backlog-bucket-button"
+                            }
+                          ) do |button|
+                     button.with_leading_visual_icon(icon: :plus)
+                     BacklogBucket.human_model_name
+                   end)
+                 else
+                   "".html_safe
+                 end
+
+        safe_join([toggle, bucket])
       end
     end
   %>
@@ -80,7 +90,8 @@ See COPYRIGHT and LICENSE files for more details.
   <%=
     render Backlogs::InboxComponent.new(
       work_packages: inbox_work_packages,
-      project: project
+      project: project,
+      group_by_epic: group_by_epic
     )
   %>
 <% end %>
