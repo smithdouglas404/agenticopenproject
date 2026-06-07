@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
+    "rootDir": "..",
     "jsx": "react-jsx",
     "types": []
   },
@@ -21,12 +22,6 @@
     "src/stimulus/controllers/**/*.spec.ts"
   ],
   "angularCompilerOptions": {
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    },
     "strictTemplates": false
   },
   "types": [
