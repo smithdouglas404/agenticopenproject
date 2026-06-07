@@ -41,6 +41,7 @@ import { I18nService } from "core-app/core/i18n/i18n.service";
   styleUrls: [
     './styles/git-actions-menu.sass'
   ],
+  host: { 'data-component-id': 'gitlab-actions-menu' },
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })

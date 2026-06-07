@@ -40,6 +40,7 @@ import { ISnippet } from 'core-app/features/plugins/linked/openproject-github_in
   styleUrls: [
     './styles/git-actions-menu.sass',
   ],
+  host: { 'data-component-id': 'github-actions-menu' },
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
