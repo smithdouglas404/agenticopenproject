@@ -89,5 +89,51 @@ RSpec.describe Backlogs::CommonHelper do
         expect(helper.all_backlogs_params).to eq({})
       end
     end
+
+    context "when group_by is epic" do
+      let(:params) { { group_by: "epic" } }
+
+      it "carries the group_by param" do
+        expect(helper.all_backlogs_params).to eq({ group_by: "epic" })
+      end
+    end
+
+    context "when both all and group_by are set" do
+      let(:params) { { all: "1", group_by: "epic" } }
+
+      it "carries both params" do
+        expect(helper.all_backlogs_params).to eq({ all: 1, group_by: "epic" })
+      end
+    end
+  end
+
+  describe "#group_by_epic?" do
+    before do
+      allow(helper).to receive(:params).and_return(params)
+    end
+
+    context "when group_by is epic" do
+      let(:params) { { group_by: "epic" } }
+
+      it "is true" do
+        expect(helper.group_by_epic?).to be true
+      end
+    end
+
+    context "when group_by is absent" do
+      let(:params) { {} }
+
+      it "is false" do
+        expect(helper.group_by_epic?).to be false
+      end
+    end
+
+    context "when group_by is some other value" do
+      let(:params) { { group_by: "assignee" } }
+
+      it "is false" do
+        expect(helper.group_by_epic?).to be false
+      end
+    end
   end
 end
