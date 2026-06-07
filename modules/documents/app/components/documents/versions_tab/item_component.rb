@@ -37,7 +37,8 @@ module Documents
 
       alias_method :journal, :model
 
-      options :document, :max_version, active_journal_id: nil
+      options :document, :max_version
+      options active_journal_id: nil
 
       def author
         journal.user
