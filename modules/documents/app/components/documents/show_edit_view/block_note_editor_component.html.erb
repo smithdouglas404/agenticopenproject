@@ -129,11 +129,11 @@
       end
     end
 
-    layout.with_tab(name: t(:label_attachment_plural), active: !version_journal && helpers.params[:tab] != "versions") do
+    layout.with_tab(name: t(:label_attachment_plural), active: !version_journal && tab_param != "versions") do
       render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, readonly:)
     end
 
-    layout.with_tab(name: I18n.t("documents.versions.tab_title"), active: !!version_journal || helpers.params[:tab] == "versions") do
+    layout.with_tab(name: I18n.t("documents.versions.tab_title"), active: !!version_journal || tab_param == "versions") do
       versions_src = document_versions_path(document, scroll_to: version_journal&.id)
       helpers.turbo_frame_tag(helpers.dom_id(document, :versions), src: versions_src, loading: :lazy) do
         tag.div(class: "loading-indicator -compact")
