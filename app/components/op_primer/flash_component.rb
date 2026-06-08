@@ -33,9 +33,8 @@ module OpPrimer
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(flash_type: nil, **system_arguments)
+    def initialize(**system_arguments)
       @unique_key = system_arguments.delete(:unique_key)
-      @flash_type = flash_type&.to_sym
       @scheme = system_arguments[:scheme]&.to_sym
       @autohide = success?
 
@@ -51,6 +50,7 @@ module OpPrimer
     end
 
     def live_region_message
+      # Preserve word boundaries for line breaks before stripping HTML.
       strip_tags(trimmed_content.to_s.gsub(%r{<br\s*/?>}i, " ")).squish
     end
 
@@ -64,7 +64,7 @@ module OpPrimer
       system_arguments.reverse_merge!(
         test_selector: "op-primer-flash-message",
         dismiss_scheme: :remove,
-        dismiss_label:,
+        dismiss_label: I18n.t(:button_close),
         role: aria_role
       )
       system_arguments[:aria] = { live: live_region_politeness }.merge(system_arguments[:aria] || {})
@@ -74,7 +74,6 @@ module OpPrimer
     def apply_flash_data_attributes(data)
       data.merge!(
         "flash-target" => "flash",
-        "flash-type" => @flash_type,
         "flash-role" => aria_role,
         "autohide" => @autohide
       )
@@ -88,20 +87,12 @@ module OpPrimer
       urgent? ? "alert" : "status"
     end
 
-    def dismiss_label
-      if urgent?
-        I18n.t("js.dismiss_error_notification", default: "Dismiss error notification")
-      else
-        I18n.t("js.dismiss_notification", default: "Dismiss notification")
-      end
-    end
-
     def success?
-      @scheme == :success || @flash_type.in?(%i[success notice])
+      @scheme == :success
     end
 
     def urgent?
-      @scheme == :danger || @flash_type.in?(%i[error danger])
+      @scheme == :danger
     end
   end
 end

@@ -12,7 +12,7 @@ RSpec.describe OpTurbo::FlashStreamHelper do
 
     def update
       flash_component = OpPrimer::FlashComponent
-        .new(scheme: :success, flash_type: :success)
+        .new(scheme: :success)
         .with_content("Saved")
 
       respond_with_flash(flash_component)

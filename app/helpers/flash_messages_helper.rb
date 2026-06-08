@@ -80,7 +80,7 @@ module FlashMessagesHelper
       end
   end
 
-  def mapped_flash_type(type)
+  def mapped_flash_scheme(type)
     case type
     when :error, :danger
       :danger
@@ -100,11 +100,10 @@ module FlashMessagesHelper
     action_button_arguments = options.delete(:action_button_arguments)
     action_button_content = options.delete(:action_button_content)
 
-    mapped_type = mapped_flash_type(type)
+    mapped_scheme = mapped_flash_scheme(type)
 
     OpPrimer::FlashComponent.new(
-      scheme: mapped_type,
-      flash_type: type,
+      scheme: mapped_scheme,
       **options
     ).tap do |component|
       component.with_content(join_flash_messages(content))

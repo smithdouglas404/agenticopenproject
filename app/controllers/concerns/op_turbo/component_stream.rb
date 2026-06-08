@@ -108,11 +108,11 @@ module OpTurbo
     end
 
     def render_success_flash_message_via_turbo_stream(message:, **)
-      render_flash_message_via_turbo_stream(message:, flash_type: :success, scheme: :success, **)
+      render_flash_message_via_turbo_stream(message:, scheme: :success, **)
     end
 
     def render_error_flash_message_via_turbo_stream(message:, **)
-      render_flash_message_via_turbo_stream(message:, flash_type: :error, scheme: :danger, icon: :stop, **)
+      render_flash_message_via_turbo_stream(message:, scheme: :danger, icon: :stop, **)
     end
 
     def render_live_region_update_message(message:, politeness: "polite", delay: nil)
@@ -121,19 +121,11 @@ module OpTurbo
         .render_in(view_context)
     end
 
-    def render_flash_message_via_turbo_stream(message:, component: OpPrimer::FlashComponent, flash_type: nil, **options)
+    def render_flash_message_via_turbo_stream(message:, component: OpPrimer::FlashComponent, **)
       return if message.blank?
 
-      instance = build_flash_stream_component(component:, flash_type:, options:).with_content(message)
+      instance = component.new(**).with_content(message)
       turbo_streams << instance.render_as_turbo_stream(view_context:, action: :flash)
-    end
-
-    def build_flash_stream_component(component:, flash_type:, options:)
-      if component <= OpPrimer::FlashComponent
-        component.new(flash_type:, **options)
-      else
-        component.new(**options)
-      end
     end
 
     def scroll_into_view_via_turbo_stream(target, behavior: :auto, block: :start)

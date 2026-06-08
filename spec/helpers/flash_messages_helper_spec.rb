@@ -132,6 +132,10 @@ RSpec.describe FlashMessagesHelper do
       end
 
       it_behaves_like "rendering a banner", "flash-warn", :alert, "You will be logged out!"
+
+      it "renders a polite announcement" do
+        expect(subject).to have_css '[data-announcement="You will be logged out!"][data-politeness="polite"]'
+      end
     end
 
     context "with an :error flash message" do
