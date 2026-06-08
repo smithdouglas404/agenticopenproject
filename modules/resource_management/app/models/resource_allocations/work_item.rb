@@ -28,10 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class NonWorkingDay < ApplicationRecord
-  validates :name, :date, presence: true
-  validates :date, uniqueness: true
+module ResourceAllocations
+  # A unit of work to schedule against a user's capacity: `minutes` of work that
+  # may be placed on any day within `[start_date, end_date]`. `id` identifies the
+  # source allocation; `work_package_id` is carried for overbooking culprit
+  # reporting.
+  class WorkItem
+    include ActiveModel::Model
+    include ActiveModel::Attributes
 
-  scope :for_dates, ->(date_range) { where(date: date_range) }
-  scope :for_year, ->(year) { for_dates(Date.new(year, 1, 1)..Date.new(year, 12, 31)) }
+    attribute :id
+    attribute :start_date, :date
+    attribute :end_date, :date
+    attribute :minutes, :integer
+    attribute :work_package_id, :integer
+
+    def self.from_allocation(allocation)
+      new(
+        id: allocation.id,
+        start_date: allocation.start_date,
+        end_date: allocation.end_date,
+        minutes: allocation.allocated_time,
+        work_package_id: allocation.entity_id
+      )
+    end
+  end
 end

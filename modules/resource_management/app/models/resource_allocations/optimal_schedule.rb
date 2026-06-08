@@ -28,10 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class NonWorkingDay < ApplicationRecord
-  validates :name, :date, presence: true
-  validates :date, uniqueness: true
+module ResourceAllocations
+  # A user's working time optimally allocated to their work packages: the
+  # scheduled entries and the available capacity, both keyed by date (minutes).
+  class OptimalSchedule
+    include ActiveModel::Model
+    include ActiveModel::Attributes
 
-  scope :for_dates, ->(date_range) { where(date: date_range) }
-  scope :for_year, ->(year) { for_dates(Date.new(year, 1, 1)..Date.new(year, 12, 31)) }
+    attribute :by_date, default: -> { {} }
+    attribute :capacity_by_date, default: -> { {} }
+
+    def entries_on(date) = by_date.fetch(date, [])
+    def capacity_on(date) = capacity_by_date.fetch(date, 0)
+    def dates = capacity_by_date.keys
+  end
 end

@@ -28,10 +28,35 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class NonWorkingDay < ApplicationRecord
-  validates :name, :date, presence: true
-  validates :date, uniqueness: true
+require "spec_helper"
 
-  scope :for_dates, ->(date_range) { where(date: date_range) }
-  scope :for_year, ->(year) { for_dates(Date.new(year, 1, 1)..Date.new(year, 12, 31)) }
+RSpec.describe ResourceAllocations::WorkItem do
+  it "casts attributes to their declared types" do
+    item = described_class.new(id: 1, start_date: "2026-01-05", end_date: "2026-01-09", minutes: "600")
+
+    expect(item.start_date).to eq(Date.new(2026, 1, 5))
+    expect(item.end_date).to eq(Date.new(2026, 1, 9))
+    expect(item.minutes).to eq(600)
+  end
+
+  describe ".from_allocation" do
+    let(:allocation) do
+      create(:resource_allocation,
+             start_date: Date.new(2026, 1, 5),
+             end_date: Date.new(2026, 1, 9),
+             allocated_time: 600)
+    end
+
+    it "maps the allocation's window, minutes and work package" do
+      item = described_class.from_allocation(allocation)
+
+      expect(item).to have_attributes(
+        id: allocation.id,
+        start_date: Date.new(2026, 1, 5),
+        end_date: Date.new(2026, 1, 9),
+        minutes: 600,
+        work_package_id: allocation.entity_id
+      )
+    end
+  end
 end

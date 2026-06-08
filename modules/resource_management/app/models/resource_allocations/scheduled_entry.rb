@@ -28,10 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class NonWorkingDay < ApplicationRecord
-  validates :name, :date, presence: true
-  validates :date, uniqueness: true
+module ResourceAllocations
+  # A single allocation's share of a day in a computed schedule: `minutes` of the
+  # `allocation` (and its `work_package`) placed on one day.
+  class ScheduledEntry
+    include ActiveModel::Model
+    include ActiveModel::Attributes
 
-  scope :for_dates, ->(date_range) { where(date: date_range) }
-  scope :for_year, ->(year) { for_dates(Date.new(year, 1, 1)..Date.new(year, 12, 31)) }
+    attribute :allocation
+    attribute :work_package
+    attribute :minutes, :integer
+  end
 end

@@ -28,10 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class NonWorkingDay < ApplicationRecord
-  validates :name, :date, presence: true
-  validates :date, uniqueness: true
+require "spec_helper"
 
-  scope :for_dates, ->(date_range) { where(date: date_range) }
-  scope :for_year, ->(year) { for_dates(Date.new(year, 1, 1)..Date.new(year, 12, 31)) }
+RSpec.describe ResourceAllocations::OptimalSchedule do
+  let(:monday) { Date.new(2026, 1, 5) }
+  let(:tuesday) { Date.new(2026, 1, 6) }
+
+  subject(:schedule) do
+    described_class.new(by_date: { monday => %i[entry] }, capacity_by_date: { monday => 480, tuesday => 480 })
+  end
+
+  it "defaults to empty collections" do
+    expect(described_class.new).to have_attributes(by_date: {}, capacity_by_date: {})
+  end
+
+  it "returns the entries scheduled on a day, or none" do
+    expect(schedule.entries_on(monday)).to eq(%i[entry])
+    expect(schedule.entries_on(tuesday)).to eq([])
+  end
+
+  it "returns the capacity on a day, or zero" do
+    expect(schedule.capacity_on(monday)).to eq(480)
+    expect(schedule.capacity_on(Date.new(2026, 1, 12))).to eq(0)
+  end
+
+  it "exposes the dates with capacity" do
+    expect(schedule.dates).to contain_exactly(monday, tuesday)
+  end
 end
