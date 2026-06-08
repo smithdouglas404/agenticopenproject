@@ -51,15 +51,21 @@ module ::ResourceManagement
     def edit; end
 
     def create
-      call = ResourceAllocations::CreateService
-               .new(user: current_user, model: ResourceAllocation.new)
-               .call(create_params)
+      # The confirmation step's "Back" button resubmits the carried form values
+      # so the editable step can be re-rendered pre-filled.
+      return render_allocation_step(set_attributes(create_params).result) if params[:back].present?
 
-      if call.success?
-        render_create_success
-      else
-        render_allocation_step(call.result, status: :unprocessable_entity)
+      validation = set_attributes(create_params)
+
+      if validation.failure?
+        return render_allocation_step(validation.result, status: :unprocessable_entity)
       end
+
+      if validation.result.schedule_violation && params[:confirmed].blank?
+        return render_outside_dates_step(validation.result)
+      end
+
+      persist_allocation
     end
 
     def update; end
@@ -79,6 +85,38 @@ module ::ResourceManagement
       )
       replace_via_turbo_stream(component: ResourceAllocations::AllocationStep::FooterComponent.new)
       respond_with_turbo_streams(status:)
+    end
+
+    def render_outside_dates_step(allocation)
+      replace_via_turbo_stream(
+        component: ResourceAllocations::OutsideDatesStep::FormComponent.new(
+          allocation:,
+          project: @project,
+          allocation_kind:,
+          form_values: submitted_allocation_params,
+          filters: params[:filters]
+        )
+      )
+      replace_via_turbo_stream(component: ResourceAllocations::OutsideDatesStep::FooterComponent.new)
+      respond_with_turbo_streams
+    end
+
+    def persist_allocation
+      call = ResourceAllocations::CreateService
+               .new(user: current_user, model: ResourceAllocation.new)
+               .call(create_params)
+
+      if call.success?
+        render_create_success
+      else
+        render_allocation_step(call.result, status: :unprocessable_entity)
+      end
+    end
+
+    def set_attributes(attributes)
+      ResourceAllocations::SetAttributesService
+        .new(user: current_user, model: ResourceAllocation.new, contract_class: ResourceAllocations::CreateContract)
+        .call(attributes)
     end
 
     def render_create_success
@@ -101,6 +139,15 @@ module ::ResourceManagement
       return @context_work_package if defined?(@context_work_package)
 
       @context_work_package = resolve_entity("WorkPackage", params[:work_package_id])
+    end
+
+    # Raw, untransformed values to carry through the confirmation step as hidden
+    # inputs so a confirmed resubmit recreates exactly what the user entered.
+    def submitted_allocation_params
+      params
+        .fetch(:resource_allocation, {})
+        .permit(:principal_id, :filter_name, :start_date, :end_date, :allocated_hours, :entity_type, :entity_id)
+        .to_h
     end
 
     def create_params

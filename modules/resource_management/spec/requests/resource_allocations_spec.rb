@@ -212,6 +212,82 @@ RSpec.describe "ResourceAllocations requests",
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+
+    context "when the allocation dates fall outside the work package's dates" do
+      shared_let(:dated_work_package) do
+        create(:work_package, project:, start_date: Date.new(2026, 1, 15), due_date: Date.new(2026, 2, 20))
+      end
+
+      let(:base_params) do
+        {
+          allocation_kind: "principal",
+          resource_allocation: {
+            principal_id: assignee.id,
+            entity_type: "WorkPackage",
+            entity_id: dated_work_package.id,
+            start_date: "2026-02-24", # after the work package's finish date
+            end_date: "2026-02-25",
+            allocated_hours: "40h"
+          }
+        }
+      end
+
+      it "does not create yet and renders the confirmation step" do
+        expect do
+          post project_resource_allocations_path(project), params: base_params, as: :turbo_stream
+        end.not_to change(ResourceAllocation, :count)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("outside of the work")
+        expect(response.body).to include('name="confirmed"')
+      end
+
+      it "creates the allocation once confirmed" do
+        expect do
+          post project_resource_allocations_path(project),
+               params: base_params.merge(confirmed: "1"),
+               as: :turbo_stream
+        end.to change(ResourceAllocation, :count).by(1)
+
+        expect(ResourceAllocation.last.entity).to eq(dated_work_package)
+      end
+
+      it "returns to the editable step without creating when going back" do
+        expect do
+          post project_resource_allocations_path(project),
+               params: base_params.merge(back: "1"),
+               as: :turbo_stream
+        end.not_to change(ResourceAllocation, :count)
+
+        expect(response).to have_http_status(:ok)
+        # The editable step re-renders the user autocompleter.
+        expect(response.body).to include("opce-user-autocompleter")
+      end
+    end
+
+    context "when the allocation dates fall within the work package's dates" do
+      shared_let(:dated_work_package) do
+        create(:work_package, project:, start_date: Date.new(2026, 1, 15), due_date: Date.new(2026, 2, 20))
+      end
+
+      it "creates the allocation directly without confirmation" do
+        expect do
+          post project_resource_allocations_path(project),
+               params: {
+                 allocation_kind: "principal",
+                 resource_allocation: {
+                   principal_id: assignee.id,
+                   entity_type: "WorkPackage",
+                   entity_id: dated_work_package.id,
+                   start_date: "2026-01-20",
+                   end_date: "2026-01-21",
+                   allocated_hours: "40h"
+                 }
+               },
+               as: :turbo_stream
+        end.to change(ResourceAllocation, :count).by(1)
+      end
+    end
   end
 
   context "without the allocate_user_resources permission" do

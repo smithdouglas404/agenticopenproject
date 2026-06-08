@@ -72,6 +72,14 @@ en:
         principal:
           caption: Allocate hours for a specific user.
           label: User
+      outside_dates:
+        title: Do you want to allocate resources outside the work package's dates?
+        description: >-
+          The selected resource dates, %{resource_dates}, are outside of the work
+          package's dates, %{work_package_dates}.
+        confirm_before_start: Please confirm that you want to allocate resources before the start date of the work package.
+        confirm_after_finish: Please confirm that you want to allocate resources after the finish date of the work package.
+        confirm_before_and_after: Please confirm that you want to allocate resources outside the dates of the work package.
       submit: Allocate
       success_message: Resource allocated.
       title: Allocate resource
