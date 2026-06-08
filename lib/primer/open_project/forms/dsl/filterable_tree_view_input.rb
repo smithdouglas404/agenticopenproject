@@ -23,36 +23,44 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class LinkExistingWikiPageForm < ApplicationForm
-    form do |f|
-      f.hidden(name: :provider_id)
-      f.hidden(name: :linkable_type)
-      f.hidden(name: :linkable_id)
+module Primer
+  module OpenProject
+    module Forms
+      module Dsl
+        # :nodoc:
+        class FilterableTreeViewInput < Primer::Forms::Dsl::Input
+          attr_reader :name, :label, :block
 
-      f.filterable_tree_view(
-        name: "wiki_page_selection",
-        src: helpers.search_wiki_pages_path(provider_id: model.provider_id, name: "wiki_page_selection"),
-        filter_mode_control_arguments: { hidden: true },
-        filter_input_arguments: {
-          placeholder: I18n.t("wikis.link_existing_wiki_page_form.placeholder"),
-          # every other property is just refilling the default values,
-          # as those are not merged into custom arguments
-          name: :filter,
-          label: I18n.t(:button_filter),
-          type: :search,
-          leading_visual: { icon: :search },
-          visually_hide_label: true,
-          show_clear_button: true
-        },
-        include_sub_items_check_box_arguments: { hidden: true },
-        no_results_node_arguments: { label: I18n.t("wikis.link_existing_wiki_page_form.no_results") }
-      )
+          def initialize(name:, label: nil, **system_arguments, &block)
+            @name = name
+            @label = label
+            @block = block
+
+            super(**system_arguments)
+          end
+
+          def to_component
+            FilterableTreeView.new(input: self)
+          end
+
+          # :nocov:
+          def type
+            :filterable_tree_view
+          end
+          # :nocov:
+
+          # :nocov:
+          def focusable?
+            true
+          end
+          # :nocov:
+        end
+      end
     end
   end
 end

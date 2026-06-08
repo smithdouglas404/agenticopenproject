@@ -1,0 +1,7 @@
+<%=
+  render(FormControl.new(input: @input)) do
+    render(Primer::OpenProject::FilterableTreeView.new(**@input.input_arguments)) do |tree_view|
+      @input.block&.call(tree_view)
+    end
+  end
+%>
