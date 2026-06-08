@@ -95,6 +95,18 @@ Bugfixes for one of the actively supported versions of OpenProject should be iss
 
  A fix for the current version (called "Hotfix" and the branch ideally being named `fix/XYZ`) should target `release/*` and a fix for the former version (called "Backport" and the branch ideally being named `backport/XYZ`) should target `backport/*`. We will try to merge hotfixes into dev branch but if that is no trivial task, we might ask you to create another PR for that.
 
+#### Merging the latest release into `dev`
+
+We use the `create-merge-release-into-dev-pr` workflow to keep `dev` up to date with the latest release branch. If the workflow cannot merge automatically, it creates a `merge-release/X.Y-<timestamp>` branch and opens a pull request for manual conflict resolution.
+
+Generated Crowdin locale files under `config/locales/crowdin/*.yml` and `modules/*/config/locales/crowdin/*.yml` are a special case. The workflow already tries to resolve those conflicts automatically when it creates the `merge-release/...` branch. Auto-resolved changes are only committed when all remaining conflicts can be resolved; otherwise the merge is aborted and no partial resolutions are kept. If you are resolving one of these branches locally, you can rerun the same helper after merging `dev` into the temporary branch:
+
+```shell
+script/i18n/merge_generated_locale_conflicts
+```
+
+The helper uses three-way YAML merge logic for generated locale conflicts, permits the locale files' symbol values, and prefers the `dev` side when both branches changed the same leaf differently. To avoid reserializing generated locale files, it only auto-writes a file when the merged parsed YAML matches one of the existing merge stages. This means that even non-overlapping changes can still be left unresolved if the combined result would differ from all stages. Any files still reported afterwards require manual review and resolution before pushing the branch.
+
 #### Tagging
 
 The stable/X branch with the highest number is the currently supported stable release. Its commits are tagged (e.g. v12.5.8) to pinpoint individual releases.

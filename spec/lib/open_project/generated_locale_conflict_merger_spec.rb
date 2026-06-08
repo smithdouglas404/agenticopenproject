@@ -1,0 +1,650 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "spec_helper"
+
+RSpec.describe OpenProject::GeneratedLocaleConflictMerger do
+  let(:git) { instance_double(described_class::Git) }
+  let(:file_writer) { class_double(File) }
+  let(:stdout) { StringIO.new }
+  let(:stderr) { StringIO.new }
+
+  subject(:merger) do
+    described_class.new(
+      git:,
+      file_writer:,
+      out: stdout,
+      err: stderr
+    )
+  end
+
+  describe "#call" do
+    let(:generated_path) { "config/locales/crowdin/es.yml" }
+    let(:other_path) { "docs/api/apiv3/openapi-spec.yml" }
+
+    before do
+      allow(git).to receive(:conflicted_files).and_return(conflicted_files)
+    end
+
+    context "when there are no conflicted files" do
+      let(:conflicted_files) { [] }
+
+      it "returns an empty result" do
+        result = merger.call
+
+        expect(result).to have_attributes(resolved_files: [], unresolved_files: [], non_generated_files: [])
+      end
+    end
+
+    context "when only non-generated files are conflicted" do
+      let(:conflicted_files) { [other_path] }
+
+      it "reports them as non-generated" do
+        result = merger.call
+
+        expect(result.resolved_files).to eq([])
+        expect(result.unresolved_files).to eq([])
+        expect(result.non_generated_files).to eq([other_path])
+        expect(stderr.string).to include(other_path)
+      end
+    end
+
+    context "when only one side changed a generated locale file" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: New
+        YAML
+      end
+
+      it "writes the changed side and stages the file" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, <<~YAML)
+          ---
+          es:
+            title: New
+        YAML
+        expect(git).to have_received(:add).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+      end
+    end
+
+    context "when both sides changed different nested keys" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            first: Old first
+            second: Old second
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            first: New first
+            second: Old second
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            first: Old first
+            second: New second
+        YAML
+      end
+
+      it "leaves the file unresolved instead of reserializing it" do
+        result = merger.call
+
+        expect(file_writer).not_to have_received(:write)
+        expect(git).not_to have_received(:add)
+        expect(result.resolved_files).to eq([])
+        expect(result.unresolved_files).to eq([generated_path])
+        expect(stderr.string).to include("merged YAML differs from all merge stages")
+      end
+    end
+
+    context "when both sides changed the same leaf differently" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Release value
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Dev value
+        YAML
+      end
+
+      it "prefers the dev side and stages the file" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, <<~YAML)
+          ---
+          es:
+            title: Dev value
+        YAML
+        expect(git).to have_received(:add).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+      end
+    end
+
+    context "when a generated locale file contains invalid yaml" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: [broken
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: New
+        YAML
+      end
+
+      it "leaves the file unresolved" do
+        result = merger.call
+
+        expect(result.unresolved_files).to eq([generated_path])
+        expect(stderr.string).to include("invalid YAML")
+      end
+    end
+
+    context "when a generated locale file has a non-hash top level value" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          - item
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: New
+        YAML
+      end
+
+      it "leaves the file unresolved" do
+        result = merger.call
+
+        expect(result.unresolved_files).to eq([generated_path])
+        expect(stderr.string).to include("expected top-level YAML mapping")
+      end
+    end
+
+    context "when a key was removed on one side only" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            keep: Keep
+            remove_me: Remove me
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            keep: Keep
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            keep: Keep
+            remove_me: Remove me
+        YAML
+      end
+
+      it "keeps the deletion" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, <<~YAML)
+          ---
+          es:
+            keep: Keep
+        YAML
+        expect(git).to have_received(:add).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+      end
+    end
+
+    context "when a key was removed on the dev side only" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            keep: Keep
+            remove_me: Remove me
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            keep: Keep
+            remove_me: Remove me
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            keep: Keep
+        YAML
+      end
+
+      it "keeps the deletion from dev side" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, <<~YAML)
+          ---
+          es:
+            keep: Keep
+        YAML
+        expect(git).to have_received(:add).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+      end
+    end
+
+    context "when the release side deleted the file" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:rm)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            remove_me: Remove me
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path)
+                                  .and_raise(described_class::Git::MissingStageEntry, "missing stage 2")
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            remove_me: Remove me
+        YAML
+      end
+
+      it "removes the file and stages the deletion" do
+        result = merger.call
+
+        expect(file_writer).not_to have_received(:write)
+        expect(git).not_to have_received(:add)
+        expect(git).to have_received(:rm).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+      end
+    end
+
+    context "when the dev side deleted the file" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:rm)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            remove_me: Remove me
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            remove_me: Remove me
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path)
+                                  .and_raise(described_class::Git::MissingStageEntry, "missing stage 3")
+      end
+
+      it "removes the file and stages the deletion" do
+        result = merger.call
+
+        expect(file_writer).not_to have_received(:write)
+        expect(git).not_to have_received(:add)
+        expect(git).to have_received(:rm).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+      end
+    end
+
+    context "when both sides added the same key with different values (no base)" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path)
+                                  .and_raise(described_class::Git::MissingStageEntry, "missing stage 1")
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Release value
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Dev value
+        YAML
+      end
+
+      it "prefers the dev side" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, <<~YAML)
+          ---
+          es:
+            title: Dev value
+        YAML
+        expect(git).to have_received(:add).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+      end
+    end
+
+    context "when a generated locale file contains symbol values" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            date:
+              order:
+                - ':año'
+                - :mes
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            date:
+              order:
+                - ':año'
+                - :mes
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            date:
+              order:
+                - ':año'
+                - :mes
+                - ':día'
+        YAML
+      end
+
+      it "permits Symbol and writes the merged content" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, <<~YAML)
+          ---
+          es:
+            date:
+              order:
+                - ':año'
+                - :mes
+                - ':día'
+        YAML
+        expect(git).to have_received(:add).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+      end
+    end
+
+    context "when the merged content matches dev exactly" do
+      let(:conflicted_files) { [generated_path] }
+      let(:theirs_yaml) do
+        <<~YAML
+          # a preserved comment
+          ---
+          es:
+            title: "Dev value"
+            description: >
+              Wrapped text
+        YAML
+      end
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old value
+            description: Wrapped text
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Release value
+            description: Wrapped text
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(theirs_yaml)
+      end
+
+      it "writes the raw dev YAML instead of reserializing" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, theirs_yaml)
+        expect(git).to have_received(:add).with(generated_path)
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+      end
+    end
+
+    context "when a merged file differs from every raw stage" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            first: Old first
+            second: Old second
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            first: Release first
+            second: Old second
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            first: Old first
+            second: Dev second
+        YAML
+      end
+
+      it "leaves the file unresolved instead of reserializing it" do
+        result = merger.call
+
+        expect(file_writer).not_to have_received(:write)
+        expect(git).not_to have_received(:add)
+        expect(result.resolved_files).to eq([])
+        expect(result.unresolved_files).to eq([generated_path])
+        expect(stderr.string).to include("merged YAML differs from all merge stages")
+      end
+    end
+
+    context "when a stage entry is missing for an added file" do
+      let(:conflicted_files) { [generated_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path)
+                                  .and_raise(described_class::Git::MissingStageEntry, "missing stage 1")
+        allow(git).to receive(:cat_file).with(2, generated_path)
+                                  .and_raise(described_class::Git::MissingStageEntry, "missing stage 2")
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            added: true
+        YAML
+      end
+
+      it "accepts the added file contents" do
+        result = merger.call
+
+        expect(file_writer).to have_received(:write).with(generated_path, <<~YAML)
+          ---
+          es:
+            added: true
+        YAML
+        expect(result.resolved_files).to eq([generated_path])
+      end
+    end
+
+    context "when generated and non-generated conflicts are mixed" do
+      let(:conflicted_files) { [generated_path, other_path] }
+
+      before do
+        allow(file_writer).to receive(:write)
+        allow(git).to receive(:add)
+        allow(git).to receive(:cat_file).with(1, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old
+        YAML
+        allow(git).to receive(:cat_file).with(2, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: Old
+        YAML
+        allow(git).to receive(:cat_file).with(3, generated_path).and_return(<<~YAML)
+          ---
+          es:
+            title: New
+        YAML
+      end
+
+      it "resolves only the generated file" do
+        result = merger.call
+
+        expect(result.resolved_files).to eq([generated_path])
+        expect(result.unresolved_files).to eq([])
+        expect(result.non_generated_files).to eq([other_path])
+      end
+    end
+  end
+
+  describe described_class::Git do
+    subject(:git) { described_class.new }
+
+    let(:path) { "config/locales/crowdin/es.yml" }
+    let(:success) { instance_double(Process::Status, success?: true) }
+
+    it "loads stage object ids once per path" do
+      allow(Open3).to receive(:capture3)
+                        .with("git", "ls-files", "--stage", "--", path)
+                        .once
+                        .and_return([
+                                      <<~OUT,
+                                        100644 sha-base 1\t#{path}
+                                        100644 sha-ours 2\t#{path}
+                                      OUT
+                                      "",
+                                      success
+                                    ])
+      allow(Open3).to receive(:capture3)
+                        .with("git", "cat-file", "blob", "sha-base")
+                        .and_return(["base", "", success])
+      allow(Open3).to receive(:capture3)
+                        .with("git", "cat-file", "blob", "sha-ours")
+                        .and_return(["ours", "", success])
+
+      expect(git.cat_file(1, path)).to eq("base")
+      expect(git.cat_file(2, path)).to eq("ours")
+    end
+
+    it "raises when a requested stage is missing" do
+      allow(Open3).to receive(:capture3)
+                        .with("git", "ls-files", "--stage", "--", path)
+                        .and_return(["100644 sha-base 1\t#{path}\n", "", success])
+
+      expect { git.cat_file(3, path) }
+        .to raise_error(described_class::MissingStageEntry, "missing stage 3")
+    end
+  end
+end

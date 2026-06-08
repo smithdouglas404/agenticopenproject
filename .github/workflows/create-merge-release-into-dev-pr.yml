@@ -48,6 +48,9 @@ jobs:
         with:
           ref: ${{ env.BASE_BRANCH }}
 
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+
       - name: Fetch dev branch upto release branch
         run: git fetch --shallow-exclude "$RELEASE_BRANCH" origin "$BASE_BRANCH" || git fetch --depth 1 origin "$BASE_BRANCH"
 
@@ -100,7 +103,31 @@ jobs:
 
               TEMP_BRANCH="merge-$RELEASE_BRANCH-$(date "+%Y%m%d%H%M%S")"
 
-              git branch "$TEMP_BRANCH" "$RELEASE_BRANCH"
+              git switch -c "$TEMP_BRANCH" "$RELEASE_BRANCH"
+
+              if ! git merge --no-edit --no-ff "$BASE_BRANCH"; then
+                if script/i18n/merge_generated_locale_conflicts; then
+                  if git diff --quiet --diff-filter=U; then
+                    git commit --no-edit
+                    merge_note=$'> [!NOTE]\n> Generated locale conflicts under Crowdin paths were automatically resolved. The helper prefers the dev side for conflicting leaf values and only auto-writes files whose merged YAML matches an existing merge stage.'
+                  else
+                    git merge --abort
+                    merge_note=$'> [!WARNING]\n> Generated locale conflicts were auto-resolved, but non-generated conflicts remain.\n> Please rerun `script/i18n/merge_generated_locale_conflicts` after resolving the remaining conflicts manually.'
+                  fi
+                else
+                  merge_status=$?
+                  if [ "$merge_status" -eq 2 ]; then
+                    git merge --abort
+                    merge_note=$'> [!WARNING]\n> Some generated locale conflicts could not be auto-resolved.\n> Please rerun `script/i18n/merge_generated_locale_conflicts` while manually resolving this branch.'
+                  else
+                    exit "$merge_status"
+                  fi
+                fi
+              fi
+
+              if [ -n "${merge_note:-}" ]; then
+                pr_body="$merge_note"$'\n\n'"$pr_body"
+              fi
 
               git push origin "$TEMP_BRANCH"
 
