@@ -368,6 +368,37 @@ RSpec.describe WorkPackages::ActivitiesTabController do
     end
   end
 
+  describe "#update_streams stream contents" do
+    let(:user) { commenter }
+    let(:edited_comment) { comment_by_user }
+
+    before do
+      # changed since the poll (updated after), but not new (created before),
+      # so it is a re-render candidate rather than an insertion
+      edited_comment.update_columns(notes: "freshly edited body", created_at: 2.hours.ago, updated_at: Time.current)
+      get :update_streams,
+          params: { work_package_id: work_package.id, project_id: project.id,
+                    last_update_timestamp: 1.hour.ago.utc, editing_journals: },
+          format: :turbo_stream
+    end
+
+    context "when the comment is not open in the client's editor" do
+      let(:editing_journals) { "" }
+
+      it "re-renders the comment edited since the last poll" do
+        expect(response.body).to include("freshly edited body")
+      end
+    end
+
+    context "when the client has the comment open in the editor" do
+      let(:editing_journals) { edited_comment.id.to_s }
+
+      it "does not re-render it, to avoid clobbering the open editor" do
+        expect(response.body).not_to include("freshly edited body")
+      end
+    end
+  end
+
   describe "#update_filter" do
     before do
       get :update_filter,
