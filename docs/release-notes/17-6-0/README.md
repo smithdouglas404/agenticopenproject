@@ -19,7 +19,20 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important updates and breaking changes
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+### Integrations (e.g. Nextcloud and XWiki) respect global SSRF filters
+
+To increase the security of OpenProject installations, we've added protections against server-side request forgery in previous releases
+of OpenProject. These prevent OpenProject from making network requests into private IP address space.
+
+Starting with OpenProject 17.6, these protections expand into the code that's responsible for web requests of storage and wiki integrations as well.
+This means if you have a Nextcloud instance or an XWiki instance reachable via a private (i.e. not publicly routable) IP address, you need to
+add it to the SSRF allowlist to be able to keep the integration working. This is usually achieved by defining the following environment variable:
+
+```
+OPENPROJECT_SSRF_PROTECTION_IP_ALLOWLIST=2001:db8:100::/48
+```
+
+The list accepts one or multiple IP addresses or ranges (in CIDR notation) that shall be exempt from SSRF filtering.
 
 <!-- BEGIN SECURITY FIXES AUTOMATED SECTION -->
 
