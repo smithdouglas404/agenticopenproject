@@ -128,7 +128,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   def create
     begin
-      call = create_journal_service_call
+      call = comment_service.add
 
       if call.success? && call.result
         set_last_server_timestamp_to_headers
@@ -145,7 +145,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   def update
     begin
-      call = update_journal_service_call
+      call = comment_service.update(@journal)
 
       if call.success? && call.result
         update_item_show_component(journal: call.result, grouped_emoji_reactions: grouped_emoji_reactions_for_journal)
@@ -160,7 +160,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def sanitize_internal_mentions
-    render plain: sanitized_journal_notes
+    render plain: comment_service.sanitized_notes
   rescue StandardError => e
     handle_internal_server_error(e)
     respond_with_turbo_streams
@@ -240,12 +240,10 @@ class WorkPackages::ActivitiesTabController < ApplicationController
     @filter = Filters.cast(params[:filter] || params.dig(:journal, :filter))
   end
 
-  def sanitized_journal_notes
-    WorkPackages::ActivitiesTab::InternalCommentMentionsSanitizer.sanitize(@work_package, journal_params[:notes])
-  end
-
-  def journal_params
-    params.expect(journal: %i[notes internal])
+  def comment_service
+    @comment_service ||= WorkPackages::ActivitiesTab::CommentService.new(
+      work_package: @work_package, user: User.current, params:
+    )
   end
 
   def handle_successful_create_call(call)
@@ -335,27 +333,6 @@ class WorkPackages::ActivitiesTabController < ApplicationController
       paginator: @paginator,
       filter: @filter
     )
-  end
-
-  def create_journal_service_call
-    internal = to_boolean(journal_params[:internal], false)
-    notes = internal ? sanitized_journal_notes : journal_params[:notes]
-
-    AddWorkPackageNoteService
-      .new(user: User.current,
-           work_package: @work_package)
-      .call(notes,
-            send_notifications: to_boolean(params[:notify], true),
-            internal:)
-  end
-
-  def to_boolean(value, default)
-    ActiveRecord::Type::Boolean.new.cast(value.presence || default)
-  end
-
-  def update_journal_service_call
-    notes = @journal.internal? ? sanitized_journal_notes : journal_params[:notes]
-    Journals::UpdateService.new(model: @journal, user: User.current).call(notes:)
   end
 
   def update_item_edit_component(journal:, grouped_emoji_reactions: {})
