@@ -28,37 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-CapybaraAccessibleSelectors.add_role_selector(:list, within: true) do
-  filter_set(:capybara_accessible_selectors, %i[aria described_by])
-end
+module Backlogs
+  class AddExistingWorkPackageDialogComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-CapybaraAccessibleSelectors.add_role_selector(:list_item, role: :listitem, within: true, content_fallback: true) do
-  expression_filter(:position, skip_if: nil) do |xpath, position|
-    xpath[position]
-  end
+    DIALOG_ID = "add-existing-work-package-dialog"
+    FORM_ID = "add-existing-work-package-form"
 
-  describe_expression_filters do |position: nil, **|
-    position ? " at position #{position}" : ""
-  end
+    attr_reader :project, :target_id
 
-  filter_set(:capybara_accessible_selectors, %i[aria described_by])
-end
+    def initialize(project:, target_id:)
+      super()
 
-module Capybara
-  module RSpecMatchers
-    # To make it possible to find, following methods are defined:
-    # * have_list
-    # * have_no_list
-    # * have_list_item
-    # * have_no_list_item
-    %i[list list_item].each do |selector|
-      define_method :"have_#{selector}" do |locator = nil, **options, &optional_filter_block|
-        Matchers::HaveSelector.new(selector, locator, **options, &optional_filter_block)
-      end
+      @project = project
+      @target_id = target_id
+    end
 
-      define_method :"have_no_#{selector}" do |*args, **options, &optional_filter_block|
-        Matchers::NegatedMatcher.new(send(:"have_#{selector}", *args, **options, &optional_filter_block))
-      end
+    private
+
+    def form_url
+      add_existing_project_backlogs_work_packages_path(project, target_id:)
     end
   end
 end

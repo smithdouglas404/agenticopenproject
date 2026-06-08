@@ -258,9 +258,18 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         it "preserves the grouped sprint action-menu structure" do
           rendered_component
 
-          expect(menu_items).to eq(["Edit sprint", "Add work package", "Sprint board", "Burndown chart"])
+          expect(menu_items).to eq(
+            [
+              "Edit sprint",
+              "Add new work package",
+              "Add existing work package",
+              "Sprint board",
+              "Burndown chart"
+            ]
+          )
           # The three item groups are separated by presentation-only dividers.
-          expect(page).to have_css("li[role='presentation']", count: 2)
+          expect(page).to have_css('li[role="presentation"]:nth-child(2)')
+          expect(page).to have_css('li[role="presentation"]:nth-child(5)')
         end
       end
     end

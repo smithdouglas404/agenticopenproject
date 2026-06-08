@@ -65,6 +65,22 @@ RSpec.describe Backlogs::WorkPackagesController do
         action: "move_to_bucket_dialog",
         project_id: "project_42",
         id: "85"
+        )
+      }
+    end
+
+      expect(get("/projects/project_42/backlogs/work_packages/add_existing_dialog")).to route_to(
+        controller: "backlogs/work_packages",
+        action: "add_existing_dialog",
+        project_id: "project_42"
+      )
+    }
+
+    it {
+      expect(post("/projects/project_42/backlogs/work_packages/add_existing")).to route_to(
+        controller: "backlogs/work_packages",
+        action: "add_existing",
+        project_id: "project_42"
       )
     }
   end

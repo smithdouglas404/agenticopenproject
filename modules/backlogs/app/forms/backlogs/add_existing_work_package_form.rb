@@ -28,37 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-CapybaraAccessibleSelectors.add_role_selector(:list, within: true) do
-  filter_set(:capybara_accessible_selectors, %i[aria described_by])
-end
+module Backlogs
+  class AddExistingWorkPackageForm < ApplicationForm
+    def initialize(project:)
+      super()
 
-CapybaraAccessibleSelectors.add_role_selector(:list_item, role: :listitem, within: true, content_fallback: true) do
-  expression_filter(:position, skip_if: nil) do |xpath, position|
-    xpath[position]
-  end
+      @project = project
+    end
 
-  describe_expression_filters do |position: nil, **|
-    position ? " at position #{position}" : ""
-  end
+    form do |f|
+      f.work_package_autocompleter(
+        name: :work_package_id,
+        label: WorkPackage.model_name.human,
+        required: true,
+        autocomplete_options: {
+          url: autocomplete_url,
+          dropdownPosition: "bottom",
+          appendTo: "##{AddExistingWorkPackageDialogComponent::DIALOG_ID}"
+        }
+      )
+    end
 
-  filter_set(:capybara_accessible_selectors, %i[aria described_by])
-end
+    private
 
-module Capybara
-  module RSpecMatchers
-    # To make it possible to find, following methods are defined:
-    # * have_list
-    # * have_no_list
-    # * have_list_item
-    # * have_no_list_item
-    %i[list list_item].each do |selector|
-      define_method :"have_#{selector}" do |locator = nil, **options, &optional_filter_block|
-        Matchers::HaveSelector.new(selector, locator, **options, &optional_filter_block)
-      end
-
-      define_method :"have_no_#{selector}" do |*args, **options, &optional_filter_block|
-        Matchers::NegatedMatcher.new(send(:"have_#{selector}", *args, **options, &optional_filter_block))
-      end
+    def autocomplete_url
+      ::API::V3::Utilities::PathHelper::ApiV3Path.work_packages_by_project(@project.id)
     end
   end
 end
