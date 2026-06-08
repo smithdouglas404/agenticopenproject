@@ -331,6 +331,20 @@ module Pages
       end
     end
 
+    def expect_sprint_heading_with_goal(sprint_name, goal_text)
+      within(:section, sprint_name) do
+        expect(page)
+          .to have_heading(sprint_name, level: 4, accessible_description: goal_text, exact: true)
+      end
+    end
+
+    def expect_sprint_heading_without_goal(sprint_name)
+      within(:section, sprint_name) do
+        expect(page)
+          .to have_heading(sprint_name, level: 4, accessible_description: "", exact: true)
+      end
+    end
+
     def open_work_package_details(work_package)
       within_work_package(work_package) do
         button = find(:button, accessible_name: "Work package actions")

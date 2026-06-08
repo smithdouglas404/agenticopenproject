@@ -29,38 +29,20 @@
 #++
 
 module Backlogs
-  class SprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-    include Primer::FetchOrFallbackHelper
+  module Sprints
+    class OwnedGoalForm < ApplicationForm
+      extend Dry::Initializer
 
-    DIALOG_ID = "sprint-dialog"
-    FORM_ID = "sprint-dialog-form"
-    FOOTER_ID = "sprint-dialog-footer"
+      option :disabled, default: -> { false }
 
-    STATE_DEFAULT = :create
-    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
-
-    attr_reader :sprint, :project, :state
-
-    delegate :create?, :edit?, to: :state
-
-    def initialize(sprint:, project:, state: STATE_DEFAULT)
-      super
-
-      @sprint = sprint
-      @project = project
-      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
-    end
-
-    private
-
-    def title
-      create? ? t(:label_sprint_new) : t(:label_sprint_edit)
-    end
-
-    def button_caption
-      create? ? t(:button_create) : t(:button_save)
+      form do |f|
+        f.text_field(
+          name: :text,
+          label: Sprint.human_attribute_name(:goal),
+          disabled:,
+          maxlength: SprintGoal::TEXT_MAX_LENGTH
+        )
+      end
     end
   end
 end

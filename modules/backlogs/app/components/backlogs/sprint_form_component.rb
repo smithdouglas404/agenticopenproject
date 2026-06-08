@@ -37,13 +37,55 @@ module Backlogs
 
     FORM_ID = SprintDialogComponent::FORM_ID
 
-    attr_reader :sprint, :base_errors
+    attr_reader :sprint, :project, :current_user, :base_errors
 
-    def initialize(sprint:, base_errors: nil)
+    def initialize(sprint:, project:, current_user: User.current, base_errors: nil)
       super
 
       @sprint = sprint
+      @project = project
+      @current_user = current_user
       @base_errors = base_errors
+    end
+
+    def shared_sprint?
+      sprint.persisted? && !sprint.owned_by?(project)
+    end
+
+    def can_edit_sprint?
+      return true unless shared_sprint?
+
+      current_user.allowed_in_project?(:create_sprints, sprint.project)
+    end
+
+    def can_edit_goal?
+      return true unless shared_sprint?
+
+      current_user.allowed_in_project?(:create_sprints, project)
+    end
+
+    def banner_scheme
+      can_edit_sprint? ? :default : :warning
+    end
+
+    def banner_text
+      if can_edit_sprint?
+        t(".shared_sprint_info_banner")
+      else
+        t(".shared_sprint_warning_banner")
+      end
+    end
+
+    def goal_form_model
+      Backlogs::Sprints::GoalFormModel.for(sprint:, project:)
+    end
+
+    def goal_form_class
+      if shared_sprint?
+        Backlogs::Sprints::SharedGoalForm
+      else
+        Backlogs::Sprints::OwnedGoalForm
+      end
     end
 
     private
@@ -54,9 +96,9 @@ module Backlogs
 
     def form_url
       if sprint.new_record?
-        project_backlogs_sprints_path(sprint.project_id, all_backlogs_params)
+        project_backlogs_sprints_path(project, all_backlogs_params)
       else
-        project_backlogs_sprint_path(sprint.project_id, sprint.id, all_backlogs_params)
+        project_backlogs_sprint_path(project, sprint, all_backlogs_params)
       end
     end
 
@@ -64,8 +106,8 @@ module Backlogs
       {
         controller: "refresh-on-form-changes",
         "refresh-on-form-changes-target": "form",
-        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_backlogs_sprints_path(sprint.project_id,
-                                                                                                     all_backlogs_params)
+        "refresh-on-form-changes-turbo-stream-url-value":
+          refresh_form_project_backlogs_sprints_path(project, all_backlogs_params)
       }
     end
   end

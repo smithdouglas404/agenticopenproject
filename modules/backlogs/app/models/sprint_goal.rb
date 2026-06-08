@@ -23,44 +23,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-    include Primer::FetchOrFallbackHelper
+class SprintGoal < ApplicationRecord
+  TEXT_MAX_LENGTH = 500
 
-    DIALOG_ID = "sprint-dialog"
-    FORM_ID = "sprint-dialog-form"
-    FOOTER_ID = "sprint-dialog-footer"
+  belongs_to :sprint, inverse_of: :goals
+  belongs_to :project
 
-    STATE_DEFAULT = :create
-    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
+  normalizes :text, with: ->(text) { text.strip.presence }
 
-    attr_reader :sprint, :project, :state
+  validates :text, presence: true, length: { maximum: TEXT_MAX_LENGTH }
 
-    delegate :create?, :edit?, to: :state
-
-    def initialize(sprint:, project:, state: STATE_DEFAULT)
-      super
-
-      @sprint = sprint
-      @project = project
-      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
-    end
-
-    private
-
-    def title
-      create? ? t(:label_sprint_new) : t(:label_sprint_edit)
-    end
-
-    def button_caption
-      create? ? t(:button_create) : t(:button_save)
-    end
-  end
+  validates :project_id,
+            uniqueness: { scope: :sprint_id, message: :project_already_has_goal }
 end

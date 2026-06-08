@@ -30,7 +30,10 @@
 
 module Backlogs::Sprints
   class BaseContract < ::ModelContract
-    validate :user_authorized
+    SPRINT_ATTRIBUTES = %w[name project_id start_date finish_date].freeze
+
+    validate :user_authorized_for_sprint_attributes
+    validate :user_authorized_for_goal_attributes
 
     def self.model
       Sprint
@@ -40,14 +43,48 @@ module Backlogs::Sprints
     attribute :project_id
     attribute :start_date
     attribute :finish_date
+    attribute :goals_attributes, readable: false
 
     private
 
-    def user_authorized
+    def user_authorized_for_sprint_attributes
       return unless model.project
+      return unless sprint_attributes_changed?
 
       unless user.allowed_in_project?(:create_sprints, model.project)
         errors.add :base, :error_unauthorized
+      end
+    end
+
+    def sprint_attributes_changed?
+      model.new_record? || model.changed.intersect?(SPRINT_ATTRIBUTES)
+    end
+
+    def user_authorized_for_goal_attributes
+      changed_goals.each do |goal|
+        project = goal_project(goal)
+
+        unless project && sprint_visible_to_goal_project?(project) && user.allowed_in_project?(:create_sprints, project)
+          errors.add :base, :error_unauthorized
+        end
+      end
+    end
+
+    def changed_goals
+      model.goals.select do |goal|
+        goal.new_record? || goal.changed? || goal.marked_for_destruction?
+      end
+    end
+
+    def goal_project(goal)
+      goal.project || Project.find_by(id: goal.project_id)
+    end
+
+    def sprint_visible_to_goal_project?(project)
+      if model.new_record?
+        model.project == project
+      else
+        model.visible_to?(project)
       end
     end
   end

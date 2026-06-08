@@ -23,44 +23,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-    include Primer::FetchOrFallbackHelper
+class CreateSprintGoals < ActiveRecord::Migration[8.0]
+  def change
+    create_table :sprint_goals do |t|
+      t.references :sprint, null: false, foreign_key: { on_delete: :cascade }
+      t.references :project, null: false, foreign_key: { on_delete: :cascade }
+      t.text :text, null: false
 
-    DIALOG_ID = "sprint-dialog"
-    FORM_ID = "sprint-dialog-form"
-    FOOTER_ID = "sprint-dialog-footer"
-
-    STATE_DEFAULT = :create
-    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
-
-    attr_reader :sprint, :project, :state
-
-    delegate :create?, :edit?, to: :state
-
-    def initialize(sprint:, project:, state: STATE_DEFAULT)
-      super
-
-      @sprint = sprint
-      @project = project
-      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
+      t.timestamps
     end
 
-    private
-
-    def title
-      create? ? t(:label_sprint_new) : t(:label_sprint_edit)
-    end
-
-    def button_caption
-      create? ? t(:button_create) : t(:button_save)
-    end
+    add_index :sprint_goals, %i[sprint_id project_id], unique: true
   end
 end
