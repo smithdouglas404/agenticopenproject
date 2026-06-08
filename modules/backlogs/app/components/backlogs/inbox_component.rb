@@ -51,7 +51,7 @@ module Backlogs
     end
 
     def truncated?
-      !show_all_backlog && work_packages.size > truncate_threshold
+      @truncated ||= !backlog_filters.show_all? && work_packages.size > truncate_threshold
     end
 
     def visible_work_packages

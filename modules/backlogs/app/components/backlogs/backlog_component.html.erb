@@ -54,7 +54,7 @@ See COPYRIGHT and LICENSE files for more details.
           render Primer::Beta::Button.new(
             tag: :a,
             label: BacklogBucket.human_model_name,
-            href: new_dialog_project_backlogs_buckets_path(project, all_backlogs_params),
+            href: new_dialog_project_backlogs_buckets_path(project, backlog_filter_params),
             data: {
               controller: "async-dialog",
               test_selector: "op-backlog-buckets--new-backlog-bucket-button"
@@ -75,12 +75,11 @@ See COPYRIGHT and LICENSE files for more details.
     end
   %>
 
+  <%= render Backlogs::BacklogFilterSelectPanelComponent.new(project:, field_name: :bucket_ids) %>
+
   <%= render Backlogs::BucketComponent.with_collection(buckets, project:) %>
 
-  <%=
-    render Backlogs::InboxComponent.new(
-      work_packages: inbox_work_packages,
-      project: project
-    )
-  %>
+  <% if backlog_filters.show_inbox? %>
+    <%= render Backlogs::InboxComponent.new(work_packages: inbox_work_packages, project:) %>
+  <% end %>
 <% end %>

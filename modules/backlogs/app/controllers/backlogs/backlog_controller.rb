@@ -64,12 +64,8 @@ module Backlogs
     end
 
     def load_backlogs
-      @backlog_buckets = BacklogBucket.for_project(@project)
-
-      @sprints = Sprint.for_project(@project)
-                       .not_completed
-                       .order_by_date
-                       .includes(:project, :task_boards)
+      @backlog_buckets = filtered_buckets_for(@project)
+      @sprints = filtered_sprints_for(@project)
 
       @work_packages_by_sprint_id = WorkPackage
                                       .where(sprint: @sprints, project: @project)

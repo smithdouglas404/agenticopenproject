@@ -34,7 +34,7 @@ RSpec.describe Backlogs::WorkPackagesController do
   # Gets the html content of the template of the first turbo-stream with the
   # given action.
   def turbo_stream_template(action:)
-    Nokogiri("<response>#{response.body}</response>").css("turbo-stream[action=#{action}] template").first.inner_html
+    assert_select("turbo-stream[action=#{action}] template").first.inner_html
   end
 
   shared_let(:type_feature) { create(:type_feature) }
@@ -564,7 +564,7 @@ RSpec.describe Backlogs::WorkPackagesController do
       it "embeds the all query in deferred action URLs" do
         subject
 
-        expect(response.body).to match(/all=1/)
+        expect(response.body).to match(/all=true/)
       end
     end
 
@@ -869,7 +869,7 @@ RSpec.describe Backlogs::WorkPackagesController do
       it "embeds the all query in the dialog form action URL" do
         subject
 
-        expect(response.body).to match(/all=1/)
+        expect(response.body).to match(/all=true/)
       end
     end
 
@@ -956,7 +956,7 @@ RSpec.describe Backlogs::WorkPackagesController do
       it "embeds the all query in the dialog form action URL" do
         subject
 
-        expect(response.body).to match(/all=1/)
+        expect(response.body).to match(/all=true/)
       end
     end
 

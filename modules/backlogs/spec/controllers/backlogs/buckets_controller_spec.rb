@@ -60,7 +60,7 @@ RSpec.describe Backlogs::BucketsController do
 
         expect(response.body).to have_turbo_stream(
           action: "redirect_to",
-          url: project_backlogs_backlog_path(project, all: 1)
+          url: project_backlogs_backlog_path(project, all: true)
         )
       end
     end
@@ -89,7 +89,7 @@ RSpec.describe Backlogs::BucketsController do
 
         expect(response.body).to have_turbo_stream(
           action: "redirect_to",
-          url: project_backlogs_backlog_path(project, all: 1)
+          url: project_backlogs_backlog_path(project, all: true)
         )
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe Backlogs::BucketsController do
 
         expect(response.body).to have_turbo_stream(
           action: "redirect_to",
-          url: project_backlogs_backlog_path(project, all: 1)
+          url: project_backlogs_backlog_path(project, all: true)
         )
       end
     end

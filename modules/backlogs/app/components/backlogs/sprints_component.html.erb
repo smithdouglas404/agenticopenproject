@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
         render Primer::Beta::Button.new(
           tag: :a,
           label: Sprint.human_model_name,
-          href: new_dialog_project_backlogs_sprints_path(project, all_backlogs_params),
+          href: new_dialog_project_backlogs_sprints_path(project, backlog_filter_params),
           data: {
             controller: "async-dialog",
             test_selector: "op-sprints--new-sprint-button"
@@ -49,6 +49,8 @@ See COPYRIGHT and LICENSE files for more details.
     end
   end
 %>
+
+<%= render Backlogs::BacklogFilterSelectPanelComponent.new(project:, field_name: :sprint_ids) %>
 
 <% if sprints.empty? %>
   <%=

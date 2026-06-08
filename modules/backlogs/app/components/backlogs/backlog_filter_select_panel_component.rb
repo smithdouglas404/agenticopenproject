@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,40 +26,62 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+  class BacklogFilterSelectPanelComponent < ApplicationComponent
     include CommonHelper
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+    InboxItem = Data.define(:id, :name)
 
-    attr_reader :backlog_bucket
+    attr_reader :project, :filter_field
 
-    def initialize(backlog_bucket:)
+    def initialize(project:, field_name:)
       super()
-      @backlog_bucket = backlog_bucket
+      @project = project
+      @filter_field = field_name.to_sym
     end
 
     private
 
-    def title
-      t(".title")
+    def filter_fields_for
+      backlog_filter_params
+        .except(filter_field)
+        .flat_map do |name, value|
+          if value.is_a?(Array)
+            value.map { |v| { name: "#{name}[]", value: v } }
+          else
+            { name:, value: }
+          end
+        end
     end
 
-    def details
-      t(".details", name: backlog_bucket.name)
+    def items
+      if filter_field == :sprint_ids
+        all_sprints_for(project)
+      else
+        all_buckets_for(project).to_a + [InboxItem.new(id: "inbox", name: I18n.t(:label_inbox))]
+      end
     end
 
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                             backlog_bucket,
-                                             backlog_filter_params),
-        method: :delete
-      }
+    def selected_ids
+      backlog_filters.public_send(filter_field)
+    end
+
+    def counter
+      render Primer::Beta::Counter.new(count: selected_ids&.size, hide_if_zero: true, ml: 2)
+    end
+
+    def selector_label
+      filter_field == :sprint_ids ? Sprint.human_model_name.pluralize : BacklogBucket.human_model_name.pluralize
+    end
+
+    def selector_color
+      selected_ids ? :default : :muted
+    end
+
+    def select_panel_id
+      "#{filter_field.to_s.delete_suffix('_ids')}-filter-select-panel"
     end
   end
 end

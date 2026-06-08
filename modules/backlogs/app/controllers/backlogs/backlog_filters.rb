@@ -28,37 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-
-RSpec.describe Backlogs::BacklogController do
-  describe "routing" do
-    it {
-      route = "/projects/project_42/backlogs/backlog"
-      expect(get(route)).to route_to(controller: "backlogs/backlog",
-                                     action: "show",
-                                     project_id: "project_42")
-    }
-
-    it {
-      expect(get("/projects/project_42/backlogs/backlog/details/33")).to route_to(
-        controller: "backlogs/backlog",
-        action: "details",
-        project_id: "project_42",
-        work_package_id: "33",
-        tab: :overview,
-        work_package_split_view: true
+module Backlogs
+  BacklogFilters = Struct.new(:bucket_ids, :sprint_ids, :show_all) do
+    def self.from_params(params)
+      new(
+        bucket_ids: Array(params[:bucket_ids]).filter_map do |id|
+                      id == "inbox" ? "inbox" : id.to_i.nonzero?
+                    end.presence,
+        sprint_ids: Array(params[:sprint_ids]).filter_map { |id| id.to_i.nonzero? }.presence,
+        show_all: ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
       )
-    }
-  end
+    end
 
-  describe "named routing" do
-    it {
-      expect(project_backlogs_backlog_path("project_42")).to eq("/projects/project_42/backlogs/backlog")
-    }
+    def show_all? = show_all
 
-    it {
-      expect(project_backlogs_backlog_details_path("project_42", "33"))
-        .to eq("/projects/project_42/backlogs/backlog/details/33")
-    }
+    def show_inbox?
+      bucket_ids.nil? || bucket_ids.include?("inbox")
+    end
+
+    def to_h
+      result = show_all? ? { all: true } : {}
+      result[:bucket_ids] = bucket_ids if bucket_ids
+      result[:sprint_ids] = sprint_ids if sprint_ids
+      result
+    end
+
+    alias to_hash to_h
   end
 end

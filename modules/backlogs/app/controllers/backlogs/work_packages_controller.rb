@@ -50,7 +50,7 @@ module Backlogs
       respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
         work_package: @work_package,
         project: @project,
-        move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
+        move_action: move_project_backlogs_work_package_path(@project, @work_package, backlog_filter_params)
       )
     end
 
@@ -58,7 +58,7 @@ module Backlogs
       respond_with_dialog Backlogs::MoveToBucketDialogComponent.new(
         work_package: @work_package,
         project: @project,
-        move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
+        move_action: move_project_backlogs_work_package_path(@project, @work_package, backlog_filter_params)
       )
     end
 
@@ -113,9 +113,13 @@ module Backlogs
 
     def backlog_component
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
-      buckets = BacklogBucket.for_project(@project)
+      buckets = filtered_buckets_for(@project)
 
-      Backlogs::BacklogComponent.new(inbox_work_packages:, buckets:, project: @project)
+      Backlogs::BacklogComponent.new(
+        inbox_work_packages:,
+        buckets:,
+        project: @project
+      )
     end
 
     def load_work_package

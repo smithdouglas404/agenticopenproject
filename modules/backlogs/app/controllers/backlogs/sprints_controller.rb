@@ -103,7 +103,7 @@ module Backlogs
 
       if call.success?
         flash[:notice] = I18n.t(:notice_successful_create)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
+        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, backlog_filter_params))
       else
         update_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
@@ -144,7 +144,7 @@ module Backlogs
 
       if result.success?
         flash[:notice] = I18n.t(:notice_successful_finish)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
+        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, backlog_filter_params))
       elsif result.includes_error?(:base, :unfinished_work_packages)
         show_finish_sprint_dialog
       else
