@@ -35,22 +35,26 @@ In the Community edition there is no limit to the number of users. In Enterprise
 
 The User list is where users are managed. They can be added, edited or deleted from this list, which can be filtered if required.
 
-![openproject_system_admin_guide_users_list](openproject_system_admin_guide_users_list.png)
+![User list](openproject_system_admin_guide_users_list.png)
 
 Column headers can be clicked to toggle sort direction. Arrows indicate sort order, up for ascending (a-z/0-9) and down for descending (z-a/9-0). Paging controls are shown at the bottom of the list. You will also see whether a user is a system administrator in OpenProject.
 
 ## Filter users
 
-Below the search panel is the **+ Add filter** form. Here, you can filter by group, status, name or username, and your list is automatically updated. Each filter button displays advanced filters to narrow down results with precision. Click the **x** symbol in front of each selected filter to clear the filter and the **x** symbol at the **top-right corner** to close the form.
+To filter for users, begin by clicking the **Filters** button. 
+
+![Activate filters button](openproject_systemguide_filters_button.png)
+
+Clicking on it opens up the **+Add filter** form. Here, you can filter by group, status, name or username, and your list is automatically updated. Each filter button displays additional filtering options to help you narrow down results. The results are then filtered based on the selected criteria. Click the **x** symbol in front of each selected filter to clear the filter and the **x** symbol at the **top-right corner** to close the form.
 
 ![Add filter form](openproject_systemguide_add_filters.png)
 
 * **Group** - select from the list of existing groups.
+* **Name** - enter any text; this can contain a "%" wild card for 0 or more characters.  For example, if you are filtering for a user named Niklas but unsure if it's Niklas, Niclas, Nikolas, or Nicholas, you can search for “Ni%las” and you'll find them all. The filter applies to first name, last name and email address.
 * **Status** - select from Active, Registered, Locked, Invited, Deleted. Each selection shows the number of users.
-* **Name** - enter any text; this can contain a "%" wild card for 0 or more characters. The filter applies to first name, last name and email address.
-* **Username** - enter any text; this can contain a "%" wild card for 0 or more characters. The filter applies to user name.
+* **Username** - enter any text or character like @, .com which is unique to the user list.
 
-![Filter users in OpenProject](openproject_systemguide_filter_users.png)
+![Filter users from user list](openproject_systemguide_filter_users.png)
 
 ## Configure view
 
