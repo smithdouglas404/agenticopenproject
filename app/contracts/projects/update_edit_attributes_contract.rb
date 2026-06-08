@@ -28,29 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::IdentifierController < ApplicationController
-  include OpTurbo::ComponentStream
+module Projects
+  class UpdateEditAttributesContract < UpdateContract
+    def valid?(context = :update) = super
 
-  before_action :find_project_by_project_id
-  before_action :authorize
+    # def writable_attributes = super.grep_v(/^custom_field_/)
 
-  def identifier_update_dialog
-    respond_with_dialog Projects::Settings::ChangeIdentifierDialogComponent.new(project: @project)
-  end
-
-  def update
-    service_call = Projects::UpdateService
-                     .new(user: current_user,
-                          model: @project,
-                          contract_class: Projects::UpdateEditAttributesContract)
-                     .call(identifier: permitted_params.project[:identifier])
-
-    if service_call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_general_path(@project)
-    else
-      respond_with_dialog Projects::Settings::ChangeIdentifierDialogComponent.new(project: service_call.result),
-                          status: :unprocessable_entity
-    end
+    # def manage_permission = :edit_project
   end
 end
