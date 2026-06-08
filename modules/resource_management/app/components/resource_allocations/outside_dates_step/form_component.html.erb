@@ -1,0 +1,38 @@
+<%=
+  component_wrapper do
+    flex_layout(align_items: :center, text_align: :center, p: 3) do |body|
+      body.with_row(mb: 2) do
+        render(Primer::Beta::Octicon.new(:calendar, size: :medium, color: :danger))
+      end
+
+      body.with_row(mb: 2) do
+        render(Primer::Beta::Heading.new(tag: :h2, font_size: 4)) { heading }
+      end
+
+      body.with_row(mb: 1) do
+        render(Primer::Beta::Text.new(tag: :p, color: :muted, m: 0)) { description }
+      end
+
+      body.with_row do
+        render(Primer::Beta::Text.new(tag: :p, color: :muted, m: 0)) { confirmation }
+      end
+
+      body.with_row do
+        form_with(
+          url: project_resource_allocations_path(@project),
+          method: :post,
+          id: ResourceAllocations::NewDialogComponent::FORM_ID,
+          data: { turbo_stream: true }
+        ) do
+          safe_join(
+            [
+              hidden_field_tag("allocation_kind", @allocation_kind),
+              (hidden_field_tag("filters", @filters) if @filters.present?),
+              *@form_values.map { |name, value| hidden_field_tag("resource_allocation[#{name}]", value) }
+            ].compact
+          )
+        end
+      end
+    end
+  end
+%>
