@@ -42,13 +42,13 @@ module Backlogs
           w: :full
         )
 
-        # f.text_area(
-        #   label: attribute_name(:goal),
-        #   name: :goal,
-        #   required: false,
-        #   w: :full,
-        #   rows: 3
-        # )
+        f.text_area(
+          label: attribute_name(:goal),
+          name: :goal,
+          required: false,
+          w: :full,
+          rows: 3
+        )
       end
     end
   end

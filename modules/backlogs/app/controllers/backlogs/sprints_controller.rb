@@ -189,11 +189,11 @@ module Backlogs
     end
 
     def sprint_params
-      params.permit(sprint: %i[name start_date finish_date])
+      params.permit(sprint: %i[name goal start_date finish_date])
     end
 
     def edit_sprint_params
-      params.permit(sprint: %i[id name start_date finish_date])
+      params.permit(sprint: %i[id name goal start_date finish_date])
     end
 
     def converted_sprint_params

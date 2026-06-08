@@ -37,6 +37,7 @@ module Backlogs::Sprints
     end
 
     attribute :name
+    attribute :goal
     attribute :project_id
     attribute :start_date
     attribute :finish_date

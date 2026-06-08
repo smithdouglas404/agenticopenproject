@@ -34,17 +34,21 @@ module Backlogs
     include OpTurbo::Streamable
     include CommonHelper
 
-    attr_reader :inbox_work_packages, :buckets, :project, :current_user
+    attr_reader :inbox_work_packages, :buckets, :project, :current_user, :group_by_epic, :show_all
 
     def initialize(inbox_work_packages:,
                    buckets:,
                    project:,
+                   group_by_epic: false,
+                   show_all: false,
                    current_user: User.current)
       super()
 
       @inbox_work_packages = inbox_work_packages
       @buckets = buckets
       @project = project
+      @group_by_epic = group_by_epic
+      @show_all = show_all
       @current_user = current_user
     end
 
@@ -56,6 +60,15 @@ module Backlogs
 
     def total
       @total ||= inbox_work_packages.count + (buckets&.sum { it.work_packages.size } || 0)
+    end
+
+    # Path that toggles the Scrum Base "group by epic" view on/off, preserving
+    # the "show all" state.
+    def group_by_epic_toggle_path
+      query = {}
+      query[:all] = 1 if show_all
+      query[:group_by] = "epic" unless group_by_epic
+      project_backlogs_backlog_path(project, query)
     end
   end
 end

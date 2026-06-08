@@ -51,9 +51,17 @@ module Backlogs
       ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
     end
 
-    # Optional query params for backlog URLs when showing all items (`?all=1`).
+    # Scrum Base-style "group by epic" toggle for the backlog (`?group_by=epic`).
+    def group_by_epic?
+      params[:group_by].to_s == "epic"
+    end
+
+    # Optional query params carried across backlog URLs / Turbo re-renders.
     def all_backlogs_params
-      show_all_backlog ? { all: 1 } : {}
+      params = {}
+      params[:all] = 1 if show_all_backlog
+      params[:group_by] = "epic" if group_by_epic?
+      params
     end
   end
 end

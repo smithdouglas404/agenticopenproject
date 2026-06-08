@@ -87,7 +87,30 @@ module Backlogs
       respond_with_turbo_streams(status: call)
     end
 
+    # Inline story-point estimation from the backlog/sprint row (Scrum Base-style).
+    def estimate
+      # Fully qualified: inside this namespace, WorkPackages::UpdateService would
+      # otherwise resolve to Backlogs::WorkPackages::UpdateService (the move service).
+      call = ::WorkPackages::UpdateService
+               .new(user: current_user, model: @work_package)
+               .call(story_points: estimate_params[:story_points].presence)
+
+      if call.success?
+        replace_component_via_turbo_stream(@work_package.reload.sprint)
+      else
+        render_error_flash_message_via_turbo_stream(
+          message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+        )
+      end
+
+      respond_with_turbo_streams(status: call)
+    end
+
     private
+
+    def estimate_params
+      params.require(:work_package).permit(:story_points)
+    end
 
     def move_work_package_to_target_component_via_turbo_stream(source:, target:)
       if source != target
@@ -115,7 +138,8 @@ module Backlogs
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
       buckets = BacklogBucket.for_project(@project)
 
-      Backlogs::BacklogComponent.new(inbox_work_packages:, buckets:, project: @project)
+      Backlogs::BacklogComponent.new(inbox_work_packages:, buckets:, project: @project,
+                                     group_by_epic: params[:group_by] == "epic")
     end
 
     def load_work_package
