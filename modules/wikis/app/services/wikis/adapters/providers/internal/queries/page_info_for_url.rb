@@ -32,29 +32,42 @@ module Wikis
   module Adapters
     module Providers
       module Internal
-        Registry = Dry::Core::Container::Namespace.new("internal") do
-          namespace("authentication") do
-            register(:user_bound, Authentication::UserBound)
-          end
+        module Queries
+          class PageInfoForUrl < BaseQuery
+            def call(input_data:, auth_strategy:)
+              project_identifier, slug = match_url(input_data.url)
+              return failure(code: :not_found) if project_identifier.nil?
 
-          namespace("commands") do
-            # ...
-          end
+              Adapters::Authentication[auth_strategy].call do |user|
+                wiki = find_wiki(project_identifier:, user:)
+                return failure(code: :not_found) if wiki.nil?
 
-          namespace("components") do
-            # ...
-          end
+                wiki_page = find_page(wiki:, slug:, user:)
+                return failure(code: :not_found) if wiki_page.nil?
 
-          namespace("contracts") do
-            # ...
-          end
+                success(PageInfo.wiki_page_to_page_info(wiki_page, provider:))
+              end
+            end
 
-          namespace("queries") do
-            register(:page_info, Queries::PageInfo)
-            register(:page_info_for_url, Queries::PageInfoForUrl)
-            register(:referencing_pages, Queries::ReferencingPages)
-            register(:relation_page_links, Queries::RelationPageLinks)
-            register(:search_pages, Queries::SearchPages)
+            private
+
+            def match_url(url)
+              matcher = %r{https?://#{Regexp.escape host_name}/projects/([^/]+)/wiki/([^/]+)}
+              match = matcher.match(url)
+              return nil if match.nil?
+
+              [match[1], match[2]]
+            end
+
+            def host_name = Setting.host_name
+
+            def find_wiki(project_identifier:, user:)
+              Project.visible(user).find_by(identifier: project_identifier)&.wiki
+            end
+
+            def find_page(wiki:, slug:, user:)
+              wiki.pages.visible(user).find_by(slug:)
+            end
           end
         end
       end
