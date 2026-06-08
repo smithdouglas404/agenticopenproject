@@ -127,7 +127,36 @@ class ResourceAllocation < ApplicationRecord
     self.allocated_time = nil
   end
 
+  def entity_start_date
+    entity.try(:start_date)
+  end
+
+  def entity_due_date
+    entity.try(:due_date)
+  end
+
+  # Describes how the allocation falls outside the schedule of its entity,
+  # comparing only the bounds the entity actually defines. Returns nil when the
+  # allocation fits within those bounds or there is nothing to compare against.
+  def schedule_violation
+    if starts_before_entity? && ends_after_entity?
+      :before_and_after
+    elsif starts_before_entity?
+      :before_start
+    elsif ends_after_entity?
+      :after_finish
+    end
+  end
+
   private
+
+  def starts_before_entity?
+    entity_start_date.present? && start_date.present? && start_date < entity_start_date
+  end
+
+  def ends_after_entity?
+    entity_due_date.present? && end_date.present? && end_date > entity_due_date
+  end
 
   def end_date_after_start_date
     return if start_date.blank? || end_date.blank?

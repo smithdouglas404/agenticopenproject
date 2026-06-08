@@ -132,6 +132,102 @@ RSpec.describe ResourceAllocation do
     end
   end
 
+  describe "#schedule_violation, #entity_start_date, #entity_due_date" do
+    let(:work_package) { build_stubbed(:work_package, start_date: Date.new(2026, 1, 10), due_date: Date.new(2026, 1, 20)) }
+
+    def allocation_for(start_date:, end_date:, entity: work_package)
+      described_class.new(entity:, start_date:, end_date:)
+    end
+
+    it "exposes the entity's start and due dates" do
+      allocation = allocation_for(start_date: Date.new(2026, 1, 12), end_date: Date.new(2026, 1, 15))
+
+      expect(allocation.entity_start_date).to eq(Date.new(2026, 1, 10))
+      expect(allocation.entity_due_date).to eq(Date.new(2026, 1, 20))
+    end
+
+    context "when the allocation is fully within the entity's schedule" do
+      it "returns nil" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 12), end_date: Date.new(2026, 1, 15)).schedule_violation)
+          .to be_nil
+      end
+    end
+
+    context "when the allocation exactly matches the entity's bounds" do
+      it "returns nil (bounds are inclusive)" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 10), end_date: Date.new(2026, 1, 20)).schedule_violation)
+          .to be_nil
+      end
+    end
+
+    context "when the allocation starts before the entity's start date" do
+      it "returns :before_start" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 5), end_date: Date.new(2026, 1, 15)).schedule_violation)
+          .to eq(:before_start)
+      end
+    end
+
+    context "when the allocation ends after the entity's due date" do
+      it "returns :after_finish" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 12), end_date: Date.new(2026, 1, 25)).schedule_violation)
+          .to eq(:after_finish)
+      end
+    end
+
+    context "when the allocation spills out on both ends" do
+      it "returns :before_and_after" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 5), end_date: Date.new(2026, 1, 25)).schedule_violation)
+          .to eq(:before_and_after)
+      end
+    end
+
+    context "when the entity has no start date" do
+      let(:work_package) { build_stubbed(:work_package, start_date: nil, due_date: Date.new(2026, 1, 20)) }
+
+      it "ignores the missing start bound and only flags the due date" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 1), end_date: Date.new(2026, 1, 15)).schedule_violation)
+          .to be_nil
+        expect(allocation_for(start_date: Date.new(2026, 1, 1), end_date: Date.new(2026, 1, 25)).schedule_violation)
+          .to eq(:after_finish)
+      end
+    end
+
+    context "when the entity has no due date" do
+      let(:work_package) { build_stubbed(:work_package, start_date: Date.new(2026, 1, 10), due_date: nil) }
+
+      it "ignores the missing due bound and only flags the start date" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 12), end_date: Date.new(2026, 1, 25)).schedule_violation)
+          .to be_nil
+        expect(allocation_for(start_date: Date.new(2026, 1, 5), end_date: Date.new(2026, 1, 25)).schedule_violation)
+          .to eq(:before_start)
+      end
+    end
+
+    context "when the entity has neither date" do
+      let(:work_package) { build_stubbed(:work_package, start_date: nil, due_date: nil) }
+
+      it "returns nil (nothing to compare against)" do
+        expect(allocation_for(start_date: Date.new(2026, 1, 5), end_date: Date.new(2026, 1, 25)).schedule_violation)
+          .to be_nil
+      end
+    end
+
+    context "when the allocation dates are blank" do
+      it "returns nil" do
+        expect(allocation_for(start_date: nil, end_date: nil).schedule_violation).to be_nil
+      end
+    end
+
+    context "without an entity" do
+      it "returns nil" do
+        allocation = described_class.new(start_date: Date.new(2026, 1, 5), end_date: Date.new(2026, 1, 25))
+
+        expect(allocation.entity_start_date).to be_nil
+        expect(allocation.schedule_violation).to be_nil
+      end
+    end
+  end
+
   describe ".needs_principal_assignment" do
     shared_let(:project) { create(:project) }
     shared_let(:work_package) { create(:work_package, project:) }
