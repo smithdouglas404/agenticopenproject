@@ -98,7 +98,7 @@ module ::TwoFactorAuthentication
           default_message = t("two_factor_authentication.devices.confirm_send_failed")
           flash[:error] = "#{default_message} #{error}"
 
-          redirect_to action: :index
+          redirect_to index_path
         end
       end
 
