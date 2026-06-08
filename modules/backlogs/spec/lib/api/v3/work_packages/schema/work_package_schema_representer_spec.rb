@@ -44,7 +44,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       allow(p).to receive(:backlogs_enabled?).and_return(backlogs_enabled)
     end
   end
-  let(:work_package_type) { build_stubbed(:type, attribute_groups: [["Agile", %w[position sprint story_points]]]) }
+  let(:work_package_type) { build_stubbed(:type, attribute_groups: [["Agile", %w[position sprint story_points backlog_bucket]]]) }
   let(:work_package) { build_stubbed(:work_package, type: work_package_type) }
 
   let(:current_user) { build_stubbed(:user) }
@@ -138,7 +138,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
   describe "attribute_groups" do
     context "with backlogs enabled" do
       it "has backlogs properties listed in the right group" do
-        expect(subject).to be_json_eql(%w[position sprint storyPoints])
+        expect(subject).to be_json_eql(%w[position sprint storyPoints backlogBucket])
                              .at_path("_attributeGroups/0/attributes")
       end
     end
@@ -147,7 +147,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       let(:permissions) { %i(view_work_packages edit_work_packages) }
 
       it "has backlogs properties listed in the right group" do
-        expect(subject).to be_json_eql(%w[position sprint storyPoints])
+        expect(subject).to be_json_eql(%w[position sprint storyPoints backlogBucket])
                              .at_path("_attributeGroups/0/attributes")
       end
     end
