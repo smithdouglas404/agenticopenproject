@@ -222,7 +222,7 @@ In OpenProject, global modules are defined as a menu to access all [modules](#mo
 
 ### Group
 
-A group in OpenProject is defined as a list of users which can be added as a member to projects with a selected [role](#role). Groups can also be assigned to work packages. Since OpenProject 17.5, groups can be nested to represent organizational structures and inherit permissions from parent groups. New groups can be defined in *Administration → Users and permissions → Groups*.
+A group in OpenProject is defined as a list of users which can be added as a member to projects with a selected [role](#role). Groups can also be assigned to work packages. They can be nested to represent organizational structures and inherit permissions from parent groups. New groups can be defined in *Administration → Users and permissions → Groups*.
 
 ## H
 
@@ -604,9 +604,9 @@ If you need a Category that applies to all projects on your instance, we recomme
 
 In OpenProject, every work package has a unique ID (identifier). It is automatically assigned when a work package is created. Work package IDs are configured globally and apply across the entire OpenProject instance.
 
-By default, work package IDs are numerical, ascending numbers, for example 429. Since OpenProject 17.5, system [administrators](#admin) can optionally switch to project-based work package IDs, which consist of a project-specific prefix and an ascending number (e.g. OP-382). Work package IDs are usually displayed with a preceding #, such as #429 or #OP-382.
+By default, work package IDs are numerical, ascending numbers, for example #429. System [administrators](#admin) can optionally switch to project-based work package IDs, which consist of a project-specific prefix and an ascending number (e.g. OP-382). Project-based identifiers that have been used are [reserved and can be released if necessary](../system-admin-guide/projects/reserved-project-identifiers/) so that they can be used again.
 
-Administrators can configure work package identifiers under *→ Administration → Work packages → Identifiers*. [Read more in the OpenProject system admin guide](../system-admin-guide/manage-work-packages/work-package-identifiers/).
+Administrators can configure work package identifiers under *Administration → Work packages → Identifiers*. [Read more in the OpenProject system admin guide](../user-guide/projects/project-settings/project-information/#change-project-identifier).
 
 ### Work package subject
 
