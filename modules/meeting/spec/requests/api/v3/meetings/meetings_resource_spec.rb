@@ -303,6 +303,37 @@ RSpec.describe "API v3 Meeting resource", content_type: :json do
       end
     end
 
+    context "when sending a smaller list of participants to _links.participants" do
+      let(:participant_user) do
+        create(:user, member_with_permissions: { project => [:view_meetings] })
+      end
+      let(:other_participant_user) do
+        create(:user, member_with_permissions: { project => [:view_meetings] })
+      end
+
+      before do
+        create(:meeting_participant, meeting:, user: participant_user, invited: true)
+        create(:meeting_participant, meeting:, user: other_participant_user, invited: true)
+      end
+
+      it "removes unlisted participants" do
+        expect(meeting.participants.count).to eq(2)
+
+        body = {
+          lockVersion: meeting.lock_version,
+          _links: {
+            participants: [{ href: api_v3_paths.user(participant_user.id) }]
+          }
+        }.to_json
+
+        patch path, body
+
+        expect(last_response).to have_http_status(:ok)
+        expect(meeting.participants.reload.map(&:user_id)).to contain_exactly(participant_user.id)
+        expect(last_response.body).to have_json_size(1).at_path("_embedded/participants")
+      end
+    end
+
     context "without edit_meetings permission" do
       let(:permissions) { %i[view_meetings] }
 
