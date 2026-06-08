@@ -30,19 +30,24 @@
 %>
 
 <%= turbo_frame_tag dom_id(@document, :versions) do %>
-  <ul id="<%= dom_id(@document, :versions_list) %>"
-      class="op-activity-list"
-      data-controller="documents--versions-scroll"
-      data-documents--versions-scroll-target-id-value="<%= @scroll_to_id %>">
-    <% @journals.each do |journal| %>
-      <%= render Documents::VersionsTab::ItemComponent.new(
-            journal,
-            document: @document,
-            max_version: @max_version,
-            active_journal_id: @scroll_to_id
-          ) %>
-    <% end %>
-  </ul>
+  <div style="position: relative;">
+    <ul id="<%= dom_id(@document, :versions_list) %>"
+        class="op-activity-list"
+        style="position: relative; z-index: 10;"
+        data-controller="documents--versions-scroll"
+        data-documents--versions-scroll-target-id-value="<%= @scroll_to_id %>">
+      <% @journals.each do |journal| %>
+        <%= render Documents::VersionsTab::ItemComponent.new(
+              journal,
+              document: @document,
+              max_version: @max_version,
+              active_journal_id: @scroll_to_id
+            ) %>
+      <% end %>
+    </ul>
+
+    <div class="work-packages-activities-tab-journals-index-component--stem-connection"></div>
+  </div>
 
   <% if @has_more %>
     <div id="<%= dom_id(@document, :versions_load_more) %>">
