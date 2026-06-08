@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::SearchPages, :webmock do
+RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::SearchPages, :disable_ssrf_filter, :webmock do
   subject { described_class.new(model: provider).call(input_data:, auth_strategy:) }
 
   let(:provider) { create(:xwiki_provider, :for_local_connection, connected_user: user) }
