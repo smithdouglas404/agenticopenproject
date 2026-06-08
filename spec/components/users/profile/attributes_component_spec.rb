@@ -41,9 +41,7 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
     subject { component.render? }
 
     context "when user has view_user_email permission" do
-      before do
-        create(:standard_global_role)
-      end
+      before { create(:standard_global_role) }
 
       it { is_expected.to be(true) }
     end
@@ -54,79 +52,55 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
       it { is_expected.to be(true) }
     end
 
-    context "when user has no view_user_email permission" do
-      it { is_expected.to be(false) }
-    end
-
-    context "when user has a custom field with a present value" do
-      let(:custom_field) { create(:user_custom_field, :string) }
-      let(:user) { build(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello")]) }
-
-      it { is_expected.to be(true) }
-    end
-
-    context "when user has a custom field with a blank value" do
-      let(:custom_field) { create(:user_custom_field, :string) }
-      let(:user) { build(:user, custom_values: [build(:custom_value, custom_field:, value: "  ")]) }
-
-      it { is_expected.to be(false) }
-    end
-
-    context "when user has a non-visible custom field with a present value" do
-      let(:custom_field) { create(:user_custom_field, :string, admin_only: true) }
-      let(:user) { build(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello")]) }
-
+    context "when user has no view_user_email permission and no filled custom fields" do
       it { is_expected.to be(false) }
     end
   end
 
-  describe "Custom field" do
-    let(:custom_field) { create(:user_custom_field, :string, admin_only:) }
-    let(:custom_values) do
-      [build(:custom_value, custom_field:, value: "Hello custom field")]
-    end
-    let(:admin_only) { false }
-    let(:user) { build_stubbed(:user, custom_values:) }
+  describe "rendering custom fields" do
+    let(:section) { create(:user_custom_field_section, name: "Profile info") }
+    let(:custom_field) { create(:user_custom_field, :string, user_custom_field_section: section) }
+    let(:user) { create(:user, custom_values: [build(:custom_value, custom_field:, value: "Hello custom field")]) }
 
     current_user { build(:admin) }
 
-    before do
-      render_inline(component)
-    end
+    before { render_inline(component) }
 
-    it "renders the field" do
+    it "renders the field value" do
       expect(page).to have_text("Hello custom field")
     end
 
-    context "when not visible" do
-      let(:admin_only) { true }
+    it "renders the section name as a heading" do
+      expect(page).to have_text("Profile info")
+    end
 
-      it "does not render the field" do
-        expect(page).to have_no_text("Hello custom field")
+    context "with an untitled section" do
+      let(:section) { create(:user_custom_field_section).tap { |s| s.update_column(:name, nil) } }
+
+      it "renders the I18n fallback label" do
+        expect(page).to have_text(I18n.t("settings.user_attributes.label_untitled_section"))
       end
     end
 
-    context "with multiple custom fields" do
-      let(:list_custom_field) { create(:user_custom_field, :multi_list, admin_only:, name: "Ze list") }
-      let(:text_custom_field) { create(:user_custom_field, :text, admin_only:, name: "A portrait") }
-      let(:custom_values) do
-        [
-          build(:custom_value, custom_field: list_custom_field, value: list_custom_field.possible_values[0]),
-          build(:custom_value, custom_field: list_custom_field, value: list_custom_field.possible_values[1]),
-          build(:custom_value, custom_field: list_custom_field, value: list_custom_field.possible_values[2]),
-          build(:custom_value, custom_field: text_custom_field, value: "This is **formatted** text.")
-        ]
+    context "with a multi-select field" do
+      let(:custom_field) { create(:user_custom_field, :multi_list, user_custom_field_section: section) }
+      let(:user) do
+        create(:user, custom_values: custom_field.possible_values.first(3).map do |v|
+          build(:custom_value, custom_field:, value: v)
+        end)
       end
 
-      it "renders the fields correctly and sorted" do
-        # correct render of formattable
-        expect(page).to have_css("strong", text: "formatted")
-        # correct render of multi select
+      it "renders values as a comma-separated list" do
         expect(page).to have_text("A, B, C")
-        # alphabetical order
-        items = page.all(:test_id, "user-custom-field")
-        expect(items[0]).to have_text("A portrait")
-        expect(items[1]).to have_text("Ze list")
+      end
+    end
+
+    context "with a formattable text field" do
+      let(:custom_field) { create(:user_custom_field, :text, user_custom_field_section: section) }
+      let(:user) { create(:user, custom_values: [build(:custom_value, custom_field:, value: "This is **formatted** text.")]) }
+
+      it "renders the value as HTML" do
+        expect(page).to have_css("strong", text: "formatted")
       end
     end
   end

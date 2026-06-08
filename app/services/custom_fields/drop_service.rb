@@ -28,18 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectCustomFields
+module CustomFields
   class DropService < ::BaseServices::BaseCallable
-    def initialize(user:, project_custom_field:)
+    def initialize(user:, custom_field:)
       super()
       @user = user
-      @project_custom_field = project_custom_field
+      @custom_field = custom_field
     end
 
     def perform
       service_call = validate_permissions
       service_call = perform_drop(service_call, params) if service_call.success?
-
       service_call
     end
 
@@ -52,44 +51,32 @@ module ProjectCustomFields
     end
 
     def perform_drop(service_call, params)
-      begin
-        section_changed, current_section, old_section = check_and_update_section_if_changed(params)
-        update_position(params[:position]&.to_i)
+      section_changed, current_section, old_section = move_to_target_section(params)
+      current_section.add_to_order(@custom_field.column_name, position: params[:position]&.to_i)
 
-        service_call.success = true
-        service_call.result = { section_changed:, current_section:, old_section: }
-      rescue StandardError => e
-        service_call.success = false
-        service_call.errors = e.message
-      end
-
+      service_call.success = true
+      service_call.result = { section_changed:, current_section: current_section.reload, old_section: }
+      service_call
+    rescue StandardError => e
+      service_call.success = false
+      service_call.errors = e.message
       service_call
     end
 
     private
 
-    def check_and_update_section_if_changed(params)
-      current_section = @project_custom_field.project_custom_field_section
+    def move_to_target_section(params)
+      current_section = @custom_field.custom_field_section
       new_section_id = params[:target_id]&.to_i
 
-      if current_section.id != new_section_id
-        old_section = current_section
-        current_section = update_section(new_section_id)
-        return [true, current_section, old_section]
-      end
+      return [false, current_section, nil] if current_section.id == new_section_id
 
-      [false, current_section, nil]
-    end
+      old_section = current_section
+      current_section = CustomFieldSection.find(new_section_id)
+      old_section.remove_from_order(@custom_field.column_name)
+      @custom_field.update!(custom_field_section_id: current_section.id)
 
-    def update_section(new_section_id)
-      current_section = ProjectCustomFieldSection.find(new_section_id)
-      @project_custom_field.remove_from_list
-      @project_custom_field.update(project_custom_field_section: current_section)
-      current_section
-    end
-
-    def update_position(new_position)
-      @project_custom_field.insert_at(new_position)
+      [true, current_section, old_section.reload]
     end
   end
 end

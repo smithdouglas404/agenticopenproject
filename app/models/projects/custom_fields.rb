@@ -62,7 +62,7 @@ module Projects::CustomFields
     def all_available_custom_fields
       ProjectCustomField
         .includes(:project_custom_field_section)
-        .order("custom_field_sections.position", :position_in_custom_field_section)
+        .order("custom_field_sections.position")
     end
 
     def all_visible_custom_fields

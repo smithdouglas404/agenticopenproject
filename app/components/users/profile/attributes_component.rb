@@ -42,16 +42,11 @@ module Users
       end
 
       def render?
-        user_is_allowed_to_see_email || @user.visible_custom_field_values.any? { it.value.present? }
+        user_is_allowed_to_see_email || sections_with_fields.any?
       end
 
-      def visible_custom_fields
-        @user
-          .visible_custom_field_values
-          .select { |cv| cv.value.present? }
-          .group_by(&:custom_field)
-          .keys
-          .sort_by(&:name)
+      def sections_with_fields
+        @sections_with_fields ||= UserCustomFieldSection.with_filled_fields_for(@user)
       end
 
       def user_is_allowed_to_see_email

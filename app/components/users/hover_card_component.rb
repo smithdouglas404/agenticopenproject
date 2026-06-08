@@ -31,6 +31,8 @@
 class Users::HoverCardComponent < ApplicationComponent
   include OpPrimer::ComponentHelpers
 
+  MULTI_VALUE_DISPLAY_LIMIT = 3
+
   def initialize(id:)
     super
 
@@ -60,7 +62,21 @@ class Users::HoverCardComponent < ApplicationComponent
     build_summary(group_links, cutoff_index)
   end
 
+  def card_sections_with_fields
+    @card_sections_with_fields ||= UserCustomFieldSection.with_filled_fields_for(@user, visible_on_user_card: true)
+  end
+
   private
+
+  def format_multi_values(value)
+    values = Array(value)
+    visible = safe_join(values.first(MULTI_VALUE_DISPLAY_LIMIT), ", ")
+    remaining = values.size - MULTI_VALUE_DISPLAY_LIMIT
+
+    return visible if remaining <= 0
+
+    safe_join([visible, t("custom_fields.multi_value_more", count: remaining)], " ")
+  end
 
   def linked_group_names(groups)
     groups.map { |group| link_to(h(group.name), show_group_path(group)) }

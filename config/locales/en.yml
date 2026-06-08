@@ -28,6 +28,7 @@
 
 ---
 en:
+  label_user_attributes_plural: "User attributes"
   no_results_title_text: There is currently nothing to display.
 
   activities:
@@ -708,6 +709,8 @@ en:
             gain_role: Will gain role ‘%{new_role}’
             lose_role: Will lose role ‘%{old_role}’
             no_change: No changes
+    multi_value_more:
+      other: "and %{count} more"
     text_add_new_custom_field: >
       To add new custom fields to a project you first need to create them before
       you can add them to this project.
@@ -752,6 +755,8 @@ en:
         project: "0 means no restriction"
       has_comment:
         project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
+      visible_on_user_card:
+        all: "When checked, this field's value is shown in the user information card when hovering over a user across the application."
 
     tab:
       no_results_title_text: There are currently no custom fields.
@@ -1793,18 +1798,6 @@ en:
 
   activerecord:
     attributes:
-      work_package_semantic_alias:
-        identifier: "Identifier"
-        work_package: "Work package"
-      jira_import:
-        projects: "Projects"
-      "import/jira":
-        name: "Jira instance name"
-        url: "Jira instance URL"
-        personal_access_token: "Personal access token"
-      "import/jira_open_project_reference":
-        jira: "Jira"
-        jira_import: "Jira Migrator"
       announcements:
         show_until: "Display until"
       attachment:
@@ -1850,6 +1843,7 @@ en:
         possible_values: "Possible values"
         regexp: "Regular expression"
         searchable: "Searchable"
+        visible_on_user_card: "Show on user card"
         admin_only: "Admin-only"
         has_comment: "Add a comment text field"
       custom_value:
@@ -1884,6 +1878,23 @@ en:
         row_count: "Number of rows"
         column_count: "Number of columns"
         widgets: "Widgets"
+      group:
+        group_users: "Group users"
+        identity_url: "Identity URL"
+        organizational_unit: "Organizational unit"
+        parent: "Parent group"
+      group_detail:
+        organizational_unit: "Organizational unit"
+        parent: "Parent group"
+      "import/jira":
+        name: "Jira instance name"
+        personal_access_token: "Personal access token"
+        url: "Jira instance URL"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira Migrator"
+      jira_import:
+        projects: "Projects"
       journal:
         notes: "Notes"
         cause_type: "Cause type"
@@ -1912,6 +1923,21 @@ en:
         resource: "Resource"
       oauth_client:
         client: "Client ID"
+      ordered_persisted_query_entity:
+        entity: "Entity"
+        persisted_query: "Persisted query"
+        position: "Position"
+      persisted_query:
+        filters: "Filters"
+        name: "Name"
+        orders: "Orders"
+        selects: "Selects"
+        views: "Views"
+      persisted_view:
+        name: "Name"
+        parent: "Parent view"
+        public: "Public"
+        query: "Query"
       project:
         active_value:
           true: "unarchived"
@@ -2058,14 +2084,8 @@ en:
         new_password: "New password"
         password_confirmation: "Confirmation"
         consented_at: "Consented at"
-      group:
-        identity_url: "Identity URL"
-        parent: "Parent group"
-        organizational_unit: "Organizational unit"
-        group_users: "Group users"
-      group_detail:
-        parent: "Parent group"
-        organizational_unit: "Organizational unit"
+      user_custom_field:
+        custom_field_section: Section
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -2164,21 +2184,9 @@ en:
         type: "Type"
         version: "Version"
         watcher: "Watcher"
-      ordered_persisted_query_entity:
-        persisted_query: "Persisted query"
-        entity: "Entity"
-        position: "Position"
-      persisted_query:
-        name: "Name"
-        views: "Views"
-        filters: "Filters"
-        orders: "Orders"
-        selects: "Selects"
-      persisted_view:
-        name: "Name"
-        query: "Query"
-        parent: "Parent view"
-        public: "Public"
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       user_card_view:
         secondary_info: "Secondary info"
         show_status_badge: "Show status badge"
@@ -5761,8 +5769,22 @@ en:
     session: "Session"
     user:
       default_preferences: "Default preferences"
-      display_format: "Display format"
       deletion: "Deletion"
+      display_format: "Display format"
+    user_attributes:
+      heading: "User attributes"
+      heading_description: "These user attributes appear on user profiles and information cards. You can add new attributes, group them into sections and re-order them."
+      label_built_in: "Built-in"
+      label_built_in_attribute_actions: "Built-in attribute actions"
+      label_edit_section: "Edit title"
+      label_new_attribute: "User attribute"
+      label_new_section: "Section"
+      label_no_user_custom_fields: "No user attributes defined in this section"
+      label_section_actions: "Section actions"
+      label_untitled_section: "Untitled section"
+      label_user_custom_field_actions: "User attribute actions"
+      new:
+        heading: "New attribute"
     working_days:
       section_work_week: "Work week"
       section_holidays_and_closures: "Holidays and closures"
