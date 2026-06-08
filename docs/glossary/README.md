@@ -82,7 +82,7 @@ In OpenProject, authentication is an important element to guarantee a data prote
 
 Backlogs is a [module](#module) in OpenProject that brings features that support [Agile project management](#agile-project-management), in particular the Scrum methodology, such as a product backlog and sprint backlogs.
 
-It includes functionality for planning and managing [sprints](#sprint), including a sprint [board](#board) that is automatically created when a sprint is started. Within the backlog, work packages can be organized using **backlog buckets** to group items into clearly defined sections. Work packages that are not assigned to a backlog bucket or a sprint are listed in the **index backlog**.
+It includes functionality for planning and managing [sprints](#sprint), including a sprint [board](#board) that is automatically created when a sprint is started. Within the backlog, work packages can be organized using **backlog buckets** to group items into clearly defined sections. Work packages that are not assigned to a backlog bucket or a sprint are listed in the **inbox** backlog bucket.
 
 To use backlogs in OpenProject, the Backlogs module has to be activated in the [project settings](#project-settings) by a project admin.
 
