@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -92,10 +94,10 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::IssueComment
       process
       expect(upsert_partial_pull_request_service)
         .to have_received(:call) do |received_payload, work_packages:|
-        expect(received_payload.to_h)
-          .to eql payload
-        expect(work_packages)
-          .to contain_exactly(work_package)
+          expect(received_payload.to_h)
+            .to eql payload
+          expect(work_packages)
+            .to contain_exactly(work_package)
       end
     end
   end

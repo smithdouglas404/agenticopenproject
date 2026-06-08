@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -102,55 +104,39 @@ RSpec.describe GitlabIssue do
     shared_let(:issue) { create(:gitlab_issue) }
 
     it "raises an ArgumentError when no id or url is provided" do
-      expect { described_class.find_by_gitlab_identifiers }.to raise_error(ArgumentError, "needs an id or an url")
+      expect { described_class.find_by_gitlab_identifiers }.to raise_error(ArgumentError, "needs an id and an url")
     end
 
     context "when the gitlab_id attribute matches" do
       it "finds by gitlab_id" do
-        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id)).to eql(issue)
+        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id, url: issue.gitlab_html_url)).to eql(issue)
       end
     end
 
     context "when the gitlab_html_url attribute matches" do
       it "finds by gitlab_html_url" do
-        expect(described_class.find_by_gitlab_identifiers(url: issue.gitlab_html_url)).to eql(issue)
-      end
-    end
-
-    context "when the provided gitlab_id does not match" do
-      it "is nil" do
-        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id + 1)).to be_nil
-      end
-    end
-
-    context "when the provided gitlab_html_url does not match" do
-      it "is nil" do
-        expect(described_class.find_by_gitlab_identifiers(url: "#{issue.gitlab_html_url}zzzz"))
-          .to be_nil
+        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id, url: issue.gitlab_html_url)).to eql(issue)
       end
     end
 
     context "when neither match" do
-      it "is nil" do
-        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id + 1,
-                                                          url: "#{issue.gitlab_html_url}zzzz"))
+      it "returns nothing" do
+        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id + 1, url: "#{issue.gitlab_html_url}zzzz"))
           .to be_nil
       end
     end
 
     context "when the provided gitlab_html_url does not match but the gitlab_id does" do
-      it "is nil" do
-        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id,
-                                                          url: "#{issue.gitlab_html_url}zzzz"))
-          .to eql issue
+      it "returns nothing" do
+        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id, url: "#{issue.gitlab_html_url}zzzz"))
+          .to be_nil
       end
     end
 
     context "when the provided gitlab_html_url does match but the gitlab_id does not" do
-      it "is nil" do
-        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id + 1,
-                                                          url: issue.gitlab_html_url))
-          .to eql issue
+      it "returns nothing" do
+        expect(described_class.find_by_gitlab_identifiers(id: issue.gitlab_id + 1, url: issue.gitlab_html_url))
+          .to be_nil
       end
     end
 
