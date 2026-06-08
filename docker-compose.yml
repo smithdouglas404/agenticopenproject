@@ -1,6 +1,14 @@
 networks:
   network:
   testing:
+  # `external` joins the gateway network managed by the TLS proxy stack
+  # (traefik + step). Used by services that need to be reachable under
+  # https://*.${OPENPROJECT_DOCKER_DEV_TLD:-local}. First step toward
+  # TLS-by-default for dev — currently hocuspocus uses it; backend and
+  # frontend will follow.
+  external:
+    name: gateway
+    external: true
 
 volumes:
   downloads-test:
@@ -57,7 +65,18 @@ x-op-backend: &backend
     - /home/dev/openproject/tmpfs/pids:uid=$DEV_UID,gid=$DEV_GID
   networks:
     - network
-
+x-op-hocuspocus: &hocuspocus
+  # On macOS you may need to specify the platform in your `docker-compose.override.yml`:
+  # platform: linux/amd64
+  image: node:22-alpine
+  restart: unless-stopped
+  environment:
+    - SECRET=secret12345
+    - NODE_TLS_REJECT_UNAUTHORIZED=0
+  working_dir: /app
+  command: sh -c "npm run dev"
+  volumes:
+    - ./extensions/op-blocknote-hocuspocus:/app
 services:
   backend:
     <<: *backend
@@ -66,6 +85,7 @@ services:
       - db
       - cache
       - frontend
+      - hocuspocus
     ports:
       - "${PORT:-3000}:3000"
 
@@ -103,6 +123,19 @@ services:
     networks:
       - network
 
+  hocuspocus:
+    <<: *hocuspocus
+    networks:
+      - network
+      - external
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hocuspocus.rule=Host(`hocuspocus.${OPENPROJECT_DOCKER_DEV_TLD:-local}`)"
+      - "traefik.http.routers.hocuspocus.tls=true"
+      - "traefik.http.routers.hocuspocus.tls.certresolver=step"
+      - "traefik.http.routers.hocuspocus.service=hocuspocus-service"
+      - "traefik.http.services.hocuspocus-service.loadbalancer.server.port=1234"
+
   cache:
     image: memcached
     <<: *restart_policy
@@ -124,9 +157,7 @@ services:
       - testing
 
   hocuspocus-test:
-    image: openproject/hocuspocus:latest
-    environment:
-      SECRET: secret12345
+    <<: *hocuspocus
     networks:
       - testing
 
