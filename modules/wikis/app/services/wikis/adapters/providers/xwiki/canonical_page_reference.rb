@@ -28,35 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  # An SSRF filter for HTTPX based on the original plugin.
-  # See https://gitlab.com/os85/httpx/-/blob/master/lib/httpx/plugins/ssrf_filter.rb
-  #
-  # The main difference is that we use our own subclass of `SsrfFilter` to perform the matching of unsafe IP addresses.
-  # We are thus consulting our own allow list of IP addresses before blocking an IP address.
-  module HttpxSsrfFilter
-    class ServerSideRequestForgeryError < HTTPX::Error; end
+module Wikis
+  module Adapters
+    module Providers
+      module XWiki
+        # Represents an XWiki page identifier in canonical document reference format:
+        # "wikiName:Space1.Space2.PageName" — e.g. "xwiki:Main.WebHome"
+        CanonicalPageReference = Data.define(:wiki, :spaces, :page) do
+          def self.parse(identifier)
+            wiki, page_path = identifier.split(":", 2)
+            return nil if page_path.blank?
 
-    module ConnectionMethods
-      def initialize(*)
-        super
-      rescue ServerSideRequestForgeryError => e
-        # may raise when IPs are passed as options via :addresses
-        throw(:resolve_error, e)
-      end
+            *spaces, page = page_path.split(".")
+            return nil if spaces.empty?
 
-      def addresses=(addrs)
-        addrs.reject! do |addr|
-          # working around an error in IPAddr that fails to check address inclusion if the passed address is not an
-          # IPAddr, but a SimpleDelegator to an IPAddr (like HTTPX::Resolver::Entry).
-          addr = addr.address if addr.respond_to?(:address)
+            new(wiki:, spaces:, page:)
+          end
 
-          SsrfProtection.send(:unsafe_ip_address?, addr)
+          # Maps the reference to the REST API path, excluding the `/rest` prefix, e.g.
+          # /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
+          def rest_path
+            spaces_path = spaces.map { "/spaces/#{CGI.escapeURIComponent(it)}" }.join
+            "/wikis/#{CGI.escapeURIComponent(wiki)}#{spaces_path}/pages/#{CGI.escapeURIComponent(page)}"
+          end
+
+          def to_s
+            "#{wiki}:#{spaces.join('.')}.#{page}"
+          end
         end
-
-        raise ServerSideRequestForgeryError, "#{@origin.host} has no public IP addresses" if addrs.empty?
-
-        super
       end
     end
   end

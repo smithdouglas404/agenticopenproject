@@ -32,23 +32,28 @@ module Wikis
   module Adapters
     module Providers
       module XWiki
-        # Represents a parsed XWiki stable page identifier in canonical document reference format:
-        # "wikiName:Space1.Space2.PageName" — e.g. "xwiki:Main.WebHome"
-        # Maps to the REST API path: /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
-        PageReference = Data.define(:wiki, :spaces, :page) do
-          def self.parse(identifier)
-            wiki, page_path = identifier.split(":", 2)
-            return nil if page_path.blank?
+        module Queries
+          # Fetch page information using a stable XWiki identifier
+          class StablePageInfo < BaseQuery
+            include Concerns::XWikiQuery
 
-            *spaces, page = page_path.split(".")
-            return nil if spaces.empty?
+            def call(input_data:, auth_strategy:)
+              ref = StablePageReference.parse(input_data.identifier)
+              return failure(code: :not_found) unless ref
 
-            new(wiki:, spaces:, page:)
-          end
-
-          def rest_path
-            spaces_path = spaces.map { "/spaces/#{CGI.escapeURIComponent(it)}" }.join
-            "/wikis/#{CGI.escapeURIComponent(wiki)}#{spaces_path}/pages/#{CGI.escapeURIComponent(page)}"
+              authenticated(auth_strategy) do |http|
+                handle_response(http.get(rest_url(ref.rest_path))) do |data|
+                  success(
+                    Results::PageInfo.new(
+                      identifier: ref.to_s,
+                      title: fetch_json(data, "title"),
+                      href: fetch_json(data, "xwikiAbsoluteUrl"),
+                      provider:
+                    )
+                  )
+                end
+              end
+            end
           end
         end
       end

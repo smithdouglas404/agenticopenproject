@@ -28,36 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  # An SSRF filter for HTTPX based on the original plugin.
-  # See https://gitlab.com/os85/httpx/-/blob/master/lib/httpx/plugins/ssrf_filter.rb
-  #
-  # The main difference is that we use our own subclass of `SsrfFilter` to perform the matching of unsafe IP addresses.
-  # We are thus consulting our own allow list of IP addresses before blocking an IP address.
-  module HttpxSsrfFilter
-    class ServerSideRequestForgeryError < HTTPX::Error; end
+require "spec_helper"
+require_module_spec_helper
 
-    module ConnectionMethods
-      def initialize(*)
-        super
-      rescue ServerSideRequestForgeryError => e
-        # may raise when IPs are passed as options via :addresses
-        throw(:resolve_error, e)
-      end
+RSpec.describe Wikis::Adapters::Providers::XWiki::StablePageReference do
+  describe ".parse" do
+    subject { described_class.parse(identifier) }
 
-      def addresses=(addrs)
-        addrs.reject! do |addr|
-          # working around an error in IPAddr that fails to check address inclusion if the passed address is not an
-          # IPAddr, but a SimpleDelegator to an IPAddr (like HTTPX::Resolver::Entry).
-          addr = addr.address if addr.respond_to?(:address)
+    let(:identifier) { "123abc" }
 
-          SsrfProtection.send(:unsafe_ip_address?, addr)
-        end
+    it { is_expected.to have_attributes(uid: "123abc") }
 
-        raise ServerSideRequestForgeryError, "#{@origin.host} has no public IP addresses" if addrs.empty?
+    context "when passing nil" do
+      let(:identifier) { nil }
 
-        super
-      end
+      it { is_expected.to be_nil }
+    end
+  end
+
+  describe "#rest_path" do
+    subject { described_class.parse(identifier).rest_path }
+
+    let(:identifier) { "123abc" }
+
+    it { is_expected.to eq("/openproject/documents/123abc") }
+  end
+
+  describe "#to_s" do
+    subject { described_class.parse(identifier).to_s }
+
+    let(:identifier) { "123abc" }
+
+    it "roundtrips" do
+      expect(subject).to eq(identifier)
     end
   end
 end

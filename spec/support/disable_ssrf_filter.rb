@@ -28,36 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  # An SSRF filter for HTTPX based on the original plugin.
-  # See https://gitlab.com/os85/httpx/-/blob/master/lib/httpx/plugins/ssrf_filter.rb
-  #
-  # The main difference is that we use our own subclass of `SsrfFilter` to perform the matching of unsafe IP addresses.
-  # We are thus consulting our own allow list of IP addresses before blocking an IP address.
-  module HttpxSsrfFilter
-    class ServerSideRequestForgeryError < HTTPX::Error; end
+RSpec.configure do |config|
+  config.before do |example|
+    next unless example.metadata[:disable_ssrf_filter]
 
-    module ConnectionMethods
-      def initialize(*)
-        super
-      rescue ServerSideRequestForgeryError => e
-        # may raise when IPs are passed as options via :addresses
-        throw(:resolve_error, e)
-      end
-
-      def addresses=(addrs)
-        addrs.reject! do |addr|
-          # working around an error in IPAddr that fails to check address inclusion if the passed address is not an
-          # IPAddr, but a SimpleDelegator to an IPAddr (like HTTPX::Resolver::Entry).
-          addr = addr.address if addr.respond_to?(:address)
-
-          SsrfProtection.send(:unsafe_ip_address?, addr)
-        end
-
-        raise ServerSideRequestForgeryError, "#{@origin.host} has no public IP addresses" if addrs.empty?
-
-        super
-      end
-    end
+    allow(OpenProject::Configuration).to receive(:ssrf_protection_ip_allowlist)
+      .and_return([IPAddr.new("0.0.0.0/0"), IPAddr.new("::0/0")])
   end
 end

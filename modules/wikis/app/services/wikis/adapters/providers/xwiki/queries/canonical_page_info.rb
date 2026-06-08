@@ -33,41 +33,36 @@ module Wikis
     module Providers
       module XWiki
         module Queries
-          class SearchPages < BaseQuery
+          # Fetch page information using a canonical XWiki identifier
+          class CanonicalPageInfo < BaseQuery
             include Concerns::XWikiQuery
 
-            # Limiting result size rather strictly, because each result will cause another HTTP call to XWiki, this does not
-            # scale well. A stricter limit improves the worst case latency.
-            MAXIMUM_RESULTS = 20
-
             def call(input_data:, auth_strategy:)
-              query = { q: "\"#{escape_quotes input_data.query}\"", number: MAXIMUM_RESULTS }
+              ref = CanonicalPageReference.parse(input_data.identifier)
+              return failure(code: :not_found) unless ref
 
-              authenticated(auth_strategy) do |http|
-                handle_response(http.get(rest_url("wikis/query", query:))) do |json|
-                  success(
-                    fetch_json(json, "searchResults")
-                      .uniq { |r| fetch_json(r, "id") }
-                      .map do |r|
-                        result = canonical_page_info(identifier: fetch_json(r, "id"), auth_strategy:)
-                        return result if result.failure?
-
-                        result.value!
-                      end
+              perform_request(ref, auth_strategy:) do |data|
+                success(
+                  Results::PageInfo.new(
+                    identifier: StablePageReference.new(uid: fetch_json(data, "id")).to_s,
+                    title: fetch_json(data, "title"),
+                    href: fetch_json(data, "xwikiAbsoluteUrl"),
+                    provider:
                   )
-                end
+                )
               end
             end
 
-            private
-
-            def escape_quotes(string)
-              string.gsub("\\", "\\\\").gsub('"', '\"')
-            end
-
-            def canonical_page_info(identifier:, auth_strategy:)
-              Input::PageInfo.build(identifier:).bind do |input_data|
-                CanonicalPageInfo.new(model: provider).call(input_data:, auth_strategy:)
+            def perform_request(reference, auth_strategy:, &)
+              authenticated(auth_strategy) do |http|
+                handle_response(
+                  http.with(headers: { "Content-Type": "application/json" })
+                      .put(
+                        rest_url("openproject/documents", query: { docRef: reference.to_s }),
+                        body: "{}"
+                      ),
+                  &
+                )
               end
             end
           end

@@ -31,7 +31,7 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Wikis::Adapters::Providers::XWiki::PageReference do
+RSpec.describe Wikis::Adapters::Providers::XWiki::CanonicalPageReference do
   describe ".parse" do
     subject { described_class.parse(identifier) }
 
@@ -85,6 +85,26 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::PageReference do
       let(:identifier) { "xwiki:My Space.My Page" }
 
       it { is_expected.to eq("/wikis/xwiki/spaces/My%20Space/pages/My%20Page") }
+    end
+  end
+
+  describe "#to_s" do
+    subject { described_class.parse(identifier).to_s }
+
+    context "with a standard identifier" do
+      let(:identifier) { "xwiki:Main.WebHome" }
+
+      it "roundtrips" do
+        expect(subject).to eq(identifier)
+      end
+    end
+
+    context "with a nested space identifier" do
+      let(:identifier) { "xwiki:MySpace.SubSpace.PageName" }
+
+      it "roundtrips" do
+        expect(subject).to eq(identifier)
+      end
     end
   end
 end
