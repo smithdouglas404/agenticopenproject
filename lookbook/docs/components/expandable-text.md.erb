@@ -1,0 +1,77 @@
+**ExpandableText** detects when content is truncated and shows an expand/collapse button. It supports two orthogonal axes: truncation direction (horizontal or vertical) and expansion mode (inline or dialog).
+
+<%= embed OpPrimer::ExpandableTextComponentPreview, :default %>
+
+## Anatomy
+
+The component is a flex container with two children:
+
+- **Truncation wrapper** — either `Primer::Beta::Truncate` (horizontal, single-line CSS ellipsis) or `OpPrimer::VerticalTruncateComponent` (vertical, multi-line `-webkit-line-clamp` via `.op-vertical-truncate`)
+- **Expander button** — a `Primer::Alpha::HiddenTextExpander`, initially hidden, shown by the private `expandable-text` Stimulus controller when overflow is detected
+
+## Two axes
+
+### Truncation direction
+
+| Mode | CSS mechanism | Use case |
+|------|--------------|----------|
+| `horizontal` (default) | `text-overflow: ellipsis` via Primer Truncate | Single-line labels in table cells, list items |
+| `vertical` | `-webkit-line-clamp` via `OpPrimer::VerticalTruncateComponent` (`.op-vertical-truncate--lines-N`) | Multi-line descriptions, rich text previews |
+
+### Expansion mode
+
+| Mode | Behaviour | Use case |
+|------|-----------|----------|
+| `expansion: :inline` (default) | Clicking the expander toggles the text in place | Permission names, status labels |
+| `expansion: :external` | Expander button triggers an external action (e.g. opening a dialog) | Long-form project attributes with formatted content |
+
+All four combinations are valid.
+
+## Used in
+
+- **Administration > Users and permissions > Permissions report** — horizontal inline (permission names in table cells)
+- **Administration > Work packages > Edit workflow** — horizontal inline (status names)
+- **Project attributes** — vertical dialog (via `AttributeComponent`, which composes `ExpandableTextComponent`)
+
+## Best practices
+
+**Do**
+
+- Always place the component inside a width-constrained parent so truncation can trigger
+- Pass `flex: 1` when using inside a flex container to allow the truncation wrapper to shrink
+- Use the component even for text that might not truncate — the expander stays hidden when content fits
+
+**Don't**
+
+- Don't set a fixed width on the component itself — constrain the parent container
+- Don't use horizontal mode for multi-line content — use `direction: :vertical` with a `lines:` count
+
+## Vertical truncation
+
+<%= embed OpPrimer::ExpandableTextComponentPreview, :vertical %>
+
+## Dialog expansion
+
+When `expansion: :external`, the controller only manages expander visibility. The click action is handled externally — for example, wiring the button to a `Primer::Alpha::Dialog` via `data-show-dialog-id`.
+
+<%= embed OpPrimer::ExpandableTextComponentPreview, :dialog %>
+
+## Technical notes
+
+<%= embed OpPrimer::ExpandableTextComponentPreview, :playground, panels: %i[params source] %>
+
+The private `expandable-text` Stimulus controller (for `ExpandableTextComponent` only):
+
+- Uses `ResizeObserver` (via `stimulus-use`) to reactively detect when content overflows its container
+- **Horizontal:** compares `scrollWidth > clientWidth` on the `.Truncate-text` element
+- **Vertical:** compares `scrollHeight > clientHeight` on the truncation target (works with `-webkit-line-clamp`)
+- Toggles `Truncate--expanded` (horizontal) or `op-vertical-truncate--expanded` (vertical) CSS class for inline expansion
+- Updates `aria-label` and `aria-expanded` for accessibility
+
+## In a table
+
+<%= embed OpPrimer::ExpandableTextComponentPreview, :in_table %>
+
+## Examples
+
+For detailed examples, have a look at the other [preview examples](/lookbook/inspect/open_project/primer/expandable_text/default) of the component.

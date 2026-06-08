@@ -1,0 +1,36 @@
+<div style="max-width: 300px;">
+  <%= render(
+        OpPrimer::ExpandableTextComponent.new(
+          direction: :vertical,
+          lines: 2,
+          expansion: :external,
+          expander_arguments: {
+            button_arguments: { "data-show-dialog-id": "expandable-text-dialog" }
+          }
+        )
+      ) do %>
+    OpenProject is an open source project management software that supports
+    a wide range of project management methodologies, including classic,
+    agile, and hybrid approaches.
+  <% end %>
+
+  <%= render(
+        Primer::Alpha::Dialog.new(
+          id: "expandable-text-dialog",
+          title: "Full description",
+          size: :large
+        )
+      ) do |component| %>
+    <% component.with_header(variant: :large) %>
+    <% component.with_body do %>
+      <p>
+        OpenProject is an open source project management software that supports
+        a wide range of project management methodologies, including classic,
+        agile, and hybrid approaches. It provides features for project planning,
+        scheduling, task management, time and cost reporting, and team
+        collaboration. With its modular architecture, teams can customise their
+        workflows to match their specific needs.
+      </p>
+    <% end %>
+  <% end %>
+</div>

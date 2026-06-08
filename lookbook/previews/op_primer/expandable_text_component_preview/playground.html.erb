@@ -1,0 +1,5 @@
+<div style="max-width: <%= width %>px;">
+  <%= render(OpPrimer::ExpandableTextComponent.new(direction:, lines:, expansion:)) do %>
+    <%= text %>
+  <% end %>
+</div>

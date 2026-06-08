@@ -35,26 +35,110 @@ RSpec.describe OpPrimer::ExpandableTextComponent, type: :component do
     render_inline(described_class.new(**), &)
   end
 
-  it "renders expandable truncated text" do
-    render_component { "Long permission label" }
+  describe "horizontal mode (default)" do
+    it "renders expandable truncated text" do
+      render_component { "Long permission label" }
 
-    expect(page).to have_css("div.d-flex.flex-items-baseline.gap-1.min-width-0[data-controller='truncation']")
-    expect(page).to have_css(".Truncate.flex-1[data-truncation-target='truncate']", text: "Long permission label")
-    expect(page).to have_css(".hidden-text-expander[data-truncation-target='expander'][hidden]", visible: :hidden)
-    expect(page).to have_css("button.ellipsis-expander[aria-label='Show full text']", visible: :hidden)
+      expect(page).to have_css(
+        "div.d-flex.flex-items-baseline.gap-1.min-width-0" \
+        "[data-controller='expandable-text']" \
+        "[data-expandable-text-mode-value='horizontal']" \
+        "[data-expandable-text-inline-value='true']"
+      )
+      expect(page).to have_css(".Truncate.flex-1[data-expandable-text-target='truncate']", text: "Long permission label")
+      expect(page).to have_css(".hidden-text-expander[data-expandable-text-target='expander'][hidden]", visible: :hidden)
+      expect(page).to have_css("button.ellipsis-expander[aria-label='Show full text']", visible: :hidden)
+    end
+
+    it "merges classes and data attributes" do
+      render_component(classes: "custom-class", data: { test_selector: "expandable-text" }) { "Long permission label" }
+
+      expect(page).to have_css(
+        "div.custom-class.gap-1.min-width-0[data-controller='expandable-text'][data-test-selector='expandable-text']"
+      )
+    end
+
+    it "supports flex system arguments" do
+      render_component(flex: 1) { "Long permission label" }
+
+      expect(page).to have_css("div.flex-1")
+    end
   end
 
-  it "merges classes and data attributes" do
-    render_component(classes: "custom-class", data: { test_selector: "expandable-text" }) { "Long permission label" }
+  describe "vertical mode" do
+    it "renders an op-vertical-truncate instead of a Truncate" do
+      render_component(direction: :vertical, lines: 3) { "Multi-line content" }
 
-    expect(page).to have_css(
-      "div.custom-class.gap-1.min-width-0[data-controller='truncation'][data-test-selector='expandable-text']"
-    )
+      expect(page).to have_css(
+        "div.d-flex[data-expandable-text-mode-value='vertical']"
+      )
+      expect(page).to have_css(
+        "div.op-vertical-truncate.op-vertical-truncate--lines-3[data-expandable-text-target='truncate']",
+        text: "Multi-line content"
+      )
+      expect(page).to have_no_css(".Truncate")
+    end
+
+    it "uses flex-end alignment for vertical mode" do
+      render_component(direction: :vertical) { "Content" }
+
+      expect(page).to have_css("div.flex-items-end")
+      expect(page).to have_no_css("div.flex-items-baseline")
+    end
+
+    it "supports configurable line count" do
+      render_component(direction: :vertical, lines: 5) { "Content" }
+
+      expect(page).to have_css("div.op-vertical-truncate--lines-5[data-expandable-text-target='truncate']")
+    end
+
+    it "clamps the line count to the supported range" do
+      render_component(direction: :vertical, lines: 99) { "Content" }
+      expect(page).to have_css("div.op-vertical-truncate--lines-6[data-expandable-text-target='truncate']")
+
+      render_component(direction: :vertical, lines: 0) { "Content" }
+      expect(page).to have_css("div.op-vertical-truncate--lines-1[data-expandable-text-target='truncate']")
+    end
   end
 
-  it "supports flex system arguments" do
-    render_component(flex: 1) { "Long permission label" }
+  describe "external expansion (expansion: :external)" do
+    it "sets the inline value to false on the controller" do
+      render_component(expansion: :external) { "Content" }
 
-    expect(page).to have_css("div.flex-1")
+      expect(page).to have_css("div[data-expandable-text-inline-value='false']")
+    end
+  end
+
+  describe "expander_arguments" do
+    it "merges additional arguments into the expander" do
+      render_component(
+        expander_arguments: { button_arguments: { "data-show-dialog-id": "my-dialog" } }
+      ) { "Content" }
+
+      expect(page).to have_css(
+        ".hidden-text-expander[data-expandable-text-target='expander']",
+        visible: :hidden
+      )
+    end
+
+    it "does not mutate the caller-provided hash, including nested button_arguments" do
+      arguments = { mt: 3, button_arguments: { classes: "x" } }
+
+      render_component(expander_arguments: arguments) { "Content" }
+
+      expect(arguments).to eq(mt: 3, button_arguments: { classes: "x" })
+    end
+  end
+
+  describe "validation" do
+    it "raises for an invalid direction in development and test" do
+      expect { render_component(direction: :diagonal) { "Content" } }
+        .to raise_error(Primer::FetchOrFallbackHelper::InvalidValueError)
+    end
+
+    it "raises for an invalid expansion in development and test" do
+      expect { render_component(expansion: :sideways) { "Content" } }
+        .to raise_error(Primer::FetchOrFallbackHelper::InvalidValueError)
+    end
   end
 end
