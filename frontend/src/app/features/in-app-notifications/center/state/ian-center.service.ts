@@ -192,7 +192,7 @@ export class IanCenterService extends UntilDestroyedMixin {
 
   public selectedNotification:INotification;
 
-  selectedWorkPackage$ = this.urlParams.pathMatching$(/\/details\/(\d+)/);
+  selectedWorkPackage$ = this.urlParams.pathMatching$(/\/details\/([^/?]+)/);
 
   constructor() {
     super();
