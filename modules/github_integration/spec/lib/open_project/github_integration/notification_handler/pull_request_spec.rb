@@ -209,7 +209,6 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
       let!(:other_work_package) { create(:work_package) }
       let(:pr_body) { "Mentioning OP##{work_package.id} and OP##{other_work_package.id}" }
 
-      # NOTE: strange behavior, needs to clarification. it received two work_packages instead one.
       it "adds a comment only for the other_work_package" do
         process
         expect(handler_instance).to have_received(:comment_on_referenced_work_packages).with(

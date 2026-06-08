@@ -140,8 +140,19 @@ RSpec.describe OpenProject::GithubIntegration::Services::UpsertPullRequest do
              state: "closed")
     end
 
-    it "doesn't update the github pull request" do
-      expect { upsert }.not_to change(github_pull_request, :reload)
+    it "promotes the partial pull request in place instead of creating a duplicate" do
+      expect { upsert }.to change { github_pull_request.reload.state }.from("closed").to("open")
+
+      expect(GithubPullRequest.where(github_html_url:).count).to eq(1)
+      expect(github_pull_request).to have_attributes(
+        github_id:,
+        number: 5,
+        title: "The PR title",
+        body: "The PR body",
+        github_html_url:,
+        github_updated_at: Time.zone.parse("20210409T12:13:14Z"),
+        repository: "test_user/repo"
+      )
     end
   end
 

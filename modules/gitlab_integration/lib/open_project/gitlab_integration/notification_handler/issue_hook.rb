@@ -68,8 +68,7 @@ module OpenProject::GitlabIntegration
       def gitlab_issue
         return @gitlab_issue if defined?(@gitlab_issue)
 
-        @gitlab_issue = GitlabIssue.find_by(gitlab_id: payload.object_attributes.iid,
-                                            gitlab_html_url: payload.object_attributes.url)
+        @gitlab_issue = GitlabIssue.find_by(gitlab_html_url: payload.object_attributes.url)
       end
 
       def upsert_issue(work_packages)

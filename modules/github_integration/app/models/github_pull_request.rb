@@ -60,16 +60,11 @@ class GithubPullRequest < ApplicationRecord
 
   scope :without_work_package, -> { where.missing(:work_packages) }
 
-  def self.find_by_github_identifiers(id: nil, url: nil, initialize: false)
-    raise ArgumentError, "needs an id and an url" if id.nil? || url.blank?
+  def self.find_by_github_identifiers(url:, id: nil, initialize: false)
+    raise ArgumentError, "needs an url" if url.blank?
 
-    found = find_by(github_id: id, github_html_url: url)
-
-    if found
-      found
-    elsif initialize
-      new(github_id: id, github_html_url: url)
-    end
+    found = find_by(github_html_url: url)
+    found || (new(github_id: id, github_html_url: url) if initialize)
   end
 
   def visible?(user = User.current)

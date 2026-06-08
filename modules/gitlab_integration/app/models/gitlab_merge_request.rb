@@ -55,16 +55,11 @@ class GitlabMergeRequest < ApplicationRecord
 
   scope :without_work_package, -> { where.missing(:work_packages) }
 
-  def self.find_by_gitlab_identifiers(id: nil, url: nil, initialize: false)
-    raise ArgumentError, "needs an id and an url" if id.nil? || url.blank?
+  def self.find_by_gitlab_identifiers(url:, id: nil, initialize: false)
+    raise ArgumentError, "needs an url" if url.blank?
 
-    found = find_by(gitlab_id: id, gitlab_html_url: url)
-
-    if found
-      found
-    elsif initialize
-      new(gitlab_id: id, gitlab_html_url: url)
-    end
+    found = find_by(gitlab_html_url: url)
+    found || (new(gitlab_id: id, gitlab_html_url: url) if initialize)
   end
 
   ##

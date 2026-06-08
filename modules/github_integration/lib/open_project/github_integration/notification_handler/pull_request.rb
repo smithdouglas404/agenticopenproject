@@ -73,8 +73,7 @@ module OpenProject::GithubIntegration
       end
 
       def already_referenced_work_packages(payload)
-        pull_request = GithubPullRequest.find_by(github_id: payload.pull_request.id,
-                                                 github_html_url: payload.pull_request.html_url)
+        pull_request = GithubPullRequest.find_by(github_html_url: payload.pull_request.html_url)
 
         pull_request&.work_packages.to_a
       end
