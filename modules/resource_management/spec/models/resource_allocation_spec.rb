@@ -32,6 +32,8 @@ require "spec_helper"
 
 RSpec.describe ResourceAllocation do
   describe "associations" do
+    subject { described_class.new(principal_explicit: false) }
+
     it { is_expected.to belong_to(:entity).required }
     it { is_expected.to belong_to(:principal).class_name("User").inverse_of(:resource_allocations).optional }
     it { is_expected.to belong_to(:requested_by).class_name("User").optional }

@@ -80,7 +80,7 @@ RSpec.describe ResourceAllocation do
       end
 
       it "tracks filter_name changes" do
-        allocation.update!(filter_name: "Full stack Developer (DE-EN)")
+        allocation.update!(principal_explicit: false, filter_name: "Full stack Developer (DE-EN)")
 
         expect(allocation.last_journal.data.filter_name).to eq("Full stack Developer (DE-EN)")
         expect(allocation.last_journal.details).to include("filter_name" => [nil, "Full stack Developer (DE-EN)"])

@@ -39,7 +39,9 @@ RSpec.describe Principals::DeleteJob, "ResourceAllocation", type: :model do
   context "with a resource allocation assigned to the principal" do
     let!(:allocation) { create(:resource_allocation, principal:) }
     let!(:other_allocation) { create(:resource_allocation, principal: create(:user)) }
-    let!(:unassigned_allocation) { create(:resource_allocation, principal: nil) }
+    let!(:unassigned_allocation) do
+      create(:resource_allocation, principal: nil, principal_explicit: false, filter_name: "Devs")
+    end
 
     it "rewrites the principal to the deleted user placeholder" do
       job
