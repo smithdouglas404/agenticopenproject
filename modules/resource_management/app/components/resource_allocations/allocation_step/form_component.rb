@@ -60,8 +60,8 @@ module ResourceAllocations
         prepends = if filter_based?
                      [
                        ResourceAllocations::Forms::FilterNameForm.new(form),
-                       ::Filters::FilterForm.new(
-                         form,
+                       ::Filters::FilterFormComponent.new(
+                         builder: form,
                          query: @allocation.candidate_query,
                          wrap_with_controller: true,
                          hidden_input_name: "filters",
