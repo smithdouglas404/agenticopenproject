@@ -41,28 +41,26 @@ module Wikis
     end
 
     def form_options
-      {
-        id: form_id,
-        model:,
-        url: form_url,
-        data: {
-          turbo_frame: WorkPackageWikisTabComponent::TURBO_FRAME_ID
+      if show_first_step?
+        {
+          id: form_id,
+          model:,
+          method: :get,
+          url: create_new_page_dialog_wiki_pages_path,
+          data: { turbo_stream: true }
         }
-      }
+      else
+        {
+          id: form_id,
+          model:,
+          url: create_and_link_wiki_pages_path,
+          data: { turbo_frame: WorkPackageWikisTabComponent::TURBO_FRAME_ID }
+        }
+      end
     end
 
     def system_arguments
       options
-    end
-
-    private
-
-    def form_url
-      if show_first_step?
-        continue_create_new_page_dialog_wiki_pages_path
-      else
-        create_and_link_wiki_pages_path
-      end
     end
   end
 end
