@@ -437,7 +437,7 @@ class UsersController < ApplicationController
     replace_via_turbo_stream(component: Users::TableComponent.new(rows: @query, current_user:))
     turbo_streams << turbo_stream.push_state(url_for(params.permit(:filters, :sortBy, :sort, :page, :per_page, :columns)))
     turbo_streams << turbo_stream.replace("primerized-flash-messages", helpers.render_flash_messages)
-    render turbo_stream: turbo_streams
+    render turbo_stream: resolve_turbo_streams
   end
 
   def prepare_views_for_tab # rubocop:disable Metrics/AbcSize
