@@ -127,6 +127,10 @@ en:
           Create a view based on users and see their details and allocation in a
           list of user cards
         label: Users card list
+    work_package_allocations_dialog:
+      allocate_resource: Allocate resource
+      hidden_user: Hidden user
+      title: Allocation
     work_package_list:
       add_work_package_dialog:
         title: Add work package

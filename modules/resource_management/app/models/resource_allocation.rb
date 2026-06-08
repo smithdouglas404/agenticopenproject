@@ -68,6 +68,15 @@ class ResourceAllocation < ApplicationRecord
       .group_by(&:entity_id)
   end
 
+  # The subset of the given allocations' principal ids that `user` may see.
+  # Used to anonymise members the current user is not allowed to know about.
+  def self.visible_principal_ids(allocations, user)
+    principal_ids = allocations.filter_map(&:principal_id).uniq
+    return Set.new if principal_ids.empty?
+
+    Principal.visible(user).where(id: principal_ids).pluck(:id).to_set
+  end
+
   validates :state, :start_date, :end_date, presence: true
   validates :allocated_time,
             presence: true,
