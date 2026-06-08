@@ -34,7 +34,7 @@ module Saml
           return {
             idp_cert_multi: {
               signing: certificates,
-              encryption: certificates
+              encryption: certificates.dup # evil hack to prevent breaking OpenProject::ConfidentialCache caching this value @todo fix this properly
             }
           }
         else
