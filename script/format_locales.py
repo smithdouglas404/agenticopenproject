@@ -12,6 +12,39 @@ from ruamel.yaml.scalarstring import (
 
 WIDTH = 120
 
+# Every locale file must carry the canonical GPL header. We strip whatever
+# leading comment block / document marker the file happens to have and always
+# emit this one, followed by a blank line and the `---` document start.
+HEADER = """\
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+"""
+
 def maybe_fold(value, indent):
     if isinstance(value, (LiteralScalarString, SingleQuotedScalarString, DoubleQuotedScalarString)):
         return value
@@ -41,12 +74,10 @@ def format_file(path):
     yaml.preserve_quotes = True
     yaml.width = WIDTH
     yaml.indent(mapping=2, sequence=4, offset=2)
+    yaml.explicit_start = True  # emit the `---` document marker after the header
 
     with open(path, "r", encoding="utf-8") as f:
-        raw = f.read()
-
-    yaml.explicit_start = raw.lstrip().startswith("---")
-    data = yaml.load(raw)
+        data = yaml.load(f)
 
     if data is None:
         return
@@ -54,6 +85,8 @@ def format_file(path):
     walk(data)
 
     with open(path, "w", encoding="utf-8") as f:
+        f.write(HEADER)
+        f.write("\n")
         yaml.dump(data, f)
 
 def main(argv):
