@@ -133,4 +133,27 @@ RSpec.describe CustomValue::DateStrategy do
       end
     end
   end
+
+  describe "#parse_value" do
+    subject { instance.parse_value(val) }
+    let(:value) { nil } # unused by parse_value but required by the double
+
+    context "when value is a valid date string" do
+      let(:val) { "2025-07-03" }
+
+      it { is_expected.to eq "2025-07-03" }
+    end
+
+    context "when value is an empty string" do
+      let(:val) { "" }
+
+      it { is_expected.to be_nil }
+    end
+
+    context "when value is nil" do
+      let(:val) { nil }
+
+      it { is_expected.to be_nil }
+    end
+  end
 end

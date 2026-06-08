@@ -31,6 +31,10 @@
 class CustomValue::DateStrategy < CustomValue::FormatStrategy
   include Redmine::I18n
 
+  def parse_value(val)
+    val.presence
+  end
+
   def typed_value
     return if value.blank?
 
