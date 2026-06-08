@@ -34,14 +34,14 @@ import { ExternalLinkCaptureExtension } from '../extensions/external-link-captur
 import { User } from '@blocknote/core/comments';
 import { filterSuggestionItems } from '@blocknote/core/extensions';
 import { BlockNoteView } from '@blocknote/mantine';
-import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
+import { getDefaultReactSlashMenuItems, SuggestionMenuController } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import {
   initializeOpBlockNoteExtensions,
   openProjectWorkPackageBlockSpec,
   openProjectWorkPackageInlineSpec,
   workPackageSlashMenu,
-  useOpBlockNoteExtensions,
+  useOpBlockNote,
   useHashWpMenu,
 } from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -124,8 +124,7 @@ export function OpBlockNoteEditor({
     };
   }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks]);
 
-  const editor = useCreateBlockNote(editorParams, [activeUser]);
-  useOpBlockNoteExtensions(editor);
+  const editor = useOpBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
   const theme = useOpTheme();
 
