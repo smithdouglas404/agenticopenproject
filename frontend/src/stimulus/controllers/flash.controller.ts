@@ -53,6 +53,10 @@ export default class FlashController extends ApplicationController {
   }
 
   private announceFlash(element:HTMLElement) {
+    if (document.documentElement.hasAttribute('data-turbo-preview')) {
+      return;
+    }
+
     const message = element.dataset.announcement;
     if (!message) {
       return;
