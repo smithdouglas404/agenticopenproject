@@ -53,9 +53,21 @@ module Meetings
       end
     end
 
+    private
+
     def set_participants(participants_attributes)
-      model.participants.clear if model.new_record?
-      model.participants_attributes = participants_attributes
+      if model.new_record?
+        model.participants.clear
+        model.participants_attributes = participants_attributes
+      else
+        model.participants_attributes = merge_with_existing_participants(participants_attributes)
+      end
+    end
+
+    def merge_with_existing_participants(participants_attributes)
+      existing_user_ids = model.participants.to_set { |p| p.user_id.to_i }
+
+      participants_attributes.reject { |attrs| existing_user_ids.include?(attrs[:user_id].to_i) }
     end
 
     def set_default_participant

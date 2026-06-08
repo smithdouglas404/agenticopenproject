@@ -40,7 +40,7 @@ module API
 
         self.to_eager_load = [:author, { project: :enabled_modules }, { participants: :user }]
 
-        cached_representer key_parts: %i(project)
+        cached_representer key_parts: %i(project participants)
 
         self_link title_getter: ->(*) { represented.title }
 

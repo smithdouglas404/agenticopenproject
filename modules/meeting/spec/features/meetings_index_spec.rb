@@ -114,10 +114,8 @@ RSpec.describe "Meetings", "Index", :js do
   end
 
   def setup_meeting_involvement
-    invite_to_meeting(tomorrows_meeting)
-    invite_to_meeting(yesterdays_meeting)
-    create(:meeting_participant, :attendee, user:, meeting: yesterdays_meeting)
-    create(:meeting_participant, :attendee, user:, meeting: tomorrows_meeting)
+    create(:meeting_participant, :invitee, :attendee, user:, meeting: yesterdays_meeting)
+    create(:meeting_participant, :invitee, :attendee, user:, meeting: tomorrows_meeting)
     meeting.update!(author: user)
   end
 
