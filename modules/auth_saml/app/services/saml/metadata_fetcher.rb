@@ -29,25 +29,40 @@
 #++
 
 module Saml
-  module Providers
-    class MetadataUrlForm < BaseForm
-      form do |f|
-        f.text_field(
-          name: :metadata_url,
-          label: I18n.t("saml.settings.metadata_url"),
-          required: false,
-          disabled: provider.seeded_from_env?,
-          caption: I18n.t("saml.instructions.metadata_url"),
-          input_width: :xlarge
-        )
-        f.text_field(
-          name: :idp_entity_id,
-          label: I18n.t("activerecord.attributes.saml/provider.idp_entity_id"),
-          required: false,
-          disabled: provider.seeded_from_env?,
-          caption: I18n.t("saml.instructions.idp_entity_id"),
-          input_width: :xlarge
-        )
+  class MetadataFetcher
+    include ActionView::Helpers::NumberHelper
+
+    def self.fetch(url, &)
+      new(url).fetch(&)
+    end
+
+    def initialize(url)
+      @url = url
+    end
+
+    def fetch
+      Tempfile.create("saml-metadata") do |file|
+        file.binmode
+
+        OpenProject::SsrfProtection.get(@url) do |response|
+          unless response.is_a?(Net::HTTPSuccess)
+            raise OneLogin::RubySaml::HttpError,
+                  "Failed to fetch idp metadata: #{response.code}: #{response.message}"
+          end
+
+          bytes_written = 0
+          response.read_body do |chunk|
+            file.write(chunk)
+            bytes_written += chunk.bytesize
+            if bytes_written > MetadataDocument::MAX_SIZE
+              raise MetadataDocument::MetadataTooLargeError,
+                    "Metadata exceeds max size of #{number_to_human_size(MetadataDocument::MAX_SIZE, precision: 2)}"
+            end
+          end
+        end
+
+        file.rewind
+        yield file
       end
     end
   end
