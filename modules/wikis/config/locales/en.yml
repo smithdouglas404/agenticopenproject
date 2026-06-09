@@ -31,6 +31,10 @@ en:
       wikis/xwiki_provider:
         one: XWiki provider
         other: XWiki providers
+  menus:
+    admin:
+      external_wiki_providers: Wiki providers
+      internal_wiki_provider: Internal wiki
   permission_manage_wiki_page_links: Manage Wiki Page Links
   project_module_wiki_platforms: Wiki providers
   wikis:
@@ -116,6 +120,12 @@ en:
           no_health_report: No report available
           no_health_report_description: Run the checks now for a full health status report for this wiki provider.
           title: Health Report
+      internal_provider_form:
+        checkbox_caption: Allow projects to use the internal OpenProject wiki along with external Wiki providers
+        checkbox_label: Enable the internal OpenProject wiki
+      internal_wiki_provider:
+        show:
+          description: Choose to enable or disable the internal OpenProject wiki
       oauth_application_info_component:
         confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
         label_oauth_client_id: OAuth Client ID
