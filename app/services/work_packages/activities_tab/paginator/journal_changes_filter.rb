@@ -60,7 +60,7 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
     def attribute_data_changes_condition_sql
       <<~SQL.squish
         SELECT 1
-          FROM #{predecessor_lateral_sql}
+          FROM #{predecessor_lateral_sql} predecessor
           INNER JOIN work_package_journals pred_data ON predecessor.data_id = pred_data.id
           INNER JOIN work_package_journals curr_data ON journals.data_id = curr_data.id
           WHERE (#{data_changes_condition_sql})
@@ -95,11 +95,11 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
       )
     end
 
-    # The immediate predecessor journal, exposed as a `predecessor` relation for
-    # comparison. Seeking the highest version below the current one through the
-    # (journable_type, journable_id, version) index keeps this a single-row lookup
-    # per journal; versions are incremental but may have gaps, so the seek matches
-    # on `< version` rather than `version - 1`.
+    # The immediate predecessor journal, for comparison against the current one.
+    # Callers alias this as `predecessor`. Seeking the highest version below the
+    # current one through the (journable_type, journable_id, version) index keeps
+    # this a single-row lookup per journal; versions are incremental but may have
+    # gaps, so the seek matches on `< version` rather than `version - 1`.
     def predecessor_lateral_sql
       <<~SQL.squish
         LATERAL (
@@ -110,7 +110,7 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
             AND p.version < journals.version
           ORDER BY p.version DESC
           LIMIT 1
-        ) predecessor
+        )
       SQL
     end
 
@@ -158,7 +158,7 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
       <<~SQL.squish
         SELECT 1
           FROM #{table} curr
-          LEFT JOIN #{predecessor_lateral_sql} ON TRUE
+          LEFT JOIN #{predecessor_lateral_sql} predecessor ON TRUE
           LEFT JOIN #{table} pred
             ON pred.journal_id = predecessor.id
             AND #{join_conditions}
@@ -176,7 +176,7 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
 
       <<~SQL.squish
         SELECT 1
-          FROM #{predecessor_lateral_sql}
+          FROM #{predecessor_lateral_sql} predecessor
           INNER JOIN #{table} pred
             ON pred.journal_id = predecessor.id
           LEFT JOIN #{table} curr
