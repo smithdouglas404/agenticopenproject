@@ -27,7 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
 module OpPrimer
   class FlashComponent < Primer::Alpha::Banner
     include ApplicationHelper
@@ -36,14 +35,10 @@ module OpPrimer
 
     def initialize(**system_arguments)
       @unique_key = system_arguments.delete(:unique_key)
+      @scheme = system_arguments[:scheme]&.to_sym
+      @autohide = success?
 
-      system_arguments[:test_selector] ||= "op-primer-flash-message"
-      system_arguments[:dismiss_scheme] ||= :remove
-      system_arguments[:dismiss_label] ||= I18n.t(:button_close)
-      system_arguments[:data] ||= {}
-      system_arguments[:data]["flash-target"] = "flash"
-
-      @autohide = system_arguments[:scheme] == :success && system_arguments[:dismiss_scheme] != :none
+      apply_accessibility_defaults(system_arguments)
 
       super
     end
@@ -54,10 +49,50 @@ module OpPrimer
       super
     end
 
+    def live_region_message
+      # Preserve word boundaries for line breaks before stripping HTML.
+      strip_tags(trimmed_content.to_s.gsub(%r{<br\s*/?>}i, " ")).squish
+    end
+
+    def live_region_politeness
+      urgent? ? "assertive" : "polite"
+    end
+
     private
+
+    def apply_accessibility_defaults(system_arguments)
+      system_arguments.reverse_merge!(
+        test_selector: "op-primer-flash-message",
+        dismiss_scheme: :remove,
+        dismiss_label: I18n.t(:button_close),
+        role: aria_role
+      )
+      system_arguments[:aria] = { live: live_region_politeness }.merge(system_arguments[:aria] || {})
+      apply_flash_data_attributes(system_arguments[:data] ||= {})
+    end
+
+    def apply_flash_data_attributes(data)
+      data.merge!(
+        "flash-target" => "flash",
+        "flash-role" => aria_role,
+        "autohide" => @autohide
+      )
+    end
 
     def render?
       trimmed_content.present?
+    end
+
+    def aria_role
+      urgent? ? "alert" : "status"
+    end
+
+    def success?
+      @scheme == :success
+    end
+
+    def urgent?
+      @scheme == :danger
     end
   end
 end
