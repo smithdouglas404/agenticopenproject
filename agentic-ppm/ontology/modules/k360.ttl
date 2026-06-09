@@ -1,0 +1,1543 @@
+@prefix k360: <https://kyndryl.com/k360/ontology#> .
+@prefix safe: <https://scaledagileframework.com/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# KYNDRYL FABRIC [K360] ENTERPRISE ONTOLOGY
+# Version: 1.0
+# Date: March 2026
+# 
+# This ontology integrates:
+# - SAFe 6.0 Canonical Model (organizational hierarchy)
+# - Nine autonomous agent domains (VRO, PMO, TMO, FinOps, OKR, Governance, Planning, OCM, Notification)
+# - Temporal Knowledge Graph properties
+# - Cross-domain relationships for agent reasoning
+# ═══════════════════════════════════════════════════════════════════════════════
+
+<https://kyndryl.com/k360/ontology> a owl:Ontology ;
+    dc:title "Kyndryl Fabric K360 Enterprise Transformation Ontology" ;
+    dc:description "AI-native governance ontology for multi-agent portfolio management" ;
+    dc:creator "Kyndryl Architecture Team" ;
+    owl:versionInfo "1.0" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 1: FOUNDATIONAL CLASSES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# -----------------------------------------------------------------------------
+# 1.1 Abstract Base Classes
+# -----------------------------------------------------------------------------
+
+k360:Entity a owl:Class ;
+    rdfs:label "Entity" ;
+    rdfs:comment "Abstract base class for all K360 entities with temporal properties" .
+
+k360:TemporalEntity a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Temporal Entity" ;
+    rdfs:comment "Entity with valid_from, valid_to, and versioning support" .
+
+k360:AuditableEntity a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Auditable Entity" ;
+    rdfs:comment "Entity with full audit trail and change tracking" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 2: SAFe 6.0 CORE HIERARCHY
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# -----------------------------------------------------------------------------
+# 2.1 Organizational Structure
+# -----------------------------------------------------------------------------
+
+safe:Portfolio a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Portfolio" ;
+    rdfs:comment "Highest level of SAFe hierarchy. Contains value streams and strategic themes." ;
+    skos:definition "A collection of value streams that deliver solutions to customers" .
+
+safe:ValueStream a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Value Stream" ;
+    rdfs:comment "Series of steps that deliver value to customers. Contains ARTs." ;
+    skos:definition "The primary construct for understanding, organizing, and delivering value in SAFe" .
+
+safe:ART a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Agile Release Train" ;
+    rdfs:comment "Long-lived team of Agile teams that incrementally develops solutions." ;
+    skos:altLabel "ART" .
+
+safe:Team a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Team" ;
+    rdfs:comment "Cross-functional group of 5-11 people responsible for defining, building, testing, and delivering value." .
+
+safe:Division a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Division" ;
+    rdfs:comment "Organizational unit grouping multiple portfolios or value streams." .
+
+# -----------------------------------------------------------------------------
+# 2.2 Work Item Hierarchy
+# -----------------------------------------------------------------------------
+
+safe:WorkItem a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Work Item" ;
+    rdfs:comment "Abstract base class for all work items in the SAFe hierarchy" .
+
+safe:StrategicTheme a owl:Class ;
+    rdfs:subClassOf safe:WorkItem ;
+    rdfs:label "Strategic Theme" ;
+    rdfs:comment "Business objective that connects portfolio to enterprise strategy" .
+
+safe:Epic a owl:Class ;
+    rdfs:subClassOf safe:WorkItem ;
+    rdfs:label "Epic" ;
+    rdfs:comment "Large initiative that spans multiple PIs. Requires Lean business case." ;
+    skos:definition "A container for a significant Solution development initiative" .
+
+safe:Feature a owl:Class ;
+    rdfs:subClassOf safe:WorkItem ;
+    rdfs:label "Feature" ;
+    rdfs:comment "Benefit-driven functionality that delivers value to users." .
+
+safe:Story a owl:Class ;
+    rdfs:subClassOf safe:WorkItem ;
+    rdfs:label "Story" ;
+    rdfs:comment "Short description of a small piece of desired functionality from user perspective." ;
+    skos:altLabel "User Story" .
+
+safe:Task a owl:Class ;
+    rdfs:subClassOf safe:WorkItem ;
+    rdfs:label "Task" ;
+    rdfs:comment "Small unit of work needed to complete a story. Typically hours of effort." .
+
+safe:Enabler a owl:Class ;
+    rdfs:subClassOf safe:WorkItem ;
+    rdfs:label "Enabler" ;
+    rdfs:comment "Technical work that supports future business functionality." .
+
+# -----------------------------------------------------------------------------
+# 2.3 Planning Constructs
+# -----------------------------------------------------------------------------
+
+safe:ProgramIncrement a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Program Increment" ;
+    rdfs:comment "8-12 week timebox during which an ART delivers incremental value." ;
+    skos:altLabel "PI" .
+
+safe:Sprint a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Sprint" ;
+    rdfs:comment "2-week iteration within a PI where teams deliver working software." ;
+    skos:altLabel "Iteration" .
+
+safe:Milestone a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Milestone" ;
+    rdfs:comment "Significant event or checkpoint in the delivery timeline." .
+
+safe:Dependency a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Dependency" ;
+    rdfs:comment "Relationship where one work item depends on completion of another." .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 3: VRO AGENT DOMAIN (Value Realization Office)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:Investment a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Investment" ;
+    rdfs:comment "Financial commitment to a portfolio initiative with expected returns." ;
+    skos:definition "VRO Agent: Tracks capital allocation, ROI projections, and benefit realization" .
+
+k360:Benefit a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Benefit" ;
+    rdfs:comment "Quantifiable value delivered by an investment or initiative." .
+
+k360:BenefitRealization a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Benefit Realization" ;
+    rdfs:comment "Tracking record of actual benefits delivered against planned benefits." .
+
+k360:ValueMetric a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Value Metric" ;
+    rdfs:comment "KPI used to measure value delivery (ROI, NPV, IRR, payback period)." .
+
+k360:InvestmentPortfolio a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Investment Portfolio" ;
+    rdfs:comment "Collection of investments managed as a unit for diversification and risk management." .
+
+# VRO-specific data properties
+k360:roi a owl:DatatypeProperty ;
+    rdfs:domain k360:Investment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "ROI" ;
+    rdfs:comment "Return on Investment as decimal (0.15 = 15%)" .
+
+k360:npv a owl:DatatypeProperty ;
+    rdfs:domain k360:Investment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "NPV" ;
+    rdfs:comment "Net Present Value in portfolio currency" .
+
+k360:irr a owl:DatatypeProperty ;
+    rdfs:domain k360:Investment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "IRR" ;
+    rdfs:comment "Internal Rate of Return as decimal" .
+
+k360:paybackPeriod a owl:DatatypeProperty ;
+    rdfs:domain k360:Investment ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Payback Period" ;
+    rdfs:comment "Months until investment breaks even" .
+
+k360:benefitTarget a owl:DatatypeProperty ;
+    rdfs:domain k360:Benefit ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Benefit Target" ;
+    rdfs:comment "Planned benefit amount" .
+
+k360:benefitActual a owl:DatatypeProperty ;
+    rdfs:domain k360:BenefitRealization ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Benefit Actual" ;
+    rdfs:comment "Realized benefit amount" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 4: STRATEGIC PMO AGENT DOMAIN (Portfolio Delivery)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:Project a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Project" ;
+    rdfs:comment "Time-bounded initiative with defined scope, budget, and deliverables." ;
+    skos:definition "PMO Agent: Tracks delivery status, flow metrics, and schedule performance" .
+
+k360:Program a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Program" ;
+    rdfs:comment "Collection of related projects managed together for coordinated benefits." .
+
+k360:FlowMetric a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Flow Metric" ;
+    rdfs:comment "SAFe flow measurement: Distribution, Velocity, Time, Load, Efficiency, Predictability." .
+
+k360:ScheduleVariance a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Schedule Variance" ;
+    rdfs:comment "Difference between planned and actual schedule performance." .
+
+k360:ResourceAllocation a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Resource Allocation" ;
+    rdfs:comment "Assignment of resources to projects or teams over time." .
+
+k360:DeliveryRisk a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Delivery Risk" ;
+    rdfs:comment "Risk specifically related to schedule, scope, or resource delivery." .
+
+# PMO-specific data properties
+k360:projectStatus a owl:DatatypeProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "Project Status" ;
+    rdfs:comment "RAG status: Red, Amber, Green" .
+
+k360:percentComplete a owl:DatatypeProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Percent Complete" ;
+    rdfs:comment "Completion percentage (0.0 to 1.0)" .
+
+k360:cycleTime a owl:DatatypeProperty ;
+    rdfs:domain k360:FlowMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Cycle Time" ;
+    rdfs:comment "Average time from work start to completion (days)" .
+
+k360:throughput a owl:DatatypeProperty ;
+    rdfs:domain k360:FlowMetric ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Throughput" ;
+    rdfs:comment "Number of items completed per time period" .
+
+k360:wip a owl:DatatypeProperty ;
+    rdfs:domain k360:FlowMetric ;
+    rdfs:range xsd:integer ;
+    rdfs:label "WIP" ;
+    rdfs:comment "Work in Progress count" .
+
+k360:flowEfficiency a owl:DatatypeProperty ;
+    rdfs:domain k360:FlowMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Flow Efficiency" ;
+    rdfs:comment "Active time / Total time ratio" .
+
+k360:spi a owl:DatatypeProperty ;
+    rdfs:domain k360:ScheduleVariance ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "SPI" ;
+    rdfs:comment "Schedule Performance Index (EV/PV)" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 5: TMO AGENT DOMAIN (Transformation Management Office)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:TransformationProgram a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Transformation Program" ;
+    rdfs:comment "Large-scale organizational change initiative spanning multiple projects." ;
+    skos:definition "TMO Agent: Tracks transformation progress, adoption, and business outcomes" .
+
+k360:Initiative a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Initiative" ;
+    rdfs:comment "Specific workstream within a transformation program." .
+
+k360:AdoptionMetric a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Adoption Metric" ;
+    rdfs:comment "Measurement of how well changes are being adopted by the organization." .
+
+k360:TransformationFatigue a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Transformation Fatigue" ;
+    rdfs:comment "Indicator that change velocity is overwhelming the organization." .
+
+k360:BusinessOutcome a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Business Outcome" ;
+    rdfs:comment "Measurable business result linked to transformation initiatives." .
+
+# TMO-specific data properties
+k360:adoptionRate a owl:DatatypeProperty ;
+    rdfs:domain k360:AdoptionMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Adoption Rate" ;
+    rdfs:comment "Percentage of target audience that has adopted the change" .
+
+k360:adoptionTarget a owl:DatatypeProperty ;
+    rdfs:domain k360:AdoptionMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Adoption Target" ;
+    rdfs:comment "Target adoption percentage" .
+
+k360:adoptionVelocity a owl:DatatypeProperty ;
+    rdfs:domain k360:AdoptionMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Adoption Velocity" ;
+    rdfs:comment "Rate of change in adoption (delta per period)" .
+
+k360:fatigueScore a owl:DatatypeProperty ;
+    rdfs:domain k360:TransformationFatigue ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Fatigue Score" ;
+    rdfs:comment "0-1 score indicating transformation fatigue level" .
+
+k360:outcomeValue a owl:DatatypeProperty ;
+    rdfs:domain k360:BusinessOutcome ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Outcome Value" ;
+    rdfs:comment "Quantified business outcome value" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 6: FINOPS AGENT DOMAIN (Financial Operations)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:Budget a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Budget" ;
+    rdfs:comment "Allocated financial resources for a project, program, or portfolio." ;
+    skos:definition "FinOps Agent: Tracks budget allocation, spend, and forecasts" .
+
+k360:CostRecord a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Cost Record" ;
+    rdfs:comment "Individual cost transaction or accrual." .
+
+k360:Forecast a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Forecast" ;
+    rdfs:comment "Projected future spending based on current burn rate and trends." .
+
+k360:CostAnomaly a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Cost Anomaly" ;
+    rdfs:comment "Detected deviation from expected cost patterns." .
+
+k360:CostOptimization a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Cost Optimization" ;
+    rdfs:comment "Recommended action to reduce costs or improve cost efficiency." .
+
+k360:SpendCategory a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Spend Category" ;
+    rdfs:comment "Classification of costs (labor, infrastructure, vendor, etc.)" .
+
+# FinOps-specific data properties
+k360:budgetAmount a owl:DatatypeProperty ;
+    rdfs:domain k360:Budget ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Budget Amount" ;
+    rdfs:comment "Total allocated budget" .
+
+k360:budgetUtilization a owl:DatatypeProperty ;
+    rdfs:domain k360:Budget ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Budget Utilization" ;
+    rdfs:comment "Percentage of budget spent (0-1)" .
+
+k360:actualSpend a owl:DatatypeProperty ;
+    rdfs:domain k360:Budget ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Actual Spend" ;
+    rdfs:comment "Cumulative actual spending" .
+
+k360:burnRate a owl:DatatypeProperty ;
+    rdfs:domain k360:Forecast ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Burn Rate" ;
+    rdfs:comment "Current spending rate per period" .
+
+k360:cpi a owl:DatatypeProperty ;
+    rdfs:domain k360:Budget ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "CPI" ;
+    rdfs:comment "Cost Performance Index (EV/AC)" .
+
+k360:eac a owl:DatatypeProperty ;
+    rdfs:domain k360:Forecast ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "EAC" ;
+    rdfs:comment "Estimate at Completion" .
+
+k360:costAmount a owl:DatatypeProperty ;
+    rdfs:domain k360:CostRecord ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Cost Amount" ;
+    rdfs:comment "Individual cost transaction amount" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 7: OKR AGENT DOMAIN (Strategy Execution)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:OKR a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "OKR" ;
+    rdfs:comment "Objectives and Key Results - strategic goal-setting framework." ;
+    skos:definition "OKR Agent: Tracks strategic alignment from company to project level" .
+
+k360:Objective a owl:Class ;
+    rdfs:subClassOf k360:OKR ;
+    rdfs:label "Objective" ;
+    rdfs:comment "Qualitative, inspirational goal that defines what you want to achieve." .
+
+k360:KeyResult a owl:Class ;
+    rdfs:subClassOf k360:OKR ;
+    rdfs:label "Key Result" ;
+    rdfs:comment "Quantitative metric that measures progress toward an Objective." .
+
+k360:AlignmentScore a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Alignment Score" ;
+    rdfs:comment "Calculated measure of how well work aligns to strategic objectives." .
+
+k360:OrphanedProject a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Orphaned Project" ;
+    rdfs:comment "Project not linked to any OKR or strategic objective." .
+
+k360:OKRCascade a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "OKR Cascade" ;
+    rdfs:comment "Hierarchical alignment from company OKRs to division to team." .
+
+# OKR-specific data properties
+k360:objectiveText a owl:DatatypeProperty ;
+    rdfs:domain k360:Objective ;
+    rdfs:range xsd:string ;
+    rdfs:label "Objective Text" ;
+    rdfs:comment "The qualitative objective statement" .
+
+k360:keyResultTarget a owl:DatatypeProperty ;
+    rdfs:domain k360:KeyResult ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Key Result Target" ;
+    rdfs:comment "Target value for the key result" .
+
+k360:keyResultActual a owl:DatatypeProperty ;
+    rdfs:domain k360:KeyResult ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Key Result Actual" ;
+    rdfs:comment "Current actual value" .
+
+k360:keyResultProgress a owl:DatatypeProperty ;
+    rdfs:domain k360:KeyResult ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Key Result Progress" ;
+    rdfs:comment "Progress percentage (0-1)" .
+
+k360:alignmentScoreValue a owl:DatatypeProperty ;
+    rdfs:domain k360:AlignmentScore ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Alignment Score Value" ;
+    rdfs:comment "Calculated alignment score (0-1)" .
+
+k360:okrQuarter a owl:DatatypeProperty ;
+    rdfs:domain k360:OKR ;
+    rdfs:range xsd:string ;
+    rdfs:label "OKR Quarter" ;
+    rdfs:comment "Quarter for this OKR cycle (Q1, Q2, Q3, Q4)" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 8: GOVERNANCE AGENT DOMAIN (Compliance & Risk)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:Policy a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Policy" ;
+    rdfs:comment "Governance rule or standard that must be followed." ;
+    skos:definition "Governance Agent: Executable policy-as-code with temporal versioning" .
+
+k360:PolicyRule a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Policy Rule" ;
+    rdfs:comment "Individual executable rule within a policy (GoRules decision table)." .
+
+k360:ComplianceCheckpoint a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Compliance Checkpoint" ;
+    rdfs:comment "Point-in-time compliance assessment for an entity." .
+
+k360:ComplianceViolation a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Compliance Violation" ;
+    rdfs:comment "Detected non-compliance with a policy or rule." .
+
+k360:AuditTrail a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Audit Trail" ;
+    rdfs:comment "Record of significant actions and decisions for audit purposes." .
+
+k360:Risk a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Risk" ;
+    rdfs:comment "Identified uncertainty that could impact objectives." .
+
+k360:RiskMitigation a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Risk Mitigation" ;
+    rdfs:comment "Action taken to reduce risk probability or impact." .
+
+k360:RegulatoryFramework a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Regulatory Framework" ;
+    rdfs:comment "External regulatory requirements (SOX, GDPR, SOC2, etc.)" .
+
+# Governance-specific data properties
+k360:policyStatus a owl:DatatypeProperty ;
+    rdfs:domain k360:Policy ;
+    rdfs:range xsd:string ;
+    rdfs:label "Policy Status" ;
+    rdfs:comment "Active, Draft, Deprecated, Superseded" .
+
+k360:policyType a owl:DatatypeProperty ;
+    rdfs:domain k360:Policy ;
+    rdfs:range xsd:string ;
+    rdfs:label "Policy Type" ;
+    rdfs:comment "Threshold, Behavioral, Workflow, Compliance" .
+
+k360:complianceStatus a owl:DatatypeProperty ;
+    rdfs:domain k360:ComplianceCheckpoint ;
+    rdfs:range xsd:string ;
+    rdfs:label "Compliance Status" ;
+    rdfs:comment "Compliant, Non-Compliant, Pending Review" .
+
+k360:riskSeverity a owl:DatatypeProperty ;
+    rdfs:domain k360:Risk ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Risk Severity" ;
+    rdfs:comment "Combined probability × impact score (0-1)" .
+
+k360:riskProbability a owl:DatatypeProperty ;
+    rdfs:domain k360:Risk ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Risk Probability" ;
+    rdfs:comment "Likelihood of risk occurring (0-1)" .
+
+k360:riskImpact a owl:DatatypeProperty ;
+    rdfs:domain k360:Risk ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Risk Impact" ;
+    rdfs:comment "Severity if risk occurs (0-1)" .
+
+k360:riskStatus a owl:DatatypeProperty ;
+    rdfs:domain k360:Risk ;
+    rdfs:range xsd:string ;
+    rdfs:label "Risk Status" ;
+    rdfs:comment "Open, Mitigated, Closed, Accepted" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 9: PLANNING AGENT DOMAIN (Capacity & Roadmap)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:CapacityPlan a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Capacity Plan" ;
+    rdfs:comment "Resource availability and allocation plan for a time period." ;
+    skos:definition "Planning Agent: Forecasts capacity, dependencies, and roadmap scenarios" .
+
+k360:Resource a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Resource" ;
+    rdfs:comment "Person, team, or asset that can be allocated to work." .
+
+k360:Roadmap a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Roadmap" ;
+    rdfs:comment "Visual timeline of planned initiatives and milestones." .
+
+k360:Scenario a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Scenario" ;
+    rdfs:comment "What-if simulation for planning decisions." .
+
+k360:DependencyAnalysis a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Dependency Analysis" ;
+    rdfs:comment "Cross-project dependency mapping and critical path identification." .
+
+k360:CapacityForecast a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Capacity Forecast" ;
+    rdfs:comment "Projected resource availability and demand." .
+
+# Planning-specific data properties
+k360:totalCapacity a owl:DatatypeProperty ;
+    rdfs:domain k360:CapacityPlan ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Total Capacity" ;
+    rdfs:comment "Total available capacity (FTEs or hours)" .
+
+k360:allocatedCapacity a owl:DatatypeProperty ;
+    rdfs:domain k360:CapacityPlan ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Allocated Capacity" ;
+    rdfs:comment "Capacity committed to work items" .
+
+k360:availableCapacity a owl:DatatypeProperty ;
+    rdfs:domain k360:CapacityPlan ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Available Capacity" ;
+    rdfs:comment "Unallocated capacity available for new work" .
+
+k360:resourceType a owl:DatatypeProperty ;
+    rdfs:domain k360:Resource ;
+    rdfs:range xsd:string ;
+    rdfs:label "Resource Type" ;
+    rdfs:comment "Developer, Analyst, PM, Designer, etc." .
+
+k360:scenarioProbability a owl:DatatypeProperty ;
+    rdfs:domain k360:Scenario ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Scenario Probability" ;
+    rdfs:comment "Likelihood this scenario will occur" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 10: OCM AGENT DOMAIN (Organizational Change Management)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:ReadinessAssessment a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Readiness Assessment" ;
+    rdfs:comment "Evaluation of stakeholder readiness for change." ;
+    skos:definition "OCM Agent: Tracks change readiness, training, and adoption barriers" .
+
+k360:Stakeholder a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Stakeholder" ;
+    rdfs:comment "Individual or group affected by or influencing a change." .
+
+k360:StakeholderGroup a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Stakeholder Group" ;
+    rdfs:comment "Collection of stakeholders with similar characteristics or interests." .
+
+k360:TrainingRecord a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Training Record" ;
+    rdfs:comment "Record of completed or required training activities." .
+
+k360:ChangeImpact a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Change Impact" ;
+    rdfs:comment "Assessment of how a change affects a stakeholder group." .
+
+k360:AdoptionBarrier a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Adoption Barrier" ;
+    rdfs:comment "Obstacle preventing successful change adoption." .
+
+k360:CommunicationPlan a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Communication Plan" ;
+    rdfs:comment "Strategy for communicating changes to stakeholders." .
+
+# OCM-specific data properties
+k360:readinessScore a owl:DatatypeProperty ;
+    rdfs:domain k360:ReadinessAssessment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Readiness Score" ;
+    rdfs:comment "Overall readiness score (0-1)" .
+
+k360:awarenessScore a owl:DatatypeProperty ;
+    rdfs:domain k360:ReadinessAssessment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Awareness Score" ;
+    rdfs:comment "ADKAR Awareness dimension score" .
+
+k360:desireScore a owl:DatatypeProperty ;
+    rdfs:domain k360:ReadinessAssessment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Desire Score" ;
+    rdfs:comment "ADKAR Desire dimension score" .
+
+k360:knowledgeScore a owl:DatatypeProperty ;
+    rdfs:domain k360:ReadinessAssessment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Knowledge Score" ;
+    rdfs:comment "ADKAR Knowledge dimension score" .
+
+k360:abilityScore a owl:DatatypeProperty ;
+    rdfs:domain k360:ReadinessAssessment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Ability Score" ;
+    rdfs:comment "ADKAR Ability dimension score" .
+
+k360:reinforcementScore a owl:DatatypeProperty ;
+    rdfs:domain k360:ReadinessAssessment ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Reinforcement Score" ;
+    rdfs:comment "ADKAR Reinforcement dimension score" .
+
+k360:trainingCompletion a owl:DatatypeProperty ;
+    rdfs:domain k360:TrainingRecord ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Training Completion" ;
+    rdfs:comment "Percentage of required training completed" .
+
+k360:impactSeverity a owl:DatatypeProperty ;
+    rdfs:domain k360:ChangeImpact ;
+    rdfs:range xsd:string ;
+    rdfs:label "Impact Severity" ;
+    rdfs:comment "Low, Medium, High, Critical" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 11: NOTIFICATION AGENT DOMAIN (Communication Hub)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:Notification a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Notification" ;
+    rdfs:comment "Alert or message generated by the system." ;
+    skos:definition "Notification Orchestrator: Deduplicates, prioritizes, and routes alerts" .
+
+k360:Alert a owl:Class ;
+    rdfs:subClassOf k360:Notification ;
+    rdfs:label "Alert" ;
+    rdfs:comment "High-priority notification requiring attention." .
+
+k360:AgentFinding a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Agent Finding" ;
+    rdfs:comment "Insight or anomaly detected by an AI agent." .
+
+k360:NotificationRule a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Notification Rule" ;
+    rdfs:comment "Rule determining when and how to send notifications." .
+
+k360:NotificationChannel a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Notification Channel" ;
+    rdfs:comment "Delivery method: Email, Slack, Dashboard, SMS, etc." .
+
+k360:EscalationPath a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Escalation Path" ;
+    rdfs:comment "Sequence of recipients for escalating alerts." .
+
+# Notification-specific data properties
+k360:notificationPriority a owl:DatatypeProperty ;
+    rdfs:domain k360:Notification ;
+    rdfs:range xsd:string ;
+    rdfs:label "Notification Priority" ;
+    rdfs:comment "Critical, High, Medium, Low, Info" .
+
+k360:notificationStatus a owl:DatatypeProperty ;
+    rdfs:domain k360:Notification ;
+    rdfs:range xsd:string ;
+    rdfs:label "Notification Status" ;
+    rdfs:comment "Pending, Sent, Acknowledged, Dismissed" .
+
+k360:sourceAgent a owl:DatatypeProperty ;
+    rdfs:domain k360:AgentFinding ;
+    rdfs:range xsd:string ;
+    rdfs:label "Source Agent" ;
+    rdfs:comment "Agent that generated this finding" .
+
+k360:findingConfidence a owl:DatatypeProperty ;
+    rdfs:domain k360:AgentFinding ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "Finding Confidence" ;
+    rdfs:comment "Agent's confidence in the finding (0-1)" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 12: AGENT OPERATIONS DOMAIN
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:Agent a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Agent" ;
+    rdfs:comment "Autonomous AI agent in the K360 system." .
+
+k360:AgentState a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Agent State" ;
+    rdfs:comment "Current operational state of an agent." .
+
+k360:AgentMemory a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "Agent Memory" ;
+    rdfs:comment "Stored memory from Mem0 (episodic) or Letta (institutional)." .
+
+k360:A2AConversation a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "A2A Conversation" ;
+    rdfs:comment "Agent-to-Agent communication session." .
+
+k360:A2AMessage a owl:Class ;
+    rdfs:subClassOf k360:TemporalEntity ;
+    rdfs:label "A2A Message" ;
+    rdfs:comment "Individual message in an A2A conversation." .
+
+k360:Intervention a owl:Class ;
+    rdfs:subClassOf k360:AuditableEntity ;
+    rdfs:label "Intervention" ;
+    rdfs:comment "Recommended action requiring human approval." .
+
+k360:AgentSkill a owl:Class ;
+    rdfs:subClassOf k360:Entity ;
+    rdfs:label "Agent Skill" ;
+    rdfs:comment "Registered capability an agent can perform." .
+
+# Agent operation data properties
+k360:agentType a owl:DatatypeProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range xsd:string ;
+    rdfs:label "Agent Type" ;
+    rdfs:comment "VRO, PMO, TMO, FinOps, OKR, Governance, Planning, OCM, Notification" .
+
+k360:agentStatus a owl:DatatypeProperty ;
+    rdfs:domain k360:AgentState ;
+    rdfs:range xsd:string ;
+    rdfs:label "Agent Status" ;
+    rdfs:comment "Running, Idle, Paused, Error" .
+
+k360:lastCycleTime a owl:DatatypeProperty ;
+    rdfs:domain k360:AgentState ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Last Cycle Time" ;
+    rdfs:comment "Timestamp of last analysis cycle" .
+
+k360:memoryType a owl:DatatypeProperty ;
+    rdfs:domain k360:AgentMemory ;
+    rdfs:range xsd:string ;
+    rdfs:label "Memory Type" ;
+    rdfs:comment "Episodic (Mem0) or Institutional (Letta)" .
+
+k360:a2aMessageType a owl:DatatypeProperty ;
+    rdfs:domain k360:A2AMessage ;
+    rdfs:range xsd:string ;
+    rdfs:label "A2A Message Type" ;
+    rdfs:comment "query, response, insight, alert, handoff, request" .
+
+k360:interventionStatus a owl:DatatypeProperty ;
+    rdfs:domain k360:Intervention ;
+    rdfs:range xsd:string ;
+    rdfs:label "Intervention Status" ;
+    rdfs:comment "Pending, Approved, Rejected, Modified" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 13: TEMPORAL PROPERTIES (For TKG Integration)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+k360:valid_from a owl:DatatypeProperty ;
+    rdfs:domain k360:TemporalEntity ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Valid From" ;
+    rdfs:comment "Start of validity period for this entity version" .
+
+k360:valid_to a owl:DatatypeProperty ;
+    rdfs:domain k360:TemporalEntity ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Valid To" ;
+    rdfs:comment "End of validity period (null = current)" .
+
+k360:state_at a owl:DatatypeProperty ;
+    rdfs:domain k360:TemporalEntity ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "State At" ;
+    rdfs:comment "Point-in-time snapshot timestamp" .
+
+k360:version a owl:DatatypeProperty ;
+    rdfs:domain k360:TemporalEntity ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Version" ;
+    rdfs:comment "Version number for this entity" .
+
+k360:created_at a owl:DatatypeProperty ;
+    rdfs:domain k360:Entity ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Created At" ;
+    rdfs:comment "Entity creation timestamp" .
+
+k360:updated_at a owl:DatatypeProperty ;
+    rdfs:domain k360:Entity ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Updated At" ;
+    rdfs:comment "Last update timestamp" .
+
+k360:created_by a owl:DatatypeProperty ;
+    rdfs:domain k360:AuditableEntity ;
+    rdfs:range xsd:string ;
+    rdfs:label "Created By" ;
+    rdfs:comment "User or agent that created this entity" .
+
+k360:updated_by a owl:DatatypeProperty ;
+    rdfs:domain k360:AuditableEntity ;
+    rdfs:range xsd:string ;
+    rdfs:label "Updated By" ;
+    rdfs:comment "User or agent that last updated this entity" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 14: OBJECT PROPERTIES (Cross-Domain Relationships)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# -----------------------------------------------------------------------------
+# 14.1 SAFe Hierarchy Relationships
+# -----------------------------------------------------------------------------
+
+safe:containsValueStream a owl:ObjectProperty ;
+    rdfs:domain safe:Portfolio ;
+    rdfs:range safe:ValueStream ;
+    rdfs:label "contains value stream" ;
+    owl:inverseOf safe:belongsToPortfolio .
+
+safe:belongsToPortfolio a owl:ObjectProperty ;
+    rdfs:domain safe:ValueStream ;
+    rdfs:range safe:Portfolio ;
+    rdfs:label "belongs to portfolio" .
+
+safe:containsART a owl:ObjectProperty ;
+    rdfs:domain safe:ValueStream ;
+    rdfs:range safe:ART ;
+    rdfs:label "contains ART" .
+
+safe:containsTeam a owl:ObjectProperty ;
+    rdfs:domain safe:ART ;
+    rdfs:range safe:Team ;
+    rdfs:label "contains team" .
+
+safe:decomposesTo a owl:ObjectProperty ;
+    rdfs:domain safe:WorkItem ;
+    rdfs:range safe:WorkItem ;
+    rdfs:label "decomposes to" ;
+    rdfs:comment "Epic → Feature → Story → Task" .
+
+safe:belongsToPI a owl:ObjectProperty ;
+    rdfs:domain safe:WorkItem ;
+    rdfs:range safe:ProgramIncrement ;
+    rdfs:label "belongs to PI" .
+
+safe:belongsToSprint a owl:ObjectProperty ;
+    rdfs:domain safe:Story ;
+    rdfs:range safe:Sprint ;
+    rdfs:label "belongs to sprint" .
+
+# -----------------------------------------------------------------------------
+# 14.2 VRO Relationships
+# -----------------------------------------------------------------------------
+
+k360:hasInvestment a owl:ObjectProperty ;
+    rdfs:domain safe:Epic ;
+    rdfs:range k360:Investment ;
+    rdfs:label "has investment" ;
+    rdfs:comment "Links Epic to its funding investment" .
+
+k360:deliversBenefit a owl:ObjectProperty ;
+    rdfs:domain k360:Investment ;
+    rdfs:range k360:Benefit ;
+    rdfs:label "delivers benefit" .
+
+k360:tracksBenefitRealization a owl:ObjectProperty ;
+    rdfs:domain k360:Benefit ;
+    rdfs:range k360:BenefitRealization ;
+    rdfs:label "tracks benefit realization" .
+
+k360:measuredBy a owl:ObjectProperty ;
+    rdfs:domain k360:Investment ;
+    rdfs:range k360:ValueMetric ;
+    rdfs:label "measured by" .
+
+# -----------------------------------------------------------------------------
+# 14.3 PMO Relationships
+# -----------------------------------------------------------------------------
+
+k360:hasProject a owl:ObjectProperty ;
+    rdfs:domain safe:Portfolio ;
+    rdfs:range k360:Project ;
+    rdfs:label "has project" .
+
+k360:implementsEpic a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range safe:Epic ;
+    rdfs:label "implements epic" .
+
+k360:hasMilestone a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range safe:Milestone ;
+    rdfs:label "has milestone" .
+
+k360:hasFlowMetric a owl:ObjectProperty ;
+    rdfs:domain safe:Team ;
+    rdfs:range k360:FlowMetric ;
+    rdfs:label "has flow metric" .
+
+k360:hasScheduleVariance a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range k360:ScheduleVariance ;
+    rdfs:label "has schedule variance" .
+
+k360:hasDeliveryRisk a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range k360:DeliveryRisk ;
+    rdfs:label "has delivery risk" .
+
+# -----------------------------------------------------------------------------
+# 14.4 TMO Relationships
+# -----------------------------------------------------------------------------
+
+k360:hasTransformationProgram a owl:ObjectProperty ;
+    rdfs:domain safe:Portfolio ;
+    rdfs:range k360:TransformationProgram ;
+    rdfs:label "has transformation program" .
+
+k360:containsInitiative a owl:ObjectProperty ;
+    rdfs:domain k360:TransformationProgram ;
+    rdfs:range k360:Initiative ;
+    rdfs:label "contains initiative" .
+
+k360:hasAdoptionMetric a owl:ObjectProperty ;
+    rdfs:domain k360:Initiative ;
+    rdfs:range k360:AdoptionMetric ;
+    rdfs:label "has adoption metric" .
+
+k360:indicatesFatigue a owl:ObjectProperty ;
+    rdfs:domain safe:Division ;
+    rdfs:range k360:TransformationFatigue ;
+    rdfs:label "indicates fatigue" .
+
+k360:achievesOutcome a owl:ObjectProperty ;
+    rdfs:domain k360:Initiative ;
+    rdfs:range k360:BusinessOutcome ;
+    rdfs:label "achieves outcome" .
+
+# -----------------------------------------------------------------------------
+# 14.5 FinOps Relationships
+# -----------------------------------------------------------------------------
+
+k360:hasBudget a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range k360:Budget ;
+    rdfs:label "has budget" .
+
+k360:incursCost a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range k360:CostRecord ;
+    rdfs:label "incurs cost" .
+
+k360:hasForecast a owl:ObjectProperty ;
+    rdfs:domain k360:Budget ;
+    rdfs:range k360:Forecast ;
+    rdfs:label "has forecast" .
+
+k360:hasCostAnomaly a owl:ObjectProperty ;
+    rdfs:domain k360:Budget ;
+    rdfs:range k360:CostAnomaly ;
+    rdfs:label "has cost anomaly" .
+
+k360:recommendsOptimization a owl:ObjectProperty ;
+    rdfs:domain k360:CostAnomaly ;
+    rdfs:range k360:CostOptimization ;
+    rdfs:label "recommends optimization" .
+
+k360:categorizedAs a owl:ObjectProperty ;
+    rdfs:domain k360:CostRecord ;
+    rdfs:range k360:SpendCategory ;
+    rdfs:label "categorized as" .
+
+# -----------------------------------------------------------------------------
+# 14.6 OKR Relationships
+# -----------------------------------------------------------------------------
+
+k360:alignsTo a owl:ObjectProperty ;
+    rdfs:domain safe:Epic ;
+    rdfs:range k360:OKR ;
+    rdfs:label "aligns to" ;
+    rdfs:comment "Critical: Links work to strategic objectives" .
+
+k360:hasKeyResult a owl:ObjectProperty ;
+    rdfs:domain k360:Objective ;
+    rdfs:range k360:KeyResult ;
+    rdfs:label "has key result" .
+
+k360:cascadesFrom a owl:ObjectProperty ;
+    rdfs:domain k360:OKR ;
+    rdfs:range k360:OKR ;
+    rdfs:label "cascades from" ;
+    rdfs:comment "Parent-child OKR relationship" .
+
+k360:hasAlignmentScore a owl:ObjectProperty ;
+    rdfs:domain safe:Epic ;
+    rdfs:range k360:AlignmentScore ;
+    rdfs:label "has alignment score" .
+
+k360:identifiedAsOrphaned a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range k360:OrphanedProject ;
+    rdfs:label "identified as orphaned" .
+
+# -----------------------------------------------------------------------------
+# 14.7 Governance Relationships
+# -----------------------------------------------------------------------------
+
+k360:governedBy a owl:ObjectProperty ;
+    rdfs:domain safe:WorkItem ;
+    rdfs:range k360:Policy ;
+    rdfs:label "governed by" ;
+    rdfs:comment "Links work items to applicable policies" .
+
+k360:hasRule a owl:ObjectProperty ;
+    rdfs:domain k360:Policy ;
+    rdfs:range k360:PolicyRule ;
+    rdfs:label "has rule" .
+
+k360:hasComplianceCheckpoint a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range k360:ComplianceCheckpoint ;
+    rdfs:label "has compliance checkpoint" .
+
+k360:violates a owl:ObjectProperty ;
+    rdfs:domain k360:ComplianceCheckpoint ;
+    rdfs:range k360:ComplianceViolation ;
+    rdfs:label "violates" .
+
+k360:hasRisk a owl:ObjectProperty ;
+    rdfs:domain k360:Project ;
+    rdfs:range k360:Risk ;
+    rdfs:label "has risk" .
+
+k360:mitigatedBy a owl:ObjectProperty ;
+    rdfs:domain k360:Risk ;
+    rdfs:range k360:RiskMitigation ;
+    rdfs:label "mitigated by" .
+
+k360:supersedes a owl:ObjectProperty ;
+    rdfs:domain k360:Policy ;
+    rdfs:range k360:Policy ;
+    rdfs:label "supersedes" ;
+    rdfs:comment "Temporal versioning: new policy replaces old" .
+
+k360:requiresComplianceWith a owl:ObjectProperty ;
+    rdfs:domain k360:Policy ;
+    rdfs:range k360:RegulatoryFramework ;
+    rdfs:label "requires compliance with" .
+
+# -----------------------------------------------------------------------------
+# 14.8 Planning Relationships
+# -----------------------------------------------------------------------------
+
+k360:hasCapacityPlan a owl:ObjectProperty ;
+    rdfs:domain safe:ART ;
+    rdfs:range k360:CapacityPlan ;
+    rdfs:label "has capacity plan" .
+
+k360:allocatesResource a owl:ObjectProperty ;
+    rdfs:domain k360:CapacityPlan ;
+    rdfs:range k360:Resource ;
+    rdfs:label "allocates resource" .
+
+k360:hasRoadmap a owl:ObjectProperty ;
+    rdfs:domain safe:Portfolio ;
+    rdfs:range k360:Roadmap ;
+    rdfs:label "has roadmap" .
+
+k360:evaluatesScenario a owl:ObjectProperty ;
+    rdfs:domain k360:Roadmap ;
+    rdfs:range k360:Scenario ;
+    rdfs:label "evaluates scenario" .
+
+k360:hasDependencyAnalysis a owl:ObjectProperty ;
+    rdfs:domain safe:ProgramIncrement ;
+    rdfs:range k360:DependencyAnalysis ;
+    rdfs:label "has dependency analysis" .
+
+k360:forecastsCapacity a owl:ObjectProperty ;
+    rdfs:domain k360:CapacityPlan ;
+    rdfs:range k360:CapacityForecast ;
+    rdfs:label "forecasts capacity" .
+
+# -----------------------------------------------------------------------------
+# 14.9 OCM Relationships
+# -----------------------------------------------------------------------------
+
+k360:hasReadinessAssessment a owl:ObjectProperty ;
+    rdfs:domain k360:Initiative ;
+    rdfs:range k360:ReadinessAssessment ;
+    rdfs:label "has readiness assessment" .
+
+k360:assessesStakeholder a owl:ObjectProperty ;
+    rdfs:domain k360:ReadinessAssessment ;
+    rdfs:range k360:Stakeholder ;
+    rdfs:label "assesses stakeholder" .
+
+k360:belongsToGroup a owl:ObjectProperty ;
+    rdfs:domain k360:Stakeholder ;
+    rdfs:range k360:StakeholderGroup ;
+    rdfs:label "belongs to group" .
+
+k360:hasTrainingRecord a owl:ObjectProperty ;
+    rdfs:domain k360:Stakeholder ;
+    rdfs:range k360:TrainingRecord ;
+    rdfs:label "has training record" .
+
+k360:hasChangeImpact a owl:ObjectProperty ;
+    rdfs:domain k360:Initiative ;
+    rdfs:range k360:ChangeImpact ;
+    rdfs:label "has change impact" .
+
+k360:impactsGroup a owl:ObjectProperty ;
+    rdfs:domain k360:ChangeImpact ;
+    rdfs:range k360:StakeholderGroup ;
+    rdfs:label "impacts group" .
+
+k360:blockedBy a owl:ObjectProperty ;
+    rdfs:domain k360:AdoptionMetric ;
+    rdfs:range k360:AdoptionBarrier ;
+    rdfs:label "blocked by" .
+
+k360:hasCommunicationPlan a owl:ObjectProperty ;
+    rdfs:domain k360:Initiative ;
+    rdfs:range k360:CommunicationPlan ;
+    rdfs:label "has communication plan" .
+
+# -----------------------------------------------------------------------------
+# 14.10 Notification Relationships
+# -----------------------------------------------------------------------------
+
+k360:generatesNotification a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:Notification ;
+    rdfs:label "generates notification" .
+
+k360:triggeredBy a owl:ObjectProperty ;
+    rdfs:domain k360:Alert ;
+    rdfs:range k360:AgentFinding ;
+    rdfs:label "triggered by" .
+
+k360:routedVia a owl:ObjectProperty ;
+    rdfs:domain k360:Notification ;
+    rdfs:range k360:NotificationChannel ;
+    rdfs:label "routed via" .
+
+k360:followsRule a owl:ObjectProperty ;
+    rdfs:domain k360:Notification ;
+    rdfs:range k360:NotificationRule ;
+    rdfs:label "follows rule" .
+
+k360:escalatesThrough a owl:ObjectProperty ;
+    rdfs:domain k360:Alert ;
+    rdfs:range k360:EscalationPath ;
+    rdfs:label "escalates through" .
+
+# -----------------------------------------------------------------------------
+# 14.11 Agent Operation Relationships
+# -----------------------------------------------------------------------------
+
+k360:hasState a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:AgentState ;
+    rdfs:label "has state" .
+
+k360:hasMemory a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:AgentMemory ;
+    rdfs:label "has memory" .
+
+k360:participatesIn a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:A2AConversation ;
+    rdfs:label "participates in" .
+
+k360:sendsMessage a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:A2AMessage ;
+    rdfs:label "sends message" .
+
+k360:receivesMessage a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:A2AMessage ;
+    rdfs:label "receives message" .
+
+k360:generatesIntervention a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:Intervention ;
+    rdfs:label "generates intervention" .
+
+k360:hasSkill a owl:ObjectProperty ;
+    rdfs:domain k360:Agent ;
+    rdfs:range k360:AgentSkill ;
+    rdfs:label "has skill" .
+
+# -----------------------------------------------------------------------------
+# 14.12 Causal Relationships (for TKG reasoning)
+# -----------------------------------------------------------------------------
+
+k360:causedBy a owl:ObjectProperty ;
+    rdfs:domain k360:Entity ;
+    rdfs:range k360:Entity ;
+    rdfs:label "caused by" ;
+    rdfs:comment "Causal relationship for root cause analysis" ;
+    owl:inverseOf k360:causes .
+
+k360:causes a owl:ObjectProperty ;
+    rdfs:domain k360:Entity ;
+    rdfs:range k360:Entity ;
+    rdfs:label "causes" .
+
+k360:correlatesWith a owl:ObjectProperty ;
+    rdfs:domain k360:Entity ;
+    rdfs:range k360:Entity ;
+    rdfs:label "correlates with" ;
+    rdf:type owl:SymmetricProperty .
+
+k360:dependsOn a owl:ObjectProperty ;
+    rdfs:domain safe:WorkItem ;
+    rdfs:range safe:WorkItem ;
+    rdfs:label "depends on" ;
+    rdfs:comment "Work item dependency" .
+
+k360:blockedBy a owl:ObjectProperty ;
+    rdfs:domain safe:WorkItem ;
+    rdfs:range safe:WorkItem ;
+    rdfs:label "blocked by" .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 15: AXIOMS AND CONSTRAINTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# -----------------------------------------------------------------------------
+# 15.1 Cardinality Constraints
+# -----------------------------------------------------------------------------
+
+# Every Epic MUST align to at least one OKR
+safe:Epic rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty k360:alignsTo ;
+    owl:minCardinality 1
+] .
+
+# Every Project MUST have exactly one Budget
+k360:Project rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty k360:hasBudget ;
+    owl:cardinality 1
+] .
+
+# Every Key Result belongs to exactly one Objective
+k360:KeyResult rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty [ owl:inverseOf k360:hasKeyResult ] ;
+    owl:cardinality 1
+] .
+
+# -----------------------------------------------------------------------------
+# 15.2 Critical Risk Constraint
+# High-severity risks require at least one mitigation
+# -----------------------------------------------------------------------------
+
+k360:CriticalRisk a owl:Class ;
+    owl:equivalentClass [
+        owl:intersectionOf (
+            k360:Risk
+            [ a owl:Restriction ;
+              owl:onProperty k360:riskSeverity ;
+              owl:someValuesFrom [
+                  a rdfs:Datatype ;
+                  owl:onDatatype xsd:decimal ;
+                  owl:withRestrictions (
+                      [ xsd:minInclusive "0.8"^^xsd:decimal ]
+                  )
+              ]
+            ]
+        )
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty k360:mitigatedBy ;
+        owl:minCardinality 1
+    ] .
+
+# -----------------------------------------------------------------------------
+# 15.3 Budget Threshold Constraints
+# -----------------------------------------------------------------------------
+
+k360:OverBudgetProject a owl:Class ;
+    owl:equivalentClass [
+        owl:intersectionOf (
+            k360:Project
+            [ a owl:Restriction ;
+              owl:onProperty k360:hasBudget ;
+              owl:someValuesFrom [
+                  owl:intersectionOf (
+                      k360:Budget
+                      [ a owl:Restriction ;
+                        owl:onProperty k360:budgetUtilization ;
+                        owl:someValuesFrom [
+                            a rdfs:Datatype ;
+                            owl:onDatatype xsd:decimal ;
+                            owl:withRestrictions (
+                                [ xsd:minExclusive "1.0"^^xsd:decimal ]
+                            )
+                        ]
+                      ]
+                  )
+              ]
+            ]
+        )
+    ] .
+
+# -----------------------------------------------------------------------------
+# 15.4 Temporal Constraints
+# supersedes implies valid_to of superseded <= valid_from of new
+# -----------------------------------------------------------------------------
+
+# This is expressed as SHACL in practice, but documented here for the model:
+# CONSTRAINT: If Policy A supersedes Policy B, then B.valid_to <= A.valid_from
+
+# -----------------------------------------------------------------------------
+# 15.5 Low Readiness Constraint
+# Low readiness initiatives should have adoption barriers identified
+# -----------------------------------------------------------------------------
+
+k360:LowReadinessInitiative a owl:Class ;
+    owl:equivalentClass [
+        owl:intersectionOf (
+            k360:Initiative
+            [ a owl:Restriction ;
+              owl:onProperty k360:hasReadinessAssessment ;
+              owl:someValuesFrom [
+                  owl:intersectionOf (
+                      k360:ReadinessAssessment
+                      [ a owl:Restriction ;
+                        owl:onProperty k360:readinessScore ;
+                        owl:someValuesFrom [
+                            a rdfs:Datatype ;
+                            owl:onDatatype xsd:decimal ;
+                            owl:withRestrictions (
+                                [ xsd:maxInclusive "0.5"^^xsd:decimal ]
+                            )
+                        ]
+                      ]
+                  )
+              ]
+            ]
+        )
+    ] .
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION 16: INFERENCE RULES (For Agent Reasoning)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# These are documented as SWRL-style rules for implementation in Timbr.ai or Stardog
+
+# RULE 1: Orphaned Project Detection
+# IF Project NOT alignsTo any OKR THEN classify as OrphanedProject
+
+# RULE 2: Budget Alert Trigger
+# IF Budget.budgetUtilization > 0.9 AND Project.percentComplete < 0.7
+# THEN generate Alert with priority=High
+
+# RULE 3: Transformation Fatigue Detection  
+# IF Division has > 3 Initiatives with AdoptionMetric.adoptionVelocity < 0
+# THEN create TransformationFatigue for Division
+
+# RULE 4: Cross-Agent Collaboration Trigger
+# IF Risk.riskSeverity > 0.7 AND Risk correlatesWith ScheduleVariance
+# THEN initiate A2AConversation between Governance and PMO agents
+
+# RULE 5: Compliance Violation Auto-Detection
+# IF Project governedBy Policy AND ComplianceCheckpoint.status = "Non-Compliant"
+# THEN create ComplianceViolation AND generate Alert
+
+# RULE 6: Benefit Realization Gap
+# IF BenefitRealization.benefitActual < (Benefit.benefitTarget * 0.8) 
+#    AND Investment.valid_to HAS PASSED
+# THEN Alert VRO Agent with priority=High
+
+# RULE 7: Capacity Over-allocation
+# IF CapacityPlan.allocatedCapacity > CapacityPlan.totalCapacity
+# THEN Alert Planning Agent AND flag CapacityPlan as "Over-allocated"
+
+# RULE 8: Policy Staleness Detection
+# IF Policy.updated_at < (NOW - 365 days) AND Policy.status = "Active"
+# THEN Alert Governance Agent for policy review
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# END OF ONTOLOGY
+# ═══════════════════════════════════════════════════════════════════════════════

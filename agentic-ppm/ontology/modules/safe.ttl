@@ -1,0 +1,218 @@
+@prefix safe: <http://nextera.energy/ontology/safe#> .
+@prefix pm: <http://nextera.energy/ontology/pm#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================================
+# SAFe 6.0 Ontology Extension
+# Scaled Agile Framework specific concepts and relationships
+# ============================================================================
+
+# SAFe extends the core PM ontology
+safe:Ontology a owl:Ontology ;
+    rdfs:label "SAFe 6.0 Ontology" ;
+    rdfs:comment "Scaled Agile Framework 6.0 ontology extending the core PM ontology" ;
+    owl:imports pm:Ontology ;
+    owl:versionInfo "6.0.0" .
+
+# ============================================================================
+# SAFe Classes
+# ============================================================================
+
+safe:Portfolio a owl:Class ;
+    rdfs:subClassOf pm:Portfolio ;
+    rdfs:label "SAFe Portfolio" ;
+    rdfs:comment "Highest level of SAFe containing value streams and strategic themes" .
+
+safe:ValueStream a owl:Class ;
+    rdfs:subClassOf pm:Program ;
+    rdfs:label "Value Stream" ;
+    rdfs:comment "Long-lived series of steps that an organization uses to provide a continuous flow of value" .
+
+safe:ART a owl:Class ;
+    rdfs:subClassOf pm:Team ;
+    rdfs:label "Agile Release Train" ;
+    rdfs:comment "Long-lived team of agile teams that incrementally develops, delivers, and operates solutions" .
+
+safe:Epic a owl:Class ;
+    rdfs:subClassOf pm:Epic ;
+    rdfs:label "SAFe Epic" ;
+    rdfs:comment "A large solution development initiative that captures significant business or technical needs" .
+
+safe:Capability a owl:Class ;
+    rdfs:subClassOf pm:Feature ;
+    rdfs:label "Capability" ;
+    rdfs:comment "Higher-level solution behavior that spans multiple ARTs" .
+
+safe:Feature a owl:Class ;
+    rdfs:subClassOf pm:Feature ;
+    rdfs:label "SAFe Feature" ;
+    rdfs:comment "Service that fulfills a stakeholder need within an ART" .
+
+safe:Story a owl:Class ;
+    rdfs:subClassOf pm:Story ;
+    rdfs:label "SAFe User Story" ;
+    rdfs:comment "Short description of desired functionality from user perspective" .
+
+safe:Enabler a owl:Class ;
+    rdfs:subClassOf pm:Task ;
+    rdfs:label "Enabler" ;
+    rdfs:comment "Work items that extend architectural runway and support exploration" .
+
+safe:PI a owl:Class ;
+    rdfs:label "Program Increment" ;
+    rdfs:comment "Timebox during which an ART delivers incremental value in the form of working, tested software and systems" .
+
+safe:Sprint a owl:Class ;
+    rdfs:subClassOf pm:Schedule ;
+    rdfs:label "Sprint/Iteration" ;
+    rdfs:comment "Standard two-week timebox for SAFe teams" .
+
+safe:StrategicTheme a owl:Class ;
+    rdfs:label "Strategic Theme" ;
+    rdfs:comment "Differentiated business objectives that connect a portfolio to enterprise strategy" .
+
+safe:Solution a owl:Class ;
+    rdfs:label "Solution" ;
+    rdfs:comment "Combination of products and services that deliver value to the customer" .
+
+# ============================================================================
+# SAFe Object Properties
+# ============================================================================
+
+safe:hasValueStream a owl:ObjectProperty ;
+    rdfs:subPropertyOf pm:belongsToPortfolio ;
+    rdfs:label "has value stream" ;
+    rdfs:domain safe:Portfolio ;
+    rdfs:range safe:ValueStream .
+
+safe:hasART a owl:ObjectProperty ;
+    rdfs:label "has ART" ;
+    rdfs:domain safe:ValueStream ;
+    rdfs:range safe:ART .
+
+safe:hasCapability a owl:ObjectProperty ;
+    rdfs:label "has capability" ;
+    rdfs:domain safe:Epic ;
+    rdfs:range safe:Capability .
+
+safe:hasEpic a owl:ObjectProperty ;
+    rdfs:label "has epic" ;
+    rdfs:domain safe:Portfolio ;
+    rdfs:range safe:Epic .
+
+safe:hasProgramIncrement a owl:ObjectProperty ;
+    rdfs:label "has program increment" ;
+    rdfs:domain safe:ART ;
+    rdfs:range safe:PI .
+
+safe:hasSprint a owl:ObjectProperty ;
+    rdfs:label "has sprint" ;
+    rdfs:domain safe:PI ;
+    rdfs:range safe:Sprint .
+
+safe:hasStrategicTheme a owl:ObjectProperty ;
+    rdfs:label "has strategic theme" ;
+    rdfs:domain safe:Portfolio ;
+    rdfs:range safe:StrategicTheme .
+
+safe:enabledBy a owl:ObjectProperty ;
+    rdfs:label "enabled by" ;
+    rdfs:range safe:Enabler .
+
+safe:partOfSolution a owl:ObjectProperty ;
+    rdfs:label "part of solution" ;
+    rdfs:range safe:Solution .
+
+# ============================================================================
+# SAFe Datatype Properties
+# ============================================================================
+
+safe:wsjfScore a owl:DatatypeProperty ;
+    rdfs:label "WSJF Score" ;
+    rdfs:comment "Weighted Shortest Job First score (business value + time criticality + RR/OE / job size)" ;
+    rdfs:domain safe:Feature ;
+    rdfs:range xsd:decimal .
+
+safe:businessValue a owl:DatatypeProperty ;
+    rdfs:label "business value" ;
+    rdfs:domain safe:Feature ;
+    rdfs:range xsd:integer .
+
+safe:timeCriticality a owl:DatatypeProperty ;
+    rdfs:label "time criticality" ;
+    rdfs:domain safe:Feature ;
+    rdfs:range xsd:integer .
+
+safe:riskReduction a owl:DatatypeProperty ;
+    rdfs:label "risk reduction" ;
+    rdfs:domain safe:Feature ;
+    rdfs:range xsd:integer .
+
+safe:jobSize a owl:DatatypeProperty ;
+    rdfs:label "job size" ;
+    rdfs:domain safe:Feature ;
+    rdfs:range xsd:integer .
+
+safe:epicType a owl:DatatypeProperty ;
+    rdfs:label "epic type" ;
+    rdfs:comment "business or enabler" ;
+    rdfs:domain safe:Epic ;
+    rdfs:range xsd:string .
+
+safe:hypothesisStatement a owl:DatatypeProperty ;
+    rdfs:label "hypothesis statement" ;
+    rdfs:domain safe:Feature ;
+    rdfs:range xsd:string .
+
+safe:acceptanceCriteria a owl:DatatypeProperty ;
+    rdfs:label "acceptance criteria" ;
+    rdfs:domain safe:Story ;
+    rdfs:range xsd:string .
+
+safe:mvpStatement a owl:DatatypeProperty ;
+    rdfs:label "MVP statement" ;
+    rdfs:comment "Minimum Viable Product statement" ;
+    rdfs:domain safe:Epic ;
+    rdfs:range xsd:string .
+
+safe:leanBusinessCase a owl:DatatypeProperty ;
+    rdfs:label "Lean Business Case" ;
+    rdfs:domain safe:Epic ;
+    rdfs:range xsd:string .
+
+safe:piObjectives a owl:DatatypeProperty ;
+    rdfs:label "PI Objectives" ;
+    rdfs:domain safe:PI ;
+    rdfs:range xsd:string .
+
+safe:velocityTarget a owl:DatatypeProperty ;
+    rdfs:label "velocity target" ;
+    rdfs:domain safe:Sprint ;
+    rdfs:range xsd:integer .
+
+safe:plannedVelocity a owl:DatatypeProperty ;
+    rdfs:label "planned velocity" ;
+    rdfs:domain safe:PI ;
+    rdfs:range xsd:integer .
+
+safe:actualVelocity a owl:DatatypeProperty ;
+    rdfs:label "actual velocity" ;
+    rdfs:domain safe:PI ;
+    rdfs:range xsd:integer .
+
+safe:targetPI a owl:DatatypeProperty ;
+    rdfs:label "target PI" ;
+    rdfs:comment "Target Program Increment for delivery" ;
+    rdfs:range xsd:string .
+
+safe:nfrRequirement a owl:DatatypeProperty ;
+    rdfs:label "NFR requirement" ;
+    rdfs:comment "Non-Functional Requirement" ;
+    rdfs:range xsd:string .
+
+safe:architecturalRunway a owl:DatatypeProperty ;
+    rdfs:label "architectural runway" ;
+    rdfs:comment "Existing code, components, and technical infrastructure needed to implement features" ;
+    rdfs:range xsd:string .

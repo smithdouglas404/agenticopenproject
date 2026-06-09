@@ -1,0 +1,252 @@
+@prefix pmbok: <http://nextera.energy/ontology/pmbok#> .
+@prefix pm: <http://nextera.energy/ontology/pm#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================================
+# PMBOK Guide 7th Edition Ontology Extension
+# Project Management Body of Knowledge concepts based on performance domains
+# ============================================================================
+
+pmbok:Ontology a owl:Ontology ;
+    rdfs:label "PMBOK Guide 7th Edition Ontology" ;
+    rdfs:comment "PMI Project Management Body of Knowledge (PMBOK) ontology extension" ;
+    owl:imports pm:Ontology ;
+    owl:versionInfo "7.0.0" .
+
+# ============================================================================
+# PMBOK Classes
+# ============================================================================
+
+pmbok:Project a owl:Class ;
+    rdfs:subClassOf pm:Project ;
+    owl:equivalentClass pm:Project ;
+    rdfs:label "PMBOK Project" ;
+    rdfs:comment "A temporary endeavor undertaken to create a unique product, service, or result (PMBOK definition)" .
+
+pmbok:Program a owl:Class ;
+    rdfs:subClassOf pm:Program ;
+    rdfs:label "PMBOK Program" ;
+    rdfs:comment "Related projects, subsidiary programs, and program activities managed in a coordinated manner" .
+
+pmbok:Portfolio a owl:Class ;
+    rdfs:subClassOf pm:Portfolio ;
+    rdfs:label "PMBOK Portfolio" ;
+    rdfs:comment "Projects, programs, subsidiary portfolios, and operations managed as a group to achieve strategic objectives" .
+
+pmbok:WorkPackage a owl:Class ;
+    rdfs:subClassOf pm:Task ;
+    rdfs:label "Work Package" ;
+    rdfs:comment "Lowest level of WBS where cost and duration estimates can be developed" .
+
+pmbok:Activity a owl:Class ;
+    rdfs:subClassOf pm:Task ;
+    rdfs:label "Activity" ;
+    rdfs:comment "A distinct, scheduled portion of work performed during the course of a project" .
+
+pmbok:Deliverable a owl:Class ;
+    rdfs:subClassOf pm:Deliverable ;
+    rdfs:label "PMBOK Deliverable" ;
+    rdfs:comment "Any unique and verifiable product, result, or capability to perform a service" .
+
+pmbok:PerformanceDomain a owl:Class ;
+    rdfs:label "Performance Domain" ;
+    rdfs:comment "A group of related activities that are critical for effective delivery of project outcomes" .
+
+pmbok:StakeholderEngagement a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Stakeholder Engagement Domain" ;
+    rdfs:comment "Activities related to building relationships with stakeholders" .
+
+pmbok:TeamManagement a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Team Management Domain" ;
+    rdfs:comment "Activities related to building and leading the project team" .
+
+pmbok:Development a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Development Approach and Life Cycle Domain" ;
+    rdfs:comment "Activities related to development approach, cadence, and life cycle phases" .
+
+pmbok:Planning a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Planning Domain" ;
+    rdfs:comment "Activities related to organization and orchestration of project work" .
+
+pmbok:ProjectWork a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Project Work Domain" ;
+    rdfs:comment "Activities related to establishing project processes and performing work" .
+
+pmbok:Delivery a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Delivery Domain" ;
+    rdfs:comment "Activities related to delivering scope and quality" .
+
+pmbok:Measurement a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Measurement Domain" ;
+    rdfs:comment "Activities related to assessing project performance and taking appropriate action" .
+
+pmbok:Uncertainty a owl:Class ;
+    rdfs:subClassOf pmbok:PerformanceDomain ;
+    rdfs:label "Uncertainty Domain" ;
+    rdfs:comment "Activities related to risk and uncertainty management" .
+
+# ============================================================================
+# PMBOK Object Properties
+# ============================================================================
+
+pmbok:hasPerformanceDomain a owl:ObjectProperty ;
+    rdfs:label "has performance domain" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range pmbok:PerformanceDomain .
+
+pmbok:hasWorkPackage a owl:ObjectProperty ;
+    rdfs:subPropertyOf pm:hasTask ;
+    rdfs:label "has work package" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range pmbok:WorkPackage .
+
+pmbok:hasActivity a owl:ObjectProperty ;
+    rdfs:subPropertyOf pm:hasTask ;
+    rdfs:label "has activity" ;
+    rdfs:domain pmbok:WorkPackage ;
+    rdfs:range pmbok:Activity .
+
+pmbok:hasSuccessor a owl:ObjectProperty ;
+    rdfs:label "has successor" ;
+    rdfs:comment "Forward dependency relationship" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range pmbok:Activity .
+
+pmbok:hasPredecessor a owl:ObjectProperty ;
+    rdfs:label "has predecessor" ;
+    rdfs:comment "Backward dependency relationship" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range pmbok:Activity .
+
+# ============================================================================
+# PMBOK Datatype Properties
+# ============================================================================
+
+pmbok:earnedValue a owl:DatatypeProperty ;
+    rdfs:label "Earned Value (EV)" ;
+    rdfs:comment "Measure of work performed expressed in terms of the budget authorized" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:plannedValue a owl:DatatypeProperty ;
+    rdfs:label "Planned Value (PV)" ;
+    rdfs:comment "Authorized budget assigned to scheduled work" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:actualCost a owl:DatatypeProperty ;
+    rdfs:label "Actual Cost (AC)" ;
+    rdfs:comment "Realized cost incurred for work performed" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:costVariance a owl:DatatypeProperty ;
+    rdfs:label "Cost Variance (CV)" ;
+    rdfs:comment "Amount of budget deficit or surplus at a given point in time (CV = EV - AC)" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:scheduleVariance a owl:DatatypeProperty ;
+    rdfs:label "Schedule Variance (SV)" ;
+    rdfs:comment "Amount by which project is ahead or behind the planned delivery date (SV = EV - PV)" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:estimateAtCompletion a owl:DatatypeProperty ;
+    rdfs:label "Estimate at Completion (EAC)" ;
+    rdfs:comment "Expected total cost of completing all work" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:estimateToComplete a owl:DatatypeProperty ;
+    rdfs:label "Estimate to Complete (ETC)" ;
+    rdfs:comment "Expected cost to finish remaining work" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:varianceAtCompletion a owl:DatatypeProperty ;
+    rdfs:label "Variance at Completion (VAC)" ;
+    rdfs:comment "Projection of budget deficit or surplus (VAC = BAC - EAC)" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:budgetAtCompletion a owl:DatatypeProperty ;
+    rdfs:label "Budget at Completion (BAC)" ;
+    rdfs:comment "Sum of all budgets established for the work to be performed" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:decimal .
+
+pmbok:criticalPath a owl:DatatypeProperty ;
+    rdfs:label "critical path" ;
+    rdfs:comment "Sequence of activities representing the longest path through the project" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:string .
+
+pmbok:earlyStart a owl:DatatypeProperty ;
+    rdfs:label "early start" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range xsd:dateTime .
+
+pmbok:earlyFinish a owl:DatatypeProperty ;
+    rdfs:label "early finish" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range xsd:dateTime .
+
+pmbok:lateStart a owl:DatatypeProperty ;
+    rdfs:label "late start" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range xsd:dateTime .
+
+pmbok:lateFinish a owl:DatatypeProperty ;
+    rdfs:label "late finish" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range xsd:dateTime .
+
+pmbok:totalFloat a owl:DatatypeProperty ;
+    rdfs:label "total float" ;
+    rdfs:comment "Amount of time an activity can be delayed without delaying project completion" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range xsd:decimal .
+
+pmbok:freeFloat a owl:DatatypeProperty ;
+    rdfs:label "free float" ;
+    rdfs:comment "Amount of time an activity can be delayed without delaying early start of successor" ;
+    rdfs:domain pmbok:Activity ;
+    rdfs:range xsd:decimal .
+
+pmbok:riskScore a owl:DatatypeProperty ;
+    rdfs:label "risk score" ;
+    rdfs:comment "Quantitative measure of risk (probability × impact)" ;
+    rdfs:domain pm:Risk ;
+    rdfs:range xsd:decimal .
+
+pmbok:qualityMetric a owl:DatatypeProperty ;
+    rdfs:label "quality metric" ;
+    rdfs:domain pm:Quality ;
+    rdfs:range xsd:string .
+
+pmbok:developmentApproach a owl:DatatypeProperty ;
+    rdfs:label "development approach" ;
+    rdfs:comment "Predictive, Adaptive, Hybrid, or Incremental" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:string .
+
+pmbok:lifeCyclePhase a owl:DatatypeProperty ;
+    rdfs:label "life cycle phase" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:string .
+
+pmbok:tailoringDecision a owl:DatatypeProperty ;
+    rdfs:label "tailoring decision" ;
+    rdfs:comment "Documented decision about adapting PM approach to project context" ;
+    rdfs:domain pmbok:Project ;
+    rdfs:range xsd:string .

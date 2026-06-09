@@ -1,0 +1,323 @@
+@prefix pm: <http://nextera.energy/ontology/pm#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# ============================================================================
+# Core Project Management Ontology (TBox/Schema)
+# Unified concepts that bridge SAFe, PMBOK, PRINCE2, and proprietary methodologies
+# ============================================================================
+
+pm:Ontology a owl:Ontology ;
+    rdfs:label "NextEra Energy Project Management Ontology" ;
+    rdfs:comment "Core ontology for enterprise project management across multiple methodologies" ;
+    owl:versionInfo "1.0.0" .
+
+# ============================================================================
+# Core Classes
+# ============================================================================
+
+pm:Project a owl:Class ;
+    rdfs:label "Project" ;
+    rdfs:comment "A temporary endeavor undertaken to create a unique product, service, or result" .
+
+pm:Portfolio a owl:Class ;
+    rdfs:label "Portfolio" ;
+    rdfs:comment "A collection of projects, programs, and other work managed as a group to achieve strategic objectives" .
+
+pm:Program a owl:Class ;
+    rdfs:label "Program" ;
+    rdfs:comment "A group of related projects managed in a coordinated way to obtain benefits not available from managing them individually" .
+
+pm:Task a owl:Class ;
+    rdfs:label "Task" ;
+    rdfs:comment "An actionable unit of work with defined start and end points" .
+
+pm:Epic a owl:Class ;
+    rdfs:label "Epic" ;
+    rdfs:comment "A large body of work that can be broken down into smaller features or stories" .
+
+pm:Feature a owl:Class ;
+    rdfs:label "Feature" ;
+    rdfs:comment "A service that fulfills a stakeholder need" .
+
+pm:Story a owl:Class ;
+    rdfs:label "User Story" ;
+    rdfs:comment "A short, simple description of a feature told from the perspective of the person who desires the capability" .
+
+pm:Risk a owl:Class ;
+    rdfs:label "Risk" ;
+    rdfs:comment "An uncertain event or condition that, if it occurs, has a positive or negative effect on project objectives" .
+
+pm:Resource a owl:Class ;
+    rdfs:label "Resource" ;
+    rdfs:comment "A person, asset, or capability available to perform work" .
+
+pm:Milestone a owl:Class ;
+    rdfs:label "Milestone" ;
+    rdfs:comment "A significant point or event in a project schedule" .
+
+pm:Dependency a owl:Class ;
+    rdfs:label "Dependency" ;
+    rdfs:comment "A relationship between tasks or projects where one cannot start or finish until another does" .
+
+pm:Issue a owl:Class ;
+    rdfs:label "Issue" ;
+    rdfs:comment "A current problem that impacts project objectives and requires resolution" .
+
+pm:Team a owl:Class ;
+    rdfs:label "Team" ;
+    rdfs:comment "A group of people working together to achieve project objectives" .
+
+pm:Stakeholder a owl:Class ;
+    rdfs:label "Stakeholder" ;
+    rdfs:comment "An individual, group, or organization that may affect, be affected by, or perceive itself to be affected by a decision or activity" .
+
+pm:Deliverable a owl:Class ;
+    rdfs:label "Deliverable" ;
+    rdfs:comment "Any unique and verifiable product, result, or capability produced to complete a project" .
+
+pm:Budget a owl:Class ;
+    rdfs:label "Budget" ;
+    rdfs:comment "The approved estimate for the project or any work breakdown structure component" .
+
+pm:Schedule a owl:Class ;
+    rdfs:label "Schedule" ;
+    rdfs:comment "The planned dates for performing work and meeting milestones" .
+
+pm:Quality a owl:Class ;
+    rdfs:label "Quality" ;
+    rdfs:comment "The degree to which a set of inherent characteristics fulfills requirements" .
+
+# ============================================================================
+# Object Properties (Relationships)
+# ============================================================================
+
+pm:hasTask a owl:ObjectProperty ;
+    rdfs:label "has task" ;
+    rdfs:domain pm:Project ;
+    rdfs:range pm:Task .
+
+pm:hasFeature a owl:ObjectProperty ;
+    rdfs:label "has feature" ;
+    rdfs:domain pm:Epic ;
+    rdfs:range pm:Feature .
+
+pm:hasStory a owl:ObjectProperty ;
+    rdfs:label "has story" ;
+    rdfs:domain pm:Feature ;
+    rdfs:range pm:Story .
+
+pm:dependsOn a owl:ObjectProperty ;
+    rdfs:label "depends on" ;
+    rdfs:comment "Indicates a dependency relationship between tasks" ;
+    rdfs:domain pm:Task ;
+    rdfs:range pm:Task .
+
+pm:mitigatesRisk a owl:ObjectProperty ;
+    rdfs:label "mitigates risk" ;
+    rdfs:domain pm:Task ;
+    rdfs:range pm:Risk .
+
+pm:isAssignedTo a owl:ObjectProperty ;
+    rdfs:label "is assigned to" ;
+    rdfs:domain pm:Task ;
+    rdfs:range pm:Resource .
+
+pm:belongsToProject a owl:ObjectProperty ;
+    rdfs:label "belongs to project" ;
+    rdfs:range pm:Project .
+
+pm:belongsToPortfolio a owl:ObjectProperty ;
+    rdfs:label "belongs to portfolio" ;
+    rdfs:range pm:Portfolio .
+
+pm:belongsToProgram a owl:ObjectProperty ;
+    rdfs:label "belongs to program" ;
+    rdfs:range pm:Program .
+
+pm:hasRisk a owl:ObjectProperty ;
+    rdfs:label "has risk" ;
+    rdfs:domain pm:Project ;
+    rdfs:range pm:Risk .
+
+pm:hasMilestone a owl:ObjectProperty ;
+    rdfs:label "has milestone" ;
+    rdfs:domain pm:Project ;
+    rdfs:range pm:Milestone .
+
+pm:hasDependency a owl:ObjectProperty ;
+    rdfs:label "has dependency" ;
+    rdfs:domain pm:Project ;
+    rdfs:range pm:Dependency .
+
+pm:hasIssue a owl:ObjectProperty ;
+    rdfs:label "has issue" ;
+    rdfs:domain pm:Project ;
+    rdfs:range pm:Issue .
+
+pm:assignedToTeam a owl:ObjectProperty ;
+    rdfs:label "assigned to team" ;
+    rdfs:domain pm:Project ;
+    rdfs:range pm:Team .
+
+pm:hasStakeholder a owl:ObjectProperty ;
+    rdfs:label "has stakeholder" ;
+    rdfs:domain pm:Project ;
+    rdfs:range pm:Stakeholder .
+
+pm:produces a owl:ObjectProperty ;
+    rdfs:label "produces" ;
+    rdfs:domain pm:Task ;
+    rdfs:range pm:Deliverable .
+
+pm:worksOn a owl:ObjectProperty ;
+    rdfs:label "works on" ;
+    rdfs:domain pm:Resource ;
+    rdfs:range pm:Project .
+
+# ============================================================================
+# Datatype Properties (Attributes)
+# ============================================================================
+
+pm:projectName a owl:DatatypeProperty ;
+    rdfs:label "project name" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:string .
+
+pm:projectStatus a owl:DatatypeProperty ;
+    rdfs:label "project status" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:string .
+
+pm:projectDescription a owl:DatatypeProperty ;
+    rdfs:label "project description" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:string .
+
+pm:taskName a owl:DatatypeProperty ;
+    rdfs:label "task name" ;
+    rdfs:domain pm:Task ;
+    rdfs:range xsd:string .
+
+pm:taskStatus a owl:DatatypeProperty ;
+    rdfs:label "task status" ;
+    rdfs:domain pm:Task ;
+    rdfs:range xsd:string .
+
+pm:taskDescription a owl:DatatypeProperty ;
+    rdfs:label "task description" ;
+    rdfs:domain pm:Task ;
+    rdfs:range xsd:string .
+
+pm:hasDueDate a owl:DatatypeProperty ;
+    rdfs:label "has due date" ;
+    rdfs:domain pm:Task ;
+    rdfs:range xsd:dateTime .
+
+pm:hasStartDate a owl:DatatypeProperty ;
+    rdfs:label "has start date" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:dateTime .
+
+pm:hasEndDate a owl:DatatypeProperty ;
+    rdfs:label "has end date" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:dateTime .
+
+pm:hasBudget a owl:DatatypeProperty ;
+    rdfs:label "has budget" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:decimal .
+
+pm:budgetSpent a owl:DatatypeProperty ;
+    rdfs:label "budget spent" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:decimal .
+
+pm:cpiValue a owl:DatatypeProperty ;
+    rdfs:label "Cost Performance Index" ;
+    rdfs:comment "Ratio of earned value to actual cost (CPI = EV / AC)" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:decimal .
+
+pm:spiValue a owl:DatatypeProperty ;
+    rdfs:label "Schedule Performance Index" ;
+    rdfs:comment "Ratio of earned value to planned value (SPI = EV / PV)" ;
+    rdfs:domain pm:Project ;
+    rdfs:range xsd:decimal .
+
+pm:effortHours a owl:DatatypeProperty ;
+    rdfs:label "effort hours" ;
+    rdfs:domain pm:Task ;
+    rdfs:range xsd:decimal .
+
+pm:storyPoints a owl:DatatypeProperty ;
+    rdfs:label "story points" ;
+    rdfs:domain pm:Story ;
+    rdfs:range xsd:integer .
+
+pm:priority a owl:DatatypeProperty ;
+    rdfs:label "priority" ;
+    rdfs:range xsd:string .
+
+pm:severity a owl:DatatypeProperty ;
+    rdfs:label "severity" ;
+    rdfs:range xsd:string .
+
+pm:riskName a owl:DatatypeProperty ;
+    rdfs:label "risk name" ;
+    rdfs:domain pm:Risk ;
+    rdfs:range xsd:string .
+
+pm:probability a owl:DatatypeProperty ;
+    rdfs:label "probability" ;
+    rdfs:domain pm:Risk ;
+    rdfs:range xsd:string .
+
+pm:impact a owl:DatatypeProperty ;
+    rdfs:label "impact" ;
+    rdfs:domain pm:Risk ;
+    rdfs:range xsd:string .
+
+pm:mitigation a owl:DatatypeProperty ;
+    rdfs:label "mitigation" ;
+    rdfs:domain pm:Risk ;
+    rdfs:range xsd:string .
+
+pm:resourceName a owl:DatatypeProperty ;
+    rdfs:label "resource name" ;
+    rdfs:domain pm:Resource ;
+    rdfs:range xsd:string .
+
+pm:resourceRole a owl:DatatypeProperty ;
+    rdfs:label "resource role" ;
+    rdfs:domain pm:Resource ;
+    rdfs:range xsd:string .
+
+pm:allocation a owl:DatatypeProperty ;
+    rdfs:label "allocation" ;
+    rdfs:comment "Percentage allocation of resource to work (0-100)" ;
+    rdfs:domain pm:Resource ;
+    rdfs:range xsd:decimal .
+
+pm:skills a owl:DatatypeProperty ;
+    rdfs:label "skills" ;
+    rdfs:domain pm:Resource ;
+    rdfs:range xsd:string .
+
+pm:assignee a owl:DatatypeProperty ;
+    rdfs:label "assignee" ;
+    rdfs:domain pm:Task ;
+    rdfs:range xsd:string .
+
+pm:completionPercentage a owl:DatatypeProperty ;
+    rdfs:label "completion percentage" ;
+    rdfs:range xsd:decimal .
+
+pm:velocity a owl:DatatypeProperty ;
+    rdfs:label "velocity" ;
+    rdfs:comment "Measure of work completed per iteration" ;
+    rdfs:domain pm:Team ;
+    rdfs:range xsd:decimal .

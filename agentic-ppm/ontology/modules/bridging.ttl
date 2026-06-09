@@ -1,0 +1,229 @@
+@prefix pm: <http://nextera.energy/ontology/pm#> .
+@prefix safe: <http://nextera.energy/ontology/safe#> .
+@prefix pmbok: <http://nextera.energy/ontology/pmbok#> .
+@prefix prince2: <http://nextera.energy/ontology/prince2#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# ============================================================================
+# Bridging Ontology - Cross-Methodology Semantic Mappings
+# Defines equivalences and relationships across SAFe, PMBOK, and PRINCE2
+# ============================================================================
+
+# ============================================================================
+# Portfolio Level Equivalences
+# ============================================================================
+
+# SAFe Portfolio = PMBOK Portfolio = PRINCE2 Program/Portfolio
+safe:Portfolio owl:equivalentClass pmbok:Portfolio .
+safe:Portfolio rdfs:subClassOf pm:Portfolio .
+pmbok:Portfolio rdfs:subClassOf pm:Portfolio .
+
+# ============================================================================
+# Program/Value Stream Equivalences
+# ============================================================================
+
+# SAFe Value Stream ≈ PMBOK Program ≈ PRINCE2 Project (at high level)
+safe:ValueStream rdfs:subClassOf pm:Program .
+pmbok:Program rdfs:subClassOf pm:Program .
+prince2:Project owl:equivalentClass pm:Project .
+
+# ============================================================================
+# Epic/Project Level Equivalences
+# ============================================================================
+
+# SAFe Epic ≈ PMBOK Project ≈ PRINCE2 Stage (large initiative)
+safe:Epic owl:equivalentClass pm:Epic .
+pmbok:Project owl:equivalentClass pm:Project .
+prince2:Stage rdfs:subClassOf pm:Program .
+
+# Large initiatives can be represented as:
+# - SAFe Epic
+# - PMBOK Project
+# - PRINCE2 Stage
+# All map to pm:Epic or pm:Project depending on scale
+
+# ============================================================================
+# Feature/Deliverable Equivalences
+# ============================================================================
+
+# SAFe Feature/Capability = PMBOK Work Package = PRINCE2 Product
+safe:Feature owl:equivalentClass pm:Feature .
+safe:Capability owl:equivalentClass pm:Feature .
+pmbok:WorkPackage rdfs:subClassOf pm:Task .
+prince2:Product owl:equivalentClass pm:Deliverable .
+
+# Semantic mapping: Features deliver Products (Deliverables)
+# A Feature is a means to deliver a Product/Deliverable
+
+# ============================================================================
+# Task/Activity Level Equivalences
+# ============================================================================
+
+# SAFe Story = PMBOK Activity = PRINCE2 Activity = pm:Task
+safe:Story owl:equivalentClass pm:Story .
+safe:Story rdfs:subClassOf pm:Task .
+pmbok:Activity owl:equivalentClass pm:Task .
+prince2:Activity owl:equivalentClass pm:Task .
+
+# All methodologies have concept of actionable work items (tasks)
+
+# ============================================================================
+# Team/Organization Equivalences
+# ============================================================================
+
+# SAFe ART = PMBOK Team = PRINCE2 Organization Structure
+safe:ART rdfs:subClassOf pm:Team .
+# Note: PRINCE2 has specific roles (Executive, Senior User, etc.)
+# These map to stakeholder/resource concepts in pm: ontology
+
+# ============================================================================
+# Time-based Structures
+# ============================================================================
+
+# SAFe Program Increment (PI) ≈ PMBOK Project Phase ≈ PRINCE2 Management Stage
+safe:PI rdfs:subClassOf pm:Schedule .
+prince2:Stage rdfs:subClassOf pm:Program .
+
+# SAFe Sprint = Agile Iteration (2 weeks) - part of Schedule
+safe:Sprint rdfs:subClassOf pm:Schedule .
+
+# ============================================================================
+# Cross-Methodology Property Mappings
+# ============================================================================
+
+# Cost/Financial Metrics Alignment
+# SAFe doesn't have explicit CPI/SPI (borrows from PMBOK)
+# PMBOK has detailed EVM metrics
+# pm: provides unified cpiValue and spiValue properties
+
+# PMBOK Earned Value metrics can be used across methodologies:
+# pm:cpiValue (inherited by all)
+# pm:spiValue (inherited by all)
+# pmbok:earnedValue
+# pmbok:plannedValue
+# pmbok:actualCost
+
+# ============================================================================
+# External System Aliases
+# Maps external PPM tool concepts to ontology
+# ============================================================================
+
+# Jira Terminology → Ontology
+# Jira Epic → safe:Epic or pm:Epic
+# Jira Story → safe:Story or pm:Story
+# Jira Task → pm:Task
+# Jira Subtask → pm:Task (smaller granularity)
+# Jira Issue → pm:Issue or pm:Task (context-dependent)
+
+# Azure DevOps Terminology → Ontology
+# Azure Epic → safe:Epic or pm:Epic
+# Azure Feature → safe:Feature or pm:Feature
+# Azure User Story → safe:Story or pm:Story
+# Azure Task → pm:Task
+# Azure Work Item → pm:Task (generic)
+
+# Excel/Generic Terminology → Ontology
+# Excel "Project" → pm:Project
+# Excel "Deliverable" → pm:Deliverable or prince2:Product
+# Excel "Task" → pm:Task
+# Excel "Activity" → pmbok:Activity or pm:Task
+
+# ServiceNow Terminology → Ontology
+# ServiceNow Project → pm:Project
+# ServiceNow Task → pm:Task
+# ServiceNow Issue → pm:Issue
+
+# ============================================================================
+# Methodology-Specific Strengths
+# ============================================================================
+
+# SAFe Strengths:
+# - Scaled agile coordination (ARTs, Value Streams)
+# - WSJF prioritization
+# - PI Planning
+# - Architectural runway
+# Use SAFe concepts for: Large agile transformations, scaled delivery
+
+# PMBOK Strengths:
+# - Earned Value Management (EVM)
+# - Performance measurement (CPI, SPI, variances)
+# - Critical path analysis
+# - Formal risk quantification
+# Use PMBOK concepts for: Traditional projects, detailed cost/schedule tracking
+
+# PRINCE2 Strengths:
+# - Product-based planning
+# - Business case justification
+# - Stage-gate governance
+# - Defined roles and tolerances
+# Use PRINCE2 concepts for: Governance-heavy projects, UK/European contexts
+
+# ============================================================================
+# Reconciliation Rules
+# ============================================================================
+
+# Rule 1: When mapping external "Task" entities:
+# - If from Jira + has story points → safe:Story
+# - If from Azure + type="User Story" → safe:Story
+# - If from PMBOK context + on critical path → pmbok:Activity
+# - Default → pm:Task
+
+# Rule 2: When mapping "Project" entities:
+# - If in SAFe context + has epics → safe:Portfolio or safe:ValueStream
+# - If has formal business case → prince2:Project
+# - If has EVM metrics → pmbok:Project
+# - Default → pm:Project
+
+# Rule 3: When mapping "Deliverable" entities:
+# - If in PRINCE2 context → prince2:Product
+# - If in SAFe context + functional → safe:Feature
+# - If in PMBOK context → pmbok:Deliverable
+# - Default → pm:Deliverable
+
+# ============================================================================
+# Query Patterns
+# ============================================================================
+
+# Pattern: Find all "projects" regardless of methodology
+# SPARQL:
+# SELECT ?project WHERE {
+#   ?project a ?type .
+#   ?type rdfs:subClassOf* pm:Project .
+# }
+# Returns: SAFe Epics, PMBOK Projects, PRINCE2 Projects, pm:Projects
+
+# Pattern: Find all "tasks" regardless of source
+# SPARQL:
+# SELECT ?task WHERE {
+#   ?task a ?type .
+#   ?type rdfs:subClassOf* pm:Task .
+# }
+# Returns: SAFe Stories, PMBOK Activities, PRINCE2 Activities, pm:Tasks, Jira Tasks, Azure Tasks
+
+# Pattern: Find semantic equivalents
+# SPARQL:
+# SELECT ?equivalent WHERE {
+#   safe:Epic owl:equivalentClass ?equivalent .
+# }
+# Returns: pmbok:Project, pm:Epic
+
+# ============================================================================
+# Data Source Semantic Reconciliation
+# ============================================================================
+
+# When querying across multiple sources, the ontology resolves:
+# - Jira "assignee" = Azure "assigned_to" = Excel "resource" = pm:isAssignedTo
+# - Jira "status" = Azure "state" = Excel "status" = pm:taskStatus
+# - Jira "summary" = Azure "title" = Excel "name" = pm:taskName
+# - Jira "duedate" = Azure "target_date" = Excel "deadline" = pm:hasDueDate
+
+# This allows a single SPARQL query like:
+# SELECT ?task ?assignee ?status ?dueDate WHERE {
+#   ?task a pm:Task ;
+#         pm:isAssignedTo ?assignee ;
+#         pm:taskStatus ?status ;
+#         pm:hasDueDate ?dueDate .
+# }
+# To retrieve unified results from Jira, Azure, Excel, and PostgreSQL
+# without knowing source-specific field names

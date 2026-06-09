@@ -1,0 +1,261 @@
+@prefix prince2: <http://nextera.energy/ontology/prince2#> .
+@prefix pm: <http://nextera.energy/ontology/pm#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================================
+# PRINCE2 Ontology Extension
+# Projects IN Controlled Environments methodology concepts
+# ============================================================================
+
+prince2:Ontology a owl:Ontology ;
+    rdfs:label "PRINCE2 Ontology" ;
+    rdfs:comment "PRINCE2 project management methodology ontology extension" ;
+    owl:imports pm:Ontology ;
+    owl:versionInfo "7.0.0" .
+
+# ============================================================================
+# PRINCE2 Classes
+# ============================================================================
+
+prince2:Project a owl:Class ;
+    rdfs:subClassOf pm:Project ;
+    rdfs:label "PRINCE2 Project" ;
+    rdfs:comment "A temporary organization created for the purpose of delivering business products" .
+
+prince2:Stage a owl:Class ;
+    rdfs:subClassOf pm:Program ;
+    rdfs:label "Management Stage" ;
+    rdfs:comment "Part of project with own plan and committed resources" .
+
+prince2:Product a owl:Class ;
+    rdfs:subClassOf pm:Deliverable ;
+    rdfs:label "Product" ;
+    rdfs:comment "Any input to or output from a project" .
+
+prince2:Activity a owl:Class ;
+    rdfs:subClassOf pm:Task ;
+    rdfs:label "PRINCE2 Activity" ;
+    rdfs:comment "A process, function, or task that occurs over time with recognizable results" .
+
+prince2:Theme a owl:Class ;
+    rdfs:label "Theme" ;
+    rdfs:comment "Aspect of project management that must be continually addressed" .
+
+prince2:Process a owl:Class ;
+    rdfs:label "Process" ;
+    rdfs:comment "Structured set of activities to accomplish a specific objective" .
+
+prince2:Principle a owl:Class ;
+    rdfs:label "Principle" ;
+    rdfs:comment "Guiding obligation that determines whether the project is genuinely managed using PRINCE2" .
+
+# PRINCE2 Themes
+
+prince2:BusinessCaseTheme a owl:Class ;
+    rdfs:subClassOf prince2:Theme ;
+    rdfs:label "Business Case Theme" ;
+    rdfs:comment "Establishes mechanisms to judge whether project is desirable, viable and achievable" .
+
+prince2:OrganizationTheme a owl:Class ;
+    rdfs:subClassOf prince2:Theme ;
+    rdfs:label "Organization Theme" ;
+    rdfs:comment "Defines and establishes project accountability and responsibilities" .
+
+prince2:QualityTheme a owl:Class ;
+    rdfs:subClassOf prince2:Theme ;
+    rdfs:label "Quality Theme" ;
+    rdfs:comment "Defines and implements the means to verify that products are fit for purpose" .
+
+prince2:PlansTheme a owl:Class ;
+    rdfs:subClassOf prince2:Theme ;
+    rdfs:label "Plans Theme" ;
+    rdfs:comment "Facilitates communication and control by defining the means of delivering products" .
+
+prince2:RiskTheme a owl:Class ;
+    rdfs:subClassOf prince2:Theme ;
+    rdfs:label "Risk Theme" ;
+    rdfs:comment "Identifies, assesses and controls uncertainty" .
+
+prince2:ChangeTheme a owl:Class ;
+    rdfs:subClassOf prince2:Theme ;
+    rdfs:label "Change Theme" ;
+    rdfs:comment "Identifies, assesses and controls potential and approved changes to baseline" .
+
+prince2:ProgressTheme a owl:Class ;
+    rdfs:subClassOf prince2:Theme ;
+    rdfs:label "Progress Theme" ;
+    rdfs:comment "Establishes mechanisms to monitor and compare actual achievements against planned" .
+
+# ============================================================================
+# PRINCE2 Object Properties
+# ============================================================================
+
+prince2:hasStage a owl:ObjectProperty ;
+    rdfs:label "has stage" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range prince2:Stage .
+
+prince2:hasProduct a owl:ObjectProperty ;
+    rdfs:label "has product" ;
+    rdfs:domain prince2:Stage ;
+    rdfs:range prince2:Product .
+
+prince2:hasTheme a owl:ObjectProperty ;
+    rdfs:label "has theme" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range prince2:Theme .
+
+prince2:hasProcess a owl:ObjectProperty ;
+    rdfs:label "has process" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range prince2:Process .
+
+prince2:hasPrinciple a owl:ObjectProperty ;
+    rdfs:label "has principle" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range prince2:Principle .
+
+# ============================================================================
+# PRINCE2 Datatype Properties
+# ============================================================================
+
+prince2:productDescription a owl:DatatypeProperty ;
+    rdfs:label "product description" ;
+    rdfs:domain prince2:Product ;
+    rdfs:range xsd:string .
+
+prince2:qualityCriteria a owl:DatatypeProperty ;
+    rdfs:label "quality criteria" ;
+    rdfs:domain prince2:Product ;
+    rdfs:range xsd:string .
+
+prince2:qualityMethod a owl:DatatypeProperty ;
+    rdfs:label "quality method" ;
+    rdfs:comment "Means by which quality criteria will be checked" ;
+    rdfs:domain prince2:Product ;
+    rdfs:range xsd:string .
+
+prince2:stageStatus a owl:DatatypeProperty ;
+    rdfs:label "stage status" ;
+    rdfs:domain prince2:Stage ;
+    rdfs:range xsd:string .
+
+prince2:tolerance a owl:DatatypeProperty ;
+    rdfs:label "tolerance" ;
+    rdfs:comment "Permissible deviation from plan without escalating to next management level" ;
+    rdfs:range xsd:string .
+
+prince2:timeTolerance a owl:DatatypeProperty ;
+    rdfs:label "time tolerance" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:costTolerance a owl:DatatypeProperty ;
+    rdfs:label "cost tolerance" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:qualityTolerance a owl:DatatypeProperty ;
+    rdfs:label "quality tolerance" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:scopeTolerance a owl:DatatypeProperty ;
+    rdfs:label "scope tolerance" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:riskTolerance a owl:DatatypeProperty ;
+    rdfs:label "risk tolerance" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:benefitTolerance a owl:DatatypeProperty ;
+    rdfs:label "benefit tolerance" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:executiveRole a owl:DatatypeProperty ;
+    rdfs:label "executive role" ;
+    rdfs:comment "Single individual with ultimate responsibility for project" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:seniorUserRole a owl:DatatypeProperty ;
+    rdfs:label "senior user role" ;
+    rdfs:comment "Represents interests of those who will use project products" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:seniorSupplierRole a owl:DatatypeProperty ;
+    rdfs:label "senior supplier role" ;
+    rdfs:comment "Represents interests of those designing, developing, or procuring products" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:projectManagerRole a owl:DatatypeProperty ;
+    rdfs:label "project manager role" ;
+    rdfs:comment "Day-to-day management on behalf of project board" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:teamManagerRole a owl:DatatypeProperty ;
+    rdfs:label "team manager role" ;
+    rdfs:comment "Manages production of products" ;
+    rdfs:domain prince2:Stage ;
+    rdfs:range xsd:string .
+
+prince2:projectSupportRole a owl:DatatypeProperty ;
+    rdfs:label "project support role" ;
+    rdfs:comment "Administrative services to project manager" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:justification a owl:DatatypeProperty ;
+    rdfs:label "justification" ;
+    rdfs:comment "Reasons why project is needed (from Business Case)" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:expectedBenefits a owl:DatatypeProperty ;
+    rdfs:label "expected benefits" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:disbenefits a owl:DatatypeProperty ;
+    rdfs:label "disbenefits" ;
+    rdfs:comment "Outcomes perceived as negative by stakeholders" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:projectApproach a owl:DatatypeProperty ;
+    rdfs:label "project approach" ;
+    rdfs:comment "Description of way in which work will be approached" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:lessons a owl:DatatypeProperty ;
+    rdfs:label "lessons" ;
+    rdfs:comment "Lessons learned from previous similar projects" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:exceptionReport a owl:DatatypeProperty ;
+    rdfs:label "exception report" ;
+    rdfs:comment "Report produced when forecast indicates deviation beyond tolerance" ;
+    rdfs:domain prince2:Stage ;
+    rdfs:range xsd:string .
+
+prince2:highlightReport a owl:DatatypeProperty ;
+    rdfs:label "highlight report" ;
+    rdfs:comment "Time-driven progress report from project manager to project board" ;
+    rdfs:domain prince2:Project ;
+    rdfs:range xsd:string .
+
+prince2:checkpointReport a owl:DatatypeProperty ;
+    rdfs:label "checkpoint report" ;
+    rdfs:comment "Progress report from team to project manager" ;
+    rdfs:domain prince2:Activity ;
+    rdfs:range xsd:string .
