@@ -55,8 +55,12 @@ export class OpenProjectClient {
     }
   }
 
-  async listProjects(): Promise<OpenProjectProject[]> {
-    const data = await this.request('GET', '/projects');
+  async listProjects(options?: { pageSize?: number; offset?: number }): Promise<OpenProjectProject[]> {
+    // OpenProject's default pageSize is 20, so a backfill MUST page explicitly.
+    const params = new URLSearchParams();
+    params.set('pageSize', String(options?.pageSize ?? 100));
+    if (options?.offset) params.set('offset', String(options.offset));
+    const data = await this.request('GET', `/projects?${params.toString()}`);
     return data._embedded?.elements ?? [];
   }
 

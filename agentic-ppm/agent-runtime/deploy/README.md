@@ -41,6 +41,15 @@ Finally, in OpenProject → Administration → Webhooks, add:
 events `work_package:created/updated`, `project:created/updated`.
 `npm run seed:webhook` prints this checklist with your configured values.
 
+### Seed the graph (run once before going live)
+
+Before the first webhook fires, backfill the graph from existing OpenProject
+data so the agent reasons over a populated world-model on day one:
+
+```bash
+npm run sync:backfill   # pages through all projects + work packages; idempotent
+```
+
 ## Is "one or two" better — OpenProject's own setup vs ours?
 
 The OpenProject Docker setup that's safe to run is the **all-in-one

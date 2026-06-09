@@ -125,18 +125,45 @@ export class Projector {
     return { label, nodeId };
   }
 
-  /** Full backfill — used for seeding the graph from existing OpenProject data. */
-  async syncAll(): Promise<{ projects: number; workPackages: number }> {
-    const projects = await this.op.listProjects();
-    for (const project of projects) await this.syncProject(project);
+  /**
+   * Full backfill — seeds the graph from ALL existing OpenProject data so the
+   * agent has a populated world-model before the first webhook fires.
+   *
+   * Pages through both projects and work packages (OpenProject's `offset` is a
+   * 1-based page number); `onProgress` is invoked after each page for CLI output.
+   */
+  async syncAll(opts?: {
+    pageSize?: number;
+    onProgress?: (msg: string) => void;
+  }): Promise<{ projects: number; workPackages: number; skipped: number }> {
+    const pageSize = opts?.pageSize ?? 100;
+    const log = opts?.onProgress ?? (() => {});
 
-    const workPackages = await this.op.listWorkPackages({ pageSize: 200 });
-    let wpCount = 0;
-    for (const wp of workPackages) {
-      const result = await this.syncWorkPackage(wp);
-      if (result) wpCount++;
+    let projectCount = 0;
+    for (let page = 1; ; page++) {
+      const projects = await this.op.listProjects({ pageSize, offset: page });
+      if (projects.length === 0) break;
+      for (const project of projects) await this.syncProject(project);
+      projectCount += projects.length;
+      log(`projects: ${projectCount} synced`);
+      if (projects.length < pageSize) break;
     }
-    return { projects: projects.length, workPackages: wpCount };
+
+    let wpCount = 0;
+    let skipped = 0;
+    for (let page = 1; ; page++) {
+      const wps = await this.op.listWorkPackages({ pageSize, offset: page });
+      if (wps.length === 0) break;
+      for (const wp of wps) {
+        const result = await this.syncWorkPackage(wp);
+        if (result) wpCount++;
+        else skipped++;
+      }
+      log(`work packages: ${wpCount} synced, ${skipped} skipped`);
+      if (wps.length < pageSize) break;
+    }
+
+    return { projects: projectCount, workPackages: wpCount, skipped };
   }
 }
 
