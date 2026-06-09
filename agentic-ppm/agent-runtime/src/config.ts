@@ -37,6 +37,17 @@ export const config = {
     graph: process.env.FALKORDB_GRAPH ?? 'agentic_ppm',
     password: process.env.FALKORDB_PASSWORD,
   },
+
+  graphiti: {
+    /** MCP server URL, e.g. http://graphiti-mcp:8000/sse. Unset = disabled. */
+    mcpUrl: process.env.GRAPHITI_MCP_URL,
+    /** MCP transport: 'sse' (default) or 'http' (streamable HTTP). */
+    transport: (process.env.GRAPHITI_MCP_TRANSPORT ?? 'sse') as 'sse' | 'http',
+    /** Namespace for episodes/entities; default to the FalkorDB graph name. */
+    groupId: process.env.GRAPHITI_GROUP_ID ?? process.env.FALKORDB_GRAPH ?? 'agentic_ppm',
+    /** Tool name on the Graphiti MCP server that ingests an episode. */
+    addMemoryTool: process.env.GRAPHITI_ADD_MEMORY_TOOL ?? 'add_memory',
+  },
 } as const;
 
 /** Throw early if anything needed to actually run the pipeline is missing. */
