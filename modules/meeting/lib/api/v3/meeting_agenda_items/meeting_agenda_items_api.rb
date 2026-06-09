@@ -30,25 +30,24 @@
 
 module API
   module V3
-    module MeetingOutcomes
-      class OutcomesByAgendaItemAPI < ::API::OpenProjectAPI
-        resources :outcomes do
-          get do
-            outcomes = @meeting_agenda_item.outcomes.includes(:author, :work_package, :meeting_agenda_item)
+    module MeetingAgendaItems
+      class MeetingAgendaItemsAPI < ::API::OpenProjectAPI
+        resources :meeting_agenda_items do
+          post &::API::V3::Utilities::Endpoints::Create.new(model: MeetingAgendaItem).mount
 
-            MeetingOutcomeCollectionRepresenter.new(outcomes,
-                                                    self_link: api_v3_paths
-                                                      .meeting_agenda_item_outcomes(@meeting_agenda_item.id,
-                                                                                    meeting_id: @meeting.id),
-                                                    current_user:)
-          end
-
-          route_param :outcome_id, type: Integer, desc: "Outcome ID" do
+          route_param :id, type: Integer, desc: "Agenda item ID" do
             after_validation do
-              @meeting_outcome = @meeting_agenda_item.outcomes.find(declared_params[:outcome_id])
+              @meeting_agenda_item = MeetingAgendaItem
+                .joins(meeting: :project)
+                .merge(Meeting.visible)
+                .find(declared_params[:id])
             end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: MeetingOutcome).mount
+            get &::API::V3::Utilities::Endpoints::Show.new(model: MeetingAgendaItem).mount
+
+            patch &::API::V3::Utilities::Endpoints::Update.new(model: MeetingAgendaItem).mount
+
+            delete &::API::V3::Utilities::Endpoints::Delete.new(model: MeetingAgendaItem).mount
           end
         end
       end

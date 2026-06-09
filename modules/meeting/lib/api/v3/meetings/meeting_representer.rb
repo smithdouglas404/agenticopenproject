@@ -76,13 +76,13 @@ module API
 
         link :agendaItems do
           {
-            href: api_v3_paths.meeting_agenda_items(represented.id)
+            href: api_v3_paths.meeting_agenda_items(meeting_id: represented.id)
           }
         end
 
         link :sections do
           {
-            href: api_v3_paths.meeting_sections(represented.id)
+            href: api_v3_paths.meeting_sections(meeting_id: represented.id)
           }
         end
 

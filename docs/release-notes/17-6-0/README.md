@@ -34,6 +34,18 @@ OPENPROJECT_SSRF_PROTECTION_IP_ALLOWLIST=2001:db8:100::/48
 
 The list accepts one or multiple IP addresses or ranges (in CIDR notation) that shall be exempt from SSRF filtering.
 
+### Meeting API structure changes
+
+17.6. introduces new endpoints for meeting outcomes,
+and changes the self link for all meeting related resources to be flat:
+
+That means, some of the responses have changed:
+
+POST/PATCH/DELETE `/api/v3/meetings/:id/agenda_items)` is no longer available,
+they have been moved to the `/api/v3/meeting_agendas/` respectively. The same is true for outcomes and sections.
+
+This follows the APIv3 standards, and also fixes a bug related to the self link.
+
 <!-- BEGIN SECURITY FIXES AUTOMATED SECTION -->
 
 <!-- END SECURITY FIXES AUTOMATED SECTION -->

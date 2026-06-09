@@ -1,23 +1,16 @@
-# /api/v3/meetings/{meeting_id}/agenda_items/{agenda_item_id}/outcomes
+# /api/v3/meetings/{id}/sections
 ---
 get:
-  summary: List meeting outcomes
-  operationId: list_meeting_outcomes
+  summary: List meeting sections
+  operationId: list_meeting_sections
   tags:
     - Meetings
-  description: Lists all outcomes for the given meeting agenda item.
+  description: Lists all sections for the given meeting.
   parameters:
     - description: Meeting identifier
       example: 1
       in: path
-      name: meeting_id
-      required: true
-      schema:
-        type: integer
-    - description: Agenda item identifier
-      example: 1
-      in: path
-      name: agenda_item_id
+      name: id
       required: true
       schema:
         type: integer
@@ -27,7 +20,7 @@ get:
       content:
         application/hal+json:
           schema:
-            $ref: "../components/schemas/meeting_outcome_collection_model.yml"
+            $ref: "../components/schemas/meeting_section_collection_model.yml"
     '404':
       content:
         application/hal+json:
@@ -40,6 +33,6 @@ get:
                 errorIdentifier: urn:openproject-org:api:v3:errors:NotFound
                 message: The requested resource could not be found.
       description: |-
-        Returned if the agenda item or meeting does not exist or the client does not have sufficient permissions to see it.
+        Returned if the meeting does not exist or the client does not have sufficient permissions to see it.
 
         **Required permission:** view meetings
