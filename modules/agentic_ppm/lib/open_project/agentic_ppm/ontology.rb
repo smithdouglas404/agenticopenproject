@@ -7,8 +7,8 @@ module OpenProject
     # The single place the OpenProject <-> Smith Clarity ontology translation
     # lives. Both directions read from this registry:
     #
-    #   * forward  (OpenProject -> RDF): the projector asks which ontology
-    #     class/properties a work package maps to and emits triples.
+    #   * forward  (OpenProject -> graph): the projector asks which ontology
+    #     class/properties a work package maps to and emits graph nodes/edges.
     #   * reverse  (agent finding -> OpenProject): an ontology subject such as
     #     "safe:Feature/123" resolves back to a target + record id so a
     #     recommendation can be attached to WorkPackage#123.
