@@ -41,8 +41,15 @@ agentic-ppm/
     ├── 04-agent-roster.md              The 9 agent domains; first-iteration agents
     ├── 05-data-flow-and-knowledge-graph.md   Webhooks → graph → reasoning → write-back
     ├── 06-roadmap.md                   Phased delivery plan
-    └── 07-refactor-from-dosv2.md       Lifting the Kyndryl-365 DOSv2 app onto OpenProject
+    ├── 07-refactor-from-dosv2.md       Lifting the Kyndryl-365 DOSv2 app onto OpenProject
+    └── 08-product-and-saas-architecture.md   v2 decisions: one product on OpenProject,
+                                              SaaS/tenancy, FalkorDB+Graphiti, HITL
 ```
+
+> **Read `08` first for current decisions.** It captures the consolidated v2 direction
+> (one product on top of OpenProject, ontology as normalization layer, graph as source of
+> insight & truth, FalkorDB+Graphiti, membership-based tenancy, HITL traceability) and
+> supersedes earlier open questions in docs 00–07 where they differ.
 
 ## Read in this order
 

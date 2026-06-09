@@ -62,11 +62,14 @@ Two trigger modes run in parallel:
   recomputable.
 
 ### Store
-A triple store that loads OWL/Turtle directly and speaks SPARQL — e.g. **Oxigraph**
-(embeddable, Rust, great for a TS service via HTTP), **Apache Jena Fuseki**, or
-**Stardog** (if OWL/SWRL reasoning depth is needed). The DOSv2 framework already uses
-**Neo4j** (Cypher); see `07-refactor-from-dosv2.md` for keeping vs. swapping it. Either
-way the **rebuildability rule** holds: the graph is a projection of OpenProject.
+**Decided (v2 — see `08-product-and-saas-architecture.md`): FalkorDB + Graphiti.**
+FalkorDB is the low-latency property-graph store (Cypher, built-in vector index,
+multi-graph for per-tenant isolation); Graphiti provides the bi-temporal knowledge-graph
+layer and agent memory on top, with incremental real-time updates and GraphRAG retrieval.
+The ontology is loaded as the **schema** (Graphiti custom entity/edge types) rather than
+run through an OWL reasoner; equivalence and derived-class logic is implemented in
+Cypher + agent rules. The **rebuildability rule** still holds: the graph is a projection
+of OpenProject and can be rebuilt from it.
 
 ### Why a graph (not just SQL)
 Cross-domain questions span risk, budget, schedule, OKRs, and readiness simultaneously.
