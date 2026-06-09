@@ -7,15 +7,20 @@ amended to point here.
 ## 1. It is ONE product, built on top of OpenProject
 
 The polished, agent-driven **living dashboard and OpenProject are one thing** — not a
-separate app competing with OpenProject. We put a **polished interface on top of
-OpenProject** so that:
+separate app competing with OpenProject. We build a **new, polished front end** that
+becomes the primary face, and we **layer it on top of OpenProject's existing UIs** for the
+standard and deep PPM work (work packages, Gantt, boards, time, costs). Users live in the
+new front end and **drill through into the embedded OpenProject UIs** when they need deep
+PPM detail. So:
 
 - people who don't already have a project tool can use *our* interface as their PPM tool;
-- OpenProject is the embedded **PPM engine + system of record/storage** underneath;
+- OpenProject is the embedded **PPM engine + system of record/storage** underneath, and
+  its existing UIs remain available (wrapped) for deep PPM tasks;
 - the agentic insight layer is part of the same product, not a bolt-on.
 
-> Mental model: **OpenProject is the engine and the system of record. Our interface is the
-> face. The knowledge graph is the brain.** All one product.
+> Mental model: **OpenProject is the engine, the system of record, and the deep-PPM UI.
+> Our new polished front end is the face on top of it. The knowledge graph is the brain.**
+> All one product.
 
 ## 2. The three roles — who owns what
 
@@ -94,29 +99,34 @@ Every agent output reaching a human carries:
 Humans **Accept / Dismiss / Snooze / Escalate**; the outcome is written back and feeds
 agent learning. Agents propose; humans (or governed policies) decide.
 
-## 6. SaaS model & authentication
+## 6. SaaS model & authentication — separate identity plane
 
-- The SaaS front door **reuses the existing DOSv2 login/registration approach** (the
-  TypeScript app in the
-  [DOSv2 repo](https://github.com/smithdouglas404/Kyndral-365-Agentic-VRO-Framework-DOSv2)).
-  Its auth flow will be read in detail and reused rather than reinvented.
-- OpenProject sits behind it as a service; the DOSv2-derived login governs access and
-  provisions the tenant.
+- A **dedicated identity / tenant control plane** owns registration, login, and tenant
+  provisioning, and **fronts both the new front end and OpenProject via SSO** (e.g.
+  Auth0/Clerk/Keycloak + a tenant manager). Users authenticate once and are signed into
+  both the polished front end and the embedded OpenProject UIs.
+- OpenProject is configured as an **SSO/OIDC client** of this identity plane (OpenProject
+  supports OIDC/SAML), so the embedded deep-PPM UIs honor the same session and the
+  agent runtime authenticates as a scoped service principal.
+- The existing DOSv2 login flow **informs** this design but is not the authority; the
+  separate identity plane is.
 
 ## 7. Tenancy — membership-driven
 
-A tenant is created based on **how the member joins**:
+A tenant is created based on **how the member joins** (Company vs. Individual), and the
+membership type maps to an **isolation tier (hybrid by tier)**:
 
-- **Company tenant** — an organization; all its members share one tenant boundary.
-- **Individual tenant** — a single person who joined on their own.
+| Membership | Tier | Isolation |
+|---|---|---|
+| **Individual** / small self-serve | Shared tier | Shared OpenProject + shared FalkorDB instance, isolated **logically** by tenant scoping (own FalkorDB graph + tenant-scoped OpenProject projects/groups) |
+| **Company** / enterprise | Dedicated tier | **Dedicated OpenProject instance or DB schema + dedicated FalkorDB namespace** for hard isolation and compliance |
 
-The membership chosen at registration determines the boundary. Isolation:
-
-- **One FalkorDB graph per tenant** (FalkorDB multi-graph = clean, cheap isolation), for
-  both company and individual tenants.
-- **OpenProject data tenant-scoped** (per-tenant projects/groups; instance-per-tenant
-  only if a company requires hard isolation).
-- Individuals can later be **upgraded/merged into a company tenant** if they join one.
+- The membership chosen at registration determines tier; the identity plane (§6)
+  provisions the right topology.
+- **Individuals can be upgraded/merged into a company tenant** (and promoted from shared
+  to dedicated tier) if they later join one.
+- This gives cheap self-serve onboarding for individuals and small teams, with a hard
+  isolation path for enterprises that require it.
 
 ## 8. Graph store decision: FalkorDB + Graphiti
 
