@@ -59,8 +59,8 @@ module OpenProject::GitlabIntegration
       end
 
       def find_merge_request
-        gitlab_id = payload.merge_request.iid
-        GitlabMergeRequest.find_by(gitlab_id:)
+        url = "#{payload.project.web_url}/-/merge_requests/#{payload.merge_request.iid}"
+        GitlabMergeRequest.find_by(gitlab_html_url: url)
       end
     end
   end
