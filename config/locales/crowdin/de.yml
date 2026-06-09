@@ -460,7 +460,7 @@ de:
         dialog:
           title: Arbeitspaket-Kennungen ändern
           heading: Aktivieren Sie projektspezifische Arbeitspaket-Kennungen?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to work. This change will take some time to complete.
+          description: 'Dadurch werden die IDs für alle Arbeitspakete in allen Projekten in diesem Fall geändert. Die bisherigen Identifikatoren und URLs werden weiterhin funktionieren. Diese Änderung wird einige Zeit in Anspruch nehmen.
 
             '
           confirm_button: Kennungen ändern
@@ -940,7 +940,7 @@ de:
       change_identifier_dialog_title: Projektkennung ändern
       change_identifier_format_hint_semantic: Nur Großbuchstaben (A-Z), Zahlen oder Unterstriche erlaubt. Maximal 10 Zeichen. Muss mit einem Buchstaben beginnen.
       change_identifier_format_hint_legacy: Nur Kleinbuchstaben (a-z), Zahlen, Bindestriche oder Unterstriche erlaubt.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifiers and URLs will nevertheless continue to work.
+      change_identifier_warning: 'Dies wird die Kennungen und URLs aller Arbeitspakete in diesem Projekt dauerhaft ändern. Die bisherigen Werte werden jedoch weiterhin funktionieren.
 
         '
       subitems:
@@ -3155,8 +3155,8 @@ de:
       edit_attribute_groups:
         description: 'Anpassen der Form-Konfiguration mit diesen zusätzlichen Add-ons:'
         features:
-          groups: Add new attribute sections
-          rename: Rename attribute sections
+          groups: Neue Attributabschnitte hinzufügen
+          rename: Attributabschnitte umbenennen
           related: Tabelle mit zugehörigen Arbeitspaketen hinzufügen
       readonly_work_packages:
         description: Arbeitspakete in bestimmten Status als schreibgeschützt markieren.
@@ -3522,12 +3522,12 @@ de:
           new_features_list:
             line_0: Project-based work package identifiers for clearer references.
             line_1: Jira Migrator support for Jira identifiers, due dates, and more.
-            line_2: Option to exclude work package types from Backlogs.
-            line_3: Redesigned sprint views.
-            line_4: Improved work package linking across Documents and text editors.
-            line_5: More flexible meeting schedules and reduced email notification noise.
-            line_6: Nested groups for organizational structures and inherited permissions.
-            line_7: Improved administration interfaces for workflows, users, and type configuration.
+            line_2: Option Arbeitspakettypen und -status in Backlogs auszuschließen.
+            line_3: Neu gestaltete Sprint-Ansichten.
+            line_4: Verbesserte Verknüpfung von Arbeitspaketen zwischen dem Dokumenten-Modul und Texteditoren.
+            line_5: Flexiblere Besprechungspläne und weniger E-Mail-Benachrichtigungen.
+            line_6: Verschachtelte Gruppen für Organisationsstrukturen und vererbte Berechtigungen.
+            line_7: Verbesserte Verwaltungsoberflächen für Workflows, Benutzer und Typkonfiguration.
     links:
       upgrade_enterprise_edition: Auf Enterprise Edition upgraden
       postgres_migration: Migration Ihrer Installation zu PostgreSQL
@@ -5355,7 +5355,7 @@ de:
   setting_welcome_on_homescreen: Willkommens-Block auf Startseite anzeigen
   setting_work_packages_identifier_classic: Instanzweite numerische Sequenz (Standard)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic: Projektspezifische semantische Kennungen (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Standard Hervorhebung
   setting_work_package_list_default_highlighted_attributes: Voreinstellung Inline Hervorherbung

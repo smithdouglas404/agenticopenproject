@@ -9,9 +9,9 @@ nl:
         authentication_methods:
           oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
-        name: Name
+        name: Naam
         token_exchange_scope: XWiki Scope
-        universal_identifier: Universal identifier
+        universal_identifier: Unieke Id
         url: Instance URL
         wiki_audience: XWiki Audience
     errors: {}
@@ -70,10 +70,10 @@ nl:
         description_html: The wiki provider %{wiki_provider} and all the related wiki page links will be deleted. In addition, every inline wiki page link will no longer be accessible. This action is irreversible.
       forms:
         general_info_form_component:
-          xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
+          xwiki_instance_description: Zorg ervoor dat u beheerrechten hebt in uw XWiki-instantie voordat u de installatie uitvoert.
         oauth_application_form_component:
-          application_id: Application ID
-          application_secret: Application secret
+          application_id: Applicatie-ID
+          application_secret: Application Secret
         oauth_client_form_component:
           client_id: Client ID
       health_status:
@@ -88,7 +88,7 @@ nl:
           title: Health Report
       oauth_application_info_component:
         confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
-        label_pending: Pending
+        label_pending: In afwachting
         replace_oauth_application: Replace OpenProject OAuth application
       oauth_client_info_component:
         confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
@@ -110,25 +110,25 @@ nl:
         index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
         label_add_new: Add new wiki provider
         label_edit: Edit XWiki provider
-        label_new_xwiki_instance: New XWiki provider
+        label_new_xwiki_instance: Nieuwe XWiki-provider
         label_wiki_platform: Wiki aanbieder
-        name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
+        name_caption: Geef de opslag een naam, zodat gebruikers verschillende wiki-platformen van elkaar kunnen onderscheiden.
         name_placeholder: XWiki knowledge base
         new_provider_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
         oauth:
           openproject_oauth: OpenProject OAuth
         sections:
-          general_information: Basisdetails
+          general_information: Basisgegevens
           oauth_configuration: OAuth configuration
-        url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
-        xwiki_instance: XWiki Instance
+        url_caption: Voeg het hostadres van uw wikiplatform toe, inclusief de https://. Het mag niet langer zijn dan 255 tekens.
+        xwiki_instance: XWiki instantie
         xwiki:
           oauth:
-            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            openproject_oauth_description: Geef XWiki toestemming om OpenProject-gegevens te benaderen met behulp van een OAuth-applicatie. Kopieer de onderstaande inloggegevens naar uw XWiki-instantie.
             provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
+            provider_oauth_description: Geef OpenProject toestemming om XWiki-gegevens te benaderen met behulp van een OAuth-applicatie. De client-ID wordt automatisch gegenereerd om OpenProject in XWiki te identificeren — geen handmatige configuratie is vereist aan XWiki-zijde.
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
     macro:
-      page_not_found: Linked wiki page no longer available
+      page_not_found: De gekoppelde wiki-pagina is niet meer beschikbaar

@@ -528,8 +528,8 @@ de:
       weekly_interval: Alle %{interval} Wochen am %{weekday}
       monthly_day: Jeden Monat am %{day}
       monthly_day_interval: Alle %{interval} Monate am %{day}
-      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
-      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
+      monthly_nth_weekday: Jeden Monat am %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Alle %{interval} Monate am %{ordinal} %{weekday}
       frequency: "%{base} um %{time}"
       full: "%{base} um %{time}, endet %{end_date}"
       full_past: "%{base} um %{time}, endet am %{end_date}"
