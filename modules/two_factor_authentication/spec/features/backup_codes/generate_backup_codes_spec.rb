@@ -18,7 +18,7 @@ RSpec.describe "Generate 2FA backup codes", :js, with_config: { "2fa": { active_
   end
 
   it "allows generating backup codes" do
-    visit my_2fa_devices_path
+    visit my_security_path
 
     # Log token for next access
     backup_codes = nil

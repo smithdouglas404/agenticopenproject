@@ -27,7 +27,7 @@ RSpec.describe "Admin 2FA management", :js, :selenium, with_settings: {
     click_link "Two-factor authentication on your account page"
 
     expect(page).to have_css(".generic-table--empty-row")
-    expect(page).to have_current_path my_2fa_devices_path
+    expect(page).to have_current_path my_security_path
   end
 
   it "allows 2FA device management of the user" do

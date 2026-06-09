@@ -24,7 +24,7 @@ RSpec.describe "My Account 2FA configuration",
 
   it "allows 2FA device management" do
     # Visit empty index
-    visit my_2fa_devices_path
+    visit my_security_path
     expect(page).to have_css(".generic-table--empty-row", text: I18n.t("two_factor_authentication.devices.not_existing"))
     expect(page).to have_css(".on-off-status.-disabled")
 
@@ -74,7 +74,7 @@ RSpec.describe "My Account 2FA configuration",
     expect(page).to have_css(".on-off-status.-enabled")
 
     # Create another one as totp
-    visit my_2fa_devices_path
+    visit my_security_path
     menu_button = find_test_selector("two_factor_authentication_devices_button")
     menu_button.click
     wait_for_network_idle if using_cuprite?
@@ -152,7 +152,7 @@ RSpec.describe "My Account 2FA configuration",
     let!(:device) { create(:two_factor_authentication_device_totp, user:) }
 
     it "loads the page correctly (Regression #41719)" do
-      visit my_2fa_devices_path
+      visit my_security_path
 
       expect(page).to have_content device.identifier
     end

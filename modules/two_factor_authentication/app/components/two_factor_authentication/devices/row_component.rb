@@ -2,7 +2,7 @@
 
 module ::TwoFactorAuthentication
   module Devices
-    class RowComponent < ::RowComponent
+    class RowComponent < ::OpPrimer::BorderBoxRowComponent
       def device
         model
       end
@@ -19,7 +19,7 @@ module ::TwoFactorAuthentication
 
       def default
         if device.default
-          helpers.op_icon "icon-yes"
+          render(Primer::Beta::Octicon.new(icon: :check))
         else
           "-"
         end
@@ -27,55 +27,66 @@ module ::TwoFactorAuthentication
 
       def confirmed
         if device.active
-          helpers.op_icon "icon-yes"
+          render(Primer::Beta::Octicon.new(icon: :check))
         elsif table.self_table?
           link_to t("two_factor_authentication.devices.confirm_now"),
                   { controller: table.target_controller, action: :confirm, device_id: device.id }
-
         else
-          helpers.op_icon "icon-no"
+          render(Primer::Beta::Octicon.new(icon: :x))
         end
       end
 
       ###
 
       def button_links
-        links = [delete_link]
-        links << make_default_link unless device.default
+        links = []
+        links << make_default_button unless device.default
+        links << delete_button
 
         links
       end
 
-      def make_default_link
-        helpers.password_confirmation_form_for(
-          device,
-          url: { controller: table.target_controller, action: :make_default, device_id: device.id },
+      def make_default_button
+        helpers.form_tag(
+          { controller: table.target_controller, action: :make_default, device_id: device.id },
           method: :post,
-          html: { id: "two_factor_make_default_form", class: "form--inline" }
-        ) do |f|
-          f.submit I18n.t(:button_make_default),
-                   class: "button--link two-factor--mark-default-button"
+          id: "two_factor_make_default_form",
+          data: helpers.password_confirmation_data_attribute({})
+        ) do
+          render(
+            Primer::Beta::IconButton.new(
+              icon: :star,
+              tag: :button,
+              size: :small,
+              type: :submit,
+              "aria-label": I18n.t(:button_make_default)
+            )
+          )
         end
       end
 
-      def delete_link
-        title =
-          if deletion_blocked?
-            I18n.t("two_factor_authentication.devices.is_default_cannot_delete")
-          else
-            I18n.t(:button_delete)
-          end
-
-        helpers.password_confirmation_form_for(
-          device,
-          url: { controller: table.target_controller, action: :destroy, device_id: device.id },
+      def delete_button
+        helpers.form_tag(
+          { controller: table.target_controller, action: :destroy, device_id: device.id },
           method: :delete,
-          html: { id: "two_factor_delete_form", class: "" }
-        ) do |f|
-          f.submit I18n.t(:button_delete),
-                   class: "button--link two-factor--delete-button",
-                   disabled: deletion_blocked?,
-                   title:
+          id: "two_factor_delete_form",
+          data: helpers.password_confirmation_data_attribute({})
+        ) do
+          render(
+            Primer::Beta::IconButton.new(
+              scheme: :danger,
+              icon: :trash,
+              tag: :button,
+              size: :small,
+              type: :submit,
+              disabled: deletion_blocked?,
+              "aria-label": if deletion_blocked?
+                              I18n.t("two_factor_authentication.devices.is_default_cannot_delete")
+                            else
+                              I18n.t(:button_delete)
+                            end
+            )
+          )
         end
       end
 
@@ -83,12 +94,6 @@ module ::TwoFactorAuthentication
         return false if table.admin_table?
 
         device.default && table.enforced?
-      end
-
-      def column_css_class(_column)
-        if device.default
-          "mobile-otp--device-default"
-        end
       end
     end
   end

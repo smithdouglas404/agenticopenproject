@@ -1126,6 +1126,7 @@ Rails.application.routes.draw do
   end
 
   scope controller: "my" do
+    get "/my/security", action: "security", as: "my_security"
     get "/my/password", action: "password"
     get "/my/password_confirmation_dialog", action: "password_confirmation_dialog"
     post "/my/change_password", action: "change_password"

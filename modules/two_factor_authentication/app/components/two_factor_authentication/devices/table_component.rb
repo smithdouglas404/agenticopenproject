@@ -2,12 +2,16 @@
 
 module ::TwoFactorAuthentication
   module Devices
-    class TableComponent < ::TableComponent
+    class TableComponent < ::OpPrimer::BorderBoxTableComponent
       options :admin_table
       columns :device_type, :default, :confirmed
 
-      def initial_sort
-        %i[login asc]
+      def mobile_title
+        I18n.t("two_factor_authentication.label_devices")
+      end
+
+      def has_actions?
+        true
       end
 
       def self_table?
@@ -26,17 +30,13 @@ module ::TwoFactorAuthentication
         end
       end
 
-      def sortable?
-        false
-      end
-
       delegate :enforced?, to: :strategy_manager
 
       def strategy_manager
         ::OpenProject::TwoFactorAuthentication::TokenStrategyManager
       end
 
-      def empty_row_message
+      def blank_title
         if admin_table?
           I18n.t "two_factor_authentication.admin.no_devices_for_user"
         else
