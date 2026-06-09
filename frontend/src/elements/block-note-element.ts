@@ -82,9 +82,7 @@ class BlockNoteElement extends HTMLElement {
     this.reactRoot = createRoot(this.editorMount);
 
     this.renderCallback = (provider:HocuspocusProvider) => {
-      this.reactRoot?.render(
-        React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider))
-      );
+      this.reactRoot?.render(this.BlockNoteReactContainer(provider));
     };
 
     LiveCollaborationManager.onReady(this.renderCallback);
