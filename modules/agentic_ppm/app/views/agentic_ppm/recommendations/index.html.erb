@@ -1,0 +1,29 @@
+<%# Minimal scaffold view -- the polished Insights inbox is a later phase (docs/06). %>
+<h2><%= t("agentic_ppm.label_recommendations") %></h2>
+
+<% if @recommendations.empty? %>
+  <p class="generic-table--empty-row"><%= t("agentic_ppm.no_recommendations") %></p>
+<% else %>
+  <table class="generic-table">
+    <thead>
+      <tr>
+        <th><%= AgentRecommendation.human_attribute_name(:title) %></th>
+        <th><%= AgentRecommendation.human_attribute_name(:agent) %></th>
+        <th><%= AgentRecommendation.human_attribute_name(:severity) %></th>
+        <th><%= AgentRecommendation.human_attribute_name(:confidence) %></th>
+        <th><%= AgentRecommendation.human_attribute_name(:status) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @recommendations.each do |rec| %>
+        <tr>
+          <td><%= rec.title %></td>
+          <td><%= rec.agent %></td>
+          <td><%= rec.severity %></td>
+          <td><%= number_to_percentage((rec.confidence || 0) * 100, precision: 0) %></td>
+          <td><%= rec.status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

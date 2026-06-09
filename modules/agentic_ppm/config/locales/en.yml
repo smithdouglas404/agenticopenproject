@@ -1,0 +1,21 @@
+en:
+  project_module_agentic_ppm: "Agentic PPM"
+  permission_view_agent_recommendations: "View agent recommendations"
+  permission_manage_agent_recommendations: "Manage agent recommendations"
+
+  agentic_ppm:
+    label_insights: "Insights"
+    label_recommendations: "Agent recommendations"
+    no_recommendations: "No recommendations yet."
+
+  activerecord:
+    models:
+      agentic_ppm/agent_recommendation: "Agent recommendation"
+    attributes:
+      agentic_ppm/agent_recommendation:
+        title: "Title"
+        agent: "Agent"
+        severity: "Severity"
+        confidence: "Confidence"
+        status: "Status"
+        ontology_subject: "Subject"
