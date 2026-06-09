@@ -73,7 +73,11 @@ module OpenProject::Wikis
       project_module :work_package_tracking do
         permission :manage_wiki_page_links,
                    {
-                     "wikis/relation_page_links": %i[create destroy confirm_delete_dialog link_existing_dialog]
+                     "wikis/pages": %i[create_and_link create_new_page_dialog],
+                     "wikis/relation_page_links": %i[create
+                                                     destroy
+                                                     confirm_delete_dialog
+                                                     link_existing_dialog]
                    },
                    permissible_on: :project,
                    dependencies: %i[edit_work_packages],

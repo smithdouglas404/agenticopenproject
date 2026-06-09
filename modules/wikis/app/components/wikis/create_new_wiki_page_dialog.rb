@@ -29,33 +29,38 @@
 #++
 
 module Wikis
-  class SearchPagesController < ApplicationController
-    include Dry::Monads[:result]
+  class CreateNewWikiPageDialog < ApplicationComponent
+    include OpTurbo::Streamable
 
-    # The search is project independent and thus permission independent. The user will see results according to
-    # the permissions set in each wiki.
-    no_authorization_required! :show
+    def id = "create-new-wiki-page-dialog"
 
-    def show
-      provider = Provider.visible.find(params.expect(:provider_id))
-      query = params[:query]
-      form_name = params[:name]
-      builder = ActionView::Helpers::FormBuilder.new("", nil, view_context, {})
-      search_result = search_pages(query, provider)
+    def form_id = "#{id}-form"
 
-      render layout: false, locals: { search_result:, builder:, name: form_name }
+    def show_first_step?
+      model.page_title.blank?
     end
 
-    private
-
-    def search_pages(query, provider)
-      return Success([]) if query.blank?
-
-      Adapters::Input::SearchPages.build(query:).bind do |input_data|
-        provider.auth_strategy_for(current_user).bind do |auth_strategy|
-          provider.resolve("queries.search_pages").call(input_data:, auth_strategy:)
-        end
+    def form_options
+      if show_first_step?
+        {
+          id: form_id,
+          model:,
+          method: :get,
+          url: create_new_page_dialog_wiki_pages_path,
+          data: { turbo_stream: true }
+        }
+      else
+        {
+          id: form_id,
+          model:,
+          url: create_and_link_wiki_pages_path,
+          data: { turbo_frame: WorkPackageWikisTabComponent::TURBO_FRAME_ID }
+        }
       end
+    end
+
+    def system_arguments
+      options
     end
   end
 end
