@@ -48,6 +48,11 @@ function projectNodeIdFromEvent(event: OPWebhookEvent): string | null {
 
 async function processEvent(event: OPWebhookEvent): Promise<void> {
   const { action } = event;
+  console.log(
+    `[webhook] received ${action}` +
+      (event.work_package?.id ? ` wp=${event.work_package.id}` : '') +
+      (event.project?.id ? ` project=${event.project.id}` : ''),
+  );
 
   // Dedup: ignore changes our own agent made.
   const syncSource = event.work_package?.['customField_sync_source'];
@@ -65,7 +70,12 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
       if (!wpId) return;
 
       // 1. Project the change into the graph.
-      await projector.syncSingleWorkPackage(wpId);
+      const projected = await projector.syncSingleWorkPackage(wpId);
+      console.log(
+        projected
+          ? `[webhook] projected WP ${wpId} as ${projected.label} (${projected.nodeId})`
+          : `[webhook] WP ${wpId} skipped (agent-originated)`,
+      );
 
       // 2. Re-run the Insights & Risk agent for the owning project.
       // TODO(debounce): coalesce bursts of WP updates per project before re-running.
