@@ -101,6 +101,22 @@ class GraphitiClient {
     await this.client?.close();
     this.client = null;
   }
+
+  /** Connectivity check for the preflight CLI. */
+  async ping(): Promise<{ enabled: boolean; ok: boolean; tools?: string[]; error?: string }> {
+    if (!config.graphiti.mcpUrl) return { enabled: false, ok: false };
+    // Reset any prior "disabled" latch so preflight always re-attempts.
+    this.disabled = false;
+    this.client = null;
+    const client = await this.connect();
+    if (!client) return { enabled: true, ok: false, error: 'connect failed (see log)' };
+    try {
+      const { tools } = await client.listTools();
+      return { enabled: true, ok: true, tools: tools.map((t) => t.name) };
+    } catch (err: any) {
+      return { enabled: true, ok: false, error: err.message };
+    }
+  }
 }
 
 const singleton = new GraphitiClient();
@@ -111,4 +127,8 @@ export function recordEpisode(episode: GraphitiEpisode): Promise<void> {
 
 export function closeGraphiti(): Promise<void> {
   return singleton.close();
+}
+
+export function pingGraphiti() {
+  return singleton.ping();
 }
