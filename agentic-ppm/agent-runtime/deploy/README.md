@@ -9,6 +9,20 @@ The stack is four services:
 | **graphiti-mcp** | Temporal memory (on FalkorDB) | Graphiti MCP server (verify tag) |
 | **agent-runtime** | This sidecar | built from `agentic-ppm/agent-runtime/` |
 
+## ⚠️ Do NOT attach the repo ROOT to Railway
+
+This repository's root is the **OpenProject Rails monorepo**. If you attach the
+root, Railway auto-detects a Rails app (`Gemfile` + `config.ru` + `Procfile`) and
+creates **one service per Procfile process** — `web`, `worker`, `backup`, `check`
+— trying to build OpenProject from source. That is NOT this stack, and not what
+you want. There is no `railway.json` at the root, so nothing overrides that.
+
+**The fix:** deploy OpenProject from its **prebuilt image** (below), and deploy
+the sidecar from the repo with **Root Directory = `agentic-ppm/agent-runtime`**.
+That subdir has its own `Dockerfile` + `railway.json` (builder=DOCKERFILE,
+healthcheck `/health`), so Railway builds just the Node sidecar — not the Rails
+tree. Delete the auto-created `web`/`worker`/`backup`/`check` services.
+
 ## Recommendation: Railway (hosted) over local docker-compose
 
 Since you already use Railway, **host it on Railway** rather than running compose
