@@ -7,16 +7,24 @@
 import { config, assertRuntimeConfig } from './config.js';
 import { buildApp } from './webhook/server.js';
 import { getOpenProjectClient } from './openproject/client.js';
+import { runPreflight } from './preflight.js';
 
 async function main(): Promise<void> {
   assertRuntimeConfig();
 
-  // Best-effort connectivity check so misconfiguration surfaces at boot, not first event.
-  const conn = await getOpenProjectClient().testConnection();
-  if (conn.connected) {
-    console.log(`[boot] OpenProject reachable: ${conn.instanceName ?? ''} (core ${conn.version ?? '?'})`);
+  if (config.preflightOnBoot) {
+    // Full dependency report (OpenProject + FalkorDB + Graphiti) at boot.
+    console.log('[boot] PREFLIGHT_ON_BOOT=1 — checking dependencies:');
+    const { failedRequired } = await runPreflight('[boot] ');
+    if (failedRequired) console.warn('[boot] ⚠ required dependency unreachable — starting anyway');
   } else {
-    console.warn(`[boot] OpenProject NOT reachable: ${conn.error}`);
+    // Best-effort connectivity check so misconfiguration surfaces at boot, not first event.
+    const conn = await getOpenProjectClient().testConnection();
+    if (conn.connected) {
+      console.log(`[boot] OpenProject reachable: ${conn.instanceName ?? ''} (core ${conn.version ?? '?'})`);
+    } else {
+      console.warn(`[boot] OpenProject NOT reachable: ${conn.error}`);
+    }
   }
 
   const app = buildApp();

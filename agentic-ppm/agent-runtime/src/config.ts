@@ -15,6 +15,8 @@ function required(name: string): string {
 
 export const config = {
   port: Number(process.env.PORT ?? 8745),
+  /** When true, run the full dependency preflight report at boot (logs to stdout). */
+  preflightOnBoot: process.env.PREFLIGHT_ON_BOOT === '1',
   logLevel: process.env.LOG_LEVEL ?? 'info',
 
   openproject: {
