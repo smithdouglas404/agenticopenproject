@@ -114,6 +114,21 @@ export class OpenProjectClient {
     return this.request('POST', `/projects/${projectId}/work_packages`, payload);
   }
 
+  /** List available work-package types (used by the smoke test to pick a valid type). */
+  async listTypes(): Promise<Array<{ id: number; name: string; self: string }>> {
+    const data = await this.request('GET', '/types');
+    return (data._embedded?.elements ?? []).map((t: any) => ({
+      id: t.id,
+      name: t.name,
+      self: t._links?.self?.href ?? `/api/v3/types/${t.id}`,
+    }));
+  }
+
+  /** Delete a work package (used by the smoke test for cleanup). */
+  async deleteWorkPackage(workPackageId: number): Promise<void> {
+    await this.request('DELETE', `/work_packages/${workPackageId}`);
+  }
+
   /** Post an activity comment on a work package. */
   async addWorkPackageComment(workPackageId: number, comment: string): Promise<void> {
     await this.request('POST', `/work_packages/${workPackageId}/activities`, {
