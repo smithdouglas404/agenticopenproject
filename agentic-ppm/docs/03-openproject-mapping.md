@@ -96,8 +96,9 @@ AgenticPpm::Ontology.bind do
 end
 ```
 
-- **Forward** (OpenProject → triples): the projector asks the binding "what ontology
-  class/props does this work package map to?" and emits RDF.
+- **Forward** (OpenProject → graph): the projector asks the binding "what ontology
+  class/props does this work package map to?" and emits FalkorDB/Graphiti nodes & edges
+  (ontology IRIs become node labels/types).
 - **Reverse** (agent finding → OpenProject): a `k360:AgentFinding` referencing
   `safe:Feature/123` resolves back to `WorkPackage#123` to attach the recommendation.
 

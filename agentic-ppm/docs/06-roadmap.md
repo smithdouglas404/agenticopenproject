@@ -3,6 +3,33 @@
 Phased delivery from blueprint to a working 4-agent vertical slice and beyond. Each phase
 is independently demoable.
 
+## Decisions (locked 2026-06-09)
+
+| Decision | Choice |
+|---|---|
+| **First vertical slice** | *Quick* — agent reasoning on **seeded** SAFe data (no ingestion pipeline yet) |
+| **Graph sync** | **Realtime** — webhook-driven near-real-time projection, with a periodic reconciliation safety net |
+| **Agent LLM** | **Anthropic Claude API** (Opus / Sonnet) |
+| **First agent** | **Portfolio Insights & Risk** |
+| **Graph store** | **FalkorDB + Graphiti** (property graph + bi-temporal memory) — see docs 05 / 08 |
+
+This reshuffles the near-term path: rather than completing ingestion (Phase 2) before
+agents (Phase 3), we cut a **thin "Quick slice"** that proves the spine end-to-end first.
+
+### Quick slice — the next milestone
+1. Seed SAFe data into OpenProject via `SeedSafeConfigurationService` + a small demo
+   Portfolio→Value Stream→ART→Epic→Feature→Story tree.
+2. Stand up **FalkorDB** + a **Python Graphiti** service (exposed over MCP).
+3. **Projector:** OpenProject → graph, triggered by **webhooks** (realtime) plus a periodic
+   reconcile.
+4. **Portfolio Insights & Risk** agent (TypeScript, Claude) reasons over the graph and
+   emits `AgentRecommendation`s.
+5. Recommendations surface in the **Insights inbox** (already scaffolded in
+   `modules/agentic_ppm`).
+
+Ingestion connectors (Jira/Excel/etc., and the Methodology Mapper that normalizes them)
+follow once the spine is proven.
+
 ## Phase 0 — Blueprint & ontology  ✅ (this deliverable)
 - Vendored Smith Clarity ontology into `agentic-ppm/ontology/`.
 - Architecture, SAFe reference model, OpenProject mapping, agent roster, data flow.
@@ -19,15 +46,16 @@ is independently demoable.
 - *Demo:* create a Portfolio→Value Stream→ART→Epic→Feature→Story tree in OpenProject; show
   WSJF fields and PI versions.
 
-## Phase 2 — Ingest & knowledge graph
-**Goal:** OpenProject state is mirrored as an ontology-shaped, temporal graph.
+## Phase 2 — Knowledge graph & realtime projection
+**Goal:** OpenProject state is mirrored as an ontology-shaped, bi-temporal property graph.
 - TS Agent Runtime skeleton: webhook receiver + APIv3 client + service-account auth.
-- Projector: record → triples via the binding; temporal stamping; idempotent upsert.
-- Stand up the triple store; load the ontology TBox; backfill ABox from APIv3.
-- Reasoner: load OWL, materialize the first derived classes (`OrphanedProject`,
-  `CostAnomaly`).
-- *Demo:* change a Feature in OpenProject → see the triple update + a derived class appear;
-  run a cross-methodology SPARQL roll-up.
+- Projector: record → graph nodes/edges via the binding; bi-temporal stamping (Graphiti);
+  idempotent upsert. Driven by webhooks (realtime) + periodic reconcile.
+- Stand up **FalkorDB**; model the ontology schema; backfill from APIv3.
+- Derived-insight pass: materialize the first derived signals (`OrphanedProject`,
+  `CostAnomaly`) as graph nodes/labels for agents to query.
+- *Demo:* change a Feature in OpenProject → see the graph update in near-real-time + a
+  derived signal appear; run a cross-methodology Cypher/Graphiti roll-up.
 
 ## Phase 3 — First agents + Insights inbox (the vertical slice)
 **Goal:** end-to-end autonomy for 4 agents.

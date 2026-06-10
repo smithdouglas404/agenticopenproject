@@ -44,4 +44,6 @@ group :opf_plugins do
   gem 'openproject-documents',                 path: 'modules/documents'
 
   gem 'openproject-bim',                       path: 'modules/bim'
+
+  gem 'openproject-agentic_ppm',               path: 'modules/agentic_ppm'
 end
