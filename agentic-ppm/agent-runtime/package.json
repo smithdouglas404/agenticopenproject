@@ -12,7 +12,8 @@
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
     "seed:webhook": "tsx src/scripts/registerWebhook.ts",
-    "sync:backfill": "tsx src/scripts/backfill.ts"
+    "sync:backfill": "tsx src/scripts/backfill.ts",
+    "preflight": "tsx src/scripts/preflight.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",
