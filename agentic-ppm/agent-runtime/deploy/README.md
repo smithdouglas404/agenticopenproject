@@ -69,6 +69,10 @@ npm run sync:backfill   # seed the graph from existing OpenProject data; idempot
 Run `preflight` first; once it's all green, `smoke` proves the round-trip and
 `sync:backfill` seeds history before the first real webhook fires.
 
+**No shell access?** Set env var `PREFLIGHT_ON_BOOT=1` on the sidecar service and
+redeploy — it logs the same ✅/❌ dependency report to the deploy logs at startup,
+then starts normally. (Or set Custom Start Command to `npm run preflight; npm start`.)
+
 ## Is "one or two" better — OpenProject's own setup vs ours?
 
 The OpenProject Docker setup that's safe to run is the **all-in-one
