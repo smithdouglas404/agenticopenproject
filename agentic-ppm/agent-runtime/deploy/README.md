@@ -55,14 +55,19 @@ Finally, in OpenProject → Administration → Webhooks, add:
 events `work_package:created/updated`, `project:created/updated`.
 `npm run seed:webhook` prints this checklist with your configured values.
 
-### Seed the graph (run once before going live)
+### Verify + seed (run on the Railway sidecar service)
 
-Before the first webhook fires, backfill the graph from existing OpenProject
-data so the agent reasons over a populated world-model on day one:
+The sidecar must reach OpenProject + FalkorDB + Graphiti on Railway's private
+network, so run these from the **sidecar service** shell (not a dev sandbox):
 
 ```bash
-npm run sync:backfill   # pages through all projects + work packages; idempotent
+npm run preflight       # ✅/❌ report: are OpenProject, FalkorDB, Graphiti reachable?
+npm run smoke           # end-to-end: create a throwaway WP -> project -> assert in graph -> cleanup
+npm run sync:backfill   # seed the graph from existing OpenProject data; idempotent
 ```
+
+Run `preflight` first; once it's all green, `smoke` proves the round-trip and
+`sync:backfill` seeds history before the first real webhook fires.
 
 ## Is "one or two" better — OpenProject's own setup vs ours?
 
