@@ -7,6 +7,7 @@
 import { config, assertRuntimeConfig } from './config.js';
 import { buildApp } from './webhook/server.js';
 import { getOpenProjectClient } from './openproject/client.js';
+import { getProjector } from './projector/projector.js';
 import { runPreflight } from './preflight.js';
 
 async function main(): Promise<void> {
@@ -31,6 +32,21 @@ async function main(): Promise<void> {
   app.listen(config.port, () => {
     console.log(`[boot] agent-runtime listening on :${config.port}`);
     console.log(`[boot] webhook endpoint: POST http://<host>:${config.port}/webhooks/openproject`);
+
+    if (config.runBackfillOnBoot) {
+      // Seed the graph in the background so the server stays healthy meanwhile.
+      // Idempotent (upserts), so it's safe to leave on — but unset it once seeded
+      // to avoid re-scanning all of OpenProject on every deploy.
+      console.log('[boot] RUN_BACKFILL_ON_BOOT=1 — seeding graph from OpenProject...');
+      void getProjector()
+        .syncAll({ onProgress: (msg) => console.log(`[backfill] ${msg}`) })
+        .then((r) =>
+          console.log(
+            `[backfill] done: ${r.projects} projects, ${r.workPackages} work packages (${r.skipped} skipped)`,
+          ),
+        )
+        .catch((err) => console.error(`[backfill] failed: ${err.message}`));
+    }
   });
 }
 

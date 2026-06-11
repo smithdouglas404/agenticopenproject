@@ -17,6 +17,8 @@ export const config = {
   port: Number(process.env.PORT ?? 8745),
   /** When true, run the full dependency preflight report at boot (logs to stdout). */
   preflightOnBoot: process.env.PREFLIGHT_ON_BOOT === '1',
+  /** When true, backfill the graph from OpenProject at boot (idempotent, runs in background). */
+  runBackfillOnBoot: process.env.RUN_BACKFILL_ON_BOOT === '1',
   logLevel: process.env.LOG_LEVEL ?? 'info',
 
   openproject: {
