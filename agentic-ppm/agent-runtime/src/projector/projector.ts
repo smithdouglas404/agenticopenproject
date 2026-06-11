@@ -11,23 +11,10 @@ import type { OpenProjectProject, OpenProjectWorkPackage } from '../openproject/
 import { getGraph } from '../graph/falkor.js';
 import { recordEpisode } from '../graph/graphiti.js';
 import { config } from '../config.js';
+import { mapType, canonicalId, type SourceSystem } from '../ontology/mapping.js';
+import type { SpineProperties } from '../ontology/spine.js';
 
-/** SAFe type mapping: OP WP type name -> graph label. (from DOSv2 WP_TYPE_TO_ONTOLOGY) */
-const WP_TYPE_TO_LABEL: Record<string, string> = {
-  Epic: 'Epic',
-  Capability: 'Feature',
-  Feature: 'Feature',
-  'User Story': 'Story',
-  Task: 'Task',
-  Risk: 'Risk',
-  'Agent Alert': 'Insight',
-  'Governance Gate': 'Project',
-  'Demand Request': 'Project',
-  'Change Request': 'Project',
-  Phase: 'Project',
-  Milestone: 'Project',
-  Bug: 'Task',
-};
+const KNOWN_SOURCES: SourceSystem[] = ['openproject', 'jira', 'msproject', 'planview'];
 
 /** Parse ISO 8601 duration (PT2H30M) to hours. (lifted from DOSv2) */
 function parseISODuration(duration?: string): number | undefined {
@@ -62,7 +49,10 @@ export class Projector {
         description: project.description?.raw ?? '',
         status: project.active === false ? 'inactive' : 'active',
         portfolioRoot: isTopLevel,
+        spineClass: 'Project',
+        dialectClass: 'pm:Project',
         source: 'openproject',
+        ingestedVia: 'openproject',
         syncedAt: new Date().toISOString(),
       },
     });
@@ -81,23 +71,45 @@ export class Projector {
     const syncSource = (wp['customField_sync_source'] as string) ?? 'openproject';
     if (syncSource === config.openproject.syncSource) return null;
 
-    const typeName = wp._links?.type?.title ?? 'Task';
-    const label = WP_TYPE_TO_LABEL[typeName] ?? 'Task';
-    const nodeId = wpNodeId(wp.id!);
+    const raw = wp as unknown as Record<string, unknown>;
 
-    const properties: Record<string, unknown> = {
+    // Canonical (spine) properties — native fields normalized to the ontology.
+    const props: SpineProperties = {
       name: wp.subject,
       description: wp.description?.raw ?? '',
-      type: typeName,
       status: wp._links?.status?.title ?? 'New',
       priority: wp._links?.priority?.title ?? 'Normal',
       assignee: wp._links?.assignee?.title,
       startDate: wp.startDate,
       endDate: wp.dueDate,
+      dueDate: wp.dueDate,
       progress: wp.percentageDone,
       estimatedHours: parseISODuration(wp.estimatedTime),
       actualHours: parseISODuration(wp.spentTime),
-      source: 'openproject',
+      storyPoints: typeof raw['storyPoints'] === 'number' ? (raw['storyPoints'] as number) : undefined,
+    };
+
+    // True origin (provenance): data ingested from another tool carries it.
+    const declared = String(raw['customField_source_system'] ?? 'openproject').toLowerCase();
+    const source: SourceSystem = (KNOWN_SOURCES as string[]).includes(declared)
+      ? (declared as SourceSystem)
+      : 'openproject';
+    const nativeId = String(raw['customField_external_id'] ?? wp.id);
+
+    // Resolve to the spine via the ontology mapping layer.
+    const typeName = wp._links?.type?.title ?? 'Task';
+    const { label, dialectClass } = mapType('openproject', typeName, props);
+    const nodeId = wpNodeId(wp.id!);
+
+    const properties: Record<string, unknown> = {
+      ...props,
+      type: typeName, // native OpenProject type
+      spineClass: label,
+      dialectClass,
+      source, // true origin system (jira/msproject/planview/openproject)
+      ingestedVia: 'openproject',
+      nativeId,
+      canonicalId: canonicalId(source, nativeId),
       syncedAt: new Date().toISOString(),
     };
 
@@ -117,9 +129,9 @@ export class Projector {
     }
 
     await recordEpisode({
-      content: `${typeName} "${wp.subject}" (#${wp.id}) is ${properties.status}`,
-      source: 'openproject',
-      metadata: { nodeId, label, status: properties.status, priority: properties.priority },
+      content: `${label} "${wp.subject}" (#${wp.id}) is ${props.status}`,
+      source,
+      metadata: { nodeId, spineClass: label, dialectClass, status: props.status, priority: props.priority },
     });
 
     return { label, nodeId };
