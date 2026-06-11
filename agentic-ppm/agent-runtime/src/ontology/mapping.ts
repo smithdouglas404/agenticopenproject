@@ -11,7 +11,19 @@
  */
 import type { SpineLabel, SpineProperties } from './spine.js';
 
-export type SourceSystem = 'openproject' | 'jira' | 'msproject' | 'planview';
+export type SourceSystem =
+  | 'openproject'
+  | 'jira'
+  | 'jiraalign'
+  | 'msproject'
+  | 'planview'
+  | 'servicenow'
+  | 'excel';
+
+/** All PPM sources with mappings shipped on day 1. */
+export const SUPPORTED_SOURCES: readonly SourceSystem[] = [
+  'openproject', 'jira', 'jiraalign', 'msproject', 'planview', 'servicenow', 'excel',
+] as const;
 
 export interface MappedType {
   label: SpineLabel;
@@ -74,11 +86,62 @@ const PLANVIEW_TYPES: TypeMap = {
   Demand: { label: 'Project', dialectClass: 'pm:Project' },
 };
 
+// Jira Align (enterprise SAFe) — strongly SAFe dialect.
+const JIRAALIGN_TYPES: TypeMap = {
+  Portfolio: { label: 'Portfolio', dialectClass: 'safe:Portfolio' },
+  'Value Stream': { label: 'Program', dialectClass: 'safe:ValueStream' },
+  Solution: { label: 'Program', dialectClass: 'safe:Solution' },
+  Program: { label: 'Team', dialectClass: 'safe:ART' },
+  Theme: { label: 'Epic', dialectClass: 'safe:Epic' },
+  Epic: { label: 'Epic', dialectClass: 'safe:Epic' },
+  Capability: { label: 'Feature', dialectClass: 'safe:Capability' },
+  Feature: { label: 'Feature', dialectClass: 'safe:Feature' },
+  Story: { label: 'Story', dialectClass: 'safe:Story' },
+  Enabler: { label: 'Story', dialectClass: 'safe:Enabler' },
+  PI: { label: 'Milestone', dialectClass: 'safe:PI' },
+  Sprint: { label: 'Milestone', dialectClass: 'safe:Sprint' },
+  Objective: { label: 'Objective', dialectClass: 'k360:Objective' },
+};
+
+// ServiceNow SPM/ITBM.
+const SERVICENOW_TYPES: TypeMap = {
+  Portfolio: { label: 'Portfolio', dialectClass: 'pm:Portfolio' },
+  Program: { label: 'Program', dialectClass: 'pm:Program' },
+  Project: { label: 'Project', dialectClass: 'pm:Project' },
+  Demand: { label: 'Project', dialectClass: 'pm:Project' },
+  Idea: { label: 'Project', dialectClass: 'pm:Project' },
+  Epic: { label: 'Epic', dialectClass: 'safe:Epic' },
+  Story: { label: 'Story', dialectClass: 'safe:Story' },
+  'Project Task': { label: 'Task', dialectClass: 'pm:Task' },
+  Task: { label: 'Task', dialectClass: 'pm:Task' },
+  Enhancement: { label: 'Issue', dialectClass: 'pm:Issue' },
+  Defect: { label: 'Issue', dialectClass: 'pm:Issue' },
+  Risk: { label: 'Risk', dialectClass: 'pm:Risk' },
+  Issue: { label: 'Issue', dialectClass: 'pm:Issue' },
+  Release: { label: 'Milestone', dialectClass: 'pm:Milestone' },
+};
+
+// Excel / generic CSV (bridging.ttl "Excel/Generic Terminology").
+const EXCEL_TYPES: TypeMap = {
+  Portfolio: { label: 'Portfolio', dialectClass: 'pm:Portfolio' },
+  Program: { label: 'Program', dialectClass: 'pm:Program' },
+  Project: { label: 'Project', dialectClass: 'pm:Project' },
+  Deliverable: { label: 'Deliverable', dialectClass: 'pm:Deliverable' },
+  Task: { label: 'Task', dialectClass: 'pm:Task' },
+  Activity: { label: 'Task', dialectClass: 'pmbok:Activity' },
+  Milestone: { label: 'Milestone', dialectClass: 'pm:Milestone' },
+  Risk: { label: 'Risk', dialectClass: 'pm:Risk' },
+  Resource: { label: 'Resource', dialectClass: 'pm:Resource' },
+};
+
 const TYPE_MAPS: Record<SourceSystem, TypeMap> = {
   openproject: OPENPROJECT_TYPES,
   jira: JIRA_TYPES,
+  jiraalign: JIRAALIGN_TYPES,
   msproject: MSPROJECT_TYPES,
   planview: PLANVIEW_TYPES,
+  servicenow: SERVICENOW_TYPES,
+  excel: EXCEL_TYPES,
 };
 
 const DEFAULT_TYPE: MappedType = { label: 'Task', dialectClass: 'pm:Task' };
@@ -142,6 +205,32 @@ export const FIELD_MAPS: Record<SourceSystem, Record<string, keyof SpineProperti
     Status: 'status',
     Owner: 'assignee',
     'Target Finish': 'dueDate',
+  },
+  jiraalign: {
+    title: 'name',
+    state: 'status',
+    owner: 'assignee',
+    targetDate: 'dueDate',
+    startDate: 'startDate',
+    points: 'storyPoints',
+  },
+  servicenow: {
+    short_description: 'name',
+    state: 'status',
+    assigned_to: 'assignee',
+    due_date: 'dueDate',
+    start_date: 'startDate',
+    percent_complete: 'progress',
+  },
+  excel: {
+    Name: 'name',
+    Status: 'status',
+    Owner: 'assignee',
+    Resource: 'assignee',
+    Start: 'startDate',
+    Deadline: 'dueDate',
+    'Due Date': 'dueDate',
+    'Percent Complete': 'progress',
   },
 };
 
