@@ -15,6 +15,9 @@ import { getProjector } from '../projector/projector.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { runInsightsAndRisk } from '../agents/insightsRiskAgent.js';
 import { publishInsight } from '../inbox/inbox.js';
+import { recordFinding, setFindingStatus } from '../store/findings.js';
+import { maybeSweepAfterEvent } from '../agents/sweep.js';
+import { buildConsoleRouter } from '../console/api.js';
 
 // Resolve the alerts project's numeric id once, so we can ignore our own Agent
 // Alerts (which live in that project) without depending on a custom field.
@@ -111,11 +114,26 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
       }
 
       const insight = await runInsightsAndRisk(projectNodeId);
+
+      // 2b. Run inference detectors opportunistically (throttled).
+      maybeSweepAfterEvent();
+
       if (!insight) return;
 
       // 3. Publish findings to the Insights inbox.
       const ids = await publishInsight(insight);
       console.log(`[webhook] published ${ids.length} finding(s) for ${projectNodeId}: [${ids.join(', ')}]`);
+
+      // 4. Record the insight in the findings store so it shows in the console.
+      const { finding } = await recordFinding({
+        type: 'portfolio-insight',
+        agentId: 'strategic-pmo',
+        severity: insight.portfolioHealth === 'red' ? 'high' : insight.portfolioHealth === 'amber' ? 'medium' : 'low',
+        title: insight.headline,
+        body: insight.healthSummary,
+        nodeId: projectNodeId,
+      });
+      if (ids[0]) await setFindingStatus(finding.id, 'published', { alertWpId: ids[0] });
       break;
     }
 
@@ -147,6 +165,9 @@ export function buildApp(): Express {
   app.get('/health', (_req: Request, res: Response) => {
     res.json({ status: 'ok', service: 'agentic-ppm-agent-runtime' });
   });
+
+  // HITL Agent Console (UI + API).
+  app.use(buildConsoleRouter());
 
   app.post('/webhooks/openproject', (req: Request, res: Response) => {
     const rawBody = (req as Request & { rawBody?: Buffer }).rawBody ?? Buffer.from(JSON.stringify(req.body));

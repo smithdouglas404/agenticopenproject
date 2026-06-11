@@ -9,6 +9,7 @@ import { buildApp } from './webhook/server.js';
 import { getOpenProjectClient } from './openproject/client.js';
 import { getProjector } from './projector/projector.js';
 import { runPreflight } from './preflight.js';
+import { startSweepLoop } from './agents/sweep.js';
 import dns from 'node:dns';
 
 // Railway's private network is IPv6-only. Node's fetch/undici otherwise prefers
@@ -41,6 +42,8 @@ async function main(): Promise<void> {
   app.listen(config.port, () => {
     console.log(`[boot] agent-runtime listening on :${config.port}`);
     console.log(`[boot] webhook endpoint: POST http://<host>:${config.port}/webhooks/openproject`);
+    console.log(`[boot] agent console: http://<host>:${config.port}/console`);
+    startSweepLoop();
 
     if (config.runBackfillOnBoot) {
       // Seed the graph in the background so the server stays healthy meanwhile.

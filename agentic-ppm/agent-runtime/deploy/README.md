@@ -81,6 +81,20 @@ Run `preflight` first; once it's all green, `smoke` proves the round-trip and
 redeploy — it logs the same ✅/❌ dependency report to the deploy logs at startup,
 then starts normally. (Or set Custom Start Command to `npm run preflight; npm start`.)
 
+## The HITL Agent Console
+
+The sidecar serves a human-in-the-loop console at **`/console`** (UI) and
+**`/api/*`** (roster, findings, approve/reject, manual sweep). To use it from a
+browser, give the agent-runtime service a **public domain** in Railway and set
+**`CONSOLE_TOKEN`** — then open `https://<domain>/console?token=<token>`.
+Approvals/rejections are written to the AgentFinding node in FalkorDB *and*
+posted as comments on the corresponding Agent Alert work package in OpenProject,
+so both surfaces stay in sync. `/health` remains unguarded for Railway checks.
+
+Detectors run on a schedule (`DETECTOR_SWEEP_MINUTES`, default 60) and after
+webhook events (throttled); findings are deduped in the graph, so an open
+finding is never re-raised.
+
 ## Is "one or two" better — OpenProject's own setup vs ours?
 
 The OpenProject Docker setup that's safe to run is the **all-in-one
