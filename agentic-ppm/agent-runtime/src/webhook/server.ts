@@ -12,8 +12,27 @@ import crypto from 'node:crypto';
 import express, { type Express, type Request, type Response } from 'express';
 import { config } from '../config.js';
 import { getProjector } from '../projector/projector.js';
+import { getOpenProjectClient } from '../openproject/client.js';
 import { runInsightsAndRisk } from '../agents/insightsRiskAgent.js';
 import { publishInsight } from '../inbox/inbox.js';
+
+// Resolve the alerts project's numeric id once, so we can ignore our own Agent
+// Alerts (which live in that project) without depending on a custom field.
+let alertsProjectId: string | null = null;
+async function isInAlertsProject(event: OPWebhookEvent): Promise<boolean> {
+  if (alertsProjectId === null) {
+    try {
+      const p = await getOpenProjectClient().getProject(config.openproject.alertsProject);
+      alertsProjectId = String((p as { id?: number | string }).id ?? '');
+    } catch {
+      alertsProjectId = '';
+    }
+  }
+  if (!alertsProjectId) return false;
+  const wpProj = event.work_package?._links?.project?.href?.split('/').pop();
+  const projId = event.project?.id != null ? String(event.project.id) : undefined;
+  return wpProj === alertsProjectId || projId === alertsProjectId;
+}
 
 interface OPWebhookEvent {
   action: string; // e.g. work_package:created, work_package:updated, project:updated
@@ -58,6 +77,12 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
   const syncSource = event.work_package?.['customField_sync_source'];
   if (syncSource === config.openproject.syncSource) {
     console.log(`[webhook] skipping agent-originated event for WP ${event.work_package?.id}`);
+    return;
+  }
+  // Also skip anything inside the alerts project (our own Agent Alerts), so the
+  // loop never feeds on itself even when custom fields aren't configured.
+  if (await isInAlertsProject(event)) {
+    console.log('[webhook] skipping event inside the alerts project');
     return;
   }
 

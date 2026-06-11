@@ -31,12 +31,26 @@ export interface InboxFinding {
 /** Write a single finding as an Agent Alert work package. Returns the created WP id. */
 export async function writeFinding(finding: InboxFinding): Promise<number> {
   const client = getOpenProjectClient();
-  const wp = await client.createWorkPackage(config.openproject.alertsProject, {
+
+  // Build a payload that works on a stock OpenProject: a valid type, and custom
+  // fields only when their API keys are configured (otherwise we'd 422).
+  const payload: Record<string, unknown> = {
     subject: `[${finding.severity.toUpperCase()}] ${finding.title}`,
-    description: { raw: finding.body },
-    customField_sync_source: config.openproject.syncSource,
-    customField_alert_severity: finding.severity,
-  });
+    description: { raw: `${finding.body}\n\n_— ${config.openproject.syncSource}_` },
+  };
+
+  const typeHref = await client.getTypeHref(config.openproject.alertType);
+  if (typeHref) payload._links = { type: { href: typeHref } };
+
+  const cfSource = config.openproject.customFieldSyncSource;
+  if (cfSource) payload[cfSource] = config.openproject.syncSource;
+  const cfSeverity = config.openproject.customFieldAlertSeverity;
+  if (cfSeverity) payload[cfSeverity] = finding.severity;
+
+  const wp = await client.createWorkPackage(
+    config.openproject.alertsProject,
+    payload as Parameters<typeof client.createWorkPackage>[1],
+  );
 
   if (finding.relatedWorkPackageId) {
     await client.addWorkPackageComment(
@@ -46,6 +60,29 @@ export async function writeFinding(finding: InboxFinding): Promise<number> {
   }
 
   return wp.id!;
+}
+
+/** Publish detector findings (from agents/detectors.ts) as Agent Alerts. */
+export async function publishDetectorFindings(
+  findings: { type: string; severity: 'low' | 'medium' | 'high'; title: string; body: string; workPackageId?: number }[],
+): Promise<number[]> {
+  const severityMap: Record<'low' | 'medium' | 'high', AlertSeverity> = {
+    low: 'notification',
+    medium: 'warning',
+    high: 'alarm',
+  };
+  const ids: number[] = [];
+  for (const f of findings) {
+    ids.push(
+      await writeFinding({
+        title: `${f.type}: ${f.title}`,
+        body: f.body,
+        severity: severityMap[f.severity],
+        relatedWorkPackageId: f.workPackageId,
+      }),
+    );
+  }
+  return ids;
 }
 
 /** Extract the trailing numeric id from a graph node id like "op-wp-1234". */

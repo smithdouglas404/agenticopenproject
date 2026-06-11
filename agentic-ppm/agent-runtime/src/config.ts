@@ -26,8 +26,13 @@ export const config = {
     apiKey: process.env.OPENPROJECT_API_KEY ?? '',
     webhookSecret: process.env.OPENPROJECT_WEBHOOK_SECRET ?? '',
     alertsProject: process.env.OPENPROJECT_ALERTS_PROJECT ?? 'agent-alerts',
+    /** WP type used for Agent Alerts. Defaults to "Task" so it works on a stock instance. */
+    alertType: process.env.OPENPROJECT_ALERT_TYPE ?? 'Task',
     /** Marker written to agent-created WPs so we can ignore our own webhook echoes. */
     syncSource: process.env.AGENT_SYNC_SOURCE ?? 'agentic-ppm',
+    /** Optional custom-field API keys (e.g. "customField12"). Set only if they exist. */
+    customFieldSyncSource: process.env.OPENPROJECT_CF_SYNC_SOURCE,
+    customFieldAlertSeverity: process.env.OPENPROJECT_CF_ALERT_SEVERITY,
   },
 
   claude: {
