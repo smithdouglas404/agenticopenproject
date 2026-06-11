@@ -9,6 +9,15 @@ import { buildApp } from './webhook/server.js';
 import { getOpenProjectClient } from './openproject/client.js';
 import { getProjector } from './projector/projector.js';
 import { runPreflight } from './preflight.js';
+import dns from 'node:dns';
+
+// Railway's private network is IPv6-only. Node's fetch/undici otherwise prefers
+// IPv4 and fails ("fetch failed") to reach *.railway.internal services such as
+// the Graphiti MCP endpoint. Prefer IPv6 when running on Railway.
+if (Object.keys(process.env).some((k) => k.startsWith('RAILWAY_'))) {
+  dns.setDefaultResultOrder('ipv6first');
+  console.log('[boot] DNS result order set to ipv6first (Railway private network is IPv6-only)');
+}
 
 async function main(): Promise<void> {
   assertRuntimeConfig();
