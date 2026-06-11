@@ -43,12 +43,20 @@ Railway you recreate each block as a Railway service:
    `alert_severity`.
 2. **FalkorDB** — New Service → Docker image `falkordb/falkordb:latest`. Expose it
    on the private network; note host/port for the sidecar.
-3. **graphiti-mcp** — New Service → the Graphiti MCP image (confirm tag against
-   getzep/graphiti). Env: FalkorDB connection + an LLM key. Expose `:8000/sse`.
+3. **graphiti-mcp-server** — New Service → build from this repo using
+   `docker/Dockerfile.graphiti-mcp` (standalone server pinned to `mcp-v1.0.2`,
+   pointed at the FalkorDB service above — NOT the bundled FalkorDB). Set:
+   `FALKORDB_URI=redis://<falkordb-service>.railway.internal:6379` and
+   `OPENAI_API_KEY` (Graphiti uses OpenAI for extraction + embeddings); optional
+   `MODEL_NAME`, `GRAPHITI_GROUP_ID=agentic_ppm`. Endpoint is `:8000/mcp/` (HTTP).
+   Do **not** set an HTTP healthcheck path — there is no `/health` route.
+   Leave this service out entirely to run FalkorDB-only.
 4. **agent-runtime** — New Service → deploy from this repo, **Root Directory**
    `agentic-ppm/agent-runtime` (it has a Dockerfile). Set the env from
-   `.env.example`, pointing `FALKORDB_HOST`, `GRAPHITI_MCP_URL`,
-   `OPENPROJECT_BASE_URL`, and the API/Anthropic keys at the services above.
+   `.env.example`, pointing `FALKORDB_HOST`, `OPENPROJECT_BASE_URL`, and the
+   API/Anthropic keys at the services above. To enable Graphiti, set
+   `GRAPHITI_MCP_URL=http://graphiti-mcp-server.railway.internal:8000/mcp/` and
+   `GRAPHITI_MCP_TRANSPORT=http` (leave unset for FalkorDB-only).
 
 Finally, in OpenProject → Administration → Webhooks, add:
 `https://<agent-runtime-domain>/webhooks/openproject` with the shared secret and

@@ -1,17 +1,27 @@
-# Graphiti MCP server — Railway-compatible build.
+# Graphiti MCP server — standalone, pointed at the EXTERNAL FalkorDB service.
 #
-# The upstream getzep/graphiti Dockerfiles use --mount=type=cache (BuildKit
-# cache mounts) which Railway's builder does not support. This file achieves
-# the same result using plain RUN layers that work on any standard Docker
-# daemon.
+# Verified against getzep/graphiti tag mcp-v1.0.2 (NOT "v1.0.2" — that tag is for
+# graphiti-core; the MCP server is tagged "mcp-v*"). Unlike the upstream combined
+# image (which bundles its OWN FalkorDB inside the container), this runs ONLY the
+# MCP server and connects to the shared FalkorDB Railway service — so the whole
+# stack uses one FalkorDB instance instead of two.
 #
-# Runtime requirements:
-#   NEO4J_URI          bolt://neo4j:7687
-#   NEO4J_USER         neo4j
-#   NEO4J_PASSWORD     <secret>
-#   ANTHROPIC_API_KEY  <secret>   (LLM)
-#   OPENAI_API_KEY     <secret>   (embeddings)
-#   PORT               8000       (HTTP / SSE transport)
+# The server's default config (mcp_server/config/config.yaml) is already
+# FalkorDB + HTTP transport on :8000 and reads ${FALKORDB_URI}. We only override
+# env vars; no custom config needed.
+#
+# Required Railway service variables on graphiti-mcp-server:
+#   FALKORDB_URI     redis://<your-falkordb-service>.railway.internal:6379
+#   OPENAI_API_KEY   <secret>   (Graphiti uses OpenAI for entity extraction + embeddings)
+# Optional:
+#   MODEL_NAME         gpt-4.1-mini      (upstream default is gpt-5.5)
+#   GRAPHITI_GROUP_ID  agentic_ppm
+#   FALKORDB_PASSWORD  <secret>          (only if FalkorDB auth is enabled)
+#   SEMAPHORE_LIMIT    8                 (episode-processing concurrency)
+#
+# MCP endpoint (for the agent-runtime sidecar): http://<host>:8000/mcp/
+# Do NOT set a Railway HTTP healthcheck path — there is no /health route; the MCP
+# server exposes a `get_status` MCP tool, not an HTTP endpoint.
 
 FROM python:3.11-slim-bookworm
 
@@ -22,38 +32,42 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# ── Install uv (no cache-mount syntax) ────────────────────────────────────────
-# Pin to a known-good release so builds are reproducible.
-ENV UV_VERSION=0.4.30
+# ── Install uv (no BuildKit cache-mount syntax, so Railway can build it) ───────
 RUN curl -fsSL https://astral.sh/uv/install.sh | UV_INSTALL_DIR=/usr/local/bin sh \
     && uv --version
 
-# ── Clone graphiti source ──────────────────────────────────────────────────────
-# Shallow clone keeps the image small; pin to a stable tag when available.
-ARG GRAPHITI_REF=main
+# ── Clone the Graphiti source (mcp_server + graphiti-core + default config) ────
+# IMPORTANT: the MCP server is tagged with an "mcp-" prefix.
+ARG GRAPHITI_REF=mcp-v1.0.2
 RUN git clone --depth 1 --branch ${GRAPHITI_REF} \
         https://github.com/getzep/graphiti.git /opt/graphiti
 
 WORKDIR /opt/graphiti/mcp_server
 
-# ── Install Python dependencies ────────────────────────────────────────────────
-# UV_NO_CACHE avoids writing a cache directory that would bloat the layer.
-RUN UV_NO_CACHE=1 uv sync --no-dev
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_PYTHON_DOWNLOADS=never \
+    PYTHONUNBUFFERED=1
 
-# ── Runtime environment defaults ───────────────────────────────────────────────
-# These are overridden at deploy time via Railway service variables / secrets.
-ENV NEO4J_URI=bolt://neo4j:7687 \
-    NEO4J_USER=neo4j \
-    NEO4J_PASSWORD="" \
-    ANTHROPIC_API_KEY="" \
-    OPENAI_API_KEY="" \
-    PORT=8000
+# ── Install Python dependencies ────────────────────────────────────────────────
+# falkordb ships via the graphiti-core[falkordb] dependency — there is NO separate
+# "falkordb" extra, so do not pass --extra falkordb. Drop any local source override
+# and re-lock against PyPI so the build doesn't depend on a workspace checkout.
+RUN sed -i '/^\[tool\.uv\.sources\]/,/^\[/{/^\[tool\.uv\.sources\]/d; /^\[/!d}' pyproject.toml 2>/dev/null || true; \
+    rm -f uv.lock; \
+    UV_NO_CACHE=1 uv lock; \
+    UV_NO_CACHE=1 uv sync --no-dev
+
+# ── Runtime environment defaults (override at deploy time) ─────────────────────
+ENV MCP_SERVER_HOST=0.0.0.0 \
+    FALKORDB_URI="" \
+    GRAPHITI_GROUP_ID=agentic_ppm \
+    SEMAPHORE_LIMIT=8 \
+    OPENAI_API_KEY=""
 
 EXPOSE 8000
 
-# ── Health check ───────────────────────────────────────────────────────────────
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
-
 # ── Start ──────────────────────────────────────────────────────────────────────
-CMD ["uv", "run", "graphiti_mcp_server.py"]
+# main.py is a wrapper that runs src/graphiti_mcp_server.py with the default
+# config/config.yaml (FalkorDB provider, HTTP transport, 0.0.0.0:8000).
+CMD ["uv", "run", "--no-sync", "main.py"]

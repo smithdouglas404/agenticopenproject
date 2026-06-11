@@ -90,6 +90,8 @@ class GraphitiClient {
           group_id: config.graphiti.groupId,
           source: 'text',
           source_description: episode.source,
+          // Bi-temporal: record when the event actually occurred, if known.
+          ...(episode.occurredAt ? { reference_time: episode.occurredAt.toISOString() } : {}),
         },
       });
     } catch (err: any) {
