@@ -54,6 +54,20 @@ export const config = {
     eventThrottleMinutes: Number(process.env.DETECTOR_EVENT_THROTTLE_MINUTES ?? 10),
     /** Publish new findings to OpenProject as Agent Alerts (else console-only). */
     publish: (process.env.DETECTOR_PUBLISH ?? '1') === '1',
+    /** Open work items per assignee before CapacityOverload fires. */
+    capacityThreshold: Number(process.env.CAPACITY_OVERLOAD_THRESHOLD ?? 10),
+  },
+
+  insights: {
+    /** Coalesce webhook bursts: wait this long per project before the LLM run (0 = immediate). */
+    debounceSeconds: Number(process.env.INSIGHT_DEBOUNCE_SECONDS ?? 45),
+  },
+
+  actions: {
+    /** Execute concrete actions when a human approves a finding (HITL-gated). */
+    enabled: (process.env.AGENT_ACTIONS ?? '1') === '1',
+    /** WP type for agent-created follow-up tasks. */
+    followupType: process.env.AGENT_FOLLOWUP_TYPE ?? 'Task',
   },
 
   console: {

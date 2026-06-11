@@ -11,6 +11,7 @@
  * detectors light up once those entities are ingested.
  */
 import { getGraph } from '../graph/falkor.js';
+import { config } from '../config.js';
 
 export type FindingSeverity = 'low' | 'medium' | 'high';
 
@@ -134,7 +135,41 @@ const orphanedWorkItem: Detector = {
   },
 };
 
-export const DETECTORS: Detector[] = [overdueInProgress, unownedHighPriority, orphanedWorkItem];
+/** Assignee carrying more open work items than the capacity threshold. */
+const capacityOverload: Detector = {
+  type: 'CapacityOverload',
+  agentId: 'planning',
+  description: 'Assignee with more open work items than the capacity threshold.',
+  async run() {
+    const threshold = config.detectors.capacityThreshold;
+    const rows = await getGraph().query<{ assignee: string; open: number }>(
+      `MATCH (w)
+       WHERE w.spineClass IN $labels
+         AND w.assignee IS NOT NULL AND w.assignee <> ''
+         AND NOT coalesce(w.status, 'New') IN $closed
+       WITH w.assignee AS assignee, count(w) AS open
+       WHERE open >= $threshold
+       RETURN assignee, open
+       LIMIT 50`,
+      { labels: WORK_LABELS, closed: OPEN_STATUSES_EXCLUDED, threshold },
+    );
+    return rows.map((r) => ({
+      type: 'CapacityOverload',
+      agentId: 'planning',
+      severity: (r.open >= threshold * 2 ? 'high' : 'medium') as FindingSeverity,
+      title: `${r.assignee} is carrying ${r.open} open items`,
+      body: `${r.assignee} has ${r.open} open work items (threshold ${threshold}). Re-balance assignments or re-plan scope.`,
+      nodeId: `assignee-${r.assignee}`,
+    }));
+  },
+};
+
+export const DETECTORS: Detector[] = [
+  overdueInProgress,
+  unownedHighPriority,
+  orphanedWorkItem,
+  capacityOverload,
+];
 
 /** Run all active detectors and return their findings. */
 export async function runDetectors(): Promise<DetectorFinding[]> {

@@ -71,6 +71,10 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
 <header>
   <h1>⚙︎ Agent Console</h1>
   <span class="sub">Agentic PPM · human-in-the-loop · <span id="updated"></span></span>
+  <button id="sweepBtn" style="margin-left:auto; background:var(--chip); color:var(--accent);
+    border:1px solid var(--accent); border-radius:6px; padding:4px 14px; cursor:pointer; font-size:13px;">
+    ▶ Run sweep
+  </button>
 </header>
 <main>
   <h2>Agents</h2>
@@ -148,9 +152,9 @@ function renderFindings(list) {
     // Prefer the LLM-generated narrative; fall back to the raw detector body.
     card.appendChild(el('div', 'body', f.narrative || f.body));
     const meta = el('div', 'meta');
-    let metaText = f.agentId + ' · ' + f.type + ' · ' + new Date(f.updatedAt).toLocaleString()
-      + (f.alertWpId ? ' · alert WP #' + f.alertWpId : '');
-    meta.textContent = metaText;
+    meta.textContent = f.agentId + ' · ' + f.type + ' · ' + new Date(f.updatedAt).toLocaleString()
+      + (f.alertWpId ? ' · alert WP #' + f.alertWpId : '')
+      + (f.followupWpId ? ' · follow-up WP #' + f.followupWpId : '');
     card.appendChild(meta);
     // Render project link and work package link when available.
     if (f.projectId || f.workPackageId) {
@@ -196,6 +200,17 @@ async function decide(id, action) {
     refresh();
   } catch (e) { alert('Failed: ' + e.message); }
 }
+
+document.getElementById('sweepBtn').onclick = async () => {
+  const btn = document.getElementById('sweepBtn');
+  btn.disabled = true; btn.textContent = '… sweeping';
+  try {
+    const r = await api('/api/sweep', { method: 'POST' });
+    btn.textContent = '✓ ' + r.detected + ' detected, ' + r.newFindings + ' new';
+    refresh();
+  } catch (e) { btn.textContent = '✕ failed'; }
+  setTimeout(() => { btn.disabled = false; btn.textContent = '▶ Run sweep'; }, 4000);
+};
 
 refresh();
 setInterval(refresh, 30000);
