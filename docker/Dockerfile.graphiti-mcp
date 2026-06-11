@@ -1,72 +1,22 @@
-# Graphiti MCP server — standalone, pointed at the EXTERNAL FalkorDB service.
+# Graphiti MCP — official combined image, patched to bind IPv6 for Railway.
 #
-# Verified against getzep/graphiti tag mcp-v1.0.2 (NOT "v1.0.2" — that tag is for
-# graphiti-core; the MCP server is tagged "mcp-v*"). Unlike the upstream combined
-# image (which bundles its OWN FalkorDB inside the container), this runs ONLY the
-# MCP server and connects to the shared FalkorDB Railway service — so the whole
-# stack uses one FalkorDB instance instead of two.
+# Why this exists: the upstream combined image (zepai/knowledge-graph-mcp) runs
+# the MCP HTTP server on 0.0.0.0:8000 — IPv4 ONLY. Railway's private network is
+# IPv6-only, so other services (the agent-runtime sidecar) get "fetch failed"
+# trying to reach graphiti-mcp-server.railway.internal:8000.
 #
-# The server's default config (mcp_server/config/config.yaml) is already
-# FalkorDB + HTTP transport on :8000 and reads ${FALKORDB_URI}. We only override
-# env vars; no custom config needed.
+# This one-line patch flips the server bind to "::" (dual-stack), so it's
+# reachable over the IPv6 private network, while keeping everything that already
+# works in the combined image — the bundled FalkorDB on localhost (no external
+# DB hop), OpenAI LLM/embedder, and the /mcp/ HTTP endpoint.
 #
-# Required Railway service variables on graphiti-mcp-server:
-#   FALKORDB_URI     redis://<your-falkordb-service>.railway.internal:6379
-#   OPENAI_API_KEY   <secret>   (Graphiti uses OpenAI for entity extraction + embeddings)
-# Optional:
-#   MODEL_NAME         gpt-4.1-mini      (upstream default is gpt-5.5)
-#   GRAPHITI_GROUP_ID  agentic_ppm
-#   FALKORDB_PASSWORD  <secret>          (only if FalkorDB auth is enabled)
-#   SEMAPHORE_LIMIT    8                 (episode-processing concurrency)
-#
-# MCP endpoint (for the agent-runtime sidecar): http://<host>:8000/mcp/
-# Do NOT set a Railway HTTP healthcheck path — there is no /health route; the MCP
-# server exposes a `get_status` MCP tool, not an HTTP endpoint.
+# graphiti-mcp-server service config:
+#   - Source: build this Dockerfile (Root Directory = repo root)
+#   - Variables: OPENAI_API_KEY (required)
+#   - Do NOT set FALKORDB_URI — the bundled localhost FalkorDB is used.
+#   - Target port 8000, no healthcheck path. MCP endpoint: :8000/mcp/
+FROM zepai/knowledge-graph-mcp:1.0.2
 
-FROM python:3.11-slim-bookworm
-
-# ── System dependencies ────────────────────────────────────────────────────────
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        curl \
-        git \
-        ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-# ── Install uv (no BuildKit cache-mount syntax, so Railway can build it) ───────
-RUN curl -fsSL https://astral.sh/uv/install.sh | UV_INSTALL_DIR=/usr/local/bin sh \
-    && uv --version
-
-# ── Clone the Graphiti source (mcp_server + graphiti-core + default config) ────
-# IMPORTANT: the MCP server is tagged with an "mcp-" prefix.
-ARG GRAPHITI_REF=mcp-v1.0.2
-RUN git clone --depth 1 --branch ${GRAPHITI_REF} \
-        https://github.com/getzep/graphiti.git /opt/graphiti
-
-WORKDIR /opt/graphiti/mcp_server
-
-ENV UV_COMPILE_BYTECODE=1 \
-    UV_LINK_MODE=copy \
-    PYTHONUNBUFFERED=1
-
-# ── Install Python dependencies ────────────────────────────────────────────────
-# falkordb ships via the graphiti-core[falkordb] dependency — there is NO separate
-# "falkordb" extra, so do not pass --extra falkordb. Drop any local source override
-# and re-lock against PyPI so the build doesn't depend on a workspace checkout.
-RUN sed -i '/^\[tool\.uv\.sources\]/,/^\[/{/^\[tool\.uv\.sources\]/d; /^\[/!d}' pyproject.toml 2>/dev/null || true; \
-    rm -f uv.lock; \
-    UV_NO_CACHE=1 uv lock; \
-    UV_NO_CACHE=1 uv sync --no-dev
-
-# ── Runtime environment defaults (override at deploy time) ─────────────────────
-ENV MCP_SERVER_HOST=0.0.0.0 \
-    FALKORDB_URI="" \
-    GRAPHITI_GROUP_ID=agentic_ppm \
-    SEMAPHORE_LIMIT=8 \
-    OPENAI_API_KEY=""
-
-EXPOSE 8000
-
-# ── Start ──────────────────────────────────────────────────────────────────────
-# main.py is a wrapper that runs src/graphiti_mcp_server.py with the default
-# config/config.yaml (FalkorDB provider, HTTP transport, 0.0.0.0:8000).
-CMD ["uv", "run", "--no-sync", "main.py"]
+# Bind the MCP server to IPv6 (dual-stack) instead of IPv4-only 0.0.0.0.
+RUN sed -i -E 's/^([[:space:]]*host:[[:space:]]*).*/\1"::"/' /app/mcp/config/config.yaml \
+    && echo "Patched server host:" && grep -nE '^[[:space:]]*host:' /app/mcp/config/config.yaml
