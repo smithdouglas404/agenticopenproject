@@ -129,6 +129,17 @@ export class OpenProjectClient {
     await this.request('DELETE', `/work_packages/${workPackageId}`);
   }
 
+  private typeHrefCache: Map<string, string> | null = null;
+
+  /** Resolve a work-package type name to its API href (cached). */
+  async getTypeHref(typeName: string): Promise<string | undefined> {
+    if (!this.typeHrefCache) {
+      const types = await this.listTypes();
+      this.typeHrefCache = new Map(types.map((t) => [t.name, t.self]));
+    }
+    return this.typeHrefCache.get(typeName);
+  }
+
   /** Post an activity comment on a work package. */
   async addWorkPackageComment(workPackageId: number, comment: string): Promise<void> {
     await this.request('POST', `/work_packages/${workPackageId}/activities`, {
