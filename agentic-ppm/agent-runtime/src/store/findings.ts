@@ -30,6 +30,8 @@ export interface StoredFinding {
   projectId?: number;
   /** Human-readable project name for display alongside the link. */
   projectName?: string;
+  /** Follow-up WP the agent created on approval, if any. */
+  followupWpId?: number;
   createdAt: string;
   updatedAt: string;
   decidedBy?: string;
@@ -115,7 +117,7 @@ export async function recordFinding(input: {
 
 const RETURN_FIELDS = `f.id AS id, f.type AS type, f.agentId AS agentId, f.severity AS severity,
   f.title AS title, f.body AS body, f.status AS status, f.nodeId AS nodeId,
-  f.workPackageId AS workPackageId, f.alertWpId AS alertWpId,
+  f.workPackageId AS workPackageId, f.alertWpId AS alertWpId, f.followupWpId AS followupWpId,
   f.narrative AS narrative, f.projectId AS projectId, f.projectName AS projectName,
   f.createdAt AS createdAt, f.updatedAt AS updatedAt, f.decidedBy AS decidedBy`;
 
@@ -149,16 +151,39 @@ export async function listFindings(filter?: {
 export async function setFindingStatus(
   id: string,
   status: FindingStatus,
-  opts?: { decidedBy?: string; alertWpId?: number },
+  opts?: { decidedBy?: string; alertWpId?: number; followupWpId?: number },
 ): Promise<StoredFinding | null> {
   await getGraph().query(
     `MATCH (f:AgentFinding { id: $id })
      SET f.status = $status, f.updatedAt = $now
          ${opts?.decidedBy ? ', f.decidedBy = $decidedBy' : ''}
-         ${opts?.alertWpId ? ', f.alertWpId = $alertWpId' : ''}`,
-    { id, status, now: new Date().toISOString(), decidedBy: opts?.decidedBy, alertWpId: opts?.alertWpId },
+         ${opts?.alertWpId ? ', f.alertWpId = $alertWpId' : ''}
+         ${opts?.followupWpId ? ', f.followupWpId = $followupWpId' : ''}`,
+    {
+      id, status, now: new Date().toISOString(),
+      decidedBy: opts?.decidedBy, alertWpId: opts?.alertWpId, followupWpId: opts?.followupWpId,
+    },
   );
   return getFinding(id);
+}
+
+/** Attach an LLM narrative + project link to an existing finding. */
+export async function setFindingNarrative(
+  id: string,
+  data: { narrative: string; projectId?: number; projectName?: string },
+): Promise<void> {
+  await getGraph().query(
+    `MATCH (f:AgentFinding { id: $id })
+     SET f.narrative = $narrative, f.projectId = $projectId, f.projectName = $projectName,
+         f.updatedAt = $now`,
+    {
+      id,
+      narrative: data.narrative,
+      projectId: data.projectId ?? 0,
+      projectName: data.projectName ?? '',
+      now: new Date().toISOString(),
+    },
+  );
 }
 
 /** Counts per agent for the console roster cards. */

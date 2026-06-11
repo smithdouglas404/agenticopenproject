@@ -72,7 +72,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'Planning',
     purpose: 'Capacity forecast, resource allocation, roadmap feasibility.',
     owns: ['CapacityOverload', 'ResourceConflict'],
-    status: 'planned',
+    status: 'active', // CapacityOverload detector runs in the sweep
   },
   {
     id: 'ocm',

@@ -16,6 +16,7 @@ import { Router, type Request, type Response, type NextFunction } from 'express'
 import { AGENT_ROSTER } from '../agents/roster.js';
 import { listFindings, getFinding, setFindingStatus, findingCountsByAgent, type FindingStatus } from '../store/findings.js';
 import { getOpenProjectClient } from '../openproject/client.js';
+import { executeApprovedAction } from '../agents/actions.js';
 import { runSweep } from '../agents/sweep.js';
 import { config } from '../config.js';
 import { CONSOLE_HTML } from './page.js';
@@ -42,19 +43,33 @@ async function decide(req: Request, res: Response, decision: 'approved' | 'rejec
   }
 
   const decidedBy = String(req.body?.decidedBy ?? 'console');
-  const updated = await setFindingStatus(finding.id, decision, { decidedBy });
+
+  // On approval, execute the concrete action (HITL-gated; see agents/actions.ts).
+  let action: Awaited<ReturnType<typeof executeApprovedAction>> = null;
+  if (decision === 'approved') {
+    action = await executeApprovedAction(finding).catch((err) => {
+      console.warn(`[console] approved action failed for ${finding.id}: ${err.message}`);
+      return null;
+    });
+  }
+
+  const updated = await setFindingStatus(finding.id, decision, {
+    decidedBy,
+    followupWpId: action?.followupWpId,
+  });
 
   // Reflect the decision into OpenProject so the WP record matches the console.
   const note =
     decision === 'approved'
-      ? `✅ **Approved** via Agent Console by ${decidedBy}. The team should action: ${finding.title}`
+      ? `✅ **Approved** via Agent Console by ${decidedBy}.` +
+        (action ? ` ${action.detail}.` : ` The team should action: ${finding.title}`)
       : `❌ **Rejected** via Agent Console by ${decidedBy}. No action will be taken.`;
   if (finding.alertWpId) {
     await getOpenProjectClient()
       .addWorkPackageComment(finding.alertWpId, note)
       .catch((err) => console.warn(`[console] comment on alert WP failed: ${err.message}`));
   }
-  if (decision === 'approved' && finding.workPackageId) {
+  if (decision === 'approved' && finding.workPackageId && !action) {
     await getOpenProjectClient()
       .addWorkPackageComment(
         finding.workPackageId,
@@ -63,8 +78,8 @@ async function decide(req: Request, res: Response, decision: 'approved' | 'rejec
       .catch(() => {});
   }
 
-  console.log(`[console] finding ${finding.id} ${decision} by ${decidedBy}`);
-  res.json(updated);
+  console.log(`[console] finding ${finding.id} ${decision} by ${decidedBy}` + (action ? ` — ${action.detail}` : ''));
+  res.json({ ...updated, action });
 }
 
 export function buildConsoleRouter(): Router {
@@ -72,7 +87,10 @@ export function buildConsoleRouter(): Router {
   router.use(['/console', '/api'], auth);
 
   router.get('/console', (_req, res) => {
-    res.type('html').send(CONSOLE_HTML);
+    // Inject the OpenProject base URL so finding links open OpenProject.
+    res
+      .type('html')
+      .send(CONSOLE_HTML.replace('__OPENPROJECT_BASE_URL__', config.openproject.baseUrl.replace(/\/$/, '')));
   });
 
   router.get('/api/roster', async (_req, res) => {

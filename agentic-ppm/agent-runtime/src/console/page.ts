@@ -71,6 +71,10 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
 <header>
   <h1>⚙︎ Agent Console</h1>
   <span class="sub">Agentic PPM · human-in-the-loop · <span id="updated"></span></span>
+  <button id="sweepBtn" style="margin-left:auto; background:var(--chip); color:var(--accent);
+    border:1px solid var(--accent); border-radius:6px; padding:4px 14px; cursor:pointer; font-size:13px;">
+    ▶ Run sweep
+  </button>
 </header>
 <main>
   <h2>Agents</h2>
@@ -80,6 +84,9 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
   <div id="findings"></div>
 </main>
 <script>
+// Injected by the server when this page is served (the OpenProject base URL),
+// so "↗ Project" / "↗ Work Package" links open OpenProject, not this console.
+const OP_BASE = '__OPENPROJECT_BASE_URL__';
 const TOKEN = new URLSearchParams(location.search).get('token') || '';
 const HEADERS = TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {};
 let statusFilter = 'open';
@@ -148,16 +155,16 @@ function renderFindings(list) {
     // Prefer the LLM-generated narrative; fall back to the raw detector body.
     card.appendChild(el('div', 'body', f.narrative || f.body));
     const meta = el('div', 'meta');
-    let metaText = f.agentId + ' · ' + f.type + ' · ' + new Date(f.updatedAt).toLocaleString()
-      + (f.alertWpId ? ' · alert WP #' + f.alertWpId : '');
-    meta.textContent = metaText;
+    meta.textContent = f.agentId + ' · ' + f.type + ' · ' + new Date(f.updatedAt).toLocaleString()
+      + (f.alertWpId ? ' · alert WP #' + f.alertWpId : '')
+      + (f.followupWpId ? ' · follow-up WP #' + f.followupWpId : '');
     card.appendChild(meta);
     // Render project link and work package link when available.
     if (f.projectId || f.workPackageId) {
       const links = el('div', 'links');
       if (f.projectId && f.projectName) {
         const projectLink = document.createElement('a');
-        projectLink.href = '/projects/' + f.projectId;
+        projectLink.href = OP_BASE + '/projects/' + f.projectId;
         projectLink.target = '_blank';
         projectLink.rel = 'noopener noreferrer';
         projectLink.textContent = '↗ ' + f.projectName;
@@ -169,7 +176,7 @@ function renderFindings(list) {
           links.appendChild(sep);
         }
         const wpLink = document.createElement('a');
-        wpLink.href = '/work_packages/' + f.workPackageId;
+        wpLink.href = OP_BASE + '/work_packages/' + f.workPackageId;
         wpLink.target = '_blank';
         wpLink.rel = 'noopener noreferrer';
         wpLink.textContent = '↗ Work Package #' + f.workPackageId;
@@ -196,6 +203,17 @@ async function decide(id, action) {
     refresh();
   } catch (e) { alert('Failed: ' + e.message); }
 }
+
+document.getElementById('sweepBtn').onclick = async () => {
+  const btn = document.getElementById('sweepBtn');
+  btn.disabled = true; btn.textContent = '… sweeping';
+  try {
+    const r = await api('/api/sweep', { method: 'POST' });
+    btn.textContent = '✓ ' + r.detected + ' detected, ' + r.newFindings + ' new';
+    refresh();
+  } catch (e) { btn.textContent = '✕ failed'; }
+  setTimeout(() => { btn.disabled = false; btn.textContent = '▶ Run sweep'; }, 4000);
+};
 
 refresh();
 setInterval(refresh, 30000);

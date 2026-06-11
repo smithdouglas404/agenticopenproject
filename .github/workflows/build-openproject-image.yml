@@ -1,0 +1,54 @@
+# Build a custom OpenProject image FROM THIS REPO — including the
+# modules/agentic_ppm Rails engine — and push it to GitHub Container Registry.
+#
+# This is the "Tier 2" UI/UX path: deploy the resulting image on Railway instead
+# of the stock openproject/openproject image, and every plugin/engine change in
+# this repo (menus, pages, dashboards, the agentic_ppm module) ships with it.
+#
+# Manual trigger only (workflow_dispatch): the build compiles the Rails app and
+# the Angular frontend and takes ~30-45 minutes — you don't want it on every push.
+#
+# After the first successful run:
+#   1. Make the GHCR package public (or add registry credentials in Railway).
+#   2. Point the Railway OpenProject service at:
+#        ghcr.io/<owner>/openproject-agentic:<tag>
+#   3. Keep DATABASE_URL/SECRET_KEY_BASE etc. unchanged — same runtime contract
+#      as the stock image (docker/prod/Dockerfile, all-in-one target).
+name: Build OpenProject image (with agentic_ppm)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Image tag
+        required: false
+        default: latest
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/prod/Dockerfile
+          target: all-in-one
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/openproject-agentic:${{ inputs.tag || 'latest' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

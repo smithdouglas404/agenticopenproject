@@ -68,6 +68,45 @@ function projectNodeIdFromEvent(event: OPWebhookEvent): string | null {
   return null;
 }
 
+/** Run the LLM insight pass for one project and publish/record the results. */
+async function runProjectInsight(projectNodeId: string): Promise<void> {
+  const insight = await runInsightsAndRisk(projectNodeId);
+  if (!insight) return;
+
+  const ids = await publishInsight(insight);
+  console.log(`[webhook] published ${ids.length} finding(s) for ${projectNodeId}: [${ids.join(', ')}]`);
+
+  const { finding } = await recordFinding({
+    type: 'portfolio-insight',
+    agentId: 'strategic-pmo',
+    severity: insight.portfolioHealth === 'red' ? 'high' : insight.portfolioHealth === 'amber' ? 'medium' : 'low',
+    title: insight.headline,
+    body: insight.healthSummary,
+    nodeId: projectNodeId,
+  });
+  if (ids[0]) await setFindingStatus(finding.id, 'published', { alertWpId: ids[0] });
+}
+
+// Debounce insight runs per project so webhook bursts trigger ONE LLM pass.
+const insightTimers = new Map<string, NodeJS.Timeout>();
+function scheduleProjectInsight(projectNodeId: string): void {
+  const delayMs = config.insights.debounceSeconds * 1000;
+  const run = () =>
+    void runProjectInsight(projectNodeId).catch((err) =>
+      console.error(`[webhook] insight run failed for ${projectNodeId}:`, err.message),
+    );
+  if (delayMs <= 0) return run();
+
+  const existing = insightTimers.get(projectNodeId);
+  if (existing) clearTimeout(existing);
+  const timer = setTimeout(() => {
+    insightTimers.delete(projectNodeId);
+    run();
+  }, delayMs);
+  timer.unref?.();
+  insightTimers.set(projectNodeId, timer);
+}
+
 async function processEvent(event: OPWebhookEvent): Promise<void> {
   const { action } = event;
   console.log(
@@ -113,27 +152,10 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
         return;
       }
 
-      const insight = await runInsightsAndRisk(projectNodeId);
-
-      // 2b. Run inference detectors opportunistically (throttled).
+      // 2. Schedule the LLM insight pass (debounced per project) and run the
+      //    inference detectors opportunistically (throttled).
+      scheduleProjectInsight(projectNodeId);
       maybeSweepAfterEvent();
-
-      if (!insight) return;
-
-      // 3. Publish findings to the Insights inbox.
-      const ids = await publishInsight(insight);
-      console.log(`[webhook] published ${ids.length} finding(s) for ${projectNodeId}: [${ids.join(', ')}]`);
-
-      // 4. Record the insight in the findings store so it shows in the console.
-      const { finding } = await recordFinding({
-        type: 'portfolio-insight',
-        agentId: 'strategic-pmo',
-        severity: insight.portfolioHealth === 'red' ? 'high' : insight.portfolioHealth === 'amber' ? 'medium' : 'low',
-        title: insight.headline,
-        body: insight.healthSummary,
-        nodeId: projectNodeId,
-      });
-      if (ids[0]) await setFindingStatus(finding.id, 'published', { alertWpId: ids[0] });
       break;
     }
 
