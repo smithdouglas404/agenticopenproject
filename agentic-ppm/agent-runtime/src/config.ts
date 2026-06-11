@@ -47,6 +47,20 @@ export const config = {
     password: process.env.FALKORDB_PASSWORD,
   },
 
+  detectors: {
+    /** Periodic detector sweep interval in minutes (0 = disabled). */
+    sweepMinutes: Number(process.env.DETECTOR_SWEEP_MINUTES ?? 60),
+    /** Min minutes between event-triggered sweeps. */
+    eventThrottleMinutes: Number(process.env.DETECTOR_EVENT_THROTTLE_MINUTES ?? 10),
+    /** Publish new findings to OpenProject as Agent Alerts (else console-only). */
+    publish: (process.env.DETECTOR_PUBLISH ?? '1') === '1',
+  },
+
+  console: {
+    /** Optional bearer token guarding /console and /api when the service is public. */
+    token: process.env.CONSOLE_TOKEN,
+  },
+
   graphiti: {
     /** MCP server URL, e.g. http://graphiti-mcp:8000/sse. Unset = disabled. */
     mcpUrl: process.env.GRAPHITI_MCP_URL,
