@@ -8,6 +8,11 @@
 import { runDetectors } from './detectors.js';
 import { recordFinding, setFindingStatus } from '../store/findings.js';
 import { writeFinding, type AlertSeverity } from '../inbox/inbox.js';
+import {
+  generateNarrative,
+  fetchWorkItemContext,
+  fetchProjectContext,
+} from './narrativeGenerator.js';
 import { config } from '../config.js';
 
 const SEVERITY_TO_ALERT: Record<'low' | 'medium' | 'high', AlertSeverity> = {
@@ -34,6 +39,29 @@ export async function runSweep(reason: string): Promise<SweepResult> {
     let published = 0;
 
     for (const f of findings) {
+      // Enrich the finding with an LLM-generated narrative before storing.
+      // Fetch graph context first so the narrative can reference project/item details.
+      let narrative: string | undefined;
+      let projectId: number | undefined;
+      let projectName: string | undefined;
+
+      if (f.nodeId) {
+        try {
+          const [workItem, project] = await Promise.all([
+            fetchWorkItemContext(f.nodeId),
+            fetchProjectContext(f.nodeId),
+          ]);
+          if (workItem) {
+            const result = await generateNarrative(f, workItem, project);
+            narrative = result.narrative;
+            projectId = result.projectId;
+            projectName = result.projectName;
+          }
+        } catch (err: any) {
+          console.warn(`[sweep] narrative generation failed for ${f.nodeId}: ${err.message}`);
+        }
+      }
+
       const { finding, isNew } = await recordFinding({
         type: f.type,
         agentId: f.agentId,
@@ -42,6 +70,9 @@ export async function runSweep(reason: string): Promise<SweepResult> {
         body: f.body,
         nodeId: f.nodeId,
         workPackageId: f.workPackageId,
+        narrative,
+        projectId,
+        projectName,
       });
       if (!isNew) continue;
       newCount++;

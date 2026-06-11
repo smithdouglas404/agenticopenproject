@@ -61,6 +61,10 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
   .status-published, .status-new { color: var(--warn); border-color: var(--warn); }
   .empty { color: var(--muted); padding: 24px; text-align: center; }
   a { color: var(--accent); text-decoration: none; }
+  .links { margin-top: 6px; font-size: 12px; display: flex; gap: 4px; flex-wrap: wrap; }
+  .links a { color: var(--accent); }
+  .links a:hover { text-decoration: underline; }
+  .link-sep { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -141,11 +145,38 @@ function renderFindings(list) {
     top.appendChild(el('span', 'title', f.title));
     top.appendChild(el('span', 'status-pill status-' + f.status, f.status));
     card.appendChild(top);
-    card.appendChild(el('div', 'body', f.body));
+    // Prefer the LLM-generated narrative; fall back to the raw detector body.
+    card.appendChild(el('div', 'body', f.narrative || f.body));
     const meta = el('div', 'meta');
-    meta.textContent = f.agentId + ' · ' + f.type + ' · ' + new Date(f.updatedAt).toLocaleString()
+    let metaText = f.agentId + ' · ' + f.type + ' · ' + new Date(f.updatedAt).toLocaleString()
       + (f.alertWpId ? ' · alert WP #' + f.alertWpId : '');
+    meta.textContent = metaText;
     card.appendChild(meta);
+    // Render project link and work package link when available.
+    if (f.projectId || f.workPackageId) {
+      const links = el('div', 'links');
+      if (f.projectId && f.projectName) {
+        const projectLink = document.createElement('a');
+        projectLink.href = '/projects/' + f.projectId;
+        projectLink.target = '_blank';
+        projectLink.rel = 'noopener noreferrer';
+        projectLink.textContent = '↗ ' + f.projectName;
+        links.appendChild(projectLink);
+      }
+      if (f.workPackageId) {
+        if (f.projectId) {
+          const sep = el('span', 'link-sep', ' · ');
+          links.appendChild(sep);
+        }
+        const wpLink = document.createElement('a');
+        wpLink.href = '/work_packages/' + f.workPackageId;
+        wpLink.target = '_blank';
+        wpLink.rel = 'noopener noreferrer';
+        wpLink.textContent = '↗ Work Package #' + f.workPackageId;
+        links.appendChild(wpLink);
+      }
+      card.appendChild(links);
+    }
     if (f.status === 'new' || f.status === 'published') {
       const actions = el('div', 'actions');
       const ok = el('button', 'approve', '✓ Approve');
