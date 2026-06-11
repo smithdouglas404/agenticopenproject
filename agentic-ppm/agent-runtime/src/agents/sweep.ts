@@ -6,7 +6,7 @@
  * after webhook events, throttled so bursts of updates don't hammer the graph.
  */
 import { runDetectors } from './detectors.js';
-import { recordFinding, setFindingStatus } from '../store/findings.js';
+import { recordFinding, setFindingStatus, setFindingNarrative } from '../store/findings.js';
 import { writeFinding, type AlertSeverity } from '../inbox/inbox.js';
 import {
   generateNarrative,
@@ -39,12 +39,22 @@ export async function runSweep(reason: string): Promise<SweepResult> {
     let published = 0;
 
     for (const f of findings) {
-      // Enrich the finding with an LLM-generated narrative before storing.
-      // Fetch graph context first so the narrative can reference project/item details.
-      let narrative: string | undefined;
-      let projectId: number | undefined;
-      let projectName: string | undefined;
+      // Dedup FIRST: open findings are skipped before any LLM spend, so the
+      // hourly sweep doesn't re-narrate findings that are already standing.
+      const { finding, isNew } = await recordFinding({
+        type: f.type,
+        agentId: f.agentId,
+        severity: f.severity,
+        title: f.title,
+        body: f.body,
+        nodeId: f.nodeId,
+        workPackageId: f.workPackageId,
+      });
+      if (!isNew) continue;
+      newCount++;
 
+      // Enrich ONLY new findings with an LLM-generated narrative + project link.
+      let narrative: string | undefined;
       if (f.nodeId) {
         try {
           const [workItem, project] = await Promise.all([
@@ -54,34 +64,18 @@ export async function runSweep(reason: string): Promise<SweepResult> {
           if (workItem) {
             const result = await generateNarrative(f, workItem, project);
             narrative = result.narrative;
-            projectId = result.projectId;
-            projectName = result.projectName;
+            await setFindingNarrative(finding.id, result);
           }
         } catch (err: any) {
           console.warn(`[sweep] narrative generation failed for ${f.nodeId}: ${err.message}`);
         }
       }
 
-      const { finding, isNew } = await recordFinding({
-        type: f.type,
-        agentId: f.agentId,
-        severity: f.severity,
-        title: f.title,
-        body: f.body,
-        nodeId: f.nodeId,
-        workPackageId: f.workPackageId,
-        narrative,
-        projectId,
-        projectName,
-      });
-      if (!isNew) continue;
-      newCount++;
-
       if (config.detectors.publish) {
         try {
           const alertWpId = await writeFinding({
             title: `${f.type}: ${f.title}`,
-            body: `${f.body}\n\nAgent: ${f.agentId} · Finding: ${finding.id}`,
+            body: `${narrative ?? f.body}\n\nAgent: ${f.agentId} · Finding: ${finding.id}`,
             severity: SEVERITY_TO_ALERT[f.severity],
             relatedWorkPackageId: f.workPackageId,
           });

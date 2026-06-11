@@ -167,6 +167,25 @@ export async function setFindingStatus(
   return getFinding(id);
 }
 
+/** Attach an LLM narrative + project link to an existing finding. */
+export async function setFindingNarrative(
+  id: string,
+  data: { narrative: string; projectId?: number; projectName?: string },
+): Promise<void> {
+  await getGraph().query(
+    `MATCH (f:AgentFinding { id: $id })
+     SET f.narrative = $narrative, f.projectId = $projectId, f.projectName = $projectName,
+         f.updatedAt = $now`,
+    {
+      id,
+      narrative: data.narrative,
+      projectId: data.projectId ?? 0,
+      projectName: data.projectName ?? '',
+      now: new Date().toISOString(),
+    },
+  );
+}
+
 /** Counts per agent for the console roster cards. */
 export async function findingCountsByAgent(): Promise<Record<string, { open: number; total: number }>> {
   const rows = await getGraph().query<{ agentId: string; status: string; c: number }>(

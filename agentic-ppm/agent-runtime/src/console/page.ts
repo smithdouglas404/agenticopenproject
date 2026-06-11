@@ -84,6 +84,9 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
   <div id="findings"></div>
 </main>
 <script>
+// Injected by the server when this page is served (the OpenProject base URL),
+// so "↗ Project" / "↗ Work Package" links open OpenProject, not this console.
+const OP_BASE = '__OPENPROJECT_BASE_URL__';
 const TOKEN = new URLSearchParams(location.search).get('token') || '';
 const HEADERS = TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {};
 let statusFilter = 'open';
@@ -161,7 +164,7 @@ function renderFindings(list) {
       const links = el('div', 'links');
       if (f.projectId && f.projectName) {
         const projectLink = document.createElement('a');
-        projectLink.href = '/projects/' + f.projectId;
+        projectLink.href = OP_BASE + '/projects/' + f.projectId;
         projectLink.target = '_blank';
         projectLink.rel = 'noopener noreferrer';
         projectLink.textContent = '↗ ' + f.projectName;
@@ -173,7 +176,7 @@ function renderFindings(list) {
           links.appendChild(sep);
         }
         const wpLink = document.createElement('a');
-        wpLink.href = '/work_packages/' + f.workPackageId;
+        wpLink.href = OP_BASE + '/work_packages/' + f.workPackageId;
         wpLink.target = '_blank';
         wpLink.rel = 'noopener noreferrer';
         wpLink.textContent = '↗ Work Package #' + f.workPackageId;

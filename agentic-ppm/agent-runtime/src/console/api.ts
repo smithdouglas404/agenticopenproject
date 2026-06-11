@@ -87,7 +87,10 @@ export function buildConsoleRouter(): Router {
   router.use(['/console', '/api'], auth);
 
   router.get('/console', (_req, res) => {
-    res.type('html').send(CONSOLE_HTML);
+    // Inject the OpenProject base URL so finding links open OpenProject.
+    res
+      .type('html')
+      .send(CONSOLE_HTML.replace('__OPENPROJECT_BASE_URL__', config.openproject.baseUrl.replace(/\/$/, '')));
   });
 
   router.get('/api/roster', async (_req, res) => {
