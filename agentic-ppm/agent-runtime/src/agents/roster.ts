@@ -40,7 +40,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'Governance',
     purpose: 'Compliance checkpoints, policy violations, stage-gate adherence.',
     owns: ['OrphanedProject', 'MissingGovernanceGate', 'PolicyViolation'],
-    status: 'planned',
+    status: 'active', // OrphanedProject detector runs in the sweep
   },
   {
     id: 'finops',
