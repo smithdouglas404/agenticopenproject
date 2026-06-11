@@ -24,6 +24,12 @@ export interface StoredFinding {
   workPackageId?: number;
   /** The Agent Alert WP created in OpenProject for this finding, if published. */
   alertWpId?: number;
+  /** LLM-generated polished narrative for the finding. Falls back to body if absent. */
+  narrative?: string;
+  /** OpenProject project ID for generating a clickable link in the console. */
+  projectId?: number;
+  /** Human-readable project name for display alongside the link. */
+  projectName?: string;
   createdAt: string;
   updatedAt: string;
   decidedBy?: string;
@@ -47,6 +53,9 @@ export async function recordFinding(input: {
   workPackageId?: number;
   status?: FindingStatus;
   alertWpId?: number;
+  narrative?: string;
+  projectId?: number;
+  projectName?: string;
 }): Promise<{ finding: StoredFinding; isNew: boolean }> {
   const graph = getGraph();
   const id = findingId(input.type, input.nodeId ?? input.title);
@@ -81,6 +90,9 @@ export async function recordFinding(input: {
         nodeId: input.nodeId ?? '',
         workPackageId: input.workPackageId ?? 0,
         alertWpId: input.alertWpId ?? 0,
+        narrative: input.narrative ?? '',
+        projectId: input.projectId ?? 0,
+        projectName: input.projectName ?? '',
         createdAt: now,
         updatedAt: now,
       },
@@ -104,6 +116,7 @@ export async function recordFinding(input: {
 const RETURN_FIELDS = `f.id AS id, f.type AS type, f.agentId AS agentId, f.severity AS severity,
   f.title AS title, f.body AS body, f.status AS status, f.nodeId AS nodeId,
   f.workPackageId AS workPackageId, f.alertWpId AS alertWpId,
+  f.narrative AS narrative, f.projectId AS projectId, f.projectName AS projectName,
   f.createdAt AS createdAt, f.updatedAt AS updatedAt, f.decidedBy AS decidedBy`;
 
 export async function getFinding(id: string): Promise<StoredFinding | null> {
