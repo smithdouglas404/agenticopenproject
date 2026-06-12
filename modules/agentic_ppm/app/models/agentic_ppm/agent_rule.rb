@@ -25,6 +25,84 @@ module AgenticPpm
 
     SEVERITIES = %w[info warning critical].freeze
 
+    # ---- Friendly authoring options ---------------------------------------
+    # Non-technical users must never type a raw ontology IRI ("safe:Epic") or
+    # an internal metric key ("percentageDone"). These curated [label, value]
+    # lists drive the form dropdowns; the value is the canonical token the
+    # agent-runtime resolves (see src/ontology/spine.ts + src/rules/loader.ts
+    # METRIC_RESOLVERS). Extend these as the ontology/metrics grow.
+
+    ONTOLOGY_CLASS_OPTIONS = [
+      ["Epic", "safe:Epic"],
+      ["Feature", "safe:Feature"],
+      ["User story", "safe:Story"],
+      ["Task", "pm:Task"],
+      ["Milestone", "pm:Milestone"],
+      ["Risk", "pm:Risk"],
+      ["Project (whole project)", "pm:Project"]
+    ].freeze
+
+    # Metrics that apply to a single work item (Epic/Feature/Story/Task).
+    WORK_ITEM_METRIC_OPTIONS = [
+      ["Percent complete (%)", "percentageDone"],
+      ["Budget variance (spent − estimated, hours)", "budget_variance"],
+      ["Risk score", "risk_score"]
+    ].freeze
+
+    # Metrics computed across a whole project.
+    PROJECT_METRIC_OPTIONS = [
+      ["Overdue open items (%)", "pctOverdue"],
+      ["Average progress (%)", "avgProgress"],
+      ["Open items (count)", "openItems"],
+      ["Schedule slippage (days)", "schedule_variance_days"]
+    ].freeze
+
+    # Operators in plain English, ordered most-common first. label => value.
+    OPERATOR_OPTIONS = [
+      ["is below", "lt"],
+      ["is at or below", "lte"],
+      ["is above", "gt"],
+      ["is at or above", "gte"],
+      ["drops below (crosses down)", "crossed_below"],
+      ["rises above (crosses up)", "crossed_above"],
+      ["changes at all", "changed"],
+      ["changes by more than", "delta_gt"],
+      ["equals", "eq"],
+      ["does not equal", "ne"],
+      ["is outside the range", "outside_range"]
+    ].freeze
+
+    # A ready-to-edit decision graph so the "Advanced" box is never blank/scary:
+    # "if percent complete < 50 => critical breach; < 70 => warning".
+    STARTER_JDM = {
+      "nodes" => [
+        { "id" => "in", "type" => "inputNode", "name" => "request",
+          "position" => { "x" => 0, "y" => 0 } },
+        { "id" => "dt", "type" => "decisionTableNode", "name" => "health",
+          "position" => { "x" => 250, "y" => 0 },
+          "content" => {
+            "hitPolicy" => "first",
+            "inputs" => [{ "id" => "i1", "field" => "percentageDone", "name" => "Progress" }],
+            "outputs" => [
+              { "id" => "o1", "field" => "breach", "name" => "Breach" },
+              { "id" => "o2", "field" => "severity", "name" => "Severity" }
+            ],
+            "rules" => [
+              { "_id" => "r1", "i1" => "< 50", "o1" => "true", "o2" => "\"critical\"" },
+              { "_id" => "r2", "i1" => "< 70", "o1" => "true", "o2" => "\"warning\"" },
+              { "_id" => "r3", "i1" => "", "o1" => "false", "o2" => "\"ok\"" }
+            ]
+          } },
+        { "id" => "out", "type" => "outputNode", "name" => "response",
+          "position" => { "x" => 500, "y" => 0 } }
+      ],
+      "edges" => [
+        { "id" => "e1", "sourceId" => "in", "targetId" => "dt" },
+        { "id" => "e2", "sourceId" => "dt", "targetId" => "out" }
+      ]
+    }.freeze
+    # -----------------------------------------------------------------------
+
     enum :severity, {
       info: "info",
       warning: "warning",
@@ -48,6 +126,11 @@ module AgenticPpm
                           if: -> { kind_threshold? && !THRESHOLDLESS_OPERATORS.include?(operator) }
     validates :severity, inclusion: { in: SEVERITIES }
     validate :jdm_shape
+
+    # The form pre-fills the decision-graph box with a starter so it is never
+    # blank; a threshold rule should not actually persist it. Reset to {} so
+    # only real decision rules carry a graph.
+    before_validation :reset_jdm_for_threshold
 
     scope :enabled, -> { where(enabled: true) }
     scope :global, -> { where(project_id: nil) }
@@ -78,6 +161,12 @@ module AgenticPpm
     end
 
     private
+
+    # Threshold rules don't use a decision graph; drop the starter the form
+    # pre-fills so the stored row stays clean and to_runtime_json emits {}.
+    def reset_jdm_for_threshold
+      self.jdm = {} if kind_threshold?
+    end
 
     # A decision rule must carry something that looks like a GoRules JDM: a
     # Hash with a "nodes" key (string- or symbol-keyed). Threshold rules are

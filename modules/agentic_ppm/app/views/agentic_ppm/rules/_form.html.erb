@@ -1,4 +1,7 @@
-<%# Shared authoring form for an AgenticPpm::AgentRule. Plain OpenProject ERB. %>
+<%# Shared authoring form for an AgenticPpm::AgentRule. Plain OpenProject ERB.
+    Designed for non-technical users: dropdowns (no raw IRIs / metric keys),
+    plain-English operators, and the GoRules decision graph hidden behind an
+    optional "Advanced" disclosure with a ready-to-edit starter. %>
 <%= form_for @rule,
              as: :agent_rule,
              url: (@rule.persisted? ?
@@ -15,78 +18,83 @@
     </div>
   <% end %>
 
+  <p class="form--field-instructions">
+    <%= t("agentic_ppm.form_intro") %>
+  </p>
+
   <div class="form--field -required">
     <%= f.label :name, class: "form--label" %>
     <span class="form--field-container">
-      <%= f.text_field :name, class: "form--text-field" %>
+      <%= f.text_field :name, class: "form--text-field",
+                       placeholder: t("agentic_ppm.placeholder_name") %>
     </span>
   </div>
 
   <div class="form--field">
     <%= f.label :description, class: "form--label" %>
     <span class="form--field-container">
-      <%= f.text_area :description, rows: 3, class: "form--text-area" %>
+      <%= f.text_area :description, rows: 2, class: "form--text-area" %>
     </span>
   </div>
 
+  <%# 1. WHAT to watch (ontology class) -- friendly dropdown, never a raw IRI. %>
   <div class="form--field -required">
-    <%= f.label :kind, class: "form--label" %>
+    <%= f.label :ontology_class, t("agentic_ppm.label_watch_what"), class: "form--label" %>
     <span class="form--field-container">
-      <%= f.select :kind,
-                   AgenticPpm::AgentRule.kinds.keys.map { |k|
-                     [t("agentic_ppm.kinds.#{k}", default: k), k]
-                   },
-                   {},
+      <%= f.select :ontology_class,
+                   AgenticPpm::AgentRule::ONTOLOGY_CLASS_OPTIONS,
+                   { include_blank: t("agentic_ppm.prompt_watch_what") },
                    class: "form--select" %>
-    </span>
-    <span class="form--field-instructions">
-      <%= t("agentic_ppm.hint_kind") %>
-    </span>
-  </div>
-
-  <div class="form--field -required">
-    <%= f.label :ontology_class, class: "form--label" %>
-    <span class="form--field-container">
-      <%= f.text_field :ontology_class, class: "form--text-field",
-                       placeholder: "safe:Epic" %>
     </span>
     <span class="form--field-instructions">
       <%= t("agentic_ppm.hint_ontology_class") %>
     </span>
   </div>
 
+  <%# 2. WHAT to measure (metric) -- grouped by work-item vs project. %>
   <div class="form--field -required">
-    <%= f.label :metric, class: "form--label" %>
+    <%= f.label :metric, t("agentic_ppm.label_measure_what"), class: "form--label" %>
     <span class="form--field-container">
-      <%= f.text_field :metric, class: "form--text-field",
-                       placeholder: "percentageDone" %>
+      <%= f.select :metric,
+                   grouped_options_for_select(
+                     [[t("agentic_ppm.group_work_item_metrics"),
+                       AgenticPpm::AgentRule::WORK_ITEM_METRIC_OPTIONS],
+                      [t("agentic_ppm.group_project_metrics"),
+                       AgenticPpm::AgentRule::PROJECT_METRIC_OPTIONS]],
+                     @rule.metric
+                   ),
+                   { include_blank: t("agentic_ppm.prompt_measure_what") },
+                   class: "form--select" %>
     </span>
     <span class="form--field-instructions">
       <%= t("agentic_ppm.hint_metric") %>
     </span>
   </div>
 
+  <%# 3. The CONDITION (operator) in plain English. %>
   <div class="form--field -required">
-    <%= f.label :operator, class: "form--label" %>
+    <%= f.label :operator, t("agentic_ppm.label_condition"), class: "form--label" %>
     <span class="form--field-container">
       <%= f.select :operator,
-                   AgenticPpm::AgentRule::OPERATORS.map { |op|
-                     [t("agentic_ppm.operators.#{op}", default: op), op]
-                   },
-                   {},
+                   AgenticPpm::AgentRule::OPERATOR_OPTIONS,
+                   { include_blank: t("agentic_ppm.prompt_condition") },
                    class: "form--select" %>
     </span>
   </div>
 
+  <%# 4. The VALUE(s) to compare against. %>
   <div class="form--field">
-    <%= f.label :threshold, class: "form--label" %>
+    <%= f.label :threshold, t("agentic_ppm.label_value"), class: "form--label" %>
     <span class="form--field-container">
       <%= f.number_field :threshold, step: "any", class: "form--text-field" %>
+    </span>
+    <span class="form--field-instructions">
+      <%= t("agentic_ppm.hint_threshold") %>
     </span>
   </div>
 
   <div class="form--field">
-    <%= f.label :threshold2, class: "form--label" %>
+    <%= f.label :threshold2, t("agentic_ppm.label_value2"), class: "form--label" %>
     <span class="form--field-container">
       <%= f.number_field :threshold2, step: "any", class: "form--text-field" %>
     </span>
@@ -95,24 +103,8 @@
     </span>
   </div>
 
-  <%# Threshold fields (ontology/metric/operator/threshold above) apply when
-      kind = "threshold"; the JDM editor below applies when kind = "decision". %>
-  <div class="form--field">
-    <%= f.label :jdm, class: "form--label" %>
-    <span class="form--field-container">
-      <%= f.text_area :jdm,
-                      rows: 12,
-                      value: (@rule.jdm.present? ? JSON.pretty_generate(@rule.jdm) : ""),
-                      class: "form--text-area",
-                      placeholder: '{ "nodes": [], "edges": [] }' %>
-    </span>
-    <span class="form--field-instructions">
-      <%= t("agentic_ppm.hint_jdm") %>
-    </span>
-  </div>
-
   <div class="form--field -required">
-    <%= f.label :severity, class: "form--label" %>
+    <%= f.label :severity, t("agentic_ppm.label_severity"), class: "form--label" %>
     <span class="form--field-container">
       <%= f.select :severity,
                    AgenticPpm::AgentRule::SEVERITIES.map { |s|
@@ -124,7 +116,7 @@
   </div>
 
   <div class="form--field">
-    <%= f.label :action_kind, class: "form--label" %>
+    <%= f.label :action_kind, t("agentic_ppm.label_action"), class: "form--label" %>
     <span class="form--field-container">
       <%= f.select :action_kind,
                    %w[alert recommend escalate].map { |a|
@@ -139,6 +131,9 @@
     <%= f.label :cooldown_minutes, class: "form--label" %>
     <span class="form--field-container">
       <%= f.number_field :cooldown_minutes, class: "form--text-field" %>
+    </span>
+    <span class="form--field-instructions">
+      <%= t("agentic_ppm.hint_cooldown") %>
     </span>
   </div>
 
@@ -162,6 +157,50 @@
       <%= f.label :enabled, class: "form--label-with-check-box" %>
     </span>
   </div>
+
+  <%# Advanced (optional): most users never open this. A "decision" rule
+      replaces the single threshold above with a GoRules decision table
+      (combine several conditions). The textarea is pre-filled with a working
+      starter you can edit; it is ignored unless the kind is set to Decision. %>
+  <details class="form--field" <%= "open" if @rule.respond_to?(:kind_decision?) && @rule.kind_decision? %>>
+    <summary style="cursor: pointer; font-weight: 600; margin: 0.5rem 0;">
+      <%= t("agentic_ppm.advanced_summary") %>
+    </summary>
+
+    <p class="form--field-instructions">
+      <%= t("agentic_ppm.advanced_intro") %>
+    </p>
+
+    <div class="form--field">
+      <%= f.label :kind, class: "form--label" %>
+      <span class="form--field-container">
+        <%= f.select :kind,
+                     AgenticPpm::AgentRule.kinds.keys.map { |k|
+                       [t("agentic_ppm.kinds.#{k}", default: k), k]
+                     },
+                     {},
+                     class: "form--select" %>
+      </span>
+      <span class="form--field-instructions">
+        <%= t("agentic_ppm.hint_kind") %>
+      </span>
+    </div>
+
+    <div class="form--field">
+      <%= f.label :jdm, class: "form--label" %>
+      <span class="form--field-container">
+        <%= f.text_area :jdm,
+                        rows: 14,
+                        value: (@rule.jdm.present? ?
+                                JSON.pretty_generate(@rule.jdm) :
+                                JSON.pretty_generate(AgenticPpm::AgentRule::STARTER_JDM)),
+                        class: "form--text-area" %>
+      </span>
+      <span class="form--field-instructions">
+        <%= t("agentic_ppm.hint_jdm") %>
+      </span>
+    </div>
+  </details>
 
   <p class="button-bar">
     <%= f.submit t(:button_save), class: "button -primary" %>
