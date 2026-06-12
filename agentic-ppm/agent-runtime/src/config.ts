@@ -68,6 +68,8 @@ export const config = {
     enabled: (process.env.AGENT_ACTIONS ?? '1') === '1',
     /** WP type for agent-created follow-up tasks. */
     followupType: process.env.AGENT_FOLLOWUP_TYPE ?? 'Task',
+    /** Write portfolio health to the OpenProject project status (Overview banner). */
+    setProjectStatus: (process.env.AGENT_SET_PROJECT_STATUS ?? '1') === '1',
   },
 
   console: {

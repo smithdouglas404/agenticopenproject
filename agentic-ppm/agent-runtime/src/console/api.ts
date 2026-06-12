@@ -14,9 +14,8 @@
  */
 import { Router, type Request, type Response, type NextFunction } from 'express';
 import { AGENT_ROSTER } from '../agents/roster.js';
-import { listFindings, getFinding, setFindingStatus, findingCountsByAgent, type FindingStatus } from '../store/findings.js';
-import { getOpenProjectClient } from '../openproject/client.js';
-import { executeApprovedAction } from '../agents/actions.js';
+import { listFindings, findingCountsByAgent, type FindingStatus } from '../store/findings.js';
+import { decideFinding } from '../agents/decisions.js';
 import { runSweep } from '../agents/sweep.js';
 import { collectChecks, type Check } from '../preflight.js';
 import { config } from '../config.js';
@@ -42,54 +41,11 @@ function auth(req: Request, res: Response, next: NextFunction): void {
 }
 
 async function decide(req: Request, res: Response, decision: 'approved' | 'rejected'): Promise<void> {
-  const finding = await getFinding(req.params.id);
-  if (!finding) {
-    res.status(404).json({ error: 'finding not found' });
-    return;
-  }
-  if (finding.status === 'approved' || finding.status === 'rejected') {
-    res.status(409).json({ error: `already ${finding.status}` });
-    return;
-  }
-
   const decidedBy = String(req.body?.decidedBy ?? 'console');
-
-  // On approval, execute the concrete action (HITL-gated; see agents/actions.ts).
-  let action: Awaited<ReturnType<typeof executeApprovedAction>> = null;
-  if (decision === 'approved') {
-    action = await executeApprovedAction(finding).catch((err) => {
-      console.warn(`[console] approved action failed for ${finding.id}: ${err.message}`);
-      return null;
-    });
-  }
-
-  const updated = await setFindingStatus(finding.id, decision, {
-    decidedBy,
-    followupWpId: action?.followupWpId,
-  });
-
-  // Reflect the decision into OpenProject so the WP record matches the console.
-  const note =
-    decision === 'approved'
-      ? `✅ **Approved** via Agent Console by ${decidedBy}.` +
-        (action ? ` ${action.detail}.` : ` The team should action: ${finding.title}`)
-      : `❌ **Rejected** via Agent Console by ${decidedBy}. No action will be taken.`;
-  if (finding.alertWpId) {
-    await getOpenProjectClient()
-      .addWorkPackageComment(finding.alertWpId, note)
-      .catch((err) => console.warn(`[console] comment on alert WP failed: ${err.message}`));
-  }
-  if (decision === 'approved' && finding.workPackageId && !action) {
-    await getOpenProjectClient()
-      .addWorkPackageComment(
-        finding.workPackageId,
-        `**Agent recommendation approved:** ${finding.title}\n\n${finding.body}`,
-      )
-      .catch(() => {});
-  }
-
-  console.log(`[console] finding ${finding.id} ${decision} by ${decidedBy}` + (action ? ` — ${action.detail}` : ''));
-  res.json({ ...updated, action });
+  const result = await decideFinding(req.params.id, decision, decidedBy);
+  res.status(result.ok ? result.code : result.code).json(
+    result.ok ? { ...result.finding, action: result.action } : { error: result.error },
+  );
 }
 
 export function buildConsoleRouter(): Router {

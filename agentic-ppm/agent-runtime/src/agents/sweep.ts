@@ -6,8 +6,9 @@
  * after webhook events, throttled so bursts of updates don't hammer the graph.
  */
 import { runDetectors } from './detectors.js';
-import { recordFinding, setFindingStatus, setFindingNarrative } from '../store/findings.js';
+import { recordFinding, setFindingStatus, setFindingNarrative, openFindingSeverityCounts } from '../store/findings.js';
 import { writeFinding, type AlertSeverity } from '../inbox/inbox.js';
+import { getOpenProjectClient } from '../openproject/client.js';
 import {
   generateNarrative,
   fetchWorkItemContext,
@@ -93,10 +94,27 @@ export async function runSweep(reason: string): Promise<SweepResult> {
         `[sweep:${reason}] ${findings.length} detected, ${newCount} new, ${published} published`,
       );
     }
+    await updateAlertsRollup().catch((err) => console.warn(`[sweep] rollup failed: ${err.message}`));
     return { detected: findings.length, newFindings: newCount, published };
   } finally {
     sweeping = false;
   }
+}
+
+/** Set the alerts project's status banner to a portfolio rollup of open findings. */
+async function updateAlertsRollup(): Promise<void> {
+  if (!config.actions.setProjectStatus) return;
+  const c = await openFindingSeverityCounts();
+  const total = c.high + c.medium + c.low;
+  const status = c.high > 0 ? 'off_track' : c.medium > 0 ? 'at_risk' : 'on_track';
+  const explanation =
+    total === 0
+      ? 'No open agent findings. The portfolio is clear.'
+      : `**${total} open finding(s)** across the portfolio: ` +
+        `🔴 ${c.high} high · 🟠 ${c.medium} medium · 🔵 ${c.low} low.\n\n` +
+        `Review and approve/reject in the Agent Console, or by changing each alert's status here. ` +
+        `_Updated ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC._`;
+  await getOpenProjectClient().updateProjectStatus(config.openproject.alertsProject, status, explanation);
 }
 
 /** Sweep after webhook events, at most once per throttle window. */
