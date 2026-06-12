@@ -1,0 +1,54 @@
+<%# Authoring surface for agent rules/thresholds. The runtime evaluates these. %>
+<h2><%= t("agentic_ppm.label_rules") %></h2>
+
+<p>
+  <%= link_to t("agentic_ppm.label_rule_new"),
+              new_project_agentic_ppm_rule_path(@project),
+              class: "button -primary" %>
+</p>
+
+<% if @rules.empty? %>
+  <p class="generic-table--empty-row"><%= t("agentic_ppm.no_rules") %></p>
+<% else %>
+  <table class="generic-table">
+    <thead>
+      <tr>
+        <th><%= AgentRule.human_attribute_name(:name) %></th>
+        <th><%= AgentRule.human_attribute_name(:ontology_class) %></th>
+        <th><%= AgentRule.human_attribute_name(:metric) %></th>
+        <th><%= AgentRule.human_attribute_name(:operator) %></th>
+        <th><%= AgentRule.human_attribute_name(:threshold) %></th>
+        <th><%= AgentRule.human_attribute_name(:severity) %></th>
+        <th><%= AgentRule.human_attribute_name(:enabled) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @rules.each do |rule| %>
+        <tr>
+          <td><%= rule.name %></td>
+          <td><%= rule.ontology_class %></td>
+          <td><%= rule.metric %></td>
+          <td><%= t("agentic_ppm.operators.#{rule.operator}", default: rule.operator) %></td>
+          <td>
+            <%= rule.threshold %><%= " .. #{rule.threshold2}" if rule.threshold2.present? %>
+          </td>
+          <td><%= t("agentic_ppm.severities.#{rule.severity}", default: rule.severity) %></td>
+          <td><%= rule.enabled? ? t(:general_text_Yes) : t(:general_text_No) %></td>
+          <td class="buttons">
+            <% if rule.project_id == @project.id %>
+              <%= link_to t(:button_edit),
+                          edit_project_agentic_ppm_rule_path(@project, rule) %>
+              <%= link_to t(:button_delete),
+                          project_agentic_ppm_rule_path(@project, rule),
+                          method: :delete,
+                          data: { confirm: t(:text_are_you_sure) } %>
+            <% else %>
+              <span class="-grey"><%= t("agentic_ppm.label_global_rule") %></span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

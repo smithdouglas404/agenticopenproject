@@ -19,7 +19,7 @@ module OpenProject::AgenticPpm
     register "openproject-agentic_ppm",
              author_url: "https://github.com/smithdouglas404/agenticopenproject",
              bundled: true,
-             settings: { default: { "graph_endpoint" => nil } } do
+             settings: { default: { "graph_endpoint" => nil, "rules_api_token" => nil } } do
       project_module :agentic_ppm, order: 90 do
         permission :view_agent_recommendations,
                    { "agentic_ppm/recommendations": %i[index show] },
@@ -29,6 +29,14 @@ module OpenProject::AgenticPpm
                    { "agentic_ppm/recommendations": %i[index show update] },
                    permissible_on: :project,
                    dependencies: :view_work_packages
+        permission :view_agent_rules,
+                   { "agentic_ppm/rules": %i[index] },
+                   permissible_on: :project,
+                   dependencies: :view_work_packages
+        permission :manage_agent_rules,
+                   { "agentic_ppm/rules": %i[index new create edit update destroy] },
+                   permissible_on: :project,
+                   dependencies: :view_work_packages
       end
 
       menu :project_menu,
@@ -36,6 +44,13 @@ module OpenProject::AgenticPpm
            { controller: "/agentic_ppm/recommendations", action: :index },
            caption: :"agentic_ppm.label_insights",
            after: :work_packages,
+           icon: "op-view-list-2"
+
+      menu :project_menu,
+           :agentic_ppm_rules,
+           { controller: "/agentic_ppm/rules", action: :index },
+           caption: :"agentic_ppm.label_rules",
+           after: :agentic_ppm,
            icon: "op-view-list-2"
     end
 

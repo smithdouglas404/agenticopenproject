@@ -2,15 +2,51 @@ en:
   project_module_agentic_ppm: "Agentic PPM"
   permission_view_agent_recommendations: "View agent recommendations"
   permission_manage_agent_recommendations: "Manage agent recommendations"
+  permission_view_agent_rules: "View agent rules"
+  permission_manage_agent_rules: "Manage agent rules"
 
   agentic_ppm:
     label_insights: "Insights"
     label_recommendations: "Agent recommendations"
     no_recommendations: "No recommendations yet."
 
+    label_rules: "Agent rules"
+    label_rule_new: "New rule"
+    label_rule_edit: "Edit rule"
+    label_global_rule: "Global rule"
+    no_rules: "No rules yet."
+    hint_ontology_class: "Which ontology elements this rule scans, e.g. \"safe:Epic\", \"pm:Task\", \"pm:Project\"."
+    hint_metric: "The field or metric to test, e.g. \"percentageDone\", \"budget_variance\", \"schedule_variance_days\", \"risk_score\" or a custom field key like \"customField12\"."
+    hint_threshold2: "Upper bound, used by the outside_range and delta operators."
+
+    operators:
+      gt: "is greater than"
+      gte: "is greater than or equal to"
+      lt: "is less than"
+      lte: "is less than or equal to"
+      eq: "equals"
+      ne: "does not equal"
+      changed: "changed"
+      delta_gt: "change is greater than"
+      delta_lt: "change is less than"
+      outside_range: "is outside range"
+      crossed_above: "crossed above"
+      crossed_below: "crossed below"
+
+    severities:
+      info: "Info"
+      warning: "Warning"
+      critical: "Critical"
+
+    action_kinds:
+      alert: "Alert"
+      recommend: "Recommend"
+      escalate: "Escalate"
+
   activerecord:
     models:
       agentic_ppm/agent_recommendation: "Agent recommendation"
+      agentic_ppm/agent_rule: "Agent rule"
     attributes:
       agentic_ppm/agent_recommendation:
         title: "Title"
@@ -19,3 +55,18 @@ en:
         confidence: "Confidence"
         status: "Status"
         ontology_subject: "Subject"
+      agentic_ppm/agent_rule:
+        name: "Name"
+        description: "Description"
+        ontology_class: "Ontology class"
+        metric: "Metric"
+        operator: "Operator"
+        threshold: "Threshold"
+        threshold2: "Upper threshold"
+        severity: "Severity"
+        enabled: "Enabled"
+        notify_openproject: "Notify in OpenProject"
+        notify_kyndral: "Notify Kyndral"
+        cooldown_minutes: "Cooldown (minutes)"
+        action_kind: "Action"
+        last_evaluated_at: "Last evaluated at"

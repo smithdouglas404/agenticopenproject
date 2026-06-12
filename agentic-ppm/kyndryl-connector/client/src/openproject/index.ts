@@ -53,3 +53,10 @@ export {
   type ApprovalQueueProps,
   type AgentFinding,
 } from "./ApprovalQueue";
+
+export {
+  RulesPanel,
+  type RulesPanelProps,
+  type AgentRule,
+  type RuleBreachFinding,
+} from "./RulesPanel";

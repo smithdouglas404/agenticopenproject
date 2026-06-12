@@ -18,6 +18,7 @@ import {
   fetchProjectContext,
 } from './narrativeGenerator.js';
 import { config } from '../config.js';
+import { evaluateRules, publishBreaches } from '../rules/evaluator.js';
 
 const SEVERITY_TO_ALERT: Record<'low' | 'medium' | 'high', AlertSeverity> = {
   low: 'notification',
@@ -134,6 +135,19 @@ export async function runSweep(reason: string): Promise<SweepResult> {
         return 0;
       });
       if (n) console.log(`[sweep:${reason}] reasoning agents raised ${n} new finding(s)`);
+    }
+    // RULES: evaluate OpenProject-authored rules against the graph and publish
+    // breaches into both UIs. Resilient — a failure here never fails the sweep.
+    if (config.rules.enabled && config.rules.evaluateOnSweep) {
+      try {
+        const breaches = await evaluateRules();
+        const n = await publishBreaches(breaches);
+        if (breaches.length > 0 || n > 0) {
+          console.log(`[sweep:${reason}] rules: ${breaches.length} breach(es), ${n} new finding(s)`);
+        }
+      } catch (err: any) {
+        console.warn(`[sweep] rule evaluation failed: ${err.message}`);
+      }
     }
     return { detected: findings.length, newFindings: newCount, published };
   } finally {

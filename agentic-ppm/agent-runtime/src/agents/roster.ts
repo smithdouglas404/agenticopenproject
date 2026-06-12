@@ -91,6 +91,14 @@ export const AGENT_ROSTER: AgentDomain[] = [
     status: 'active',
   },
   {
+    id: 'rules',
+    name: 'Rules Agent',
+    domain: 'Rules',
+    purpose: 'Evaluate OpenProject-authored rules against the world-model and raise breaches.',
+    owns: ['RuleBreach'],
+    status: 'active', // rules evaluator runs in the sweep + event path
+  },
+  {
     id: 'notification',
     name: 'Notification Agent',
     domain: 'Notification',
