@@ -69,7 +69,7 @@ async function checkGraphiti(): Promise<Check> {
  * `prefix` lets the boot path tag lines (e.g. "[preflight] ").
  */
 export async function runPreflight(prefix = ''): Promise<{ checks: Check[]; failedRequired: boolean }> {
-  const checks = [await checkOpenProject(), await checkFalkor(), await checkGraphiti()];
+  const checks = await collectChecks();
 
   let failedRequired = false;
   for (const c of checks) {
@@ -79,4 +79,9 @@ export async function runPreflight(prefix = ''): Promise<{ checks: Check[]; fail
     if (!c.ok && c.required) failedRequired = true;
   }
   return { checks, failedRequired };
+}
+
+/** Run the checks silently and return them (for the console status endpoint). */
+export async function collectChecks(): Promise<Check[]> {
+  return [await checkOpenProject(), await checkFalkor(), await checkGraphiti()];
 }

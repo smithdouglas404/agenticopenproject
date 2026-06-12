@@ -65,12 +65,18 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
   .links a { color: var(--accent); }
   .links a:hover { text-decoration: underline; }
   .link-sep { color: var(--muted); }
+  .health { display: flex; gap: 6px; align-items: center; }
+  .hpill { font-size: 11px; border-radius: 999px; padding: 1px 9px; border: 1px solid var(--border); cursor: default; }
+  .hpill.ok { color: var(--ok); border-color: var(--ok); }
+  .hpill.warn { color: var(--warn); border-color: var(--warn); }
+  .hpill.bad { color: var(--bad); border-color: var(--bad); }
 </style>
 </head>
 <body>
 <header>
   <h1>⚙︎ Agent Console</h1>
   <span class="sub">Agentic PPM · human-in-the-loop · <span id="updated"></span></span>
+  <span id="status" class="health"></span>
   <button id="sweepBtn" style="margin-left:auto; background:var(--chip); color:var(--accent);
     border:1px solid var(--accent); border-radius:6px; padding:4px 14px; cursor:pointer; font-size:13px;">
     ▶ Run sweep
@@ -104,14 +110,31 @@ function el(tag, cls, text) {
   return e;
 }
 
+function renderStatus(checks) {
+  const root = document.getElementById('status');
+  root.innerHTML = '';
+  for (const c of checks) {
+    const disabled = (c.detail || '').includes('disabled');
+    let cls = 'ok', label = '✓';
+    if (!c.ok) { cls = c.required ? 'bad' : 'warn'; label = '✕'; }
+    else if (disabled) { cls = 'warn'; label = 'off'; }
+    const short = c.name.replace(' MCP', '');
+    const pill = el('span', 'hpill ' + cls, short + ' ' + label);
+    pill.title = c.detail || '';
+    root.appendChild(pill);
+  }
+}
+
 async function refresh() {
   try {
-    const [roster, findings] = await Promise.all([
+    const [roster, findings, status] = await Promise.all([
       api('/api/roster'),
       api('/api/findings' + (statusFilter === 'all' ? '' : '?status=' + statusFilter)),
+      api('/api/status').catch(() => []),
     ]);
     renderAgents(roster);
     renderFindings(findings);
+    renderStatus(status);
     document.getElementById('updated').textContent = 'updated ' + new Date().toLocaleTimeString();
   } catch (e) {
     document.getElementById('findings').innerHTML =

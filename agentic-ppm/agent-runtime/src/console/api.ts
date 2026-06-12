@@ -18,8 +18,18 @@ import { listFindings, getFinding, setFindingStatus, findingCountsByAgent, type 
 import { getOpenProjectClient } from '../openproject/client.js';
 import { executeApprovedAction } from '../agents/actions.js';
 import { runSweep } from '../agents/sweep.js';
+import { collectChecks, type Check } from '../preflight.js';
 import { config } from '../config.js';
 import { CONSOLE_HTML } from './page.js';
+
+// Dependency health, cached so the 30s console refresh doesn't hammer Graphiti.
+let statusCache: { at: number; checks: Check[] } | null = null;
+async function getStatus(): Promise<Check[]> {
+  if (statusCache && Date.now() - statusCache.at < 120_000) return statusCache.checks;
+  const checks = await collectChecks();
+  statusCache = { at: Date.now(), checks };
+  return checks;
+}
 
 function auth(req: Request, res: Response, next: NextFunction): void {
   const token = config.console.token;
@@ -118,6 +128,10 @@ export function buildConsoleRouter(): Router {
 
   router.post('/api/sweep', async (_req, res) => {
     res.json(await runSweep('manual'));
+  });
+
+  router.get('/api/status', async (_req, res) => {
+    res.json(await getStatus());
   });
 
   return router;
