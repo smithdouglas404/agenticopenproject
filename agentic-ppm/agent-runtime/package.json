@@ -16,10 +16,12 @@
     "preflight": "tsx src/scripts/preflight.ts",
     "smoke": "tsx src/scripts/smoke.ts",
     "letta:provision": "tsx src/scripts/provisionLetta.ts",
-    "rules:eval": "tsx src/scripts/evaluateRules.ts"
+    "rules:eval": "tsx src/scripts/evaluateRules.ts",
+    "rules:zen-smoke": "tsx src/scripts/zenSmoke.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",
+    "@gorules/zen-engine": "^0.54.0",
     "@letta-ai/letta-client": "^1.12.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "dotenv": "^17.2.3",

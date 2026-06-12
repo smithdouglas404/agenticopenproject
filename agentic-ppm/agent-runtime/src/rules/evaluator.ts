@@ -18,6 +18,7 @@ import { config } from '../config.js';
 import type { Rule, RuleBreach, RuleSeverity } from './types.js';
 import { loadRules, resolveMetric, resetMetricCaches, type ResolvedNode } from './loader.js';
 import { getState, setState, withinCooldown } from './state.js';
+import { evaluateDecisionRule } from './zenEvaluator.js';
 import { postRuleAlert, type RuleAlertPayload } from './opModuleClient.js';
 
 // ---------------------------------------------------------------------------
@@ -192,6 +193,13 @@ function buildMessage(rule: Rule, node: ResolvedNode, value: number | string, pr
  * cooldown, and returns the breaches.
  */
 export async function evaluateRule(rule: Rule, nodes: ResolvedNode[]): Promise<RuleBreach[]> {
+  // Decision rules route to the GoRules ZEN core; threshold rules fall through to
+  // the operator logic below. evaluateRules/evaluateForChangedNodes call this, so
+  // both sweep paths cover decision rules automatically.
+  if (rule.kind === 'decision' && rule.jdm) {
+    return evaluateDecisionRule(rule, nodes);
+  }
+
   const breaches: RuleBreach[] = [];
 
   for (const node of nodes) {

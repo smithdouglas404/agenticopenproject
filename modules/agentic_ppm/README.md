@@ -67,6 +67,30 @@ breach it POSTs back, and the breach is persisted as an `AgentRecommendation`
 A rule with a `nil` `project_id` is **global** and applies to every project;
 otherwise it is scoped to its project.
 
+### Rule kinds: `threshold` vs `decision`
+
+Every rule has a `kind`:
+
+- **`threshold`** (default) — the original single comparison: a `metric`,
+  `operator` and `threshold`/`threshold2` (e.g. *Epic `percentageDone` `lt`
+  40*).
+- **`decision`** — carries a full **GoRules JDM** (JSON Decision Model) decision
+  graph in the `jdm` jsonb column. The runtime evaluates it with its **ZEN
+  engine** (see [`src/rules/zenEvaluator.ts`](../../src/rules/zenEvaluator.ts))
+  rather than the simple comparator. A decision rule has no
+  `metric`/`operator`/`threshold` of its own — that logic lives inside the JDM
+  graph. Design rationale and the graph schema are in
+  [`docs/DECISION_ENGINE_GORULES.md`](../../docs/DECISION_ENGINE_GORULES.md).
+
+The model validates that a `decision` rule's `jdm` looks like a JDM graph (a
+Hash with a `"nodes"` key). The authoring form takes the JDM as pretty-printed
+JSON text; the controller `JSON.parse`s it and rejects malformed JSON with a
+*"JDM is not valid JSON"* error. A minimal JDM looks like:
+
+```json
+{ "nodes": [{ "id": "in", "type": "inputNode" }], "edges": [] }
+```
+
 ### Permissions
 
 Added to the `:agentic_ppm` project module:
@@ -107,6 +131,7 @@ Returns the **enabled** global rules plus the project's enabled rules:
     {
       "id": 12,
       "project_id": 7,
+      "kind": "threshold",
       "ontology_class": "safe:Epic",
       "metric": "percentageDone",
       "operator": "lt",
@@ -117,15 +142,20 @@ Returns the **enabled** global rules plus the project's enabled rules:
       "action_kind": "alert",
       "notify_openproject": true,
       "notify_kyndral": true,
-      "enabled": true
+      "enabled": true,
+      "jdm": {}
     }
   ]
 }
 ```
 
-`operator` is one of: `gt`, `gte`, `lt`, `lte`, `eq`, `ne`, `changed`,
-`delta_gt`, `delta_lt`, `outside_range`, `crossed_above`, `crossed_below`.
-`threshold2` is the upper bound for `outside_range` / delta comparisons.
+`kind` is `"threshold"` or `"decision"`. `operator` is one of: `gt`, `gte`,
+`lt`, `lte`, `eq`, `ne`, `changed`, `delta_gt`, `delta_lt`, `outside_range`,
+`crossed_above`, `crossed_below`. `threshold2` is the upper bound for
+`outside_range` / delta comparisons. `jdm` carries the GoRules JDM decision
+graph for `decision` rules (evaluated by the runtime's ZEN engine,
+[`src/rules/zenEvaluator.ts`](../../src/rules/zenEvaluator.ts)) and is `{}` for
+`threshold` rules.
 
 Optionally the runtime can stamp evaluation progress:
 

@@ -31,11 +31,23 @@ module AgenticPpm
       critical: "critical"
     }, prefix: true, default: "warning"
 
+    # A "threshold" rule is the original simple comparison; a "decision" rule
+    # carries a GoRules JDM graph in :jdm, evaluated by the runtime's ZEN engine.
+    enum :kind, {
+      threshold: "threshold",
+      decision: "decision"
+    }, prefix: true, default: "threshold"
+
     enum :operator, OPERATORS.index_with(&:itself), prefix: true
 
-    validates :name, :ontology_class, :metric, :operator, presence: true
-    validates :threshold, presence: true, unless: -> { THRESHOLDLESS_OPERATORS.include?(operator) }
+    validates :name, :ontology_class, presence: true
+    # The metric/operator/threshold trio only governs threshold rules; a
+    # decision rule legitimately has none of them (its logic lives in :jdm).
+    validates :metric, :operator, presence: true, if: :kind_threshold?
+    validates :threshold, presence: true,
+                          if: -> { kind_threshold? && !THRESHOLDLESS_OPERATORS.include?(operator) }
     validates :severity, inclusion: { in: SEVERITIES }
+    validate :jdm_shape
 
     scope :enabled, -> { where(enabled: true) }
     scope :global, -> { where(project_id: nil) }
@@ -43,10 +55,13 @@ module AgenticPpm
 
     # The hash the agent-runtime consumes when it pulls rules to evaluate.
     # Keep this shape stable -- it is the contract the runtime depends on.
+    # For decision rules we emit the GoRules JDM graph; threshold rules emit
+    # an empty {} (the runtime treats absent/empty jdm as "no decision").
     def to_runtime_json
       {
         id:,
         project_id:,
+        kind:,
         ontology_class:,
         metric:,
         operator:,
@@ -57,8 +72,21 @@ module AgenticPpm
         action_kind:,
         notify_openproject:,
         notify_kyndral:,
-        enabled:
+        enabled:,
+        jdm: kind_decision? ? jdm : {}
       }
+    end
+
+    private
+
+    # A decision rule must carry something that looks like a GoRules JDM: a
+    # Hash with a "nodes" key (string- or symbol-keyed). Threshold rules are
+    # exempt -- they have no JDM.
+    def jdm_shape
+      return if kind_threshold?
+      return if jdm.is_a?(Hash) && (jdm["nodes"] || jdm[:nodes])
+
+      errors.add(:jdm, :invalid)
     end
   end
 end

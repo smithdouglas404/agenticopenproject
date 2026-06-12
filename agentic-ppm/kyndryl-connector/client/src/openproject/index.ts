@@ -60,3 +60,12 @@ export {
   type AgentRule,
   type RuleBreachFinding,
 } from "./RulesPanel";
+
+// DecisionEditor wraps the GoRules visual JDM editor for authoring decision rules.
+// The consumer MUST install `@gorules/jdm-editor` first (`npm i @gorules/jdm-editor`);
+// DecisionEditor.tsx carries an ambient module declaration so it is self-contained,
+// but the real package must be present at runtime. See docs/DECISION_ENGINE_GORULES.md.
+export {
+  DecisionEditor,
+  type DecisionEditorProps,
+} from "./DecisionEditor";

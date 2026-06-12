@@ -26,7 +26,9 @@ module AgenticPpm
     end
 
     def create
-      @rule = AgentRule.new(rule_params)
+      attrs = parsed_rule_params or return render(:new)
+
+      @rule = AgentRule.new(attrs)
       @rule.project_id = @project.id
       if @rule.save
         flash[:notice] = t(:notice_successful_create)
@@ -40,7 +42,9 @@ module AgenticPpm
     def edit; end
 
     def update
-      if @rule.update(rule_params)
+      attrs = parsed_rule_params or return render(:edit)
+
+      if @rule.update(attrs)
         flash[:notice] = t(:notice_successful_update)
         redirect_to project_agentic_ppm_rules_path(@project)
       else
@@ -68,12 +72,44 @@ module AgenticPpm
       @rule = AgentRule.where(project_id: @project.id).find(params[:id])
     end
 
+    # :jdm is authored as text in the form, so we cannot permit it as a Hash
+    # the usual way (Rails strong params reject unbounded jsonb/hash params).
+    # Instead we permit it as a scalar String here, then JSON.parse it in
+    # #parsed_rule_params and assign the resulting Hash to the model.
     def rule_params
       params.require(:agent_rule).permit(
         :name, :description, :ontology_class, :metric, :operator,
         :threshold, :threshold2, :severity, :enabled,
-        :notify_openproject, :notify_kyndral, :cooldown_minutes, :action_kind
+        :notify_openproject, :notify_kyndral, :cooldown_minutes, :action_kind,
+        :kind, :jdm
       )
+    end
+
+    # Returns the permitted attributes with :jdm parsed from its text form into
+    # a Hash, or nil if the supplied JDM text is not valid JSON. On failure it
+    # sets a flash error and primes @rule (preserving the submitted values, jdm
+    # excepted) so the caller can re-render the form.
+    def parsed_rule_params
+      attrs = rule_params
+      raw = attrs[:jdm]
+
+      if raw.is_a?(String) && raw.strip.present?
+        begin
+          attrs[:jdm] = JSON.parse(raw)
+        rescue JSON::ParserError
+          attrs = attrs.except(:jdm)
+          @rule ||= AgentRule.new(project_id: @project.id)
+          @rule.assign_attributes(attrs)
+          @rule.errors.add(:jdm, t("agentic_ppm.errors.jdm_invalid_json"))
+          flash.now[:error] = @rule.errors.full_messages.join(", ")
+          return nil
+        end
+      elsif raw.is_a?(String)
+        # Blank textarea => no decision graph; fall back to the column default.
+        attrs[:jdm] = {}
+      end
+
+      attrs
     end
   end
 end
