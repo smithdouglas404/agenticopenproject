@@ -69,12 +69,33 @@ function projectNodeIdFromEvent(event: OPWebhookEvent): string | null {
 }
 
 /** Run the LLM insight pass for one project and publish/record the results. */
+const HEALTH_TO_STATUS: Record<string, 'on_track' | 'at_risk' | 'off_track'> = {
+  green: 'on_track',
+  amber: 'at_risk',
+  red: 'off_track',
+};
+
 async function runProjectInsight(projectNodeId: string): Promise<void> {
   const insight = await runInsightsAndRisk(projectNodeId);
   if (!insight) return;
 
   const ids = await publishInsight(insight);
   console.log(`[webhook] published ${ids.length} finding(s) for ${projectNodeId}: [${ids.join(', ')}]`);
+
+  // Surface the verdict on the project Overview page via the native status field.
+  const opProjectId = projectNodeId.replace(/^op-project-/, '');
+  if (config.actions.setProjectStatus && opProjectId && opProjectId !== projectNodeId) {
+    const statusCode = HEALTH_TO_STATUS[insight.portfolioHealth] ?? 'at_risk';
+    const topRec = insight.recommendations[0];
+    const explanation =
+      `**${insight.headline}**\n\n${insight.healthSummary}` +
+      (topRec ? `\n\n**Next:** ${topRec.action} — ${topRec.rationale}` : '') +
+      `\n\n_Assessed by the Strategic PMO agent · ${new Date().toISOString().slice(0, 10)}_`;
+    await getOpenProjectClient()
+      .updateProjectStatus(opProjectId, statusCode, explanation)
+      .then(() => console.log(`[webhook] set project ${opProjectId} status = ${statusCode}`))
+      .catch((err) => console.warn(`[webhook] set project status failed: ${err.message}`));
+  }
 
   const { finding } = await recordFinding({
     type: 'portfolio-insight',

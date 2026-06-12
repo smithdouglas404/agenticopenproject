@@ -68,6 +68,24 @@ export class OpenProjectClient {
     return this.request('GET', `/projects/${projectId}`);
   }
 
+  /**
+   * Set a project's status (on_track | at_risk | off_track) and the explanation
+   * shown on the project Overview page. This surfaces the agent's portfolio-health
+   * verdict natively, without a custom UI.
+   */
+  async updateProjectStatus(
+    projectId: string | number,
+    statusCode: 'on_track' | 'at_risk' | 'off_track',
+    explanationRaw: string,
+  ): Promise<void> {
+    const project = (await this.getProject(projectId)) as OpenProjectProject & { lockVersion?: number };
+    await this.request('PATCH', `/projects/${projectId}`, {
+      lockVersion: project.lockVersion,
+      statusExplanation: { raw: explanationRaw },
+      _links: { status: { href: `/api/v3/project_statuses/${statusCode}` } },
+    });
+  }
+
   async listWorkPackages(options?: {
     projectId?: string | number;
     pageSize?: number;
