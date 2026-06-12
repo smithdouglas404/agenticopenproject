@@ -9,6 +9,7 @@ import { publishInsight } from '../inbox/inbox.js';
 import { recordFinding, setFindingStatus } from '../store/findings.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { getGraph } from '../graph/falkor.js';
+import { formatProjectMetricsLine } from '../grounding/metrics.js';
 import { config } from '../config.js';
 
 const HEALTH_TO_STATUS: Record<string, 'on_track' | 'at_risk' | 'off_track'> = {
@@ -24,8 +25,9 @@ function stamp(): string {
 
 /** Assess one project; returns true if an insight was produced. */
 export async function assessProject(projectNodeId: string): Promise<boolean> {
-  const insight = await runInsightsAndRisk(projectNodeId);
-  if (!insight) return false;
+  const result = await runInsightsAndRisk(projectNodeId);
+  if (!result) return false;
+  const { insight, metrics } = result;
 
   const ids = await publishInsight(insight);
 
@@ -34,11 +36,15 @@ export async function assessProject(projectNodeId: string): Promise<boolean> {
   const topRec = insight.recommendations[0];
   const narrative =
     `${insight.healthSummary}` + (topRec ? `\n\n**Next:** ${topRec.action} — ${topRec.rationale}` : '');
+  // Two-channel banner: the computed line is deterministic graph math, visibly
+  // separate from the LLM narrative above it.
+  const computedLine = metrics ? `\n\n${formatProjectMetricsLine(metrics)}` : '';
 
   if (config.actions.setProjectStatus && isProject) {
     const statusCode = HEALTH_TO_STATUS[insight.portfolioHealth] ?? 'at_risk';
     const explanation =
-      `**${insight.headline}**\n\n${narrative}\n\n_Assessed by the Strategic PMO agent · ${stamp()}_`;
+      `**${insight.headline}**\n\n${narrative}${computedLine}` +
+      `\n\n_AI narrative by the Strategic PMO agent; 📊 line computed from the graph · ${stamp()}_`;
     await getOpenProjectClient()
       .updateProjectStatus(opProjectId, statusCode, explanation)
       .then(() => console.log(`[assess] project ${opProjectId} status = ${statusCode} @ ${stamp()}`))
@@ -51,9 +57,10 @@ export async function assessProject(projectNodeId: string): Promise<boolean> {
     severity: insight.portfolioHealth === 'red' ? 'high' : insight.portfolioHealth === 'amber' ? 'medium' : 'low',
     title: insight.headline,
     body: insight.healthSummary,
-    narrative,
+    narrative: narrative + computedLine,
     nodeId: projectNodeId,
     projectId: isProject ? Number(opProjectId) : undefined,
+    metrics: metrics ?? undefined,
   });
   // portfolio-insight is a living assessment: re-publish so the console shows it as current.
   await setFindingStatus(finding.id, 'published', ids[0] ? { alertWpId: ids[0] } : undefined);

@@ -4,6 +4,8 @@
  * GET  /console                      the console UI
  * GET  /api/roster                   agents + open/total finding counts
  * GET  /api/findings?status=&agent=  findings ("open" = new|published)
+ * GET  /api/metrics                  computed portfolio metrics (deterministic, no LLM)
+ * GET  /api/learning                 per-agent accuracy + recent resolved predictions
  * POST /api/findings/:id/approve     human approves -> comment on alert WP
  * POST /api/findings/:id/reject      human rejects  -> comment on alert WP
  * POST /api/sweep                    run the detector sweep on demand
@@ -17,6 +19,8 @@ import { AGENT_ROSTER } from '../agents/roster.js';
 import { listFindings, findingCountsByAgent, type FindingStatus } from '../store/findings.js';
 import { decideFinding } from '../agents/decisions.js';
 import { runSweep } from '../agents/sweep.js';
+import { computePortfolioMetrics } from '../grounding/metrics.js';
+import { agentAccuracy, recentResolvedPredictions } from '../learning/outcomes.js';
 import { collectChecks, type Check } from '../preflight.js';
 import { config } from '../config.js';
 import { CONSOLE_HTML } from './page.js';
@@ -90,6 +94,25 @@ export function buildConsoleRouter(): Router {
 
   router.get('/api/status', async (_req, res) => {
     res.json(await getStatus());
+  });
+
+  // Computed-metrics channel: deterministic Cypher aggregates, never the LLM.
+  // Degrades to an empty metric list when the graph is unreachable/empty.
+  router.get('/api/metrics', async (_req, res) => {
+    try {
+      res.json(await computePortfolioMetrics());
+    } catch (err: any) {
+      res.json({ computedAt: new Date().toISOString(), metrics: [], error: err.message });
+    }
+  });
+
+  // Learning loop: per-agent track record + recently resolved predictions.
+  router.get('/api/learning', async (_req, res) => {
+    const [accuracy, recent] = await Promise.all([
+      agentAccuracy().catch(() => ({})),
+      recentResolvedPredictions(20).catch(() => []),
+    ]);
+    res.json({ accuracy, recent });
   });
 
   // Project-level portfolio assessments (the banner-quality insights), latest

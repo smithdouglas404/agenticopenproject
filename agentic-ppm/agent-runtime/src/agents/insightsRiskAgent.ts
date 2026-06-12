@@ -15,6 +15,11 @@ import { callLLMJson } from '../llm/claude.js';
 import { lettaConfigured, getRosterAgentId, sendToAgent } from '../letta/client.js';
 import { InsightSchema, type Insight } from './insightSchema.js';
 import {
+  computeProjectMetrics,
+  metricsPromptBlock,
+  type ProjectMetrics,
+} from '../grounding/metrics.js';
+import {
   analyzeRiskProbability,
   calculateRiskImpact,
   type RiskInput,
@@ -28,8 +33,11 @@ Your role is to provide portfolio-level insights that are:
 3. EVIDENCE-BASED - reference specific work packages or projects by name/id from the data
 4. PRIORITIZED - surface the highest-probability, highest-impact risks first
 
-You are given pre-computed risk probability and impact scores. Reason over those scores;
-do not invent new ones. Respond in valid JSON only, with no text outside the JSON object.`;
+You are given pre-computed risk probability and impact scores, plus a block of
+COMPUTED METRICS that were calculated deterministically from the graph. These metrics
+are computed from the graph — reference them by id (e.g. [overdue], [avgProgress]);
+do NOT invent numbers or recompute them. Reason over the provided scores; do not
+invent new ones. Respond in valid JSON only, with no text outside the JSON object.`;
 
 interface GraphWorkItem {
   id: string;
@@ -142,18 +150,35 @@ async function reasonThroughLetta(context: string): Promise<Insight | null> {
   return parsed.success ? { ...parsed.data, generatedAt: new Date().toISOString() } : null;
 }
 
+/** Two-channel result: the LLM narrative + the deterministic metrics it was grounded on. */
+export interface InsightResult {
+  /** AI narrative channel (LLM-generated, schema-validated). */
+  insight: Insight;
+  /** Computed channel (deterministic Cypher aggregates; null only if the metrics query failed). */
+  metrics: ProjectMetrics | null;
+}
+
 /**
- * Run the agent for one project node and return a validated Insight.
- * Returns null if the project has no work items to reason about.
+ * Run the agent for one project node and return a validated Insight plus the
+ * computed metrics it was shown (two-channel output: the metrics are never
+ * LLM-generated). Returns null if the project has no work items to reason about.
  *
  * When Letta is configured, the reasoning runs through the stateful Strategic PMO
  * agent (so it remembers prior assessments); otherwise it uses a direct Claude call.
  */
-export async function runInsightsAndRisk(projectNodeId: string): Promise<Insight | null> {
+export async function runInsightsAndRisk(projectNodeId: string): Promise<InsightResult | null> {
   const items = await loadProjectItems(projectNodeId);
   if (items.length === 0) return null;
 
-  const context = buildContext(projectNodeId, items);
+  // Computed channel first — deterministic aggregates the LLM must reference.
+  const metrics = await computeProjectMetrics(projectNodeId).catch((err) => {
+    console.warn(`[insights] computed metrics failed for ${projectNodeId}: ${err.message}`);
+    return null;
+  });
+
+  const context =
+    buildContext(projectNodeId, items) +
+    (metrics ? `\n\n${metricsPromptBlock(metrics.metrics)}` : '');
 
   if (lettaConfigured()) {
     const viaLetta = await reasonThroughLetta(context).catch((err) => {
@@ -162,7 +187,7 @@ export async function runInsightsAndRisk(projectNodeId: string): Promise<Insight
     });
     if (viaLetta) {
       console.log('[insights] reasoned via Letta agent (strategic-pmo)');
-      return viaLetta;
+      return { insight: viaLetta, metrics };
     }
   }
 
@@ -172,5 +197,5 @@ export async function runInsightsAndRisk(projectNodeId: string): Promise<Insight
   if (!parsed.success) {
     throw new Error(`Insight validation failed: ${parsed.error.message}`);
   }
-  return { ...parsed.data, generatedAt: new Date().toISOString() };
+  return { insight: { ...parsed.data, generatedAt: new Date().toISOString() }, metrics };
 }
