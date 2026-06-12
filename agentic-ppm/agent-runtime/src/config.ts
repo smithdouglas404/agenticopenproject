@@ -65,6 +65,11 @@ export const config = {
     reassessOnSweep: (process.env.REASSESS_PROJECTS_ON_SWEEP ?? '1') === '1',
   },
 
+  reasoning: {
+    /** Run all roster agents as LLM reasoning agents during the sweep. */
+    enabled: (process.env.REASONING_AGENTS ?? '1') === '1',
+  },
+
   actions: {
     /** Execute concrete actions when a human approves a finding (HITL-gated). */
     enabled: (process.env.AGENT_ACTIONS ?? '1') === '1',
