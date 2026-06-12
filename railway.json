@@ -5,7 +5,7 @@
     "dockerfilePath": "docker/prod/Dockerfile"
   },
   "deploy": {
-    "startCommand": "MIGRATE=true ./docker/prod/web",
+    "startCommand": "env MIGRATE=true ./docker/prod/web",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
