@@ -64,6 +64,15 @@ async function createAgent(opts: {
   }
 }
 
+function personaFor(a: { name: string; domain: string; purpose: string }): string {
+  return (
+    `You are the ${a.name} for an enterprise project portfolio in OpenProject.\n` +
+    `Domain: ${a.domain}. Purpose: ${a.purpose}\n` +
+    `You watch the portfolio graph, remember what changes over time, and raise ` +
+    `concise, evidence-based findings and recommendations for human review.`
+  );
+}
+
 /** Idempotently provision a Letta agent for each roster entry. Returns id map. */
 export async function provisionRosterAgents(
   log: (m: string) => void = () => {},
@@ -75,17 +84,25 @@ export async function provisionRosterAgents(
     if (id) {
       log(`exists: ${a.name} (${id})`);
     } else {
-      const persona =
-        `You are the ${a.name} for an enterprise project portfolio in OpenProject.\n` +
-        `Domain: ${a.domain}. Purpose: ${a.purpose}\n` +
-        `You watch the portfolio graph, remember what changes over time, and raise ` +
-        `concise, evidence-based findings and recommendations for human review.`;
-      id = await createAgent({ name, persona });
+      id = await createAgent({ name, persona: personaFor(a) });
       log(id ? `created: ${a.name} (${id})` : `FAILED: ${a.name}`);
     }
     if (id) ids[a.id] = id;
   }
   return ids;
+}
+
+const rosterAgentIds = new Map<string, string>();
+/** Resolve a roster agent's Letta id (auto-provisioning it once if missing). */
+export async function getRosterAgentId(rosterId: string): Promise<string | null> {
+  if (!lettaConfigured()) return null;
+  if (rosterAgentIds.has(rosterId)) return rosterAgentIds.get(rosterId)!;
+  const a = AGENT_ROSTER.find((x) => x.id === rosterId);
+  if (!a) return null;
+  const name = `agentic-ppm-${a.id}`;
+  const id = (await findAgentByName(name)) ?? (await createAgent({ name, persona: personaFor(a) }));
+  if (id) rosterAgentIds.set(rosterId, id);
+  return id;
 }
 
 let memoryAgentId: string | null = null;
