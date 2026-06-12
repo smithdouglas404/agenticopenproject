@@ -26,6 +26,7 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `docs/PALANTIR_TO_FALKORDB.md` | Migration plan: Palantir ontology backend → FalkorDB (mapping table, env vars, backfill, rollback) |
 | `docs/SCHEMA_AND_OPENPROJECT_MAPPING.md` | OpenProject ↔ Kyndral v2 field/type mapping + schema gap list |
 | `docs/ORCHESTRATION_AND_RULES.md` | Cost analysis: polling vs event-driven orchestrators, rules-engine verdict |
+| `docs/RULES_ENGINE.md` | **The rules-engine design + contract** (source of truth): rules authored in OpenProject (`AgentRule`) → runtime pulls `rules.json` → evaluates event-driven + safety sweep → breach fans out to BOTH UIs. rules.json/alerts.json schemas, operator semantics, auth, env vars, phased rollout |
 | `docs/GROUNDING_AND_HALLUCINATION.md` | Grounding / outcome-tracking strategy for the agents |
 | `docs/MOCK_DATA_TO_REAL.md` | "Kill the demo data" plan: mock inventory, the every-number-traces rule, cutover steps + per-page verification checklist |
 | `docs/UI_STRATEGY.md` | UI strategy notes |
@@ -34,6 +35,7 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `client/src/openproject/OpenProjectEditGuard.tsx` | Bidirectional save: `useBidirectionalSave(entity)` (local save → push to OpenProject), `<PushStatus>` inline indicator with retry, render-prop wrapper |
 | `client/src/openproject/OpenProjectPanel.tsx` | Collapsible ProjectDetailPage panel (connection dot, "Open in OpenProject", last sync, create-work-package mini-form, optional agent-console `?embed=1` iframe) + `OpenProjectStatusDot` for the app header |
 | `client/src/openproject/ApprovalQueue.tsx` | **The HITL inbox**: agent insights/recommendations with evidence, confidence and per-agent track record; Approve & execute / Reject buttons (decisions train the agents) |
+| `client/src/openproject/RulesPanel.tsx` | **Read-only rules view**: lists active threshold rules (ontology_class · metric · operator · threshold · severity · enabled, with OP/Kyndral notify chips) + recent rule-breach findings. "Authored in OpenProject" with deep link. Reads `/api/agent/rules` (new proxy of OpenProject `rules.json`) + `/api/agent/findings?type=RuleBreach` |
 | `client/src/openproject/index.ts` | Barrel export — copy the whole `openproject/` folder into Kyndral's `client/src/` |
 | `server/routes/agentFindings.routes.ts` | `/api/agent/*` proxy to the agent-runtime (findings, decisions, learning, metrics) keeping the runtime token server-side |
 | `CLAUDE_MD_FOR_KYNDRAL.md` | **Install as `CLAUDE.md` in the Kyndral repo root** — teaches every future Claude session the whole integration so you can vibe-code |
@@ -121,3 +123,17 @@ await op?.createWorkPackage(opProjectId, { subject, description, typeName: 'Task
   storage entities; OpenProject now joins them as both a source AND the write target.
 - The canonical type→entity mapping (`TYPE_BUCKET`) and status/priority mappers in the
   client are the ontology mapping for OpenProject — extend as your ontology evolves.
+
+## Cross-repo: the rules engine
+
+Threshold/rules are **authored natively in the forked OpenProject** (the
+`modules/agentic_ppm` Rails module, stored as `AgentRule` rows — OpenProject is the
+system of record for rules) and **evaluated by the agent-runtime** in this repo
+(`agentic-ppm/agent-runtime/src/rules/`): it pulls `GET /agentic_ppm/api/rules.json`,
+evaluates event-driven on OpenProject webhook changes + a periodic safety sweep, and on
+a breach fans out to BOTH UIs (OpenProject Agent Alert WP/comment/banner +
+`POST /agentic_ppm/api/alerts.json`, AND the Kyndral ApprovalQueue/RulesPanel). The
+full contract is `docs/RULES_ENGINE.md`; the Kyndral read-only view is
+`client/src/openproject/RulesPanel.tsx`. Those two OpenProject/runtime directories are
+owned by separate work — this connector only documents the contract and ships the
+Kyndral viewer.

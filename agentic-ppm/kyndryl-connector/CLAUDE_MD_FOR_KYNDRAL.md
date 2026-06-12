@@ -45,6 +45,7 @@ All building blocks are already in this repo (originally authored in
 | Mark a UI element as OpenProject-backed | `client/src/openproject/SourceBadge.tsx`; detect with `isOpenProjectEntity(entity)` (`sourceSystem === 'openproject'` + `externalId`) |
 | Make any save bidirectional | wrap the save handler with `useBidirectionalSave` from `client/src/openproject/OpenProjectEditGuard.tsx` |
 | Agent insights + HITL approve/reject in the UI | `client/src/openproject/ApprovalQueue.tsx` + server proxy `server/routes/agentFindings.routes.ts` (`/api/agent/*`) |
+| Set a threshold rule | OpenProject → agentic_ppm module → Rules; runtime evaluates; breaches appear in both UIs (read-only view: `client/src/openproject/RulesPanel.tsx`, proxy `/api/agent/rules`; design: `docs/RULES_ENGINE.md`) |
 | Agent chat with grounded widgets (Vercel AI SDK) | `ai-sdk/` — tools in `ai-sdk/server/tools.ts`, route `POST /api/agent-chat`, widgets + `AgenticChat` in `ai-sdk/client/` |
 | OKR progress from real delivery | `server/okrRollupService.ts` (KR progress = Σ entity progress × contribution%); routes in `server/routes/okrRollup.routes.ts` |
 
@@ -72,6 +73,28 @@ Per-page integration recipes: `docs/UI_BIDIRECTIONAL_WIRING_MAP.md`.
    `openProjectWriteback.ts`. Change them together or sync drifts.
 7. **No mock data.** Every UI number must trace to: OpenProject sync, a user
    setup screen, or a computed formula (see `docs/MOCK_DATA_TO_REAL.md`).
+8. **Rules are authored in OpenProject** (the agentic_ppm module is the system
+   of record for rules). The runtime evaluates them **event-driven** (on the
+   OpenProject webhook change, on the changed entity) **+ a periodic safety
+   sweep** — never a tight scan loop. On a breach, the fan-out must reach
+   **both UIs** (OpenProject native Agent Alert WP + comment + banner + the
+   alerts.json inbox, AND the Kyndral ApprovalQueue / RulesPanel). Kyndral's
+   rules view is read-only; don't move authoring out of OpenProject.
+
+## Rules engine
+
+Threshold/rules live in the forked OpenProject (`modules/agentic_ppm`, stored as
+`AgentRule` rows) — OpenProject is the **system of record for rules**. The
+agent-runtime (`agentic-ppm/agent-runtime/src/rules/`) pulls `rules.json`,
+evaluates each rule against the FalkorDB graph **event-driven on OpenProject
+webhook changes + a periodic safety sweep** (remembering previous values for
+`delta_*`/`changed`/`crossed_*`, respecting `cooldown_minutes`), and on a breach
+records a finding (→ Kyndral ApprovalQueue/RulesPanel + AI-SDK) AND notifies
+OpenProject (Agent Alert WP + comment + banner + `POST /agentic_ppm/api/alerts.json`)
+— so the same breach reaches both UIs. The Kyndral side is read-only
+(`client/src/openproject/RulesPanel.tsx`, via the `/api/agent/rules` proxy and
+`/api/agent/findings?type=RuleBreach`); the full contract is in
+`docs/RULES_ENGINE.md`.
 
 ## Env vars (integration)
 

@@ -15,7 +15,8 @@
     "sync:backfill": "tsx src/scripts/backfill.ts",
     "preflight": "tsx src/scripts/preflight.ts",
     "smoke": "tsx src/scripts/smoke.ts",
-    "letta:provision": "tsx src/scripts/provisionLetta.ts"
+    "letta:provision": "tsx src/scripts/provisionLetta.ts",
+    "rules:eval": "tsx src/scripts/evaluateRules.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",

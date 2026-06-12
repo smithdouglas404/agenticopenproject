@@ -74,6 +74,23 @@ export const config = {
     enabled: (process.env.REASONING_AGENTS ?? '1') === '1',
   },
 
+  rules: {
+    /** Evaluate OpenProject-authored rules against the graph (master switch). */
+    enabled: (process.env.RULES_ENABLED ?? '1') === '1',
+    /** Where rules come from: the OpenProject module endpoint, or a local file/env. */
+    source: (process.env.RULES_SOURCE ?? 'openproject') as 'openproject' | 'local',
+    /** In-memory cache TTL for the rules endpoint (minutes). */
+    refreshMinutes: Number(process.env.RULES_REFRESH_MINUTES ?? 5),
+    /** Path to a JSON file of Rule[] when source === 'local' (else RULES_JSON env). */
+    localFile: process.env.RULES_LOCAL_FILE,
+    /** Shared secret sent as X-OP-Rules-Token to the module endpoints. */
+    apiToken: process.env.RULES_API_TOKEN ?? '',
+    /** Run rule evaluation as part of the periodic/event detector sweep. */
+    evaluateOnSweep: (process.env.RULES_EVALUATE_ON_SWEEP ?? '1') === '1',
+    /** Allow targeted rule evaluation from the webhook (changed-node path). */
+    evaluateOnEvent: (process.env.RULES_EVALUATE_ON_EVENT ?? '1') === '1',
+  },
+
   grounding: {
     /** Drop LLM findings that reference entities not present in the graph. */
     enforceEntityCheck: (process.env.GROUNDING_ENTITY_CHECK ?? '1') === '1',

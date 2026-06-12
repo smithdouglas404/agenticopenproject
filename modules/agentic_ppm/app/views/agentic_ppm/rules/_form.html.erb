@@ -1,0 +1,140 @@
+<%# Shared authoring form for an AgentRule. Plain OpenProject ERB. %>
+<%= form_for @rule,
+             url: (@rule.persisted? ?
+                   project_agentic_ppm_rule_path(@project, @rule) :
+                   project_agentic_ppm_rules_path(@project)),
+             html: { method: (@rule.persisted? ? :patch : :post) } do |f| %>
+  <% if @rule.errors.any? %>
+    <div class="op-toast -error">
+      <ul>
+        <% @rule.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form--field -required">
+    <%= f.label :name, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.text_field :name, class: "form--text-field" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <%= f.label :description, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.text_area :description, rows: 3, class: "form--text-area" %>
+    </span>
+  </div>
+
+  <div class="form--field -required">
+    <%= f.label :ontology_class, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.text_field :ontology_class, class: "form--text-field",
+                       placeholder: "safe:Epic" %>
+    </span>
+    <span class="form--field-instructions">
+      <%= t("agentic_ppm.hint_ontology_class") %>
+    </span>
+  </div>
+
+  <div class="form--field -required">
+    <%= f.label :metric, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.text_field :metric, class: "form--text-field",
+                       placeholder: "percentageDone" %>
+    </span>
+    <span class="form--field-instructions">
+      <%= t("agentic_ppm.hint_metric") %>
+    </span>
+  </div>
+
+  <div class="form--field -required">
+    <%= f.label :operator, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.select :operator,
+                   AgentRule::OPERATORS.map { |op|
+                     [t("agentic_ppm.operators.#{op}", default: op), op]
+                   },
+                   {},
+                   class: "form--select" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <%= f.label :threshold, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.number_field :threshold, step: "any", class: "form--text-field" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <%= f.label :threshold2, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.number_field :threshold2, step: "any", class: "form--text-field" %>
+    </span>
+    <span class="form--field-instructions">
+      <%= t("agentic_ppm.hint_threshold2") %>
+    </span>
+  </div>
+
+  <div class="form--field -required">
+    <%= f.label :severity, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.select :severity,
+                   AgentRule::SEVERITIES.map { |s|
+                     [t("agentic_ppm.severities.#{s}", default: s), s]
+                   },
+                   {},
+                   class: "form--select" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <%= f.label :action_kind, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.select :action_kind,
+                   %w[alert recommend escalate].map { |a|
+                     [t("agentic_ppm.action_kinds.#{a}", default: a), a]
+                   },
+                   {},
+                   class: "form--select" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <%= f.label :cooldown_minutes, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.number_field :cooldown_minutes, class: "form--text-field" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <span class="form--field-container">
+      <%= f.check_box :notify_openproject %>
+      <%= f.label :notify_openproject, class: "form--label-with-check-box" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <span class="form--field-container">
+      <%= f.check_box :notify_kyndral %>
+      <%= f.label :notify_kyndral, class: "form--label-with-check-box" %>
+    </span>
+  </div>
+
+  <div class="form--field">
+    <span class="form--field-container">
+      <%= f.check_box :enabled %>
+      <%= f.label :enabled, class: "form--label-with-check-box" %>
+    </span>
+  </div>
+
+  <p class="button-bar">
+    <%= f.submit t(:button_save), class: "button -primary" %>
+    <%= link_to t(:button_cancel),
+                project_agentic_ppm_rules_path(@project),
+                class: "button" %>
+  </p>
+<% end %>

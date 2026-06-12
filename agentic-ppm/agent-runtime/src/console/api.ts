@@ -117,6 +117,17 @@ export function buildConsoleRouter(): Router {
 
   // Project-level portfolio assessments (the banner-quality insights), latest
   // per project — separate from the task-level findings feed.
+  // Active rule definitions (authored in OpenProject; the runtime evaluates
+  // them). Read-only surface for UIs; the rules API token stays server-side.
+  router.get('/api/rules', async (_req, res) => {
+    try {
+      const { loadRules } = await import('../rules/loader.js');
+      res.json({ rules: await loadRules() });
+    } catch (err: any) {
+      res.json({ rules: [], error: err.message });
+    }
+  });
+
   router.get('/api/project-status', async (_req, res) => {
     const all = await listFindings({ type: 'portfolio-insight', limit: 200 });
     const latest = new Map<string, (typeof all)[number]>();

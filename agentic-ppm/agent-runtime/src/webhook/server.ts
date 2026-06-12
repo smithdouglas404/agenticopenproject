@@ -17,6 +17,7 @@ import { getFindingByAlertWp } from '../store/findings.js';
 import { assessProject } from '../agents/projectAssessor.js';
 import { decideFinding } from '../agents/decisions.js';
 import { maybeSweepAfterEvent } from '../agents/sweep.js';
+import { evaluateForChangedNodes, publishBreaches } from '../rules/evaluator.js';
 import { buildConsoleRouter } from '../console/api.js';
 
 // Resolve the alerts project's numeric id once, so we can ignore our own Agent
@@ -169,6 +170,18 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
       //    inference detectors opportunistically (throttled).
       scheduleProjectInsight(projectNodeId);
       maybeSweepAfterEvent();
+
+      // 3. Event-targeted rule evaluation: evaluate rules only against the nodes
+      //    this event touched (the changed WP + its owning project), so a breach
+      //    surfaces immediately without waiting for the throttled full sweep.
+      if (config.rules.enabled && config.rules.evaluateOnEvent) {
+        const changedIds = [projected?.nodeId, projectNodeId].filter(
+          (id): id is string => typeof id === 'string',
+        );
+        void evaluateForChangedNodes(changedIds)
+          .then((breaches) => publishBreaches(breaches))
+          .catch((err) => console.warn(`[webhook] rule evaluation failed: ${err.message}`));
+      }
       break;
     }
 
