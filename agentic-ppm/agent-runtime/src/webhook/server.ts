@@ -90,26 +90,33 @@ async function runProjectInsight(projectNodeId: string): Promise<void> {
 
   // Surface the verdict on the project Overview page via the native status field.
   const opProjectId = projectNodeId.replace(/^op-project-/, '');
-  if (config.actions.setProjectStatus && opProjectId && opProjectId !== projectNodeId) {
+  const topRec = insight.recommendations[0];
+  const narrative =
+    `${insight.healthSummary}` +
+    (topRec ? `\n\n**Next:** ${topRec.action} — ${topRec.rationale}` : '');
+  const isProject = !!opProjectId && opProjectId !== projectNodeId;
+
+  if (config.actions.setProjectStatus && isProject) {
     const statusCode = HEALTH_TO_STATUS[insight.portfolioHealth] ?? 'at_risk';
-    const topRec = insight.recommendations[0];
     const explanation =
-      `**${insight.headline}**\n\n${insight.healthSummary}` +
-      (topRec ? `\n\n**Next:** ${topRec.action} — ${topRec.rationale}` : '') +
-      `\n\n_Assessed by the Strategic PMO agent · ${new Date().toISOString().slice(0, 10)}_`;
+      `**${insight.headline}**\n\n${narrative}\n\n_Assessed by the Strategic PMO agent · ${new Date().toISOString().slice(0, 10)}_`;
     await getOpenProjectClient()
       .updateProjectStatus(opProjectId, statusCode, explanation)
       .then(() => console.log(`[webhook] set project ${opProjectId} status = ${statusCode}`))
       .catch((err) => console.warn(`[webhook] set project status failed: ${err.message}`));
   }
 
+  // Record the same insight as a portfolio-insight finding so the console shows
+  // the identical, full-quality narrative (headline + summary + Next) the banner has.
   const { finding } = await recordFinding({
     type: 'portfolio-insight',
     agentId: 'strategic-pmo',
     severity: insight.portfolioHealth === 'red' ? 'high' : insight.portfolioHealth === 'amber' ? 'medium' : 'low',
     title: insight.headline,
     body: insight.healthSummary,
+    narrative,
     nodeId: projectNodeId,
+    projectId: isProject ? Number(opProjectId) : undefined,
   });
   if (ids[0]) await setFindingStatus(finding.id, 'published', { alertWpId: ids[0] });
 }

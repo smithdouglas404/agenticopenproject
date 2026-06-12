@@ -67,16 +67,18 @@ export function buildConsoleRouter(): Router {
   router.get('/api/findings', async (req, res) => {
     const status = String(req.query.status ?? '');
     const agentId = req.query.agent ? String(req.query.agent) : undefined;
+    // The task-level feed excludes portfolio-insight; those have their own section.
+    const exclude = 'portfolio-insight';
     if (status === 'open' || status === '') {
       const [fresh, published] = await Promise.all([
-        listFindings({ status: 'new', agentId }),
-        listFindings({ status: 'published', agentId }),
+        listFindings({ status: 'new', agentId, excludeType: exclude }),
+        listFindings({ status: 'published', agentId, excludeType: exclude }),
       ]);
       const merged = [...fresh, ...published].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-      res.json(status === '' ? await listFindings({ agentId }) : merged);
+      res.json(status === '' ? await listFindings({ agentId, excludeType: exclude }) : merged);
       return;
     }
-    res.json(await listFindings({ status: status as FindingStatus, agentId }));
+    res.json(await listFindings({ status: status as FindingStatus, agentId, excludeType: exclude }));
   });
 
   router.post('/api/findings/:id/approve', (req, res) => void decide(req, res, 'approved'));
@@ -88,6 +90,18 @@ export function buildConsoleRouter(): Router {
 
   router.get('/api/status', async (_req, res) => {
     res.json(await getStatus());
+  });
+
+  // Project-level portfolio assessments (the banner-quality insights), latest
+  // per project — separate from the task-level findings feed.
+  router.get('/api/project-status', async (_req, res) => {
+    const all = await listFindings({ type: 'portfolio-insight', limit: 200 });
+    const latest = new Map<string, (typeof all)[number]>();
+    for (const f of all) {
+      const key = f.nodeId || f.id;
+      if (!latest.has(key)) latest.set(key, f); // already sorted updatedAt DESC
+    }
+    res.json([...latest.values()]);
   });
 
   return router;

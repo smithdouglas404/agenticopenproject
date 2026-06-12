@@ -85,6 +85,8 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
 <main>
   <h2>Agents</h2>
   <div class="agents" id="agents"></div>
+  <h2>Project Status</h2>
+  <div id="projectStatus"></div>
   <h2>Findings & Recommendations</h2>
   <div class="filters" id="filters"></div>
   <div id="findings"></div>
@@ -127,12 +129,14 @@ function renderStatus(checks) {
 
 async function refresh() {
   try {
-    const [roster, findings, status] = await Promise.all([
+    const [roster, findings, status, projects] = await Promise.all([
       api('/api/roster'),
       api('/api/findings' + (statusFilter === 'all' ? '' : '?status=' + statusFilter)),
       api('/api/status').catch(() => []),
+      api('/api/project-status').catch(() => []),
     ]);
     renderAgents(roster);
+    renderProjectStatus(projects);
     renderFindings(findings);
     renderStatus(status);
     document.getElementById('updated').textContent = 'updated ' + new Date().toLocaleTimeString();
@@ -153,6 +157,38 @@ function renderAgents(roster) {
     meta.appendChild(el('span', 'chip' + (a.status === 'active' ? ' active' : ''), a.status));
     if (a.counts) meta.appendChild(el('span', 'chip open', a.counts.open + ' open / ' + a.counts.total));
     card.appendChild(meta);
+    root.appendChild(card);
+  }
+}
+
+function renderProjectStatus(list) {
+  const root = document.getElementById('projectStatus');
+  root.innerHTML = '';
+  if (!list || !list.length) {
+    root.appendChild(el('div', 'empty', 'No project assessments yet — edit a work package to trigger one.'));
+    return;
+  }
+  const health = { high: 'off_track', medium: 'at_risk', low: 'on_track' };
+  for (const f of list) {
+    const card = el('div', 'finding');
+    const top = el('div', 'top');
+    const code = health[f.severity] || 'at_risk';
+    top.appendChild(el('span', 'sev ' + f.severity, code === 'off_track' ? '🔴 OFF TRACK' : code === 'at_risk' ? '🟠 AT RISK' : '🟢 ON TRACK'));
+    top.appendChild(el('span', 'title', f.title));
+    card.appendChild(top);
+    card.appendChild(el('div', 'body', f.narrative || f.body));
+    const meta = el('div', 'meta');
+    meta.textContent = (f.projectName || f.nodeId) + ' · ' + f.agentId + ' · ' + new Date(f.updatedAt).toLocaleString();
+    card.appendChild(meta);
+    if (f.projectId) {
+      const links = el('div', 'links');
+      const a = document.createElement('a');
+      a.href = OP_BASE + '/projects/' + f.projectId + '/';
+      a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.textContent = '↗ Open project in OpenProject';
+      links.appendChild(a);
+      card.appendChild(links);
+    }
     root.appendChild(card);
   }
 }
