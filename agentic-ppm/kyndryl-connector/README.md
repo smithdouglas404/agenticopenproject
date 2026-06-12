@@ -17,6 +17,9 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `server/openProjectClient.ts` | Bidirectional OpenProject client (sync in, agent write-back out) — the core connector |
 | `server/FalkorOntologyDataProvider.ts` | Drop-in FalkorDB replacement for the Palantir `OntologyDataProvider` (same method surface, `/api/palantir/ontology/*` unchanged) |
 | `server/routes/webhooks/openproject.ts` | `POST /webhooks/openproject` Express router: HMAC verify → `handleWebhook()` sync + orchestrator `registerChange()` |
+| `shared/schema.openproject-gaps.ts` | Copy-paste Drizzle tables for the spec's gap list: `workPackageRelations`, `releases`, `workPackageCategories`, `okrEntityContributions`, `activityCostRates` + ALTER notes (tasks.startDate/completedDate, timesheets.activityName, customFields sync columns) |
+| `server/okrRollupService.ts` | OKR↔Epic↔Task rollup engine: KR progress = Σ entity.progress × contribution% (deterministic, with `formula` audit string), OKR weighted average, contribution inference from `okrLinkages`, write-back skeleton |
+| `server/routes/okrRollup.routes.ts` | Express router: `GET /api/okrs/:id/rollup` (computed, contributors + formula) and `POST /api/okrs/:okrId/key-results/:krId/contributions` (human override upsert) |
 | `server/integrationSyncService.openproject.patch.ts` | Copy-paste `testOpenProjectConnection`/`syncOpenProject` methods + switch cases for `IntegrationSyncService` |
 | `server/patches/eventDrivenBootstrap.ts` | `activateEventDrivenOrchestration()` + `registerCrudChangeHooks()` — the missing wiring for `EventDrivenOrchestrator` |
 | `server/patches/ACTIVATE_EVENT_DRIVEN.md` | Exact steps to kill the 15s polling loop and go event-driven (~93% cost cut) |
@@ -24,6 +27,7 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `docs/SCHEMA_AND_OPENPROJECT_MAPPING.md` | OpenProject ↔ Kyndral v2 field/type mapping + schema gap list |
 | `docs/ORCHESTRATION_AND_RULES.md` | Cost analysis: polling vs event-driven orchestrators, rules-engine verdict |
 | `docs/GROUNDING_AND_HALLUCINATION.md` | Grounding / outcome-tracking strategy for the agents |
+| `docs/MOCK_DATA_TO_REAL.md` | "Kill the demo data" plan: mock inventory, the every-number-traces rule, cutover steps + per-page verification checklist |
 | `docs/UI_STRATEGY.md` | UI strategy notes |
 
 ## What it provides
