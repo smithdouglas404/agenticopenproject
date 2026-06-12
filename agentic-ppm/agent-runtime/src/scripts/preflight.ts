@@ -13,7 +13,7 @@
  */
 import { runPreflight } from '../preflight.js';
 import { getGraph } from '../graph/falkor.js';
-import { closeGraphiti } from '../graph/graphiti.js';
+import { closeMemory } from '../memory/index.js';
 
 async function main(): Promise<void> {
   console.log('Agentic PPM — preflight\n');
@@ -32,5 +32,5 @@ main()
     process.exitCode = 1;
   })
   .finally(async () => {
-    await Promise.allSettled([getGraph().close(), closeGraphiti()]);
+    await Promise.allSettled([getGraph().close(), closeMemory()]);
   });

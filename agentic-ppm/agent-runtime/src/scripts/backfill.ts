@@ -15,7 +15,7 @@ import { assertRuntimeConfig } from '../config.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { getProjector } from '../projector/projector.js';
 import { getGraph } from '../graph/falkor.js';
-import { closeGraphiti } from '../graph/graphiti.js';
+import { closeMemory } from '../memory/index.js';
 
 async function main(): Promise<void> {
   assertRuntimeConfig();
@@ -47,5 +47,5 @@ main()
   })
   .finally(async () => {
     // Release the FalkorDB socket and Graphiti MCP connection so the process exits.
-    await Promise.allSettled([getGraph().close(), closeGraphiti()]);
+    await Promise.allSettled([getGraph().close(), closeMemory()]);
   });

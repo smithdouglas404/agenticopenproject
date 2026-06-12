@@ -77,6 +77,14 @@ export const config = {
     token: process.env.CONSOLE_TOKEN,
   },
 
+  memory: {
+    /** Memory provider: falkor (default, native) | mem0 (managed) | graphiti | none. */
+    provider: (process.env.MEMORY_PROVIDER ?? 'falkor') as 'falkor' | 'mem0' | 'graphiti' | 'none',
+    mem0ApiKey: process.env.MEM0_API_KEY,
+    mem0BaseUrl: process.env.MEM0_BASE_URL ?? 'https://api.mem0.ai',
+    mem0AgentId: process.env.MEM0_AGENT_ID ?? 'agentic-ppm',
+  },
+
   graphiti: {
     /** MCP server URL, e.g. http://graphiti-mcp:8000/sse. Unset = disabled. */
     mcpUrl: process.env.GRAPHITI_MCP_URL,

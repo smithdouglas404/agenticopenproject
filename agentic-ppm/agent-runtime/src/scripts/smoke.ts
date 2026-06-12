@@ -19,7 +19,7 @@ import { config } from '../config.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { getProjector } from '../projector/projector.js';
 import { getGraph } from '../graph/falkor.js';
-import { closeGraphiti } from '../graph/graphiti.js';
+import { closeMemory } from '../memory/index.js';
 
 async function main(): Promise<void> {
   const op = getOpenProjectClient();
@@ -99,5 +99,5 @@ main()
     process.exitCode = 1;
   })
   .finally(async () => {
-    await Promise.allSettled([getGraph().close(), closeGraphiti()]);
+    await Promise.allSettled([getGraph().close(), closeMemory()]);
   });

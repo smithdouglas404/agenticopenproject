@@ -9,7 +9,7 @@
 import { getOpenProjectClient } from '../openproject/client.js';
 import type { OpenProjectProject, OpenProjectWorkPackage } from '../openproject/types.js';
 import { getGraph } from '../graph/falkor.js';
-import { recordEpisode } from '../graph/graphiti.js';
+import { recordEpisode } from '../memory/index.js';
 import { config } from '../config.js';
 import { mapType, canonicalId, type SourceSystem } from '../ontology/mapping.js';
 import type { SpineProperties } from '../ontology/spine.js';
@@ -131,7 +131,8 @@ export class Projector {
     await recordEpisode({
       content: `${label} "${wp.subject}" (#${wp.id}) is ${props.status}`,
       source,
-      metadata: { nodeId, spineClass: label, dialectClass, status: props.status, priority: props.priority },
+      subjectNodeId: nodeId,
+      metadata: { spineClass: label, dialectClass, status: props.status, priority: props.priority },
     });
 
     return { label, nodeId };
