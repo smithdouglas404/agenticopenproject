@@ -10,6 +10,22 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 > The agent-runtime in this repo proved the OpenProject↔graph↔agents loop; this is
 > that work, refactored into a Kyndral-native client.
 
+## What's in here now
+
+| File | What it is |
+|---|---|
+| `server/openProjectClient.ts` | Bidirectional OpenProject client (sync in, agent write-back out) — the core connector |
+| `server/FalkorOntologyDataProvider.ts` | Drop-in FalkorDB replacement for the Palantir `OntologyDataProvider` (same method surface, `/api/palantir/ontology/*` unchanged) |
+| `server/routes/webhooks/openproject.ts` | `POST /webhooks/openproject` Express router: HMAC verify → `handleWebhook()` sync + orchestrator `registerChange()` |
+| `server/integrationSyncService.openproject.patch.ts` | Copy-paste `testOpenProjectConnection`/`syncOpenProject` methods + switch cases for `IntegrationSyncService` |
+| `server/patches/eventDrivenBootstrap.ts` | `activateEventDrivenOrchestration()` + `registerCrudChangeHooks()` — the missing wiring for `EventDrivenOrchestrator` |
+| `server/patches/ACTIVATE_EVENT_DRIVEN.md` | Exact steps to kill the 15s polling loop and go event-driven (~93% cost cut) |
+| `docs/PALANTIR_TO_FALKORDB.md` | Migration plan: Palantir ontology backend → FalkorDB (mapping table, env vars, backfill, rollback) |
+| `docs/SCHEMA_AND_OPENPROJECT_MAPPING.md` | OpenProject ↔ Kyndral v2 field/type mapping + schema gap list |
+| `docs/ORCHESTRATION_AND_RULES.md` | Cost analysis: polling vs event-driven orchestrators, rules-engine verdict |
+| `docs/GROUNDING_AND_HALLUCINATION.md` | Grounding / outcome-tracking strategy for the agents |
+| `docs/UI_STRATEGY.md` | UI strategy notes |
+
 ## What it provides
 
 `server/openProjectClient.ts` — `OpenProjectClient`, same shape as `planviewClient.ts`:
