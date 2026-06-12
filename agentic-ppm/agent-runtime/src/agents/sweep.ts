@@ -9,6 +9,7 @@ import { runDetectors } from './detectors.js';
 import { recordFinding, setFindingStatus, setFindingNarrative, openFindingSeverityCounts } from '../store/findings.js';
 import { writeFinding, type AlertSeverity } from '../inbox/inbox.js';
 import { getOpenProjectClient } from '../openproject/client.js';
+import { assessAllProjects } from './projectAssessor.js';
 import {
   generateNarrative,
   fetchWorkItemContext,
@@ -95,6 +96,14 @@ export async function runSweep(reason: string): Promise<SweepResult> {
       );
     }
     await updateAlertsRollup().catch((err) => console.warn(`[sweep] rollup failed: ${err.message}`));
+    // Refresh every project's status banner so it tracks predictably, not only on edits.
+    if (config.insights.reassessOnSweep) {
+      const n = await assessAllProjects().catch((err) => {
+        console.warn(`[sweep] project re-assessment failed: ${err.message}`);
+        return 0;
+      });
+      if (n) console.log(`[sweep:${reason}] re-assessed ${n} project(s)`);
+    }
     return { detected: findings.length, newFindings: newCount, published };
   } finally {
     sweeping = false;
