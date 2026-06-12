@@ -14,6 +14,11 @@
  * default; we honor the algorithm named in the header prefix (sha1/sha256)
  * and default to SHA-1. Secret comes from OPENPROJECT_WEBHOOK_SECRET.
  *
+ * ECHO GUARD: outbound writes (server/openProjectWriteback.ts) record each
+ * pushed work-package id in a 30s-TTL set; work_package events for those ids
+ * are skipped here via wasRecentlyPushed() so our own write-backs don't
+ * re-sync (and re-trigger agents) as phantom inbound changes.
+ *
  * DROP-IN (Kyndral server/index.ts or routes registry):
  *   import { initOpenProjectWebhook } from "./routes/webhooks/openproject";
  *   const opWebhooks = initOpenProjectWebhook(express.Router(), {
@@ -26,6 +31,7 @@
  */
 import crypto from "node:crypto";
 import express, { type Request, type Response, type Router } from "express";
+import { wasRecentlyPushed } from "../../openProjectWriteback";
 
 // ── Minimal structural types (Kyndral's real classes satisfy these) ─────────
 
@@ -189,6 +195,14 @@ export function initOpenProjectWebhook(router: Router, deps: OpenProjectWebhookD
       const event: OPWebhookEvent = req.body;
       if (!event?.action) {
         res.status(400).json({ error: "missing action field" });
+        return;
+      }
+
+      // Echo guard: skip work_package events caused by our own outbound
+      // write-back (openProjectWriteback marks each pushed id for 30s).
+      const wpId = event.work_package?.id;
+      if (event.action.startsWith("work_package") && wpId != null && wasRecentlyPushed(wpId)) {
+        res.status(200).json({ received: true, action: event.action, skipped: "echo" });
         return;
       }
 

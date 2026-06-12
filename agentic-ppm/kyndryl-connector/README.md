@@ -29,6 +29,15 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `docs/GROUNDING_AND_HALLUCINATION.md` | Grounding / outcome-tracking strategy for the agents |
 | `docs/MOCK_DATA_TO_REAL.md` | "Kill the demo data" plan: mock inventory, the every-number-traces rule, cutover steps + per-page verification checklist |
 | `docs/UI_STRATEGY.md` | UI strategy notes |
+| `client/src/openproject/useOpenProject.ts` | Zero-dependency client hooks (plain fetch + React state): `useOpenProjectLink`, `useOpenProjectStatus`, `pushToOpenProject`, `createWorkPackageInOpenProject`, `isOpenProjectEntity` type guard, `formatRelativeTime` |
+| `client/src/openproject/SourceBadge.tsx` | "⚡ OpenProject" provenance chip with last-sync tooltip + deep-link icon; renders nothing for non-OP entities, so it's safe next to any title |
+| `client/src/openproject/OpenProjectEditGuard.tsx` | Bidirectional save: `useBidirectionalSave(entity)` (local save → push to OpenProject), `<PushStatus>` inline indicator with retry, render-prop wrapper |
+| `client/src/openproject/OpenProjectPanel.tsx` | Collapsible ProjectDetailPage panel (connection dot, "Open in OpenProject", last sync, create-work-package mini-form, optional agent-console `?embed=1` iframe) + `OpenProjectStatusDot` for the app header |
+| `client/src/openproject/ApprovalQueue.tsx` | **The HITL inbox**: agent insights/recommendations with evidence, confidence and per-agent track record; Approve & execute / Reject buttons (decisions train the agents) |
+| `client/src/openproject/index.ts` | Barrel export — copy the whole `openproject/` folder into Kyndral's `client/src/` |
+| `server/routes/agentFindings.routes.ts` | `/api/agent/*` proxy to the agent-runtime (findings, decisions, learning, metrics) keeping the runtime token server-side |
+| `CLAUDE_MD_FOR_KYNDRAL.md` | **Install as `CLAUDE.md` in the Kyndral repo root** — teaches every future Claude session the whole integration so you can vibe-code |
+| `docs/UI_BIDIRECTIONAL_WIRING_MAP.md` | **OpenProject in every area of the UI**: page-by-page wiring table (shows / writes back / exact drop-in) for all major Kyndral v2 areas, 6-step apply order, and a paste-prompt for the Kyndral session |
 
 ## What it provides
 
