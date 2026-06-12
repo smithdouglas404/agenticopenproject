@@ -44,14 +44,14 @@ module OpenProject::AgenticPpm
            { controller: "/agentic_ppm/recommendations", action: :index },
            caption: :"agentic_ppm.label_insights",
            after: :work_packages,
-           icon: "op-view-list-2"
+           icon: "op-view-list"
 
       menu :project_menu,
            :agentic_ppm_rules,
            { controller: "/agentic_ppm/rules", action: :index },
            caption: :"agentic_ppm.label_rules",
            after: :agentic_ppm,
-           icon: "op-view-list-2"
+           icon: "op-view-list"
     end
 
     # Build the ontology <-> OpenProject binding registry on every reload so
