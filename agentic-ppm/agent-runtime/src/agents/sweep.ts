@@ -10,6 +10,7 @@ import { recordFinding, setFindingStatus, setFindingNarrative, openFindingSeveri
 import { writeFinding, type AlertSeverity } from '../inbox/inbox.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { assessAllProjects } from './projectAssessor.js';
+import { runAgents } from './reasoningAgents.js';
 import {
   generateNarrative,
   fetchWorkItemContext,
@@ -103,6 +104,14 @@ export async function runSweep(reason: string): Promise<SweepResult> {
         return 0;
       });
       if (n) console.log(`[sweep:${reason}] re-assessed ${n} project(s)`);
+    }
+    // Run all roster agents as reasoning agents over the portfolio.
+    if (config.reasoning.enabled) {
+      const n = await runAgents().catch((err) => {
+        console.warn(`[sweep] reasoning agents failed: ${err.message}`);
+        return 0;
+      });
+      if (n) console.log(`[sweep:${reason}] reasoning agents raised ${n} new finding(s)`);
     }
     return { detected: findings.length, newFindings: newCount, published };
   } finally {

@@ -48,7 +48,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'FinOps',
     purpose: 'Cost anomalies, budget burn, cost optimization.',
     owns: ['CostAnomaly', 'BudgetOverrun'],
-    status: 'planned',
+    status: 'active',
   },
   {
     id: 'vro',
@@ -56,7 +56,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'VRO',
     purpose: 'Benefit realization, value metrics, business outcomes.',
     owns: ['UnrealizedBenefit', 'ValueAtRisk'],
-    status: 'planned',
+    status: 'active',
   },
   {
     id: 'okr',
@@ -64,7 +64,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'OKR',
     purpose: 'Objective/key-result cascade and alignment scoring.',
     owns: ['MisalignedInitiative', 'OrphanedObjective'],
-    status: 'planned',
+    status: 'active',
   },
   {
     id: 'planning',
@@ -80,7 +80,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'OCM',
     purpose: 'Readiness, adoption barriers, transformation fatigue.',
     owns: ['LowReadinessInitiative', 'TransformationFatigue'],
-    status: 'planned',
+    status: 'active',
   },
   {
     id: 'tmo',
@@ -88,7 +88,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'TMO',
     purpose: 'Transformation programs, initiatives, scenario analysis.',
     owns: ['StalledInitiative'],
-    status: 'planned',
+    status: 'active',
   },
   {
     id: 'notification',
@@ -96,7 +96,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'Notification',
     purpose: 'Routing, escalation paths, alert delivery to the HITL console.',
     owns: ['EscalationRequired'],
-    status: 'planned',
+    status: 'active',
   },
 ];
 
