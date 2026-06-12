@@ -1,5 +1,6 @@
-<%# Shared authoring form for an AgentRule. Plain OpenProject ERB. %>
+<%# Shared authoring form for an AgenticPpm::AgentRule. Plain OpenProject ERB. %>
 <%= form_for @rule,
+             as: :agent_rule,
              url: (@rule.persisted? ?
                    project_agentic_ppm_rule_path(@project, @rule) :
                    project_agentic_ppm_rules_path(@project)),
@@ -32,7 +33,7 @@
     <%= f.label :kind, class: "form--label" %>
     <span class="form--field-container">
       <%= f.select :kind,
-                   AgentRule.kinds.keys.map { |k|
+                   AgenticPpm::AgentRule.kinds.keys.map { |k|
                      [t("agentic_ppm.kinds.#{k}", default: k), k]
                    },
                    {},
@@ -69,7 +70,7 @@
     <%= f.label :operator, class: "form--label" %>
     <span class="form--field-container">
       <%= f.select :operator,
-                   AgentRule::OPERATORS.map { |op|
+                   AgenticPpm::AgentRule::OPERATORS.map { |op|
                      [t("agentic_ppm.operators.#{op}", default: op), op]
                    },
                    {},
@@ -114,7 +115,7 @@
     <%= f.label :severity, class: "form--label" %>
     <span class="form--field-container">
       <%= f.select :severity,
-                   AgentRule::SEVERITIES.map { |s|
+                   AgenticPpm::AgentRule::SEVERITIES.map { |s|
                      [t("agentic_ppm.severities.#{s}", default: s), s]
                    },
                    {},
