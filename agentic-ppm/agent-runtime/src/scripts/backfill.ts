@@ -36,7 +36,8 @@ async function main(): Promise<void> {
   const secs = ((Date.now() - started) / 1000).toFixed(1);
   console.log(
     `\nDone in ${secs}s: ${result.projects} projects, ${result.workPackages} work packages` +
-      ` (${result.skipped} skipped as agent-authored).`,
+      ` (${result.skipped} skipped as agent-authored), ${result.relations} relations,` +
+      ` ${result.releases} releases, ${result.timeEntries} time entries aggregated.`,
   );
 }
 

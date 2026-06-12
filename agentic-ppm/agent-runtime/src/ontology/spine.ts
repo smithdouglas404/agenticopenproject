@@ -25,6 +25,7 @@ export type SpineLabel =
   // supporting concepts
   | 'Risk'
   | 'Milestone'
+  | 'Release'
   | 'Deliverable'
   | 'Resource'
   | 'Team'
@@ -36,7 +37,7 @@ export type SpineLabel =
 
 export const SPINE_LABELS: readonly SpineLabel[] = [
   'Portfolio', 'Program', 'Project', 'Epic', 'Feature', 'Story', 'Task', 'Issue',
-  'Risk', 'Milestone', 'Deliverable', 'Resource', 'Team', 'Objective', 'KeyResult', 'Insight',
+  'Risk', 'Milestone', 'Release', 'Deliverable', 'Resource', 'Team', 'Objective', 'KeyResult', 'Insight',
 ] as const;
 
 /** Relationship types = `pm:` object properties, materialized as edge types. */
@@ -49,7 +50,15 @@ export type SpineRelationship =
   | 'BELONGS_TO_PORTFOLIO'
   | 'BELONGS_TO_PROGRAM'
   | 'CONTRIBUTES_TO' // work -> Objective (k360 OKR alignment)
-  | 'HAS_RISK'; // work/Project -> Risk
+  | 'HAS_RISK' // work/Project -> Risk
+  // dependency edges (canonicalized from source relation types, original kept on `opType`)
+  | 'BLOCKS' // work -> work it blocks
+  | 'FOLLOWS' // work -> the work it comes after ('precedes' is stored reversed)
+  | 'RELATES_TO' // generic association
+  | 'DUPLICATES' // work -> the work it duplicates
+  // release edges
+  | 'HAS_RELEASE' // Project -> Release
+  | 'TARGETS_RELEASE'; // work -> Release (fix version)
 
 /**
  * Canonical property names (compiled from core.ttl datatype properties).

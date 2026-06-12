@@ -31,7 +31,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     name: 'Strategic PMO Agent',
     domain: 'Strategic PMO',
     purpose: 'Delivery risk, schedule variance, dependency and portfolio health.',
-    owns: ['portfolio-insight', 'OverdueInProgress', 'StaleHighPriority', 'UnownedHighPriority'],
+    owns: ['portfolio-insight', 'OverdueInProgress', 'StaleHighPriority', 'UnownedHighPriority', 'ReleaseAtRisk'],
     status: 'active', // implemented as insightsRiskAgent.ts
   },
   {
@@ -47,7 +47,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     name: 'FinOps Agent',
     domain: 'FinOps',
     purpose: 'Cost anomalies, budget burn, cost optimization.',
-    owns: ['CostAnomaly', 'BudgetOverrun'],
+    owns: ['CostAnomaly', 'CostBurnWithoutProgress', 'BudgetOverrun'],
     status: 'active',
   },
   {
@@ -71,7 +71,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     name: 'Planning Agent',
     domain: 'Planning',
     purpose: 'Capacity forecast, resource allocation, roadmap feasibility.',
-    owns: ['CapacityOverload', 'ResourceConflict'],
+    owns: ['CapacityOverload', 'ResourceConflict', 'BlockedCriticalWork'],
     status: 'active', // CapacityOverload detector runs in the sweep
   },
   {

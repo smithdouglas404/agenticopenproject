@@ -40,6 +40,16 @@ function today(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+/** ISO timestamp `days` ago — comparable lexicographically with stored updatedAt. */
+function isoDaysAgo(days: number): string {
+  return new Date(Date.now() - days * 86_400_000).toISOString();
+}
+
+/** ISO date `days` from now (yyyy-mm-dd), for look-ahead windows. */
+function isoDaysAhead(days: number): string {
+  return new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 10);
+}
+
 function wpId(nodeId: string): number | undefined {
   const m = nodeId.match(/op-wp-(\d+)/);
   return m ? Number(m[1]) : undefined;
@@ -164,11 +174,163 @@ const capacityOverload: Detector = {
   },
 };
 
+/** High-priority open work untouched for longer than the staleness window. */
+const staleHighPriority: Detector = {
+  type: 'StaleHighPriority',
+  agentId: 'strategic-pmo',
+  description: 'High-priority open item not updated within the staleness window.',
+  async run() {
+    const days = config.detectors.staleHighPriorityDays;
+    const cutoff = isoDaysAgo(days);
+    const severeCutoff = isoDaysAgo(days * 2);
+    const rows = await getGraph().query<Row & { updatedAt?: string }>(
+      `MATCH (w)
+       WHERE w.spineClass IN $labels
+         AND coalesce(w.priority, 'Normal') IN $high
+         AND NOT coalesce(w.status, 'New') IN $closed
+         AND w.updatedAt IS NOT NULL AND w.updatedAt < $cutoff
+       RETURN w.id AS id, w.name AS name, w.priority AS priority, w.status AS status,
+              w.updatedAt AS updatedAt
+       LIMIT 100`,
+      { labels: WORK_LABELS, high: HIGH_PRIORITIES, closed: OPEN_STATUSES_EXCLUDED, cutoff },
+    );
+    return rows.map((r) => ({
+      type: 'StaleHighPriority',
+      agentId: 'strategic-pmo',
+      severity: ((r.updatedAt ?? '') < severeCutoff ? 'high' : 'medium') as FindingSeverity,
+      title: `Stale ${r.priority} work: "${r.name}"`,
+      body:
+        `Priority ${r.priority}, still "${r.status ?? 'open'}", last updated ` +
+        `${(r.updatedAt ?? '').slice(0, 10)} — over ${days} days without movement.`,
+      nodeId: r.id,
+      workPackageId: wpId(r.id),
+    }));
+  },
+};
+
+/** Open work blocked by an open, already-overdue blocker (dependency at risk). */
+const blockedCriticalWork: Detector = {
+  type: 'BlockedCriticalWork',
+  agentId: 'planning',
+  description: 'Open item blocked by an open item that is itself overdue.',
+  async run() {
+    const rows = await getGraph().query<{
+      id: string; name: string; status?: string;
+      blockerId: string; blockerName: string; blockerStatus?: string; blockerDue?: string;
+    }>(
+      `MATCH (blocker)-[:BLOCKS]->(w)
+       WHERE w.spineClass IN $labels AND blocker.spineClass IN $labels
+         AND NOT coalesce(w.status, 'New') IN $closed
+         AND NOT coalesce(blocker.status, 'New') IN $closed
+         AND blocker.endDate IS NOT NULL AND blocker.endDate < $today
+       RETURN w.id AS id, w.name AS name, w.status AS status,
+              blocker.id AS blockerId, blocker.name AS blockerName,
+              blocker.status AS blockerStatus, blocker.endDate AS blockerDue
+       LIMIT 100`,
+      { labels: WORK_LABELS, closed: OPEN_STATUSES_EXCLUDED, today: today() },
+    );
+    return rows.map((r) => ({
+      type: 'BlockedCriticalWork',
+      agentId: 'planning',
+      severity: 'high' as FindingSeverity,
+      title: `Blocked by overdue work: "${r.name}"`,
+      body:
+        `Blocked by "${r.blockerName}" (${r.blockerId}), which was due ${r.blockerDue} ` +
+        `and is still "${r.blockerStatus ?? 'open'}". The downstream item cannot proceed.`,
+      nodeId: r.id,
+      workPackageId: wpId(r.id),
+    }));
+  },
+};
+
+/** Release due within 14 days (or past) with open work that is behind. */
+const releaseAtRisk: Detector = {
+  type: 'ReleaseAtRisk',
+  agentId: 'strategic-pmo',
+  description: 'Release due within 14 days with behind-schedule open work targeting it.',
+  async run() {
+    const rows = await getGraph().query<{
+      id: string; name: string; endDate: string;
+      open: number; avgProgress: number; overdue: number;
+    }>(
+      `MATCH (r:Release)
+       WHERE r.endDate IS NOT NULL AND r.endDate < $horizon
+       OPTIONAL MATCH (w)-[:TARGETS_RELEASE]->(r)
+       WHERE NOT coalesce(w.status, 'New') IN $closed
+       WITH r, count(w) AS open, avg(coalesce(w.progress, 0)) AS avgProgress,
+            sum(CASE WHEN w.endDate IS NOT NULL AND w.endDate < $today THEN 1 ELSE 0 END) AS overdue
+       WHERE open > 0 AND (avgProgress < 70 OR overdue > 0)
+       RETURN r.id AS id, r.name AS name, r.endDate AS endDate, open, avgProgress, overdue
+       LIMIT 50`,
+      { closed: OPEN_STATUSES_EXCLUDED, today: today(), horizon: isoDaysAhead(14) },
+    );
+    return rows.map((r) => ({
+      type: 'ReleaseAtRisk',
+      agentId: 'strategic-pmo',
+      severity: (r.endDate < today() ? 'high' : 'medium') as FindingSeverity,
+      title: `Release at risk: "${r.name}"`,
+      body:
+        `Due ${r.endDate} with ${r.open} open item(s) at avg ${Math.round(r.avgProgress)}% progress` +
+        `${r.overdue > 0 ? ` (${r.overdue} already overdue)` : ''}. Re-plan scope or move the date.`,
+      nodeId: r.id,
+    }));
+  },
+};
+
+/** Time burn exceeding the estimate (or burning with no estimate and low progress). */
+const costBurnWithoutProgress: Detector = {
+  type: 'CostBurnWithoutProgress',
+  agentId: 'finops',
+  description: 'CostAnomaly: spent hours exceed the estimate, or burn with no estimate and low progress.',
+  async run() {
+    const threshold = config.detectors.costBurnHoursThreshold;
+    const rows = await getGraph().query<{
+      id: string; name: string; status?: string;
+      spent: number; estimate?: number; progress?: number;
+    }>(
+      `MATCH (w)
+       WHERE w.spineClass IN $labels
+         AND NOT coalesce(w.status, 'New') IN $closed
+         AND w.spentHours IS NOT NULL AND w.spentHours > 0
+         AND (
+           (w.estimatedHours IS NOT NULL AND w.estimatedHours > 0 AND w.spentHours > w.estimatedHours)
+           OR (
+             (w.estimatedHours IS NULL OR w.estimatedHours = 0)
+             AND w.spentHours > $threshold AND coalesce(w.progress, 0) < 25
+           )
+         )
+       RETURN w.id AS id, w.name AS name, w.status AS status, w.spentHours AS spent,
+              w.estimatedHours AS estimate, w.progress AS progress
+       LIMIT 100`,
+      { labels: WORK_LABELS, closed: OPEN_STATUSES_EXCLUDED, threshold },
+    );
+    return rows.map((r) => {
+      const overEstimate = typeof r.estimate === 'number' && r.estimate > 0;
+      const severe = overEstimate ? r.spent > r.estimate! * 1.5 : r.spent > threshold * 2;
+      return {
+        type: 'CostBurnWithoutProgress',
+        agentId: 'finops',
+        severity: (severe ? 'high' : 'medium') as FindingSeverity,
+        title: `Cost burn anomaly: "${r.name}"`,
+        body: overEstimate
+          ? `${r.spent}h logged against a ${r.estimate}h estimate at ${r.progress ?? 0}% progress — budget burn exceeds plan.`
+          : `${r.spent}h logged with no estimate and only ${r.progress ?? 0}% progress (threshold ${threshold}h). Add an estimate and review scope.`,
+        nodeId: r.id,
+        workPackageId: wpId(r.id),
+      };
+    });
+  },
+};
+
 export const DETECTORS: Detector[] = [
   overdueInProgress,
   unownedHighPriority,
   orphanedWorkItem,
   capacityOverload,
+  staleHighPriority,
+  blockedCriticalWork,
+  releaseAtRisk,
+  costBurnWithoutProgress,
 ];
 
 /** Run all active detectors and return their findings. */
