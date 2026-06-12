@@ -29,6 +29,21 @@
   </div>
 
   <div class="form--field -required">
+    <%= f.label :kind, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.select :kind,
+                   AgentRule.kinds.keys.map { |k|
+                     [t("agentic_ppm.kinds.#{k}", default: k), k]
+                   },
+                   {},
+                   class: "form--select" %>
+    </span>
+    <span class="form--field-instructions">
+      <%= t("agentic_ppm.hint_kind") %>
+    </span>
+  </div>
+
+  <div class="form--field -required">
     <%= f.label :ontology_class, class: "form--label" %>
     <span class="form--field-container">
       <%= f.text_field :ontology_class, class: "form--text-field",
@@ -76,6 +91,22 @@
     </span>
     <span class="form--field-instructions">
       <%= t("agentic_ppm.hint_threshold2") %>
+    </span>
+  </div>
+
+  <%# Threshold fields (ontology/metric/operator/threshold above) apply when
+      kind = "threshold"; the JDM editor below applies when kind = "decision". %>
+  <div class="form--field">
+    <%= f.label :jdm, class: "form--label" %>
+    <span class="form--field-container">
+      <%= f.text_area :jdm,
+                      rows: 12,
+                      value: (@rule.jdm.present? ? JSON.pretty_generate(@rule.jdm) : ""),
+                      class: "form--text-area",
+                      placeholder: '{ "nodes": [], "edges": [] }' %>
+    </span>
+    <span class="form--field-instructions">
+      <%= t("agentic_ppm.hint_jdm") %>
     </span>
   </div>
 

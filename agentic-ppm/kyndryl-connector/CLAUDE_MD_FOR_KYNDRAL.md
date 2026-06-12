@@ -46,6 +46,7 @@ All building blocks are already in this repo (originally authored in
 | Make any save bidirectional | wrap the save handler with `useBidirectionalSave` from `client/src/openproject/OpenProjectEditGuard.tsx` |
 | Agent insights + HITL approve/reject in the UI | `client/src/openproject/ApprovalQueue.tsx` + server proxy `server/routes/agentFindings.routes.ts` (`/api/agent/*`) |
 | Set a threshold rule | OpenProject → agentic_ppm module → Rules; runtime evaluates; breaches appear in both UIs (read-only view: `client/src/openproject/RulesPanel.tsx`, proxy `/api/agent/rules`; design: `docs/RULES_ENGINE.md`) |
+| Author a decision-table rule | GoRules JDM on AgentRule (kind='decision'); visual editor `DecisionEditor.tsx` (`@gorules/jdm-editor`); runtime evaluates via ZEN (design: `docs/DECISION_ENGINE_GORULES.md`) |
 | Agent chat with grounded widgets (Vercel AI SDK) | `ai-sdk/` — tools in `ai-sdk/server/tools.ts`, route `POST /api/agent-chat`, widgets + `AgenticChat` in `ai-sdk/client/` |
 | OKR progress from real delivery | `server/okrRollupService.ts` (KR progress = Σ entity progress × contribution%); routes in `server/routes/okrRollup.routes.ts` |
 
@@ -95,6 +96,16 @@ OpenProject (Agent Alert WP + comment + banner + `POST /agentic_ppm/api/alerts.j
 (`client/src/openproject/RulesPanel.tsx`, via the `/api/agent/rules` proxy and
 `/api/agent/findings?type=RuleBreach`); the full contract is in
 `docs/RULES_ENGINE.md`.
+
+A rule has a `kind`: `'threshold'` (the single-metric `metric operator threshold`
+rule above) or `'decision'` (a GoRules **JDM** — a decision table / decision graph
+— carried in a `jdm` field on the AgentRule and evaluated in-process by the
+GoRules **ZEN** engine against the entity context, returning
+`{breach, severity?, message?, action_kind?, metric?, value?}`). Only the *decide*
+step differs; the event+sweep trigger, previous-value memory, cooldown/dedup, and
+dual-UI fan-out are reused unchanged. Decision rules are authored by pasting JDM
+JSON in OpenProject (Phase 1) or visually via `client/src/openproject/DecisionEditor.tsx`
+(the `@gorules/jdm-editor` wrapper, Phase 2). See `docs/DECISION_ENGINE_GORULES.md`.
 
 ## Env vars (integration)
 

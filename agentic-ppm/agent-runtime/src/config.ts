@@ -89,6 +89,8 @@ export const config = {
     evaluateOnSweep: (process.env.RULES_EVALUATE_ON_SWEEP ?? '1') === '1',
     /** Allow targeted rule evaluation from the webhook (changed-node path). */
     evaluateOnEvent: (process.env.RULES_EVALUATE_ON_EVENT ?? '1') === '1',
+    /** Enable the GoRules ZEN decision core for kind:'decision' rules. */
+    zenEnabled: (process.env.RULES_ZEN_ENABLED ?? '1') === '1',
   },
 
   grounding: {

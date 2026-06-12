@@ -18,6 +18,15 @@ en:
     hint_ontology_class: "Which ontology elements this rule scans, e.g. \"safe:Epic\", \"pm:Task\", \"pm:Project\"."
     hint_metric: "The field or metric to test, e.g. \"percentageDone\", \"budget_variance\", \"schedule_variance_days\", \"risk_score\" or a custom field key like \"customField12\"."
     hint_threshold2: "Upper bound, used by the outside_range and delta operators."
+    hint_kind: "A \"threshold\" rule is a single comparison; a \"decision\" rule carries a GoRules JDM decision graph evaluated by the runtime's ZEN engine."
+    hint_jdm: "Paste a GoRules JDM decision graph (visual editor coming in Kyndral — see docs/RULES_ENGINE.md / DECISION_ENGINE_GORULES.md). The ontology/metric/operator/threshold fields apply when kind = threshold; this JDM applies when kind = decision."
+
+    kinds:
+      threshold: "Threshold"
+      decision: "Decision (GoRules JDM)"
+
+    errors:
+      jdm_invalid_json: "JDM is not valid JSON"
 
     operators:
       gt: "is greater than"
@@ -58,6 +67,8 @@ en:
       agentic_ppm/agent_rule:
         name: "Name"
         description: "Description"
+        kind: "Rule kind"
+        jdm: "Decision graph (GoRules JDM)"
         ontology_class: "Ontology class"
         metric: "Metric"
         operator: "Operator"
