@@ -8,7 +8,7 @@
 # of the License, or (at your option) any later version.
 
 module AgenticPpm
-  module Api
+  module API
     # Pull endpoint the TypeScript agent runtime polls to fetch the rules it
     # must evaluate. Returns the *enabled* global rules plus the requested
     # project's enabled rules as { rules: [...to_runtime_json] }.
