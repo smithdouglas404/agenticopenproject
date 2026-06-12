@@ -78,11 +78,23 @@ export const config = {
   },
 
   memory: {
-    /** Memory provider: falkor (default, native) | mem0 (managed) | graphiti | none. */
-    provider: (process.env.MEMORY_PROVIDER ?? 'falkor') as 'falkor' | 'mem0' | 'graphiti' | 'none',
+    /** Memory provider: falkor (default) | mem0 | letta | graphiti | none. */
+    provider: (process.env.MEMORY_PROVIDER ?? 'falkor') as 'falkor' | 'mem0' | 'letta' | 'graphiti' | 'none',
     mem0ApiKey: process.env.MEM0_API_KEY,
     mem0BaseUrl: process.env.MEM0_BASE_URL ?? 'https://api.mem0.ai',
     mem0AgentId: process.env.MEM0_AGENT_ID ?? 'agentic-ppm',
+  },
+
+  letta: {
+    /** Letta Cloud API key (or self-hosted via LETTA_BASE_URL). */
+    apiKey: process.env.LETTA_API_KEY,
+    baseUrl: process.env.LETTA_BASE_URL ?? 'https://api.letta.com',
+    /** Model handle for the agents — Claude by default ("claude native"). */
+    model: process.env.LETTA_MODEL ?? 'anthropic/claude-sonnet-4-20250514',
+    embedding: process.env.LETTA_EMBEDDING ?? 'openai/text-embedding-3-small',
+    /** Tag applied to all agents/memory we own, so we can find them idempotently. */
+    tag: process.env.LETTA_TAG ?? 'agentic-ppm',
+    configured: !!(process.env.LETTA_API_KEY || process.env.LETTA_BASE_URL),
   },
 
   graphiti: {
