@@ -13,9 +13,8 @@ import express, { type Express, type Request, type Response } from 'express';
 import { config } from '../config.js';
 import { getProjector } from '../projector/projector.js';
 import { getOpenProjectClient } from '../openproject/client.js';
-import { runInsightsAndRisk } from '../agents/insightsRiskAgent.js';
-import { publishInsight } from '../inbox/inbox.js';
-import { recordFinding, setFindingStatus, getFindingByAlertWp } from '../store/findings.js';
+import { getFindingByAlertWp } from '../store/findings.js';
+import { assessProject } from '../agents/projectAssessor.js';
 import { decideFinding } from '../agents/decisions.js';
 import { maybeSweepAfterEvent } from '../agents/sweep.js';
 import { buildConsoleRouter } from '../console/api.js';
@@ -74,51 +73,9 @@ function projectNodeIdFromEvent(event: OPWebhookEvent): string | null {
   return null;
 }
 
-/** Run the LLM insight pass for one project and publish/record the results. */
-const HEALTH_TO_STATUS: Record<string, 'on_track' | 'at_risk' | 'off_track'> = {
-  green: 'on_track',
-  amber: 'at_risk',
-  red: 'off_track',
-};
-
+/** Run the LLM insight pass for one project (delegates to the shared assessor). */
 async function runProjectInsight(projectNodeId: string): Promise<void> {
-  const insight = await runInsightsAndRisk(projectNodeId);
-  if (!insight) return;
-
-  const ids = await publishInsight(insight);
-  console.log(`[webhook] published ${ids.length} finding(s) for ${projectNodeId}: [${ids.join(', ')}]`);
-
-  // Surface the verdict on the project Overview page via the native status field.
-  const opProjectId = projectNodeId.replace(/^op-project-/, '');
-  const topRec = insight.recommendations[0];
-  const narrative =
-    `${insight.healthSummary}` +
-    (topRec ? `\n\n**Next:** ${topRec.action} — ${topRec.rationale}` : '');
-  const isProject = !!opProjectId && opProjectId !== projectNodeId;
-
-  if (config.actions.setProjectStatus && isProject) {
-    const statusCode = HEALTH_TO_STATUS[insight.portfolioHealth] ?? 'at_risk';
-    const explanation =
-      `**${insight.headline}**\n\n${narrative}\n\n_Assessed by the Strategic PMO agent · ${new Date().toISOString().slice(0, 10)}_`;
-    await getOpenProjectClient()
-      .updateProjectStatus(opProjectId, statusCode, explanation)
-      .then(() => console.log(`[webhook] set project ${opProjectId} status = ${statusCode}`))
-      .catch((err) => console.warn(`[webhook] set project status failed: ${err.message}`));
-  }
-
-  // Record the same insight as a portfolio-insight finding so the console shows
-  // the identical, full-quality narrative (headline + summary + Next) the banner has.
-  const { finding } = await recordFinding({
-    type: 'portfolio-insight',
-    agentId: 'strategic-pmo',
-    severity: insight.portfolioHealth === 'red' ? 'high' : insight.portfolioHealth === 'amber' ? 'medium' : 'low',
-    title: insight.headline,
-    body: insight.healthSummary,
-    narrative,
-    nodeId: projectNodeId,
-    projectId: isProject ? Number(opProjectId) : undefined,
-  });
-  if (ids[0]) await setFindingStatus(finding.id, 'published', { alertWpId: ids[0] });
+  await assessProject(projectNodeId);
 }
 
 // Debounce insight runs per project so webhook bursts trigger ONE LLM pass.

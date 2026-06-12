@@ -61,6 +61,8 @@ export const config = {
   insights: {
     /** Coalesce webhook bursts: wait this long per project before the LLM run (0 = immediate). */
     debounceSeconds: Number(process.env.INSIGHT_DEBOUNCE_SECONDS ?? 45),
+    /** Re-assess every project's status during the detector sweep (predictable refresh). */
+    reassessOnSweep: (process.env.REASSESS_PROJECTS_ON_SWEEP ?? '1') === '1',
   },
 
   actions: {
