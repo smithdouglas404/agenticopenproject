@@ -15,7 +15,8 @@ import { getProjector } from '../projector/projector.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { runInsightsAndRisk } from '../agents/insightsRiskAgent.js';
 import { publishInsight } from '../inbox/inbox.js';
-import { recordFinding, setFindingStatus } from '../store/findings.js';
+import { recordFinding, setFindingStatus, getFindingByAlertWp } from '../store/findings.js';
+import { decideFinding } from '../agents/decisions.js';
 import { maybeSweepAfterEvent } from '../agents/sweep.js';
 import { buildConsoleRouter } from '../console/api.js';
 
@@ -39,7 +40,12 @@ async function isInAlertsProject(event: OPWebhookEvent): Promise<boolean> {
 
 interface OPWebhookEvent {
   action: string; // e.g. work_package:created, work_package:updated, project:updated
-  work_package?: { id?: number; subject?: string; _links?: { project?: { href?: string } }; [k: string]: unknown };
+  work_package?: {
+    id?: number;
+    subject?: string;
+    _links?: { project?: { href?: string }; status?: { title?: string } };
+    [k: string]: unknown;
+  };
   project?: { id?: number; name?: string };
 }
 
@@ -128,6 +134,25 @@ function scheduleProjectInsight(projectNodeId: string): void {
   insightTimers.set(projectNodeId, timer);
 }
 
+// Map an Agent Alert WP status to a HITL decision. Closed/Resolved = approve
+// (the human accepted the recommendation); Rejected = reject. Configurable names.
+const APPROVE_STATUSES = (process.env.ALERT_APPROVE_STATUSES ?? 'closed,resolved,approved,done')
+  .split(',').map((s) => s.trim().toLowerCase());
+const REJECT_STATUSES = (process.env.ALERT_REJECT_STATUSES ?? 'rejected,cancelled,canceled')
+  .split(',').map((s) => s.trim().toLowerCase());
+
+async function handleAlertStatusChange(alertWpId: number, statusTitle?: string): Promise<void> {
+  if (!statusTitle) return;
+  const s = statusTitle.toLowerCase();
+  const decision = APPROVE_STATUSES.includes(s) ? 'approved' : REJECT_STATUSES.includes(s) ? 'rejected' : null;
+  if (!decision) return;
+
+  const finding = await getFindingByAlertWp(alertWpId);
+  if (!finding) return;
+  const r = await decideFinding(finding.id, decision, `openproject:${statusTitle}`);
+  if (r.ok) console.log(`[webhook] alert WP ${alertWpId} -> finding ${finding.id} ${decision} via OpenProject status`);
+}
+
 async function processEvent(event: OPWebhookEvent): Promise<void> {
   const { action } = event;
   console.log(
@@ -142,10 +167,13 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
     console.log(`[webhook] skipping agent-originated event for WP ${event.work_package?.id}`);
     return;
   }
-  // Also skip anything inside the alerts project (our own Agent Alerts), so the
-  // loop never feeds on itself even when custom fields aren't configured.
+  // Events inside the alerts project are our own Agent Alerts. We don't re-project
+  // them — BUT a human changing an alert's STATUS is an approve/reject decision,
+  // making OpenProject a first-class HITL surface equal to the console.
   if (await isInAlertsProject(event)) {
-    console.log('[webhook] skipping event inside the alerts project');
+    if (event.action === 'work_package:updated' && event.work_package?.id) {
+      await handleAlertStatusChange(event.work_package.id, event.work_package._links?.status?.title);
+    }
     return;
   }
 

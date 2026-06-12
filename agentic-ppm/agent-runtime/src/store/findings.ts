@@ -129,6 +129,15 @@ export async function getFinding(id: string): Promise<StoredFinding | null> {
   return rows[0] ?? null;
 }
 
+/** Find the open finding whose Agent Alert WP is the given id (for OpenProject-side HITL). */
+export async function getFindingByAlertWp(alertWpId: number): Promise<StoredFinding | null> {
+  const rows = await getGraph().query<StoredFinding>(
+    `MATCH (f:AgentFinding { alertWpId: $alertWpId }) RETURN ${RETURN_FIELDS} LIMIT 1`,
+    { alertWpId },
+  );
+  return rows[0] ?? null;
+}
+
 export async function listFindings(filter?: {
   status?: FindingStatus;
   agentId?: string;
@@ -184,6 +193,19 @@ export async function setFindingNarrative(
       now: new Date().toISOString(),
     },
   );
+}
+
+/** Open-finding counts by severity, for the alerts-project rollup banner. */
+export async function openFindingSeverityCounts(): Promise<{ high: number; medium: number; low: number }> {
+  const rows = await getGraph().query<{ severity: string; c: number }>(
+    `MATCH (f:AgentFinding) WHERE f.status IN ['new', 'published']
+     RETURN f.severity AS severity, count(f) AS c`,
+  );
+  const out = { high: 0, medium: 0, low: 0 };
+  for (const r of rows) {
+    if (r.severity === 'high' || r.severity === 'medium' || r.severity === 'low') out[r.severity] += r.c;
+  }
+  return out;
 }
 
 /** Counts per agent for the console roster cards. */
