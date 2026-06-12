@@ -8,13 +8,13 @@
 # of the License, or (at your option) any later version.
 
 module AgenticPpm
-  module Api
+  module API
     # Ingestion endpoint the agent runtime POSTs to when a rule breaches.
     # Each breach is persisted as an AgentRecommendation (finding_type
     # "rule_breach") so it surfaces in OpenProject's native Insights inbox for
-    # human triage. Same shared-token auth as Api::RulesController.
+    # human triage. Same shared-token auth as API::RulesController.
     #
-    # ASSUMPTION TO DOUBLE-CHECK: identical to Api::RulesController -- token in
+    # ASSUMPTION TO DOUBLE-CHECK: identical to API::RulesController -- token in
     # `Authorization: Bearer` / `X-OP-Rules-Token`, falling back to a standard
     # authenticated OpenProject user. Mirrors the core webhooks controller's
     # CSRF/authorization handling.
