@@ -14,10 +14,12 @@
     "seed:webhook": "tsx src/scripts/registerWebhook.ts",
     "sync:backfill": "tsx src/scripts/backfill.ts",
     "preflight": "tsx src/scripts/preflight.ts",
-    "smoke": "tsx src/scripts/smoke.ts"
+    "smoke": "tsx src/scripts/smoke.ts",
+    "letta:provision": "tsx src/scripts/provisionLetta.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",
+    "@letta-ai/letta-client": "^1.12.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
