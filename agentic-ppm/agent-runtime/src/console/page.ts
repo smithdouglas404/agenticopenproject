@@ -70,6 +70,10 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
   .hpill.ok { color: var(--ok); border-color: var(--ok); }
   .hpill.warn { color: var(--warn); border-color: var(--warn); }
   .hpill.bad { color: var(--bad); border-color: var(--bad); }
+  /* Embed mode (?embed=1): hide chrome so it fits an OpenProject widget/iframe. */
+  html.embed header, html.embed #agentsSection { display: none; }
+  html.embed main { padding: 12px; }
+  html.embed body { background: transparent; }
 </style>
 </head>
 <body>
@@ -83,8 +87,10 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
   </button>
 </header>
 <main>
-  <h2>Agents</h2>
-  <div class="agents" id="agents"></div>
+  <div id="agentsSection">
+    <h2>Agents</h2>
+    <div class="agents" id="agents"></div>
+  </div>
   <h2>Project Status</h2>
   <div id="projectStatus"></div>
   <h2>Findings & Recommendations</h2>
@@ -96,6 +102,10 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
 // so "↗ Project" / "↗ Work Package" links open OpenProject, not this console.
 const OP_BASE = '__OPENPROJECT_BASE_URL__';
 const TOKEN = new URLSearchParams(location.search).get('token') || '';
+// ?embed=1 strips the header + agent roster so the console fits inside an
+// OpenProject Overview widget (or any iframe) showing just project status + findings.
+const EMBED = new URLSearchParams(location.search).get('embed') === '1';
+if (EMBED) document.documentElement.classList.add('embed');
 const HEADERS = TOKEN ? { 'Authorization': 'Bearer ' + TOKEN } : {};
 let statusFilter = 'open';
 
