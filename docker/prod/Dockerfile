@@ -78,8 +78,6 @@ USER $APP_USER
 EXPOSE 8080
 CMD ["./docker/prod/web"]
 ENTRYPOINT ["./docker/prod/entrypoint-slim.sh"]
-VOLUME ["$APP_DATA_PATH"]
-
 # -------------------------------------
 # all-in-one (public)
 # -------------------------------------
@@ -97,9 +95,6 @@ RUN ./docker/prod/setup/postinstall-onprem.sh && \
 
 # Expose ports for apache and postgres
 EXPOSE 80
-
-# Expose the postgres data directory and OpenProject data directory as volumes
-VOLUME ["$PGDATA", "$APP_DATA_PATH"]
 
 # Set a custom entrypoint to allow for privilege dropping and one-off commands
 ENTRYPOINT ["./docker/prod/entrypoint.sh"]
