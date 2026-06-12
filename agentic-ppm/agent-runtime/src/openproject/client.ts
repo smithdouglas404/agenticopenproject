@@ -10,6 +10,9 @@ import { config } from '../config.js';
 import type {
   OpenProjectConnection,
   OpenProjectProject,
+  OpenProjectRelation,
+  OpenProjectTimeEntry,
+  OpenProjectVersion,
   OpenProjectWorkPackage,
 } from './types.js';
 
@@ -156,6 +159,42 @@ export class OpenProjectClient {
       this.typeHrefCache = new Map(types.map((t) => [t.name, t.self]));
     }
     return this.typeHrefCache.get(typeName);
+  }
+
+  /**
+   * Bulk-list work-package relations (follows/blocks/relates/…) across the
+   * whole instance. Paged like the other collections (`offset` = page number).
+   */
+  async getRelations(options?: { pageSize?: number; offset?: number }): Promise<OpenProjectRelation[]> {
+    const params = new URLSearchParams();
+    params.set('pageSize', String(options?.pageSize ?? 100));
+    if (options?.offset) params.set('offset', String(options.offset));
+    const data = await this.request('GET', `/relations?${params.toString()}`);
+    return data._embedded?.elements ?? [];
+  }
+
+  /** List a project's versions (releases). */
+  async getVersions(projectIdOrIdentifier: string | number): Promise<OpenProjectVersion[]> {
+    const data = await this.request('GET', `/projects/${projectIdOrIdentifier}/versions`);
+    return data._embedded?.elements ?? [];
+  }
+
+  /**
+   * List time entries instance-wide (paged). Returns [] when the time/costs
+   * module is disabled (403/404) so enrichment degrades gracefully.
+   */
+  async getTimeEntries(options?: { pageSize?: number; offset?: number }): Promise<OpenProjectTimeEntry[]> {
+    const params = new URLSearchParams();
+    params.set('pageSize', String(options?.pageSize ?? 100));
+    if (options?.offset) params.set('offset', String(options.offset));
+    try {
+      const data = await this.request('GET', `/time_entries?${params.toString()}`);
+      return data._embedded?.elements ?? [];
+    } catch (error: any) {
+      // request() embeds the HTTP status as "(403)"/"(404)" in the message.
+      if (/\((403|404)\)/.test(error?.message ?? '')) return [];
+      throw error;
+    }
   }
 
   /** Post an activity comment on a work package. */

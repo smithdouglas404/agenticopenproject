@@ -20,6 +20,7 @@ import { writeFinding, type AlertSeverity } from '../inbox/inbox.js';
 import { validateFinding, checkContradictions, type ContradictionInput } from '../grounding/validate.js';
 import { recordPrediction, severityAdjustment } from '../learning/outcomes.js';
 import { AGENT_ROSTER, type AgentDomain } from './roster.js';
+import { OPEN_STATUSES_EXCLUDED } from './detectors.js';
 import { config } from '../config.js';
 
 const AgentOutput = z.object({
@@ -84,7 +85,45 @@ async function buildPortfolioContext(): Promise<string> {
         `progress=${w.progress ?? 0}% assignee=${w.assignee ?? 'unassigned'} due=${w.endDate ?? 'n/a'} source=${w.source ?? 'openproject'}`,
     )
     .join('\n');
-  return `PROJECTS (${projects.length}):\n${projLines}\n\nWORK ITEMS (${items.length}):\n${itemLines}`;
+  let context = `PROJECTS (${projects.length}):\n${projLines}\n\nWORK ITEMS (${items.length}):\n${itemLines}`;
+
+  // Dependency edges (synced from OpenProject relations) — bounded at 50 lines
+  // so the dependency picture stays compact next to the work-item list.
+  const deps = await graph.query<{ fromName: string; fromId: string; edgeType: string; toName: string; toId: string }>(
+    `MATCH (a)-[rel]->(b)
+     WHERE type(rel) IN ['BLOCKS', 'FOLLOWS', 'RELATES_TO', 'DUPLICATES']
+     RETURN a.name AS fromName, a.id AS fromId, type(rel) AS edgeType, b.name AS toName, b.id AS toId
+     LIMIT 50`,
+  );
+  if (deps.length > 0) {
+    const depLines = deps
+      .map((d) => `- "${d.fromName}" (${d.fromId}) ${d.edgeType} "${d.toName}" (${d.toId})`)
+      .join('\n');
+    context += `\n\nDEPENDENCIES (${deps.length}):\n${depLines}`;
+  }
+
+  // Releases with open-work rollups (synced from OpenProject versions).
+  const releases = await graph.query<{ id: string; name: string; endDate?: string; open: number; avgProgress: number }>(
+    `MATCH (r:Release)
+     OPTIONAL MATCH (w)-[:TARGETS_RELEASE]->(r)
+     WHERE NOT coalesce(w.status, 'New') IN $closed
+     WITH r, count(w) AS open, avg(coalesce(w.progress, 0)) AS avgProgress
+     RETURN r.id AS id, r.name AS name, r.endDate AS endDate, open, avgProgress
+     LIMIT 25`,
+    { closed: OPEN_STATUSES_EXCLUDED },
+  );
+  if (releases.length > 0) {
+    const relLines = releases
+      .map(
+        (r) =>
+          `- Release "${r.name}" (${r.id}) due=${r.endDate ?? 'n/a'} openItems=${r.open} ` +
+          `avgProgress=${Math.round(r.avgProgress ?? 0)}%`,
+      )
+      .join('\n');
+    context += `\n\nRELEASES (${releases.length}):\n${relLines}`;
+  }
+
+  return context;
 }
 
 function systemPromptFor(agent: AgentDomain): string {

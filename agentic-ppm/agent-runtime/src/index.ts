@@ -54,7 +54,8 @@ async function main(): Promise<void> {
         .syncAll({ onProgress: (msg) => console.log(`[backfill] ${msg}`) })
         .then((r) =>
           console.log(
-            `[backfill] done: ${r.projects} projects, ${r.workPackages} work packages (${r.skipped} skipped)`,
+            `[backfill] done: ${r.projects} projects, ${r.workPackages} work packages (${r.skipped} skipped), ` +
+              `${r.relations} relations, ${r.releases} releases, ${r.timeEntries} time entries`,
           ),
         )
         .catch((err) => console.error(`[backfill] failed: ${err.message}`));

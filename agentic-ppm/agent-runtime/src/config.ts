@@ -56,6 +56,10 @@ export const config = {
     publish: (process.env.DETECTOR_PUBLISH ?? '1') === '1',
     /** Open work items per assignee before CapacityOverload fires. */
     capacityThreshold: Number(process.env.CAPACITY_OVERLOAD_THRESHOLD ?? 10),
+    /** Days without an update before a high-priority open item is stale (high at 2x). */
+    staleHighPriorityDays: Number(process.env.STALE_HIGH_PRIORITY_DAYS ?? 14),
+    /** Spent hours before CostBurnWithoutProgress fires on items with no estimate. */
+    costBurnHoursThreshold: Number(process.env.COST_BURN_HOURS_THRESHOLD ?? 40),
   },
 
   insights: {
