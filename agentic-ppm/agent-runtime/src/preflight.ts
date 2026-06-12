@@ -9,7 +9,7 @@
 import { config } from './config.js';
 import { getOpenProjectClient } from './openproject/client.js';
 import { getGraph } from './graph/falkor.js';
-import { pingGraphiti } from './graph/graphiti.js';
+import { memoryStatus } from './memory/index.js';
 
 export type Check = { name: string; ok: boolean; detail: string; required: boolean };
 
@@ -45,22 +45,13 @@ async function checkFalkor(): Promise<Check> {
   }
 }
 
-async function checkGraphiti(): Promise<Check> {
-  const r = await pingGraphiti();
-  if (!r.enabled) {
-    return { name: 'Graphiti MCP', ok: true, required: false, detail: 'disabled (GRAPHITI_MCP_URL unset) — FalkorDB-only' };
-  }
-  if (!r.ok) {
-    return { name: 'Graphiti MCP', ok: false, required: false, detail: r.error ?? 'unreachable' };
-  }
-  const hasAddMemory = r.tools?.includes(config.graphiti.addMemoryTool);
+async function checkMemory(): Promise<Check> {
+  const s = await memoryStatus();
   return {
-    name: 'Graphiti MCP',
-    ok: true,
+    name: `Memory (${s.provider})`,
+    ok: s.enabled ? s.ok : true, // disabled is a valid, non-failing state
     required: false,
-    detail:
-      `${config.graphiti.mcpUrl} — ${r.tools?.length ?? 0} tools` +
-      (hasAddMemory ? `, "${config.graphiti.addMemoryTool}" present` : `, ⚠ "${config.graphiti.addMemoryTool}" NOT found`),
+    detail: s.detail,
   };
 }
 
@@ -83,5 +74,5 @@ export async function runPreflight(prefix = ''): Promise<{ checks: Check[]; fail
 
 /** Run the checks silently and return them (for the console status endpoint). */
 export async function collectChecks(): Promise<Check[]> {
-  return [await checkOpenProject(), await checkFalkor(), await checkGraphiti()];
+  return [await checkOpenProject(), await checkFalkor(), await checkMemory()];
 }
