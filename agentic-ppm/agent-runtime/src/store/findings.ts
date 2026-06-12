@@ -141,18 +141,22 @@ export async function getFindingByAlertWp(alertWpId: number): Promise<StoredFind
 export async function listFindings(filter?: {
   status?: FindingStatus;
   agentId?: string;
+  type?: string;
+  excludeType?: string;
   limit?: number;
 }): Promise<StoredFinding[]> {
   const where: string[] = [];
   if (filter?.status) where.push('f.status = $status');
   if (filter?.agentId) where.push('f.agentId = $agentId');
+  if (filter?.type) where.push('f.type = $type');
+  if (filter?.excludeType) where.push('f.type <> $excludeType');
   const rows = await getGraph().query<StoredFinding>(
     `MATCH (f:AgentFinding)
      ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
      RETURN ${RETURN_FIELDS}
      ORDER BY f.updatedAt DESC
      LIMIT ${Math.min(filter?.limit ?? 200, 500)}`,
-    { status: filter?.status, agentId: filter?.agentId },
+    { status: filter?.status, agentId: filter?.agentId, type: filter?.type, excludeType: filter?.excludeType },
   );
   return rows;
 }

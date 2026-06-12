@@ -45,6 +45,12 @@ export class FalkorGraph {
         socket: { host: config.falkor.host, port: config.falkor.port },
         password: config.falkor.password,
       });
+      // FalkorDB emits 'error' as an EventEmitter; without a handler an
+      // unhandled 'error' crashes the whole process on a transient DB blip.
+      this.db.on('error', (err: unknown) => {
+        console.warn(`[falkor] connection error: ${(err as Error)?.message ?? err}`);
+        this.db = null; // force reconnect on next query
+      });
     }
     return this.db.selectGraph(config.falkor.graph);
   }
