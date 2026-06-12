@@ -11,6 +11,7 @@
  */
 import { getFinding, setFindingStatus, type StoredFinding } from '../store/findings.js';
 import { executeApprovedAction, type ActionResult } from './actions.js';
+import { recordHumanDecision } from '../learning/outcomes.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 
 export interface DecisionResult {
@@ -45,6 +46,11 @@ export async function decideFinding(
     decidedBy,
     followupWpId: action?.followupWpId,
   });
+
+  // LEARNING: the human decision is the most reliable outcome label we have —
+  // resolve the matching prediction immediately (approved = confirmed, rejected
+  // = negative signal), whichever HITL surface (console or OpenProject) decided.
+  await recordHumanDecision(finding, decision);
 
   // Reflect the decision back into OpenProject so both surfaces stay in sync.
   const client = getOpenProjectClient();

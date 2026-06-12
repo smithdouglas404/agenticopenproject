@@ -32,6 +32,12 @@ export interface StoredFinding {
   projectName?: string;
   /** Follow-up WP the agent created on approval, if any. */
   followupWpId?: number;
+  /** Evidence citations ([{entityId, metric, value}]) as a JSON string; '' if absent. */
+  evidence?: string;
+  /** Agent-reported, grounding-adjusted confidence 0–1; 0 means "not reported". */
+  confidence?: number;
+  /** Computed-metrics snapshot (two-channel output) as a JSON string; '' if absent. */
+  metrics?: string;
   createdAt: string;
   updatedAt: string;
   decidedBy?: string;
@@ -58,6 +64,12 @@ export async function recordFinding(input: {
   narrative?: string;
   projectId?: number;
   projectName?: string;
+  /** Evidence citations; stored as a JSON string on the node. */
+  evidence?: { entityId: string; metric: string; value: string }[];
+  /** Confidence 0–1 (agent-reported, grounding-adjusted). */
+  confidence?: number;
+  /** Computed-metrics snapshot; stored as a JSON string on the node. */
+  metrics?: unknown;
 }): Promise<{ finding: StoredFinding; isNew: boolean }> {
   const graph = getGraph();
   const id = findingId(input.type, input.nodeId ?? input.title);
@@ -95,6 +107,9 @@ export async function recordFinding(input: {
         narrative: input.narrative ?? '',
         projectId: input.projectId ?? 0,
         projectName: input.projectName ?? '',
+        evidence: input.evidence?.length ? JSON.stringify(input.evidence) : '',
+        confidence: input.confidence ?? 0,
+        metrics: input.metrics != null ? JSON.stringify(input.metrics) : '',
         createdAt: now,
         updatedAt: now,
       },
@@ -119,6 +134,7 @@ const RETURN_FIELDS = `f.id AS id, f.type AS type, f.agentId AS agentId, f.sever
   f.title AS title, f.body AS body, f.status AS status, f.nodeId AS nodeId,
   f.workPackageId AS workPackageId, f.alertWpId AS alertWpId, f.followupWpId AS followupWpId,
   f.narrative AS narrative, f.projectId AS projectId, f.projectName AS projectName,
+  f.evidence AS evidence, f.confidence AS confidence, f.metrics AS metrics,
   f.createdAt AS createdAt, f.updatedAt AS updatedAt, f.decidedBy AS decidedBy`;
 
 export async function getFinding(id: string): Promise<StoredFinding | null> {

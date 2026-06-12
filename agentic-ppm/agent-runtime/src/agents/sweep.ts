@@ -11,6 +11,7 @@ import { writeFinding, type AlertSeverity } from '../inbox/inbox.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { assessAllProjects } from './projectAssessor.js';
 import { runAgents } from './reasoningAgents.js';
+import { recordPrediction, resolveOutcomes, severityAdjustment } from '../learning/outcomes.js';
 import {
   generateNarrative,
   fetchWorkItemContext,
@@ -56,6 +57,17 @@ export async function runSweep(reason: string): Promise<SweepResult> {
       if (!isNew) continue;
       newCount++;
 
+      // LEARNING: record the detector call as a prediction so the outcome loop
+      // can later score it against what actually happened to the node.
+      await recordPrediction({
+        id: finding.id,
+        type: f.type,
+        agentId: f.agentId,
+        severity: f.severity,
+        nodeId: f.nodeId,
+        workPackageId: f.workPackageId,
+      }).catch((err) => console.warn(`[sweep] prediction record failed for ${finding.id}: ${err.message}`));
+
       // Enrich ONLY new findings with an LLM-generated narrative + project link.
       let narrative: string | undefined;
       if (f.nodeId) {
@@ -76,10 +88,14 @@ export async function runSweep(reason: string): Promise<SweepResult> {
 
       if (config.detectors.publish) {
         try {
+          // Track-record weighting: agents with a poor resolved-prediction
+          // record get their PUBLISHED severity downgraded one notch.
+          const tuned = await severityAdjustment(f.agentId, f.severity);
+          const note = tuned.adjusted ? `\n\n_${tuned.note}_` : '';
           const alertWpId = await writeFinding({
             title: `${f.type}: ${f.title}`,
-            body: `${narrative ?? f.body}\n\nAgent: ${f.agentId} · Finding: ${finding.id}`,
-            severity: SEVERITY_TO_ALERT[f.severity],
+            body: `${narrative ?? f.body}${note}\n\nAgent: ${f.agentId} · Finding: ${finding.id}`,
+            severity: SEVERITY_TO_ALERT[tuned.severity],
             relatedWorkPackageId: f.workPackageId,
           });
           await setFindingStatus(finding.id, 'published', { alertWpId });
@@ -88,6 +104,12 @@ export async function runSweep(reason: string): Promise<SweepResult> {
           console.warn(`[sweep] publish failed for ${finding.id}: ${err.message}`);
         }
       }
+    }
+
+    // LEARNING: resolve open predictions against actual graph state (after the
+    // detectors have refreshed findings, before projects are re-assessed).
+    if (config.learning.enabled) {
+      await resolveOutcomes().catch((err) => console.warn(`[sweep] outcome resolution failed: ${err.message}`));
     }
 
     lastSweepAt = Date.now();

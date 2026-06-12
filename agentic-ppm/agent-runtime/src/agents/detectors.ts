@@ -32,9 +32,9 @@ export interface Detector {
   run(): Promise<DetectorFinding[]>;
 }
 
-const OPEN_STATUSES_EXCLUDED = ['Closed', 'Rejected', 'Done', 'Completed', 'On hold'];
-const WORK_LABELS = ['Task', 'Story', 'Feature', 'Epic', 'Issue'];
-const HIGH_PRIORITIES = ['High', 'Immediate', 'Urgent', 'Critical'];
+export const OPEN_STATUSES_EXCLUDED = ['Closed', 'Rejected', 'Done', 'Completed', 'On hold'];
+export const WORK_LABELS = ['Task', 'Story', 'Feature', 'Epic', 'Issue'];
+export const HIGH_PRIORITIES = ['High', 'Immediate', 'Urgent', 'Critical'];
 
 function today(): string {
   return new Date().toISOString().slice(0, 10);

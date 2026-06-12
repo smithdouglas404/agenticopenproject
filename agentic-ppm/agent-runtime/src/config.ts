@@ -70,6 +70,20 @@ export const config = {
     enabled: (process.env.REASONING_AGENTS ?? '1') === '1',
   },
 
+  grounding: {
+    /** Drop LLM findings that reference entities not present in the graph. */
+    enforceEntityCheck: (process.env.GROUNDING_ENTITY_CHECK ?? '1') === '1',
+    /** Findings whose grounded confidence falls below this are dropped (abstention). */
+    minConfidence: Number(process.env.GROUNDING_MIN_CONFIDENCE ?? 0.4),
+    /** Downgrade published severity for agents with a poor resolved-prediction track record. */
+    autoTuneSeverity: (process.env.LEARNING_AUTOTUNE ?? '1') === '1',
+  },
+
+  learning: {
+    /** Record predictions and resolve them against actual outcomes (the learning loop). */
+    enabled: (process.env.LEARNING_ENABLED ?? '1') === '1',
+  },
+
   actions: {
     /** Execute concrete actions when a human approves a finding (HITL-gated). */
     enabled: (process.env.AGENT_ACTIONS ?? '1') === '1',
