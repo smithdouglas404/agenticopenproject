@@ -12,6 +12,7 @@
  */
 import { getGraph } from '../graph/falkor.js';
 import { callLLMJson } from '../llm/claude.js';
+import { lettaConfigured, getRosterAgentId, sendToAgent } from '../letta/client.js';
 import { InsightSchema, type Insight } from './insightSchema.js';
 import {
   analyzeRiskProbability,
@@ -111,17 +112,62 @@ Return JSON with exactly this structure:
 
 Provide up to 3 key risks (highest exposure first), up to 3 recommendations, and up to 4 KPI highlights.`;
 
+/** Pull the first balanced JSON object out of a (possibly chatty) agent reply. */
+function extractJson(text: string): unknown | null {
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start === -1 || end <= start) return null;
+  try {
+    return JSON.parse(text.slice(start, end + 1));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Reason THROUGH the Strategic PMO Letta agent (stateful, memory-aware). Returns
+ * a validated Insight, or null to fall back to the direct Claude path.
+ */
+async function reasonThroughLetta(context: string): Promise<Insight | null> {
+  const agentId = await getRosterAgentId('strategic-pmo');
+  if (!agentId) return null;
+  const reply = await sendToAgent(
+    agentId,
+    USER_PROMPT_TEMPLATE(context) + '\n\nRespond with ONLY the JSON object, no prose.',
+  );
+  if (!reply) return null;
+  const raw = extractJson(reply);
+  if (!raw) return null;
+  const parsed = InsightSchema.safeParse(raw);
+  return parsed.success ? { ...parsed.data, generatedAt: new Date().toISOString() } : null;
+}
+
 /**
  * Run the agent for one project node and return a validated Insight.
  * Returns null if the project has no work items to reason about.
+ *
+ * When Letta is configured, the reasoning runs through the stateful Strategic PMO
+ * agent (so it remembers prior assessments); otherwise it uses a direct Claude call.
  */
 export async function runInsightsAndRisk(projectNodeId: string): Promise<Insight | null> {
   const items = await loadProjectItems(projectNodeId);
   if (items.length === 0) return null;
 
   const context = buildContext(projectNodeId, items);
-  const raw = await callLLMJson(SYSTEM_PROMPT, USER_PROMPT_TEMPLATE(context), { maxTokens: 2000 });
 
+  if (lettaConfigured()) {
+    const viaLetta = await reasonThroughLetta(context).catch((err) => {
+      console.warn(`[insights] Letta reasoning failed, falling back to Claude-direct: ${err.message}`);
+      return null;
+    });
+    if (viaLetta) {
+      console.log('[insights] reasoned via Letta agent (strategic-pmo)');
+      return viaLetta;
+    }
+  }
+
+  // Direct Claude path (default, and the fallback when Letta is unavailable).
+  const raw = await callLLMJson(SYSTEM_PROMPT, USER_PROMPT_TEMPLATE(context), { maxTokens: 2000 });
   const parsed = InsightSchema.safeParse(raw);
   if (!parsed.success) {
     throw new Error(`Insight validation failed: ${parsed.error.message}`);
