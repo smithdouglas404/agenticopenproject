@@ -83,6 +83,13 @@ export const config = {
     cascadeCooldownMinutes: Number(process.env.AGENTS_CASCADE_COOLDOWN_MIN ?? 30),
     /** Run the optional LLM narrative pass for agents that fired something. */
     llmNarrative: (process.env.AGENTS_LLM_NARRATIVE ?? '1') === '1',
+    /** Proactive autonomy: agents reflect for OPPORTUNITIES (not just breaches)
+     *  on change + on a2a handoffs (the agent conversation), statefully via Letta. */
+    proactive: (process.env.AGENTS_PROACTIVE ?? '1') === '1',
+    /** Optional autonomous reflection sweep over recently-active entities.
+     *  0 = OFF (no cron — the default). Set >0 ONLY to opt into a sparse,
+     *  stimulus-driven scan; it never re-evaluates the whole portfolio. */
+    proactiveScanMinutes: Number(process.env.AGENTS_PROACTIVE_SCAN_MIN ?? 0),
   },
 
   rules: {
