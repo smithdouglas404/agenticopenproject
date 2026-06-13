@@ -25,10 +25,13 @@
   `POST /api/findings/:id/approve|reject`, `POST /api/sweep`.
   Env to reach it: `AGENT_RUNTIME_URL` (+ `AGENT_RUNTIME_TOKEN` bearer if set).
 
-The ontology layer: the UI reads ontology objects (Project/Feature/Story/Task/
-Risk) via `/api/palantir/ontology/*` routes backed by
-`server/FalkorOntologyDataProvider.ts` (FalkorDB; Palantir has been replaced —
-keep the route URLs, never reintroduce Foundry).
+The ontology layer: **FalkorDB is the knowledge graph + ontology layer.** The
+UI reads ontology objects (Project/Feature/Story/Task/Risk) through
+`server/FalkorOntologyDataProvider.ts` (openCypher + native vector for
+GraphRAG). The current route stem `/api/palantir/ontology/*` is purely
+historical — nothing Palantir runs behind it. Optionally rename to
+`/api/ontology/*` (see `docs/ONTOLOGY_LAYER.md`). Never reintroduce an
+external ontology service: FalkorDB is the only ontology backend.
 
 ## OpenProject integration — how to do common things
 
@@ -124,5 +127,5 @@ ANTHROPIC_API_KEY / ANTHROPIC_MODEL # AI SDK chat route
 The reference implementations and docs originate in the public repo
 `smithdouglas404/agenticopenproject` under `agentic-ppm/kyndryl-connector/`
 (strategy docs: `GROUNDING_AND_HALLUCINATION.md`, `ORCHESTRATION_AND_RULES.md`,
-`UI_STRATEGY.md`, `SCHEMA_AND_OPENPROJECT_MAPPING.md`, `PALANTIR_TO_FALKORDB.md`).
+`UI_STRATEGY.md`, `SCHEMA_AND_OPENPROJECT_MAPPING.md`, `ONTOLOGY_LAYER.md`).
 If something here seems missing or stale, read that folder's latest `main`.

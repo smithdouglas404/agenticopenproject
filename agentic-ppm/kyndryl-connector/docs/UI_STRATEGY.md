@@ -1,7 +1,6 @@
 # UI strategy: OpenProject as datastore, Kyndral as the system of governance
 
-Scope: Kyndral-365 DOSv2 UI (~59 pages, built on a Palantir-style ontology layer:
-`/api/palantir/ontology/*`). This answers #7: how to handle the UI when some data
+Scope: Kyndral-365 DOSv2 UI (~59 pages, built on a FalkorDB ontology layer at `/api/palantir/ontology/*` — see `ONTOLOGY_LAYER.md`). This answers #7: how to handle the UI when some data
 maps from OpenProject and other data must come from Kyndral's own setup screens.
 
 ## The clean mental model
@@ -10,7 +9,7 @@ maps from OpenProject and other data must come from Kyndral's own setup screens.
   packages, status, assignees, dates, time, hierarchy).
 - **Kyndral = the System of Governance** on top (OKRs, divisions/segments,
   policies, custom fields, agent rules, KPIs) + the agentic intelligence.
-- The bridge: OpenProject data flows **into the Palantir ontology objects**
+- The bridge: OpenProject data flows **into the ontology objects**
   (`Project`, `Risk`, `Feature`, `Story`, `Task`) that the UI already reads via
   `/api/palantir/ontology/*`. So the connector's job is *not* to feed new screens
   — it's to **populate the ontology objects the existing UI already renders.**
@@ -47,7 +46,7 @@ maps from OpenProject and other data must come from Kyndral's own setup screens.
 ## Polish plan (what to actually do)
 
 1. **Wire OpenProject into the ontology layer, not new screens.** Implement the
-   connector so OpenProject projects/WPs land as Palantir `Project`/`Feature`/
+   connector so OpenProject projects/WPs land as ontology `Project`/`Feature`/
    `Story`/`Task` objects. The existing 59 pages then "just work" on real data —
    minimal UI change. (See `SCHEMA_AND_OPENPROJECT_MAPPING.md`.)
 2. **Make the OpenProject-mapped fields visibly read-from-source.** On

@@ -15,7 +15,7 @@ auditable recommendation before a human thinks to look.
 ## Where this comes from
 
 The Smith Clarity ontology (vendored under `agentic-ppm/ontology/`) was authored for an
-enterprise deployment whose live source of truth was **Palantir Foundry**, driving an
+enterprise deployment whose live source of truth was **a Foundry-style ontology service**, driving an
 **11-agent system across 9 domains**. This project keeps the ontology and the agent
 model intact and **substitutes OpenProject for Foundry as the source of truth**. The
 intellectual core — a neutral PM spine with SAFe/PMBOK/PRINCE2 dialects and the K360

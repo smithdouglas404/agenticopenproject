@@ -11,7 +11,7 @@ Three ideas anchor the design:
 
 1. **OpenProject is the source of truth.** Every fact an agent acts on originates in,
    and every recommendation an agent produces lands back in, OpenProject. (This
-   replaces Palantir Foundry, which was the source of truth in the original
+   uses FalkorDB as the ontology / source of truth, replacing the original
    Smith Clarity deployment.)
 2. **The Smith Clarity ontology is the agents' world model.** A formal W3C OWL/Turtle
    ontology with a framework-neutral PM "spine" (`pm:`) and dialects for **SAFe 6.0**,

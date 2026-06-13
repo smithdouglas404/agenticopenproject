@@ -1,6 +1,6 @@
 # Is the graph learning & grounding insights? — Honest assessment + how to stop "just an LLM"
 
-Scope: Kyndral-365 DOSv2 (Mastra + A2A, Palantir Foundry ontology as the data
+Scope: Kyndral-365 DOSv2 (Mastra + A2A, FalkorDB as the ontology / world-model
 source). This answers two questions directly: (1) is it actually grounded/learning,
 or is it "feed data to an LLM and return the answer," and (2) how to reduce
 hallucinations so people trust it.
@@ -11,7 +11,7 @@ There are **three tiers**, and they are very different:
 
 | Tier | What it is | Grounded? | Hallucination risk |
 |---|---|---|---|
-| **Computed metrics** — EVM (CPI/SPI/EAC), risk score (P×I), value realization, capacity | Deterministic math on real Palantir data | ✅ **Fully grounded** | 🟢 None — it's arithmetic |
+| **Computed metrics** — EVM (CPI/SPI/EAC), risk score (P×I), value realization, capacity | Deterministic math on real graph data | ✅ **Fully grounded** | 🟢 None — it's arithmetic |
 | **Reactive watcher** — threshold breaches → interventions | Deterministic rules, no LLM | ✅ **Fully grounded** | 🟢 None |
 | **Narrative layer** — executive insights, plans, reflections, recommendations | LLM generation given a data context | 🟡 **Loosely grounded** | 🔴 **High** for free-text insights, 🟡 medium for plans/recs |
 
@@ -25,7 +25,7 @@ The narrative layer (`executiveInsights.ts`, Deep-agent planning/reflection) fee
 
 | Gap today | Risk | Fix (in priority order) |
 |---|---|---|
-| **No entity-existence check** | LLM recommends action on a project/risk that isn't in Palantir | Before emitting any finding, resolve every referenced entity id against Palantir; drop/flag unresolved ones |
+| **No entity-existence check** | LLM recommends action on a project/risk that isn't in the graph | Before emitting any finding, resolve every referenced entity id against the graph; drop/flag unresolved ones |
 | **Computed vs generated not separated** | A made-up "Strategic Readiness: 72%" reads identical to a real CPI | **Two-channel output**: `metrics{}` (computed, never from the LLM) + `narrative{}` (LLM, explains the metrics). UI labels them. The LLM is told to reference metric ids, not invent numbers |
 | **No evidence citations** | "3 similar projects succeeded" with nothing to click | Require every finding to carry `evidence:[{entityId, metric, value}]`; render as links. No evidence → not published |
 | **No constraint validation** | LLM says "EAC -$5M" or "ship 3 months early" ignoring capacity | After generation, validate against hard bounds (EAC ≥ AC; delay ≤ remaining duration; allocation ≤ capacity). Clip or reject violations |
@@ -46,7 +46,7 @@ Once that loop runs, you can say something no "LLM wrapper" can: *"This agent's 
 
 ## 4. The ontology is loaded but not reasoning
 
-The Smith-Clarity mega-ontology (1,870 triples, the `pm:` spine + SAFe/PMBOK/PRINCE2/K360 dialects) is loaded into an N3 store but used only for **static lookups** — there's **no OWL reasoner and no SPARQL inference at runtime.** Agents read structured data from Palantir, not the triple store.
+The Smith-Clarity mega-ontology (1,870 triples, the `pm:` spine + SAFe/PMBOK/PRINCE2/K360 dialects) is loaded into an N3 store but used only for **static lookups** — there's **no OWL reasoner and no SPARQL inference at runtime.** Agents read structured data from the FalkorDB graph, not the triple store.
 
 That's fine for now (the property-graph + deterministic detectors do the work), but two cheap upgrades make the ontology *earn its keep* and improve grounding:
 1. **Materialize the spine mappings** (already done in the agent-runtime `mapping.ts`) so every source's types resolve to canonical `pm:`/`safe:` classes — this is what lets OpenProject, Jira, Planview etc. be reasoned over uniformly.

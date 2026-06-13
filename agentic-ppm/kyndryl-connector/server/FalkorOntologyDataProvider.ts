@@ -1,24 +1,22 @@
 /**
- * FalkorOntologyDataProvider — drop-in replacement for the Palantir-backed
- * OntologyDataProvider in Kyndral-365 DOSv2, backed by FalkorDB.
+ * FalkorOntologyDataProvider — the ontology backend for Kyndral-365 DOSv2.
  *
- * The DOSv2 UI reads "Palantir ontology objects" (Project, Feature, Story,
- * Task, Risk, …) through `/api/palantir/ontology/*` routes that delegate to
- * `OntologyDataProvider`. This class keeps the same method surface so the
- * route layer (and therefore the UI) does not change — only the storage
- * backend swaps from Postgres + Palantir Foundry to FalkorDB (openCypher).
+ * FalkorDB IS the knowledge graph and ontology layer. The Kyndral UI reads
+ * ontology objects (Project, Feature, Story, Task, Risk, …) through the
+ * `OntologyDataProvider` interface; this class implements that interface
+ * against FalkorDB (openCypher), so the route layer and the UI are unchanged.
  *
- * Method mapping (old Palantir provider → this class):
- *   getObjects(type)                       → getObjects(objectType, filter?, limit?)
- *   getObject(type, id)                    → getObject(objectType, id)
- *   upsertObject(type, obj)                → upsertObject(objectType, obj)   (MERGE by id, SET +=)
- *   deleteObject(type, id)                 → deleteObject(objectType, id)
- *   linkObjects(fromT, fromId, rel, toT, toId) → linkObjects(...)            (MERGE relationship)
- *   getLinkedObjects(type, id, rel, dir)   → getLinkedObjects(...)
- *   searchObjects(type, text)              → searchObjects(...)              (CONTAINS over name/description)
- *   <Foundry SQL / dataset queries>        → query(cypher, params)           (escape hatch)
- *   <Foundry aggregations>                 → aggregate(objectType, groupBy, agg)
- *   <Foundry health/auth check>            → health()
+ * Provider API:
+ *   getObjects(objectType, filter?, limit?)
+ *   getObject(objectType, id)
+ *   upsertObject(objectType, obj)            (MERGE by id, SET +=)
+ *   deleteObject(objectType, id)
+ *   linkObjects(fromT, fromId, rel, toT, toId)   (MERGE relationship)
+ *   getLinkedObjects(objectType, id, rel, dir)
+ *   searchObjects(objectType, text)          (CONTAINS over name/description)
+ *   query(cypher, params)                    (escape hatch: raw openCypher)
+ *   aggregate(objectType, groupBy, agg)      (count / sum / avg by property)
+ *   health()
  *
  * Connection pattern is identical to the proven client in
  * agentic-ppm/agent-runtime/src/graph/falkor.ts:
@@ -30,8 +28,10 @@
  * sanitizeLabel() (/^[A-Za-z_][A-Za-z0-9_]*$/) and throws otherwise.
  * FalkorDB rejects `undefined` query params, so clean() strips them.
  *
- * DROP-IN: place in Kyndral's `server/`, point the `/api/palantir/ontology/*`
- * route handlers at getOntologyProvider() instead of the Palantir provider.
+ * DROP-IN: place in Kyndral's `server/`, point the ontology routes at
+ * getOntologyProvider(). The legacy `/api/palantir/ontology/*` URL stem can
+ * stay for compatibility, or migrate to `/api/ontology/*` (see
+ * docs/ONTOLOGY_LAYER.md for the rename plan).
  * Env: FALKORDB_HOST, FALKORDB_PORT, FALKORDB_GRAPH, FALKORDB_PASSWORD.
  */
 import { FalkorDB } from "falkordb";
@@ -124,7 +124,7 @@ export class FalkorOntologyDataProvider {
 
   /**
    * List objects of a type (node label), optionally filtered on exact
-   * property equality. Palantir: getObjects(type).
+ * property equality.
    */
   async getObjects(
     objectType: string,
@@ -147,7 +147,7 @@ export class FalkorOntologyDataProvider {
     return rows.map((r) => toObject(r.n));
   }
 
-  /** Fetch one object by id. Palantir: getObject(type, id). */
+  /** Fetch one object by id. */
   async getObject(objectType: string, id: string): Promise<OntologyObject | null> {
     const label = sanitizeLabel(objectType);
     const rows = await this.run<{ n: unknown }>(
@@ -161,7 +161,7 @@ export class FalkorOntologyDataProvider {
 
   /**
    * Idempotent upsert keyed by id: MERGE the node, SET += properties.
-   * Palantir: upsertObject(type, obj) (Postgres row + Foundry object write).
+ * Idempotent upsert (MERGE by id, SET += props).
    */
   async upsertObject(objectType: string, obj: OntologyObject): Promise<OntologyObject> {
     const label = sanitizeLabel(objectType);
@@ -174,7 +174,7 @@ export class FalkorOntologyDataProvider {
     return { ...obj, id: String(obj.id) };
   }
 
-  /** Delete an object (and its relationships). Palantir: deleteObject(type, id). */
+  /** Delete an object (and its relationships). */
   async deleteObject(objectType: string, id: string): Promise<boolean> {
     const label = sanitizeLabel(objectType);
     const rows = await this.run<{ deleted: number }>(
@@ -191,7 +191,7 @@ export class FalkorOntologyDataProvider {
 
   /**
    * Idempotent directed link between two objects (MERGE both endpoints so
-   * link order never matters). Palantir: linkObjects(...).
+   * link order never matters).
    */
   async linkObjects(
     fromType: string,
@@ -218,7 +218,7 @@ export class FalkorOntologyDataProvider {
    *   'out'  → (object)-[rel]->(linked)
    *   'in'   → (object)<-[rel]-(linked)
    *   'both' → either direction
-   * Palantir: getLinkedObjects(...).
+
    */
   async getLinkedObjects(
     objectType: string,
@@ -246,8 +246,8 @@ export class FalkorOntologyDataProvider {
 
   /**
    * Simple case-insensitive substring search over name + description.
-   * Palantir: searchObjects(type, text). (Upgrade path: FalkorDB full-text /
-   * vector index for GraphRAG — see docs/PALANTIR_TO_FALKORDB.md.)
+ * (Upgrade path: FalkorDB full-text / vector index for GraphRAG —
+   * see docs/ONTOLOGY_LAYER.md.)
    */
   async searchObjects(objectType: string, text: string, limit = 50): Promise<OntologyObject[]> {
     const label = sanitizeLabel(objectType);
@@ -262,7 +262,7 @@ export class FalkorOntologyDataProvider {
   }
 
   /**
-   * Escape hatch: run raw openCypher with params. Replaces Palantir's Foundry
+ * Escape hatch: run raw openCypher with params. Bypasses the typed
    * SQL/dataset queries. Params are cleaned of undefined values.
    */
   async query<T = Record<string, unknown>>(
@@ -276,7 +276,7 @@ export class FalkorOntologyDataProvider {
    * Group-by aggregation over one object type.
    *   aggregate('Task', 'status', { op: 'count' })
    *   aggregate('Project', 'status', { op: 'sum', property: 'budget' })
-   * Returns [{ group, value }]. Palantir: Foundry aggregations.
+ * Returns [{ group, value }] — count / sum / avg group-by aggregations.
    */
   async aggregate(
     objectType: string,
