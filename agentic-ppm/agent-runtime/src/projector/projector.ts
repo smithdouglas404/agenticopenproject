@@ -31,6 +31,36 @@ function parseISODuration(duration?: string): number | undefined {
   return days * 24 + hours + minutes / 60;
 }
 
+/**
+ * Coerce an arbitrary OpenProject attribute value to a FalkorDB-safe scalar
+ * (or array of scalars). Returns undefined for empty/unwritable values so the
+ * caller can skip them — FalkorDB rejects undefined and nested objects.
+ */
+function toGraphScalar(value: unknown): string | number | boolean | string[] | undefined {
+  if (value === undefined || value === null) return undefined;
+  const t = typeof value;
+  if (t === 'string') return value as string;
+  if (t === 'number' || t === 'boolean') return value as number | boolean;
+  if (Array.isArray(value)) {
+    const items = value
+      .map((v) => toGraphScalar(v))
+      .filter((v): v is string | number | boolean => v !== undefined)
+      .map((v) => String(v));
+    return items.length > 0 ? items : undefined;
+  }
+  if (t === 'object') {
+    const obj = value as Record<string, unknown>;
+    // Formattable text ({ raw, html }).
+    if (typeof obj.raw === 'string') return obj.raw;
+    // Linked resource ({ href, title }) or embedded ({ name }).
+    if (typeof obj.title === 'string') return obj.title;
+    if (typeof obj.name === 'string') return obj.name as string;
+    if (typeof obj.href === 'string') return obj.href as string;
+    return undefined;
+  }
+  return undefined;
+}
+
 function projectNodeId(opId: number | string): string {
   return `op-project-${opId}`;
 }
@@ -148,6 +178,19 @@ export class Projector {
       canonicalId: canonicalId(source, nativeId),
       syncedAt: new Date().toISOString(),
     };
+
+    // ALSO carry arbitrary OpenProject attributes (esp. custom fields) onto the
+    // node so the universal mapper can surface/transform them downstream. The
+    // flattened APIv3 payload exposes custom fields as `customField_<name>` and
+    // `customFieldN`; we write them under a stable `cf_*` prefix as graph-safe
+    // scalars. Standard fields are already normalized above, so we add only the
+    // extras here. Idempotent + never writes undefined.
+    for (const [key, value] of Object.entries(raw)) {
+      if (!key.startsWith('customField')) continue;
+      const scalar = toGraphScalar(value);
+      if (scalar === undefined) continue;
+      properties[`cf_${key.replace(/^customField_?/, '')}`] = scalar;
+    }
 
     await this.graph.upsertNode({ id: nodeId, label, properties });
 

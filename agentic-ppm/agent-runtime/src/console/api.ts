@@ -24,6 +24,7 @@ import { agentAccuracy, recentResolvedPredictions } from '../learning/outcomes.j
 import { collectChecks, type Check } from '../preflight.js';
 import { config } from '../config.js';
 import { CONSOLE_HTML } from './page.js';
+import { mountMappingRoutes } from '../mapping/routes.js';
 
 // Dependency health, cached so the 30s console refresh doesn't hammer Graphiti.
 let statusCache: { at: number; checks: Check[] } | null = null;
@@ -137,6 +138,9 @@ export function buildConsoleRouter(): Router {
     }
     res.json([...latest.values()]);
   });
+
+  // Ontology-as-universal-mapper endpoints (schema/properties/widgets/mapping).
+  mountMappingRoutes(router);
 
   return router;
 }

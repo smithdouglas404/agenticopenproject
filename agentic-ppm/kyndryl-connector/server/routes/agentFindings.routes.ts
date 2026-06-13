@@ -93,5 +93,16 @@ export function initAgentFindingsRoutes(router: Router): Router {
   router.get("/api/agent/project-status", (_req, res) => void forward(res, "/api/project-status"));
   router.post("/api/agent/sweep", (_req, res) => void forward(res, "/api/sweep", { method: "POST" }));
 
+  // Ontology-as-universal-mapper (schema discovery + mapping studio).
+  router.get("/api/agent/openproject/schema", (_req, res) => void forward(res, "/api/openproject/schema"));
+  router.get("/api/agent/ontology/properties", (_req, res) => void forward(res, "/api/ontology/properties"));
+  router.get("/api/agent/widgets", (_req, res) => void forward(res, "/api/widgets"));
+  router.get("/api/agent/mapping", (req, res) => {
+    const source = typeof req.query.source === "string" ? req.query.source : "openproject";
+    void forward(res, `/api/mapping?source=${encodeURIComponent(source)}`);
+  });
+  // Requires express.json() mounted so req.body is parsed for the POST.
+  router.post("/api/agent/mapping", (req, res) => void forward(res, "/api/mapping", { method: "POST", body: req.body }));
+
   return router;
 }

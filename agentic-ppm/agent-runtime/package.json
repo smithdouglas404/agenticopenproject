@@ -16,7 +16,8 @@
     "preflight": "tsx src/scripts/preflight.ts",
     "smoke": "tsx src/scripts/smoke.ts",
     "rules:eval": "tsx src/scripts/evaluateRules.ts",
-    "rules:zen-smoke": "tsx src/scripts/zenSmoke.ts"
+    "rules:zen-smoke": "tsx src/scripts/zenSmoke.ts",
+    "mapping:smoke": "tsx src/scripts/mappingSmoke.ts"
   },
   "dependencies": {
     "@gorules/zen-engine": "^0.54.0",
