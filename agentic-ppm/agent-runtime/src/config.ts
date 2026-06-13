@@ -74,6 +74,17 @@ export const config = {
     enabled: (process.env.REASONING_AGENTS ?? '1') === '1',
   },
 
+  agents: {
+    /** Master switch for the event-driven, relevance-gated a2a execution engine. */
+    eventDriven: (process.env.AGENTS_EVENT_DRIVEN ?? '1') === '1',
+    /** Max hops in the a2a cascade — the hard guard against a runaway loop. */
+    maxCascadeDepth: Number(process.env.AGENTS_MAX_CASCADE_DEPTH ?? 3),
+    /** Minutes a fired (agent, node) is suppressed before it can re-fire in a cascade. */
+    cascadeCooldownMinutes: Number(process.env.AGENTS_CASCADE_COOLDOWN_MIN ?? 30),
+    /** Run the optional LLM narrative pass for agents that fired something. */
+    llmNarrative: (process.env.AGENTS_LLM_NARRATIVE ?? '1') === '1',
+  },
+
   rules: {
     /** Evaluate OpenProject-authored rules against the graph (master switch). */
     enabled: (process.env.RULES_ENABLED ?? '1') === '1',
