@@ -1,10 +1,6 @@
 /**
  * Central runtime configuration, read once from the environment.
  */
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 function required(name: string): string {
   const value = process.env[name];
   if (!value) {
