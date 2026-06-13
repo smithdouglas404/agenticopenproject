@@ -43,6 +43,7 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `CLAUDE_MD_FOR_KYNDRAL.md` | **Install as `CLAUDE.md` in the Kyndral repo root** — teaches every future Claude session the whole integration so you can vibe-code |
 | `docs/WHERE_TO_CODE.md` | The 4 services, which repo to open for which change, and how they wire together (read this when unsure where to work) |
 | `docs/AGENT_CONSOLIDATION.md` | Consolidate Kyndral's 13 deep agents into the single agent-runtime roster (mapping table + migration plan) |
+| `docs/ENV_WIRING_MAP.md` | Every env var on every service (OpenProject / agent-runtime / Kyndral / FalkorDB) and what it unlocks — set these to make the live system talk to itself |
 | `docs/KYNDRAL_RECOVERY.md` | **Un-vendor OpenProject** from Kyndral and restore the 3-service working model — validated cherry-pick recipe + conflict notes |
 | `ci/no-vendor-openproject.yml` | Drop-in Kyndral CI guard: fails the build if the OpenProject monorepo is ever vendored in again |
 | `ci/kyndral-session-start.sh` + `ci/kyndral-settings.json` | Drop-in SessionStart hook for Kyndral — forces the architecture guardrails into every session (fixes "agents don't read CLAUDE.md") |
