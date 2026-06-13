@@ -18,10 +18,13 @@
 - **OpenProject** — the datastore / system of work. Projects and work packages
   physically live there. Users never see its UI; we read/write via APIv3.
 - **agent-runtime** (sidecar service, lives in the `agenticopenproject` repo
-  under `agentic-ppm/agent-runtime/`, deployed separately) — syncs OpenProject
-  into a **FalkorDB** graph, runs 9 reasoning agents + deterministic detectors
-  over it, owns the findings/HITL lifecycle and the learning loop.
-  HTTP API: `GET /api/findings|metrics|learning|roster|project-status`,
+  under `agentic-ppm/agent-runtime/`, deployed separately) — the **grounding /
+  data layer**: syncs OpenProject into a **FalkorDB** graph, computes metrics,
+  evaluates the OpenProject-authored **rules engine**, owns the findings/HITL
+  lifecycle + OpenProject write-back. It does **NOT** do LLM reasoning — **the
+  Mastra deep agents in THIS repo are the brain** and call the runtime for
+  grounded facts (graph, computed metrics, rule results) and to publish findings.
+  HTTP API: `GET /api/findings|metrics|rules|roster|project-status`,
   `POST /api/findings/:id/approve|reject`, `POST /api/sweep`.
   Env to reach it: `AGENT_RUNTIME_URL` (+ `AGENT_RUNTIME_TOKEN` bearer if set).
 

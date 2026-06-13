@@ -1,8 +1,8 @@
 /**
  * Agent-runtime sidecar entrypoint.
  *
- * Boots the OpenProject webhook receiver, which drives the Quick-slice pipeline:
- *   OpenProject webhook -> projector -> FalkorDB/Graphiti -> Insights & Risk agent -> inbox.
+ * Boots the OpenProject webhook receiver, which drives the grounding pipeline:
+ *   OpenProject webhook -> projector -> FalkorDB/Graphiti -> detectors + rules -> inbox.
  */
 import { config, assertRuntimeConfig } from './config.js';
 import { buildApp } from './webhook/server.js';
@@ -44,31 +44,6 @@ async function main(): Promise<void> {
     console.log(`[boot] webhook endpoint: POST http://<host>:${config.port}/webhooks/openproject`);
     console.log(`[boot] agent console: http://<host>:${config.port}/console`);
     startSweepLoop();
-
-    // Provision the roster as STATEFUL Letta agents (background, best-effort) so
-    // proactive reflection routes through agents that remember. No-op if Letta
-    // isn't configured (reflection then falls back to a direct Claude call).
-    if (config.letta.configured) {
-      void import('./letta/client.js')
-        .then(({ provisionRosterAgents }) =>
-          provisionRosterAgents((m) => console.log(`[letta] ${m}`)),
-        )
-        .then((ids) => console.log(`[letta] provisioned ${ids?.length ?? 0} stateful roster agent(s)`))
-        .catch((err) => console.warn(`[letta] provisioning failed (non-fatal): ${err.message}`));
-    }
-
-    // OPT-IN proactive autonomy scan. OFF by default (proactiveScanMinutes=0) —
-    // this is NOT a cron/orchestrator. When the user opts in, it reflects over
-    // recently-active entities only (stimulus-driven), never the whole portfolio.
-    if (config.agents.proactive && config.agents.proactiveScanMinutes > 0) {
-      const ms = config.agents.proactiveScanMinutes * 60_000;
-      console.log(`[autonomy] opt-in proactive reflection every ${config.agents.proactiveScanMinutes} min`);
-      setInterval(() => {
-        void import('./agents/autonomy/proactive.js')
-          .then(({ proactiveReflect }) => proactiveReflect())
-          .catch((err) => console.warn(`[autonomy] proactive scan failed: ${err.message}`));
-      }, ms).unref();
-    }
 
     if (config.runBackfillOnBoot) {
       // Seed the graph in the background so the server stays healthy meanwhile.

@@ -10,9 +10,11 @@ deployables** that make up the product. Read this before changing anything.
    work. Embeds the `modules/agentic_ppm` plugin (rules authoring, insights).
    Deploys on its own (Railway: `railway.json` → `docker/prod/Dockerfile`,
    `env MIGRATE=true ./docker/prod/web`).
-2. **agent-runtime** — `agentic-ppm/agent-runtime/` (Node/TS sidecar). Syncs
-   OpenProject → FalkorDB graph, runs the reasoning agents + rules evaluator,
-   owns findings/HITL/learning. Deploys on its own.
+2. **agent-runtime** — `agentic-ppm/agent-runtime/` (Node/TS sidecar). The
+   GROUNDING/DATA layer: syncs OpenProject → FalkorDB graph, computes metrics,
+   evaluates the OpenProject-authored rules engine, owns findings/HITL +
+   OpenProject write-back. It does NOT do LLM reasoning — the Mastra agents in
+   Kyndral-365 are the brain and call this for grounded facts. Deploys on its own.
 3. **Kyndral-365** — a SEPARATE repo (`Kyndral-365-Agentic-VRO-Framework-DOSv2`).
    The UI/server. Talks to OpenProject and the agent-runtime **over HTTP**.
 

@@ -1,10 +1,10 @@
 /**
- * OpenProject webhook receiver — Quick-slice pipeline entry point.
+ * OpenProject webhook receiver — grounding-service pipeline entry point.
  *
  * ADAPTED from DOSv2 `server/routes/webhooks/openproject.ts`: HMAC-SHA256 verify of
  * the X-OP-Signature header, agent-origin dedup, ack-immediately-then-process-async.
- * The downstream is re-pointed: instead of syncing to an external ontology service + broadcasting to a UI,
- * it runs  projector -> Insights & Risk agent -> inbox.
+ * The downstream is the deterministic grounding layer: projector (graph write) ->
+ * rules evaluation (changed nodes) -> detector sweep trigger -> inbox. No LLM.
  *
  *   POST /webhooks/openproject  <- configure this URL in the OpenProject webhook admin
  */
@@ -14,11 +14,9 @@ import { config } from '../config.js';
 import { getProjector } from '../projector/projector.js';
 import { getOpenProjectClient } from '../openproject/client.js';
 import { getFindingByAlertWp } from '../store/findings.js';
-import { assessProject } from '../agents/projectAssessor.js';
 import { decideFinding } from '../agents/decisions.js';
 import { maybeSweepAfterEvent } from '../agents/sweep.js';
 import { evaluateForChangedNodes, publishBreaches } from '../rules/evaluator.js';
-import { runAgentsForChange, buildChangeFromWebhook } from '../agents/events/runOnChange.js';
 import { buildConsoleRouter } from '../console/api.js';
 
 // Resolve the alerts project's numeric id once, so we can ignore our own Agent
@@ -73,31 +71,6 @@ function projectNodeIdFromEvent(event: OPWebhookEvent): string | null {
   }
   if (event.project?.id) return `op-project-${event.project.id}`;
   return null;
-}
-
-/** Run the LLM insight pass for one project (delegates to the shared assessor). */
-async function runProjectInsight(projectNodeId: string): Promise<void> {
-  await assessProject(projectNodeId);
-}
-
-// Debounce insight runs per project so webhook bursts trigger ONE LLM pass.
-const insightTimers = new Map<string, NodeJS.Timeout>();
-function scheduleProjectInsight(projectNodeId: string): void {
-  const delayMs = config.insights.debounceSeconds * 1000;
-  const run = () =>
-    void runProjectInsight(projectNodeId).catch((err) =>
-      console.error(`[webhook] insight run failed for ${projectNodeId}:`, err.message),
-    );
-  if (delayMs <= 0) return run();
-
-  const existing = insightTimers.get(projectNodeId);
-  if (existing) clearTimeout(existing);
-  const timer = setTimeout(() => {
-    insightTimers.delete(projectNodeId);
-    run();
-  }, delayMs);
-  timer.unref?.();
-  insightTimers.set(projectNodeId, timer);
 }
 
 // Map an Agent Alert WP status to a HITL decision. Closed/Resolved = approve
@@ -159,45 +132,17 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
           : `[webhook] WP ${wpId} skipped (agent-originated)`,
       );
 
-      // 2. Re-run the Insights & Risk agent for the owning project.
-      // TODO(debounce): coalesce bursts of WP updates per project before re-running.
+      // 2. Resolve the owning project for targeted rule evaluation.
       const projectNodeId = projectNodeIdFromEvent(event);
       if (!projectNodeId) {
         console.warn(`[webhook] WP ${wpId} has no resolvable project; skipping analysis`);
         return;
       }
 
-      // 2. Schedule the LLM insight pass (debounced per project) and run the
-      //    inference detectors opportunistically (throttled).
-      scheduleProjectInsight(projectNodeId);
+      // 3. Run the deterministic detectors opportunistically (throttled).
       maybeSweepAfterEvent();
 
-      // 2b. EVENT-DRIVEN agents: the domain + reasoning agents now fire on the
-      //     event itself, relevance-gated. The webhook gives no field-level diff,
-      //     so seed `changed` with the WP's key attributes (prev=next=current) —
-      //     enough for the relevance gate to wake the agents that watch them.
-      //     Fire-and-forget; the sweep above remains the safety net.
-      if (projected?.nodeId && config.agents.eventDriven) {
-        const wp = event.work_package ?? {};
-        const change = buildChangeFromWebhook({
-          nodeId: projected.nodeId,
-          ontologyClass: projected.label ? `pm:${projected.label}` : undefined,
-          attributes: {
-            percentageDone: (wp as Record<string, unknown>).percentageDone,
-            status: wp._links?.status?.title,
-            priority: (wp._links as { priority?: { title?: string } } | undefined)?.priority?.title,
-            spentHours: (wp as Record<string, unknown>).spentTime,
-            estimatedHours: (wp as Record<string, unknown>).estimatedTime,
-          },
-        });
-        if (change) {
-          void runAgentsForChange(change).catch((err) =>
-            console.warn(`[webhook] event-driven agents failed for ${projected.nodeId}: ${err.message}`),
-          );
-        }
-      }
-
-      // 3. Event-targeted rule evaluation: evaluate rules only against the nodes
+      // 4. Event-targeted rule evaluation: evaluate rules only against the nodes
       //    this event touched (the changed WP + its owning project), so a breach
       //    surfaces immediately without waiting for the throttled full sweep.
       if (config.rules.enabled && config.rules.evaluateOnEvent) {
