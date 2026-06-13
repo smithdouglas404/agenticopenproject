@@ -18,7 +18,8 @@
     "letta:provision": "tsx src/scripts/provisionLetta.ts",
     "rules:eval": "tsx src/scripts/evaluateRules.ts",
     "rules:zen-smoke": "tsx src/scripts/zenSmoke.ts",
-    "agents:event-smoke": "tsx src/scripts/eventSmoke.ts"
+    "agents:event-smoke": "tsx src/scripts/eventSmoke.ts",
+    "agents:reflect": "tsx src/scripts/reflect.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",

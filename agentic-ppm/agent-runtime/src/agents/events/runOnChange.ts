@@ -18,6 +18,7 @@ import { buildDecisionContext } from '../../rules/decisionContext.js';
 import type { Rule } from '../../rules/types.js';
 import { agentsForChange } from './relevance.js';
 import { cascade, resolveNodeById } from './collaboration.js';
+import { reflectForOpportunities } from '../autonomy/reflection.js';
 
 /** Minimal Rule shim so buildDecisionContext can resolve the node's metrics. */
 function contextRule(ontologyClass: string | undefined): Rule {
@@ -88,6 +89,35 @@ export async function runAgentsForChange(
         `${run.agentsRun} agent-run(s), ${run.findings} new finding(s); ` +
         `cascade path: ${run.path.map((p) => `${p.agentId}@d${p.depth}(fired=${p.fired})`).join(' -> ')}`,
     );
+
+    // 3b. AUTONOMY / a2a CONVERSATION — proactive opportunity reflection.
+    //     Beyond rule breaches: each agent that fired reflects (statefully, via
+    //     Letta when configured) for OPPORTUNITIES on this entity, and every
+    //     handoff edge becomes a directed conversation — the target agent
+    //     reflects in light of what the originating agent observed. Bounded by
+    //     the cascade's own visited/cooldown guards (only fired agents + their
+    //     direct handoff targets reflect), gated by config.agents.proactive.
+    if (config.agents.proactive) {
+      const reflected = new Set<string>();
+      for (const step of run.path) {
+        if (step.fired === 0) continue;
+        // The agent that fired reflects on its own finding (deeper opportunity).
+        if (!reflected.has(step.agentId)) {
+          reflected.add(step.agentId);
+          await reflectForOpportunities(step.agentId, node).catch(() => 0);
+        }
+        // Each peer it handed off to reflects on the stimulus (the conversation).
+        for (const target of step.handoffs) {
+          const key = `${target}<-${step.agentId}`;
+          if (reflected.has(key)) continue;
+          reflected.add(key);
+          await reflectForOpportunities(target, node, {
+            fromAgent: step.agentId,
+            observation: `fired ${step.fired} rule(s) on ${node.id}`,
+          }).catch(() => 0);
+        }
+      }
+    }
 
     // 4. OPTIONAL focused LLM narrative — only for agents that actually fired,
     //    on this one entity (cost-bounded). Gated by config; never fatal.
