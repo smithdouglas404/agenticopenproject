@@ -26,6 +26,7 @@ import { collectChecks, type Check } from '../preflight.js';
 import { config } from '../config.js';
 import { CONSOLE_HTML } from './page.js';
 import { mountMappingRoutes } from '../mapping/routes.js';
+import { mountLearningRoutes } from '../learning/routes.js';
 
 // Dependency health, cached so the 30s console refresh doesn't hammer Graphiti.
 let statusCache: { at: number; checks: Check[] } | null = null;
@@ -187,6 +188,9 @@ export function buildConsoleRouter(): Router {
 
   // Ontology-as-universal-mapper endpoints (schema/properties/widgets/mapping).
   mountMappingRoutes(router);
+
+  // Learning endpoints (ML-suggested rule thresholds from the outcome history).
+  mountLearningRoutes(router);
 
   return router;
 }

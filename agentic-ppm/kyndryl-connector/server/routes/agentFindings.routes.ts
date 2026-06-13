@@ -97,6 +97,37 @@ export function initAgentFindingsRoutes(router: Router): Router {
   router.get("/api/agent/openproject/schema", (_req, res) => void forward(res, "/api/openproject/schema"));
   router.get("/api/agent/ontology/properties", (_req, res) => void forward(res, "/api/ontology/properties"));
   router.get("/api/agent/widgets", (_req, res) => void forward(res, "/api/widgets"));
+
+  // Multi-source adapters / MCP (the MappingStudio source dropdown + adapter
+  // schema/tool discovery). See docs/SOURCE_ADAPTERS_AND_MCP.md.
+  router.get("/api/agent/sources", (_req, res) => void forward(res, "/api/sources"));
+  router.get("/api/agent/sources/:id/schema", (req, res) => {
+    const id = String(req.params.id ?? "");
+    if (!/^[A-Za-z0-9_:.-]+$/.test(id)) {
+      res.status(400).json({ error: "invalid source id" });
+      return;
+    }
+    void forward(res, `/api/sources/${encodeURIComponent(id)}/schema`);
+  });
+  router.get("/api/agent/sources/:id/tools", (req, res) => {
+    const id = String(req.params.id ?? "");
+    if (!/^[A-Za-z0-9_:.-]+$/.test(id)) {
+      res.status(400).json({ error: "invalid source id" });
+      return;
+    }
+    void forward(res, `/api/sources/${encodeURIComponent(id)}/tools`);
+  });
+
+  // Rule-authoring assist (ML-suggested thresholds from the learning loop).
+  // The runtime serves this as GET with ?class=&metric= query params.
+  router.get("/api/agent/rules/suggest", (req, res) => {
+    const qs = new URLSearchParams();
+    for (const k of ["class", "metric"] as const) {
+      const v = req.query[k];
+      if (typeof v === "string" && v) qs.set(k, v);
+    }
+    void forward(res, `/api/rules/suggest${qs.size ? `?${qs}` : ""}`);
+  });
   router.get("/api/agent/mapping", (req, res) => {
     const source = typeof req.query.source === "string" ? req.query.source : "openproject";
     void forward(res, `/api/mapping?source=${encodeURIComponent(source)}`);
