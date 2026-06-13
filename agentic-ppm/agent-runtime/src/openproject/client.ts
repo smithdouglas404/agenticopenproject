@@ -203,6 +203,36 @@ export class OpenProjectClient {
       comment: { raw: comment },
     });
   }
+
+  /**
+   * Fetch the collection of work-package schemas (GET /api/v3/work_packages/schemas).
+   * Each element carries the per-attribute descriptors used by schema discovery.
+   * Returns [] (rather than throwing) when the endpoint is forbidden/absent so
+   * discovery can fall back to the standard attribute set.
+   */
+  async getWorkPackageSchemas(): Promise<any[]> {
+    try {
+      const data = await this.request('GET', '/work_packages/schemas');
+      return data._embedded?.elements ?? [];
+    } catch (error: any) {
+      if (/\((403|404)\)/.test(error?.message ?? '')) return [];
+      throw error;
+    }
+  }
+
+  /**
+   * Fetch instance custom-field definitions (GET /api/v3/custom_fields). Not all
+   * OpenProject versions expose this; tolerate 403/404 by returning [].
+   */
+  async getCustomFields(): Promise<any[]> {
+    try {
+      const data = await this.request('GET', '/custom_fields');
+      return data._embedded?.elements ?? [];
+    } catch (error: any) {
+      if (/\((403|404)\)/.test(error?.message ?? '')) return [];
+      throw error;
+    }
+  }
 }
 
 let singleton: OpenProjectClient | null = null;

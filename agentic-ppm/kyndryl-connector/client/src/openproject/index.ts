@@ -71,3 +71,41 @@ export {
 } from "./DecisionEditor";
 
 export { AgentConsole, type AgentConsoleProps } from "./AgentConsole";
+
+// Ontology Mapping Studio — map any source's attributes to the shared ontology.
+export {
+  MappingStudio,
+  type MappingStudioProps,
+  type AttributeType,
+  type AttributeDescriptor,
+  type OntologyProperty,
+  type WidgetDescriptor,
+  type TransformId,
+  type AttributeMapping,
+  type SourceMappingSet,
+} from "./MappingStudio";
+
+// Widget registry — renders a mapped value with the chosen widget.
+export {
+  renderWidget,
+  WIDGET_RENDERERS,
+  FALLBACK_WIDGET,
+  type WidgetRenderer,
+  type WidgetProps,
+  type WidgetValueType,
+} from "./WidgetRenderer";
+
+// Grounding client for Kyndral's Mastra DeepAgentBase (computed, not generated).
+export {
+  AgentRuntimeClient,
+  createAgentRuntimeClient,
+  type AgentRuntimeClientOptions,
+  type RuntimeMetric,
+  type MetricsResult,
+  type ProjectStatusItem,
+  type RuntimeRule,
+  type RuntimeFinding,
+  type PublishFindingInput,
+  type FindingsFilter,
+  type GraphSlice,
+} from "./agentRuntimeClient";
