@@ -1,15 +1,14 @@
 # OpenProject → Kyndral-365 (v2) field mapping + schema additions
 
-Scope: Kyndral-365 DOSv2 (`shared/schema.ts`, 94 tables; Palantir ontology layer
-via `OntologyDataProvider` / `/api/palantir/ontology/*`). This answers #1: expose
+Scope: Kyndral-365 DOSv2 (`shared/schema.ts`, 94 tables; ontology layer (FalkorDB)
+via `OntologyDataProvider` (route stem `/api/palantir/ontology/*` is historical; see `ONTOLOGY_LAYER.md`)). This answers #1: expose
 OpenProject PPM features and map Epics/Tasks/OKRs through the ontology.
 
 ## Where OpenProject data lands
 
-**Important v2 detail:** the UI reads from the **Palantir ontology objects**, not
+**Important v2 detail:** the UI reads from the **ontology objects**, not
 raw tables. So the connector should write to the ontology objects (`Project`,
-`Feature`, `Story`, `Task`, `Risk`) via `OntologyDataProvider`, which persist to
-Postgres + Palantir. The `openProjectClient.ts` in this folder maps to the SAFe
+`Feature`, `Story`, `Task`, `Risk`) via `OntologyDataProvider`, which persist to FalkorDB. The `openProjectClient.ts` in this folder maps to the SAFe
 storage entities; on the Kyndral side, route those through `OntologyDataProvider`
 so the existing pages render them.
 

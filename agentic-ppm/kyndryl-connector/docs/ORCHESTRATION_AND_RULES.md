@@ -49,7 +49,7 @@ The 15-second loop re-analyzes **unchanged** projects all day. That's the waste 
 It's a sensible **hybrid** and doesn't need ripping out:
 - **Policy-as-code** (`server/services/policyAsCodeExtractor.ts`): LLM extracts rules from documents → **HITL approval** → stored. Good.
 - **In-code thresholds** (`rulesEngine.ts`, `UnifiedOrchestrationEngine.ts`): CPI/SPI cutoffs. Fine, but **move the hardcoded thresholds** (CPI 0.75/0.85, SPI 0.75) into config so they're tunable without a deploy.
-- **Palantir Functions** (`PalantirRulesService.ts`) + **Camunda DMN** for heavier governance. Keep.
+- **cloud rule services** (the legacy `PalantirRulesService.ts` in DOSv2 source — already deprecated) + **Camunda DMN** for heavier governance. Keep.
 - **SmartModelRouter** (heuristic→cheap→premium, caching, free Nemotron tier) — **keep and lean on it harder**; it already makes 60–70% of calls free.
 
 One cleanup: the workflow rules in `UnifiedOrchestrationEngine` are defined but only *partially* firing under the polling model — they become first-class once everything is event-driven (the rule trigger *is* the event).

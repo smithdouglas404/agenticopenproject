@@ -3,7 +3,7 @@
  *
  * ADAPTED from DOSv2 `server/routes/webhooks/openproject.ts`: HMAC-SHA256 verify of
  * the X-OP-Signature header, agent-origin dedup, ack-immediately-then-process-async.
- * The downstream is re-pointed: instead of syncing to Palantir + broadcasting to a UI,
+ * The downstream is re-pointed: instead of syncing to an external ontology service + broadcasting to a UI,
  * it runs  projector -> Insights & Risk agent -> inbox.
  *
  *   POST /webhooks/openproject  <- configure this URL in the OpenProject webhook admin

@@ -15,7 +15,7 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | File | What it is |
 |---|---|
 | `server/openProjectClient.ts` | Bidirectional OpenProject client (sync in, agent write-back out) — the core connector |
-| `server/FalkorOntologyDataProvider.ts` | Drop-in FalkorDB replacement for the Palantir `OntologyDataProvider` (same method surface, `/api/palantir/ontology/*` unchanged) |
+| `server/FalkorOntologyDataProvider.ts` | FalkorDB ontology backend (provider API, vector-ready) (same method surface, `/api/palantir/ontology/*` unchanged) |
 | `server/routes/webhooks/openproject.ts` | `POST /webhooks/openproject` Express router: HMAC verify → `handleWebhook()` sync + orchestrator `registerChange()` |
 | `shared/schema.openproject-gaps.ts` | Copy-paste Drizzle tables for the spec's gap list: `workPackageRelations`, `releases`, `workPackageCategories`, `okrEntityContributions`, `activityCostRates` + ALTER notes (tasks.startDate/completedDate, timesheets.activityName, customFields sync columns) |
 | `server/okrRollupService.ts` | OKR↔Epic↔Task rollup engine: KR progress = Σ entity.progress × contribution% (deterministic, with `formula` audit string), OKR weighted average, contribution inference from `okrLinkages`, write-back skeleton |
@@ -23,7 +23,7 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `server/integrationSyncService.openproject.patch.ts` | Copy-paste `testOpenProjectConnection`/`syncOpenProject` methods + switch cases for `IntegrationSyncService` |
 | `server/patches/eventDrivenBootstrap.ts` | `activateEventDrivenOrchestration()` + `registerCrudChangeHooks()` — the missing wiring for `EventDrivenOrchestrator` |
 | `server/patches/ACTIVATE_EVENT_DRIVEN.md` | Exact steps to kill the 15s polling loop and go event-driven (~93% cost cut) |
-| `docs/PALANTIR_TO_FALKORDB.md` | Migration plan: Palantir ontology backend → FalkorDB (mapping table, env vars, backfill, rollback) |
+| `docs/ONTOLOGY_LAYER.md` | The FalkorDB ontology layer: provider API, the optional /api/ontology rename, data migration, rollback (mapping table, env vars, backfill, rollback) |
 | `docs/SCHEMA_AND_OPENPROJECT_MAPPING.md` | OpenProject ↔ Kyndral v2 field/type mapping + schema gap list |
 | `docs/ORCHESTRATION_AND_RULES.md` | Cost analysis: polling vs event-driven orchestrators, rules-engine verdict |
 | `docs/RULES_ENGINE.md` | **The rules-engine design + contract** (source of truth): rules authored in OpenProject (`AgentRule`) → runtime pulls `rules.json` → evaluates event-driven + safety sweep → breach fans out to BOTH UIs. rules.json/alerts.json schemas, operator semantics, auth, env vars, phased rollout |

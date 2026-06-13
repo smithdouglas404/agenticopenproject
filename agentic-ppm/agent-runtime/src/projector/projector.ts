@@ -1,9 +1,9 @@
 /**
  * OpenProject -> graph projector.
  *
- * ADAPTED from DOSv2 `server/services/sync/OpenProjectToPalantirSync.ts`.
+ * Mirrors the canonical sync pattern from the source platform.
  * The WP-type -> ontology mapping and ISO-duration parsing are kept verbatim in
- * spirit; the Palantir sink (`pushToPalantir`) is replaced with FalkorDB node/edge
+ * spirit; the ontology sink is FalkorDB node/edge
  * upserts plus a Graphiti episode. Object-type names are reused as graph labels.
  */
 import { getOpenProjectClient } from '../openproject/client.js';

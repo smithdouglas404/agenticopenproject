@@ -1,8 +1,8 @@
 /**
  * FalkorDB graph client.
  *
- * NEW BUILD (gap #1 in the reuse map). DOSv2 used Neo4j (`server/graph/GraphService.ts`)
- * and a "Palantir" abstraction; the target world-model is FalkorDB. FalkorDB speaks
+ * NEW BUILD (gap #1 in the reuse map). DOSv2 used Neo4j (`server/graph/GraphService.ts`).
+ * FalkorDB is the target world-model; it speaks
  * openCypher, so the *query shapes* from DOSv2's `schema.cypher` / GraphService port
  * over — only the driver/connection below is new.
  */

@@ -2,7 +2,7 @@
 
 A formal, machine-readable model of how an enterprise actually runs project & portfolio
 management (PPM). It is written in **W3C OWL / Turtle (`.ttl`)**, the same standard used
-by Palantir Foundry, Protégé, GraphDB, Stardog, and every major knowledge-graph tool — so
+by a Foundry-style ontology service, Protégé, GraphDB, Stardog, and every major knowledge-graph tool — so
 it loads anywhere without translation.
 
 This package contains the **modular source** (six files you can read one domain at a time)
@@ -93,11 +93,11 @@ risk classes instead of you hand-flagging them.
 
 There are three practical mapping paths depending on where your data lives.
 
-### Path A — Palantir Foundry (the live source of truth here)
+### Path A — a Foundry-style ontology service (the live source of truth here)
 The running platform already maps **~20 `Atlas*` object types** onto this ontology.
 The correspondence is:
 
-| Ontology class | Palantir object type | Notes |
+| Ontology class | FalkorDB ontology object type | Notes |
 |---|---|---|
 | `pm:Project` / `safe:Epic` | `AtlasProject` | milestones & resources embedded as `milestonesJson` / `resourcesJson` |
 | `pm:Portfolio` | `AtlasPortfolio` | |
@@ -188,7 +188,7 @@ node -e "const N3=require('n3'),fs=require('fs');let c=0;new N3.Parser().parse(f
 **Load into a triple store:** GraphDB, Stardog, Apache Jena Fuseki, or Blazegraph all
 import the `.ttl` directly; then query with SPARQL.
 
-**Import into Palantir Foundry:** use the Ontology importer and align by class/property IRI.
+**Import into a Foundry-style ontology service:** use the Ontology importer and align by class/property IRI.
 
 ---
 

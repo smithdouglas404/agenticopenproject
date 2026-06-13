@@ -20,7 +20,7 @@ the agent in Rails, we lift those into this TS service and adapt three seams:
 
 | Seam | DOSv2 | Here |
 |---|---|---|
-| Graph backend | Neo4j / "Palantir" | **FalkorDB** (`src/graph/falkor.ts`) + Graphiti stub (`src/graph/graphiti.ts`) |
+| Graph backend | Neo4j / "FalkorDB ontology" | **FalkorDB** (`src/graph/falkor.ts`) + Graphiti stub (`src/graph/graphiti.ts`) |
 | LLM client | OpenRouter (`callLLM`) | **Claude API** (`src/llm/claude.ts`) |
 | Data reads | Postgres/Drizzle `storage` | **OpenProject + graph** (`src/openproject/`, projector) |
 
@@ -30,7 +30,7 @@ the agent in Rails, we lift those into this TS service and adapt three seams:
 |---|---|---|
 | `src/openproject/client.ts` | OpenProject APIv3 client | **LIFTED** from `OpenProjectService.ts` |
 | `src/webhook/server.ts` | Webhook receiver (HMAC, dedup, async) | **ADAPTED** from `routes/webhooks/openproject.ts` |
-| `src/projector/projector.ts` | OP entities → graph nodes/edges | **ADAPTED** from `OpenProjectToPalantirSync.ts` |
+| `src/projector/projector.ts` | OP entities → graph nodes/edges | **ADAPTED** from `OpenProjectToFalkorDB ontologySync.ts` |
 | `src/agents/insightSchema.ts` | Insight finding schema (zod) | **LIFTED** from `executiveInsights.ts` |
 | `src/agents/riskHeuristics.ts` | Probability/impact math | **LIFTED** from `DeepRiskAgent.ts` |
 | `src/agents/insightsRiskAgent.ts` | The agent (graph + math + Claude) | **COMPOSED** (doc 09 §3c) |
