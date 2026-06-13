@@ -23,7 +23,7 @@ export const config = {
 
   openproject: {
     baseUrl: process.env.OPENPROJECT_BASE_URL ?? 'http://localhost:8080',
-    apiKey: process.env.OPENPROJECT_API_KEY ?? '',
+    apiKey: (process.env.OPENPROJECT_API_KEY ?? '').trim(),
     webhookSecret: process.env.OPENPROJECT_WEBHOOK_SECRET ?? '',
     alertsProject: process.env.OPENPROJECT_ALERTS_PROJECT ?? 'agent-alerts',
     /** WP type used for Agent Alerts. Defaults to "Task" so it works on a stock instance. */
