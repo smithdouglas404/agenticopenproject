@@ -1,0 +1,48 @@
+name: Agentic PPM guard
+
+# Fast, deterministic gate for the agentic layer. Catches the bug classes that
+# broke real deploys (Gemfile.lock plugin entry, Zeitwerk Api/API, missing menu
+# icon, un-namespaced ERB constants, migration class mismatches) in seconds —
+# no full Rails boot required — plus the agent-runtime typecheck.
+#
+# Scoped to the agentic paths so it doesn't run on unrelated OpenProject changes.
+
+on:
+  pull_request:
+    paths:
+      - 'modules/agentic_ppm/**'
+      - 'agentic-ppm/**'
+      - 'Gemfile.lock'
+      - '.github/workflows/agentic-ppm-guard.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'modules/agentic_ppm/**'
+      - 'agentic-ppm/**'
+      - 'Gemfile.lock'
+
+jobs:
+  plugin-guard:
+    name: OpenProject plugin static guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+      - name: Run plugin guard
+        run: ./agentic-ppm/scripts/plugin-guard.sh
+
+  agent-runtime-typecheck:
+    name: agent-runtime typecheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: agentic-ppm/agent-runtime
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run typecheck

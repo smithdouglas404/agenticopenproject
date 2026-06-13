@@ -1,0 +1,37 @@
+name: No vendored OpenProject
+
+# Mechanically blocks the mistake that broke this repo before: vendoring the
+# entire OpenProject monorepo into Kyndral. OpenProject is a SEPARATE deployable
+# — integrate over the API, never copy its source tree in.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Reject vendored OpenProject source
+        run: |
+          fail=0
+          # 1) The unmistakable OpenProject root files must not exist here.
+          for f in config.ru Gemfile.modules openproject/config.ru openproject/Gemfile.modules; do
+            if [ -e "$f" ]; then echo "::error::OpenProject source vendored ($f present). Integrate via API, do not vendor."; fail=1; fi
+          done
+          # 2) No giant OpenProject Rails tree (its tell-tale paths).
+          if [ -d app/models/work_package.rb ] || [ -d modules/bim ] || [ -d modules/backlogs ]; then
+            echo "::error::OpenProject Rails modules detected in this repo."; fail=1
+          fi
+          # 3) Catch a massive vendor-in within a single PR (file-count spike).
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            added=$(git diff --name-only --diff-filter=A "${{ github.event.pull_request.base.sha }}"..HEAD | wc -l)
+            if [ "$added" -gt 2000 ]; then
+              echo "::error::This PR adds $added files (>2000). Refusing — looks like a vendored monorepo."; fail=1
+            fi
+          fi
+          [ $fail -eq 0 ] && echo "OK: no vendored OpenProject."
+          exit $fail
