@@ -89,6 +89,8 @@ export function initAgentFindingsRoutes(router: Router): Router {
   router.get("/api/agent/metrics", (_req, res) => void forward(res, "/api/metrics"));
   router.get("/api/agent/roster", (_req, res) => void forward(res, "/api/roster"));
   router.get("/api/agent/rules", (_req, res) => void forward(res, "/api/rules"));
+  router.get("/api/agent/status", (_req, res) => void forward(res, "/api/status"));
+  router.get("/api/agent/project-status", (_req, res) => void forward(res, "/api/project-status"));
   router.post("/api/agent/sweep", (_req, res) => void forward(res, "/api/sweep", { method: "POST" }));
 
   return router;
