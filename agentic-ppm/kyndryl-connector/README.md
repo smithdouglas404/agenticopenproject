@@ -41,6 +41,8 @@ Built by reading the Kyndral repo's exact patterns so it drops straight in.
 | `client/src/openproject/index.ts` | Barrel export — copy the whole `openproject/` folder into Kyndral's `client/src/` |
 | `server/routes/agentFindings.routes.ts` | `/api/agent/*` proxy to the agent-runtime (findings, decisions, learning, metrics) keeping the runtime token server-side |
 | `CLAUDE_MD_FOR_KYNDRAL.md` | **Install as `CLAUDE.md` in the Kyndral repo root** — teaches every future Claude session the whole integration so you can vibe-code |
+| `docs/WHERE_TO_CODE.md` | The 4 services, which repo to open for which change, and how they wire together (read this when unsure where to work) |
+| `docs/AGENT_CONSOLIDATION.md` | Consolidate Kyndral's 13 deep agents into the single agent-runtime roster (mapping table + migration plan) |
 | `docs/KYNDRAL_RECOVERY.md` | **Un-vendor OpenProject** from Kyndral and restore the 3-service working model — validated cherry-pick recipe + conflict notes |
 | `ci/no-vendor-openproject.yml` | Drop-in Kyndral CI guard: fails the build if the OpenProject monorepo is ever vendored in again |
 | `ci/kyndral-session-start.sh` + `ci/kyndral-settings.json` | Drop-in SessionStart hook for Kyndral — forces the architecture guardrails into every session (fixes "agents don't read CLAUDE.md") |
