@@ -11,15 +11,8 @@
  */
 import { getOpenProjectClient } from '../openproject/client.js';
 import { config } from '../config.js';
-import type { Insight } from '../agents/insightSchema.js';
 
 export type AlertSeverity = 'notification' | 'warning' | 'alarm' | 'critical';
-
-const RISK_SEVERITY_TO_ALERT: Record<'high' | 'medium' | 'low', AlertSeverity> = {
-  high: 'alarm',
-  medium: 'warning',
-  low: 'notification',
-};
 
 export interface InboxFinding {
   title: string;
@@ -83,45 +76,4 @@ export async function publishDetectorFindings(
     );
   }
   return ids;
-}
-
-/** Extract the trailing numeric id from a graph node id like "op-wp-1234". */
-function workPackageIdFromRef(ref?: string): number | undefined {
-  if (!ref) return undefined;
-  const match = ref.match(/op-wp-(\d+)/);
-  return match ? Number(match[1]) : undefined;
-}
-
-/**
- * Fan an Insight out into inbox findings: one summary alert plus one per key risk.
- * Returns the ids of the created Agent Alert work packages.
- */
-export async function publishInsight(insight: Insight): Promise<number[]> {
-  const created: number[] = [];
-
-  const summarySeverity: AlertSeverity =
-    insight.portfolioHealth === 'red' ? 'critical' : insight.portfolioHealth === 'amber' ? 'warning' : 'notification';
-
-  const summaryBody = [
-    insight.healthSummary,
-    '',
-    insight.recommendations.map((r) => `- (${r.priority}) ${r.action} — ${r.rationale}`).join('\n'),
-  ].join('\n');
-
-  created.push(
-    await writeFinding({ title: insight.headline, body: summaryBody, severity: summarySeverity }),
-  );
-
-  for (const risk of insight.keyRisks) {
-    created.push(
-      await writeFinding({
-        title: risk.title,
-        body: `**Impact:** ${risk.impact}\n\n**Mitigation:** ${risk.mitigation}`,
-        severity: RISK_SEVERITY_TO_ALERT[risk.severity],
-        relatedWorkPackageId: workPackageIdFromRef(risk.linkedEntity),
-      }),
-    );
-  }
-
-  return created;
 }

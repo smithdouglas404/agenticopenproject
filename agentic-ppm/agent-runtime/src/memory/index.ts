@@ -7,7 +7,6 @@ import { config } from '../config.js';
 import type { MemoryEpisode, MemoryHit, MemoryProvider, MemoryStatus } from './types.js';
 import { FalkorMemoryProvider } from './falkor.js';
 import { Mem0MemoryProvider } from './mem0.js';
-import { LettaMemoryProvider } from './letta.js';
 import {
   recordEpisode as graphitiRecord,
   pingGraphiti,
@@ -55,9 +54,6 @@ function get(): MemoryProvider {
   switch (config.memory.provider) {
     case 'mem0':
       provider = new Mem0MemoryProvider();
-      break;
-    case 'letta':
-      provider = new LettaMemoryProvider();
       break;
     case 'graphiti':
       provider = new GraphitiMemoryProvider();

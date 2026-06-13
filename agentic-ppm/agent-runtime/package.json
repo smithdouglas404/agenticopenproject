@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Agent-runtime sidecar for Agentic PPM on OpenProject. Quick slice: OpenProject webhook -> projector -> FalkorDB/Graphiti -> Insights & Risk agent -> Insights inbox.",
+  "description": "Grounding-service sidecar for Agentic PPM on OpenProject. OpenProject webhook -> projector -> FalkorDB/Graphiti -> detectors + rules -> findings/HITL inbox. No LLM reasoning (that lives in the Kyndral repo).",
   "engines": {
     "node": ">=20"
   },
@@ -15,16 +15,11 @@
     "sync:backfill": "tsx src/scripts/backfill.ts",
     "preflight": "tsx src/scripts/preflight.ts",
     "smoke": "tsx src/scripts/smoke.ts",
-    "letta:provision": "tsx src/scripts/provisionLetta.ts",
     "rules:eval": "tsx src/scripts/evaluateRules.ts",
-    "rules:zen-smoke": "tsx src/scripts/zenSmoke.ts",
-    "agents:event-smoke": "tsx src/scripts/eventSmoke.ts",
-    "agents:reflect": "tsx src/scripts/reflect.ts"
+    "rules:zen-smoke": "tsx src/scripts/zenSmoke.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.37.0",
     "@gorules/zen-engine": "^0.54.0",
-    "@letta-ai/letta-client": "^1.12.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",

@@ -1,72 +1,71 @@
-# One agent system: consolidate Kyndral's deep agents into the agent-runtime
+# Agent architecture: Mastra agents are the brain; agent-runtime is the grounding layer
 
-## The problem
+> This supersedes the earlier "consolidate onto the agent-runtime" plan. Decision
+> made: **keep the Mastra deep agents as the single brain.** The agent-runtime is
+> NOT a second agent system — it's the grounded data layer the Mastra agents call.
 
-There are currently **two agent systems** with overlapping domains:
-- **Kyndral-365** — 13 "deep agents" (`server/agents/deep/*`) on Mastra +
-  `DeepAgentBase` + `ContinuousOrchestrator` + a2a + SmartModelRouter.
-- **agent-runtime** — a 9-agent roster + rules agent over the FalkorDB graph,
-  with grounding (evidence/citations), the learning loop, the rules engine,
-  and the HITL findings lifecycle.
+## The final architecture
 
-Running both = double LLM cost, contradictory findings on the same entity, two
-memory stores, two orchestrators. Your own commit #14 ("Make agent-runtime the
-sole agent system") already chose the fix; this finishes it.
+```
+  Kyndral-365 (Mastra deep agents = THE BRAIN)
+    - stateful (Mem0 + Letta), planning/reflection, a2a via AgentSignalBus
+    - 13 deep agents: FinOps, VRO, PMO, Governance, Risk, Planning, OCM, TMO,
+      OKR, Notification, IntegratedMgmt, …
+        │  calls over HTTP for grounded facts; publishes findings
+        ▼
+  agent-runtime (GROUNDING / DATA layer — NO LLM reasoning)
+    - FalkorDB world-model (graph) + computed metrics (deterministic)
+    - OpenProject-authored rules engine (GoRules ZEN) — deterministic breaches
+    - findings/HITL store + Agent-Alert inbox + OpenProject write-back
+    - webhook receiver → projects changes into the graph
+        │  reads / writes
+        ▼
+  OpenProject (datastore + rules authoring UI)
+```
 
-## The decision
+## Why this (not the reverse)
 
-**One brain: the agent-runtime.** Kyndral *displays* agent output and routes
-human decisions — it does **not** run agents. The deep agents' domain expertise
-moves into the agent-runtime roster.
+The Mastra agents already have the expensive, valuable machinery — stateful
+memory (Mem0 + Letta), agent-to-agent collaboration (`AgentSignalBus`),
+planning/reflection. Rebuilding that in the runtime was duplicate work (it has
+been **removed** — see below). What the Mastra agents lacked is **grounding**:
+a graph world-model, computed-not-generated metrics, and a deterministic rules
+engine. That's exactly what the agent-runtime provides. So: brain stays in
+Kyndral; grounding lives in the runtime; they talk over HTTP.
 
-## They map almost 1:1
+## What was removed from the agent-runtime (the duplicate brain)
 
-| Kyndral deep agent | → agent-runtime roster id |
+Deleted — these duplicated the Mastra agents and are gone:
+`reasoningAgents`, `insightsRiskAgent`, `insightSchema`, `narrativeGenerator`,
+`projectAssessor`, `riskHeuristics`, `agents/domains/*`, `agents/events/*`,
+`agents/autonomy/*`, `llm/*`, `letta/*`. The runtime no longer calls an LLM.
+
+## What the agent-runtime keeps (the grounding the Mastra agents call)
+
+| Endpoint | What the Mastra agents get |
 |---|---|
-| DeepPMOAgent | `strategic-pmo` |
-| DeepGovernanceAgent | `governance` |
-| DeepFinOpsAgent | `finops` |
-| DeepVROAgent | `vro` |
-| DeepOKRInferenceAgent | `okr` |
-| DeepPlanningAgent | `planning` |
-| DeepOCMAgent | `ocm` |
-| DeepTMOAgent | `tmo` |
-| DeepRiskAgent | `strategic-pmo` (risk detectors) / new `risk` roster entry |
-| DeepNotificationAgent | `notification` |
-| DeepIntegratedMgmtAgent | cross-cutting — fold into the reconciliation pass |
-| GenericDeepAgent / DeepAgentWithRAG | the base reasoning path (already in `reasoningAgents.ts`) |
+| `GET /api/metrics` | computed portfolio metrics (deterministic Cypher + formulas) |
+| `GET /api/project-status` | per-project computed status |
+| `GET /api/rules` | the OpenProject-authored rules |
+| `GET /api/findings` | deterministic rule/detector breaches |
+| `POST /api/findings/:id/approve|reject` | HITL decisions |
+| `POST /api/sweep` | run the deterministic detector + rules sweep |
+| `POST /webhooks/openproject` | change feed (the runtime projects it into the graph) |
+| (graph) | FalkorDB world-model the agents reason over |
 
-## Migration plan
+The runtime's `roster` now exists only to **attribute** deterministic
+findings (detector/rule breaches) — it is not a set of reasoning agents.
 
-1. **Port the domain expertise.** For each deep agent, copy its system
-   prompt + its `server/agents/attributes/*AgentAttributes.ts` (the SAFe/PMBOK
-   attribute definitions — the genuinely valuable part) into the matching
-   `agent-runtime/src/agents/roster.ts` entry's `purpose`/prompt, and any
-   domain-specific checks into `detectors.ts`. The runtime's agents are
-   currently generic; this makes them as smart as the Kyndral ones, but
-   grounded + learning.
-2. **Add a `risk` roster agent** if DeepRiskAgent carries logic not covered by
-   the existing detectors.
-3. **Stop running agents in Kyndral.** Disable `DeepAgentBootstrap` /
-   `ContinuousOrchestrator` (also the ~$10–15k/yr cost). Keep the deep-agent
-   files as reference until the port is verified, then retire them.
-4. **Kyndral reads, doesn't run.** Agent pages render from `/api/agent/*`
-   (findings, metrics, learning) and route approve/reject back to the runtime —
-   already wired (`ApprovalQueue.tsx`, `agentFindings.routes.ts`, `ai-sdk/`).
-5. **Keep the good Mastra bits as runtime features, not a parallel system.** If
-   specific Mastra tools/workflows are valuable (e.g. scenario analysis),
-   re-implement them as agent-runtime capabilities — one system, not two.
+## How the Mastra agents use it (integration sketch)
 
-## End state
+In `DeepAgentBase` (Kyndral), add a thin client to the agent-runtime
+(`AGENT_RUNTIME_URL` + bearer `AGENT_RUNTIME_TOKEN`):
+- Before reasoning, pull grounded facts: `GET /api/metrics`, the relevant graph
+  slice, and current rule results — so numbers come from the graph, not the LLM.
+- When the agent concludes something actionable, `POST` it as a finding so it
+  surfaces in the HITL surfaces and (optionally) OpenProject.
+- The runtime's webhook change-feed can be the stimulus that wakes the right
+  Mastra agent (event-driven), instead of any cron.
 
-One roster, one FalkorDB graph, one HITL surface, one learning loop, one cost
-center, event-driven (not the 15s loop). Kyndral is the UI; the agent-runtime
-is the brain; OpenProject is the datastore. No contradictory findings, no double
-spend.
-
-## Why not the reverse (agents stay in Kyndral, runtime is just a graph)?
-
-That couples reasoning to the UI deploy, re-creates the two-orchestrator cost
-problem, and splits memory/learning across two services. The grounding +
-learning + rules engine already live in the agent-runtime; bring the agents to
-the data, not the data to the UI.
+That keeps the Mastra brain intact AND makes its numbers grounded — the
+"computed, not generated" guarantee — without a second agent system.

@@ -1,12 +1,12 @@
 /**
- * Agent roster — the K360 agent domains, declared as the system's spec.
+ * Agent roster — lightweight attribution registry for deterministic findings.
  *
- * Defining the full roster NOW (even though most are not yet implemented) gives
- * the system a stable contract: every Insight/Finding/Recommendation is owned by
- * a known agent, the HITL console can group by agent, and we implement them
- * incrementally without changing the data model.
+ * This is NOT an LLM reasoning roster. It gives detector- and rule-produced
+ * findings a stable owner (id/name/domain), so the HITL console can group and
+ * attribute findings by signal source. The actual reasoning agents live in the
+ * separate Kyndral repo; this runtime only grounds + attributes.
  *
- * Mirrors the 9 agent domains in ontology/modules/k360.ttl (§2.2 of the README).
+ * Mirrors the K360 agent domains in ontology/modules/k360.ttl (§2.2 of the README).
  */
 
 export type AgentStatus = 'active' | 'planned';
@@ -32,7 +32,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'Strategic PMO',
     purpose: 'Delivery risk, schedule variance, dependency and portfolio health.',
     owns: ['portfolio-insight', 'OverdueInProgress', 'StaleHighPriority', 'UnownedHighPriority', 'ReleaseAtRisk'],
-    status: 'active', // implemented as insightsRiskAgent.ts
+    status: 'active',
   },
   {
     id: 'governance',
@@ -104,7 +104,7 @@ export const AGENT_ROSTER: AgentDomain[] = [
     domain: 'Risk',
     purpose: 'Risk identification, probability/impact scoring, mitigation tracking and risk-driven escalation across the portfolio.',
     owns: ['RiskBreach', 'ValueAtRisk', 'EmergingRisk'],
-    status: 'active', // domain pack: src/agents/domains/risk.ts; runs event-driven
+    status: 'active',
   },
   {
     id: 'notification',

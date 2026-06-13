@@ -35,11 +35,6 @@ export const config = {
     customFieldAlertSeverity: process.env.OPENPROJECT_CF_ALERT_SEVERITY,
   },
 
-  claude: {
-    apiKey: process.env.ANTHROPIC_API_KEY ?? '',
-    model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6',
-  },
-
   falkor: {
     host: process.env.FALKORDB_HOST ?? 'localhost',
     port: Number(process.env.FALKORDB_PORT ?? 6379),
@@ -62,36 +57,6 @@ export const config = {
     costBurnHoursThreshold: Number(process.env.COST_BURN_HOURS_THRESHOLD ?? 40),
   },
 
-  insights: {
-    /** Coalesce webhook bursts: wait this long per project before the LLM run (0 = immediate). */
-    debounceSeconds: Number(process.env.INSIGHT_DEBOUNCE_SECONDS ?? 45),
-    /** Re-assess every project's status during the detector sweep (predictable refresh). */
-    reassessOnSweep: (process.env.REASSESS_PROJECTS_ON_SWEEP ?? '1') === '1',
-  },
-
-  reasoning: {
-    /** Run all roster agents as LLM reasoning agents during the sweep. */
-    enabled: (process.env.REASONING_AGENTS ?? '1') === '1',
-  },
-
-  agents: {
-    /** Master switch for the event-driven, relevance-gated a2a execution engine. */
-    eventDriven: (process.env.AGENTS_EVENT_DRIVEN ?? '1') === '1',
-    /** Max hops in the a2a cascade — the hard guard against a runaway loop. */
-    maxCascadeDepth: Number(process.env.AGENTS_MAX_CASCADE_DEPTH ?? 3),
-    /** Minutes a fired (agent, node) is suppressed before it can re-fire in a cascade. */
-    cascadeCooldownMinutes: Number(process.env.AGENTS_CASCADE_COOLDOWN_MIN ?? 30),
-    /** Run the optional LLM narrative pass for agents that fired something. */
-    llmNarrative: (process.env.AGENTS_LLM_NARRATIVE ?? '1') === '1',
-    /** Proactive autonomy: agents reflect for OPPORTUNITIES (not just breaches)
-     *  on change + on a2a handoffs (the agent conversation), statefully via Letta. */
-    proactive: (process.env.AGENTS_PROACTIVE ?? '1') === '1',
-    /** Optional autonomous reflection sweep over recently-active entities.
-     *  0 = OFF (no cron — the default). Set >0 ONLY to opt into a sparse,
-     *  stimulus-driven scan; it never re-evaluates the whole portfolio. */
-    proactiveScanMinutes: Number(process.env.AGENTS_PROACTIVE_SCAN_MIN ?? 0),
-  },
-
   rules: {
     /** Evaluate OpenProject-authored rules against the graph (master switch). */
     enabled: (process.env.RULES_ENABLED ?? '1') === '1',
@@ -112,10 +77,6 @@ export const config = {
   },
 
   grounding: {
-    /** Drop LLM findings that reference entities not present in the graph. */
-    enforceEntityCheck: (process.env.GROUNDING_ENTITY_CHECK ?? '1') === '1',
-    /** Findings whose grounded confidence falls below this are dropped (abstention). */
-    minConfidence: Number(process.env.GROUNDING_MIN_CONFIDENCE ?? 0.4),
     /** Downgrade published severity for agents with a poor resolved-prediction track record. */
     autoTuneSeverity: (process.env.LEARNING_AUTOTUNE ?? '1') === '1',
   },
@@ -140,23 +101,11 @@ export const config = {
   },
 
   memory: {
-    /** Memory provider: falkor (default) | mem0 | letta | graphiti | none. */
-    provider: (process.env.MEMORY_PROVIDER ?? 'falkor') as 'falkor' | 'mem0' | 'letta' | 'graphiti' | 'none',
+    /** Memory provider: falkor (default) | mem0 | graphiti | none. */
+    provider: (process.env.MEMORY_PROVIDER ?? 'falkor') as 'falkor' | 'mem0' | 'graphiti' | 'none',
     mem0ApiKey: process.env.MEM0_API_KEY,
     mem0BaseUrl: process.env.MEM0_BASE_URL ?? 'https://api.mem0.ai',
     mem0AgentId: process.env.MEM0_AGENT_ID ?? 'agentic-ppm',
-  },
-
-  letta: {
-    /** Letta Cloud API key (or self-hosted via LETTA_BASE_URL). */
-    apiKey: process.env.LETTA_API_KEY,
-    baseUrl: process.env.LETTA_BASE_URL ?? 'https://api.letta.com',
-    /** Model handle for the agents — Claude by default ("claude native"). */
-    model: process.env.LETTA_MODEL ?? 'anthropic/claude-sonnet-4-20250514',
-    embedding: process.env.LETTA_EMBEDDING ?? 'openai/text-embedding-3-small',
-    /** Tag applied to all agents/memory we own, so we can find them idempotently. */
-    tag: process.env.LETTA_TAG ?? 'agentic-ppm',
-    configured: !!(process.env.LETTA_API_KEY || process.env.LETTA_BASE_URL),
   },
 
   graphiti: {
@@ -174,5 +123,4 @@ export const config = {
 /** Throw early if anything needed to actually run the pipeline is missing. */
 export function assertRuntimeConfig(): void {
   required('OPENPROJECT_API_KEY');
-  required('ANTHROPIC_API_KEY');
 }

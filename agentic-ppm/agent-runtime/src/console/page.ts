@@ -103,7 +103,7 @@ export const CONSOLE_HTML = /* html */ `<!doctype html>
 </header>
 <main>
   <div id="agentsSection">
-    <h2>Agents</h2>
+    <h2>Signal sources <span class="sub">(detectors + rules — deterministic, no LLM)</span></h2>
     <div class="agents" id="agents"></div>
   </div>
   <h2>Computed Metrics <span class="tag computed">computed, not generated</span></h2>
@@ -270,10 +270,8 @@ function renderFindings(list) {
     top.appendChild(el('span', 'status-pill status-' + f.status, f.status));
     // Confidence badge (agent-reported, grounding-adjusted), when present.
     if (f.confidence > 0) top.appendChild(el('span', 'conf', 'confidence ' + Math.round(f.confidence * 100) + '%'));
-    // The narrative/body is LLM text — label it so it never reads as a computed fact.
-    top.appendChild(el('span', 'tag ai', 'AI narrative'));
     card.appendChild(top);
-    // Prefer the LLM-generated narrative; fall back to the raw detector body.
+    // Findings are deterministic (detectors + rules); render the finding body.
     card.appendChild(el('div', 'body', f.narrative || f.body));
     // Evidence citations: entity id + metric=value rows, validated against the graph.
     let evidence = [];
