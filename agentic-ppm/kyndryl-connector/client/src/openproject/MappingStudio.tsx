@@ -79,6 +79,13 @@ export interface AttributeMapping {
   transform?: TransformId;
   widget?: string;
   synced: boolean;
+  /**
+   * Write-back enabled: when true, the value renders as an EDITABLE widget
+   * (see EditableWidget.tsx) and user edits PATCH back to OpenProject. The
+   * runtime should persist this alongside the rest of the mapping. Defaults to
+   * undefined (read-only) so nothing is accidentally mutable.
+   */
+  editable?: boolean;
 }
 
 /** The full set of mappings for one source. */
@@ -307,6 +314,7 @@ export function MappingStudio({
               <th className="px-3 py-2 font-medium">Transform</th>
               <th className="px-3 py-2 font-medium">Widget</th>
               <th className="px-3 py-2 text-center font-medium">Sync</th>
+              <th className="px-3 py-2 text-center font-medium">Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -400,12 +408,28 @@ export function MappingStudio({
                       aria-label={`sync ${attr.label}`}
                     />
                   </td>
+                  <td className="px-3 py-2 text-center">
+                    {/* Write-back: only meaningful for mapped attributes. */}
+                    <input
+                      type="checkbox"
+                      checked={row.editable ?? false}
+                      disabled={!row.ontologyProperty}
+                      onChange={(e) => setRow(attr.key, { editable: e.target.checked })}
+                      className="h-4 w-4 accent-indigo-600 disabled:opacity-40"
+                      aria-label={`write-back ${attr.label}`}
+                      title={
+                        row.ontologyProperty
+                          ? "Allow editing this attribute (writes back to OpenProject)"
+                          : "Map an ontology property first to enable write-back"
+                      }
+                    />
+                  </td>
                 </tr>
               );
             })}
             {attributes.length === 0 && !discovering && (
               <tr>
-                <td colSpan={6} className="px-3 py-6 text-center text-sm text-neutral-500">
+                <td colSpan={7} className="px-3 py-6 text-center text-sm text-neutral-500">
                   Nothing discovered yet. Click <span className="font-medium">Discover</span> to load the source schema.
                 </td>
               </tr>

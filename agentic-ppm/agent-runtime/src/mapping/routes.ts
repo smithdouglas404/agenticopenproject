@@ -6,7 +6,10 @@
  * UI consumes to discover a source's attributes, see the ontology targets +
  * widget catalog, and read/write the per-source mapping set.
  *
- *   GET  /api/openproject/schema       discovered AttributeDescriptor[]
+ *   GET  /api/sources                  AdapterSummary[] (every registered source)
+ *   GET  /api/sources/:id/schema       discovered AttributeDescriptor[] for a source
+ *   GET  /api/sources/:id/tools        MCP tools for a source (else [])
+ *   GET  /api/openproject/schema       discovered AttributeDescriptor[] (alias of sources/openproject/schema)
  *   GET  /api/ontology/properties      OntologyProperty[]
  *   GET  /api/widgets                  { widgets: WidgetDescriptor[] }
  *   GET  /api/mapping?source=…         SourceMappingSet (seeded default if unsaved)
@@ -17,6 +20,7 @@
  */
 import type { Router } from 'express';
 import { discoverSchema } from '../openproject/schema.js';
+import { getAdapter, listAdapters } from '../adapters/registry.js';
 import { listOntologyProperties } from './ontologyProperties.js';
 import { WIDGET_CATALOG } from './widgets.js';
 import { getMapping, saveMapping } from './store.js';
@@ -24,6 +28,44 @@ import type { SourceMappingSet } from './types.js';
 
 /** Mount the mapping endpoints onto an existing router. */
 export function mountMappingRoutes(router: Router): void {
+  // Every registered source the studio can target (pluggable: OP, REST stubs, MCP).
+  router.get('/api/sources', (_req, res) => {
+    try {
+      res.json(listAdapters());
+    } catch (err: any) {
+      res.json({ sources: [], error: err?.message ?? String(err) });
+    }
+  });
+
+  // Generic per-source schema discovery (the OP alias below delegates here).
+  router.get('/api/sources/:id/schema', async (req, res) => {
+    const adapter = getAdapter(req.params.id);
+    if (!adapter) {
+      res.json({ attributes: [], error: `unknown source: ${req.params.id}` });
+      return;
+    }
+    try {
+      res.json(await adapter.discoverSchema());
+    } catch (err: any) {
+      res.json({ attributes: [], error: err?.message ?? String(err) });
+    }
+  });
+
+  // MCP TOOLS (candidate agent ACTIONS) for a source; [] for non-MCP sources.
+  router.get('/api/sources/:id/tools', async (req, res) => {
+    const adapter = getAdapter(req.params.id);
+    if (!adapter?.listTools) {
+      res.json([]);
+      return;
+    }
+    try {
+      res.json(await adapter.listTools());
+    } catch (err: any) {
+      res.json({ tools: [], error: err?.message ?? String(err) });
+    }
+  });
+
+  // Back-compat alias — keep the original OpenProject schema endpoint working.
   router.get('/api/openproject/schema', async (_req, res) => {
     try {
       res.json(await discoverSchema());

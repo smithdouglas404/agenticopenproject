@@ -118,7 +118,32 @@ export const config = {
     /** Tool name on the Graphiti MCP server that ingests an episode. */
     addMemoryTool: process.env.GRAPHITI_ADD_MEMORY_TOOL ?? 'add_memory',
   },
+
+  mcp: {
+    /**
+     * MCP servers registered as mappable SOURCES (resources→objects, tools→
+     * actions). Optional: none configured = no MCP adapters. Read from
+     * MCP_SOURCES (comma-separated "url" or "url|transport") or a single
+     * MCP_SERVER_URL. Transport defaults to MCP_DEFAULT_TRANSPORT (sse|http).
+     */
+    servers: parseMcpSources(),
+  },
 } as const;
+
+/** Parse the optional MCP source list from the environment. */
+function parseMcpSources(): { url: string; transport: 'sse' | 'http' }[] {
+  const defaultTransport = (process.env.MCP_DEFAULT_TRANSPORT ?? 'sse') as 'sse' | 'http';
+  const raw = process.env.MCP_SOURCES ?? process.env.MCP_SERVER_URL ?? '';
+  return raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+    .map((entry) => {
+      // "url" or "url|transport".
+      const [url, transport] = entry.split('|').map((p) => p.trim());
+      return { url, transport: transport === 'http' ? 'http' : transport === 'sse' ? 'sse' : defaultTransport };
+    });
+}
 
 /** Throw early if anything needed to actually run the pipeline is missing. */
 export function assertRuntimeConfig(): void {
