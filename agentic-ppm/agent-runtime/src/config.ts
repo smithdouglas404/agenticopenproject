@@ -13,6 +13,17 @@ function required(name: string): string {
   return value;
 }
 
+/** Parse a JSON object of HTTP headers from an env var; {} on absent/invalid. */
+function parseHeaders(raw: string | undefined): Record<string, string> {
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? (parsed as Record<string, string>) : {};
+  } catch {
+    return {};
+  }
+}
+
 export const config = {
   port: Number(process.env.PORT ?? 8745),
   /** When true, run the full dependency preflight report at boot (logs to stdout). */
@@ -117,6 +128,37 @@ export const config = {
     groupId: process.env.GRAPHITI_GROUP_ID ?? process.env.FALKORDB_GRAPH ?? 'agentic_ppm',
     /** Tool name on the Graphiti MCP server that ingests an episode. */
     addMemoryTool: process.env.GRAPHITI_ADD_MEMORY_TOOL ?? 'add_memory',
+  },
+
+  /**
+   * Additional source spokes for the universal mapper. Each maps ONCE onto the
+   * ontology (hub) via its adapter (src/sources/*). All optional — an unset
+   * source reports `configured:false` and contributes an empty schema; OpenProject
+   * remains the always-present source via the top-level `openproject` block.
+   */
+  sources: {
+    jira: {
+      baseUrl: process.env.JIRA_BASE_URL ?? '',
+      email: process.env.JIRA_EMAIL ?? '',
+      apiToken: process.env.JIRA_API_TOKEN ?? '',
+    },
+    ado: {
+      orgUrl: process.env.ADO_ORG_URL ?? '',
+      project: process.env.ADO_PROJECT ?? '',
+      pat: process.env.ADO_PAT ?? '',
+    },
+    servicenow: {
+      instanceUrl: process.env.SERVICENOW_INSTANCE_URL ?? '',
+      user: process.env.SERVICENOW_USER ?? '',
+      password: process.env.SERVICENOW_PASSWORD ?? '',
+      table: process.env.SERVICENOW_TABLE ?? 'incident',
+    },
+    mcp: {
+      url: process.env.MCP_SERVER_URL ?? '',
+      headers: parseHeaders(process.env.MCP_HEADERS),
+      objectResource: process.env.MCP_OBJECT_RESOURCE ?? '',
+      updateTool: process.env.MCP_UPDATE_TOOL ?? '',
+    },
   },
 } as const;
 

@@ -175,6 +175,18 @@ export function buildConsoleRouter(): Router {
     }
   });
 
+  // ML-suggested thresholds: per-rule threshold recommendations learned from the
+  // HITL learning loop (approved = true positive, rejected = false positive).
+  // Advisory only — rules stay authored in OpenProject. Degrades to [].
+  router.get('/api/rules/suggestions', async (_req, res) => {
+    try {
+      const { suggestThresholds } = await import('../learning/thresholds.js');
+      res.json({ suggestions: await suggestThresholds() });
+    } catch (err: any) {
+      res.json({ suggestions: [], error: err.message });
+    }
+  });
+
   router.get('/api/project-status', async (_req, res) => {
     const all = await listFindings({ type: 'portfolio-insight', limit: 200 });
     const latest = new Map<string, (typeof all)[number]>();
