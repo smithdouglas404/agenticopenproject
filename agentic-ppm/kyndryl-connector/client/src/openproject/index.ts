@@ -69,3 +69,5 @@ export {
   DecisionEditor,
   type DecisionEditorProps,
 } from "./DecisionEditor";
+
+export { AgentConsole, type AgentConsoleProps } from "./AgentConsole";
