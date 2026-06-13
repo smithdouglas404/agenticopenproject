@@ -99,6 +99,14 @@ export const AGENT_ROSTER: AgentDomain[] = [
     status: 'active', // rules evaluator runs in the sweep + event path
   },
   {
+    id: 'risk',
+    name: 'Risk Agent',
+    domain: 'Risk',
+    purpose: 'Risk identification, probability/impact scoring, mitigation tracking and risk-driven escalation across the portfolio.',
+    owns: ['RiskBreach', 'ValueAtRisk', 'EmergingRisk'],
+    status: 'active', // domain pack: src/agents/domains/risk.ts; runs event-driven
+  },
+  {
     id: 'notification',
     name: 'Notification Agent',
     domain: 'Notification',

@@ -18,6 +18,7 @@ import { assessProject } from '../agents/projectAssessor.js';
 import { decideFinding } from '../agents/decisions.js';
 import { maybeSweepAfterEvent } from '../agents/sweep.js';
 import { evaluateForChangedNodes, publishBreaches } from '../rules/evaluator.js';
+import { runAgentsForChange, buildChangeFromWebhook } from '../agents/events/runOnChange.js';
 import { buildConsoleRouter } from '../console/api.js';
 
 // Resolve the alerts project's numeric id once, so we can ignore our own Agent
@@ -170,6 +171,31 @@ async function processEvent(event: OPWebhookEvent): Promise<void> {
       //    inference detectors opportunistically (throttled).
       scheduleProjectInsight(projectNodeId);
       maybeSweepAfterEvent();
+
+      // 2b. EVENT-DRIVEN agents: the domain + reasoning agents now fire on the
+      //     event itself, relevance-gated. The webhook gives no field-level diff,
+      //     so seed `changed` with the WP's key attributes (prev=next=current) —
+      //     enough for the relevance gate to wake the agents that watch them.
+      //     Fire-and-forget; the sweep above remains the safety net.
+      if (projected?.nodeId && config.agents.eventDriven) {
+        const wp = event.work_package ?? {};
+        const change = buildChangeFromWebhook({
+          nodeId: projected.nodeId,
+          ontologyClass: projected.label ? `pm:${projected.label}` : undefined,
+          attributes: {
+            percentageDone: (wp as Record<string, unknown>).percentageDone,
+            status: wp._links?.status?.title,
+            priority: (wp._links as { priority?: { title?: string } } | undefined)?.priority?.title,
+            spentHours: (wp as Record<string, unknown>).spentTime,
+            estimatedHours: (wp as Record<string, unknown>).estimatedTime,
+          },
+        });
+        if (change) {
+          void runAgentsForChange(change).catch((err) =>
+            console.warn(`[webhook] event-driven agents failed for ${projected.nodeId}: ${err.message}`),
+          );
+        }
+      }
 
       // 3. Event-targeted rule evaluation: evaluate rules only against the nodes
       //    this event touched (the changed WP + its owning project), so a breach
