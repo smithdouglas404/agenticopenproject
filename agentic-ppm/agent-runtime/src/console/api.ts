@@ -4,6 +4,7 @@
  * GET  /console                      the console UI
  * GET  /api/roster                   agents + open/total finding counts
  * GET  /api/findings?status=&agent=  findings ("open" = new|published)
+ * POST /api/findings                 agents publish a grounded conclusion
  * GET  /api/metrics                  computed portfolio metrics (deterministic, no LLM)
  * GET  /api/learning                 per-agent accuracy + recent resolved predictions
  * POST /api/findings/:id/approve     human approves -> comment on alert WP
@@ -16,7 +17,7 @@
  */
 import { Router, type Request, type Response, type NextFunction } from 'express';
 import { AGENT_ROSTER } from '../agents/roster.js';
-import { listFindings, findingCountsByAgent, type FindingStatus } from '../store/findings.js';
+import { listFindings, findingCountsByAgent, recordFinding, type FindingStatus } from '../store/findings.js';
 import { decideFinding } from '../agents/decisions.js';
 import { runSweep } from '../agents/sweep.js';
 import { computePortfolioMetrics } from '../grounding/metrics.js';
@@ -84,6 +85,51 @@ export function buildConsoleRouter(): Router {
       return;
     }
     res.json(await listFindings({ status: status as FindingStatus, agentId, excludeType: exclude }));
+  });
+
+  // Agents publish a grounded, actionable conclusion here. The Mastra deep agents
+  // in Kyndral are the brain; they POST conclusions into this findings store so
+  // they surface in the HITL surfaces (this console + the Kyndral ApprovalQueue)
+  // and, on approval, mirror back to OpenProject. Dedups by (type, nodeId).
+  // `evidence` may be the citation array or a pre-stringified JSON — both are
+  // normalized. Defaults to status 'published' so it lands directly in the HITL
+  // queue (which reads ?status=published); pass status:'new' to stage it instead.
+  router.post('/api/findings', async (req, res) => {
+    const b = (req.body ?? {}) as Record<string, any>;
+    if (!b.type || !b.agentId || !b.title || !b.body) {
+      res.status(400).json({ error: 'a finding requires { type, agentId, title, body }' });
+      return;
+    }
+    let evidence: { entityId: string; metric: string; value: string }[] | undefined;
+    if (Array.isArray(b.evidence)) {
+      evidence = b.evidence;
+    } else if (typeof b.evidence === 'string' && b.evidence.trim()) {
+      try {
+        const parsed = JSON.parse(b.evidence);
+        if (Array.isArray(parsed)) evidence = parsed;
+      } catch {
+        /* ignore malformed evidence string */
+      }
+    }
+    try {
+      const { finding, isNew } = await recordFinding({
+        type: String(b.type),
+        agentId: String(b.agentId),
+        severity: String(b.severity ?? 'medium'),
+        title: String(b.title),
+        body: String(b.body),
+        status: b.status === 'new' ? 'new' : 'published',
+        nodeId: b.nodeId != null ? String(b.nodeId) : undefined,
+        narrative: b.narrative != null ? String(b.narrative) : undefined,
+        projectId: typeof b.projectId === 'number' ? b.projectId : undefined,
+        projectName: b.projectName != null ? String(b.projectName) : undefined,
+        confidence: typeof b.confidence === 'number' ? b.confidence : undefined,
+        evidence,
+      });
+      res.status(isNew ? 201 : 200).json(finding);
+    } catch (err: any) {
+      res.status(502).json({ error: err?.message ?? String(err) });
+    }
   });
 
   router.post('/api/findings/:id/approve', (req, res) => void decide(req, res, 'approved'));
