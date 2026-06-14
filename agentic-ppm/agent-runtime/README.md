@@ -8,7 +8,7 @@ It implements the **Quick slice** from the reuse map
 (`../docs/09-dosv2-reuse-map.md`):
 
 ```
-OpenProject webhook ─▶ projector ─▶ FalkorDB (+ Graphiti) ─▶ Insights & Risk agent ─▶ Insights inbox
+OpenProject webhook ─▶ projector ─▶ FalkorDB ─▶ Insights & Risk agent ─▶ Insights inbox
 ```
 
 ## Why a sidecar
@@ -20,7 +20,7 @@ the agent in Rails, we lift those into this TS service and adapt three seams:
 
 | Seam | DOSv2 | Here |
 |---|---|---|
-| Graph backend | Neo4j / "FalkorDB ontology" | **FalkorDB** (`src/graph/falkor.ts`) + Graphiti stub (`src/graph/graphiti.ts`) |
+| Graph backend | Neo4j / "FalkorDB ontology" | **FalkorDB** (`src/graph/falkor.ts`) — also the temporal layer (`src/graph/policyTemporal.ts`, FalkorDB-native memory in `src/memory/falkor.ts`) |
 | LLM client | OpenRouter (`callLLM`) | **Claude API** (`src/llm/claude.ts`) |
 | Data reads | Postgres/Drizzle `storage` | **OpenProject + graph** (`src/openproject/`, projector) |
 
@@ -36,7 +36,8 @@ the agent in Rails, we lift those into this TS service and adapt three seams:
 | `src/agents/insightsRiskAgent.ts` | The agent (graph + math + Claude) | **COMPOSED** (doc 09 §3c) |
 | `src/inbox/inbox.ts` | Agent Alert WP writer | **ADAPTED** from `opSendNotificationTool` |
 | `src/graph/falkor.ts` | FalkorDB driver/queries | **NEW** (gap #1) |
-| `src/graph/graphiti.ts` | Temporal memory seam | **STUB** (gap #1) |
+| `src/graph/policyTemporal.ts` | FalkorDB-native temporal policy graph (append-only versions/governs) | **NEW** |
+| `src/memory/falkor.ts` | FalkorDB-native temporal memory (episodes) | **NEW** |
 
 ## Run
 
@@ -61,8 +62,6 @@ To backfill the graph from existing OpenProject data, call the projector's
 
 - **Mastra runtime + A2A** — KEEP per doc 09 §2; lets the single agent grow into
   the full roster (doc 04). The Quick slice calls Claude directly instead.
-- **Graphiti service** — currently a logging stub; stand up the real temporal
-  graph and replace `recordEpisode`.
 - **Inbox UI** — the Rails engine `modules/agentic_ppm` renders these Agent Alert
   work packages (gap #3); this service only writes them.
 - **Debounce** — re-runs the agent per work-package event; coalesce bursts per

@@ -2,9 +2,10 @@
  * Dependency preflight checks, shared by the CLI (`npm run preflight`) and the
  * optional boot-time check in index.ts (PREFLIGHT_ON_BOOT=1).
  *
- * Verifies OpenProject + FalkorDB (required) and Graphiti MCP (optional),
- * printing a ✅/❌/⚠️ report. Does NOT open/close connections beyond what each
- * check needs — callers own lifecycle (the CLI closes; the server keeps them).
+ * Verifies OpenProject + FalkorDB (required) and the agent-memory provider
+ * (optional), printing a ✅/❌/⚠️ report. Does NOT open/close connections beyond
+ * what each check needs — callers own lifecycle (the CLI closes; the server keeps
+ * them).
  */
 import { config } from './config.js';
 import { getOpenProjectClient } from './openproject/client.js';

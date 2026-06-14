@@ -1,10 +1,9 @@
 /**
  * Pluggable agent-memory layer.
  *
- * Graphiti proved operationally unstable as an external service, so memory is now
- * an interface with swappable providers. Default is `falkor` — temporal episodes
- * stored as nodes in the FalkorDB we already run (no extra service to babysit).
- * `mem0` (managed API) and `graphiti` remain options; `none` disables it.
+ * Memory is an interface with swappable providers. Default is `falkor` — temporal
+ * episodes stored as nodes in the FalkorDB we already run (no extra service to
+ * babysit). `mem0` (managed API) remains an option; `none` disables it.
  *
  * Memory is augmentation, never the critical path: every provider degrades to a
  * no-op on error so the pipeline keeps running.
@@ -30,7 +29,7 @@ export interface MemoryHit {
 }
 
 export interface MemoryStatus {
-  /** Provider name: falkor | mem0 | graphiti | none. */
+  /** Provider name: falkor | mem0 | none. */
   provider: string;
   /** Whether memory is configured to be active at all. */
   enabled: boolean;

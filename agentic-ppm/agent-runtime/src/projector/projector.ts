@@ -4,7 +4,8 @@
  * Mirrors the canonical sync pattern from the source platform.
  * The WP-type -> ontology mapping and ISO-duration parsing are kept verbatim in
  * spirit; the ontology sink is FalkorDB node/edge
- * upserts plus a Graphiti episode. Object-type names are reused as graph labels.
+ * upserts plus a FalkorDB-native memory episode. Object-type names are reused as
+ * graph labels.
  */
 import { getOpenProjectClient } from '../openproject/client.js';
 import type {

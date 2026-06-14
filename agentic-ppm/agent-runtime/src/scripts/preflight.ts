@@ -3,13 +3,13 @@
  *
  * Checks every external dependency the agent needs and prints a pass/fail
  * report. Run it ON the Railway sidecar service (or locally) BEFORE the smoke
- * test — it confirms OpenProject, FalkorDB, and Graphiti are all reachable with
- * the configured env, so you find misconfiguration here instead of mid-event.
+ * test — it confirms OpenProject and FalkorDB are reachable with the configured
+ * env, so you find misconfiguration here instead of mid-event.
  *
  *   npm run preflight
  *
- * Exit code is non-zero if any REQUIRED check fails (Graphiti is optional).
- * Shares its check logic with the boot-time PREFLIGHT_ON_BOOT=1 path.
+ * Exit code is non-zero if any REQUIRED check fails (the memory provider is
+ * optional). Shares its check logic with the boot-time PREFLIGHT_ON_BOOT=1 path.
  */
 import { runPreflight } from '../preflight.js';
 import { getGraph } from '../graph/falkor.js';

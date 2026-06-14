@@ -27,7 +27,7 @@ export interface McpToolDescriptor {
  * advertises by implementing the matching method.
  */
 export interface SourceAdapter {
-  /** Stable id, e.g. "openproject", "jira", "mcp:graphiti". */
+  /** Stable id, e.g. "openproject", "jira", "mcp:my-server". */
   id: string;
   /** Human label for the studio's source picker. */
   label: string;

@@ -2,7 +2,7 @@
  * Agent-runtime sidecar entrypoint.
  *
  * Boots the OpenProject webhook receiver, which drives the grounding pipeline:
- *   OpenProject webhook -> projector -> FalkorDB/Graphiti -> detectors + rules -> inbox.
+ *   OpenProject webhook -> projector -> FalkorDB -> detectors + rules -> inbox.
  */
 import { config, assertRuntimeConfig } from './config.js';
 import { buildApp } from './webhook/server.js';
@@ -14,7 +14,7 @@ import dns from 'node:dns';
 
 // Railway's private network is IPv6-only. Node's fetch/undici otherwise prefers
 // IPv4 and fails ("fetch failed") to reach *.railway.internal services such as
-// the Graphiti MCP endpoint. Prefer IPv6 when running on Railway.
+// FalkorDB or OpenProject. Prefer IPv6 when running on Railway.
 if (Object.keys(process.env).some((k) => k.startsWith('RAILWAY_'))) {
   dns.setDefaultResultOrder('ipv6first');
   console.log('[boot] DNS result order set to ipv6first (Railway private network is IPv6-only)');
@@ -24,7 +24,7 @@ async function main(): Promise<void> {
   assertRuntimeConfig();
 
   if (config.preflightOnBoot) {
-    // Full dependency report (OpenProject + FalkorDB + Graphiti) at boot.
+    // Full dependency report (OpenProject + FalkorDB + memory) at boot.
     console.log('[boot] PREFLIGHT_ON_BOOT=1 — checking dependencies:');
     const { failedRequired } = await runPreflight('[boot] ');
     if (failedRequired) console.warn('[boot] ⚠ required dependency unreachable — starting anyway');
