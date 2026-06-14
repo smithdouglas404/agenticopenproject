@@ -64,12 +64,16 @@ These land as real runtime code + Kyndral drop-ins + docs on `agenticopenproject
 9. Rotate the API tokens that were pasted in chat (the dead `33773…` and the
    Railway token `fecff7…`).
 
-## ⏭ Later (after the foundation)
-- Generalize the mapping studio to Jira / ADO / ServiceNow / **MCP** sources
-  (each = a new adapter to the spine; MCP resources→objects, MCP tools→actions).
-- Bidirectional edit widgets (write-back) per attribute.
-- ML-suggested thresholds from the learning loop.
-- Rename `/api/palantir/ontology/*` → `/api/ontology/*` (see `ONTOLOGY_LAYER.md`).
+## ✅ Later — DONE (PR #72)
+- ✅ Multi-source / **MCP** adapters (SourceAdapter + registry; Jira/ADO/ServiceNow
+  stubs + real MCP adapter: resources→objects, tools→actions). `/api/sources*`.
+- ✅ Bidirectional **edit widgets** (write-back) per attribute (`EditableWidget`).
+- ✅ **ML-suggested thresholds** from the learning loop (`/api/rules/suggest`).
+- ✅ Ontology route **rename** alias `/api/ontology/*` (+ legacy) + codemod doc.
+
+## ⏭ Still later (nice-to-have)
+- Real API wiring for the Jira/ADO/ServiceNow adapter stubs (creds + SDKs).
+- Promote MCP tools → invokable agent actions (HITL-gated).
 
 ---
 

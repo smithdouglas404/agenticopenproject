@@ -1,0 +1,19 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: "default"
+  resource: "project"
+  importDerivedRoles: ["ppm_roles"]
+  rules:
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo", "project_manager", "contributor", "viewer", "agent"]
+    - actions: ["create"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+    - actions: ["edit", "manage_modules"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+      derivedRoles: ["project_owner"]
+    - actions: ["archive", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]

@@ -1,0 +1,16 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: "default"
+  resource: "okr"
+  importDerivedRoles: ["ppm_roles"]
+  rules:
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo", "project_manager", "contributor", "viewer", "agent"]
+    - actions: ["create", "edit", "delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+    - actions: ["link"]
+      effect: EFFECT_ALLOW
+      roles: ["project_manager"]
+      derivedRoles: ["project_owner"]
