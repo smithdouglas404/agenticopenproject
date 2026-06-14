@@ -1,0 +1,20 @@
+apiVersion: api.cerbos.dev/v1
+description: Ownership/membership-derived roles for PPM resources
+derivedRoles:
+  name: ppm_roles
+  definitions:
+    - name: project_owner
+      parentRoles: ["admin", "pmo", "project_manager"]
+      condition:
+        match:
+          expr: request.principal.id in request.resource.attr.ownerIds
+    - name: project_member
+      parentRoles: ["admin", "pmo", "project_manager", "contributor", "viewer"]
+      condition:
+        match:
+          expr: request.principal.id in request.resource.attr.memberIds
+    - name: finding_assignee
+      parentRoles: ["pmo", "project_manager"]
+      condition:
+        match:
+          expr: request.principal.id in request.resource.attr.assigneeIds

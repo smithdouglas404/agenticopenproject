@@ -28,6 +28,12 @@ Two options, your call:
 | **Rename to `/api/ontology/*`** | Add the new route, keep the old as an alias for a release, update UI fetches, then drop the alias. | Clean naming; ~30 min of search-and-replace in Kyndral's `client/src`. |
 
 ### If you rename: the safe rollout
+
+> **Superseded:** the exact cutover (with the alias drop-in
+> `server/routes/ontologyAlias.ts` and copy-paste ripgrep/sed commands) now lives
+> in [`ONTOLOGY_RENAME.md`](./ONTOLOGY_RENAME.md). The summary below is kept for
+> context.
+
 1. In Kyndral's server, mount the same handler on **both** `/api/ontology/*` and `/api/palantir/ontology/*` (alias) — zero-downtime, both URLs work.
 2. Grep the Kyndral `client/` for `/api/palantir/ontology` and replace with `/api/ontology`.
 3. After a release where the new URL is in use, remove the alias.

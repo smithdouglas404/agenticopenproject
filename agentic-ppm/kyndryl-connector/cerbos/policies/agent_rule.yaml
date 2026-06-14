@@ -1,0 +1,20 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: "default"
+  resource: "agent_rule"
+  importDerivedRoles: ["ppm_roles"]
+  rules:
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo", "project_manager", "contributor", "viewer", "agent"]
+    - actions: ["create", "edit", "delete", "enable", "disable"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+    - actions: ["create", "edit"]
+      effect: EFFECT_ALLOW
+      roles: ["project_manager"]
+      derivedRoles: ["project_owner"]
+    # The runtime pulls rules.json to evaluate them — read only.
+    - actions: ["evaluate"]
+      effect: EFFECT_ALLOW
+      roles: ["agent"]

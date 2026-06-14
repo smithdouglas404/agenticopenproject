@@ -95,6 +95,21 @@ export {
   type WidgetValueType,
 } from "./WidgetRenderer";
 
+// Editable widgets — write-back twin of the registry: edit a mapped attribute
+// and PATCH the value back to OpenProject (the system of record).
+export {
+  renderEditableWidget,
+  useAttributeWriteback,
+  resolveWritebackField,
+  EDITABLE_WIDGETS,
+  DEFAULT_FIELD_MAP,
+  type EditableWidgetProps,
+  type EditableWidgetRenderer,
+  type UseAttributeWritebackOptions,
+  type AttributeWritebackApi,
+  type WritebackField,
+} from "./EditableWidget";
+
 // Grounding client for Kyndral's Mastra DeepAgentBase (computed, not generated).
 export {
   AgentRuntimeClient,

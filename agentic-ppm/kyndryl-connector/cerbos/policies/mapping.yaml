@@ -1,0 +1,11 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: "default"
+  resource: "mapping"
+  rules:
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+    - actions: ["edit", "publish"]
+      effect: EFFECT_ALLOW
+      roles: ["admin"]

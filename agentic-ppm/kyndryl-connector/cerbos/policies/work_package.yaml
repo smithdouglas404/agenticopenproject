@@ -1,0 +1,24 @@
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: "default"
+  resource: "work_package"
+  importDerivedRoles: ["ppm_roles"]
+  rules:
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo", "project_manager", "contributor", "viewer", "agent"]
+    - actions: ["create", "edit", "transition", "assign"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+      derivedRoles: ["project_owner"]
+    - actions: ["create", "edit", "transition"]
+      effect: EFFECT_ALLOW
+      roles: ["contributor"]
+      derivedRoles: ["project_member"]
+    - actions: ["delete"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+    # The agent-runtime writes status/comments back; allow only the write-back action.
+    - actions: ["agent_writeback"]
+      effect: EFFECT_ALLOW
+      roles: ["agent"]

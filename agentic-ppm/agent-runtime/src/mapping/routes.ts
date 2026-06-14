@@ -6,7 +6,10 @@
  * UI consumes to discover a source's attributes, see the ontology targets +
  * widget catalog, and read/write the per-source mapping set.
  *
- *   GET  /api/openproject/schema       discovered AttributeDescriptor[]
+ *   GET  /api/sources                  AdapterSummary[] (every registered source)
+ *   GET  /api/sources/:id/schema       discovered AttributeDescriptor[] for a source
+ *   GET  /api/sources/:id/tools        MCP tools for a source (else [])
+ *   GET  /api/openproject/schema       discovered AttributeDescriptor[] (alias of sources/openproject/schema)
  *   GET  /api/ontology/properties      OntologyProperty[]
  *   GET  /api/widgets                  { widgets: WidgetDescriptor[] }
  *   GET  /api/mapping?source=…         SourceMappingSet (seeded default if unsaved)
@@ -16,45 +19,57 @@
  * payload plus an `error` field, never a 500 crash.
  */
 import type { Router } from 'express';
+import { discoverSchema } from '../openproject/schema.js';
+import { getAdapter, listAdapters } from '../adapters/registry.js';
 import { listOntologyProperties } from './ontologyProperties.js';
 import { WIDGET_CATALOG } from './widgets.js';
 import { getMapping, saveMapping } from './store.js';
 import { buildMetricsCatalog } from './metricsCatalog.js';
-import type { AttributeMapping, SourceMappingSet } from './types.js';
-import { listSources, discoverSchemaFor, getAdapter } from '../sources/registry.js';
-
-/** Invert a forward ingest transform for write-back (best-effort). */
-function reverseTransform(transform: AttributeMapping['transform'], value: unknown): unknown {
-  if (transform === 'iso_duration_hours') {
-    const hours = typeof value === 'number' ? value : Number(value);
-    return Number.isFinite(hours) ? `PT${hours}H` : value; // hours → ISO-8601 duration
-  }
-  // status_map / priority_map are enum normalizations without a stored inverse;
-  // pass the value through (the source usually accepts its own canonical name).
-  return value;
-}
+import type { SourceMappingSet } from './types.js';
 
 /** Mount the mapping endpoints onto an existing router. */
 export function mountMappingRoutes(router: Router): void {
-  // The sources the universal mapper can map (hub-and-spoke), with configured flags.
+  // Every registered source the studio can target (pluggable: OP, REST stubs, MCP).
   router.get('/api/sources', (_req, res) => {
-    res.json(listSources());
+    try {
+      res.json(listAdapters());
+    } catch (err: any) {
+      res.json({ sources: [], error: err?.message ?? String(err) });
+    }
   });
 
-  // Generalized schema discovery for ANY source (?source=openproject|jira|ado|servicenow|mcp).
-  router.get('/api/schema', async (req, res) => {
-    const source = String(req.query.source ?? 'openproject');
+  // Generic per-source schema discovery (the OP alias below delegates here).
+  router.get('/api/sources/:id/schema', async (req, res) => {
+    const adapter = getAdapter(req.params.id);
+    if (!adapter) {
+      res.json({ attributes: [], error: `unknown source: ${req.params.id}` });
+      return;
+    }
     try {
-      res.json(await discoverSchemaFor(source));
+      res.json(await adapter.discoverSchema());
     } catch (err: any) {
       res.json({ attributes: [], error: err?.message ?? String(err) });
     }
   });
 
-  // Back-compat alias for OpenProject, now served through the source registry.
+  // MCP TOOLS (candidate agent ACTIONS) for a source; [] for non-MCP sources.
+  router.get('/api/sources/:id/tools', async (req, res) => {
+    const adapter = getAdapter(req.params.id);
+    if (!adapter?.listTools) {
+      res.json([]);
+      return;
+    }
+    try {
+      res.json(await adapter.listTools());
+    } catch (err: any) {
+      res.json({ tools: [], error: err?.message ?? String(err) });
+    }
+  });
+
+  // Back-compat alias — keep the original OpenProject schema endpoint working.
   router.get('/api/openproject/schema', async (_req, res) => {
     try {
-      res.json(await discoverSchemaFor('openproject'));
+      res.json(await discoverSchema());
     } catch (err: any) {
       res.json({ attributes: [], error: err?.message ?? String(err) });
     }
@@ -104,61 +119,6 @@ export function mountMappingRoutes(router: Router): void {
       res.json({ ok: true });
     } catch (err: any) {
       res.json({ ok: false, error: err?.message ?? String(err) });
-    }
-  });
-
-  /**
-   * Bidirectional edit (write-back): push a value to a source object. Body is
-   * either { source, objectId, fields:{sourceKey:value} } (direct) or
-   * { source, objectId, ontologyProperty, value } (resolved through the saved
-   * mapping + reverse transform — consumers speak ontology, not source keys).
-   * The adapter talks to the source; the OpenProject adapter echo-guards its write.
-   */
-  router.post('/api/writeback', async (req, res) => {
-    const body = (req.body ?? {}) as {
-      source?: string;
-      objectId?: string | number;
-      fields?: Record<string, unknown>;
-      ontologyProperty?: string;
-      value?: unknown;
-    };
-    const source = String(body.source ?? '');
-    const objectId = body.objectId != null ? String(body.objectId) : '';
-    if (!source || !objectId) {
-      res.status(400).json({ ok: false, error: 'body requires { source, objectId, (fields | ontologyProperty+value) }' });
-      return;
-    }
-    const adapter = getAdapter(source);
-    if (!adapter) {
-      res.status(404).json({ ok: false, error: `unknown source "${source}"` });
-      return;
-    }
-    if (!adapter.applyUpdate) {
-      res.status(501).json({ ok: false, error: `source "${source}" has no write-back capability` });
-      return;
-    }
-
-    let fields: Record<string, unknown> = {};
-    if (body.fields && typeof body.fields === 'object') {
-      fields = body.fields;
-    } else if (body.ontologyProperty) {
-      const set = await getMapping(source).catch(() => null);
-      const m = set?.mappings.find((x: AttributeMapping) => x.ontologyProperty === body.ontologyProperty);
-      if (!m) {
-        res.status(400).json({ ok: false, error: `no mapping for ontology property "${body.ontologyProperty}" on ${source}` });
-        return;
-      }
-      fields = { [m.sourceKey]: reverseTransform(m.transform, body.value) };
-    } else {
-      res.status(400).json({ ok: false, error: 'provide either fields or ontologyProperty+value' });
-      return;
-    }
-
-    try {
-      const result = await adapter.applyUpdate(objectId, fields);
-      res.status(result.ok ? 200 : 502).json(result);
-    } catch (err: any) {
-      res.status(502).json({ ok: false, source, objectId, error: err?.message ?? String(err) });
     }
   });
 }

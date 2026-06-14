@@ -9,7 +9,7 @@
  * throws on an empty/unreachable graph — degrades to the in-memory default.
  */
 import { getGraph } from '../graph/falkor.js';
-import { discoverSchemaFor } from '../sources/registry.js';
+import { discoverSchema } from '../openproject/schema.js';
 import { listOntologyProperties } from './ontologyProperties.js';
 import { defaultWidgetForType } from './widgets.js';
 import type {
@@ -99,9 +99,12 @@ function autoMatch(
 
 /** Build the default mapping set for a source from discovery + auto-match. */
 async function defaultMappingSet(source: string): Promise<SourceMappingSet> {
-  // Discover via the source's adapter (registry) — OpenProject, Jira, ADO,
-  // ServiceNow, MCP all seed the same way now. Never throw — fall back to empty.
-  const attributes: AttributeDescriptor[] = await discoverSchemaFor(source).catch(() => []);
+  // Discovery is OpenProject-shaped today; other sources start empty until a
+  // dedicated discoverer exists. Never throw — fall back to an empty set.
+  let attributes: AttributeDescriptor[] = [];
+  if (source === 'openproject') {
+    attributes = await discoverSchema().catch(() => []);
+  }
   const mappings = autoMatch(attributes, listOntologyProperties());
   return { source, mappings, updatedAt: new Date().toISOString() };
 }

@@ -13,17 +13,6 @@ function required(name: string): string {
   return value;
 }
 
-/** Parse a JSON object of HTTP headers from an env var; {} on absent/invalid. */
-function parseHeaders(raw: string | undefined): Record<string, string> {
-  if (!raw) return {};
-  try {
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? (parsed as Record<string, string>) : {};
-  } catch {
-    return {};
-  }
-}
-
 export const config = {
   port: Number(process.env.PORT ?? 8745),
   /** When true, run the full dependency preflight report at boot (logs to stdout). */
@@ -130,37 +119,31 @@ export const config = {
     addMemoryTool: process.env.GRAPHITI_ADD_MEMORY_TOOL ?? 'add_memory',
   },
 
-  /**
-   * Additional source spokes for the universal mapper. Each maps ONCE onto the
-   * ontology (hub) via its adapter (src/sources/*). All optional — an unset
-   * source reports `configured:false` and contributes an empty schema; OpenProject
-   * remains the always-present source via the top-level `openproject` block.
-   */
-  sources: {
-    jira: {
-      baseUrl: process.env.JIRA_BASE_URL ?? '',
-      email: process.env.JIRA_EMAIL ?? '',
-      apiToken: process.env.JIRA_API_TOKEN ?? '',
-    },
-    ado: {
-      orgUrl: process.env.ADO_ORG_URL ?? '',
-      project: process.env.ADO_PROJECT ?? '',
-      pat: process.env.ADO_PAT ?? '',
-    },
-    servicenow: {
-      instanceUrl: process.env.SERVICENOW_INSTANCE_URL ?? '',
-      user: process.env.SERVICENOW_USER ?? '',
-      password: process.env.SERVICENOW_PASSWORD ?? '',
-      table: process.env.SERVICENOW_TABLE ?? 'incident',
-    },
-    mcp: {
-      url: process.env.MCP_SERVER_URL ?? '',
-      headers: parseHeaders(process.env.MCP_HEADERS),
-      objectResource: process.env.MCP_OBJECT_RESOURCE ?? '',
-      updateTool: process.env.MCP_UPDATE_TOOL ?? '',
-    },
+  mcp: {
+    /**
+     * MCP servers registered as mappable SOURCES (resources→objects, tools→
+     * actions). Optional: none configured = no MCP adapters. Read from
+     * MCP_SOURCES (comma-separated "url" or "url|transport") or a single
+     * MCP_SERVER_URL. Transport defaults to MCP_DEFAULT_TRANSPORT (sse|http).
+     */
+    servers: parseMcpSources(),
   },
 } as const;
+
+/** Parse the optional MCP source list from the environment. */
+function parseMcpSources(): { url: string; transport: 'sse' | 'http' }[] {
+  const defaultTransport = (process.env.MCP_DEFAULT_TRANSPORT ?? 'sse') as 'sse' | 'http';
+  const raw = process.env.MCP_SOURCES ?? process.env.MCP_SERVER_URL ?? '';
+  return raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+    .map((entry) => {
+      // "url" or "url|transport".
+      const [url, transport] = entry.split('|').map((p) => p.trim());
+      return { url, transport: transport === 'http' ? 'http' : transport === 'sse' ? 'sse' : defaultTransport };
+    });
+}
 
 /** Throw early if anything needed to actually run the pipeline is missing. */
 export function assertRuntimeConfig(): void {
