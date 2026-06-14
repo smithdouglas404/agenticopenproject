@@ -27,8 +27,9 @@ import { config } from '../config.js';
 import { CONSOLE_HTML } from './page.js';
 import { mountMappingRoutes } from '../mapping/routes.js';
 import { mountLearningRoutes } from '../learning/routes.js';
+import { mountPolicyRoutes } from '../graph/policyTemporal.js';
 
-// Dependency health, cached so the 30s console refresh doesn't hammer Graphiti.
+// Dependency health, cached so the 30s console refresh doesn't hammer the deps.
 let statusCache: { at: number; checks: Check[] } | null = null;
 async function getStatus(): Promise<Check[]> {
   if (statusCache && Date.now() - statusCache.at < 120_000) return statusCache.checks;
@@ -203,6 +204,10 @@ export function buildConsoleRouter(): Router {
 
   // Learning endpoints (ML-suggested rule thresholds from the outcome history).
   mountLearningRoutes(router);
+
+  // Temporal policy graph (FalkorDB-native): which policy version governed what,
+  // when. Read-only surface for UIs.
+  mountPolicyRoutes(router);
 
   return router;
 }

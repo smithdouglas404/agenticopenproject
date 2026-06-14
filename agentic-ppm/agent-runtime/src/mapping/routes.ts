@@ -90,10 +90,18 @@ export function mountMappingRoutes(router: Router): void {
   // Every resolvable metric/attribute (standard + computed + mapped custom) so
   // the Kyndral RulesPanel metric picker and the widget palette can offer them.
   // The 'agent' kind (agent_attributes) is merged in by the Kyndral proxy.
+  // Optional facet filters narrow the list (all backward-compatible — no params
+  // returns the full catalog): ?methodology=agile|safe|… , ?industry=… ,
+  // ?agent=<rosterId>. Metrics untagged for a facet are agnostic and always pass.
   router.get('/api/metrics-catalog', async (req, res) => {
     const source = String(req.query.source ?? 'openproject');
+    const filters = {
+      methodology: req.query.methodology ? String(req.query.methodology) : undefined,
+      industry: req.query.industry ? String(req.query.industry) : undefined,
+      agent: req.query.agent ? String(req.query.agent) : undefined,
+    };
     try {
-      res.json({ metrics: await buildMetricsCatalog(source) });
+      res.json({ metrics: await buildMetricsCatalog(source, filters) });
     } catch (err: any) {
       res.json({ metrics: [], error: err?.message ?? String(err) });
     }
