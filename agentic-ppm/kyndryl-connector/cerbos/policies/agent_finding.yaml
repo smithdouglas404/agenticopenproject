@@ -1,0 +1,28 @@
+apiVersion: api.cerbos.dev/v1
+description: >
+  HITL gate. Agents PUBLISH findings; only humans APPROVE/REJECT (which executes
+  the gated action + writes the training label). Agents must never self-approve.
+resourcePolicy:
+  version: "default"
+  resource: "agent_finding"
+  importDerivedRoles: ["ppm_roles"]
+  rules:
+    - actions: ["view"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo", "project_manager", "contributor", "viewer", "agent"]
+    # Agents (service principal) may publish a grounded conclusion — nothing else.
+    - actions: ["publish"]
+      effect: EFFECT_ALLOW
+      roles: ["agent"]
+    # Humans gate the action.
+    - actions: ["approve", "reject", "resolve"]
+      effect: EFFECT_ALLOW
+      roles: ["admin", "pmo"]
+    - actions: ["approve", "reject", "resolve"]
+      effect: EFFECT_ALLOW
+      roles: ["project_manager"]
+      derivedRoles: ["finding_assignee", "project_owner"]
+    # Belt-and-suspenders: agents can NEVER approve/reject.
+    - actions: ["approve", "reject"]
+      effect: EFFECT_DENY
+      roles: ["agent"]
