@@ -7,34 +7,6 @@ import { config } from '../config.js';
 import type { MemoryEpisode, MemoryHit, MemoryProvider, MemoryStatus } from './types.js';
 import { FalkorMemoryProvider } from './falkor.js';
 import { Mem0MemoryProvider } from './mem0.js';
-import {
-  recordEpisode as graphitiRecord,
-  pingGraphiti,
-  closeGraphiti,
-} from '../graph/graphiti.js';
-
-/** Graphiti kept as one optional provider (no longer the default). */
-class GraphitiMemoryProvider implements MemoryProvider {
-  readonly name = 'graphiti';
-  async recordEpisode(ep: MemoryEpisode): Promise<void> {
-    await graphitiRecord({ content: ep.content, source: ep.source, occurredAt: ep.occurredAt, metadata: ep.metadata });
-  }
-  async search(): Promise<MemoryHit[]> {
-    return []; // recall via the Graphiti MCP search tools is a separate path; not used here
-  }
-  async status(): Promise<MemoryStatus> {
-    const p = await pingGraphiti();
-    return {
-      provider: this.name,
-      enabled: p.enabled,
-      ok: p.enabled ? p.ok : true,
-      detail: !p.enabled ? 'disabled (GRAPHITI_MCP_URL unset)' : p.ok ? `connected (${p.tools?.length ?? 0} tools)` : (p.error ?? 'connect failed'),
-    };
-  }
-  async close(): Promise<void> {
-    await closeGraphiti();
-  }
-}
 
 class NullMemoryProvider implements MemoryProvider {
   readonly name = 'none';
@@ -54,9 +26,6 @@ function get(): MemoryProvider {
   switch (config.memory.provider) {
     case 'mem0':
       provider = new Mem0MemoryProvider();
-      break;
-    case 'graphiti':
-      provider = new GraphitiMemoryProvider();
       break;
     case 'none':
       provider = new NullMemoryProvider();

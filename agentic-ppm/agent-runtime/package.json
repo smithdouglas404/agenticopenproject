@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Grounding-service sidecar for Agentic PPM on OpenProject. OpenProject webhook -> projector -> FalkorDB/Graphiti -> detectors + rules -> findings/HITL inbox. No LLM reasoning (that lives in the Kyndral repo).",
+  "description": "Grounding-service sidecar for Agentic PPM on OpenProject. OpenProject webhook -> projector -> FalkorDB -> detectors + rules -> findings/HITL inbox. No LLM reasoning (that lives in the Kyndral repo).",
   "engines": {
     "node": ">=20"
   },

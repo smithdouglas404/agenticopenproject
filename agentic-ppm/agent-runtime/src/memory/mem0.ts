@@ -1,9 +1,9 @@
 /**
  * Mem0 memory provider (managed API).
  *
- * Uses the hosted Mem0 platform (https://mem0.ai) so there's no service to run —
- * the stability win over self-hosted Graphiti. Set MEM0_API_KEY to enable.
- * Talks the simple REST API directly (add / search), no SDK dependency.
+ * Uses the hosted Mem0 platform (https://mem0.ai) so there's no service to run.
+ * Set MEM0_API_KEY to enable. Talks the simple REST API directly (add / search),
+ * no SDK dependency.
  */
 import { config } from '../config.js';
 import type { MemoryEpisode, MemoryHit, MemoryProvider, MemoryStatus } from './types.js';

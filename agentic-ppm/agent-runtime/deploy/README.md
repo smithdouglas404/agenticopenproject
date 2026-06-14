@@ -1,12 +1,11 @@
 # Deploying the Agentic PPM stack
 
-The stack is four services:
+The stack is three services:
 
 | Service | What it is | Image / source |
 |---|---|---|
 | **openproject** | Source of truth + UI | `openproject/openproject:15` (all-in-one) |
-| **falkordb** | Graph world-model | `falkordb/falkordb:latest` |
-| **graphiti-mcp** | Temporal memory (on FalkorDB) | Graphiti MCP server (verify tag) |
+| **falkordb** | Graph world-model **+ temporal layer** (memory episodes + policy versions) | `falkordb/falkordb:latest` |
 | **agent-runtime** | This sidecar | built from `agentic-ppm/agent-runtime/` |
 
 ## ⚠️ Do NOT attach the repo ROOT to Railway
@@ -42,21 +41,13 @@ Railway you recreate each block as a Railway service:
    `agent-alerts`, a WP type `Agent Alert`, and custom fields `sync_source` +
    `alert_severity`.
 2. **FalkorDB** — New Service → Docker image `falkordb/falkordb:latest`. Expose it
-   on the private network; note host/port for the sidecar.
-3. **graphiti-mcp-server** — New Service → build from this repo using
-   `docker/Dockerfile.graphiti-mcp` (standalone server pinned to `mcp-v1.0.2`,
-   pointed at the FalkorDB service above — NOT the bundled FalkorDB). Set:
-   `FALKORDB_URI=redis://<falkordb-service>.railway.internal:6379` and
-   `OPENAI_API_KEY` (Graphiti uses OpenAI for extraction + embeddings); optional
-   `MODEL_NAME`, `GRAPHITI_GROUP_ID=agentic_ppm`. Endpoint is `:8000/mcp/` (HTTP).
-   Do **not** set an HTTP healthcheck path — there is no `/health` route.
-   Leave this service out entirely to run FalkorDB-only.
-4. **agent-runtime** — New Service → deploy from this repo, **Root Directory**
+   on the private network; note host/port for the sidecar. This is the only graph
+   backend — it holds the world-model **and** the temporal layer (memory episodes
+   and the append-only policy-version graph); no separate temporal-memory service.
+3. **agent-runtime** — New Service → deploy from this repo, **Root Directory**
    `agentic-ppm/agent-runtime` (it has a Dockerfile). Set the env from
    `.env.example`, pointing `FALKORDB_HOST`, `OPENPROJECT_BASE_URL`, and the
-   API/Anthropic keys at the services above. To enable Graphiti, set
-   `GRAPHITI_MCP_URL=http://graphiti-mcp-server.railway.internal:8000/mcp/` and
-   `GRAPHITI_MCP_TRANSPORT=http` (leave unset for FalkorDB-only).
+   API/Anthropic keys at the services above.
 
 Finally, in OpenProject → Administration → Webhooks, add:
 `https://<agent-runtime-domain>/webhooks/openproject` with the shared secret and
@@ -65,11 +56,11 @@ events `work_package:created/updated`, `project:created/updated`.
 
 ### Verify + seed (run on the Railway sidecar service)
 
-The sidecar must reach OpenProject + FalkorDB + Graphiti on Railway's private
+The sidecar must reach OpenProject + FalkorDB on Railway's private
 network, so run these from the **sidecar service** shell (not a dev sandbox):
 
 ```bash
-npm run preflight       # ✅/❌ report: are OpenProject, FalkorDB, Graphiti reachable?
+npm run preflight       # ✅/❌ report: are OpenProject and FalkorDB reachable?
 npm run smoke           # end-to-end: create a throwaway WP -> project -> assert in graph -> cleanup
 npm run sync:backfill   # seed the graph from existing OpenProject data; idempotent
 ```
@@ -108,6 +99,6 @@ moved elsewhere. So: use the all-in-one image for the instance, and this
 
 ```bash
 cd agentic-ppm/agent-runtime/deploy
-# export OPENPROJECT_BASE_URL, OPENPROJECT_API_KEY, ANTHROPIC_API_KEY (+ a Graphiti LLM key)
+# export OPENPROJECT_BASE_URL, OPENPROJECT_API_KEY, ANTHROPIC_API_KEY
 docker compose up --build
 ```

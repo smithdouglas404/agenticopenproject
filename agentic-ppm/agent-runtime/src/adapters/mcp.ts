@@ -4,7 +4,7 @@
  * NEW BUILD ("Later" feature). The PATTERN: an MCP server's RESOURCES become
  * objects/attributes the studio can map onto the spine, and its TOOLS become
  * candidate agent ACTIONS (surfaced via listTools()). This runtime is an MCP
- * *client* (same SDK as src/graph/graphiti.ts); we connect on demand, list
+ * *client* (@modelcontextprotocol/sdk); we connect on demand, list
  * resources/tools, and translate them into AttributeDescriptor[] / tool list.
  *
  * Degrades gracefully: an unreachable/empty server yields [] and a warning,
@@ -18,7 +18,7 @@ import type { McpToolDescriptor, SourceAdapter } from './types.js';
 
 export type McpTransport = 'sse' | 'http';
 
-/** Short, stable id fragment from a server URL ("mcp:graphiti-mcp"). */
+/** Short, stable id fragment from a server URL ("mcp:my-mcp-server"). */
 function serverTag(serverUrl: string): string {
   try {
     return new URL(serverUrl).hostname || serverUrl;

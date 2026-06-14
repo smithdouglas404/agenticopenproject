@@ -97,22 +97,11 @@ export const config = {
   },
 
   memory: {
-    /** Memory provider: falkor (default) | mem0 | graphiti | none. */
-    provider: (process.env.MEMORY_PROVIDER ?? 'falkor') as 'falkor' | 'mem0' | 'graphiti' | 'none',
+    /** Memory provider: falkor (default) | mem0 | none. */
+    provider: (process.env.MEMORY_PROVIDER ?? 'falkor') as 'falkor' | 'mem0' | 'none',
     mem0ApiKey: process.env.MEM0_API_KEY,
     mem0BaseUrl: process.env.MEM0_BASE_URL ?? 'https://api.mem0.ai',
     mem0AgentId: process.env.MEM0_AGENT_ID ?? 'agentic-ppm',
-  },
-
-  graphiti: {
-    /** MCP server URL, e.g. http://graphiti-mcp:8000/sse. Unset = disabled. */
-    mcpUrl: process.env.GRAPHITI_MCP_URL,
-    /** MCP transport: 'sse' (default) or 'http' (streamable HTTP). */
-    transport: (process.env.GRAPHITI_MCP_TRANSPORT ?? 'sse') as 'sse' | 'http',
-    /** Namespace for episodes/entities; default to the FalkorDB graph name. */
-    groupId: process.env.GRAPHITI_GROUP_ID ?? process.env.FALKORDB_GRAPH ?? 'agentic_ppm',
-    /** Tool name on the Graphiti MCP server that ingests an episode. */
-    addMemoryTool: process.env.GRAPHITI_ADD_MEMORY_TOOL ?? 'add_memory',
   },
 
   mcp: {

@@ -8,8 +8,8 @@
  *   npm run sync:backfill
  *
  * Idempotent: every node/edge is an upsert, so re-running is safe. Work packages
- * whose sync_source is our own agent are skipped (no feedback loop). Graphiti
- * episodes are recorded too when GRAPHITI_MCP_URL is set; otherwise FalkorDB-only.
+ * whose sync_source is our own agent are skipped (no feedback loop). Memory
+ * episodes are recorded too (FalkorDB-native by default).
  */
 import { assertRuntimeConfig } from '../config.js';
 import { getOpenProjectClient } from '../openproject/client.js';
@@ -47,6 +47,6 @@ main()
     process.exitCode = 1;
   })
   .finally(async () => {
-    // Release the FalkorDB socket and Graphiti MCP connection so the process exits.
+    // Release the FalkorDB socket and the memory provider so the process exits.
     await Promise.allSettled([getGraph().close(), closeMemory()]);
   });

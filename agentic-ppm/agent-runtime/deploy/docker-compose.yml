@@ -1,9 +1,10 @@
 # Agentic PPM stack (local / reference topology).
 #
-# Brings up: FalkorDB (graph) + Graphiti MCP (temporal memory, on FalkorDB) +
-# the agent-runtime sidecar. OpenProject is treated as EXTERNAL by default
-# (point OPENPROJECT_BASE_URL at your Railway/hosted instance) — see the
-# commented block at the bottom to run it locally too.
+# Brings up: FalkorDB (the graph world-model AND the temporal layer — memory
+# episodes + the append-only policy-version graph) + the agent-runtime sidecar.
+# OpenProject is treated as EXTERNAL by default (point OPENPROJECT_BASE_URL at
+# your Railway/hosted instance) — see the commented block at the bottom to run it
+# locally too.
 #
 # On Railway: Railway deploys per-service, not via compose. Use this file as the
 # source of truth and create one Railway service per block (see deploy/README.md).
@@ -22,30 +23,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  graphiti-mcp:
-    # NOTE: confirm the current published image/tag against the Graphiti repo
-    # (getzep/graphiti, mcp_server/). If no suitable image exists, build from source:
-    #   build:
-    #     context: https://github.com/getzep/graphiti.git#main:mcp_server
-    image: zepai/knowledge-graph-mcp:latest
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-    environment:
-      # --- Graph backend: FalkorDB (verify exact var names against Graphiti docs) ---
-      GRAPH_DB_PROVIDER: falkordb
-      FALKORDB_HOST: falkordb
-      FALKORDB_PORT: "6379"
-      # --- LLM used by Graphiti for entity/edge extraction ---
-      # Graphiti defaults to OpenAI; set Anthropic per its LLM-client config if preferred.
-      OPENAI_API_KEY: ${GRAPHITI_OPENAI_API_KEY:-}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      MODEL_NAME: ${GRAPHITI_MODEL_NAME:-gpt-4o-mini}
-      MCP_TRANSPORT: sse
-    depends_on:
-      falkordb:
-        condition: service_healthy
 
   agent-runtime:
     build:
@@ -69,9 +46,6 @@ services:
       FALKORDB_HOST: falkordb
       FALKORDB_PORT: "6379"
       FALKORDB_GRAPH: ${FALKORDB_GRAPH:-agentic_ppm}
-      # Graphiti MCP
-      GRAPHITI_MCP_URL: http://graphiti-mcp:8000/sse
-      GRAPHITI_MCP_TRANSPORT: sse
     depends_on:
       falkordb:
         condition: service_healthy
