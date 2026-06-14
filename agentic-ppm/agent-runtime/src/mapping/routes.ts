@@ -24,6 +24,7 @@ import { getAdapter, listAdapters } from '../adapters/registry.js';
 import { listOntologyProperties } from './ontologyProperties.js';
 import { WIDGET_CATALOG } from './widgets.js';
 import { getMapping, saveMapping } from './store.js';
+import { buildMetricsCatalog } from './metricsCatalog.js';
 import type { SourceMappingSet } from './types.js';
 
 /** Mount the mapping endpoints onto an existing router. */
@@ -84,6 +85,18 @@ export function mountMappingRoutes(router: Router): void {
 
   router.get('/api/widgets', (_req, res) => {
     res.json({ widgets: WIDGET_CATALOG });
+  });
+
+  // Every resolvable metric/attribute (standard + computed + mapped custom) so
+  // the Kyndral RulesPanel metric picker and the widget palette can offer them.
+  // The 'agent' kind (agent_attributes) is merged in by the Kyndral proxy.
+  router.get('/api/metrics-catalog', async (req, res) => {
+    const source = String(req.query.source ?? 'openproject');
+    try {
+      res.json({ metrics: await buildMetricsCatalog(source) });
+    } catch (err: any) {
+      res.json({ metrics: [], error: err?.message ?? String(err) });
+    }
   });
 
   router.get('/api/mapping', async (req, res) => {

@@ -197,6 +197,30 @@ export class OpenProjectClient {
     }
   }
 
+  /**
+   * PATCH scalar attributes on a work package, handling optimistic locking. Reads
+   * the current lockVersion, applies the update, and retries once on a 409 with a
+   * fresh lockVersion. `fields` are top-level APIv3 attributes (subject, dueDate,
+   * percentageDone, customFieldN, …); link fields (status/priority/…) are not
+   * handled here. Used by the universal-mapper write-back path (bidirectional edit).
+   */
+  async patchWorkPackage(
+    workPackageId: number,
+    fields: Record<string, unknown>,
+  ): Promise<OpenProjectWorkPackage> {
+    const current = (await this.getWorkPackage(workPackageId)) as OpenProjectWorkPackage & { lockVersion?: number };
+    try {
+      return await this.request('PATCH', `/work_packages/${workPackageId}`, { lockVersion: current.lockVersion, ...fields });
+    } catch (err: any) {
+      // request() embeds the HTTP status as "(409)" in the message — retry once.
+      if (/\(409\)/.test(err?.message ?? '')) {
+        const fresh = (await this.getWorkPackage(workPackageId)) as OpenProjectWorkPackage & { lockVersion?: number };
+        return await this.request('PATCH', `/work_packages/${workPackageId}`, { lockVersion: fresh.lockVersion, ...fields });
+      }
+      throw err;
+    }
+  }
+
   /** Post an activity comment on a work package. */
   async addWorkPackageComment(workPackageId: number, comment: string): Promise<void> {
     await this.request('POST', `/work_packages/${workPackageId}/activities`, {
