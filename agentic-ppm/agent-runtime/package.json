@@ -23,7 +23,6 @@
   "dependencies": {
     "@gorules/zen-engine": "^0.54.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
-    "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "falkordb": "^6.2.7",
     "tsx": "^4.19.2",
