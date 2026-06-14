@@ -17,6 +17,8 @@ import { recordEpisode } from '../memory/index.js';
 import { config } from '../config.js';
 import { mapType, canonicalId, type SourceSystem } from '../ontology/mapping.js';
 import type { SpineProperties } from '../ontology/spine.js';
+import { getMapping } from '../mapping/store.js';
+import type { SourceMappingSet, AttributeMapping } from '../mapping/types.js';
 
 const KNOWN_SOURCES: SourceSystem[] = ['openproject', 'jira', 'msproject', 'planview'];
 
@@ -59,6 +61,71 @@ function toGraphScalar(value: unknown): string | number | boolean | string[] | u
     return undefined;
   }
   return undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Mapped-attribute transform bridge
+// ---------------------------------------------------------------------------
+// After raw custom fields land as cf_* props, apply the active MappingSet's
+// transform and ALSO write the canonical value under the mapping's ontology
+// property id (e.g. pm:percentComplete, k360:objective) — so a mapped attribute
+// is queryable by its ontology id and usable as a rule metric, not just as a
+// raw cf_* prop. Idempotent.
+
+/** Active mapping per source, cached briefly (mappings change rarely; the WP
+ *  sync runs hot). */
+let mappingCache: { source: string; set: SourceMappingSet | null; at: number } | null = null;
+async function activeMapping(source: string): Promise<SourceMappingSet | null> {
+  const TTL_MS = 60_000;
+  if (mappingCache && mappingCache.source === source && Date.now() - mappingCache.at < TTL_MS) {
+    return mappingCache.set;
+  }
+  const set = await getMapping(source).catch(() => null);
+  mappingCache = { source, set, at: Date.now() };
+  return set;
+}
+
+/** Forward transform: ISO-8601 duration → hours (mirrors the reverse in
+ *  mapping/routes.ts which emits PT{h}H). status_map/priority_map pass through
+ *  (the source's canonical enum name is kept, as on the reverse path). */
+function isoDurationToHours(value: unknown): number | undefined {
+  if (typeof value === 'number') return value;
+  if (typeof value !== 'string') return undefined;
+  const t = value.match(/PT(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?/);
+  if (t && (t[1] || t[2])) return Number(t[1] ?? 0) + Number(t[2] ?? 0) / 60;
+  const d = value.match(/P(\d+(?:\.\d+)?)D/);
+  if (d) return Number(d[1]) * 24;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : undefined;
+}
+
+function applyForwardTransform(transform: AttributeMapping['transform'], value: unknown): unknown {
+  if (transform === 'iso_duration_hours') return isoDurationToHours(value);
+  return value; // status_map / priority_map / none → pass through
+}
+
+/**
+ * Write canonical ontology-property values for every synced mapping, resolving
+ * the source value from the raw payload, the cf_* alias, or the normalized
+ * props. Mutates `properties` in place (never writes undefined). Best-effort:
+ * a missing/unreadable mapping just skips the bridge.
+ */
+async function applyMappingBridge(
+  source: string,
+  raw: Record<string, unknown>,
+  normalized: Record<string, unknown>,
+  properties: Record<string, unknown>,
+): Promise<void> {
+  const set = await activeMapping(source);
+  if (!set) return;
+  for (const m of set.mappings ?? []) {
+    if (!m.synced || !m.ontologyProperty) continue;
+    const cfKey = `cf_${m.sourceKey.replace(/^customField_?/, '')}`;
+    const srcVal = raw[m.sourceKey] ?? properties[cfKey] ?? normalized[m.sourceKey];
+    if (srcVal === undefined || srcVal === null) continue;
+    const scalar = toGraphScalar(applyForwardTransform(m.transform, srcVal));
+    if (scalar !== undefined) properties[m.ontologyProperty] = scalar;
+  }
 }
 
 function projectNodeId(opId: number | string): string {
@@ -191,6 +258,11 @@ export class Projector {
       if (scalar === undefined) continue;
       properties[`cf_${key.replace(/^customField_?/, '')}`] = scalar;
     }
+
+    // Transform bridge: also write canonical ontology-property values for every
+    // synced mapping (so mapped attributes are queryable by ontology id + usable
+    // as rule metrics, not just as raw cf_* props).
+    await applyMappingBridge(source, raw, props as Record<string, unknown>, properties);
 
     await this.graph.upsertNode({ id: nodeId, label, properties });
 
