@@ -45,4 +45,4 @@ as `CLAUDE.md` in the Kyndral repo.
 
 ## Working here
 - agent-runtime: `cd agentic-ppm/agent-runtime && npm run typecheck` (the SessionStart hook installs its deps).
-- OpenProject plugin: Ruby in `modules/agentic_ppm/`; can't boot Rails here — rely on the CI smoke test (`.github/workflows/agentic-ppm-smoke.yml`).
+- OpenProject plugin: Ruby in `modules/agentic_ppm/`; can't boot Rails here — rely on the CI guard (`.github/workflows/agentic-ppm-guard.yml` — plugin static guard via `agentic-ppm/scripts/plugin-guard.sh` + agent-runtime typecheck).
